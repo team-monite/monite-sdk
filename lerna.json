@@ -1,0 +1,16 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "command": {
+    "bootstrap": {
+      "npmClientArgs": [
+        "--hoist"
+      ],
+      "ignore": []
+    }
+  },
+  "version": "independent",
+  "useWorkspaces": true,
+  "npmClient": "yarn"
+}

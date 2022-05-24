@@ -1,0 +1,41 @@
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+import type { CounterpartBankAccount } from '../models/CounterpartBankAccount';
+import type { CounterpartBankAccountResponse } from '../models/CounterpartBankAccountResponse';
+import type { CounterpartContactResponse } from '../models/CounterpartContactResponse';
+import type { CounterpartCreatePayload } from '../models/CounterpartCreatePayload';
+import type { CounterpartResponse } from '../models/CounterpartResponse';
+import type { CounterpartUpdatePayload } from '../models/CounterpartUpdatePayload';
+import type { CreateCounterpartContactPayload } from '../models/CreateCounterpartContactPayload';
+import type { UpdateCounterpartContactPayload } from '../models/UpdateCounterpartContactPayload';
+
+import type { CancelablePromise } from '../CancelablePromise';
+import { OpenAPI, OpenAPIConfig } from '../OpenAPI';
+import { request as __request } from '../request';
+
+export default class CounterpartsService {
+  openapiConfig: Partial<OpenAPIConfig>;
+
+  constructor({ config }: { config: Partial<OpenAPIConfig> }) {
+    this.openapiConfig = config;
+  }
+
+  /**
+   * Get all counterparts
+   * This endpoint lists all counterparts sorted by creation date, with the most recently created counterparts appearing first.
+   * @returns CounterpartResponse Successful Response
+   * @throws ApiError
+   */
+  public getCounterpartsCounterpartsGet(): CancelablePromise<Array<CounterpartResponse>> {
+    return __request( {
+      method: 'GET',
+      url: '/counterparts',
+      errors: {
+        404: `Not found`,
+        405: `Method Not Allowed`,
+        500: `Internal Server Error`,
+      },
+    }, this.openapiConfig);
+  }
+}
