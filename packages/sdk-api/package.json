@@ -1,0 +1,50 @@
+{
+  "name": "@monite/sdk-api",
+  "version": "3.7.0",
+  "apiVersion": "2023-09-01",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist",
+    "out"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test:ci": "jest --coverage --silent",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "clean": "rimraf dist/",
+    "dev": "yarn build --watch",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --max-warnings 0",
+    "write-package-version-file": "yarn exec ../../write-package-version-file.sh",
+    "gen:openapi": "yarn exec ./genOpenApi.sh"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@swc/jest": "~0.2.26",
+    "@team-monite/eslint-plugin": "workspace:~",
+    "@types/jest": "~29.5.11",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.38.0",
+    "jest": "~29.7.0",
+    "jest-environment-jsdom": "~29.7.0",
+    "jest-fetch-mock": "~3.0.3",
+    "msw": "~1.2.1",
+    "openapi-typescript-codegen": "~0.24.0",
+    "rimraf": "~5.0.0",
+    "tsup": "~8.0.2",
+    "typescript": "~5.0.4"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  }
+}
