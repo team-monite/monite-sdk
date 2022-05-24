@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <title>Monite App Widget Label</title>
+  </head>
+  <body>
+    <monite-app
+      entity-id="lazy"
+      api-url="lazy"
+      basename="/monite-app"
+      component="counterparts"
+    >
+      <script slot="fetch-token">
+        async function fetchDropInToken() {
+          return await window.fetchToken();
+        }
+      </script>
+
+      <script slot="theme" type="application/json">
+        {
+          "typography": {
+            "fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"
+          }
+        }
+      </script>
+
+      <script slot="locale" type="application/json">
+        {
+          "code": "de-DE",
+          "messages": {
+            "Name, country, city": "City Test",
+            "Payables": "My Payables"
+          }
+        }
+      </script>
+    </monite-app>
+
+    <script type="module">
+      (async () => {
+        const { MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY, getConfig } =
+          await import('@team-monite/sdk-demo');
+        const { api_url } = await getConfig();
+
+        const credentials = JSON.parse(
+          localStorage.getItem(MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY)
+        );
+        const { entity_id } = credentials;
+        const moniteAppNode = document.querySelector('monite-app');
+        moniteAppNode.setAttribute('api-url', `${api_url}/v1`);
+        moniteAppNode.setAttribute('entity-id', entity_id);
+      })().catch((error) => {
+        console.error(error);
+        throw new Error('Error while fetching credentials');
+      });
+    </script>
+
+    <script type="module">
+      window.fetchToken = async () => {
+        try {
+          const
+            { fetchToken, MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY, getConfig }
+           = await import('@team-monite/sdk-demo');
+          const { api_url } = await getConfig();
+          const credentials = JSON.parse(
+            localStorage.getItem(MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY)
+          );
+
+          const { entity_user_id, client_id, client_secret } = credentials;
+
+          return await fetchToken(`${api_url}/v1`, {
+            entity_user_id,
+            client_id,
+            client_secret,
+          });
+        } catch (error) {
+          console.error(error);
+          throw new Error('Error while fetching token');
+        }
+      };
+    </script>
+
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "name": "@monite/sdk-drop-in",
+  "version": "1.4.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/monite-app.js",
+      "require": "./dist/monite-app.umd.cjs"
+    },
+    "./package.json": "./package.json",
+    "./*": "./dist/*.js"
+  },
+  "scripts": {
+    "dev": "vite --config vite.config.dev.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rimraf dist/",
+    "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "sideEffects": true,
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!lodash-es)"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@emotion/react": "~11.11.1",
+    "@monite/sdk-api": "workspace:~",
+    "@monite/sdk-react": "workspace:~",
+    "@team-monite/eslint-plugin": "workspace:~",
+    "@team-monite/sdk-demo": "workspace:~",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "@vitejs/plugin-react-swc": "3.5.0",
+    "eslint": "~8.38.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-router-dom": "^6.3.0",
+    "react-use": "^17.3.2",
+    "rimraf": "~5.0.0",
+    "typescript": "~5.0.4",
+    "vite": "~5.1.4"
+  },
+  "dependencies": {
+    "@monite/sdk-api": "workspace:~"
+  },
+  "files": [
+    "dist"
+  ]
+}
