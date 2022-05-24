@@ -1,0 +1,250 @@
+include:
+  - project: monite/infra/common-ci
+    file: 'deploys.yml'
+  - project: monite/infra/common-ci
+    file: 'reviewStep.yaml'
+  - project: monite/infra/common-ci
+    file: 'staticCodeAnalysis.yml'
+
+
+Test Packages Publishing:
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: tests
+  needs:
+    - Build
+  before_script:
+    - hostname
+  variables:
+    NPM_PUBLISH_REGISTRY: 'http://verdaccio:4873'
+    UNSAFE_HTTP_WHITELIST: 'verdaccio'
+  services:
+    - name: ${WERF_PRIVATE_REGISTRY_DOCKER_IMAGE_NAME}
+      alias: verdaccio
+  script:
+    - cd /app
+    - yarn run "e2e:publish-to-private-registry"
+    - TEST_PROJECTS_DIR=/builds/monite/frontend/sdkapp/e2e/projects yarn run "e2e:update-projects-from-private-registry"
+    - TEST_PROJECTS_DIR=/builds/monite/frontend/sdkapp/e2e/projects yarn run "e2e:build-projects"
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Types Check:
+  resource_group: linters
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: linters
+  needs:
+    - Build
+  before_script:
+    - hostname
+  script:
+    - cd /app
+    - yarn typecheck
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Translations Validator:
+  resource_group: linters
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: linters
+  needs:
+    - Build
+  before_script:
+    - hostname
+  script:
+    - cd /app
+    - ./lingui-translations-validator.sh
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Tests:
+  resource_group: tests
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: tests
+  needs:
+    - Build
+  before_script:
+    - hostname
+  script:
+    - cd /app
+    - yarn test
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Linters:
+  resource_group: linters
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: linters
+  needs:
+    - Build
+  before_script:
+    - hostname
+  script:
+    - cd /app
+    - yarn exec e2e/bin/test-yarnrc-for-private-registry.sh
+    - yarn lint
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Build Storybook:
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: build
+  needs:
+    - Build
+  except:
+    refs:
+      - schedules
+  interruptible: true
+  before_script:
+    - hostname
+  script:
+    - (cd /app && yarn storybook:build --filter=@monite/sdk-react)
+    # Move `storybook_static` to project root to make it available as artifacts
+    - mv /app/packages/sdk-react/storybook_static/ packages/sdk-react/
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - packages/sdk-react/storybook_static/
+
+Deploy Storybook:
+  image: public.ecr.aws/aws-cli/aws-cli:2.15.11
+  stage: deploy
+  needs:
+    - Build Storybook
+  only:
+    - master
+    - main
+  except:
+    refs:
+      - schedules
+  interruptible: true
+  before_script:
+    - "true"
+  script:
+    # Used artifacts from `Build Storybook` stage
+    - aws s3 sync packages/sdk-react/storybook_static s3://monite-kit-storybook
+    - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
+
+Comment on MR with changesets:
+  resource_group: linters
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  stage: linters
+  needs:
+    - Build
+  only:
+    - merge_requests
+  before_script:
+    - hostname
+  script:
+    - cd /app
+    - GIT_DIR="/builds/monite/frontend/sdkapp/.git" GIT_WORK_TREE="/app" yarn changesets-gitlab comment
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+Versioning And Publishing Packages:
+  image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
+  needs:
+    - Build
+  stage: publish
+  only:
+    - master
+  before_script:
+    - hostname
+  script:
+    # Create a script to dump PUBLISHED_PACKAGES env variable to the env file.
+    # It is needed because 'INPUT_PUBLISHED' env callback accepts only one command with arguments
+    - |
+      echo 'echo "PUBLISHED_PACKAGES=$PUBLISHED_PACKAGES" > /tmp/published-packages.env' > \
+        /tmp/create-published-packages-env.sh
+      chmod +x /tmp/create-published-packages-env.sh
+
+    - cd /app
+
+    # Make sure to inject debug IDs in sourcemaps before publishing packages
+    - yarn sentry-cli sourcemaps inject packages/sdk-react/dist
+
+    - touch "$HOME/.npmrc" # Prevent creation of '.npmrc' by 'changesets-gitlab' with the 'NPM_TOKEN'
+    - yarn config set 'npmScopes["monite"]' --home --json '{"npmAlwaysAuth":true,"npmAuthToken":"${NPM_TOKEN}"}'
+    - yarn config set 'npmScopes["team-monite"]' --home --json '{"npmAlwaysAuth":true,"npmAuthToken":"${NPM_TOKEN}"}'
+    - GIT_DIR="/builds/monite/frontend/sdkapp/.git" GIT_WORK_TREE="/app" yarn changesets-gitlab
+
+    # If 'changesets-gitlab' publishes packages, it will trigger '$INPUT_PUBLISHED' variable callback
+    - |
+      if [ -f /tmp/published-packages.env ]; then
+        source /tmp/published-packages.env
+        echo "Found published packages. Creating Sentry release..."
+        yarn sentry-cli sourcemaps upload --release="$(node -p 'require("@monite/sdk-api/package.json").version')" packages/sdk-react/dist
+      else
+        echo "No packages were published, skipping Sentry release creation"
+      fi
+  variables:
+    INPUT_VERSION: .changeset/version.sh
+    INPUT_PUBLISH: .changeset/publish.sh --create-git-tags
+    INPUT_PUBLISHED: /tmp/create-published-packages-env.sh
+    SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
+    SENTRY_ORG: monite-team
+    SENTRY_PROJECT: sdk
+  interruptible: true
+  except:
+    refs:
+      - schedules
+
+sync to github:
+  before_script:
+    - hostname
+  stage: deploy
+  image: alpine/git
+  script:
+    - git config user.email "andrey.tarasov@monite.com"
+    - git config user.name "Andrey Tarasov"
+    - git remote add github https://andreitarasov:${GITHUB_TOKEN}@github.com/team-monite/monite-sdk.git
+    - git checkout --orphan main
+    - rm -r .helm werf.yaml .gitlab-ci.yml
+    - git add .
+    - git commit -m 'updates'
+    - git push github main --force
+  tags:
+    - docker
+  only:
+    refs:
+    - schedules
+    variables:
+    - $SCHEDULE == "gitlab-sync"
+
+Deploy to review:
+  variables:
+    K8S_NAMESPACE: review-${CI_COMMIT_REF_SLUG}
+    WERF_KUBE_CONTEXT: main
+    DISPLAY_INGRESS: "yes"
+
+Deploy code to review:
+  extends: .base_deploy_review
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    on_stop: Stop Review
+    auto_stop_in: 5 days
+
+Cleanup:
+  stage: deploy
+  script:
+    - unset WERF_KUBE_CONTEXT
+    - docker login -u nobody -p ${WERF_IMAGES_CLEANUP_PASSWORD} ${CI_REGISTRY_IMAGE}
+    - werf cleanup
+  only:
+    refs:
+    - schedules
+    variables:
+    - $SCHEDULE == "cleanup" || $SCHEDULE == null
+  tags:
+    - werf-flant

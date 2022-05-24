@@ -1,0 +1,1 @@
+export { PayableDetailsAttachFile } from './PayableDetailsAttachFile';

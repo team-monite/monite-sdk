@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json.schemastore.org/eslintrc",
+  "extends": ["plugin:@team-monite/react"],
+  "overrides": [
+    {
+      "files": ["*"],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          { "devDependencies": true }
+        ]
+      }
+    },
+    {
+      "files": ["vite.config.ts", "vite.config.dev.ts"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ]
+}
