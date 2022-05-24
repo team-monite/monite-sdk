@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#: src/components/LoginForm/LoginForm.tsx:85
+msgid "Client ID"
+msgstr "Client ID"
+
+#: src/components/LoginForm/LoginForm.tsx:103
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: src/components/Menu/consts.tsx:29
+msgid "Counterparts"
+msgstr "Counterparts"
+
+#: src/components/LoginForm/LoginForm.tsx:119
+msgid "Entity ID"
+msgstr "Entity ID"
+
+#: src/components/LoginForm/LoginForm.tsx:136
+msgid "Entity User ID"
+msgstr "Entity User ID"
+
+#: src/components/LoginForm/LoginForm.tsx:148
+msgid "Login"
+msgstr "Login"
+
+#: src/apps/SDKDemo/SDKDemo.tsx:103
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/Menu/consts.tsx:54
+msgid "Onboard Entity"
+msgstr "Onboard Entity"
+
+#: src/components/Menu/consts.tsx:19
+msgid "Payables"
+msgstr "Payables"
+
+#: src/components/Menu/consts.tsx:34
+msgid "Products"
+msgstr "Products"
+
+#: src/components/Menu/consts.tsx:24
+msgid "Sales"
+msgstr "Sales"
+
+#: src/components/Menu/consts.tsx:39
+msgid "Settings"
+msgstr "Settings"
+
+#: src/components/Menu/consts.tsx:49
+msgid "Tags"
+msgstr "Tags"
+
+#: src/components/LoginForm/LoginForm.tsx:65
+msgid "Welcome back"
+msgstr "Welcome back"

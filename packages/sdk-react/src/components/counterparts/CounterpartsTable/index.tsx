@@ -1,0 +1,1 @@
+export { CounterpartsTable } from './CounterpartsTable';

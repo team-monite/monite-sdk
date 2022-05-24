@@ -1,0 +1,100 @@
+{
+  "extends": [
+    "plugin:@team-monite/react",
+    "plugin:@team-monite/lingui",
+    "plugin:@team-monite/mui"
+  ],
+  "ignorePatterns": [
+    "src/core/i18n/locales/*/messages.ts",
+    "src/core/i18n/locales/*/messages.d.ts",
+    "*Fixture.ts"
+  ],
+  "rules": {
+    "import/no-unresolved": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+
+        "project": "packages/sdk-react/tsconfig.json"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["*"],
+      "rules": {
+        "import/no-duplicates": "off",
+
+        "no-extra-boolean-cast": "off",
+        "no-prototype-builtins": "off",
+
+        "prefer-const": "off",
+
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "types": {
+              "{}": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "src/mocks/**/*.{ts,tsx,jsx,jsx,cjx,mjs}",
+        "src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts",
+        "src/utils/form/FillForm.executor.ts",
+        "src/utils/test-utils.tsx",
+        "src/components/onboarding/onboardingTestUtils.ts",
+        "src/setupTests.tsx"
+      ],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          { "devDependencies": true }
+        ]
+      }
+    },
+    {
+      "files": [
+        "src/mocks/entityUsers/entityUserByIdFixture.ts",
+        "src/components/payment/YapilyWidget/InvoiceDetails/InvoiceDetails.tsx"
+      ],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off"
+      }
+    },
+    {
+      "files": ["src/components/onboarding/hooks/useOnboardingValidation.ts"],
+      "rules": {
+        "import/named": "off"
+      }
+    },
+    {
+      "files": ["src/components/payables/PayablesTable/PayablesTable.test.tsx"],
+      "rules": {
+        "no-empty": "off"
+      }
+    },
+    {
+      "files": ["src/utils/test-utils.tsx"],
+      "rules": {
+        "lingui/no-unlocalized-strings": "off"
+      }
+    },
+    {
+      "files": ["src/utils/test-utils.tsx"],
+      "rules": {
+        "lingui/no-unlocalized-strings": "off"
+      }
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+build
+coverage
+dist
+storybook_static
+*.yaml
+*.md
+.lock
+.yarn
