@@ -1,0 +1,32 @@
+.table {
+  :global {
+    .ant-table-thead > tr > th {
+      color: #707070;
+      background: none;
+      border-bottom: none;
+      padding: 12px;
+
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+
+      &:before {
+        display: none;
+      }
+    }
+
+    .ant-table-tbody > tr > td {
+      border-bottom: none;
+      padding: 10px 12px 22px 12px;
+    }
+
+    .ant-table-tbody > tr.ant-table-row:hover > td, .ant-table-tbody > tr > td.ant-table-cell-row-hover {
+      background: #fafafa;
+    }
+
+    .ant-table-tbody > tr.ant-table-row-selected > td {
+      background: #fafafa;
+      border-color: rgba(0, 0, 0, 0.03);
+    }
+  }
+}

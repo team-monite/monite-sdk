@@ -19,6 +19,8 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.2",
+    "@svgr/rollup": "^6.2.1",
+    "classnames": "^2.3.1",
     "less": "^4.1.2",
     "rollup": "^2.74.1",
     "rollup-plugin-dts": "^4.2.1",
@@ -30,5 +32,8 @@
   "peerDependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
+  },
+  "dependencies": {
+    "@monite/js-sdk": "0.0.1"
   }
 }

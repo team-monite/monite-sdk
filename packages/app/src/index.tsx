@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import 'antd/dist/antd.less';
 import '@monite/react-kit/dist/esm/monite.css';
 import './index.css';
+import 'assets/fonts/Faktum/font.css';
 
 import { init as i18nInit } from 'features/i18n';
 import Root from './Root';

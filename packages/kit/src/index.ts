@@ -1,7 +1,6 @@
 export * from './components';
+export * from './ui';
 
 export { default as MoniteProvider } from './core/context/ContextProvider';
 
-export { default as ApiService } from './core/api/ApiService';
-
-export { OpenAPIConfig } from './core/api/OpenAPI';
+export * from '@monite/js-sdk';

@@ -1,18 +1,18 @@
 import React from 'react';
+import { MoniteApp } from '@monite/js-sdk';
+
 import { ComponentsContext } from './ComponentsContext';
 
-import ApiService from '../api/ApiService';
-
 interface MoniteProviderProps {
-  api: ApiService;
+  monite: MoniteApp;
   children?: any;
 }
 
-const MoniteProvider = ({ api, children }: MoniteProviderProps) => {
+const MoniteProvider = ({ monite, children }: MoniteProviderProps) => {
   return (
     <ComponentsContext.Provider
       value={{
-        api,
+        monite,
       }}
     >
       {children}

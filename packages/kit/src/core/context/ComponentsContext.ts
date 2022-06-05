@@ -1,9 +1,8 @@
-import React, { createContext, useContext } from 'react';
-
-import ApiService from '../api/ApiService';
+import { createContext, useContext } from 'react';
+import { MoniteApp } from '@monite/js-sdk';
 
 type ComponentsContextValue = {
-  api: ApiService;
+  monite: MoniteApp;
 };
 
 export const ComponentsContext = createContext<ComponentsContextValue | null>(

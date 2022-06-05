@@ -1,2 +1,45 @@
-@import '../../node_modules/antd/es/table/style/index';
+.monite-counterparts-table {
+  .monite-table-thead > tr > th {
+    color: #707070;
+    background: none;
+    border-bottom: none;
+    padding: 12px;
 
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+
+    &:before {
+      display: none;
+    }
+  }
+
+  .monite-table-tbody > tr > td {
+    border-bottom: none;
+    padding: 10px 12px 22px 12px;
+  }
+
+  .monite-table-tbody > tr.monite-table-row:hover > td, .monite-table-tbody > tr > td.monite-table-cell-row-hover {
+    background: none;
+  }
+
+  .monite-table-tbody > tr.monite-table-row-selected > td {
+    background: none;
+    border-color: rgba(0, 0, 0, 0.03);
+  }
+
+  &--contacts {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+
+    div {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 8px;
+      }
+    }
+  }
+}

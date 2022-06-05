@@ -1,43 +1,161 @@
 import React, { useEffect, useState } from 'react';
 
-import AntTable, { TableProps as AntTableProps } from 'antd/es/table';
-
-import ConfigProvider from 'antd/es/config-provider';
 import { useComponentsContext } from '../../../core/context/ComponentsContext';
 
 import './styles.less';
+import {
+  Table,
+  TableProps,
+  ColumnsType,
+  Avatar,
+  Tag,
+  CallIcon,
+  AccountIcon,
+  MessageIcon,
+  Space,
+} from '../../../ui';
 
-export interface CounterpartsTableProps extends AntTableProps<any> {}
+export interface CounterpartsTableProps extends TableProps<any> {
+  data?: any;
+  useMoniteApi?: boolean;
+}
 
-const columns = [
+const columns: ColumnsType<any> = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
+    title: 'Name, country, city',
+    key: 'name',
+    render: (_: any, row: any) => {
+      const data = row[row.type];
+
+      if (row.type === 'organization') {
+        return (
+          <Space size={16}>
+            <Avatar size={44}>{data?.legal_name[0]}</Avatar>
+            <div>
+              <div>{data.legal_name}</div>
+              <div>
+                {data?.registered_address?.country} •{' '}
+                {data?.registered_address?.city}
+              </div>
+            </div>
+          </Space>
+        );
+      }
+
+      return (
+        <Space size={16}>
+          <Avatar size={44}>{data?.first_name[0]}</Avatar>
+          <div>
+            <div>{data?.first_name}</div>
+            <div>
+              {data?.residential_address?.country} •{' '}
+              {data?.residential_address?.city}
+            </div>
+          </div>
+        </Space>
+      );
+    },
   },
   {
     title: 'Type',
-    dataIndex: 'type',
     key: 'type',
+    width: 220,
+    render: (_: any, row: any) => {
+      const data = row[row.type];
+
+      return (
+        <Space size={8} wrap>
+          {data.is_customer ? <Tag>Customer</Tag> : null}
+          {data.is_vendor ? <Tag>Vendor</Tag> : null}
+        </Space>
+      );
+    },
+  },
+  {
+    title: 'Contact information',
+    key: 'address',
+    render: (_: any, row: any) => {
+      const data = row[row.type];
+      const contacts = (data.contacts || []).map((c: any) => c.first_name);
+      return (
+        <Space
+          className="monite-counterparts-table--contacts"
+          size={0}
+          wrap
+          direction="vertical"
+        >
+          <div>
+            <MessageIcon width={16} height={16} />
+            {data.email}
+          </div>
+          {contacts.length ? (
+            <div>
+              <AccountIcon width={16} height={16} />
+              {contacts.join(', ')}
+            </div>
+          ) : null}
+          <div>
+            <CallIcon width={16} height={16} />
+            {data.phone}
+          </div>
+        </Space>
+      );
+    },
   },
 ];
 
-const CounterpartsTable = (props: CounterpartsTableProps) => {
-  const [data, setData] = useState<any>([]);
+const rowSelection = {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      'selectedRows: ',
+      selectedRows
+    );
+  },
+  getCheckboxProps: (record: any) => ({
+    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    name: record.id,
+  }),
+};
 
-  const { api } = useComponentsContext() || {};
+const CounterpartsTable = ({
+  data: customData,
+  useMoniteApi,
+  ...otherProps
+}: CounterpartsTableProps) => {
+  const [data, setData] = useState<any>(customData || []);
+
+  const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
     (async () => {
-      const data = await api!.counterparts.getCounterpartsCounterpartsGet();
-      setData(data);
+      if (customData || !useMoniteApi) {
+        return;
+      }
+
+      const data =
+        await monite.api!.counterparts.getCounterpartsCounterpartsGet();
+      setData(
+        (Array.isArray(data) ? data : []).filter(
+          (row) => row.id && row.type && (row as any)[row.type]
+        )
+      );
     })();
   }, []);
 
   return (
-    <ConfigProvider prefixCls="monite">
-      <AntTable dataSource={data} columns={columns} {...props} />
-    </ConfigProvider>
+    <Table
+      rowKey="id"
+      rowSelection={{
+        type: 'checkbox',
+        ...rowSelection,
+      }}
+      pagination={false}
+      className="monite-counterparts-table"
+      dataSource={data}
+      columns={columns}
+      {...otherProps}
+    />
   );
 };
 

@@ -12,10 +12,11 @@ const packageJson = require('../package.json');
 async function getPlugins() {
   return [
     peerDepsExternal(),
-    resolve(),
+    resolve({ extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
     postcss({
+      autoModules: true,
       extract: 'monite.css',
       use: [
         'sass',
@@ -30,7 +31,7 @@ async function getPlugins() {
         ],
       ],
     }),
-    // terser(),
+    terser(),
     // visualizer({
     //   open: true,
     // }),
