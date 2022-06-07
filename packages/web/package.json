@@ -2,7 +2,10 @@
   "name": "@monite/web-kit",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/es/index.js",
+  "module": "dist/es/index.js",
+  "umd:main": "dist/monite.js",
+  "browser": "dist/monite.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",

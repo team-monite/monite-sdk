@@ -6,6 +6,7 @@ import alias from '@rollup/plugin-alias';
 // import { visualizer } from 'rollup-plugin-visualizer';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
+import pkg from '../package.json';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -62,11 +63,24 @@ export default async () => {
     {
       input,
       external: getExternals(),
+      plugins,
+      output: [
+        {
+          dir: 'dist/es',
+          format: 'es',
+          chunkFileNames: '[name].js',
+          sourcemap: false,
+        },
+      ],
+    },
+    {
+      input,
+      external: getExternals(),
       plugins: [...plugins],
       output: [
         {
           name: 'MoniteApp',
-          file: 'dist/monite.js',
+          file: pkg['umd:main'],
           format: 'umd',
           inlineDynamicImports: true,
           sourcemap: false,

@@ -9,7 +9,6 @@ export type PartnerResponseSchema = {
     settings?: ResponseSettings;
     updated_at: string;
     created_at: string;
-    name: string;
     status: StatusEnum;
     id: string;
 };

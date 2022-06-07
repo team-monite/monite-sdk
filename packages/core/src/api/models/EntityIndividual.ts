@@ -15,4 +15,20 @@ export type EntityIndividual = {
      * The Tax ID of the entity issuing the receivable, when it is an individual.
      */
     tax_id: string;
+    /**
+     * An entity type
+     */
+    type: EntityIndividual.type;
 };
+
+export namespace EntityIndividual {
+
+    /**
+     * An entity type
+     */
+    export enum type {
+        INDIVIDUAL = 'individual',
+    }
+
+
+}

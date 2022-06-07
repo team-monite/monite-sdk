@@ -18,7 +18,7 @@ export type UpdateIndividualEntityRequest = {
      */
     email?: string;
     /**
-     * @TODO: What is that field for ?
+     * An ID used by a Partner in their systems to identify this resource
      */
     partner_reference?: string;
     /**
@@ -26,7 +26,7 @@ export type UpdateIndividualEntityRequest = {
      */
     phone?: string;
     /**
-     * A set of meta data describing the individal
+     * A set of meta data describing the individual
      */
     individual?: OptionalIndividualSchema;
 };

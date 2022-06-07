@@ -59,6 +59,9 @@ export type QuoteResponsePayload = {
      */
     counterpart_type: CounterpartType;
     counterpart_address: CounterpartAddress;
+    /**
+     * Additional information about counterpart contacts.
+     */
     counterpart_contact?: ReceivableCounterpartContact;
     /**
      * A legal name of a counterpart it is an organization

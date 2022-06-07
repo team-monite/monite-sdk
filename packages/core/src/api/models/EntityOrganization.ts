@@ -11,4 +11,20 @@ export type EntityOrganization = {
      * The VAT ID of the entity issuing the receivable, when it is an organization.
      */
     vat_id: string;
+    /**
+     * The entity type.
+     */
+    type: EntityOrganization.type;
 };
+
+export namespace EntityOrganization {
+
+    /**
+     * The entity type.
+     */
+    export enum type {
+        ORGANIZATION = 'organization',
+    }
+
+
+}

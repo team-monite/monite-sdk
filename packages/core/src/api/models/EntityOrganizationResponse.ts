@@ -21,7 +21,7 @@ export type EntityOrganizationResponse = {
      */
     email: string;
     /**
-     * @TODO: What is that field for ?
+     * An ID used by a Partner in their systems to identify this resource
      */
     partner_reference?: string;
     /**

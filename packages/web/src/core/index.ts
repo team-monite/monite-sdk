@@ -6,22 +6,17 @@ import DefaultElement from '../components/DefaultElement';
 
 type CoreOptions = monite.MoniteAppConfig;
 
-class Core {
-  components = [];
-  public app: monite.MoniteApp;
-
+class Core extends monite.MoniteApp {
   constructor(config: CoreOptions) {
+    super(config);
     this.create = this.create.bind(this);
-
-    this.app = new monite.MoniteApp(config);
-    Object.assign(this, this.app);
   }
 
   create(componentType, options) {
     const props = {
       ...options,
       modules: {
-        monite: this.app,
+        monite: this,
       },
     };
     return componentType ? this.handleCreate(componentType, props) : null;
