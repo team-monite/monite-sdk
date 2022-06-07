@@ -95,7 +95,7 @@ This is package is just a wrapper around the @monite/react-kit package.
   (async () => {
     const monite = MoniteApp({
       // end-user API key
-      apiKey: 'en-52cefd74-c7f2-4e3b-8ba9-61b4cf405cce',
+      apiKey: '123',
     });
 
     // an example of receiving data
@@ -116,7 +116,7 @@ import MoniteApp from '@monite/web-kit';
 import '@monite/web-kit/dist/monite.css';
 
 const monite = MoniteApp({
-  apiKey: 'en-52cefd74-c7f2-4e3b-8ba9-61b4cf405cce',
+  apiKey: '123',
 });
 
 // an example of receiving data
