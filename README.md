@@ -82,10 +82,10 @@ This is package is just a wrapper around the @monite/react-kit package.
 ### Why
 
 - To allow to use react.js UI-components in non-react environments.
-- To create a ready-to-use HTML tag <script> solution.
+- To create a ready-to-use HTML tag \<script\> solution.
 - It uses preact as the lightweight alternative to the react.js.
 
-### Use case: <script>
+### Use case: \<script\>
 
 ```
 <script src=".../dist/monite.js"></script>
