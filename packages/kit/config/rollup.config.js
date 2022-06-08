@@ -8,6 +8,14 @@ import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const packageJson = require('../package.json');
+const watchConfig = {
+  chokidar: {
+    usePolling: true,
+    useFsEvents: false,
+    interval: 500,
+  },
+  exclude: 'node_modules/**',
+};
 
 async function getPlugins() {
   return [
@@ -57,6 +65,7 @@ export default async () => {
         },
       ],
       plugins,
+      watch: watchConfig,
     },
     {
       input: 'dist/esm/types/index.d.ts',
@@ -64,6 +73,7 @@ export default async () => {
       plugins: [dts()],
 
       external: [/\.css$/, /\.less$/, /\.scss$/],
+      watch: watchConfig,
     },
   ];
 
