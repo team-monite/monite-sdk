@@ -1,4 +1,4 @@
 export type CommonIconProps = {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 };

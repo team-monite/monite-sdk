@@ -1,22 +1,122 @@
 @import '../../node_modules/antd/es/button/style/index';
+@import '../../style/index';
 
 .monite-btn {
-  color: #fff;
-  padding: 12px 16px;
+  .font-regular-bold();
 
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-
-  height: auto;
-
-  background: #246FFF;
-  border-color: #246FFF;
   border-radius: 6px;
+  padding: 12px 16px;
+  height: auto;
+  width: auto;
 
-  &:hover, &:focus {
-    background: #111111;
-    border-color: #111111;
+  white-space: nowrap;
+
+  > * + * {
+    margin-left: 8px;
+  }
+
+  > * {
+    vertical-align: middle;
+  }
+
+  &.monite-btn-icon-only {
+    padding: 12px;
+  }
+}
+
+// default
+.monite-btn-default {
+  color: @color-black;
+  background: @color-lightGrey3;
+  border-color: @color-lightGrey3;
+
+  &:hover:not([disabled]) {
+    background: @color-grey;
+    border-color: @color-grey;
     color: #fff;
   }
+
+  // dangerous
+  &.monite-btn-dangerous {
+    background: #fff;
+    border-color: @color-lightGrey2;
+    color: @color-red;
+
+    &:hover:not([disabled]) {
+      color: #fff;
+      background: @color-red;
+      border-color: @color-red;
+    }
+  }
+
+  &.monite-btn-dangerous[disabled], &.monite-btn-dangerous[disabled]:hover, &.monite-btn-dangerous[disabled]:focus, &.monite-btn-dangerous[disabled]:active {
+    background: #fff;
+    color: @color-red;
+    border-color: @color-lightGrey2;
+    opacity: 0.5;
+  }
+}
+
+.monite-btn-default[disabled], .monite-btn-default[disabled]:hover, .monite-btn-default[disabled]:focus, .monite-btn-default[disabled]:active {
+  color: @color-lightGrey1;
+  border-color: @color-lightGrey3;
+}
+
+// primary
+.monite-btn-primary {
+  background: @color-blue;
+  border-color: @color-blue;
+
+  &:hover:not([disabled]) {
+    background: @color-black;
+    border-color: @color-black;
+  }
+}
+
+.monite-btn-primary[disabled], .monite-btn-primary[disabled]:hover, .monite-btn-primary[disabled]:focus, .monite-btn-primary[disabled]:active {
+  background: @color-blue;
+  border-color: @color-blue;
+  opacity: 0.5;
+  color: #fff;
+}
+
+
+// text
+.monite-btn-text {
+  color: @color-grey;
+
+  &:hover:not([disabled]) {
+    color: @color-black;
+    background: none;
+  }
+}
+
+.monite-btn-text[disabled], .monite-btn-text[disabled]:hover, .monite-btn-text[disabled]:focus, .monite-btn-text[disabled]:active {
+  color: @color-lightGrey1;
+}
+
+// link
+.monite-btn-link {
+  .font-small-bold();
+  color: @color-blue;
+
+  &:hover:not([disabled]) {
+    color: @color-primaryDarker;
+  }
+
+  // dangerous
+  &.monite-btn-dangerous {
+    color: @color-red;
+
+    &:hover:not([disabled]) {
+      color: @color-dangerDarker;
+    }
+  }
+
+  &.monite-btn-dangerous[disabled], &.monite-btn-dangerous[disabled]:hover, &.monite-btn-dangerous[disabled]:focus, &.monite-btn-dangerous[disabled]:active {
+  }
+}
+
+.monite-btn-link[disabled], .monite-btn-link[disabled]:hover, .monite-btn-link[disabled]:focus, .monite-btn-link[disabled]:active {
+  color: @color-lightGrey1;
 }

@@ -1,13 +1,67 @@
 @import '../../node_modules/antd/es/tag/style/index';
+@import '../../style/index';
 
 .monite-tag {
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   border-radius: 4px;
-  padding: 0 8px;
+  padding: 1px 8px;
 
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
+  .font-small-bold();
 
   background: none;
+
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  .monite-tag-close-icon {
+    line-height: 0;
+    margin-right: -6px;
+  }
+
+  > * + * {
+    margin-left: 8px;
+  }
+
+  @status-prefix: ~'.monite-tag-status';
+  &@{status-prefix}-disabled {
+    border-color: @color-lightGrey2;
+    color: @color-grey;
+  }
+
+  &@{status-prefix}-draft {
+    background: @color-lightGrey3;
+    color: @color-grey;
+    border-color: @color-lightGrey3;
+  }
+
+  &@{status-prefix}-pending {
+    background: @color-pink;
+    color: @color-violet;
+    border-color: @color-pink;
+  }
+
+  &@{status-prefix}-partially {
+    background: @color-pink;
+    color: @color-violet;
+    border-color: @color-pink;
+  }
+
+  &@{status-prefix}-warning {
+    background: @color-beige;
+    color: @color-orange;
+    border-color: @color-beige;
+  }
+
+  &@{status-prefix}-success {
+    background: @color-salad;
+    color: @color-green;
+    border-color: @color-salad;
+  }
+
+  &@{status-prefix}-archived {
+    background: @color-lightGrey3;
+    color: @color-black;
+    border-color: @color-lightGrey3;
+  }
 }

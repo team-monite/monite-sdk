@@ -17,5 +17,14 @@ export const Checkboxes = () => (
     <br />
     <br />
     <Checkbox checked />
+    <br />
+    <br />
+    <Checkbox disabled checked />
+    <br />
+    <br />
+    <Checkbox indeterminate />
+    <br />
+    <br />
+    <Checkbox indeterminate disabled />
   </>
 );

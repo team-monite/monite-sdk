@@ -10,6 +10,7 @@
     "app:build": "yarn workspace @monite/sdk-app build",
     "sdk:build": "yarn workspace @monite/js-sdk build",
     "react:build": "yarn workspace @monite/react-kit build",
+    "react:story": "yarn workspace @monite/react-kit storybook",
     "web:build": "yarn workspace @monite/web-kit build",
     "lint": "lerna run lint"
   },
