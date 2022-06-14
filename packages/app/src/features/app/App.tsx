@@ -1,11 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import PageCounterparts from 'features/counterparts/PageCounterparts';
+import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate';
 
 import styles from './styles.module.scss';
 
-const ROUTES = {
+export const ROUTES = {
   counterparts: '/counterparts',
+  counterpartsCreate: '/counterparts/create',
 };
 
 function App() {
@@ -13,6 +15,10 @@ function App() {
     <div className={styles.app}>
       <Routes>
         <Route path={ROUTES.counterparts} element={<PageCounterparts />} />
+        <Route
+          path={ROUTES.counterpartsCreate}
+          element={<PageCounterpartsCreate />}
+        />
         <Route path="*" element={<Navigate to={ROUTES.counterparts} />} />
       </Routes>
     </div>

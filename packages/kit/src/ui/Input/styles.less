@@ -1,0 +1,56 @@
+@import '../../node_modules/antd/es/input/style/index';
+@import '../../style/index';
+@import './mixins';
+
+.monite-input {
+  .input-mixin(monite-input);
+
+  // the mess!!!
+  &.monite-input-root {
+    &[value=""], &:not([value]) {
+      &:not([placeholder]) {
+        &:not(.monite-input-status-error):not(.monite-input-status-warning), &.monite-input-disabled {
+          background-color: @color-lightGrey3;
+          border-color: @color-lightGrey3;
+
+          &:not(.monite-input-disabled) {
+            &:hover, &:focus, &.monite-input-focused {
+              border-color: @color-blue;
+              box-shadow: 0px 0px 0px 4px #246FFF33;
+              background-color: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.monite-input-group > .monite-input:first-child, .monite-input-group-addon:first-child{
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.monite-input-group > .monite-input:last-child, .monite-input-group-addon:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.monite-input-affix-wrapper {
+  .input-mixin(monite-input-affix-wrapper);
+
+  .monite-input {
+    &:hover, &:focus, &.monite-input-focused {
+      box-shadow: none;
+    }
+  }
+
+  &.monite-input-empty {
+    background-color: @color-lightGrey3;
+    border-color: @color-lightGrey3;
+
+    .monite-input {
+      background-color: @color-lightGrey3;
+    }
+  }
+}

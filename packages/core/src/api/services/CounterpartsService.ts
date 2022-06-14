@@ -27,13 +27,39 @@ export default class CounterpartsService {
    * @returns CounterpartResponse Successful Response
    * @throws ApiError
    */
-  public getCounterpartsCounterpartsGet(): CancelablePromise<Array<CounterpartResponse>> {
+  public getList(): CancelablePromise<Array<CounterpartResponse>> {
     return __request( {
       method: 'GET',
       url: '/counterparts',
       errors: {
         404: `Not found`,
         405: `Method Not Allowed`,
+        500: `Internal Server Error`,
+      },
+    }, this.openapiConfig);
+  }
+
+  /**
+   * Create a counterpart
+   * This endpoint creates a new counterpart.
+   * @param requestBody
+   * @returns CounterpartResponse Successful Response
+   * @throws ApiError
+   */
+  public create(
+    requestBody: CounterpartCreatePayload,
+  ): CancelablePromise<CounterpartResponse> {
+    return __request({
+      method: 'POST',
+      url: '/counterparts',
+      body: requestBody,
+      mediaType: 'application/json',
+      errors: {
+        400: `Bad Request`,
+        401: `Unauthorized`,
+        403: `Forbidden`,
+        405: `Method Not Allowed`,
+        422: `Validation Error`,
         500: `Internal Server Error`,
       },
     }, this.openapiConfig);

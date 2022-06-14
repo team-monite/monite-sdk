@@ -8,6 +8,8 @@ module.exports = {
         lessOptions: {
           modifyVars: {
             'ant-prefix': 'monite',
+            'primary-color': '#246FFF',
+            'error-color': '#FF475D',
           },
         },
       },

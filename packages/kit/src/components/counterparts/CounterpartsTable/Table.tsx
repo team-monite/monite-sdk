@@ -133,8 +133,7 @@ const CounterpartsTable = ({
         return;
       }
 
-      const data =
-        await monite.api!.counterparts.getCounterpartsCounterpartsGet();
+      const data = await monite.api!.counterparts.getList();
       setData(
         (Array.isArray(data) ? data : []).filter(
           (row) => row.id && row.type && (row as any)[row.type]

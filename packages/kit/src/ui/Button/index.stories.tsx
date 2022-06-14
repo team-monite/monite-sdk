@@ -19,6 +19,10 @@ export const DefaultButton = () => (
       </Button>
       <Button disabled>Default Disabled</Button>
       <Button disabled icon={<MessageIcon width={24} height={24} />} />
+      <Button loading>Default</Button>
+      <Button href="https://monite.com" target="_blank">
+        Default
+      </Button>
     </Space>
     <div>
       <Button block>Default Block</Button>
@@ -35,6 +39,9 @@ export const DefaultButton = () => (
         Primary Disabled Icon
       </Button>
       <Button type="primary" icon={<MessageIcon width={24} height={24} />} />
+      <Button type="primary" loading>
+        Default
+      </Button>
     </Space>
     <div>
       <Button type="primary" block>

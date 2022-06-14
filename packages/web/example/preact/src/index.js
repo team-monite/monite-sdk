@@ -15,8 +15,7 @@ export default function App() {
         apiKey: 'en-52cefd74-c7f2-4e3b-8ba9-61b4cf405cce',
       });
 
-      const data =
-        await monite.api.counterparts.getCounterpartsCounterpartsGet();
+      const data = await monite.api.counterparts.getList();
 
       monite
         .create('CounterpartsTable', {

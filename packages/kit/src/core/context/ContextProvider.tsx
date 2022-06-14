@@ -1,7 +1,10 @@
 import React from 'react';
 import { MoniteApp } from '@monite/js-sdk';
+import ConfigProvider from 'antd/es/config-provider';
 
 import { ComponentsContext } from './ComponentsContext';
+
+import '../../index.less';
 
 interface MoniteProviderProps {
   monite: MoniteApp;
@@ -15,7 +18,7 @@ const MoniteProvider = ({ monite, children }: MoniteProviderProps) => {
         monite,
       }}
     >
-      {children}
+      <ConfigProvider prefixCls="monite">{children}</ConfigProvider>
     </ComponentsContext.Provider>
   );
 };

@@ -2,6 +2,8 @@ import { MoniteApp } from '@monite/js-sdk';
 
 import MoniteProvider from '../src/core/context/ContextProvider';
 
+import './main.css';
+
 export const parameters = {
   viewMode: 'docs',
   actions: { argTypesRegex: '^on[A-Z].*' },

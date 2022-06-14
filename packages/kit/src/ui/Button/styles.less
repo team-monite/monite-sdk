@@ -1,26 +1,41 @@
 @import '../../node_modules/antd/es/button/style/index';
+@import '../../node_modules/antd/es/spin/style/index';
 @import '../../style/index';
 
-.monite-btn {
+.monite-btn, a.monite-btn {
+  box-sizing: border-box;
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
   .font-regular-bold();
 
   border-radius: 6px;
-  padding: 12px 16px;
-  height: auto;
+  padding: 0 16px;
+  height: 48px;
   width: auto;
 
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   > * + * {
     margin-left: 8px;
   }
 
-  > * {
-    vertical-align: middle;
+  &.monite-btn-icon-only {
+    padding: 0 11px;
   }
 
-  &.monite-btn-icon-only {
-    padding: 12px;
+  &.monite-btn-loading {
+    .monite-btn-spinner {
+      animation: spinner-spin 1s linear infinite;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+    }
   }
 }
 
