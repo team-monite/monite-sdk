@@ -1,5 +1,8 @@
 import React from 'react';
 
+// @ts-ignore
+import { Button } from '@monite/ui';
+
 // import { useComponentsContext } from '../../../core/context/ComponentsContext';
 
 import './styles.less';
@@ -7,7 +10,7 @@ import {
   Form,
   FormItem,
   Input,
-  Button,
+  Button as OldButton,
   ListItem,
   List,
   Checkbox,
@@ -115,14 +118,12 @@ const CounterpartsFormCreate = () => {
             />
           </ListItem>
           <ListItem>
-            <Button type="link">Edit</Button>
-            <Button type="link">Delete</Button>
+            <OldButton type="link">Edit</OldButton>
+            <OldButton type="link">Delete</OldButton>
           </ListItem>
         </List>
       </FormItem>
-      <Button htmlType="submit" type="primary">
-        Create
-      </Button>
+      <Button text="Create" />
     </Form>
   );
 };

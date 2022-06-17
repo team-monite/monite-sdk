@@ -6,6 +6,8 @@ import postcss from 'rollup-plugin-postcss';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import svgr from '@svgr/rollup';
+import url from '@rollup/plugin-url';
 
 const packageJson = require('../package.json');
 const watchConfig = {
@@ -19,26 +21,13 @@ const watchConfig = {
 
 async function getPlugins() {
   return [
+    url(),
+    svgr({ exportType: 'named', icon: true }),
     peerDepsExternal(),
     resolve({ browser: true, extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
-    postcss({
-      autoModules: true,
-      extract: 'monite.css',
-      use: [
-        'sass',
-        [
-          'less',
-          {
-            javascriptEnabled: true,
-            modifyVars: {
-              'ant-prefix': 'monite',
-            },
-          },
-        ],
-      ],
-    }),
+    postcss({}),
     terser(),
     // visualizer({
     //   open: true,
@@ -67,14 +56,14 @@ export default async () => {
       plugins,
       watch: watchConfig,
     },
-    {
-      input: 'dist/esm/types/index.d.ts',
-      output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-      plugins: [dts()],
-
-      external: [/\.css$/, /\.less$/, /\.scss$/],
-      watch: watchConfig,
-    },
+    // {
+    //   input: 'dist/esm/types/index.d.ts',
+    //   output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    //   plugins: [dts()],
+    //
+    //   external: [/\.css$/, /\.less$/, /\.scss$/],
+    //   watch: watchConfig,
+    // },
   ];
 
   return build;
