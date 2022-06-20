@@ -31,7 +31,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject",
-    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0"
+    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
+    "analyze": "craco build --config analyze.config.js"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
-    "craco-babel-loader": "^1.0.3"
+    "craco-babel-loader": "^1.0.3",
+    "webpack-bundle-analyzer": "^4.5.0"
   }
 }

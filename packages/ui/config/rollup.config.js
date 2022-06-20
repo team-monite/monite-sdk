@@ -8,6 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import svgr from '@svgr/rollup';
 import url from '@rollup/plugin-url';
+import alias from '@rollup/plugin-alias';
 
 const packageJson = require('../package.json');
 const watchConfig = {
@@ -28,7 +29,7 @@ async function getPlugins() {
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
     postcss({}),
-    terser(),
+    // terser(),
     // visualizer({
     //   open: true,
     // }),
@@ -56,14 +57,24 @@ export default async () => {
       plugins,
       watch: watchConfig,
     },
-    // {
-    //   input: 'dist/esm/types/index.d.ts',
-    //   output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    //   plugins: [dts()],
-    //
-    //   external: [/\.css$/, /\.less$/, /\.scss$/],
-    //   watch: watchConfig,
-    // },
+    {
+      input: 'dist/esm/types/index.d.ts',
+      output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+      plugins: [
+        alias({
+          entries: [
+            {
+              find: /.*\.svg$/,
+              replacement: 'src/types/icon.d.ts',
+            },
+          ],
+        }),
+        dts(),
+      ],
+
+      external: [/\.css$/, /\.less$/, /\.scss$/],
+      watch: watchConfig,
+    },
   ];
 
   return build;

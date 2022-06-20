@@ -10,6 +10,7 @@
   "files": [
     "dist"
   ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
@@ -48,8 +49,5 @@
   "peerDependencies": {
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
-  },
-  "browser": {
-    "crypto": false
   }
 }

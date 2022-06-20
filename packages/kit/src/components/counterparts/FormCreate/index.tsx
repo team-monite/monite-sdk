@@ -1,6 +1,5 @@
 import React from 'react';
 
-// @ts-ignore
 import { Button } from '@monite/ui';
 
 // import { useComponentsContext } from '../../../core/context/ComponentsContext';
