@@ -1,4 +1,3 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import Button from '.';
@@ -16,15 +15,15 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 
 export const DefaultButton = Template.bind({});
 DefaultButton.args = {
-  text: 'Default Button',
+  children: 'Default Button',
 };
 
 export const PrimaryButton = () => {
   return (
     <>
-      <Button text="Danger" /> <Button text="Danger" disabled />{' '}
+      <Button>Danger</Button> <Button disabled>Danger</Button>{' '}
       <Button isLoading /> <Button icon={<InfoIcon />} />{' '}
-      <Button leftIcon={<InfoIcon width={24} height={24} />} text="Primary" />
+      <Button leftIcon={<InfoIcon width={24} height={24} />}>Primary</Button>
     </>
   );
 };
@@ -32,15 +31,15 @@ export const PrimaryButton = () => {
 export const Secondary = () => {
   return (
     <>
-      <Button color="secondary" text="Secondary" />{' '}
-      <Button color="secondary" text="Secondary" disabled />{' '}
+      <Button color="secondary">Secondary</Button>{' '}
+      <Button color="secondary" disabled>
+        Secondary
+      </Button>{' '}
       <Button color="secondary" isLoading />{' '}
       <Button color="secondary" icon={<InfoIcon />} />{' '}
-      <Button
-        color="secondary"
-        leftIcon={<InfoIcon width={24} height={24} />}
-        text="Secondary"
-      />
+      <Button color="secondary" leftIcon={<InfoIcon width={24} height={24} />}>
+        Secondary
+      </Button>
     </>
   );
 };
@@ -48,15 +47,15 @@ export const Secondary = () => {
 export const Danger = () => {
   return (
     <>
-      <Button color="danger" text="Danger" />{' '}
-      <Button color="danger" text="Danger" disabled />{' '}
+      <Button color="danger">Danger</Button>{' '}
+      <Button color="danger" disabled>
+        Danger
+      </Button>{' '}
       <Button color="danger" isLoading />{' '}
       <Button color="danger" icon={<InfoIcon />} />{' '}
-      <Button
-        color="danger"
-        leftIcon={<InfoIcon width={24} height={24} />}
-        text="Danger"
-      />
+      <Button color="danger" leftIcon={<InfoIcon width={24} height={24} />}>
+        Danger
+      </Button>
     </>
   );
 };
@@ -64,7 +63,9 @@ export const Danger = () => {
 export const BlockButton = () => {
   return (
     <Box width={[1, 1 / 2]} pt={2}>
-      <Button block text="Block" my={1} />
+      <Button block my={1}>
+        Block
+      </Button>
       <Button block isLoading my={1} />
     </Box>
   );
@@ -73,15 +74,15 @@ export const BlockButton = () => {
 export const ColoredLinks = () => {
   return (
     <>
-      <Button color="blue" text="Blue" />{' '}
-      <Button color="grey" text="Grey" disabled />{' '}
+      <Button color="blue">Blue</Button>{' '}
+      <Button color="grey" disabled>
+        Grey
+      </Button>{' '}
       <Button color="salad" isLoading />{' '}
       <Button color="orange" icon={<InfoIcon width={24} height={24} />} />{' '}
-      <Button
-        color="green"
-        leftIcon={<InfoIcon width={24} height={24} />}
-        text="Green"
-      />
+      <Button color="green" leftIcon={<InfoIcon width={24} height={24} />}>
+        Green
+      </Button>
     </>
   );
 };
@@ -89,8 +90,12 @@ export const ColoredLinks = () => {
 export const LinksWithNoPadding = () => {
   return (
     <>
-      <Button noPadding color="blue" text="Blue" />{' '}
-      <Button noPadding color="grey" text="Grey" disabled />{' '}
+      <Button noPadding color="blue">
+        Blue
+      </Button>{' '}
+      <Button noPadding color="grey" disabled>
+        Grey
+      </Button>{' '}
       <Button noPadding color="salad" isLoading />{' '}
       <Button
         noPadding
@@ -101,8 +106,9 @@ export const LinksWithNoPadding = () => {
         noPadding
         color="green"
         leftIcon={<InfoIcon width={24} height={24} />}
-        text="Green"
-      />
+      >
+        Green
+      </Button>
     </>
   );
 };

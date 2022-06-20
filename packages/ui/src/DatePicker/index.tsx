@@ -7,8 +7,8 @@ import ReactDatePicker, {
 // import 'react-datepicker/dist/react-datepicker.css'; TODO: should import from here but test fail ("Jest failed to parse a file"). That's why moved this file to current folder
 
 import './react-datepicker.css';
-import enGB from 'date-fns/locale/en-GB';
-import getYear from 'date-fns/getYear';
+import { enGB } from 'date-fns/locale';
+import { getYear, format } from 'date-fns';
 
 import Input from '../Input';
 import Button from '../Button';
@@ -24,26 +24,11 @@ function getYearsPeriod(date: Date, yearItemNumber = DEFAULT_YEAR_ITEM_NUMBER) {
 
 registerLocale('en-GB', enGB);
 
-const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
 const StyledCalendarContainer = styled(CalendarContainer)`
-  font-family: 'Faktum';
+  font-family: 'Faktum', system-ui;
 
   > div {
-    box-shadow: 0px 6px 16px rgba(15, 15, 15, 0.12);
+    box-shadow: 0 6px 16px rgba(15, 15, 15, 0.12);
     border-radius: 12px;
     width: 280px;
     max-width: 280px;
@@ -54,29 +39,30 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   .react-datepicker__header {
     background: white;
     border: none;
-    padding: 0px;
+    padding: 0;
     height: 48px;
   }
 
   .react-datepicker__month {
-    margin: 40px 0px 0px 0px;
+    margin: 40px 0 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   .react-datepicker__monthPicker {
-    margin: 16px 0px 0px 10px;
-}
+    margin: 16px 0 0 10px;
+  }
+
   .react-datepicker__year {
     margin: 0;
   }
 
-.react-datepicker__year-wrapper {
+  .react-datepicker__year-wrapper {
     max-width: 280px;
     margin-top: 16px;
     margin-left: 10px;
-}
+  }
 
   .react-datepicker__current-month {
     font-style: normal;
@@ -89,7 +75,6 @@ const StyledCalendarContainer = styled(CalendarContainer)`
     width: 32px;
     height: 32px;
     line-height: 32px;
-    font-size: 12px;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -118,36 +103,37 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   .react-datepicker__day--keyboard-selected,
   .react-datepicker__month-text--keyboard-selected,
   .react-datepicker__year-text--selected {
-    background: #286df3;
+    background: ${({ theme }) => theme.colors.primary};
   }
 
   .react-datepicker__day--today,
   .react-datepicker__month-text--today,
   .react-datepicker__year-text--today,
   .react-datepicker__day--keyboard-selected,
-  .react-datepicker__year-text--keyboard-selected   {
+  .react-datepicker__year-text--keyboard-selected {
     background: none;
     color: #000;
     font-weight: normal
   }
 }
 
-  .day {
-    border-radius: 50%;
-    margin: 0 4px 0 0;
-    margin-bottom: 4px;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    font-size: 14px;
-    &:not(:last-child) {
-      margin-right: 4px;
-    }
+.day {
+  border-radius: 50%;
+  margin: 0 4px 4px 0;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+
+  &:not(:last-child) {
+    margin-right: 4px;
+  }
 `;
 
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
   padding: 16px 24px;
   height: 48px;
@@ -173,6 +159,7 @@ type DatePickerProps = {
   className?: string;
   minDate?: Date;
   maxDate?: Date;
+  dateFormat?: string;
 };
 
 const DatePicker = ({
@@ -181,6 +168,7 @@ const DatePicker = ({
   className,
   minDate,
   maxDate,
+  dateFormat = 'dd.MM.yyyy',
 }: DatePickerProps) => {
   const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
   const [showYearPicker, setShowYearPicker] = useState(false);
@@ -216,7 +204,7 @@ const DatePicker = ({
       calendarContainer={MyContainer}
       dayClassName={() => 'day'}
       locale={'en-GB'}
-      dateFormat="dd.MM.yyyy"
+      dateFormat={dateFormat}
       showMonthYearPicker={showMonthYearPicker}
       showYearPicker={showYearPicker}
       shouldCloseOnSelect={!(showMonthYearPicker || showYearPicker)}
@@ -228,6 +216,7 @@ const DatePicker = ({
         if (showMonthYearPicker) {
           setShowMonthYearPicker(false);
         }
+
         if (showYearPicker) {
           setShowYearPicker(false);
         }
@@ -251,21 +240,21 @@ const DatePicker = ({
             noPadding
             color="grey"
           />
-          <div>
+          <>
             {!showMonthYearPicker && !showYearPicker && (
               <HeaderDate
-                onClick={() => setShowMonthYearPicker(!showMonthYearPicker)}
+                onClick={() => setShowMonthYearPicker((value) => !value)}
               >
-                {MONTHS[date.getMonth()]}
+                {format(date, 'MMMM')}
               </HeaderDate>
             )}
             {!showYearPicker && (
-              <HeaderDate onClick={() => setShowYearPicker(!showYearPicker)}>
+              <HeaderDate onClick={() => setShowYearPicker((value) => !value)}>
                 {` ${date.getFullYear()}`}
               </HeaderDate>
             )}
             {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
-          </div>
+          </>
           <Button
             onClick={
               !showMonthYearPicker && !showYearPicker
