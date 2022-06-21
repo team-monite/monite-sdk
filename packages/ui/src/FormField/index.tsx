@@ -1,5 +1,5 @@
 import React, { LabelHTMLAttributes } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import Button from '../Button';
 import { QuestionIcon } from '../Icons';
@@ -19,9 +19,7 @@ const Field = styled.div<Partial<FormFieldProps>>`
       : ''}
 `;
 
-const Label = styled(Text).attrs({
-  as: 'label',
-})<LabelHTMLAttributes<{}>>`
+const Label = styled(Text)<LabelHTMLAttributes<{}>>`
   text-align: left;
   margin-bottom: 8px;
 
@@ -35,10 +33,7 @@ const Label = styled(Text).attrs({
   }
 `;
 
-const Error = styled(Text).attrs({
-  as: 'div',
-  size: 'small',
-})<{}>`
+const Error = styled(Text)<{}>`
   color: ${({ theme }) => theme.colors.error};
   margin-top: 8px;
 
@@ -89,7 +84,7 @@ const FormField = ({
 }: FormFieldProps) => {
   return (
     <Field readOnly={readOnly}>
-      <Label htmlFor={id} size={labelTextSize || 'smallBold'}>
+      <Label as="label" htmlFor={id} size={labelTextSize || 'smallBold'}>
         <span>{label}</span>
         {onClickInfo ? (
           <Button
@@ -102,7 +97,11 @@ const FormField = ({
       </Label>
       {children}
       {text && <FormText>{text}</FormText>}
-      {error && <Error>{error}</Error>}
+      {error && (
+        <Error as="div" size="small">
+          {error}
+        </Error>
+      )}
     </Field>
   );
 };

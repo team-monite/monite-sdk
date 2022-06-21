@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { ReactComponent as SpinnerIcon } from './spinner.svg';
 
@@ -7,9 +7,8 @@ interface SpinnerProps {
 }
 
 const getPxSize = ({ pxSize = 16 }: SpinnerProps) => pxSize;
-const Spinner = styled(SpinnerIcon).withConfig({
-  shouldForwardProp: (prop, defaultValidatorFn) =>
-    !['pxSize'].includes(prop as string) && defaultValidatorFn(prop),
+const Spinner = styled(SpinnerIcon, {
+  shouldForwardProp: (prop) => !['pxSize'].includes(prop as string),
 })<SpinnerProps>`
   animation: spinner-spin 1s linear infinite;
 

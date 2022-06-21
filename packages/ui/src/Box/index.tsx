@@ -1,7 +1,7 @@
 // @see https://github.com/rebassjs/rebass/blob/master/packages/reflexbox/src/index.js
 
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   compose,
   space,
@@ -31,7 +31,7 @@ export type BoxProps = Omit<RebassBoxProps, 'css'> &
   BorderProps &
   GridProps &
   TextAlignProps;
-export const Box = styled<any>('div').withConfig({
+export const Box = styled<any>('div', {
   shouldForwardProp,
 })(
   {
@@ -44,7 +44,7 @@ export const Box = styled<any>('div').withConfig({
   sx,
   (props) => props.css,
   compose(space, layout, typography, color, flexbox, border, grid, textAlign)
-) as any as React.FC<BoxProps>;
+);
 
 export const Flex = styled(Box)({
   display: 'flex',

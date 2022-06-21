@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import ReactTooltip, { TooltipProps } from 'react-tooltip';
 
 import { Button, Tooltip, InfoIcon } from '..';

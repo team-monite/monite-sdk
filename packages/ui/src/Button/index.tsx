@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from '@emotion/styled';
 
 import Spinner from '../Spinner';
 import Text, { STYLES as TEXT_STYLES } from '../Text';
@@ -7,7 +7,7 @@ import { Box, BoxProps } from '../Box';
 
 import { THEMES } from '../consts';
 
-import type { TooltipProps } from '../types';
+import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type StyledButtonProps = {
   $isLoading: boolean;
@@ -83,7 +83,7 @@ const Hover: Record<string, any> = {
 const getColor = ({
   $color = 'primary',
   theme,
-}: ThemedStyledProps<StyledButtonProps, any>) => {
+}: ThemedStyledProps<StyledButtonProps>) => {
   if (!$color) {
     return '';
   }
@@ -105,7 +105,7 @@ const getHoverColor = ({
   theme,
   disabled,
   $isLoading,
-}: ThemedStyledProps<ButtonProps & StyledButtonProps, any>) => {
+}: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
   if (disabled || $isLoading) {
     return '';
   }
