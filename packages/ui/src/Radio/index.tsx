@@ -1,7 +1,7 @@
 import React from 'react';
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from '@emotion/styled';
 
-import type { TooltipProps } from '../types';
+import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type StyledProps = {
   $checked?: boolean;
@@ -11,7 +11,7 @@ const getBorderColor = ({
   $checked,
   theme,
   $disabled,
-}: ThemedStyledProps<StyledProps, any>) => {
+}: ThemedStyledProps<StyledProps>) => {
   if ($checked && $disabled) {
     return theme.colors.lightGrey2;
   }

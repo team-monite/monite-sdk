@@ -1,9 +1,9 @@
 import React from 'react';
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from '@emotion/styled';
 
 import { CheckIcon } from '../Icons';
 
-import type { TooltipProps } from '../types';
+import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type StyledProps = {
   $checked?: boolean;
@@ -15,7 +15,7 @@ const getBorderColor = ({
   theme,
   $disabled,
   $invalid,
-}: ThemedStyledProps<StyledProps, any>) => {
+}: ThemedStyledProps<StyledProps>) => {
   let color = theme.colors.lightGrey2;
   if ($checked) {
     color = theme.colors.black;
@@ -51,7 +51,7 @@ const getOutlineColor = ({
   theme,
   $disabled,
   $invalid,
-}: ThemedStyledProps<StyledProps, any>) => {
+}: ThemedStyledProps<StyledProps>) => {
   if ($disabled) {
     return '';
   }
@@ -70,7 +70,7 @@ const getColor = ({
   theme,
   $disabled,
   $invalid,
-}: ThemedStyledProps<StyledProps, any>) => {
+}: ThemedStyledProps<StyledProps>) => {
   if ($disabled) {
     return `color: ${theme.colors.lightGrey2};`;
   }

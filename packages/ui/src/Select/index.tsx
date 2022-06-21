@@ -8,7 +8,7 @@ import Select, {
   MultiValueGenericProps,
 } from 'react-select';
 import ReactTooltip from 'react-tooltip';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import type { FormatOptionLabelMeta } from 'react-select/dist/declarations/src/Select';
 
