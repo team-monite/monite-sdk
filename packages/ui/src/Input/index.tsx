@@ -1,5 +1,7 @@
 import React from 'react';
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from '@emotion/styled';
+
+import type { ThemedStyledProps } from '../types';
 
 const InputGroup = styled.div<{ hasAddonIcon: boolean }>`
   position: relative;
@@ -23,7 +25,7 @@ const getBg = ({
   theme,
   readOnly,
   value,
-}: ThemedStyledProps<InputProps, any>) => {
+}: ThemedStyledProps<InputProps>) => {
   if (isInvalid) {
     return `
       background-color: ${theme.colors.white};

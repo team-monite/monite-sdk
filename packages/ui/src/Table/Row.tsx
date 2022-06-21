@@ -1,14 +1,19 @@
 import React from 'react';
-import styled, { ThemedStyledProps } from 'styled-components';
+import styled from '@emotion/styled';
+
+import { ThemedStyledProps } from '../types';
 import { Button, Dropdown, DropdownMenu, useDropdownPopper } from '..';
 
 import { DotsVIcon } from '../Icons';
 
 type StyledTableRowProps = {
   $inactive?: boolean;
-} & ThemedStyledProps<TableRowProps, any>;
+} & TableRowProps;
 
-const inactive = ({ $inactive, theme }: StyledTableRowProps) => {
+const inactive = ({
+  $inactive,
+  theme,
+}: ThemedStyledProps<StyledTableRowProps>) => {
   if (!$inactive) {
     return '';
   }

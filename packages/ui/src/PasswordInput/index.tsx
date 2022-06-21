@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import eyeSrc from './eye.svg';
 import eyeSlashSrc from './eye-slash.svg';

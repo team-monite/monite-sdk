@@ -1,10 +1,11 @@
 import ReactTooltip, { TooltipProps } from 'react-tooltip';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { THEMES } from '..';
 
-const StyledTooltip = styled(ReactTooltip)`
+// TODO: fix types
+const StyledTooltip = styled<TooltipProps & any>(ReactTooltip)`
   font-size: 14px !important;
   font-weight: 400;
   line-height: 20px;
