@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from '@emotion/react';
 import {
   Title,
   Subtitle,
@@ -11,7 +10,7 @@ import {
 import '../../app/src/assets/fonts/Faktum/font.css';
 import './main.css';
 
-import { THEMES } from '../src';
+import ThemeProvider from '../src/core/ThemeProvider';
 
 export const parameters = {
   // argTypes: {
@@ -44,7 +43,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={THEMES.default}>
+    <ThemeProvider>
       <Story />
     </ThemeProvider>
   ),

@@ -15,9 +15,11 @@ const PageCounterparts = () => {
       <PageHeader
         title="Counterparts"
         extra={[
-          <Button key="1" onClick={() => navigate(ROUTES.counterpartsCreate)}>
-            Create New
-          </Button>,
+          <Button
+            key="1"
+            onClick={() => navigate(ROUTES.counterpartsCreate)}
+            text="Create New"
+          />,
         ]}
       />
       <CounterpartsTable data={CounterpartsTestData} />

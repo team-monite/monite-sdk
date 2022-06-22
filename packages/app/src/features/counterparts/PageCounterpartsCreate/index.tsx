@@ -16,9 +16,11 @@ const PageCounterpartsCreate = () => {
       <PageHeader
         title="Create Counterpart"
         extra={[
-          <Button key="1" onClick={() => navigate(ROUTES.counterparts)}>
-            Back
-          </Button>,
+          <Button
+            key="1"
+            onClick={() => navigate(ROUTES.counterparts)}
+            text="Back"
+          />,
         ]}
       />
       <div className={styles.wrapper}>

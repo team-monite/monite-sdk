@@ -27,11 +27,13 @@ const base: any = (props: any) => css(props.__css)(props.theme);
 const variant: any = ({ theme, variant, tx = 'variants' }: any) =>
   css(get(theme, tx + '.' + variant, get(theme, variant)))(theme);
 
-export type BoxProps = Omit<RebassBoxProps, 'css'> &
+export type BoxProps = Omit<RebassBoxProps, 'children'> &
   BorderProps &
   GridProps &
-  TextAlignProps;
-export const Box = styled<any>('div', {
+  TextAlignProps & {
+    children?: any;
+  };
+export const Box = styled('div', {
   shouldForwardProp,
 })(
   {
@@ -44,7 +46,7 @@ export const Box = styled<any>('div', {
   sx,
   (props) => props.css,
   compose(space, layout, typography, color, flexbox, border, grid, textAlign)
-);
+) as any as React.FC<BoxProps>;
 
 export const Flex = styled(Box)({
   display: 'flex',

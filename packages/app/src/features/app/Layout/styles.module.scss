@@ -18,42 +18,10 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-
-  :global {
-    li.ant-menu-item, .ant-menu-submenu-title {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 4px;
-
-      span {
-        margin-left: 8px;
-      }
-
-      &:hover {
-        background: #DDDDDD;
-        color: inherit;
-      }
-    }
-
-    .ant-menu-sub {
-      background: none;
-    }
-
-    li.ant-menu-submenu-active {
-      color: inherit;
-    }
-  }
 }
 
 .company {
-  display: flex;
-
-  :global {
-    .ant-avatar {
-      flex: 1 0 44px;
-    }
-  }
+  align-items: center;
 }
 
 .companyMenu {
@@ -62,20 +30,4 @@
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
-
-  :global {
-    li.ant-menu-item, .ant-menu-submenu-title {
-      background: none;
-      display: flex;
-      align-items: center;
-
-      &:hover {
-        color: inherit;
-      }
-    }
-
-    li.ant-menu-submenu-active {
-      color: inherit;
-    }
-  }
 }

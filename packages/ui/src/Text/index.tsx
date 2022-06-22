@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
+import { Box } from '../Box';
+
 export const STYLES: Record<string, any> = {
   h2: {
     //styleName: Titles/H2;
@@ -48,14 +50,14 @@ export const STYLES: Record<string, any> = {
 };
 
 export type TextProps = {
-  size?: keyof typeof STYLES;
+  textSize?: keyof typeof STYLES;
   align?: 'initial' | 'inherit' | 'left' | 'center' | 'right' | 'justify';
   color?: string;
   children: React.ReactNode;
 };
 
-const Text = styled.div<TextProps>`
-  ${({ size = 'regular' }) => STYLES[size]}
+const Text = styled(Box)<TextProps>`
+  ${({ textSize = 'regular' }) => STYLES[textSize]}
   ${({ align }) => (align ? `text-align: ${align};` : '')};
   ${({ color, theme }) =>
     color && theme.colors[color] ? `color: ${theme.colors[color]};` : ''}
