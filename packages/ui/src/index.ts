@@ -28,7 +28,9 @@ export { default as FlexTable } from './FlexTable';
 export { default as Avatar } from './Avatar';
 export { default as AvatarInput } from './AvatarInput';
 export { default as DatePicker } from './DatePicker';
+export { default as ThemeProvider } from './core/ThemeProvider';
 
 export * from './Icons';
 export * from './consts';
+export * from './types';
 // export * from '../index.d';
