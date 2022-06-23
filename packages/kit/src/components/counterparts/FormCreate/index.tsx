@@ -122,7 +122,7 @@ const CounterpartsFormCreate = () => {
           </ListItem>
         </List>
       </FormItem>
-      <Button text="Create" />
+      <Button>Create</Button>
     </Form>
   );
 };

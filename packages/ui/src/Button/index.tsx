@@ -1,4 +1,10 @@
-import React from 'react';
+import React, {
+  BaseSyntheticEvent,
+  FC,
+  forwardRef,
+  ReactNode,
+  Ref,
+} from 'react';
 import styled from '@emotion/styled';
 
 import Spinner from '../Spinner';
@@ -132,7 +138,6 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
   border-radius: 6px;
   text-align: center;
   display: inline-block;
-  border: none;
   position: relative;
 
   white-space: nowrap;
@@ -140,7 +145,7 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
   cursor: pointer;
 
   background: transparent;
-  border-color: transparent;
+  border: none transparent;
 
   width: max-content;
   vertical-align: middle;
@@ -176,9 +181,7 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
       border-width: 1px;
       border-style: solid;
     `}
-
   ${({ disabled }) => (disabled ? `opacity: 0.5;` : '')}
-
   > svg + span {
     margin-left: 12px;
   }
@@ -241,9 +244,9 @@ const StyledDisabledTooltip = styled.span`
 `;
 
 export interface ButtonProps extends BoxProps {
-  text?: string;
-  icon?: React.ReactNode;
-  leftIcon?: React.ReactNode;
+  children?: string;
+  icon?: ReactNode;
+  leftIcon?: ReactNode;
   disabled?: boolean;
   isLoading?: boolean;
   tooltip?: TooltipProps;
@@ -251,23 +254,23 @@ export interface ButtonProps extends BoxProps {
   to?: string;
   href?: string;
   noPadding?: boolean;
-  ref?: React.Ref<any>;
+  ref?: Ref<any>;
   size?: ButtonSize;
   block?: boolean;
   className?: string;
   textSize?: string;
   color?: string;
   hover?: string;
-  onClick?: (e: React.BaseSyntheticEvent) => void;
+  onClick?: (e: BaseSyntheticEvent) => void;
 }
 
-const Button: React.FC<ButtonProps> = React.forwardRef<any, ButtonProps>(
+const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
   (
     {
       tooltip,
       disabled,
       isLoading,
-      text,
+      children,
       icon,
       leftIcon,
       noPadding,
@@ -289,16 +292,16 @@ const Button: React.FC<ButtonProps> = React.forwardRef<any, ButtonProps>(
         }, {})
       : {};
 
-    let textContent = null;
-    if (text) {
-      textContent = textSize ? (
+    const getTextContent = () => {
+      if (!children) return null;
+      if (!textSize) return <span>{children}</span>;
+
+      return (
         <Text as="span" size={textSize}>
-          {text}
+          {children}
         </Text>
-      ) : (
-        <span>{text}</span>
       );
-    }
+    };
 
     return (
       <StyledButton
@@ -328,8 +331,8 @@ const Button: React.FC<ButtonProps> = React.forwardRef<any, ButtonProps>(
               <StyledDisabledTooltip {...tooltipAttributes} />
             ) : null}
             {leftIcon}
-            {icon ? <i>{icon}</i> : null}
-            {text ? textContent : null}
+            {icon && <i>{icon}</i>}
+            {getTextContent()}
           </>
         )}
       </StyledButton>

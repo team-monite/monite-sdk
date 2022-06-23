@@ -28,15 +28,18 @@ export default class CounterpartsService {
    * @throws ApiError
    */
   public getList(): CancelablePromise<Array<CounterpartResponse>> {
-    return __request( {
-      method: 'GET',
-      url: '/counterparts',
-      errors: {
-        404: `Not found`,
-        405: `Method Not Allowed`,
-        500: `Internal Server Error`,
+    return __request(
+      {
+        method: 'GET',
+        url: '/counterparts',
+        errors: {
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          500: `Internal Server Error`,
+        },
       },
-    }, this.openapiConfig);
+      this.openapiConfig
+    );
   }
 
   /**
@@ -47,21 +50,47 @@ export default class CounterpartsService {
    * @throws ApiError
    */
   public create(
-    requestBody: CounterpartCreatePayload,
+    requestBody: CounterpartCreatePayload
   ): CancelablePromise<CounterpartResponse> {
-    return __request({
-      method: 'POST',
-      url: '/counterparts',
-      body: requestBody,
-      mediaType: 'application/json',
-      errors: {
-        400: `Bad Request`,
-        401: `Unauthorized`,
-        403: `Forbidden`,
-        405: `Method Not Allowed`,
-        422: `Validation Error`,
-        500: `Internal Server Error`,
+    return __request(
+      {
+        method: 'POST',
+        url: '/counterparts',
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
       },
-    }, this.openapiConfig);
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Counterpart Contacts
+   * get counterpart contacts
+   * @returns CounterpartContactResponse Successful Response
+   * @throws ApiError
+   */
+  public getCounterpartContacts(
+    counterpartId: string
+  ): CancelablePromise<Array<CounterpartContactResponse>> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/counterparts/${counterpartId}/contacts`,
+        errors: {
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
   }
 }

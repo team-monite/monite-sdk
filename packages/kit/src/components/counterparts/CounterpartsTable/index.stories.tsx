@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Table from '.';
-import CounterpartsTestData from './fixtures/counterparts';
+import CounterpartsTestData from '../fixtures/counterparts';
 
 const Story = {
   title: 'CounterpartsTable',
