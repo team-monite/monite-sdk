@@ -3,7 +3,7 @@ import { THEMES } from '../../consts';
 
 type ThemeProviderProps = {
   theme: Theme;
-  children: React.ReactNode;
+  children: any;
 };
 const ThemeProvider = ({
   theme = THEMES.default,

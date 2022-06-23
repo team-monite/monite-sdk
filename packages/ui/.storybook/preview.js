@@ -6,11 +6,12 @@ import {
   Primary,
   Stories,
 } from '@storybook/addon-docs';
+import { ThemeProvider } from 'emotion-theming';
 
 import '../../app/src/assets/fonts/Faktum/font.css';
 import './main.css';
 
-import ThemeProvider from '../src/core/ThemeProvider';
+import { THEMES } from '../src';
 
 export const parameters = {
   // argTypes: {
@@ -43,7 +44,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider>
+    <ThemeProvider theme={THEMES.default}>
       <Story />
     </ThemeProvider>
   ),
