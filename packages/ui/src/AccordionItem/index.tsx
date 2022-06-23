@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 const Wrapper = styled.div<{
   $isExpanded?: boolean;
   $isButton?: boolean;
+  onClick?: () => void;
 }>`
   padding: 14px 16px;
   display: flex;
