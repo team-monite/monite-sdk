@@ -41,6 +41,7 @@ const StyledBadge = styled.span<
     $color?: string;
   }
 >`
+  box-sizing: border-box;
   display: inline-block;
   color: ${THEMES.default.colors.black};
 

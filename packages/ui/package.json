@@ -27,9 +27,7 @@
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
     "@svgr/webpack": "^5.5.0",
-    "@types/react": "^17.0.39",
     "@types/react-datepicker": "^4.4.2",
-    "@types/styled-components": "^5.1.23",
     "babel-loader": "^8.2.3",
     "file-loader": "^6.2.0",
     "jest-styled-components": "^7.0.8",
@@ -48,9 +46,9 @@
     "styled-system": "^5.1.5"
   },
   "peerDependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
     "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3"
+    "@emotion/styled": "^11.9.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   }
 }

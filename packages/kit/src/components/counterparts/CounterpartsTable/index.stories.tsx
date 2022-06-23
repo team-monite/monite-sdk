@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Table from '.';
+import Table from './Table';
 import CounterpartsTestData from './fixtures/counterparts';
 
 const Story = {
