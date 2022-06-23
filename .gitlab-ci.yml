@@ -11,5 +11,11 @@ test-job:       # This job runs in the build stage, which runs first.
     - yarn install --frozen-lockfile
     - echo "Run linting..."
     - yarn lint
+    - echo "Run building..."
+    - yarn ui:build
+    - yarn sdk:build
+    - yarn react:build
+    - yarn web:build
+    - yarn app:build
   tags:
     - docker
