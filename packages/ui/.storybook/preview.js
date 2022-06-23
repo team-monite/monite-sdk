@@ -11,8 +11,6 @@ import { ThemeProvider } from 'emotion-theming';
 import '../../app/src/assets/fonts/Faktum/font.css';
 import './main.css';
 
-import { ThemeProvider } from 'emotion-theming';
-
 import { THEMES } from '../src';
 
 export const parameters = {
