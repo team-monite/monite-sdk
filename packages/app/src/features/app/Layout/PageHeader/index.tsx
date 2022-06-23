@@ -1,20 +1,29 @@
-import {
-  PageHeader as AntPageHeader,
-  PageHeaderProps as AntPageHeaderProps,
-} from 'antd';
+import React from 'react';
+import { Text } from '@monite/react-kit';
+import styled from '@emotion/styled';
 
-import styles from './styles.module.scss';
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+`;
 
 type PageHeaderProps = {
   title: string;
-} & AntPageHeaderProps;
-const PageHeader = ({ title, ...rest }: PageHeaderProps) => {
+  extra: React.ReactNode;
+};
+const PageHeader = ({ title, extra }: PageHeaderProps) => {
   return (
-    <AntPageHeader
-      className={styles.header}
-      title={<h1>{title}</h1>}
-      {...rest}
-    />
+    <Wrapper>
+      <div>
+        <Text as="h1" textSize="h2">
+          {title}
+        </Text>
+      </div>
+      {extra ? <aside>{extra}</aside> : null}
+    </Wrapper>
   );
 };
 

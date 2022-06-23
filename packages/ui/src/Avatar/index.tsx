@@ -6,6 +6,9 @@ import { Box, BoxProps } from '../Box';
 type StyledProps = {
   $size?: number;
   hasHover?: boolean;
+  onClick?: () => void;
+  url?: string;
+  inactive?: boolean;
 };
 
 const Wrapper = styled(Box)<StyledProps>`
@@ -30,7 +33,7 @@ const Wrapper = styled(Box)<StyledProps>`
       : ''}
 `;
 
-const Icon = styled.i<AvatarProps & StyledProps>`
+const Icon = styled.i<StyledProps>`
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
@@ -84,6 +87,7 @@ type AvatarProps = {
   inactive?: boolean;
   size?: number;
   onlyLetter?: boolean;
+  onClick?: () => void;
 } & BoxProps;
 
 const Avatar = ({

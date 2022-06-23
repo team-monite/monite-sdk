@@ -1,5 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from '@emotion/react';
 import {
   Title,
   Subtitle,
@@ -7,6 +6,7 @@ import {
   Primary,
   Stories,
 } from '@storybook/addon-docs';
+import { ThemeProvider } from 'emotion-theming';
 
 import '../../app/src/assets/fonts/Faktum/font.css';
 import './main.css';

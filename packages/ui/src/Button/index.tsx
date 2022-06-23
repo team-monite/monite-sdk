@@ -307,11 +307,11 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
       <StyledButton
         disabled={disabled}
         onClick={onClick}
-        $isLoading={isLoading}
+        $isLoading={!!isLoading}
         $isIcon={!!icon}
         $hasLeftIcon={!!leftIcon}
-        $noPadding={noPadding}
-        $block={block}
+        $noPadding={!!noPadding}
+        $block={!!block}
         $textSize={textSize}
         $color={color}
         $hover={hover}
