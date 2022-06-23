@@ -1,0 +1,13 @@
+default:
+  image: cimg/node:16.14.2-browsers #lts
+
+stages:          # List of stages for jobs, and their order of execution
+  - test
+
+test-job:       # This job runs in the build stage, which runs first.
+  stage: test
+  script:
+    - echo "Node modules modules modules..."
+    - yarn install --frozen-lockfile
+    - echo "Run linting..."
+    - yarn lint
