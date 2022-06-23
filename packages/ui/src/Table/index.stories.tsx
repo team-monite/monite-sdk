@@ -6,7 +6,7 @@ import DropdownItem from '../Dropdown/MenuItem';
 import Button from '../Button';
 
 const Story = {
-  title: 'Table',
+  title: 'Components/Table',
   component: Table,
 };
 export default Story;

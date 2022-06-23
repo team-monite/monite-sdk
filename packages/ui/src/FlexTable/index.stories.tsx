@@ -4,7 +4,7 @@ import FlexTable from '.';
 import { Flex, Box } from '../Box';
 
 const Story = {
-  title: 'FlexTable',
+  title: 'Components/FlexTable',
   component: FlexTable,
 };
 export default Story;

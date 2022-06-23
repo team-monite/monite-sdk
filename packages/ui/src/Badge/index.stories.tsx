@@ -6,7 +6,7 @@ import Badge from '.';
 import { InfoIcon } from '../Icons';
 
 const Story = {
-  title: 'Badge',
+  title: 'Components/Badge',
   component: Badge,
 };
 export default Story;

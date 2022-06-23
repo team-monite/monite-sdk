@@ -13,7 +13,7 @@ import {
 } from '@storybook/addon-docs';
 
 const Story = {
-  title: 'DatePicker',
+  title: 'Components/DatePicker',
   component: DatePicker,
   parameters: {
     docs: {

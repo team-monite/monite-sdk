@@ -4,7 +4,7 @@ import List from '.';
 import ListItem from '../ListItem';
 
 const Story = {
-  title: 'List',
+  title: 'Components/List',
   component: List,
 };
 export default Story;

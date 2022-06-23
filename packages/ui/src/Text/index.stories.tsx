@@ -3,7 +3,7 @@ import React from 'react';
 import Text from '.';
 
 const Story = {
-  title: 'Text',
+  title: 'Components/Text',
   component: Text,
 };
 export default Story;

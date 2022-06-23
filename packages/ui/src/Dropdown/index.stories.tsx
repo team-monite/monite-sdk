@@ -5,7 +5,7 @@ import DropdownMenu from './Menu';
 import DropdownItem from './MenuItem';
 
 const Story = {
-  title: 'Dropdown Menu',
+  title: 'Components/Dropdown Menu',
   component: Dropdown,
 };
 export default Story;

@@ -9,8 +9,8 @@ import {
 
 import '../../app/src/assets/fonts/Faktum/font.css';
 import './main.css';
-
-import ThemeProvider from '../src/core/ThemeProvider';
+import { THEMES } from '@monite/react-kit';
+import { ThemeProvider } from 'emotion-theming';
 
 export const parameters = {
   // argTypes: {
@@ -43,7 +43,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider>
+    <ThemeProvider theme={{ ...THEMES.default }}>
       <Story />
     </ThemeProvider>
   ),
