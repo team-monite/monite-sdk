@@ -1,4 +1,4 @@
-import React, { LabelHTMLAttributes } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 import Button from '../Button';
@@ -19,7 +19,7 @@ const Field = styled.div<Partial<FormFieldProps>>`
       : ''}
 `;
 
-const Label = styled(Text)<LabelHTMLAttributes<{}>>`
+const Label = styled(Text)`
   text-align: left;
   margin-bottom: 8px;
 

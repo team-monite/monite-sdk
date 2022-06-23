@@ -1,7 +1,13 @@
-import '@emotion/react';
+declare module '@emotion/styled' {
+  export interface Theme {
+    colors: {
+      [key: string]: string;
+    };
+  }
 
-import type { Theme as ITheme } from '.';
+  import { CreateStyled } from '@emotion/styled/types/index';
 
-declare module '@emotion/react' {
-  export interface Theme extends ITheme {}
+  export * from '@emotion/styled/types/index';
+  const customStyled: CreateStyled<Theme>;
+  export default customStyled;
 }
