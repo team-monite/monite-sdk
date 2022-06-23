@@ -3,7 +3,7 @@ import React from 'react';
 import Modal from '.';
 
 const Story = {
-  title: 'Modal',
+  title: 'Components/Modal',
   component: Modal,
 };
 export default Story;

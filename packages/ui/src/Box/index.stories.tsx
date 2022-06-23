@@ -4,7 +4,7 @@ import { ComponentStory } from '@storybook/react';
 import { Box, Flex, BoxProps } from '.';
 
 const Story = {
-  title: 'Box',
+  title: 'Components/Box',
   component: Box,
 };
 export default Story;

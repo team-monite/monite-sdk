@@ -3,7 +3,7 @@ import Card from '../Card';
 import Tooltip from '../Tooltip';
 
 const Story = {
-  title: 'Icons',
+  title: 'Components/Icons',
 };
 export default Story;
 

@@ -6,7 +6,7 @@ import PasswordInput from '../PasswordInput';
 import Select from '../Select';
 
 const Story = {
-  title: 'FormField',
+  title: 'Components/FormField',
   component: FormField,
 };
 export default Story;
