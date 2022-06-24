@@ -93,4 +93,21 @@ export default class CounterpartsService {
       this.openapiConfig
     );
   }
+
+  public getCounterpartById(
+    counterpartId: string
+  ): CancelablePromise<Array<CounterpartResponse>> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/counterparts/${counterpartId}`,
+        errors: {
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
 }
