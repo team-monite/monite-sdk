@@ -4,8 +4,6 @@ import { Button, Checkbox, Input, FormField } from '@monite/ui';
 
 // import { useComponentsContext } from '../../../core/context/ComponentsContext';
 
-import './styles.less';
-
 // export interface CounterpartsFormCreateProps {}
 
 // type FormValues = {
