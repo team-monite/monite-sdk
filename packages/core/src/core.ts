@@ -2,12 +2,15 @@ import ApiService from './api/ApiService';
 
 export type CoreConfig = {
   apiKey: string;
+  locale?: string;
 };
 
 class Core {
   api: ApiService;
 
-  constructor({ apiKey }: CoreConfig) {
+  locale: string = 'en';
+
+  constructor({ apiKey, locale }: CoreConfig) {
     this.api = new ApiService({
       config: {
         HEADERS: {
@@ -15,6 +18,10 @@ class Core {
         },
       },
     });
+
+    if (locale) {
+      this.locale = locale;
+    }
   }
 }
 
