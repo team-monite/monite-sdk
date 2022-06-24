@@ -22,7 +22,7 @@ export const DefaultForm = () => (
     </FormField>
     <br />
     <FormField id="city" label="City" required>
-      <Input required/>
+      <Input required />
     </FormField>
     <br />
     <FormField id="gender" label="Gender">
