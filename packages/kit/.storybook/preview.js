@@ -19,6 +19,7 @@ export const decorators = [
   (Story) => {
     const monite = new MoniteApp({
       // apiKey: '',
+      locale: 'en',
     });
     return (
       <MoniteProvider monite={monite}>

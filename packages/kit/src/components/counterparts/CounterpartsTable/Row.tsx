@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge, Avatar, Text, TableRow, DropdownItem } from '@monite/ui';
+import { useTranslation } from 'react-i18next';
 
 import { CallIcon, AccountIcon, MessageIcon } from '../../../ui';
 
@@ -62,14 +63,15 @@ const ColName = ({ row }: any) => {
 };
 
 const Row = ({ row }: any) => {
+  const { t } = useTranslation();
   const data = row[row.type];
 
   return (
     <TableRow
       dropdownActions={() => (
         <>
-          <DropdownItem onClick={() => {}}>Edit</DropdownItem>
-          <DropdownItem onClick={() => {}}>Delete</DropdownItem>
+          <DropdownItem onClick={() => {}}>{t('common:edit')}</DropdownItem>
+          <DropdownItem onClick={() => {}}>{t('common:delete')}</DropdownItem>
         </>
       )}
     >
@@ -78,8 +80,10 @@ const Row = ({ row }: any) => {
       </td>
       <td>
         <Styled.ColType>
-          {data.is_customer ? <Badge text="Customer" /> : null}
-          {data.is_vendor ? <Badge text="Vendor" /> : null}
+          {data.is_customer ? (
+            <Badge text={t('counterparts:customer')} />
+          ) : null}
+          {data.is_vendor ? <Badge text={t('counterparts:vendor')} /> : null}
         </Styled.ColType>
       </td>
       <td>

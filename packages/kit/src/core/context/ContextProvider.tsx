@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MoniteApp } from '@monite/js-sdk';
 import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui';
 import ConfigProvider from 'antd/es/config-provider';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
+import { I18nextProvider } from 'react-i18next';
 
+import i18n from '../i18n';
 import { ComponentsContext } from './ComponentsContext';
 
 import '../../index.less';
@@ -17,6 +19,10 @@ interface MoniteProviderProps {
 const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
   const finalTheme = theme || THEMES.default;
 
+  useEffect(() => {
+    i18n.changeLanguage(monite.locale);
+  }, [monite.locale]);
+
   return (
     <ComponentsContext.Provider
       value={{
@@ -25,7 +31,9 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
     >
       <EmotionThemeProvider theme={finalTheme}>
         <UIThemeProvider theme={finalTheme}>
-          <ConfigProvider prefixCls="monite">{children}</ConfigProvider>
+          <I18nextProvider i18n={i18n}>
+            <ConfigProvider prefixCls="monite">{children}</ConfigProvider>
+          </I18nextProvider>
         </UIThemeProvider>
       </EmotionThemeProvider>
     </ComponentsContext.Provider>
