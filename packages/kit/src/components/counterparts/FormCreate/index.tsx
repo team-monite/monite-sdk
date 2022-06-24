@@ -1,32 +1,20 @@
 import React from 'react';
 
-import { Button } from '@monite/ui';
+import { Button, Checkbox, Input, FormField } from '@monite/ui';
 
 // import { useComponentsContext } from '../../../core/context/ComponentsContext';
 
-import './styles.less';
-import {
-  Form,
-  FormItem,
-  Input,
-  Button as OldButton,
-  ListItem,
-  List,
-  Checkbox,
-  Values,
-} from '../../../ui';
-
 // export interface CounterpartsFormCreateProps {}
 
-type FormValues = {
-  companyName: string;
-  vatId: string;
-};
+// type FormValues = {
+//   companyName: string;
+//   vatId: string;
+// };
 
 const CounterpartsFormCreate = () => {
   // const { monite } = useComponentsContext() || {};
 
-  const onFinish = async (values: FormValues) => {
+  const onFinish = async (values: unknown) => {
     console.log(values);
 
     /* TODO: make an API request here?
@@ -52,78 +40,53 @@ const CounterpartsFormCreate = () => {
     */
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    // TODO
-    console.log('Failed:', errorInfo);
-  };
-
   return (
-    <Form onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical">
-      <FormItem
-        label="Company name"
-        name="companyName"
-        required
-        rules={[{ required: true, message: 'Please input the Company name!' }]}
-      >
-        <Input />
-      </FormItem>
-      <FormItem
+    <form onSubmit={onFinish}>
+      <FormField label="Company name" id="companyName" required>
+        <Input required />
+      </FormField>
+      <FormField
         label="Email"
         name="email"
         required
         rules={[{ required: true, message: 'Please input the Email!' }]}
       >
         <Input />
-      </FormItem>
-      <FormItem
+      </FormField>
+      <FormField
         label="VAT ID"
         name="vatId"
         required
         rules={[{ required: true, message: 'Please input the VAT!' }]}
       >
         <Input />
-      </FormItem>
-      <FormItem label="Phone number">
+      </FormField>
+      <FormField label="Phone number">
         <Input />
-      </FormItem>
-      <FormItem label="Set this counterpart as" required>
-        <List bordered>
-          <ListItem>
-            <Checkbox>Customer</Checkbox>
-          </ListItem>
-          <ListItem>
-            <Checkbox>Vendor</Checkbox>
-          </ListItem>
-        </List>
-      </FormItem>
-      <FormItem label="Set this counterpart as" required>
-        <List bordered>
-          <ListItem>
-            <Values
-              data={[
-                {
-                  label: 'Full name',
-                  value: 'John Doe',
-                },
-                {
-                  label: 'E-mail',
-                  value: 'john@smagency.com',
-                },
-                {
-                  label: 'Phone',
-                  value: '+49 176 23455469',
-                },
-              ]}
-            />
-          </ListItem>
-          <ListItem>
-            <OldButton type="link">Edit</OldButton>
-            <OldButton type="link">Delete</OldButton>
-          </ListItem>
-        </List>
-      </FormItem>
+      </FormField>
+      <FormField label="Set this counterpart as" required>
+        <ul>
+          <li>
+            <Checkbox label="Customer" />
+          </li>
+          <li>
+            <Checkbox label="Vendor" />
+          </li>
+        </ul>
+      </FormField>
+      <FormField label="Set this counterpart as" required>
+        <ul>
+          <li>Full name: John Doe</li>
+          <li>E-mail: john@smagency.com</li>
+          <li>Phone: +49 176 23455469</li>
+          <li>
+            <Button color="link" text="Edit" />
+            <Button color="link" text="Delete" />
+          </li>
+        </ul>
+      </FormField>
       <Button text="Create" />
-    </Form>
+    </form>
   );
 };
 

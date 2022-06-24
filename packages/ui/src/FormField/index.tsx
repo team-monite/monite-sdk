@@ -31,6 +31,19 @@ const Label = styled(Text)`
     display: inline-block;
     margin-left: 4px;
   }
+
+  ${({ required, theme }) =>
+    required &&
+    `&:after {
+      content: '';
+      display: inline-block;
+      margin-left: 7px;
+      vertical-align: middle;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: ${theme.colors.red};
+    }`}
 `;
 
 const Error = styled(Text)<{}>`
@@ -69,6 +82,7 @@ type FormFieldProps = {
   children: React.ReactNode;
   labelTextSize?: string;
   readOnly?: boolean;
+  required?: boolean;
   onClickInfo?: (e: React.BaseSyntheticEvent) => void;
 };
 
@@ -80,11 +94,17 @@ const FormField = ({
   label,
   text,
   readOnly,
+  required,
   onClickInfo,
 }: FormFieldProps) => {
   return (
     <Field readOnly={readOnly}>
-      <Label as="label" htmlFor={id} size={labelTextSize || 'smallBold'}>
+      <Label
+        as="label"
+        htmlFor={id}
+        textSize={labelTextSize || 'smallBold'}
+        required={required}
+      >
         <span>{label}</span>
         {onClickInfo ? (
           <Button
