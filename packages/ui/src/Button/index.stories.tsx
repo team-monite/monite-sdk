@@ -6,7 +6,7 @@ import { Box } from '../Box';
 import { InfoIcon } from '../Icons';
 
 const Story = {
-  title: 'Button',
+  title: 'Components/Button',
   component: Button,
 };
 export default Story;

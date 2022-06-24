@@ -4,7 +4,7 @@ import { ComponentStory } from '@storybook/react';
 import Radiobox from '.';
 
 const Story = {
-  title: 'Radiobox',
+  title: 'Components/Radiobox',
   component: Radiobox,
 };
 export default Story;

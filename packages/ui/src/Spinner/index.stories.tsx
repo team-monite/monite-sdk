@@ -4,7 +4,7 @@ import { ComponentStory } from '@storybook/react';
 import Spinner from '.';
 
 const Story = {
-  title: 'Spinner',
+  title: 'Components/Spinner',
   component: Spinner,
 };
 export default Story;

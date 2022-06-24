@@ -4,7 +4,7 @@ import { ComponentStory } from '@storybook/react';
 import Card from '.';
 
 const Story = {
-  title: 'Card',
+  title: 'Components/Card',
   component: Card,
 };
 export default Story;

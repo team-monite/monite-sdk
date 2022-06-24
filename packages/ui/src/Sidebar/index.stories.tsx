@@ -3,7 +3,7 @@ import React from 'react';
 import Sidebar from '.';
 
 const Story = {
-  title: 'Sidebar',
+  title: 'Components/Sidebar',
   component: Sidebar,
 };
 export default Story;

@@ -3,7 +3,7 @@ import React from 'react';
 import Accordion from '.';
 
 const Story = {
-  title: 'Accordion',
+  title: 'Components/Accordion',
   component: Accordion,
 };
 export default Story;

@@ -10,7 +10,7 @@ import {
 } from '@storybook/addon-docs';
 
 const Stoys = {
-  title: 'Avatar',
+  title: 'Components/Avatar',
   component: Avatar,
   parameters: {
     docs: {
