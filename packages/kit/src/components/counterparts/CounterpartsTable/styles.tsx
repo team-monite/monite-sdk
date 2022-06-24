@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@monite/ui';
 import styled from '@emotion/styled';
 
 export const Table = styled.div`
