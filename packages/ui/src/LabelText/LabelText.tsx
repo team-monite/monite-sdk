@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Box, Flex } from '@monite/ui';
+import { Box, Flex } from '../Box';
 
 type LabelTextProps = {
   label: string;

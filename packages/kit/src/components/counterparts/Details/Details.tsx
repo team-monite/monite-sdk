@@ -4,6 +4,7 @@ import { CounterpartResponse as Counterpart } from '@monite/js-sdk';
 
 import CounterPartCompany from './CounterPartCompany';
 import CounterPartContact from './CounterPartContact';
+import CounterPartOrganization from './CounterPartOrganization';
 
 import {
   getAddress,
@@ -57,29 +58,31 @@ const CounterpartsDetails = ({
     } = counterPart.organization;
 
     return (
-      <>
-        <CounterPartCompany
-          companyName={legal_name}
-          type={is_customer ? 'Customer' : 'Not a customer'}
-          address={getAddress(registered_address)}
-          phone={phone}
-          email={email}
-          // todo what is vat_number?
-          taxId={vat_number}
-          onEdit={onEdit}
-        />
-
-        {contacts.length > 0 && <h1>Contact persons</h1>}
-
-        {contacts.map(({ last_name, first_name, address, email, phone }) => (
-          <CounterPartContact
-            fullName={getFullName(first_name, last_name)}
-            address={getAddress(address)}
-            email={email}
+      <CounterPartOrganization
+        company={
+          <CounterPartCompany
+            companyName={legal_name}
+            type={is_customer ? 'Customer' : 'Not a customer'}
+            address={getAddress(registered_address)}
             phone={phone}
+            email={email}
+            // todo what is vat_number?
+            taxId={vat_number}
+            onEdit={onEdit}
           />
-        ))}
-      </>
+        }
+        contacts={
+          contacts.length &&
+          contacts.map(({ last_name, first_name, address, email, phone }) => (
+            <CounterPartContact
+              fullName={getFullName(first_name, last_name)}
+              address={getAddress(address)}
+              email={email}
+              phone={phone}
+            />
+          ))
+        }
+      />
     );
   }
 

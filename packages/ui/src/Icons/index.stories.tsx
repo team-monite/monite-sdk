@@ -1,5 +1,5 @@
 import * as Icons from './';
-import Card from '../Card';
+import Card from '../Card/Card';
 import Tooltip from '../Tooltip';
 
 const Story = {

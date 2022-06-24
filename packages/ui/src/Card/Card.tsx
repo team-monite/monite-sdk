@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react';
-import { Box, Flex } from '@monite/ui';
+import { Box, Flex } from '../Box';
 import styled from '@emotion/styled';
 
-type DetailsCardProps = {
-  children: ReactNode;
+type CardProps = {
+  content: ReactNode;
   actions?: ReactNode;
 };
 
-const Card = styled(Box)`
+const CardRoot = styled(Box)`
   border: 1px solid #dddddd;
   border-radius: 17px;
 `;
@@ -24,13 +24,13 @@ const Actions = styled(Flex)`
   gap: 25px;
 `;
 
-const DetailsCard = ({ children, actions }: DetailsCardProps) => {
+const Card = ({ content, actions }: CardProps) => {
   return (
-    <Card>
-      <Content>{children}</Content>
+    <CardRoot>
+      <Content>{content}</Content>
       {actions && <Actions>{actions}</Actions>}
-    </Card>
+    </CardRoot>
   );
 };
 
-export default DetailsCard;
+export default Card;

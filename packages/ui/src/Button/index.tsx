@@ -39,10 +39,25 @@ const Size: Record<ButtonSize, string> = {
 const Width: Record<string, number> = {
   md: 48,
 };
-const getSize = ({ $textSize, size = 'md' }: ButtonProps & StyledButtonProps) =>
-  $textSize ? TEXT_STYLES[$textSize] : Size[size];
+const getSize = ({
+  $textSize,
+  size = 'md',
+  $color,
+}: ButtonProps & StyledButtonProps) => {
+  if ($color)
+    return `
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    padding: 0;
+    `;
 
-const Themes: Record<string, any> = {
+  if ($textSize) return TEXT_STYLES[$textSize];
+
+  return Size[size];
+};
+
+export const Themes: Record<string, any> = {
   primary: `
     background: ${THEMES.default.colors.primary};
     color: ${THEMES.default.colors.white};
@@ -63,7 +78,7 @@ const Themes: Record<string, any> = {
   `,
 };
 
-const Hover: Record<string, any> = {
+export const Hover: Record<string, any> = {
   primary: `
     &:hover {
       background: ${THEMES.default.colors.black};
@@ -128,16 +143,18 @@ const getHoverColor = ({
 };
 
 const getPadding = ({ $hasLeftIcon }: ButtonProps & StyledButtonProps) => {
-  if ($hasLeftIcon) {
-    return 'padding-left: 11px;';
-  }
+  // if ($hasLeftIcon) {
+  //   return 'padding-left: 11px;';
+  // }
 
   return '';
 };
 const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
   border-radius: 6px;
   text-align: center;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
 
   white-space: nowrap;
@@ -183,7 +200,7 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
     `}
   ${({ disabled }) => (disabled ? `opacity: 0.5;` : '')}
   > svg + span {
-    margin-left: 12px;
+    margin-left: 6px;
   }
 
   i {
@@ -244,7 +261,7 @@ const StyledDisabledTooltip = styled.span`
 `;
 
 export interface ButtonProps extends BoxProps {
-  children?: string;
+  children?: ReactNode;
   icon?: ReactNode;
   leftIcon?: ReactNode;
   disabled?: boolean;
