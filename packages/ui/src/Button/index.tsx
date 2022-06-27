@@ -39,23 +39,8 @@ const Size: Record<ButtonSize, string> = {
 const Width: Record<string, number> = {
   md: 48,
 };
-const getSize = ({
-  $textSize,
-  size = 'md',
-  $color,
-}: ButtonProps & StyledButtonProps) => {
-  if ($color)
-    return `
-    font-size: 14px;
-    line-height: 20px;
-    font-weight: 500;
-    padding: 0;
-    `;
-
-  if ($textSize) return TEXT_STYLES[$textSize];
-
-  return Size[size];
-};
+const getSize = ({ $textSize, size = 'md' }: ButtonProps & StyledButtonProps) =>
+  $textSize ? TEXT_STYLES[$textSize] : Size[size];
 
 export const Themes: Record<string, any> = {
   primary: `
@@ -143,9 +128,9 @@ const getHoverColor = ({
 };
 
 const getPadding = ({ $hasLeftIcon }: ButtonProps & StyledButtonProps) => {
-  // if ($hasLeftIcon) {
-  //   return 'padding-left: 11px;';
-  // }
+  if ($hasLeftIcon) {
+    return 'padding-left: 11px;';
+  }
 
   return '';
 };
@@ -200,7 +185,7 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
     `}
   ${({ disabled }) => (disabled ? `opacity: 0.5;` : '')}
   > svg + span {
-    margin-left: 6px;
+    margin-left: 12px;
   }
 
   i {

@@ -1,19 +1,28 @@
 import React, { ReactNode } from 'react';
-import { Box, Flex } from '../Box';
+
 import styled from '@emotion/styled';
+import { Box, BoxProps, Flex } from '../Box';
 
 type CardProps = {
-  content: ReactNode;
+  children: React.ReactNode;
+  className?: string;
+  ref?: React.Ref<HTMLDivElement>;
+  shadow?: boolean;
   actions?: ReactNode;
-};
+} & BoxProps;
 
-const CardRoot = styled(Box)`
-  border: 1px solid #dddddd;
-  border-radius: 17px;
-`;
-
-const Content = styled(Box)`
-  padding: 27px 23px 32px;
+const CardRoot = styled(Box)<CardProps>`
+  ${({ shadow }) =>
+    shadow
+      ? `
+        box-shadow: 0 4px 8px 0 #1111110f;
+        background: white;
+        border-radius: 8px;
+  `
+      : `
+        border: 1px solid #dddddd;
+        border-radius: 17px;
+  `};
 `;
 
 const Actions = styled(Flex)`
@@ -24,10 +33,14 @@ const Actions = styled(Flex)`
   gap: 25px;
 `;
 
-const Card = ({ content, actions }: CardProps) => {
+const Card: React.FC<CardProps> = ({
+  children,
+  actions,
+  ...props
+}: CardProps) => {
   return (
-    <CardRoot>
-      <Content>{content}</Content>
+    <CardRoot {...props}>
+      {children}
       {actions && <Actions>{actions}</Actions>}
     </CardRoot>
   );

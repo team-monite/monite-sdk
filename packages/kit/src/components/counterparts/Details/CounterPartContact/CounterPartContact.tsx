@@ -1,5 +1,5 @@
 import React from 'react';
-import { LabelText, Card, MailIcon, CallIcon, Link } from '@monite/ui';
+import { LabelText, Card, MailIcon, CallIcon, Link, Box } from '@monite/ui';
 
 type CounterPartContactProps = {
   fullName: string;
@@ -15,14 +15,6 @@ const CounterPartContact = ({
   address,
 }: CounterPartContactProps) => (
   <Card
-    content={
-      <>
-        <LabelText label={'Full name'} text={fullName} />
-        <LabelText label={'Address'} text={address} />
-        <LabelText label={'Phone'} text={phone} />
-        <LabelText label={'E-mail'} text={email} />
-      </>
-    }
     actions={
       <>
         <Link
@@ -42,7 +34,14 @@ const CounterPartContact = ({
         </Link>
       </>
     }
-  />
+  >
+    <Box sx={{ padding: '27px 23px 32px' }}>
+      <LabelText label={'Full name'} text={fullName} />
+      <LabelText label={'Address'} text={address} />
+      <LabelText label={'Phone'} text={phone} />
+      <LabelText label={'E-mail'} text={email} />
+    </Box>
+  </Card>
 );
 
 export default CounterPartContact;

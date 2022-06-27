@@ -3,6 +3,7 @@ import Button from '../Button';
 import { EditIcon, MailIcon } from '../Icons';
 import LabelText from '../LabelText';
 import Link from '../Link';
+import { Box } from '../Box';
 
 const Story = {
   title: 'Components/Card',
@@ -13,28 +14,31 @@ export default Story;
 
 export const DefaultCard = () => {
   return (
-    <DetailsCard
-      content={
-        <>
-          <LabelText label={'Company name'} text={'Company name'} />
-          <LabelText label={'Type'} text={'Type'} />
-          <LabelText label={'Business address'} text={'Business address'} />
-        </>
-      }
-    />
+    <DetailsCard>
+      <Box sx={{ padding: '27px 23px 32px' }}>
+        <LabelText label={'Company name'} text={'Company name'} />
+        <LabelText label={'Type'} text={'Type'} />
+        <LabelText label={'Business address'} text={'Business address'} />
+      </Box>
+    </DetailsCard>
+  );
+};
+
+export const CardWithShadow = () => {
+  return (
+    <DetailsCard shadow>
+      <Box sx={{ padding: '27px 23px 32px' }}>
+        <LabelText label={'Company name'} text={'Company name'} />
+        <LabelText label={'Type'} text={'Type'} />
+        <LabelText label={'Business address'} text={'Business address'} />
+      </Box>
+    </DetailsCard>
   );
 };
 
 export const CardWithActions = () => {
   return (
     <DetailsCard
-      content={
-        <>
-          <LabelText label={'Company name'} text={'Company name'} />
-          <LabelText label={'Type'} text={'Type'} />
-          <LabelText label={'Business address'} text={'Business address'} />
-        </>
-      }
       actions={
         <>
           <Button
@@ -52,6 +56,12 @@ export const CardWithActions = () => {
           </Link>
         </>
       }
-    />
+    >
+      <Box sx={{ padding: '27px 23px 32px' }}>
+        <LabelText label={'Company name'} text={'Company name'} />
+        <LabelText label={'Type'} text={'Type'} />
+        <LabelText label={'Business address'} text={'Business address'} />
+      </Box>
+    </DetailsCard>
   );
 };

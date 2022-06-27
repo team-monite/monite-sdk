@@ -1,4 +1,4 @@
-import { Button, EditIcon, LabelText, Card } from '@monite/ui';
+import { Button, EditIcon, LabelText, Card, Box } from '@monite/ui';
 import React from 'react';
 
 type CounterPartCompanyProps = {
@@ -30,17 +30,16 @@ const CounterPartCompany = ({
         Edit details
       </Button>
     }
-    content={
-      <>
-        <LabelText label={'Company name'} text={companyName} />
-        <LabelText label={'Type'} text={type} />
-        <LabelText label={'Business address'} text={address} />
-        {phone && <LabelText label={'Phone'} text={phone} />}
-        {email && <LabelText label={'E-mail'} text={email} />}
-        {taxId && <LabelText label={'Tax ID'} text={taxId} />}
-      </>
-    }
-  />
+  >
+    <Box sx={{ padding: '27px 23px 32px' }}>
+      <LabelText label={'Company name'} text={companyName} />
+      <LabelText label={'Type'} text={type} />
+      <LabelText label={'Business address'} text={address} />
+      {phone && <LabelText label={'Phone'} text={phone} />}
+      {email && <LabelText label={'E-mail'} text={email} />}
+      {taxId && <LabelText label={'Tax ID'} text={taxId} />}
+    </Box>
+  </Card>
 );
 
 export default CounterPartCompany;
