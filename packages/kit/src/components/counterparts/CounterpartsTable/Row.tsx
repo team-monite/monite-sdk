@@ -1,6 +1,7 @@
 import React from 'react';
 import { Badge, Avatar, Text, TableRow, DropdownItem } from '@monite/ui';
-import { useTranslation } from 'react-i18next';
+
+import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import { CallIcon, AccountIcon, MessageIcon } from '../../../ui';
 
@@ -63,7 +64,7 @@ const ColName = ({ row }: any) => {
 };
 
 const Row = ({ row }: any) => {
-  const { t } = useTranslation();
+  const { t } = useComponentsContext();
   const data = row[row.type];
 
   return (

@@ -20,7 +20,9 @@
     "importHelpers": true,
 
     "sourceMap": true,
-    "baseUrl": "./"
+    "baseUrl": "./src",
+
+    "noEmitOnError": true
   },
   "include": ["src/"],
   "exclude": ["**/*.test.*"]
