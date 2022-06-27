@@ -1,0 +1,16 @@
+{
+  "counterparts": {
+    "columns": {
+      "name": "Name, country, city",
+      "type": "Type",
+      "contacts": "Contact information"
+    },
+    "customer": "Customer",
+    "vendor": "Vendor"
+  },
+  "common": {
+    "welcome": "Welcome",
+    "edit": "Edit",
+    "delete": "Delete"
+  }
+}

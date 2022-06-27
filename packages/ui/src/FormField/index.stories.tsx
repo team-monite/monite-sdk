@@ -21,7 +21,7 @@ export const DefaultForm = () => (
       <Input placeholder="Surname" error="Some error" isInvalid />
     </FormField>
     <br />
-    <FormField id="city" label="City">
+    <FormField id="city" label="City" required>
       <Input required />
     </FormField>
     <br />
