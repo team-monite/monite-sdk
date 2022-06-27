@@ -34,27 +34,43 @@ const getBg = ({
     `;
   }
 
-  if (readOnly && value) {
+  if (readOnly) {
+    if (value) {
+      return `
+        border-color: ${theme.colors.lightGrey2};
+        background-color: ${theme.colors.white};
+        color: ${theme.colors.lightGrey1};
+      `;
+    }
+    return `
+      &:hover, &:focus {
+        border-color: ${theme.colors.lightGrey3};
+        box-shadow: none;
+      }
+    `;
+  }
+
+  if (value) {
     return `
       border-color: ${theme.colors.lightGrey2};
       background-color: ${theme.colors.white};
-      color: ${theme.colors.lightGrey1};
+
+      &:hover, &:focus {
+        border-color: ${theme.colors.blue};
+        box-shadow: 0px 0px 0px 4px ${theme.colors.blue}33;
+      }
     `;
   }
 
   return `
-    &:focus {
+    &:hover, &:focus {
       border-color: ${theme.colors.blue};
       background-color: ${theme.colors.white};
       box-shadow: 0px 0px 0px 4px ${theme.colors.blue}33;
     }
-
-    &:valid:not(:focus) {
-      border-color: ${theme.colors.lightGrey2};
-      background-color: ${theme.colors.white};
-    }
   `;
 };
+
 const Input = styled.input<InputProps>`
   display: block;
   flex: 1;
@@ -67,7 +83,7 @@ const Input = styled.input<InputProps>`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
   padding: 11px 16px;
-  background: ${({ theme }) => theme.colors.lightGrey3};
+  background-color: ${({ theme }) => theme.colors.lightGrey3};
 
   font-size: 16px;
   font-weight: 400;
@@ -80,6 +96,8 @@ const Input = styled.input<InputProps>`
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   isInvalid?: boolean;
   renderAddon?: () => React.ReactNode;

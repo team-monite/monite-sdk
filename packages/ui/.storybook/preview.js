@@ -25,8 +25,7 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
-    disable: true,
-    // hideNoControlsWarning: true,
+    hideNoControlsWarning: true,
   },
   docs: {
     page: () => (
