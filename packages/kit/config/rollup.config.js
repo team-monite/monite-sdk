@@ -27,19 +27,7 @@ async function getPlugins() {
     typescript({ tsconfig: './tsconfig.json' }),
     postcss({
       autoModules: true,
-      extract: 'monite.css',
-      use: [
-        'sass',
-        [
-          'less',
-          {
-            javascriptEnabled: true,
-            modifyVars: {
-              'ant-prefix': 'monite',
-            },
-          },
-        ],
-      ],
+      use: ['less'],
     }),
     terser(),
     // visualizer({
