@@ -5,6 +5,26 @@
       "type": "Type",
       "contacts": "Contact information"
     },
+    "company": {
+      "companyName": "Company name",
+      "type": "Type",
+      "address": "Business address",
+      "phone": "Phone",
+      "email": "E-mail",
+      "taxId": "Tax ID"
+    },
+    "contact": {
+      "fullName": "Full name",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "E-mail"
+    },
+    "actions": {
+      "call": "Call",
+      "sendEmail": "Send email",
+      "editDetails": "Edit details"
+    },
+    "contactPersons": "Contact persons",
     "customer": "Customer",
     "vendor": "Vendor"
   },

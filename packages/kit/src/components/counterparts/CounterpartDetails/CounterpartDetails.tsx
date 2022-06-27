@@ -2,9 +2,11 @@ import React from 'react';
 
 import { CounterpartResponse as Counterpart } from '@monite/js-sdk';
 
-import CounterPartCompany from './CounterPartCompany';
-import CounterPartContact from './CounterPartContact';
-import CounterPartOrganization from './CounterPartOrganization';
+import { useComponentsContext } from 'core/context/ComponentsContext';
+
+import CounterPartCompany from './CounterpartCompany';
+import CounterPartContact from './CounterpartContact';
+import CounterPartOrganization from './CounterpartOrganization';
 
 import {
   getAddress,
@@ -22,11 +24,20 @@ const CounterpartsDetails = ({
   counterPart,
   onEdit,
 }: CounterpartsDetailsProps) => {
+  const { t } = useComponentsContext();
+
+  const getType = (isCustomer: boolean, isVendor: boolean): string => {
+    if (isCustomer) return t('counterparts:customer');
+    if (isVendor) return t('counterparts:vendor');
+    return '';
+  };
+
   if (isIndividualCounterpart(counterPart)) {
     const {
       first_name,
       last_name,
       is_customer,
+      is_vendor,
       residential_address,
       phone,
       email,
@@ -36,7 +47,7 @@ const CounterpartsDetails = ({
     return (
       <CounterPartCompany
         companyName={getFullName(first_name, last_name)}
-        type={is_customer ? 'Customer' : 'Not a customer'}
+        type={getType(is_customer, is_vendor)}
         address={getAddress(residential_address)}
         phone={phone}
         email={email}
@@ -52,6 +63,7 @@ const CounterpartsDetails = ({
       registered_address,
       vat_number,
       is_customer,
+      is_vendor,
       phone,
       email,
       contacts,
@@ -62,7 +74,7 @@ const CounterpartsDetails = ({
         company={
           <CounterPartCompany
             companyName={legal_name}
-            type={is_customer ? 'Customer' : 'Not a customer'}
+            type={getType(is_customer, is_vendor)}
             address={getAddress(registered_address)}
             phone={phone}
             email={email}
