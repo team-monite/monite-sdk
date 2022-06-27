@@ -75,12 +75,12 @@ const CounterpartsFormCreate = () => {
           <li>E-mail: john@smagency.com</li>
           <li>Phone: +49 176 23455469</li>
           <li>
-            <Button color="link" text="Edit" />
-            <Button color="link" text="Delete" />
+            <Button color="link">Edit</Button>
+            <Button color="link">Delete</Button>
           </li>
         </ul>
       </FormField>
-      <Button text="Create" />
+      <Button>Create</Button>
     </form>
   );
 };
