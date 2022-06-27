@@ -6,15 +6,6 @@ module.exports = {
     '@storybook/addon-docs',
     {
       name: '@storybook/preset-ant-design',
-      options: {
-        lessOptions: {
-          modifyVars: {
-            'ant-prefix': 'monite',
-            'primary-color': '#246FFF',
-            'error-color': '#FF475D',
-          },
-        },
-      },
     },
   ],
   framework: '@storybook/react',

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { MoniteApp } from '@monite/js-sdk';
 import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui';
-import ConfigProvider from 'antd/es/config-provider';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 
@@ -31,9 +30,7 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
     >
       <EmotionThemeProvider theme={finalTheme}>
         <UIThemeProvider theme={finalTheme}>
-          <I18nextProvider i18n={i18n}>
-            <ConfigProvider prefixCls="monite">{children}</ConfigProvider>
-          </I18nextProvider>
+          <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
         </UIThemeProvider>
       </EmotionThemeProvider>
     </ComponentsContext.Provider>
