@@ -196,10 +196,11 @@ const data = [
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=4959%3A428487',
   },
   {
-    name: 'Chips',
+    name: 'Filters/Search',
     status: 'Not ready',
     figmaLink:
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2159%3A18797',
+    comment: 'Added filter select, also need to add button and input styles',
   },
   {
     name: 'Switch',
