@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Select, {
   components,
   StylesConfig,
@@ -6,6 +6,8 @@ import Select, {
   OptionProps,
   MenuListProps,
   MultiValueGenericProps,
+  ControlProps,
+  ClearIndicatorProps,
 } from 'react-select';
 import ReactTooltip from 'react-tooltip';
 import styled from '@emotion/styled';
@@ -14,7 +16,7 @@ import type { FormatOptionLabelMeta } from 'react-select/dist/declarations/src/S
 
 import Checkbox from '../Checkbox';
 import { THEMES } from '../consts';
-import { ArrowDownIcon } from '../Icons';
+import { ArrowDownIcon, CloseIcon } from '../Icons';
 
 const MultiLabelWithCheckbox = styled.div`
   display: flex;
@@ -43,6 +45,9 @@ export type SelectProps = {
   isDisabled?: boolean;
   placeholder?: string;
   className?: string;
+  leftIcon?: () => ReactNode;
+  isClearable?: boolean;
+  isFilter?: boolean;
   onChange?: (e: any) => void;
   onBlur?: (e: any) => void;
 };
@@ -59,6 +64,9 @@ const ReactSelect = (props: SelectProps) => {
     onBlur,
     isDisabled,
     className,
+    isFilter,
+    leftIcon,
+    isClearable,
   } = props;
 
   const onMenuOpen = () => {
@@ -129,35 +137,51 @@ const ReactSelect = (props: SelectProps) => {
       };
     },
     control: (provided: any, state: any) => {
-      const borderColor = state.isFocused
-        ? THEMES.default.colors.blue
-        : props.placeholder === '' && !value
-        ? THEMES.default.colors.lightGrey3
-        : THEMES.default.colors.lightGrey2;
-
-      const background =
-        state.isFocused || value
-          ? THEMES.default.colors.white
-          : props.placeholder === ''
+      const borderColor =
+        state.isFocused && !isFilter
+          ? THEMES.default.colors.blue
+          : props.placeholder === '' && !value
           ? THEMES.default.colors.lightGrey3
-          : THEMES.default.colors.white;
+          : THEMES.default.colors.lightGrey2;
 
-      const boxShadow = state.isFocused
-        ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
-        : 'none';
+      const getBackgroundColor = () => {
+        if ((state.isFocused || value) && !isFilter) {
+          return THEMES.default.colors.white;
+        } else if (props.placeholder === '' || (isFilter && state.hasValue)) {
+          return THEMES.default.colors.lightGrey3;
+        }
+        return THEMES.default.colors.white;
+      };
+
+      const boxShadow =
+        state.isFocused && !isFilter
+          ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
+          : 'none';
 
       return {
         ...provided,
-        borderRadius: 8,
+        borderRadius: isFilter ? 100 : 8,
         borderColor,
         boxShadow,
         padding: 0,
+        paddingLeft: 10,
         transition:
           'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
         ':hover': {
           borderColor,
+          backgroundColor: isFilter
+            ? THEMES.default.colors.black
+            : 'transparent',
+          color: isFilter
+            ? THEMES.default.colors.white
+            : THEMES.default.colors.lightGrey1,
+          '*': {
+            color: isFilter
+              ? THEMES.default.colors.white
+              : THEMES.default.colors.lightGrey1,
+          },
         },
-        background,
+        background: getBackgroundColor(),
       };
     },
     input: (provided: any, state: any) => {
@@ -176,6 +200,17 @@ const ReactSelect = (props: SelectProps) => {
         fontSize: '16px',
         fontWeight: 400,
         lineHeight: '24px',
+        ':hover': {
+          color: isFilter ? THEMES.default.colors.white : 'inherit',
+        },
+      };
+    },
+    clearIndicator: (provided: any, state: any) => {
+      return {
+        ...provided,
+        ...(isDisabled ? {} : { cursor: 'pointer' }),
+        color: THEMES.default.colors.black,
+        paddingRight: '16px',
       };
     },
     dropdownIndicator: (provided: any, state: any) => {
@@ -188,10 +223,18 @@ const ReactSelect = (props: SelectProps) => {
   };
 
   const overrideDropdownIndicator = (props: DropdownIndicatorProps) => {
-    return (
+    return !(props.hasValue && isClearable) ? (
       <components.DropdownIndicator {...props}>
         <ArrowDownIcon />
       </components.DropdownIndicator>
+    ) : null;
+  };
+
+  const overrideClearIndicator = (props: ClearIndicatorProps) => {
+    return (
+      <components.ClearIndicator {...props}>
+        <CloseIcon />
+      </components.ClearIndicator>
     );
   };
 
@@ -266,6 +309,15 @@ const ReactSelect = (props: SelectProps) => {
     );
   };
 
+  const overrideControl = ({ children, ...props }: ControlProps) => (
+    <components.Control {...props}>
+      <>
+        {leftIcon ? leftIcon() : null}
+        {children}
+      </>
+    </components.Control>
+  );
+
   return (
     <Select
       id={id}
@@ -282,11 +334,13 @@ const ReactSelect = (props: SelectProps) => {
         MenuList: overrideMenuList,
         MultiValueRemove: () => null,
         MultiValueLabel: overrideMultiValueLabel,
+        Control: overrideControl,
+        ClearIndicator: overrideClearIndicator,
       }}
       onMenuOpen={onMenuOpen}
       onMenuClose={onMenuClose}
       isMulti={isMulti}
-      isClearable={false}
+      isClearable={isClearable}
       hideSelectedOptions={false}
       formatOptionLabel={isMulti ? formatOptionLabel : undefined}
       closeMenuOnSelect={!isMulti}
