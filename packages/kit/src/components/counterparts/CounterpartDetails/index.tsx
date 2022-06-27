@@ -1,1 +1,1 @@
-export { default } from './CounterpartDetails';
+export { default } from './CounterpartsDetails';

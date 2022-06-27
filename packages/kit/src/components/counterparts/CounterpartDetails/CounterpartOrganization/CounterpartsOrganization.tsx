@@ -7,7 +7,7 @@ type CounterPartOrganizationProps = {
   contacts?: ReactNode;
 };
 
-const CounterPartOrganization = ({
+const CounterpartsOrganization = ({
   company,
   contacts,
 }: CounterPartOrganizationProps) => {
@@ -26,4 +26,4 @@ const CounterPartOrganization = ({
   );
 };
 
-export default CounterPartOrganization;
+export default CounterpartsOrganization;

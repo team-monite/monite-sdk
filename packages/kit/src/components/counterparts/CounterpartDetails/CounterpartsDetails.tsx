@@ -4,9 +4,9 @@ import { CounterpartResponse as Counterpart } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import CounterPartCompany from './CounterpartCompany';
-import CounterPartContact from './CounterpartContact';
-import CounterPartOrganization from './CounterpartOrganization';
+import CounterpartsCompany from './CounterpartCompany';
+import CounterpartsContact from './CounterpartContact';
+import CounterpartsOrganization from './CounterpartOrganization';
 
 import {
   getAddress,
@@ -45,7 +45,7 @@ const CounterpartsDetails = ({
     } = counterPart.individual;
 
     return (
-      <CounterPartCompany
+      <CounterpartsCompany
         companyName={getFullName(first_name, last_name)}
         type={getType(is_customer, is_vendor)}
         address={getAddress(residential_address)}
@@ -70,9 +70,9 @@ const CounterpartsDetails = ({
     } = counterPart.organization;
 
     return (
-      <CounterPartOrganization
+      <CounterpartsOrganization
         company={
-          <CounterPartCompany
+          <CounterpartsCompany
             companyName={legal_name}
             type={getType(is_customer, is_vendor)}
             address={getAddress(registered_address)}
@@ -86,7 +86,7 @@ const CounterpartsDetails = ({
         contacts={
           contacts.length &&
           contacts.map(({ last_name, first_name, address, email, phone }) => (
-            <CounterPartContact
+            <CounterpartsContact
               fullName={getFullName(first_name, last_name)}
               address={getAddress(address)}
               email={email}

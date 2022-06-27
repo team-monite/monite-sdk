@@ -9,7 +9,7 @@ type CounterPartContactProps = {
   address: string;
 };
 
-const CounterPartContact = ({
+const CounterpartsContact = ({
   fullName,
   phone,
   email,
@@ -49,4 +49,4 @@ const CounterPartContact = ({
   );
 };
 
-export default CounterPartContact;
+export default CounterpartsContact;

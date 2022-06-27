@@ -1,1 +1,1 @@
-export { default } from './CounterPartOrganization';
+export { default } from './CounterpartsOrganization';

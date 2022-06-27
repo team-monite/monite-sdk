@@ -12,7 +12,7 @@ type CounterPartCompanyProps = {
   taxId?: string;
 };
 
-const CounterPartCompany = ({
+const CounterpartsCompany = ({
   onEdit,
   companyName,
   type,
@@ -56,4 +56,4 @@ const CounterPartCompany = ({
   );
 };
 
-export default CounterPartCompany;
+export default CounterpartsCompany;

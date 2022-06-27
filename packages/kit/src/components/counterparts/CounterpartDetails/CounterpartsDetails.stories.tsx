@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CounterpartsDetails from './CounterpartDetails';
+import CounterpartsDetails from './CounterpartsDetails';
 import counterparts from '../fixtures/counterparts';
 
 const Story = {
