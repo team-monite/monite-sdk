@@ -56,6 +56,7 @@ const CounterpartsFormCreate = () => {
       <FormField
         label="VAT ID"
         name="vatId"
+        id={'vatId'}
         required
         rules={[{ required: true, message: 'Please input the VAT!' }]}
       >
@@ -67,10 +68,15 @@ const CounterpartsFormCreate = () => {
       <FormField label="Set this counterpart as" required>
         <ul>
           <li>
-            <Checkbox label="Customer" />
+            <Checkbox
+              label="Customer"
+              name={'customer'}
+              id={'customer'}
+              value={1}
+            />
           </li>
           <li>
-            <Checkbox label="Vendor" />
+            <Checkbox label="Vendor" name={'vendor'} id={'vendor'} value={1} />
           </li>
         </ul>
       </FormField>
@@ -80,12 +86,12 @@ const CounterpartsFormCreate = () => {
           <li>E-mail: john@smagency.com</li>
           <li>Phone: +49 176 23455469</li>
           <li>
-            <Button color="link" text="Edit" />
-            <Button color="link" text="Delete" />
+            <Button color="link">Edit</Button>
+            <Button color="link">Delete</Button>
           </li>
         </ul>
       </FormField>
-      <Button text="Create" />
+      <Button>Create</Button>
     </form>
   );
 };

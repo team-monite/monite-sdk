@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import './reset.scss';
-import '@monite/react-kit/dist/esm/monite.css';
 import './index.css';
 import 'assets/fonts/Faktum/font.css';
 
