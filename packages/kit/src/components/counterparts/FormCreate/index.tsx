@@ -45,53 +45,42 @@ const CounterpartsFormCreate = () => {
       <FormField label="Company name" id="companyName" required>
         <Input required />
       </FormField>
-      <FormField
-        label="Email"
-        name="email"
-        required
-        rules={[{ required: true, message: 'Please input the Email!' }]}
-      >
+      <FormField label="Email" id="email" required>
         <Input />
       </FormField>
-      <FormField
-        label="VAT ID"
-        name="vatId"
-        id={'vatId'}
-        required
-        rules={[{ required: true, message: 'Please input the VAT!' }]}
-      >
+      <FormField label="VAT ID" id="vatId" required>
         <Input />
       </FormField>
-      <FormField label="Phone number">
+      <FormField label="Phone number" id="phone">
         <Input />
       </FormField>
-      <FormField label="Set this counterpart as" required>
+      <FormField label="Set this counterpart as" id="type" required>
         <ul>
           <li>
             <Checkbox
               label="Customer"
-              name={'customer'}
-              id={'customer'}
-              value={1}
+              name="type"
+              id="customer"
+              value="customer"
             />
           </li>
           <li>
-            <Checkbox label="Vendor" name={'vendor'} id={'vendor'} value={1} />
+            <Checkbox label="Vendor" name="type" id="vendor" value="vendor" />
           </li>
         </ul>
       </FormField>
-      <FormField label="Set this counterpart as" required>
+      <FormField label="Set this counterpart as" id="contacts">
         <ul>
           <li>Full name: John Doe</li>
           <li>E-mail: john@smagency.com</li>
           <li>Phone: +49 176 23455469</li>
           <li>
-            <Button color="link">Edit</Button>
-            <Button color="link">Delete</Button>
+            <Button color="link" text="Edit" />
+            <Button color="link" text="Delete" />
           </li>
         </ul>
       </FormField>
-      <Button>Create</Button>
+      <Button text="Create" />
     </form>
   );
 };
