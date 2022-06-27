@@ -70,11 +70,9 @@ const ModalDialog = ({
       {footerSeparator && <Separator />}
       <Actions isSingleButton={isSingleButton}>
         {isSingleButton ? null : (
-          <Button
-            color="secondary"
-            text={cancelButtonTitle || 'Cancel'}
-            onClick={onCancel}
-          />
+          <Button color="secondary" onClick={onCancel}>
+            {cancelButtonTitle || 'Cancel'}
+          </Button>
         )}
         <Button
           text={confirmButtonTitle || 'Confirm'}

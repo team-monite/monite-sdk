@@ -16,6 +16,13 @@ export const STYLES: Record<string, any> = {
     'font-weight': '600',
     'line-height': '32px',
   },
+  h4: {
+    //styleName: Titles/H4;
+    'font-size': '17px',
+    'font-weight': '600',
+    'line-height': '24px',
+    'letter-spacing': '1px',
+  },
   smallBold: {
     //styleName: Small/Bold;
     'font-size': '14px',
@@ -58,9 +65,9 @@ export type TextProps = {
 
 const Text = styled(Box)<TextProps>`
   ${({ textSize = 'regular' }) => STYLES[textSize]}
-  ${({ align }) => (align ? `text-align: ${align};` : '')};
+  ${({ align }) => align && `text-align: ${align};`};
   ${({ color, theme }) =>
-    color && theme.colors[color] ? `color: ${theme.colors[color]};` : ''}
+    color && theme.colors[color] && `color: ${theme.colors[color]};`}
 `;
 
 export default Text;

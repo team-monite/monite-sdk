@@ -44,6 +44,7 @@ import { ReactComponent as KeyIcon } from './assets/key.svg';
 import { ReactComponent as LockOpenIcon } from './assets/lock_open.svg';
 import { ReactComponent as LogoutIcon } from './assets/logout.svg';
 import { ReactComponent as MailIcon } from './assets/mail.svg';
+import { ReactComponent as CallIcon } from './assets/call.svg';
 import { ReactComponent as PinIcon } from './assets/pin.svg';
 import { ReactComponent as Plus2Icon } from './assets/plus2.svg';
 import { ReactComponent as PlusIcon } from './assets/plus.svg';
@@ -77,6 +78,7 @@ export {
   BoxIcon,
   BreakIcon,
   CalendarIcon,
+  CallIcon,
   CardIcon,
   Cash1Icon,
   Cash2Icon,

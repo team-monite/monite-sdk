@@ -225,7 +225,21 @@ const data = [
     figmaLink:
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2142%3A22906',
   },
+  {
+    name: 'LabelText',
+    status: 'Done',
+  },
+  {
+    name: 'Link',
+    status: 'Done',
+  },
 ];
+
+function sortByName(a, b) {
+  if (a.name < b.name) return -1;
+  if (a.name > b.name) return 1;
+  return 0;
+}
 
 export const StatusOfComponents = () => {
   return (
@@ -237,7 +251,7 @@ export const StatusOfComponents = () => {
           <Box width={1}>Comment</Box>
           <Box width={1}>Link to Figma</Box>
         </Flex>
-        {data.map(({ name, status, comment, figmaLink }) => (
+        {data.sort(sortByName).map(({ name, status, comment, figmaLink }) => (
           <Flex>
             <Box width={1}>{name}</Box>
             <Box width={1}>
@@ -251,8 +265,7 @@ export const StatusOfComponents = () => {
                     noPadding
                     color="blue"
                     type="Link"
-                    text={`${name} in Figma`}
-                  />
+                  >{`${name} in Figma`}</Button>
                 </a>
               )}
             </Box>

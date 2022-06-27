@@ -13,6 +13,7 @@ export const IconsList = () => {
     <div>
       <code>{`import {[name_icon]} from 'monite-ui`}';</code>
       <Card
+        shadow
         style={{
           maxWidth: 600,
           display: 'flex',
@@ -22,19 +23,17 @@ export const IconsList = () => {
           marginTop: '24px',
         }}
       >
-        {icons.map(([name, IconComponent]) => {
-          return (
-            <div key={name} style={{ margin: '12px' }}>
-              <IconComponent
-                data-for={name}
-                data-tip={name}
-                width={24}
-                height={24}
-              />
-              <Tooltip id={name} />
-            </div>
-          );
-        })}
+        {icons.map(([name, IconComponent]) => (
+          <div key={name} style={{ margin: '12px' }}>
+            <IconComponent
+              data-for={name}
+              data-tip={name}
+              width={24}
+              height={24}
+            />
+            <Tooltip id={name} />
+          </div>
+        ))}
       </Card>
     </div>
   );

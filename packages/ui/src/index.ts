@@ -10,7 +10,7 @@ export { default as DropdownMenu } from './Dropdown/Menu';
 export { default as DropdownItem } from './Dropdown/MenuItem';
 export { default as DropdownDivider } from './Dropdown/MenuDivider';
 export { default as useDropdownPopper } from './Dropdown/useDropdownPopper';
-export { default as Card } from './Card';
+export { default as Card } from './Card/Card';
 export { default as Radio } from './Radio';
 export { default as Select } from './Select';
 export { default as Checkbox } from './Checkbox';
@@ -27,6 +27,8 @@ export { default as Sidebar } from './Sidebar';
 export { default as FlexTable } from './FlexTable';
 export { default as Avatar } from './Avatar';
 export { default as AvatarInput } from './AvatarInput';
+export { default as LabelText } from './LabelText';
+export { default as Link } from './Link';
 export { default as DatePicker } from './DatePicker';
 export { default as ThemeProvider } from './core/ThemeProvider';
 

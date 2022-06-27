@@ -34,8 +34,8 @@ export const DefaultTable = () => (
       <Row
         buttonActions={() => (
           <>
-            <Button text="Action1" />
-            <Button text="Action2" />
+            <Button>Action1</Button>
+            <Button>Action2</Button>
           </>
         )}
       >

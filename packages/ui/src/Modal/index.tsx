@@ -28,6 +28,7 @@ const SIZE_MAP: Record<string, string> = {
 };
 const getSize = ({ $size = 'sm' }: StyledModalProps) =>
   $size ? SIZE_MAP[$size] : '';
+
 const Body = styled.div<StyledModalProps>`
   position: relative;
   width: auto;
@@ -37,10 +38,9 @@ const Body = styled.div<StyledModalProps>`
   display: flex;
   align-items: center;
   margin: 1.75rem auto;
+  min-height: calc(100% - 3.5rem);
 
   ${getSize}
-
-  min-height: calc(100% - 3.5rem);
 `;
 
 const Content = styled.div<StyledModalProps>`
@@ -56,7 +56,7 @@ const Content = styled.div<StyledModalProps>`
   background-clip: padding-box;
   outline: 0;
 
-  box-shadow: 0px 8px 12px 0px #1111111f;
+  box-shadow: 0 8px 12px 0 #1111111f;
   border-radius: 8px;
 
   ${({ $fixedHeight }) =>
@@ -120,7 +120,7 @@ const Modal = (props: ModalProps) => {
               <>
                 <Area>{children}</Area>
                 <Footer>
-                  <FooterButton text="Got it" onClick={onClickBackdrop} />
+                  <FooterButton onClick={onClickBackdrop}>Got it</FooterButton>
                 </Footer>
               </>
             ) : (
