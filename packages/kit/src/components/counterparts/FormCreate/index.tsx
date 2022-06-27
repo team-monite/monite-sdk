@@ -45,36 +45,31 @@ const CounterpartsFormCreate = () => {
       <FormField label="Company name" id="companyName" required>
         <Input required />
       </FormField>
-      <FormField
-        label="Email"
-        name="email"
-        required
-        rules={[{ required: true, message: 'Please input the Email!' }]}
-      >
+      <FormField label="Email" id="email" required>
         <Input />
       </FormField>
-      <FormField
-        label="VAT ID"
-        name="vatId"
-        required
-        rules={[{ required: true, message: 'Please input the VAT!' }]}
-      >
+      <FormField label="VAT ID" id="vatId" required>
         <Input />
       </FormField>
-      <FormField label="Phone number">
+      <FormField label="Phone number" id="phone">
         <Input />
       </FormField>
-      <FormField label="Set this counterpart as" required>
+      <FormField label="Set this counterpart as" id="type" required>
         <ul>
           <li>
-            <Checkbox label="Customer" />
+            <Checkbox
+              label="Customer"
+              name="type"
+              id="customer"
+              value="customer"
+            />
           </li>
           <li>
-            <Checkbox label="Vendor" />
+            <Checkbox label="Vendor" name="type" id="vendor" value="vendor" />
           </li>
         </ul>
       </FormField>
-      <FormField label="Set this counterpart as" required>
+      <FormField label="Set this counterpart as" id="contacts">
         <ul>
           <li>Full name: John Doe</li>
           <li>E-mail: john@smagency.com</li>

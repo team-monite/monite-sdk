@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
@@ -17,10 +18,11 @@ module.exports = {
 
     // ========================================================
     // Add SVGR Loader:
-    const assetRule = config.module.rules.find(({ test }) => test.test(".svg"));
+    const assetRule = config.module.rules.find(({ test }) => test.test('.svg'));
 
     // Exclude svg
-    assetRule.test = /\.(ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/;
+    assetRule.test =
+      /\.(ico|jpg|jpeg|png|apng|gif|eot|otf|webp|ttf|woff|woff2|cur|ani|pdf)(\?.*)?$/;
 
     // Merge our rule with existing assetLoader rules
     config.module.rules.push({
@@ -50,6 +52,11 @@ module.exports = {
       },
     });
     // ========================================================
+
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      path.resolve(__dirname, '../src'),
+    ];
 
     // Return the altered config
     return config;

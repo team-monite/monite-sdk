@@ -1,9 +1,8 @@
 import React from 'react';
 import { Table } from '@monite/ui';
 import { CounterpartResponse } from '@monite/js-sdk';
-import { useTranslation } from 'react-i18next';
 
-import { useComponentsContext } from '../../../core/context/ComponentsContext';
+import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
 import Row from './Row';
@@ -13,8 +12,7 @@ export interface CounterpartsTableProps {
 }
 
 const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
-  useComponentsContext();
-  const { t } = useTranslation();
+  const { t } = useComponentsContext();
 
   return (
     <Styled.Table>
