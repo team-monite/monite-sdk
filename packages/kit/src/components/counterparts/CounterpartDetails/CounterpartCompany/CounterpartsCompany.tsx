@@ -37,19 +37,19 @@ const CounterpartsCompany = ({
     >
       <Box sx={{ padding: '27px 23px 32px' }}>
         <LabelText
-          label={t('counterparts:company:companyName')}
+          label={t('counterparts:company.companyName')}
           text={companyName}
         />
-        <LabelText label={t('counterparts:company:type')} text={type} />
-        <LabelText label={t('counterparts:company:address')} text={address} />
+        <LabelText label={t('counterparts:company.type')} text={type} />
+        <LabelText label={t('counterparts:company.address')} text={address} />
         {phone && (
-          <LabelText label={t('counterparts:company:phone')} text={phone} />
+          <LabelText label={t('counterparts:company.phone')} text={phone} />
         )}
         {email && (
-          <LabelText label={t('counterparts:company:email')} text={email} />
+          <LabelText label={t('counterparts:company.email')} text={email} />
         )}
         {taxId && (
-          <LabelText label={t('counterparts:company:taxId')} text={taxId} />
+          <LabelText label={t('counterparts:company.taxId')} text={taxId} />
         )}
       </Box>
     </Card>

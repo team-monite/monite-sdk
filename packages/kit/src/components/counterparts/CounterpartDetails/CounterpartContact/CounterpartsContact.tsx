@@ -26,7 +26,7 @@ const CounterpartsContact = ({
             href={`tel:${phone}`}
             leftIcon={<CallIcon width={18} height={18} fill={'blue'} />}
           >
-            {t('counterparts:actions:call')}
+            {t('counterparts:actions.call')}
           </Link>
           <Link
             color="blue"
@@ -34,16 +34,16 @@ const CounterpartsContact = ({
             height="14px"
             leftIcon={<MailIcon width={18} height={18} fill={'blue'} />}
           >
-            {t('counterparts:actions:sendEmail')}
+            {t('counterparts:actions.sendEmail')}
           </Link>
         </>
       }
     >
       <Box sx={{ padding: '27px 23px 32px' }}>
-        <LabelText label={t('counterparts:contact:fullName')} text={fullName} />
-        <LabelText label={t('counterparts:contact:address')} text={address} />
-        <LabelText label={t('counterparts:contact:phone')} text={phone} />
-        <LabelText label={t('counterparts:contact:email')} text={email} />
+        <LabelText label={t('counterparts:contact.fullName')} text={fullName} />
+        <LabelText label={t('counterparts:contact.address')} text={address} />
+        <LabelText label={t('counterparts:contact.phone')} text={phone} />
+        <LabelText label={t('counterparts:contact.email')} text={email} />
       </Box>
     </Card>
   );
