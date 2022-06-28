@@ -80,7 +80,7 @@ type FormFieldProps = {
   text?: string | React.ReactNode;
   label: string;
   children: React.ReactNode;
-  labelTextSize?: string;
+  labelTextSize?: string; // TODO set proper type
   readOnly?: boolean;
   required?: boolean;
   onClickInfo?: (e: React.BaseSyntheticEvent) => void;

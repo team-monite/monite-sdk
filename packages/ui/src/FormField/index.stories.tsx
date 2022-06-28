@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ComponentStory } from '@storybook/react';
 
 import FormField from '.';
 import Input from '../Input';
@@ -11,14 +12,49 @@ const Story = {
 };
 export default Story;
 
+const Template: ComponentStory<typeof FormField> = (args) => {
+  const [value, setValue] = useState('');
+  return (
+    <FormField {...args}>
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        isInvalid={!!args.error}
+        readOnly={args.readOnly}
+      />
+    </FormField>
+  );
+};
+
+export const DefaultFormField = Template.bind({});
+
+DefaultFormField.args = {
+  id: 'name',
+  label: 'Name',
+  onClickInfo: undefined,
+  error: '',
+  text: '',
+  labelTextSize: '',
+  readOnly: undefined,
+  required: false,
+};
+
+DefaultFormField.argTypes = {
+  error: { control: 'text' },
+  text: { control: 'text' },
+  labelTextSize: { control: 'text' },
+  readOnly: { control: 'boolean' },
+  required: { control: 'boolean' },
+};
+
 export const DefaultForm = () => (
   <div style={{ maxWidth: 400, position: 'relative' }}>
     <FormField id="name" label="Name" text="Some text">
-      <Input placeholder="Name" />
+      <Input />
     </FormField>
     <br />
     <FormField id="surname" label="Surname" error="Some error">
-      <Input placeholder="Surname" error="Some error" isInvalid />
+      <Input error="Some error" isInvalid />
     </FormField>
     <br />
     <FormField id="city" label="City" required>
