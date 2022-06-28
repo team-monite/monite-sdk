@@ -20,7 +20,7 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
 
   useEffect(() => {
     i18n.changeLanguage(monite.locale);
-  }, [monite.locale]);
+  }, [monite.locale, i18n.changeLanguage]);
 
   return (
     <ComponentsContext.Provider

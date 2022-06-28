@@ -2,9 +2,11 @@ import React from 'react';
 
 import { CounterpartResponse as Counterpart } from '@monite/js-sdk';
 
-import CounterPartCompany from './CounterPartCompany';
-import CounterPartContact from './CounterPartContact';
-import CounterPartOrganization from './CounterPartOrganization';
+import { useComponentsContext } from 'core/context/ComponentsContext';
+
+import CounterpartsCompany from './CounterpartCompany';
+import CounterpartsContact from './CounterpartContact';
+import CounterpartsOrganization from './CounterpartOrganization';
 
 import {
   getAddress,
@@ -22,11 +24,20 @@ const CounterpartsDetails = ({
   counterPart,
   onEdit,
 }: CounterpartsDetailsProps) => {
+  const { t } = useComponentsContext();
+
+  const getType = (isCustomer: boolean, isVendor: boolean): string => {
+    if (isCustomer) return t('counterparts:customer');
+    if (isVendor) return t('counterparts:vendor');
+    return '';
+  };
+
   if (isIndividualCounterpart(counterPart)) {
     const {
       first_name,
       last_name,
       is_customer,
+      is_vendor,
       residential_address,
       phone,
       email,
@@ -34,9 +45,9 @@ const CounterpartsDetails = ({
     } = counterPart.individual;
 
     return (
-      <CounterPartCompany
+      <CounterpartsCompany
         companyName={getFullName(first_name, last_name)}
-        type={is_customer ? 'Customer' : 'Not a customer'}
+        type={getType(is_customer, is_vendor)}
         address={getAddress(residential_address)}
         phone={phone}
         email={email}
@@ -52,17 +63,18 @@ const CounterpartsDetails = ({
       registered_address,
       vat_number,
       is_customer,
+      is_vendor,
       phone,
       email,
       contacts,
     } = counterPart.organization;
 
     return (
-      <CounterPartOrganization
+      <CounterpartsOrganization
         company={
-          <CounterPartCompany
+          <CounterpartsCompany
             companyName={legal_name}
-            type={is_customer ? 'Customer' : 'Not a customer'}
+            type={getType(is_customer, is_vendor)}
             address={getAddress(registered_address)}
             phone={phone}
             email={email}
@@ -74,7 +86,7 @@ const CounterpartsDetails = ({
         contacts={
           contacts.length &&
           contacts.map(({ last_name, first_name, address, email, phone }) => (
-            <CounterPartContact
+            <CounterpartsContact
               fullName={getFullName(first_name, last_name)}
               address={getAddress(address)}
               email={email}
