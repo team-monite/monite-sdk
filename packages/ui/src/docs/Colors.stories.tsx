@@ -129,7 +129,6 @@ export const Colors = () => {
         <Block color={colors.lime} name="Lime" hex="#CDFB7D" />
         <Block color={colors.teal} name="Teal" hex="#00A9B9" />
         <Block color={colors.purple} name="Purple" hex="#7A1A83" />
-        <Block color={colors.lime} name="Lime" hex="#CDFB7D" />
       </Flex>
 
       <Flex m={'32px 0 16px 0'}>
