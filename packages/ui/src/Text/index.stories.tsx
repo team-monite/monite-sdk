@@ -1,5 +1,6 @@
-import Text from '.';
-
+import Text, { STYLES } from '.';
+import FlexTable from '../FlexTable';
+import { Flex, Box } from '../Box';
 const Story = {
   title: 'Components/Text',
   component: Text,
@@ -19,60 +20,24 @@ export const DefaultText = () => (
 
 export const Sizes = () => (
   <div style={{ maxWidth: 800 }}>
-    <Text size="h2">
-      H2: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text size="h3">
-      H3: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text size="smallBold">
-      smallBold: Lorem Ipsum is simply dummy text of the printing and
-      typesetting industry. Lorem Ipsum has been the industry's standard dummy
-      text ever since the 1500s, when an unknown printer took a galley of type
-      and scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text size="smallBoldLink">
-      smallBoldLink: Lorem Ipsum is simply dummy text of the printing and
-      typesetting industry. Lorem Ipsum has been the industry's standard dummy
-      text ever since the 1500s, when an unknown printer took a galley of type
-      and scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text size="small">
-      small: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text size="bold">
-      bold: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text>
-      Regular: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
-    <br />
-    <Text textSize="h4">
-      H4: Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry. Lorem Ipsum has been the industry's standard dummy text ever
-      since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book.
-    </Text>
+    <FlexTable>
+      <Flex>
+        <Box width={'25%'}>Text variant</Box>
+        <Box width={1}>Example</Box>
+      </Flex>
+      {Object.keys(STYLES).map((textVariant) => (
+        <Flex>
+          <Box width={'25%'}>
+            <Text textSize={textVariant}>{textVariant}</Text>
+          </Box>
+          <Box width={1}>
+            <Text textSize={textVariant}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </Text>
+          </Box>
+        </Flex>
+      ))}
+    </FlexTable>
   </div>
 );
