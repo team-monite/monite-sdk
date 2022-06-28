@@ -2,14 +2,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ActionEnum } from './ActionEnum';
+import type { PayableActionEnum } from './PayableActionEnum';
 import type { PermissionEnum } from './PermissionEnum';
 
-export type OptionalActionSchema = {
+export type PayableActionSchema = {
     /**
      * Action name
      */
-    action_name?: ActionEnum;
+    action_name?: PayableActionEnum;
     /**
      * Permission type
      */

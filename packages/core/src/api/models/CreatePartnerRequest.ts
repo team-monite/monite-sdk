@@ -16,7 +16,7 @@ export type CreatePartnerRequest = {
     /**
      * Website url
      */
-    website?: string;
+    website: string;
     /**
      * Contact person email
      */

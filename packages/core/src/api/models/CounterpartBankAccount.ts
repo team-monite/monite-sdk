@@ -5,4 +5,5 @@
 export type CounterpartBankAccount = {
     iban?: string;
     bic?: string;
+    name?: string;
 };

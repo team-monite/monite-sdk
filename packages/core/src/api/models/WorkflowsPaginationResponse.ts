@@ -6,7 +6,7 @@ import type { WorkflowResponseSchema } from './WorkflowResponseSchema';
 
 export type WorkflowsPaginationResponse = {
     /**
-     * array of records
+     * A paginated list of workflows.
      */
     data: Array<WorkflowResponseSchema>;
     /**

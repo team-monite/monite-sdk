@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type LineItem = {
+export type api__schemas__accounts_receivables__receivables__LineItem = {
     /**
      * The quantity of each of the goods, materials, or services listed in the receivable.
      */

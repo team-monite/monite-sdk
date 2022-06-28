@@ -13,10 +13,6 @@ import type { ReceivableCounterpartContact } from './ReceivableCounterpartContac
 import type { ReceivablesStatusEnum } from './ReceivablesStatusEnum';
 import type { ResponseItem } from './ResponseItem';
 
-/**
- * @TODO: Reshape this schema base
- * @see: https://gemms.atlassian.net/browse/DEV-2090
- */
 export type QuoteResponsePayload = {
     /**
      * The type of the document uploaded.
@@ -93,6 +89,10 @@ export type QuoteResponsePayload = {
      * The unique ID of a previous document related to the receivable if applicable.
      */
     based_on?: string;
+    /**
+     * A note with additional information for a receivable
+     */
+    memo?: string;
 };
 
 export namespace QuoteResponsePayload {

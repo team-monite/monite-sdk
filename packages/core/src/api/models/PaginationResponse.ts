@@ -4,6 +4,9 @@
 
 import type { PayableResponseSchema } from './PayableResponseSchema';
 
+/**
+ * A paginated list of payables.
+ */
 export type PaginationResponse = {
     data: Array<PayableResponseSchema>;
     /**

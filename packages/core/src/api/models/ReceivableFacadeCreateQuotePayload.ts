@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { api__schemas__accounts_receivables__receivables__LineItem } from './api__schemas__accounts_receivables__receivables__LineItem';
 import type { CurrencyEnum } from './CurrencyEnum';
 import type { EntityBankAccountRequest } from './EntityBankAccountRequest';
-import type { LineItem } from './LineItem';
 
 export type ReceivableFacadeCreateQuotePayload = {
     /**
@@ -16,12 +16,16 @@ export type ReceivableFacadeCreateQuotePayload = {
      */
     expiry_date?: string;
     currency: CurrencyEnum;
-    line_items: Array<LineItem>;
+    line_items: Array<api__schemas__accounts_receivables__receivables__LineItem>;
     counterpart_id: string;
     commercial_condition_description?: string;
     entity_bank_account?: EntityBankAccountRequest;
     vat_exempt?: boolean;
     vat_exemption_rationale?: string;
+    /**
+     * A note with additional information for a receivable
+     */
+    memo?: string;
 };
 
 export namespace ReceivableFacadeCreateQuotePayload {

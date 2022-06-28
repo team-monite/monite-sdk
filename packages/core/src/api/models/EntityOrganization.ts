@@ -2,7 +2,22 @@
 /* tslint:disable */
 /* eslint-disable */
 
+/**
+ * A schema for an entity of organization type
+ */
 export type EntityOrganization = {
+    /**
+     * A phone number of the entity
+     */
+    phone?: string;
+    /**
+     * A link to the entity logo
+     */
+    logo?: string;
+    /**
+     * An email of the entity
+     */
+    email?: string;
     /**
      * The name of the entity issuing the receivable, when it is an organization.
      */
@@ -12,7 +27,7 @@ export type EntityOrganization = {
      */
     vat_id: string;
     /**
-     * The entity type.
+     * The entity type
      */
     type: EntityOrganization.type;
 };
@@ -20,7 +35,7 @@ export type EntityOrganization = {
 export namespace EntityOrganization {
 
     /**
-     * The entity type.
+     * The entity type
      */
     export enum type {
         ORGANIZATION = 'organization',

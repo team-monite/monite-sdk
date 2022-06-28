@@ -17,7 +17,7 @@ export type RoleResponse = {
     /**
      * Access permissions
      */
-    permissions?: BizObjectsSchema;
+    permissions: BizObjectsSchema;
     /**
      * record status, 'active' by default
      */

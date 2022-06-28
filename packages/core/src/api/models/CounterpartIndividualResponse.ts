@@ -25,5 +25,9 @@ export type CounterpartIndividualResponse = {
      * The counterpart type: `organization` (juridical person) or `individual` (natural person).
      */
     type: CounterpartType;
+    /**
+     * `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
+     */
+    created_automatically?: boolean;
     individual: CounterpartIndividual;
 };
