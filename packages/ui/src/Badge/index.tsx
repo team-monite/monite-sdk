@@ -6,19 +6,19 @@ import { THEMES } from '../consts';
 const Themes: Record<string, any> = {
   primary: '',
   success: `
-    color: ${THEMES.default.colors.green};
-    background: ${THEMES.default.colors.salad};
-    border-color: ${THEMES.default.colors.salad}
+    color: ${THEMES.default.colors.tagGreen};
+    background: ${THEMES.default.colors.tagSalad};
+    border-color: ${THEMES.default.colors.tagSalad}
   `,
   warning: `
     color: ${THEMES.default.colors.orange};
-    background: ${THEMES.default.colors.beige};
-    border-color: ${THEMES.default.colors.beige}
+    background: ${THEMES.default.colors.tagBeige};
+    border-color: ${THEMES.default.colors.tagBeige}
   `,
   pending: `
-    color: ${THEMES.default.colors.violet};
-    background: ${THEMES.default.colors.pink};
-    border-color: ${THEMES.default.colors.pink}
+    color: ${THEMES.default.colors.tagViolet};
+    background: ${THEMES.default.colors.tagPink};
+    border-color: ${THEMES.default.colors.tagPink}
   `,
   disabled: `
     color: ${THEMES.default.colors.grey};
