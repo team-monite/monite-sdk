@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import ReactTooltip, { TooltipProps } from 'react-tooltip';
 
-import { Button, Tooltip, InfoIcon } from '..';
+import { IconButton, Tooltip, InfoIcon } from '..';
 
 import type { TooltipProps as DataTooltipProp } from '../types';
 
@@ -46,14 +46,9 @@ const ListItem = ({
     <Wrapper {...tooltipAttributes} className={className}>
       <div>{children}</div>
       {onClickInfo && (
-        <Button
-          type="button"
-          color={'lightGrey1'}
-          variant={'text'}
-          onClick={onClickInfo}
-        >
+        <IconButton color={'lightGrey1'} onClick={onClickInfo}>
           <InfoIcon />
-        </Button>
+        </IconButton>
       )}
       {reactTooltip ? (
         <Tooltip

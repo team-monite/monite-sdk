@@ -236,7 +236,6 @@ const DatePicker = ({
                 : decreaseYear
             }
             color="grey"
-            variant={'text'}
           >
             <ArrowLeftIcon />
           </IconButton>
@@ -262,7 +261,6 @@ const DatePicker = ({
                 : increaseYear
             }
             color="grey"
-            variant={'text'}
           >
             <ArrowRightIcon />
           </IconButton>
