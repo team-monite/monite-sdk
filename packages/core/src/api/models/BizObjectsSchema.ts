@@ -2,11 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ObjectSchema } from './ObjectSchema';
+import type { RootSchema } from './RootSchema';
 
 export type BizObjectsSchema = {
     /**
      * List of objects
      */
-    objects?: Array<ObjectSchema>;
+    objects?: Array<RootSchema>;
 };

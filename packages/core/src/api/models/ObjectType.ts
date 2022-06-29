@@ -6,10 +6,6 @@
  * An enumeration.
  */
 export enum ObjectType {
-    API_USER = 'api_user',
-    API_USER_INTERNAL_CONFIG = 'api_user_internal_config',
-    API_USER_TOKEN = 'api_user_token',
-    API_USER_SETTINGS = 'api_user_settings',
     PARTNER = 'partner',
     PARTNER_INTERNAL_CONFIG = 'partner_internal_config',
     PARTNER_TOKEN = 'partner_token',
@@ -35,4 +31,6 @@ export enum ObjectType {
     COUNTERPART_BANK_ACCOUNT = 'counterpart_bank_account',
     COUNTERPART_CONTACT_PERSON = 'counterpart_contact_person',
     WEBHOOK = 'webhook',
+    AUDIT_TRAIL = 'audit_trail',
+    TAG = 'tag',
 }

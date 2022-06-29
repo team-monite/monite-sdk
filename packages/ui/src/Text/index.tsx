@@ -4,6 +4,12 @@ import styled from '@emotion/styled';
 import { Box } from '../Box';
 
 export const STYLES = {
+  h1: {
+    //styleName: Titles/H1;
+    'font-size': '48px',
+    'font-weight': '600',
+    'line-height': '64px',
+  },
   h2: {
     //styleName: Titles/H2;
     'font-size': '32px',
@@ -14,26 +20,39 @@ export const STYLES = {
     //styleName: Titles/H3;
     'font-size': '24px',
     'font-weight': '600',
-    'line-height': '32px',
+    'line-height': '36px',
   },
   h4: {
     //styleName: Titles/H4;
-    'font-size': '17px',
+    'font-size': '18px',
     'font-weight': '600',
     'line-height': '24px',
     'letter-spacing': '1px',
   },
-  smallBold: {
-    //styleName: Small/Bold;
-    'font-size': '14px',
-    'font-weight': '500',
-    'line-height': '20px',
+  regular: {
+    //styleName: Regular/Regular;
+    'font-size': '16px',
+    'font-weight': '400',
+    'line-height': '24px',
   },
-  smallBoldLink: {
-    //styleName: Small/Bold Link;
-    'font-size': '14px',
+  bold: {
+    //styleName: Regular/Bold;
+    'font-size': '16px',
     'font-weight': '500',
-    'line-height': '20px',
+    'line-height': '24px',
+  },
+  regularLink: {
+    //styleName: Regular/RegularLink;
+    'font-size': '16px',
+    'font-weight': '400',
+    'line-height': '24px',
+    'text-decoration': 'underline',
+  },
+  regularBoldLink: {
+    //styleName: Regular/RegularBoldLink;
+    'font-size': '16px',
+    'font-weight': '500',
+    'line-height': '24px',
     'text-decoration': 'underline',
   },
   small: {
@@ -42,17 +61,25 @@ export const STYLES = {
     'font-weight': '400',
     'line-height': '20px',
   },
-  bold: {
-    //styleName: Regular/Bold;
-    'font-size': '16px',
+  smallBold: {
+    //styleName: Small/Bold;
+    'font-size': '14px',
     'font-weight': '500',
-    'line-height': '24px',
+    'line-height': '20px',
   },
-  regular: {
-    //styleName: Regular/Regular;
-    'font-size': '16px',
+  smallLink: {
+    //styleName: Small/SmallLink;
+    'font-size': '14px',
     'font-weight': '400',
-    'line-height': '24px',
+    'line-height': '20px',
+    'text-decoration': 'underline',
+  },
+  smallBoldLink: {
+    //styleName: Small/Bold Link;
+    'font-size': '14px',
+    'font-weight': '500',
+    'line-height': '20px',
+    'text-decoration': 'underline',
   },
 };
 

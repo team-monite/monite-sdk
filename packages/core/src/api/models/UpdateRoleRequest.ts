@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { OptionalBizObjectsSchema } from './OptionalBizObjectsSchema';
+import type { BizObjectsSchema } from './BizObjectsSchema';
 
 export type UpdateRoleRequest = {
     /**
@@ -12,5 +12,5 @@ export type UpdateRoleRequest = {
     /**
      * Access permissions
      */
-    permissions?: OptionalBizObjectsSchema;
+    permissions?: BizObjectsSchema;
 };

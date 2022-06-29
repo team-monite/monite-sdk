@@ -161,8 +161,7 @@ const data = [
   },
   {
     name: 'Text',
-    status: 'Needs improvement',
-    comment: 'Add variants',
+    status: 'Done',
     figmaLink:
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2142%3A18342',
   },
@@ -187,10 +186,14 @@ const data = [
   {
     name: 'MultiSelectWithBadges',
     status: 'Not ready',
+    figmaLink:
+      'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=4880%3A360500',
   },
   {
     name: 'Autocomplete',
     status: 'Not ready',
+    figmaLink:
+      'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=4959%3A428487',
   },
   {
     name: 'Chips',
@@ -221,7 +224,7 @@ const data = [
   },
   {
     name: 'Colors',
-    status: 'Add to storybook',
+    status: 'Done',
     figmaLink:
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2142%3A22906',
   },
@@ -232,6 +235,12 @@ const data = [
   {
     name: 'Link',
     status: 'Done',
+  },
+  {
+    name: 'Alert',
+    status: 'Not ready',
+    figmaLink:
+      'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2166%3A26151',
   },
 ];
 

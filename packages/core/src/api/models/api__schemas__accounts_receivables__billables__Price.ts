@@ -4,7 +4,7 @@
 
 import type { CurrencyEnum } from './CurrencyEnum';
 
-export type Price = {
+export type api__schemas__accounts_receivables__billables__Price = {
     /**
      * The currency in which the price of the product is set.
      */

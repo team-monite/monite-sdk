@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Price } from './Price';
+import type { api__schemas__accounts_receivables__billables__Price } from './api__schemas__accounts_receivables__billables__Price';
 import type { UnitResponse } from './UnitResponse';
 import type { VatClassResponse } from './VatClassResponse';
 
@@ -15,7 +15,7 @@ export type LineItemProduct = {
      * Description of the product.
      */
     description?: string;
-    price?: Price;
+    price?: api__schemas__accounts_receivables__billables__Price;
     /**
      * The unique ID reference of the unit used to measure the quantity of this product (e.g. items, meters, kilograms).
      */

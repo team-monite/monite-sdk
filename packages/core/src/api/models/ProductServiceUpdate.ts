@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { Price } from './Price';
+import type { api__schemas__accounts_receivables__billables__Price } from './api__schemas__accounts_receivables__billables__Price';
 
 export type ProductServiceUpdate = {
     /**
@@ -13,7 +13,7 @@ export type ProductServiceUpdate = {
      * Description of the product.
      */
     description?: string;
-    price?: Price;
+    price?: api__schemas__accounts_receivables__billables__Price;
     /**
      * The list of unique ID references of VAT classes for the product.
      */

@@ -6,7 +6,7 @@ import type { PipelineResponseSchema } from './PipelineResponseSchema';
 
 export type PipelinesPaginationResponse = {
     /**
-     * array of records
+     * A paginated list of pipelines.
      */
     data: Array<PipelineResponseSchema>;
     /**
