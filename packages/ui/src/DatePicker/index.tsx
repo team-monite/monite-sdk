@@ -235,11 +235,12 @@ const DatePicker = ({
                 ? decreaseMonth
                 : decreaseYear
             }
-            icon={<ArrowLeftIcon />}
             type="button"
-            noPadding
             color="grey"
-          />
+            variant={'text'}
+          >
+            <ArrowLeftIcon />
+          </Button>
           <>
             {!showMonthYearPicker && !showYearPicker && (
               <HeaderDate
@@ -261,11 +262,12 @@ const DatePicker = ({
                 ? increaseMonth
                 : increaseYear
             }
-            icon={<ArrowRightIcon />}
             type="button"
-            noPadding
             color="grey"
-          />
+            variant={'text'}
+          >
+            <ArrowRightIcon />
+          </Button>
         </HeaderWrapper>
       )}
     />

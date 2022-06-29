@@ -29,7 +29,6 @@ const inactive = ({
 };
 const StyledTableRow = styled.tr<StyledTableRowProps>`
   ${inactive}
-
   &:hover td {
     background: ${({ theme }) => theme.colors.lightGrey3};
     ${({ onClick }) => (onClick ? 'cursor: pointer' : '')};
@@ -74,7 +73,7 @@ const TableRow = ({
   const {
     shownDropdownMenu,
     toggleDropdownMenu,
-    setReferenceElement,
+    // setReferenceElement,
     setPopperElement,
     popper,
   } = useDropdownPopper();
@@ -93,15 +92,17 @@ const TableRow = ({
                 }}
               >
                 <DropdownToggler
-                  icon={<DotsVIcon width={20} height={20} />}
                   color="lightGrey1"
-                  noPadding
+                  variant={'text'}
                   onClick={(e: React.BaseSyntheticEvent) => {
                     e.stopPropagation();
                     toggleDropdownMenu((shown) => !shown);
                   }}
-                  ref={setReferenceElement}
-                />
+                  // todo need to understand why it doesn't work
+                  // ref={setReferenceElement}
+                >
+                  <DotsVIcon width={20} height={20} />
+                </DropdownToggler>
                 {shownDropdownMenu ? (
                   <DropdownMenu
                     innerRef={setPopperElement}

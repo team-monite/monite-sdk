@@ -102,18 +102,15 @@ const FormField = ({
       <Label
         as="label"
         htmlFor={id}
-        textSize={labelTextSize || 'smallBold'}
+        // textSize={labelTextSize || 'smallBold'}
         required={required}
       >
         <span>{label}</span>
-        {onClickInfo ? (
-          <Button
-            noPadding
-            color="lightGrey1"
-            icon={<QuestionIcon />}
-            onClick={onClickInfo}
-          />
-        ) : null}
+        {onClickInfo && (
+          <Button variant={'text'} color="lightGrey1" onClick={onClickInfo}>
+            <QuestionIcon />
+          </Button>
+        )}
       </Label>
       {children}
       {text && <FormText>{text}</FormText>}

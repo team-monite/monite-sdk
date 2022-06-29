@@ -31,10 +31,10 @@ export const Primary = () => {
       <Link href={'#'}>
         <InfoIcon />
       </Link>
-      <Link href={'#'} leftIcon={<MailIcon width={24} height={24} />}>
+      <Link href={'#'} leftIcon={<MailIcon />}>
         Primary with icon
       </Link>
-      <Link href={'#'} disabled leftIcon={<MailIcon width={24} height={24} />}>
+      <Link href={'#'} disabled leftIcon={<MailIcon />}>
         Primary disabled with icon
       </Link>
     </Flex>
@@ -53,19 +53,10 @@ export const Secondary = () => {
       <Link color="secondary" href={'#'}>
         <InfoIcon />
       </Link>
-      <Link
-        href={'#'}
-        color="secondary"
-        leftIcon={<MailIcon width={24} height={24} />}
-      >
+      <Link href={'#'} color="secondary" leftIcon={<MailIcon />}>
         Secondary with icon
       </Link>
-      <Link
-        href={'#'}
-        color="secondary"
-        disabled
-        leftIcon={<MailIcon width={24} height={24} />}
-      >
+      <Link href={'#'} color="secondary" disabled leftIcon={<MailIcon />}>
         Secondary disabled with icon
       </Link>
     </Flex>
@@ -84,19 +75,10 @@ export const Danger = () => {
       <Link color="danger" href={'#'}>
         <InfoIcon />
       </Link>
-      <Link
-        href={'#'}
-        color="danger"
-        leftIcon={<MailIcon width={24} height={24} />}
-      >
+      <Link href={'#'} color="danger" leftIcon={<MailIcon />}>
         Danger with icon
       </Link>
-      <Link
-        href={'#'}
-        color="danger"
-        disabled
-        leftIcon={<MailIcon width={24} height={24} />}
-      >
+      <Link href={'#'} color="danger" disabled leftIcon={<MailIcon />}>
         Danger disabled with icon
       </Link>
     </Flex>

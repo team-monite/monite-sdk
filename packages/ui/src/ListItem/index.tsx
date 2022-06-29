@@ -14,11 +14,6 @@ const Wrapper = styled.div`
   > div {
     flex: 1;
   }
-
-  > button {
-    color: ${({ theme }) => theme.colors.lightGrey1};
-    width: 20px;
-  }
 `;
 
 type ListItemProps = {
@@ -50,15 +45,16 @@ const ListItem = ({
   return (
     <Wrapper {...tooltipAttributes} className={className}>
       <div>{children}</div>
-      {onClickInfo ? (
+      {onClickInfo && (
         <Button
           type="button"
-          noPadding
-          color="link"
+          color={'lightGrey1'}
+          variant={'text'}
           onClick={onClickInfo}
-          icon={<InfoIcon />}
-        />
-      ) : null}
+        >
+          <InfoIcon />
+        </Button>
+      )}
       {reactTooltip ? (
         <Tooltip
           overridePosition={(position, _event, _target, _ref, place) => ({

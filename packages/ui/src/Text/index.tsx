@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import { Box } from '../Box';
 
-export const STYLES: Record<string, any> = {
+export const STYLES = {
   h2: {
     //styleName: Titles/H2;
     'font-size': '32px',
