@@ -197,13 +197,14 @@ const getSecondaryColor = ({
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
   if (disabled || $isLoading || $color !== 'secondary') return '';
 
-  const { white, black } = THEMES.default.colors;
+  const { white, black, grey } = THEMES.default.colors;
 
   if ($variant === 'contained') {
     return `
       color: ${black};
 
       &:hover {
+        background-color: ${grey};
         color: ${white};
       }
     `;

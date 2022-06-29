@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { ThemedStyledProps } from '../types';
-import { Button, Dropdown, DropdownMenu, useDropdownPopper } from '..';
+import { IconButton, Dropdown, DropdownMenu, useDropdownPopper } from '..';
 
 import { DotsVIcon } from '../Icons';
 
@@ -46,7 +46,7 @@ const ActionsMenu = styled.div`
   }
 `;
 
-const DropdownToggler = styled(Button)`
+const DropdownToggler = styled(IconButton)`
   height: 32px;
   width: 32px;
 
@@ -73,7 +73,7 @@ const TableRow = ({
   const {
     shownDropdownMenu,
     toggleDropdownMenu,
-    // setReferenceElement,
+    setReferenceElement,
     setPopperElement,
     popper,
   } = useDropdownPopper();
@@ -93,13 +93,11 @@ const TableRow = ({
               >
                 <DropdownToggler
                   color="lightGrey1"
-                  variant={'text'}
                   onClick={(e: React.BaseSyntheticEvent) => {
                     e.stopPropagation();
                     toggleDropdownMenu((shown) => !shown);
                   }}
-                  // todo need to understand why it doesn't work
-                  // ref={setReferenceElement}
+                  ref={setReferenceElement}
                 >
                   <DotsVIcon width={20} height={20} />
                 </DropdownToggler>
