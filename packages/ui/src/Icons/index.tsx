@@ -47,6 +47,7 @@ import { ReactComponent as MailIcon } from './assets/mail.svg';
 import { ReactComponent as CallIcon } from './assets/call.svg';
 import { ReactComponent as PinIcon } from './assets/pin.svg';
 import { ReactComponent as Plus2Icon } from './assets/plus2.svg';
+import { ReactComponent as Plus3Icon } from './assets/plus3.svg';
 import { ReactComponent as PlusIcon } from './assets/plus.svg';
 import { ReactComponent as ProductsIcon } from './assets/products.svg';
 import { ReactComponent as ProfileIcon } from './assets/profile.svg';
@@ -113,6 +114,7 @@ export {
   MailIcon,
   PinIcon,
   Plus2Icon,
+  Plus3Icon,
   PlusIcon,
   ProductsIcon,
   ProfileIcon,

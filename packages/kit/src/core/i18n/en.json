@@ -11,7 +11,8 @@
       "address": "Business address",
       "phone": "Phone",
       "email": "E-mail",
-      "taxId": "Tax ID"
+      "taxId": "Tax ID",
+      "vatId": "VAT ID"
     },
     "contact": {
       "fullName": "Full name",
@@ -22,11 +23,21 @@
     "actions": {
       "call": "Call",
       "sendEmail": "Send email",
-      "editDetails": "Edit details"
+      "editDetails": "Edit details",
+      "setCounterpart": "Set this counterpart as",
+      "addContactPerson": "Add contact person"
     },
     "contactPersons": "Contact persons",
     "customer": "Customer",
     "vendor": "Vendor"
+  },
+  "address": {
+    "addressLine1": "Address line 1",
+    "addressLine2": "Address line 2",
+    "city": "City",
+    "state": "State / Area / Province",
+    "country": "Country",
+    "zipcode": "ZIP code"
   },
   "common": {
     "welcome": "Welcome",

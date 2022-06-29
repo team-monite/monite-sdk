@@ -8,6 +8,7 @@ import Text from '../Text';
 const Field = styled.div<Partial<FormFieldProps>>`
   display: flex;
   flex-direction: column;
+  margin-bottom: 24px;
 
   ${({ readOnly, theme }) =>
     readOnly
