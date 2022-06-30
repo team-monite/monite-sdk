@@ -164,7 +164,7 @@ const ReactSelect = (props: SelectProps) => {
         borderColor,
         boxShadow,
         padding: 0,
-        paddingLeft: 10,
+        paddingLeft: leftIcon ? 10 : 0,
         transition:
           'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
         ':hover': {
