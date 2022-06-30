@@ -28,6 +28,7 @@ export interface ButtonProps extends BoxProps {
   hover?: ButtonColor;
   type?: ButtonType;
   leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
   tooltip?: TooltipProps;
   size?: ButtonSize;
   textSize?: ButtonTextSize;
@@ -49,6 +50,7 @@ type StyledButtonProps = {
   $isLoading?: boolean;
   $isLink?: boolean;
   $hasLeftIcon?: boolean;
+  $hasRightIcon?: boolean;
   $block?: boolean;
 };
 
@@ -145,7 +147,7 @@ const getHover = ({
   theme,
   disabled,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
-  const { white, black } = THEMES.default.colors;
+  const { white, black, primaryDarker, dangerDarker } = THEMES.default.colors;
   const color = $hover ? $hover : getColor({ $color, theme });
 
   if (disabled || $isLoading) return '';
@@ -178,17 +180,25 @@ const getHover = ({
   }
 
   if ($variant === 'text') {
-    // todo needs to understand the hover color
-    return `
-      &:hover {
+    if ($color === 'primary') {
+      return `
+        &:hover {
+          color: ${primaryDarker}
+        }
+      `;
+    }
 
-      }
-    `;
+    if ($color === 'danger') {
+      return `
+        &:hover {
+          color: ${dangerDarker}
+        }
+      `;
+    }
   }
 
   return '';
 };
-
 const getSecondaryColor = ({
   $color,
   $variant,
@@ -205,7 +215,18 @@ const getSecondaryColor = ({
 
       &:hover {
         background-color: ${grey};
+        border-color: ${grey};
         color: ${white};
+      }
+    `;
+  }
+
+  if ($variant === 'link') {
+    return `
+      color: ${black};
+
+      &:hover {
+        border-color: ${grey};
       }
     `;
   }
@@ -222,10 +243,13 @@ const getSecondaryColor = ({
 const getPadding = ({
   $variant,
   $hasLeftIcon,
+  $hasRightIcon,
 }: ThemedStyledProps<StyledButtonProps>) => {
   if ($variant === 'text') return 'padding: 0;';
 
+  if ($hasLeftIcon && $hasRightIcon) return 'padding: 11px';
   if ($hasLeftIcon) return 'padding: 11px 15px 11px 11px;';
+  if ($hasRightIcon) return 'padding: 11px 11px 11px 15px;';
 
   return 'padding: 11px 15px;';
 };
@@ -273,6 +297,7 @@ const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
   width: max-content;
   border: 1px solid transparent;
   text-decoration: none;
+  transition: color 110ms, background-color 110ms, border-color 110ms;
 
   ${getSize}
   ${getTextSize}
@@ -298,12 +323,18 @@ const StyledSpinner = styled.i`
   display: flex;
 `;
 
-const StyledLeftIcon = styled.i<StyledButtonProps>`
+const StyledIcon = styled.i<StyledButtonProps>`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 
-  ${({ $variant }) => {
-    if ($variant === 'text') return 'margin-right: 6px;';
-    return 'margin-right: 12px;';
+  ${({ $variant, $hasLeftIcon, $hasRightIcon }) => {
+    const margin = $variant === 'text' ? '6' : '8';
+
+    if ($hasLeftIcon) return `margin-right: ${margin}px;`;
+    if ($hasRightIcon) return `margin-left: ${margin}px;`;
   }}
 `;
 
@@ -319,6 +350,7 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
       disabled,
       isLoading,
       leftIcon,
+      rightIcon,
       onClick,
       block,
       textSize,
@@ -354,10 +386,20 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
             // react-tooltip workaround for disabled non-interactive elements
             <StyledDisabledTooltip {...tooltipAttributes} />
           )}
+
           {leftIcon && (
-            <StyledLeftIcon $variant={variant}>{leftIcon}</StyledLeftIcon>
+            <StyledIcon $hasLeftIcon $variant={variant}>
+              {leftIcon}
+            </StyledIcon>
           )}
+
           {children}
+
+          {rightIcon && (
+            <StyledIcon $hasRightIcon $variant={variant}>
+              {rightIcon}
+            </StyledIcon>
+          )}
         </>
       );
     };
@@ -370,6 +412,7 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
         $isLoading={isLoading}
         $isLink={isLink}
         $hasLeftIcon={!!leftIcon}
+        $hasRightIcon={!!rightIcon}
         $block={block}
         $size={size}
         $textSize={textSize}

@@ -89,13 +89,48 @@ export const ButtonColors = () => {
   ));
 };
 
-export const ButtonWithIcon = () => {
+export const ButtonWithLLeftIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
         <Button
           key={color}
-          leftIcon={<InfoIcon width={24} height={24} />}
+          leftIcon={<InfoIcon />}
+          variant={variant}
+          color={color}
+        >
+          {variant} {color}
+        </Button>
+      ))}
+    </Wrap>
+  ));
+};
+
+export const ButtonWithLRightIcon = () => {
+  return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+    <Wrap key={variant}>
+      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+        <Button
+          key={color}
+          rightIcon={<InfoIcon />}
+          variant={variant}
+          color={color}
+        >
+          {variant} {color}
+        </Button>
+      ))}
+    </Wrap>
+  ));
+};
+
+export const ButtonWithLefAndRightIcons = () => {
+  return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+    <Wrap key={variant}>
+      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+        <Button
+          key={color}
+          leftIcon={<InfoIcon />}
+          rightIcon={<InfoIcon />}
           variant={variant}
           color={color}
         >
@@ -109,14 +144,14 @@ export const ButtonWithIcon = () => {
 export const ColoredButton = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      <Button variant={variant} color={'green'}>
-        {variant} green
+      <Button variant={variant} color={'tagViolet'}>
+        {variant} tagViolet
       </Button>
       <Button variant={variant} color={'orange'}>
         {variant} orange
       </Button>
-      <Button variant={variant} color={'violet'}>
-        {variant} violet
+      <Button variant={variant} color={'teal'}>
+        {variant} teal
       </Button>
     </Wrap>
   ));
@@ -142,7 +177,7 @@ export const BlockButton = () => {
       <Button block my={1}>
         Block
       </Button>
-      <Button leftIcon={<InfoIcon width={24} height={24} />} block my={1}>
+      <Button leftIcon={<InfoIcon />} block my={1}>
         Block with icon
       </Button>
     </Box>
