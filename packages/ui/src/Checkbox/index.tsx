@@ -89,12 +89,15 @@ const Check = styled(CheckIcon)<StyledProps>`
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 0.75em;
+  height: 0.625em;
 
   transform: translate(-50%, -50%);
   ${({ $checked }) => `display: ${$checked ? 'inline-block' : 'none'};`}
 `;
 const Checkmark = styled.i<StyledProps>`
   position: relative;
+  box-sizing: border-box;
 
   width: 20px;
   height: 20px;
