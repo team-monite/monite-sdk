@@ -5,6 +5,8 @@ import {
   Description,
   Primary,
   Stories,
+  ArgsTable,
+  PRIMARY_STORY,
 } from '@storybook/addon-docs';
 import { ThemeProvider } from 'emotion-theming';
 
@@ -34,7 +36,7 @@ export const parameters = {
         <Subtitle />
         <Description />
         <Primary />
-        {/*<ArgsTable story={PRIMARY_STORY} />*/}
+        <ArgsTable story={PRIMARY_STORY} />
         <Stories />
       </>
     ),
