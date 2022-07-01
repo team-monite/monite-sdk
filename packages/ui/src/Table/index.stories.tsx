@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Table from '.';
 import Row from './Row';
 import DropdownItem from '../Dropdown/MenuItem';
@@ -51,7 +49,9 @@ export const DefaultTable = () => (
         )}
         buttonActions={() => (
           <>
-            <Button noPadding color="grey" text="Test" hover="hoverAction" />
+            <Button variant={'text'} color="grey" hover="hoverAction">
+              Test
+            </Button>
           </>
         )}
       >

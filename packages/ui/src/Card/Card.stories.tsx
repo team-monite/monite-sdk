@@ -42,16 +42,13 @@ export const CardWithActions = () => {
       actions={
         <>
           <Button
-            color="blue"
-            leftIcon={<EditIcon fill={'blue'} width={24} height={24} />}
+            variant={'text'}
+            size={'sm'}
+            leftIcon={<EditIcon width={24} height={24} />}
           >
             Edit details
           </Button>
-          <Link
-            color="blue"
-            href={'#'}
-            leftIcon={<MailIcon width={24} height={24} fill={'blue'} />}
-          >
+          <Link href={'#'} leftIcon={<MailIcon fill={'blue'} />}>
             Send email
           </Link>
         </>

@@ -11,7 +11,7 @@ import { enGB } from 'date-fns/locale';
 import { getYear, format } from 'date-fns';
 
 import Input from '../Input';
-import Button from '../Button';
+import IconButton from '../IconButton';
 import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon } from '../Icons';
 
 const DEFAULT_YEAR_ITEM_NUMBER = 12;
@@ -229,17 +229,16 @@ const DatePicker = ({
         increaseYear,
       }) => (
         <HeaderWrapper>
-          <Button
+          <IconButton
             onClick={
               !showMonthYearPicker && !showYearPicker
                 ? decreaseMonth
                 : decreaseYear
             }
-            icon={<ArrowLeftIcon />}
-            type="button"
-            noPadding
             color="grey"
-          />
+          >
+            <ArrowLeftIcon />
+          </IconButton>
           <>
             {!showMonthYearPicker && !showYearPicker && (
               <HeaderDate
@@ -255,17 +254,16 @@ const DatePicker = ({
             )}
             {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
           </>
-          <Button
+          <IconButton
             onClick={
               !showMonthYearPicker && !showYearPicker
                 ? increaseMonth
                 : increaseYear
             }
-            icon={<ArrowRightIcon />}
-            type="button"
-            noPadding
             color="grey"
-          />
+          >
+            <ArrowRightIcon />
+          </IconButton>
         </HeaderWrapper>
       )}
     />

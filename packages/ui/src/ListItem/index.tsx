@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import ReactTooltip, { TooltipProps } from 'react-tooltip';
 
-import { Button, Tooltip, InfoIcon } from '..';
+import { IconButton, Tooltip, InfoIcon } from '..';
 
 import type { TooltipProps as DataTooltipProp } from '../types';
 
@@ -13,11 +13,6 @@ const Wrapper = styled.div`
 
   > div {
     flex: 1;
-  }
-
-  > button {
-    color: ${({ theme }) => theme.colors.lightGrey1};
-    width: 20px;
   }
 `;
 
@@ -50,15 +45,11 @@ const ListItem = ({
   return (
     <Wrapper {...tooltipAttributes} className={className}>
       <div>{children}</div>
-      {onClickInfo ? (
-        <Button
-          type="button"
-          noPadding
-          color="link"
-          onClick={onClickInfo}
-          icon={<InfoIcon />}
-        />
-      ) : null}
+      {onClickInfo && (
+        <IconButton color={'lightGrey1'} onClick={onClickInfo}>
+          <InfoIcon />
+        </IconButton>
+      )}
       {reactTooltip ? (
         <Tooltip
           overridePosition={(position, _event, _target, _ref, place) => ({

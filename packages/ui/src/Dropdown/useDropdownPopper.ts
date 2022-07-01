@@ -8,7 +8,7 @@ type UseDropdownPopperProps = {
 };
 const useDropdownPopper = ({ offsetOptions }: UseDropdownPopperProps = {}) => {
   const [shownDropdownMenu, toggleDropdownMenu] = useState(false);
-  const [referenceElement, setReferenceElement] = useState(null);
+  const [referenceElement, setReferenceElement] = useState<any>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
   const popper = usePopper(referenceElement, popperElement, {

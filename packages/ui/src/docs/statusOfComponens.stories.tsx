@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Title,
   Subtitle,
@@ -11,7 +9,7 @@ import {
 import FlexTable from '../FlexTable';
 import { Flex, Box } from '../Box';
 import Badge from '../Badge';
-import Button from '../Button';
+import Link from '../Link';
 
 const Story = {
   title: 'DesignSystem/Documentation',
@@ -270,13 +268,11 @@ export const StatusOfComponents = () => {
             <Box width={1}>{comment}</Box>
             <Box width={1}>
               {figmaLink && (
-                <a href={figmaLink} target="_blank" rel="noreferrer">
-                  <Button
-                    noPadding
-                    color="blue"
-                    type="Link"
-                  >{`${name} in Figma`}</Button>
-                </a>
+                <Link
+                  href={figmaLink}
+                  rel="noreferrer"
+                  target="_blank"
+                >{`${name} in Figma`}</Link>
               )}
             </Box>
           </Flex>

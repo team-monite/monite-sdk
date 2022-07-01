@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { ThemedStyledProps } from '../types';
-import { Button, Dropdown, DropdownMenu, useDropdownPopper } from '..';
+import { IconButton, Dropdown, DropdownMenu, useDropdownPopper } from '..';
 
 import { DotsVIcon } from '../Icons';
 
@@ -29,7 +29,6 @@ const inactive = ({
 };
 const StyledTableRow = styled.tr<StyledTableRowProps>`
   ${inactive}
-
   &:hover td {
     background: ${({ theme }) => theme.colors.lightGrey3};
     ${({ onClick }) => (onClick ? 'cursor: pointer' : '')};
@@ -47,7 +46,7 @@ const ActionsMenu = styled.div`
   }
 `;
 
-const DropdownToggler = styled(Button)`
+const DropdownToggler = styled(IconButton)`
   height: 32px;
   width: 32px;
 
@@ -93,15 +92,15 @@ const TableRow = ({
                 }}
               >
                 <DropdownToggler
-                  icon={<DotsVIcon width={20} height={20} />}
                   color="lightGrey1"
-                  noPadding
                   onClick={(e: React.BaseSyntheticEvent) => {
                     e.stopPropagation();
                     toggleDropdownMenu((shown) => !shown);
                   }}
                   ref={setReferenceElement}
-                />
+                >
+                  <DotsVIcon width={20} height={20} />
+                </DropdownToggler>
                 {shownDropdownMenu ? (
                   <DropdownMenu
                     innerRef={setPopperElement}

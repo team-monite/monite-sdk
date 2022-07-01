@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Button from '../Button';
+import IconButton from '../IconButton';
 import { QuestionIcon } from '../Icons';
-import Text from '../Text';
+import Text, { STYLES } from '../Text';
 
 const Field = styled.div<Partial<FormFieldProps>>`
   display: flex;
@@ -81,7 +81,7 @@ type FormFieldProps = {
   text?: string | React.ReactNode;
   label: string;
   children: React.ReactNode;
-  labelTextSize?: string; // TODO set proper type
+  labelTextSize?: keyof typeof STYLES;
   readOnly?: boolean;
   required?: boolean;
   onClickInfo?: (e: React.BaseSyntheticEvent) => void;
@@ -107,14 +107,11 @@ const FormField = ({
         required={required}
       >
         <span>{label}</span>
-        {onClickInfo ? (
-          <Button
-            noPadding
-            color="lightGrey1"
-            icon={<QuestionIcon />}
-            onClick={onClickInfo}
-          />
-        ) : null}
+        {onClickInfo && (
+          <IconButton color="lightGrey1" onClick={onClickInfo}>
+            <QuestionIcon />
+          </IconButton>
+        )}
       </Label>
       {children}
       {text && <FormText>{text}</FormText>}
