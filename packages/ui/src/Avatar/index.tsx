@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 import { Box, BoxProps } from '../Box';
+import Text, { STYLES } from '../Text';
 
 type StyledProps = {
   $size?: number;
@@ -69,15 +70,11 @@ const Icon = styled.i<StyledProps>`
   ${({ inactive }) => (inactive ? 'opacity: 50%;' : '')}
 `;
 
-const Name = styled.span`
+const Name = styled(Text)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-left: 10px;
-
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
 `;
 
 type AvatarProps = {
@@ -86,6 +83,7 @@ type AvatarProps = {
   to?: string;
   inactive?: boolean;
   size?: number;
+  textSize?: keyof typeof STYLES;
   onlyLetter?: boolean;
   onClick?: () => void;
 } & BoxProps;
@@ -95,6 +93,7 @@ const Avatar = ({
   name,
   inactive,
   size,
+  textSize,
   onlyLetter,
   onClick,
   ...rest
@@ -113,7 +112,11 @@ const Avatar = ({
       >
         {url ? null : <span>{name![0] || '?'}</span>}
       </Icon>
-      {name && !onlyLetter ? <Name>{name}</Name> : null}
+      {name && !onlyLetter ? (
+        <Name as="span" textSize={textSize || 'bold'}>
+          {name}
+        </Name>
+      ) : null}
     </Wrapper>
   );
 };

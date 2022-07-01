@@ -1,6 +1,5 @@
 import React from 'react';
-import { CounterpartsFormCreate } from '@monite/react-kit';
-import { Button } from '@monite/ui';
+import { CounterpartsFormCreate, Button } from '@monite/react-kit';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from 'features/app/Layout';
