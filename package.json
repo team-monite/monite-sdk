@@ -8,6 +8,7 @@
     "app:start": "yarn workspace @monite/sdk-app start",
     "app:serve": "yarn workspace @monite/sdk-app serve",
     "app:build": "yarn workspace @monite/sdk-app build",
+    "app:analyze": "yarn workspace @monite/sdk-app analyze",
     "sdk:build": "yarn workspace @monite/js-sdk build",
     "react:build": "yarn workspace @monite/react-kit build",
     "react:story": "yarn workspace @monite/react-kit storybook",

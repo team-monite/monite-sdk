@@ -36,10 +36,14 @@ export default Stoys;
 
 export const DefaultAvatar = () => <Avatar size={34} name="Monite" />;
 
-export const AvatarImg = () => (
-  <Avatar
-    size={34}
-    url="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png"
-    name="Monite"
-  />
+export const Avatars = () => (
+  <>
+    <Avatar
+      size={34}
+      url="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png"
+      name="Monite"
+    />
+    <br />
+    <Avatar size={34} name="Monite" textSize="h1" />
+  </>
 );

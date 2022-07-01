@@ -1,4 +1,16 @@
 {
+  "payables": {
+    "columns": {
+      "number": "Number",
+      "supplier": "Supplier",
+      "issueDate": "Issue date",
+      "dueDate": "Due date",
+      "status": "Status",
+      "appliedPolicy": "Applied policy",
+      "amount": "Amount",
+      "addedBy": "Added by"
+    }
+  },
   "counterparts": {
     "columns": {
       "name": "Name, country, city",

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 type PageHeaderProps = {
   title: string;
-  extra: React.ReactNode;
+  extra?: React.ReactNode;
 };
 const PageHeader = ({ title, extra }: PageHeaderProps) => {
   return (
