@@ -89,7 +89,37 @@ export const ButtonColors = () => {
   ));
 };
 
-export const ButtonWithLLeftIcon = () => {
+export const LoadingButtonColors = () => {
+  return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+    <Wrap key={variant}>
+      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+        <Button
+          isLoading
+          key={color}
+          variant={variant}
+          color={color}
+          href={'#'}
+        >
+          {variant} {color}
+        </Button>
+      ))}
+    </Wrap>
+  ));
+};
+
+export const DisabledButtonColors = () => {
+  return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+    <Wrap key={variant}>
+      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+        <Button disabled key={color} variant={variant} color={color} href={'#'}>
+          {variant} {color}
+        </Button>
+      ))}
+    </Wrap>
+  ));
+};
+
+export const ButtonWithLeftIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
@@ -106,7 +136,7 @@ export const ButtonWithLLeftIcon = () => {
   ));
 };
 
-export const ButtonWithLRightIcon = () => {
+export const ButtonWithRightIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
@@ -123,7 +153,7 @@ export const ButtonWithLRightIcon = () => {
   ));
 };
 
-export const ButtonWithLefAndRightIcons = () => {
+export const ButtonWithLeftAndRightIcons = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (

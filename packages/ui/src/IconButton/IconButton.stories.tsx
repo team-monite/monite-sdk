@@ -24,8 +24,11 @@ DefaultIconButton.args = {
 export const Primary = () => {
   return (
     <Flex style={{ gap: 20 }}>
-      <IconButton>
-        <InfoIcon />
+      <IconButton variant={'contained'}>
+        <InfoIcon width={24} height={24} />
+      </IconButton>
+      <IconButton isLoading variant={'contained'}>
+        <InfoIcon width={24} height={24} />
       </IconButton>
       <IconButton>
         <MailIcon />

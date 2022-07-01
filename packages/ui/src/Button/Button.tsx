@@ -15,7 +15,7 @@ import { THEMES } from '../consts';
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type ButtonSize = 'sm' | 'md';
-export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link';
+export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
 type ButtonTextSize = keyof typeof TEXT_STYLES;
 type ButtonColor = keyof typeof Themes | keyof typeof THEMES.default.colors;
@@ -34,6 +34,7 @@ export interface ButtonProps extends BoxProps {
   textSize?: ButtonTextSize;
   ref?: Ref<ReactNode>;
   disabled?: boolean;
+  isIcon?: boolean;
   isLoading?: boolean;
   block?: boolean;
   href?: string;
@@ -47,6 +48,7 @@ type StyledButtonProps = {
   $color?: ButtonColor;
   $hover?: ButtonColor;
   $variant?: ButtonVariant;
+  $isIcon?: boolean;
   $isLoading?: boolean;
   $isLink?: boolean;
   $hasLeftIcon?: boolean;
@@ -202,10 +204,8 @@ const getHover = ({
 const getSecondaryColor = ({
   $color,
   $variant,
-  $isLoading,
-  disabled,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
-  if (disabled || $isLoading || $color !== 'secondary') return '';
+  if ($color !== 'secondary') return '';
 
   const { white, black, grey } = THEMES.default.colors;
 
@@ -244,10 +244,11 @@ const getPadding = ({
   $variant,
   $hasLeftIcon,
   $hasRightIcon,
+  $isIcon,
 }: ThemedStyledProps<StyledButtonProps>) => {
   if ($variant === 'text') return 'padding: 0;';
 
-  if ($hasLeftIcon && $hasRightIcon) return 'padding: 11px';
+  if (($hasLeftIcon && $hasRightIcon) || $isIcon) return 'padding: 11px';
   if ($hasLeftIcon) return 'padding: 11px 15px 11px 11px;';
   if ($hasRightIcon) return 'padding: 11px 11px 11px 15px;';
 
@@ -319,17 +320,15 @@ const StyledDisabledTooltip = styled.span`
   z-index: 5;
 `;
 
-const StyledSpinner = styled.i`
-  display: flex;
-`;
-
-const StyledIcon = styled.i<StyledButtonProps>`
+const StyledIcon = styled.i`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 24px;
   height: 24px;
+`;
 
+const StyledSecondaryIcon = styled(StyledIcon)<StyledButtonProps>`
   ${({ $variant, $hasLeftIcon, $hasRightIcon }) => {
     const margin = $variant === 'text' ? '6' : '8';
 
@@ -349,6 +348,7 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
       tooltip,
       disabled,
       isLoading,
+      isIcon,
       leftIcon,
       rightIcon,
       onClick,
@@ -374,10 +374,14 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
     const renderContent = () => {
       if (isLoading) {
         return (
-          <StyledSpinner>
+          <StyledIcon>
             <Spinner pxSize={16} />
-          </StyledSpinner>
+          </StyledIcon>
         );
+      }
+
+      if (isIcon) {
+        return <StyledIcon>{children}</StyledIcon>;
       }
 
       return (
@@ -388,17 +392,17 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
           )}
 
           {leftIcon && (
-            <StyledIcon $hasLeftIcon $variant={variant}>
+            <StyledSecondaryIcon $hasLeftIcon $variant={variant}>
               {leftIcon}
-            </StyledIcon>
+            </StyledSecondaryIcon>
           )}
 
           {children}
 
           {rightIcon && (
-            <StyledIcon $hasRightIcon $variant={variant}>
+            <StyledSecondaryIcon $hasRightIcon $variant={variant}>
               {rightIcon}
-            </StyledIcon>
+            </StyledSecondaryIcon>
           )}
         </>
       );
@@ -410,6 +414,7 @@ const Button: FC<ButtonProps> = forwardRef<any, ButtonProps>(
         {...(!disabled && tooltip && tooltipAttributes)}
         $variant={variant}
         $isLoading={isLoading}
+        $isIcon={isIcon}
         $isLink={isLink}
         $hasLeftIcon={!!leftIcon}
         $hasRightIcon={!!rightIcon}
