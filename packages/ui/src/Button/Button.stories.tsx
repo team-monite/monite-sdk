@@ -5,7 +5,7 @@ import { Box, Flex } from '../Box';
 
 import { InfoIcon } from '../Icons';
 import { STYLES as TEXT_STYLES } from '../Text';
-import { Size, Themes } from './Button';
+import { TextSize, Themes } from './Button';
 
 const Story = {
   title: 'Components/Button',
@@ -53,7 +53,7 @@ export const LinkButton = () => {
   return (
     <Wrap>
       {buttonVariant.map((variant: keyof typeof ButtonVariants) => (
-        <Button href={'#'} key={'variant'} variant={variant}>
+        <Button href={'#'} key={variant} variant={variant}>
           {variant}
         </Button>
       ))}
@@ -64,7 +64,7 @@ export const LinkButton = () => {
 export const ButtonSizes = () => {
   return (
     <Wrap>
-      {Object.keys(Size).map((size: keyof typeof Size) => (
+      {Object.keys(TextSize).map((size: keyof typeof TextSize) => (
         <Wrap key={size}>
           {buttonVariant.map((variant: keyof typeof ButtonVariants) => (
             <Button key={`${size}-${variant}`} variant={variant} size={size}>
@@ -81,7 +81,7 @@ export const ButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
-        <Button key={color} variant={variant} color={color}>
+        <Button key={`${variant}-${color}`} variant={variant} color={color}>
           {variant} {color}
         </Button>
       ))}
@@ -111,7 +111,13 @@ export const DisabledButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
-        <Button disabled key={color} variant={variant} color={color} href={'#'}>
+        <Button
+          disabled
+          key={`${variant}-${color}`}
+          variant={variant}
+          color={color}
+          href={'#'}
+        >
           {variant} {color}
         </Button>
       ))}
@@ -124,7 +130,7 @@ export const ButtonWithLeftIcon = () => {
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
         <Button
-          key={color}
+          key={`${variant}-${color}`}
           leftIcon={<InfoIcon />}
           variant={variant}
           color={color}
@@ -141,7 +147,7 @@ export const ButtonWithRightIcon = () => {
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
         <Button
-          key={color}
+          key={`${variant}-${color}`}
           rightIcon={<InfoIcon />}
           variant={variant}
           color={color}
@@ -158,7 +164,7 @@ export const ButtonWithLeftAndRightIcons = () => {
     <Wrap key={variant}>
       {Object.keys(Themes).map((color: keyof typeof Themes) => (
         <Button
-          key={color}
+          key={`${variant}-${color}`}
           leftIcon={<InfoIcon />}
           rightIcon={<InfoIcon />}
           variant={variant}
@@ -193,7 +199,11 @@ export const CustomSizeButton = () => {
       {Object.keys(TEXT_STYLES)
         .reverse()
         .map((style: keyof typeof TEXT_STYLES) => (
-          <Button key={style} variant={variant} textSize={style}>
+          <Button
+            key={`${variant}-${style}`}
+            variant={variant}
+            textSize={style}
+          >
             {variant} {style}
           </Button>
         ))}

@@ -61,7 +61,7 @@ const Dimensions: Record<ButtonSize, number> = {
   md: 48,
 };
 
-export const Size: Record<ButtonSize, string> = {
+export const TextSize: Record<ButtonSize, string> = {
   sm: `
     font-size: 14px;
     font-weight: 400;
@@ -86,7 +86,7 @@ const getSize = ({ $size = 'md', $variant }: StyledButtonProps) => {
 };
 
 const getTextSize = ({ $textSize, $size = 'md' }: StyledButtonProps) => {
-  if (!$textSize) return Size[$size];
+  if (!$textSize) return TextSize[$size];
   if (TEXT_STYLES[$textSize]) return TEXT_STYLES[$textSize];
 };
 
@@ -201,42 +201,48 @@ const getHover = ({
 
   return '';
 };
+
+// todo this is a hack to style secondary button
 const getSecondaryColor = ({
   $color,
   $variant,
+  $isLoading,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
   if ($color !== 'secondary') return '';
 
   const { white, black, grey } = THEMES.default.colors;
 
+  const secondaryColor = `color: ${black};`;
+  const getHover = (style: string) => (!$isLoading ? `&:hover {${style}}` : '');
+
   if ($variant === 'contained') {
     return `
-      color: ${black};
+      ${secondaryColor}
 
-      &:hover {
+      ${getHover(`
         background-color: ${grey};
         border-color: ${grey};
         color: ${white};
-      }
+      `)}
     `;
   }
 
   if ($variant === 'link') {
     return `
-      color: ${black};
+      ${secondaryColor}
 
-      &:hover {
+      ${getHover(`
         border-color: ${grey};
-      }
+      `)}
     `;
   }
 
   return `
-      color: ${black};
+      ${secondaryColor}
 
-      &:hover {
-        color: ${black};
-      }
+      ${getHover(`
+        ${secondaryColor}
+      `)}
     `;
 };
 
