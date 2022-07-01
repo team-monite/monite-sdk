@@ -21,19 +21,10 @@ const CounterpartsContact = ({
     <Card
       actions={
         <>
-          <Link
-            color="blue"
-            href={`tel:${phone}`}
-            leftIcon={<CallIcon width={18} height={18} fill={'blue'} />}
-          >
+          <Link href={`tel:${phone}`} leftIcon={<CallIcon />}>
             {t('counterparts:actions.call')}
           </Link>
-          <Link
-            color="blue"
-            href={`mailto:${email}`}
-            height="14px"
-            leftIcon={<MailIcon width={18} height={18} fill={'blue'} />}
-          >
+          <Link href={`mailto:${email}`} leftIcon={<MailIcon />}>
             {t('counterparts:actions.sendEmail')}
           </Link>
         </>

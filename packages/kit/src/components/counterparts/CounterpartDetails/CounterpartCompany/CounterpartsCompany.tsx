@@ -27,11 +27,12 @@ const CounterpartsCompany = ({
     <Card
       actions={
         <Button
-          color="blue"
+          size={'sm'}
+          variant={'text'}
           onClick={onEdit}
-          leftIcon={<EditIcon fill={'blue'} width={24} height={24} />}
+          leftIcon={<EditIcon />}
         >
-          {t('counterparts:actions:editDetails')}
+          {t('counterparts:actions.editDetails')}
         </Button>
       }
     >
