@@ -28,7 +28,7 @@ deploy:
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - test-deploy
+    - dev
   script:
     - aws --version
     - aws s3 sync packages/app/build s3://monite-sdk-app-dev
