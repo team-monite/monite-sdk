@@ -32,5 +32,6 @@ deploy:
   script:
     - aws --version
     - aws s3 sync packages/app/build s3://monite-sdk-app-dev
+    - aws cloudfront create-invalidation --distribution-id E2XLI83DAN4J4J --paths "/*"
   tags:
     - docker
