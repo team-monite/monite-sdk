@@ -20,6 +20,9 @@ test-job:       # This job runs in the build stage, which runs first.
     - yarn app:build
   tags:
     - docker
+  artifacts:
+    paths:
+      - packages/app/build
 
 deploy:
   stage: deploy
@@ -28,7 +31,6 @@ deploy:
     - test-deploy
   script:
     - aws --version
-    - aws s3 ls
     - aws s3 sync packages/app/build s3://monite-sdk-app-dev
   tags:
     - docker
