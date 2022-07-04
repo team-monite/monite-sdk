@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
 import CounterpartsTestData from 'tests/fixtures/counterparts';
-import { ROUTES } from 'features/app/App';
+import { ROUTES } from 'features/app/consts';
 
 const PageCounterparts = () => {
   const navigate = useNavigate();

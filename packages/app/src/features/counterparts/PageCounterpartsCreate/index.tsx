@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import { ROUTES } from 'features/app/App';
+import { ROUTES } from 'features/app/consts';
 
 import styles from './styles.module.scss';
 
