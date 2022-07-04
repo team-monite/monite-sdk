@@ -23,6 +23,7 @@ test-job:       # This job runs in the build stage, which runs first.
   artifacts:
     paths:
       - packages/app/build
+    expire_in: 1 day
 
 deploy:
   stage: deploy
