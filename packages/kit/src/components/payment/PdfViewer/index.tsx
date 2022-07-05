@@ -41,13 +41,14 @@ const PdfViewer = (props: any) => {
   const { file } = props;
 
   return (
-    <Styled.ViewerLayout>
+    <>
       <Styled.ControlPanel>
         <Flex alignItems="center">
           <IconButton
             variant="icon"
             onClick={onPreviousPage}
             disabled={pageNumber <= 1}
+            minWidth={48}
           >
             <BackIcon width={24} height={24} />
           </IconButton>
@@ -58,6 +59,7 @@ const PdfViewer = (props: any) => {
             variant="icon"
             disabled={pageNumber >= numPages}
             onClick={onNextPage}
+            minWidth={48}
           >
             <ForthIcon width={24} height={24} />
           </IconButton>
@@ -84,7 +86,7 @@ const PdfViewer = (props: any) => {
       >
         <Page pageNumber={pageNumber} scale={scale} />
       </Document>
-    </Styled.ViewerLayout>
+    </>
   );
 };
 

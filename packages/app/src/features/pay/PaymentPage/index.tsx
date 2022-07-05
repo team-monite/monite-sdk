@@ -4,15 +4,16 @@ import { Flex, Box, Card, Text } from '@monite/react-kit';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import Layout from 'features/pay/Layout';
+import { PdfViewer } from '@monite/react-kit';
+import samplePDF from '@monite/react-kit/src/components/payment/PdfViewer/example.pdf';
 
-import InvoiceImageSrc from './Invoice.png';
+import Layout from 'features/pay/Layout';
 
 const Row = styled(Flex)``;
 const Col = styled(Box)``;
 
 const PaymentPDFViewerWrapper = styled.div`
-  padding: 24px 72px;
+  padding: 32px 72px;
 `;
 const PaymentWidgetWrapper = styled.div`
   padding: 32px;
@@ -31,7 +32,7 @@ const PaymentPage = () => {
       <Row>
         <Col width={[1 / 2]}>
           <PaymentPDFViewerWrapper>
-            <img src={InvoiceImageSrc} alt="invoice" />
+            <PdfViewer file={samplePDF} />
           </PaymentPDFViewerWrapper>
         </Col>
         <Col width={[1 / 2]}>

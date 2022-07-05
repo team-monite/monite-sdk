@@ -1,12 +1,5 @@
 import styled from '@emotion/styled';
 
-export const ViewerLayout = styled.div`
-  background: ${({ theme }) => theme.colors.lightGrey3};
-  padding: 72px;
-  width: 762px;
-  box-sizing: border-box;
-`;
-
 export const ControlPanel = styled.div`
   margin-bottom: 24px;
   display: flex;
