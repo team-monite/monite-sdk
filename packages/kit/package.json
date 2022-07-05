@@ -55,6 +55,8 @@
   "dependencies": {
     "@monite/js-sdk": "0.0.1",
     "@monite/ui": "0.0.1",
-    "react-hook-form": "~7.33.0"
+    "@types/react-pdf": "~5.7.2",
+    "react-hook-form": "~7.33.0",
+    "react-pdf": "~5.7.2"
   }
 }
