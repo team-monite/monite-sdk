@@ -1,5 +1,22 @@
 {
   "login": {
-    "title": "Welcome back!"
+    "title": "Log In",
+    "errors": {
+      "emailPassword": "The email or password is incorrect. Please retry",
+      "emptyFieldTooltip": "Please fill in the required text fields first"
+    },
+    "forgot": "Forgot password?",
+    "submit": "Sign In",
+    "signupText": "Don't have an account yet?",
+    "signupLink": "Open one now"
+  },
+  "forms": {
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "errors": {
+      "required": "{{field}} is a required field"
+    }
   }
 }
