@@ -7,7 +7,7 @@ import {
 } from 'react-tabs';
 
 import {
-  disabledTabPanel,
+  disabledTab,
   selectedTab,
   selectedTabPanel,
   tabs,
@@ -25,7 +25,7 @@ const Tabs: ReactTabsFC<TabsProps> = ({ children, ...props }) => {
       className={tabs}
       selectedTabPanelClassName={selectedTabPanel}
       selectedTabClassName={selectedTab}
-      disabledTabClassName={disabledTabPanel}
+      disabledTabClassName={disabledTab}
       {...props}
     >
       {children}
