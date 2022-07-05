@@ -1,23 +1,17 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
-import PageCounterparts from 'features/counterparts/PageCounterparts';
-import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate';
-import PagePayables from 'features/payables/PagePayables';
+import PageLogin from 'features/auth/PageLogin';
 
 import { ROUTES } from 'features/app/consts';
 
 const PublicArea = () => {
   return (
     <Routes>
-      <Route path={ROUTES.counterparts} element={<PageCounterparts />} />
-      <Route
-        path={ROUTES.counterpartsCreate}
-        element={<PageCounterpartsCreate />}
-      />
-      <Route path={ROUTES.payables} element={<PagePayables />} />
-      <Route path="*" element={<Navigate to={ROUTES.counterparts} />} />
+      <Route path={ROUTES.signin} element={<PageLogin />} />
+      <Route path="*" element={<Navigate to={ROUTES.signin} />} />
     </Routes>
   );
 };
 
-export default PublicArea;
+export default observer(PublicArea);
