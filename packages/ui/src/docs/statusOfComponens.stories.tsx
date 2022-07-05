@@ -170,12 +170,6 @@ const data = [
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2158%3A18724',
   },
   {
-    name: 'Tab',
-    status: 'Not ready',
-    figmaLink:
-      'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2157%3A18493',
-  },
-  {
     name: 'Separator',
     status: 'Not ready',
     figmaLink:
@@ -240,6 +234,12 @@ const data = [
     status: 'Not ready',
     figmaLink:
       'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2166%3A26151',
+  },
+  {
+    name: 'Tabs',
+    status: 'Done',
+    figmaLink:
+      'https://www.figma.com/file/sIzcQHjFEhYt47GGKz2zSd/Design-System-2.0?node-id=2157%3A18493',
   },
 ];
 
