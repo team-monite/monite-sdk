@@ -7,15 +7,37 @@ import {
 } from 'react-tabs';
 import { tabList } from '../TabsClassNames';
 
-type TabListProps = ReactTabListProps & {};
+type TabListProps = ReactTabListProps & {
+  scrollable?: boolean;
+};
 
 const StyledTabList = styled(ReactTabList)<TabListProps>`
-  padding: 0;
+  padding: 0 0 4px;
   margin: 0;
   display: flex;
+  gap: 30px;
 `;
 
-const TabList: ReactTabsFC<TabListProps> = ({ children, ref: _, ...props }) => {
+const Scrollable = styled.div`
+  overflow-x: auto;
+  width: 100%;
+`;
+
+const TabList: ReactTabsFC<TabListProps> = ({
+  children,
+  scrollable,
+  ref: _,
+  ...props
+}) => {
+  if (scrollable) {
+    return (
+      <Scrollable>
+        <StyledTabList className={tabList} {...props}>
+          {children}
+        </StyledTabList>
+      </Scrollable>
+    );
+  }
   return (
     <StyledTabList className={tabList} {...props}>
       {children}
