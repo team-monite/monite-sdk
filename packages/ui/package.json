@@ -45,6 +45,7 @@
     "date-fns": "^2.28.0",
     "react-datepicker": "^4.8.0",
     "react-select": "^5.2.2",
+    "react-tabs": "~5.1.0",
     "styled-system": "^5.1.5"
   },
   "peerDependencies": {
