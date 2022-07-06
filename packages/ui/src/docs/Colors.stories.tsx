@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   Title,
   Subtitle,
@@ -10,7 +8,7 @@ import {
 } from '@storybook/addon-docs';
 import { Flex, Box } from '../Box';
 import Text from '../Text';
-import { THEMES } from 'consts';
+import { THEMES } from '../consts';
 
 const Story = {
   title: 'DesignSystem/Colors',

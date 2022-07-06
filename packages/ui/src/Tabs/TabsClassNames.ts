@@ -7,5 +7,4 @@ export const disabledTab = `${tab}--disabled`;
 export const tabList = `${tabs}__tab-list`;
 
 export const tabPanel = `${tabs}__tab-panel`;
-export const disabledTabPanel = `${tabPanel}--selected`;
 export const selectedTabPanel = `${tabPanel}--selected`;

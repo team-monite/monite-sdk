@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {
-  ReactTabsFunctionComponent as ReactTabsFC,
   TabList as ReactTabList,
   TabListProps as ReactTabListProps,
 } from 'react-tabs';
 import { tabList } from '../TabsClassNames';
+import { ReactTabsFC } from '../typings';
 
 type TabListProps = ReactTabListProps & {
   scrollable?: boolean;

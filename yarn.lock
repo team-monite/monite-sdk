@@ -5896,6 +5896,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-tabs@~2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@types/react-tabs/-/react-tabs-2.3.4.tgz#b63662ee52e59a86ec33b78b9721d8163a46394c"
+  integrity sha512-HQzhKW+RF/7h14APw/2cu4Nnt+GmsTvfBKbFdn/NbYpb8Q+iB65wIkPHz4VRKDxWtOpNFpOUtzt5r0LRmQMfOA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.4.0":
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.4.tgz#acd4cceaa2be6b757db61ed7b432e103242d163e"
@@ -16986,10 +16993,10 @@ react-syntax-highlighter@^15.4.5:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
-react-tabs@~5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-5.1.0.tgz#5ef8fad015c71c23b0fff65bd9b3bd419219c27b"
-  integrity sha512-jsPVEPuhG7JljTo8Q4ujz4UKRpG90nHlDClAdvV5KrLxCHU+MT/kg7dmhq8fDv8+frciDtaYeFFlTVRLm4N5AQ==
+react-tabs@~4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-4.2.1.tgz#82e2dc787555e791f909746dd64164d780d7d477"
+  integrity sha512-nQcEN3KrAsSry6f9Jz2oyMQsnh+sLEy31YjlskL/mnI3KU/c7BeyD1VzHZmmcJ15UEFu12pYOXYkdTzZ0uyIbw==
   dependencies:
     clsx "^1.1.0"
     prop-types "^15.5.0"

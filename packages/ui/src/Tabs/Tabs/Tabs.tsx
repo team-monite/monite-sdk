@@ -1,10 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {
-  ReactTabsFunctionComponent as ReactTabsFC,
-  Tabs as ReactTabs,
-  TabsProps as ReactTabsProps,
-} from 'react-tabs';
+import { Tabs as ReactTabs, TabsProps } from 'react-tabs';
 
 import {
   disabledTab,
@@ -12,8 +8,7 @@ import {
   selectedTabPanel,
   tabs,
 } from '../TabsClassNames';
-
-type TabsProps = ReactTabsProps & {};
+import { ReactTabsFC } from '../typings';
 
 const StyledTabs = styled(ReactTabs)<TabsProps>`
   -webkit-tap-highlight-color: transparent;

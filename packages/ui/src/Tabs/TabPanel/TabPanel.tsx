@@ -1,13 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import {
-  ReactTabsFunctionComponent as ReactTabsFC,
-  TabPanel as ReactTabPanel,
-  TabPanelProps as ReactTabPanelProps,
-} from 'react-tabs';
+import { TabPanel as ReactTabPanel, TabPanelProps } from 'react-tabs';
 import { tabPanel, selectedTabPanel } from '../TabsClassNames';
-
-type TabPanelProps = ReactTabPanelProps & {};
+import { ReactTabsFC } from '../typings';
 
 const StyledTabPanel = styled(ReactTabPanel)<TabPanelProps>`
   display: none;

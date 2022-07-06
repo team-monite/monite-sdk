@@ -87,7 +87,7 @@ export const TabsWithCounter = () => {
 
 export const ScrollableTabs = () => {
   return (
-    <Box sx={{ width: 600 }}>
+    <Box sx={{ width: 300 }}>
       <Tabs>
         <TabList scrollable>
           <Tab>Tab one</Tab>
