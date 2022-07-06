@@ -1,7 +1,7 @@
 import React from 'react';
 import samplePDF from './example.pdf';
 
-import PdfViewer from './';
+import PdfViewer from './PdfViewer';
 
 const Story = {
   title: 'PdfViewer',

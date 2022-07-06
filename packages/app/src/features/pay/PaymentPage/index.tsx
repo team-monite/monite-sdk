@@ -4,8 +4,7 @@ import { Flex, Box, Card, Text } from '@monite/react-kit';
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { PdfViewer } from '@monite/react-kit';
-import samplePDF from '@monite/react-kit/src/components/payment/PdfViewer/example.pdf';
+import { PdfViewerWithAPI } from '@monite/react-kit';
 
 import Layout from 'features/pay/Layout';
 
@@ -32,7 +31,7 @@ const PaymentPage = () => {
       <Row>
         <Col width={[1 / 2]}>
           <PaymentPDFViewerWrapper>
-            <PdfViewer file={samplePDF} />
+            <PdfViewerWithAPI id={id || ''} />
           </PaymentPDFViewerWrapper>
         </Col>
         <Col width={[1 / 2]}>
