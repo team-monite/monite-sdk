@@ -31,6 +31,7 @@ export { default as AvatarInput } from './AvatarInput';
 export { default as LabelText } from './LabelText';
 export { default as Link } from './Link';
 export { default as DatePicker } from './DatePicker';
+export { Tabs, Tab, TabPanel, TabList } from './Tabs';
 export { default as ThemeProvider } from './core/ThemeProvider';
 
 export * from './Icons';
