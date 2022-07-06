@@ -5,30 +5,85 @@ import Select, {
   DropdownIndicatorProps,
   OptionProps,
   MenuListProps,
-  MultiValueGenericProps,
   ControlProps,
   ClearIndicatorProps,
+  MultiValueProps,
+  InputProps,
 } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import ReactTooltip from 'react-tooltip';
 import styled from '@emotion/styled';
 
-import type { FormatOptionLabelMeta } from 'react-select/dist/declarations/src/Select';
-
-import Checkbox from '../Checkbox';
+import { Box } from '../Box';
+import Text from '../Text';
 import { THEMES } from '../consts';
 import { ArrowDownIcon, CloseIcon } from '../Icons';
 
-const MultiLabelWithCheckbox = styled.div`
-  display: flex;
-  > * + * {
-    margin-left: 12px;
+const LabelWithIcon = styled.div`
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+// TODO 'target' is a hack to refer OptionIcon in another style component. See https://github.com/emotion-js/emotion/issues/2354
+const OptionIcon = styled('div', { target: 'optionIcon' })`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  div,
+  i {
+    width: 24px;
+    height: 24px;
   }
 `;
 
-const LabelWithIcon = styled.div`
+const CreateInputWrapper = styled.div`
+  padding: 16px 12px;
+  background-color: ${({ theme }) => theme.colors.lightGrey3};
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+
+const CreateInput = styled.input`
+  flex: 1 1 auto;
+  background-color: transparent;
+  border: none;
+
+  &:focus-visible {
+    outline: none;
+  }
+`;
+
+const Tag = styled(Text)`
+  display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
+  padding: 1px 8px;
+  border: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.white};
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+
+  ${OptionIcon} {
+    width: 16px;
+    height: 16px;
+
+    div,
+    i {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 type Option = {
@@ -36,45 +91,73 @@ type Option = {
   label: string;
 };
 
-export type SelectProps = {
+interface SelectProps {
   id?: string;
   name?: string;
-  value?: Option | Option[] | null;
-  options: Option[];
-  isMulti?: boolean;
-  isDisabled?: boolean;
-  placeholder?: string;
   className?: string;
-  leftIcon?: () => ReactNode;
-  isClearable?: boolean;
-  isFilter?: boolean;
+  placeholder?: string;
+  value?: Option | Option[] | string | null;
   onChange?: (e: any) => void;
+  options: Option[];
+  optionAsTag?: boolean;
+  isMulti?: boolean;
+  isCreatable?: boolean;
+  isFilter?: boolean;
+  isClearable?: boolean;
+  isFocused?: boolean;
+  isDisabled?: boolean;
+  onFocus?: () => void;
   onBlur?: (e: any) => void;
-};
+  hideSelectedOptions?: boolean;
+  inputValue?: string;
+  onInputChange?: (value: string) => void;
+  menuIsOpen?: boolean;
+  onMenuOpen?: () => void;
+  onMenuClose?: () => void;
+  controlShouldRenderValue?: boolean;
+  onCreateOption?: (value: string) => void;
+  handleRemoveSelectedOption?: (value: string) => void;
+  leftIcon?: () => ReactNode;
+}
 
 const ReactSelect = (props: SelectProps) => {
   const {
     id,
     name,
-    value,
-    options,
-    isMulti,
-    placeholder,
-    onChange,
-    onBlur,
-    isDisabled,
     className,
+    placeholder = '',
+    value,
+    onChange,
+    options,
+    optionAsTag = false,
+    isMulti,
+    isCreatable,
     isFilter,
-    leftIcon,
     isClearable,
+    isFocused,
+    isDisabled,
+    onFocus,
+    onBlur,
+    hideSelectedOptions = false,
+    inputValue,
+    onInputChange,
+    onMenuOpen,
+    onMenuClose,
+    onCreateOption,
+    handleRemoveSelectedOption,
+    leftIcon,
+    ...restProps
   } = props;
+  const WrapperComponent = isCreatable ? CreatableSelect : Select;
 
-  const onMenuOpen = () => {
+  const handleOnMenuOpen = () => {
     ReactTooltip.rebuild();
+    onMenuOpen && onMenuOpen();
   };
 
-  const onMenuClose = () => {
+  const handleOnMenuClose = () => {
     ReactTooltip.hide();
+    onMenuClose && onMenuClose();
   };
 
   const customStyles: StylesConfig = {
@@ -90,14 +173,18 @@ const ReactSelect = (props: SelectProps) => {
       ...provided,
       background: 'transparent',
       margin: 0,
+      display: 'inline-flex',
+      flexShrink: 0,
+      maxWidth: '200px',
     }),
     multiValueLabel: (provided: any, state: any) => ({
       ...provided,
       fontSize: '16px',
       fontWeight: 400,
-      lineHeight: '24px',
+      lineHeight: optionAsTag ? '24px' : '20px',
       padding: 0,
-      color: THEMES.default.colors.grey,
+      paddingLeft: 0,
+      color: THEMES.default.colors.black,
     }),
     menu: (provided: any, state: any) => ({
       ...provided,
@@ -140,17 +227,20 @@ const ReactSelect = (props: SelectProps) => {
       const borderColor =
         state.isFocused && !isFilter
           ? THEMES.default.colors.blue
-          : props.placeholder === '' && !value
-          ? THEMES.default.colors.lightGrey3
-          : THEMES.default.colors.lightGrey2;
+          : state.hasValue
+          ? THEMES.default.colors.lightGrey2
+          : THEMES.default.colors.lightGrey3;
 
       const getBackgroundColor = () => {
-        if ((state.isFocused || value) && !isFilter) {
-          return THEMES.default.colors.white;
-        } else if (props.placeholder === '' || (isFilter && state.hasValue)) {
-          return THEMES.default.colors.lightGrey3;
+        if (isFilter) {
+          return state.hasValue
+            ? THEMES.default.colors.lightGrey3
+            : THEMES.default.colors.white;
+        } else {
+          return state.hasValue || isFocused
+            ? THEMES.default.colors.white
+            : THEMES.default.colors.lightGrey3;
         }
-        return THEMES.default.colors.white;
       };
 
       const boxShadow =
@@ -167,18 +257,23 @@ const ReactSelect = (props: SelectProps) => {
         paddingLeft: leftIcon ? 10 : 0,
         transition:
           'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
-        ':hover': {
-          borderColor,
+        ':hover, :focus': {
+          borderColor: !isFilter
+            ? THEMES.default.colors.blue
+            : props.placeholder === '' && !state.hasValue
+            ? THEMES.default.colors.lightGrey3
+            : THEMES.default.colors.lightGrey2,
+          boxShadow: !isFilter
+            ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
+            : 'none',
           backgroundColor: isFilter
             ? THEMES.default.colors.black
-            : 'transparent',
+            : THEMES.default.colors.white,
           color: isFilter
             ? THEMES.default.colors.white
-            : THEMES.default.colors.lightGrey1,
+            : THEMES.default.colors.black,
           '*': {
-            color: isFilter
-              ? THEMES.default.colors.white
-              : THEMES.default.colors.lightGrey1,
+            color: isFilter && THEMES.default.colors.white,
           },
         },
         background: getBackgroundColor(),
@@ -203,6 +298,9 @@ const ReactSelect = (props: SelectProps) => {
         ':hover': {
           color: isFilter ? THEMES.default.colors.white : 'inherit',
         },
+        flexWrap: 'nowrap',
+        overflow: 'auto',
+        gap: '4px',
       };
     },
     clearIndicator: (provided: any, state: any) => {
@@ -231,11 +329,11 @@ const ReactSelect = (props: SelectProps) => {
   };
 
   const overrideClearIndicator = (props: ClearIndicatorProps) => {
-    return (
+    return isClearable ? (
       <components.ClearIndicator {...props}>
         <CloseIcon />
       </components.ClearIndicator>
-    );
+    ) : null;
   };
 
   const overrideOption = (props: OptionProps<any>) => {
@@ -252,65 +350,128 @@ const ReactSelect = (props: SelectProps) => {
           }, {})
         : {};
 
+    const renderChildren = () => {
+      const newChildren = props.data?.icon ? (
+        <LabelWithIcon>
+          <OptionIcon>{props.data?.icon}</OptionIcon>
+          &nbsp;
+          {children}
+        </LabelWithIcon>
+      ) : (
+        children
+      );
+
+      if (props.data?.__isNew__) {
+        // TODO add localization
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Text
+              color={THEMES.default.colors.primary}
+              style={{ display: 'inline-block', flexShrink: 0 }}
+            >
+              Create new
+            </Text>
+            &nbsp;
+            <Tag textSize="small">{inputValue}</Tag>
+            &nbsp;
+            <Text
+              color={THEMES.default.colors.primary}
+              style={{ display: 'inline-block', flexShrink: 0 }}
+            >
+              tag
+            </Text>
+          </div>
+        );
+      }
+
+      if (optionAsTag) {
+        return <Tag textSize="small">{newChildren}</Tag>;
+      }
+
+      return newChildren;
+    };
+
     return (
       <components.Option
         {...props}
         innerProps={{ ...props.innerProps, ...tooltipAttributes }}
       >
-        {data?.icon ? (
-          <LabelWithIcon>
-            {children}
-            {data.icon}
-          </LabelWithIcon>
-        ) : (
-          children
-        )}
+        {renderChildren()}
       </components.Option>
     );
   };
 
   const overrideMenuList = (props: MenuListProps) => {
     ReactTooltip.rebuild();
-    return <components.MenuList {...props} />;
-  };
-
-  const overrideMultiValueLabel = (props: MultiValueGenericProps) => {
-    const { data } = props;
-    const values = Array.isArray(value) ? value : [];
-    const currentOptionIdx = values.findIndex(
-      (option) => option.value === data.value
-    );
+    const { selectProps } = props;
 
     return (
-      <components.MultiValueLabel {...props}>
-        {data.value}
-        {currentOptionIdx === values.length - 1 ? '' : ', '}
-      </components.MultiValueLabel>
+      <>
+        {isCreatable && (
+          <>
+            <CreateInputWrapper>
+              {Array.isArray(selectProps.value) &&
+                selectProps.value.map((selected) => (
+                  <Box display="inline-flex" key={selected.value}>
+                    <Tag textSize="small">
+                      {selected.icon ? (
+                        <LabelWithIcon>
+                          <OptionIcon>{selected.icon}</OptionIcon>
+                          &nbsp;
+                          {selected.label}
+                        </LabelWithIcon>
+                      ) : (
+                        selected.label
+                      )}
+                      &nbsp;
+                      <CloseIcon
+                        color={THEMES.default.colors.lightGrey1}
+                        cursor="pointer"
+                        onClick={() =>
+                          handleRemoveSelectedOption &&
+                          handleRemoveSelectedOption(selected.value)
+                        }
+                      />
+                    </Tag>
+                  </Box>
+                ))}
+              <CreateInput
+                value={inputValue}
+                autoFocus={true}
+                onChange={(e) =>
+                  onInputChange && onInputChange(e.currentTarget.value)
+                }
+              />
+            </CreateInputWrapper>
+            <Box sx={{ padding: '16px 14px' }}>
+              <Text textSize="small" color={THEMES.default.colors.grey}>
+                Choose one of the options or create a new one
+              </Text>
+            </Box>
+          </>
+        )}
+        <components.MenuList {...props} />
+      </>
     );
   };
 
-  const formatOptionLabel = (
-    data: any,
-    formatOptionLabelMeta: FormatOptionLabelMeta<any>
-  ) => {
-    const { selectValue } = formatOptionLabelMeta;
-    const isSelected = selectValue.find((o: Option) => o.value === data.value);
+  const overrideMultiValue = ({ children, ...props }: MultiValueProps) => (
+    <components.MultiValue {...props}>
+      <Tag textSize="small">{children}</Tag>
+    </components.MultiValue>
+  );
 
-    return (
-      <MultiLabelWithCheckbox>
-        <Checkbox
-          id={data.value}
-          name={data.value}
-          value={data.value}
-          checked={!!isSelected}
-        />
-        <div>{data.label}</div>
-      </MultiLabelWithCheckbox>
-    );
-  };
+  const overrideInput = ({ children, ...props }: InputProps) => (
+    <components.Input
+      {...props}
+      disabled={isCreatable && props.selectProps.menuIsOpen}
+    >
+      {children}
+    </components.Input>
+  );
 
   const overrideControl = ({ children, ...props }: ControlProps) => (
-    <components.Control {...props}>
+    <components.Control {...props} isFocused={isFocused || false}>
       <>
         {leftIcon ? leftIcon() : null}
         {children}
@@ -319,35 +480,38 @@ const ReactSelect = (props: SelectProps) => {
   );
 
   return (
-    <Select
+    <WrapperComponent
       id={id}
       name={name}
       onChange={onChange}
+      inputValue={inputValue}
+      onFocus={onFocus}
       onBlur={onBlur}
       styles={customStyles}
       options={options}
+      hideSelectedOptions={hideSelectedOptions}
       value={value}
       components={{
         DropdownIndicator: overrideDropdownIndicator,
         IndicatorSeparator: () => null,
         Option: overrideOption,
         MenuList: overrideMenuList,
+        MultiValue: overrideMultiValue,
+        Input: overrideInput,
         MultiValueRemove: () => null,
-        MultiValueLabel: overrideMultiValueLabel,
         Control: overrideControl,
         ClearIndicator: overrideClearIndicator,
       }}
-      onMenuOpen={onMenuOpen}
-      onMenuClose={onMenuClose}
+      onMenuOpen={handleOnMenuOpen}
+      onMenuClose={handleOnMenuClose}
       isMulti={isMulti}
       isClearable={isClearable}
-      hideSelectedOptions={false}
-      formatOptionLabel={isMulti ? formatOptionLabel : undefined}
       closeMenuOnSelect={!isMulti}
       placeholder={placeholder}
       isDisabled={isDisabled}
       className={className}
-      // menuIsOpen={true} // uncomment it for debug purpose
+      onCreateOption={onCreateOption}
+      {...restProps}
     />
   );
 };
