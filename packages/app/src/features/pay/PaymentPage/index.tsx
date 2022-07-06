@@ -31,13 +31,7 @@ const PaymentPage = () => {
       <Row>
         <Col width={[1 / 2]}>
           <PaymentPDFViewerWrapper>
-            <PdfViewerWithAPI
-              id={
-                id === 'test'
-                  ? '431fcffa-ab67-4a79-9286-566f30bdb654'
-                  : id || ''
-              } //TODO it is for testing
-            />
+            <PdfViewerWithAPI id={id || ''} />
           </PaymentPDFViewerWrapper>
         </Col>
         <Col width={[1 / 2]}>

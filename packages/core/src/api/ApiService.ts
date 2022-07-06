@@ -3,7 +3,7 @@ import { OpenAPIConfig } from './OpenAPI';
 import CounterpartsService from './services/CounterpartsService';
 import PayablesService from './services/PayablesService';
 import UserInfoService from './services/UserInfoService';
-import PaymentService from './services/PaymentService';
+import ReceivableService from './services/ReceivableService';
 
 class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -11,7 +11,7 @@ class ApiService {
   counterparts: CounterpartsService;
   payables: PayablesService;
   profile: UserInfoService;
-  payments: PaymentService;
+  receivable: ReceivableService;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
     this.openapiConfig = config;
@@ -19,7 +19,7 @@ class ApiService {
     this.counterparts = new CounterpartsService({ config });
     this.payables = new PayablesService({ config });
     this.profile = new UserInfoService({ config });
-    this.payments = new PaymentService({ config });
+    this.receivable = new ReceivableService({ config });
   }
 }
 

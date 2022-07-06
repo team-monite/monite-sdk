@@ -2,7 +2,7 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 
-export default class PaymentService {
+export default class ReceivableService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
@@ -14,9 +14,7 @@ export default class PaymentService {
    * @returns string Successful Response
    * @throws ApiError
    */
-  public getReceivableByIdPdfLink(
-    receivableId: string
-  ): CancelablePromise<string> {
+  public getReceivablePdfLink(receivableId: string): CancelablePromise<string> {
     return __request(
       {
         method: 'GET',

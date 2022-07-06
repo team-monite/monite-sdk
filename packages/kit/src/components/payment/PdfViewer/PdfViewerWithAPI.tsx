@@ -14,7 +14,7 @@ const PdfViewerWithAPI = ({ id }: PdfViewerWithAPIProps) => {
 
   useEffect(() => {
     (async () => {
-      const data = await monite.api!.payments.getReceivableByIdPdfLink(id);
+      const data = await monite.api!.receivable.getReceivablePdfLink(id);
       setPDFLink(data);
     })();
   }, [monite]);
