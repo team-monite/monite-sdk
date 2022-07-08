@@ -3,8 +3,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { terser } from 'rollup-plugin-terser';
+// import { visualizer } from 'rollup-plugin-visualizer';
+// import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import svgr from '@svgr/rollup';
 import url from '@rollup/plugin-url';
@@ -36,6 +36,7 @@ async function getPlugins() {
   ];
 }
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async () => {
   const plugins = await getPlugins();
 

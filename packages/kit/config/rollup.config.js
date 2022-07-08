@@ -4,7 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
 // import { visualizer } from 'rollup-plugin-visualizer';
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import json from '@rollup/plugin-json';
 
@@ -29,7 +29,7 @@ async function getPlugins() {
       autoModules: true,
       use: ['less'],
     }),
-    terser(),
+    // terser(),
     // visualizer({
     //   open: true,
     // }),

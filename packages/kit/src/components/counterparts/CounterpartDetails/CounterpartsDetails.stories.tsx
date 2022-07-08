@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CounterpartsDetails from './CounterpartsDetails';
 import counterparts from '../fixtures/counterparts';
 

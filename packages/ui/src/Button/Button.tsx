@@ -18,7 +18,10 @@ type ButtonSize = 'sm' | 'md';
 export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
 type ButtonTextSize = keyof typeof TEXT_STYLES;
-type ButtonColor = keyof typeof Themes | keyof typeof THEMES.default.colors;
+type ButtonColor =
+  | keyof typeof Themes
+  | keyof typeof THEMES.default.colors
+  | 'inherit';
 
 export interface ButtonProps extends BoxProps {
   onClick?: (e: BaseSyntheticEvent) => void;
@@ -92,6 +95,8 @@ const getTextSize = ({ $textSize, $size = 'md' }: StyledButtonProps) => {
 
 const getColor = ({ $color, theme }: ThemedStyledProps<StyledButtonProps>) => {
   if (!$color) return '';
+
+  if ($color === 'inherit') return 'inherit';
 
   if (Themes[$color]) return Themes[$color];
 
