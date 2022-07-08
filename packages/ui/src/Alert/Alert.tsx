@@ -1,30 +1,11 @@
 import React, { BaseSyntheticEvent, FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { UClockThree, UCheck, UExclamationTriangle } from 'unicons';
-import { THEMES } from '../consts';
+import { ThemeType } from '../consts';
 import { STYLES as TEXT_STYLES } from '../Text';
-
-type AlertColorValue = {
-  background: string;
-  color: string;
-};
+import { ThemedStyledProps } from '../types';
 
 export type AlertVariant = 'info' | 'success' | 'error';
-
-export const AlertColors: Record<AlertVariant, AlertColorValue> = {
-  info: {
-    background: THEMES.default.colors.alertInfo,
-    color: THEMES.default.colors.primary,
-  },
-  success: {
-    background: THEMES.default.colors.alertSuccess,
-    color: THEMES.default.colors.successDarker,
-  },
-  error: {
-    background: THEMES.default.colors.alertError,
-    color: THEMES.default.colors.error,
-  },
-};
 
 export const AlertIcons: Record<AlertVariant, ReactNode> = {
   info: <UClockThree size={20} />,
@@ -39,10 +20,36 @@ export interface AlertProps {
   hasLeftIcon?: boolean;
   link?: ReactNode;
   action?: ReactNode;
+  color?: ThemeType;
+  backgroundColor?: ThemeType;
 }
 
 type StyledAlertProps = {
   $variant: AlertVariant;
+  $color?: ThemeType;
+  $backgroundColor?: ThemeType;
+};
+
+const getColor = ({
+  $variant,
+  $color,
+  theme,
+}: ThemedStyledProps<StyledAlertProps>) => {
+  if ($color) return theme.colors[$color];
+  if ($variant === 'info') return theme.colors.primary;
+  if ($variant === 'success') return theme.colors.successDarker;
+  if ($variant === 'error') return theme.colors.error;
+};
+
+const getBackgroundColor = ({
+  $variant,
+  $backgroundColor,
+  theme,
+}: ThemedStyledProps<StyledAlertProps>) => {
+  if ($backgroundColor) return theme.colors[$backgroundColor];
+  if ($variant === 'info') return theme.colors.alertInfo;
+  if ($variant === 'success') return theme.colors.alertSuccess;
+  if ($variant === 'error') return theme.colors.alertError;
 };
 
 const StyledAlert = styled.div<StyledAlertProps>`
@@ -53,8 +60,8 @@ const StyledAlert = styled.div<StyledAlertProps>`
   justify-content: space-between;
   padding: 17px;
   gap: 16px;
-  background: ${({ $variant }) => $variant && AlertColors[$variant].background};
-  color: ${({ $variant }) => $variant && AlertColors[$variant].color};
+  background: ${getBackgroundColor};
+  color: ${getColor};
 `;
 
 const StyledText = styled.div<AlertProps>`
@@ -79,13 +86,20 @@ const StyledLink = styled.div`
 const Alert: FC<AlertProps> = ({
   children,
   variant = 'info',
+  color,
+  backgroundColor,
   hasLeftIcon,
   link,
   action,
   ...props
 }) => {
   return (
-    <StyledAlert $variant={variant} {...props}>
+    <StyledAlert
+      $variant={variant}
+      $color={color}
+      $backgroundColor={backgroundColor}
+      {...props}
+    >
       {hasLeftIcon && <StyledIcon>{AlertIcons[variant]}</StyledIcon>}
       <StyledText>{children}</StyledText>
       {link && <StyledLink>{link}</StyledLink>}

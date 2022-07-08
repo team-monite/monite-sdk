@@ -55,3 +55,5 @@ export const THEMES = {
     breakpoints,
   },
 };
+
+export type ThemeType = keyof typeof THEMES.default.colors;
