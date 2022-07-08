@@ -11,14 +11,14 @@ import styled from '@emotion/styled';
 import Spinner from '../Spinner';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { Box, BoxProps } from '../Box';
-import { THEMES } from '../consts';
+import { THEMES, ThemeType } from '../consts';
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type ButtonSize = 'sm' | 'md';
 export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
 type ButtonTextSize = keyof typeof TEXT_STYLES;
-type ButtonColor = keyof typeof Themes | keyof typeof THEMES.default.colors;
+type ButtonColor = ThemeType | keyof typeof THEMES.default.colors | 'inherit';
 
 export interface ButtonProps extends BoxProps {
   onClick?: (e: BaseSyntheticEvent) => void;
@@ -92,6 +92,8 @@ const getTextSize = ({ $textSize, $size = 'md' }: StyledButtonProps) => {
 
 const getColor = ({ $color, theme }: ThemedStyledProps<StyledButtonProps>) => {
   if (!$color) return '';
+
+  if ($color === 'inherit') return 'inherit';
 
   if (Themes[$color]) return Themes[$color];
 

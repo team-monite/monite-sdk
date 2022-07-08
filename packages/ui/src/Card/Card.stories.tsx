@@ -1,6 +1,6 @@
 import DetailsCard from './Card';
 import Button from '../Button';
-import { EditIcon, MailIcon } from '../Icons';
+import { UEnvelopeAlt, UPen } from '../unicons';
 import LabelText from '../LabelText';
 import Link from '../Link';
 import { Box } from '../Box';
@@ -41,14 +41,10 @@ export const CardWithActions = () => {
     <DetailsCard
       actions={
         <>
-          <Button
-            variant={'text'}
-            size={'sm'}
-            leftIcon={<EditIcon width={24} height={24} />}
-          >
+          <Button variant={'text'} size={'sm'} leftIcon={<UPen size={20} />}>
             Edit details
           </Button>
-          <Link href={'#'} leftIcon={<MailIcon fill={'blue'} />}>
+          <Link href={'#'} leftIcon={<UEnvelopeAlt width={20} />}>
             Send email
           </Link>
         </>

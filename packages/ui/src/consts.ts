@@ -48,7 +48,12 @@ export const THEMES = {
       tagSalad: '#E1FBEB',
       tagGreen: '#1FBCA0',
       orange2: '#F9A03F',
+      alertInfo: '#F4F8FF',
+      alertSuccess: '#EEFBF9',
+      alertError: '#FFF9F9',
     },
     breakpoints,
   },
 };
+
+export type ThemeType = keyof typeof THEMES.default.colors;
