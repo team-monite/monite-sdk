@@ -10,6 +10,15 @@
     "signupText": "Don't have an account yet?",
     "signupLink": "Open one now"
   },
+  "payment": {
+    "result": {
+      "title": "Payment initiated",
+      "text": "Thanks for your time, {{payer}}. The payment of the invoice from {{payee}} {{id}} for {{price}} is initiated. It may take a few minutes for the payment to be processed. We will send you an email once the payment is complete.",
+      "reference": "Reference",
+      "iban": "IBAN",
+      "payee": "Payee Name"
+    }
+  },
   "forms": {
     "fields": {
       "email": "Email",

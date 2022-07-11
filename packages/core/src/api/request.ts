@@ -332,9 +332,6 @@ export const request = <T>(
           body: responseHeader ?? responseBody,
         };
 
-        // TODO: only in debug mode
-        console.log('api call debug', result);
-
         catchErrorCodes(options, result);
 
         resolve(result.body);

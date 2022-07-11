@@ -4,6 +4,8 @@ import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 
+import GlobalToast from '../GlobalToast';
+
 import i18n from '../i18n';
 import { ComponentsContext } from './ComponentsContext';
 
@@ -29,6 +31,7 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
       }}
     >
       <EmotionThemeProvider theme={finalTheme}>
+        <GlobalToast />
         <UIThemeProvider theme={finalTheme}>
           <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
         </UIThemeProvider>
