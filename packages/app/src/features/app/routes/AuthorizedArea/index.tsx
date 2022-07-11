@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate';
 import PagePayables from 'features/payables/PagePayables';
+import PageApprovalPolicies from 'features/approvalPolicies/PageApprovalPolicies';
 
 import { ROUTES } from 'features/app/consts';
 
@@ -16,6 +17,14 @@ const AuthorizedArea = () => {
         element={<PageCounterpartsCreate />}
       />
       <Route path={ROUTES.payables} element={<PagePayables />} />
+      <Route
+        path={ROUTES.settings}
+        element={<Navigate to={ROUTES.approvalPolicies} />}
+      />
+      <Route
+        path={ROUTES.approvalPolicies}
+        element={<PageApprovalPolicies />}
+      />
       <Route path="*" element={<Navigate to={ROUTES.counterparts} />} />
     </Routes>
   );
