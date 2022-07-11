@@ -8,20 +8,20 @@
     <link rel="stylesheet" href="../../dist/monite.css" />
 </head>
 <body>
-<div id="component"></div>
+<div id="component1"></div>
+<div id="component2"></div>
 <script>
   console.log(window.MoniteApp);
   (async () => {
     const monite = MoniteApp({
       // some public API key available for test
-      apiKey: 'en-52cefd74-c7f2-4e3b-8ba9-61b4cf405cce',
+      apiKey: 'eu-f2250088-dbfd-4dc6-8e2a-acec5b0a8419',
       locale: 'en',
     });
     const data = await monite.api.counterparts.getList();
     console.log(data);
-    monite.create('CounterpartsTableWithAPI', {
-      useMoniteApi: true,
-    }).mount('#component');
+    monite.create('CounterpartsTableWithAPI', {}).mount('#component1');
+    monite.create('PayablesTableWithAPI', {}).mount('#component2');
   })();
 </script>
 </body>

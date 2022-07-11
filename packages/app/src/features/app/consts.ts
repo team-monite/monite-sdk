@@ -7,4 +7,5 @@ export const ROUTES = {
   counterpartsCreate: '/counterparts/create',
   payables: '/payables',
   pay: '/pay/:id',
+  payResult: '/pay/:id/result',
 };

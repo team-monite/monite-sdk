@@ -1,12 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Flex, Box, Card, Text } from '@monite/react-kit';
-import { useParams } from 'react-router-dom';
+import {
+  Flex,
+  Box,
+  Card,
+  Text,
+  PdfViewerWithAPI,
+  PaymentWidget,
+} from '@monite/react-kit';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { PdfViewerWithAPI } from '@monite/react-kit';
-
 import Layout from 'features/pay/Layout';
+
+import { ROUTES } from 'features/app/consts';
 
 const Row = styled(Flex)``;
 const Col = styled(Box)``;
@@ -24,6 +31,11 @@ const PaymentWidgetWrapper = styled.div`
 
 const PaymentPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  if (!id) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Layout>
@@ -40,7 +52,21 @@ const PaymentPage = () => {
               Pay invoice #FA-{id}
             </Text>
             <Card shadow p="32px">
-              Stripe Payment Widget
+              <PaymentWidget
+                price={1000}
+                onFinish={(res) => {
+                  if (
+                    res.status === 'succeeded' ||
+                    res.status === 'processing'
+                  ) {
+                    navigate(
+                      `${ROUTES.payResult.replace(':id', id)}?status=${
+                        res.status
+                      }`
+                    );
+                  }
+                }}
+              />
             </Card>
           </PaymentWidgetWrapper>
         </Col>
