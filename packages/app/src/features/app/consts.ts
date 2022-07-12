@@ -8,4 +8,6 @@ export const ROUTES = {
   payables: '/payables',
   pay: '/pay/:id',
   payResult: '/pay/:id/result',
+  settings: '/settings',
+  approvalPolicies: '/settings/approval-policies',
 };

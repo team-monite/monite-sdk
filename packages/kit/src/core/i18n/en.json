@@ -1,4 +1,13 @@
 {
+  "approvalPolicies": {
+    "columns": {
+      "policyName": "Policy name",
+      "status": "Status",
+      "createdBy": "Created by",
+      "date": "Date",
+      "rules": "Rules"
+    }
+  },
   "payment": {
     "widget": {
       "method": "Payment method",
