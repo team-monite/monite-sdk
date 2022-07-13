@@ -24,9 +24,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "antd": "^4.20.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.16.0",

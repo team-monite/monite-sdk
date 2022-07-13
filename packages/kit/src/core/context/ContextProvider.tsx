@@ -3,6 +3,7 @@ import { MoniteApp } from '@monite/js-sdk';
 import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
+import { merge } from 'lodash';
 
 import GlobalToast from '../GlobalToast';
 
@@ -18,7 +19,9 @@ interface MoniteProviderProps {
 }
 
 const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
-  const finalTheme = theme || THEMES.default;
+  const finalTheme = theme
+    ? merge(THEMES.default, theme || {})
+    : THEMES.default;
 
   useEffect(() => {
     i18n.changeLanguage(monite.locale);

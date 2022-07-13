@@ -14,7 +14,10 @@ class DefaultElement extends UIElement {
     }
 
     return (
-      <monite.MoniteProvider monite={modules.monite}>
+      <monite.MoniteProvider
+        monite={modules.monite}
+        theme={modules.monite.config.theme}
+      >
         <Component {...props} />
       </monite.MoniteProvider>
     );
