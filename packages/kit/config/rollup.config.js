@@ -43,7 +43,6 @@ export default async () => {
   const build = [
     {
       input: 'src/index.ts',
-      external: ['emotion-theming'],
       output: [
         {
           file: packageJson.main,
