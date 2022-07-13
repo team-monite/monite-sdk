@@ -1,5 +1,3 @@
-import '@monite/react-kit/dist/esm/monite.css';
-
 import Core from './core';
 
 function MoniteRoot(props) {

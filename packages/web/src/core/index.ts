@@ -4,12 +4,17 @@ import componentsMap from '../components';
 import UIElement from '../components/UIElement';
 import DefaultElement from '../components/DefaultElement';
 
-type CoreOptions = monite.MoniteAppConfig;
+type CoreOptions = monite.MoniteAppConfig & {
+  theme: monite.Theme;
+};
 
 class Core extends monite.MoniteApp {
+  config: CoreOptions;
+
   constructor(config: CoreOptions) {
     super(config);
     this.create = this.create.bind(this);
+    this.config = config;
   }
 
   create(componentType, options) {

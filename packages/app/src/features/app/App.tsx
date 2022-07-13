@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { MoniteProvider, MoniteApp, THEMES } from '@monite/react-kit';
+import { MoniteProvider, MoniteApp } from '@monite/react-kit';
 
 import Routes from 'features/app/routes';
 import { store } from 'features/mobx';
@@ -28,9 +28,7 @@ function App() {
       monite={monite}
       theme={{
         // here we can override theme for the react-kit UI components
-        ...THEMES.default,
-        // an example
-        colors: { ...THEMES.default.colors, grey: '#707070' },
+        colors: { grey: '#707070' },
       }}
     >
       <div className={styles.app}>
