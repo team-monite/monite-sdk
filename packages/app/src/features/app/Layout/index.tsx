@@ -10,6 +10,10 @@ import { useRootStore } from 'features/mobx';
 import styles from './styles.module.scss';
 
 const Sider = styled(Flex)`
+  position: sticky;
+  top: 0;
+  height: 100vh;
+
   flex-direction: column;
   background: ${(props: any) => props.theme.colors.lightGrey3};
 
