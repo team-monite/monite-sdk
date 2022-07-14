@@ -47,21 +47,16 @@ export const Content = styled.div(
     margin-block-start: 24px;
   }
 
-  h2 {
-    margin: 0;
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 40px;
-    text-align: center;
-  }
-
   form {
     display: flex;
     flex-direction: column;
 
+    > * + * {
+      margin-block-start: 24px;
+    }
+
     button[type='submit'] {
-      margin-block-start: 16px;
-      width: 100%;
+      margin-block-start: 40px;
     }
   }
 `

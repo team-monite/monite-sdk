@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-
+import styled from '@emotion/styled';
 import {
   Box,
   Card,
@@ -18,6 +18,12 @@ import {
 } from '@monite/ui';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
+const Form = styled.form`
+  > * + * {
+    margin-top: 24px;
+  }
+`;
+
 // export interface CounterpartsFormCreateProps {}
 
 // type FormValues = {
@@ -25,7 +31,7 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 //   vatId: string;
 // };
 
-interface Form {
+interface FormValues {
   companyName: string;
   email: string;
   phone?: string;
@@ -41,9 +47,9 @@ interface Form {
 
 const CounterpartsFormCreate = () => {
   const { t } = useComponentsContext();
-  const { control, handleSubmit } = useForm<Form>();
+  const { control, handleSubmit } = useForm<FormValues>();
 
-  const onSubmit: SubmitHandler<Form> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
 
     /* TODO: make an API request here?
@@ -70,7 +76,7 @@ const CounterpartsFormCreate = () => {
   };
 
   return (
-    <form id="createCounterpart" onSubmit={handleSubmit(onSubmit)}>
+    <Form id="createCounterpart" onSubmit={handleSubmit(onSubmit)}>
       <FormField
         label={t('counterparts:company.companyName')}
         id="companyName"
@@ -254,7 +260,7 @@ const CounterpartsFormCreate = () => {
           </Card>
         </Box>
       </Box>
-      <Box sx={{ paddingTop: 24 }}>
+      <Box>
         <Card>
           <Box sx={{ padding: '20px 18px 16px' }}>
             <Link
@@ -267,7 +273,7 @@ const CounterpartsFormCreate = () => {
           </Box>
         </Card>
       </Box>
-    </form>
+    </Form>
   );
 };
 

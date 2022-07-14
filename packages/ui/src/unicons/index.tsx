@@ -7,7 +7,7 @@
 // export { default as UAngleDown } from './icons/UAngleDown';
 // export { default as UAngleLeft } from './icons/UAngleLeft';
 // export { default as UAngleLeftB } from './icons/UAngleLeftB';
-// export { default as UAngleRight } from './icons/UAngleRight';
+export { default as UAngleRight } from './icons/UAngleRight';
 // export { default as UAngleRightB } from './icons/UAngleRightB';
 // export { default as UAngleUp } from './icons/UAngleUp';
 // export { default as UArrow } from './icons/UArrow';

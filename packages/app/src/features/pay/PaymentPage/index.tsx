@@ -54,6 +54,7 @@ const PaymentPage = () => {
             <Card shadow p="32px">
               <PaymentWidget
                 price={1000}
+                fee={10.4}
                 onFinish={(res) => {
                   if (
                     res.status === 'succeeded' ||

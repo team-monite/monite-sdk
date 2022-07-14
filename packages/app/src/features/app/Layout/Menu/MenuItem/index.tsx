@@ -52,10 +52,14 @@ const LinkIcon = styled.i`
 `;
 
 const MenuItem = ({ item }: MenuItemProps) => {
-  const { url, label, icon, children } = item;
+  const { url, label, icon, children, onClick } = item;
   const [submenuIsShown, setSubmenuIsShown] = useState<boolean>(false);
 
-  const handleOnClick = () => {
+  const handleOnClick = (e: React.BaseSyntheticEvent) => {
+    if (onClick) {
+      onClick(e);
+    }
+
     if (children) setSubmenuIsShown((prev) => !prev);
   };
 
