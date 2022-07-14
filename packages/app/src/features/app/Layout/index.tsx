@@ -3,17 +3,32 @@ import styled from '@emotion/styled';
 import { Avatar, Box, Text, Flex } from '@monite/react-kit';
 
 import Menu from './Menu';
+import MenuItem from './Menu/MenuItem';
+import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
+import { useRootStore } from 'features/mobx';
 
 import styles from './styles.module.scss';
 
-const Sider = styled(Box)`
+const Sider = styled(Flex)`
+  position: sticky;
+  top: 0;
+  height: 100vh;
+
+  flex-direction: column;
   background: ${(props: any) => props.theme.colors.lightGrey3};
+
+  a {
+    color: ${({ theme }) => theme.colors.black};
+    text-decoration: none;
+  }
 `;
 
 type DefaultLayoutProps = {
   children?: React.ReactNode;
 };
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
+  const rootStore = useRootStore();
+
   return (
     <Flex className={styles.layout}>
       <Sider className={styles.sider} width={240}>
@@ -23,7 +38,24 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
             <Text textSize="smallBold">Silver Wind LLC</Text>
           </Box>
         </Flex>
-        <Menu />
+        <Box flex={1}>
+          <Menu />
+        </Box>
+        <Box>
+          <MenuItem
+            item={{
+              url: '/logout',
+              onClick: (e: React.BaseSyntheticEvent) => {
+                e.stopPropagation();
+                e.preventDefault();
+
+                rootStore.auth.logout();
+              },
+              label: 'Logout',
+              icon: <HelpIcon width={20} height={20} />,
+            }}
+          />
+        </Box>
       </Sider>
       <Box flex={1}>
         <div className={styles.content}>{children}</div>

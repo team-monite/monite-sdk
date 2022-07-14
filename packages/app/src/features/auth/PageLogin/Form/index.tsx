@@ -97,11 +97,12 @@ const LoginBaseForm = () => {
         </FormField>
 
         {isSubmitting ? (
-          <Button type="submit" disabled isLoading>
+          <Button type="submit" disabled isLoading block>
             {t('login:submit')}
           </Button>
         ) : (
           <Button
+            block
             type="submit"
             tooltip={{
               tip:
