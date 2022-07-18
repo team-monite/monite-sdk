@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Sidebar from '.';
+import { Sidebar } from '../index';
 
 const Story = {
   title: 'Components/Sidebar',
@@ -10,7 +8,7 @@ export default Story;
 
 export const DefaultSidebar = () => {
   return (
-    <Sidebar onClickBackdrop={() => {}}>
+    <Sidebar isOpen={true} onClickBackdrop={() => {}}>
       <div style={{ padding: 20 }}>Content</div>
     </Sidebar>
   );
