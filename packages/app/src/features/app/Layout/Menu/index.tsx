@@ -1,57 +1,63 @@
 import React from 'react';
 
 import MenuItem from './MenuItem';
-import { ReactComponent as DashboardIcon } from 'assets/icons/grid.svg';
-import { ReactComponent as PayablesIcon } from 'assets/icons/dcoin.svg';
-import { ReactComponent as ReceivablesIcon } from 'assets/icons/bill.svg';
-import { ReactComponent as CounterpartsIcon } from 'assets/icons/bank.svg';
-import { ReactComponent as ProductsIcon } from 'assets/icons/cube.svg';
-import { ReactComponent as AuditIcon } from 'assets/icons/clipboard.svg';
-import { ReactComponent as SettingsIcon } from 'assets/icons/setting.svg';
-import { ReactComponent as EnvelopeIcon } from 'assets/icons/envelope.svg';
+import {
+  THEMES,
+  UApps,
+  UUsdCircle,
+  UInvoice,
+  UUniversity,
+  UBox,
+  USetting,
+  UClipboardNotes,
+  UPostcard,
+} from '@monite/ui';
+
 import { MenuItemType } from './types';
 import * as Styled from './styles';
+
+const iconColor = THEMES.default.colors.primary;
 
 const items: MenuItemType[] = [
   {
     label: 'Dashboard',
     url: '/dashboard',
-    icon: <DashboardIcon width={20} height={20} />,
+    icon: <UApps width={20} color={iconColor} />,
   },
   {
     label: 'Payables',
     url: '/payables',
-    icon: <PayablesIcon width={20} height={20} />,
+    icon: <UUsdCircle width={20} color={iconColor} />,
   },
   {
     label: 'Receivables',
     url: '/receivables',
-    icon: <ReceivablesIcon width={20} height={20} />,
+    icon: <UInvoice width={20} color={iconColor} />,
   },
   {
     label: 'Counterparts',
     url: '/counterparts',
-    icon: <CounterpartsIcon width={20} height={20} />,
+    icon: <UUniversity width={20} color={iconColor} />,
   },
   {
     label: 'Products & Services',
     url: '/products',
-    icon: <ProductsIcon width={20} height={20} />,
+    icon: <UBox width={20} color={iconColor} />,
   },
   {
     label: 'Audit',
     url: '/audit',
-    icon: <AuditIcon width={20} height={20} />,
+    icon: <UClipboardNotes width={20} color={iconColor} />,
   },
   {
     label: 'Settings',
     url: '/settings',
-    icon: <SettingsIcon width={20} height={20} />,
+    icon: <USetting width={20} color={iconColor} />,
     children: [
       {
         label: 'Approval Policies',
         url: '/settings/approval-policies',
-        icon: <EnvelopeIcon width={20} height={20} />,
+        icon: <UPostcard width={20} color={iconColor} />,
       },
     ],
   },

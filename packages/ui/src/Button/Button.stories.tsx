@@ -1,9 +1,9 @@
 import { ComponentStory } from '@storybook/react';
 
-import Button from '.';
+import Button, { ButtonColor } from '.';
 import { Box, Flex } from '../Box';
 
-import { InfoIcon } from '../Icons';
+import { UInfoCircle } from '../unicons';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { TextSize, Themes } from './Button';
 
@@ -80,7 +80,7 @@ export const ButtonSizes = () => {
 export const ButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button key={`${variant}-${color}`} variant={variant} color={color}>
           {variant} {color}
         </Button>
@@ -92,7 +92,7 @@ export const ButtonColors = () => {
 export const LoadingButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button
           isLoading
           key={color}
@@ -110,7 +110,7 @@ export const LoadingButtonColors = () => {
 export const DisabledButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button
           disabled
           key={`${variant}-${color}`}
@@ -128,10 +128,10 @@ export const DisabledButtonColors = () => {
 export const ButtonWithLeftIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
-          leftIcon={<InfoIcon />}
+          leftIcon={<UInfoCircle />}
           variant={variant}
           color={color}
         >
@@ -145,10 +145,10 @@ export const ButtonWithLeftIcon = () => {
 export const ButtonWithRightIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
-          rightIcon={<InfoIcon />}
+          rightIcon={<UInfoCircle />}
           variant={variant}
           color={color}
         >
@@ -162,11 +162,11 @@ export const ButtonWithRightIcon = () => {
 export const ButtonWithLeftAndRightIcons = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: keyof typeof Themes) => (
+      {Object.keys(Themes).map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
-          leftIcon={<InfoIcon />}
-          rightIcon={<InfoIcon />}
+          leftIcon={<UInfoCircle />}
+          rightIcon={<UInfoCircle />}
           variant={variant}
           color={color}
         >
@@ -217,7 +217,7 @@ export const BlockButton = () => {
       <Button block my={1}>
         Block
       </Button>
-      <Button leftIcon={<InfoIcon />} block my={1}>
+      <Button leftIcon={<UInfoCircle />} block my={1}>
         Block with icon
       </Button>
     </Box>

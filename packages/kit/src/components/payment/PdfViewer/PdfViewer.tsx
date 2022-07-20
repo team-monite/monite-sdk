@@ -3,11 +3,11 @@ import { Document, Page, pdfjs } from 'react-pdf';
 
 import {
   IconButton,
-  ZoomPlusIcon,
-  ZoomMinusIcon,
-  DownloadFileIcon,
-  BackIcon,
-  ForthIcon,
+  USearchPlus,
+  USearchMinus,
+  UFileDownload,
+  UArrowLeft,
+  UArrowRight,
   Flex,
 } from '@monite/ui';
 
@@ -60,35 +60,35 @@ const PdfViewer = ({ file }: PDfViewerProps) => {
       <Styled.ControlPanel>
         <Flex alignItems="center">
           <IconButton
-            variant="icon"
+            color={'black'}
             onClick={onPreviousPage}
             disabled={pageNumber <= 1}
             minWidth={48}
           >
-            <BackIcon width={24} height={24} />
+            <UArrowLeft width={24} height={24} />
           </IconButton>
           <div>
             {pageNumber || (numPages ? 1 : '-')} of {numPages || '-'}
           </div>
           <IconButton
-            variant="icon"
+            color={'black'}
             disabled={pageNumber >= numPages}
             onClick={onNextPage}
             minWidth={48}
           >
-            <ForthIcon width={24} height={24} />
+            <UArrowRight width={24} height={24} />
           </IconButton>
         </Flex>
         <Flex>
-          <IconButton variant="icon" onClick={onZoomOut}>
-            <ZoomMinusIcon width={24} height={24} />
+          <IconButton color={'black'} onClick={onZoomOut}>
+            <USearchMinus width={24} height={24} />
           </IconButton>
-          <IconButton variant="icon" onClick={onZoomIn}>
-            <ZoomPlusIcon width={24} height={24} />
+          <IconButton color={'black'} onClick={onZoomIn}>
+            <USearchPlus width={24} height={24} />
           </IconButton>
-          <IconButton variant="icon">
+          <IconButton color={'black'}>
             <Styled.Link href={file} download>
-              <DownloadFileIcon width={24} height={24} color="black" />
+              <UFileDownload width={24} height={24} color="black" />
             </Styled.Link>
           </IconButton>
         </Flex>

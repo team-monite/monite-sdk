@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import IconButton from '../IconButton';
-import { QuestionIcon } from '../Icons';
+import { UQuestionCircle } from '../unicons';
 import Text, { STYLES } from '../Text';
 
 const Field = styled.div<Partial<FormFieldProps>>`
@@ -108,7 +108,7 @@ const FormField = ({
         <span>{label}</span>
         {onClickInfo && (
           <IconButton color="lightGrey1" onClick={onClickInfo}>
-            <QuestionIcon />
+            <UQuestionCircle />
           </IconButton>
         )}
       </Label>

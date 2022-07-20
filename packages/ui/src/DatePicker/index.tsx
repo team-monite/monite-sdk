@@ -12,7 +12,7 @@ import { getYear, format } from 'date-fns';
 
 import Input from '../Input';
 import IconButton from '../IconButton';
-import { ArrowLeftIcon, ArrowRightIcon, CalendarIcon } from '../Icons';
+import { UAngleRight, UAngleLeft, UCalendarAlt } from 'unicons';
 
 const DEFAULT_YEAR_ITEM_NUMBER = 12;
 
@@ -196,7 +196,7 @@ const DatePicker = ({
                 }
               }}
             >
-              <CalendarIcon color="#B8B8B8" width={16} height={16} />
+              <UCalendarAlt color="#B8B8B8" width={16} height={16} />
             </InputIcon>
           )}
         />
@@ -237,7 +237,7 @@ const DatePicker = ({
             }
             color="grey"
           >
-            <ArrowLeftIcon />
+            <UAngleLeft />
           </IconButton>
           <>
             {!showMonthYearPicker && !showYearPicker && (
@@ -262,7 +262,7 @@ const DatePicker = ({
             }
             color="grey"
           >
-            <ArrowRightIcon />
+            <UAngleRight />
           </IconButton>
         </HeaderWrapper>
       )}

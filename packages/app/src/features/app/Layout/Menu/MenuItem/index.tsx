@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { ReactComponent as DownArrowIcon } from 'assets/icons/down_arrow.svg';
+import { Text, UAngleDown } from '@monite/ui';
 import { MenuItemType } from '../types';
-import { Text } from '@monite/ui';
 
 type MenuItemProps = {
   item: MenuItemType;
@@ -81,7 +80,7 @@ const MenuItem = ({ item }: MenuItemProps) => {
               </LinkText>
               {children && (
                 <LinkIcon>
-                  <DownArrowIcon />
+                  <UAngleDown width={24} />
                 </LinkIcon>
               )}
             </>

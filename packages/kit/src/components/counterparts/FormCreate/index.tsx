@@ -5,7 +5,6 @@ import {
   Box,
   Card,
   Checkbox,
-  EditIcon,
   Input,
   FormField,
   LabelText,
@@ -13,8 +12,9 @@ import {
   List,
   ListItem,
   Text,
-  TrashIcon,
-  Plus3Icon,
+  UPen,
+  UTrashAlt,
+  UPlusCircle,
 } from '@monite/ui';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
@@ -222,18 +222,10 @@ const CounterpartsFormCreate = () => {
           <Card
             actions={
               <>
-                <Link
-                  color="blue"
-                  href="#"
-                  leftIcon={<EditIcon fill="blue" width={16} height={16} />}
-                >
+                <Link color="blue" href="#" leftIcon={<UPen />}>
                   {t('common:edit')}
                 </Link>
-                <Link
-                  color="blue"
-                  href="#"
-                  leftIcon={<TrashIcon fill="blue" width={16} height={16} />}
-                >
+                <Link color="blue" href="#" leftIcon={<UTrashAlt />}>
                   {t('common:delete')}
                 </Link>
               </>
@@ -263,11 +255,7 @@ const CounterpartsFormCreate = () => {
       <Box>
         <Card>
           <Box sx={{ padding: '20px 18px 16px' }}>
-            <Link
-              color="blue"
-              href="#"
-              leftIcon={<Plus3Icon fill="blue" width={16} height={16} />}
-            >
+            <Link color="blue" href="#" leftIcon={<UPlusCircle />}>
               {t('counterparts:actions.addContactPerson')}
             </Link>
           </Box>

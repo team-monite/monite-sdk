@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { ReactComponent as SpinnerIcon } from './spinner.svg';
+import SpinnerIcon from './spinner';
 
 interface SpinnerProps {
   pxSize: number;

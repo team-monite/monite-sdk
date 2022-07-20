@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 
 import Link from './Link';
 
-import { InfoIcon, MailIcon } from '../Icons';
+import { UInfoCircle, UEnvelopeAlt } from '../unicons';
 import { Flex } from '../Box';
 
 const Story = {
@@ -29,12 +29,12 @@ export const Primary = () => {
         Primary disabled
       </Link>
       <Link href={'#'}>
-        <InfoIcon />
+        <UInfoCircle />
       </Link>
-      <Link href={'#'} leftIcon={<MailIcon />}>
+      <Link href={'#'} leftIcon={<UEnvelopeAlt />}>
         Primary with icon
       </Link>
-      <Link href={'#'} disabled leftIcon={<MailIcon />}>
+      <Link href={'#'} disabled leftIcon={<UEnvelopeAlt />}>
         Primary disabled with icon
       </Link>
     </Flex>
@@ -51,12 +51,12 @@ export const Secondary = () => {
         Secondary disabled
       </Link>
       <Link color="secondary" href={'#'}>
-        <InfoIcon />
+        <UInfoCircle />
       </Link>
-      <Link href={'#'} color="secondary" leftIcon={<MailIcon />}>
+      <Link href={'#'} color="secondary" leftIcon={<UEnvelopeAlt />}>
         Secondary with icon
       </Link>
-      <Link href={'#'} color="secondary" disabled leftIcon={<MailIcon />}>
+      <Link href={'#'} color="secondary" disabled leftIcon={<UEnvelopeAlt />}>
         Secondary disabled with icon
       </Link>
     </Flex>
@@ -73,12 +73,12 @@ export const Danger = () => {
         Danger disabled
       </Link>
       <Link color="danger" href={'#'}>
-        <InfoIcon />
+        <UInfoCircle />
       </Link>
-      <Link href={'#'} color="danger" leftIcon={<MailIcon />}>
+      <Link href={'#'} color="danger" leftIcon={<UEnvelopeAlt />}>
         Danger with icon
       </Link>
-      <Link href={'#'} color="danger" disabled leftIcon={<MailIcon />}>
+      <Link href={'#'} color="danger" disabled leftIcon={<UEnvelopeAlt />}>
         Danger disabled with icon
       </Link>
     </Flex>

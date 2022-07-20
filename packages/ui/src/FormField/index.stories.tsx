@@ -49,7 +49,7 @@ DefaultFormField.argTypes = {
 
 export const DefaultForm = () => (
   <div style={{ maxWidth: 400, position: 'relative' }}>
-    <FormField id="name" label="Name" text="Some text">
+    <FormField id="name" label="Name" text="Some text" onClickInfo={() => {}}>
       <Input />
     </FormField>
     <br />

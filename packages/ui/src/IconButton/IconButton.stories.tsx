@@ -2,7 +2,7 @@ import { ComponentStory } from '@storybook/react';
 
 import IconButton from './IconButton';
 
-import { InfoIcon, MailIcon } from '../Icons';
+import { UInfoCircle, UEnvelopeAlt } from '../unicons';
 import { Flex } from '../Box';
 
 const Story = {
@@ -18,20 +18,20 @@ const Template: ComponentStory<typeof IconButton> = ({ children, ...args }) => (
 
 export const DefaultIconButton = Template.bind({});
 DefaultIconButton.args = {
-  children: <InfoIcon />,
+  children: <UInfoCircle />,
 };
 
 export const Primary = () => {
   return (
     <Flex style={{ gap: 20 }}>
       <IconButton variant={'contained'}>
-        <InfoIcon width={24} height={24} />
+        <UInfoCircle />
       </IconButton>
       <IconButton isLoading variant={'contained'}>
-        <InfoIcon width={24} height={24} />
+        <UInfoCircle />
       </IconButton>
       <IconButton>
-        <MailIcon />
+        <UEnvelopeAlt />
       </IconButton>
     </Flex>
   );

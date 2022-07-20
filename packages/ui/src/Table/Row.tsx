@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { ThemedStyledProps } from '../types';
 import { IconButton, Dropdown, DropdownMenu, useDropdownPopper } from '..';
 
-import { DotsVIcon } from '../Icons';
+import { UEllipsisV } from '../unicons';
 
 type StyledTableRowProps = {
   $inactive?: boolean;
@@ -99,7 +99,7 @@ const TableRow = ({
                   }}
                   ref={setReferenceElement}
                 >
-                  <DotsVIcon width={20} height={20} />
+                  <UEllipsisV width={20} height={20} />
                 </DropdownToggler>
                 {shownDropdownMenu ? (
                   <DropdownMenu
