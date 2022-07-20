@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Avatar, Box, Text, Flex } from '@monite/react-kit';
+import { UQuestionCircle, THEMES, Avatar, Box, Text, Flex } from '@monite/ui';
 
 import Menu from './Menu';
 import MenuItem from './Menu/MenuItem';
-import { ReactComponent as HelpIcon } from 'assets/icons/help.svg';
 import { useRootStore } from 'features/mobx';
 
 import styles from './styles.module.scss';
@@ -52,7 +51,13 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 rootStore.auth.logout();
               },
               label: 'Logout',
-              icon: <HelpIcon width={20} height={20} />,
+              icon: (
+                <UQuestionCircle
+                  color={THEMES.default.colors.primary}
+                  width={20}
+                  height={20}
+                />
+              ),
             }}
           />
         </Box>

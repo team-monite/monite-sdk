@@ -1,7 +1,6 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
-import { TeamIcon } from '../Icons';
+import { UUsersAlt } from '../unicons';
 import Select from '.';
 
 const Story = {
@@ -49,7 +48,7 @@ export const FilterWithIcon = () => {
         isFilter
         isClearable
         placeholder="Filter"
-        leftIcon={() => <TeamIcon />}
+        leftIcon={() => <UUsersAlt width={24} />}
       />
     </div>
   );

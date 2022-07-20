@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import Spinner from '../Spinner';
-import { ReactComponent as UploadIcon } from './upload2.svg';
+import { UCloudUpload } from '../unicons';
 
 const Wrapper = styled.div<{ size: number } & Partial<AvatarInputProps>>`
   position: relative;
@@ -83,7 +83,7 @@ const AvatarInput = ({
         {isLoading ? (
           <Spinner pxSize={Math.min(24, iconSize)} />
         ) : (
-          <UploadIcon width={iconSize} height={iconSize} />
+          <UCloudUpload width={iconSize} height={iconSize} />
         )}
       </label>
     </Wrapper>

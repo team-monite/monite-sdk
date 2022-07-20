@@ -1,9 +1,16 @@
 import React from 'react';
-import { Badge, Avatar, Text, TableRow, DropdownItem } from '@monite/ui';
+import {
+  Badge,
+  Avatar,
+  Text,
+  TableRow,
+  DropdownItem,
+  UPhone,
+  UEnvelopeAlt,
+  UUserSquare,
+} from '@monite/ui';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
-
-import { CallIcon, AccountIcon, MessageIcon } from '../../../ui';
 
 import * as Styled from './styles';
 
@@ -14,17 +21,17 @@ const Contacts = ({ row }: any) => {
   return (
     <Styled.ColContacts>
       <div>
-        <MessageIcon width={16} height={16} />
+        <UEnvelopeAlt width={16} height={16} />
         {data.email}
       </div>
       {contacts.length ? (
         <div>
-          <AccountIcon width={16} height={16} />
+          <UUserSquare width={16} height={16} />
           {contacts.join(', ')}
         </div>
       ) : null}
       <div>
-        <CallIcon width={16} height={16} />
+        <UPhone width={16} height={16} />
         {data.phone}
       </div>
     </Styled.ColContacts>

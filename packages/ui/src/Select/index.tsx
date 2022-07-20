@@ -17,7 +17,8 @@ import styled from '@emotion/styled';
 import { Box } from '../Box';
 import Text from '../Text';
 import { THEMES } from '../consts';
-import { ArrowDownIcon, CloseIcon } from '../Icons';
+import { UAngleDown, UTimes } from '../unicons';
+import IconButton from '../IconButton';
 
 const LabelWithIcon = styled.div`
   display: inline-flex;
@@ -161,7 +162,7 @@ const ReactSelect = (props: SelectProps) => {
   };
 
   const customStyles: StylesConfig = {
-    singleValue: (provided: any, state: any) => ({
+    singleValue: (provided: any) => ({
       ...provided,
       ...(isDisabled
         ? {
@@ -169,7 +170,7 @@ const ReactSelect = (props: SelectProps) => {
           }
         : {}),
     }),
-    multiValue: (provided: any, state: any) => ({
+    multiValue: (provided: any) => ({
       ...provided,
       background: 'transparent',
       margin: 0,
@@ -177,7 +178,7 @@ const ReactSelect = (props: SelectProps) => {
       flexShrink: 0,
       maxWidth: '200px',
     }),
-    multiValueLabel: (provided: any, state: any) => ({
+    multiValueLabel: (provided: any) => ({
       ...provided,
       fontSize: '16px',
       fontWeight: 400,
@@ -186,13 +187,13 @@ const ReactSelect = (props: SelectProps) => {
       paddingLeft: 0,
       color: THEMES.default.colors.black,
     }),
-    menu: (provided: any, state: any) => ({
+    menu: (provided: any) => ({
       ...provided,
       border: 0,
       boxShadow: '0px 4px 8px 0px #1111111F',
       borderRadius: 8,
     }),
-    menuList: (provided: any, state: any) => {
+    menuList: (provided: any) => {
       return {
         ...provided,
         margin: 0,
@@ -279,7 +280,7 @@ const ReactSelect = (props: SelectProps) => {
         background: getBackgroundColor(),
       };
     },
-    input: (provided: any, state: any) => {
+    input: (provided: any) => {
       return {
         ...provided,
         padding: 0,
@@ -287,7 +288,7 @@ const ReactSelect = (props: SelectProps) => {
         outline: 0,
       };
     },
-    valueContainer: (provided: any, state: any) => {
+    valueContainer: (provided: any) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
@@ -303,7 +304,7 @@ const ReactSelect = (props: SelectProps) => {
         gap: '4px',
       };
     },
-    clearIndicator: (provided: any, state: any) => {
+    clearIndicator: (provided: any) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
@@ -311,7 +312,7 @@ const ReactSelect = (props: SelectProps) => {
         paddingRight: '16px',
       };
     },
-    dropdownIndicator: (provided: any, state: any) => {
+    dropdownIndicator: (provided: any) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
@@ -323,7 +324,7 @@ const ReactSelect = (props: SelectProps) => {
   const overrideDropdownIndicator = (props: DropdownIndicatorProps) => {
     return !(props.hasValue && isClearable) ? (
       <components.DropdownIndicator {...props}>
-        <ArrowDownIcon />
+        <UAngleDown width={24} />
       </components.DropdownIndicator>
     ) : null;
   };
@@ -331,7 +332,7 @@ const ReactSelect = (props: SelectProps) => {
   const overrideClearIndicator = (props: ClearIndicatorProps) => {
     return isClearable ? (
       <components.ClearIndicator {...props}>
-        <CloseIcon />
+        <UTimes width={24} />
       </components.ClearIndicator>
     ) : null;
   };
@@ -403,7 +404,7 @@ const ReactSelect = (props: SelectProps) => {
 
   const overrideMenuList = (props: MenuListProps) => {
     ReactTooltip.rebuild();
-    const { selectProps } = props;
+    const { selectProps, children } = props;
 
     return (
       <>
@@ -424,14 +425,16 @@ const ReactSelect = (props: SelectProps) => {
                         selected.label
                       )}
                       &nbsp;
-                      <CloseIcon
-                        color={THEMES.default.colors.lightGrey1}
-                        cursor="pointer"
+                      {/* todo check visibility */}
+                      <IconButton
+                        color={'lightGrey1'}
                         onClick={() =>
                           handleRemoveSelectedOption &&
                           handleRemoveSelectedOption(selected.value)
                         }
-                      />
+                      >
+                        <UTimes />
+                      </IconButton>
                     </Tag>
                   </Box>
                 ))}
@@ -450,7 +453,7 @@ const ReactSelect = (props: SelectProps) => {
             </Box>
           </>
         )}
-        <components.MenuList {...props} />
+        <components.MenuList {...props}>{children}</components.MenuList>
       </>
     );
   };
@@ -473,7 +476,7 @@ const ReactSelect = (props: SelectProps) => {
   const overrideControl = ({ children, ...props }: ControlProps) => (
     <components.Control {...props} isFocused={isFocused || false}>
       <>
-        {leftIcon ? leftIcon() : null}
+        {leftIcon && leftIcon()}
         {children}
       </>
     </components.Control>

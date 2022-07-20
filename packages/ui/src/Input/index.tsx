@@ -118,8 +118,8 @@ const InputField = ({
   return (
     <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
       <Input id={id} type={type || 'text'} ref={inputRef} {...props} />
-      {renderAddon ? renderAddon() : null}
-      {renderAddonIcon ? <i>{renderAddonIcon()}</i> : null}
+      {renderAddon && renderAddon()}
+      {renderAddonIcon && <i>{renderAddonIcon()}</i>}
     </InputGroup>
   );
 };

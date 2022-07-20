@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
-import eyeSrc from './eye.svg';
-import eyeSlashSrc from './eye-slash.svg';
-
 import InputField, { InputProps } from '../Input';
+import { UEye, UEyeSlash } from '../unicons';
+import IconButton from '../IconButton';
 
 const Field = styled(InputField)`
   input {
@@ -12,38 +11,36 @@ const Field = styled(InputField)`
   }
 `;
 
-const EyeTrigger = styled.div`
+const EyeTrigger = styled.span`
   position: absolute;
   right: 0;
-  top: 0;
   width: 56px;
-  height: 100%;
-  cursor: pointer;
-  user-select: none;
-
-  input[type='password'] + & {
-    background: url(${eyeSrc}) no-repeat;
-    background-size: 20px 20px;
-    background-position: center center;
-  }
-  input[type='text'] + & {
-    background: url(${eyeSlashSrc}) no-repeat;
-    background-size: 20px 20px;
-    background-position: center center;
-  }
+  height: 48px;
+  top: 50%;
+  display: flex;
+  justify-content: center;
+  transform: translateY(-50%);
 `;
 
-const PasswordField = ({ ...props }: InputProps) => {
+const PasswordField = (props: InputProps) => {
   const [isShowPassword, setShowPassword] = useState(false);
 
   const onClickEye = () => {
     setShowPassword((isShowPassword) => !isShowPassword);
   };
 
+  const renderIcon = () => (
+    <EyeTrigger>
+      <IconButton color={'lightGrey1'} onClick={onClickEye}>
+        {isShowPassword ? <UEyeSlash /> : <UEye />}
+      </IconButton>
+    </EyeTrigger>
+  );
+
   return (
     <Field
       type={isShowPassword ? 'text' : 'password'}
-      renderAddon={() => <EyeTrigger onClick={onClickEye} />}
+      renderAddon={renderIcon}
       {...props}
     />
   );

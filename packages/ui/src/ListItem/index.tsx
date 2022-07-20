@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import ReactTooltip, { TooltipProps } from 'react-tooltip';
 
-import { IconButton, Tooltip, InfoIcon } from '..';
+import { IconButton, Tooltip, UInfoCircle } from '..';
 
 import type { TooltipProps as DataTooltipProp } from '../types';
 
@@ -47,10 +47,10 @@ const ListItem = ({
       <div>{children}</div>
       {onClickInfo && (
         <IconButton color={'lightGrey1'} onClick={onClickInfo}>
-          <InfoIcon />
+          <UInfoCircle />
         </IconButton>
       )}
-      {reactTooltip ? (
+      {reactTooltip && (
         <Tooltip
           overridePosition={(position, _event, _target, _ref, place) => ({
             left: position.left,
@@ -58,7 +58,7 @@ const ListItem = ({
           })}
           {...reactTooltip}
         />
-      ) : null}
+      )}
     </Wrapper>
   );
 };

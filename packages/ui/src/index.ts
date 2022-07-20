@@ -35,7 +35,6 @@ export { Tabs, Tab, TabPanel, TabList } from './Tabs';
 export { default as Alert } from './Alert';
 export { default as ThemeProvider } from './core/ThemeProvider';
 
-export * from './Icons';
 export * from './unicons';
 export * from './consts';
 export * from './types';

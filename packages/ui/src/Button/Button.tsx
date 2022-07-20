@@ -18,7 +18,10 @@ type ButtonSize = 'sm' | 'md';
 export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
 type ButtonTextSize = keyof typeof TEXT_STYLES;
-type ButtonColor = ThemeType | keyof typeof THEMES.default.colors | 'inherit';
+export type ButtonColor =
+  | ThemeType
+  | keyof typeof THEMES.default.colors
+  | 'inherit';
 
 export interface ButtonProps extends BoxProps {
   onClick?: (e: BaseSyntheticEvent) => void;
@@ -140,7 +143,10 @@ const getVariant = ({
     `;
   }
 
-  return '';
+  return `
+    background-color: transparent;
+    color: ${color};
+  `;
 };
 
 const getHover = ({
@@ -334,6 +340,10 @@ const StyledIcon = styled.i`
   justify-content: center;
   width: 24px;
   height: 24px;
+
+  svg {
+    width: 20px;
+  }
 `;
 
 const StyledSecondaryIcon = styled(StyledIcon)<StyledButtonProps>`

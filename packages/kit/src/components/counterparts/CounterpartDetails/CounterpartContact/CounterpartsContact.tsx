@@ -1,5 +1,5 @@
 import React from 'react';
-import { LabelText, Card, MailIcon, CallIcon, Link, Box } from '@monite/ui';
+import { LabelText, Card, UEnvelopeAlt, UPhone, Link, Box } from '@monite/ui';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 type CounterPartContactProps = {
@@ -21,10 +21,10 @@ const CounterpartsContact = ({
     <Card
       actions={
         <>
-          <Link href={`tel:${phone}`} leftIcon={<CallIcon />}>
+          <Link href={`tel:${phone}`} leftIcon={<UPhone />}>
             {t('counterparts:actions.call')}
           </Link>
-          <Link href={`mailto:${email}`} leftIcon={<MailIcon />}>
+          <Link href={`mailto:${email}`} leftIcon={<UEnvelopeAlt />}>
             {t('counterparts:actions.sendEmail')}
           </Link>
         </>

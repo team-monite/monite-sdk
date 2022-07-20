@@ -40,7 +40,7 @@ async function getPlugins() {
 export default async () => {
   const plugins = await getPlugins();
 
-  const build = [
+  return [
     {
       input: 'src/index.ts',
       output: [
@@ -67,6 +67,4 @@ export default async () => {
       watch: watchConfig,
     },
   ];
-
-  return build;
 };

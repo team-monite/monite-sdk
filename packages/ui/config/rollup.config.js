@@ -6,9 +6,7 @@ import postcss from 'rollup-plugin-postcss';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import svgr from '@svgr/rollup';
 import url from '@rollup/plugin-url';
-import alias from '@rollup/plugin-alias';
 
 const packageJson = require('../package.json');
 const watchConfig = {
@@ -23,7 +21,6 @@ const watchConfig = {
 async function getPlugins() {
   return [
     url(),
-    svgr({ exportType: 'named', icon: true }),
     peerDepsExternal(),
     resolve({ browser: true, extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
     commonjs(),
@@ -40,7 +37,7 @@ async function getPlugins() {
 export default async () => {
   const plugins = await getPlugins();
 
-  const build = [
+  return [
     {
       input: 'src/index.ts',
       output: [
@@ -61,22 +58,10 @@ export default async () => {
     {
       input: 'dist/esm/types/index.d.ts',
       output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-      plugins: [
-        alias({
-          entries: [
-            {
-              find: /.*\.svg$/,
-              replacement: 'src/types/icon.d.ts',
-            },
-          ],
-        }),
-        dts(),
-      ],
+      plugins: [dts()],
 
       external: [/\.css$/, /\.less$/, /\.scss$/],
       watch: watchConfig,
     },
   ];
-
-  return build;
 };

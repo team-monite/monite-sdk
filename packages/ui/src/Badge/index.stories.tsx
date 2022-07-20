@@ -1,9 +1,8 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import Badge from '.';
 
-import { InfoIcon } from '../Icons';
+import { UInfoCircle } from '../unicons';
 
 const Story = {
   title: 'Components/Badge',
@@ -34,10 +33,10 @@ export const Colors = () => {
 export const ColorsWithIcons = () => {
   return (
     <>
-      <Badge leftIcon={<InfoIcon />} text="Left Icon" />{' '}
-      <Badge leftIcon={<InfoIcon />} text="Left Icon" color="success" />{' '}
-      <Badge rightIcon={<InfoIcon />} text="Right Icon" />{' '}
-      <Badge rightIcon={<InfoIcon />} text="Right Icon" color="warning" />
+      <Badge leftIcon={<UInfoCircle />} text="Left Icon" />{' '}
+      <Badge leftIcon={<UInfoCircle />} text="Left Icon" color="success" />{' '}
+      <Badge rightIcon={<UInfoCircle />} text="Right Icon" />{' '}
+      <Badge rightIcon={<UInfoCircle />} text="Right Icon" color="warning" />
     </>
   );
 };

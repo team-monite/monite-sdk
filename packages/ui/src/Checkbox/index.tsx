@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { CheckIcon } from '../Icons';
+import { UCheck } from 'unicons';
 
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
@@ -66,6 +66,7 @@ const getOutlineColor = ({
     }
   `;
 };
+
 const getColor = ({
   theme,
   $disabled,
@@ -85,16 +86,7 @@ const getColor = ({
     }
   `;
 };
-const Check = styled(CheckIcon)<StyledProps>`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0.75em;
-  height: 0.625em;
 
-  transform: translate(-50%, -50%);
-  ${({ $checked }) => `display: ${$checked ? 'inline-block' : 'none'};`}
-`;
 const Checkmark = styled.i<StyledProps>`
   position: relative;
   box-sizing: border-box;
@@ -177,7 +169,7 @@ const Checkbox = ({
       {...tooltipAttributes}
     >
       <Checkmark $checked={checked} $disabled={disabled} $invalid={isInvalid}>
-        <Check $checked={checked} />
+        {checked && <UCheck />}
       </Checkmark>
       <input
         type="checkbox"

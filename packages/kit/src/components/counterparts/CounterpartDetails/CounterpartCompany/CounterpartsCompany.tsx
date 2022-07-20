@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, EditIcon, LabelText, Card, Box } from '@monite/ui';
+import { Button, LabelText, Card, Box, UPen } from '@monite/ui';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 type CounterPartCompanyProps = {
@@ -30,7 +30,7 @@ const CounterpartsCompany = ({
           size={'sm'}
           variant={'text'}
           onClick={onEdit}
-          leftIcon={<EditIcon />}
+          leftIcon={<UPen />}
         >
           {t('counterparts:actions.editDetails')}
         </Button>
