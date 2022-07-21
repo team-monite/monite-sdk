@@ -95,7 +95,8 @@ const Input = styled.input<InputProps>`
 `;
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+  extends React.AllHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+  as?: string;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;

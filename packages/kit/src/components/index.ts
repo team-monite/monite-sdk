@@ -5,4 +5,5 @@ export * from './payment/PdfViewer';
 export * from './payment/PaymentWidget';
 
 export * from './approvalPolicies/ApprovalPoliciesTable';
+export * from './approvalPolicies/ApprovalPolicyCreate';
 export * from './payables/PayablesTable';

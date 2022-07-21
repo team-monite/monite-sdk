@@ -96,9 +96,10 @@ const FormField = ({
   readOnly,
   required,
   onClickInfo,
+  ...restProps
 }: FormFieldProps) => {
   return (
-    <Field readOnly={readOnly}>
+    <Field readOnly={readOnly} {...restProps}>
       <Label
         as="label"
         htmlFor={id}

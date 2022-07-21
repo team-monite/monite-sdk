@@ -6,7 +6,35 @@
       "createdBy": "Created by",
       "date": "Date",
       "rules": "Rules"
-    }
+    },
+    "newPolicy": "New policy",
+    "savePolicy": "Save policy",
+    "policyName": "Policy name",
+    "policyDescription": "Policy description",
+    "noConditionMessage": "No conditions. This policy will be applied to all payable documents that appeared in the account.",
+    "noRuleMessage": "No rules. Any payables suitable for this policy won’t require any approval and may be paid immediately.",
+    "addCondition": "Add condition",
+    "addRule": "Add rule",
+    "conditions": "Conditions",
+    "editCondition": "Edit condition",
+    "editRule": "Edit rule",
+    "saveCondition": "Save condition",
+    "saveRule": "Save rule",
+    "conditionType": "Condition type",
+    "conditionSelectedLogic": "OR logic applied: if any one of this options is true then the policy will be applied.",
+    "switchLogic": "Switch to AND logic",
+    "selectedTags": "Selected tags",
+    "rules": "Rules",
+    "policyApplyCondition": "Policy will be applied if document has",
+    "thresholdAmount": "Threshold amount",
+    "approvals": "Approvals",
+    "addAdditionalApprover": "Add additional approver",
+    "addAdditionalApproverDescription": "Any payable document with the amount above the threshold should be approved by all approvers listed below, in order.",
+    "changeApprovalProcess": "Change approval process to selective check",
+    "ruleApprovalLogicDescription": "AND logic applied: if any one of this options is true then the policy will be applied.",
+    "spendAmount": "Spend amount",
+    "whoApproved": "Who need to approve?",
+    "noApprovalRequired": "No approval required"
   },
   "payment": {
     "widget": {
@@ -73,6 +101,9 @@
   "common": {
     "welcome": "Welcome",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "createNew": "Create New",
+    "cancel": "Cancel",
+    "type": "Type"
   }
 }
