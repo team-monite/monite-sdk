@@ -53,8 +53,9 @@ const PaymentPage = () => {
             </Text>
             <Card shadow p="32px">
               <PaymentWidget
-                price={1000}
-                fee={10.4}
+                id={id || ''}
+                //TODO hardcoded fee while backend configurator for fees is not ready
+                fee={350}
                 onFinish={(res) => {
                   if (
                     res.status === 'succeeded' ||

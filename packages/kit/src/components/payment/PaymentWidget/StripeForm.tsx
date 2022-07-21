@@ -11,6 +11,7 @@ let stripePromise: Promise<Stripe | null> | null = null;
 
 type StripeFormProps = {
   clientSecret: string;
+  price: number;
 } & PaymentWidgetProps;
 
 const StripeForm = ({

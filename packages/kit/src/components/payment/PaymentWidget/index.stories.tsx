@@ -8,6 +8,10 @@ export default Story;
 
 export const DefaultTable = () => (
   <>
-    <PaymentWidget price={1000} returnUrl="/" fee={10.4} />
+    <PaymentWidget
+      id="cc2fa0aa-2199-4f96-a0cd-9edb78ad74d1"
+      returnUrl="/"
+      fee={350}
+    />
   </>
 );

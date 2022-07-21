@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useComponentsContext } from '../../../core/context/ComponentsContext';
+import { useComponentsContext } from 'core/context/ComponentsContext';
 import PdfViewer from './PdfViewer';
 
 export interface PdfViewerWithAPIProps {
