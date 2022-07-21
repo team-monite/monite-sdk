@@ -1,7 +1,7 @@
 import { CurrencyEnum } from '@monite/js-sdk';
 
 export type PaymentWidgetProps = {
-  price: number;
+  id: string;
   fee?: number;
   currency?: CurrencyEnum;
   onFinish?: (result: any) => void;

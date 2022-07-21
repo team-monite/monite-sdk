@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Tab, TabList, TabPanel } from '@monite/ui';
+import { ReceivableResponse } from '@monite/js-sdk';
 import styled from '@emotion/styled';
+
+import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import StripeForm from './StripeForm';
 import YapilyForm from './YapilyForm';
@@ -16,19 +19,28 @@ const Wrapper = styled.div`
 `;
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
-  const [stripeClientSecret] = useState(
-    // TODO: fetch clientSecret from the API endpoint WHEN it will be ready
-    'pi_3LKHgzCq0HpJYRYN0EOoxirg_secret_weXEYslETkqL1D8sQsJqUKHnS'
-  );
+  const [stripeClientSecret, setClientSecret] = useState('');
+  const [receivableData, setReceivableData] = useState<ReceivableResponse>();
+
+  const { id } = props;
+  const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
-    // TODO: fetch clientSecret from the API endpoint WHEN it will be ready
-    // Create PaymentIntent as soon as the page loads
-    // (async () => {
-    //   const res = await rootStore.monite?.api.payments.initPayment({});
-    //
-    //   setClientSecret(res.clientSecret)
-    // })();
+    // TODO: we will retrieve client secret from url param in base64
+    (async () => {
+      const receivableData = await monite.api.payment.getPaymentReceivableById(
+        id
+      );
+
+      const stripeRes = await monite?.api.payment.getStripeClientSecret({
+        amount: receivableData.total_amount,
+        currency: receivableData.currency,
+        payment_method_types: ['card'],
+      });
+
+      setReceivableData(receivableData);
+      setClientSecret(stripeRes.client_secret);
+    })();
   }, []);
 
   return (
@@ -40,8 +52,12 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         </TabList>
 
         <TabPanel forceRender>
-          {stripeClientSecret && (
-            <StripeForm clientSecret={stripeClientSecret} {...props} />
+          {stripeClientSecret && receivableData?.total_amount && (
+            <StripeForm
+              clientSecret={stripeClientSecret}
+              {...props}
+              price={receivableData?.total_amount}
+            />
           )}
         </TabPanel>
         <TabPanel>
