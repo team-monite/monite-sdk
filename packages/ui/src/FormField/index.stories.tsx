@@ -92,7 +92,7 @@ export const DefaultForm = () => (
       />
     </FormField>
     <br />
-    <FormField id="password" label="Password">
+    <FormField id="password" label="Password" required>
       <PasswordInput required />
     </FormField>
     <br />
@@ -100,6 +100,7 @@ export const DefaultForm = () => (
       id="repeatPassword"
       label="Repeat password"
       error="Some error message"
+      required
     >
       <PasswordInput required isInvalid />
     </FormField>

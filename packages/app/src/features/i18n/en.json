@@ -19,6 +19,9 @@
       "payee": "Payee Name"
     }
   },
+  "approvalPolicies": {
+    "approvalPolicies": "Approval Policies"
+  },
   "forms": {
     "fields": {
       "email": "Email",
@@ -27,5 +30,8 @@
     "errors": {
       "required": "{{field}} is a required field"
     }
+  },
+  "common": {
+    "createNew": "Create New"
   }
 }
