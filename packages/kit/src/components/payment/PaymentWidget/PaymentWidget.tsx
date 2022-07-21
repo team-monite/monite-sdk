@@ -32,14 +32,14 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         id
       );
 
-      const res = await monite?.api.payment.getStripeClientSecret({
+      const stripeRes = await monite?.api.payment.getStripeClientSecret({
         amount: receivableData.total_amount,
         currency: receivableData.currency,
         payment_method_types: ['card'],
       });
 
       setReceivableData(receivableData);
-      setClientSecret(res.client_secret);
+      setClientSecret(stripeRes.client_secret);
     })();
   }, []);
 
