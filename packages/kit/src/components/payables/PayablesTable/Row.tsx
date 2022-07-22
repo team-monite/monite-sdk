@@ -1,12 +1,12 @@
 import React from 'react';
-import { Badge, Avatar, TableRow, DropdownItem } from '@monite/ui';
+import { Tag, TagColorType, Avatar, TableRow, DropdownItem } from '@monite/ui';
 import { PayableResponseSchema, PayableStateEnum } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
 
-const ROW_TO_BADGE_STATUS_MAP = {
+const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
   [PayableStateEnum.NEW]: 'success',
   [PayableStateEnum.APPROVE_IN_PROGRESS]: 'pending',
   [PayableStateEnum.WAITING_TO_BE_PAID]: 'pending',
@@ -41,9 +41,11 @@ const Row = ({ row }: { row: PayableResponseSchema }) => {
       <td>
         <Styled.Col>
           {/* TODO: Here we should use the counterpart logo picture url */}
-          {row.counterpart_name ? (
-            <Avatar size={24} name={row.counterpart_name} textSize="regular" />
-          ) : null}
+          {!!row.counterpart_name && (
+            <Avatar size={24} textSize="regular">
+              {row.counterpart_name}
+            </Avatar>
+          )}
         </Styled.Col>
       </td>
       <td>
@@ -58,28 +60,23 @@ const Row = ({ row }: { row: PayableResponseSchema }) => {
       </td>
       <td>
         <Styled.Col>
-          <Badge
-            text={row.status}
-            color={ROW_TO_BADGE_STATUS_MAP[row.status]}
-          />
+          <Tag color={ROW_TO_TAG_STATUS_MAP[row.status]}>{row.status}</Tag>
         </Styled.Col>
       </td>
       <td>
         <Styled.Col>
-          {row.applied_policy ? <Badge text={row.applied_policy} /> : null}
+          {row.applied_policy && <Tag>{row.applied_policy}</Tag>}
         </Styled.Col>
       </td>
       <td>{row.amount ? formatter.format(row.amount) : ''}</td>
       <td>
         <Styled.Col>
           {/* TODO: Here we should use an Avatar with User name instead of user_id */}
-          {row.was_created_by_user_id ? (
-            <Avatar
-              size={24}
-              name={row.was_created_by_user_id}
-              textSize="regular"
-            />
-          ) : null}
+          {!!row.was_created_by_user_id && (
+            <Avatar size={24} textSize="regular">
+              {row.was_created_by_user_id}
+            </Avatar>
+          )}
         </Styled.Col>
       </td>
     </TableRow>

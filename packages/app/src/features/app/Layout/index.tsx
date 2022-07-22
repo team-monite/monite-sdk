@@ -32,7 +32,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
     <Flex className={styles.layout}>
       <Sider className={styles.sider} width={240}>
         <Flex alignItems="center" ml={12}>
-          <Avatar size={44} onlyLetter name="M" />
+          <Avatar size={44}>M</Avatar>
           <Box ml={12}>
             <Text textSize="smallBold">Silver Wind LLC</Text>
           </Box>

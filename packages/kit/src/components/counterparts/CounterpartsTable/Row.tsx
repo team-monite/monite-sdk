@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Badge,
+  Tag,
   Avatar,
   Text,
   TableRow,
@@ -44,7 +44,7 @@ const ColName = ({ row }: any) => {
   if (row.type === 'organization') {
     return (
       <Styled.ColName>
-        <Avatar size={44} onlyLetter name={data?.legal_name[0]} />
+        <Avatar size={44}>{data?.legal_name}</Avatar>
         <div>
           <Text textSize="bold">{data.legal_name}</Text>
           <Styled.AddressText>
@@ -58,7 +58,7 @@ const ColName = ({ row }: any) => {
 
   return (
     <Styled.ColName>
-      <Avatar size={44} onlyLetter name={data?.first_name[0]} />
+      <Avatar size={44}>{data?.first_name[0]}</Avatar>
       <div>
         <Text textSize="bold">{data?.first_name}</Text>
         <Styled.AddressText>
@@ -88,10 +88,8 @@ const Row = ({ row }: any) => {
       </td>
       <td>
         <Styled.ColType>
-          {data.is_customer ? (
-            <Badge text={t('counterparts:customer')} />
-          ) : null}
-          {data.is_vendor ? <Badge text={t('counterparts:vendor')} /> : null}
+          {data.is_customer && <Tag>{t('counterparts:customer')}</Tag>}
+          {data.is_vendor && <Tag>{t('counterparts:vendor')}</Tag>}
         </Styled.ColType>
       </td>
       <td>

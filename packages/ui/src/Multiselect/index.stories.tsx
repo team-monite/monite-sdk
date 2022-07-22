@@ -1,4 +1,3 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import Multiselect from '.';
@@ -9,30 +8,27 @@ const options = [
     label: 'Bird',
     value: 'bird',
     icon: (
-      <Avatar
-        url="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png"
-        name="bird"
-      />
+      <Avatar src="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png">
+        bird
+      </Avatar>
     ),
   },
   {
     label: 'Snake',
     value: 'snake',
     icon: (
-      <Avatar
-        url="https://cdn-icons-png.flaticon.com/512/1303/1303472.png"
-        name="snake"
-      />
+      <Avatar src="https://cdn-icons-png.flaticon.com/512/1303/1303472.png">
+        snake
+      </Avatar>
     ),
   },
   {
     label: 'Dog',
     value: 'dog',
     icon: (
-      <Avatar
-        url="https://cdn-icons-png.flaticon.com/512/616/616554.png"
-        name="dog"
-      />
+      <Avatar src="https://cdn-icons-png.flaticon.com/512/616/616554.png">
+        dog
+      </Avatar>
     ),
   },
   {

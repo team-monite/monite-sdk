@@ -8,7 +8,7 @@ import {
 } from '@storybook/addon-docs';
 import FlexTable from '../FlexTable';
 import { Flex, Box } from '../Box';
-import Badge from '../Badge';
+import Tag from '../Tag';
 import Link from '../Link';
 
 const Story = {
@@ -263,7 +263,7 @@ export const StatusOfComponents = () => {
           <Flex>
             <Box width={1}>{name}</Box>
             <Box width={1}>
-              <Badge text={status} color={statuses[status]} />
+              <Tag color={statuses[status]}>{status}</Tag>
             </Box>
             <Box width={1}>{comment}</Box>
             <Box width={1}>
