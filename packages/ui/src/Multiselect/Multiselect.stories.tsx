@@ -1,35 +1,22 @@
 import { ComponentStory } from '@storybook/react';
 
-import Multiselect from '.';
-import Avatar from '../Avatar';
+import Multiselect from './Multiseclect';
 
 const options = [
   {
     label: 'Bird',
     value: 'bird',
-    icon: (
-      <Avatar src="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png">
-        bird
-      </Avatar>
-    ),
+    icon: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png',
   },
   {
     label: 'Snake',
     value: 'snake',
-    icon: (
-      <Avatar src="https://cdn-icons-png.flaticon.com/512/1303/1303472.png">
-        snake
-      </Avatar>
-    ),
+    icon: 'https://cdn-icons-png.flaticon.com/512/1303/1303472.png',
   },
   {
     label: 'Dog',
     value: 'dog',
-    icon: (
-      <Avatar src="https://cdn-icons-png.flaticon.com/512/616/616554.png">
-        dog
-      </Avatar>
-    ),
+    icon: 'https://cdn-icons-png.flaticon.com/512/616/616554.png',
   },
   {
     label: 'Turtle',

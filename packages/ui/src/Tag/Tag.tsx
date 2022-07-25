@@ -18,6 +18,7 @@ export interface TagProps {
   avatar?: React.ReactNode;
   rightIcon?: React.ReactNode;
   leftIcon?: React.ReactNode;
+  onClose?: () => void;
 }
 
 const Themes: Record<TagColorType, string> = {
@@ -54,6 +55,7 @@ const Themes: Record<TagColorType, string> = {
 const StyledTag = styled.span<
   TagProps & {
     $color?: TagColorType;
+    $isClickable?: boolean;
   }
 >`
   box-sizing: border-box;
@@ -73,6 +75,7 @@ const StyledTag = styled.span<
   line-height: 20px;
 
   white-space: nowrap;
+  cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
 
   ${({ $color = 'primary' }) => Themes[$color]}
 `;
@@ -119,10 +122,16 @@ const Tag: React.FC<TagProps> = ({
   rightIcon,
   avatar,
   color,
+  onClose,
   ...props
 }: TagProps) => {
   return (
-    <StyledTag $color={color} {...props}>
+    <StyledTag
+      onClick={onClose}
+      $isClickable={!!onClose}
+      $color={color}
+      {...props}
+    >
       {avatar && <StyledAvatar>{avatar}</StyledAvatar>}
       {leftIcon && <StyledIcon $hasLeftIcon>{leftIcon}</StyledIcon>}
       {children && <span>{children}</span>}

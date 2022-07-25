@@ -1,12 +1,13 @@
 import { ComponentStory } from '@storybook/react';
 
 import { UUsersAlt } from '../unicons';
-import Select from '.';
+import Select from './Select';
 
 const Story = {
   title: 'Components/Select',
   component: Select,
 };
+
 export default Story;
 
 const options = [
