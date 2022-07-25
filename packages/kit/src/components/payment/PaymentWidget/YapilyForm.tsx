@@ -46,7 +46,9 @@ const BankListItem = ({ data, onClick }: BankListItemProps) => {
         onClick(data.name);
       }}
     >
-      <Avatar size={24} textSize="regular" name={data.name} />
+      <Avatar size={24} textSize="regular">
+        {data.name}
+      </Avatar>
       <UAngleRight width={16} height={16} color={theme.colors.lightGrey2} />
     </StyledBankListItem>
   );

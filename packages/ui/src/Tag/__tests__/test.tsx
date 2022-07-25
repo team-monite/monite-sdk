@@ -2,9 +2,9 @@ import { render, screen } from '@testing-library/react';
 
 import React from 'react';
 
-import Badge from '../index';
+import Tag from '../Tag';
 
 it("SHOULD render badge's text", () => {
-  render(<Badge text="Contact us" />);
+  render(<Tag>Contact us</Tag>);
   expect(screen.getByText('Contact us')).toBeInTheDocument();
 });

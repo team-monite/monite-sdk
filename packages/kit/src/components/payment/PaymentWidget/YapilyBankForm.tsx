@@ -60,7 +60,7 @@ const BankForm = ({ bankId, onFinish }: BankFormProps) => {
         alignItems="center"
         justifyContent="center"
       >
-        <Avatar size={44} name={bankId} onlyLetter />
+        <Avatar size={44}>{bankId}</Avatar>
         <Text textSize="h3" mt="12px" textAlign="center">
           {bankId}
         </Text>
