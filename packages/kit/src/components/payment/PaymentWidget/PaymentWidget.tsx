@@ -19,27 +19,18 @@ const Wrapper = styled.div`
 `;
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
-  const [stripeClientSecret, setClientSecret] = useState('');
   const [receivableData, setReceivableData] = useState<ReceivableResponse>();
 
-  const { id } = props;
+  const { id, stripeClientSecret } = props;
+
   const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
-    // TODO: we will retrieve client secret from url param in base64
     (async () => {
       const receivableData = await monite.api.payment.getPaymentReceivableById(
         id
       );
-
-      const stripeRes = await monite?.api.payment.getStripeClientSecret({
-        amount: receivableData.total_amount,
-        currency: receivableData.currency,
-        payment_method_types: ['card'],
-      });
-
       setReceivableData(receivableData);
-      setClientSecret(stripeRes.client_secret);
     })();
   }, []);
 

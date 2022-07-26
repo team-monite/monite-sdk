@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { Buffer } from 'buffer';
+
 import styled from '@emotion/styled';
 import {
   Flex,
@@ -8,12 +10,10 @@ import {
   PdfViewerWithAPI,
   PaymentWidget,
 } from '@monite/react-kit';
-import { useParams, Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import Layout from 'features/pay/Layout';
-
-import { ROUTES } from 'features/app/consts';
 
 const Row = styled(Flex)``;
 const Col = styled(Box)``;
@@ -29,13 +29,52 @@ const PaymentWidgetWrapper = styled.div`
   }
 `;
 
-const PaymentPage = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+type Provider = {
+  type: PaymentProvidersEnum;
+  secret: string;
+};
 
-  if (!id) {
+type URLData = {
+  object: {
+    id: string;
+    type: string;
+  };
+  providers: Provider[];
+};
+
+enum PaymentProvidersEnum {
+  STRIPE = 'stripe',
+  YAPILY = 'yapily',
+}
+
+const PaymentPage = () => {
+  const { search } = useLocation();
+
+  const paymentData = useMemo(() => {
+    const rawPaymentData = new URLSearchParams(search).get('data');
+    return (
+      rawPaymentData &&
+      (JSON.parse(
+        Buffer.from(rawPaymentData, 'base64').toString('utf8')
+      ) as URLData)
+    );
+  }, [search]);
+
+  if (!paymentData) {
     return <Navigate to="/" replace />;
   }
+  const {
+    object: { id },
+    providers,
+  } = paymentData;
+
+  const stripeClientSecret = providers.find(
+    (provider) => provider.type === PaymentProvidersEnum.STRIPE
+  )?.secret;
+
+  const yapilyClientSecret = providers.find(
+    (provider) => provider.type === PaymentProvidersEnum.YAPILY
+  )?.secret;
 
   return (
     <Layout>
@@ -56,16 +95,18 @@ const PaymentPage = () => {
                 id={id || ''}
                 //TODO hardcoded fee while backend configurator for fees is not ready
                 fee={350}
+                stripeClientSecret={stripeClientSecret}
+                yapilyClientSecret={yapilyClientSecret}
                 onFinish={(res) => {
                   if (
                     res.status === 'succeeded' ||
                     res.status === 'processing'
                   ) {
-                    navigate(
-                      `${ROUTES.payResult.replace(':id', id)}?status=${
-                        res.status
-                      }`
-                    );
+                    // navigate(
+                    //   `${ROUTES.payResult.replace(':id', id)}?status=${
+                    //     res.status
+                    //   }`
+                    // );
                   }
                 }}
               />
