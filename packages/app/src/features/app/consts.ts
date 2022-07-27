@@ -6,7 +6,7 @@ export const ROUTES = {
   counterparts: '/counterparts',
   counterpartsCreate: '/counterparts/create',
   payables: '/payables',
-  pay: '/pay/:id',
+  pay: '/pay',
   payResult: '/pay/:id/result',
   settings: '/settings',
   approvalPolicies: '/settings/approval-policies',
