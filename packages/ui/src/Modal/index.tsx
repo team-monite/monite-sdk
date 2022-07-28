@@ -1,47 +1,73 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Button from '../Button';
-
 type ModalSize = 'md' | 'sm';
 
-const Wrapper = styled.div`
+type StyledModalProps = {
+  $size?: ModalSize;
+  $fixedHeight?: boolean;
+  $fullScreen?: boolean;
+};
+
+export type ModalProps = {
+  children: React.ReactNode;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  onClickBackdrop?: () => void;
+  size?: ModalSize;
+  fixedHeight?: boolean;
+  fullScreen?: boolean;
+  className?: string;
+};
+
+const SIZE_MAP: Record<ModalSize, string> = {
+  md: 'max-width: 600px;',
+  sm: 'max-width: 464px;',
+};
+
+const getWidth = ({ $size = 'sm', $fullScreen }: StyledModalProps) => {
+  if ($fullScreen) return 'width: 100%;';
+  if ($size) return SIZE_MAP[$size];
+  return '';
+};
+
+const Wrapper = styled.div<StyledModalProps>`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 950;
   display: block;
   width: 100%;
   height: 100%;
-  outline: 0;
 
   overflow-x: hidden;
   overflow-y: auto;
 
-  padding-top: 40px;
-  padding-bottom: 40px;
+  ${({ $fullScreen }) =>
+    !$fullScreen &&
+    `
+    padding-top: 40px;
+    padding-bottom: 40px;
+  `}
 `;
 
-const SIZE_MAP: Record<string, string> = {
-  md: 'max-width: 600px;',
-  sm: 'max-width: 464px;',
-};
-const getSize = ({ $size = 'sm' }: StyledModalProps) =>
-  $size ? SIZE_MAP[$size] : '';
-
-const Body = styled.div<StyledModalProps>`
-  position: relative;
-  width: auto;
-  pointer-events: none;
-
-  transform: none;
-  display: flex;
-  align-items: center;
-  margin: 1.75rem auto;
-  min-height: calc(100% - 3.5rem);
-
-  ${getSize}
-`;
+// const Body = styled.div<StyledModalProps>`
+//   position: relative;
+//   width: ${({ $fullScreen }) => ($fullScreen ? '100%' : 'auto')};
+//   pointer-events: none;
+//
+//   transform: none;
+//   display: flex;
+//   align-items: center;
+//
+//   ${({ $fullScreen }) =>
+//     !$fullScreen &&
+//     `
+//       margin: 1.75rem auto;
+//       min-height: calc(100% - 3.5rem);
+//     `}
+//
+//   ${getWidth}
+// `;
 
 const Content = styled.div<StyledModalProps>`
   font-size: 16px;
@@ -56,11 +82,17 @@ const Content = styled.div<StyledModalProps>`
   background-clip: padding-box;
   outline: 0;
 
-  box-shadow: 0 8px 12px 0 #1111111f;
-  border-radius: 8px;
+  ${getWidth}
 
-  ${({ $fixedHeight }) =>
-    $fixedHeight ? 'max-height: calc(100vh - 80px - 3.5rem);' : ''}
+  ${({ $fullScreen }) =>
+    !$fullScreen &&
+    `
+      box-shadow: 0 8px 12px 0 #1111111f;
+      border-radius: 8px;
+    `}
+
+  ${({ $fixedHeight, $fullScreen }) =>
+    $fixedHeight && !$fullScreen && 'max-height: calc(100vh - 80px - 3.5rem);'}
 `;
 
 const Backdrop = styled.div`
@@ -69,67 +101,29 @@ const Backdrop = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 940;
   width: 100vw;
   height: 100vh;
   background-color: #fff;
 `;
 
-const Area = styled.div`
-  overflow-y: scroll;
-`;
-
-const Footer = styled.div`
-  padding: 24px;
-  border-top: solid 1px ${({ theme }) => theme.colors.lightGrey2};
-  display: flex;
-  justify-content: center;
-`;
-
-const FooterButton = styled(Button)`
-  padding-right: 36px;
-  padding-left: 36px;
-`;
-
-type StyledModalProps = {
-  $size?: string;
-  $fixedHeight?: boolean;
-};
-
-export type ModalProps = {
-  children: React.ReactNode;
-  onClickBackdrop?: () => void;
-  size?: ModalSize;
-  fixedHeight?: boolean;
-  className?: string;
-};
-
-const Modal = (props: ModalProps) => {
-  const { onClickBackdrop, children, size, fixedHeight, className } = props;
-
-  const onClickModalContent = (e: React.BaseSyntheticEvent) => {
-    e.stopPropagation();
-  };
-
+const Modal = ({
+  onClickBackdrop,
+  children,
+  size,
+  fixedHeight,
+  className,
+  fullScreen,
+  header,
+  footer,
+}: ModalProps) => {
   return (
     <>
-      <Wrapper onClick={onClickBackdrop}>
-        <Body $size={size} className={className}>
-          <Content onClick={onClickModalContent} $fixedHeight={fixedHeight}>
-            {fixedHeight ? (
-              <>
-                <Area>{children}</Area>
-                <Footer>
-                  <FooterButton onClick={onClickBackdrop}>Got it</FooterButton>
-                </Footer>
-              </>
-            ) : (
-              children
-            )}
-          </Content>
-        </Body>
-      </Wrapper>
       <Backdrop onClick={onClickBackdrop} />
+      <Wrapper $fullScreen={fullScreen} onClick={onClickBackdrop}>
+        {header}
+        <Content $fixedHeight={fixedHeight}>{children}</Content>
+        {footer}
+      </Wrapper>
     </>
   );
 };

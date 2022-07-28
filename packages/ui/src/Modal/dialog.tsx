@@ -74,11 +74,9 @@ const ModalDialog = ({
             {cancelButtonTitle || 'Cancel'}
           </Button>
         )}
-        <Button
-          text={confirmButtonTitle || 'Confirm'}
-          onClick={onConfirm}
-          {...confirmButtonProps}
-        />
+        <Button onClick={onConfirm} {...confirmButtonProps}>
+          {confirmButtonTitle || 'Confirm'}
+        </Button>
       </Actions>
     </Modal>
   );
