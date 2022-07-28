@@ -1,7 +1,7 @@
 import { Sidebar } from '../index';
 
 const Story = {
-  title: 'Components/Sidebar',
+  title: 'Layout/Sidebar',
   component: Sidebar,
 };
 export default Story;

@@ -7,7 +7,7 @@ import Avatar from '../Avatar';
 import { Flex } from '../Box';
 
 const Story = {
-  title: 'Components/Tag',
+  title: 'Data Display/Tag',
   component: Tag,
 };
 export default Story;

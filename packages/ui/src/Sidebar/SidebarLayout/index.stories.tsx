@@ -2,7 +2,7 @@ import { SidebarLayout } from './index';
 import { Sidebar } from '../Sidebar';
 
 const Story = {
-  title: 'Components/Sidebar/Sidebar Layout',
+  title: 'Layout/Sidebar/Sidebar Layout',
   component: SidebarLayout,
 };
 export default Story;

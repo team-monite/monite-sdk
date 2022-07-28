@@ -1,11 +1,9 @@
-import React from 'react';
-
 import Dropdown from '.';
 import DropdownMenu from './Menu';
 import DropdownItem from './MenuItem';
 
 const Story = {
-  title: 'Components/Dropdown Menu',
+  title: 'Data Display/Dropdown Menu',
   component: Dropdown,
 };
 export default Story;

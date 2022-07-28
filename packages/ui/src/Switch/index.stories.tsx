@@ -1,10 +1,9 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import Switch from '.';
 
 const Story = {
-  title: 'Components/Switch',
+  title: 'Data Input/Switch',
   component: Switch,
 };
 export default Story;

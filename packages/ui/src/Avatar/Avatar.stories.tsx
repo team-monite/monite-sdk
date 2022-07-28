@@ -1,67 +1,115 @@
 import Avatar from '.';
 
-import {
-  Title,
-  Subtitle,
-  Primary,
-  ArgsTable,
-  Stories,
-  PRIMARY_STORY,
-} from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+import { THEMES } from '../consts';
+import { STYLES } from '../Text';
 
-const Stoys = {
-  title: 'Components/Avatar',
+const Story = {
+  title: 'Data Display/Avatar',
   component: Avatar,
-  parameters: {
-    docs: {
-      page: () => (
-        <>
-          <Title />
-          <Subtitle>Custom Avatar</Subtitle>
-          <br />
-          <Primary />
-          <ArgsTable story={PRIMARY_STORY} />
-          <Stories />
-        </>
-      ),
+};
+
+export default Story;
+
+const defaultArgs = {
+  children: 'Monite',
+  size: 32,
+  src: undefined,
+  to: undefined,
+  disabled: false,
+  color: undefined,
+  textSize: undefined,
+  onClick: action('onClick'),
+  withStatus: false,
+};
+
+const Template = (args) => <Avatar {...args} />;
+
+export const Playground = Template.bind({});
+
+Playground.args = defaultArgs;
+
+Playground.argTypes = {
+  children: {
+    control: 'text',
+  },
+  size: {
+    description: 'width && height of the avatar component',
+    table: {
+      defaultValue: {
+        summary: 32,
+      },
     },
+    control: 'number',
+  },
+  src: {
+    description: 'a link to img',
+    control: 'text',
+  },
+  to: {
+    description: 'location to navigate after click',
+    control: 'text',
+  },
+  disabled: {
+    control: 'boolean',
+  },
+  color: {
+    control: 'select',
+    options: Object.keys(THEMES.default.colors),
+  },
+  textSize: {
+    control: 'select',
+    options: Object.keys(STYLES),
+  },
+  withStatus: {
+    control: 'boolean',
   },
 };
 
-export default Stoys;
+export const WithImage = Template.bind({});
 
-export const DefaultAvatar = () => <Avatar size={34}>Avatar</Avatar>;
+WithImage.args = {
+  src: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png',
+};
 
-export const Avatars = () => (
-  <>
-    <Subtitle>With image</Subtitle>
-    <Avatar
-      size={34}
-      src="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png"
-    />
-    <br />
-    <br />
-    <Subtitle>Disabled</Subtitle>
-    <Avatar
-      disabled
-      size={34}
-      src="https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png"
-    />
-    <br />
-    <br />
-    <Subtitle>With children</Subtitle>
-    <Avatar size={34}>Monite</Avatar>
-    <br />
-    <br />
-    <Subtitle>With custom color</Subtitle>
-    <Avatar size={34} color={'orange'}>
+export const WithStatus = Template.bind({});
+
+WithStatus.args = {
+  children: 'Monite',
+  withStatus: true,
+};
+
+export const Disabled = Template.bind({});
+
+Disabled.args = {
+  children: 'Monite',
+  disabled: true,
+};
+
+export const Colors = (args) => (
+  <div>
+    <Avatar {...args} color="primary">
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} color="danger">
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} color="success">
       Monite
     </Avatar>
-    <br />
-    <br />
-    <Subtitle>With status</Subtitle>
-    <Avatar withStatus size={34} color={'orange'}>
+  </div>
+);
+
+export const Sizes = (args) => (
+  <div>
+    <Avatar {...args} size={16}>
       Monite
-    </Avatar>
-  </>
+    </Avatar>{' '}
+    <Avatar {...args} size={32}>
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} size={64}>
+      Monite
+    </Avatar>{' '}
+  </div>
 );

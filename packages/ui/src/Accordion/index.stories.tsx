@@ -1,9 +1,7 @@
-import React from 'react';
-
 import Accordion from '.';
 
 const Story = {
-  title: 'Components/Accordion',
+  title: 'Data Display/Accordion',
   component: Accordion,
 };
 export default Story;

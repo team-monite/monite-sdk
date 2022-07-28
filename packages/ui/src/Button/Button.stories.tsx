@@ -8,7 +8,7 @@ import { STYLES as TEXT_STYLES } from '../Text';
 import { TextSize, Themes } from './Button';
 
 const Story = {
-  title: 'Components/Button',
+  title: 'Data Input/Button',
   component: Button,
 };
 

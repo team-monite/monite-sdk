@@ -3,7 +3,7 @@ import { ComponentStory } from '@storybook/react';
 import Spinner from '.';
 
 const Story = {
-  title: 'Components/Spinner',
+  title: 'Data Display/Spinner',
   component: Spinner,
 };
 export default Story;

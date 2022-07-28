@@ -6,7 +6,7 @@ import { UInfoCircle, UEnvelopeAlt } from '../unicons';
 import { Flex } from '../Box';
 
 const Story = {
-  title: 'Components/Link',
+  title: 'Navigation/Link',
   component: Link,
 };
 

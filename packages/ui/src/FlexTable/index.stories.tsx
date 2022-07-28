@@ -1,10 +1,8 @@
-import React from 'react';
-
 import FlexTable from '.';
 import { Flex, Box } from '../Box';
 
 const Story = {
-  title: 'Components/FlexTable',
+  title: 'Data Display/FlexTable',
   component: FlexTable,
 };
 export default Story;

@@ -2,7 +2,7 @@ import Text, { STYLES } from '.';
 import FlexTable from '../FlexTable';
 import { Flex, Box } from '../Box';
 const Story = {
-  title: 'Components/Text',
+  title: 'Data Display/Text',
   component: Text,
 };
 export default Story;

@@ -25,7 +25,7 @@ const options = [
 ];
 
 const Story = {
-  title: 'Components/Multiselect',
+  title: 'Data Input/Multiselect',
   component: Multiselect,
 };
 

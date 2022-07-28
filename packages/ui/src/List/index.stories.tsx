@@ -1,10 +1,8 @@
-import React from 'react';
-
 import List from '.';
 import ListItem from '../ListItem';
 
 const Story = {
-  title: 'Components/List',
+  title: 'Data Display/List',
   component: List,
 };
 export default Story;
