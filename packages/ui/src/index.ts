@@ -19,7 +19,6 @@ export { default as List } from './List';
 export { default as ListItem } from './ListItem';
 export { default as Modal } from './Modal';
 export { default as Multiselect } from './Multiselect';
-export { default as ModalDialog } from './Modal/dialog';
 export { default as Tooltip } from './Tooltip';
 export { default as Accordion } from './Accordion';
 export { Box, Flex } from './Box';

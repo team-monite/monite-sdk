@@ -7,6 +7,8 @@ import Text from '../Text';
 import Tag from '../Tag';
 import Button from '../Button';
 import Avatar from '../Avatar';
+import IconButton from '../IconButton';
+import { UMultiply } from '../unicons';
 
 const Story = {
   title: 'Components/Header',
@@ -53,7 +55,11 @@ DefaultHeader.args = {
 export const FullScreenModalHeader = () => {
   return (
     <Template
-      onClose={() => {}}
+      leftBtn={
+        <IconButton color={'black'}>
+          <UMultiply size={18} />
+        </IconButton>
+      }
       actions={
         <StyledActions>
           <Button color={'secondary'}>Save</Button>
@@ -71,7 +77,13 @@ export const FullScreenModalHeader = () => {
 
 export const SidebarHeader = () => {
   return (
-    <Template onClose={() => {}} closeBtnPosition={'right'}>
+    <Template
+      rightBtn={
+        <IconButton color={'black'}>
+          <UMultiply size={18} />
+        </IconButton>
+      }
+    >
       <StyledContent sx={{ gap: '16px !important' }}>
         <Avatar src={'https://cdn-icons-png.flaticon.com/512/616/616554.png'} />
         <Text textSize={'h3'}>Sidebar Title</Text>
