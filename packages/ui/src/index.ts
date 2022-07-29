@@ -25,6 +25,7 @@ export { default as Accordion } from './Accordion';
 export { Box, Flex } from './Box';
 export { default as Table } from './Table';
 export { default as TableRow } from './Table/Row';
+export { default as TableCell } from './Table/Cell';
 export { Sidebar, SidebarLayout } from './Sidebar';
 export { default as FlexTable } from './FlexTable';
 export { default as Avatar } from './Avatar/Avatar';

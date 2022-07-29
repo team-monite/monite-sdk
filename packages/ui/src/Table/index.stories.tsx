@@ -1,5 +1,6 @@
 import Table from '.';
 import Row from './Row';
+import Cell from './Cell';
 import DropdownItem from '../Dropdown/MenuItem';
 import Button from '../Button';
 
@@ -13,9 +14,9 @@ export const DefaultTable = () => (
   <div style={{ maxWidth: 400 }}>
     <Table>
       <Row>
-        <th>Col1</th>
-        <th></th>
-        <th>Col3</th>
+        <Cell forHeader>Col1</Cell>
+        <Cell forHeader>Col2</Cell>
+        <Cell forHeader>Col3</Cell>
       </Row>
       <Row
         dropdownActions={() => (
@@ -25,9 +26,9 @@ export const DefaultTable = () => (
           </>
         )}
       >
-        <td width={1}>Cell1</td>
-        <td width={1}>Cell2</td>
-        <td width={1}>Cell3</td>
+        <Cell>Cell1</Cell>
+        <Cell>Cell2</Cell>
+        <Cell>Cell3</Cell>
       </Row>
       <Row
         buttonActions={() => (
@@ -37,9 +38,9 @@ export const DefaultTable = () => (
           </>
         )}
       >
-        <td width={1}>Cell4</td>
-        <td width={1}>Cell5</td>
-        <td width={1}>Cell6</td>
+        <Cell>Cell4</Cell>
+        <Cell>Cell5</Cell>
+        <Cell>Cell6</Cell>
       </Row>
       <Row
         dropdownActions={() => (
@@ -55,9 +56,9 @@ export const DefaultTable = () => (
           </>
         )}
       >
-        <td width={1}>Cell7</td>
-        <td width={1}>Cell8</td>
-        <td width={1}>Cell9</td>
+        <Cell>Cell7</Cell>
+        <Cell>Cell8</Cell>
+        <Cell>Cell9</Cell>
       </Row>
     </Table>
   </div>

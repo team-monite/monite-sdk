@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from '@monite/ui';
+import { Table, TableCell } from '@monite/ui';
 import { WorkflowResponseSchema } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -17,11 +17,17 @@ const ApprovalPoliciesTable = ({ data }: TableProps) => {
     <Table>
       <thead>
         <tr>
-          <th>{t('approvalPolicies:columns.policyName')}</th>
-          <th>{t('approvalPolicies:columns.status')}</th>
-          <th>{t('approvalPolicies:columns.createdBy')}</th>
-          <th>{t('approvalPolicies:columns.date')}</th>
-          <th>{t('approvalPolicies:columns.rules')}</th>
+          <TableCell forHeader>
+            {t('approvalPolicies:columns.policyName')}
+          </TableCell>
+          <TableCell forHeader>
+            {t('approvalPolicies:columns.status')}
+          </TableCell>
+          <TableCell forHeader>
+            {t('approvalPolicies:columns.createdBy')}
+          </TableCell>
+          <TableCell forHeader>{t('approvalPolicies:columns.date')}</TableCell>
+          <TableCell forHeader>{t('approvalPolicies:columns.rules')}</TableCell>
         </tr>
       </thead>
       <tbody>
