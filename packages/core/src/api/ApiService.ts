@@ -26,7 +26,13 @@ class ApiService {
     this.workflows = new WorkflowsService({ config });
     //TODO: temporarily config for gateway
     this.payment = new PaymentService({
-      config: { ...config, HEADERS: { 'x-service-name': 'swagger' } },
+      config: {
+        ...config,
+        HEADERS: {
+          'x-service-name': 'swagger',
+          'x-monite-data-source': 'receivables',
+        },
+      },
     });
   }
 }
