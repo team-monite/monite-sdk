@@ -7,13 +7,8 @@ export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
-    this.openapiConfig = {
-      ...config,
-      //TODO: it is temporarily URL
-      BASE: 'https://api-gateway.dev.monite.com/v1',
-    };
+    this.openapiConfig = config;
   }
-
   /**
    * Get Receivable Data by ID
    * @returns ReceivableResponse Successful Response
