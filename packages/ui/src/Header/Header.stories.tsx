@@ -11,7 +11,7 @@ import IconButton from '../IconButton';
 import { UMultiply } from '../unicons';
 
 const Story = {
-  title: 'Components/Header',
+  title: 'Navigation/Header',
   component: Header,
 };
 

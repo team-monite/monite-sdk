@@ -12,7 +12,7 @@ import IconButton from '../IconButton';
 import { UMultiply } from '../unicons';
 
 const Story = {
-  title: 'Components/Modal',
+  title: 'Layout/Modal',
   component: Modal,
 };
 
