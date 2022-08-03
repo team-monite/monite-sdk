@@ -5,7 +5,7 @@ import DropdownItem from '../Dropdown/MenuItem';
 import Button from '../Button';
 
 const Story = {
-  title: 'Components/Table.tsx',
+  title: 'Data Display/Table',
   component: Table,
 };
 export default Story;

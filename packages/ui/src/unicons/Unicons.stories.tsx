@@ -2,7 +2,7 @@ import { Primary, Title } from '@storybook/addon-docs';
 import Link from '../Link';
 
 const Story = {
-  title: 'Components/Unicons',
+  title: 'DesignSystem/Unicons',
   parameters: {
     docs: {
       page: () => (

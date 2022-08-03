@@ -7,7 +7,7 @@ import { UMultiply } from '../unicons';
 import { Box } from '../Box';
 
 const Story = {
-  title: 'Components/Alert',
+  title: 'Data Display/Alert',
   component: Alert,
 };
 

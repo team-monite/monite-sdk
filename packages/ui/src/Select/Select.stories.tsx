@@ -4,7 +4,7 @@ import { UUsersAlt } from '../unicons';
 import Select from './Select';
 
 const Story = {
-  title: 'Components/Select',
+  title: 'Data Input/Select',
   component: Select,
 };
 

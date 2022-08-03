@@ -11,7 +11,7 @@ import {
 import Link from '../Link';
 
 const Story = {
-  title: 'Components/Tabs',
+  title: 'Data Display/Tabs',
   component: Tabs,
   parameters: {
     docs: {

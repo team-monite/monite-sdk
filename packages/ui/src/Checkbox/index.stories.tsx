@@ -1,10 +1,9 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import Checkbox from '.';
 
 const Story = {
-  title: 'Components/Checkbox',
+  title: 'Data Input/Checkbox',
   component: Checkbox,
 };
 export default Story;

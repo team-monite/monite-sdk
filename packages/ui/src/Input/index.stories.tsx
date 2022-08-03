@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Input from '.';
 import { ComponentStory } from '@storybook/react';
 
 const Story = {
-  title: 'Components/Input',
+  title: 'Data Input/Input',
   component: Input,
 };
 export default Story;

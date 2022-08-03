@@ -76,7 +76,7 @@ const Avatar = ({
   children,
   disabled,
   size,
-  textSize,
+  textSize, // TODO unused prop
   onClick,
   color = 'grey',
   withStatus,

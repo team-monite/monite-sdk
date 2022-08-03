@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import FormField from '.';
@@ -7,7 +7,7 @@ import PasswordInput from '../PasswordInput';
 import Select from '../Select';
 
 const Story = {
-  title: 'Components/FormField',
+  title: 'Data Input/FormField',
   component: FormField,
 };
 export default Story;
@@ -26,20 +26,20 @@ const Template: ComponentStory<typeof FormField> = (args) => {
   );
 };
 
-export const DefaultFormField = Template.bind({});
+export const Playground = Template.bind({});
 
-DefaultFormField.args = {
+Playground.args = {
   id: 'name',
   label: 'Name',
   onClickInfo: undefined,
   error: '',
   text: '',
   labelTextSize: '',
-  readOnly: undefined,
+  readOnly: false,
   required: false,
 };
 
-DefaultFormField.argTypes = {
+Playground.argTypes = {
   error: { control: 'text' },
   text: { control: 'text' },
   labelTextSize: { control: 'text' },

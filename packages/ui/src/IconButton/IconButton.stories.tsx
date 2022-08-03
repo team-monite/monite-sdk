@@ -6,7 +6,7 @@ import { UInfoCircle, UEnvelopeAlt } from '../unicons';
 import { Flex } from '../Box';
 
 const Story = {
-  title: 'Components/IconButton',
+  title: 'Data Input/IconButton',
   component: IconButton,
 };
 

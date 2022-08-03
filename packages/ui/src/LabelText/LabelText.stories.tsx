@@ -1,7 +1,7 @@
 import LabelText from '../LabelText';
 
 const Story = {
-  title: 'LabelText',
+  title: 'Data Display/LabelText',
   component: Text,
 };
 

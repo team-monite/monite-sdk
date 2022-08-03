@@ -6,7 +6,7 @@ import Link from '../Link';
 import { Box } from '../Box';
 
 const Story = {
-  title: 'Components/Card',
+  title: 'Data Display/Card',
   component: Text,
 };
 

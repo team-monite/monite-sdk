@@ -1,10 +1,9 @@
-import React from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import { Box, Flex, BoxProps } from '.';
 
 const Story = {
-  title: 'Components/Box',
+  title: 'Layout/Box',
   component: Box,
 };
 export default Story;

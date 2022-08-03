@@ -20,7 +20,21 @@ export const parameters = {
   //   color: { control: 'select', options: ['primary', 'secondary'] },
   //   text: { table: { disable: true } },
   // },
-  viewMode: 'docs',
+  viewMode: 'story',
+  options: {
+    storySort: {
+      order: [
+        'Welcome',
+        'Changelog',
+        'DesignSystem',
+        ['Colors', 'Unicons', 'Status of Components'],
+        'Layout',
+        'Navigation',
+        'Data Display',
+        'Data Input',
+      ],
+    },
+  },
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
