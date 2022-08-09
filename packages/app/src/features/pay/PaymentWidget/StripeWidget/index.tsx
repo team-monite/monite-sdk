@@ -5,14 +5,16 @@ import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 import { Theme } from '@monite/ui';
 
-import type { PaymentWidgetProps } from './types';
-
 let stripePromise: Promise<Stripe | null> | null = null;
 
 type StripeFormProps = {
   clientSecret: string;
   price: number;
-} & PaymentWidgetProps;
+  fee?: number;
+  onFinish?: (result: any) => void;
+  returnUrl?: string;
+  stripeEnabled?: boolean;
+};
 
 const StripeForm = ({
   clientSecret,
