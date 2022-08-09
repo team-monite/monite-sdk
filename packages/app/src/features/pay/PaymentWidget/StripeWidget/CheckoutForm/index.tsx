@@ -6,8 +6,8 @@ import {
 } from '@stripe/react-stripe-js';
 import { Button, Alert, Box } from '@monite/ui';
 
-import { toast } from 'ui/toast';
-import { useComponentsContext } from 'core/context/ComponentsContext';
+// import { toast } from 'ui/toast';
+import { useComponentsContext } from '@monite/react-kit';
 
 import * as Styled from './styles';
 
@@ -33,7 +33,7 @@ export default function CheckoutForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const setMessage = (message: string) => {
-    toast(message);
+    // toast(message);
   };
 
   useEffect(() => {

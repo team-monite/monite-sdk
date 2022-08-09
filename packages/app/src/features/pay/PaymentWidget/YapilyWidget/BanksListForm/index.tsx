@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { Avatar, Text, Input, Box, UAngleRight, Theme } from '@monite/ui';
+
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
+import { ReceivableResponse } from '@monite/js-sdk';
+import {
+  Avatar,
+  Text,
+  Input,
+  Box,
+  UAngleRight,
+  Theme,
+  USearchAlt,
+  IconButton,
+  Flex,
+} from '@monite/ui';
 
-import BankForm from './YapilyBankForm';
-import type { BankItem, PaymentWidgetProps } from './types';
+import InvoiceDetailes from '../InvoiceDetailes';
+import type { BankItem } from '../types';
 
-import { demoBanks } from './fixtures/banks';
+import styles from './style.module.scss';
 
-const StyledBanksList = styled.div`
-  > * + * {
-    margin-top: 8px;
-  }
-`;
+import { demoBanks } from '../../fixtures/banks';
 
 const StyledBankListItem = styled.div(
   ({ theme }) => `
@@ -21,6 +30,7 @@ const StyledBankListItem = styled.div(
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 8px;
 
   border: ${theme.colors.lightGrey2} solid 1px;
   border-radius: 4px;
@@ -35,30 +45,29 @@ const StyledBankListItem = styled.div(
 
 type BankListItemProps = {
   data: BankItem;
-  onClick: (id: string) => void;
 };
-const BankListItem = ({ data, onClick }: BankListItemProps) => {
+const BankListItem = ({ data }: BankListItemProps) => {
   const theme = useTheme<Theme>();
 
   return (
-    <StyledBankListItem
-      onClick={() => {
-        onClick(data.name);
-      }}
-    >
-      <Avatar size={24} textSize="regular">
-        {data.name}
-      </Avatar>
+    <StyledBankListItem>
+      <Flex>
+        <Avatar size={24} textSize="regular" src={data.logo} />
+        <Box ml={1}>
+          <Text>{data.name}</Text>
+        </Box>
+      </Flex>
       <UAngleRight width={16} height={16} color={theme.colors.lightGrey2} />
     </StyledBankListItem>
   );
 };
 
-type YapilyFormProps = {} & PaymentWidgetProps;
+type YapilyFormProps = {
+  receivableData?: ReceivableResponse;
+};
 
-const YapilyForm = ({ onFinish }: YapilyFormProps) => {
+const YapilyForm = ({ receivableData }: YapilyFormProps) => {
   const [searchText, setSearchText] = useState('');
-  const [selectedBank, setSelectedBank] = useState('');
 
   // TODO: here we should fetch an actual list of banks from the API when it will be ready
   const [banks] = useState(demoBanks);
@@ -66,43 +75,46 @@ const YapilyForm = ({ onFinish }: YapilyFormProps) => {
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
-
-  if (selectedBank) {
-    // TODO: here we should pass also consentToken
-    return <BankForm bankId={selectedBank} onFinish={onFinish} />;
-  }
+  const { search } = useLocation();
 
   return (
     <div>
-      <Text textSize="h3" mt="44px">
+      <Text textSize="h3" mt="44px" align="center">
         Continue with your bank account
       </Text>
+      <Routes>
+        <Route
+          path={':id'}
+          element={
+            <InvoiceDetailes banks={banks} receivableData={receivableData} />
+          }
+        />
+      </Routes>
       <Box mt="24px" mb="32px">
         <Input
           placeholder="Search for your bank"
           onChange={(e) => {
             updateSearchText(e.target.value);
           }}
+          renderAddonIcon={() => (
+            <IconButton color={'lightGrey1'}>
+              <USearchAlt size={20} />
+            </IconButton>
+          )}
         />
       </Box>
-      <StyledBanksList>
+      <Box>
         {(searchText
           ? banks.filter((bank) =>
               bank.name.toLowerCase().includes(searchText.toLowerCase())
             )
           : banks
         ).map((bank) => (
-          <BankListItem
-            data={bank}
-            onClick={(id: string) => {
-              // TODO: here we should make an API request to receive authorisationUrl for chosen bank
-              // and should redirect the user to this authorisationUrl in order to get the consentToken
-              // and should create the payment intent using the consentToken via another API request
-              setSelectedBank(id);
-            }}
-          />
+          <Link to={`${bank.id}${search}`} className={styles.link}>
+            <BankListItem data={bank} />
+          </Link>
         ))}
-      </StyledBanksList>
+      </Box>
     </div>
   );
 };

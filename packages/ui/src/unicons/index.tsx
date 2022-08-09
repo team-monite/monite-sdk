@@ -1076,7 +1076,7 @@ export { default as UQuestionCircle } from './icons/UQuestionCircle';
 // export { default as URss } from './icons/URss';
 // export { default as USave } from './icons/USave';
 // export { default as USearch } from './icons/USearch';
-// export { default as USearchAlt } from './icons/USearchAlt';
+export { default as USearchAlt } from './icons/USearchAlt';
 export { default as USearchMinus } from './icons/USearchMinus';
 export { default as USearchPlus } from './icons/USearchPlus';
 export { default as USetting } from './icons/USetting';
