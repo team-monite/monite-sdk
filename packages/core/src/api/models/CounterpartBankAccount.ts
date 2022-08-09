@@ -7,3 +7,4 @@ export type CounterpartBankAccount = {
     bic?: string;
     name?: string;
 };
+

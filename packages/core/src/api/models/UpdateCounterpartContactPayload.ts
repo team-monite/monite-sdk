@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartAddress } from './CounterpartAddress';
+
 /**
  * The contact person for an organization.
  */
@@ -30,4 +32,9 @@ export type UpdateCounterpartContactPayload = {
      * The title or honorific of a contact person. Examples: Mr., Ms., Dr., Prof.
      */
     title?: string;
+    /**
+     * The address of a contact person.
+     */
+    address?: CounterpartAddress;
 };
+

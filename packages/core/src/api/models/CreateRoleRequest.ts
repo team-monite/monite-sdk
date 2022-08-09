@@ -14,3 +14,4 @@ export type CreateRoleRequest = {
      */
     permissions: BizObjectsSchema;
 };
+

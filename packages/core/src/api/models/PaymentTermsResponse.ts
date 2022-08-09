@@ -13,3 +13,4 @@ export type PaymentTermsResponse = {
     term_2?: PaymentTermDiscount;
     id: string;
 };
+

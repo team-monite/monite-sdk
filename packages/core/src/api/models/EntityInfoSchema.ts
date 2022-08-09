@@ -15,3 +15,4 @@ export type EntityInfoSchema = {
      */
     phone?: string;
 };
+

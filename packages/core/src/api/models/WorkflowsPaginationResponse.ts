@@ -18,3 +18,4 @@ export type WorkflowsPaginationResponse = {
      */
     next_pagination_token?: string;
 };
+

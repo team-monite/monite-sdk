@@ -5,3 +5,4 @@
 export type PayableSettings = {
     approve_page_url: string;
 };
+

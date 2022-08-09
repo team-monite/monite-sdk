@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { api__schemas__accounts_receivables__billables__Price } from './api__schemas__accounts_receivables__billables__Price';
+import type { Price } from './Price';
 
 export type ProductServiceRequest = {
     /**
@@ -13,7 +13,7 @@ export type ProductServiceRequest = {
      * Description of the product.
      */
     description?: string;
-    price?: api__schemas__accounts_receivables__billables__Price;
+    price?: Price;
     /**
      * The unique ID reference of the unit used to measure the quantity of this product (e.g. items, meters, kilograms).
      */
@@ -27,3 +27,4 @@ export type ProductServiceRequest = {
      */
     smallest_amount?: number;
 };
+

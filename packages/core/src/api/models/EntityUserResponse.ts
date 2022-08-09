@@ -17,8 +17,9 @@ export type EntityUserResponse = {
      */
     role?: RoleResponse;
     userpic?: FileSchema;
+    info?: EntityInfoSchema;
     /**
-     * Email, phone or login
+     * Login
      */
     login: string;
     /**
@@ -29,10 +30,6 @@ export type EntityUserResponse = {
      * Last name
      */
     last_name?: string;
-    /**
-     * ID api partner
-     */
-    partner_id: string;
     /**
      * record status, 'active' by default
      */
@@ -45,8 +42,5 @@ export type EntityUserResponse = {
      * UTC datetime
      */
     updated_at: string;
-    /**
-     * Additional information about entity user
-     */
-    info?: EntityInfoSchema;
 };
+

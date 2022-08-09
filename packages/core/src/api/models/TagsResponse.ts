@@ -10,3 +10,4 @@ import type { TagReadSchema } from './TagReadSchema';
 export type TagsResponse = {
     data: Array<TagReadSchema>;
 };
+

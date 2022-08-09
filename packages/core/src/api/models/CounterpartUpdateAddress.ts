@@ -33,3 +33,4 @@ export type CounterpartUpdateAddress = {
      */
     line2?: string;
 };
+

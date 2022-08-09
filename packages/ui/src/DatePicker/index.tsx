@@ -137,6 +137,7 @@ const HeaderWrapper = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
   padding: 16px 24px;
   height: 48px;
+  box-sizing: border-box;
 `;
 
 const HeaderDate = styled.span`
@@ -160,6 +161,7 @@ type DatePickerProps = {
   minDate?: Date;
   maxDate?: Date;
   dateFormat?: string;
+  required?: boolean;
 };
 
 const DatePicker = ({
@@ -169,6 +171,7 @@ const DatePicker = ({
   minDate,
   maxDate,
   dateFormat = 'dd.MM.yyyy',
+  required,
 }: DatePickerProps) => {
   const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
   const [showYearPicker, setShowYearPicker] = useState(false);
@@ -180,7 +183,7 @@ const DatePicker = ({
       className={className}
       selected={date}
       onChange={(date) => date && onChange(date)}
-      required
+      required={required}
       minDate={minDate}
       maxDate={maxDate}
       customInput={

@@ -12,3 +12,4 @@ export type PaymentTermsCreatePayload = {
     term_1?: PaymentTermDiscount;
     term_2?: PaymentTermDiscount;
 };
+

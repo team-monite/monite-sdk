@@ -4,7 +4,6 @@
 
 import type { EntityAddressSchema } from './EntityAddressSchema';
 import type { FileSchema } from './FileSchema';
-import type { MailboxResponse } from './MailboxResponse';
 import type { OrganizationSchema } from './OrganizationSchema';
 import type { StatusEnum } from './StatusEnum';
 
@@ -21,10 +20,6 @@ export type EntityOrganizationResponse = {
      */
     email: string;
     /**
-     * An ID used by a Partner in their systems to identify this resource
-     */
-    partner_reference?: string;
-    /**
      * A phone number of the entity
      */
     phone?: string;
@@ -36,7 +31,6 @@ export type EntityOrganizationResponse = {
      * UUID entity ID
      */
     id: string;
-    mailboxes: Array<MailboxResponse>;
     /**
      * A logo image of the entity
      */
@@ -70,3 +64,4 @@ export namespace EntityOrganizationResponse {
 
 
 }
+

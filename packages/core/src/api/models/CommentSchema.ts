@@ -22,3 +22,4 @@ export type CommentSchema = {
     edited_at?: string;
     created_at?: string;
 };
+

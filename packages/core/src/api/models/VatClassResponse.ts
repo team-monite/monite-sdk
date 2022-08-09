@@ -14,3 +14,4 @@ export type VatClassResponse = {
     created_at: string;
     updated_at: string;
 };
+

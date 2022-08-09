@@ -6,7 +6,7 @@ import type { EntityAddressSchema } from './EntityAddressSchema';
 import type { OptionalOrganizationSchema } from './OptionalOrganizationSchema';
 
 /**
- * An interface to flatten schema's field
+ * A base for entity related schemas of different types
  */
 export type UpdateOrganizationEntityRequest = {
     /**
@@ -18,10 +18,6 @@ export type UpdateOrganizationEntityRequest = {
      */
     email?: string;
     /**
-     * An ID used by a Partner in their systems to identify this resource
-     */
-    partner_reference?: string;
-    /**
      * A phone number of the entity
      */
     phone?: string;
@@ -30,3 +26,4 @@ export type UpdateOrganizationEntityRequest = {
      */
     organization?: OptionalOrganizationSchema;
 };
+

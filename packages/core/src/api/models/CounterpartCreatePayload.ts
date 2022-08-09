@@ -11,3 +11,4 @@ import type { CounterpartCreateOrganizationPayload } from './CounterpartCreateOr
  * you need to provide the data for either the `individual` or `organization` property.
  */
 export type CounterpartCreatePayload = (CounterpartCreateOrganizationPayload | CounterpartCreateIndividualPayload);
+

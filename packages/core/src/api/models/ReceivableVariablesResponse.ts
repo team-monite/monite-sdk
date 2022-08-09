@@ -8,3 +8,4 @@
 export type ReceivableVariablesResponse = {
     data: Array<string>;
 };
+

@@ -17,3 +17,4 @@ export type MailboxResponse = {
     mailbox_full_address: string;
     belongs_to_mailbox_domain_id?: string;
 };
+

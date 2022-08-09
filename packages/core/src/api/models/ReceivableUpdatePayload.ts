@@ -9,3 +9,4 @@ import type { UpdateQuotePayload } from './UpdateQuotePayload';
  * An abstract which provides interfaces for managing polymorphic schemas
  */
 export type ReceivableUpdatePayload = (UpdateQuotePayload | UpdateInvoicePayload);
+

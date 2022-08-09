@@ -11,3 +11,4 @@ export type VatClassRequest = {
     value: number;
     country: AllowedCountriesCodes;
 };
+

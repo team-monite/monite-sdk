@@ -15,4 +15,5 @@ export enum ReceivablesStatusEnum {
     UNCOLLECTIBLE = 'uncollectible',
     CANCELED = 'canceled',
     DELETED = 'deleted',
+    RECURRING = 'recurring',
 }

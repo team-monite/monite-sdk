@@ -14,3 +14,4 @@ export type SystemTemplateDataSchema = {
      */
     available_templates: Array<TemplateDataSchema>;
 };
+

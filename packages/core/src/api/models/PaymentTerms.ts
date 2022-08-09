@@ -12,3 +12,4 @@ export type PaymentTerms = {
     term_1?: PaymentTermDiscountWithDate;
     term_2?: PaymentTermDiscountWithDate;
 };
+

@@ -56,6 +56,30 @@
       "appliedPolicy": "Applied policy",
       "amount": "Amount",
       "addedBy": "Added by"
+    },
+    "tabs": {
+      "document": "Document",
+      "payment": "Payment",
+      "status": "Status",
+      "history": "History"
+    },
+    "tabPanels": {
+      "document": "Document details",
+      "payment": "Payment details",
+      "status": "Status",
+      "history": "Comments"
+    },
+    "details": {
+      "suppliersName": "Suppliers name",
+      "invoiceNumber": "Invoice Number",
+      "invoiceDate": "Invoice date",
+      "suggestedPaymentDate": "Suggested payment date",
+      "dueDate": "Due date",
+      "total": "Total",
+      "submittedBy": "Submitted by",
+      "tags": "Tags",
+      "iban": "IBAN",
+      "bic": "BIC"
     }
   },
   "counterparts": {

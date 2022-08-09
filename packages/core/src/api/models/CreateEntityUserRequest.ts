@@ -5,18 +5,16 @@
 import type { EntityInfoSchema } from './EntityInfoSchema';
 
 export type CreateEntityUserRequest = {
+    login: string;
+    info?: EntityInfoSchema;
     /**
      * UUID of the role assigned to this entity user
      */
     role_id?: string;
     /**
-     * Email, phone or login
-     */
-    login: string;
-    /**
      * First name
      */
-    first_name?: string;
+    first_name: string;
     /**
      * Last name
      */
@@ -25,8 +23,5 @@ export type CreateEntityUserRequest = {
      * Title
      */
     title?: string;
-    /**
-     * Additional information about an entity user
-     */
-    info?: EntityInfoSchema;
 };
+

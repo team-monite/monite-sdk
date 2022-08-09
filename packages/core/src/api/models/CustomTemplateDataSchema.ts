@@ -32,3 +32,4 @@ export type CustomTemplateDataSchema = {
      */
     updated_at: string;
 };
+

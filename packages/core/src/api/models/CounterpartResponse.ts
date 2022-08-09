@@ -11,3 +11,4 @@ import type { CounterpartOrganizationResponse } from './CounterpartOrganizationR
  * [SME](https://monite.stoplight.io/docs/api-docs/ZG9jOjQyMDM0NzMx-glossary#sme).
  */
 export type CounterpartResponse = (CounterpartIndividualResponse | CounterpartOrganizationResponse);
+

@@ -7,3 +7,4 @@ export type CurrencyExchangeSchema = {
     rate: number;
     total: number;
 };
+

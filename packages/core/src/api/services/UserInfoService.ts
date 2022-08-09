@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Body_add_entity_user_userpic_info_userpic_put } from '../models/Body_add_entity_user_userpic_info_userpic_put';
+// import type { Body_add_entity_user_userpic_info_userpic_put } from '../models/Body_add_entity_user_userpic_info_userpic_put';
 import type { EntityUserResponse } from '../models/EntityUserResponse';
 import type { FileSchema } from '../models/FileSchema';
 

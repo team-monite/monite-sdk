@@ -31,3 +31,4 @@ export type CounterpartIndividualResponse = {
     created_automatically?: boolean;
     individual: CounterpartIndividual;
 };
+

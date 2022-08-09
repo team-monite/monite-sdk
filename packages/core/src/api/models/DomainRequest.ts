@@ -11,3 +11,4 @@ export type DomainRequest = {
      */
     provider?: EmailServiceProviderEnum;
 };
+

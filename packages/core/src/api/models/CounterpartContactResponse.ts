@@ -39,3 +39,4 @@ export type CounterpartContactResponse = {
     id: string;
     counterpart_id: string;
 };
+

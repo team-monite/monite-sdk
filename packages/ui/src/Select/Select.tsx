@@ -51,7 +51,7 @@ const CreateInput = styled.input`
   }
 `;
 
-type Option = {
+export type Option = {
   value: string;
   label: string;
   icon?: string;

@@ -8,7 +8,9 @@ import type { FileSchema } from './FileSchema';
 import type { OcrRecognitionResponse } from './OcrRecognitionResponse';
 import type { PayableOriginEnum } from './PayableOriginEnum';
 import type { PayableStateEnum } from './PayableStateEnum';
+import type { PaymentTermsCreatePayload } from './PaymentTermsCreatePayload';
 import type { SourceOfPayableDataEnum } from './SourceOfPayableDataEnum';
+import type { SuggestedPaymentTerm } from './SuggestedPaymentTerm';
 import type { TagReadSchema } from './TagReadSchema';
 
 /**
@@ -47,6 +49,14 @@ export type PayableResponseSchema = {
      * The date by which the payable must be paid, in the YYYY-MM-DD format. If the payable specifies payment terms with early payment discounts, this is the final payment date.
      */
     due_date?: string;
+    /**
+     * The number of days to pay with potential discount for options shorter than due_date
+     */
+    payment_terms?: PaymentTermsCreatePayload;
+    /**
+     * The suggested date and corresponding discount in which payable could be paid. The date is in the YYYY-MM-DD format. The discount is calculated as X * (10^-4) - for example, 100 is 1%, 25 is 0,25%, 10000 is 100 %. Date varies depending on the payment terms and may even be equal to the due date with discount 0.
+     */
+    suggested_payment_term?: SuggestedPaymentTerm;
     /**
      * The date when the payable was issued, in the YYYY-MM-DD format.
      */
@@ -99,4 +109,9 @@ export type PayableResponseSchema = {
      * The name of an existing workflow (approval policy) that applies to this payable, if any. A workflow is applied if the payable matches the workflow trigger conditions.
      */
     applied_policy?: string;
+    /**
+     * A unique invoice number assigned by the invoice issuer for payment tracking purposes. This is different from `id` which is an internal ID created automatically by Monite.
+     */
+    document_id?: string;
 };
+

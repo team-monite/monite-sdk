@@ -14,4 +14,6 @@ export type UpdateInvoice = {
      */
     memo?: string;
     payment_terms_id?: string;
+    payment_reminder_id?: string;
 };
+
