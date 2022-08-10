@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
-
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
+
 import { ReceivableResponse } from '@monite/js-sdk';
 import {
   Avatar,
@@ -79,7 +79,7 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
 
   return (
     <div>
-      <Text textSize="h3" mt="44px" align="center">
+      <Text textSize="h3" align="center">
         Continue with your bank account
       </Text>
       <Routes>

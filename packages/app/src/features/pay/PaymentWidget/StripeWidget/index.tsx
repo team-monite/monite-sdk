@@ -5,6 +5,8 @@ import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 import { Theme } from '@monite/ui';
 
+import NavHeader from '../NavHeader';
+
 let stripePromise: Promise<Stripe | null> | null = null;
 
 type StripeFormProps = {
@@ -14,6 +16,7 @@ type StripeFormProps = {
   onFinish?: (result: any) => void;
   returnUrl?: string;
   stripeEnabled?: boolean;
+  navButton?: boolean;
 };
 
 const StripeForm = ({
@@ -22,6 +25,7 @@ const StripeForm = ({
   onFinish,
   price,
   fee,
+  navButton,
 }: StripeFormProps) => {
   const theme = useTheme<Theme>();
 
@@ -70,15 +74,18 @@ const StripeForm = ({
   return (
     <>
       {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm
-            clientSecret={clientSecret}
-            returnUrl={returnUrl}
-            onFinish={onFinish}
-            price={price}
-            fee={fee}
-          />
-        </Elements>
+        <>
+          {navButton && <NavHeader />}
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm
+              clientSecret={clientSecret}
+              returnUrl={returnUrl}
+              onFinish={onFinish}
+              price={price}
+              fee={fee}
+            />
+          </Elements>
+        </>
       )}
     </>
   );

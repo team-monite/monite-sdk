@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import { ReceivableResponse } from '@monite/js-sdk';
-import { CurrencyEnum } from '@monite/js-sdk';
-import { useComponentsContext, Card } from '@monite/react-kit';
+import { ReceivableResponse, CurrencyEnum } from '@monite/js-sdk';
+import { useComponentsContext } from '@monite/react-kit';
+import { Card } from '@monite/ui';
 
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
@@ -30,7 +30,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const {
     object: { id },
     providers,
-    paymentMethods = ['bank', 'card'], // TODO: mockData
+    paymentMethods = ['card', 'others'], // TODO: mockData
   } = paymentData;
 
   const stripeClientSecret = providers.find(
@@ -64,7 +64,10 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   return (
     <Card shadow p="32px" className={styles.card}>
       <Routes>
-        <Route path="/" element={<SelectPaymentMethod />} />
+        <Route
+          path="/"
+          element={<SelectPaymentMethod paymentMethods={paymentMethods} />}
+        />
         <Route
           path={'card/*'}
           element={
@@ -74,6 +77,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 clientSecret={stripeClientSecret}
                 {...props}
                 price={receivableData?.total_amount}
+                fee={300}
+                navButton={paymentMethods.length > 1}
               />
             )
           }
