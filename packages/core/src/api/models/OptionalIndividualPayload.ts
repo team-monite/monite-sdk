@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CounterpartType } from './CounterpartType';
 import type { OptionalCounterpartIndividual } from './OptionalCounterpartIndividual';
 
 /**
@@ -12,6 +11,19 @@ export type OptionalIndividualPayload = {
     /**
      * Must be "individual".
      */
-    type: CounterpartType;
+    type: OptionalIndividualPayload.type;
     individual: OptionalCounterpartIndividual;
 };
+
+export namespace OptionalIndividualPayload {
+
+    /**
+     * Must be "individual".
+     */
+    export enum type {
+        INDIVIDUAL = 'individual',
+    }
+
+
+}
+

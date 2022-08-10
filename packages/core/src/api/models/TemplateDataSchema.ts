@@ -16,3 +16,4 @@ export type TemplateDataSchema = {
      */
     body_template: string;
 };
+

@@ -11,3 +11,4 @@ import type { UpdateQuote } from './UpdateQuote';
 export type UpdateQuotePayload = {
     quote: UpdateQuote;
 };
+

@@ -9,3 +9,4 @@ export type WebhookSettingsResponse = {
     object_type: ObjectType;
     url: string;
 };
+

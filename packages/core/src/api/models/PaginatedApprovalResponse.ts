@@ -9,3 +9,4 @@ export type PaginatedApprovalResponse = {
     next_pagination_token?: string;
     prev_pagination_token?: string;
 };
+

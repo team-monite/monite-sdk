@@ -27,3 +27,4 @@ export type OptionalIndividualSchema = {
      */
     title?: string;
 };
+

@@ -6,3 +6,4 @@ export type UpdateTodoTask = {
     mute?: boolean;
     viewed?: boolean;
 };
+

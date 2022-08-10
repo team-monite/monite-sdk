@@ -42,3 +42,4 @@ export type CounterpartOrganization = {
      */
     contacts: Array<CreateCounterpartContactPayload>;
 };
+

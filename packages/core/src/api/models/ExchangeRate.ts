@@ -7,3 +7,4 @@ export type ExchangeRate = {
     to: string;
     rate: number;
 };
+

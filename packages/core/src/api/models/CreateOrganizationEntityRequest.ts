@@ -6,7 +6,7 @@ import type { EntityAddressSchema } from './EntityAddressSchema';
 import type { OrganizationSchema } from './OrganizationSchema';
 
 /**
- * An interface to flatten schema's field
+ * A base for an entity request schema
  */
 export type CreateOrganizationEntityRequest = {
     /**
@@ -17,10 +17,6 @@ export type CreateOrganizationEntityRequest = {
      * An official email address of the entity
      */
     email: string;
-    /**
-     * An ID used by a Partner in their systems to identify this resource
-     */
-    partner_reference?: string;
     /**
      * A phone number of the entity
      */
@@ -46,3 +42,4 @@ export namespace CreateOrganizationEntityRequest {
 
 
 }
+

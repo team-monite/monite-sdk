@@ -27,3 +27,4 @@ export type IndividualSchema = {
      */
     title?: string;
 };
+

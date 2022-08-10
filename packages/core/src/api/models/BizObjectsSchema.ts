@@ -10,3 +10,4 @@ export type BizObjectsSchema = {
      */
     objects?: Array<RootSchema>;
 };
+

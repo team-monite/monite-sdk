@@ -11,3 +11,4 @@ export type MailboxDomainRequest = {
     related_object_type: ObjectTypeEnum;
     mailbox_full_address: string;
 };
+

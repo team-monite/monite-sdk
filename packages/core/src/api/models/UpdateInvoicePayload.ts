@@ -11,3 +11,4 @@ import type { UpdateInvoice } from './UpdateInvoice';
 export type UpdateInvoicePayload = {
     invoice: UpdateInvoice;
 };
+

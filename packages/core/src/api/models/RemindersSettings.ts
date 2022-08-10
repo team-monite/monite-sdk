@@ -7,5 +7,6 @@ export type RemindersSettings = {
     /**
      * Counterparts UUID's for which reminders will be turned off
      */
-    excluded_counterparts?: Array<string>;
+    excluded_counterpart_ids: Array<string>;
 };
+

@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { api__schemas__accounts_receivables__receivables__LineItem } from './api__schemas__accounts_receivables__receivables__LineItem';
 import type { CurrencyEnum } from './CurrencyEnum';
 import type { EntityBankAccountRequest } from './EntityBankAccountRequest';
+import type { LineItem } from './LineItem';
 
 export type ReceivableFacadeCreateInvoicePayload = {
     /**
@@ -12,7 +12,7 @@ export type ReceivableFacadeCreateInvoicePayload = {
      */
     type: ReceivableFacadeCreateInvoicePayload.type;
     currency: CurrencyEnum;
-    line_items: Array<api__schemas__accounts_receivables__receivables__LineItem>;
+    line_items: Array<LineItem>;
     counterpart_id: string;
     commercial_condition_description?: string;
     entity_bank_account?: EntityBankAccountRequest;
@@ -23,6 +23,7 @@ export type ReceivableFacadeCreateInvoicePayload = {
      */
     memo?: string;
     payment_terms_id?: string;
+    payment_reminder_id?: string;
 };
 
 export namespace ReceivableFacadeCreateInvoicePayload {
@@ -36,3 +37,4 @@ export namespace ReceivableFacadeCreateInvoicePayload {
 
 
 }
+

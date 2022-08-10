@@ -18,3 +18,4 @@ export type RolePaginationResponse = {
      */
     next_pagination_token?: string;
 };
+

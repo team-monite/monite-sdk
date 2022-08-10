@@ -37,3 +37,4 @@ export type OptionalCounterpartUpdateOrganization = {
      */
     registered_address?: CounterpartUpdateAddress;
 };
+

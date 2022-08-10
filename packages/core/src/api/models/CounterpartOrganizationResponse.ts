@@ -31,3 +31,4 @@ export type CounterpartOrganizationResponse = {
     created_automatically?: boolean;
     organization: CounterpartOrganization;
 };
+

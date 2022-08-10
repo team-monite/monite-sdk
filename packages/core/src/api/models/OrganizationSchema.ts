@@ -19,3 +19,4 @@ export type OrganizationSchema = {
      */
     legal_entity_id?: string;
 };
+

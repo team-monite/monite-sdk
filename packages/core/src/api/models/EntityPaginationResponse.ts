@@ -18,3 +18,4 @@ export type EntityPaginationResponse = {
      */
     next_pagination_token?: string;
 };
+

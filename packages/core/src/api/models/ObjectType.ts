@@ -14,6 +14,7 @@ export enum ObjectType {
     COMMENT = 'comment',
     EXPORT = 'export',
     ENTITY = 'entity',
+    ENTITY_SETTINGS = 'entity_settings',
     ENTITY_TOKEN = 'entity_token',
     ENTITY_USER = 'entity_user',
     ENTITY_USER_TOKEN = 'entity_user_token',
@@ -32,5 +33,7 @@ export enum ObjectType {
     COUNTERPART_CONTACT_PERSON = 'counterpart_contact_person',
     WEBHOOK = 'webhook',
     AUDIT_TRAIL = 'audit_trail',
+    PAYMENT_REMINDER = 'payment_reminder',
+    RECURRENCE = 'recurrence',
     TAG = 'tag',
 }

@@ -17,3 +17,4 @@ export type EntityBankAccountRequest = {
     bank_name: string;
     display_name?: string;
 };
+

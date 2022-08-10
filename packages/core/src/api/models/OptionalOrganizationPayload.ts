@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CounterpartType } from './CounterpartType';
 import type { OptionalCounterpartUpdateOrganization } from './OptionalCounterpartUpdateOrganization';
 
 /**
@@ -12,6 +11,19 @@ export type OptionalOrganizationPayload = {
     /**
      * Must be "organization".
      */
-    type: CounterpartType;
+    type: OptionalOrganizationPayload.type;
     organization: OptionalCounterpartUpdateOrganization;
 };
+
+export namespace OptionalOrganizationPayload {
+
+    /**
+     * Must be "organization".
+     */
+    export enum type {
+        ORGANIZATION = 'organization',
+    }
+
+
+}
+

@@ -9,3 +9,4 @@ export type ReceivableSendRequest = {
     subject_text: string;
     body_text: string;
 };
+

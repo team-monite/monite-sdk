@@ -9,3 +9,4 @@ export type CounterpartBankAccountResponse = {
     id: string;
     counterpart_id: string;
 };
+

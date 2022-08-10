@@ -6,3 +6,4 @@ export type ExportObjectSchema = {
     name: string;
     statuses: Array<string>;
 };
+

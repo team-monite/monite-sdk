@@ -7,3 +7,4 @@ import type { ReceivableFacadeCreateInvoicePayload } from './ReceivableFacadeCre
 import type { ReceivableFacadeCreateQuotePayload } from './ReceivableFacadeCreateQuotePayload';
 
 export type ReceivableFacadeCreatePayload = (ReceivableFacadeCreateQuotePayload | ReceivableFacadeCreateInvoicePayload | ReceivableCreateBasedOnPayload);
+

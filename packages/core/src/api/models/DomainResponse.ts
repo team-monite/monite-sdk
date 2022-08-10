@@ -13,3 +13,4 @@ export type DomainResponse = {
     provider: string;
     dns_records: any;
 };
+

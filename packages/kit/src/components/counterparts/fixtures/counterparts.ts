@@ -75,7 +75,7 @@ const data: Counterpart[] = [
     updated_at: '2022-05-20T14:43:06.671745+00:00',
     type: CounterpartType.ORGANIZATION,
     organization: {
-      legal_name: 'SMART Agency',
+      legal_name: 'SMART Agency 1',
       vat_number: 'vat_number1',
       is_vendor: true,
       is_customer: false,

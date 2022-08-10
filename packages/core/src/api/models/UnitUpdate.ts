@@ -6,3 +6,4 @@ export type UnitUpdate = {
     name?: string;
     description?: string;
 };
+

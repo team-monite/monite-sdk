@@ -23,7 +23,6 @@ export namespace CommonSchema {
     export enum object_type {
         COMMENT = 'comment',
         ENTITY_USER = 'entity_user',
-        ENTITY_USER_TOKEN = 'entity_user_token',
         ENTITY = 'entity',
         ENTITY_BANK_ACCOUNT = 'entity_bank_account',
         EXPORT = 'export',
@@ -37,3 +36,4 @@ export namespace CommonSchema {
 
 
 }
+

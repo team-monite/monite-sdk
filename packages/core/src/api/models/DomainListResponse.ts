@@ -7,3 +7,4 @@ import type { DomainResponse } from './DomainResponse';
 export type DomainListResponse = {
     data: Array<DomainResponse>;
 };
+

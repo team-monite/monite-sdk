@@ -20,3 +20,4 @@ export type AddCustomTemplateSchema = {
      */
     template_name: string;
 };
+

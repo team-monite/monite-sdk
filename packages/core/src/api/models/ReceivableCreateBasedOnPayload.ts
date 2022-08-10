@@ -8,3 +8,4 @@ export type ReceivableCreateBasedOnPayload = {
      */
     based_on: string;
 };
+

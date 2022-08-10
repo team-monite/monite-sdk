@@ -15,3 +15,4 @@ export type VerifyResponse = {
     status: string;
     provider: string;
 };
+

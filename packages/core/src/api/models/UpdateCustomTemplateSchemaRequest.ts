@@ -16,3 +16,4 @@ export type UpdateCustomTemplateSchemaRequest = {
      */
     body_template?: string;
 };
+

@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PayableResponseSchema } from './PayableResponseSchema';
+import type { ReceivableResponse } from './ReceivableResponse';
 
 /**
- * A paginated list of payables.
+ * A paginated list of receivables
  */
 export type PaginationResponse = {
-    data: Array<PayableResponseSchema>;
+    data: Array<ReceivableResponse>;
     /**
      * optional querystring with pagination parameters, null if there is no page
      */
@@ -18,3 +18,4 @@ export type PaginationResponse = {
      */
     next_pagination_token?: string;
 };
+

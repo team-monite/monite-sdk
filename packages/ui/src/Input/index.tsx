@@ -97,7 +97,7 @@ const Input = styled.input<InputProps>`
 export interface InputProps
   extends React.AllHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   as?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   isInvalid?: boolean;

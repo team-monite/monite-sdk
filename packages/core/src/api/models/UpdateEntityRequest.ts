@@ -9,3 +9,4 @@ import type { UpdateOrganizationEntityRequest } from './UpdateOrganizationEntity
  * A schema for a request to update an entity
  */
 export type UpdateEntityRequest = (UpdateOrganizationEntityRequest | UpdateIndividualEntityRequest);
+

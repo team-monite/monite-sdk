@@ -45,3 +45,4 @@ export type OptionalCounterpartIndividual = {
      */
     residential_address?: CounterpartUpdateAddress;
 };
+

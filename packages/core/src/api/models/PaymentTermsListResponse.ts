@@ -7,3 +7,4 @@ import type { PaymentTermsResponse } from './PaymentTermsResponse';
 export type PaymentTermsListResponse = {
     data?: Array<PaymentTermsResponse>;
 };
+

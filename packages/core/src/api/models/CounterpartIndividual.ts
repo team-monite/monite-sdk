@@ -45,3 +45,4 @@ export type CounterpartIndividual = {
      */
     residential_address: CounterpartAddress;
 };
+

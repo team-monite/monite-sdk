@@ -24,3 +24,4 @@ export type ReceivableCounterpartContact = {
      */
     title?: string;
 };
+

@@ -9,3 +9,4 @@ export type ReceivablePreviewRequest = {
     subject_text: string;
     body_text: string;
 };
+

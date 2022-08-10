@@ -47,6 +47,10 @@ export type QuoteResponsePayload = {
     entity_address: EntityAddressSchema;
     entity: (EntityOrganization | EntityIndividual);
     /**
+     * The entity user who created this document.
+     */
+    entity_user_id?: string;
+    /**
      * Unique ID of the counterpart.
      */
     counterpart_id: string;
@@ -93,6 +97,11 @@ export type QuoteResponsePayload = {
      * A note with additional information for a receivable
      */
     memo?: string;
+    payment_reminder_id?: string;
+    /**
+     * Stores an unique ID of a recurrence if the receivable is in a recurring status
+     */
+    recurrence_id?: string;
 };
 
 export namespace QuoteResponsePayload {
@@ -106,3 +115,4 @@ export namespace QuoteResponsePayload {
 
 
 }
+

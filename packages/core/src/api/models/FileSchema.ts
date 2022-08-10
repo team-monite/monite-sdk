@@ -49,5 +49,9 @@ export type FileSchema = {
      * Preview images generated for this file. There can be multiple images with different sizes.
      */
     previews?: Array<PreviewSchema>;
+    /**
+     * If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.
+     */
     pages?: Array<PageSchema>;
 };
+

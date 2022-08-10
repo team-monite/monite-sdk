@@ -9,3 +9,4 @@ import type { CreateOrganizationEntityRequest } from './CreateOrganizationEntity
  * A schema for a request to create an entity of different types
  */
 export type CreateEntityRequest = (CreateOrganizationEntityRequest | CreateIndividualEntityRequest);
+
