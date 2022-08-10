@@ -62,7 +62,7 @@ type TableRowProps = {
   dropdownActions?: () => React.ReactNode;
   onClick?: () => void;
 };
-
+// TODO handle buttonActions and delete component
 const TableRow = ({
   children,
   inactive,

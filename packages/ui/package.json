@@ -13,7 +13,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
-    "storybook": "start-storybook -p 6006 --no-manager-cache",
+    "storybook": "start-storybook -p 6007 --no-manager-cache",
     "build-storybook": "build-storybook",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "chromatic": "chromatic"
@@ -47,6 +47,7 @@
     "@types/react-datepicker": "^4.4.2",
     "@types/rebass": "^4.0.10",
     "date-fns": "^2.28.0",
+    "rc-table": "~7.26.0",
     "react-datepicker": "^4.8.0",
     "react-select": "^5.2.2",
     "react-tabs": "~4.2.1",

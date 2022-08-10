@@ -1,8 +1,7 @@
 import Table from '.';
-import Row from './Row';
-import Cell from './Cell';
-import DropdownItem from '../Dropdown/MenuItem';
 import Button from '../Button';
+import Select from '../Select/Select';
+import DropdownItem from '../Dropdown/MenuItem';
 
 const Story = {
   title: 'Data Display/Table',
@@ -11,55 +10,85 @@ const Story = {
 export default Story;
 
 export const DefaultTable = () => (
-  <div style={{ maxWidth: 400 }}>
-    <Table>
-      <Row>
-        <Cell forHeader>Col1</Cell>
-        <Cell forHeader>Col2</Cell>
-        <Cell forHeader>Col3</Cell>
-      </Row>
-      <Row
-        dropdownActions={() => (
-          <>
-            <DropdownItem>Link1</DropdownItem>
-            <DropdownItem>Link2</DropdownItem>
-          </>
-        )}
-      >
-        <Cell>Cell1</Cell>
-        <Cell>Cell2</Cell>
-        <Cell>Cell3</Cell>
-      </Row>
-      <Row
-        buttonActions={() => (
-          <>
-            <Button>Action1</Button>
-            <Button>Action2</Button>
-          </>
-        )}
-      >
-        <Cell>Cell4</Cell>
-        <Cell>Cell5</Cell>
-        <Cell>Cell6</Cell>
-      </Row>
-      <Row
-        dropdownActions={() => (
-          <>
-            <DropdownItem>test</DropdownItem>
-          </>
-        )}
-        buttonActions={() => (
-          <>
-            <Button variant={'text'} color="grey" hover="hoverAction">
-              Test
-            </Button>
-          </>
-        )}
-      >
-        <Cell>Cell7</Cell>
-        <Cell>Cell8</Cell>
-        <Cell>Cell9</Cell>
-      </Row>
-    </Table>
+  <div style={{ maxWidth: 500 }}>
+    <Table
+      columns={[
+        {
+          title: 'Col1',
+          dataIndex: 'col1',
+          key: 'col1',
+        },
+        {
+          title: 'Col2',
+          dataIndex: 'col2',
+          key: 'col2',
+        },
+        {
+          title: 'Col3',
+          dataIndex: 'col3',
+          key: 'col3',
+        },
+        {
+          title: '',
+          dataIndex: 'action',
+          key: 'action',
+          render: (value) => {
+            switch (value.type) {
+              case 'select':
+                return (
+                  <Select
+                    options={value.options}
+                    isFilter
+                    placeholder="Action"
+                  />
+                );
+              case 'button':
+                return <Button>{value.value}</Button>;
+            }
+          },
+        },
+      ]}
+      data={[
+        {
+          id: 1,
+          col1: 'Cell11',
+          col2: 'Cell12',
+          col3: 'Cell13',
+          action: {
+            type: 'select',
+            options: [
+              { label: 'link1', value: 1 },
+              { label: 'link2', value: 2 },
+            ],
+          },
+        },
+        {
+          id: 2,
+          col1: 'Cell21',
+          col2: 'Cell22',
+          col3: 'Cell23',
+          action: {
+            type: 'button',
+            value: 'Action1',
+          },
+        },
+        {
+          id: 3,
+          col1: 'Cell31',
+          col2: 'Cell32',
+          col3: 'Cell33',
+          action: {
+            type: 'button',
+            value: 'Action1',
+          },
+        },
+      ]}
+      dropdownActions={
+        <>
+          <DropdownItem onClick={() => {}}>Edit</DropdownItem>
+          <DropdownItem onClick={() => {}}>Delete</DropdownItem>
+        </>
+      }
+    />
   </div>
 );
