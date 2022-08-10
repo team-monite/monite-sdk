@@ -31,7 +31,8 @@ const StyledListItem = styled.div(
   padding: 11px;
 
   &:hover {
-    background-color: ${theme.colors.lightGrey3};
+    background-color: ${theme.colors.black};
+    color:${theme.colors.white};
     cursor: pointer;
   }
 `
@@ -52,6 +53,9 @@ const StyledIconBlock = styled.div(
   justify-content: center;
   align-items: center;
   margin-right: 8px;
+  &:hover {
+    background-color: ${theme.colors.white};
+  }
 `
 );
 
