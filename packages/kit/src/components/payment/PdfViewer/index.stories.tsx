@@ -1,4 +1,3 @@
-import React from 'react';
 import samplePDF from './example.pdf';
 
 import PdfViewer from './PdfViewer';

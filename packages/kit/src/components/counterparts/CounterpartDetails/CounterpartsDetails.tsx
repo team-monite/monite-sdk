@@ -87,6 +87,7 @@ const CounterpartsDetails = ({
           contacts.length &&
           contacts.map(({ last_name, first_name, address, email, phone }) => (
             <CounterpartsContact
+              key={email}
               fullName={getFullName(first_name, last_name)}
               address={getAddress(address)}
               email={email}

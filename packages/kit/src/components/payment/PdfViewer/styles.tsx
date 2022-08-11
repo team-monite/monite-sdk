@@ -7,7 +7,3 @@ export const ControlPanel = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-
-export const Link = styled.a`
-  height: 24px;
-`;

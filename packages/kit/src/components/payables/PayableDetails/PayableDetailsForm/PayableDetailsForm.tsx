@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
@@ -71,17 +71,15 @@ const getCounterparts = (counterparts: Counterpart[]) =>
       : '',
   }));
 
-const PayableDetailsForm = ({
-  onSubmit,
-  payable,
-  tags,
-  counterparts,
-}: PayablesDetailsFormProps) => {
+const PayableDetailsForm = forwardRef<
+  HTMLFormElement,
+  PayablesDetailsFormProps
+>(({ onSubmit, payable, tags, counterparts }, ref) => {
   const { t } = useTranslation();
   const { control, handleSubmit } = useForm<PayableDetailsFormFields>();
 
   return (
-    <form id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
+    <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
       <FormSection>
         <FormTitle textSize={'bold'}>
           {t('payables:tabPanels.document')}
@@ -256,6 +254,6 @@ const PayableDetailsForm = ({
       </FormSection>
     </form>
   );
-};
+});
 
 export default PayableDetailsForm;

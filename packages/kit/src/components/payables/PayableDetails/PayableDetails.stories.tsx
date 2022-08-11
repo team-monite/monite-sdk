@@ -1,13 +1,14 @@
 import PayableDetails from './PayableDetails';
-import { Box } from '@monite/ui';
 import payables from '../fixtures/list';
 import counterparts from '../../counterparts/fixtures/counterparts';
 import { TagReadSchema } from '@monite/js-sdk';
+import { Box } from '@monite/ui';
 
 const Story = {
   title: 'Payable Details',
   component: PayableDetails,
 };
+
 export default Story;
 
 const tags: TagReadSchema[] = [
@@ -22,7 +23,7 @@ const tags: TagReadSchema[] = [
 ];
 
 export const DefaultForm = () => (
-  <Box sx={{ width: 556, backgroundColor: '#F3F3F3', padding: 20 }}>
+  <Box sx={{ width: '100%', height: '500px' }}>
     <PayableDetails
       tags={tags}
       counterparts={counterparts}
