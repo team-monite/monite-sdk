@@ -22,7 +22,7 @@ export { default as Multiselect } from './Multiselect';
 export { default as Tooltip } from './Tooltip';
 export { default as Accordion } from './Accordion';
 export { Box, Flex } from './Box';
-export { default as Table } from './Table';
+export { Table, HeadCellSort } from './Table';
 export { Sidebar, SidebarLayout } from './Sidebar';
 export { default as FlexTable } from './FlexTable';
 export { default as Avatar } from './Avatar/Avatar';

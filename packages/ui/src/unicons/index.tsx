@@ -29,7 +29,7 @@ export { default as UArrowLeft } from './icons/UArrowLeft';
 export { default as UArrowRight } from './icons/UArrowRight';
 // export { default as UArrowToBottom } from './icons/UArrowToBottom';
 // export { default as UArrowToRight } from './icons/UArrowToRight';
-// export { default as UArrowUp } from './icons/UArrowUp';
+export { default as UArrowUp } from './icons/UArrowUp';
 // export { default as UArrowUpLeft } from './icons/UArrowUpLeft';
 // export { default as UArrowUpRight } from './icons/UArrowUpRight';
 // export { default as UArrowsH } from './icons/UArrowsH';
