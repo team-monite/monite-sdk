@@ -28,12 +28,12 @@ const StyledTable = styled(RCTable)`
 
     padding: 20px 16px;
 
-    &:first-child {
+    &:first-of-type {
       border-bottom-left-radius: 4px;
       border-top-left-radius: 4px;
     }
 
-    &:last-child {
+    &:last-of-type {
       padding-right: 16px;
 
       border-bottom-right-radius: 4px;
@@ -53,13 +53,13 @@ const StyledTable = styled(RCTable)`
 
     padding: 20px 16px;
 
-    &:first-child {
+    &:first-of-type {
       padding-left: 16px;
       border-bottom-left-radius: 4px;
       border-top-left-radius: 4px;
     }
 
-    &:last-child {
+    &:last-of-type {
       padding-right: 16px;
       border-bottom-right-radius: 4px;
       border-top-right-radius: 4px;
@@ -160,7 +160,6 @@ export const Table = ({
           : columns
       }
       {...restProps}
-      scroll={{ x: 'max-content' }}
     />
   );
 };

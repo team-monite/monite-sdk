@@ -3,6 +3,7 @@ import { Text } from '@monite/react-kit';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`
+  flex: 0 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
