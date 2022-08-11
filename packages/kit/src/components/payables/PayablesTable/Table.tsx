@@ -1,13 +1,13 @@
 import React from 'react';
 import { Avatar, DropdownItem, Table, Tag, TagColorType } from '@monite/ui';
-import { PayableResponseSchema, PayableStateEnum } from '@monite/js-sdk';
+import { PayableStateEnum, ReceivableResponse } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
 
 export interface PayablesTableProps {
-  data?: PayableResponseSchema[];
+  data?: ReceivableResponse[];
 }
 
 const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {

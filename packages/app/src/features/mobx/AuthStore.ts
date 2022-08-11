@@ -1,4 +1,6 @@
-import { makeObservable, action } from 'mobx';
+import { action, makeObservable } from 'mobx';
+import { nanoid } from 'nanoid';
+import { GrantType } from '@monite/js-sdk';
 
 import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
 
@@ -44,13 +46,15 @@ class AuthStore extends BaseStore {
 
     let res;
     try {
-      res = await this.rootStore.monite?.api.profile.getInfo({
-        openapiConfig: {
-          HEADERS: {
-            'x-api-key': data.email,
-          },
-        },
-      });
+      res = await this.rootStore.monite?.api.auth.getAuthToken(
+        nanoid(),
+        'white-label',
+        {
+          grant_type: GrantType.CLIENT_CREDENTIALS,
+          client_id: data.email,
+          client_secret: data.password,
+        }
+      );
     } catch (err) {
       res = null;
     }
@@ -61,8 +65,7 @@ class AuthStore extends BaseStore {
       };
     }
 
-    // TODO: replace data.email with the real API token here
-    this.processAuthToken(data.email);
+    this.processAuthToken(res.access_token);
 
     return {
       success: true,
