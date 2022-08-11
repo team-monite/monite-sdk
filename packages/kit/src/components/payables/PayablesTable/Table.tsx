@@ -1,5 +1,12 @@
 import React from 'react';
-import { Avatar, DropdownItem, Table, Tag, TagColorType } from '@monite/ui';
+import {
+  Avatar,
+  DropdownItem,
+  Table,
+  HeadCellSort,
+  Tag,
+  TagColorType,
+} from '@monite/ui';
 import { PayableStateEnum, ReceivableResponse } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -52,7 +59,12 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
               value ? value.split('-').reverse().join('.') : '',
           },
           {
-            title: t('payables:columns.dueDate'),
+            title: (
+              <HeadCellSort
+                title={t('payables:columns.dueDate')}
+                handleChangeOrder={(order) => console.log(order)}
+              />
+            ),
             dataIndex: 'due_date',
             key: 'due_date',
             render: (value: string) =>
@@ -73,7 +85,12 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
             render: (value: string) => value && <Tag>{value}</Tag>,
           },
           {
-            title: t('payables:columns.amount'),
+            title: (
+              <HeadCellSort
+                title={t('payables:columns.amount')}
+                handleChangeOrder={(order) => console.log(order)}
+              />
+            ),
             dataIndex: 'amount',
             key: 'amount',
             render: (value: number | undefined) =>

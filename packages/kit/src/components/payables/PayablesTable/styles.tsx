@@ -29,11 +29,3 @@ export const Table = styled.div`
     white-space: nowrap;
   }
 `;
-
-export const Col = styled.div`
-  width: 0;
-  min-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;

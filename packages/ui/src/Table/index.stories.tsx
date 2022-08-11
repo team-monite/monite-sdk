@@ -1,4 +1,5 @@
-import Table from '.';
+import { Table } from './Table';
+import { HeadCellSort } from './HeadCellSort';
 import Button from '../Button';
 import Select from '../Select/Select';
 import DropdownItem from '../Dropdown/MenuItem';
@@ -19,7 +20,12 @@ export const DefaultTable = () => (
           key: 'col1',
         },
         {
-          title: 'Col2',
+          title: (
+            <HeadCellSort
+              title="Col2"
+              handleChangeOrder={(order) => console.log(order)}
+            />
+          ),
           dataIndex: 'col2',
           key: 'col2',
         },
