@@ -13,6 +13,7 @@ type StripeFormProps = {
   clientSecret: string;
   price: number;
   fee?: number;
+  currency: string;
   onFinish?: (result: any) => void;
   returnUrl?: string;
   stripeEnabled?: boolean;
@@ -26,6 +27,7 @@ const StripeForm = ({
   price,
   fee,
   navButton,
+  currency,
 }: StripeFormProps) => {
   const theme = useTheme<Theme>();
 
@@ -83,6 +85,7 @@ const StripeForm = ({
               onFinish={onFinish}
               price={price}
               fee={fee}
+              currency={currency}
             />
           </Elements>
         </>
