@@ -3,7 +3,7 @@ import { OpenAPIConfig } from './OpenAPI';
 import CounterpartsService from './services/CounterpartsService';
 import PayablesService from './services/PayablesService';
 import PaymentService from './services/PaymentService';
-import UserInfoService from './services/UserInfoService';
+import AuthService from './services/AuthService';
 import ReceivableService from './services/ReceivableService';
 import WorkflowsService from './services/WorkflowsService';
 class ApiService {
@@ -11,7 +11,7 @@ class ApiService {
 
   counterparts: CounterpartsService;
   payables: PayablesService;
-  profile: UserInfoService;
+  auth: AuthService;
   receivable: ReceivableService;
   workflows: WorkflowsService;
   payment: PaymentService;
@@ -21,7 +21,7 @@ class ApiService {
 
     this.counterparts = new CounterpartsService({ config });
     this.payables = new PayablesService({ config });
-    this.profile = new UserInfoService({ config });
+    this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
     this.workflows = new WorkflowsService({ config });
     //TODO: temporarily config for gateway

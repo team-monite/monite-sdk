@@ -20,6 +20,7 @@
     "mobx": "~6.6.1",
     "mobx-react-lite": "~3.4.0",
     "mobx-utils": "~6.0.5",
+    "nanoid": "~4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-helmet": "^6.1.0",
