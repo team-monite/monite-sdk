@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  DropdownItem,
-  Table,
-  HeadCellSort,
-  Tag,
-  TagColorType,
-} from '@monite/ui';
+import { Table, HeadCellSort, Tag, TagColorType } from '@monite/ui';
 import { PayableStateEnum, ReceivableResponse } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -40,10 +33,9 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
         rowKey="id"
         columns={[
           {
-            title: t('payables:columns.number'),
-            // TODO: Here should be a short Number instead of the long uuid
-            dataIndex: 'id',
-            key: 'id',
+            title: t('payables:columns.invoice'),
+            dataIndex: 'document_id',
+            key: 'document_id',
           },
           {
             title: t('payables:columns.supplier'),
@@ -52,7 +44,7 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
             key: 'counterpart_name',
           },
           {
-            title: t('payables:columns.issueDate'),
+            title: t('payables:columns.invoiceDate'),
             dataIndex: 'issued_at',
             key: 'issued_at',
             render: (value: string) =>
@@ -62,7 +54,7 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
             title: (
               <HeadCellSort
                 title={t('payables:columns.dueDate')}
-                handleChangeOrder={(order) => console.log(order)}
+                onChangeOrder={(order) => console.log(order)}
               />
             ),
             dataIndex: 'due_date',
@@ -78,17 +70,17 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
               <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
             ),
           },
-          {
-            title: t('payables:columns.appliedPolicy'),
-            dataIndex: 'applied_policy',
-            key: 'applied_policy',
-            render: (value: string) => value && <Tag>{value}</Tag>,
-          },
+          // {
+          //   title: t('payables:columns.appliedPolicy'),
+          //   dataIndex: 'applied_policy',
+          //   key: 'applied_policy',
+          //   render: (value: string) => value && <Tag>{value}</Tag>,
+          // },
           {
             title: (
               <HeadCellSort
                 title={t('payables:columns.amount')}
-                handleChangeOrder={(order) => console.log(order)}
+                onChangeOrder={(order) => console.log(order)}
               />
             ),
             dataIndex: 'amount',
@@ -96,25 +88,21 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
             render: (value: number | undefined) =>
               value ? formatter.format(value) : '',
           },
-          {
-            title: t('payables:columns.addedBy'),
-            // TODO: Here we should use an Avatar with User name instead of user_id
-            dataIndex: 'was_created_by_user_id',
-            key: 'was_created_by_user_id',
-            render: (value: string | undefined) => (
-              <Avatar size={24} textSize="regular">
-                {value}
-              </Avatar>
-            ),
-          },
+          // {
+          //   title: t('payables:columns.addedBy'),
+          //   // TODO: Here we should use an Avatar with User name instead of user_id
+          //   dataIndex: 'was_created_by_user_id',
+          //   key: 'was_created_by_user_id',
+          //   render: (value: string | undefined) => (
+          //     <Avatar size={24} textSize="regular">
+          //       {value}
+          //     </Avatar>
+          //   ),
+          // },
         ]}
         data={data}
-        dropdownActions={
-          <>
-            <DropdownItem onClick={() => {}}>{t('common:edit')}</DropdownItem>
-            <DropdownItem onClick={() => {}}>{t('common:delete')}</DropdownItem>
-          </>
-        }
+        scroll={{ y: 'auto' }}
+        // footer={() => <div>test</div>}
       />
     </Styled.Table>
   );

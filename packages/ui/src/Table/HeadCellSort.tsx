@@ -28,15 +28,15 @@ type Order = 'asc' | 'desc' | null;
 
 interface Props {
   title?: string;
-  handleChangeOrder: (order: Order) => void;
+  onChangeOrder: (order: Order) => void;
 }
 
-export const HeadCellSort = ({ title, handleChangeOrder }: Props) => {
+export const HeadCellSort = ({ title, onChangeOrder }: Props) => {
   // TODO control state outside component
   const [order, setOrder] = useState<Order>(null);
 
   useEffect(() => {
-    handleChangeOrder(order);
+    onChangeOrder(order);
   }, [order]);
 
   const renderArrow = () => {

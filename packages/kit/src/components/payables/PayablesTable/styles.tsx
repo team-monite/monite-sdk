@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Table = styled.div`
+  flex: 1 1 auto;
   font-family: 'Faktum', sans-serif;
 
   * {
@@ -27,5 +28,20 @@ export const Table = styled.div`
     vertical-align: top;
 
     white-space: nowrap;
+  }
+
+  // for fixed header
+  .rc-table,
+  .rc-table-container {
+    height: 100%;
+  }
+
+  .rc-table-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rc-table-body {
+    flex: 1 1 0;
   }
 `;

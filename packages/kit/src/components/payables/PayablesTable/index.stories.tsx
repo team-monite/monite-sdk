@@ -8,7 +8,7 @@ const Story = {
 export default Story;
 
 export const DefaultTable = () => (
-  <>
+  <div style={{ display: 'flex', height: 400 }}>
     <Table data={TestData} />
-  </>
+  </div>
 );

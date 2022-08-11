@@ -23,7 +23,7 @@ export const DefaultTable = () => (
           title: (
             <HeadCellSort
               title="Col2"
-              handleChangeOrder={(order) => console.log(order)}
+              onChangeOrder={(order) => console.log(order)}
             />
           ),
           dataIndex: 'col2',
