@@ -17,6 +17,7 @@ type CheckoutFormProps = {
   onFinish?: (result: any) => void;
   price: number;
   fee?: number;
+  currency: string;
 };
 
 export default function CheckoutForm({
@@ -24,6 +25,7 @@ export default function CheckoutForm({
   price,
   fee,
   returnUrl,
+  currency,
 }: CheckoutFormProps) {
   const { t } = useComponentsContext();
 
@@ -106,7 +108,7 @@ export default function CheckoutForm({
 
   const formatter = new Intl.NumberFormat('de-DE', {
     style: 'currency',
-    currency: 'EUR',
+    currency,
   });
 
   const totalPrice = price + (fee || 0);
