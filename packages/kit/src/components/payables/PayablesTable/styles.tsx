@@ -34,9 +34,6 @@ export const Table = styled.div`
   .rc-table,
   .rc-table-container {
     height: 100%;
-  }
-
-  .rc-table-container {
     display: flex;
     flex-direction: column;
   }
@@ -44,4 +41,11 @@ export const Table = styled.div`
   .rc-table-body {
     flex: 1 1 0;
   }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 16px;
 `;
