@@ -23,12 +23,22 @@ const tags: TagReadSchema[] = [
 ];
 
 export const DefaultForm = () => (
-  <Box sx={{ width: '100%', height: '500px' }}>
+  <Box sx={{ width: '100%' }}>
     <PayableDetails
+      isLoading={false}
       tags={tags}
       counterparts={counterparts}
       payable={payables[0]}
+      onClose={() => {
+        console.log('close');
+      }}
       onSubmit={(values) => {
+        console.log(values);
+      }}
+      onPay={(values) => {
+        console.log(values);
+      }}
+      onSave={(values) => {
         console.log(values);
       }}
     />

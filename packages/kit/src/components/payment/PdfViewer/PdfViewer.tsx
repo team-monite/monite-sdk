@@ -11,8 +11,12 @@ import {
   Flex,
 } from '@monite/ui';
 
+import { pdfjs } from 'react-pdf';
+
 import * as Styled from './styles';
 import styled from '@emotion/styled';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const SCALE_STEP = 0.1; //TODO: Peter will define scale step later
 

@@ -1,31 +1,32 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
-import styled from '@emotion/styled';
 
-import {
-  Input,
-  FormField,
-  DatePicker,
-  Multiselect,
-  Text,
-  Select,
-} from '@monite/ui';
+import { Input, DatePicker, Multiselect, Select } from '@monite/ui';
+
 import {
   PayableResponseSchema,
   TagReadSchema,
   CounterpartResponse as Counterpart,
 } from '@monite/js-sdk';
+
 import {
   convertToMajorUnits,
   getSymbolFromCurrency,
 } from 'core/utils/currency';
+
 import {
   getFullName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from 'components/counterparts/helpers';
-import PayableDetailsFormFields from './types';
+
+import {
+  CurrencyAddon,
+  FormItem,
+  FormSection,
+  FormTitle,
+} from '../PayableDetailsStyle';
 
 export type PayablesDetailsFormProps = {
   onSubmit: (values: PayableDetailsFormFields) => void;
@@ -34,32 +35,24 @@ export type PayablesDetailsFormProps = {
   counterparts?: Counterpart[];
 };
 
-export const FormSection = styled.div`
-  background-color: white;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 40px;
-`;
+type Option = { label: string; value: string };
 
-export const FormItem = styled(FormField)`
-  margin-bottom: 24px;
-`;
+export interface PayableDetailsFormFields {
+  suppliersName: Option;
+  invoiceNumber: string;
+  invoiceDate: string;
+  suggestedPaymentDate: string;
+  dueDate: string;
+  total: number;
+  tags: Option[];
+  iban: string;
+  bic: string;
+}
 
-export const FormTitle = styled(Text)`
-  margin-bottom: 24px;
-`;
+const counterpartsToSelect = (counterparts: Counterpart[] | undefined) => {
+  if (!counterparts) return [];
 
-const CurrencyAddon = styled(Text)`
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  display: flex;
-  justify-content: center;
-  transform: translateY(-50%);
-`;
-
-const getCounterparts = (counterparts: Counterpart[]) =>
-  counterparts?.map((counterpart) => ({
+  return counterparts?.map((counterpart) => ({
     value: counterpart.id,
     label: isIndividualCounterpart(counterpart)
       ? getFullName(
@@ -70,6 +63,16 @@ const getCounterparts = (counterparts: Counterpart[]) =>
       ? counterpart.organization.legal_name
       : '',
   }));
+};
+
+const tagsToSelect = (tags: TagReadSchema[] | undefined) => {
+  if (!tags) return [];
+
+  return tags.map(({ id: value, name: label }) => ({
+    value,
+    label,
+  }));
+};
 
 const PayableDetailsForm = forwardRef<
   HTMLFormElement,
@@ -84,28 +87,27 @@ const PayableDetailsForm = forwardRef<
         <FormTitle textSize={'bold'}>
           {t('payables:tabPanels.document')}
         </FormTitle>
-        {counterparts && payable.counterpart_id && (
-          <FormItem
-            label={t('payables:details.suppliersName')}
-            id="suppliersName"
-            required
-          >
-            <Controller
-              name={'suppliersName'}
-              control={control}
-              defaultValue={{
-                value: payable.counterpart_id,
-                label: payable.counterpart_name || '',
-              }}
-              render={({ field: { ref, ...restField } }) => (
-                <Select
-                  options={getCounterparts(counterparts)}
-                  {...restField}
-                />
-              )}
-            />
-          </FormItem>
-        )}
+        <FormItem
+          label={t('payables:details.suppliersName')}
+          id="suppliersName"
+          required
+        >
+          {/* TODO: Add Created automatically */}
+          <Controller
+            name={'suppliersName'}
+            control={control}
+            defaultValue={{
+              value: payable.counterpart_id || '',
+              label: payable.counterpart_name || '',
+            }}
+            render={({ field: { ref, ...restField } }) => (
+              <Select
+                {...restField}
+                options={counterpartsToSelect(counterparts)}
+              />
+            )}
+          />
+        </FormItem>
         <FormItem
           label={t('payables:details.invoiceNumber')}
           id="invoiceNumber"
@@ -116,7 +118,7 @@ const PayableDetailsForm = forwardRef<
             control={control}
             defaultValue={payable.document_id}
             render={({ field: { ref, ...restField } }) => (
-              <Input required {...restField} />
+              <Input {...restField} required />
             )}
           />
         </FormItem>
@@ -131,9 +133,9 @@ const PayableDetailsForm = forwardRef<
             defaultValue={payable.issued_at}
             render={({ field: { ref, value, ...restField } }) => (
               <DatePicker
+                {...restField}
                 required
                 date={value ? new Date(value) : null}
-                {...restField}
               />
             )}
           />
@@ -150,9 +152,9 @@ const PayableDetailsForm = forwardRef<
             render={({ field: { ref, value, ...restField } }) => (
               // TODO Add discount
               <DatePicker
+                {...restField}
                 date={value ? new Date(value) : null}
                 required
-                {...restField}
               />
             )}
           />
@@ -164,67 +166,57 @@ const PayableDetailsForm = forwardRef<
             defaultValue={payable.due_date}
             render={({ field: { ref, value, ...restField } }) => (
               <DatePicker
+                {...restField}
                 date={value ? new Date(value) : null}
                 required
-                {...restField}
               />
             )}
           />
         </FormItem>
-        {!!(payable.amount && payable.currency) && (
-          <FormItem label={t('payables:details.total')} id="total" required>
-            <Controller
-              name="total"
-              control={control}
-              defaultValue={convertToMajorUnits(
-                payable.amount,
-                payable.currency
-              )}
-              render={({ field: { ref, ...restField } }) => (
-                <Input
-                  renderAddon={() => {
-                    if (!payable.currency) return undefined;
-                    return (
-                      <CurrencyAddon color={'lightGrey1'}>
-                        {getSymbolFromCurrency(payable.currency)}
-                      </CurrencyAddon>
-                    );
-                  }}
-                  id="total"
-                  required
-                  type="number"
-                  {...restField}
-                />
-              )}
-            />
-          </FormItem>
-        )}
+        <FormItem label={t('payables:details.total')} id="total" required>
+          <Controller
+            name="total"
+            control={control}
+            defaultValue={convertToMajorUnits(
+              payable.amount ?? 0,
+              payable.currency ?? ''
+            )}
+            render={({ field: { ref, ...restField } }) => (
+              <Input
+                {...restField}
+                renderAddon={() => {
+                  if (!payable.currency) return undefined;
+                  return (
+                    <CurrencyAddon color={'lightGrey1'}>
+                      {getSymbolFromCurrency(payable.currency)}
+                    </CurrencyAddon>
+                  );
+                }}
+                id="total"
+                required
+                type="number"
+              />
+            )}
+          />
+        </FormItem>
         <FormItem label={t('payables:details.submittedBy')} id="submittedBy">
           {/*TODO Waiting design*/}
           submittedBy
         </FormItem>
-        {!!(payable.tags && tags) && (
-          <FormItem label={t('payables:details.tags')} id="tags">
-            <Controller
-              name={'tags'}
-              control={control}
-              defaultValue={payable.tags.map(({ id: value, name: label }) => ({
-                value,
-                label,
-              }))}
-              render={({ field: { ref, ...restField } }) => (
-                <Multiselect
-                  optionAsTag
-                  options={tags.map(({ id: value, name: label }) => ({
-                    value,
-                    label,
-                  }))}
-                  {...restField}
-                />
-              )}
-            />
-          </FormItem>
-        )}
+        <FormItem label={t('payables:details.tags')} id="tags">
+          <Controller
+            name={'tags'}
+            control={control}
+            defaultValue={tagsToSelect(payable.tags)}
+            render={({ field: { ref, ...restField } }) => (
+              <Multiselect
+                {...restField}
+                optionAsTag
+                options={tagsToSelect(tags)}
+              />
+            )}
+          />
+        </FormItem>
       </FormSection>
 
       <FormSection>
@@ -237,7 +229,7 @@ const PayableDetailsForm = forwardRef<
             control={control}
             defaultValue={payable.counterpart_account_id}
             render={({ field: { ref, ...restField } }) => (
-              <Input required {...restField} />
+              <Input {...restField} required />
             )}
           />
         </FormItem>
@@ -247,7 +239,7 @@ const PayableDetailsForm = forwardRef<
             control={control}
             defaultValue={payable.counterpart_bank_id}
             render={({ field: { ref, ...restField } }) => (
-              <Input required {...restField} />
+              <Input {...restField} required />
             )}
           />
         </FormItem>

@@ -1,11 +1,7 @@
 import { MoniteApp } from '@monite/js-sdk';
 
 import MoniteProvider from '../src/core/context/ContextProvider';
-
 import './main.css';
-import { pdfjs } from 'react-pdf';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export const parameters = {
   viewMode: 'docs',

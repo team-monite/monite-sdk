@@ -1,17 +1,17 @@
-import React, { useCallback, useRef } from 'react';
-import styled from '@emotion/styled';
+import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { PayableStateEnum } from '@monite/js-sdk';
 
 import {
   Button,
-  Flex,
-  FormField,
   Text,
   IconButton,
   ModalLayout,
   UMultiply,
   Header,
   Tag,
-  Box,
+  TagColorType,
 } from '@monite/ui';
 
 import PdfViewer from '../../payment/PdfViewer/PdfViewer';
@@ -20,38 +20,38 @@ import PayableDetailsForm, {
   PayablesDetailsFormProps,
 } from './PayableDetailsForm';
 
-export interface PayablesDetailsProps extends PayablesDetailsFormProps {}
+import {
+  StyledContent,
+  StyledHeaderActions,
+  StyledHeaderContent,
+  StyledSection,
+} from './PayableDetailsStyle';
 
-export const FormItem = styled(FormField)`
-  margin-bottom: 24px;
-`;
+export interface PayablesDetailsProps extends PayablesDetailsFormProps {
+  onClose: () => void;
+  isLoading: boolean;
+  onPay: PayablesDetailsFormProps['onSubmit'];
+  onSave: PayablesDetailsFormProps['onSubmit'];
+}
 
-const StyledHeaderContent = styled(Flex)`
-  align-items: center;
-  gap: 24px;
-`;
-
-const StyledHeaderActions = styled(Flex)`
-  align-items: center;
-  gap: 12px;
-`;
-
-const StyledContent = styled(Flex)`
-  padding: 40px;
-  background-color: #f3f3f3;
-  gap: 76px;
-`;
-
-const StyledSection = styled(Box)`
-  width: 50%;
-`;
+const payableStatus: Partial<Record<PayableStateEnum, TagColorType>> = {
+  [PayableStateEnum.NEW]: 'draft',
+  [PayableStateEnum.APPROVE_IN_PROGRESS]: 'pending',
+  [PayableStateEnum.WAITING_TO_BE_PAID]: 'pending',
+  [PayableStateEnum.PAID]: 'success',
+  [PayableStateEnum.CANCELED]: 'warning',
+  [PayableStateEnum.REJECTED]: 'warning',
+};
 
 const PayableDetails = ({
   onSubmit,
   payable,
   tags,
   counterparts,
+  onClose,
 }: PayablesDetailsProps) => {
+  const { t } = useTranslation();
+  const [isEdit] = useState<boolean>(true);
   const formRef = useRef<HTMLFormElement>(null);
 
   const submitForm = useCallback(() => {
@@ -64,22 +64,29 @@ const PayableDetails = ({
       header={
         <Header
           leftBtn={
-            <IconButton color={'black'}>
+            <IconButton onClick={onClose} color={'black'}>
               <UMultiply size={18} />
             </IconButton>
           }
           actions={
             <StyledHeaderActions>
               <Button onClick={submitForm} color={'secondary'}>
-                Save
+                {t('common:save')}
               </Button>
-              <Button onClick={submitForm}>Submit</Button>
+              {payable.status === PayableStateEnum.NEW && (
+                <Button onClick={submitForm}>{t('common:submit')}</Button>
+              )}
+              {payable.status === PayableStateEnum.WAITING_TO_BE_PAID && (
+                <Button onClick={submitForm}>{t('common:pay')}</Button>
+              )}
             </StyledHeaderActions>
           }
         >
           <StyledHeaderContent>
-            <Text textSize={'h3'}>Mindspace GmbH</Text>
-            <Tag color={'draft'}>Draft</Tag>
+            <Text textSize={'h3'}>{payable.counterpart_name}</Text>
+            <Tag color={payableStatus[payable.status]}>
+              {t(`payables:status.${payable.status}`)}
+            </Tag>
           </StyledHeaderContent>
         </Header>
       }
@@ -89,13 +96,15 @@ const PayableDetails = ({
           {!!payable.file && <PdfViewer file={payable.file.url} />}
         </StyledSection>
         <StyledSection sx={{ flexGrow: 1 }}>
-          <PayableDetailsForm
-            ref={formRef}
-            tags={tags}
-            counterparts={counterparts}
-            onSubmit={onSubmit}
-            payable={payable}
-          />
+          {isEdit && (
+            <PayableDetailsForm
+              ref={formRef}
+              tags={tags}
+              counterparts={counterparts}
+              onSubmit={onSubmit}
+              payable={payable}
+            />
+          )}
         </StyledSection>
       </StyledContent>
     </ModalLayout>
