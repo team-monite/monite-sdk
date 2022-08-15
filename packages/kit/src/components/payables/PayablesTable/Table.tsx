@@ -1,13 +1,26 @@
 import React from 'react';
-import { Table, HeadCellSort, Tag, TagColorType } from '@monite/ui';
+import {
+  Button,
+  Table,
+  HeadCellSort,
+  Tag,
+  TagColorType,
+  UArrowLeft,
+  UArrowRight,
+} from '@monite/ui';
 import { PayableStateEnum, ReceivableResponse } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
 
+import { PaginationTokens } from './types';
+
 export interface PayablesTableProps {
   data?: ReceivableResponse[];
+  onPrev?: () => void;
+  onNext?: () => void;
+  paginationTokens: PaginationTokens;
 }
 
 const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
@@ -24,7 +37,12 @@ const formatter = new Intl.NumberFormat('de-DE', {
   currency: 'EUR',
 });
 
-const PayablesTable = ({ data }: PayablesTableProps) => {
+const PayablesTable = ({
+  data,
+  onPrev,
+  onNext,
+  paginationTokens,
+}: PayablesTableProps) => {
   const { t } = useComponentsContext();
 
   return (
@@ -102,7 +120,27 @@ const PayablesTable = ({ data }: PayablesTableProps) => {
         ]}
         data={data}
         scroll={{ y: 'auto' }}
-        // footer={() => <div>test</div>}
+        // TODO create footer component and move to UI
+        footer={() => (
+          <Styled.Footer>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onPrev}
+              disabled={!paginationTokens.prev_pagination_token}
+            >
+              <UArrowLeft width={24} height={24} />
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onNext}
+              disabled={!paginationTokens.next_pagination_token}
+            >
+              <UArrowRight width={24} height={24} />
+            </Button>
+          </Styled.Footer>
+        )}
       />
     </Styled.Table>
   );
