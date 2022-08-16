@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, UArrowLeft, Box } from '@monite/ui';
+import { useComponentsContext } from '@monite/react-kit';
 
 const NavHeader = () => {
   const navigate = useNavigate();
+  const { t } = useComponentsContext();
 
   return (
     <Box height={48}>
@@ -14,7 +16,7 @@ const NavHeader = () => {
         variant="text"
         onClick={() => navigate(-1)}
       >
-        Back
+        {t('payment:widget.back')}
       </Button>
     </Box>
   );

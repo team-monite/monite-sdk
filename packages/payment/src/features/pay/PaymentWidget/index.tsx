@@ -6,6 +6,7 @@ import { ReceivableResponse, CurrencyEnum } from '@monite/js-sdk';
 import { useComponentsContext } from '@monite/react-kit';
 import { Card } from '@monite/ui';
 
+import { ROUTES } from 'features/app/consts';
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
@@ -66,7 +67,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           element={<SelectPaymentMethod paymentMethods={payment_methods} />}
         />
         <Route
-          path={'card/*'}
+          path={ROUTES.card}
           element={
             stripe?.secret && (
               <StripeWidget
@@ -81,7 +82,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           }
         />
         <Route
-          path={'bank/*'}
+          path={ROUTES.bank}
           element={<YapilyWidget {...props} receivableData={receivableData} />}
         />
       </Routes>

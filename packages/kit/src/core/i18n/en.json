@@ -43,7 +43,8 @@
       "fee": "Transaction fee",
       "total": "Total",
       "feeAlert": "A {{percent}}% credit card transaction fee applies. It’ll be charged separately to your card.",
-      "submit": "Pay"
+      "submit": "Pay",
+      "back": "Back"
     }
   },
   "payables": {
