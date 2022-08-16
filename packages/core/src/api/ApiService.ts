@@ -24,12 +24,10 @@ class ApiService {
     this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
     this.workflows = new WorkflowsService({ config });
-    //TODO: temporarily config for gateway
     this.payment = new PaymentService({
       config: {
         ...config,
         HEADERS: {
-          'x-service-name': 'swagger',
           'x-monite-data-source': 'receivables',
         },
       },

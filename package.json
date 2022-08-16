@@ -15,6 +15,7 @@
     "ui:story": "yarn workspace @monite/ui storybook",
     "ui:build": "yarn workspace @monite/ui build",
     "web:build": "yarn workspace @monite/web-kit build",
+    "payment:start": "yarn workspace @monite/payment start",
     "full:build": "yarn ui:build && yarn sdk:build && yarn react:build && yarn app:build",
     "lint": "yarn workspaces run lint",
     "lint-staged": "yarn workspaces run lint-staged",

@@ -71,7 +71,7 @@ export default function CheckoutForm({
           break;
       }
     });
-  }, [stripe, onFinish]);
+  }, [stripe]);
 
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();

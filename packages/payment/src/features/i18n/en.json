@@ -1,0 +1,37 @@
+{
+  "login": {
+    "title": "Log In",
+    "errors": {
+      "emailPassword": "The email or password is incorrect. Please retry",
+      "emptyFieldTooltip": "Please fill in the required text fields first"
+    },
+    "forgot": "Forgot password?",
+    "submit": "Sign In",
+    "signupText": "Don't have an account yet?",
+    "signupLink": "Open one now"
+  },
+  "payment": {
+    "result": {
+      "title": "Payment initiated",
+      "text": "Thanks for your time, {{payer}}. The payment of the invoice from {{payee}} {{id}} for {{price}} is initiated. It may take a few minutes for the payment to be processed. We will send you an email once the payment is complete.",
+      "reference": "Reference",
+      "iban": "IBAN",
+      "payee": "Payee Name"
+    }
+  },
+  "approvalPolicies": {
+    "approvalPolicies": "Approval Policies"
+  },
+  "forms": {
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "errors": {
+      "required": "{{field}} is a required field"
+    }
+  },
+  "common": {
+    "createNew": "Create New"
+  }
+}

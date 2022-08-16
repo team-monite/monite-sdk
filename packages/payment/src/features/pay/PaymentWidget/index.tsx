@@ -56,7 +56,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     } else if (payment_methods.length === 1 && payment_methods[0] === 'bank') {
       navigate(`bank${search}`, { replace: true });
     }
-  }, [id, monite.api.payment, navigate, payment_methods, search]);
+  }, []);
 
   return (
     <Card shadow p="32px" className={styles.card}>
