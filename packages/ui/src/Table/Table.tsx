@@ -170,7 +170,7 @@ export const Table = ({
                           >
                             <UEllipsisV width={20} height={20} />
                           </DropdownToggler>
-                          {shownDropdownMenu === index ? (
+                          {shownDropdownMenu === index && (
                             <DropdownMenu
                               innerRef={setPopperElement}
                               style={popper.styles.popper}
@@ -182,7 +182,7 @@ export const Table = ({
                             >
                               {dropdownActions}
                             </DropdownMenu>
-                          ) : null}
+                          )}
                         </Dropdown>
                       </ActionsMenu>
                     );
