@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UArrowUp, UArrowDown } from '../unicons';
 import styled from '@emotion/styled';
-import { OrderEnum } from '@monite/js-sdk';
 
 export const Wrapper = styled.div`
   cursor: pointer;
@@ -24,6 +23,11 @@ export const SortArrow = styled.span<{ $active: boolean }>`
     top: 0;
   }
 `;
+
+declare enum OrderEnum {
+  ASC = 'asc',
+  DESC = 'desc',
+}
 
 interface Props {
   isActive: boolean;
