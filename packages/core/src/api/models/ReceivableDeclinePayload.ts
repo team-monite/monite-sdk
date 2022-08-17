@@ -9,6 +9,6 @@ export type ReceivableDeclinePayload = {
     /**
      * Field with a comment on why the client declined this Quote
      */
-    declined_comment?: string;
+    comment?: string;
 };
 

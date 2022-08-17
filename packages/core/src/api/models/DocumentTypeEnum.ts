@@ -5,7 +5,6 @@
 /**
  * An enumeration.
  */
-export enum ExportFormat {
-    CSV = 'csv',
-    PDF = 'pdf',
+export enum DocumentTypeEnum {
+    RECEIVABLE = 'receivable',
 }

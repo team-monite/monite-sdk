@@ -26,6 +26,18 @@ export type PayableResponseSchema = {
      */
     entity_id: string;
     /**
+     * An arbitrary comment that describes how and when this payable was paid.
+     */
+    marked_as_paid_with_comment?: string;
+    /**
+     * The ID of the entity user who marked this document as paid.
+     */
+    marked_as_paid_by_entity_user_id?: string;
+    /**
+     * The ID of the entity who marked this document as paid.
+     */
+    marked_as_paid_by_entity_id?: string;
+    /**
      * The [status](https://docs.monite.com/docs/payables-lifecycle) of the payable.
      */
     status: PayableStateEnum;
@@ -113,5 +125,13 @@ export type PayableResponseSchema = {
      * A unique invoice number assigned by the invoice issuer for payment tracking purposes. This is different from `id` which is an internal ID created automatically by Monite.
      */
     document_id?: string;
+    /**
+     * The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
+     */
+    subtotal?: number;
+    /**
+     * Registered tax applied for a service price, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
+     */
+    tax?: number;
 };
 

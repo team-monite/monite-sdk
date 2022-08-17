@@ -64,5 +64,13 @@ export type PayableUploadWithDataSchema = {
      * A unique invoice number assigned by the invoice issuer for payment tracking purposes.
      */
     document_id?: string;
+    /**
+     * The subtotal amount to be paid, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
+     */
+    subtotal?: number;
+    /**
+     * Registered tax applied for a service price, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
+     */
+    tax?: number;
 };
 
