@@ -5,7 +5,7 @@
 /**
  * An enumeration.
  */
-export enum ExportFormat {
-    CSV = 'csv',
-    PDF = 'pdf',
+export enum TemplateTypeEnum {
+    BLOCK = 'block',
+    SOURCE_OBJECT = 'source_object',
 }

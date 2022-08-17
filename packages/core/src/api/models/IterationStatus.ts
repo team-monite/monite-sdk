@@ -7,7 +7,7 @@
  */
 export enum IterationStatus {
     PENDING = 'pending',
-    CANCELED = 'canceled',
     COMPLETED = 'completed',
+    CANCELED = 'canceled',
     ISSUE_FAILED = 'issue_failed',
 }

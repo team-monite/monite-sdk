@@ -9,6 +9,16 @@ export default Story;
 
 export const DefaultTable = () => (
   <div style={{ display: 'flex', height: 400 }}>
-    <Table data={TestData} />
+    <Table
+      data={TestData}
+      paginationTokens={{
+        next_pagination_token: null,
+        prev_pagination_token: null,
+      }}
+      currentSort={{
+        sort: null,
+        order: null,
+      }}
+    />
   </div>
 );

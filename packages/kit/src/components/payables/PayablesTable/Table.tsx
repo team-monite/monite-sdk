@@ -8,19 +8,30 @@ import {
   UArrowLeft,
   UArrowRight,
 } from '@monite/ui';
-import { PayableStateEnum, ReceivableResponse } from '@monite/js-sdk';
+import {
+  api__v1__payables__pagination__CursorFields,
+  OrderEnum,
+  PayableStateEnum,
+  ReceivableResponse,
+} from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
 
-import { PaginationTokens } from './types';
+import { PaginationTokens, Sort } from './types';
 
 export interface PayablesTableProps {
+  loading?: boolean;
   data?: ReceivableResponse[];
   onPrev?: () => void;
   onNext?: () => void;
   paginationTokens: PaginationTokens;
+  onChangeSort: (
+    sort: api__v1__payables__pagination__CursorFields,
+    order: OrderEnum | null
+  ) => void;
+  currentSort: Sort | null;
 }
 
 const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
@@ -38,16 +49,20 @@ const formatter = new Intl.NumberFormat('de-DE', {
 });
 
 const PayablesTable = ({
+  loading,
   data,
   onPrev,
   onNext,
   paginationTokens,
+  onChangeSort,
+  currentSort,
 }: PayablesTableProps) => {
   const { t } = useComponentsContext();
 
   return (
     <Styled.Table>
       <Table
+        loading={loading}
         rowKey="id"
         columns={[
           {
@@ -71,8 +86,19 @@ const PayablesTable = ({
           {
             title: (
               <HeadCellSort
+                isActive={
+                  currentSort
+                    ? currentSort.sort ===
+                      api__v1__payables__pagination__CursorFields.DUE_DATE
+                    : false
+                }
                 title={t('payables:columns.dueDate')}
-                onChangeOrder={(order) => console.log(order)}
+                onChangeOrder={(order) =>
+                  onChangeSort(
+                    api__v1__payables__pagination__CursorFields.DUE_DATE,
+                    order
+                  )
+                }
               />
             ),
             dataIndex: 'due_date',
@@ -97,8 +123,19 @@ const PayablesTable = ({
           {
             title: (
               <HeadCellSort
+                isActive={
+                  currentSort
+                    ? currentSort.sort ===
+                      api__v1__payables__pagination__CursorFields.AMOUNT
+                    : false
+                }
                 title={t('payables:columns.amount')}
-                onChangeOrder={(order) => console.log(order)}
+                onChangeOrder={(order) =>
+                  onChangeSort(
+                    api__v1__payables__pagination__CursorFields.AMOUNT,
+                    order
+                  )
+                }
               />
             ),
             dataIndex: 'amount',

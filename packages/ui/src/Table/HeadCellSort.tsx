@@ -16,7 +16,7 @@ export const SortArrow = styled.span<{ $active: boolean }>`
   position: relative;
   width: 16px;
   height: 16px;
-  ${({ $active }) => !$active && 'opacity: 0.5;'}
+  ${({ $active }) => !$active && 'opacity: 0.3;'}
 
   svg {
     position: absolute;
@@ -24,20 +24,27 @@ export const SortArrow = styled.span<{ $active: boolean }>`
   }
 `;
 
-type Order = 'asc' | 'desc' | null;
-
-interface Props {
-  title?: string;
-  onChangeOrder: (order: Order) => void;
+declare enum OrderEnum {
+  ASC = 'asc',
+  DESC = 'desc',
 }
 
-export const HeadCellSort = ({ title, onChangeOrder }: Props) => {
-  // TODO control state outside component
-  const [order, setOrder] = useState<Order>(null);
+interface Props {
+  isActive: boolean;
+  title?: string;
+  onChangeOrder: (order: OrderEnum | null) => void;
+}
+
+export const HeadCellSort = ({ title, isActive, onChangeOrder }: Props) => {
+  const [order, setOrder] = useState<OrderEnum | null>(null);
 
   useEffect(() => {
     onChangeOrder(order);
   }, [order]);
+
+  useEffect(() => {
+    !isActive && setOrder(null);
+  }, [isActive]);
 
   const renderArrow = () => {
     switch (order) {
@@ -55,10 +62,12 @@ export const HeadCellSort = ({ title, onChangeOrder }: Props) => {
         setOrder((prevState) => {
           switch (prevState) {
             case null:
-              return 'asc';
-            case 'asc':
-              return 'desc';
-            case 'desc':
+              return OrderEnum.ASC;
+            case OrderEnum.ASC:
+              return OrderEnum.DESC;
+            case OrderEnum.DESC:
+              return null;
+            default:
               return null;
           }
         })
