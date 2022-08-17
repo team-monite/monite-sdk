@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
-
 import {
   Text,
   Box,

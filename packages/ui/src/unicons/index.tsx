@@ -1042,7 +1042,7 @@ export { default as UInfoCircle } from './icons/UInfoCircle';
 // export { default as UMessage } from './icons/UMessage';
 // export { default as UMicrophone } from './icons/UMicrophone';
 // export { default as UMinus } from './icons/UMinus';
-// export { default as UMinusCircle } from './icons/UMinusCircle';
+export { default as UMinusCircle } from './icons/UMinusCircle';
 // export { default as UMinusSquare } from './icons/UMinusSquare';
 // export { default as UMinusSquareFull } from './icons/UMinusSquareFull';
 // export { default as UMobileVibrate } from './icons/UMobileVibrate';

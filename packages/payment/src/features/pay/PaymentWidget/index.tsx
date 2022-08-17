@@ -10,13 +10,14 @@ import { ROUTES } from 'features/app/consts';
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
+import EmptyScreen from 'features/pay/EmptyScreen';
 
 import { URLData } from '../types';
 
 import styles from './styles.module.scss';
 
 type PaymentWidgetProps = {
-  paymentData: URLData;
+  paymentData?: URLData;
   fee?: number;
   currency?: CurrencyEnum;
   onFinish?: (result: any) => void;
@@ -28,16 +29,6 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const [receivableData, setReceivableData] = useState<ReceivableResponse>();
 
   const { paymentData } = props;
-  const {
-    object: { id },
-    stripe,
-    payment_methods = ['card', 'others', 'bank'], // TODO: mockData
-    // payment_intent_id,
-    amount,
-    currency,
-    // success_url,
-    // cancel_url,
-  } = paymentData;
 
   const { search } = useLocation();
 
@@ -47,36 +38,61 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
 
   useEffect(() => {
     (async () => {
-      const receivableData = await monite.api.payment.getPaymentReceivableById(
-        id
-      );
-      setReceivableData(receivableData);
+      if (paymentData?.object.id) {
+        const receivableData =
+          await monite.api.payment.getPaymentReceivableById(
+            paymentData?.object.id
+          );
+        setReceivableData(receivableData);
+      }
     })();
-    if (payment_methods.length === 1 && payment_methods[0] === 'card') {
+    if (
+      paymentData?.payment_methods.length === 1 &&
+      paymentData?.payment_methods[0] === 'card'
+    ) {
       navigate(`card${search}`, { replace: true });
-    } else if (payment_methods.length === 1 && payment_methods[0] === 'bank') {
+    } else if (
+      paymentData?.payment_methods.length === 1 &&
+      paymentData?.payment_methods[0] === 'bank'
+    ) {
       navigate(`bank${search}`, { replace: true });
     }
-  }, [id, monite.api.payment, navigate, payment_methods, search]);
+  }, [
+    paymentData?.object.id,
+    monite.api.payment,
+    navigate,
+    search,
+    paymentData?.payment_methods,
+  ]);
 
   return (
     <Card shadow p="32px" className={styles.card}>
       <Routes>
         <Route
           path="/"
-          element={<SelectPaymentMethod paymentMethods={payment_methods} />}
+          element={
+            paymentData && paymentData?.payment_methods.length ? (
+              <SelectPaymentMethod
+                paymentMethods={
+                  paymentData?.payment_methods || ['card', 'others', 'bank']
+                }
+              />
+            ) : (
+              <EmptyScreen />
+            )
+          }
         />
         <Route
           path={ROUTES.card}
           element={
-            stripe?.secret && (
+            paymentData?.stripe?.secret && (
               <StripeWidget
-                clientSecret={stripe.secret}
+                clientSecret={paymentData?.stripe.secret}
                 {...props}
-                price={amount}
-                currency={currency}
+                price={paymentData?.amount}
+                currency={paymentData?.currency}
                 fee={300}
-                navButton={payment_methods.length > 1}
+                navButton={paymentData?.payment_methods.length > 1}
               />
             )
           }

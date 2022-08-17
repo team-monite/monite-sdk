@@ -44,7 +44,9 @@
       "total": "Total",
       "feeAlert": "A {{percent}}% credit card transaction fee applies. It’ll be charged separately to your card.",
       "submit": "Pay",
-      "back": "Back"
+      "back": "Back",
+      "emptyTitle": "No payment methods available",
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
     }
   },
   "payables": {

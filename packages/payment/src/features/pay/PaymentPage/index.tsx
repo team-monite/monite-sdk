@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Buffer } from 'buffer';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { Flex, Box } from '@monite/ui';
@@ -15,25 +15,16 @@ const PaymentPage = () => {
 
   const paymentData = useMemo(() => {
     const rawPaymentData = new URLSearchParams(search).get('data');
-    return (
-      rawPaymentData &&
-      (JSON.parse(
+    if (rawPaymentData) {
+      return JSON.parse(
         Buffer.from(rawPaymentData, 'base64').toString('utf8')
-      ) as URLData)
-    );
+      ) as URLData;
+    }
   }, [search]);
-
-  if (!paymentData) {
-    return <Navigate to="/" replace />;
-  }
-
-  const {
-    object: { id },
-  } = paymentData;
 
   return (
     <Layout>
-      <Helmet title={`Pay invoice ${id}`} />
+      <Helmet title={`Pay invoice ${paymentData?.object?.id}`} />
       <Flex justifyContent="center">
         <Box width={600} p={4} pt={80}>
           <PaymentWidget
