@@ -12,7 +12,7 @@ export type SettingsResponse = {
     reminder?: RemindersSettings;
     template?: TemplateSettings;
     /**
-     * Payment preferences for entity to automate calculating suggested payment date basing on paymentterms and entity preferences
+     * Payment preferences for entity to automate calculating suggested payment date basing on payment terms and entity preferences
      */
     payment_priority?: PaymentPriorityEnum;
 };

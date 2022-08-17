@@ -9,6 +9,10 @@
 .content {
   background: #fff;
   padding: 36px 48px;
+  height: 100vh;
+  min-height: min-content;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu {

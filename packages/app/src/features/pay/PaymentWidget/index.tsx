@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import { ReceivableResponse } from '@monite/js-sdk';
-import { CurrencyEnum } from '@monite/js-sdk';
-import { useComponentsContext, Card } from '@monite/react-kit';
+import { ReceivableResponse, CurrencyEnum } from '@monite/js-sdk';
+import { useComponentsContext } from '@monite/react-kit';
+import { Card } from '@monite/ui';
 
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 
-import { PaymentProvidersEnum, URLData } from '../types';
+import { URLData } from '../types';
 
 import styles from './styles.module.scss';
 
@@ -29,17 +29,14 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const { paymentData } = props;
   const {
     object: { id },
-    providers,
-    paymentMethods = ['bank', 'card'], // TODO: mockData
+    stripe,
+    payment_methods = ['card', 'others', 'bank'], // TODO: mockData
+    // payment_intent_id,
+    amount,
+    currency,
+    // success_url,
+    // cancel_url,
   } = paymentData;
-
-  const stripeClientSecret = providers.find(
-    (provider) => provider.type === PaymentProvidersEnum.STRIPE
-  )?.secret;
-
-  // const yapilyClientSecret = providers.find(
-  //   (provider) => provider.type === PaymentProvidersEnum.YAPILY
-  // )?.secret;
 
   const { search } = useLocation();
 
@@ -54,9 +51,9 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
       );
       setReceivableData(receivableData);
     })();
-    if (paymentMethods.length === 1 && paymentMethods[0] === 'card') {
+    if (payment_methods.length === 1 && payment_methods[0] === 'card') {
       navigate(`card${search}`, { replace: true });
-    } else if (paymentMethods.length === 1 && paymentMethods[0] === 'bank') {
+    } else if (payment_methods.length === 1 && payment_methods[0] === 'bank') {
       navigate(`bank${search}`, { replace: true });
     }
   }, []);
@@ -64,16 +61,21 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   return (
     <Card shadow p="32px" className={styles.card}>
       <Routes>
-        <Route path="/" element={<SelectPaymentMethod />} />
+        <Route
+          path="/"
+          element={<SelectPaymentMethod paymentMethods={payment_methods} />}
+        />
         <Route
           path={'card/*'}
           element={
-            stripeClientSecret &&
-            receivableData?.total_amount && (
+            stripe?.secret && (
               <StripeWidget
-                clientSecret={stripeClientSecret}
+                clientSecret={stripe.secret}
                 {...props}
-                price={receivableData?.total_amount}
+                price={amount}
+                currency={currency}
+                fee={300}
+                navButton={payment_methods.length > 1}
               />
             )
           }

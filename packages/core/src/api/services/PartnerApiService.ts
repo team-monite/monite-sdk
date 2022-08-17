@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+
 import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
@@ -12,7 +13,7 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { PayableResponseSchema } from '../models/PayableResponseSchema';
 
-export default class PayablesService {
+export default class PartnerApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
@@ -22,10 +23,11 @@ export default class PayablesService {
   /**
    * Get Payables
    * Lists all payables from the connected entity.
-   * @param order Order by
-   * @param limit Max is 100
-   * @param paginationToken A token, obtained from previous page. Prior over other filters
-   * @param sort Allowed sort fields
+   * @param xMoniteEntityId monite entity_id
+   * @param order Sort order: `asc` (ascending) or `desc` (descending).
+   * @param limit The maximum number of results to return per page.
+   * @param paginationToken The pagination token to access the next or previous page of results. If `pagination_token` is specified, the `sort`, `order`, and filtering parameters are ignored.
+   * @param sort The field by which the results will be sorted.
    * @param createdAt
    * @param createdAtGt
    * @param createdAtLt
@@ -44,10 +46,13 @@ export default class PayablesService {
    * @param dueDateLt
    * @param dueDateGte
    * @param dueDateLte
+   * @param documentId
    * @returns PaginationResponse Successful Response
    * @throws ApiError
    */
-  public getList(
+
+  public getPayables(
+    xMoniteEntityId: string,
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
@@ -69,12 +74,16 @@ export default class PayablesService {
     dueDateGt?: string,
     dueDateLt?: string,
     dueDateGte?: string,
-    dueDateLte?: string
+    dueDateLte?: string,
+    documentId?: string
   ): CancelablePromise<PaginationResponse> {
     return __request(
       {
         method: 'GET',
         url: '/payables',
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
+        },
         query: {
           order: order,
           limit: limit,
@@ -98,6 +107,7 @@ export default class PayablesService {
           due_date__lt: dueDateLt,
           due_date__gte: dueDateGte,
           due_date__lte: dueDateLte,
+          document_id: documentId,
         },
         errors: {
           400: `Bad Request`,

@@ -6,5 +6,6 @@
  * An enumeration.
  */
 export enum ExportFormat {
-    ZIP = 'zip',
+    CSV = 'csv',
+    PDF = 'pdf',
 }

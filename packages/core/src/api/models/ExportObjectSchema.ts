@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ExportObjectSchema = {
-    name: string;
-    statuses: Array<string>;
-};
+import type { ExportPayableSchema } from './ExportPayableSchema';
+import type { ExportReceivableSchema } from './ExportReceivableSchema';
+
+export type ExportObjectSchema = (ExportPayableSchema | ExportReceivableSchema);
 

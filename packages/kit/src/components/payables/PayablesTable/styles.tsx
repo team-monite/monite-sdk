@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Table = styled.div`
+  flex: 1 1 auto;
   font-family: 'Faktum', sans-serif;
 
   * {
@@ -28,12 +29,23 @@ export const Table = styled.div`
 
     white-space: nowrap;
   }
+
+  // for fixed header
+  .rc-table,
+  .rc-table-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rc-table-body {
+    flex: 1 1 0;
+  }
 `;
 
-export const Col = styled.div`
-  width: 0;
-  min-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+export const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding-top: 16px;
 `;

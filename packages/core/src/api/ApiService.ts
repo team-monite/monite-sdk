@@ -1,17 +1,17 @@
 import { OpenAPIConfig } from './OpenAPI';
 
 import CounterpartsService from './services/CounterpartsService';
-import PayablesService from './services/PayablesService';
+import PartnerApiService from './services/PartnerApiService';
 import PaymentService from './services/PaymentService';
-import UserInfoService from './services/UserInfoService';
+import AuthService from './services/AuthService';
 import ReceivableService from './services/ReceivableService';
 import WorkflowsService from './services/WorkflowsService';
 class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   counterparts: CounterpartsService;
-  payables: PayablesService;
-  profile: UserInfoService;
+  partnerApi: PartnerApiService;
+  auth: AuthService;
   receivable: ReceivableService;
   workflows: WorkflowsService;
   payment: PaymentService;
@@ -20,8 +20,8 @@ class ApiService {
     this.openapiConfig = config;
 
     this.counterparts = new CounterpartsService({ config });
-    this.payables = new PayablesService({ config });
-    this.profile = new UserInfoService({ config });
+    this.partnerApi = new PartnerApiService({ config });
+    this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
     this.workflows = new WorkflowsService({ config });
     //TODO: temporarily config for gateway

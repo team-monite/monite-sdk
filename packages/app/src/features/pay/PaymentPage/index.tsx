@@ -3,7 +3,7 @@ import { Buffer } from 'buffer';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { Flex, Box } from '@monite/react-kit';
+import { Flex, Box } from '@monite/ui';
 
 import Layout from 'features/pay/Layout';
 import PaymentWidget from 'features/pay/PaymentWidget';

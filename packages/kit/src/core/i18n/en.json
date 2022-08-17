@@ -48,9 +48,9 @@
   },
   "payables": {
     "columns": {
-      "number": "Number",
-      "supplier": "Supplier",
-      "issueDate": "Issue date",
+      "invoice": "Invoice #",
+      "supplier": "Supplier’s name",
+      "invoiceDate": "Invoice date",
       "dueDate": "Due date",
       "status": "Status",
       "appliedPolicy": "Applied policy",
