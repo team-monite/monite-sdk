@@ -87,10 +87,8 @@ const PayablesTable = ({
             title: (
               <HeadCellSort
                 isActive={
-                  currentSort
-                    ? currentSort.sort ===
-                      api__v1__payables__pagination__CursorFields.DUE_DATE
-                    : false
+                  currentSort?.sort ===
+                  api__v1__payables__pagination__CursorFields.DUE_DATE
                 }
                 title={t('payables:columns.dueDate')}
                 onChangeOrder={(order) =>
@@ -124,10 +122,8 @@ const PayablesTable = ({
             title: (
               <HeadCellSort
                 isActive={
-                  currentSort
-                    ? currentSort.sort ===
-                      api__v1__payables__pagination__CursorFields.AMOUNT
-                    : false
+                  currentSort?.sort ===
+                  api__v1__payables__pagination__CursorFields.AMOUNT
                 }
                 title={t('payables:columns.amount')}
                 onChangeOrder={(order) =>
