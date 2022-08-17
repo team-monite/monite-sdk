@@ -139,6 +139,8 @@
     "submit": "Submit",
     "pay": "Pay",
     "save": "Save",
+    "approve": "Approve",
+    "reject": "Reject",
     "type": "Type"
   }
 }

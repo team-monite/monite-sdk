@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { Input, DatePicker, Multiselect, Select } from '@monite/ui';
 
@@ -28,11 +30,12 @@ import {
   FormTitle,
 } from '../PayableDetailsStyle';
 
-export type PayablesDetailsFormProps = {
+import usePayableDetailsForm, {
+  UsePayableDetailsFormProps,
+} from './usePayableDetailsForm';
+
+export type PayablesDetailsFormProps = UsePayableDetailsFormProps & {
   onSubmit: (values: PayableDetailsFormFields) => void;
-  payable: PayableResponseSchema;
-  tags?: TagReadSchema[];
-  counterparts?: Counterpart[];
 };
 
 type Option = { label: string; value: string };
@@ -49,10 +52,8 @@ export interface PayableDetailsFormFields {
   bic: string;
 }
 
-const counterpartsToSelect = (counterparts: Counterpart[] | undefined) => {
-  if (!counterparts) return [];
-
-  return counterparts?.map((counterpart) => ({
+const counterpartsToSelect = (counterparts: Counterpart[]) =>
+  counterparts?.map((counterpart) => ({
     value: counterpart.id,
     label: isIndividualCounterpart(counterpart)
       ? getFullName(
@@ -63,7 +64,6 @@ const counterpartsToSelect = (counterparts: Counterpart[] | undefined) => {
       ? counterpart.organization.legal_name
       : '',
   }));
-};
 
 const tagsToSelect = (tags: TagReadSchema[] | undefined) => {
   if (!tags) return [];
@@ -74,12 +74,63 @@ const tagsToSelect = (tags: TagReadSchema[] | undefined) => {
   }));
 };
 
+const getValidationSchema = () =>
+  yup
+    .object({
+      suppliersName: yup.object({
+        value: yup.string().required(),
+        label: yup.string().required(),
+      }),
+      invoiceNumber: yup.string().required(),
+      invoiceDate: yup.string().required(),
+      suggestedPaymentDate: yup.string().required(),
+      dueDate: yup.string().required(),
+      total: yup.number().positive().required(),
+      tags: yup
+        .array(
+          yup.object({
+            value: yup.string().required(),
+            label: yup.string().required(),
+          })
+        )
+        .required(),
+
+      iban: yup.string().required(),
+      bic: yup.string().required(),
+    })
+    .required();
+
+const getDefaultValues = (payable: PayableResponseSchema) => ({
+  suppliersName: {
+    value: payable.counterpart_id || '',
+    label: payable.counterpart_name || '',
+  },
+  invoiceNumber: payable.document_id,
+  invoiceDate: payable.issued_at,
+  suggestedPaymentDate: payable?.suggested_payment_term?.date,
+  dueDate: payable.due_date,
+  total: convertToMajorUnits(payable.amount ?? 0, payable.currency ?? ''),
+  tags: tagsToSelect(payable.tags),
+  iban: payable.counterpart_account_id,
+  bic: payable.counterpart_bank_id,
+});
+
 const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayablesDetailsFormProps
->(({ onSubmit, payable, tags, counterparts }, ref) => {
+>(({ onSubmit, payable, debug }, ref) => {
   const { t } = useTranslation();
-  const { control, handleSubmit } = useForm<PayableDetailsFormFields>();
+  const { control, handleSubmit } = useForm<PayableDetailsFormFields>({
+    resolver: yupResolver(getValidationSchema()),
+    defaultValues: getDefaultValues(payable),
+  });
+
+  const { tags, counterparts, isLoading } = usePayableDetailsForm({
+    payable,
+    debug,
+  });
+
+  console.log(isLoading);
 
   return (
     <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
@@ -96,10 +147,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name={'suppliersName'}
             control={control}
-            defaultValue={{
-              value: payable.counterpart_id || '',
-              label: payable.counterpart_name || '',
-            }}
             render={({ field: { ref, ...restField } }) => (
               <Select
                 {...restField}
@@ -116,7 +163,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="invoiceNumber"
             control={control}
-            defaultValue={payable.document_id}
             render={({ field: { ref, ...restField } }) => (
               <Input {...restField} required />
             )}
@@ -130,7 +176,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="invoiceDate"
             control={control}
-            defaultValue={payable.issued_at}
             render={({ field: { ref, value, ...restField } }) => (
               <DatePicker
                 {...restField}
@@ -148,7 +193,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="suggestedPaymentDate"
             control={control}
-            defaultValue={payable?.suggested_payment_term?.date}
             render={({ field: { ref, value, ...restField } }) => (
               // TODO Add discount
               <DatePicker
@@ -163,7 +207,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="dueDate"
             control={control}
-            defaultValue={payable.due_date}
             render={({ field: { ref, value, ...restField } }) => (
               <DatePicker
                 {...restField}
@@ -177,10 +220,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="total"
             control={control}
-            defaultValue={convertToMajorUnits(
-              payable.amount ?? 0,
-              payable.currency ?? ''
-            )}
             render={({ field: { ref, ...restField } }) => (
               <Input
                 {...restField}
@@ -207,7 +246,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name={'tags'}
             control={control}
-            defaultValue={tagsToSelect(payable.tags)}
             render={({ field: { ref, ...restField } }) => (
               <Multiselect
                 {...restField}
@@ -227,7 +265,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="iban"
             control={control}
-            defaultValue={payable.counterpart_account_id}
             render={({ field: { ref, ...restField } }) => (
               <Input {...restField} required />
             )}
@@ -237,7 +274,6 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="bic"
             control={control}
-            defaultValue={payable.counterpart_bank_id}
             render={({ field: { ref, ...restField } }) => (
               <Input {...restField} required />
             )}

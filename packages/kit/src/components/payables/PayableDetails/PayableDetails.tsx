@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { PayableStateEnum } from '@monite/js-sdk';
@@ -12,13 +12,15 @@ import {
   Header,
   Tag,
   TagColorType,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
 } from '@monite/ui';
 
 import PdfViewer from '../../payment/PdfViewer/PdfViewer';
 
-import PayableDetailsForm, {
-  PayablesDetailsFormProps,
-} from './PayableDetailsForm';
+import PayableDetailsForm from './PayableDetailsForm';
 
 import {
   StyledContent,
@@ -27,11 +29,10 @@ import {
   StyledSection,
 } from './PayableDetailsStyle';
 
-export interface PayablesDetailsProps extends PayablesDetailsFormProps {
-  onClose: () => void;
-  isLoading: boolean;
-  onPay: PayablesDetailsFormProps['onSubmit'];
-  onSave: PayablesDetailsFormProps['onSubmit'];
+import usePayableDetails, { UsePayableDetailsProps } from './usePayableDetails';
+
+export interface PayablesDetailsProps extends UsePayableDetailsProps {
+  onClose?: () => void;
 }
 
 const payableStatus: Partial<Record<PayableStateEnum, TagColorType>> = {
@@ -43,20 +44,45 @@ const payableStatus: Partial<Record<PayableStateEnum, TagColorType>> = {
   [PayableStateEnum.REJECTED]: 'warning',
 };
 
+const TAB_LIST = ['document', 'payment', 'status', 'history'];
+
 const PayableDetails = ({
-  onSubmit,
-  payable,
-  tags,
-  counterparts,
+  id,
+  debug,
   onClose,
+  onSubmit,
+  onSave,
+  onReject,
+  onApprove,
+  onPay,
 }: PayablesDetailsProps) => {
   const { t } = useTranslation();
-  const [isEdit] = useState<boolean>(true);
-  const formRef = useRef<HTMLFormElement>(null);
+  const {
+    payable,
+    formRef,
+    isEdit,
 
-  const submitForm = useCallback(() => {
-    formRef.current?.dispatchEvent(new Event('submit', { bubbles: true }));
-  }, [formRef]);
+    permissions: { canPay, canReject, canApprove, canSave, canSubmit },
+
+    actions: {
+      onFormSubmit,
+      saveInvoice,
+      submitInvoice,
+      rejectInvoice,
+      approveInvoice,
+      payInvoice,
+    },
+  } = usePayableDetails({
+    id,
+    debug,
+    onSubmit,
+    onSave,
+    onReject,
+    onPay,
+    onApprove,
+  });
+
+  if (!payable) return null;
 
   return (
     <ModalLayout
@@ -70,14 +96,24 @@ const PayableDetails = ({
           }
           actions={
             <StyledHeaderActions>
-              <Button onClick={submitForm} color={'secondary'}>
-                {t('common:save')}
-              </Button>
-              {payable.status === PayableStateEnum.NEW && (
-                <Button onClick={submitForm}>{t('common:submit')}</Button>
+              {canSave && (
+                <Button onClick={saveInvoice} color={'secondary'}>
+                  {t('common:save')}
+                </Button>
               )}
-              {payable.status === PayableStateEnum.WAITING_TO_BE_PAID && (
-                <Button onClick={submitForm}>{t('common:pay')}</Button>
+              {canReject && (
+                <Button onClick={rejectInvoice} color={'danger'}>
+                  {t('common:reject')}
+                </Button>
+              )}
+              {canSubmit && (
+                <Button onClick={submitInvoice}>{t('common:submit')}</Button>
+              )}
+              {canApprove && (
+                <Button onClick={approveInvoice}>{t('common:approve')}</Button>
+              )}
+              {canPay && (
+                <Button onClick={payInvoice}>{t('common:pay')}</Button>
               )}
             </StyledHeaderActions>
           }
@@ -96,12 +132,22 @@ const PayableDetails = ({
           {!!payable.file && <PdfViewer file={payable.file.url} />}
         </StyledSection>
         <StyledSection sx={{ flexGrow: 1 }}>
+          <Tabs>
+            <TabList>
+              {TAB_LIST.map((tab) => (
+                <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+              ))}
+            </TabList>
+            {TAB_LIST.map((tab) => (
+              <TabPanel key={tab}></TabPanel>
+            ))}
+          </Tabs>
+
           {isEdit && (
             <PayableDetailsForm
+              debug={debug}
               ref={formRef}
-              tags={tags}
-              counterparts={counterparts}
-              onSubmit={onSubmit}
+              onSubmit={onFormSubmit}
               payable={payable}
             />
           )}

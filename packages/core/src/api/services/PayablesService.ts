@@ -10,6 +10,7 @@ import type { PayableStateEnum } from '../models/PayableStateEnum';
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
+import { PayableResponseSchema } from '../models/PayableResponseSchema';
 
 export default class PayablesService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -97,6 +98,35 @@ export default class PayablesService {
           due_date__lt: dueDateLt,
           due_date__gte: dueDateGte,
           due_date__lte: dueDateLte,
+        },
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Payable by ID
+   * Payable from the connected entity.
+   * @param id
+   * @returns PayableResponseSchema Successful Response
+   * @throws ApiError
+   */
+  public getById(id: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'GET',
+        url: '/payables',
+        query: {
+          id,
         },
         errors: {
           400: `Bad Request`,
