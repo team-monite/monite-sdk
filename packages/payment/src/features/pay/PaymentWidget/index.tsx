@@ -35,7 +35,6 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const navigate = useNavigate();
 
   const { monite } = useComponentsContext() || {};
-
   useEffect(() => {
     (async () => {
       if (paymentData?.object.id) {
@@ -47,13 +46,13 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
       }
     })();
     if (
-      paymentData?.payment_methods.length === 1 &&
-      paymentData?.payment_methods[0] === 'card'
+      paymentData?.payment_methods?.length === 1 &&
+      paymentData?.payment_methods?.[0] === 'card'
     ) {
       navigate(`card${search}`, { replace: true });
     } else if (
-      paymentData?.payment_methods.length === 1 &&
-      paymentData?.payment_methods[0] === 'bank'
+      paymentData?.payment_methods?.length === 1 &&
+      paymentData?.payment_methods?.[0] === 'bank'
     ) {
       navigate(`bank${search}`, { replace: true });
     }
@@ -71,7 +70,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path="/"
           element={
-            paymentData && paymentData?.payment_methods.length ? (
+            paymentData && paymentData?.payment_methods?.length ? (
               <SelectPaymentMethod
                 paymentMethods={
                   paymentData?.payment_methods || ['card', 'others', 'bank']
@@ -92,7 +91,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
                 fee={300}
-                navButton={paymentData?.payment_methods.length > 1}
+                navButton={paymentData?.payment_methods?.length > 1}
               />
             )
           }

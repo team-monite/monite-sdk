@@ -24,7 +24,7 @@ const PaymentPage = () => {
 
   return (
     <Layout>
-      <Helmet title={`Pay invoice ${paymentData?.object?.id}`} />
+      <Helmet title={`Pay invoice ${paymentData?.object?.id || ''}`} />
       <Flex justifyContent="center">
         <Box width={600} p={4} pt={80}>
           <PaymentWidget
