@@ -5,9 +5,13 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import { Button, Alert, Box } from '@monite/ui';
+import {
+  // ReceivableResponse,
+  // CurrencyEnum,
+  PaymentMethodsEnum,
+} from '@monite/js-sdk';
 
-// import { toast } from 'ui/toast';
-import { useComponentsContext } from '@monite/react-kit';
+import { useComponentsContext, toast } from '@monite/react-kit';
 
 import * as Styled from './styles';
 
@@ -18,60 +22,81 @@ type CheckoutFormProps = {
   price: number;
   fee?: number;
   currency: string;
+  paymentLinkId: string;
 };
 
 export default function CheckoutForm({
   onFinish,
   price,
-  fee,
   returnUrl,
   currency,
+  paymentLinkId,
 }: CheckoutFormProps) {
-  const { t } = useComponentsContext();
+  const { t, monite } = useComponentsContext();
 
   const stripe = useStripe();
   const elements = useElements();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [fee, setFee] = useState<number>();
+  const [totalAmount, setTotalAmount] = useState<number>(0);
 
   const setMessage = (message: string) => {
-    // toast(message);
+    toast(message);
   };
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
+  useEffect(
+    function () {
+      elements?.getElement('payment')?.focus();
+    },
+    [elements]
+  );
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
+  // useEffect(() => {
+  //   if (!stripe) {
+  //     return;
+  //   }
 
-    if (!clientSecret) {
-      return;
-    }
+  //   const clientSecret = new URLSearchParams(window.location.search).get(
+  //     'payment_intent_client_secret'
+  //   );
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      if (onFinish) {
-        onFinish({ status: paymentIntent?.status, clientSecret });
-      }
+  //   if (!clientSecret) {
+  //     return;
+  //   }
 
-      switch (paymentIntent?.status) {
-        case 'succeeded':
-          setMessage('Payment succeeded!');
-          break;
-        case 'processing':
-          setMessage('Your payment is processing.');
-          break;
-        case 'requires_payment_method':
-          setMessage('Your payment was not successful, please try again.');
-          break;
-        default:
-          setMessage('Something went wrong.');
-          break;
-      }
-    });
-  }, [onFinish, stripe]);
+  //   stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+  //     if (onFinish) {
+  //       onFinish({ status: paymentIntent?.status, clientSecret });
+  //     }
+
+  //     switch (paymentIntent?.status) {
+  //       case 'succeeded':
+  //         setMessage('Payment succeeded!');
+  //         break;
+  //       case 'processing':
+  //         setMessage('Your payment is processing.');
+  //         break;
+  //       case 'requires_payment_method':
+  //         setMessage('Your payment was not successful, please try again.');
+  //         break;
+  //       default:
+  //         setMessage('Something went wrong.');
+  //         break;
+  //     }
+  //   });
+  // }, [onFinish, stripe]);
+
+  const handleChangeFee = async (paymentMethod: PaymentMethodsEnum) => {
+    monite.api.payment
+      .getFeeByPaymentMethod(paymentMethod, {
+        payment_link_id: paymentLinkId,
+      })
+      .then((response) => {
+        setFee(response.total.fee);
+        setTotalAmount(response.total.amount);
+      });
+  };
 
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
@@ -91,13 +116,16 @@ export default function CheckoutForm({
         return_url: returnUrl || `${window.location.href}`,
       },
     });
-
     // This point will only be reached if there is an immediate error when
     // confirming the payment. Otherwise, your customer will be redirected to
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
-    if (error.type === 'card_error' || error.type === 'validation_error') {
+    if (
+      error.type === 'card_error' ||
+      error.type === 'validation_error' ||
+      error.type === 'invalid_request_error'
+    ) {
       setMessage(error.message || '');
     } else {
       setMessage('An unexpected error occurred.');
@@ -111,12 +139,14 @@ export default function CheckoutForm({
     currency,
   });
 
-  const totalPrice = price + (fee || 0);
-
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <div>
-        <PaymentElement />
+        <PaymentElement
+          onChange={(value) =>
+            handleChangeFee(value.value.type as PaymentMethodsEnum)
+          }
+        />
       </div>
       <Styled.Prices>
         <Styled.PriceRow>
@@ -131,13 +161,15 @@ export default function CheckoutForm({
         ) : null}
         <Styled.PriceRow total>
           <div>{t('payment:widget.total')}</div>
-          <div>{formatter.format(totalPrice)}</div>
+          <div>{formatter.format(totalAmount)}</div>
         </Styled.PriceRow>
       </Styled.Prices>
       {fee ? (
         <Box mt="16px">
           <Alert>
-            {t('payment:widget.feeAlert', { percent: (fee * 100.0) / price })}
+            {t('payment:widget.feeAlert', {
+              percent: ((fee * 100.0) / price).toFixed(2),
+            })}
           </Alert>
         </Box>
       ) : null}
@@ -150,7 +182,7 @@ export default function CheckoutForm({
         isLoading={isLoading}
       >
         <span id="button-text">
-          {t('payment:widget.submit')} {formatter.format(totalPrice)}
+          {t('payment:widget.submit')} {formatter.format(totalAmount)}
         </span>
       </Button>
     </form>

@@ -3,4 +3,5 @@ export const ROUTES = {
   payResult: '/pay/:id/result',
   card: 'card/*',
   bank: 'bank/*',
+  other: 'other/*',
 };
