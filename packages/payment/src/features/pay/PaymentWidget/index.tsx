@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import { ReceivableResponse, CurrencyEnum } from '@monite/js-sdk';
+import {
+  ReceivableResponse,
+  CurrencyEnum,
+  PaymentMethodsEnum,
+} from '@monite/js-sdk';
 import { useComponentsContext } from '@monite/react-kit';
 import { Card } from '@monite/ui';
 
@@ -43,26 +47,30 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           await monite.api.payment.getPaymentReceivableById(
             paymentData?.object.id
           );
+
         setReceivableData(receivableData);
       }
     })();
+
     if (
-      paymentData?.payment_methods.length === 1 &&
-      paymentData?.payment_methods[0] === 'card'
+      paymentData?.payment_methods?.length === 1 &&
+      paymentData?.payment_methods?.[0] === PaymentMethodsEnum.CARD
     ) {
       navigate(`card${search}`, { replace: true });
-    } else if (
-      paymentData?.payment_methods.length === 1 &&
-      paymentData?.payment_methods[0] === 'bank'
-    ) {
-      navigate(`bank${search}`, { replace: true });
     }
+    //  else if (
+    //   paymentData?.payment_methods?.length === 1 &&
+    //   paymentData?.payment_methods?.[0] === 'bank'
+    // ) {
+    //   navigate(`bank${search}`, { replace: true });
+    // }
   }, [
     paymentData?.object.id,
-    monite.api.payment,
     navigate,
     search,
     paymentData?.payment_methods,
+    paymentData?.id,
+    monite.api.payment,
   ]);
 
   return (
@@ -71,11 +79,9 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path="/"
           element={
-            paymentData && paymentData?.payment_methods.length ? (
+            paymentData && paymentData?.payment_methods?.length ? (
               <SelectPaymentMethod
-                paymentMethods={
-                  paymentData?.payment_methods || ['card', 'others', 'bank']
-                }
+                paymentMethods={paymentData?.payment_methods}
               />
             ) : (
               <EmptyScreen />
@@ -91,8 +97,25 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
-                fee={300}
-                navButton={paymentData?.payment_methods.length > 1}
+                navButton={paymentData?.payment_methods?.length > 1}
+                paymentLinkId={paymentData?.id}
+              />
+            )
+          }
+        />
+        <Route
+          path={ROUTES.other}
+          element={
+            paymentData?.stripe?.secret && (
+              <StripeWidget
+                clientSecret={
+                  'pi_3LKHgzCq0HpJYRYN0EOoxirg_secret_weXEYslETkqL1D8sQsJqUKHnS'
+                }
+                {...props}
+                price={paymentData?.amount}
+                currency={paymentData?.currency}
+                navButton={paymentData?.payment_methods?.length > 1}
+                paymentLinkId={paymentData?.id}
               />
             )
           }

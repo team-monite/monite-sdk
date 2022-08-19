@@ -967,7 +967,7 @@ export { default as UBox } from './icons/UBox';
 // export { default as UCardAtm } from './icons/UCardAtm';
 export { default as UCheck } from './icons/UCheck';
 // export { default as UCheckCircle } from './icons/UCheckCircle';
-// export { default as UCheckSquare } from './icons/UCheckSquare';
+export { default as UCheckSquare } from './icons/UCheckSquare';
 // export { default as UCoffee } from './icons/UCoffee';
 // export { default as UCog } from './icons/UCog';
 // export { default as UCommentAltSlash } from './icons/UCommentAltSlash';
