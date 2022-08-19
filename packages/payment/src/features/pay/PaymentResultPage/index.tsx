@@ -12,7 +12,7 @@ import {
 } from '@monite/react-kit';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Layout from '../Layout';
 
@@ -42,6 +42,9 @@ export const PaymentResultPage = () => {
   const theme = useTheme<Theme>();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { search } = useLocation();
+
+  const status = new URLSearchParams(search).get('status');
 
   const statusesMap = {
     processing: {
@@ -109,7 +112,6 @@ export const PaymentResultPage = () => {
 
   // TODO: fetch receivable data from the API endpoint WHEN it will be ready
   // fields: doc id, doc number, counterpart name, iban, price
-  const status = 'canceled';
 
   return (
     <Layout>
@@ -126,7 +128,7 @@ export const PaymentResultPage = () => {
                   textSize="h3"
                   color={
                     getStatus(status as StripeResultStatuses) ===
-                      ResultStatuses.Canceled || ResultStatuses.Error
+                    (ResultStatuses.Canceled || ResultStatuses.Error)
                       ? theme.colors.danger
                       : theme.colors.successDarker
                   }
