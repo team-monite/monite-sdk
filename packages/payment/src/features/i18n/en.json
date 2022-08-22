@@ -1,0 +1,30 @@
+{
+  "payment": {
+    "widget": {
+      "method": "Payment method",
+      "amount": "Invoice amount",
+      "fee": "Transaction fee",
+      "total": "Total",
+      "feeAlert": "A {{percent}}% credit card transaction fee applies. It’ll be charged separately to your card.",
+      "submit": "Pay",
+      "back": "Back",
+      "emptyTitle": "No payment methods available",
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
+    },
+    "result": {
+      "processingTitle": "Payment initiated",
+      "processingText": "Thanks for your time! The payment is initiated. It may take a few minutes for the payment to be processed.  We will notify you once the payment is complete.",
+      "succeededTitle": "Payment completed",
+      "succeededText": "We’re glad to inform you that your payment has been completed successfully . Thanks for your time!",
+      "errorTitle": "Payment error",
+      "errorText": "An unexpected error occured while paying. Please try again later or choose another payment method.",
+      "canceledTitle": "Payment declined",
+      "canceledText": "The payment has been declined by the provider. Please make sure that selected account is active and has sufficient funds for the current transaction.",
+      "reference": "Reference",
+      "iban": "IBAN",
+      "payee": "Payee Name",
+      "amount": "Amount",
+      "back": "Go back"
+    }
+  }
+}
