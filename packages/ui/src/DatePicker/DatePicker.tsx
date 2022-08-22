@@ -155,6 +155,7 @@ const MyContainer = ({ children }: { children: any }) => {
 };
 
 type DatePickerProps = {
+  placeholder?: string;
   date?: Date | null;
   onChange: (date: Date | null) => void;
   className?: string;
@@ -164,11 +165,13 @@ type DatePickerProps = {
   required?: boolean;
   error?: string;
   isInvalid?: boolean;
+  isClearable?: boolean;
 };
 
 const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
   (
     {
+      placeholder,
       date,
       onChange,
       className,
@@ -176,6 +179,7 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       maxDate,
       dateFormat = 'dd.MM.yyyy',
       required,
+      isClearable,
       error,
       isInvalid,
       ...props
@@ -192,10 +196,12 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
         selected={date}
         onChange={(date) => date && onChange(date)}
         required={required}
+        isClearable={isClearable}
         minDate={minDate}
         maxDate={maxDate}
         customInput={
           <Input
+            placeholder={placeholder}
             required={required}
             ref={ref}
             error={error}

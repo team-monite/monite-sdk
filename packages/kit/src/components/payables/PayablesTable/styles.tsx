@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 export const Table = styled.div`
   flex: 1 1 auto;
   font-family: 'Faktum', sans-serif;
+  display: flex;
+  flex-direction: column;
 
   * {
     box-sizing: border-box;

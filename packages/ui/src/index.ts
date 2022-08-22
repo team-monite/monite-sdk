@@ -13,6 +13,7 @@ export { default as DropdownDivider } from './Dropdown/MenuDivider';
 export { default as useDropdownPopper } from './Dropdown/useDropdownPopper';
 export { default as Card } from './Card/Card';
 export { default as Radio } from './Radio';
+export { default as Search } from './Search';
 export { default as Select } from './Select';
 export { default as Checkbox } from './Checkbox';
 export { default as List } from './List';
