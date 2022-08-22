@@ -42,7 +42,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
 
   useEffect(() => {
     (async () => {
-      if (paymentData?.object.id) {
+      if (paymentData?.object?.id) {
         const receivableData =
           await monite.api.payment.getPaymentReceivableById(
             paymentData?.object.id
@@ -65,7 +65,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     //   navigate(`bank${search}`, { replace: true });
     // }
   }, [
-    paymentData?.object.id,
+    paymentData?.object?.id,
     navigate,
     search,
     paymentData?.payment_methods,
@@ -93,7 +93,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           element={
             paymentData?.stripe?.secret && (
               <StripeWidget
-                clientSecret={paymentData?.stripe.secret}
+                clientSecret={paymentData?.stripe.secret.card}
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
@@ -108,14 +108,13 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           element={
             paymentData?.stripe?.secret && (
               <StripeWidget
-                clientSecret={
-                  'pi_3LKHgzCq0HpJYRYN0EOoxirg_secret_weXEYslETkqL1D8sQsJqUKHnS'
-                }
+                clientSecret={paymentData?.stripe.secret.others}
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
                 navButton={paymentData?.payment_methods?.length > 1}
                 paymentLinkId={paymentData?.id}
+                onFinish={props.onFinish}
               />
             )
           }
