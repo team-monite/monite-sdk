@@ -1,8 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { PayableStateEnum } from '@monite/js-sdk';
-
 import {
   Button,
   Text,
@@ -11,7 +9,6 @@ import {
   UMultiply,
   Header,
   Tag,
-  TagColorType,
   Tabs,
   TabList,
   Tab,
@@ -19,6 +16,7 @@ import {
   FileViewer,
 } from '@monite/ui';
 
+import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../../consts';
 import PayableDetailsForm from './PayableDetailsForm';
 
 import {
@@ -35,17 +33,6 @@ import usePayableDetails, { UsePayableDetailsProps } from './usePayableDetails';
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
 }
-
-const payableStatus: Partial<Record<PayableStateEnum, TagColorType>> = {
-  [PayableStateEnum.NEW]: 'draft',
-  [PayableStateEnum.APPROVE_IN_PROGRESS]: 'pending',
-  [PayableStateEnum.WAITING_TO_BE_PAID]: 'pending',
-  [PayableStateEnum.PAID]: 'success',
-  [PayableStateEnum.CANCELED]: 'warning',
-  [PayableStateEnum.REJECTED]: 'warning',
-};
-
-const TAB_LIST = ['document', 'payment', 'status', 'history'];
 
 const PayableDetails = ({
   id,
@@ -121,7 +108,7 @@ const PayableDetails = ({
         >
           <StyledHeaderContent>
             <Text textSize={'h3'}>{payable.counterpart_name}</Text>
-            <Tag color={payableStatus[payable.status]}>
+            <Tag color={ROW_TO_TAG_STATUS_MAP[payable.status]}>
               {t(`payables:status.${payable.status}`)}
             </Tag>
           </StyledHeaderContent>
@@ -146,11 +133,11 @@ const PayableDetails = ({
           {isEdit && (
             <Tabs>
               <TabList>
-                {TAB_LIST.map((tab) => (
+                {PAYABLE_TAB_LIST.map((tab) => (
                   <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
                 ))}
               </TabList>
-              {TAB_LIST.map((tab) => (
+              {PAYABLE_TAB_LIST.map((tab) => (
                 <TabPanel key={tab}></TabPanel>
               ))}
             </Tabs>
