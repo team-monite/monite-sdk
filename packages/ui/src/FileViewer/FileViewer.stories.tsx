@@ -1,16 +1,15 @@
-import React from 'react';
 import samplePDF from './example.pdf';
 
-import PdfViewer from './PdfViewer';
+import FileViewer from './FileViewer';
 
 const Story = {
-  title: 'PdfViewer',
-  component: PdfViewer,
+  title: 'Data Display/FileViewer',
+  component: FileViewer,
 };
 export default Story;
 
 export const DefaultPdfViewer = () => (
   <div style={{ width: 612, padding: 48, background: '#F3F3F3' }}>
-    <PdfViewer file={samplePDF} />
+    <FileViewer mimetype={'application/pdf'} url={samplePDF} />
   </div>
 );

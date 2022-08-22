@@ -60,6 +60,14 @@
       "amount": "Amount",
       "addedBy": "Added by"
     },
+    "status": {
+      "new": "Draft",
+      "approve_in_progress": "Pending",
+      "waiting_to_be_paid": "Waiting to be paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "Rejected"
+    },
     "tabs": {
       "document": "Document",
       "payment": "Payment",
@@ -131,6 +139,11 @@
     "delete": "Delete",
     "createNew": "Create New",
     "cancel": "Cancel",
+    "submit": "Submit",
+    "pay": "Pay",
+    "save": "Save",
+    "approve": "Approve",
+    "reject": "Reject",
     "type": "Type"
   }
 }

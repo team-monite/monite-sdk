@@ -145,7 +145,9 @@ const getHeaders = async (
   config: OpenAPIConfig,
   options: ApiRequestOptions
 ): Promise<Headers> => {
-  const token = await resolve(options, config.TOKEN);
+  // const token = await resolve(options, config.TOKEN);
+  const token =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImNsaWVudF9pZCI6IjRmYmUxYmMyLWNmZmItNDIzOS1hYTAyLTQ4YmJlNGFiMTU4ZiIsImNyZWF0ZWRfYXQiOiIyMDIyLTA4LTE4VDExOjIwOjMwLjIyNDcxNyJ9LCJleHAiOjE2NjA4MjM0MzB9.JaMcJ5ZnwDTuM5VeKz-ozfgrqLJjxr8cpz0aCGNdHVY';
   const username = await resolve(options, config.USERNAME);
   const password = await resolve(options, config.PASSWORD);
   const additionalHeaders = await resolve(options, config.HEADERS);

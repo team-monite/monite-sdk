@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from '@emotion/styled';
 
 import type { ThemedStyledProps } from '../types';
@@ -103,26 +103,21 @@ export interface InputProps
   isInvalid?: boolean;
   renderAddon?: () => React.ReactNode;
   renderAddonIcon?: () => React.ReactNode;
-  inputRef?: React.RefObject<HTMLInputElement>;
 }
 
-const InputField = ({
-  id,
-  className,
-  error,
-  renderAddon,
-  renderAddonIcon,
-  type,
-  inputRef,
-  ...props
-}: InputProps) => {
-  return (
-    <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
-      <Input id={id} type={type || 'text'} ref={inputRef} {...props} />
-      {renderAddon && renderAddon()}
-      {renderAddonIcon && <i>{renderAddonIcon()}</i>}
-    </InputGroup>
-  );
-};
+const InputField = forwardRef<HTMLInputElement, InputProps>(
+  (
+    { id, className, error, renderAddon, renderAddonIcon, type, ...props },
+    ref
+  ) => {
+    return (
+      <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
+        <Input ref={ref} id={id} type={type || 'text'} {...props} />
+        {renderAddon && renderAddon()}
+        {renderAddonIcon && <i>{renderAddonIcon()}</i>}
+      </InputGroup>
+    );
+  }
+);
 
 export default InputField;

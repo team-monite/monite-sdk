@@ -18,7 +18,7 @@ class Core {
           Authorization:
             'Bearer ' + localStorage.getItem(AUTH_TOKEN_STORAGE_KEY),
           // TODO refactor auth flow and remove hardcoded value
-          'x-monite-entity-id': '766b0f6f-2eef-4fa6-a72f-15cea3b7b343',
+          'x-monite-entity-id': 'b306679d-dd88-45d6-b0f2-ba14464fd4a0',
         },
       },
     });

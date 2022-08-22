@@ -1,7 +1,7 @@
 import { MoniteApp } from '@monite/js-sdk';
 
 import MoniteProvider from '../src/core/context/ContextProvider';
-
+import { MONITE_ENTITY_ID } from '../src/constants';
 import './main.css';
 
 export const parameters = {
@@ -18,7 +18,7 @@ export const parameters = {
 export const decorators = [
   (Story) => {
     const monite = new MoniteApp({
-      // apiKey: '',
+      apiKey: MONITE_ENTITY_ID,
       locale: 'en',
     });
     return (

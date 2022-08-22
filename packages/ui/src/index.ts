@@ -17,7 +17,8 @@ export { default as Select } from './Select';
 export { default as Checkbox } from './Checkbox';
 export { default as List } from './List';
 export { default as ListItem } from './ListItem';
-export { default as Modal } from './Modal';
+export { Modal, ModalLayout } from './Modal';
+export { default as Header } from './Header';
 export { default as Multiselect } from './Multiselect';
 export { default as Tooltip } from './Tooltip';
 export { default as Accordion } from './Accordion';
@@ -32,6 +33,7 @@ export { default as Link } from './Link';
 export { default as DatePicker } from './DatePicker';
 export { Tabs, Tab, TabPanel, TabList } from './Tabs';
 export { default as Alert } from './Alert';
+export { default as FileViewer } from './FileViewer';
 export { default as ThemeProvider } from './core/ThemeProvider';
 
 export * from './unicons';

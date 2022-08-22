@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type PaymentProvider = {
-    type: string;
-    secret: string;
+export type PayeeInfo = {
+    name: string;
+    iban: string;
 };
 

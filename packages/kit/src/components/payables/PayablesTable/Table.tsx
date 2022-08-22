@@ -4,7 +4,6 @@ import {
   Table,
   HeadCellSort,
   Tag,
-  TagColorType,
   UArrowLeft,
   UArrowRight,
 } from '@monite/ui';
@@ -20,6 +19,7 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import * as Styled from './styles';
 
 import { PaginationTokens, Sort } from './types';
+import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
 
 export interface PayablesTableProps {
   loading?: boolean;
@@ -33,15 +33,6 @@ export interface PayablesTableProps {
   ) => void;
   currentSort: Sort | null;
 }
-
-const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
-  [PayableStateEnum.NEW]: 'success',
-  [PayableStateEnum.APPROVE_IN_PROGRESS]: 'pending',
-  [PayableStateEnum.WAITING_TO_BE_PAID]: 'pending',
-  [PayableStateEnum.PAID]: 'success',
-  [PayableStateEnum.CANCELED]: 'warning',
-  [PayableStateEnum.REJECTED]: 'warning',
-};
 
 const formatter = new Intl.NumberFormat('de-DE', {
   style: 'currency',

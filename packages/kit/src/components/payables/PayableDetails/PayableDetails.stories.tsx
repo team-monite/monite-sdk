@@ -1,48 +1,38 @@
 import PayableDetails from './PayableDetails';
-import { Box } from '@monite/ui';
-import payables from '../fixtures/list';
-import counterparts from '../../counterparts/fixtures/counterparts';
-import { TagReadSchema } from '@monite/js-sdk';
+import { Box, Modal } from '@monite/ui';
 
 const Story = {
   title: 'Payable Details',
   component: PayableDetails,
 };
+
 export default Story;
 
-const tags: TagReadSchema[] = [
-  {
-    id: 'test1',
-    name: 'test 1',
-  },
-  {
-    id: 'test2',
-    name: 'test 2',
-  },
-];
-
 export const DefaultForm = () => (
-  <Box sx={{ width: 556, backgroundColor: '#F3F3F3', padding: 20 }}>
-    <PayableDetails
-      tags={tags}
-      counterparts={counterparts}
-      payable={payables[0]}
-      onSubmit={(values) => {
-        console.log(values);
-      }}
-    />
+  <Box sx={{ width: '100%' }}>
+    <Modal>
+      <PayableDetails
+        id={'d8915b79-0228-45ca-9a66-5a201db9c6a7'}
+        debug={false}
+        onClose={() => {
+          console.log('onClose');
+        }}
+        onPay={() => {
+          console.log('onPay');
+        }}
+        onReject={() => {
+          console.log('onReject');
+        }}
+        onSubmit={() => {
+          console.log('onSubmit');
+        }}
+        onApprove={() => {
+          console.log('onApprove');
+        }}
+        onSave={() => {
+          console.log('onSave');
+        }}
+      />
+    </Modal>
   </Box>
 );
-
-// const tabs = ['document', 'payment', 'status', 'history'];
-
-// <Tabs>
-//   <TabList>
-//     {tabs.map((tab) => (
-//       <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
-//     ))}
-//   </TabList>
-//   {tabs.map((tab) => (
-//     <TabPanel key={tab}></TabPanel>
-//   ))}
-// </Tabs>
