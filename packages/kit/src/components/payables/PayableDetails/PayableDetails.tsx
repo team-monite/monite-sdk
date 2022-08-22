@@ -16,9 +16,8 @@ import {
   TabList,
   Tab,
   TabPanel,
+  FileViewer,
 } from '@monite/ui';
-
-import PdfViewer from '../../payment/PdfViewer/PdfViewer';
 
 import PayableDetailsForm from './PayableDetailsForm';
 
@@ -26,6 +25,8 @@ import {
   StyledContent,
   StyledHeaderActions,
   StyledHeaderContent,
+  StyledScroll,
+  StyledScrollContent,
   StyledSection,
 } from './PayableDetailsStyle';
 
@@ -129,27 +130,42 @@ const PayableDetails = ({
     >
       <StyledContent>
         <StyledSection>
-          {!!payable.file && <PdfViewer file={payable.file.url} />}
+          <StyledScrollContent>
+            <StyledScroll>
+              {payable.file && (
+                <FileViewer
+                  name={payable.file.name}
+                  mimetype={payable.file.mimetype}
+                  url={payable.file.url}
+                />
+              )}
+            </StyledScroll>
+          </StyledScrollContent>
         </StyledSection>
-        <StyledSection sx={{ flexGrow: 1 }}>
-          <Tabs>
-            <TabList>
-              {TAB_LIST.map((tab) => (
-                <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
-              ))}
-            </TabList>
-            {TAB_LIST.map((tab) => (
-              <TabPanel key={tab}></TabPanel>
-            ))}
-          </Tabs>
-
+        <StyledSection>
           {isEdit && (
-            <PayableDetailsForm
-              debug={debug}
-              ref={formRef}
-              onSubmit={onFormSubmit}
-              payable={payable}
-            />
+            <Tabs>
+              <TabList>
+                {TAB_LIST.map((tab) => (
+                  <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+                ))}
+              </TabList>
+              {TAB_LIST.map((tab) => (
+                <TabPanel key={tab}></TabPanel>
+              ))}
+            </Tabs>
+          )}
+          {isEdit && (
+            <StyledScrollContent>
+              <StyledScroll>
+                <PayableDetailsForm
+                  debug={debug}
+                  ref={formRef}
+                  onSubmit={onFormSubmit}
+                  payable={payable}
+                />
+              </StyledScroll>
+            </StyledScrollContent>
           )}
         </StyledSection>
       </StyledContent>

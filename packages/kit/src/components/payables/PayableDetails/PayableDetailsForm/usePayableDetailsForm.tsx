@@ -36,11 +36,9 @@ export default function usePayableDetailsForm({
   const { monite } = useComponentsContext();
 
   useEffect(() => {
-    (async () => {
-      // TODO fetch counterparts and tags
-      setTags(tagsMock);
-      setCounterparts(counterpartsMock);
-    })();
+    // TODO fetch counterparts and tags
+    setTags(tagsMock);
+    setCounterparts(counterpartsMock);
   }, [monite, debug, payable]);
 
   return {

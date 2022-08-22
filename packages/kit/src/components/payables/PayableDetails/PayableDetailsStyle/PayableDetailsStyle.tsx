@@ -27,13 +27,32 @@ export const StyledHeaderActions = styled(Flex)`
 `;
 
 export const StyledContent = styled(Flex)`
-  padding: 40px;
+  padding: 40px 40px 0 40px;
   background-color: ${({ theme }) => theme.colors.secondary};
   gap: 76px;
+  height: 100%;
 `;
 
 export const StyledSection = styled(Box)`
   width: 50%;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledScrollContent = styled(Box)`
+  height: 100%;
+  position: relative;
+`;
+
+export const StyledScroll = styled(Box)`
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 `;
 
 export const CurrencyAddon = styled(Text)`

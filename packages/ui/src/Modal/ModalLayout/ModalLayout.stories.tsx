@@ -35,7 +35,7 @@ export const DefaultModalLayout = () => {
 
 export const ModalLayoutWithScroll = () => {
   return (
-    <ModalLayout>
+    <ModalLayout scrollableContent>
       <div style={{ padding: 20 }}>
         {[...new Array(10)].map((key) => (
           <p key={key}>
@@ -64,6 +64,7 @@ export const FullScreenModalLayout = ({ onHide }: { onHide: () => void }) => {
   return (
     <ModalLayout
       fullScreen
+      scrollableContent
       footer={
         <Flex
           sx={{

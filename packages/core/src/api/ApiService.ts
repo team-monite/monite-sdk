@@ -6,12 +6,17 @@ import PaymentService from './services/PaymentService';
 import AuthService from './services/AuthService';
 import ReceivableService from './services/ReceivableService';
 import WorkflowsService from './services/WorkflowsService';
+import PayablesService from './services/PayableService';
+import RoleService from './services/RoleService';
+
 class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   counterparts: CounterpartsService;
   partnerApi: PartnerApiService;
   auth: AuthService;
+  payable: PayablesService;
+  role: RoleService;
   receivable: ReceivableService;
   workflows: WorkflowsService;
   payment: PaymentService;
@@ -23,6 +28,8 @@ class ApiService {
     this.partnerApi = new PartnerApiService({ config });
     this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
+    this.payable = new PayablesService({ config });
+    this.role = new RoleService({ config });
     this.workflows = new WorkflowsService({ config });
     //TODO: temporarily config for gateway
     this.payment = new PaymentService({

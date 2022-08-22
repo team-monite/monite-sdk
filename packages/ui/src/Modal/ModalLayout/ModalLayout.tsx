@@ -3,17 +3,19 @@ import styled from '@emotion/styled';
 
 type ModalLayoutSize = 'md' | 'sm';
 
-type StyledModalLayoutProps = {
-  $size?: ModalLayoutSize;
-  $fullScreen?: boolean;
-};
-
 export type ModalLayoutProps = {
   children: React.ReactNode;
   header?: React.ReactNode;
   footer?: React.ReactNode;
   size?: ModalLayoutSize;
   fullScreen?: boolean;
+  scrollableContent?: boolean;
+};
+
+type StyledModalLayoutProps = {
+  $size?: ModalLayoutSize;
+  $fullScreen?: boolean;
+  $scrollableContent?: boolean;
 };
 
 const SIZE_MAP: Record<ModalLayoutSize, string> = {
@@ -61,36 +63,34 @@ const StyledWrap = styled.div<StyledModalLayoutProps>`
 `;
 
 const StyledModalLayoutContent = styled.div<StyledModalLayoutProps>`
-  overflow-y: auto;
   width: 100%;
   pointer-events: auto;
   outline: 0;
+  height: 100%;
+  ${({ $scrollableContent }) => $scrollableContent && 'overflow-y: auto;'};
 `;
 
-const StyledModalLayoutHeader = styled.div<StyledModalLayoutProps>`
+const StyledModalLayoutHeader = styled.div`
   flex: 0 0 auto;
 `;
 
-const StyledModalLayoutFooter = styled.div<StyledModalLayoutProps>`
+const StyledModalLayoutFooter = styled.div`
   flex: 0 0 auto;
-`;
-
-const StyledModalLayoutScroll = styled.div<StyledModalLayoutProps>`
-  width: 100%;
 `;
 
 const ModalLayout = ({
   children,
-  size,
-  fullScreen,
   header,
   footer,
+  size,
+  fullScreen,
+  scrollableContent,
 }: ModalLayoutProps) => {
   return (
     <StyledWrap $size={size} $fullScreen={fullScreen}>
       {header && <StyledModalLayoutHeader>{header}</StyledModalLayoutHeader>}
-      <StyledModalLayoutContent>
-        <StyledModalLayoutScroll>{children}</StyledModalLayoutScroll>
+      <StyledModalLayoutContent $scrollableContent={scrollableContent}>
+        {children}
       </StyledModalLayoutContent>
       {footer && <StyledModalLayoutFooter>{footer}</StyledModalLayoutFooter>}
     </StyledWrap>

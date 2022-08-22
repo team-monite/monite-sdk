@@ -94,7 +94,6 @@ const getValidationSchema = () =>
           })
         )
         .required(),
-
       iban: yup.string().required(),
       bic: yup.string().required(),
     })
@@ -105,14 +104,14 @@ const getDefaultValues = (payable: PayableResponseSchema) => ({
     value: payable.counterpart_id || '',
     label: payable.counterpart_name || '',
   },
-  invoiceNumber: payable.document_id,
-  invoiceDate: payable.issued_at,
-  suggestedPaymentDate: payable?.suggested_payment_term?.date,
-  dueDate: payable.due_date,
+  invoiceNumber: payable.document_id ?? '',
+  invoiceDate: payable.issued_at ?? '',
+  suggestedPaymentDate: payable?.suggested_payment_term?.date ?? '',
+  dueDate: payable.due_date ?? '',
   total: convertToMajorUnits(payable.amount ?? 0, payable.currency ?? ''),
   tags: tagsToSelect(payable.tags),
-  iban: payable.counterpart_account_id,
-  bic: payable.counterpart_bank_id,
+  iban: payable.counterpart_account_id ?? '',
+  bic: payable.counterpart_bank_id ?? '',
 });
 
 const PayableDetailsForm = forwardRef<
@@ -125,12 +124,10 @@ const PayableDetailsForm = forwardRef<
     defaultValues: getDefaultValues(payable),
   });
 
-  const { tags, counterparts, isLoading } = usePayableDetailsForm({
+  const { tags, counterparts } = usePayableDetailsForm({
     payable,
     debug,
   });
-
-  console.log(isLoading);
 
   return (
     <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
@@ -163,8 +160,17 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="invoiceNumber"
             control={control}
-            render={({ field: { ref, ...restField } }) => (
-              <Input {...restField} required />
+            render={({
+              field: { ref, ...restField },
+              fieldState: { error },
+            }) => (
+              <Input
+                {...restField}
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
+                required
+              />
             )}
           />
         </FormItem>
@@ -176,10 +182,16 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="invoiceDate"
             control={control}
-            render={({ field: { ref, value, ...restField } }) => (
+            render={({
+              field: { ref, value, ...restField },
+              fieldState: { error },
+            }) => (
               <DatePicker
                 {...restField}
                 required
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
                 date={value ? new Date(value) : null}
               />
             )}
@@ -193,11 +205,17 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="suggestedPaymentDate"
             control={control}
-            render={({ field: { ref, value, ...restField } }) => (
+            render={({
+              field: { ref, value, ...restField },
+              fieldState: { error },
+            }) => (
               // TODO Add discount
               <DatePicker
                 {...restField}
                 date={value ? new Date(value) : null}
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
                 required
               />
             )}
@@ -207,10 +225,16 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="dueDate"
             control={control}
-            render={({ field: { ref, value, ...restField } }) => (
+            render={({
+              field: { ref, value, ...restField },
+              fieldState: { error },
+            }) => (
               <DatePicker
                 {...restField}
                 date={value ? new Date(value) : null}
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
                 required
               />
             )}
@@ -220,7 +244,10 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="total"
             control={control}
-            render={({ field: { ref, ...restField } }) => (
+            render={({
+              field: { ref, ...restField },
+              fieldState: { error },
+            }) => (
               <Input
                 {...restField}
                 renderAddon={() => {
@@ -234,6 +261,9 @@ const PayableDetailsForm = forwardRef<
                 id="total"
                 required
                 type="number"
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
               />
             )}
           />
@@ -265,8 +295,17 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="iban"
             control={control}
-            render={({ field: { ref, ...restField } }) => (
-              <Input {...restField} required />
+            render={({
+              field: { ref, ...restField },
+              fieldState: { error },
+            }) => (
+              <Input
+                {...restField}
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
+                required
+              />
             )}
           />
         </FormItem>
@@ -274,8 +313,17 @@ const PayableDetailsForm = forwardRef<
           <Controller
             name="bic"
             control={control}
-            render={({ field: { ref, ...restField } }) => (
-              <Input {...restField} required />
+            render={({
+              field: { ref, ...restField },
+              fieldState: { error },
+            }) => (
+              <Input
+                {...restField}
+                ref={ref}
+                error={error?.message}
+                isInvalid={!!error}
+                required
+              />
             )}
           />
         </FormItem>

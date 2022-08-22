@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { PayableResponseSchema } from '@monite/js-sdk';
 
 import { useComponentsContext } from '../../../core/context/ComponentsContext';
-import payables from '../fixtures/list';
+import payableMock from '../fixtures/getById';
 import { PayableDetailsFormFields } from './PayableDetailsForm';
 
 export type UsePayableDetailsProps = {
@@ -81,13 +81,24 @@ export default function usePayableDetails({
     (async () => {
       // TODO fetch payable and user roles
 
-      setPayable(payables[0]);
+      if (debug) {
+        setPayable(payableMock);
+      } else {
+        const payables = await monite.api!.payable.getList();
+        console.log(payables);
 
-      // const res = await monite.api!.payables.getList();
-      // console.log(res);
-      // setData(
-      //   (Array.isArray(res?.data) ? res.data : []).filter((row) => row.id)
-      // );
+        // const payable = await monite.api!.payable.getById(id);
+        // setPayable(payable);
+
+        Promise.all([
+          monite.api!.payable.getById(id),
+          // monite.api!.role.getList(),
+        ]).then(([payable]) => {
+          setPayable(payable);
+
+          // console.log(roles);
+        });
+      }
     })();
   }, [monite, id, debug]);
 

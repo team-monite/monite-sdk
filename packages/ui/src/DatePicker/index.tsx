@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, forwardRef } from 'react';
 import styled from '@emotion/styled';
 import ReactDatePicker, {
   CalendarContainer,
@@ -162,115 +162,131 @@ type DatePickerProps = {
   maxDate?: Date;
   dateFormat?: string;
   required?: boolean;
+  error?: string;
+  isInvalid?: boolean;
 };
 
-const DatePicker = ({
-  date,
-  onChange,
-  className,
-  minDate,
-  maxDate,
-  dateFormat = 'dd.MM.yyyy',
-  required,
-}: DatePickerProps) => {
-  const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
-  const [showYearPicker, setShowYearPicker] = useState(false);
-  const { startPeriod, endPeriod } = getYearsPeriod(date || new Date());
-  const inputRef = useRef<HTMLInputElement>(null);
+const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
+  (
+    {
+      date,
+      onChange,
+      className,
+      minDate,
+      maxDate,
+      dateFormat = 'dd.MM.yyyy',
+      required,
+      error,
+      isInvalid,
+      ...props
+    },
+    ref
+  ) => {
+    const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
+    const [showYearPicker, setShowYearPicker] = useState(false);
+    const { startPeriod, endPeriod } = getYearsPeriod(date || new Date());
 
-  return (
-    <ReactDatePicker
-      className={className}
-      selected={date}
-      onChange={(date) => date && onChange(date)}
-      required={required}
-      minDate={minDate}
-      maxDate={maxDate}
-      customInput={
-        <Input
-          inputRef={inputRef}
-          renderAddonIcon={() => (
-            <InputIcon
-              /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => {
-                if (inputRef.current !== document.activeElement) {
-                  inputRef.current?.focus();
-                }
-              }}
-            >
-              <UCalendarAlt color="#B8B8B8" width={16} height={16} />
-            </InputIcon>
-          )}
-        />
-      }
-      calendarContainer={MyContainer}
-      dayClassName={() => 'day'}
-      locale={'en-GB'}
-      dateFormat={dateFormat}
-      showMonthYearPicker={showMonthYearPicker}
-      showYearPicker={showYearPicker}
-      shouldCloseOnSelect={!(showMonthYearPicker || showYearPicker)}
-      onCalendarClose={() => {
-        setShowMonthYearPicker(false);
-        setShowYearPicker(false);
-      }}
-      onSelect={() => {
-        if (showMonthYearPicker) {
-          setShowMonthYearPicker(false);
-        }
-
-        if (showYearPicker) {
-          setShowYearPicker(false);
-        }
-      }}
-      renderCustomHeader={({
-        date,
-        decreaseMonth,
-        increaseMonth,
-        decreaseYear,
-        increaseYear,
-      }) => (
-        <HeaderWrapper>
-          <IconButton
-            onClick={
-              !showMonthYearPicker && !showYearPicker
-                ? decreaseMonth
-                : decreaseYear
-            }
-            color="grey"
-          >
-            <UAngleLeft />
-          </IconButton>
-          <>
-            {!showMonthYearPicker && !showYearPicker && (
-              <HeaderDate
-                onClick={() => setShowMonthYearPicker((value) => !value)}
+    return (
+      <ReactDatePicker
+        className={className}
+        selected={date}
+        onChange={(date) => date && onChange(date)}
+        required={required}
+        minDate={minDate}
+        maxDate={maxDate}
+        customInput={
+          <Input
+            required={required}
+            ref={ref}
+            error={error}
+            isInvalid={isInvalid}
+            renderAddonIcon={() => (
+              <InputIcon
+                /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  if (ref !== document.activeElement) {
+                    // TODO fix focus
+                    // ref?.focus();
+                  }
+                }}
               >
-                {format(date, 'MMMM')}
-              </HeaderDate>
+                <UCalendarAlt color="#B8B8B8" width={16} height={16} />
+              </InputIcon>
             )}
-            {!showYearPicker && (
-              <HeaderDate onClick={() => setShowYearPicker((value) => !value)}>
-                {` ${date.getFullYear()}`}
-              </HeaderDate>
-            )}
-            {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
-          </>
-          <IconButton
-            onClick={
-              !showMonthYearPicker && !showYearPicker
-                ? increaseMonth
-                : increaseYear
-            }
-            color="grey"
-          >
-            <UAngleRight />
-          </IconButton>
-        </HeaderWrapper>
-      )}
-    />
-  );
-};
+            {...props}
+          />
+        }
+        calendarContainer={MyContainer}
+        dayClassName={() => 'day'}
+        locale={'en-GB'}
+        dateFormat={dateFormat}
+        showMonthYearPicker={showMonthYearPicker}
+        showYearPicker={showYearPicker}
+        shouldCloseOnSelect={!(showMonthYearPicker || showYearPicker)}
+        onCalendarClose={() => {
+          setShowMonthYearPicker(false);
+          setShowYearPicker(false);
+        }}
+        onSelect={() => {
+          if (showMonthYearPicker) {
+            setShowMonthYearPicker(false);
+          }
+
+          if (showYearPicker) {
+            setShowYearPicker(false);
+          }
+        }}
+        renderCustomHeader={({
+          date,
+          decreaseMonth,
+          increaseMonth,
+          decreaseYear,
+          increaseYear,
+        }) => (
+          <HeaderWrapper>
+            <IconButton
+              onClick={
+                !showMonthYearPicker && !showYearPicker
+                  ? decreaseMonth
+                  : decreaseYear
+              }
+              color="grey"
+            >
+              <UAngleLeft />
+            </IconButton>
+            <>
+              {!showMonthYearPicker && !showYearPicker && (
+                <HeaderDate
+                  onClick={() => setShowMonthYearPicker((value) => !value)}
+                >
+                  {format(date, 'MMMM')}
+                </HeaderDate>
+              )}
+              {!showYearPicker && (
+                <HeaderDate
+                  onClick={() => setShowYearPicker((value) => !value)}
+                >
+                  {` ${date.getFullYear()}`}
+                </HeaderDate>
+              )}
+              {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
+            </>
+            <IconButton
+              onClick={
+                !showMonthYearPicker && !showYearPicker
+                  ? increaseMonth
+                  : increaseYear
+              }
+              color="grey"
+            >
+              <UAngleRight />
+            </IconButton>
+          </HeaderWrapper>
+        )}
+      />
+    );
+  }
+);
 
 export default DatePicker;
