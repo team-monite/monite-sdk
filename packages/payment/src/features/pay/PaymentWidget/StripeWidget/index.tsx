@@ -34,6 +34,7 @@ const StripeForm = ({
   const theme = useTheme<Theme>();
 
   const [, setStripePromise] = useState(stripePromise);
+  // const [secret, setSecret] = useState(clientSecret);
 
   useEffect(() => {
     if (stripePromise) {
