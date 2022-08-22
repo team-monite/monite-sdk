@@ -48,6 +48,6 @@ deploy_payment:
   script:
     - aws --version
     - aws s3 sync packages/payment/build s3://monite-payments
-    - aws cloudfront create-invalidation --distribution-id E25LGDILD4PO78 --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id EZPL89L14KXTE --paths "/*"
   tags:
     - docker
