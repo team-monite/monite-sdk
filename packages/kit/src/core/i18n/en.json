@@ -90,7 +90,9 @@
       "submittedBy": "Submitted by",
       "tags": "Tags",
       "iban": "IBAN",
-      "bic": "BIC"
+      "bic": "BIC",
+      "subtotal": "Subtotal",
+      "tax": "VAT"
     }
   },
   "counterparts": {
