@@ -66,10 +66,22 @@ const Filters = ({ onChangeFilter }: Props) => {
         />
       </Item>
       <Item style={{ width: 160 }}>
-        <DatePicker date={dueDate} onChange={setDueDate} />
+        <DatePicker
+          date={createdAt}
+          onChange={setCreatedAt}
+          placeholder={t('payables:columns.invoiceDate')}
+          isFilter
+          isClearable
+        />
       </Item>
       <Item style={{ width: 160 }}>
-        <DatePicker date={createdAt} onChange={setCreatedAt} />
+        <DatePicker
+          date={dueDate}
+          onChange={setDueDate}
+          placeholder={t('payables:columns.dueDate')}
+          isFilter
+          isClearable
+        />
       </Item>
     </Wrapper>
   );

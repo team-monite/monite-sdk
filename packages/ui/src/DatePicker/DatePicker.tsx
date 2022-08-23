@@ -12,7 +12,7 @@ import { getYear, format } from 'date-fns';
 
 import Input from '../Input';
 import IconButton from '../IconButton';
-import { UAngleRight, UAngleLeft, UCalendarAlt } from 'unicons';
+import { UAngleRight, UAngleLeft, UCalendarAlt, UTimes } from 'unicons';
 
 const DEFAULT_YEAR_ITEM_NUMBER = 12;
 
@@ -130,6 +130,24 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   }
 `;
 
+const DataPickerWrapper = styled.div<{ isFilter?: boolean }>`
+  .react-datepicker__close-icon {
+    display: none;
+    visibility: hidden;
+  }
+
+  &:hover {
+    i > div {
+      color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
+    }
+    input {
+      color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
+      background-color: ${({ isFilter, theme }) =>
+        isFilter && theme.colors.black};
+    }
+  }
+`;
+
 const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -145,9 +163,14 @@ const HeaderDate = styled.span`
   cursor: pointer;
 `;
 
-const InputIcon = styled.div`
-  margin-top: 16px;
-  margin-right: 16px;
+const InputIcon = styled.div<{ selected?: Date | null }>`
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 14px;
+  color: ${({ theme, selected }) =>
+    selected ? theme.colors.black : theme.colors.lightGrey1};
 `;
 
 const MyContainer = ({ children }: { children: any }) => {
@@ -166,6 +189,7 @@ type DatePickerProps = {
   error?: string;
   isInvalid?: boolean;
   isClearable?: boolean;
+  isFilter?: boolean;
 };
 
 const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
@@ -182,6 +206,7 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       isClearable,
       error,
       isInvalid,
+      isFilter,
       ...props
     },
     ref
@@ -191,106 +216,126 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     const { startPeriod, endPeriod } = getYearsPeriod(date || new Date());
 
     return (
-      <ReactDatePicker
-        className={className}
-        selected={date}
-        onChange={(date) => date && onChange(date)}
-        required={required}
-        isClearable={isClearable}
-        minDate={minDate}
-        maxDate={maxDate}
-        customInput={
-          <Input
-            placeholder={placeholder}
-            required={required}
-            ref={ref}
-            error={error}
-            isInvalid={isInvalid}
-            renderAddonIcon={() => (
-              <InputIcon
-                /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => {
-                  if (ref !== document.activeElement) {
-                    // TODO fix focus
-                    // ref?.focus();
-                  }
-                }}
-              >
-                <UCalendarAlt color="#B8B8B8" width={16} height={16} />
-              </InputIcon>
-            )}
-            {...props}
-          />
-        }
-        calendarContainer={MyContainer}
-        dayClassName={() => 'day'}
-        locale={'en-GB'}
-        dateFormat={dateFormat}
-        showMonthYearPicker={showMonthYearPicker}
-        showYearPicker={showYearPicker}
-        shouldCloseOnSelect={!(showMonthYearPicker || showYearPicker)}
-        onCalendarClose={() => {
-          setShowMonthYearPicker(false);
-          setShowYearPicker(false);
-        }}
-        onSelect={() => {
-          if (showMonthYearPicker) {
-            setShowMonthYearPicker(false);
-          }
+      <DataPickerWrapper isFilter={isFilter}>
+        <ReactDatePicker
+          className={className}
+          selected={date}
+          onChange={onChange}
+          required={required}
+          isClearable={isClearable}
+          minDate={minDate}
+          maxDate={maxDate}
+          placeholderText={placeholder}
+          customInput={
+            <Input
+              required={required}
+              ref={ref}
+              error={error}
+              isInvalid={isInvalid}
+              isFilter={isFilter}
+              renderAddonIcon={() => {
+                if (date && isClearable)
+                  return (
+                    isFilter && (
+                      <InputIcon selected={date}>
+                        <UTimes
+                          width={24}
+                          height={24}
+                          onClick={() => onChange(null)}
+                          aria-label="Close"
+                          tabIndex={-1}
+                        />
+                      </InputIcon>
+                    )
+                  );
 
-          if (showYearPicker) {
-            setShowYearPicker(false);
+                return (
+                  <InputIcon
+                    /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      if (ref !== document.activeElement) {
+                        // TODO fix focus
+                        // ref?.focus();
+                      }
+                    }}
+                  >
+                    <UCalendarAlt width={20} height={20} />
+                  </InputIcon>
+                );
+              }}
+              {...props}
+            />
           }
-        }}
-        renderCustomHeader={({
-          date,
-          decreaseMonth,
-          increaseMonth,
-          decreaseYear,
-          increaseYear,
-        }) => (
-          <HeaderWrapper>
-            <IconButton
-              onClick={
-                !showMonthYearPicker && !showYearPicker
-                  ? decreaseMonth
-                  : decreaseYear
-              }
-              color="grey"
-            >
-              <UAngleLeft />
-            </IconButton>
-            <>
-              {!showMonthYearPicker && !showYearPicker && (
-                <HeaderDate
-                  onClick={() => setShowMonthYearPicker((value) => !value)}
-                >
-                  {format(date, 'MMMM')}
-                </HeaderDate>
-              )}
-              {!showYearPicker && (
-                <HeaderDate
-                  onClick={() => setShowYearPicker((value) => !value)}
-                >
-                  {` ${date.getFullYear()}`}
-                </HeaderDate>
-              )}
-              {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
-            </>
-            <IconButton
-              onClick={
-                !showMonthYearPicker && !showYearPicker
-                  ? increaseMonth
-                  : increaseYear
-              }
-              color="grey"
-            >
-              <UAngleRight />
-            </IconButton>
-          </HeaderWrapper>
-        )}
-      />
+          calendarContainer={MyContainer}
+          dayClassName={() => 'day'}
+          locale={'en-GB'}
+          dateFormat={dateFormat}
+          showMonthYearPicker={showMonthYearPicker}
+          showYearPicker={showYearPicker}
+          shouldCloseOnSelect={!(showMonthYearPicker || showYearPicker)}
+          onCalendarClose={() => {
+            setShowMonthYearPicker(false);
+            setShowYearPicker(false);
+          }}
+          onSelect={() => {
+            if (showMonthYearPicker) {
+              setShowMonthYearPicker(false);
+            }
+
+            if (showYearPicker) {
+              setShowYearPicker(false);
+            }
+          }}
+          renderCustomHeader={({
+            date,
+            decreaseMonth,
+            increaseMonth,
+            decreaseYear,
+            increaseYear,
+          }) => (
+            <HeaderWrapper>
+              <IconButton
+                onClick={
+                  !showMonthYearPicker && !showYearPicker
+                    ? decreaseMonth
+                    : decreaseYear
+                }
+                color="grey"
+              >
+                <UAngleLeft />
+              </IconButton>
+              <>
+                {!showMonthYearPicker && !showYearPicker && (
+                  <HeaderDate
+                    onClick={() => setShowMonthYearPicker((value) => !value)}
+                  >
+                    {format(date, 'MMMM')}
+                  </HeaderDate>
+                )}
+                {!showYearPicker && (
+                  <HeaderDate
+                    onClick={() => setShowYearPicker((value) => !value)}
+                  >
+                    {` ${date.getFullYear()}`}
+                  </HeaderDate>
+                )}
+                {showYearPicker ? `${startPeriod} - ${endPeriod}` : null}
+              </>
+              <IconButton
+                onClick={
+                  !showMonthYearPicker && !showYearPicker
+                    ? increaseMonth
+                    : increaseYear
+                }
+                color="grey"
+              >
+                <UAngleRight />
+              </IconButton>
+            </HeaderWrapper>
+          )}
+        />
+      </DataPickerWrapper>
     );
   }
 );
