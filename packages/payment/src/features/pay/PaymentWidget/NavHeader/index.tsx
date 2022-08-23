@@ -9,7 +9,7 @@ const NavHeader = () => {
   const { t } = useComponentsContext();
 
   return (
-    <Box height={48}>
+    <Box height={48} ml={'-10px'}>
       <Button
         color="grey"
         leftIcon={<UArrowLeft width={24} height={24} />}
