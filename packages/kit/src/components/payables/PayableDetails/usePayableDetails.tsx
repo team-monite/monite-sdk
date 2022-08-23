@@ -26,14 +26,14 @@ export default function usePayableDetails({
 }: UsePayableDetailsProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [isEdit] = useState<boolean>(true);
+  const [isEdit] = useState<boolean>(false);
   const [isLoading] = useState<boolean>(false);
   const [payable, setPayable] = useState<PayableResponseSchema | null>(null);
 
   const { monite } = useComponentsContext();
 
-  const [canSave] = useState<boolean>(true);
-  const [canSubmit] = useState<boolean>(true);
+  const [canSave] = useState<boolean>(false);
+  const [canSubmit] = useState<boolean>(false);
   const [canPay] = useState<boolean>(false);
   const [canApprove] = useState<boolean>(false);
   const [canReject] = useState<boolean>(false);

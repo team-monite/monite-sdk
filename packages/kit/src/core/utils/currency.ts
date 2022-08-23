@@ -198,7 +198,20 @@ export function convertToMajorUnits(amount: number, currency: string): number {
   return Number((amount / 100).toFixed(2));
 }
 
-export function convertToMinorUnits(amount: string, currency: string): number {
+export function convertToMinorUnits(
+  amount: string | number,
+  currency: string
+): number {
   if (currency === 'JPY') return Number(amount);
   return Number(amount) * 100;
+}
+
+export function getReadableAmount(
+  amount: string | number,
+  currency: string
+): string {
+  return `${convertToMajorUnits(
+    Number(amount),
+    currency
+  )} ${getSymbolFromCurrency(currency)}`;
 }

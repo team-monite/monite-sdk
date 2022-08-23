@@ -14,6 +14,7 @@ import {
   Tab,
   TabPanel,
   FileViewer,
+  Spinner,
 } from '@monite/ui';
 
 import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../../consts';
@@ -23,12 +24,14 @@ import {
   StyledContent,
   StyledHeaderActions,
   StyledHeaderContent,
+  StyledLoading,
   StyledScroll,
   StyledScrollContent,
   StyledSection,
 } from './PayableDetailsStyle';
 
 import usePayableDetails, { UsePayableDetailsProps } from './usePayableDetails';
+import PayableDetailsInfo from './PayableDetailsInfo';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
@@ -70,7 +73,14 @@ const PayableDetails = ({
     onApprove,
   });
 
-  if (!payable) return null;
+  if (!payable)
+    return (
+      <ModalLayout fullScreen>
+        <StyledLoading>
+          <Spinner color={'primary'} pxSize={45} />
+        </StyledLoading>
+      </ModalLayout>
+    );
 
   return (
     <ModalLayout
@@ -151,6 +161,14 @@ const PayableDetails = ({
                   onSubmit={onFormSubmit}
                   payable={payable}
                 />
+              </StyledScroll>
+            </StyledScrollContent>
+          )}
+
+          {!isEdit && (
+            <StyledScrollContent>
+              <StyledScroll>
+                <PayableDetailsInfo payable={payable} />
               </StyledScroll>
             </StyledScrollContent>
           )}

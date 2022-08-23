@@ -13,7 +13,7 @@ export const DefaultForm = () => (
     <Modal>
       <PayableDetails
         id={'d8915b79-0228-45ca-9a66-5a201db9c6a7'}
-        debug={false}
+        debug={true}
         onClose={() => {
           console.log('onClose');
         }}

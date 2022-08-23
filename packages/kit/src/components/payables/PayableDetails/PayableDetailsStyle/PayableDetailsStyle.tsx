@@ -63,3 +63,44 @@ export const CurrencyAddon = styled(Text)`
   justify-content: center;
   transform: translateY(-50%);
 `;
+
+export const StyledLoading = styled(Text)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const StyledInfo = styled(StyledScrollContent)`
+  //margin-top: 48px;
+`;
+
+export const StyledInfoTable = styled(Box)`
+  border: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border-radius: 6px;
+`;
+
+export const StyledInfoRow = styled(Box)`
+  display: flex;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  height: 48px;
+  align-items: center;
+  padding: 0 16px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+export const StyledInfoLabel = styled(Text)`
+  width: 50%;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+export const StyledInfoValue = styled(Text)`
+  width: 50%;
+`;
