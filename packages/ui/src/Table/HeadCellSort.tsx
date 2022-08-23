@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UArrowUp, UArrowDown } from '../unicons';
 import styled from '@emotion/styled';
+import { SortOrderEnum } from '../types';
 
 export const Wrapper = styled.div`
   cursor: pointer;
@@ -24,19 +25,14 @@ export const SortArrow = styled.span<{ $active: boolean }>`
   }
 `;
 
-declare enum OrderEnum {
-  ASC = 'asc',
-  DESC = 'desc',
-}
-
 interface Props {
   isActive: boolean;
   title?: string;
-  onChangeOrder: (order: OrderEnum | null) => void;
+  onChangeOrder: (order: SortOrderEnum | null) => void;
 }
 
 export const HeadCellSort = ({ title, isActive, onChangeOrder }: Props) => {
-  const [order, setOrder] = useState<OrderEnum | null>(null);
+  const [order, setOrder] = useState<SortOrderEnum | null>(null);
 
   useEffect(() => {
     onChangeOrder(order);
@@ -62,10 +58,10 @@ export const HeadCellSort = ({ title, isActive, onChangeOrder }: Props) => {
         setOrder((prevState) => {
           switch (prevState) {
             case null:
-              return OrderEnum.ASC;
-            case OrderEnum.ASC:
-              return OrderEnum.DESC;
-            case OrderEnum.DESC:
+              return SortOrderEnum.ASC;
+            case SortOrderEnum.ASC:
+              return SortOrderEnum.DESC;
+            case SortOrderEnum.DESC:
               return null;
             default:
               return null;

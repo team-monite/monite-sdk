@@ -14,7 +14,10 @@ import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { fromBase64 } from 'features/app/consts';
+
 import Layout from '../Layout';
+import { URLData } from '../types';
 
 // ex: /pay/123/result
 // ?payment_intent=pi_3LIfaSCq0HpJYRYN0QS5lQ0O
@@ -45,6 +48,11 @@ export const PaymentResultPage = () => {
   const { search } = useLocation();
 
   const status = new URLSearchParams(search).get('status');
+
+  const rawPaymentData = new URLSearchParams(search).get('data');
+  const paymentData = rawPaymentData
+    ? (fromBase64(rawPaymentData) as URLData)
+    : null;
 
   const statusesMap = {
     processing: {
@@ -113,6 +121,11 @@ export const PaymentResultPage = () => {
   // TODO: fetch receivable data from the API endpoint WHEN it will be ready
   // fields: doc id, doc number, counterpart name, iban, price
 
+  const formatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: paymentData?.currency!,
+  });
+
   return (
     <Layout>
       <Flex justifyContent="center">
@@ -128,7 +141,9 @@ export const PaymentResultPage = () => {
                   textSize="h3"
                   color={
                     getStatus(status as StripeResultStatuses) ===
-                    (ResultStatuses.Canceled || ResultStatuses.Error)
+                      ResultStatuses.Canceled ||
+                    getStatus(status as StripeResultStatuses) ===
+                      ResultStatuses.Error
                       ? theme.colors.danger
                       : theme.colors.successDarker
                   }
@@ -142,42 +157,48 @@ export const PaymentResultPage = () => {
                 </Text>
               </Box>
             </Flex>
-            <Box textAlign="left">
-              <FlexTable>
-                <Flex>
-                  <Box width={1 / 3}>
-                    <Text color={theme.colors.black}>
-                      {t('payment:result.amount')}
-                    </Text>
-                  </Box>
-                  <Box width={2 / 3}>
-                    <Text color={theme.colors.black}>239999.00</Text>
-                  </Box>
-                </Flex>
-                <Flex>
-                  <Box width={1 / 3}>{t('payment:result.payee')}</Box>
-                  <Box width={2 / 3}>Toledo GmbH</Box>
-                </Flex>
-                <Flex>
-                  <Box width={1 / 3}>{t('payment:result.iban')}</Box>
-                  <Box width={2 / 3}>DE89 0000 0000 9988 8888</Box>
-                </Flex>
-                <Flex>
-                  <Box width={1 / 3}>{t('payment:result.reference')}</Box>
-                  <Box width={2 / 3}>#FA-000231</Box>
-                </Flex>
-              </FlexTable>
-              {getStatus(status as StripeResultStatuses) !==
-                ResultStatuses.Succeeded && (
-                <Flex justifyContent="center">
-                  <Box width={'160px'}>
-                    <Button mt="24px" block onClick={() => navigate(-1)}>
-                      {t('payment:result.back')}
-                    </Button>
-                  </Box>
-                </Flex>
-              )}
-            </Box>
+            {paymentData && (
+              <Box textAlign="left">
+                <FlexTable>
+                  <Flex>
+                    <Box width={1 / 3}>
+                      <Text color={theme.colors.black}>
+                        {t('payment:result.amount')}
+                      </Text>
+                    </Box>
+                    <Box width={2 / 3}>
+                      <Text color={theme.colors.black}>
+                        {formatter.format(paymentData.amount)}
+                      </Text>
+                    </Box>
+                  </Flex>
+                  <Flex>
+                    <Box width={1 / 3}>{t('payment:result.payee')}</Box>
+                    <Box width={2 / 3}>{paymentData.payee?.name}</Box>
+                  </Flex>
+                  <Flex>
+                    <Box width={1 / 3}>{t('payment:result.iban')}</Box>
+                    <Box width={2 / 3}>
+                      {paymentData.payee?.account_identification?.value}
+                    </Box>
+                  </Flex>
+                  <Flex>
+                    <Box width={1 / 3}>{t('payment:result.reference')}</Box>
+                    <Box width={2 / 3}>{paymentData.payment_reference}</Box>
+                  </Flex>
+                </FlexTable>
+                {getStatus(status as StripeResultStatuses) !==
+                  ResultStatuses.Succeeded && (
+                  <Flex justifyContent="center">
+                    <Box width={'160px'}>
+                      <Button mt="24px" block onClick={() => navigate(-1)}>
+                        {t('payment:result.back')}
+                      </Button>
+                    </Box>
+                  </Flex>
+                )}
+              </Box>
+            )}
           </Card>
         </Box>
       </Flex>

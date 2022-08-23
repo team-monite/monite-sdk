@@ -17,3 +17,8 @@ export interface ThemeProps {
 }
 
 export type ThemedStyledProps<P> = P & ThemeProps;
+
+export enum SortOrderEnum {
+  ASC = 'asc',
+  DESC = 'desc',
+}

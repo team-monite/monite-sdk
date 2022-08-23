@@ -1,7 +1,14 @@
 import {
   api__v1__payables__pagination__CursorFields,
-  OrderEnum,
+  PayableStateEnum,
 } from '@monite/js-sdk';
+import { SortOrderEnum } from '@monite/ui';
+import {
+  FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_STATUS,
+} from './consts';
 
 export type PaginationTokens = {
   next_pagination_token: string | null | undefined;
@@ -10,5 +17,14 @@ export type PaginationTokens = {
 
 export type Sort = {
   sort: api__v1__payables__pagination__CursorFields;
-  order: OrderEnum;
+  order: SortOrderEnum;
 };
+
+export type Filters = {
+  [FILTER_TYPE_SEARCH]?: string | null;
+  [FILTER_TYPE_STATUS]?: PayableStateEnum | null;
+  [FILTER_TYPE_DUE_DATE]?: Date | null;
+  [FILTER_TYPE_CREATED_AT]?: Date | null;
+};
+
+export type FilterValue = PayableStateEnum | 'all' | Date | string | null;

@@ -93,6 +93,15 @@
       "bic": "BIC",
       "subtotal": "Subtotal",
       "tax": "VAT"
+    },
+    "statuses": {
+      "all": "All invoices",
+      "new": "New",
+      "approve_in_progress": "Approve in Progress",
+      "waiting_to_be_paid": "Waiting to be Paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "rejected"
     }
   },
   "counterparts": {
@@ -146,6 +155,8 @@
     "save": "Save",
     "approve": "Approve",
     "reject": "Reject",
-    "type": "Type"
+    "type": "Type",
+    "search": "Search",
+    "status": "Status"
   }
 }

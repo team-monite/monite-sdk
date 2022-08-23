@@ -25,6 +25,7 @@ const getBg = ({
   theme,
   readOnly,
   value,
+  isFilter,
 }: ThemedStyledProps<InputProps>) => {
   if (isInvalid) {
     return `
@@ -50,7 +51,7 @@ const getBg = ({
     `;
   }
 
-  if (value) {
+  if (value && !isFilter) {
     return `
       border-color: ${theme.colors.lightGrey2};
       background-color: ${theme.colors.white};
@@ -58,6 +59,30 @@ const getBg = ({
       &:hover, &:focus {
         border-color: ${theme.colors.blue};
         box-shadow: 0px 0px 0px 4px ${theme.colors.blue}33;
+      }
+    `;
+  }
+
+  if (isFilter) {
+    return `
+      border-color: ${
+        value ? theme.colors.lightGrey2 : theme.colors.lightGrey3
+      };
+      background-color: ${value ? theme.colors.lightGrey3 : theme.colors.white};
+      box-shadow: none;
+
+      &:hover {
+        background-color: ${theme.colors.black};
+        color: ${theme.colors.white};
+
+        &::placeholder {
+          color: ${theme.colors.white};
+        }
+      }
+
+      &:hover, &:focus {
+        border-color: ${theme.colors.lightGrey2};
+        box-shadow: none;
       }
     `;
   }
@@ -80,7 +105,7 @@ const Input = styled.input<InputProps>`
   box-shadow: none;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  border-radius: 8px;
+  border-radius: ${({ isFilter }) => (isFilter ? '100px' : '8px')};
   border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
   padding: 11px 16px;
   background-color: ${({ theme }) => theme.colors.lightGrey3};
@@ -101,18 +126,34 @@ export interface InputProps
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   isInvalid?: boolean;
+  isFilter?: boolean;
   renderAddon?: () => React.ReactNode;
   renderAddonIcon?: () => React.ReactNode;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputProps>(
   (
-    { id, className, error, renderAddon, renderAddonIcon, type, ...props },
+    {
+      id,
+      className,
+      error,
+      renderAddon,
+      renderAddonIcon,
+      type,
+      isFilter,
+      ...props
+    },
     ref
   ) => {
     return (
       <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
-        <Input ref={ref} id={id} type={type || 'text'} {...props} />
+        <Input
+          ref={ref}
+          id={id}
+          type={type || 'text'}
+          isFilter={isFilter}
+          {...props}
+        />
         {renderAddon && renderAddon()}
         {renderAddonIcon && <i>{renderAddonIcon()}</i>}
       </InputGroup>

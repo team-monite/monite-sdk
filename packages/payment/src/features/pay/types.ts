@@ -5,7 +5,7 @@ export type URLData = {
   payment_reference: string;
   currency: string;
   payment_methods: PaymentMethodsEnum[];
-  stripe: { secret: string; publishable: string };
+  stripe: { secret: { card: string; others: string }; publishable: string };
   success_url: string;
   cancel_url: string;
   payee: {

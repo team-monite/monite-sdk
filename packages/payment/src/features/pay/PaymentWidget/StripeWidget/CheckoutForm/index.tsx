@@ -31,6 +31,7 @@ export default function CheckoutForm({
   returnUrl,
   currency,
   paymentLinkId,
+  clientSecret,
 }: CheckoutFormProps) {
   const { t, monite } = useComponentsContext();
 
@@ -52,40 +53,16 @@ export default function CheckoutForm({
     [elements]
   );
 
-  // useEffect(() => {
-  //   if (!stripe) {
-  //     return;
-  //   }
-
-  //   const clientSecret = new URLSearchParams(window.location.search).get(
-  //     'payment_intent_client_secret'
-  //   );
-
-  //   if (!clientSecret) {
-  //     return;
-  //   }
-
-  //   stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-  //     if (onFinish) {
-  //       onFinish({ status: paymentIntent?.status, clientSecret });
-  //     }
-
-  //     switch (paymentIntent?.status) {
-  //       case 'succeeded':
-  //         setMessage('Payment succeeded!');
-  //         break;
-  //       case 'processing':
-  //         setMessage('Your payment is processing.');
-  //         break;
-  //       case 'requires_payment_method':
-  //         setMessage('Your payment was not successful, please try again.');
-  //         break;
-  //       default:
-  //         setMessage('Something went wrong.');
-  //         break;
-  //     }
-  //   });
-  // }, [onFinish, stripe]);
+  useEffect(() => {
+    if (!stripe) {
+      return;
+    }
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      if (onFinish) {
+        onFinish({ status: paymentIntent?.status });
+      }
+    });
+  }, [clientSecret, onFinish, stripe]);
 
   const handleChangeFee = async (paymentMethod: PaymentMethodsEnum) => {
     monite.api.payment
