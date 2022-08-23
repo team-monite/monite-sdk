@@ -41,6 +41,7 @@ export default function CheckoutForm({
   const [isLoading, setIsLoading] = useState(false);
   const [fee, setFee] = useState<number>();
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   const setMessage = (message: string) => {
     toast(message);
@@ -85,29 +86,37 @@ export default function CheckoutForm({
     }
 
     setIsLoading(true);
+    try {
+      if (paymentMethod !== PaymentMethodsEnum.CARD) {
+        await monite.api.payment.payByPaymentLinkId(paymentLinkId, {
+          payment_method: paymentMethod,
+        });
+      }
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: returnUrl || `${window.location.href}`,
-      },
-    });
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (
-      error.type === 'card_error' ||
-      error.type === 'validation_error' ||
-      error.type === 'invalid_request_error'
-    ) {
-      setMessage(error.message || '');
-    } else {
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          // Make sure to change this to your payment completion page
+          return_url: returnUrl || `${window.location.href}`,
+        },
+      });
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Otherwise, your customer will be redirected to
+      // your `return_url`. For some payment methods like iDEAL, your customer will
+      // be redirected to an intermediate site first to authorize the payment, then
+      // redirected to the `return_url`.
+      if (
+        error.type === 'card_error' ||
+        error.type === 'validation_error' ||
+        error.type === 'invalid_request_error'
+      ) {
+        setMessage(error.message || '');
+      } else {
+        setMessage('An unexpected error occurred.');
+      }
+    } catch (e: any) {
       setMessage('An unexpected error occurred.');
     }
-
     setIsLoading(false);
   };
 
@@ -120,9 +129,10 @@ export default function CheckoutForm({
     <form id="payment-form" onSubmit={handleSubmit}>
       <div>
         <PaymentElement
-          onChange={(value) =>
-            handleChangeFee(value.value.type as PaymentMethodsEnum)
-          }
+          onChange={(value) => {
+            setPaymentMethod(value.value.type as PaymentMethodsEnum);
+            handleChangeFee(value.value.type as PaymentMethodsEnum);
+          }}
         />
       </div>
       <Styled.Prices>

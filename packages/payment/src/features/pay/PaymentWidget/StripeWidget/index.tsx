@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 import { Theme } from '@monite/ui';
-
 import NavHeader from '../NavHeader';
 
 let stripePromise: Promise<Stripe | null> | null = null;
@@ -23,18 +22,17 @@ type StripeFormProps = {
 
 const StripeForm = ({
   clientSecret,
-  returnUrl,
   onFinish,
   price,
   fee,
   navButton,
   currency,
   paymentLinkId,
+  returnUrl,
 }: StripeFormProps) => {
   const theme = useTheme<Theme>();
 
   const [, setStripePromise] = useState(stripePromise);
-  // const [secret, setSecret] = useState(clientSecret);
 
   useEffect(() => {
     if (stripePromise) {
