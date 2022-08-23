@@ -19,11 +19,6 @@ import { fromBase64 } from 'features/app/consts';
 import Layout from '../Layout';
 import { URLData } from '../types';
 
-// ex: /pay/123/result
-// ?payment_intent=pi_3LIfaSCq0HpJYRYN0QS5lQ0O
-// &payment_intent_client_secret=pi_3LIfaSCq0HpJYRYN0QS5lQ0O_secret_E4uCICSwwzLIvbiYiOelzwKuK
-// &redirect_status=succeeded
-
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
   RequiresConfirmation = 'requires_confirmation',
@@ -47,7 +42,7 @@ export const PaymentResultPage = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
 
-  const status = new URLSearchParams(search).get('status');
+  const status = new URLSearchParams(search).get('redirect_status');
 
   const rawPaymentData = new URLSearchParams(search).get('data');
   const paymentData = rawPaymentData
@@ -118,12 +113,9 @@ export const PaymentResultPage = () => {
     }
   };
 
-  // TODO: fetch receivable data from the API endpoint WHEN it will be ready
-  // fields: doc id, doc number, counterpart name, iban, price
-
   const formatter = new Intl.NumberFormat('de-DE', {
     style: 'currency',
-    currency: paymentData?.currency!,
+    currency: paymentData?.currency || 'EUR',
   });
 
   return (
@@ -162,29 +154,49 @@ export const PaymentResultPage = () => {
                 <FlexTable>
                   <Flex>
                     <Box width={1 / 3}>
-                      <Text color={theme.colors.black}>
+                      <Text color={theme.colors.grey}>
                         {t('payment:result.amount')}
                       </Text>
                     </Box>
                     <Box width={2 / 3}>
-                      <Text color={theme.colors.black}>
+                      <Text textSize="bold" color={theme.colors.black}>
                         {formatter.format(paymentData.amount)}
                       </Text>
                     </Box>
                   </Flex>
                   <Flex>
-                    <Box width={1 / 3}>{t('payment:result.payee')}</Box>
-                    <Box width={2 / 3}>{paymentData.payee?.name}</Box>
-                  </Flex>
-                  <Flex>
-                    <Box width={1 / 3}>{t('payment:result.iban')}</Box>
+                    <Box width={1 / 3}>
+                      <Text color={theme.colors.grey}>
+                        {t('payment:result.payee')}
+                      </Text>
+                    </Box>
                     <Box width={2 / 3}>
-                      {paymentData.payee?.account_identification?.value}
+                      <Text textSize="bold">{paymentData.payee?.name}</Text>
                     </Box>
                   </Flex>
                   <Flex>
-                    <Box width={1 / 3}>{t('payment:result.reference')}</Box>
-                    <Box width={2 / 3}>{paymentData.payment_reference}</Box>
+                    <Box width={1 / 3}>
+                      <Text color={theme.colors.grey}>
+                        {t('payment:result.iban')}{' '}
+                      </Text>
+                    </Box>
+                    <Box width={2 / 3}>
+                      <Text textSize="bold">
+                        {paymentData.payee?.account_identification?.value}
+                      </Text>
+                    </Box>
+                  </Flex>
+                  <Flex>
+                    <Box width={1 / 3}>
+                      <Text color={theme.colors.grey}>
+                        {t('payment:result.reference')}
+                      </Text>
+                    </Box>
+                    <Box width={2 / 3}>
+                      <Text textSize="bold">
+                        {paymentData.payment_reference}{' '}
+                      </Text>
+                    </Box>
                   </Flex>
                 </FlexTable>
                 {getStatus(status as StripeResultStatuses) !==

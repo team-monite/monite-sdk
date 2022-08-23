@@ -37,7 +37,7 @@ const PaymentPage = () => {
                 res.status !== 'requires_confirmation'
               ) {
                 navigate(
-                  `${ROUTES.payResult}?data=${rawPaymentData}&status=${res.status}`,
+                  `${ROUTES.payResult}?data=${rawPaymentData}&redirect_status=${res.status}`,
                   {
                     replace: true,
                   }
