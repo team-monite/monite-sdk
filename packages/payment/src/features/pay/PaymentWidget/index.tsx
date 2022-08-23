@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import {
-  ReceivableResponse,
-  CurrencyEnum,
-  PaymentMethodsEnum,
-} from '@monite/js-sdk';
-import { useComponentsContext } from '@monite/react-kit';
+import { CurrencyEnum, PaymentMethodsEnum } from '@monite/js-sdk';
 import { Card } from '@monite/ui';
 
 import { ROUTES } from 'features/app/consts';
+
 import StripeWidget from './StripeWidget';
-import YapilyWidget from './YapilyWidget';
+// import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import EmptyScreen from 'features/pay/EmptyScreen';
 
@@ -30,7 +26,7 @@ type PaymentWidgetProps = {
 };
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
-  const [receivableData, setReceivableData] = useState<ReceivableResponse>();
+  // const [receivableData, setReceivableData] = useState<ReceivableResponse>();
 
   const { paymentData } = props;
 
@@ -38,19 +34,17 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
 
   const navigate = useNavigate();
 
-  const { monite } = useComponentsContext() || {};
-
   useEffect(() => {
-    (async () => {
-      if (paymentData?.object?.id) {
-        const receivableData =
-          await monite.api.payment.getPaymentReceivableById(
-            paymentData?.object.id
-          );
+    // (async () => {
+    //   if (paymentData?.object?.id) {
+    //     const receivableData =
+    //       await monite.api.payment.getPaymentReceivableById(
+    //         paymentData?.object.id
+    //       );
 
-        setReceivableData(receivableData);
-      }
-    })();
+    //     setReceivableData(receivableData);
+    //   }
+    // })();
 
     if (
       paymentData?.payment_methods?.length === 1 &&
@@ -64,14 +58,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     // ) {
     //   navigate(`bank${search}`, { replace: true });
     // }
-  }, [
-    paymentData?.object?.id,
-    navigate,
-    search,
-    paymentData?.payment_methods,
-    paymentData?.id,
-    monite.api.payment,
-  ]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Card shadow p="32px" className={styles.card}>
@@ -114,15 +102,16 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 currency={paymentData?.currency}
                 navButton={paymentData?.payment_methods?.length > 1}
                 paymentLinkId={paymentData?.id}
+                returnUrl={paymentData?.success_url}
                 onFinish={props.onFinish}
               />
             )
           }
         />
-        <Route
+        {/* <Route
           path={ROUTES.bank}
           element={<YapilyWidget {...props} receivableData={receivableData} />}
-        />
+        /> */}
       </Routes>
     </Card>
   );
