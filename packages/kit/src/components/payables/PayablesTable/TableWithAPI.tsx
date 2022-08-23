@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { formatISO, addDays } from 'date-fns';
 import {
   api__v1__payables__pagination__CursorFields,
-  OrderEnum,
   ReceivableResponse,
+  OrderEnum,
 } from '@monite/js-sdk';
+import { SortOrderEnum } from '@monite/ui';
 
 import { useComponentsContext } from '../../../core/context/ComponentsContext';
 import Table from './Table';
-import { PaginationTokens, Sort } from './types';
+import { PaginationTokens, Sort, Filters, FilterValue } from './types';
 import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
-
+import {
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_STATUS,
+} from './consts';
 const PayablesTableWithAPI = () => {
+  const { monite } = useComponentsContext() || {};
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [data, setData] = useState<ReceivableResponse[]>([]);
   const [paginationTokens, setPaginationTokens] = useState<PaginationTokens>({
@@ -21,18 +29,45 @@ const PayablesTableWithAPI = () => {
     string | null
   >(null);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
-  const { monite } = useComponentsContext() || {};
+  const [currentFilter, setCurrentFilter] = useState<Filters>({});
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
 
+      // TODO request fires multiple times when component mounts
       const res = await monite.api!.partnerApi.getPayables(
         MONITE_ENTITY_ID,
-        currentSort ? currentSort.order : undefined,
+        currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
         PAGE_LIMIT,
         currentPaginationToken || undefined,
-        currentSort ? currentSort.sort : undefined
+        currentSort ? currentSort.sort : undefined,
+        undefined,
+        undefined,
+        // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+        currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+          : undefined,
+        currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
+        undefined,
+        currentFilter[FILTER_TYPE_STATUS] || undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        currentFilter[FILTER_TYPE_DUE_DATE]
+          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+          : undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        currentFilter[FILTER_TYPE_SEARCH] || undefined
       );
 
       setData(
@@ -44,7 +79,7 @@ const PayablesTableWithAPI = () => {
       });
       setIsLoading(false);
     })();
-  }, [monite, currentSort, currentPaginationToken]);
+  }, [monite, currentSort, currentPaginationToken, currentFilter]);
 
   const onPrev = () =>
     paginationTokens.prev_pagination_token &&
@@ -56,7 +91,7 @@ const PayablesTableWithAPI = () => {
 
   const onChangeSort = (
     sort: api__v1__payables__pagination__CursorFields,
-    order: OrderEnum | null
+    order: SortOrderEnum | null
   ) => {
     if (order) {
       setCurrentSort({
@@ -68,6 +103,13 @@ const PayablesTableWithAPI = () => {
     }
   };
 
+  const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
+    setCurrentFilter((prevFilter) => ({
+      ...prevFilter,
+      [field]: value === 'all' ? null : value,
+    }));
+  };
+
   return (
     <Table
       loading={isLoading}
@@ -77,6 +119,7 @@ const PayablesTableWithAPI = () => {
       paginationTokens={paginationTokens}
       onChangeSort={onChangeSort}
       currentSort={currentSort}
+      onChangeFilter={onChangeFilter}
     />
   );
 };

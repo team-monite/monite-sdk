@@ -19,6 +19,10 @@ export const DefaultTable = () => (
         sort: null,
         order: null,
       }}
+      onChangeSort={() => {}}
+      onChangeFilter={(field, value) => {
+        console.log({ field, value });
+      }}
     />
   </div>
 );

@@ -26,9 +26,11 @@ export const DefaultInput = Template.bind({});
 DefaultInput.args = {
   readOnly: false,
   isInvalid: false,
+  isFilter: false,
 };
 
 DefaultInput.argTypes = {
   readOnly: { control: 'boolean' },
   isInvalid: { control: 'boolean' },
+  isFilter: { control: 'boolean' },
 };

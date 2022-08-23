@@ -1,4 +1,5 @@
 import React from 'react';
+import { format } from 'date-fns';
 import {
   Button,
   Table,
@@ -6,19 +7,26 @@ import {
   Tag,
   UArrowLeft,
   UArrowRight,
+  SortOrderEnum,
 } from '@monite/ui';
 import {
   api__v1__payables__pagination__CursorFields,
-  OrderEnum,
   PayableStateEnum,
   ReceivableResponse,
 } from '@monite/js-sdk';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
+import Filters from './Filters';
+
 import * as Styled from './styles';
 
-import { PaginationTokens, Sort } from './types';
+import {
+  PaginationTokens,
+  Sort,
+  Filters as FiltersType,
+  FilterValue,
+} from './types';
 import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
 
 export interface PayablesTableProps {
@@ -29,9 +37,10 @@ export interface PayablesTableProps {
   paginationTokens: PaginationTokens;
   onChangeSort: (
     sort: api__v1__payables__pagination__CursorFields,
-    order: OrderEnum | null
+    order: SortOrderEnum | null
   ) => void;
   currentSort: Sort | null;
+  onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
 }
 
 const formatter = new Intl.NumberFormat('de-DE', {
@@ -47,11 +56,13 @@ const PayablesTable = ({
   paginationTokens,
   onChangeSort,
   currentSort,
+  onChangeFilter,
 }: PayablesTableProps) => {
   const { t } = useComponentsContext();
 
   return (
     <Styled.Table>
+      <Filters onChangeFilter={onChangeFilter} />
       <Table
         loading={loading}
         rowKey="id"
@@ -69,10 +80,10 @@ const PayablesTable = ({
           },
           {
             title: t('payables:columns.invoiceDate'),
-            dataIndex: 'issued_at',
-            key: 'issued_at',
+            dataIndex: 'created_at',
+            key: 'created_at',
             render: (value: string) =>
-              value ? value.split('-').reverse().join('.') : '',
+              value ? format(new Date(value), 'dd.MM.yyyy') : '',
           },
           {
             title: (
