@@ -29,7 +29,7 @@ shell:
     - set -x
     - cd /app
     - echo "Building..."
-    - yarn app:build:{{ env "CI_ENVIRONMENT_NAME" }}
+    - yarn app:build
 ---
 image: nginx
 from: nginx:1.21.6
