@@ -8,7 +8,7 @@ import ReceivablePaymentResultPage from 'features/pay/PaymentResultPage';
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={ROUTES.pay} element={<ReceivablePaymentPage />} />
+      <Route path={'/*'} element={<ReceivablePaymentPage />} />
       <Route
         path={ROUTES.payResult}
         element={<ReceivablePaymentResultPage />}

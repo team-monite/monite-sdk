@@ -1,8 +1,7 @@
 import { Buffer } from 'buffer';
 
 export const ROUTES = {
-  pay: 'pay/*',
-  payResult: '/pay/result',
+  payResult: '/result',
   card: 'card/*',
   bank: 'bank/*',
   other: 'other/*',
@@ -17,6 +16,5 @@ export const fromBase64 = (data: string) => {
       paymentData = '';
     }
   }
-  console.log('paymentData__', paymentData);
   return paymentData;
 };
