@@ -34,8 +34,6 @@ shell:
     - yarn react:build
     - yarn web:build
     - yarn payment:build
-    - pwd
-    - ls -lah
 ---
 image: nginx
 from: nginx:1.21.6
