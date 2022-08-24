@@ -1,0 +1,27 @@
+{{- $env := .Values.werf.env }}
+{{- $host := pluck $env .Values.ingress.host | first | default (printf .Values.ingress.host._default (default $env .Values.werf.review_env)) }}
+{{- $secretName := pluck $env .Values.ingress.secretName | first | default .Values.ingress.secretName._default }}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: {{ $host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Chart.Name }}
+            port:
+              number: 80
+  tls:
+    - hosts:
+        - {{ $host }}
+      secretName: {{ $secretName }}

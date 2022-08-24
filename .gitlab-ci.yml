@@ -1,15 +1,15 @@
+include:
+  - project: monite/infra/common-ci
+    file: "deploys.yml"
+
 default:
   image: cimg/node:16.14.2-browsers #lts
 
-stages: # List of stages for jobs, and their order of execution
-  - test
-  - deploy_app
-  - deploy_payment
-
 test-job: # This job runs in the build stage, which runs first.
-  stage: test
+  stage: tests
+  before_script:
+    - hostname
   script:
-    - echo "Node modules modules modules..."
     - yarn install --frozen-lockfile
     - echo "Run linting..."
     - yarn lint
@@ -28,11 +28,11 @@ test-job: # This job runs in the build stage, which runs first.
       - packages/app/build
     expire_in: 1 day
 
-deploy_app:
-  stage: deploy_app
+app:
+  stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
-    - dev
+    - master
   script:
     - aws --version
     - aws s3 sync packages/app/build s3://monite-sdk-app-dev
@@ -40,14 +40,15 @@ deploy_app:
   tags:
     - docker
 
-deploy_payment:
-  stage: deploy_payment
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
-  only:
-    - dev
-  script:
-    - aws --version
-    - aws s3 sync packages/payment/build s3://monite-payments
-    - aws cloudfront create-invalidation --distribution-id EZPL89L14KXTE --paths "/*"
-  tags:
-    - docker
+# temporary deploy to k8s cluster
+#payment:
+#  stage: deploy
+#  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+#  only:
+#    - dev
+#  script:
+#    - aws --version
+#    - aws s3 sync packages/payment/build s3://monite-payments
+#    - aws cloudfront create-invalidation --distribution-id EZPL89L14KXTE --paths "/*"
+#  tags:
+#    - docker

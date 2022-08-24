@@ -1,0 +1,51 @@
+ingress:
+  host:
+    _default: pay-%s.review.monite.com
+    dev: pay.dev.monite.com
+    production: pay.monite.com
+    sandbox: pay.sandbox.monite.com
+  secretName:
+    _default: wildcard-review-monite-com
+    dev: wildcard-dev-monite-com
+    sandbox: wildcard-sandbox-monite-com
+    production: wildcard-monite-com
+nginx:
+  replicas:
+    _default: 1
+  resources:
+    requests:
+      memory:
+        _default: 256Mi
+      cpu:
+        _default: 50m
+    limits:
+      memory:
+        _default: 256Mi
+  tolerations:
+    _default: []
+    sandbox:
+      - effect: NoExecute
+        key: dedicated
+        operator: Equal
+        value: sandbox
+    production:
+      - effect: NoExecute
+        key: dedicated
+        operator: Equal
+        value: production
+  affinity:
+    _default: {}
+    sandbox:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/sandbox
+                  operator: Exists
+    production:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: node-role.kubernetes.io/production
+                  operator: Exists

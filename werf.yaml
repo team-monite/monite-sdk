@@ -1,0 +1,53 @@
+configVersion: 1
+project: payments-page
+deploy:
+  helmRelease: "[[ project ]]-[[ env ]]"
+  namespace: "[[ env ]]"
+---
+image: static
+from: cimg/node:16.14.2-browsers
+git:
+- add: /
+  to: /app
+  excludePaths:
+  - .helm
+  - .ci
+  stageDependencies:
+    install:
+    - package.json
+    - package-lock.json
+    - yarn.lock
+    setup:
+    - '**/*'
+shell:
+  install:
+    - set -x
+    - cd /app
+    - echo "Node modules modules modules..."
+    - yarn install --frozen-lockfile
+  setup:
+    - set -x
+    - cd /app
+    - echo "Building..."
+    - yarn ui:build
+    - yarn sdk:build
+    - yarn react:build
+    - yarn web:build
+    - yarn payment:build
+    - yarn app:build
+---
+image: nginx
+from: nginx:1.21.6
+docker:
+  WORKDIR: /app
+import:
+ - image: static
+   add: /app/packages/app/build
+   to: /app
+   before: install
+   owner: app
+   group: app
+shell:
+  beforeInstall:
+  - useradd -u 7000 -m -s /bin/bash -d /app app
+  - TZ=Europe/Berlin; ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
