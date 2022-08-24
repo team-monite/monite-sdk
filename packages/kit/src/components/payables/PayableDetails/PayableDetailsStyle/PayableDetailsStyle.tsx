@@ -29,7 +29,7 @@ export const StyledHeaderActions = styled(Flex)`
 export const StyledContent = styled(Flex)`
   padding: 40px 40px 0 40px;
   background-color: ${({ theme }) => theme.colors.secondary};
-  gap: 76px;
+  gap: 48px;
   height: 100%;
 `;
 
@@ -75,8 +75,12 @@ export const StyledLoading = styled(Text)`
   color: ${({ theme }) => theme.colors.primary};
 `;
 
-export const StyledInfo = styled(StyledScrollContent)`
-  //margin-top: 48px;
+export const StyledTabs = styled(Box)`
+  padding-left: 16px;
+`;
+
+export const StyledInfoScroll = styled(StyledScroll)`
+  padding-top: 48px;
 `;
 
 export const StyledInfoTable = styled(Box)`

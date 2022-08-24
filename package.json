@@ -17,7 +17,7 @@
     "web:build": "yarn workspace @monite/web-kit build",
     "payment:start": "yarn workspace @monite/payment start",
     "payment:build": "yarn workspace @monite/payment build",
-    "full:build": "yarn ui:build && yarn sdk:build && yarn react:build && yarn app:build",
+    "full:build": "yarn ui:build && yarn sdk:build && yarn react:build",
     "lint": "yarn workspaces run lint",
     "lint-staged": "yarn workspaces run lint-staged",
     "prepare": "husky install"

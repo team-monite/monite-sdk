@@ -6,12 +6,12 @@ import { formatDate, getReadableAmount } from 'core/utils';
 import {
   FormSection,
   FormTitle,
-  StyledInfo,
-  StyledScroll,
   StyledInfoLabel,
   StyledInfoRow,
   StyledInfoTable,
   StyledInfoValue,
+  StyledScrollContent,
+  StyledInfoScroll,
 } from '../PayableDetailsStyle';
 
 export type PayablesDetailsInfoProps = {
@@ -22,11 +22,11 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
 
   return (
-    <StyledInfo>
-      <StyledScroll sx={{ top: '48px !important' }}>
+    <StyledScrollContent>
+      <StyledInfoScroll>
         <FormSection>
           <FormTitle textSize={'bold'}>
-            {t('payables:tabPanels.payment')}
+            {t('payables:tabPanels.document')}
           </FormTitle>
 
           <StyledInfoTable>
@@ -83,7 +83,7 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
 
         <FormSection>
           <FormTitle textSize={'bold'}>
-            {t('payables:tabPanels.document')}
+            {t('payables:tabPanels.payment')}
           </FormTitle>
           <StyledInfoTable>
             <StyledInfoRow>
@@ -128,8 +128,8 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
             </StyledInfoRow>
           </StyledInfoTable>
         </FormSection>
-      </StyledScroll>
-    </StyledInfo>
+      </StyledInfoScroll>
+    </StyledScrollContent>
   );
 };
 

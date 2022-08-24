@@ -111,10 +111,8 @@ const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
             </>
           )}
 
-          <IconButton color={'black'}>
-            <IconButton target={'_blank'} href={url} download>
-              <UFileDownload width={24} height={24} color="black" />
-            </IconButton>
+          <IconButton color={'black'} target={'_blank'} href={url} download>
+            <UFileDownload width={24} height={24} color="black" />
           </IconButton>
         </Flex>
       </ControlPanel>
