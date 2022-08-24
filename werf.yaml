@@ -42,7 +42,7 @@ docker:
   WORKDIR: /app
 import:
  - image: static
-   add: /app/packages/app/build
+   add: /app/packages/payment/build
    to: /app
    before: install
    owner: app
