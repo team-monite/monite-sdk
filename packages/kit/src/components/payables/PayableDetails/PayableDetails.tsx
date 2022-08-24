@@ -26,9 +26,8 @@ import {
   StyledHeaderActions,
   StyledHeaderContent,
   StyledLoading,
-  StyledScroll,
-  StyledScrollContent,
   StyledSection,
+  StyledTabs,
 } from './PayableDetailsStyle';
 
 import usePayableDetails, { UsePayableDetailsProps } from './usePayableDetails';
@@ -133,51 +132,38 @@ const PayableDetails = ({
       >
         <StyledContent>
           <StyledSection>
-            <StyledScrollContent>
-              <StyledScroll>
-                {payable.file && (
-                  <FileViewer
-                    name={payable.file.name}
-                    mimetype={payable.file.mimetype}
-                    url={payable.file.url}
-                  />
-                )}
-              </StyledScroll>
-            </StyledScrollContent>
+            {payable.file && (
+              <FileViewer
+                name={payable.file.name}
+                mimetype={payable.file.mimetype}
+                url={payable.file.url}
+              />
+            )}
           </StyledSection>
           <StyledSection>
             {isEdit && (
-              <Tabs>
-                <TabList>
+              <StyledTabs>
+                <Tabs>
+                  <TabList>
+                    {PAYABLE_TAB_LIST.map((tab) => (
+                      <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+                    ))}
+                  </TabList>
                   {PAYABLE_TAB_LIST.map((tab) => (
-                    <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+                    <TabPanel key={tab} />
                   ))}
-                </TabList>
-                {PAYABLE_TAB_LIST.map((tab) => (
-                  <TabPanel key={tab}></TabPanel>
-                ))}
-              </Tabs>
+                </Tabs>
+              </StyledTabs>
             )}
             {isEdit && (
-              <StyledScrollContent>
-                <StyledScroll>
-                  <PayableDetailsForm
-                    debug={debug}
-                    ref={formRef}
-                    onSubmit={onFormSubmit}
-                    payable={payable}
-                  />
-                </StyledScroll>
-              </StyledScrollContent>
+              <PayableDetailsForm
+                debug={debug}
+                ref={formRef}
+                onSubmit={onFormSubmit}
+                payable={payable}
+              />
             )}
-
-            {!isEdit && (
-              <StyledScrollContent>
-                <StyledScroll>
-                  <PayableDetailsInfo payable={payable} />
-                </StyledScroll>
-              </StyledScrollContent>
-            )}
+            {!isEdit && <PayableDetailsInfo payable={payable} />}
           </StyledSection>
         </StyledContent>
       </ModalLayout>

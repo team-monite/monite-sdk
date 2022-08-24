@@ -26,7 +26,7 @@ export default function usePayableDetails({
 }: UsePayableDetailsProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [isEdit] = useState<boolean>(false);
+  const [isEdit] = useState<boolean>(true);
   const [isLoading] = useState<boolean>(false);
   const [payable, setPayable] = useState<PayableResponseSchema | null>(null);
 

@@ -66,7 +66,8 @@ const StyledModalLayoutContent = styled.div<StyledModalLayoutProps>`
   width: 100%;
   pointer-events: auto;
   outline: 0;
-  height: 100%;
+  flex-grow: 1;
+  overflow: hidden;
   ${({ $scrollableContent }) => $scrollableContent && 'overflow-y: auto;'};
 `;
 

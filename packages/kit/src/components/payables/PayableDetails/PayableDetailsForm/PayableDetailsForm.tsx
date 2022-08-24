@@ -28,6 +28,8 @@ import {
   FormItem,
   FormSection,
   FormTitle,
+  StyledScroll,
+  StyledScrollContent,
 } from '../PayableDetailsStyle';
 
 import usePayableDetailsForm, {
@@ -130,205 +132,216 @@ const PayableDetailsForm = forwardRef<
   });
 
   return (
-    <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
-      <FormSection>
-        <FormTitle textSize={'bold'}>
-          {t('payables:tabPanels.document')}
-        </FormTitle>
-        <FormItem
-          label={t('payables:details.suppliersName')}
-          id="suppliersName"
-          required
-        >
-          {/* TODO: Add Created automatically */}
-          <Controller
-            name={'suppliersName'}
-            control={control}
-            render={({ field: { ref, ...restField } }) => (
-              <Select
-                {...restField}
-                options={counterpartsToSelect(counterparts)}
+    <StyledScrollContent>
+      <StyledScroll>
+        <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
+          <FormSection>
+            <FormTitle textSize={'bold'}>
+              {t('payables:tabPanels.document')}
+            </FormTitle>
+            <FormItem
+              label={t('payables:details.suppliersName')}
+              id="suppliersName"
+              required
+            >
+              {/* TODO: Add Created automatically */}
+              <Controller
+                name={'suppliersName'}
+                control={control}
+                render={({ field: { ref, ...restField } }) => (
+                  <Select
+                    {...restField}
+                    options={counterpartsToSelect(counterparts)}
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem
-          label={t('payables:details.invoiceNumber')}
-          id="invoiceNumber"
-          required
-        >
-          <Controller
-            name="invoiceNumber"
-            control={control}
-            render={({
-              field: { ref, ...restField },
-              fieldState: { error },
-            }) => (
-              <Input
-                {...restField}
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                required
+            </FormItem>
+            <FormItem
+              label={t('payables:details.invoiceNumber')}
+              id="invoiceNumber"
+              required
+            >
+              <Controller
+                name="invoiceNumber"
+                control={control}
+                render={({
+                  field: { ref, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <Input
+                    {...restField}
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    required
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem
-          label={t('payables:details.invoiceDate')}
-          id="invoiceDate"
-          required
-        >
-          <Controller
-            name="invoiceDate"
-            control={control}
-            render={({
-              field: { ref, value, ...restField },
-              fieldState: { error },
-            }) => (
-              <DatePicker
-                {...restField}
-                required
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                date={value ? new Date(value) : null}
+            </FormItem>
+            <FormItem
+              label={t('payables:details.invoiceDate')}
+              id="invoiceDate"
+              required
+            >
+              <Controller
+                name="invoiceDate"
+                control={control}
+                render={({
+                  field: { ref, value, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <DatePicker
+                    {...restField}
+                    required
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    date={value ? new Date(value) : null}
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem
-          label={t('payables:details.suggestedPaymentDate')}
-          id="suggestedPaymentDate"
-          required
-        >
-          <Controller
-            name="suggestedPaymentDate"
-            control={control}
-            render={({
-              field: { ref, value, ...restField },
-              fieldState: { error },
-            }) => (
-              // TODO Add discount
-              <DatePicker
-                {...restField}
-                date={value ? new Date(value) : null}
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                required
+            </FormItem>
+            <FormItem
+              label={t('payables:details.suggestedPaymentDate')}
+              id="suggestedPaymentDate"
+              required
+            >
+              <Controller
+                name="suggestedPaymentDate"
+                control={control}
+                render={({
+                  field: { ref, value, ...restField },
+                  fieldState: { error },
+                }) => (
+                  // TODO Add discount
+                  <DatePicker
+                    {...restField}
+                    date={value ? new Date(value) : null}
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    required
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem label={t('payables:details.dueDate')} id="dueDate" required>
-          <Controller
-            name="dueDate"
-            control={control}
-            render={({
-              field: { ref, value, ...restField },
-              fieldState: { error },
-            }) => (
-              <DatePicker
-                {...restField}
-                date={value ? new Date(value) : null}
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                required
+            </FormItem>
+            <FormItem
+              label={t('payables:details.dueDate')}
+              id="dueDate"
+              required
+            >
+              <Controller
+                name="dueDate"
+                control={control}
+                render={({
+                  field: { ref, value, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <DatePicker
+                    {...restField}
+                    date={value ? new Date(value) : null}
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    required
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem label={t('payables:details.total')} id="total" required>
-          <Controller
-            name="total"
-            control={control}
-            render={({
-              field: { ref, ...restField },
-              fieldState: { error },
-            }) => (
-              <Input
-                {...restField}
-                renderAddon={() => {
-                  if (!payable.currency) return undefined;
-                  return (
-                    <CurrencyAddon color={'lightGrey1'}>
-                      {getSymbolFromCurrency(payable.currency)}
-                    </CurrencyAddon>
-                  );
-                }}
-                id="total"
-                required
-                type="number"
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
+            </FormItem>
+            <FormItem label={t('payables:details.total')} id="total" required>
+              <Controller
+                name="total"
+                control={control}
+                render={({
+                  field: { ref, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <Input
+                    {...restField}
+                    renderAddon={() => {
+                      if (!payable.currency) return undefined;
+                      return (
+                        <CurrencyAddon color={'lightGrey1'}>
+                          {getSymbolFromCurrency(payable.currency)}
+                        </CurrencyAddon>
+                      );
+                    }}
+                    id="total"
+                    required
+                    type="number"
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem label={t('payables:details.submittedBy')} id="submittedBy">
-          {/*TODO Waiting design*/}
-          submittedBy
-        </FormItem>
-        <FormItem label={t('payables:details.tags')} id="tags">
-          <Controller
-            name={'tags'}
-            control={control}
-            render={({ field: { ref, ...restField } }) => (
-              <Multiselect
-                {...restField}
-                optionAsTag
-                options={tagsToSelect(tags)}
+            </FormItem>
+            <FormItem
+              label={t('payables:details.submittedBy')}
+              id="submittedBy"
+            >
+              {/*TODO Waiting design*/}
+              submittedBy
+            </FormItem>
+            <FormItem label={t('payables:details.tags')} id="tags">
+              <Controller
+                name={'tags'}
+                control={control}
+                render={({ field: { ref, ...restField } }) => (
+                  <Multiselect
+                    {...restField}
+                    optionAsTag
+                    options={tagsToSelect(tags)}
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-      </FormSection>
+            </FormItem>
+          </FormSection>
 
-      <FormSection>
-        <FormTitle textSize={'bold'}>
-          {t('payables:tabPanels.payment')}
-        </FormTitle>
-        <FormItem label={t('payables:details.iban')} id="iban" required>
-          <Controller
-            name="iban"
-            control={control}
-            render={({
-              field: { ref, ...restField },
-              fieldState: { error },
-            }) => (
-              <Input
-                {...restField}
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                required
+          <FormSection>
+            <FormTitle textSize={'bold'}>
+              {t('payables:tabPanels.payment')}
+            </FormTitle>
+            <FormItem label={t('payables:details.iban')} id="iban" required>
+              <Controller
+                name="iban"
+                control={control}
+                render={({
+                  field: { ref, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <Input
+                    {...restField}
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    required
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-        <FormItem label={t('payables:details.bic')} id="bic" required>
-          <Controller
-            name="bic"
-            control={control}
-            render={({
-              field: { ref, ...restField },
-              fieldState: { error },
-            }) => (
-              <Input
-                {...restField}
-                ref={ref}
-                error={error?.message}
-                isInvalid={!!error}
-                required
+            </FormItem>
+            <FormItem label={t('payables:details.bic')} id="bic" required>
+              <Controller
+                name="bic"
+                control={control}
+                render={({
+                  field: { ref, ...restField },
+                  fieldState: { error },
+                }) => (
+                  <Input
+                    {...restField}
+                    ref={ref}
+                    error={error?.message}
+                    isInvalid={!!error}
+                    required
+                  />
+                )}
               />
-            )}
-          />
-        </FormItem>
-      </FormSection>
-    </form>
+            </FormItem>
+          </FormSection>
+        </form>
+      </StyledScroll>
+    </StyledScrollContent>
   );
 });
 

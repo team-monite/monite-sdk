@@ -262,7 +262,7 @@ const getPadding = ({
 }: ThemedStyledProps<StyledButtonProps>) => {
   if ($variant === 'text') return 'padding: 0;';
 
-  if (($hasLeftIcon && $hasRightIcon) || $isIcon) return 'padding: 11px';
+  if (($hasLeftIcon && $hasRightIcon) || $isIcon) return 'padding: 11px;';
   if ($hasLeftIcon) return 'padding: 11px 15px 11px 11px;';
   if ($hasRightIcon) return 'padding: 11px 11px 11px 15px;';
 
