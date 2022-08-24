@@ -29,6 +29,8 @@ test-job: # This job runs in the build stage, which runs first.
     expire_in: 1 day
 
 app:
+  before_script:
+    - hostname
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
