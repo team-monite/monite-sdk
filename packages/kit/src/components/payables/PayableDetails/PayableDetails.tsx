@@ -15,6 +15,7 @@ import {
   TabPanel,
   FileViewer,
   Spinner,
+  Modal,
 } from '@monite/ui';
 
 import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../../consts';
@@ -75,106 +76,112 @@ const PayableDetails = ({
 
   if (!payable)
     return (
-      <ModalLayout fullScreen>
-        <StyledLoading>
-          <Spinner color={'primary'} pxSize={45} />
-        </StyledLoading>
-      </ModalLayout>
+      <Modal>
+        <ModalLayout fullScreen>
+          <StyledLoading>
+            <Spinner color={'primary'} pxSize={45} />
+          </StyledLoading>
+        </ModalLayout>
+      </Modal>
     );
 
   return (
-    <ModalLayout
-      fullScreen
-      header={
-        <Header
-          leftBtn={
-            <IconButton onClick={onClose} color={'black'}>
-              <UMultiply size={18} />
-            </IconButton>
-          }
-          actions={
-            <StyledHeaderActions>
-              {canSave && (
-                <Button onClick={saveInvoice} color={'secondary'}>
-                  {t('common:save')}
-                </Button>
-              )}
-              {canReject && (
-                <Button onClick={rejectInvoice} color={'danger'}>
-                  {t('common:reject')}
-                </Button>
-              )}
-              {canSubmit && (
-                <Button onClick={submitInvoice}>{t('common:submit')}</Button>
-              )}
-              {canApprove && (
-                <Button onClick={approveInvoice}>{t('common:approve')}</Button>
-              )}
-              {canPay && (
-                <Button onClick={payInvoice}>{t('common:pay')}</Button>
-              )}
-            </StyledHeaderActions>
-          }
-        >
-          <StyledHeaderContent>
-            <Text textSize={'h3'}>{payable.counterpart_name}</Text>
-            <Tag color={ROW_TO_TAG_STATUS_MAP[payable.status]}>
-              {t(`payables:status.${payable.status}`)}
-            </Tag>
-          </StyledHeaderContent>
-        </Header>
-      }
-    >
-      <StyledContent>
-        <StyledSection>
-          <StyledScrollContent>
-            <StyledScroll>
-              {payable.file && (
-                <FileViewer
-                  name={payable.file.name}
-                  mimetype={payable.file.mimetype}
-                  url={payable.file.url}
-                />
-              )}
-            </StyledScroll>
-          </StyledScrollContent>
-        </StyledSection>
-        <StyledSection>
-          {isEdit && (
-            <Tabs>
-              <TabList>
+    <Modal>
+      <ModalLayout
+        fullScreen
+        header={
+          <Header
+            leftBtn={
+              <IconButton onClick={onClose} color={'black'}>
+                <UMultiply size={18} />
+              </IconButton>
+            }
+            actions={
+              <StyledHeaderActions>
+                {canSave && (
+                  <Button onClick={saveInvoice} color={'secondary'}>
+                    {t('common:save')}
+                  </Button>
+                )}
+                {canReject && (
+                  <Button onClick={rejectInvoice} color={'danger'}>
+                    {t('common:reject')}
+                  </Button>
+                )}
+                {canSubmit && (
+                  <Button onClick={submitInvoice}>{t('common:submit')}</Button>
+                )}
+                {canApprove && (
+                  <Button onClick={approveInvoice}>
+                    {t('common:approve')}
+                  </Button>
+                )}
+                {canPay && (
+                  <Button onClick={payInvoice}>{t('common:pay')}</Button>
+                )}
+              </StyledHeaderActions>
+            }
+          >
+            <StyledHeaderContent>
+              <Text textSize={'h3'}>{payable.counterpart_name}</Text>
+              <Tag color={ROW_TO_TAG_STATUS_MAP[payable.status]}>
+                {t(`payables:status.${payable.status}`)}
+              </Tag>
+            </StyledHeaderContent>
+          </Header>
+        }
+      >
+        <StyledContent>
+          <StyledSection>
+            <StyledScrollContent>
+              <StyledScroll>
+                {payable.file && (
+                  <FileViewer
+                    name={payable.file.name}
+                    mimetype={payable.file.mimetype}
+                    url={payable.file.url}
+                  />
+                )}
+              </StyledScroll>
+            </StyledScrollContent>
+          </StyledSection>
+          <StyledSection>
+            {isEdit && (
+              <Tabs>
+                <TabList>
+                  {PAYABLE_TAB_LIST.map((tab) => (
+                    <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+                  ))}
+                </TabList>
                 {PAYABLE_TAB_LIST.map((tab) => (
-                  <Tab key={tab}>{t(`payables:tabs.${tab}`)}</Tab>
+                  <TabPanel key={tab}></TabPanel>
                 ))}
-              </TabList>
-              {PAYABLE_TAB_LIST.map((tab) => (
-                <TabPanel key={tab}></TabPanel>
-              ))}
-            </Tabs>
-          )}
-          {isEdit && (
-            <StyledScrollContent>
-              <StyledScroll>
-                <PayableDetailsForm
-                  debug={debug}
-                  ref={formRef}
-                  onSubmit={onFormSubmit}
-                  payable={payable}
-                />
-              </StyledScroll>
-            </StyledScrollContent>
-          )}
+              </Tabs>
+            )}
+            {isEdit && (
+              <StyledScrollContent>
+                <StyledScroll>
+                  <PayableDetailsForm
+                    debug={debug}
+                    ref={formRef}
+                    onSubmit={onFormSubmit}
+                    payable={payable}
+                  />
+                </StyledScroll>
+              </StyledScrollContent>
+            )}
 
-          {!isEdit && (
-            <StyledScrollContent>
-              <StyledScroll>
-                <PayableDetailsInfo payable={payable} />
-              </StyledScroll>
-            </StyledScrollContent>
-          )}
-        </StyledSection>
-      </StyledContent>
-    </ModalLayout>
+            {!isEdit && (
+              <StyledScrollContent>
+                <StyledScroll>
+                  <PayableDetailsInfo payable={payable} />
+                </StyledScroll>
+              </StyledScrollContent>
+            )}
+          </StyledSection>
+        </StyledContent>
+      </ModalLayout>
+    </Modal>
   );
 };
 

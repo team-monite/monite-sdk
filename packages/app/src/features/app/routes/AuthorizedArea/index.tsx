@@ -16,7 +16,10 @@ const AuthorizedArea = () => {
         path={ROUTES.counterpartsCreate}
         element={<PageCounterpartsCreate />}
       />
-      <Route path={ROUTES.payables} element={<PagePayables />} />
+      <Route path={ROUTES.payables}>
+        <Route index element={<PagePayables />} />
+        <Route path=":id" element={<PagePayables />} />
+      </Route>
       <Route
         path={ROUTES.settings}
         element={<Navigate to={ROUTES.approvalPolicies} />}
