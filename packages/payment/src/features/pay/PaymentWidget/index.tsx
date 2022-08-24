@@ -87,7 +87,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 currency={paymentData?.currency}
                 navButton={paymentData?.payment_methods?.length > 1}
                 paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.success_url}
+                returnUrl={paymentData?.return_url}
               />
             )
           }
@@ -103,7 +103,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 currency={paymentData?.currency}
                 navButton={paymentData?.payment_methods?.length > 1}
                 paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.success_url}
+                returnUrl={paymentData?.return_url}
                 onFinish={props.onFinish}
               />
             )

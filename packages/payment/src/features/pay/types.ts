@@ -6,8 +6,7 @@ export type URLData = {
   currency: string;
   payment_methods: PaymentMethodsEnum[];
   stripe: { secret: { card: string; others: string }; publishable: string };
-  success_url: string;
-  cancel_url: string;
+  return_url: string;
   payee: {
     name: string;
     account_identification: {
