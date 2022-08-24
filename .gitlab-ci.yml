@@ -6,7 +6,7 @@ default:
   image: cimg/node:16.14.2-browsers #lts
 
 test-job: # This job runs in the build stage, which runs first.
-  stage: test
+  stage: tests
   script:
     - yarn install --frozen-lockfile
     - echo "Run linting..."
