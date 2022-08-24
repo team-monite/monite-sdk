@@ -1,0 +1,5 @@
+giterminismConfigVersion: 1
+config:
+  goTemplateRendering:
+    allowEnvVariables:
+     - CI_ENVIRONMENT_NAME

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  replicas: {{ pluck .Values.werf.env .Values.nginx.replicas | first | default .Values.nginx.replicas._default }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print .Template.BasePath "/10-app-config.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      tolerations: {{ toYaml (pluck .Values.werf.env .Values.nginx.tolerations | first | default .Values.nginx.tolerations._default) | nindent 8 }}
+      affinity: {{ toYaml (pluck .Values.werf.env .Values.nginx.affinity | first | default .Values.nginx.affinity._default) | nindent 8 }}
+      imagePullSecrets:
+      - name: registrysecret
+      volumes:
+      - name: config
+        configMap:
+          name: {{ .Chart.Name }}
+      containers:
+      - name: nginx
+        image: {{ index .Values.werf.image "nginx" }}
+        lifecycle:
+          preStop:
+            exec:
+              command: [ "/bin/bash", "-c", "sleep 5; kill -QUIT 1" ]
+        command: ["/usr/sbin/nginx", "-g", "daemon off;"]
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /_tech/ngx-status
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /_tech/ngx-status
+            port: http
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        resources:
+          requests:
+            memory: {{ pluck .Values.werf.env .Values.nginx.resources.requests.memory | first | default .Values.nginx.resources.requests.memory._default }}
+            cpu: {{ pluck .Values.werf.env .Values.nginx.resources.requests.cpu | first | default .Values.nginx.resources.requests.cpu._default }}
+          limits:
+            memory: {{ pluck .Values.werf.env .Values.nginx.resources.limits.memory | first | default .Values.nginx.resources.limits.memory._default }}

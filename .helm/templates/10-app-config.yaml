@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+data:
+  nginx.conf: |
+    user app;
+    error_log  /dev/stderr;
+    pid /run/nginx.pid;
+    worker_processes 2;
+    worker_rlimit_nofile 409600;
+    events {
+      worker_connections 100000;
+      multi_accept on;
+    }
+    http {
+        set_real_ip_from 0.0.0.0/0;
+
+        charset utf-8;
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        server_tokens off;
+        log_not_found off;
+        types_hash_max_size 2048;
+        client_max_body_size 300M;
+        keepalive_timeout 65;
+        client_body_timeout 20;
+        send_timeout 10;
+        resolver 192.168.0.10 valid=3s;
+        # MIME
+        include mime.types;
+        default_type application/octet-stream;
+        map $http_x_forwarded_proto $thescheme {
+            default $scheme;
+            https https;
+            http http;
+        }
+        map $http_x_request_id $best_request_id {
+            default $http_x_request_id;
+            "" $request_id;
+        }
+        # logging
+        log_format combined_plus '{ "ip": "$remote_addr", "http_user": "$remote_user", "request_id": "$best_request_id", "time": "$time_local",'
+                                    ' "method": "$request_method", "uri": "$thescheme://$http_host$request_uri", "protocol": "$server_protocol", "status": "$status", "body_size": "$body_bytes_sent", "referrer": "$http_referer", '
+                                    ' "user_agent": "$http_user_agent", "request_time": "$request_time", "cache_status": "$upstream_cache_status",'
+                                    ' "upstream_response_time": "$upstream_response_time", "upstream_addr": "$upstream_addr", "upstream_status": "$upstream_status", "upstream_response_length": "$upstream_response_length", "rewrited": "$uri$is_args$args", "redirect": "$sent_http_location"}';
+        # gzip
+        gzip on;
+        gzip_vary on;
+        gzip_proxied any;
+        gzip_comp_level 1;
+        gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss application/atom+xml image/svg+xml;
+
+        proxy_buffer_size 16k;
+        proxy_buffers 32 16k;
+        proxy_busy_buffers_size 64k;
+        proxy_max_temp_file_size 0;
+        large_client_header_buffers 8 16k;
+        client_header_buffer_size 4k;
+        client_body_buffer_size 256k;
+
+        proxy_set_header X-Real-Host     $host;
+        proxy_set_header Host            $host;
+        proxy_set_header X-Real-IP       $remote_addr;
+        proxy_set_header X-Real-Port     $remote_port;
+        proxy_set_header X-Server-Port   $server_port;
+        proxy_set_header X-Real-Scheme   $scheme;
+        proxy_set_header X-Real-Request  $request_uri;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        variables_hash_max_size 2048;
+        variables_hash_bucket_size 128;
+
+        server {
+            listen 80;
+            index index.html;
+            root /app;
+            access_log /dev/stdout combined_plus;
+            error_log /dev/stderr;
+            error_page   500 502 503 504  /50x.html;
+            location / {
+              add_header Last-Modified $date_gmt;
+              add_header Cache-Control 'no-store, no-cache';
+              if_modified_since off;
+              expires off;
+              etag off;
+              try_files $uri $uri/ /index.html;
+            }
+            location = /50x.html {
+              root   /usr/share/nginx/html;
+            }
+            location ~* "^\/_tech\/ngx-status$" {
+                stub_status;
+                access_log off;
+            }
+            location ~* "^/_tech/nginx/health$" {
+                default_type text/plain;
+                access_log off;
+                return 200 OK;
+            }
+            location ~* "^/_tech/nginx/status$" {
+                access_log off;
+                stub_status;
+            }
+        }
+    }
