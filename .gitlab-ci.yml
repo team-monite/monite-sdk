@@ -20,6 +20,8 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn web:build
     - yarn payment:build
     - yarn app:build
+  tags:
+    - docker
   artifacts:
     paths:
       - packages/payment/build
