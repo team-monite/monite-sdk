@@ -29,6 +29,11 @@ shell:
     - set -x
     - cd /app
     - echo "Building..."
+    - yarn ui:build
+    - yarn sdk:build
+    - yarn react:build
+    - yarn web:build
+    - yarn payment:build
     - yarn app:build
 ---
 image: nginx
