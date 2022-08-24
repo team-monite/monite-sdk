@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   PaymentElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
 import { Button, Alert, Box } from '@monite/ui';
-import {
-  // ReceivableResponse,
-  // CurrencyEnum,
-  PaymentMethodsEnum,
-} from '@monite/js-sdk';
+import { PaymentMethodsEnum } from '@monite/js-sdk';
 
 import { useComponentsContext, toast } from '@monite/react-kit';
 
@@ -37,6 +34,10 @@ export default function CheckoutForm({
 
   const stripe = useStripe();
   const elements = useElements();
+
+  const { search } = useLocation();
+
+  const rawPaymentData = new URLSearchParams(search).get('data');
 
   const [isLoading, setIsLoading] = useState(false);
   const [fee, setFee] = useState<number>();
@@ -96,8 +97,8 @@ export default function CheckoutForm({
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          // Make sure to change this to your payment completion page
-          return_url: returnUrl || `${window.location.href}`,
+          return_url:
+            `${returnUrl}?data=${rawPaymentData}` || `${window.location.href}`,
         },
       });
       // This point will only be reached if there is an immediate error when
