@@ -50,9 +50,11 @@ class AuthStore extends BaseStore {
         nanoid(),
         'white-label',
         {
-          grant_type: GrantType.CLIENT_CREDENTIALS,
+          grant_type: GrantType.ENTITY_USER,
           client_id: data.email,
           client_secret: data.password,
+          // TODO remove hardcoded value
+          entity_user_id: 'ee57fda9-265a-4f42-abe0-d64b3e0fd746',
         }
       );
     } catch (err) {
