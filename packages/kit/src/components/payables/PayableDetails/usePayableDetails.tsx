@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PayableResponseSchema } from '@monite/js-sdk';
-
-import { useComponentsContext } from '../../../core/context/ComponentsContext';
-import payableMock from '../fixtures/getById';
+import { usePayableById } from 'core/queries/usePayable';
 import { PayableDetailsFormFields } from './PayableDetailsForm';
+import { PayableStateEnum } from '@monite/js-sdk';
 
 export type UsePayableDetailsProps = {
   id: string;
@@ -15,6 +13,13 @@ export type UsePayableDetailsProps = {
   onReject?: () => void;
 };
 
+export type PayableDetailsPermissions =
+  | 'save'
+  | 'submit'
+  | 'reject'
+  | 'approve'
+  | 'pay';
+
 export default function usePayableDetails({
   id,
   debug,
@@ -24,19 +29,36 @@ export default function usePayableDetails({
   onApprove,
   onPay,
 }: UsePayableDetailsProps) {
+  const { data: payable, error, isLoading } = usePayableById(id, debug);
+
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [isEdit] = useState<boolean>(true);
-  const [isLoading] = useState<boolean>(false);
-  const [payable, setPayable] = useState<PayableResponseSchema | null>(null);
+  const [isEdit, setEdit] = useState<boolean>(false);
+  const [permissions, setPermissions] = useState<PayableDetailsPermissions[]>(
+    []
+  );
 
-  const { monite } = useComponentsContext();
+  const status = payable?.status;
 
-  const [canSave] = useState<boolean>(false);
-  const [canSubmit] = useState<boolean>(false);
-  const [canPay] = useState<boolean>(false);
-  const [canApprove] = useState<boolean>(false);
-  const [canReject] = useState<boolean>(false);
+  useEffect(() => {
+    if (!status) return;
+
+    setEdit(false);
+    setPermissions([]);
+
+    switch (payable.status) {
+      case PayableStateEnum.NEW:
+        setPermissions(['save', 'submit']);
+        setEdit(true);
+        break;
+      case PayableStateEnum.APPROVE_IN_PROGRESS:
+        setPermissions(['reject', 'approve']);
+        break;
+      case PayableStateEnum.WAITING_TO_BE_PAID:
+        setPermissions(['pay']);
+        break;
+    }
+  }, [status]);
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -77,43 +99,13 @@ export default function usePayableDetails({
     [formRef]
   );
 
-  useEffect(() => {
-    (async () => {
-      // TODO fetch payable and user roles
-
-      if (debug) {
-        setPayable(payableMock);
-      } else {
-        const payables = await monite.api!.payable.getList();
-        console.log(payables);
-
-        // const payable = await monite.api!.payable.getById(id);
-        // setPayable(payable);
-
-        Promise.all([
-          monite.api!.payable.getById(id),
-          // monite.api!.role.getList(),
-        ]).then(([payable]) => {
-          setPayable(payable);
-
-          // console.log(roles);
-        });
-      }
-    })();
-  }, [monite, id, debug]);
-
   return {
     payable,
     formRef,
     isLoading,
+    error,
     isEdit,
-    permissions: {
-      canSave,
-      canApprove,
-      canSubmit,
-      canPay,
-      canReject,
-    },
+    permissions,
     actions: {
       onFormSubmit,
       submitInvoice,

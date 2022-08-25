@@ -27,7 +27,7 @@ import {
   Filters as FiltersType,
   FilterValue,
 } from './types';
-import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
+import { ROW_TO_TAG_STATUS_MAP } from '../consts';
 
 export interface PayablesTableProps {
   loading?: boolean;
