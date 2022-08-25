@@ -6,7 +6,8 @@ import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate
 import PagePayables from 'features/payables/PagePayables';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
-import { ROUTES, navigationData } from 'features/app/consts';
+import { ROUTES } from 'features/app/consts';
+import { navigationData } from 'features/app/Layout/Menu/consts';
 
 const AuthorizedArea = () => {
   return (

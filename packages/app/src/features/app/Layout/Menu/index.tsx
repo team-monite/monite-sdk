@@ -2,7 +2,7 @@ import React from 'react';
 
 import MenuItem from './MenuItem';
 
-import { navigationData } from 'features/app/consts';
+import { navigationData } from 'features/app/Layout/Menu/consts';
 
 import * as Styled from './styles';
 

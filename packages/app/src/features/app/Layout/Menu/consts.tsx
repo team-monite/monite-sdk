@@ -10,9 +10,7 @@ import {
   UPostcard,
 } from '@monite/ui';
 
-import { MenuItemType } from './Layout/Menu/types';
-
-export const AUTH_TOKEN_STORAGE_KEY = 'MONITE_AUTH_TOKEN';
+import { MenuItemType } from './types';
 
 export const ROUTES = {
   signin: '/signin',
