@@ -4,9 +4,9 @@ import { observer } from 'mobx-react-lite';
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate';
 import PagePayables from 'features/payables/PagePayables';
-import PageApprovalPolicies from 'features/approvalPolicies/PageApprovalPolicies';
+import EmptyPage from 'features/app/Layout/EmptyPage';
 
-import { ROUTES } from 'features/app/consts';
+import { ROUTES, navigationData } from 'features/app/consts';
 
 const AuthorizedArea = () => {
   return (
@@ -26,7 +26,57 @@ const AuthorizedArea = () => {
       />
       <Route
         path={ROUTES.approvalPolicies}
-        element={<PageApprovalPolicies />}
+        element={
+          <EmptyPage
+            label={navigationData.settings?.children?.approvalPolicies.label}
+            renderIcon={
+              navigationData.settings?.children?.approvalPolicies.renderIcon
+            }
+            apiLink={
+              navigationData.settings?.children?.approvalPolicies.apiLink
+            }
+          />
+        }
+      />
+      <Route
+        path={ROUTES.dashboard}
+        element={
+          <EmptyPage
+            label={navigationData.dashboard.label}
+            renderIcon={navigationData.dashboard.renderIcon}
+            apiLink={navigationData.dashboard.apiLink}
+          />
+        }
+      />
+      <Route
+        path={ROUTES.receivables}
+        element={
+          <EmptyPage
+            label={navigationData.receivables.label}
+            renderIcon={navigationData.receivables.renderIcon}
+            apiLink={navigationData.receivables.apiLink}
+          />
+        }
+      />
+      <Route
+        path={ROUTES.products}
+        element={
+          <EmptyPage
+            label={navigationData.products.label}
+            renderIcon={navigationData.products.renderIcon}
+            apiLink={navigationData.products.apiLink}
+          />
+        }
+      />
+      <Route
+        path={ROUTES.audit}
+        element={
+          <EmptyPage
+            label={navigationData.audit.label}
+            renderIcon={navigationData.audit.renderIcon}
+            apiLink={navigationData.audit.apiLink}
+          />
+        }
       />
       <Route path="*" element={<Navigate to={ROUTES.counterparts} />} />
     </Routes>
