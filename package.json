@@ -12,6 +12,7 @@
     "sdk:build": "yarn workspace @monite/js-sdk build",
     "react:build": "yarn workspace @monite/react-kit build",
     "react:story": "yarn workspace @monite/react-kit storybook",
+    "react:build-storybook": "yarn workspace @monite/react-kit build-storybook",
     "ui:story": "yarn workspace @monite/ui storybook",
     "ui:build": "yarn workspace @monite/ui build",
     "web:build": "yarn workspace @monite/web-kit build",

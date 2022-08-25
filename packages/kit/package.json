@@ -14,7 +14,7 @@
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "dev": "cross-env NODE_ENV=development rollup --watch --config config/rollup.config.js",
     "storybook": "start-storybook -p 6006 --no-manager-cache",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -o storybook_static",
     "chromatic": "npx chromatic --project-token=52f2e25e515b"
   },
   "author": "",
