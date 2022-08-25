@@ -11,6 +11,7 @@ export const DefaultTable = () => (
   <div style={{ display: 'flex', height: 400 }}>
     <Table
       data={TestData}
+      onRowClick={() => {}}
       paginationTokens={{
         next_pagination_token: null,
         prev_pagination_token: null,
