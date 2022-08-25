@@ -32,6 +32,7 @@ import { ROW_TO_TAG_STATUS_MAP } from '../consts';
 export interface PayablesTableProps {
   loading?: boolean;
   data?: ReceivableResponse[];
+  onRowClick: (id: string) => void;
   onPrev?: () => void;
   onNext?: () => void;
   paginationTokens: PaginationTokens;
@@ -51,6 +52,7 @@ const formatter = new Intl.NumberFormat('de-DE', {
 const PayablesTable = ({
   loading,
   data,
+  onRowClick,
   onPrev,
   onNext,
   paginationTokens,
@@ -154,6 +156,9 @@ const PayablesTable = ({
           // },
         ]}
         data={data}
+        onRow={(record) => ({
+          onClick: () => onRowClick((record as ReceivableResponse).id),
+        })}
         scroll={{ y: 'auto' }}
         // TODO create footer component and move to UI
         footer={() => (

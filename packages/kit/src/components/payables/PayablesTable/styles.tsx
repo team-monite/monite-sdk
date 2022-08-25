@@ -42,6 +42,14 @@ export const Table = styled.div`
 
   .rc-table-body {
     flex: 1 1 0;
+
+    tr {
+      cursor: pointer;
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.lightGrey3};
+      }
+    }
   }
 `;
 
