@@ -20,7 +20,7 @@ const PagePayables = () => {
     <Layout>
       <PageHeader title="Payables" />
       <PayablesTableWithAPI />
-      {id && <PayableDetails id={id} debug={true} onClose={closeModal} />}
+      {id && <PayableDetails id={id} onClose={closeModal} />}
     </Layout>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -18,7 +18,7 @@ import {
   Modal,
 } from '@monite/ui';
 
-import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../../consts';
+import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../consts';
 import PayableDetailsForm from './PayableDetailsForm';
 
 import {
@@ -30,7 +30,10 @@ import {
   StyledTabs,
 } from './PayableDetailsStyle';
 
-import usePayableDetails, { UsePayableDetailsProps } from './usePayableDetails';
+import usePayableDetails, {
+  PayableDetailsPermissions,
+  UsePayableDetailsProps,
+} from './usePayableDetails';
 import PayableDetailsInfo from './PayableDetailsInfo';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
@@ -52,9 +55,9 @@ const PayableDetails = ({
     payable,
     formRef,
     isEdit,
-
-    permissions: { canPay, canReject, canApprove, canSave, canSubmit },
-
+    isLoading,
+    error,
+    permissions,
     actions: {
       onFormSubmit,
       saveInvoice,
@@ -73,7 +76,35 @@ const PayableDetails = ({
     onApprove,
   });
 
-  if (!payable)
+  const actions: Record<PayableDetailsPermissions, ReactNode> = {
+    save: (
+      <Button key={'save'} onClick={saveInvoice} color={'secondary'}>
+        {t('common:save')}
+      </Button>
+    ),
+    submit: (
+      <Button key={'submit'} onClick={submitInvoice}>
+        {t('common:submit')}
+      </Button>
+    ),
+    reject: (
+      <Button key={'reject'} onClick={rejectInvoice} color={'danger'}>
+        {t('common:reject')}
+      </Button>
+    ),
+    approve: (
+      <Button key={'approve'} onClick={approveInvoice}>
+        {t('common:approve')}
+      </Button>
+    ),
+    pay: (
+      <Button key={'pay'} onClick={payInvoice}>
+        {t('common:pay')}
+      </Button>
+    ),
+  };
+
+  if (isLoading)
     return (
       <Modal>
         <ModalLayout fullScreen>
@@ -83,6 +114,29 @@ const PayableDetails = ({
         </ModalLayout>
       </Modal>
     );
+
+  if (error || !payable) {
+    return (
+      <Modal>
+        <ModalLayout
+          fullScreen
+          header={
+            <Header
+              leftBtn={
+                <IconButton onClick={onClose} color={'black'}>
+                  <UMultiply size={18} />
+                </IconButton>
+              }
+            >
+              {error?.message}
+            </Header>
+          }
+        >
+          {error?.message}
+        </ModalLayout>
+      </Modal>
+    );
+  }
 
   return (
     <Modal>
@@ -97,27 +151,7 @@ const PayableDetails = ({
             }
             actions={
               <StyledHeaderActions>
-                {canSave && (
-                  <Button onClick={saveInvoice} color={'secondary'}>
-                    {t('common:save')}
-                  </Button>
-                )}
-                {canReject && (
-                  <Button onClick={rejectInvoice} color={'danger'}>
-                    {t('common:reject')}
-                  </Button>
-                )}
-                {canSubmit && (
-                  <Button onClick={submitInvoice}>{t('common:submit')}</Button>
-                )}
-                {canApprove && (
-                  <Button onClick={approveInvoice}>
-                    {t('common:approve')}
-                  </Button>
-                )}
-                {canPay && (
-                  <Button onClick={payInvoice}>{t('common:pay')}</Button>
-                )}
+                {permissions.map((permission) => actions[permission])}
               </StyledHeaderActions>
             }
           >
