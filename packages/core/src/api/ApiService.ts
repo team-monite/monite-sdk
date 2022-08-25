@@ -34,7 +34,6 @@ class ApiService {
     this.payment = new PaymentService({
       config: {
         ...config,
-        BASE: 'http://pay.dev.monite.com/api/v1',
         HEADERS: {
           'x-monite-data-source': 'receivables',
         },
