@@ -15,6 +15,7 @@
     "react:build-storybook": "yarn workspace @monite/react-kit build-storybook",
     "ui:story": "yarn workspace @monite/ui storybook",
     "ui:build": "yarn workspace @monite/ui build",
+    "ui:build-storybook": "yarn workspace @monite/ui build-storybook",
     "web:build": "yarn workspace @monite/web-kit build",
     "payment:start": "yarn workspace @monite/payment start",
     "payment:build": "yarn workspace @monite/payment build",

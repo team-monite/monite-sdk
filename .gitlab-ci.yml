@@ -27,6 +27,7 @@ test-job: # This job runs in the build stage, which runs first.
     paths:
       - packages/payment/build
       - packages/kit/storybook_static
+      - packages/ui/storybook_static
       - packages/app/build
     expire_in: 1 day
 
@@ -55,6 +56,20 @@ kit_storybook:
     - aws --version
     - aws s3 sync packages/kit/storybook_static s3://monite-kit-storybook
     - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
+  tags:
+    - docker
+
+ui_storybook:
+  before_script:
+    - hostname
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - master
+  script:
+    - aws --version
+    - aws s3 sync packages/ui/storybook_static s3://monite-ui-storybook
+    - aws cloudfront create-invalidation --distribution-id E225FCWSSAPLS --paths "/*"
   tags:
     - docker
 
