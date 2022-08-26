@@ -40,8 +40,8 @@ class ApiService {
     this.payment = new PaymentService({
       config: {
         ...config,
+        BASE: PAYMENT_BASE_URL,
         HEADERS: {
-          BASE: PAYMENT_BASE_URL,
           'x-monite-data-source': 'receivables',
         },
       },
