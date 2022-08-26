@@ -15,8 +15,10 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn lint
     - echo "Run building..."
     - yarn ui:build
+    - yarn ui:build-storybook
     - yarn sdk:build
     - yarn react:build
+    - yarn react:build-storybook
     - yarn web:build
     - yarn payment:build
     - yarn app:build
@@ -25,10 +27,14 @@ test-job: # This job runs in the build stage, which runs first.
   artifacts:
     paths:
       - packages/payment/build
+      - packages/kit/storybook_static
+      - packages/ui/storybook_static
       - packages/app/build
     expire_in: 1 day
 
 app:
+  before_script:
+    - hostname
   stage: deploy
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   only:
@@ -37,6 +43,34 @@ app:
     - aws --version
     - aws s3 sync packages/app/build s3://monite-sdk-app-dev
     - aws cloudfront create-invalidation --distribution-id E2XLI83DAN4J4J --paths "/*"
+  tags:
+    - docker
+
+kit_storybook:
+  before_script:
+    - hostname
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - master
+  script:
+    - aws --version
+    - aws s3 sync packages/kit/storybook_static s3://monite-kit-storybook
+    - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
+  tags:
+    - docker
+
+ui_storybook:
+  before_script:
+    - hostname
+  stage: deploy
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  only:
+    - master
+  script:
+    - aws --version
+    - aws s3 sync packages/ui/storybook_static s3://monite-ui-storybook
+    - aws cloudfront create-invalidation --distribution-id E225FCWSSAPLS --paths "/*"
   tags:
     - docker
 

@@ -35,3 +35,25 @@
   font-weight: 500;
   line-height: 20px;
 }
+
+.emptyPageWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyPageContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 480px;
+  align-items: center;
+}
+
+.link {
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: underline;
+}

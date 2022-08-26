@@ -34,7 +34,6 @@ shell:
     - yarn react:build
     - yarn web:build
     - yarn payment:build
-    - yarn app:build
 ---
 image: nginx
 from: nginx:1.21.6
@@ -42,7 +41,7 @@ docker:
   WORKDIR: /app
 import:
  - image: static
-   add: /app/packages/app/build
+   add: /app/packages/payment/build
    to: /app
    before: install
    owner: app

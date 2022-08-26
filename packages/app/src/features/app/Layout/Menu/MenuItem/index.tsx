@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { Text, UAngleDown } from '@monite/ui';
+import { Text, UAngleDown, THEMES } from '@monite/ui';
 import { MenuItemType } from '../types';
 
 type MenuItemProps = {
@@ -51,8 +51,10 @@ const LinkIcon = styled.i`
 `;
 
 const MenuItem = ({ item }: MenuItemProps) => {
-  const { url, label, icon, children, onClick } = item;
+  const { url, label, renderIcon, children, onClick } = item;
   const [submenuIsShown, setSubmenuIsShown] = useState<boolean>(false);
+
+  const iconColor = THEMES.default.colors.primary;
 
   const handleOnClick = (e: React.BaseSyntheticEvent) => {
     if (onClick) {
@@ -74,7 +76,11 @@ const MenuItem = ({ item }: MenuItemProps) => {
 
           return (
             <>
-              <LinkIcon>{icon}</LinkIcon>
+              {renderIcon && (
+                <LinkIcon>
+                  {renderIcon({ width: 20, color: iconColor })}
+                </LinkIcon>
+              )}{' '}
               <LinkText textSize="smallBold" ml="8px">
                 {label}
               </LinkText>
@@ -89,9 +95,13 @@ const MenuItem = ({ item }: MenuItemProps) => {
       </MenuItemLink>
       {children &&
         submenuIsShown &&
-        children.map((subItem) => (
+        Object.values(children).map((subItem) => (
           <MenuSubItemLink to={subItem.url} key={subItem.url}>
-            <LinkIcon>{subItem.icon}</LinkIcon>
+            {subItem.renderIcon && (
+              <LinkIcon>
+                {subItem.renderIcon({ width: 20, color: iconColor })}
+              </LinkIcon>
+            )}
             <LinkText textSize="smallBold" ml="8px">
               {subItem.label}
             </LinkText>

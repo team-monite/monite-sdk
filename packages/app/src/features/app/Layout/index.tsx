@@ -51,7 +51,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 rootStore.auth.logout();
               },
               label: 'Logout',
-              icon: (
+              renderIcon: () => (
                 <UQuestionCircle
                   color={THEMES.default.colors.primary}
                   width={20}

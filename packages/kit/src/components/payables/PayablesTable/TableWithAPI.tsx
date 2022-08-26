@@ -17,7 +17,12 @@ import {
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_STATUS,
 } from './consts';
-const PayablesTableWithAPI = () => {
+
+interface Props {
+  openModal: (id: string) => void;
+}
+
+const PayablesTableWithAPI = ({ openModal }: Props) => {
   const { monite } = useComponentsContext() || {};
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [data, setData] = useState<ReceivableResponse[]>([]);
@@ -114,6 +119,7 @@ const PayablesTableWithAPI = () => {
     <Table
       loading={isLoading}
       data={data}
+      onRowClick={openModal}
       onPrev={onPrev}
       onNext={onNext}
       paginationTokens={paginationTokens}

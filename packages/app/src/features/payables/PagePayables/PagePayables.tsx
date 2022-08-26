@@ -11,6 +11,10 @@ const PagePayables = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get(PAYABLE_ID);
 
+  const openModal = (id: string) => {
+    searchParams.set('id', id);
+    setSearchParams(searchParams);
+  };
   const closeModal = () => {
     searchParams.delete(PAYABLE_ID);
     setSearchParams(searchParams);
@@ -19,8 +23,8 @@ const PagePayables = () => {
   return (
     <Layout>
       <PageHeader title="Payables" />
-      <PayablesTableWithAPI />
-      {id && <PayableDetails id={id} debug={true} onClose={closeModal} />}
+      <PayablesTableWithAPI openModal={openModal} />
+      {id && <PayableDetails id={id} onClose={closeModal} />}
     </Layout>
   );
 };

@@ -65,3 +65,15 @@ spec:
             cpu: {{ pluck .Values.werf.env .Values.nginx.resources.requests.cpu | first | default .Values.nginx.resources.requests.cpu._default }}
           limits:
             memory: {{ pluck .Values.werf.env .Values.nginx.resources.limits.memory | first | default .Values.nginx.resources.limits.memory._default }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  clusterIP: None
+  selector:
+    app: {{ .Chart.Name }}
+  ports:
+  - name: http
+    port: 80

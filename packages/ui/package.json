@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "storybook": "start-storybook -p 6007 --no-manager-cache",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -o storybook_static",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "chromatic": "chromatic"
   },
