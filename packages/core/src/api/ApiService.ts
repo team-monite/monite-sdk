@@ -9,6 +9,12 @@ import WorkflowsService from './services/WorkflowsService';
 import PayablesService from './services/PayableService';
 import RoleService from './services/RoleService';
 
+const isLocalhost = (url: string) =>
+  url.includes('localhost') || url.includes('127.0.0.1');
+
+const PAYMENT_BASE_URL = isLocalhost(window.location.origin)
+  ? 'http://pay.dev.monite.com/api/v1'
+  : '/api/v1';
 class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -35,6 +41,7 @@ class ApiService {
       config: {
         ...config,
         HEADERS: {
+          BASE: PAYMENT_BASE_URL,
           'x-monite-data-source': 'receivables',
         },
       },

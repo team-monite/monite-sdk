@@ -49,3 +49,7 @@ nginx:
             - matchExpressions:
                 - key: node-role.kubernetes.io/production
                   operator: Exists
+
+
+payments_backend_url:
+  _default: http://payments
