@@ -25,12 +25,15 @@ const EmptyPage = ({ label, renderIcon, apiLink = '' }: EmptyPageProps) => {
             </Text>
           </Box>
           <Text align="center">
-            We’re working on bringing{' '}
-            <Link href={'https://docs.monite.com/page/white-label-sdk'}>
-              <Text className={styles.link}>Dashboard</Text>
+            We’re working on bringing {label} into{' '}
+            <Link
+              target="_blank"
+              href={'https://docs.monite.com/page/white-label-sdk'}
+            >
+              <Text className={styles.link}>White Label.</Text>
             </Link>{' '}
-            into White Label. Meanwhile you can check our{' '}
-            <Link href={apiLink} className={styles.link}>
+            Meanwhile you can check our{' '}
+            <Link target="_blank" href={apiLink} className={styles.link}>
               <Text className={styles.link}> API docs</Text>
             </Link>{' '}
             to see what you can build!
