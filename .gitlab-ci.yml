@@ -15,6 +15,7 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn lint
     - echo "Run building..."
     - yarn ui:build
+    - yarn ui:build-storybook
     - yarn sdk:build
     - yarn react:build
     - yarn react:build-storybook
