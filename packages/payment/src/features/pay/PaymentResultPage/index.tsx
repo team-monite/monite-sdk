@@ -164,7 +164,7 @@ export const PaymentResultPage = () => {
                       </Text>
                     </Box>
                   </Flex>
-                  <Flex>
+                  {/* <Flex>
                     <Box width={1 / 3}>
                       <Text color={theme.colors.grey}>
                         {t('payment:result.payee')}
@@ -185,7 +185,7 @@ export const PaymentResultPage = () => {
                         {paymentData.payee?.account_identification?.value}
                       </Text>
                     </Box>
-                  </Flex>
+                  </Flex> */}
                   <Flex>
                     <Box width={1 / 3}>
                       <Text color={theme.colors.grey}>
