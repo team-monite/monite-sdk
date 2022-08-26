@@ -35,6 +35,7 @@ class ApiService {
       config: {
         ...config,
         HEADERS: {
+          BASE: 'http://pay.dev.monite.com/api/v1',
           'x-monite-data-source': 'receivables',
         },
       },
