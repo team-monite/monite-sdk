@@ -78,6 +78,10 @@ data:
             access_log /dev/stdout combined_plus;
             error_log /dev/stderr;
             error_page   500 502 503 504  /50x.html;
+            location /api/ {
+                proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/;
+            }
+
             location / {
               add_header Last-Modified $date_gmt;
               add_header Cache-Control 'no-store, no-cache';
