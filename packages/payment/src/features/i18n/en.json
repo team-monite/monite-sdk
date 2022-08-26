@@ -23,7 +23,7 @@
       "reference": "Reference",
       "iban": "IBAN",
       "payee": "Payee Name",
-      "amount": "Amount",
+      "amount": "Invoice amount",
       "back": "Go back"
     }
   }
