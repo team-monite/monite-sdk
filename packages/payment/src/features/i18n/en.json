@@ -5,7 +5,7 @@
       "amount": "Invoice amount",
       "fee": "Transaction fee",
       "total": "Total",
-      "feeAlert": "A {{percent}}% transaction fee applies. It’ll be charged separately to your card.",
+      "feeAlert": "A {{percent}}% transaction fee applies.",
       "submit": "Pay",
       "back": "Back",
       "emptyTitle": "No payment methods available",
