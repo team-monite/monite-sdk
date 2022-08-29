@@ -1,7 +1,7 @@
 import PayableDetails from './PayableDetails';
 
 const Story = {
-  title: 'Payable Details',
+  title: 'Payables/Payables — Details',
   component: PayableDetails,
 };
 

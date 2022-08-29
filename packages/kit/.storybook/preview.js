@@ -6,6 +6,11 @@ import './main.css';
 
 export const parameters = {
   viewMode: 'docs',
+  options: {
+    storySort: {
+      order: ['Common', 'Payables', 'In Progress'],
+    },
+  },
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {

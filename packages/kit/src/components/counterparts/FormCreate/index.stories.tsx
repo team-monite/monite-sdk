@@ -4,7 +4,7 @@ import Form from '.';
 import { Box, Button } from '@monite/ui';
 
 const Story = {
-  title: 'CounterpartsFormCreate',
+  title: 'In Progress/Counterparts — Form Create',
   component: Form,
 };
 export default Story;

@@ -2,7 +2,7 @@ import CounterpartsDetails from './CounterpartsDetails';
 import counterparts from '../fixtures/counterparts';
 
 const Story = {
-  title: 'CounterpartsDetails',
+  title: 'In Progress/Counterparts — Details',
   component: CounterpartsDetails,
 };
 
