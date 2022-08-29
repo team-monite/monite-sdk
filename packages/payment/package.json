@@ -1,9 +1,9 @@
 {
   "name": "@monite/payment",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "@monite/react-kit": "0.0.1",
+    "@monite/react-kit": "^0.0.2",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",
