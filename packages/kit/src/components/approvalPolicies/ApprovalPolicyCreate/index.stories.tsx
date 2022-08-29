@@ -1,7 +1,7 @@
 import ApprovalPolicyCreate from './ApprovalPolicyCreate';
 
 const Story = {
-  title: 'Approval Policy Create form',
+  title: 'In Progress/Approval Policies — Form Create',
   component: ApprovalPolicyCreate,
 };
 export default Story;
