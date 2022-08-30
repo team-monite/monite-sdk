@@ -1,6 +1,6 @@
 include:
   - project: monite/infra/common-ci
-    file: "deploys.yml"
+    file: 'deploys.yml'
 
 default:
   image: cimg/node:16.14.2-browsers #lts
@@ -14,25 +14,24 @@ test-job: # This job runs in the build stage, which runs first.
     - echo "Run linting..."
     - yarn lint
     - echo "Run building..."
-    - yarn ui:build
-    - yarn ui:build-storybook
-    - yarn sdk:build
-    - yarn react:build
-    - yarn react:build-storybook
-    - yarn web:build
+    - yarn ui-kit-react:build
+    - yarn ui-kit-react:build-storybook
+    - yarn sdk-api:build
+    - yarn ui-widgets-react:build
+    - yarn ui-widgets-react:build-storybook
     - yarn payment:build
-    - yarn app:build
+    - yarn app-white-label:build
   tags:
     - docker
   artifacts:
     paths:
       - packages/payment/build
-      - packages/kit/storybook_static
-      - packages/ui/storybook_static
-      - packages/app/build
+      - packages/ui-widgets-react/storybook_static
+      - packages/ui-kit-react/storybook_static
+      - packages/app-white-label/build
     expire_in: 1 day
 
-app:
+app-white-label:
   before_script:
     - hostname
   stage: deploy
@@ -41,12 +40,12 @@ app:
     - master
   script:
     - aws --version
-    - aws s3 sync packages/app/build s3://monite-sdk-app-dev
+    - aws s3 sync packages/app-white-label/build s3://monite-sdk-app-dev
     - aws cloudfront create-invalidation --distribution-id E2XLI83DAN4J4J --paths "/*"
   tags:
     - docker
 
-kit_storybook:
+ui-widgets-react_storybook:
   before_script:
     - hostname
   stage: deploy
@@ -55,12 +54,12 @@ kit_storybook:
     - master
   script:
     - aws --version
-    - aws s3 sync packages/kit/storybook_static s3://monite-kit-storybook
+    - aws s3 sync packages/ui-widgets-react/storybook_static s3://monite-kit-storybook
     - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
   tags:
     - docker
 
-ui_storybook:
+ui-kit-react_storybook:
   before_script:
     - hostname
   stage: deploy
@@ -69,11 +68,10 @@ ui_storybook:
     - master
   script:
     - aws --version
-    - aws s3 sync packages/ui/storybook_static s3://monite-ui-storybook
+    - aws s3 sync packages/ui-kit-react/storybook_static s3://monite-ui-storybook
     - aws cloudfront create-invalidation --distribution-id E225FCWSSAPLS --paths "/*"
   tags:
     - docker
-
 # temporary deploy to k8s cluster
 #payment:
 #  stage: deploy

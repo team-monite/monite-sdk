@@ -12,7 +12,7 @@ import {
   // UUniversity,
   UMoneyBill,
 } from '@monite/ui';
-import { PaymentMethodsEnum } from '@monite/js-sdk';
+import { PaymentMethodsEnum } from '@monite/sdk-api';
 
 type SelectPaymentMethodProps = {
   paymentMethods: PaymentMethodsEnum[];
