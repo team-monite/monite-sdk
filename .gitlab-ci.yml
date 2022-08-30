@@ -24,6 +24,8 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn app:build
   tags:
     - docker
+  except:
+  - schedules
   artifacts:
     paths:
       - packages/payment/build
@@ -45,6 +47,8 @@ app:
     - aws cloudfront create-invalidation --distribution-id E2XLI83DAN4J4J --paths "/*"
   tags:
     - docker
+  except:
+  - schedules
 
 kit_storybook:
   before_script:
@@ -59,6 +63,8 @@ kit_storybook:
     - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
   tags:
     - docker
+  except:
+  - schedules
 
 ui_storybook:
   before_script:
@@ -73,7 +79,8 @@ ui_storybook:
     - aws cloudfront create-invalidation --distribution-id E225FCWSSAPLS --paths "/*"
   tags:
     - docker
-
+  except:
+  - schedules
 # temporary deploy to k8s cluster
 #payment:
 #  stage: deploy
