@@ -5,8 +5,8 @@ import {
   usePayableById,
   usePayPayableById,
   useRejectPayableById,
-  useSubmitPayableById,
 } from 'core/queries/usePayable';
+import { toast } from 'react-hot-toast';
 
 export type UsePayableDetailsProps = {
   id: string;
@@ -43,7 +43,7 @@ export default function usePayableDetails({
     []
   );
 
-  const submitMutation = useSubmitPayableById();
+  // const submitMutation = useSubmitPayableById();
   const approveMutation = useApprovePayableById();
   const rejectMutation = useRejectPayableById();
   const payMutation = usePayPayableById();
@@ -58,9 +58,7 @@ export default function usePayableDetails({
 
     switch (status) {
       case PayableStateEnum.NEW:
-        // TODO uncomment later
-        // setPermissions(['save', 'submit']);
-        setPermissions(['reject', 'approve']);
+        setPermissions(['save', 'submit']);
         setEdit(true);
         break;
       case PayableStateEnum.APPROVE_IN_PROGRESS:
@@ -80,31 +78,35 @@ export default function usePayableDetails({
     );
   }, [formRef]);
 
-  const saveInvoice = useCallback(() => {
-    submitForm();
-  }, [submitForm]);
+  const saveInvoice = useCallback(submitForm, [submitForm]);
 
   const submitInvoice = useCallback(async () => {
     if (!payable?.id) return;
-    await submitMutation.mutate(payable.id);
+    // TODO uncomment later
+    // await submitMutation.mutate(payable.id);
+    await approveMutation.mutate(payable.id);
+    toast.success('Submitted');
     onSubmit && onSubmit();
-  }, [submitForm]);
+  }, [submitForm, payable]);
 
   const approveInvoice = useCallback(async () => {
     if (!payable?.id) return;
     await approveMutation.mutate(payable.id);
+    toast.success('Approved');
     onApprove && onApprove();
-  }, []);
+  }, [approveMutation, payable]);
 
   const rejectInvoice = useCallback(async () => {
     if (!payable?.id) return;
     await rejectMutation.mutate(payable.id);
+    toast.success('Rejected');
     onReject && onReject();
-  }, []);
+  }, [rejectMutation, payable]);
 
   const payInvoice = useCallback(async () => {
     if (!payable?.id) return;
     await payMutation.mutate(payable.id);
+    toast.success('Payed');
     onPay && onPay();
   }, []);
 

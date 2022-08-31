@@ -8,8 +8,9 @@ const PAYABLE_QUERY_ID = 'payable';
 export const usePayableById = (id: string, debug?: boolean) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<PayableResponseSchema, Error>([PAYABLE_QUERY_ID, id], () =>
-    debug ? payableMock : monite.api!.payable.getById(id)
+  return useQuery<PayableResponseSchema, Error>(
+    [PAYABLE_QUERY_ID, { id }],
+    () => (debug ? payableMock : monite.api!.payable.getById(id))
   );
 };
 
@@ -20,7 +21,9 @@ export const useUpdatePayableById = (id: string) => {
   return useMutation<PayableResponseSchema, Error, PayableUpdateSchema>(
     (body) => monite.api!.payable.update(id, body),
     {
-      onSuccess: () => queryClient.invalidateQueries([PAYABLE_QUERY_ID, id]),
+      onSuccess: (payable) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+      },
     }
   );
 };
@@ -32,7 +35,9 @@ export const useSubmitPayableById = () => {
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.submit(id),
     {
-      onSuccess: () => queryClient.invalidateQueries([PAYABLE_QUERY_ID]),
+      onSuccess: (payable, id) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+      },
     }
   );
 };
@@ -44,7 +49,9 @@ export const useApprovePayableById = () => {
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.approve(id),
     {
-      onSuccess: () => queryClient.invalidateQueries([PAYABLE_QUERY_ID]),
+      onSuccess: (payable, id) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+      },
     }
   );
 };
@@ -56,7 +63,9 @@ export const useRejectPayableById = () => {
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.reject(id),
     {
-      onSuccess: () => queryClient.invalidateQueries([PAYABLE_QUERY_ID]),
+      onSuccess: (payable, id) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+      },
     }
   );
 };

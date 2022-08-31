@@ -36,10 +36,6 @@ import {
   tagsToSelect,
 } from './helpers';
 
-export type PayablesDetailsFormProps = UsePayableDetailsFormProps & {
-  onSubmit: () => void;
-};
-
 const getValidationSchema = () =>
   yup
     .object({
@@ -67,7 +63,7 @@ const getValidationSchema = () =>
 
 const PayableDetailsForm = forwardRef<
   HTMLFormElement,
-  PayablesDetailsFormProps
+  UsePayableDetailsFormProps
 >(({ onSubmit, payable, debug }, ref) => {
   const { t } = useTranslation();
   const { control, handleSubmit } = useForm<PayableDetailsFormFields>({
@@ -78,6 +74,7 @@ const PayableDetailsForm = forwardRef<
   const { tags, counterparts, saveMutation } = usePayableDetailsForm({
     payable,
     debug,
+    onSubmit,
   });
 
   return (
