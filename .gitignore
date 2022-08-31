@@ -8,6 +8,7 @@ build-storybook.log
 .firebase
 .DS_Store
 .idea
+.npmrc
 
 node_modules
 dist
