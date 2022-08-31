@@ -108,7 +108,7 @@ export default function usePayableDetails({
     await payMutation.mutate(payable.id);
     toast.success('Payed');
     onPay && onPay();
-  }, []);
+  }, [payMutation, payable]);
 
   const onFormSubmit = useCallback(() => {
     onSave && onSave();

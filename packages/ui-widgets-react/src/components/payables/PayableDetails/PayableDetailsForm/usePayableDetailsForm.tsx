@@ -31,7 +31,10 @@ export default function usePayableDetailsForm({
   const saveMutation = useUpdatePayableById(payable.id);
 
   useEffect(() => {
-    saveMutation.isSuccess && toast.success('Saved');
+    if (!saveMutation.isSuccess) return;
+
+    onSubmit && onSubmit();
+    toast.success('Saved');
   }, [saveMutation.isSuccess]);
 
   return {
