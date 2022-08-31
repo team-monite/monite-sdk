@@ -23,6 +23,8 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn app-white-label:build
   tags:
     - docker
+  except:
+  - schedules
   artifacts:
     paths:
       - packages/payment/build
@@ -44,6 +46,8 @@ app-white-label:
     - aws cloudfront create-invalidation --distribution-id E2XLI83DAN4J4J --paths "/*"
   tags:
     - docker
+  except:
+  - schedules
 
 ui-widgets-react_storybook:
   before_script:
@@ -58,6 +62,8 @@ ui-widgets-react_storybook:
     - aws cloudfront create-invalidation --distribution-id EHG26TRKYNPIT --paths "/*"
   tags:
     - docker
+  except:
+  - schedules
 
 ui-kit-react_storybook:
   before_script:
@@ -72,6 +78,8 @@ ui-kit-react_storybook:
     - aws cloudfront create-invalidation --distribution-id E225FCWSSAPLS --paths "/*"
   tags:
     - docker
+  except:
+  - schedules
 # temporary deploy to k8s cluster
 #payment:
 #  stage: deploy
