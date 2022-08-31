@@ -14,11 +14,12 @@ This repository is a monorepo, which consists of:
 - To make sales process much easier.
 - To provide Monite's services out-of-the-box.
 
-It uses @monite/react-kit as the dependency, to test and verify that our SDK actually works, so:
+It uses @monite/ui-widgets-react as the dependency, to test and verify that our SDK actually works, so:
+
 - Monite will be the first user of our own js SDK.
 - Monite will be the first user of our own White-Label solution.
 
-## package: @monite/js-sdk
+## package: @monite/sdk-api
 
 The core package of the Monite's non-UI functionality.
 
@@ -32,9 +33,9 @@ This package will be used in our other packages as a core of the Monite's functi
 ### Use case
 
 ```
-npm install @monite/js-sdk
+npm install @monite/sdk-api
 
-import { MoniteApp } from '@monite/js-sdk';
+import { MoniteApp } from '@monite/sdk-api';
 
 const monite = new MoniteApp({
   // here should be provided an end-user API key to retrieve end user data, such as the list of the counterparts for this specific user
@@ -47,7 +48,7 @@ const monite = new MoniteApp({
 const data = monite.api.counterparts.getList();
 ```
 
-## package: @monite/react-kit
+## package: @monite/ui-widgets-react
 
 This package is the library of ready-to-use react.js UI components.
 
@@ -61,9 +62,9 @@ This package is the library of ready-to-use react.js UI components.
 ### Use case
 
 ```
-npm install @monite/react-kit;
+npm install @monite/ui-widgets-react;
 
-import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@monite/react-kit';
+import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@monite/ui-widgets-react';
 
 const monite = new MoniteApp({
   // end-user API key
@@ -73,57 +74,4 @@ const monite = new MoniteApp({
 <MoniteProvider monite={monite}>
   <CounterpartsTable someProp />
 </MoniteProvider>
-```
-
-## package: @monite/web-kit
-
-This is package is just a wrapper around the @monite/react-kit package.
-
-### Why
-
-- To allow to use react.js UI-components in non-react environments.
-- To create a ready-to-use HTML tag \<script\> solution.
-- It uses preact as the lightweight alternative to the react.js.
-
-### Use case: \<script\>
-
-```
-<script src=".../dist/monite.js"></script>
-<link rel="stylesheet" href=".../dist/monite.css" />
-
-<script>
-  (async () => {
-    const monite = MoniteApp({
-      // end-user API key
-      apiKey: '123',
-    });
-
-    // an example of receiving data
-    const data = await monite.api.counterparts.getList();
-
-    // an example of rendering a component
-    monite.create('CounterpartsTable', {
-      someProp: true,
-    }).mount('#component');
-  })();
-</script>
-```
-
-### Use case: npm
-
-```
-import MoniteApp from '@monite/web-kit';
-import '@monite/web-kit/dist/monite.css';
-
-const monite = MoniteApp({
-  apiKey: '123',
-});
-
-// an example of receiving data
-const data = await monite.api.counterparts.getList();
-
-// an example of rendering a component
-monite.create('CounterpartsTable', {
-  someProp: true,
-}).mount('#component');
 ```

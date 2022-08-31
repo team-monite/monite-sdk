@@ -3,7 +3,7 @@ import CheckoutForm from './CheckoutForm';
 import React, { useEffect, useState } from 'react';
 import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
-import { Theme } from '@monite/ui';
+import { Theme } from '@monite/ui-kit-react';
 import NavHeader from '../NavHeader';
 
 let stripePromise: Promise<Stripe | null> | null = null;

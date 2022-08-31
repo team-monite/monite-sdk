@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import InvoiceDetailes from './InvoiceDetailes';
 import BanksListForm from './BanksListForm';
 import NavHeader from '../NavHeader';
-import { ReceivableResponse } from '@monite/js-sdk';
+import { ReceivableResponse } from '@monite/sdk-api';
 import { demoBanks } from '../fixtures/banks';
 
 type YapilyFormProps = {
