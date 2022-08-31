@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { TagReadSchema } from '@monite/js-sdk';
+import { TagReadSchema } from '@monite/sdk-api';
 
 const tagList: TagReadSchema[] = [
   {

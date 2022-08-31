@@ -1,4 +1,4 @@
-import { PayableResponseSchema } from '@monite/js-sdk';
+import { PayableResponseSchema } from '@monite/sdk-api';
 
 import { useTagList, useUpdatePayableById } from 'core/queries';
 import { useCounterpartList } from 'core/queries/useCounterpart';
@@ -24,12 +24,12 @@ export default function usePayableDetailsForm({
     isLoading: isCounterpartLoading,
   } = useCounterpartList(debug);
 
-  const submitMutation = useUpdatePayableById(payable.id);
+  const saveMutation = useUpdatePayableById(payable.id);
 
   return {
     isTagLoading,
     isCounterpartLoading,
-    submitMutation,
+    saveMutation,
     tags: tags?.data || [],
     counterparts: counterparts?.data || [],
   };

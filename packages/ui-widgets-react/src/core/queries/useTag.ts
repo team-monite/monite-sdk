@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { TagsResponse } from '@monite/js-sdk';
+import { TagsResponse } from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import tagList from './fixtures/tagList';
 

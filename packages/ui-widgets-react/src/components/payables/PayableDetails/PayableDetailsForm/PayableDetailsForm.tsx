@@ -4,7 +4,13 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Input, DatePicker, Multiselect, Select } from '@monite/ui';
+import {
+  Input,
+  DatePicker,
+  Multiselect,
+  Select,
+  Spinner,
+} from '@monite/ui-kit-react';
 
 import { getSymbolFromCurrency } from 'core/utils/currency';
 
@@ -13,6 +19,7 @@ import {
   FormItem,
   FormSection,
   FormTitle,
+  StyledLoading,
   StyledScroll,
   StyledScrollContent,
 } from '../PayableDetailsStyle';
@@ -68,19 +75,24 @@ const PayableDetailsForm = forwardRef<
     defaultValues: prepareDefaultValues(payable),
   });
 
-  const { tags, counterparts, submitMutation } = usePayableDetailsForm({
+  const { tags, counterparts, saveMutation } = usePayableDetailsForm({
     payable,
     debug,
   });
 
   return (
     <StyledScrollContent>
+      {saveMutation.isLoading && (
+        <StyledLoading>
+          <Spinner color={'primary'} pxSize={45} />
+        </StyledLoading>
+      )}
       <StyledScroll>
         <form
           ref={ref}
           id="payableDetailsForm"
           onSubmit={handleSubmit((values) =>
-            submitMutation.mutate(prepareSubmit(values))
+            saveMutation.mutate(prepareSubmit(values))
           )}
         >
           <FormSection>

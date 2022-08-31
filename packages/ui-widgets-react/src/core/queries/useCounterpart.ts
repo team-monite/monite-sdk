@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { CounterpartPaginationResponse } from '@monite/js-sdk';
+import { CounterpartPaginationResponse } from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import counterpartsMock from 'components/counterparts/fixtures/counterparts';
 

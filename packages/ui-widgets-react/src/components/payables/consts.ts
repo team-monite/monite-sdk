@@ -10,4 +10,7 @@ export const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
   [PayableStateEnum.REJECTED]: 'warning',
 };
 
-export const PAYABLE_TAB_LIST = ['document', 'payment', 'status', 'history'];
+export const PAYABLE_TAB_LIST = [
+  'document',
+  'payment' /*, 'status', 'history' */,
+];

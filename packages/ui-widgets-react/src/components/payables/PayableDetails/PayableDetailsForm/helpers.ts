@@ -4,7 +4,7 @@ import {
   PayableResponseSchema,
   PayableUpdateSchema,
   TagReadSchema,
-} from '@monite/js-sdk';
+} from '@monite/sdk-api';
 import { convertToMajorUnits, convertToMinorUnits } from 'core/utils';
 import {
   getFullName,
@@ -89,7 +89,8 @@ export const prepareSubmit = ({
   suggestedPaymentDate,
   bic,
   iban,
-  // suppliersName,
+  invoiceNumber,
+  suppliersName,
   tags,
 }: PayableDetailsFormFields): PayableUpdateSchema => ({
   currency,
@@ -101,16 +102,15 @@ export const prepareSubmit = ({
   },
   counterpart_bank_id: bic,
   counterpart_account_id: iban,
-  // TODO: uncomment
-  // counterpart_id: suppliersName.value,
-  // counterpart_name: suppliersName.label,
+  counterpart_id: suppliersName.value,
+  counterpart_name: suppliersName.label,
   tag_ids: tags.map((tag) => tag.value),
+  document_id: invoiceNumber,
 
   // TODO: need to mapping
   // description: '',
   // payment_terms: PaymentTermsCreatePayload,
   // issued_at: '',
-  // document_id: '',
   // subtotal: 0,
   // tax: number,
 });

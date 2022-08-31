@@ -179,7 +179,7 @@ export default class PayablesService {
   public submit(payableId: string): CancelablePromise<PayableResponseSchema> {
     return __request(
       {
-        method: 'GET',
+        method: 'POST',
         url: `/payables/${payableId}/submit_for_approval`,
         errors: {
           400: `Bad Request`,
@@ -204,7 +204,7 @@ export default class PayablesService {
   public approve(payableId: string): CancelablePromise<PayableResponseSchema> {
     return __request(
       {
-        method: 'GET',
+        method: 'POST',
         url: `/payables/${payableId}/approve_payment_operation`,
         errors: {
           400: `Bad Request`,
@@ -229,7 +229,7 @@ export default class PayablesService {
   public reject(payableId: string): CancelablePromise<PayableResponseSchema> {
     return __request(
       {
-        method: 'GET',
+        method: 'POST',
         url: `/payables/${payableId}/reject`,
         errors: {
           400: `Bad Request`,
@@ -254,7 +254,7 @@ export default class PayablesService {
   public pay(payableId: string): CancelablePromise<PayableResponseSchema> {
     return __request(
       {
-        method: 'GET',
+        method: 'POST',
         url: `/payables/${payableId}/pay`,
         errors: {
           400: `Bad Request`,

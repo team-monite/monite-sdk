@@ -72,7 +72,9 @@ export const StyledLoading = styled(Text)`
   bottom: 0;
   display: flex;
   justify-content: center;
+  background-color: #ffffffb8;
   color: ${({ theme }) => theme.colors.primary};
+  z-index: 1;
 `;
 
 export const StyledTabs = styled(Box)`

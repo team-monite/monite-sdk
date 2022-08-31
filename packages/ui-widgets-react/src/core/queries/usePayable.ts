@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import { PayableResponseSchema, PayableUpdateSchema } from '@monite/js-sdk';
+import { PayableResponseSchema, PayableUpdateSchema } from '@monite/sdk-api';
 import payableMock from 'components/payables/fixtures/getById';
 import { useComponentsContext } from '../context/ComponentsContext';
 

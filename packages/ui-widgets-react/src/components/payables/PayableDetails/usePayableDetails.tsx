@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PayableStateEnum } from '@monite/js-sdk';
+import { PayableStateEnum } from '@monite/sdk-api';
 import {
-  // useApprovePayableById,
+  useApprovePayableById,
   usePayableById,
-  // useUpdatePayableById,
+  usePayPayableById,
+  useRejectPayableById,
+  useSubmitPayableById,
 } from 'core/queries/usePayable';
 
 export type UsePayableDetailsProps = {
@@ -41,7 +43,10 @@ export default function usePayableDetails({
     []
   );
 
-  // const approveMutation = useApprovePayableById();
+  const submitMutation = useSubmitPayableById();
+  const approveMutation = useApprovePayableById();
+  const rejectMutation = useRejectPayableById();
+  const payMutation = usePayPayableById();
 
   const status = payable?.status || '';
 
@@ -53,7 +58,9 @@ export default function usePayableDetails({
 
     switch (status) {
       case PayableStateEnum.NEW:
-        setPermissions(['save', 'submit']);
+        // TODO uncomment later
+        // setPermissions(['save', 'submit']);
+        setPermissions(['reject', 'approve']);
         setEdit(true);
         break;
       case PayableStateEnum.APPROVE_IN_PROGRESS:
@@ -73,29 +80,35 @@ export default function usePayableDetails({
     );
   }, [formRef]);
 
-  const submitInvoice = useCallback(() => {
-    submitForm();
-  }, [submitForm]);
-
   const saveInvoice = useCallback(() => {
     submitForm();
   }, [submitForm]);
 
-  const approveInvoice = useCallback(() => {
+  const submitInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await submitMutation.mutate(payable.id);
+    onSubmit && onSubmit();
+  }, [submitForm]);
+
+  const approveInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await approveMutation.mutate(payable.id);
     onApprove && onApprove();
   }, []);
 
-  const rejectInvoice = useCallback(() => {
+  const rejectInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await rejectMutation.mutate(payable.id);
     onReject && onReject();
   }, []);
 
-  const payInvoice = useCallback(() => {
+  const payInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await payMutation.mutate(payable.id);
     onPay && onPay();
   }, []);
 
   const onFormSubmit = useCallback(() => {
-    // TODO separate onSubmit and onSave after fetch
-    onSubmit && onSubmit();
     onSave && onSave();
   }, []);
 
