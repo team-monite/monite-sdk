@@ -54,7 +54,7 @@ class AuthStore extends BaseStore {
           client_id: data.email,
           client_secret: data.password,
           // TODO remove hardcoded value
-          entity_user_id: 'ee57fda9-265a-4f42-abe0-d64b3e0fd746',
+          entity_user_id: '5b4daced-6b9a-4707-83c6-08193d999fab',
         }
       );
     } catch (err) {

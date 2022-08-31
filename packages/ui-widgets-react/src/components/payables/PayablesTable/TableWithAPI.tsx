@@ -98,6 +98,7 @@ const PayablesTableWithAPI = ({ openModal }: Props) => {
     sort: api__v1__payables__pagination__CursorFields,
     order: SortOrderEnum | null
   ) => {
+    setCurrentPaginationToken(null);
     if (order) {
       setCurrentSort({
         sort,
@@ -109,6 +110,7 @@ const PayablesTableWithAPI = ({ openModal }: Props) => {
   };
 
   const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
+    setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
       ...prevFilter,
       [field]: value === 'all' ? null : value,
