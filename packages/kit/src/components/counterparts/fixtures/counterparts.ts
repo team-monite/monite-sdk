@@ -1,10 +1,11 @@
 import {
   CounterpartType,
-  CounterpartResponse as Counterpart,
+  CounterpartResponse,
   AllowedCountriesCodes,
+  CounterpartPaginationResponse,
 } from '@monite/js-sdk';
 
-const data: Counterpart[] = [
+const data: CounterpartResponse[] = [
   {
     id: '44ac3882-1d32-415e-a3bb-fa375c576855',
     created_at: '2022-05-20T14:37:04.383441+00:00',
@@ -151,4 +152,10 @@ const data: Counterpart[] = [
   },
 ];
 
-export default data;
+const response: CounterpartPaginationResponse = {
+  data,
+  prev_pagination_token: '',
+  next_pagination_token: '',
+};
+
+export default response;

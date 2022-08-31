@@ -1,18 +1,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CounterpartBankAccount } from '../models/CounterpartBankAccount';
-import type { CounterpartBankAccountResponse } from '../models/CounterpartBankAccountResponse';
 import type { CounterpartContactResponse } from '../models/CounterpartContactResponse';
 import type { CounterpartCreatePayload } from '../models/CounterpartCreatePayload';
 import type { CounterpartResponse } from '../models/CounterpartResponse';
-import type { CounterpartUpdatePayload } from '../models/CounterpartUpdatePayload';
-import type { CreateCounterpartContactPayload } from '../models/CreateCounterpartContactPayload';
-import type { UpdateCounterpartContactPayload } from '../models/UpdateCounterpartContactPayload';
 
 import type { CancelablePromise } from '../CancelablePromise';
-import { OpenAPI, OpenAPIConfig } from '../OpenAPI';
+import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
+import { CounterpartPaginationResponse } from '../models/CounterpartPaginationResponse';
 
 export default class CounterpartsService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -27,7 +23,7 @@ export default class CounterpartsService {
    * @returns CounterpartResponse Successful Response
    * @throws ApiError
    */
-  public getList(): CancelablePromise<Array<CounterpartResponse>> {
+  public getList(): CancelablePromise<CounterpartPaginationResponse> {
     return __request(
       {
         method: 'GET',

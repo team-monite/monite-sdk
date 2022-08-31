@@ -11,6 +11,7 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { PayableResponseSchema } from '../models/PayableResponseSchema';
+import { PayableUpdateSchema } from '../models/PayableUpdateSchema';
 
 export default class PayablesService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -125,6 +126,136 @@ export default class PayablesService {
       {
         method: 'GET',
         url: `/payables/${id}`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Update Payable By Id
+   * @param payableId
+   * @param body
+   * @returns PayableResponse Successful Response
+   * @throws ApiError
+   */
+  public update(
+    payableId: string,
+    body: PayableUpdateSchema
+  ): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'PATCH',
+        url: `/payables/${payableId}`,
+        body,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Submit Payable By Id
+   * @param payableId
+   * @returns PayableResponse Successful Response
+   * @throws ApiError
+   */
+  public submit(payableId: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/payables/${payableId}/submit_for_approval`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Approve Payable By Id
+   * @param payableId
+   * @returns PayableResponse Successful Response
+   * @throws ApiError
+   */
+  public approve(payableId: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/payables/${payableId}/approve_payment_operation`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Reject Payable By Id
+   * @param payableId
+   * @returns PayableResponse Successful Response
+   * @throws ApiError
+   */
+  public reject(payableId: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/payables/${payableId}/reject`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Pay Payable By Id
+   * @param payableId
+   * @returns PayableResponse Successful Response
+   * @throws ApiError
+   */
+  public pay(payableId: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/payables/${payableId}/pay`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,

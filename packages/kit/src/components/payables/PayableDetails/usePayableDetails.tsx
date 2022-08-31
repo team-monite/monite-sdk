@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePayableById } from 'core/queries/usePayable';
-import { PayableDetailsFormFields } from './PayableDetailsForm';
 import { PayableStateEnum } from '@monite/js-sdk';
+import {
+  // useApprovePayableById,
+  usePayableById,
+  // useUpdatePayableById,
+} from 'core/queries/usePayable';
 
 export type UsePayableDetailsProps = {
   id: string;
@@ -38,7 +41,9 @@ export default function usePayableDetails({
     []
   );
 
-  const status = payable?.status;
+  // const approveMutation = useApprovePayableById();
+
+  const status = payable?.status || '';
 
   useEffect(() => {
     if (!status) return;
@@ -46,7 +51,7 @@ export default function usePayableDetails({
     setEdit(false);
     setPermissions([]);
 
-    switch (payable.status) {
+    switch (status) {
       case PayableStateEnum.NEW:
         setPermissions(['save', 'submit']);
         setEdit(true);
@@ -88,16 +93,11 @@ export default function usePayableDetails({
     onPay && onPay();
   }, []);
 
-  const onFormSubmit = useCallback(
-    (data: PayableDetailsFormFields) => {
-      // TODO separate onSubmit and onSave after fetch
-      onSubmit && onSubmit();
-      onSave && onSave();
-
-      console.log(data);
-    },
-    [formRef]
-  );
+  const onFormSubmit = useCallback(() => {
+    // TODO separate onSubmit and onSave after fetch
+    onSubmit && onSubmit();
+    onSave && onSave();
+  }, []);
 
   return {
     payable,

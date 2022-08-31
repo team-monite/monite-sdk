@@ -5,6 +5,7 @@ import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 import { merge } from 'lodash';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 import GlobalToast from '../GlobalToast';
 
@@ -53,6 +54,7 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
             <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
           </UIThemeProvider>
         </EmotionThemeProvider>
+        <ReactQueryDevtools />
       </QueryClientProvider>
     </ComponentsContext.Provider>
   );

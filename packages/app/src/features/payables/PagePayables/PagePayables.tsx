@@ -12,9 +12,10 @@ const PagePayables = () => {
   const id = searchParams.get(PAYABLE_ID);
 
   const openModal = (id: string) => {
-    searchParams.set('id', id);
+    searchParams.set(PAYABLE_ID, id);
     setSearchParams(searchParams);
   };
+
   const closeModal = () => {
     searchParams.delete(PAYABLE_ID);
     setSearchParams(searchParams);
