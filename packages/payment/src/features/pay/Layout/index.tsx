@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { Global } from '@emotion/react';
 
-import type { Theme } from '@monite/react-kit';
+import type { Theme } from '@monite/ui-widgets-react';
 
 const Wrapper = styled.div(
   ({ theme }) => `

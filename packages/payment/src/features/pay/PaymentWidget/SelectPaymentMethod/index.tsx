@@ -11,8 +11,8 @@ import {
   UCreditCard,
   // UUniversity,
   UMoneyBill,
-} from '@monite/ui';
-import { PaymentMethodsEnum } from '@monite/js-sdk';
+} from '@monite/ui-kit-react';
+import { PaymentMethodsEnum } from '@monite/sdk-api';
 
 type SelectPaymentMethodProps = {
   paymentMethods: PaymentMethodsEnum[];

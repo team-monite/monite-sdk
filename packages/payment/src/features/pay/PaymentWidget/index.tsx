@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import { CurrencyEnum, PaymentMethodsEnum } from '@monite/js-sdk';
-import { Card } from '@monite/ui';
+import { CurrencyEnum, PaymentMethodsEnum } from '@monite/sdk-api';
+import { Card } from '@monite/ui-kit-react';
 
 import { ROUTES } from 'features/app/consts';
 

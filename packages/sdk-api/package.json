@@ -1,0 +1,20 @@
+{
+  "name": "@monite/sdk-api",
+  "version": "0.0.2",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist",
+    "out"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
+    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
+    "gen:openapi": "npx openapi-typescript-codegen -i https://api.dev.monite.com/openapi.json --exportCore false --exportServices false -o ./src/api"
+  },
+  "author": "",
+  "license": "ISC"
+}
