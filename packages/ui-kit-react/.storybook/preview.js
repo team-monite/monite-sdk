@@ -10,7 +10,7 @@ import {
 } from '@storybook/addon-docs';
 import { ThemeProvider } from 'emotion-theming';
 
-import '../../app/src/assets/fonts/Faktum/font.css';
+import '@monite/app-white-label/src/assets/fonts/Faktum/font.css';
 import './main.css';
 
 import { THEMES } from '../src';
