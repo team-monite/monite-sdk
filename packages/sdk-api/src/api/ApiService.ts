@@ -8,6 +8,7 @@ import ReceivableService from './services/ReceivableService';
 import WorkflowsService from './services/WorkflowsService';
 import PayablesService from './services/PayableService';
 import RoleService from './services/RoleService';
+import TagService from './services/TagService';
 
 const isLocalhost = (url: string) =>
   url.includes('localhost') || url.includes('127.0.0.1');
@@ -15,6 +16,7 @@ const isLocalhost = (url: string) =>
 const PAYMENT_BASE_URL = isLocalhost(window.location.origin)
   ? 'http://pay.dev.monite.com/api/v1'
   : '/api/v1';
+
 class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -22,6 +24,7 @@ class ApiService {
   partnerApi: PartnerApiService;
   auth: AuthService;
   payable: PayablesService;
+  tag: TagService;
   role: RoleService;
   receivable: ReceivableService;
   workflows: WorkflowsService;
@@ -35,6 +38,7 @@ class ApiService {
     this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
     this.payable = new PayablesService({ config });
+    this.tag = new TagService({ config });
     this.role = new RoleService({ config });
     this.workflows = new WorkflowsService({ config });
     this.payment = new PaymentService({

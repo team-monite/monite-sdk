@@ -63,6 +63,7 @@
     "@monite/ui-kit-react": "^0.0.3",
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
+    "@tanstack/react-query-devtools": "~4.2.3",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
     "react-query": "~3.39.2"

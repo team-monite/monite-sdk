@@ -4,30 +4,22 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Input, DatePicker, Multiselect, Select } from '@monite/ui-kit-react';
-
 import {
-  PayableResponseSchema,
-  TagReadSchema,
-  CounterpartResponse as Counterpart,
-} from '@monite/sdk-api';
+  Input,
+  DatePicker,
+  Multiselect,
+  Select,
+  Spinner,
+} from '@monite/ui-kit-react';
 
-import {
-  convertToMajorUnits,
-  getSymbolFromCurrency,
-} from 'core/utils/currency';
-
-import {
-  getFullName,
-  isIndividualCounterpart,
-  isOrganizationCounterpart,
-} from 'components/counterparts/helpers';
+import { getSymbolFromCurrency } from 'core/utils/currency';
 
 import {
   CurrencyAddon,
   FormItem,
   FormSection,
   FormTitle,
+  StyledLoading,
   StyledScroll,
   StyledScrollContent,
 } from '../PayableDetailsStyle';
@@ -36,51 +28,19 @@ import usePayableDetailsForm, {
   UsePayableDetailsFormProps,
 } from './usePayableDetailsForm';
 
-export type PayablesDetailsFormProps = UsePayableDetailsFormProps & {
-  onSubmit: (values: PayableDetailsFormFields) => void;
-};
-
-type Option = { label: string; value: string };
-
-export interface PayableDetailsFormFields {
-  suppliersName: Option;
-  invoiceNumber: string;
-  invoiceDate: string;
-  suggestedPaymentDate: string;
-  dueDate: string;
-  total: number;
-  tags: Option[];
-  iban: string;
-  bic: string;
-}
-
-const counterpartsToSelect = (counterparts: Counterpart[]) =>
-  counterparts?.map((counterpart) => ({
-    value: counterpart.id,
-    label: isIndividualCounterpart(counterpart)
-      ? getFullName(
-          counterpart.individual.first_name,
-          counterpart.individual.last_name
-        )
-      : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
-      : '',
-  }));
-
-const tagsToSelect = (tags: TagReadSchema[] | undefined) => {
-  if (!tags) return [];
-
-  return tags.map(({ id: value, name: label }) => ({
-    value,
-    label,
-  }));
-};
+import {
+  counterpartsToSelect,
+  PayableDetailsFormFields,
+  prepareDefaultValues,
+  prepareSubmit,
+  tagsToSelect,
+} from './helpers';
 
 const getValidationSchema = () =>
   yup
     .object({
       suppliersName: yup.object({
-        value: yup.string().required(),
+        value: yup.string(),
         label: yup.string().required(),
       }),
       invoiceNumber: yup.string().required(),
@@ -101,161 +61,170 @@ const getValidationSchema = () =>
     })
     .required();
 
-const getDefaultValues = (payable: PayableResponseSchema) => ({
-  suppliersName: {
-    value: payable.counterpart_id || '',
-    label: payable.counterpart_name || '',
-  },
-  invoiceNumber: payable.document_id ?? '',
-  invoiceDate: payable.issued_at ?? '',
-  suggestedPaymentDate: payable?.suggested_payment_term?.date ?? '',
-  dueDate: payable.due_date ?? '',
-  total: convertToMajorUnits(payable.amount ?? 0, payable.currency ?? ''),
-  tags: tagsToSelect(payable.tags),
-  iban: payable.counterpart_account_id ?? '',
-  bic: payable.counterpart_bank_id ?? '',
-});
-
 const PayableDetailsForm = forwardRef<
   HTMLFormElement,
-  PayablesDetailsFormProps
+  UsePayableDetailsFormProps
 >(({ onSubmit, payable, debug }, ref) => {
   const { t } = useTranslation();
   const { control, handleSubmit } = useForm<PayableDetailsFormFields>({
     resolver: yupResolver(getValidationSchema()),
-    defaultValues: getDefaultValues(payable),
+    defaultValues: prepareDefaultValues(payable),
   });
 
-  const { tags, counterparts } = usePayableDetailsForm({
+  const { tags, counterparts, saveMutation } = usePayableDetailsForm({
     payable,
     debug,
+    onSubmit,
   });
 
   return (
     <StyledScrollContent>
+      {saveMutation.isLoading && (
+        <StyledLoading>
+          <Spinner color={'primary'} pxSize={45} />
+        </StyledLoading>
+      )}
       <StyledScroll>
-        <form ref={ref} id="payableDetails" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          ref={ref}
+          id="payableDetailsForm"
+          onSubmit={handleSubmit((values) =>
+            saveMutation.mutate(prepareSubmit(values))
+          )}
+        >
           <FormSection>
             <FormTitle textSize={'bold'}>
               {t('payables:tabPanels.document')}
             </FormTitle>
-            <FormItem
-              label={t('payables:details.suppliersName')}
-              id="suppliersName"
-              required
-            >
-              {/* TODO: Add Created automatically */}
-              <Controller
-                name={'suppliersName'}
-                control={control}
-                render={({ field: { ref, ...restField } }) => (
+            <Controller
+              name={'suppliersName'}
+              control={control}
+              render={({
+                field: { ref, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.suppliersName')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
+                  {/* TODO: Add Created automatically */}
                   <Select
                     {...restField}
                     options={counterpartsToSelect(counterparts)}
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem
-              label={t('payables:details.invoiceNumber')}
-              id="invoiceNumber"
-              required
-            >
-              <Controller
-                name="invoiceNumber"
-                control={control}
-                render={({
-                  field: { ref, ...restField },
-                  fieldState: { error },
-                }) => (
+                </FormItem>
+              )}
+            />
+
+            <Controller
+              name="invoiceNumber"
+              control={control}
+              render={({
+                field: { ref, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.invoiceNumber')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <Input
                     {...restField}
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     required
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem
-              label={t('payables:details.invoiceDate')}
-              id="invoiceDate"
-              required
-            >
-              <Controller
-                name="invoiceDate"
-                control={control}
-                render={({
-                  field: { ref, value, ...restField },
-                  fieldState: { error },
-                }) => (
+                </FormItem>
+              )}
+            />
+            <Controller
+              name="invoiceDate"
+              control={control}
+              render={({
+                field: { ref, value, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.invoiceDate')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <DatePicker
                     {...restField}
                     required
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     date={value ? new Date(value) : null}
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem
-              label={t('payables:details.suggestedPaymentDate')}
-              id="suggestedPaymentDate"
-              required
-            >
-              <Controller
-                name="suggestedPaymentDate"
-                control={control}
-                render={({
-                  field: { ref, value, ...restField },
-                  fieldState: { error },
-                }) => (
-                  // TODO Add discount
+                </FormItem>
+              )}
+            />
+
+            <Controller
+              name="suggestedPaymentDate"
+              control={control}
+              render={({
+                field: { ref, value, ...restField },
+                fieldState: { error },
+              }) => (
+                // TODO Add discount
+                <FormItem
+                  label={t('payables:details.suggestedPaymentDate')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <DatePicker
                     {...restField}
                     date={value ? new Date(value) : null}
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     required
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem
-              label={t('payables:details.dueDate')}
-              id="dueDate"
-              required
-            >
-              <Controller
-                name="dueDate"
-                control={control}
-                render={({
-                  field: { ref, value, ...restField },
-                  fieldState: { error },
-                }) => (
+                </FormItem>
+              )}
+            />
+
+            <Controller
+              name="dueDate"
+              control={control}
+              render={({
+                field: { ref, value, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.dueDate')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <DatePicker
                     {...restField}
                     date={value ? new Date(value) : null}
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     required
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem label={t('payables:details.total')} id="total" required>
-              <Controller
-                name="total"
-                control={control}
-                render={({
-                  field: { ref, ...restField },
-                  fieldState: { error },
-                }) => (
+                </FormItem>
+              )}
+            />
+            <Controller
+              name="total"
+              control={control}
+              render={({
+                field: { ref, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.total')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <Input
                     {...restField}
                     renderAddon={() => {
@@ -270,74 +239,85 @@ const PayableDetailsForm = forwardRef<
                     required
                     type="number"
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                   />
-                )}
-              />
-            </FormItem>
+                </FormItem>
+              )}
+            />
             <FormItem
               label={t('payables:details.submittedBy')}
               id="submittedBy"
             >
               {/*TODO Waiting design*/}
-              submittedBy
             </FormItem>
-            <FormItem label={t('payables:details.tags')} id="tags">
+            {!!tags?.length && (
               <Controller
                 name={'tags'}
                 control={control}
                 render={({ field: { ref, ...restField } }) => (
-                  <Multiselect
-                    {...restField}
-                    optionAsTag
-                    options={tagsToSelect(tags)}
-                  />
+                  <FormItem
+                    label={t('payables:details.tags')}
+                    id={restField.name}
+                  >
+                    <Multiselect
+                      {...restField}
+                      optionAsTag
+                      options={tagsToSelect(tags)}
+                    />
+                  </FormItem>
                 )}
               />
-            </FormItem>
+            )}
           </FormSection>
 
           <FormSection>
             <FormTitle textSize={'bold'}>
               {t('payables:tabPanels.payment')}
             </FormTitle>
-            <FormItem label={t('payables:details.iban')} id="iban" required>
-              <Controller
-                name="iban"
-                control={control}
-                render={({
-                  field: { ref, ...restField },
-                  fieldState: { error },
-                }) => (
+            <Controller
+              name="iban"
+              control={control}
+              render={({
+                field: { ref, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.iban')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <Input
                     {...restField}
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     required
                   />
-                )}
-              />
-            </FormItem>
-            <FormItem label={t('payables:details.bic')} id="bic" required>
-              <Controller
-                name="bic"
-                control={control}
-                render={({
-                  field: { ref, ...restField },
-                  fieldState: { error },
-                }) => (
+                </FormItem>
+              )}
+            />
+            <Controller
+              name="bic"
+              control={control}
+              render={({
+                field: { ref, ...restField },
+                fieldState: { error },
+              }) => (
+                <FormItem
+                  label={t('payables:details.bic')}
+                  id={restField.name}
+                  error={error?.message}
+                  required
+                >
                   <Input
                     {...restField}
                     ref={ref}
-                    error={error?.message}
                     isInvalid={!!error}
                     required
                   />
-                )}
-              />
-            </FormItem>
+                </FormItem>
+              )}
+            />
           </FormSection>
         </form>
       </StyledScroll>

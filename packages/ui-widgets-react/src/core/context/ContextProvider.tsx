@@ -5,6 +5,7 @@ import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui-kit-react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 import { merge } from 'lodash';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 
 import GlobalToast from '../GlobalToast';
 

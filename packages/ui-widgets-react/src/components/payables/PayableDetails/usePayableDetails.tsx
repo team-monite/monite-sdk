@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { usePayableById } from 'core/queries/usePayable';
-import { PayableDetailsFormFields } from './PayableDetailsForm';
 import { PayableStateEnum } from '@monite/sdk-api';
+import {
+  useApprovePayableById,
+  usePayableById,
+  usePayPayableById,
+  useRejectPayableById,
+} from 'core/queries/usePayable';
+import { toast } from 'react-hot-toast';
 
 export type UsePayableDetailsProps = {
   id: string;
@@ -38,7 +43,12 @@ export default function usePayableDetails({
     []
   );
 
-  const status = payable?.status;
+  // const submitMutation = useSubmitPayableById();
+  const approveMutation = useApprovePayableById();
+  const rejectMutation = useRejectPayableById();
+  const payMutation = usePayPayableById();
+
+  const status = payable?.status || '';
 
   useEffect(() => {
     if (!status) return;
@@ -46,7 +56,7 @@ export default function usePayableDetails({
     setEdit(false);
     setPermissions([]);
 
-    switch (payable.status) {
+    switch (status) {
       case PayableStateEnum.NEW:
         setPermissions(['save', 'submit']);
         setEdit(true);
@@ -68,36 +78,41 @@ export default function usePayableDetails({
     );
   }, [formRef]);
 
-  const submitInvoice = useCallback(() => {
-    submitForm();
-  }, [submitForm]);
+  const saveInvoice = useCallback(submitForm, [submitForm]);
 
-  const saveInvoice = useCallback(() => {
-    submitForm();
-  }, [submitForm]);
+  const submitInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    // TODO uncomment later
+    // await submitMutation.mutate(payable.id);
+    await approveMutation.mutate(payable.id);
+    toast.success('Submitted');
+    onSubmit && onSubmit();
+  }, [submitForm, payable]);
 
-  const approveInvoice = useCallback(() => {
+  const approveInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await approveMutation.mutate(payable.id);
+    toast.success('Approved');
     onApprove && onApprove();
-  }, []);
+  }, [approveMutation, payable]);
 
-  const rejectInvoice = useCallback(() => {
+  const rejectInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await rejectMutation.mutate(payable.id);
+    toast.success('Rejected');
     onReject && onReject();
-  }, []);
+  }, [rejectMutation, payable]);
 
-  const payInvoice = useCallback(() => {
+  const payInvoice = useCallback(async () => {
+    if (!payable?.id) return;
+    await payMutation.mutate(payable.id);
+    toast.success('Payed');
     onPay && onPay();
+  }, [payMutation, payable]);
+
+  const onFormSubmit = useCallback(() => {
+    onSave && onSave();
   }, []);
-
-  const onFormSubmit = useCallback(
-    (data: PayableDetailsFormFields) => {
-      // TODO separate onSubmit and onSave after fetch
-      onSubmit && onSubmit();
-      onSave && onSave();
-
-      console.log(data);
-    },
-    [formRef]
-  );
 
   return {
     payable,
