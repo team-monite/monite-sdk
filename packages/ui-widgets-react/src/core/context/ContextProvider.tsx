@@ -35,7 +35,8 @@ export const queryClient = new QueryClient({
 const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
   const finalTheme = theme
     ? merge(THEMES.default, theme || {})
-    : THEMES.default;
+    : // REPLACE {} WITH CUSTOM THEME OBJECT OR SET INDIVIDUAL COLORS
+      merge(THEMES.default, {});
 
   useEffect(() => {
     i18n.changeLanguage(monite.locale);
