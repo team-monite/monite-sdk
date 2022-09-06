@@ -199,17 +199,22 @@ export const PaymentResultPage = () => {
                     </Box>
                   </Flex>
                 </FlexTable>
-                {getStatus(status as StripeResultStatuses) !==
-                  ResultStatuses.Succeeded && (
-                  <Flex justifyContent="center">
-                    <Box width={'160px'}>
-                      <Button mt="24px" block onClick={() => navigate(-1)}>
-                        {t('payment:result.back')}
-                      </Button>
-                    </Box>
-                  </Flex>
-                )}
               </Box>
+            )}
+
+            {getStatus(status as StripeResultStatuses) !==
+              ResultStatuses.Succeeded && (
+              <Flex justifyContent="center">
+                <Box width={'160px'}>
+                  <Button
+                    mt="24px"
+                    block
+                    onClick={() => navigate(`/?data=${rawPaymentData}`)}
+                  >
+                    {t('payment:result.back')}
+                  </Button>
+                </Box>
+              </Flex>
             )}
           </Card>
         </Box>
