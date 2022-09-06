@@ -3,7 +3,7 @@ import ApiService from './api/ApiService';
 export type CoreConfig = {
   apiKey: string;
   locale?: string;
-  entityId: string;
+  entityId?: string;
 };
 
 class Core {
@@ -16,7 +16,7 @@ class Core {
       config: {
         TOKEN: apiKey,
         HEADERS: {
-          'x-monite-entity-id': entityId,
+          'x-monite-entity-id': entityId || '',
         },
       },
     });
