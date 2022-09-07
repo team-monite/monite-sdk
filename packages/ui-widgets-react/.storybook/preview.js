@@ -23,8 +23,10 @@ export const parameters = {
 export const decorators = [
   (Story) => {
     const monite = new MoniteApp({
-      apiKey: MONITE_ENTITY_ID,
+      entityId: MONITE_ENTITY_ID,
       locale: 'en',
+      apiKey:
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkI…xMzN9.0fbrKVeba_d1LhbNnEZmC-k4l7zMcKPSJrp-ukW2iWU',
     });
     return (
       <MoniteProvider monite={monite}>
