@@ -1,9 +1,9 @@
 import ApiService from './api/ApiService';
-import { AUTH_TOKEN_STORAGE_KEY } from '@monite/app-white-label/src/features/app/consts';
 
 export type CoreConfig = {
   apiKey: string;
   locale?: string;
+  entityId?: string;
 };
 
 class Core {
@@ -11,14 +11,12 @@ class Core {
 
   locale: string = 'en';
 
-  constructor({ locale }: CoreConfig) {
+  constructor({ locale, apiKey, entityId }: CoreConfig) {
     this.api = new ApiService({
       config: {
+        TOKEN: apiKey,
         HEADERS: {
-          Authorization:
-            'Bearer ' + localStorage.getItem(AUTH_TOKEN_STORAGE_KEY),
-          // TODO refactor auth flow and remove hardcoded value
-          'x-monite-entity-id': 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
+          'x-monite-entity-id': entityId || '',
         },
       },
     });

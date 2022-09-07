@@ -4,11 +4,16 @@ import { StoreContext, store } from 'features/mobx';
 import { MoniteProvider, MoniteApp } from '@monite/ui-widgets-react';
 
 import App from 'features/app/App';
+import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
 
 const Root = () => {
   const monite = new MoniteApp({
-    apiKey: store.auth.authUserToken || '',
+    apiKey:
+      store.auth.authUserToken ||
+      localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) ||
+      '',
     locale: 'en',
+    entityId: 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
   });
 
   store.setMoniteApp(monite);
@@ -22,7 +27,7 @@ const Root = () => {
             // REPLACE {} WITH CUSTOM THEME OBJECT OR SET INDIVIDUAL COLORS
             theme={{}}
           >
-            <App key={store.auth.authUserToken} />
+            <App />
           </MoniteProvider>
         </StoreContext.Provider>
       </BrowserRouter>
