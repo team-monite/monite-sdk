@@ -10,11 +10,6 @@ import {
   FILTER_TYPE_STATUS,
 } from './consts';
 
-export type PaginationTokens = {
-  next_pagination_token: string | null | undefined;
-  prev_pagination_token: string | null | undefined;
-};
-
 export type Sort = {
   sort: api__v1__payables__pagination__CursorFields;
   order: SortOrderEnum;

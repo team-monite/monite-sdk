@@ -1,6 +1,12 @@
+import React from 'react';
 import styled from '@emotion/styled';
+import { THEMES } from '@monite/ui-kit-react';
 
-export const Table = styled.div`
+export const Table = styled.div<{
+  children: React.ReactNode;
+  theme: typeof THEMES.default;
+  clickableRow?: boolean;
+}>`
   flex: 1 1 auto;
   font-family: 'Faktum', sans-serif;
   display: flex;
@@ -43,13 +49,17 @@ export const Table = styled.div`
   .rc-table-body {
     flex: 1 1 0;
 
-    tr {
-      cursor: pointer;
+    ${({ theme, clickableRow }) =>
+      clickableRow &&
+      `
+        tr:not(.rc-table-placeholder) {
+          cursor: pointer;
 
-      &:hover {
-        background-color: ${({ theme }) => theme.colors.lightGrey3};
-      }
-    }
+          &:hover {
+            background-color: ${theme.colors.lightGrey3};
+          }
+        }
+      `}
   }
 `;
 

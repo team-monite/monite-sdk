@@ -1,5 +1,5 @@
 import React from 'react';
-import { PayablesTableWithAPI, PayableDetails } from '@monite/ui-widgets-react';
+import { PayablesTable, PayableDetails } from '@monite/ui-widgets-react';
 import { useSearchParams } from 'react-router-dom';
 
 import Layout from 'features/app/Layout';
@@ -11,7 +11,7 @@ const PagePayables = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get(PAYABLE_ID);
 
-  const openModal = (id: string) => {
+  const onRowClick = (id: string) => {
     searchParams.set(PAYABLE_ID, id);
     setSearchParams(searchParams);
   };
@@ -24,7 +24,7 @@ const PagePayables = () => {
   return (
     <Layout>
       <PageHeader title="Payables" />
-      <PayablesTableWithAPI openModal={openModal} />
+      <PayablesTable onRowClick={onRowClick} />
       {id && <PayableDetails id={id} onClose={closeModal} />}
     </Layout>
   );
