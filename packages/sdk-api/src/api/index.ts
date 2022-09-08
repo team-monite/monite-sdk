@@ -339,3 +339,5 @@ export { WorkflowPipelineStatusEnum } from './models/WorkflowPipelineStatusEnum'
 export type { WorkflowResponseSchema } from './models/WorkflowResponseSchema';
 export type { WorkflowsPaginationResponse } from './models/WorkflowsPaginationResponse';
 export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCodes';
+
+export { default as PartnerApiService } from './services/PartnerApiService';

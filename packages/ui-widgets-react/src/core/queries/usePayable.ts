@@ -1,9 +1,25 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import { PayableResponseSchema, PayableUpdateSchema } from '@monite/sdk-api';
+import {
+  PayableResponseSchema,
+  PayableUpdateSchema,
+  PartnerApiService,
+  PaginationResponse,
+} from '@monite/sdk-api';
 import payableMock from 'components/payables/fixtures/getById';
 import { useComponentsContext } from '../context/ComponentsContext';
 
 const PAYABLE_QUERY_ID = 'payable';
+
+export const usePayable = (
+  ...args: Parameters<PartnerApiService['getPayables']>
+) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<PaginationResponse, Error>([PAYABLE_QUERY_ID], () =>
+    // TODO use partnerApi because `payables.getList` does not have documentId filter yet
+    monite.api!.partnerApi.getPayables(...args)
+  );
+};
 
 export const usePayableById = (id: string, debug?: boolean) => {
   const { monite } = useComponentsContext();
