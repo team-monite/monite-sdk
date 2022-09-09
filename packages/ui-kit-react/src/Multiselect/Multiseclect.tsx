@@ -5,6 +5,10 @@ import { OnChangeValue } from 'react-select';
 interface Props {
   options: Option[];
   optionAsTag?: boolean;
+  isCreatable?: boolean;
+  onChange?: (options: Option[]) => void;
+  onCreate?: (option: Option) => void;
+  value: Option[];
 }
 
 const createOption = (label: string) => ({
@@ -12,11 +16,16 @@ const createOption = (label: string) => ({
   value: label.toLowerCase().replace(/\W/g, ''),
 });
 
-const Multiselect = ({ options, ...restProps }: Props) => {
+const Multiselect = ({
+  options,
+  onCreate,
+  onChange,
+  isCreatable = true,
+  value,
+  ...restProps
+}: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [localOptions, setLocalOptions] = useState(options);
-  const [value, setValue] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [menuIsOpen, setMenuIsOpen] = useState(false);
 
@@ -41,32 +50,25 @@ const Multiselect = ({ options, ...restProps }: Props) => {
   const onCreateOption = (newValue: string) => {
     const newOption = createOption(newValue);
 
-    setInputValue('');
-    setValue([...value, newOption]);
-    setLocalOptions([...localOptions, newOption]);
-  };
-
-  const onChange = (value: Option[] | null) => {
-    if (value) setValue(value);
+    onCreate && onCreate(newOption);
     setInputValue('');
   };
 
-  const removeSelectedOption = (selectedValue: string) => {
-    const newValue = value.filter((item) => item.value !== selectedValue);
-
-    setValue(newValue);
+  const handleChange = (value: Option[] | null) => {
+    setInputValue('');
+    onChange && onChange(value ? value : []);
   };
 
   return (
     <div ref={containerRef}>
       <Select
         isMulti
-        isCreatable
+        isCreatable={isCreatable}
         hideSelectedOptions
-        options={localOptions}
+        options={options}
         value={value}
         onChange={(newValue: OnChangeValue<Option[], false>) =>
-          onChange(newValue)
+          handleChange(newValue)
         }
         inputValue={inputValue}
         onInputChange={(value) => {
@@ -79,9 +81,6 @@ const Multiselect = ({ options, ...restProps }: Props) => {
         onMenuClose={() => setMenuIsOpen(false)}
         controlShouldRenderValue={!menuIsOpen}
         onCreateOption={onCreateOption}
-        handleRemoveSelectedOption={(selectedValue) =>
-          removeSelectedOption(selectedValue)
-        }
         {...restProps}
       />
     </div>

@@ -6,6 +6,8 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { TagsResponse } from '../models/TagsResponse';
+import { TagReadSchema } from '../models/TagReadSchema';
+import { TagCreateOrUpdateSchema } from '../models/TagCreateOrUpdateSchema';
 
 export default class TagService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -24,6 +26,35 @@ export default class TagService {
         method: 'GET',
         url: '/tags',
         query: {},
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Create Tag
+   * @param body
+   * @returns TagReadSchema Successful Response
+   * @throws ApiError
+   */
+  public create(
+    body: TagCreateOrUpdateSchema
+  ): CancelablePromise<TagReadSchema> {
+    return __request(
+      {
+        method: 'POST',
+        url: '/tags',
+        query: {},
+        body,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,

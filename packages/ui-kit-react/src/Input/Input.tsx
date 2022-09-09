@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
 
 import type { ThemedStyledProps } from '../types';
@@ -129,18 +129,19 @@ export interface InputProps
   isFilter?: boolean;
   renderAddon?: () => React.ReactNode;
   renderAddonIcon?: () => React.ReactNode;
+  externalRef?: ForwardedRef<HTMLInputElement>;
 }
 
 const InputField = forwardRef<HTMLInputElement, InputProps>(
   (
     {
-      id,
       className,
       error,
       renderAddon,
       renderAddonIcon,
-      type,
+      type = 'text',
       isFilter,
+      externalRef,
       ...props
     },
     ref
@@ -148,11 +149,10 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
     return (
       <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
         <Input
-          ref={ref}
-          id={id}
-          type={type || 'text'}
-          isFilter={isFilter}
           {...props}
+          ref={externalRef || ref}
+          type={type}
+          isFilter={isFilter}
         />
         {renderAddon && renderAddon()}
         {renderAddonIcon && <i>{renderAddonIcon()}</i>}
