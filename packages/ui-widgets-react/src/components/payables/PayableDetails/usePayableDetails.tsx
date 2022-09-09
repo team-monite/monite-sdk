@@ -54,7 +54,7 @@ export default function usePayableDetails({
 
     switch (status) {
       case PayableStateEnum.NEW:
-        setPermissions(['save', 'reject', 'approve']);
+        setPermissions(['save', 'submit']);
         setEdit(true);
         break;
       case PayableStateEnum.APPROVE_IN_PROGRESS:
@@ -74,33 +74,29 @@ export default function usePayableDetails({
     );
   }, [formRef]);
 
-  const onFormSubmit = useCallback(() => {
+  const onFormSave = useCallback(() => {
     onSave && onSave();
   }, [onSave]);
 
   const submitInvoice = useCallback(async () => {
-    if (!payable?.id) return;
-    await submitMutation.mutateAsync(payable.id);
+    await submitMutation.mutateAsync(id);
     onSubmit && onSubmit();
-  }, [submitMutation, payable, onSubmit]);
+  }, [submitMutation, id, onSubmit]);
 
   const approveInvoice = useCallback(async () => {
-    if (!payable?.id) return;
-    await approveMutation.mutateAsync(payable.id);
+    await approveMutation.mutateAsync(id);
     onApprove && onApprove();
-  }, [approveMutation, payable, onApprove]);
+  }, [approveMutation, id, onApprove]);
 
   const rejectInvoice = useCallback(async () => {
-    if (!payable?.id) return;
-    await rejectMutation.mutateAsync(payable.id);
+    await rejectMutation.mutateAsync(id);
     onReject && onReject();
-  }, [rejectMutation, payable, onReject]);
+  }, [rejectMutation, id, onReject]);
 
   const payInvoice = useCallback(async () => {
-    if (!payable?.id) return;
-    await payMutation.mutateAsync(payable.id);
+    await payMutation.mutateAsync(id);
     onPay && onPay();
-  }, [payMutation, payable, onPay]);
+  }, [payMutation, id, onPay]);
 
   return {
     payable,
@@ -110,7 +106,7 @@ export default function usePayableDetails({
     isEdit,
     permissions,
     actions: {
-      onFormSubmit,
+      onFormSave,
       submitInvoice,
       saveInvoice,
       approveInvoice,

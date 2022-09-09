@@ -59,7 +59,7 @@ const PayableDetails = ({
     error,
     permissions,
     actions: {
-      onFormSubmit,
+      onFormSave,
       saveInvoice,
       submitInvoice,
       rejectInvoice,
@@ -192,7 +192,7 @@ const PayableDetails = ({
             {isEdit && (
               <PayableDetailsForm
                 ref={formRef}
-                onSubmit={onFormSubmit}
+                onSubmit={onFormSave}
                 payable={payable}
               />
             )}
