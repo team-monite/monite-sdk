@@ -63,7 +63,7 @@ export const DefaultDatePicker = () => {
 
   return (
     <div style={{ height: 350, width: 300 }}>
-      <DatePicker date={date} onChange={setDate} />
+      <DatePicker id={'test'} name={'test'} date={date} onChange={setDate} />
     </div>
   );
 };

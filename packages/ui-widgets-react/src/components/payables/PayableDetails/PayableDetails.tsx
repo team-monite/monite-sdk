@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -34,6 +34,7 @@ import usePayableDetails, {
   PayableDetailsPermissions,
   UsePayableDetailsProps,
 } from './usePayableDetails';
+
 import PayableDetailsInfo from './PayableDetailsInfo';
 
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
@@ -42,7 +43,6 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
 
 const PayableDetails = ({
   id,
-  debug,
   onClose,
   onSubmit,
   onSave,
@@ -68,7 +68,6 @@ const PayableDetails = ({
     },
   } = usePayableDetails({
     id,
-    debug,
     onSubmit,
     onSave,
     onReject,
@@ -76,7 +75,7 @@ const PayableDetails = ({
     onApprove,
   });
 
-  const actions: Record<PayableDetailsPermissions, ReactNode> = {
+  const [actions] = useState<Record<PayableDetailsPermissions, ReactNode>>({
     save: (
       <Button key={'save'} onClick={saveInvoice} color={'secondary'}>
         {t('common:save')}
@@ -102,7 +101,7 @@ const PayableDetails = ({
         {t('common:pay')}
       </Button>
     ),
-  };
+  });
 
   if (isLoading)
     return (
@@ -116,6 +115,7 @@ const PayableDetails = ({
     );
 
   if (error || !payable) {
+    // TODO this is only example
     return (
       <Modal>
         <ModalLayout
@@ -191,7 +191,6 @@ const PayableDetails = ({
             )}
             {isEdit && (
               <PayableDetailsForm
-                debug={debug}
                 ref={formRef}
                 onSubmit={onFormSubmit}
                 payable={payable}

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { forwardRef, ReactNode } from 'react';
 import Select, {
   components,
   StylesConfig,
@@ -82,11 +82,10 @@ interface SelectProps {
   onMenuClose?: () => void;
   controlShouldRenderValue?: boolean;
   onCreateOption?: (value: string) => void;
-  handleRemoveSelectedOption?: (value: string) => void;
   leftIcon?: () => ReactNode;
 }
 
-const ReactSelect = (props: SelectProps) => {
+const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   const {
     id,
     name,
@@ -110,7 +109,6 @@ const ReactSelect = (props: SelectProps) => {
     onMenuOpen,
     onMenuClose,
     onCreateOption,
-    handleRemoveSelectedOption,
     leftIcon,
     ...restProps
   } = props;
@@ -142,7 +140,6 @@ const ReactSelect = (props: SelectProps) => {
       margin: 0,
       display: 'inline-flex',
       flexShrink: 0,
-      maxWidth: '200px',
       borderRadius: 0,
     }),
     multiValueLabel: (provided: any) => ({
@@ -381,9 +378,9 @@ const ReactSelect = (props: SelectProps) => {
     );
   };
 
-  const overrideMenuList = (props: MenuListProps) => {
+  const overrideMenuList = (menuListProps: MenuListProps) => {
     ReactTooltip.rebuild();
-    const { selectProps, children } = props;
+    const { selectProps, children, setValue } = menuListProps;
 
     return (
       <>
@@ -397,8 +394,12 @@ const ReactSelect = (props: SelectProps) => {
                     rightIcon={<UTimes />}
                     avatar={selected.icon && <Avatar src={selected.icon} />}
                     onClose={() =>
-                      handleRemoveSelectedOption &&
-                      handleRemoveSelectedOption(selected.value)
+                      setValue(
+                        (selectProps.value as Option[])?.filter(
+                          (item) => item.value !== selected.value
+                        ),
+                        'select-option'
+                      )
                     }
                   >
                     {selected.label}
@@ -419,7 +420,7 @@ const ReactSelect = (props: SelectProps) => {
             </Box>
           </>
         )}
-        <components.MenuList {...props}>{children}</components.MenuList>
+        <components.MenuList {...menuListProps}>{children}</components.MenuList>
       </>
     );
   };
@@ -462,6 +463,7 @@ const ReactSelect = (props: SelectProps) => {
     <WrapperComponent
       id={id}
       name={name}
+      ref={ref}
       onChange={onChange}
       inputValue={inputValue}
       onFocus={onFocus}
@@ -493,6 +495,6 @@ const ReactSelect = (props: SelectProps) => {
       {...restProps}
     />
   );
-};
+});
 
 export default ReactSelect;

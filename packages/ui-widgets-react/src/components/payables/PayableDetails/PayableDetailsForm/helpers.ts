@@ -13,10 +13,14 @@ import {
 } from 'components/counterparts/helpers';
 import { format } from 'date-fns';
 
-type Option = { label: string; value: string };
+export type Option = { label: string; value: string };
 
-export const counterpartsToSelect = (counterparts: Counterpart[]): Option[] =>
-  counterparts?.map((counterpart) => ({
+export const counterpartsToSelect = (
+  counterparts: Counterpart[] | undefined
+): Option[] => {
+  if (!counterparts) return [];
+
+  return counterparts?.map((counterpart) => ({
     value: counterpart.id,
     label: isIndividualCounterpart(counterpart)
       ? getFullName(
@@ -27,6 +31,7 @@ export const counterpartsToSelect = (counterparts: Counterpart[]): Option[] =>
       ? counterpart.organization.legal_name
       : '',
   }));
+};
 
 export const tagsToSelect = (tags: TagReadSchema[] | undefined): Option[] => {
   if (!tags) return [];
@@ -76,7 +81,7 @@ export const prepareDefaultValues = ({
   invoiceDate: issued_at ?? '',
   suggestedPaymentDate: suggested_payment_term?.date ?? '',
   dueDate: due_date ?? '',
-  total: convertToMajorUnits(amount ?? 0, currency ?? ''),
+  total: convertToMajorUnits(amount ?? 0, currency ?? CurrencyEnum.EUR),
   tags: tagsToSelect(tags),
   iban: counterpart_account_id ?? '',
   bic: counterpart_bank_id ?? '',

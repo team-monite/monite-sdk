@@ -140,6 +140,7 @@ const DataPickerWrapper = styled.div<{ isFilter?: boolean }>`
     i > div {
       color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
     }
+
     input {
       color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
       background-color: ${({ isFilter, theme }) =>
@@ -190,6 +191,8 @@ type DatePickerProps = {
   isInvalid?: boolean;
   isClearable?: boolean;
   isFilter?: boolean;
+  id?: string;
+  name?: string;
 };
 
 const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
@@ -198,9 +201,6 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       placeholder,
       date,
       onChange,
-      className,
-      minDate,
-      maxDate,
       dateFormat = 'dd.MM.yyyy',
       required,
       isClearable,
@@ -218,18 +218,16 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     return (
       <DataPickerWrapper isFilter={isFilter}>
         <ReactDatePicker
-          className={className}
+          {...props}
           selected={date}
           onChange={onChange}
           required={required}
           isClearable={isClearable}
-          minDate={minDate}
-          maxDate={maxDate}
           placeholderText={placeholder}
           customInput={
             <Input
               required={required}
-              ref={ref}
+              externalRef={ref}
               error={error}
               isInvalid={isInvalid}
               isFilter={isFilter}
@@ -254,17 +252,16 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                     /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => {
-                      if (ref !== document.activeElement) {
-                        // TODO fix focus
-                        // ref?.focus();
-                      }
+                      // if (inputRef.current !== document.activeElement) {
+                      // TODO fix focus
+                      // originalRef?.current?.focus();
+                      // }
                     }}
                   >
                     <UCalendarAlt width={20} height={20} />
                   </InputIcon>
                 );
               }}
-              {...props}
             />
           }
           calendarContainer={MyContainer}

@@ -5,12 +5,11 @@ import {
   usePayableById,
   usePayPayableById,
   useRejectPayableById,
+  useSubmitPayableById,
 } from 'core/queries/usePayable';
-import { toast } from 'react-hot-toast';
 
 export type UsePayableDetailsProps = {
   id: string;
-  debug?: boolean;
   onSubmit?: () => void;
   onSave?: () => void;
   onPay?: () => void;
@@ -27,28 +26,25 @@ export type PayableDetailsPermissions =
 
 export default function usePayableDetails({
   id,
-  debug,
   onSubmit,
   onSave,
   onReject,
   onApprove,
   onPay,
 }: UsePayableDetailsProps) {
-  const { data: payable, error, isLoading } = usePayableById(id, debug);
-
+  const { data: payable, error, isLoading } = usePayableById(id);
   const formRef = useRef<HTMLFormElement>(null);
-
   const [isEdit, setEdit] = useState<boolean>(false);
   const [permissions, setPermissions] = useState<PayableDetailsPermissions[]>(
     []
   );
 
-  // const submitMutation = useSubmitPayableById();
+  const submitMutation = useSubmitPayableById();
   const approveMutation = useApprovePayableById();
   const rejectMutation = useRejectPayableById();
   const payMutation = usePayPayableById();
 
-  const status = payable?.status || '';
+  const status = payable?.status;
 
   useEffect(() => {
     if (!status) return;
@@ -58,7 +54,7 @@ export default function usePayableDetails({
 
     switch (status) {
       case PayableStateEnum.NEW:
-        setPermissions(['save', 'submit']);
+        setPermissions(['save', 'reject', 'approve']);
         setEdit(true);
         break;
       case PayableStateEnum.APPROVE_IN_PROGRESS:
@@ -70,7 +66,7 @@ export default function usePayableDetails({
     }
   }, [status]);
 
-  const submitForm = useCallback(() => {
+  const saveInvoice = useCallback(() => {
     formRef.current?.dispatchEvent(
       new Event('submit', {
         bubbles: true,
@@ -78,41 +74,33 @@ export default function usePayableDetails({
     );
   }, [formRef]);
 
-  const saveInvoice = useCallback(submitForm, [submitForm]);
+  const onFormSubmit = useCallback(() => {
+    onSave && onSave();
+  }, [onSave]);
 
   const submitInvoice = useCallback(async () => {
     if (!payable?.id) return;
-    // TODO uncomment later
-    // await submitMutation.mutate(payable.id);
-    await approveMutation.mutate(payable.id);
-    toast.success('Submitted');
+    await submitMutation.mutateAsync(payable.id);
     onSubmit && onSubmit();
-  }, [submitForm, payable]);
+  }, [submitMutation, payable, onSubmit]);
 
   const approveInvoice = useCallback(async () => {
     if (!payable?.id) return;
-    await approveMutation.mutate(payable.id);
-    toast.success('Approved');
+    await approveMutation.mutateAsync(payable.id);
     onApprove && onApprove();
-  }, [approveMutation, payable]);
+  }, [approveMutation, payable, onApprove]);
 
   const rejectInvoice = useCallback(async () => {
     if (!payable?.id) return;
-    await rejectMutation.mutate(payable.id);
-    toast.success('Rejected');
+    await rejectMutation.mutateAsync(payable.id);
     onReject && onReject();
-  }, [rejectMutation, payable]);
+  }, [rejectMutation, payable, onReject]);
 
   const payInvoice = useCallback(async () => {
     if (!payable?.id) return;
-    await payMutation.mutate(payable.id);
-    toast.success('Payed');
+    await payMutation.mutateAsync(payable.id);
     onPay && onPay();
-  }, [payMutation, payable]);
-
-  const onFormSubmit = useCallback(() => {
-    onSave && onSave();
-  }, []);
+  }, [payMutation, payable, onPay]);
 
   return {
     payable,

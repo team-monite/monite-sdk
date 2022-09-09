@@ -1,16 +1,21 @@
+import { toast } from 'react-hot-toast';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import { PayableResponseSchema, PayableUpdateSchema } from '@monite/sdk-api';
-import payableMock from 'components/payables/fixtures/getById';
 import { useComponentsContext } from '../context/ComponentsContext';
 
-const PAYABLE_QUERY_ID = 'payable';
+export const PAYABLE_QUERY_ID = 'payable';
 
-export const usePayableById = (id: string, debug?: boolean) => {
+export const usePayableById = (id: string) => {
   const { monite } = useComponentsContext();
 
   return useQuery<PayableResponseSchema, Error>(
     [PAYABLE_QUERY_ID, { id }],
-    () => (debug ? payableMock : monite.api!.payable.getById(id))
+    () => monite.api!.payable.getById(id),
+    {
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
   );
 };
 
@@ -23,6 +28,10 @@ export const useUpdatePayableById = (id: string) => {
     {
       onSuccess: (payable) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        toast.success('Saved');
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     }
   );
@@ -37,6 +46,10 @@ export const useSubmitPayableById = () => {
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        toast.success('Submitted');
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     }
   );
@@ -51,6 +64,10 @@ export const useApprovePayableById = () => {
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        toast.success('Approved');
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     }
   );
@@ -65,6 +82,10 @@ export const useRejectPayableById = () => {
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        toast.success('Rejected');
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     }
   );
@@ -75,6 +96,14 @@ export const usePayPayableById = () => {
 
   return useMutation<PayableResponseSchema, Error, string>(
     [PAYABLE_QUERY_ID],
-    (id) => monite.api!.payable.pay(id)
+    (id) => monite.api!.payable.pay(id),
+    {
+      onSuccess: () => {
+        toast.success('Payed');
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
   );
 };

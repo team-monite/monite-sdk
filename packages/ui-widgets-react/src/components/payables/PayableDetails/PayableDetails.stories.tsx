@@ -9,25 +9,24 @@ export default Story;
 
 export const DefaultForm = () => (
   <PayableDetails
-    id={'6ed11873-a850-4876-bc59-895e79fe72e0'}
-    debug={true}
+    id={'16949fba-033b-4158-8f8f-a97c8d4b968e'}
     onClose={() => {
       console.log('onClose');
     }}
-    onPay={() => {
-      console.log('onPay');
-    }}
-    onReject={() => {
-      console.log('onReject');
+    onSave={() => {
+      console.log('onSave');
     }}
     onSubmit={() => {
       console.log('onSubmit');
     }}
+    onReject={() => {
+      console.log('onReject');
+    }}
     onApprove={() => {
       console.log('onApprove');
     }}
-    onSave={() => {
-      console.log('onSave');
+    onPay={() => {
+      console.log('onPay');
     }}
   />
 );

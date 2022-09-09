@@ -1,47 +1,51 @@
-import { PayableResponseSchema } from '@monite/sdk-api';
+import { useCallback } from 'react';
 
-import { useTagList, useUpdatePayableById } from 'core/queries';
+import { PayableResponseSchema, PayableUpdateSchema } from '@monite/sdk-api';
+import { useUpdatePayableById } from 'core/queries/usePayable';
+import { useCreateTag, useTagList } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';
-import { useEffect } from 'react';
-import { toast } from 'react-hot-toast';
+import { useEntityUserById } from 'core/queries/useEntityUser';
+
+import type { Option } from './helpers';
 
 export type UsePayableDetailsFormProps = {
   payable: PayableResponseSchema;
-  debug?: boolean;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 };
 
 export default function usePayableDetailsForm({
   payable,
-  debug,
   onSubmit,
 }: UsePayableDetailsFormProps) {
-  const {
-    data: tags,
-    // error: tagError,
-    isLoading: isTagLoading,
-  } = useTagList(debug);
+  const tagQuery = useTagList();
+  const counterpartQuery = useCounterpartList();
+  const entityUserQuery = useEntityUserById(payable.was_created_by_user_id);
+  const payableSaveMutation = useUpdatePayableById(payable.id);
+  const tagCreateMutation = useCreateTag(payable.id);
 
-  const {
-    data: counterparts,
-    // error: counterpartError,
-    isLoading: isCounterpartLoading,
-  } = useCounterpartList(debug);
+  const saveInvoice = useCallback(
+    async (data: PayableUpdateSchema) => {
+      await payableSaveMutation.mutateAsync(data);
+      onSubmit && onSubmit();
+    },
+    [payableSaveMutation]
+  );
 
-  const saveMutation = useUpdatePayableById(payable.id);
-
-  useEffect(() => {
-    if (!saveMutation.isSuccess) return;
-
-    onSubmit && onSubmit();
-    toast.success('Saved');
-  }, [saveMutation.isSuccess]);
+  const createTag = useCallback(
+    ({ label: name }: Option) => {
+      tagCreateMutation.mutate({
+        name,
+      });
+    },
+    [tagCreateMutation]
+  );
 
   return {
-    isTagLoading,
-    isCounterpartLoading,
-    saveMutation,
-    tags: tags?.data || [],
-    counterparts: counterparts?.data || [],
+    tagQuery,
+    counterpartQuery,
+    entityUserQuery,
+    saveInvoice,
+    createTag,
+    isFormLoading: payableSaveMutation.isLoading,
   };
 }
