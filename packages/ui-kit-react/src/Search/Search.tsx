@@ -4,14 +4,18 @@ import { debounce } from 'lodash';
 
 import Input from '../Input';
 import { USearch } from '../unicons';
+import { THEMES } from '../consts';
 
 interface Props {
   placeholder: string;
   isFilter?: boolean;
-  onSearch: (value: string | undefined | null) => void;
+  onSearch?: (value: string | undefined | null) => void;
 }
 
-const SearchInput = styled(Input)<Props>`
+const SearchInput = styled(Input)<{
+  theme: typeof THEMES.default;
+  isFilter?: boolean;
+}>`
   input {
     padding: 11px 38px 11px 16px;
     ${({ theme, isFilter }) =>
@@ -47,7 +51,7 @@ const Search = ({ placeholder, isFilter, onSearch }: Props) => {
 
   useEffect(() => {
     if (search !== undefined) {
-      onSearch(search);
+      onSearch && onSearch(search);
     }
   }, [search]);
 
@@ -64,7 +68,6 @@ const Search = ({ placeholder, isFilter, onSearch }: Props) => {
     <SearchInput
       placeholder={placeholder}
       value={value}
-      onSearch={onSearch}
       isFilter={isFilter}
       onChange={(e) => onChangeHandler(e.target.value)}
       renderAddonIcon={() => (

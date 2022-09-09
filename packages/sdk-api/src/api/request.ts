@@ -8,7 +8,6 @@ import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 import type { OpenAPIConfig } from './OpenAPI';
 import { OpenAPI } from './OpenAPI';
-import { AUTH_TOKEN_STORAGE_KEY } from '@monite/app-white-label/src/features/app/consts';
 
 const isDefined = <T>(
   value: T | null | undefined
@@ -146,8 +145,7 @@ const getHeaders = async (
   config: OpenAPIConfig,
   options: ApiRequestOptions
 ): Promise<Headers> => {
-  // const token = await resolve(options, config.TOKEN);
-  const token = localStorage.getItem(AUTH_TOKEN_STORAGE_KEY);
+  const token = await resolve(options, config.TOKEN);
   const username = await resolve(options, config.USERNAME);
   const password = await resolve(options, config.PASSWORD);
   const additionalHeaders = await resolve(options, config.HEADERS);

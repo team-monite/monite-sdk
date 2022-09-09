@@ -1,47 +1,45 @@
-import React from 'react';
-import { format } from 'date-fns';
-import {
-  Button,
-  Table,
-  HeadCellSort,
-  Tag,
-  UArrowLeft,
-  UArrowRight,
-  SortOrderEnum,
-} from '@monite/ui-kit-react';
+import React, { useEffect, useState } from 'react';
+import { formatISO, addDays, format } from 'date-fns';
 import {
   api__v1__payables__pagination__CursorFields,
+  OrderEnum,
   PayableStateEnum,
   ReceivableResponse,
 } from '@monite/sdk-api';
+import {
+  Button,
+  HeadCellSort,
+  SortOrderEnum,
+  Table,
+  Tag,
+  UArrowLeft,
+  UArrowRight,
+} from '@monite/ui-kit-react';
 
+import { usePayable } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-
-import Filters from './Filters';
-
+import { default as FiltersComponent } from './Filters';
+import { Sort, Filters, FilterValue } from './types';
+import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
+import {
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_STATUS,
+} from './consts';
+import { ROW_TO_TAG_STATUS_MAP } from '../consts';
 import * as Styled from './styles';
 
-import {
-  PaginationTokens,
-  Sort,
-  Filters as FiltersType,
-  FilterValue,
-} from './types';
-import { ROW_TO_TAG_STATUS_MAP } from '../consts';
-
-export interface PayablesTableProps {
-  loading?: boolean;
-  data?: ReceivableResponse[];
-  onRowClick: (id: string) => void;
-  onPrev?: () => void;
-  onNext?: () => void;
-  paginationTokens: PaginationTokens;
-  onChangeSort: (
-    sort: api__v1__payables__pagination__CursorFields,
-    order: SortOrderEnum | null
-  ) => void;
-  currentSort: Sort | null;
-  onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
+interface Props {
+  onRowClick?: (id: string) => void;
+  onChangeSort?: (params: {
+    sort: api__v1__payables__pagination__CursorFields;
+    order: SortOrderEnum | null;
+  }) => void;
+  onChangeFilter?: (filter: {
+    field: keyof Filters;
+    value: FilterValue;
+  }) => void;
 }
 
 const formatter = new Intl.NumberFormat('de-DE', {
@@ -50,23 +48,98 @@ const formatter = new Intl.NumberFormat('de-DE', {
 });
 
 const PayablesTable = ({
-  loading,
-  data,
   onRowClick,
-  onPrev,
-  onNext,
-  paginationTokens,
-  onChangeSort,
-  currentSort,
-  onChangeFilter,
-}: PayablesTableProps) => {
+  onChangeSort: onChangeSortCallback,
+  onChangeFilter: onChangeFilterCallback,
+}: Props) => {
   const { t } = useComponentsContext();
+  const [currentPaginationToken, setCurrentPaginationToken] = useState<
+    string | null
+  >(null);
+  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const [currentFilter, setCurrentFilter] = useState<Filters>({});
+
+  const {
+    data: payables,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = usePayable(
+    MONITE_ENTITY_ID,
+    currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
+    PAGE_LIMIT,
+    currentPaginationToken || undefined,
+    currentSort ? currentSort.sort : undefined,
+    undefined,
+    undefined,
+    // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+    currentFilter[FILTER_TYPE_CREATED_AT]
+      ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+      : undefined,
+    currentFilter[FILTER_TYPE_CREATED_AT]
+      ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+      : undefined,
+    undefined,
+    currentFilter[FILTER_TYPE_STATUS] || undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    currentFilter[FILTER_TYPE_DUE_DATE]
+      ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+      : undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    currentFilter[FILTER_TYPE_SEARCH] || undefined
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [currentPaginationToken, currentSort, currentFilter]);
+
+  const onPrev = () =>
+    setCurrentPaginationToken(payables?.prev_pagination_token || null);
+
+  const onNext = () =>
+    setCurrentPaginationToken(payables?.next_pagination_token || null);
+
+  const onChangeSort = (
+    sort: api__v1__payables__pagination__CursorFields,
+    order: SortOrderEnum | null
+  ) => {
+    setCurrentPaginationToken(null);
+    if (order) {
+      setCurrentSort({
+        sort,
+        order,
+      });
+    } else if (currentSort?.sort === sort && order === null) {
+      setCurrentSort(null);
+    }
+
+    onChangeSortCallback && onChangeSortCallback({ sort, order });
+  };
+
+  const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
+    setCurrentPaginationToken(null);
+    setCurrentFilter((prevFilter) => ({
+      ...prevFilter,
+      [field]: value === 'all' ? null : value,
+    }));
+
+    onChangeFilterCallback && onChangeFilterCallback({ field, value });
+  };
 
   return (
-    <Styled.Table>
-      <Filters onChangeFilter={onChangeFilter} />
+    <Styled.Table clickableRow={!!onRowClick}>
+      <FiltersComponent onChangeFilter={onChangeFilter} />
       <Table
-        loading={loading}
+        loading={isLoading || isRefetching}
         rowKey="id"
         columns={[
           {
@@ -116,12 +189,6 @@ const PayablesTable = ({
               <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
             ),
           },
-          // {
-          //   title: t('payables:columns.appliedPolicy'),
-          //   dataIndex: 'applied_policy',
-          //   key: 'applied_policy',
-          //   render: (value: string) => value && <Tag>{value}</Tag>,
-          // },
           {
             title: (
               <HeadCellSort
@@ -155,9 +222,10 @@ const PayablesTable = ({
           //   ),
           // },
         ]}
-        data={data}
+        data={payables?.data}
         onRow={(record) => ({
-          onClick: () => onRowClick((record as ReceivableResponse).id),
+          onClick: () =>
+            onRowClick && onRowClick((record as ReceivableResponse).id),
         })}
         scroll={{ y: 'auto' }}
         // TODO create footer component and move to UI
@@ -167,7 +235,7 @@ const PayablesTable = ({
               variant="contained"
               color="secondary"
               onClick={onPrev}
-              disabled={!paginationTokens.prev_pagination_token}
+              disabled={!payables?.prev_pagination_token}
             >
               <UArrowLeft width={24} height={24} />
             </Button>
@@ -175,7 +243,7 @@ const PayablesTable = ({
               variant="contained"
               color="secondary"
               onClick={onNext}
-              disabled={!paginationTokens.next_pagination_token}
+              disabled={!payables?.next_pagination_token}
             >
               <UArrowRight width={24} height={24} />
             </Button>

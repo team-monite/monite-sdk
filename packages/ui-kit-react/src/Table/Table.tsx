@@ -24,7 +24,6 @@ const SpinnerWrapper = styled.div`
   height: 100%;
   display: flex;
   background-color: rgba(255, 255, 255, 0.8);
-  z-index: 1;
 `;
 
 const StyledTable = styled(RCTable)`

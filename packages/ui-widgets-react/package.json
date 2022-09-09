@@ -66,6 +66,7 @@
     "@tanstack/react-query-devtools": "~4.2.3",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
-    "react-query": "~3.39.2"
+    "react-query": "~3.39.2",
+    "storybook-addon-mock": "~2.4.1"
   }
 }

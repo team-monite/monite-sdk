@@ -4,6 +4,8 @@ module.exports = {
   stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-docs',
+    'storybook-addon-mock/register',
+    '@storybook/addon-actions',
     {
       name: '@storybook/preset-ant-design',
     },
