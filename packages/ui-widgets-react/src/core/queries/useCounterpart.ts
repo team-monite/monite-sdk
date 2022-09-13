@@ -1,15 +1,20 @@
 import { useQuery } from 'react-query';
-import { CounterpartPaginationResponse } from '@monite/sdk-api';
+import {
+  CounterpartPaginationResponse,
+  CounterpartsService,
+} from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 
-export const useCounterpartList = () => {
+export const useCounterpartList = (
+  ...args: Parameters<CounterpartsService['getList']>
+) => {
   const { monite } = useComponentsContext();
 
   return useQuery<CounterpartPaginationResponse, Error>(
     ['counterpart'],
     () => {
-      return monite.api!.counterparts.getList();
+      return monite.api!.counterparts.getList(...args);
     },
     {
       onError: (error) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Table,
@@ -7,7 +7,13 @@ import {
   UEnvelopeAlt,
   UPhone,
   UUserSquare,
+  Button,
+  // HeadCellSort,
+  // SortOrderEnum,
+  UArrowLeft,
+  UArrowRight,
 } from '@monite/ui-kit-react';
+
 import {
   CounterpartIndividual,
   CounterpartOrganization,
@@ -15,9 +21,12 @@ import {
   CounterpartType,
 } from '@monite/sdk-api';
 
+import { useCounterpartList } from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import * as Styled from './styles';
+
+import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
   data?: CounterpartResponse[];
@@ -30,16 +39,61 @@ type CounterpartsTableRow = CounterpartResponse & {
 const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
   const { t } = useComponentsContext();
 
-  const prepareDataForTable = (): CounterpartsTableRow[] => {
-    return (data || []).map((item) => ({
-      key: item.id,
-      ...item,
-    }));
-  };
+  const [currentPaginationToken, setCurrentPaginationToken] = useState<
+    string | null
+  >(null);
+  // const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  // const [currentFilter, setCurrentFilter] = useState<Filters>({});
+
+  const {
+    data: counterparts,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = useCounterpartList(
+    MONITE_ENTITY_ID,
+    undefined,
+    undefined,
+    PAGE_LIMIT,
+    currentPaginationToken || undefined
+  );
+  // xMoniteEntityId: string,
+  // iban?: string,
+  // order?: OrderEnum,
+  // limit: number = 100,
+  // paginationToken?: string,
+  // sort?: Receivablesapi__v1__counterparts__pagination__CursorFields,
+  // type?: ReceivablesCounterpartType,
+  // counterpartName?: string,
+  // counterpartNameContains?: string,
+  // counterpartNameIcontains?: string,
+  // isVendor?: boolean,
+  // isCustomer?: boolean,
+  // email?: string,
+  // emailContains?: string,
+  // emailIcontains?: string,
+  // createdAt?: string,
+  // createdAtGt?: string,
+  // createdAtLt?: string,
+  // createdAtGte?: string,
+  // createdAtLte?: string
+
+  useEffect(() => {
+    refetch();
+  }, [currentPaginationToken]);
+
+  const onPrev = () =>
+    setCurrentPaginationToken(counterparts?.prev_pagination_token || null);
+
+  const onNext = () =>
+    setCurrentPaginationToken(counterparts?.next_pagination_token || null);
 
   return (
-    <Styled.Table>
+    <Styled.Table clickableRow={true}>
+      {/* <FiltersComponent onChangeFilter={onChangeFilter} /> */}
       <Table
+        loading={isLoading || isRefetching}
+        rowKey="id"
         columns={[
           {
             title: t('counterparts:columns.name'),
@@ -141,7 +195,32 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
             },
           },
         ]}
-        data={prepareDataForTable()}
+        // data={prepareDataForTable()}
+        data={counterparts?.data}
+        onRow={(record) => ({
+          onClick: () => console.log('onRowClick'),
+        })}
+        scroll={{ y: 'auto' }}
+        footer={() => (
+          <Styled.Footer>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onPrev}
+              disabled={!counterparts?.prev_pagination_token}
+            >
+              <UArrowLeft width={24} height={24} />
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={onNext}
+              disabled={!counterparts?.next_pagination_token}
+            >
+              <UArrowRight width={24} height={24} />
+            </Button>
+          </Styled.Footer>
+        )}
       />
     </Styled.Table>
   );
