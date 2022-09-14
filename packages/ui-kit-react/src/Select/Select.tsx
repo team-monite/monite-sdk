@@ -13,6 +13,7 @@ import Select, {
 import CreatableSelect from 'react-select/creatable';
 import ReactTooltip from 'react-tooltip';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 
 import { Box } from '../Box';
 import Text from '../Text';
@@ -112,6 +113,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
     leftIcon,
     ...restProps
   } = props;
+  const theme = useTheme();
 
   const WrapperComponent = isCreatable ? CreatableSelect : Select;
 
@@ -253,6 +255,10 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         padding: 0,
         margin: 0,
         outline: 0,
+        color: isFilter && theme.select.textColor,
+        ':hover': {
+          color: isFilter && theme.select.textColorHover,
+        },
       };
     },
     valueContainer: (provided: any) => {

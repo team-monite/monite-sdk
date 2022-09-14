@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { THEMES } from '@monite/ui-kit-react';
 
 export const Table = styled.div<{
   children: React.ReactNode;
-  theme: typeof THEMES.default;
   clickableRow?: boolean;
 }>`
   flex: 1 1 auto;

@@ -40,4 +40,4 @@ export { default as ThemeProvider } from './core/ThemeProvider';
 export * from './unicons';
 export * from './consts';
 export * from './types';
-// export * from '../index.d';
+export * from './theme/theme';

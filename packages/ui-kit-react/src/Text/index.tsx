@@ -94,6 +94,7 @@ const Text = styled(Box)<TextProps>`
   ${({ textSize = 'regular' }) => STYLES[textSize]}
   ${({ align }) => align && `text-align: ${align};`};
   ${({ color, theme }) =>
+    // @ts-ignore TODO add only allowed colors to TextProps
     color && theme.colors[color] && `color: ${theme.colors[color]};`}
 `;
 

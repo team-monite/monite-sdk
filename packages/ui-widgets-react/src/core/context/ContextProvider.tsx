@@ -1,7 +1,11 @@
 import React, { ReactNode, useEffect } from 'react';
 import { MoniteApp } from '@monite/sdk-api';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { THEMES, ThemeProvider as UIThemeProvider } from '@monite/ui-kit-react';
+import {
+  THEMES,
+  ThemeProvider as UIThemeProvider,
+  tokenizedTheme,
+} from '@monite/ui-kit-react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 import { merge } from 'lodash';
@@ -17,7 +21,7 @@ import '../../index.less';
 interface MoniteProviderProps {
   monite: MoniteApp;
   children?: ReactNode;
-  theme?: any;
+  theme?: any; // TODO should be partial Theme
 }
 
 export const queryClient = new QueryClient({
@@ -34,9 +38,9 @@ export const queryClient = new QueryClient({
 
 const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
   const finalTheme = theme
-    ? merge(THEMES.default, theme || {})
+    ? merge(THEMES.default, tokenizedTheme, theme || {})
     : // REPLACE {} WITH CUSTOM THEME OBJECT OR SET INDIVIDUAL COLORS
-      merge(THEMES.default, {});
+      merge(THEMES.default, tokenizedTheme, {});
 
   useEffect(() => {
     i18n.changeLanguage(monite.locale);

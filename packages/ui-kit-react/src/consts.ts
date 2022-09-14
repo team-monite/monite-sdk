@@ -1,10 +1,4 @@
-const breakpoints: any = ['576px', '768px', '992px', '1200px', '1400px']; // @see bootstrap
-
-breakpoints.sm = breakpoints[0];
-breakpoints.md = breakpoints[1];
-breakpoints.lg = breakpoints[2];
-breakpoints.xl = breakpoints[3];
-breakpoints.xxl = breakpoints[4];
+import { TokenizedThemeType } from './theme/theme';
 
 export const THEMES = {
   default: {
@@ -60,8 +54,9 @@ export const THEMES = {
 
       hoverAction: '#18191A',
     },
-    breakpoints,
   },
 };
 
-export type ThemeType = keyof typeof THEMES.default.colors;
+export type ThemeColors = keyof typeof THEMES.default.colors;
+
+export type Theme = typeof THEMES.default & TokenizedThemeType;

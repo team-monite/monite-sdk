@@ -4,7 +4,6 @@ import { debounce } from 'lodash';
 
 import Input from '../Input';
 import { USearch } from '../unicons';
-import { THEMES } from '../consts';
 
 interface Props {
   placeholder: string;
@@ -13,15 +12,16 @@ interface Props {
 }
 
 const SearchInput = styled(Input)<{
-  theme: typeof THEMES.default;
   isFilter?: boolean;
 }>`
   input {
+    color: ${({ theme }) => theme.search.textColor};
+
     padding: 11px 38px 11px 16px;
     ${({ theme, isFilter }) =>
       isFilter &&
       `
-      background-color: ${theme.colors.white};
+      background-color: ${theme.search.backgroundColor};
       border-radius: 100px;
       box-shadow: none;
     `}
@@ -30,6 +30,8 @@ const SearchInput = styled(Input)<{
       ${({ theme, isFilter }) =>
         isFilter &&
         `
+        color: ${theme.search.textColorHover};
+        background-color: ${theme.search.backgroundColorHover};
         border-color: ${theme.colors.black};
         box-shadow: none;
       `}
@@ -69,7 +71,9 @@ const Search = ({ placeholder, isFilter, onSearch }: Props) => {
       placeholder={placeholder}
       value={value}
       isFilter={isFilter}
-      onChange={(e) => onChangeHandler(e.target.value)}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+        onChangeHandler(e.target?.value)
+      }
       renderAddonIcon={() => (
         <SearchBtn>
           <USearch width={20} height={20} />

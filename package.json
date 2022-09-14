@@ -28,10 +28,14 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "emotion-theming": "~10.3.0"
+  },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^8.16.0",
+    "eslint": "8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.0",

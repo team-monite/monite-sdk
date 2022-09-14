@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Box, BoxProps } from '../Box';
 import { TextProps } from '../Text';
-import { ThemeType } from '../consts';
+import { ThemeColors } from '../consts';
 import { ThemedStyledProps } from '../types';
 
 type AvatarProps = {
@@ -11,7 +11,7 @@ type AvatarProps = {
   children?: string;
   to?: string;
   disabled?: boolean;
-  color?: ThemeType;
+  color?: ThemeColors;
   size?: number;
   textSize?: TextProps['textSize'];
   onClick?: () => void;
@@ -21,7 +21,7 @@ type AvatarProps = {
 type StyledProps = {
   $size?: number;
   $hasHover?: boolean;
-  $color: ThemeType;
+  $color: ThemeColors;
   $disabled?: boolean;
   $withStatus?: boolean;
 };

@@ -1,14 +1,11 @@
-import { Theme, ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import { THEMES } from 'consts';
+import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
+import { Theme } from 'consts';
 
 type ThemeProviderProps = {
   theme: Theme;
   children: any;
 };
-const ThemeProvider = ({
-  theme = THEMES.default,
-  children,
-}: ThemeProviderProps) => (
+const ThemeProvider = ({ theme, children }: ThemeProviderProps) => (
   <EmotionThemeProvider theme={theme}>{children}</EmotionThemeProvider>
 );
 
