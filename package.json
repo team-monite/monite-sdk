@@ -18,7 +18,7 @@
     "ui-kit-react:build-storybook": "yarn workspace @monite/ui-kit-react build-storybook",
     "payment:start": "yarn workspace @monite/payment start",
     "payment:build": "yarn workspace @monite/payment build",
-    "full:build": "yarn ui-kit-react:build && yarn sdk-api:build && yarn ui-widgets-react:build",
+    "full:build": "yarn ui-kit-react:build && yarn sdk-api:build && yarn ui-widgets-react:build && yarn payment:build",
     "lint": "yarn workspaces run lint",
     "lint-staged": "yarn workspaces run lint-staged",
     "prepare": "husky install"

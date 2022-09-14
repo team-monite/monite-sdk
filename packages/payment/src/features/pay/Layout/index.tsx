@@ -1,24 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { useTheme } from 'emotion-theming';
-import { Global } from '@emotion/react';
+import { Global, useTheme } from '@emotion/react';
 
-import type { Theme } from '@monite/ui-widgets-react';
-
-const Wrapper = styled.div(
-  ({ theme }) => `
-  background: ${theme.colors.lightGrey3};
+const Wrapper = styled.div`
+  background: ${({ theme }) => theme.colors.lightGrey3};
   min-height: 100vh;
-`
-);
+`;
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const Layout = ({ children }: LayoutProps) => {
-  const theme = useTheme<Theme>();
+  const theme = useTheme();
 
   return (
     <Wrapper>

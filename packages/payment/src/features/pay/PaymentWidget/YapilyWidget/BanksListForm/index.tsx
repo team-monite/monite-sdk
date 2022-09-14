@@ -93,7 +93,7 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
       <Box mt="24px" mb="32px">
         <Input
           placeholder="Search for your bank"
-          onChange={(e) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             updateSearchText(e.target.value);
           }}
           renderAddonIcon={() => (
