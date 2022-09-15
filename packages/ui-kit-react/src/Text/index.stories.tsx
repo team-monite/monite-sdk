@@ -26,7 +26,7 @@ export const Sizes = () => (
         <Box width={1}>Example</Box>
       </Flex>
       {Object.keys(STYLES).map((textVariant) => (
-        <Flex>
+        <Flex key={textVariant}>
           <Box width={'25%'}>
             <Text textSize={textVariant}>{textVariant}</Text>
           </Box>

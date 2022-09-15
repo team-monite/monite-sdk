@@ -2,100 +2,108 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { Box } from '../Box';
+import { ThemeColors } from '../consts';
 
 export const STYLES = {
   h1: {
     //styleName: Titles/H1;
-    'font-size': '48px',
-    'font-weight': '600',
-    'line-height': '64px',
+    fontSize: '48px',
+    fontWeight: '600',
+    lineHeight: '64px',
   },
   h2: {
     //styleName: Titles/H2;
-    'font-size': '32px',
-    'font-weight': '600',
-    'line-height': '40px',
+    fontSize: '32px',
+    fontWeight: '600',
+    lineHeight: '40px',
   },
   h3: {
     //styleName: Titles/H3;
-    'font-size': '24px',
-    'font-weight': '600',
-    'line-height': '36px',
+    fontSize: '24px',
+    fontWeight: '600',
+    lineHeight: '36px',
   },
   h4: {
     //styleName: Titles/H4;
-    'font-size': '18px',
-    'font-weight': '600',
-    'line-height': '24px',
-    'letter-spacing': '1px',
+    fontSize: '18px',
+    fontWeight: '600',
+    lineHeight: '24px',
+    letterSpacing: '1px',
   },
   regular: {
     //styleName: Regular/Regular;
-    'font-size': '16px',
-    'font-weight': '400',
-    'line-height': '24px',
+    fontSize: '16px',
+    fontWeight: '400',
+    lineHeight: '24px',
   },
   bold: {
     //styleName: Regular/Bold;
-    'font-size': '16px',
-    'font-weight': '500',
-    'line-height': '24px',
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '24px',
   },
   regularLink: {
     //styleName: Regular/RegularLink;
-    'font-size': '16px',
-    'font-weight': '400',
-    'line-height': '24px',
-    'text-decoration': 'underline',
+    fontSize: '16px',
+    fontWeight: '400',
+    lineHeight: '24px',
+    textDecoration: 'underline',
   },
   regularBoldLink: {
     //styleName: Regular/RegularBoldLink;
-    'font-size': '16px',
-    'font-weight': '500',
-    'line-height': '24px',
-    'text-decoration': 'underline',
+    fontSize: '16px',
+    fontWeight: '500',
+    lineHeight: '24px',
+    textDecoration: 'underline',
   },
   small: {
     //styleName: Small/Small;
-    'font-size': '14px',
-    'font-weight': '400',
-    'line-height': '20px',
+    fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '20px',
   },
   smallBold: {
     //styleName: Small/Bold;
-    'font-size': '14px',
-    'font-weight': '500',
-    'line-height': '20px',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '20px',
   },
   smallLink: {
     //styleName: Small/SmallLink;
-    'font-size': '14px',
-    'font-weight': '400',
-    'line-height': '20px',
-    'text-decoration': 'underline',
+    fontSize: '14px',
+    fontWeight: '400',
+    lineHeight: '20px',
+    textDecoration: 'underline',
   },
   smallBoldLink: {
     //styleName: Small/Bold Link;
-    'font-size': '14px',
-    'font-weight': '500',
-    'line-height': '20px',
-    'text-decoration': 'underline',
+    fontSize: '14px',
+    fontWeight: '500',
+    lineHeight: '20px',
+    textDecoration: 'underline',
   },
 };
 
 export type TextProps = {
   textSize?: keyof typeof STYLES;
   align?: 'initial' | 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  color?: string;
+  $color?: ThemeColors;
   children: React.ReactNode;
 };
 
-const Text = styled(Box)<TextProps>`
-  ${({ textSize = 'regular' }) => STYLES[textSize]}
-  ${({ align }) => align && `text-align: ${align};`};
-  ${({ color, theme }) =>
-    // @ts-ignore TODO add only allowed colors to TextProps
-    color && theme.colors[color] && `color: ${theme.colors[color]};`}
-`;
+// const Text = styled(Box)<TextProps>`
+//   ${({ textSize = 'regular' }) => STYLES[textSize]}
+//   ${({ align }) => align && `text-align: ${align};`};
+//   ${({ $color, theme }) =>
+//     $color && theme.colors[$color] && `color: ${theme.colors[$color]};`}
+// `;
+
+const Text = styled(Box)<TextProps>(
+  ({ theme, textSize = 'regular', align, $color }) => ({
+    ...STYLES[textSize],
+    align: align,
+    color: $color && theme.colors[$color],
+  })
+);
 
 export default Text;
