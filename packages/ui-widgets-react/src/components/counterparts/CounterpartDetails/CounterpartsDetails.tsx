@@ -26,7 +26,10 @@ const CounterpartsDetails = ({
 }: CounterpartsDetailsProps) => {
   const { t } = useComponentsContext();
 
-  const getType = (isCustomer: boolean, isVendor: boolean): string => {
+  const getCounterpartType = (
+    isCustomer: boolean,
+    isVendor: boolean
+  ): string => {
     if (isCustomer) return t('counterparts:customer');
     if (isVendor) return t('counterparts:vendor');
     return '';
@@ -47,7 +50,7 @@ const CounterpartsDetails = ({
     return (
       <CounterpartsCompany
         companyName={getFullName(first_name, last_name)}
-        type={getType(is_customer, is_vendor)}
+        type={getCounterpartType(is_customer, is_vendor)}
         address={getAddress(residential_address)}
         phone={phone}
         email={email}
@@ -74,7 +77,7 @@ const CounterpartsDetails = ({
         company={
           <CounterpartsCompany
             companyName={legal_name}
-            type={getType(is_customer, is_vendor)}
+            type={getCounterpartType(is_customer, is_vendor)}
             address={getAddress(registered_address)}
             phone={phone}
             email={email}
@@ -83,9 +86,8 @@ const CounterpartsDetails = ({
             onEdit={onEdit}
           />
         }
-        contacts={
-          contacts.length &&
-          contacts.map(({ last_name, first_name, address, email, phone }) => (
+        contacts={contacts?.map(
+          ({ last_name, first_name, address, email, phone }) => (
             <CounterpartsContact
               key={email}
               fullName={getFullName(first_name, last_name)}
@@ -93,8 +95,8 @@ const CounterpartsDetails = ({
               email={email}
               phone={phone}
             />
-          ))
-        }
+          )
+        )}
       />
     );
   }
