@@ -130,7 +130,15 @@
       "sendEmail": "Send email",
       "editDetails": "Edit details",
       "setCounterpart": "Set this counterpart as",
-      "addContactPerson": "Add contact person"
+      "addContactPerson": "Add contact person",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "confirmDialogue": {
+      "title": "Delete Counterpart?",
+      "content": "Are you sure you want to delete “{{name}}”? This action can’t be undone.",
+      "successNotification": "Counterpart “{{name}}” was deleted.",
+      "errorNotification": "Failed to delete counterpart “{{name}}”."
     },
     "contactPersons": "Contact persons",
     "customer": "Customer",

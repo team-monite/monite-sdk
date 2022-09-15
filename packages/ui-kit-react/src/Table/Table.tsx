@@ -112,11 +112,11 @@ const NoData = styled(Text)`
 
 interface TableProps extends RCTableProps {
   loading?: boolean;
-  dropdownActions?: ReactNode;
+  renderDropdownActions?: (value: any) => ReactNode;
 }
 
 export const Table = ({
-  dropdownActions,
+  renderDropdownActions,
   columns,
   loading,
   ...restProps
@@ -140,10 +140,10 @@ export const Table = ({
         rowKey="id"
         // @ts-ignore
         columns={
-          columns && dropdownActions
+          columns && renderDropdownActions
             ? [
                 ...columns,
-                dropdownActions && {
+                renderDropdownActions && {
                   title: '',
                   dataIndex: '',
                   key: 'operations',
@@ -179,7 +179,7 @@ export const Table = ({
                               }}
                               {...popper.attributes.popper}
                             >
-                              {dropdownActions}
+                              {renderDropdownActions(value)}
                             </DropdownMenu>
                           )}
                         </Dropdown>

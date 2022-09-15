@@ -174,4 +174,36 @@ export default class CounterpartsService {
       this.openapiConfig
     );
   }
+
+  /**
+   * Delete Counterpart By Id
+   * @param counterpartId
+   * @param xMoniteEntityId monite entity_id
+   * @returns void
+   * @throws ApiError
+   */
+  public deleteCounterpartById(
+    counterpartId: string,
+    xMoniteEntityId: string
+  ): CancelablePromise<void> {
+    return __request(
+      {
+        method: 'DELETE',
+        url: '/counterparts/{counterpart_id}',
+        path: {
+          counterpart_id: counterpartId,
+        },
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
+        },
+        errors: {
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
 }

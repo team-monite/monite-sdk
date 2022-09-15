@@ -35,3 +35,15 @@ export function getAddress({
 export function getFullName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
 }
+
+export function getName(counterpart: Counterpart): string {
+  if (isIndividualCounterpart(counterpart)) {
+    const data = counterpart as CounterpartIndividual;
+    return data.individual.first_name;
+  }
+  if (isOrganizationCounterpart(counterpart)) {
+    const data = counterpart as CounterpartOrganization;
+    return data.organization.legal_name;
+  }
+  return '';
+}

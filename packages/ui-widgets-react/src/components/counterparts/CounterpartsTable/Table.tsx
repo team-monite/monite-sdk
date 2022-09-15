@@ -12,6 +12,7 @@ import {
   // SortOrderEnum,
   UArrowLeft,
   UArrowRight,
+  DropdownItem,
 } from '@monite/ui-kit-react';
 
 import {
@@ -21,8 +22,14 @@ import {
   CounterpartType,
 } from '@monite/sdk-api';
 
-import { useCounterpartList } from 'core/queries/useCounterpart';
+import {
+  useCounterpartList,
+  useDeleteCounterpartById,
+} from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
+
+import ConfirmDeleteDialogue from './ConfirmDeleteDialogue';
+import { getName } from '../helpers';
 
 import * as Styled from './styles';
 
@@ -38,6 +45,11 @@ type CounterpartsTableRow = CounterpartResponse & {
 
 const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
   const { t } = useComponentsContext();
+
+  const [openDeleteDialogue, setOpenDeleteDialogue] = useState(false);
+  const [selectedCounterpart, setSelectedCounterpart] = useState<
+    CounterpartResponse | undefined
+  >();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -88,141 +100,185 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
   const onNext = () =>
     setCurrentPaginationToken(counterparts?.next_pagination_token || null);
 
-  return (
-    <Styled.Table clickableRow={true}>
-      {/* <FiltersComponent onChangeFilter={onChangeFilter} /> */}
-      <Table
-        loading={isLoading || isRefetching}
-        rowKey="id"
-        columns={[
-          {
-            title: t('counterparts:columns.name'),
-            dataIndex: 'name',
-            key: 'name',
-            render: (value, row) => {
-              const type: CounterpartType = (row as CounterpartsTableRow).type;
-              const data: CounterpartIndividual | CounterpartOrganization = (
-                row as any
-              )[type];
+  const deleteCounterpartMutation = useDeleteCounterpartById(
+    selectedCounterpart!,
+    MONITE_ENTITY_ID
+  );
 
-              if (type === CounterpartType.ORGANIZATION) {
-                const orgData = data as CounterpartOrganization;
+  return (
+    <>
+      <Styled.Table clickableRow={true}>
+        {/* <FiltersComponent onChangeFilter={onChangeFilter} /> */}
+        <Table
+          loading={isLoading || isRefetching}
+          rowKey="id"
+          columns={[
+            {
+              title: t('counterparts:columns.name'),
+              dataIndex: 'name',
+              key: 'name',
+              render: (value, row) => {
+                const type: CounterpartType = (row as CounterpartsTableRow)
+                  .type;
+                const data: CounterpartIndividual | CounterpartOrganization = (
+                  row as any
+                )[type];
+
+                if (type === CounterpartType.ORGANIZATION) {
+                  const orgData = data as CounterpartOrganization;
+
+                  return (
+                    <Styled.ColName>
+                      <Avatar size={44}>{orgData?.legal_name}</Avatar>
+                      <div>
+                        <Text textSize="bold">{orgData.legal_name}</Text>
+                        <Styled.AddressText>
+                          {orgData?.registered_address?.country} •{' '}
+                          {orgData?.registered_address?.city}
+                        </Styled.AddressText>
+                      </div>
+                    </Styled.ColName>
+                  );
+                }
+
+                const indData = data as CounterpartIndividual;
 
                 return (
                   <Styled.ColName>
-                    <Avatar size={44}>{orgData?.legal_name}</Avatar>
+                    <Avatar size={44}>{indData?.first_name[0]}</Avatar>
                     <div>
-                      <Text textSize="bold">{orgData.legal_name}</Text>
+                      <Text textSize="bold">{indData?.first_name}</Text>
                       <Styled.AddressText>
-                        {orgData?.registered_address?.country} •{' '}
-                        {orgData?.registered_address?.city}
+                        {indData?.residential_address?.country} •{' '}
+                        {indData?.residential_address?.city}
                       </Styled.AddressText>
                     </div>
                   </Styled.ColName>
                 );
-              }
-
-              const indData = data as CounterpartIndividual;
-
-              return (
-                <Styled.ColName>
-                  <Avatar size={44}>{indData?.first_name[0]}</Avatar>
-                  <div>
-                    <Text textSize="bold">{indData?.first_name}</Text>
-                    <Styled.AddressText>
-                      {indData?.residential_address?.country} •{' '}
-                      {indData?.residential_address?.city}
-                    </Styled.AddressText>
-                  </div>
-                </Styled.ColName>
-              );
+              },
             },
-          },
-          {
-            title: t('counterparts:columns.type'),
-            dataIndex: 'type',
-            key: 'type',
-            render: (value, row) => {
-              const type: CounterpartType = (row as CounterpartsTableRow).type;
-              const data: CounterpartIndividual | CounterpartOrganization = (
-                row as any
-              )[type];
-
-              return (
-                <Styled.ColType>
-                  {data.is_customer && <Tag>{t('counterparts:customer')}</Tag>}
-                  {data.is_vendor && <Tag>{t('counterparts:vendor')}</Tag>}
-                </Styled.ColType>
-              );
-            },
-          },
-          {
-            title: t('counterparts:columns.contacts'),
-            dataIndex: 'contacts',
-            key: 'contacts',
-            render: (value, row) => {
-              const type: CounterpartType = (row as CounterpartsTableRow).type;
-              const data: CounterpartIndividual | CounterpartOrganization = (
-                row as any
-              )[type];
-
-              if (type === CounterpartType.ORGANIZATION) {
-                const contacts = (
-                  (data as CounterpartOrganization).contacts || []
-                ).map((c: any) => c.first_name);
+            {
+              title: t('counterparts:columns.type'),
+              dataIndex: 'type',
+              key: 'type',
+              render: (value, row) => {
+                const type: CounterpartType = (row as CounterpartsTableRow)
+                  .type;
+                const data: CounterpartIndividual | CounterpartOrganization = (
+                  row as any
+                )[type];
 
                 return (
-                  <Styled.ColContacts>
-                    <div>
-                      <UEnvelopeAlt width={16} height={16} />
-                      {data.email}
-                    </div>
-                    {contacts.length ? (
-                      <div>
-                        <UUserSquare width={16} height={16} />
-                        {contacts.join(', ')}
-                      </div>
-                    ) : null}
-                    <div>
-                      <UPhone width={16} height={16} />
-                      {data.phone}
-                    </div>
-                  </Styled.ColContacts>
+                  <Styled.ColType>
+                    {data.is_customer && (
+                      <Tag>{t('counterparts:customer')}</Tag>
+                    )}
+                    {data.is_vendor && <Tag>{t('counterparts:vendor')}</Tag>}
+                  </Styled.ColType>
                 );
-              }
-
-              return null;
+              },
             },
-          },
-        ]}
-        // data={prepareDataForTable()}
-        data={counterparts?.data}
-        onRow={(record) => ({
-          onClick: () => console.log('onRowClick'),
-        })}
-        scroll={{ y: 'auto' }}
-        footer={() => (
-          <Styled.Footer>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={onPrev}
-              disabled={!counterparts?.prev_pagination_token}
-            >
-              <UArrowLeft width={24} height={24} />
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={onNext}
-              disabled={!counterparts?.next_pagination_token}
-            >
-              <UArrowRight width={24} height={24} />
-            </Button>
-          </Styled.Footer>
-        )}
-      />
-    </Styled.Table>
+            {
+              title: t('counterparts:columns.contacts'),
+              dataIndex: 'contacts',
+              key: 'contacts',
+              render: (value, row) => {
+                const type: CounterpartType = (row as CounterpartsTableRow)
+                  .type;
+                const data: CounterpartIndividual | CounterpartOrganization = (
+                  row as any
+                )[type];
+
+                if (type === CounterpartType.ORGANIZATION) {
+                  const contacts = (
+                    (data as CounterpartOrganization).contacts || []
+                  ).map((c: any) => c.first_name);
+
+                  return (
+                    <Styled.ColContacts>
+                      <div>
+                        <UEnvelopeAlt width={16} height={16} />
+                        {data.email}
+                      </div>
+                      {contacts.length ? (
+                        <div>
+                          <UUserSquare width={16} height={16} />
+                          {contacts.join(', ')}
+                        </div>
+                      ) : null}
+                      <div>
+                        <UPhone width={16} height={16} />
+                        {data.phone}
+                      </div>
+                    </Styled.ColContacts>
+                  );
+                }
+
+                return null;
+              },
+            },
+          ]}
+          //TODO: doesn't work, fix it'
+          renderDropdownActions={(value: any) => {
+            return (
+              <>
+                <DropdownItem onClick={() => {}}>
+                  {t('counterparts:actions.edit')}
+                </DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setSelectedCounterpart(value);
+                    setOpenDeleteDialogue(true);
+                  }}
+                >
+                  {t('counterparts:actions.delete')}
+                </DropdownItem>
+              </>
+            );
+          }}
+          // data={prepareDataForTable()}
+          data={counterparts?.data}
+          onRow={(record) => ({
+            onClick: () => console.log('onRowClick', record),
+          })}
+          scroll={{ y: 'auto' }}
+          footer={() => (
+            <Styled.Footer>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={onPrev}
+                disabled={!counterparts?.prev_pagination_token}
+              >
+                <UArrowLeft width={24} height={24} />
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={onNext}
+                disabled={!counterparts?.next_pagination_token}
+              >
+                <UArrowRight width={24} height={24} />
+              </Button>
+            </Styled.Footer>
+          )}
+        />
+      </Styled.Table>
+      {openDeleteDialogue && (
+        <ConfirmDeleteDialogue
+          onClose={() => {
+            setOpenDeleteDialogue(false);
+            setSelectedCounterpart(undefined);
+          }}
+          onDelete={() => {
+            deleteCounterpartMutation.mutate();
+            setOpenDeleteDialogue(false);
+            setSelectedCounterpart(undefined);
+          }}
+          name={selectedCounterpart ? getName(selectedCounterpart) : ''}
+        />
+      )}
+    </>
   );
 };
 
