@@ -11,17 +11,14 @@ import styled from '@emotion/styled';
 import Spinner from '../Spinner';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { Box, BoxProps } from '../Box';
-import { THEMES, ThemeType } from '../consts';
+import { THEMES, ThemeColors } from '../consts';
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type ButtonSize = 'sm' | 'md';
 export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
 type ButtonTextSize = keyof typeof TEXT_STYLES;
-export type ButtonColor =
-  | ThemeType
-  | keyof typeof THEMES.default.colors
-  | 'inherit';
+export type ButtonColor = ThemeColors | 'inherit';
 
 export interface ButtonProps extends BoxProps {
   onClick?: (e: BaseSyntheticEvent) => void;
@@ -218,6 +215,7 @@ const getSecondaryColor = ({
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
   if ($color !== 'secondary') return '';
 
+  // TODO remove THEMES. use useTheme()
   const { white, black, grey } = THEMES.default.colors;
 
   const secondaryColor = `color: ${black};`;

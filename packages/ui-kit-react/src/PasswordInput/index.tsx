@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 
 import InputField, { InputProps } from '../Input';
 import { UEye, UEyeSlash } from '../unicons';
@@ -24,6 +25,7 @@ const EyeTrigger = styled.span`
 
 const PasswordField = (props: InputProps) => {
   const [isShowPassword, setShowPassword] = useState(false);
+  const theme = useTheme();
 
   const onClickEye = () => {
     setShowPassword((isShowPassword) => !isShowPassword);
@@ -39,6 +41,7 @@ const PasswordField = (props: InputProps) => {
 
   return (
     <Field
+      theme={theme}
       type={isShowPassword ? 'text' : 'password'}
       renderAddon={renderIcon}
       {...props}

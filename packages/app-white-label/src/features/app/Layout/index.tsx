@@ -21,7 +21,7 @@ const Sider = styled(Flex)`
   height: 100vh;
 
   flex-direction: column;
-  background: ${(props: any) => props.theme.colors.lightGrey3};
+  background: ${({ theme }) => theme.colors.lightGrey3};
 
   a {
     color: ${({ theme }) => theme.colors.black};

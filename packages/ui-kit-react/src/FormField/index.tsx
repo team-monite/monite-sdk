@@ -47,11 +47,11 @@ const Label = styled(Text)`
 `;
 
 const Error = styled(Text)<{}>`
-  color: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.colors.danger};
   margin-top: 8px;
 
   a {
-    color: ${({ theme }) => theme.colors.error};
+    color: ${({ theme }) => theme.colors.danger};
     text-decoration: underline;
   }
 `;

@@ -72,7 +72,7 @@ const NewPolicyForm = ({
               control={control}
               defaultValue=""
               render={({ field: { ref, ...restField } }) => (
-                <Input {...restField} as="textarea" rows={4} />
+                <Input {...restField} textarea={true} rows={4} />
               )}
             />
           </FormItem>
