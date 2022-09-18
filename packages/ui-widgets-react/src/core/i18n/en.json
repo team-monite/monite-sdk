@@ -140,6 +140,19 @@
       "successNotification": "Counterpart “{{name}}” was deleted.",
       "errorNotification": "Failed to delete counterpart “{{name}}”."
     },
+    "filters": {
+      "isCustomer": {
+        "all": "Customers & Vendors",
+        "customers": "Customers",
+        "vendors": "Vendors"
+      },
+      "type": {
+        "all": "All",
+        "companies": "Companies",
+        "individuals": "Individuals"
+      },
+      "search": "Search by name"
+    },
     "contactPersons": "Contact persons",
     "customer": "Customer",
     "vendor": "Vendor"

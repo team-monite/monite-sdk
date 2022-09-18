@@ -8,8 +8,8 @@ import {
   UPhone,
   UUserSquare,
   Button,
-  // HeadCellSort,
-  // SortOrderEnum,
+  HeadCellSort,
+  SortOrderEnum,
   UArrowLeft,
   UArrowRight,
   DropdownItem,
@@ -20,6 +20,7 @@ import {
   CounterpartOrganization,
   CounterpartResponse,
   CounterpartType,
+  Receivablesapi__v1__counterparts__pagination__CursorFields,
 } from '@monite/sdk-api';
 
 import {
@@ -29,21 +30,41 @@ import {
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import ConfirmDeleteDialogue from './ConfirmDeleteDialogue';
+import { default as FiltersComponent } from './Filters';
+
 import { getName } from '../helpers';
+import { Sort, Filters, FilterValue } from './types';
+import {
+  FILTER_TYPE_SEARCH,
+  FILTER_TYPE_TYPE,
+  FILTER_TYPE_IS_CUSTOMER,
+} from './consts';
 
 import * as Styled from './styles';
 
 import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
-  data?: CounterpartResponse[];
+  onRowClick?: (id: string) => void;
+  onChangeSort?: (params: {
+    sort: Receivablesapi__v1__counterparts__pagination__CursorFields;
+    order: SortOrderEnum | null;
+  }) => void;
+  onChangeFilter?: (filter: {
+    field: keyof Filters;
+    value: FilterValue;
+  }) => void;
 }
 
 type CounterpartsTableRow = CounterpartResponse & {
   key: string;
 };
 
-const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
+const CounterpartsTable = ({
+  onRowClick,
+  onChangeSort: onChangeSortCallback,
+  onChangeFilter: onChangeFilterCallback,
+}: CounterpartsTableProps) => {
   const { t } = useComponentsContext();
 
   const [openDeleteDialogue, setOpenDeleteDialogue] = useState(false);
@@ -54,8 +75,8 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  // const [currentSort, setCurrentSort] = useState<Sort | null>(null);
-  // const [currentFilter, setCurrentFilter] = useState<Filters>({});
+  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const [currentFilter, setCurrentFilter] = useState<Filters>({});
 
   const {
     data: counterparts,
@@ -67,38 +88,49 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
     undefined,
     undefined,
     PAGE_LIMIT,
-    currentPaginationToken || undefined
+    currentPaginationToken || undefined,
+    currentSort ? currentSort.sort : undefined,
+    currentFilter[FILTER_TYPE_TYPE] || undefined,
+    undefined,
+    currentFilter[FILTER_TYPE_SEARCH] || undefined,
+    undefined,
+    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
+    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined
   );
-  // xMoniteEntityId: string,
-  // iban?: string,
-  // order?: OrderEnum,
-  // limit: number = 100,
-  // paginationToken?: string,
-  // sort?: Receivablesapi__v1__counterparts__pagination__CursorFields,
-  // type?: ReceivablesCounterpartType,
-  // counterpartName?: string,
-  // counterpartNameContains?: string,
-  // counterpartNameIcontains?: string,
-  // isVendor?: boolean,
-  // isCustomer?: boolean,
-  // email?: string,
-  // emailContains?: string,
-  // emailIcontains?: string,
-  // createdAt?: string,
-  // createdAtGt?: string,
-  // createdAtLt?: string,
-  // createdAtGte?: string,
-  // createdAtLte?: string
 
   useEffect(() => {
     refetch();
-  }, [currentPaginationToken]);
+  }, [currentPaginationToken, currentSort, currentFilter]);
 
   const onPrev = () =>
     setCurrentPaginationToken(counterparts?.prev_pagination_token || null);
 
   const onNext = () =>
     setCurrentPaginationToken(counterparts?.next_pagination_token || null);
+
+  const onChangeSort = (sort: any, order: SortOrderEnum | null) => {
+    setCurrentPaginationToken(null);
+    if (order) {
+      setCurrentSort({
+        sort,
+        order,
+      });
+    } else if (currentSort?.sort === sort && order === null) {
+      setCurrentSort(null);
+    }
+
+    onChangeSortCallback && onChangeSortCallback({ sort, order });
+  };
+
+  const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
+    setCurrentPaginationToken(null);
+    setCurrentFilter((prevFilter) => ({
+      ...prevFilter,
+      [field]: value === 'all' ? null : value,
+    }));
+
+    onChangeFilterCallback && onChangeFilterCallback({ field, value });
+  };
 
   const deleteCounterpartMutation = useDeleteCounterpartById(
     selectedCounterpart!,
@@ -107,14 +139,28 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
 
   return (
     <>
-      <Styled.Table clickableRow={true}>
-        {/* <FiltersComponent onChangeFilter={onChangeFilter} /> */}
+      <Styled.Table clickableRow={!!onRowClick}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
         <Table
           loading={isLoading || isRefetching}
           rowKey="id"
           columns={[
             {
-              title: t('counterparts:columns.name'),
+              title: (
+                <HeadCellSort
+                  isActive={
+                    currentSort?.sort ===
+                    Receivablesapi__v1__counterparts__pagination__CursorFields.COUNTERPART_NAME
+                  }
+                  title={t('counterparts:columns.name')}
+                  onChangeOrder={(order) =>
+                    onChangeSort(
+                      Receivablesapi__v1__counterparts__pagination__CursorFields.COUNTERPART_NAME,
+                      order
+                    )
+                  }
+                />
+              ),
               dataIndex: 'name',
               key: 'name',
               render: (value, row) => {
@@ -236,10 +282,10 @@ const CounterpartsTable = ({ data }: CounterpartsTableProps) => {
               </>
             );
           }}
-          // data={prepareDataForTable()}
           data={counterparts?.data}
           onRow={(record) => ({
-            onClick: () => console.log('onRowClick', record),
+            onClick: () =>
+              onRowClick && onRowClick((record as CounterpartResponse).id),
           })}
           scroll={{ y: 'auto' }}
           footer={() => (
