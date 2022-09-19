@@ -60,7 +60,13 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={merge(THEMES.default, tokenizedTheme)}>
+    <ThemeProvider
+      theme={merge(
+        THEMES.default,
+        tokenizedTheme,
+        {} // custom theme
+      )}
+    >
       <Story />
     </ThemeProvider>
   ),

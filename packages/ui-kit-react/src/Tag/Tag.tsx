@@ -1,16 +1,14 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { THEMES } from '../consts';
-
 export type TagColorType =
   | 'primary'
+  | 'secondary'
+  | 'disabled'
   | 'success'
   | 'warning'
-  | 'pending'
-  | 'disabled'
-  | 'secondary'
-  | 'draft';
+  | 'error'
+  | 'special';
 
 export interface TagProps {
   color?: TagColorType;
@@ -21,37 +19,6 @@ export interface TagProps {
   onClose?: () => void;
 }
 
-const Themes: Record<TagColorType, string> = {
-  primary: '',
-  success: `
-    color: ${THEMES.default.colors.tagGreen};
-    background: ${THEMES.default.colors.tagSalad};
-    border-color: ${THEMES.default.colors.tagSalad}
-  `,
-  warning: `
-    color: ${THEMES.default.colors.orange};
-    background: ${THEMES.default.colors.tagBeige};
-    border-color: ${THEMES.default.colors.tagBeige}
-  `,
-  pending: `
-    color: ${THEMES.default.colors.tagViolet};
-    background: ${THEMES.default.colors.tagPink};
-    border-color: ${THEMES.default.colors.tagPink}
-  `,
-  disabled: `
-    color: ${THEMES.default.colors.grey};
-  `,
-  secondary: `
-    background: ${THEMES.default.colors.lightGrey3};
-    border-color: ${THEMES.default.colors.lightGrey3};
-  `,
-  draft: `
-    background: ${THEMES.default.colors.lightGrey3};
-    border-color: ${THEMES.default.colors.lightGrey3};
-    color: ${THEMES.default.colors.grey};
-  `,
-};
-
 const StyledTag = styled.span<
   TagProps & {
     $color?: TagColorType;
@@ -61,11 +28,11 @@ const StyledTag = styled.span<
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme, $color = 'primary' }) => theme.tag[`${$color}TextColor`]};
 
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey2};
   border-radius: 4px;
-  background: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme, $color = 'primary' }) =>
+    theme.tag[`${$color}BackgroundColor`]};
 
   padding: 1px 8px;
   height: 24px;
@@ -76,8 +43,6 @@ const StyledTag = styled.span<
 
   white-space: nowrap;
   cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};
-
-  ${({ $color = 'primary' }) => Themes[$color]}
 `;
 
 const StyledIcon = styled.i<{

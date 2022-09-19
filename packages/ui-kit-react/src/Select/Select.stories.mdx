@@ -1,0 +1,79 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+
+import { UUsersAlt } from '../unicons';
+import Select from './Select';
+
+<Meta
+  title="Data Input/Select"
+  component={Select}
+  args={{
+    isDisabled: false,
+    onChange: action('onChange')
+  }}
+  argTypes={{
+    isFilter: {
+      control: 'boolean',
+    },
+    isClearable: {
+      control: 'boolean',
+    },
+    placeholder: {
+      control: 'text',
+    },
+    isDisabled: {
+      control: 'boolean',
+    }
+  }}
+/>
+
+export const options = [
+  {
+    label: 'Male',
+    value: '1',
+  },
+  {
+    label: 'Female',
+    value: '2',
+  },
+];
+
+export const Template = (args) => (
+  <div style={{ height: 200, width: 300 }}>
+    <Select {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story
+    name="Playground"
+    args={{
+      options: options,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Filter"
+    args={{
+      options: options,
+      isFilter: true,
+      isClearable: true,
+      placeholder: 'Filter',
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="FilterWithIcon"
+    args={{
+      options: options,
+      isFilter: true,
+      isClearable: true,
+      placeholder: 'Filter',
+      leftIcon: () => <UUsersAlt width={24} />,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

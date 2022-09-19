@@ -104,7 +104,7 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   .react-datepicker__day--keyboard-selected,
   .react-datepicker__month-text--keyboard-selected,
   .react-datepicker__year-text--selected {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.datePicker.selectedBackgroundColor};
   }
 
   .react-datepicker__day--today,

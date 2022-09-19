@@ -35,7 +35,7 @@ export default Story;
 const statuses = {
   Done: 'success',
   'Add to storybook': 'warning',
-  'Not ready': 'draft',
+  'Not ready': 'secondary',
 };
 
 const data = [

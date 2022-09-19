@@ -130,11 +130,8 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   const customStyles: StylesConfig = {
     singleValue: (provided: any) => ({
       ...provided,
-      ...(isDisabled
-        ? {
-            color: THEMES.default.colors.lightGrey1,
-          }
-        : {}),
+      ...(isFilter && { color: theme.select.filterTextColor }),
+      ...(isDisabled && { color: theme.select.filterTextColorDisabled }),
     }),
     multiValue: (provided: any) => ({
       ...provided,
@@ -199,13 +196,17 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
           ? THEMES.default.colors.blue
           : state.hasValue
           ? THEMES.default.colors.lightGrey2
-          : THEMES.default.colors.lightGrey3;
+          : theme.select.filterBorderColor;
 
       const getBackgroundColor = () => {
         if (isFilter) {
-          return state.hasValue
-            ? THEMES.default.colors.lightGrey3
-            : THEMES.default.colors.white;
+          if (isDisabled) {
+            return theme.select.filterBackgroundColorDisabled;
+          } else {
+            return state.hasValue
+              ? theme.select.filterWithValueBackgroundColor
+              : theme.select.filterBackgroundColor;
+          }
         } else {
           return state.hasValue || isFocused
             ? THEMES.default.colors.white
@@ -220,30 +221,26 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
 
       return {
         ...provided,
-        borderRadius: isFilter ? 100 : 8,
+        borderRadius: isFilter ? theme.select.filterBorderRadius : 8,
         borderColor,
         boxShadow,
         padding: 0,
         paddingLeft: leftIcon ? 10 : 0,
-        transition:
-          'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out',
         ':hover, :focus': {
           borderColor: !isFilter
             ? THEMES.default.colors.blue
-            : props.placeholder === '' && !state.hasValue
-            ? THEMES.default.colors.lightGrey3
-            : THEMES.default.colors.lightGrey2,
+            : theme.select.filterBorderColorHover,
           boxShadow: !isFilter
             ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
             : 'none',
           backgroundColor: isFilter
-            ? THEMES.default.colors.black
+            ? theme.select.filterBackgroundColorHover
             : THEMES.default.colors.white,
           color: isFilter
-            ? THEMES.default.colors.white
+            ? theme.select.filterTextColorHover
             : THEMES.default.colors.black,
           '*': {
-            color: isFilter && THEMES.default.colors.white,
+            color: isFilter && theme.select.filterTextColorHover,
           },
         },
         background: getBackgroundColor(),
@@ -255,10 +252,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         padding: 0,
         margin: 0,
         outline: 0,
-        color: isFilter && theme.select.textColor,
-        ':hover': {
-          color: isFilter && theme.select.textColorHover,
-        },
+        color: isFilter && theme.select.filterTextColor,
       };
     },
     valueContainer: (provided: any) => {
