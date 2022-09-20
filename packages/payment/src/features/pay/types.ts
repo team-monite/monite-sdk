@@ -18,6 +18,20 @@ export type URLData = {
     id: string;
     type: string;
   };
+  recipient: {
+    id: string;
+    type: string;
+  };
   account_id: string;
   id: string;
 };
+
+export enum PaymentType {
+  PAYABLE = 'payable',
+  RECEIVABLE = 'receivable',
+}
+
+export enum RecipientType {
+  COUNTERPART = 'counterpart',
+  ENTITY = 'entity',
+}
