@@ -17,7 +17,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fromBase64 } from 'features/app/consts';
 
 import Layout from '../Layout';
-import { URLData, PaymentType } from '../types';
+import { URLData, RecipientType } from '../types';
 
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
@@ -49,14 +49,13 @@ export const PaymentResultPage = () => {
     ? (fromBase64(rawPaymentData) as URLData)
     : null;
 
-  const type = paymentData?.object?.type;
+  const type = paymentData?.recipient?.type;
 
   const returnUrl =
-    type === PaymentType.PAYABLE
+    type === RecipientType.COUNTERPART
       ? paymentData?.return_url || ''
       : `/?data=${rawPaymentData}`;
 
-  console.log('PAYMENTDATA', paymentData);
   const statusesMap = {
     processing: {
       renderIcon: () => (
@@ -129,10 +128,10 @@ export const PaymentResultPage = () => {
   const showReturnButton = () => {
     if (
       (getStatus(status as StripeResultStatuses) === ResultStatuses.Succeeded &&
-        type === PaymentType.RECEIVABLE) ||
+        type === RecipientType.ENTITY) ||
       (getStatus(status as StripeResultStatuses) ===
         ResultStatuses.Processing &&
-        type === PaymentType.RECEIVABLE)
+        type === RecipientType.ENTITY)
     ) {
       return false;
     }
