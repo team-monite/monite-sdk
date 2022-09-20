@@ -24,7 +24,8 @@
       "iban": "IBAN",
       "payee": "Payee Name",
       "amount": "Invoice amount",
-      "back": "Go back"
+      "return": "Return to account",
+      "tryAgain": "Try again"
     }
   }
 }

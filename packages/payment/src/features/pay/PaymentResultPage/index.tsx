@@ -17,7 +17,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fromBase64 } from 'features/app/consts';
 
 import Layout from '../Layout';
-import { URLData } from '../types';
+import { URLData, PaymentType } from '../types';
 
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
@@ -49,6 +49,14 @@ export const PaymentResultPage = () => {
     ? (fromBase64(rawPaymentData) as URLData)
     : null;
 
+  const type = paymentData?.object?.type;
+
+  const returnUrl =
+    type === PaymentType.PAYABLE
+      ? paymentData?.return_url || ''
+      : `/?data=${rawPaymentData}`;
+
+  console.log('PAYMENTDATA', paymentData);
   const statusesMap = {
     processing: {
       renderIcon: () => (
@@ -117,6 +125,19 @@ export const PaymentResultPage = () => {
     style: 'currency',
     currency: paymentData?.currency || 'EUR',
   });
+
+  const showReturnButton = () => {
+    if (
+      (getStatus(status as StripeResultStatuses) === ResultStatuses.Succeeded &&
+        type === PaymentType.RECEIVABLE) ||
+      (getStatus(status as StripeResultStatuses) ===
+        ResultStatuses.Processing &&
+        type === PaymentType.RECEIVABLE)
+    ) {
+      return false;
+    }
+    return true;
+  };
 
   return (
     <Layout>
@@ -202,16 +223,16 @@ export const PaymentResultPage = () => {
               </Box>
             )}
 
-            {getStatus(status as StripeResultStatuses) !==
-              ResultStatuses.Succeeded && (
+            {showReturnButton() && (
               <Flex justifyContent="center">
                 <Box width={'160px'}>
-                  <Button
-                    mt="24px"
-                    block
-                    onClick={() => navigate(`/?data=${rawPaymentData}`)}
-                  >
-                    {t('payment:result.back')}
+                  <Button mt="24px" block onClick={() => navigate(returnUrl)}>
+                    {getStatus(status as StripeResultStatuses) ===
+                      ResultStatuses.Succeeded ||
+                    getStatus(status as StripeResultStatuses) ===
+                      ResultStatuses.Processing
+                      ? t('payment:result.return')
+                      : t('payment:result.tryAgain')}
                   </Button>
                 </Box>
               </Flex>

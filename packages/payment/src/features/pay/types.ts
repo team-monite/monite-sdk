@@ -21,3 +21,8 @@ export type URLData = {
   account_id: string;
   id: string;
 };
+
+export enum PaymentType {
+  PAYABLE = 'payable',
+  RECEIVABLE = 'receivable',
+}
