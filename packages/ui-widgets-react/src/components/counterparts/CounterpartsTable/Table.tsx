@@ -20,7 +20,6 @@ import {
   CounterpartOrganization,
   CounterpartResponse,
   CounterpartType,
-  Receivablesapi__v1__counterparts__pagination__CursorFields,
 } from '@monite/sdk-api';
 
 import {
@@ -33,7 +32,12 @@ import ConfirmDeleteDialogue from './ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
 import { getName } from '../helpers';
-import { Sort, Filters, FilterValue } from './types';
+import {
+  Sort,
+  Filters,
+  FilterValue,
+  Receivablesapi__v1__counterparts__pagination__CursorFields,
+} from './types';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,

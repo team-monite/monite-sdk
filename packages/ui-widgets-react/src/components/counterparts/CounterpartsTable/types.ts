@@ -1,8 +1,4 @@
-import {
-  Receivablesapi__v1__counterparts__pagination__CursorFields,
-  PayableStateEnum,
-  ReceivablesCounterpartType,
-} from '@monite/sdk-api';
+import { PayableStateEnum, ReceivablesCounterpartType } from '@monite/sdk-api';
 import { SortOrderEnum } from '@monite/ui-kit-react';
 import {
   FILTER_TYPE_SEARCH,
@@ -22,3 +18,7 @@ export type Filters = {
 };
 
 export type FilterValue = PayableStateEnum | 'all' | Date | string | null;
+
+export enum Receivablesapi__v1__counterparts__pagination__CursorFields {
+  COUNTERPART_NAME = 'counterpart_name',
+}
