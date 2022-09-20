@@ -3,7 +3,7 @@ import { CounterpartType } from '@monite/sdk-api';
 import { Search, Select } from '@monite/ui-kit-react';
 import styled from '@emotion/styled';
 
-import { useComponentsContext } from '../../../core/context/ComponentsContext';
+import { useComponentsContext } from 'core/context/ComponentsContext';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,

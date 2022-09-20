@@ -52,10 +52,10 @@ const ConfirmDeleteDialogue = ({
             <Separator />
             <ActionsWrapper>
               <Button color="secondary" onClick={onClose}>
-                Cancel
+                {t('common:cancel')}
               </Button>
               <Button color="danger" onClick={onDelete}>
-                Delete
+                {t('common:delete')}
               </Button>
             </ActionsWrapper>
           </>
