@@ -1,0 +1,34 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+
+import Search from './Search';
+
+<Meta
+  title='Data Input/Search'
+  component={Search}
+  args={{
+    placeholder: 'Search',
+    isFilter: false,
+    onSearch: action('onSearch'),
+    disabled: false,
+  }}
+  argTypes={{
+    placeholder: {
+      control: 'text',
+    },
+    isFilter: {
+      control: 'boolean',
+    },
+    disabled: {
+      control: 'boolean',
+    },
+  }}
+/>
+
+export const Template = (args) => <Search {...args} />;
+
+<Canvas>
+  <Story name='Playground'>
+    {Template.bind({})}
+  </Story>
+</Canvas>

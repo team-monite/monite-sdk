@@ -40,7 +40,7 @@ const StyledTable = styled(RCTable)`
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    color: ${({ theme }) => theme.colors.grey};
+    color: ${({ theme }) => theme.tableHeader.textColor};
 
     padding: 20px 16px;
 
@@ -65,7 +65,7 @@ const StyledTable = styled(RCTable)`
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.tableBody.textColor};
 
     padding: 20px 16px;
 
@@ -80,6 +80,24 @@ const StyledTable = styled(RCTable)`
       border-bottom-right-radius: 4px;
       border-top-right-radius: 4px;
     }
+  }
+
+  .rc-table-body {
+    ${({ theme, onRow }) =>
+      onRow &&
+      `
+        tr:not(.rc-table-placeholder) {
+          cursor: pointer;
+
+          &:hover {
+            background-color: ${theme.tableBody.backgroundColorHover};
+          }
+
+          &:active {
+            background-color: ${theme.tableBody.backgroundColorActive};
+          }
+        }
+      `}
   }
 `;
 

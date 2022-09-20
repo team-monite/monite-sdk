@@ -69,7 +69,7 @@ export const FullScreenModalHeader = () => {
     >
       <StyledContent>
         <Text textSize={'h3'}>Mindspace GmbH</Text>
-        <Tag color={'draft'}>Draft</Tag>
+        <Tag color={'secondary'}>Draft</Tag>
       </StyledContent>
     </Template>
   );

@@ -21,8 +21,6 @@ export const Table = styled.div<{
     font-weight: 400;
     line-height: 24px;
 
-    color: ${({ theme }) => theme.colors.grey};
-
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -30,7 +28,6 @@ export const Table = styled.div<{
 
   table td {
     padding: 22px 12px;
-    color: ${({ theme }) => theme.colors.black};
     vertical-align: top;
 
     white-space: nowrap;
@@ -46,18 +43,6 @@ export const Table = styled.div<{
 
   .rc-table-body {
     flex: 1 1 0;
-
-    ${({ theme, clickableRow }) =>
-      clickableRow &&
-      `
-        tr:not(.rc-table-placeholder) {
-          cursor: pointer;
-
-          &:hover {
-            background-color: ${theme.colors.lightGrey3};
-          }
-        }
-      `}
   }
 `;
 
