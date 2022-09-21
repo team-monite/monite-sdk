@@ -16,7 +16,7 @@ import GlobalToast from '../GlobalToast';
 import i18n from '../i18n';
 import { ComponentsContext } from './ComponentsContext';
 
-import '../../index.less';
+import '../../index.css';
 
 interface MoniteProviderProps {
   monite: MoniteApp;
