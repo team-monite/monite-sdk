@@ -17,6 +17,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { fromBase64 } from 'features/app/consts';
 
 import Layout from '../Layout';
+import { formatAmountFromMinor } from '../consts';
 import { URLData, RecipientType } from '../types';
 
 enum StripeResultStatuses {
@@ -180,7 +181,12 @@ export const PaymentResultPage = () => {
                     </Box>
                     <Box width={2 / 3}>
                       <Text textSize="bold" color={theme.colors.black}>
-                        {formatter.format(paymentData.amount)}
+                        {formatter.format(
+                          formatAmountFromMinor(
+                            paymentData.amount,
+                            paymentData.currency
+                          )
+                        )}
                       </Text>
                     </Box>
                   </Flex>

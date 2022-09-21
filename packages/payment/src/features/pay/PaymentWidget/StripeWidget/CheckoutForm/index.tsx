@@ -11,6 +11,7 @@ import { PaymentMethodsEnum } from '@monite/sdk-api';
 import { useComponentsContext, toast } from '@monite/ui-widgets-react';
 
 import * as Styled from './styles';
+import { formatAmountFromMinor } from '../../../consts';
 
 type CheckoutFormProps = {
   clientSecret: string;
@@ -72,8 +73,8 @@ export default function CheckoutForm({
         payment_link_id: paymentLinkId,
       })
       .then((response) => {
-        setFee(response.total.fee);
-        setTotalAmount(response.total.amount);
+        setFee(formatAmountFromMinor(response.total.fee, currency));
+        setTotalAmount(formatAmountFromMinor(response.total.amount, currency));
       });
   };
 
@@ -127,6 +128,8 @@ export default function CheckoutForm({
     currency,
   });
 
+  const formattedFromMinorPrice = formatAmountFromMinor(price, currency);
+
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <div>
@@ -140,7 +143,7 @@ export default function CheckoutForm({
       <Styled.Prices>
         <Styled.PriceRow>
           <div>{t('payment:widget.amount')}</div>
-          <div>{formatter.format(price)}</div>
+          <div>{formatter.format(formattedFromMinorPrice)}</div>
         </Styled.PriceRow>
         {fee ? (
           <Styled.PriceRow>
@@ -157,7 +160,7 @@ export default function CheckoutForm({
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
-              percent: ((fee * 100.0) / price).toFixed(2),
+              percent: ((fee * 100.0) / formattedFromMinorPrice).toFixed(2),
             })}
           </Alert>
         </Box>
