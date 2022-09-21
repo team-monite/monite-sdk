@@ -98,7 +98,8 @@ export default function CheckoutForm({
         elements,
         confirmParams: {
           return_url:
-            `${returnUrl}?data=${rawPaymentData}` || `${window.location.href}`,
+            `${window.location.origin}/result?data=${rawPaymentData}` ||
+            `${window.location.href}`,
         },
       });
       // This point will only be reached if there is an immediate error when

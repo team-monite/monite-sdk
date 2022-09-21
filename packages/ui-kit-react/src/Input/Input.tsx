@@ -1,5 +1,12 @@
+// TODO refactor component, split to two: Input & Textarea
 import React, { ForwardedRef, forwardRef } from 'react';
 import styled from '@emotion/styled';
+import {
+  Input as RebassInput,
+  InputProps as RebassInputProps,
+  Textarea as RebassTextarea,
+  TextareaProps as RebassTextareaProps,
+} from '@rebass/forms';
 
 import type { ThemedStyledProps } from '../types';
 
@@ -96,7 +103,7 @@ const getBg = ({
   `;
 };
 
-const Input = styled.input<InputProps>`
+const Input = styled(RebassInput)`
   display: block;
   flex: 1;
   width: 100%;
@@ -119,20 +126,56 @@ const Input = styled.input<InputProps>`
   ${getBg}
 `;
 
-export interface InputProps
-  extends React.AllHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
-  as?: string;
+const Textarea = styled(RebassTextarea)`
+  display: block;
+  flex: 1;
+  width: 100%;
+
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  border-radius: ${({ isFilter }) => (isFilter ? '100px' : '8px')};
+  border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
+  padding: 11px 16px;
+  background-color: ${({ theme }) => theme.colors.lightGrey3};
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+
+  color: ${({ theme }) => theme.colors.black};
+
+  ${getBg}
+`;
+
+export interface InputProps extends RebassInputProps {
   value?: string | number;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<any>) => void;
   error?: string;
   isInvalid?: boolean;
   isFilter?: boolean;
+  hasAddonIcon?: boolean;
   renderAddon?: () => React.ReactNode;
   renderAddonIcon?: () => React.ReactNode;
   externalRef?: ForwardedRef<HTMLInputElement>;
+  textarea?: boolean;
 }
 
-const InputField = forwardRef<HTMLInputElement, InputProps>(
+export interface TextareaProps extends RebassTextareaProps {
+  value?: string | number;
+  onChange?: (event: React.ChangeEvent<any>) => void;
+  error?: string;
+  isInvalid?: boolean;
+  isFilter?: boolean;
+  hasAddonIcon?: boolean;
+  renderAddon?: () => React.ReactNode;
+  renderAddonIcon?: () => React.ReactNode;
+  externalRef?: ForwardedRef<HTMLInputElement>;
+  textarea?: boolean;
+}
+// TODO fix typings for forward ref
+const InputField = forwardRef<any, any>(
   (
     {
       className,
@@ -142,13 +185,16 @@ const InputField = forwardRef<HTMLInputElement, InputProps>(
       type = 'text',
       isFilter,
       externalRef,
+      textarea,
       ...props
     },
     ref
   ) => {
+    const RenderedInput = textarea ? Textarea : Input;
+
     return (
       <InputGroup className={className} hasAddonIcon={!!renderAddonIcon}>
-        <Input
+        <RenderedInput
           {...props}
           ref={externalRef || ref}
           type={type}

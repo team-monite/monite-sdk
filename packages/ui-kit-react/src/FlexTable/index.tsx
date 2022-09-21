@@ -10,7 +10,7 @@ const Wrapper = styled(List)`
     align-content: center;
     position: relative;
 
-    &:first-child {
+    &:first-of-type {
       padding: 14px 16px;
 
       font-size: 14px;

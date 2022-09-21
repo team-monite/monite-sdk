@@ -36,13 +36,13 @@ DefaultTag.args = {
 export const Colors = () => {
   return (
     <Wrap>
-      <Tag>Active</Tag>
+      <Tag>Primary</Tag>
+      <Tag color="secondary">Secondary</Tag>
+      <Tag color="disabled">Disabled</Tag>
       <Tag color="success">Success</Tag>
       <Tag color="warning">Warning</Tag>
-      <Tag color="pending">Pending</Tag>
-      <Tag color="disabled">Disabled</Tag>
-      <Tag color="secondary">Archived</Tag>
-      <Tag color="draft">Draft</Tag>
+      <Tag color="error">Error</Tag>
+      <Tag color="special">Special</Tag>
     </Wrap>
   );
 };

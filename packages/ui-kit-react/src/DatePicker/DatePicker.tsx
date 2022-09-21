@@ -1,5 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
 import ReactDatePicker, {
   CalendarContainer,
   registerLocale,
@@ -103,7 +104,7 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   .react-datepicker__day--keyboard-selected,
   .react-datepicker__month-text--keyboard-selected,
   .react-datepicker__year-text--selected {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.datePicker.selectedBackgroundColor};
   }
 
   .react-datepicker__day--today,
@@ -214,6 +215,7 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     const [showMonthYearPicker, setShowMonthYearPicker] = useState(false);
     const [showYearPicker, setShowYearPicker] = useState(false);
     const { startPeriod, endPeriod } = getYearsPeriod(date || new Date());
+    const theme = useTheme();
 
     return (
       <DataPickerWrapper isFilter={isFilter}>
@@ -226,6 +228,7 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           placeholderText={placeholder}
           customInput={
             <Input
+              theme={theme}
               required={required}
               externalRef={ref}
               error={error}

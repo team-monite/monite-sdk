@@ -90,12 +90,12 @@ export const DefaultTable = () => (
           },
         },
       ]}
-      dropdownActions={
+      renderDropdownActions={() => (
         <>
           <DropdownItem onClick={() => {}}>Edit</DropdownItem>
           <DropdownItem onClick={() => {}}>Delete</DropdownItem>
         </>
-      }
+      )}
     />
   </div>
 );

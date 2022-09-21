@@ -94,7 +94,7 @@ export const FullScreenModalLayout = ({ onHide }: { onHide: () => void }) => {
         >
           <StyledHeaderContent>
             <Text textSize={'h3'}>Mindspace GmbH</Text>
-            <Tag color={'draft'}>Draft</Tag>
+            <Tag color={'secondary'}>Draft</Tag>
           </StyledHeaderContent>
         </Header>
       }

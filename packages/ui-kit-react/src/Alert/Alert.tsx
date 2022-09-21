@@ -1,7 +1,7 @@
 import React, { BaseSyntheticEvent, FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { UClockThree, UCheck, UExclamationTriangle } from 'unicons';
-import { ThemeType } from '../consts';
+import { ThemeColors } from '../consts';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { ThemedStyledProps } from '../types';
 
@@ -20,14 +20,14 @@ export interface AlertProps {
   hasLeftIcon?: boolean;
   link?: ReactNode;
   action?: ReactNode;
-  color?: ThemeType;
-  backgroundColor?: ThemeType;
+  color?: ThemeColors;
+  backgroundColor?: ThemeColors;
 }
 
 type StyledAlertProps = {
   $variant: AlertVariant;
-  $color?: ThemeType;
-  $backgroundColor?: ThemeType;
+  $color?: ThemeColors;
+  $backgroundColor?: ThemeColors;
 };
 
 const getColor = ({
@@ -38,7 +38,7 @@ const getColor = ({
   if ($color) return theme.colors[$color];
   if ($variant === 'info') return theme.colors.primary;
   if ($variant === 'success') return theme.colors.successDarker;
-  if ($variant === 'error') return theme.colors.error;
+  if ($variant === 'error') return theme.colors.danger;
 };
 
 const getBackgroundColor = ({

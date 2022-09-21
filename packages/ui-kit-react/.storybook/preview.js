@@ -8,12 +8,13 @@ import {
   ArgsTable,
   PRIMARY_STORY,
 } from '@storybook/addon-docs';
-import { ThemeProvider } from 'emotion-theming';
+import ThemeProvider from '../src/core/ThemeProvider';
+import { merge } from 'lodash';
 
 import '@monite/app-white-label/src/assets/fonts/Faktum/font.css';
 import './main.css';
 
-import { THEMES } from '../src';
+import { THEMES, tokenizedTheme } from '../src';
 
 export const parameters = {
   // argTypes: {
@@ -59,7 +60,13 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={THEMES.default}>
+    <ThemeProvider
+      theme={merge(
+        THEMES.default,
+        tokenizedTheme,
+        {} // custom theme
+      )}
+    >
       <Story />
     </ThemeProvider>
   ),

@@ -1,0 +1,74 @@
+import Table from './Table';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import withMock from 'storybook-addon-mock';
+import { action } from '@storybook/addon-actions';
+import counterpartsMock from '../fixtures/counterparts';
+
+<Meta
+  title="In Progress/Counterparts — Table View"
+  component={Table}
+  decorators={[withMock]}
+  parameters={{
+    mockData: [
+      {
+        url: 'https://api.dev.monite.com/v1/counterparts?limit=10',
+        method: 'GET',
+        status: 200,
+        response: counterpartsMock.firstPage,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/counterparts?limit=10&pagination_token=:pagination_token',
+        method: 'GET',
+        status: 200,
+        response: (request) => {
+          switch (request.searchParams.pagination_token) {
+            case 'next_page':
+              return counterpartsMock.secondPage;
+            case 'prev_page':
+              return counterpartsMock.firstPage;
+          }
+        },
+      },
+    ],
+  }}
+/>
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <Table {...args} />
+  </div>
+);
+
+# Counterparts Table
+
+#### The Counterparts table is a component for displaying the list of counterparts for the current entity user.
+
+It displays
+
+- Name, country, city
+- Counterpart's type
+- Contact information
+- Actions dropdown for each row
+
+It has sorting column: Name. First click set up ASC order, second — DESC order, third — disable sorting.
+
+It has a search field by Name. It sends a request after a user types a search string.
+
+It has the filter by type "Customer" or "Vendor". The user can select specific type or the "Customers & Vendors" option (it means the same as no selection at all). After every select change, the filter settings will be updated and a new request will be fired with updated values.
+
+It has the filter by type "Individuals" or "Companies". The user can select specific type or the "All" option (it means the same as no selection at all). After every select change, the filter settings will be updated and a new request will be fired with updated values.
+
+It has pagination. The user can go to the previous/next page only. The current limit for 1 page is 10 rows.
+
+<Canvas>
+  <Story
+    name="Playground"
+    args={{
+      onRowClick: action('onRowClick'),
+      onChangeSort: action('onChangeSort'),
+      onChangeFilter: action('onChangeFilter'),
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

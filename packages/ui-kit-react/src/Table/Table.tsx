@@ -40,7 +40,7 @@ const StyledTable = styled(RCTable)`
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    color: ${({ theme }) => theme.colors.grey};
+    color: ${({ theme }) => theme.tableHeader.textColor};
 
     padding: 20px 16px;
 
@@ -58,14 +58,13 @@ const StyledTable = styled(RCTable)`
   }
 
   td {
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.tableBody.textColor};
 
     padding: 20px 16px;
 
@@ -80,6 +79,24 @@ const StyledTable = styled(RCTable)`
       border-bottom-right-radius: 4px;
       border-top-right-radius: 4px;
     }
+  }
+
+  .rc-table-body {
+    ${({ theme, onRow }) =>
+      onRow &&
+      `
+        tr:not(.rc-table-placeholder) {
+          cursor: pointer;
+
+          &:hover {
+            background-color: ${theme.tableBody.backgroundColorHover};
+          }
+
+          &:active {
+            background-color: ${theme.tableBody.backgroundColorActive};
+          }
+        }
+      `}
   }
 `;
 
@@ -112,11 +129,11 @@ const NoData = styled(Text)`
 
 interface TableProps extends RCTableProps {
   loading?: boolean;
-  dropdownActions?: ReactNode;
+  renderDropdownActions?: (value: any) => ReactNode;
 }
 
 export const Table = ({
-  dropdownActions,
+  renderDropdownActions,
   columns,
   loading,
   ...restProps
@@ -137,16 +154,24 @@ export const Table = ({
         </SpinnerWrapper>
       )}
       <StyledTable
-        rowKey="id"
+        rowKey={(record, index) => `${record}${index}`}
         // @ts-ignore
         columns={
-          columns && dropdownActions
+          columns && renderDropdownActions
             ? [
                 ...columns,
-                dropdownActions && {
+                renderDropdownActions && {
                   title: '',
                   dataIndex: '',
                   key: 'operations',
+                  onCell: (value, index) => ({
+                    onClick(e) {
+                      if (e.target) {
+                        //@ts-ignore
+                        setReferenceElement(e.target.querySelector('button'));
+                      }
+                    },
+                  }),
                   render: (value, row, index) => {
                     // TODO move to separate component
                     return (
@@ -164,8 +189,6 @@ export const Table = ({
                                 !shown ? index : false
                               );
                             }}
-                            // TODO ref is ignored. fix it.
-                            ref={setReferenceElement}
                           >
                             <UEllipsisV width={20} height={20} />
                           </DropdownToggler>
@@ -179,7 +202,7 @@ export const Table = ({
                               }}
                               {...popper.attributes.popper}
                             >
-                              {dropdownActions}
+                              {renderDropdownActions(value)}
                             </DropdownMenu>
                           )}
                         </Dropdown>

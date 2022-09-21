@@ -1,22 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
   CounterpartCreatePayload,
+  CounterpartsService,
   CounterpartPaginationResponse,
   CounterpartResponse,
   CounterpartUpdatePayload,
 } from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
+import { getName } from 'components/counterparts/helpers';
 
 const COUNTERPARTS_QUERY_ID = 'counterparts';
 
-export const useCounterpartList = () => {
+export const useCounterpartList = (
+  ...args: Parameters<CounterpartsService['getList']>
+) => {
   const { monite } = useComponentsContext();
 
   return useQuery<CounterpartPaginationResponse, Error>(
-    [COUNTERPARTS_QUERY_ID, 'list'],
+    ['counterpart'],
     () => {
-      return monite.api!.counterparts.getList();
+      return monite.api!.counterparts.getList(...args);
     },
     {
       onError: (error) => {
@@ -81,4 +85,28 @@ export const useUpdateCounterpart = (id: string) => {
       },
     }
   );
+};
+
+export const useDeleteCounterpartById = (counterpart: CounterpartResponse) => {
+  const queryClient = useQueryClient();
+  const { monite, t } = useComponentsContext();
+
+  return useMutation(() => monite.api!.counterparts.delete(counterpart.id), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['counterpart']);
+
+      toast(
+        t('counterparts:confirmDialogue.successNotification', {
+          name: getName(counterpart),
+        })
+      );
+    },
+    onError: () => {
+      toast.error(
+        t('counterparts:confirmDialogue.errorNotification', {
+          name: getName(counterpart),
+        })
+      );
+    },
+  });
 };

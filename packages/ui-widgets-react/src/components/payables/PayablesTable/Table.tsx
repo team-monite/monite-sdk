@@ -136,7 +136,7 @@ const PayablesTable = ({
   };
 
   return (
-    <Styled.Table clickableRow={!!onRowClick}>
+    <Styled.Table>
       <FiltersComponent onChangeFilter={onChangeFilter} />
       <Table
         loading={isLoading || isRefetching}

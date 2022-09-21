@@ -1,16 +1,5 @@
 import React from 'react';
-
-export type TooltipProps = {
-  tip?: string | React.ReactNode;
-  effect?: 'float' | 'solid';
-  [key: string]: any;
-};
-
-export interface Theme {
-  colors: {
-    [key: string]: string;
-  };
-}
+import { Theme } from 'consts';
 
 export interface ThemeProps {
   theme: Theme;
@@ -22,3 +11,9 @@ export enum SortOrderEnum {
   ASC = 'asc',
   DESC = 'desc',
 }
+
+export type TooltipProps = {
+  tip?: string | React.ReactNode;
+  effect?: 'float' | 'solid';
+  [key: string]: any;
+};

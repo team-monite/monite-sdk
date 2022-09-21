@@ -7,9 +7,38 @@ export const Wrapper = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  position: relative;
 
-  &:hover > span {
-    opacity: 1;
+  &:hover {
+    &:after {
+      position: absolute;
+      content: '';
+      width: 140%;
+      height: 140%;
+      left: -20%;
+      top: -20%;
+      background-color: ${({ theme }) =>
+        theme.tableHeader.backgroundColorHover};
+      z-index: -1;
+    }
+
+    > span {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    &:after {
+      position: absolute;
+      content: '';
+      width: 140%;
+      height: 140%;
+      left: -20%;
+      top: -20%;
+      background-color: ${({ theme }) =>
+        theme.tableHeader.backgroundColorActive};
+      z-index: -1;
+    }
   }
 `;
 
