@@ -28,9 +28,8 @@ export const formatAmountFromMinor = (
   currency: string
 ): number => {
   //@ts-ignore
-  if (CURRENCIES[currency as Keys<CURRENCIES>]?.minor_units) {
+  if (CURRENCIES[currency]?.minor_units) {
     //@ts-ignore
-
     return amount / 10 ** CURRENCIES[currency].minor_units;
   }
   return amount / 10 ** DEFAULT_MINOR_UNITS;

@@ -18,6 +18,7 @@ import { fromBase64 } from 'features/app/consts';
 
 import Layout from '../Layout';
 import { URLData } from '../types';
+import { formatAmountFromMinor } from '../consts';
 
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
@@ -160,7 +161,12 @@ export const PaymentResultPage = () => {
                     </Box>
                     <Box width={2 / 3}>
                       <Text textSize="bold" color={theme.colors.black}>
-                        {formatter.format(paymentData.amount)}
+                        {formatter.format(
+                          formatAmountFromMinor(
+                            paymentData.amount,
+                            paymentData.currency
+                          )
+                        )}
                       </Text>
                     </Box>
                   </Flex>
