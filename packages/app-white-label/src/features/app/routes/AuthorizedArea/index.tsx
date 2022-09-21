@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import PageCounterparts from 'features/counterparts/PageCounterparts';
-import PageCounterpartsCreate from 'features/counterparts/PageCounterpartsCreate';
 import PagePayables from 'features/payables/PagePayables';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
@@ -13,10 +12,6 @@ const AuthorizedArea = () => {
   return (
     <Routes>
       <Route path={ROUTES.counterparts} element={<PageCounterparts />} />
-      <Route
-        path={ROUTES.counterpartsCreate}
-        element={<PageCounterpartsCreate />}
-      />
       <Route path={ROUTES.payables}>
         <Route index element={<PagePayables />} />
         <Route path=":id" element={<PagePayables />} />

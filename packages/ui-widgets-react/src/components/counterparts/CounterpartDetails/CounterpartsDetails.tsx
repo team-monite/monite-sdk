@@ -55,8 +55,6 @@ const CounterpartsDetails = ({
       </Modal>
     );
 
-  if (counterpartView === COUNTERPART_VIEW.readonly) return 123;
-
   return null;
 };
 

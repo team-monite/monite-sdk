@@ -137,8 +137,7 @@ const CounterpartsTable = ({
   };
 
   const deleteCounterpartMutation = useDeleteCounterpartById(
-    selectedCounterpart!,
-    MONITE_ENTITY_ID
+    selectedCounterpart!
   );
 
   return (

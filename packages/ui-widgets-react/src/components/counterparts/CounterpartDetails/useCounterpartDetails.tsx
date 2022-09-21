@@ -36,9 +36,9 @@ export default function useCounterpartDetails({
 
   const { data: counterpart } = useCounterpartById(counterpartId);
 
-  useEffect(() => {
-    console.log(counterpart);
-  }, [counterpart]);
+  // useEffect(() => {
+  //   console.log(counterpart);
+  // }, [counterpart]);
 
   useEffect(() => {
     if (id) {
