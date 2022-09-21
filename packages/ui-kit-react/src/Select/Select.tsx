@@ -128,9 +128,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   };
 
   const customStyles: StylesConfig = {
-    singleValue: (provided: any) => ({
+    singleValue: (provided: any, state: any) => ({
       ...provided,
-      ...(isFilter && { color: theme.select.filterTextColor }),
+      ...(isFilter && {
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
+      }),
       ...(isDisabled && { color: theme.select.filterTextColorDisabled }),
     }),
     multiValue: (provided: any) => ({
@@ -246,13 +252,17 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         background: getBackgroundColor(),
       };
     },
-    input: (provided: any) => {
+    input: (provided: any, state: any) => {
       return {
         ...provided,
         padding: 0,
         margin: 0,
         outline: 0,
-        color: isFilter && theme.select.filterTextColor,
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
       };
     },
     valueContainer: (provided: any) => {
@@ -271,11 +281,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         gap: '4px',
       };
     },
-    clearIndicator: (provided: any) => {
+    clearIndicator: (provided: any, state: any) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
-        color: THEMES.default.colors.black,
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
         paddingRight: '16px',
       };
     },

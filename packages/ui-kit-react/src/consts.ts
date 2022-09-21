@@ -1,4 +1,4 @@
-import { TokenizedThemeType } from './theme/theme';
+import { TokenizedThemeType } from './theme';
 
 export const THEMES = {
   default: {

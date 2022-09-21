@@ -34,11 +34,39 @@ const palette = {
 
 const shape = {
   borderRadiusMax: '100px',
+  borderRadiusLarge: '16px',
+  borderRadiusMedium: '12px',
+  borderRadiusSmall: '8px',
 };
 
 const components = {
   datePicker: {
+    filterTextColor: palette.neutral10,
+    filterBackgroundColor: palette.neutral100,
+    filterBorderColor: palette.neutral80,
+    filterBorderRadius: shape.borderRadiusMax,
+
+    filterTextColorHover: palette.neutral100,
+    filterBackgroundColorHover: palette.neutral10,
+    filterBorderColorHover: palette.neutral10,
+
+    filterWithValueColor: palette.neutral10,
+    filterWithValueBackgroundColor: palette.neutral90,
+
     selectedBackgroundColor: palette.primary50,
+  },
+  input: {
+    filterTextColor: palette.neutral10,
+    filterBackgroundColor: palette.neutral100,
+    filterBorderColor: palette.neutral80,
+    filterBorderRadius: shape.borderRadiusMax,
+
+    filterTextColorHover: palette.neutral100,
+    filterBackgroundColorHover: palette.primary95,
+    filterBorderColorHover: palette.neutral10,
+
+    filterWithValueColor: palette.neutral10,
+    filterWithValueBackgroundColor: palette.neutral90,
   },
   search: {
     filterTextColor: palette.neutral10,
@@ -63,6 +91,7 @@ const components = {
     filterBackgroundColorHover: palette.neutral10,
     filterBorderColorHover: palette.neutral10,
 
+    filterWithValueTextColor: palette.neutral10,
     filterWithValueBackgroundColor: palette.neutral90,
 
     filterTextColorDisabled: palette.neutral50,

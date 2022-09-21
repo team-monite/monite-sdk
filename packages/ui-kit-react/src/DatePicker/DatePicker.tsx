@@ -113,8 +113,8 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   .react-datepicker__day--keyboard-selected,
   .react-datepicker__year-text--keyboard-selected {
     background: none;
-    color: #000;
-    font-weight: normal
+    color: ${({ theme }) => theme.black};
+    font-weight: normal;
   }
 }
 
@@ -131,21 +131,31 @@ const StyledCalendarContainer = styled(CalendarContainer)`
   }
 `;
 
-const DataPickerWrapper = styled.div<{ isFilter?: boolean }>`
+const DataPickerWrapper = styled.div<{
+  isFilter?: boolean;
+  hasValue?: boolean;
+}>`
   .react-datepicker__close-icon {
     display: none;
     visibility: hidden;
   }
 
+  i > div {
+    color: ${({ theme, hasValue }) =>
+      hasValue && theme.datePicker.filterWithValueColor};
+  }
+
   &:hover {
     i > div {
-      color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
+      color: ${({ isFilter, theme }) =>
+        isFilter && theme.datePicker.filterTextColorHover};
     }
 
     input {
-      color: ${({ isFilter, theme }) => isFilter && theme.colors.white};
+      color: ${({ isFilter, theme }) =>
+        isFilter && theme.datePicker.filterTextColorHover};
       background-color: ${({ isFilter, theme }) =>
-        isFilter && theme.colors.black};
+        isFilter && theme.datePicker.filterBackgroundColorHover};
     }
   }
 `;
@@ -218,7 +228,7 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     const theme = useTheme();
 
     return (
-      <DataPickerWrapper isFilter={isFilter}>
+      <DataPickerWrapper isFilter={isFilter} hasValue={!!date}>
         <ReactDatePicker
           {...props}
           selected={date}
