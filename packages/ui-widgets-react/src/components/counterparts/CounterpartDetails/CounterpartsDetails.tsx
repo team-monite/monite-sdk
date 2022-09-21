@@ -1,103 +1,59 @@
 import React from 'react';
-
-import { CounterpartResponse as Counterpart } from '@monite/sdk-api';
-
-import { useComponentsContext } from 'core/context/ComponentsContext';
-
-import CounterpartsCompany from './CounterpartCompany';
-import CounterpartsContact from './CounterpartContact';
-import CounterpartsOrganization from './CounterpartOrganization';
-
 import {
-  getAddress,
-  getFullName,
-  isIndividualCounterpart,
-  isOrganizationCounterpart,
-} from '../helpers';
+  CounterpartOrganizationResponse,
+  CounterpartType,
+} from '@monite/sdk-api';
+import { CounterpartOrganizationForm } from './CounterpartOrganization';
+import { Button, Modal } from '@monite/ui-kit-react';
+import useCounterpartDetails, {
+  COUNTERPART_VIEW,
+} from './useCounterpartDetails';
+import { StyledHeaderActions } from '../../payables/PayableDetails/PayableDetailsStyle';
 
 type CounterpartsDetailsProps = {
-  counterPart: Counterpart;
-  onEdit: () => void;
+  id?: string;
+  type?: CounterpartType;
+  onClose?: () => void;
 };
 
 const CounterpartsDetails = ({
-  counterPart,
-  onEdit,
+  id,
+  type,
+  onClose,
 }: CounterpartsDetailsProps) => {
-  const { t } = useComponentsContext();
+  const {
+    counterpartView,
+    formRef,
+    createCounterpart,
+    counterpartCreateMutation,
+    submitForm,
+    counterpart,
+  } = useCounterpartDetails({ id, type });
 
-  const getType = (isCustomer: boolean, isVendor: boolean): string => {
-    if (isCustomer) return t('counterparts:customer');
-    if (isVendor) return t('counterparts:vendor');
-    return '';
-  };
+  if (!(id || type)) return null;
 
-  if (isIndividualCounterpart(counterPart)) {
-    const {
-      first_name,
-      last_name,
-      is_customer,
-      is_vendor,
-      residential_address,
-      phone,
-      email,
-      tax_id,
-    } = counterPart.individual;
-
+  if (counterpartView === COUNTERPART_VIEW.organizationForm)
     return (
-      <CounterpartsCompany
-        companyName={getFullName(first_name, last_name)}
-        type={getType(is_customer, is_vendor)}
-        address={getAddress(residential_address)}
-        phone={phone}
-        email={email}
-        taxId={tax_id}
-        onEdit={onEdit}
-      />
+      <Modal onClose={onClose} anchor={'right'}>
+        <CounterpartOrganizationForm
+          counterpart={counterpart as CounterpartOrganizationResponse}
+          isLoading={counterpartCreateMutation.isLoading}
+          error={counterpartCreateMutation.error}
+          ref={formRef}
+          onSubmit={createCounterpart}
+          actions={
+            <StyledHeaderActions>
+              <Button onClick={onClose} variant={'link'} color={'secondary'}>
+                Cancel
+              </Button>
+              <Button onClick={submitForm} type={'submit'}>
+                Create
+              </Button>
+            </StyledHeaderActions>
+          }
+        />
+      </Modal>
     );
-  }
-
-  if (isOrganizationCounterpart(counterPart)) {
-    const {
-      legal_name,
-      registered_address,
-      vat_number,
-      is_customer,
-      is_vendor,
-      phone,
-      email,
-      contacts,
-    } = counterPart.organization;
-
-    return (
-      <CounterpartsOrganization
-        company={
-          <CounterpartsCompany
-            companyName={legal_name}
-            type={getType(is_customer, is_vendor)}
-            address={getAddress(registered_address)}
-            phone={phone}
-            email={email}
-            // todo what is vat_number?
-            taxId={vat_number}
-            onEdit={onEdit}
-          />
-        }
-        contacts={
-          contacts.length &&
-          contacts.map(({ last_name, first_name, address, email, phone }) => (
-            <CounterpartsContact
-              key={email}
-              fullName={getFullName(first_name, last_name)}
-              address={getAddress(address)}
-              email={email}
-              phone={phone}
-            />
-          ))
-        }
-      />
-    );
-  }
 
   return null;
 };

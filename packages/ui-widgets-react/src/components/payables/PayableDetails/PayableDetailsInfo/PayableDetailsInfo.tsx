@@ -12,6 +12,7 @@ import {
   StyledInfoValue,
   StyledScrollContent,
   StyledInfoScroll,
+  StyledTags,
 } from '../PayableDetailsStyle';
 
 export type PayablesDetailsInfoProps = {
@@ -72,11 +73,11 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
             </StyledInfoRow>
             <StyledInfoRow>
               <StyledInfoLabel>{t('payables:details.tags')}</StyledInfoLabel>
-              <StyledInfoValue>
-                {payable?.tags?.map((tag) => (
-                  <Tag key={tag.id}>{tag.name}</Tag>
+              <StyledTags>
+                {payable?.tags?.map(({ id, name }) => (
+                  <Tag key={id}>{name}</Tag>
                 ))}
-              </StyledInfoValue>
+              </StyledTags>
             </StyledInfoRow>
           </StyledInfoTable>
         </FormSection>
@@ -108,9 +109,11 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
             </StyledInfoRow>
             <StyledInfoRow>
               <StyledInfoLabel>
-                {`${payable?.suggested_payment_term?.discount}% ${t(
-                  'payables:details.tax'
-                )}`}
+                {`${
+                  payable?.suggested_payment_term?.discount
+                    ? `${payable?.suggested_payment_term?.discount}%`
+                    : ''
+                } ${t('payables:details.tax')}`}
               </StyledInfoLabel>
               <StyledInfoValue>
                 {payable.tax &&

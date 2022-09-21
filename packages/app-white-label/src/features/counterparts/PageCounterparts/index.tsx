@@ -1,25 +1,34 @@
-import React from 'react';
-import { CounterpartsTable, Button } from '@monite/ui-widgets-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import {
+  CounterpartsTable,
+  CounterpartDetails,
+  Button,
+} from '@monite/ui-widgets-react';
+import { CounterpartType } from '@monite/sdk-api';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import { ROUTES } from 'features/app/consts';
 
 const PageCounterparts = () => {
-  const navigate = useNavigate();
+  const [isCreateVisible, setCreateVisible] = useState<boolean>(false);
 
   return (
     <Layout>
       <PageHeader
         title="Counterparts"
         extra={[
-          <Button key="1" onClick={() => navigate(ROUTES.counterpartsCreate)}>
+          <Button key="1" onClick={() => setCreateVisible(true)}>
             Create New
           </Button>,
         ]}
       />
       <CounterpartsTable />
+      {isCreateVisible && (
+        <CounterpartDetails
+          type={CounterpartType.ORGANIZATION}
+          onClose={() => setCreateVisible(false)}
+        />
+      )}
     </Layout>
   );
 };

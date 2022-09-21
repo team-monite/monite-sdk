@@ -1,5 +1,5 @@
 import CounterpartsDetails from './CounterpartsDetails';
-import counterparts from '../fixtures/counterparts';
+import { CounterpartType } from '@monite/sdk-api';
 
 const Story = {
   title: 'In Progress/Counterparts — Details',
@@ -10,12 +10,12 @@ export default Story;
 
 export const OrganizationCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
-    <CounterpartsDetails onEdit={() => {}} counterPart={counterparts[0]} />
+    <CounterpartsDetails type={CounterpartType.ORGANIZATION} />
   </div>
 );
 
 export const IndividualCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
-    <CounterpartsDetails onEdit={() => {}} counterPart={counterparts[1]} />
+    <CounterpartsDetails type={CounterpartType.INDIVIDUAL} />
   </div>
 );

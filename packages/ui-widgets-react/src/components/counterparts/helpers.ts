@@ -2,18 +2,18 @@ import {
   CounterpartAddress,
   CounterpartIndividualResponse as CounterpartIndividual,
   CounterpartOrganizationResponse as CounterpartOrganization,
-  CounterpartResponse as Counterpart,
+  CounterpartResponse,
   CounterpartType,
 } from '@monite/sdk-api';
 
 export function isIndividualCounterpart(
-  counterpart: Counterpart
+  counterpart: CounterpartResponse
 ): counterpart is CounterpartIndividual {
   return counterpart.type === CounterpartType.INDIVIDUAL;
 }
 
 export function isOrganizationCounterpart(
-  counterpart: Counterpart
+  counterpart: CounterpartResponse
 ): counterpart is CounterpartOrganization {
   return counterpart.type === CounterpartType.ORGANIZATION;
 }
@@ -36,14 +36,16 @@ export function getFullName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
 }
 
-export function getName(counterpart: Counterpart): string {
+export function getName(counterpart: CounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
     const data = counterpart as CounterpartIndividual;
-    return data.individual.first_name;
+    return getFullName(data.individual.first_name, data.individual.last_name);
   }
+
   if (isOrganizationCounterpart(counterpart)) {
     const data = counterpart as CounterpartOrganization;
     return data.organization.legal_name;
   }
+
   return '';
 }

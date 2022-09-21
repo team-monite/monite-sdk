@@ -110,20 +110,36 @@
       "type": "Type",
       "contacts": "Contact information"
     },
-    "company": {
-      "companyName": "Company name",
-      "type": "Type",
+    "organization": {
       "address": "Business address",
-      "phone": "Phone",
-      "email": "E-mail",
-      "taxId": "Tax ID",
-      "vatId": "VAT ID"
+      "companyName": "Company name",
+      "phone": "Phone number",
+      "email": "Email",
+      "vatNumber": "VAT ID"
+    },
+    "individual": {
+      "address": "Address",
+      "firstName": "First name",
+      "lastName": "Second name",
+      "taxId": "Tax number",
+      "phone": "Phone number",
+      "email": "Email"
     },
     "contact": {
-      "fullName": "Full name",
       "address": "Address",
-      "phone": "Phone",
-      "email": "E-mail"
+      "fullName": "Full name",
+      "firstName": "First name",
+      "lastName": "Second name",
+      "phone": "Phone number",
+      "email": "Email"
+    },
+    "address": {
+      "line1": "Address line 1",
+      "line2": "Address line 2",
+      "city": "City",
+      "state": "State / Area / Province",
+      "country": "Country",
+      "postalCode": "ZIP code"
     },
     "actions": {
       "call": "Call",
@@ -157,13 +173,9 @@
     "customer": "Customer",
     "vendor": "Vendor"
   },
-  "address": {
-    "addressLine1": "Address line 1",
-    "addressLine2": "Address line 2",
-    "city": "City",
-    "state": "State / Area / Province",
-    "country": "Country",
-    "zipcode": "ZIP code"
+  "errors": {
+    "requiredField": " is required",
+    "validEmail": " must be a valid email"
   },
   "common": {
     "welcome": "Welcome",

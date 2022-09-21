@@ -93,9 +93,8 @@ export const StyledInfoTable = styled(Box)`
 export const StyledInfoRow = styled(Box)`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
-  height: 48px;
   align-items: center;
-  padding: 0 16px;
+  padding: 11px 16px;
 
   &:last-child {
     border-bottom: none;
@@ -109,4 +108,10 @@ export const StyledInfoLabel = styled(Text)`
 
 export const StyledInfoValue = styled(Text)`
   width: 50%;
+`;
+
+export const StyledTags = styled(StyledInfoValue)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
