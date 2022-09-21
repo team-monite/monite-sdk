@@ -9,12 +9,14 @@ export type ModalLayoutProps = {
   footer?: React.ReactNode;
   size?: ModalLayoutSize;
   fullScreen?: boolean;
+  isDrawer?: boolean;
   scrollableContent?: boolean;
 };
 
 type StyledModalLayoutProps = {
   $size?: ModalLayoutSize;
   $fullScreen?: boolean;
+  $isDrawer?: boolean;
   $scrollableContent?: boolean;
 };
 
@@ -29,20 +31,20 @@ const getWidth = ({ $size = 'sm', $fullScreen }: StyledModalLayoutProps) => {
   return '';
 };
 
-const getHeight = ({ $fullScreen }: StyledModalLayoutProps) => {
-  if ($fullScreen) return 'height: 100%;';
+const getHeight = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
+  if ($fullScreen || $isDrawer) return 'height: 100%;';
 
   return 'max-height: calc(100% - 64px);';
 };
 
-const getMargin = ({ $fullScreen }: StyledModalLayoutProps) => {
-  if ($fullScreen) return '';
+const getMargin = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
+  if ($fullScreen || $isDrawer) return '';
 
   return 'margin: 40px;';
 };
 
-const getBoxStyles = ({ $fullScreen }: StyledModalLayoutProps) => {
-  if ($fullScreen) return '';
+const getBoxStyles = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
+  if ($fullScreen || $isDrawer) return '';
 
   return `
     box-shadow: 0 8px 12px 0 #1111111f;
@@ -55,6 +57,7 @@ const StyledWrap = styled.div<StyledModalLayoutProps>`
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: right;
 
   ${getWidth}
   ${getHeight}
@@ -85,10 +88,11 @@ const ModalLayout = ({
   footer,
   size,
   fullScreen,
+  isDrawer,
   scrollableContent,
 }: ModalLayoutProps) => {
   return (
-    <StyledWrap $size={size} $fullScreen={fullScreen}>
+    <StyledWrap $size={size} $fullScreen={fullScreen} $isDrawer={isDrawer}>
       {header && <StyledModalLayoutHeader>{header}</StyledModalLayoutHeader>}
       <StyledModalLayoutContent $scrollableContent={scrollableContent}>
         {children}

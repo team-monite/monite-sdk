@@ -2,18 +2,18 @@ import {
   CounterpartAddress,
   CounterpartIndividualResponse as CounterpartIndividual,
   CounterpartOrganizationResponse as CounterpartOrganization,
-  CounterpartResponse as Counterpart,
+  CounterpartResponse,
   CounterpartType,
 } from '@monite/sdk-api';
 
 export function isIndividualCounterpart(
-  counterpart: Counterpart
+  counterpart: CounterpartResponse
 ): counterpart is CounterpartIndividual {
   return counterpart.type === CounterpartType.INDIVIDUAL;
 }
 
 export function isOrganizationCounterpart(
-  counterpart: Counterpart
+  counterpart: CounterpartResponse
 ): counterpart is CounterpartOrganization {
   return counterpart.type === CounterpartType.ORGANIZATION;
 }

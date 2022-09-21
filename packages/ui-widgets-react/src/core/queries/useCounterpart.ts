@@ -26,13 +26,14 @@ export const useCounterpartList = () => {
   );
 };
 
-export const useCounterpartById = (id: string) => {
+export const useCounterpartById = (id?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartResponse, Error>(
+  return useQuery<CounterpartResponse | undefined, Error>(
     [COUNTERPARTS_QUERY_ID, { id }],
-    () => monite.api!.counterparts.getById(id),
+    () => (id ? monite.api!.counterparts.getById(id) : undefined),
     {
+      enabled: !!id,
       onError: (error) => {
         toast.error(error.message);
       },

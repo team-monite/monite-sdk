@@ -7,6 +7,11 @@ export type ModalProps = {
   children: React.ReactNode;
   onClose?: () => void;
   className?: string;
+  anchor?: 'left' | 'right' | 'center';
+};
+
+type StyledModalProps = {
+  $anchor: ModalProps['anchor'];
 };
 
 const StyledBackdrop = styled.div`
@@ -17,10 +22,10 @@ const StyledBackdrop = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: rgba(17, 17, 17, 0.25);
 `;
 
-const StyledModal = styled(Flex)`
+const StyledModal = styled(Flex)<StyledModalProps>`
   position: fixed;
   top: 0;
   left: 0;
@@ -29,11 +34,16 @@ const StyledModal = styled(Flex)`
   outline: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: ${({ $anchor }) => $anchor};
   z-index: 950;
 `;
 
-const ModalLayout = ({ onClose, children, className }: ModalProps) => {
+const ModalLayout = ({
+  onClose,
+  children,
+  className,
+  anchor = 'center',
+}: ModalProps) => {
   useEffect(() => {
     document.body.style.setProperty('overflow', 'hidden');
     return () => {
@@ -44,7 +54,9 @@ const ModalLayout = ({ onClose, children, className }: ModalProps) => {
   return createPortal(
     <>
       <StyledBackdrop onClick={onClose} />
-      <StyledModal className={className}>{children}</StyledModal>
+      <StyledModal $anchor={anchor} className={className}>
+        {children}
+      </StyledModal>
     </>,
     document.body
   );
