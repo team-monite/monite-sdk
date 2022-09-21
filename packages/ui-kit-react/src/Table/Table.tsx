@@ -58,7 +58,6 @@ const StyledTable = styled(RCTable)`
   }
 
   td {
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 
@@ -130,11 +129,11 @@ const NoData = styled(Text)`
 
 interface TableProps extends RCTableProps {
   loading?: boolean;
-  dropdownActions?: ReactNode;
+  renderDropdownActions?: (value: any) => ReactNode;
 }
 
 export const Table = ({
-  dropdownActions,
+  renderDropdownActions,
   columns,
   loading,
   ...restProps
@@ -155,16 +154,24 @@ export const Table = ({
         </SpinnerWrapper>
       )}
       <StyledTable
-        rowKey="id"
+        rowKey={(record, index) => `${record}${index}`}
         // @ts-ignore
         columns={
-          columns && dropdownActions
+          columns && renderDropdownActions
             ? [
                 ...columns,
-                dropdownActions && {
+                renderDropdownActions && {
                   title: '',
                   dataIndex: '',
                   key: 'operations',
+                  onCell: (value, index) => ({
+                    onClick(e) {
+                      if (e.target) {
+                        //@ts-ignore
+                        setReferenceElement(e.target.querySelector('button'));
+                      }
+                    },
+                  }),
                   render: (value, row, index) => {
                     // TODO move to separate component
                     return (
@@ -182,8 +189,6 @@ export const Table = ({
                                 !shown ? index : false
                               );
                             }}
-                            // TODO ref is ignored. fix it.
-                            ref={setReferenceElement}
                           >
                             <UEllipsisV width={20} height={20} />
                           </DropdownToggler>
@@ -197,7 +202,7 @@ export const Table = ({
                               }}
                               {...popper.attributes.popper}
                             >
-                              {dropdownActions}
+                              {renderDropdownActions(value)}
                             </DropdownMenu>
                           )}
                         </Dropdown>
