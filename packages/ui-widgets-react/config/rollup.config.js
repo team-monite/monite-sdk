@@ -3,6 +3,8 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
+// import postcssImport from 'postcss-import';
+// import postcssUrl from 'postcss-url';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -27,7 +29,8 @@ async function getPlugins() {
     typescript({ tsconfig: './tsconfig.json' }),
     postcss({
       autoModules: true,
-      use: ['less'],
+      // extract: true,
+      // plugins: [postcssImport(), postcssUrl()],
     }),
     // terser(),
     // visualizer({
