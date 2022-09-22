@@ -40,3 +40,16 @@ export const prepareCounterpartAddressSubmit = ({
     postal_code,
   };
 };
+
+export function printAddress({
+  line1,
+  line2,
+  postalCode,
+  city,
+  country,
+  state,
+}: CounterpartAddressFormFields): string {
+  const street2 = line2 ? `${line2}, ` : '';
+
+  return `${line1}, ${street2}${postalCode} ${city}, ${state}, ${country}`;
+}

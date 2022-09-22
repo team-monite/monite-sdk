@@ -7,30 +7,28 @@ type CounterpartDetailsBlockProps = {
   children: ReactNode;
 };
 
-const Root = styled.div`
+export const CounterpartBlockRoot = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 24px;
 `;
 
-const Block = styled(Card)`
+export const CounterpartBlock = styled(Card)`
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 24px;
 `;
 
-const CounterpartDetailsBlock = ({
+export const CounterpartDetailsBlock = ({
   title,
   children,
 }: CounterpartDetailsBlockProps) => {
   return (
-    <Root>
+    <CounterpartBlockRoot>
       <Text textSize={'h4'}>{title}</Text>
-      <Block>{children}</Block>
-    </Root>
+      <CounterpartBlock>{children}</CounterpartBlock>
+    </CounterpartBlockRoot>
   );
 };
-
-export default CounterpartDetailsBlock;

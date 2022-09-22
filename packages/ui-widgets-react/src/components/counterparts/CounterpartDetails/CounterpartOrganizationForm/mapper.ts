@@ -3,9 +3,9 @@ import {
   CounterpartAddressFormFields,
   prepareCounterpartAddress,
   prepareCounterpartAddressSubmit,
-} from '../../CounterpartAddress';
+} from '../CounterpartAddressForm';
 
-export interface CounterpartOrganizationFormFields
+export interface CounterpartOrganizationFields
   extends CounterpartAddressFormFields {
   companyName: string;
   email: string;
@@ -17,7 +17,7 @@ export interface CounterpartOrganizationFormFields
 
 export const prepareCounterpartOrganization = (
   organization?: CounterpartOrganization
-): CounterpartOrganizationFormFields => {
+): CounterpartOrganizationFields => {
   return {
     companyName: organization?.legal_name ?? '',
     email: organization?.email ?? '',
@@ -37,7 +37,7 @@ export const prepareCounterpartOrganizationSubmit = ({
   isVendor,
   vatNumber,
   ...address
-}: CounterpartOrganizationFormFields): CounterpartOrganization => {
+}: CounterpartOrganizationFields): CounterpartOrganization => {
   return {
     legal_name: companyName,
     vat_number: vatNumber,
