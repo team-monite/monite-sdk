@@ -72,18 +72,24 @@ const getBg = ({
 
   if (isFilter) {
     return `
-      border-color: ${
-        value ? theme.colors.lightGrey2 : theme.colors.lightGrey3
+      color: ${
+        value ? theme.input.filterWithValueColor : theme.input.filterTextColor
       };
-      background-color: ${value ? theme.colors.lightGrey3 : theme.colors.white};
+      border-color: ${theme.input.filterBorderColor};
+      background-color: ${
+        value
+          ? theme.input.filterWithValueBackgroundColor
+          : theme.input.filterBackgroundColor
+      };
       box-shadow: none;
 
       &:hover {
-        background-color: ${theme.colors.black};
-        color: ${theme.colors.white};
+        background-color: ${theme.input.filterBackgroundColorHover};
+        color: ${theme.input.filterTextColorHover};
+        border-color: ${theme.input.filterBorderColorHover};
 
         &::placeholder {
-          color: ${theme.colors.white};
+          color: ${theme.input.filterTextColorHover};
         }
       }
 
@@ -112,7 +118,8 @@ const Input = styled(RebassInput)`
   box-shadow: none;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  border-radius: ${({ isFilter }) => (isFilter ? '100px' : '8px')};
+  border-radius: ${({ theme, isFilter }) =>
+    isFilter ? theme.input.filterBorderRadius : '8px'};
   border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
   padding: 11px 16px;
   background-color: ${({ theme }) => theme.colors.lightGrey3};
@@ -135,7 +142,8 @@ const Textarea = styled(RebassTextarea)`
   box-shadow: none;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  border-radius: ${({ isFilter }) => (isFilter ? '100px' : '8px')};
+  border-radius: ${({ theme, isFilter }) =>
+    isFilter ? theme.input.filterBorderRadius : '8px'};
   border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
   padding: 11px 16px;
   background-color: ${({ theme }) => theme.colors.lightGrey3};
