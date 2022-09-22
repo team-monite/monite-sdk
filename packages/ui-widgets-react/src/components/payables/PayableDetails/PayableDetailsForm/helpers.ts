@@ -7,7 +7,7 @@ import {
 } from '@monite/sdk-api';
 import { convertToMajorUnits, convertToMinorUnits } from 'core/utils';
 import {
-  getFullName,
+  getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from 'components/counterparts/helpers';
@@ -23,7 +23,7 @@ export const counterpartsToSelect = (
   return counterparts?.map((counterpart) => ({
     value: counterpart.id,
     label: isIndividualCounterpart(counterpart)
-      ? getFullName(
+      ? getIndividualName(
           counterpart.individual.first_name,
           counterpart.individual.last_name
         )

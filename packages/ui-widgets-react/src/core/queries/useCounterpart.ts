@@ -66,12 +66,17 @@ export const useCreateCounterpart = () => {
   );
 };
 
-export const useUpdateCounterpart = (id: string) => {
+type CounterpartUpdate = {
+  id: string;
+  counterpart: CounterpartUpdatePayload;
+};
+
+export const useUpdateCounterpart = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
 
-  return useMutation<CounterpartResponse, Error, CounterpartUpdatePayload>(
-    (body) => monite.api!.counterparts.update(id, body),
+  return useMutation<CounterpartResponse, Error, CounterpartUpdate>(
+    ({ id, counterpart }) => monite.api!.counterparts.update(id, counterpart),
     {
       onSuccess: (counterpart) => {
         queryClient.setQueryData(

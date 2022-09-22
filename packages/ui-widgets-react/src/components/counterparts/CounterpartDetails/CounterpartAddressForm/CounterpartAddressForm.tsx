@@ -1,33 +1,8 @@
 import React from 'react';
-import { TFunction } from 'react-i18next';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormField, Input } from '@monite/ui-kit-react';
-import * as yup from 'yup';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartAddressFormFields } from './helpers';
-
-export const getAddressValidationSchema = (t: TFunction) => ({
-  line1: yup
-    .string()
-    .required(`${t('counterparts:address.line1')}${t('errors:requiredField')}`),
-  line2: yup.string(),
-  city: yup
-    .string()
-    .required(`${t('counterparts:address.city')}${t('errors:requiredField')}`),
-  state: yup
-    .string()
-    .required(`${t('counterparts:address.state')}${t('errors:requiredField')}`),
-  country: yup
-    .string()
-    .required(
-      `${t('counterparts:address.country')}${t('errors:requiredField')}`
-    ),
-  postalCode: yup
-    .string()
-    .required(
-      `${t('counterparts:address.postalCode')}${t('errors:requiredField')}`
-    ),
-});
 
 const CounterpartAddressForm = () => {
   const { t } = useComponentsContext();

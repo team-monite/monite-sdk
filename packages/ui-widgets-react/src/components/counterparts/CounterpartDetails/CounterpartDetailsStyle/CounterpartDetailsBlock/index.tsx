@@ -1,1 +1,1 @@
-export { default as CounterpartDetailsBlock } from './CounterpartDetailsBlock';
+export * from './CounterpartDetailsBlock';

@@ -119,8 +119,9 @@
     },
     "individual": {
       "address": "Address",
+      "fullName": "Full name",
       "firstName": "First name",
-      "lastName": "Second name",
+      "lastName": "Last name",
       "taxId": "Tax number",
       "phone": "Phone number",
       "email": "Email"
@@ -129,7 +130,7 @@
       "address": "Address",
       "fullName": "Full name",
       "firstName": "First name",
-      "lastName": "Second name",
+      "lastName": "Last name",
       "phone": "Phone number",
       "email": "Email"
     },
@@ -141,12 +142,20 @@
       "country": "Country",
       "postalCode": "ZIP code"
     },
+    "titles": {
+      "create": "Create Counterpart – {{name}}",
+      "organization": "Company",
+      "individual": "Individual"
+    },
     "actions": {
       "call": "Call",
       "sendEmail": "Send email",
-      "editDetails": "Edit details",
       "setCounterpart": "Set this counterpart as",
       "addContactPerson": "Add contact person",
+      "addBankAccount": "Add bank account",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
       "edit": "Edit",
       "delete": "Delete"
     },
