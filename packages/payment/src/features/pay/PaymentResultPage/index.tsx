@@ -18,7 +18,7 @@ import { fromBase64 } from 'features/app/consts';
 
 import Layout from '../Layout';
 import { formatAmountFromMinor } from '../consts';
-import { URLData, RecipientType } from '../types';
+import { URLData } from '../types';
 
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
@@ -49,13 +49,6 @@ export const PaymentResultPage = () => {
   const paymentData = rawPaymentData
     ? (fromBase64(rawPaymentData) as URLData)
     : null;
-
-  const type = paymentData?.recipient?.type;
-
-  const returnUrl =
-    type === RecipientType.COUNTERPART
-      ? paymentData?.return_url || ''
-      : `/?data=${rawPaymentData}`;
 
   const statusesMap = {
     processing: {
@@ -125,19 +118,6 @@ export const PaymentResultPage = () => {
     style: 'currency',
     currency: paymentData?.currency || 'EUR',
   });
-
-  const showReturnButton = () => {
-    if (
-      (getStatus(status as StripeResultStatuses) === ResultStatuses.Succeeded &&
-        type === RecipientType.ENTITY) ||
-      (getStatus(status as StripeResultStatuses) ===
-        ResultStatuses.Processing &&
-        type === RecipientType.ENTITY)
-    ) {
-      return false;
-    }
-    return true;
-  };
 
   return (
     <Layout>
@@ -228,10 +208,14 @@ export const PaymentResultPage = () => {
               </Box>
             )}
 
-            {showReturnButton() && (
+            {paymentData?.return_url && (
               <Flex justifyContent="center">
                 <Box width={'160px'}>
-                  <Button mt="24px" block onClick={() => navigate(returnUrl)}>
+                  <Button
+                    mt="24px"
+                    block
+                    onClick={() => navigate(paymentData?.return_url)}
+                  >
                     {getStatus(status as StripeResultStatuses) ===
                       ResultStatuses.Succeeded ||
                     getStatus(status as StripeResultStatuses) ===
