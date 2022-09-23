@@ -52,11 +52,14 @@ export const useCreateCounterpart = () => {
   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>(
     (body) => monite.api!.counterparts.create(body),
     {
-      onSuccess: (counterpart) => {
+      onSuccess: async (counterpart) => {
         queryClient.setQueryData(
           [COUNTERPARTS_QUERY_ID, { id: counterpart.id }],
           counterpart
         );
+
+        await queryClient.invalidateQueries(['counterpart']);
+
         toast.success('Created');
       },
       onError: (error) => {
@@ -78,11 +81,12 @@ export const useUpdateCounterpart = () => {
   return useMutation<CounterpartResponse, Error, CounterpartUpdate>(
     ({ id, counterpart }) => monite.api!.counterparts.update(id, counterpart),
     {
-      onSuccess: (counterpart) => {
+      onSuccess: async (counterpart) => {
         queryClient.setQueryData(
           [COUNTERPARTS_QUERY_ID, { id: counterpart.id }],
           counterpart
         );
+        await queryClient.invalidateQueries(['counterpart']);
         toast.success('Updated');
       },
       onError: (error) => {
@@ -97,14 +101,13 @@ export const useDeleteCounterpartById = (counterpart: CounterpartResponse) => {
   const { monite, t } = useComponentsContext();
 
   return useMutation(() => monite.api!.counterparts.delete(counterpart.id), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['counterpart']);
-
+    onSuccess: async () => {
       toast(
         t('counterparts:confirmDialogue.successNotification', {
           name: getName(counterpart),
         })
       );
+      await queryClient.invalidateQueries(['counterpart']);
     },
     onError: () => {
       toast.error(
