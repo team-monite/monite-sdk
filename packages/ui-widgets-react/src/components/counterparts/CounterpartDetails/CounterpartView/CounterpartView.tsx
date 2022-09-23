@@ -4,8 +4,10 @@ import {
   Box,
   Button,
   Header,
+  IconButton,
   ModalLayout,
   Text,
+  UMultiply,
   UPen,
 } from '@monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -25,9 +27,10 @@ type CounterpartViewProps = {
   id: string;
   onEdit: (type: CounterpartType) => void;
   onDelete?: () => void;
+  onClose?: () => void;
 };
 
-const CounterpartView = ({ id, onEdit }: CounterpartViewProps) => {
+const CounterpartView = ({ id, onEdit, onClose }: CounterpartViewProps) => {
   const { t } = useComponentsContext();
   const { data: counterpart } = useCounterpartById(id);
 
@@ -39,7 +42,13 @@ const CounterpartView = ({ id, onEdit }: CounterpartViewProps) => {
         isDrawer
         header={
           <CounterpartHeader>
-            <Header>
+            <Header
+              rightBtn={
+                <IconButton onClick={onClose} color={'black'}>
+                  <UMultiply size={18} />
+                </IconButton>
+              }
+            >
               <Text textSize={'h3'}>{getName(counterpart)}</Text>
             </Header>
           </CounterpartHeader>
