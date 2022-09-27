@@ -14,11 +14,9 @@ import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { fromBase64 } from 'features/app/consts';
-
 import Layout from '../Layout';
 import { formatAmountFromMinor } from '../consts';
-import { URLData, RecipientType } from '../types';
+import { RecipientType } from '../types';
 
 enum StripeResultStatuses {
   RequiresPaymentMethod = 'requires_payment_method',
@@ -44,18 +42,19 @@ export const PaymentResultPage = () => {
   const { search } = useLocation();
 
   const status = new URLSearchParams(search).get('redirect_status');
-
-  const rawPaymentData = new URLSearchParams(search).get('data');
-  const paymentData = rawPaymentData
-    ? (fromBase64(rawPaymentData) as URLData)
-    : null;
-
-  const type = paymentData?.recipient?.type;
+  const amount = Number(new URLSearchParams(search).get('amount'));
+  const currency = new URLSearchParams(search).get('currency');
+  const recipientType = new URLSearchParams(search).get('recipient_type');
+  const linkData = new URLSearchParams(search).get('data');
+  const return_url = new URLSearchParams(search).get('return_url');
+  const payment_reference = new URLSearchParams(search).get(
+    'payment_reference'
+  );
 
   const returnUrl =
-    type === RecipientType.COUNTERPART
-      ? paymentData?.return_url || ''
-      : `/?data=${rawPaymentData}`;
+    recipientType === RecipientType.COUNTERPART
+      ? return_url || ''
+      : `/?data=${linkData}`;
 
   const statusesMap = {
     processing: {
@@ -123,16 +122,16 @@ export const PaymentResultPage = () => {
 
   const formatter = new Intl.NumberFormat('de-DE', {
     style: 'currency',
-    currency: paymentData?.currency || 'EUR',
+    currency: currency || 'EUR',
   });
 
   const showReturnButton = () => {
     if (
       (getStatus(status as StripeResultStatuses) === ResultStatuses.Succeeded &&
-        type === RecipientType.ENTITY) ||
+        recipientType === RecipientType.ENTITY) ||
       (getStatus(status as StripeResultStatuses) ===
         ResultStatuses.Processing &&
-        type === RecipientType.ENTITY)
+        recipientType === RecipientType.ENTITY)
     ) {
       return false;
     }
@@ -170,7 +169,7 @@ export const PaymentResultPage = () => {
                 </Text>
               </Box>
             </Flex>
-            {paymentData && (
+            {!!amount && currency && (
               <Box textAlign="left">
                 <FlexTable>
                   <Flex>
@@ -182,10 +181,7 @@ export const PaymentResultPage = () => {
                     <Box width={2 / 3}>
                       <Text textSize="bold" color={theme.colors.black}>
                         {formatter.format(
-                          formatAmountFromMinor(
-                            paymentData.amount,
-                            paymentData.currency
-                          )
+                          formatAmountFromMinor(amount, currency)
                         )}
                       </Text>
                     </Box>
@@ -219,9 +215,7 @@ export const PaymentResultPage = () => {
                       </Text>
                     </Box>
                     <Box width={2 / 3}>
-                      <Text textSize="bold">
-                        {paymentData.payment_reference}{' '}
-                      </Text>
+                      <Text textSize="bold">{payment_reference} </Text>
                     </Box>
                   </Flex>
                 </FlexTable>

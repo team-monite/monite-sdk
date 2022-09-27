@@ -12,10 +12,9 @@ import {
   // UUniversity,
   UMoneyBill,
 } from '@monite/ui-kit-react';
-import { PaymentMethodsEnum } from '@monite/sdk-api';
 
 type SelectPaymentMethodProps = {
-  paymentMethods: PaymentMethodsEnum[];
+  paymentMethods: Array<string>;
 };
 
 const StyledListItem = styled.div(
@@ -70,7 +69,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
       </Text>
 
       <Box mt={24}>
-        {paymentMethods.includes(PaymentMethodsEnum.CARD) && (
+        {paymentMethods.includes('card') && (
           <StyledLink to={`card${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
@@ -118,8 +117,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
           </StyledLink>
         )} */}
 
-        {paymentMethods.filter((method) => method !== PaymentMethodsEnum.CARD)
-          .length > 0 && (
+        {paymentMethods.filter((method) => method !== 'card').length > 0 && (
           <StyledLink to={`other${search}`}>
             <StyledListItem>
               <Flex alignItems="center">

@@ -5,7 +5,7 @@ import type { ReceivableResponse } from '../models/ReceivableResponse';
 import { PaymentMethodsEnum } from '../models/PaymentMethodsEnum';
 import type { PaymentMethodsCalculateFeePayload } from '../models/PaymentMethodsCalculateFeePayload';
 import type { PaymentMethodsCalculateFeeResponse } from '../models/PaymentMethodsCalculateFeeResponse';
-// import type { PayPaymentLinkPayload } from '../models/PaymentLinkPayload';
+import { PaymentsPaymentLinkResponse } from '../models/PaymentsPaymentLinkResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -92,6 +92,39 @@ export default class PaymentService {
         url: `/payment_links/${paymentLinkId}/pay`,
         body: requestBody,
         mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get PaymentsPayment Link
+   * @param paymentLinkId
+   * @returns PaymentsPaymentLinkResponse Successful Response
+   * @throws ApiError
+   */
+  public getPaymentLinkById(
+    paymentLinkId: string
+  ): CancelablePromise<PaymentsPaymentLinkResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/payment_links/${paymentLinkId}`,
+        path: {
+          payment_link_id: paymentLinkId,
+        },
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
