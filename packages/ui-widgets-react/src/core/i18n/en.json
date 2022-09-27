@@ -157,7 +157,9 @@
       "create": "Create",
       "update": "Update",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "createContact": "Add contact",
+      "updateContact": "Update contact"
     },
     "confirmDialogue": {
       "title": "Delete Counterpart?",

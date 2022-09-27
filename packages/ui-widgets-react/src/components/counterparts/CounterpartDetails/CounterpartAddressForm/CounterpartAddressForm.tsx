@@ -3,13 +3,14 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { FormField, Input } from '@monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartAddressFormFields } from './helpers';
+import { CounterpartDetailsBlock } from '../styles';
 
 const CounterpartAddressForm = () => {
   const { t } = useComponentsContext();
   const { control } = useFormContext<CounterpartAddressFormFields>();
 
   return (
-    <>
+    <CounterpartDetailsBlock>
       <Controller
         name="line1"
         control={control}
@@ -95,7 +96,7 @@ const CounterpartAddressForm = () => {
           </FormField>
         )}
       />
-    </>
+    </CounterpartDetailsBlock>
   );
 };
 

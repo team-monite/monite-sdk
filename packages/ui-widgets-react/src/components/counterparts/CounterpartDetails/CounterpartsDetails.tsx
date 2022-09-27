@@ -9,15 +9,21 @@ import useCounterpartDetails, {
 import CounterpartOrganizationForm from './CounterpartOrganizationForm';
 import CounterpartIndividualForm from './CounterpartIndividualForm';
 import CounterpartView from './CounterpartView';
+import CounterpartContactForm from './CounterpartContactForm';
 
 const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
   const {
     counterpartId,
+    contactId,
     counterpartView,
     onCreate,
     onUpdate,
     onEdit,
-    actions: { showView },
+    onContactEdit,
+    onContactCreate,
+    onContactUpdate,
+    onContactCancel,
+    actions: { showView, showContactForm },
   } = useCounterpartDetails(props);
 
   if (!(props.id || props.type)) return null;
@@ -44,10 +50,22 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
         />
       )}
 
+      {counterpartId && counterpartView === COUNTERPART_VIEW.contactForm && (
+        <CounterpartContactForm
+          counterpartId={counterpartId}
+          contactId={contactId}
+          onCancel={onContactCancel}
+          onCreate={onContactCreate}
+          onUpdate={onContactUpdate}
+        />
+      )}
+
       {counterpartId && counterpartView === COUNTERPART_VIEW.view && (
         <CounterpartView
           id={counterpartId}
           onEdit={onEdit}
+          onContactEdit={onContactEdit}
+          onContactCreate={showContactForm}
           onClose={props.onClose}
         />
       )}

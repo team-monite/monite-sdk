@@ -36,7 +36,7 @@ import {
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
-} from '../CounterpartDetailsStyle';
+} from '../styles';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import useCounterpartForm, {

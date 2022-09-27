@@ -8,6 +8,9 @@ export type CounterpartsDetailsProps = {
   onCreate?: (id: string) => void;
   onUpdate?: () => void;
   onEdit?: (type: CounterpartType) => void;
+  onContactCreate?: (id: string) => void;
+  onContactUpdate?: (id: string) => void;
+  onContactEdit?: (id: string) => void;
 };
 
 export enum COUNTERPART_VIEW {
@@ -25,6 +28,8 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
   const [counterpartId, setCounterpartId] = useState<string | undefined>(
     props.id
   );
+
+  const [contactId, setContactId] = useState<string | undefined>();
 
   const actions = {
     showView: () => setCounterpartView(COUNTERPART_VIEW.view),
@@ -80,12 +85,49 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
     [props.onEdit]
   );
 
+  const onContactCancel = useCallback(() => {
+    actions.showView();
+    setContactId(undefined);
+  }, [props.onContactCreate]);
+
+  const onContactCreate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onContactCreate && props.onContactCreate(id);
+      setContactId(undefined);
+    },
+    [props.onContactCreate]
+  );
+
+  const onContactUpdate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onContactUpdate && props.onContactUpdate(id);
+      setContactId(undefined);
+    },
+    [props.onContactUpdate]
+  );
+
+  const onContactEdit = useCallback(
+    (id: string) => {
+      setContactId(id);
+      actions.showContactForm();
+      props.onContactEdit && props.onContactEdit(id);
+    },
+    [props.onContactEdit]
+  );
+
   return {
     counterpartId,
+    contactId,
     counterpartView,
     actions,
     onCreate,
     onUpdate,
     onEdit,
+    onContactCreate,
+    onContactUpdate,
+    onContactEdit,
+    onContactCancel,
   };
 }
