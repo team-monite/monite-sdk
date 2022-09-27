@@ -82,13 +82,13 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
 
       {counterpartId && counterpartView === COUNTERPART_VIEW.view && (
         <CounterpartView
+          onClose={props.onClose}
           id={counterpartId}
           onEdit={onEdit}
           onContactEdit={onContactEdit}
           onContactCreate={showContactForm}
           onBankEdit={onBankEdit}
           onBankCreate={showBankAccountForm}
-          onClose={props.onClose}
         />
       )}
     </Modal>

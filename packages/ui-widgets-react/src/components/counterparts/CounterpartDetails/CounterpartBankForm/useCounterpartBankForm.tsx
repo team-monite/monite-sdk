@@ -14,8 +14,7 @@ import { CounterpartBankAccount } from '@monite/sdk-api';
 import { useForm } from 'react-hook-form';
 import getValidationSchema from './validation';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-export type CounterpartBankFields = Required<CounterpartBankAccount>;
+import { CounterpartBankFields, prepareCounterpartBank } from './mapper';
 
 export type CounterpartBankFormProps = {
   counterpartId: string;
@@ -42,11 +41,11 @@ export default function useCounterpartBankForm({
 
   const methods = useForm<CounterpartBankFields>({
     resolver: yupResolver(getValidationSchema(t)),
-    defaultValues: useMemo(() => bank, [bank]),
+    defaultValues: useMemo(() => prepareCounterpartBank(bank), [bank]),
   });
 
   useEffect(() => {
-    methods.reset(bank);
+    methods.reset(prepareCounterpartBank(bank));
   }, [bank]);
 
   const submitForm = useCallback(() => {
