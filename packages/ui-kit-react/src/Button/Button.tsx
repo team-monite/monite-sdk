@@ -11,7 +11,7 @@ import styled from '@emotion/styled';
 import Spinner from '../Spinner';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { Box, BoxProps } from '../Box';
-import { THEMES, ThemeColors } from '../consts';
+import { THEMES, ThemeColors } from '../theme_deprecated';
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type ButtonSize = 'sm' | 'md';

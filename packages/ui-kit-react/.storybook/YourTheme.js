@@ -1,5 +1,5 @@
 import { create } from '@storybook/theming';
-import { THEMES } from '../src/consts';
+import { THEMES } from '../src/theme_deprecated';
 import Logo from './monite_logo.svg';
 
 export default create({

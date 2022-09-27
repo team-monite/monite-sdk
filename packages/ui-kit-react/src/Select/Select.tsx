@@ -18,7 +18,7 @@ import { useTheme } from '@emotion/react';
 import { Box } from '../Box';
 import Text from '../Text';
 import Tag from '../Tag';
-import { THEMES } from '../consts';
+import { THEMES } from '../theme_deprecated';
 import { UAngleDown, UTimes } from '../unicons';
 import Avatar from '../Avatar';
 

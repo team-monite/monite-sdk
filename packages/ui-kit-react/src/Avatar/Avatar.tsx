@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Box, BoxProps } from '../Box';
 import { TextProps } from '../Text';
-import { ThemeColors } from '../consts';
+import { ThemeColors } from '../theme_deprecated';
 import { ThemedStyledProps } from '../types';
 
 type AvatarProps = {

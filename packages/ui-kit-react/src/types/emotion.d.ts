@@ -13,8 +13,8 @@ import {
   TextareaProps as TextareaP,
   LabelProps as LabelP,
 } from '@rebass/forms';
-import { THEMES } from '../consts';
-import { TokenizedThemeType } from '../index';
+import { THEMES } from '../theme_deprecated';
+import { TokenizedThemeType } from '../theme';
 
 declare module '@emotion/react' {
   export type FinalTheme = typeof THEMES.default & TokenizedThemeType;
