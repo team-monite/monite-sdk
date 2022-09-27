@@ -29,22 +29,24 @@ import {
   prepareCounterpartOrganizationSubmit,
 } from './mapper';
 
-import CounterpartAddressForm from '../CounterpartAddressForm';
+import CounterpartAddressForm from '../../CounterpartAddressForm';
 
 import {
   CounterpartDetailsBlock,
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
-} from '../CounterpartDetailsStyle';
+} from '../../styles';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
+
 import useCounterpartForm, {
   CounterpartsFormProps,
 } from '../useCounterpartForm';
+
 import getValidationSchema from './validation';
 
-const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
+export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
 
   const {
@@ -254,5 +256,3 @@ const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
     </ModalLayout>
   );
 };
-
-export default CounterpartOrganizationForm;

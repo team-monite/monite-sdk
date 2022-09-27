@@ -6,9 +6,14 @@ import useCounterpartDetails, {
   CounterpartsDetailsProps,
 } from './useCounterpartDetails';
 
-import CounterpartOrganizationForm from './CounterpartOrganizationForm';
-import CounterpartIndividualForm from './CounterpartIndividualForm';
+import {
+  CounterpartOrganizationForm,
+  CounterpartIndividualForm,
+} from './CounterpartForm';
+
 import CounterpartView from './CounterpartView';
+import CounterpartContactForm from './CounterpartContactForm';
+import CounterpartBankForm from './CounterpartBankForm';
 
 const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
   const {
@@ -17,7 +22,17 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
     onCreate,
     onUpdate,
     onEdit,
-    actions: { showView },
+    contactId,
+    onContactEdit,
+    onContactCreate,
+    onContactUpdate,
+    onContactCancel,
+    bankId,
+    onBankEdit,
+    onBankCreate,
+    onBankUpdate,
+    onBankCancel,
+    actions: { showView, showContactForm, showBankAccountForm },
   } = useCounterpartDetails(props);
 
   if (!(props.id || props.type)) return null;
@@ -44,11 +59,36 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
         />
       )}
 
+      {counterpartId && counterpartView === COUNTERPART_VIEW.contactForm && (
+        <CounterpartContactForm
+          counterpartId={counterpartId}
+          contactId={contactId}
+          onCancel={onContactCancel}
+          onCreate={onContactCreate}
+          onUpdate={onContactUpdate}
+        />
+      )}
+
+      {counterpartId &&
+        counterpartView === COUNTERPART_VIEW.bankAccountForm && (
+          <CounterpartBankForm
+            counterpartId={counterpartId}
+            bankId={bankId}
+            onCancel={onBankCancel}
+            onCreate={onBankCreate}
+            onUpdate={onBankUpdate}
+          />
+        )}
+
       {counterpartId && counterpartView === COUNTERPART_VIEW.view && (
         <CounterpartView
+          onClose={props.onClose}
           id={counterpartId}
           onEdit={onEdit}
-          onClose={props.onClose}
+          onContactEdit={onContactEdit}
+          onContactCreate={showContactForm}
+          onBankEdit={onBankEdit}
+          onBankCreate={showBankAccountForm}
         />
       )}
     </Modal>

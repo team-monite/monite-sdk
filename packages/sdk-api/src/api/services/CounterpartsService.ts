@@ -221,7 +221,7 @@ export default class CounterpartsService {
     return __request(
       {
         method: 'GET',
-        url: `/${COUNTERPARTS_ENDPOINT}/${counterpartId}`,
+        url: `/${COUNTERPARTS_ENDPOINT}/${counterpartId}/${COUNTERPARTS_CONTACT_ENDPOINT}`,
         errors,
       },
       this.openapiConfig

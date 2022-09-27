@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
-import { LabelText, Card, Box } from '@monite/ui-kit-react';
+import { LabelText, Card } from '@monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { CounterpartOrganizationFields } from '../../CounterpartOrganizationForm';
+import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { printAddress } from '../../CounterpartAddressForm';
 import { printCounterpartType } from '../../helpers';
+import { CounterpartContainer } from '../../styles';
 
 type CounterpartOrganizationViewProps = {
   actions: ReactNode;
@@ -31,7 +32,7 @@ const CounterpartOrganizationView = ({
 
   return (
     <Card actions={actions}>
-      <Box sx={{ padding: '27px 23px 32px' }}>
+      <CounterpartContainer>
         <LabelText
           label={t('counterparts:organization.companyName')}
           text={companyName}
@@ -72,7 +73,7 @@ const CounterpartOrganizationView = ({
             text={vatNumber}
           />
         )}
-      </Box>
+      </CounterpartContainer>
     </Card>
   );
 };

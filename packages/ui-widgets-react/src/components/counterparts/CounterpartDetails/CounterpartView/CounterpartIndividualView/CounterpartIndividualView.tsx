@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
-import { LabelText, Card, Box } from '@monite/ui-kit-react';
+import { LabelText, Card } from '@monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { CounterpartIndividualFields } from '../../CounterpartIndividualForm';
+import { CounterpartIndividualFields } from '../../CounterpartForm';
 import { printAddress } from '../../CounterpartAddressForm';
 import { printCounterpartType } from '../../helpers';
 import { getIndividualName } from '../../../helpers';
+import { CounterpartContainer } from '../../styles';
 
 type CounterpartIndividualViewProps = {
   actions: ReactNode;
@@ -33,7 +34,7 @@ const CounterpartIndividualView = ({
 
   return (
     <Card actions={actions}>
-      <Box sx={{ padding: '27px 23px 32px' }}>
+      <CounterpartContainer>
         <LabelText
           label={t('counterparts:individual.fullName')}
           text={getIndividualName(firstName, lastName)}
@@ -65,7 +66,7 @@ const CounterpartIndividualView = ({
         {taxId && (
           <LabelText label={t('counterparts:individual.taxId')} text={taxId} />
         )}
-      </Box>
+      </CounterpartContainer>
     </Card>
   );
 };

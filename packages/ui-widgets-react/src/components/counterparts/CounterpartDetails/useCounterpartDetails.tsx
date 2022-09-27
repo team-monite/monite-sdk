@@ -8,6 +8,14 @@ export type CounterpartsDetailsProps = {
   onCreate?: (id: string) => void;
   onUpdate?: () => void;
   onEdit?: (type: CounterpartType) => void;
+
+  onContactCreate?: (id: string) => void;
+  onContactUpdate?: (id: string) => void;
+  onContactEdit?: (id: string) => void;
+
+  onBankCreate?: (id: string) => void;
+  onBankUpdate?: (id: string) => void;
+  onBankEdit?: (id: string) => void;
 };
 
 export enum COUNTERPART_VIEW {
@@ -25,6 +33,10 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
   const [counterpartId, setCounterpartId] = useState<string | undefined>(
     props.id
   );
+
+  const [contactId, setContactId] = useState<string | undefined>();
+
+  const [bankId, setBankId] = useState<string | undefined>();
 
   const actions = {
     showView: () => setCounterpartView(COUNTERPART_VIEW.view),
@@ -80,12 +92,86 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
     [props.onEdit]
   );
 
+  const onContactCancel = useCallback(() => {
+    actions.showView();
+    setContactId(undefined);
+  }, [props.onContactCreate]);
+
+  const onContactCreate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onContactCreate && props.onContactCreate(id);
+      setContactId(undefined);
+    },
+    [props.onContactCreate]
+  );
+
+  const onContactUpdate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onContactUpdate && props.onContactUpdate(id);
+      setContactId(undefined);
+    },
+    [props.onContactUpdate]
+  );
+
+  const onContactEdit = useCallback(
+    (id: string) => {
+      setContactId(id);
+      actions.showContactForm();
+      props.onContactEdit && props.onContactEdit(id);
+    },
+    [props.onContactEdit]
+  );
+
+  const onBankCancel = useCallback(() => {
+    actions.showView();
+    setBankId(undefined);
+  }, [props.onBankCreate]);
+
+  const onBankCreate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onBankCreate && props.onBankCreate(id);
+      setBankId(undefined);
+    },
+    [props.onBankCreate]
+  );
+
+  const onBankUpdate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onBankUpdate && props.onBankUpdate(id);
+      setBankId(undefined);
+    },
+    [props.onBankUpdate]
+  );
+
+  const onBankEdit = useCallback(
+    (id: string) => {
+      setBankId(id);
+      actions.showBankAccountForm();
+      props.onBankEdit && props.onBankEdit(id);
+    },
+    [props.onBankEdit]
+  );
+
   return {
     counterpartId,
+    contactId,
+    bankId,
     counterpartView,
     actions,
     onCreate,
     onUpdate,
     onEdit,
+    onContactCreate,
+    onContactUpdate,
+    onContactEdit,
+    onContactCancel,
+    onBankCreate,
+    onBankUpdate,
+    onBankEdit,
+    onBankCancel,
   };
 }

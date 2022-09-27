@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import styled from '@emotion/styled';
 
 import {
   Checkbox,
@@ -15,7 +14,6 @@ import {
   Header,
   Button,
   Spinner,
-  Flex,
 } from '@monite/ui-kit-react';
 
 import {
@@ -32,35 +30,26 @@ import {
   prepareCounterpartIndividualSubmit,
 } from './mapper';
 
-import CounterpartAddressForm from '../CounterpartAddressForm';
+import CounterpartAddressForm from '../../CounterpartAddressForm';
 
 import {
   CounterpartDetailsBlock,
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
-} from '../CounterpartDetailsStyle';
+  CounterpartContactName,
+} from '../../styles';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import useCounterpartForm, {
   CounterpartsFormProps,
 } from '../useCounterpartForm';
 
-import { getIndividualName } from '../../helpers';
+import { getIndividualName } from '../../../helpers';
 
 import getValidationSchema from './validation';
 
-const CounterpartName = styled(Flex)`
-  width: 100%;
-  gap: 24px;
-  justify-content: space-between;
-
-  > * {
-    width: 50%;
-  }
-`;
-
-const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
+export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
 
   const {
@@ -149,7 +138,7 @@ const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               : createCounterpart(payload as CounterpartCreatePayload);
           })}
         >
-          <CounterpartName>
+          <CounterpartContactName>
             <Controller
               name="firstName"
               control={control}
@@ -188,7 +177,7 @@ const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                 </FormField>
               )}
             />
-          </CounterpartName>
+          </CounterpartContactName>
           <FormField
             label={`${t('counterparts:actions.setCounterpart')}:`}
             id="counterpartType"
@@ -285,5 +274,3 @@ const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     </ModalLayout>
   );
 };
-
-export default CounterpartIndividualForm;

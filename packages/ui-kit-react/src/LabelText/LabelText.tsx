@@ -7,13 +7,7 @@ type LabelTextProps = {
   text: string;
 };
 
-const LabelTextRoot = styled(Flex)`
-  margin-bottom: 28px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
+const LabelTextRoot = styled(Flex)``;
 
 const Label = styled(Box)`
   width: 132px;

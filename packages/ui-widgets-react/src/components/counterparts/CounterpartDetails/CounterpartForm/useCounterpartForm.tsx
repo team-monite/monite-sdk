@@ -26,6 +26,8 @@ export default function useCounterpartForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { data: counterpart } = useCounterpartById(id);
+  const counterpartCreateMutation = useCreateCounterpart();
+  const counterpartUpdateMutation = useUpdateCounterpart();
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -34,9 +36,6 @@ export default function useCounterpartForm({
       })
     );
   }, [formRef]);
-
-  const counterpartCreateMutation = useCreateCounterpart();
-  const counterpartUpdateMutation = useUpdateCounterpart();
 
   const createCounterpart = useCallback(
     async (req: CounterpartCreatePayload) => {
