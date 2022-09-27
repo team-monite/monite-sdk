@@ -6,24 +6,33 @@ import useCounterpartDetails, {
   CounterpartsDetailsProps,
 } from './useCounterpartDetails';
 
-import CounterpartOrganizationForm from './CounterpartOrganizationForm';
-import CounterpartIndividualForm from './CounterpartIndividualForm';
+import {
+  CounterpartOrganizationForm,
+  CounterpartIndividualForm,
+} from './CounterpartForm';
+
 import CounterpartView from './CounterpartView';
 import CounterpartContactForm from './CounterpartContactForm';
+import CounterpartBankForm from './CounterpartBankForm';
 
 const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
   const {
     counterpartId,
-    contactId,
     counterpartView,
     onCreate,
     onUpdate,
     onEdit,
+    contactId,
     onContactEdit,
     onContactCreate,
     onContactUpdate,
     onContactCancel,
-    actions: { showView, showContactForm },
+    bankId,
+    onBankEdit,
+    onBankCreate,
+    onBankUpdate,
+    onBankCancel,
+    actions: { showView, showContactForm, showBankAccountForm },
   } = useCounterpartDetails(props);
 
   if (!(props.id || props.type)) return null;
@@ -60,12 +69,25 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
         />
       )}
 
+      {counterpartId &&
+        counterpartView === COUNTERPART_VIEW.bankAccountForm && (
+          <CounterpartBankForm
+            counterpartId={counterpartId}
+            bankId={bankId}
+            onCancel={onBankCancel}
+            onCreate={onBankCreate}
+            onUpdate={onBankUpdate}
+          />
+        )}
+
       {counterpartId && counterpartView === COUNTERPART_VIEW.view && (
         <CounterpartView
           id={counterpartId}
           onEdit={onEdit}
           onContactEdit={onContactEdit}
           onContactCreate={showContactForm}
+          onBankEdit={onBankEdit}
+          onBankCreate={showBankAccountForm}
           onClose={props.onClose}
         />
       )}

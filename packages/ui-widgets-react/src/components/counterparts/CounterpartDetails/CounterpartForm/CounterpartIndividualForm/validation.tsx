@@ -1,5 +1,5 @@
 import { TFunction } from 'react-i18next';
-import { getAddressValidationSchema } from '../CounterpartAddressForm/validation';
+import { getAddressValidationSchema } from '../../CounterpartAddressForm/validation';
 import * as yup from 'yup';
 
 const getValidationSchema = (t: TFunction) =>

@@ -30,7 +30,7 @@ import {
   prepareCounterpartIndividualSubmit,
 } from './mapper';
 
-import CounterpartAddressForm from '../CounterpartAddressForm';
+import CounterpartAddressForm from '../../CounterpartAddressForm';
 
 import {
   CounterpartDetailsBlock,
@@ -38,18 +38,18 @@ import {
   CounterpartHeader,
   CounterpartForm,
   CounterpartContactName,
-} from '../styles';
+} from '../../styles';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import useCounterpartForm, {
   CounterpartsFormProps,
 } from '../useCounterpartForm';
 
-import { getIndividualName } from '../../helpers';
+import { getIndividualName } from '../../../helpers';
 
 import getValidationSchema from './validation';
 
-const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
+export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
 
   const {
@@ -274,5 +274,3 @@ const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     </ModalLayout>
   );
 };
-
-export default CounterpartIndividualForm;

@@ -8,6 +8,8 @@ import {
   CounterpartContactResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
+  CounterpartBankAccount,
+  CounterpartBankAccountResponse,
 } from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -16,6 +18,7 @@ import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/s
 
 const COUNTERPARTS_QUERY = 'counterparts';
 const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
+const COUNTERPARTS_BANKS_QUERY = 'counterpartBanks';
 
 type CounterpartUpdate = {
   id: string;
@@ -25,6 +28,170 @@ type CounterpartUpdate = {
 type CounterpartContactUpdate = {
   contactId: string;
   payload: UpdateCounterpartContactPayload;
+};
+
+type CounterpartBankUpdate = {
+  bankId: string;
+  payload: CounterpartBankAccount;
+};
+
+export const useCounterpartBankList = (counterpartId: string) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<CounterpartBankAccountResponse[], Error>(
+    [COUNTERPARTS_BANKS_QUERY],
+    () => monite.api.counterparts.getBankAccounts(counterpartId),
+    {
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
+
+export const useCreateCounterpartBank = (counterpartId: string) => {
+  const queryClient = useQueryClient();
+  const { monite } = useComponentsContext();
+
+  return useMutation<
+    CounterpartBankAccountResponse,
+    Error,
+    CounterpartBankAccount
+  >((bank) => monite.api.counterparts.createBankAccount(counterpartId, bank), {
+    onSuccess: async (bank) => {
+      await queryClient.setQueryData(
+        [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
+        bank
+      );
+
+      await queryClient.setQueryData<
+        Updater<
+          CounterpartBankAccountResponse[],
+          CounterpartBankAccountResponse[]
+        >
+      >(
+        [COUNTERPARTS_BANKS_QUERY],
+        (banks: CounterpartBankAccountResponse[]) => [...banks, bank]
+      );
+
+      await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
+
+      toast.success('Bank was created');
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useCounterpartBankById = (
+  counterpartId: string,
+  bankId?: string
+) => {
+  const { monite } = useComponentsContext();
+  const queryClient = useQueryClient();
+
+  return useQuery<CounterpartBankAccountResponse | undefined, Error>(
+    [COUNTERPARTS_BANKS_QUERY, { bankId }],
+    () => {
+      if (!bankId) return undefined;
+
+      const existedBank = queryClient
+        .getQueryData<CounterpartBankAccountResponse[]>(
+          COUNTERPARTS_BANKS_QUERY
+        )
+        ?.find((bank) => bank.id === bankId);
+
+      if (existedBank) {
+        return queryClient.setQueryData(
+          [COUNTERPARTS_BANKS_QUERY, { id: existedBank.id }],
+          existedBank
+        );
+      }
+
+      return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
+    },
+    {
+      enabled: !!bankId,
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
+
+export const useUpdateCounterpartBank = (counterpartId: string) => {
+  const queryClient = useQueryClient();
+  const { monite } = useComponentsContext();
+
+  return useMutation<
+    CounterpartBankAccountResponse,
+    Error,
+    CounterpartBankUpdate
+  >(
+    ({ bankId, payload }) =>
+      monite.api.counterparts.updateBankAccount(counterpartId, bankId, payload),
+    {
+      onSuccess: async (bank) => {
+        await queryClient.setQueryData<
+          Updater<
+            CounterpartBankAccountResponse[],
+            CounterpartBankAccountResponse[]
+          >
+        >(
+          [COUNTERPARTS_BANKS_QUERY],
+          (banks: CounterpartBankAccountResponse[]) =>
+            banks.map((oldBank) => (oldBank.id === bank.id ? bank : oldBank))
+        );
+
+        await queryClient.setQueryData(
+          [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
+          bank
+        );
+
+        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
+
+        toast.success('Bank was updated');
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
+
+export const useDeleteCounterpartBank = (counterpartId: string) => {
+  const queryClient = useQueryClient();
+  const { monite } = useComponentsContext();
+
+  return useMutation<void, Error, string>(
+    (bankId) =>
+      monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
+    {
+      onSuccess: async (_, bankId) => {
+        await queryClient.setQueryData<
+          Updater<
+            CounterpartBankAccountResponse[],
+            CounterpartBankAccountResponse[]
+          >
+        >(
+          [COUNTERPARTS_BANKS_QUERY],
+          (banks: CounterpartBankAccountResponse[]) =>
+            banks.filter((bank) => bank.id !== bankId)
+        );
+
+        // await queryClient.setQueryData(
+        //   [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
+        //   bank
+        // );
+
+        toast.success('Bank was deleted');
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
 };
 
 export const useCounterpartContactList = (counterpartId: string) => {

@@ -15,36 +15,35 @@ import {
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import { getIndividualName, getName } from '../../helpers';
+import { getName } from '../../helpers';
 
 import {
-  CounterpartDetailsBlock,
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
-  CounterpartContactName,
   CounterpartEntityTitle,
 } from '../styles';
-import CounterpartAddressForm from '../CounterpartAddressForm';
 
-import useCounterpartContactForm, {
-  CounterpartContactFormProps,
-} from './useCounterpartContactForm';
+import useCounterpartBankForm, {
+  CounterpartBankFormProps,
+} from './useCounterpartBankForm';
 
-const CounterpartContactForm = (props: CounterpartContactFormProps) => {
+const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { t } = useComponentsContext();
 
   const {
     methods,
     counterpart,
-    contact,
+    bank,
     formRef,
     submitForm,
-    saveContact,
+    saveBank,
     isLoading,
-  } = useCounterpartContactForm(props);
+  } = useCounterpartBankForm(props);
 
   const { control, handleSubmit, watch } = methods;
+
+  if (!counterpart) return null;
 
   return (
     <ModalLayout
@@ -60,9 +59,9 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
               </Text>
               <UArrowRight size={20} color={'#B8B8B8'} />
               <Text textSize={'bold'}>
-                {!!contact
-                  ? getIndividualName(watch('firstName'), watch('lastName'))
-                  : t('counterparts:actions.addContactPerson')}
+                {!!bank
+                  ? watch('name')
+                  : t('counterparts:actions.addBankAccount')}
               </Text>
             </CounterpartEntityTitle>
           </Header>
@@ -86,9 +85,9 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                   disabled={isLoading}
                   rightIcon={isLoading && <Spinner pxSize={16} />}
                 >
-                  {!!contact
-                    ? t('counterparts:actions.updateContact')
-                    : t('counterparts:actions.createContact')}
+                  {!!bank
+                    ? t('counterparts:actions.updateBank')
+                    : t('counterparts:actions.createBank')}
                 </Button>
               </StyledHeaderActions>
             }
@@ -98,56 +97,16 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
     >
       <FormProvider {...methods}>
         <CounterpartForm
-          id="counterpartContactForm"
+          id="counterpartBankForm"
           ref={formRef}
-          onSubmit={handleSubmit(saveContact)}
+          onSubmit={handleSubmit(saveBank)}
         >
-          <CounterpartContactName>
-            <Controller
-              name="firstName"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormField
-                  label={t('counterparts:contact.firstName')}
-                  id={field.name}
-                  required
-                  error={error?.message}
-                >
-                  <Input
-                    {...field}
-                    id={field.name}
-                    isInvalid={!!error}
-                    required
-                  />
-                </FormField>
-              )}
-            />
-            <Controller
-              name="lastName"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormField
-                  label={t('counterparts:contact.lastName')}
-                  id={field.name}
-                  required
-                  error={error?.message}
-                >
-                  <Input
-                    {...field}
-                    id={field.name}
-                    isInvalid={!!error}
-                    required
-                  />
-                </FormField>
-              )}
-            />
-          </CounterpartContactName>
           <Controller
-            name="email"
+            name="name"
             control={control}
             render={({ field, fieldState: { error } }) => (
               <FormField
-                label={t('counterparts:contact.email')}
+                label={t('counterparts:bank.name')}
                 id={field.name}
                 required
                 error={error?.message}
@@ -156,31 +115,53 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                   {...field}
                   id={field.name}
                   isInvalid={!!error}
-                  type="email"
+                  required
                 />
               </FormField>
             )}
           />
           <Controller
-            name="phone"
+            name="iban"
             control={control}
-            render={({ field }) => (
+            render={({ field, fieldState: { error } }) => (
               <FormField
-                label={t('counterparts:contact.phone')}
+                label={t('counterparts:bank.iban')}
                 id={field.name}
+                required
+                error={error?.message}
               >
-                <Input {...field} id={field.name} type="tel" />
+                <Input
+                  {...field}
+                  id={field.name}
+                  isInvalid={!!error}
+                  required
+                />
               </FormField>
             )}
           />
-
-          <CounterpartDetailsBlock title={t('counterparts:contact.address')}>
-            <CounterpartAddressForm />
-          </CounterpartDetailsBlock>
+          <Controller
+            name="bic"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormField
+                label={t('counterparts:bank.bic')}
+                id={field.name}
+                required
+                error={error?.message}
+              >
+                <Input
+                  {...field}
+                  id={field.name}
+                  isInvalid={!!error}
+                  required
+                />
+              </FormField>
+            )}
+          />
         </CounterpartForm>
       </FormProvider>
     </ModalLayout>
   );
 };
 
-export default CounterpartContactForm;
+export default CounterpartBankForm;

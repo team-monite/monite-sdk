@@ -97,13 +97,16 @@ export default function useCounterpartContactForm({
     [contactUpdateMutation]
   );
 
-  const saveContact = useCallback(async (values: CounterpartContactFields) => {
-    const payload = prepareCounterpartContactSubmit(values);
+  const saveContact = useCallback(
+    async (values: CounterpartContactFields) => {
+      const payload = prepareCounterpartContactSubmit(values);
 
-    return !!contact
-      ? updateContact(payload as UpdateCounterpartContactPayload)
-      : createContact(payload as CreateCounterpartContactPayload);
-  }, []);
+      return !!contact
+        ? updateContact(payload as UpdateCounterpartContactPayload)
+        : createContact(payload as CreateCounterpartContactPayload);
+    },
+    [updateContact, createContact]
+  );
 
   return {
     methods,

@@ -3,7 +3,7 @@ import {
   CounterpartAddressFormFields,
   prepareCounterpartAddress,
   prepareCounterpartAddressSubmit,
-} from '../CounterpartAddressForm';
+} from '../../CounterpartAddressForm';
 
 export interface CounterpartOrganizationFields
   extends CounterpartAddressFormFields {

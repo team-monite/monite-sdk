@@ -134,6 +134,11 @@
       "phone": "Phone number",
       "email": "Email"
     },
+    "bank": {
+      "name": "Account name",
+      "iban": "IBAN",
+      "bic": "BIC"
+    },
     "address": {
       "line1": "Address line 1",
       "line2": "Address line 2",
@@ -159,7 +164,9 @@
       "edit": "Edit",
       "delete": "Delete",
       "createContact": "Add contact",
-      "updateContact": "Update contact"
+      "updateContact": "Update contact",
+      "createBank": "Add bank account",
+      "updateBank": "Update bank account"
     },
     "confirmDialogue": {
       "title": "Delete Counterpart?",
@@ -181,6 +188,7 @@
       "search": "Search by name"
     },
     "contactPersons": "Contact persons",
+    "bankAccounts": "Bank accounts",
     "customer": "Customer",
     "vendor": "Vendor"
   },
