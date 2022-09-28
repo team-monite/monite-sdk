@@ -8,19 +8,14 @@ import {
   ArgsTable,
   PRIMARY_STORY,
 } from '@storybook/addon-docs';
-import ThemeProvider from '../src/core/ThemeProvider';
 import { merge } from 'lodash';
+import { Global } from '@emotion/react';
 
-import '@monite/app-white-label/src/assets/fonts/Faktum/font.css';
-import './main.css';
-
+import ThemeProvider from '../src/core/ThemeProvider';
 import { THEMES, tokenizedTheme } from '../src';
+import { getStyles } from '../src/globalStyles';
 
 export const parameters = {
-  // argTypes: {
-  //   color: { control: 'select', options: ['primary', 'secondary'] },
-  //   text: { table: { disable: true } },
-  // },
   viewMode: 'story',
   options: {
     storySort: {
@@ -59,15 +54,18 @@ export const parameters = {
 };
 
 export const decorators = [
-  (Story) => (
-    <ThemeProvider
-      theme={merge(
-        THEMES.default,
-        tokenizedTheme,
-        {} // custom theme
-      )}
-    >
-      <Story />
-    </ThemeProvider>
-  ),
+  (Story) => {
+    const theme = merge(
+      THEMES.default,
+      tokenizedTheme,
+      {} // custom theme
+    );
+
+    return (
+      <ThemeProvider theme={theme}>
+        <Global styles={getStyles(theme)} />
+        <Story />
+      </ThemeProvider>
+    );
+  },
 ];

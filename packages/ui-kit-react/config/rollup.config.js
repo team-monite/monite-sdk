@@ -3,10 +3,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import postcss from 'rollup-plugin-postcss';
+import url from 'rollup-plugin-url';
 // import { visualizer } from 'rollup-plugin-visualizer';
 // import { terser } from 'rollup-plugin-terser';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import url from '@rollup/plugin-url';
 
 const packageJson = require('../package.json');
 const watchConfig = {
@@ -20,12 +20,15 @@ const watchConfig = {
 
 async function getPlugins() {
   return [
-    url(),
     peerDepsExternal(),
     resolve({ browser: true, extensions: ['.js', '.jsx', '.ts', '.tsx'] }),
     commonjs(),
     typescript({ tsconfig: './tsconfig.json' }),
-    postcss({}),
+    postcss({ autoModules: true }),
+    url({
+      include: ['**/*.woff', '**/*.woff2'],
+      limit: Infinity,
+    }),
     // terser(),
     // visualizer({
     //   open: true,

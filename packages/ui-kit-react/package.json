@@ -44,6 +44,7 @@
     "jest-styled-components": "^7.0.8",
     "react-tooltip": "^4.2.21",
     "react-use": "^17.3.2",
+    "rollup-plugin-url": "~3.0.1",
     "storybook-addon-pseudo-states": "^1.0.0"
   },
   "dependencies": {
