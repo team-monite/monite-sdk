@@ -153,6 +153,7 @@
       "individual": "Individual"
     },
     "actions": {
+      "loading": "Loading...",
       "call": "Call",
       "sendEmail": "Send email",
       "setCounterpart": "Set this counterpart as",

@@ -24,7 +24,7 @@ import {
 
 import {
   useCounterpartList,
-  useDeleteCounterpartById,
+  useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
@@ -46,7 +46,7 @@ import {
 
 import * as Styled from './styles';
 
-import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
+import { PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
   onRowClick?: (id: string) => void;
@@ -88,7 +88,6 @@ const CounterpartsTable = ({
     isRefetching,
     refetch,
   } = useCounterpartList(
-    MONITE_ENTITY_ID,
     undefined,
     undefined,
     PAGE_LIMIT,
@@ -136,9 +135,7 @@ const CounterpartsTable = ({
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
 
-  const deleteCounterpartMutation = useDeleteCounterpartById(
-    selectedCounterpart!
-  );
+  const deleteCounterpartMutation = useDeleteCounterpart();
 
   return (
     <>
@@ -320,7 +317,8 @@ const CounterpartsTable = ({
             setSelectedCounterpart(undefined);
           }}
           onDelete={() => {
-            deleteCounterpartMutation.mutate();
+            selectedCounterpart &&
+              deleteCounterpartMutation.mutate(selectedCounterpart);
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
           }}

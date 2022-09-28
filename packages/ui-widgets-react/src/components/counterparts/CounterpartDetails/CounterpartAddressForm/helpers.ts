@@ -1,11 +1,13 @@
 import { AllowedCountriesCodes, CounterpartAddress } from '@monite/sdk-api';
+import { countries } from 'core/utils/countries';
+import { Option } from '../helpers';
 
 export interface CounterpartAddressFormFields {
   line1: string;
   line2?: string;
   city: string;
   state: string;
-  country: AllowedCountriesCodes;
+  country: Option;
   postalCode: string;
 }
 
@@ -15,8 +17,10 @@ export const prepareCounterpartAddress = (
   return {
     city: address?.city ?? '',
     state: address?.state ?? '',
-    // TODO set correct country
-    country: address?.country ?? AllowedCountriesCodes.ES,
+    country: {
+      value: (address?.country as AllowedCountriesCodes) ?? '',
+      label: countries[address?.country as AllowedCountriesCodes] ?? '',
+    },
     line1: address?.line1 ?? '',
     line2: address?.line2 ?? '',
     postalCode: address?.postal_code ?? '',
@@ -34,7 +38,7 @@ export const prepareCounterpartAddressSubmit = ({
   return {
     city,
     state,
-    country,
+    country: country.value as AllowedCountriesCodes,
     line1,
     line2,
     postal_code,
@@ -51,5 +55,7 @@ export function printAddress({
 }: CounterpartAddressFormFields): string {
   const street2 = line2 ? `${line2}, ` : '';
 
-  return `${line1}, ${street2}${postalCode} ${city}, ${state}, ${country}`;
+  return `${line1}, ${street2}${postalCode} ${city}, ${state}, ${
+    countries[country.value as AllowedCountriesCodes]
+  }`;
 }

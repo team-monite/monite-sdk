@@ -27,6 +27,7 @@ import {
 import useCounterpartBankForm, {
   CounterpartBankFormProps,
 } from './useCounterpartBankForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { t } = useComponentsContext();
@@ -50,6 +51,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>

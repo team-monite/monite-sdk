@@ -21,31 +21,37 @@ import {
 
 import { CounterpartDetailsBlock, CounterpartHeader } from '../styles';
 
-import CounterpartOrganizationView from './CounterpartOrganizationView';
-import CounterpartIndividualView from './CounterpartIndividualView';
-import CounterpartContactView from './CounterpartContactView';
-
 import {
   prepareCounterpartIndividual,
   prepareCounterpartOrganization,
 } from '../CounterpartForm';
 import { prepareCounterpartContact } from '../CounterpartContactForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
+import CounterpartOrganizationView from './CounterpartOrganizationView';
+import CounterpartIndividualView from './CounterpartIndividualView';
+import CounterpartContactView from './CounterpartContactView';
 import CounterpartBankView from './CounterpartBankView';
 import useCounterpartView, { CounterpartViewProps } from './useCounterpartView';
 
 const CounterpartView = (props: CounterpartViewProps) => {
   const { t } = useComponentsContext();
-  const { counterpart, banks, contacts, deleteBank, deleteContact } =
-    useCounterpartView(props);
-
-  if (!counterpart) return null;
+  const {
+    counterpart,
+    banks,
+    contacts,
+    deleteCounterpart,
+    deleteBank,
+    deleteContact,
+    isLoading,
+  } = useCounterpartView(props);
 
   return (
     <ModalLayout
       scrollableContent
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header
@@ -55,13 +61,16 @@ const CounterpartView = (props: CounterpartViewProps) => {
               </IconButton>
             }
           >
-            <Text textSize={'h3'}>{getName(counterpart)}</Text>
+            <Text textSize={'h3'}>
+              {isLoading && t('counterparts:actions.loading')}
+              {counterpart ? getName(counterpart) : 'Error'}
+            </Text>
           </Header>
         </CounterpartHeader>
       }
     >
       <CounterpartDetailsBlock sx={{ gap: '32px !important', padding: 24 }}>
-        {isOrganizationCounterpart(counterpart) && (
+        {counterpart && isOrganizationCounterpart(counterpart) && (
           <CounterpartOrganizationView
             actions={
               <>
@@ -73,6 +82,15 @@ const CounterpartView = (props: CounterpartViewProps) => {
                 >
                   {t('counterparts:actions.edit')}
                 </Button>
+                <Button
+                  onClick={deleteCounterpart}
+                  size={'sm'}
+                  variant={'text'}
+                  color={'danger'}
+                  leftIcon={<UTrashAlt />}
+                >
+                  {t('counterparts:actions.delete')}
+                </Button>
               </>
             }
             counterpart={prepareCounterpartOrganization(
@@ -81,23 +99,34 @@ const CounterpartView = (props: CounterpartViewProps) => {
           />
         )}
 
-        {isIndividualCounterpart(counterpart) && (
+        {counterpart && isIndividualCounterpart(counterpart) && (
           <CounterpartIndividualView
             counterpart={prepareCounterpartIndividual(counterpart.individual)}
             actions={
-              <Button
-                onClick={() => props.onEdit(counterpart.type)}
-                size={'sm'}
-                variant={'text'}
-                leftIcon={<UPen />}
-              >
-                {t('counterparts:actions.edit')}
-              </Button>
+              <>
+                <Button
+                  onClick={() => props.onEdit(counterpart.type)}
+                  size={'sm'}
+                  variant={'text'}
+                  leftIcon={<UPen />}
+                >
+                  {t('counterparts:actions.edit')}
+                </Button>
+                <Button
+                  onClick={deleteCounterpart}
+                  size={'sm'}
+                  variant={'text'}
+                  color={'danger'}
+                  leftIcon={<UTrashAlt />}
+                >
+                  {t('counterparts:actions.delete')}
+                </Button>
+              </>
             }
           />
         )}
 
-        {isOrganizationCounterpart(counterpart) && (
+        {counterpart && isOrganizationCounterpart(counterpart) && (
           <CounterpartDetailsBlock
             title={t('counterparts:contactPersons')}
             action={
@@ -126,7 +155,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
                       {t('counterparts:actions.edit')}
                     </Button>
                     <Button
-                      onClick={deleteContact}
+                      onClick={() => deleteContact(contact.id)}
                       size={'sm'}
                       variant={'text'}
                       color={'danger'}
@@ -169,7 +198,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
                     {t('counterparts:actions.edit')}
                   </Button>
                   <Button
-                    onClick={deleteBank}
+                    onClick={() => deleteBank(bank.id)}
                     size={'sm'}
                     variant={'text'}
                     color={'danger'}

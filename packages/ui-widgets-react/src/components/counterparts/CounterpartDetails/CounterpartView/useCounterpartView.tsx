@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 
+import { CounterpartType } from '@monite/sdk-api';
+
 import {
   useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
+  useDeleteCounterpart,
   useDeleteCounterpartBank,
   useDeleteCounterpartContact,
 } from 'core/queries/useCounterpart';
-import { CounterpartType } from '@monite/sdk-api';
 
 export type CounterpartViewProps = {
   id: string;
@@ -26,37 +28,67 @@ export type CounterpartViewProps = {
 
 export default function useCounterpartView({
   id,
+  onDelete,
   onBankDelete,
   onContactDelete,
 }: CounterpartViewProps) {
-  const { data: counterpart } = useCounterpartById(id);
-  const { data: contacts } = useCounterpartContactList(id);
-  const { data: banks } = useCounterpartBankList(id);
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    useCounterpartById(id);
 
+  const { data: contacts, isLoading: isContactsLoading } =
+    useCounterpartContactList(id);
+
+  const { data: banks, isLoading: isBanksLoading } = useCounterpartBankList(id);
+
+  const counterpartDeleteMutation = useDeleteCounterpart();
   const contactDeleteMutation = useDeleteCounterpartContact(id);
   const bankDeleteMutation = useDeleteCounterpartBank(id);
 
-  const deleteContact = useCallback(async () => {
-    return await contactDeleteMutation.mutateAsync(id, {
-      onSuccess: () => {
-        onContactDelete && onContactDelete();
-      },
-    });
-  }, [contactDeleteMutation]);
+  const deleteCounterpart = useCallback(async () => {
+    if (!counterpart) return;
 
-  const deleteBank = useCallback(async () => {
-    return await bankDeleteMutation.mutateAsync(id, {
+    return await counterpartDeleteMutation.mutateAsync(counterpart, {
       onSuccess: () => {
-        onBankDelete && onBankDelete();
+        onDelete && onDelete();
       },
     });
-  }, [bankDeleteMutation]);
+  }, [counterpartDeleteMutation, counterpart]);
+
+  const deleteContact = useCallback(
+    async (contactId: string) => {
+      return await contactDeleteMutation.mutateAsync(contactId, {
+        onSuccess: () => {
+          onContactDelete && onContactDelete();
+        },
+      });
+    },
+    [contactDeleteMutation]
+  );
+
+  const deleteBank = useCallback(
+    async (bankId: string) => {
+      return await bankDeleteMutation.mutateAsync(bankId, {
+        onSuccess: () => {
+          onBankDelete && onBankDelete();
+        },
+      });
+    },
+    [bankDeleteMutation]
+  );
 
   return {
     contacts,
     banks,
     counterpart,
+    deleteCounterpart,
     deleteBank,
     deleteContact,
+    isLoading:
+      isBanksLoading ||
+      isCounterpartLoading ||
+      isContactsLoading ||
+      counterpartDeleteMutation.isLoading ||
+      bankDeleteMutation.isLoading ||
+      contactDeleteMutation.isLoading,
   };
 }
