@@ -6,7 +6,6 @@ export const Table = styled.div<{
   clickableRow?: boolean;
 }>`
   flex: 1 1 auto;
-  font-family: 'Faktum', sans-serif;
   display: flex;
   flex-direction: column;
 
@@ -16,10 +15,6 @@ export const Table = styled.div<{
 
   table th {
     padding: 12px;
-
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
 
     white-space: nowrap;
     overflow: hidden;

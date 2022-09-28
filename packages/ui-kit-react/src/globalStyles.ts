@@ -54,6 +54,8 @@ export const getStyles = (theme: Theme) => css`
   body {
     margin: 0;
     font-family: ${theme.fontFamily};
+    font-size: ${theme.fontSize};
+    font-weight: ${theme.fontWeight};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

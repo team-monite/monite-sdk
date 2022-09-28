@@ -13,10 +13,10 @@ interface Props {
 }
 
 const SearchInput = styled(Input)`
-  font-family: ${({ theme }) => theme.search.fontFamily};
-
   input {
     font-family: ${({ theme }) => theme.search.fontFamily};
+    font-size: ${({ theme }) => theme.search.fontSize};
+    font-weight: ${({ theme }) => theme.search.fontWeight};
     color: ${({ theme }) => theme.search.filterTextColor};
 
     border-color: ${({ theme }) => theme.search.filterBorderColor};

@@ -149,8 +149,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
     }),
     multiValueLabel: (provided: any) => ({
       ...provided,
-      fontSize: '16px',
-      fontWeight: 400,
+      fontFamily: theme.select.fontFamily,
+      fontSize: theme.select.fontSize,
+      fontWeight: theme.select.fontWeight,
       lineHeight: optionAsTag ? '24px' : '20px',
       padding: 0,
       paddingLeft: 0,
@@ -270,8 +271,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
         padding: '11px 16px',
-        fontSize: '16px',
-        fontWeight: 400,
+        fontFamily: theme.select.fontFamily,
+        fontSize: theme.select.fontSize,
+        fontWeight: theme.select.fontWeight,
         lineHeight: '24px',
         ':hover': {
           color: isFilter ? THEMES.default.colors.white : 'inherit',
