@@ -1,3 +1,8 @@
+import { CountriesType } from 'core/utils/countries';
+import { AllowedCountriesCodes } from '@monite/sdk-api';
+
+export type Option = { label: string; value: string };
+
 export const printCounterpartType = (
   customer?: string,
   vendor?: string
@@ -8,4 +13,11 @@ export const printCounterpartType = (
   if (vendor) types.push(vendor);
 
   return types.join(', ');
+};
+
+export const countriesToSelect = (countries: CountriesType): Option[] => {
+  return Object.keys(countries).map((country) => ({
+    value: country,
+    label: countries[country as AllowedCountriesCodes],
+  }));
 };

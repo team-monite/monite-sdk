@@ -13,10 +13,20 @@ export const getAddressValidationSchema = (t: TFunction) => ({
     .string()
     .required(`${t('counterparts:address.state')}${t('errors:requiredField')}`),
   country: yup
-    .string()
-    .required(
-      `${t('counterparts:address.country')}${t('errors:requiredField')}`
-    ),
+    .object()
+    .shape({
+      value: yup
+        .string()
+        .required(
+          `${t('counterparts:address.country')}${t('errors:requiredField')}`
+        ),
+      label: yup
+        .string()
+        .required(
+          `${t('counterparts:address.country')}${t('errors:requiredField')}`
+        ),
+    })
+    .required(),
   postalCode: yup
     .string()
     .required(

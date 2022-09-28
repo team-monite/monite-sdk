@@ -45,6 +45,7 @@ import useCounterpartForm, {
 } from '../useCounterpartForm';
 
 import getValidationSchema from './validation';
+import { CounterpartDetailsLoading } from '../../styles/CounterpartDetailsLoading';
 
 export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
@@ -83,6 +84,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>

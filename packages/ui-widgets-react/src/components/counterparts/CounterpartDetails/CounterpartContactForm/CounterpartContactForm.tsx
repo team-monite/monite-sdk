@@ -30,6 +30,7 @@ import CounterpartAddressForm from '../CounterpartAddressForm';
 import useCounterpartContactForm, {
   CounterpartContactFormProps,
 } from './useCounterpartContactForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { t } = useComponentsContext();
@@ -51,6 +52,7 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>

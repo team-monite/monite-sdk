@@ -11,7 +11,7 @@ export default Story;
 export const OrganizationCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
     <CounterpartsDetails
-      id={'31cf1d41-0d4e-4ebf-8700-831d467a1c94'}
+      id={'1b10a11e-c021-4d14-8b06-fb94f0c9ea91'}
       type={CounterpartType.ORGANIZATION}
     />
   </div>

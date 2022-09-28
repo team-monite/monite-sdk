@@ -12,6 +12,7 @@ type CounterpartDetailsBlockProps = {
 const Root = styled(Flex)`
   flex-direction: column;
   gap: 20px;
+  position: relative;
 `;
 
 export const CounterpartDetailsBlock = ({

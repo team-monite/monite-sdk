@@ -1,9 +1,16 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormField, Input } from '@monite/ui-kit-react';
+import {
+  Controller,
+  ControllerFieldState,
+  useFormContext,
+} from 'react-hook-form';
+import { FormField, Input, Select } from '@monite/ui-kit-react';
+import { countries } from 'core/utils/countries';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartAddressFormFields } from './helpers';
 import { CounterpartDetailsBlock } from '../styles';
+import { FormItem } from '../../../payables/PayableDetails/PayableDetailsStyle';
+import { countriesToSelect } from '../helpers';
 
 const CounterpartAddressForm = () => {
   const { t } = useComponentsContext();
@@ -77,23 +84,27 @@ const CounterpartAddressForm = () => {
         )}
       />
       <Controller
-        name="country"
+        name={'country'}
         control={control}
-        render={({ field, fieldState: { error } }) => (
-          <FormField
+        render={({
+          field,
+          fieldState: { error },
+        }: any & {
+          fieldState: {
+            error: ControllerFieldState & {
+              value?: { message?: string };
+              label?: { message?: string };
+            };
+          };
+        }) => (
+          <FormItem
             label={t('counterparts:address.country')}
             id={field.name}
+            error={error?.value?.message || error?.label?.message}
             required
-            error={error?.message}
           >
-            <Input
-              {...field}
-              disabled
-              id={field.name}
-              isInvalid={!!error}
-              required
-            />
-          </FormField>
+            <Select {...field} options={countriesToSelect(countries)} />
+          </FormItem>
         )}
       />
     </CounterpartDetailsBlock>
