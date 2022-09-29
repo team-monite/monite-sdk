@@ -46,6 +46,7 @@ const PageCounterparts = () => {
           id={counterpartId}
           type={counterpartType}
           onClose={closeModal}
+          onDelete={closeModal}
         />
       )}
     </Layout>

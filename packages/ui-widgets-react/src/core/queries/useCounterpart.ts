@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
-  CounterpartCreatePayload,
-  CounterpartsService,
-  CounterpartPaginationResponse,
-  CounterpartResponse,
-  CounterpartUpdatePayload,
-  CounterpartContactResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
   CounterpartBankAccount,
   CounterpartBankAccountResponse,
+  CounterpartContactResponse,
+  CounterpartCreatePayload,
+  CounterpartPaginationResponse,
+  CounterpartResponse,
+  CounterpartsService,
+  CounterpartUpdatePayload,
+  CreateCounterpartContactPayload,
+  UpdateCounterpartContactPayload,
 } from '@monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -35,16 +35,20 @@ type CounterpartBankUpdate = {
   payload: CounterpartBankAccount;
 };
 
-export const useCounterpartBankList = (counterpartId: string) => {
+export const useCounterpartBankList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartBankAccountResponse[], Error>(
+  return useQuery<CounterpartBankAccountResponse[] | undefined, Error>(
     [COUNTERPARTS_BANKS_QUERY],
-    () => monite.api.counterparts.getBankAccounts(counterpartId),
+    () =>
+      !!counterpartId
+        ? monite.api.counterparts.getBankAccounts(counterpartId)
+        : undefined,
     {
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!counterpartId,
     }
   );
 };
@@ -189,16 +193,20 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   );
 };
 
-export const useCounterpartContactList = (counterpartId: string) => {
+export const useCounterpartContactList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartContactResponse[], Error>(
+  return useQuery<CounterpartContactResponse[] | undefined, Error>(
     [COUNTERPARTS_CONTACTS_QUERY],
-    () => monite.api.counterparts.getContacts(counterpartId),
+    () =>
+      counterpartId
+        ? monite.api.counterparts.getContacts(counterpartId)
+        : undefined,
     {
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!counterpartId,
     }
   );
 };

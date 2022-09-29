@@ -28,7 +28,7 @@ import {
 } from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import ConfirmDeleteDialogue from './ConfirmDeleteDialogue';
+import ConfirmDeleteDialogue from '../ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
 import { getName } from '../helpers';
@@ -246,12 +246,12 @@ const CounterpartsTable = ({
                         <UEnvelopeAlt width={16} height={16} />
                         {data.email}
                       </div>
-                      {contacts.length ? (
+                      {!!contacts.length && (
                         <div>
                           <UUserSquare width={16} height={16} />
                           {contacts.join(', ')}
                         </div>
-                      ) : null}
+                      )}
                       <div>
                         <UPhone width={16} height={16} />
                         {data.phone}
@@ -312,6 +312,7 @@ const CounterpartsTable = ({
       </Styled.Table>
       {openDeleteDialogue && (
         <ConfirmDeleteDialogue
+          isLoading={deleteCounterpartMutation.isLoading}
           onClose={() => {
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
@@ -322,6 +323,7 @@ const CounterpartsTable = ({
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
           }}
+          type={t('counterparts:titles.counterpart')}
           name={selectedCounterpart ? getName(selectedCounterpart) : ''}
         />
       )}

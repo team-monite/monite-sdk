@@ -8,7 +8,6 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
   UArrowRight,
 } from '@monite/ui-kit-react';
 
@@ -82,11 +81,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!bank
                     ? t('counterparts:actions.updateBank')
                     : t('counterparts:actions.createBank')}

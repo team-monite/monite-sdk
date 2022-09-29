@@ -12,7 +12,6 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
 } from '@monite/ui-kit-react';
 
 import {
@@ -111,11 +110,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!counterpart
                     ? t('counterparts:actions.update')
                     : t('counterparts:actions.create')}
