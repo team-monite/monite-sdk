@@ -85,10 +85,13 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
           onClose={props.onClose}
           id={counterpartId}
           onEdit={onEdit}
+          onDelete={props.onDelete}
           onContactEdit={onContactEdit}
           onContactCreate={showContactForm}
+          onContactDelete={props.onContactDelete}
           onBankEdit={onBankEdit}
           onBankCreate={showBankAccountForm}
+          onBankDelete={props.onBankDelete}
         />
       )}
     </Modal>

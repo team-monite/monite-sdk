@@ -1,19 +1,25 @@
-import React, { ReactNode } from 'react';
-import { LabelText, Card } from '@monite/ui-kit-react';
+import React from 'react';
+import { LabelText, Card, Button, UPen, UTrashAlt } from '@monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { printAddress } from '../../CounterpartAddressForm';
-import { CounterpartContactFields } from '../../CounterpartContactForm';
 import { getIndividualName } from '../../../helpers';
 import { CounterpartContainer } from '../../styles';
 
-type CounterpartContactViewProps = {
-  actions: ReactNode;
-  contact: CounterpartContactFields;
-};
+import ConfirmDeleteDialogue, {
+  useConfirmDeleteDialogue,
+} from '../../../ConfirmDeleteDialogue';
 
-const CounterpartContactView = ({
-  actions,
-  contact: {
+import { prepareCounterpartContact } from '../../CounterpartContactForm';
+
+import {
+  useCounterpartContactView,
+  CounterpartContactViewProps,
+} from './useCounterpartContactView';
+
+const CounterpartContactView = (props: CounterpartContactViewProps) => {
+  const { t } = useComponentsContext();
+
+  const {
     firstName,
     lastName,
     phone,
@@ -24,12 +30,37 @@ const CounterpartContactView = ({
     city,
     country,
     state,
-  },
-}: CounterpartContactViewProps) => {
-  const { t } = useComponentsContext();
+  } = prepareCounterpartContact(props.contact);
+
+  const { showDialogue, hideDialogue, isDialogueOpen } =
+    useConfirmDeleteDialogue();
+
+  const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
 
   return (
-    <Card actions={actions}>
+    <Card
+      actions={
+        <>
+          <Button
+            onClick={onEdit}
+            size={'sm'}
+            variant={'text'}
+            leftIcon={<UPen />}
+          >
+            {t('counterparts:actions.edit')}
+          </Button>
+          <Button
+            onClick={showDialogue}
+            size={'sm'}
+            variant={'text'}
+            color={'danger'}
+            leftIcon={<UTrashAlt />}
+          >
+            {t('counterparts:actions.delete')}
+          </Button>
+        </>
+      }
+    >
       <CounterpartContainer>
         <LabelText
           label={t('counterparts:contact.fullName')}
@@ -53,6 +84,16 @@ const CounterpartContactView = ({
           <LabelText label={t('counterparts:contact.email')} text={email} />
         )}
       </CounterpartContainer>
+
+      {isDialogueOpen && (
+        <ConfirmDeleteDialogue
+          isLoading={isLoading}
+          onClose={hideDialogue}
+          onDelete={deleteContact}
+          type={t('counterparts:titles.contact')}
+          name={getIndividualName(firstName, lastName)}
+        />
+      )}
     </Card>
   );
 };

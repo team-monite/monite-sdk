@@ -8,7 +8,6 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
   UArrowRight,
 } from '@monite/ui-kit-react';
 
@@ -83,11 +82,7 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!contact
                     ? t('counterparts:actions.updateContact')
                     : t('counterparts:actions.createContact')}
