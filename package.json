@@ -1,7 +1,9 @@
 {
-  "name": "@monite/monorepo",
+  "name": "@team-monite/monite-sdk",
   "version": "0.0.1",
-  "private": true,
+  "publishConfig": {
+    "@team-monite:registry": "https://npm.pkg.github.com"
+  },
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
