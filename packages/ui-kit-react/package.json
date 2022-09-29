@@ -1,6 +1,9 @@
 {
   "name": "@monite/ui-kit-react",
   "version": "0.0.3",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "monite ui",
   "author": "monite.com",
   "homepage": "",

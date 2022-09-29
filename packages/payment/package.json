@@ -1,7 +1,9 @@
 {
   "name": "@monite/payment",
   "version": "0.1.1",
-  "private": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
