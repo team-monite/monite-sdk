@@ -8,9 +8,6 @@
         "--hoist"
       ],
       "ignore": []
-    },
-    "publish": {
-      "registry": "https://gitlab.com/api/v4/projects/56/packages/npm/"
     }
   },
   "version": "independent",
