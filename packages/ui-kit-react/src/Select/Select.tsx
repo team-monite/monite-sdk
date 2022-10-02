@@ -56,6 +56,7 @@ export type Option = {
   value: string;
   label: string;
   icon?: string;
+  renderIcon?: () => React.ReactElement;
 };
 
 interface SelectProps {
@@ -347,6 +348,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
             <Avatar size={24} src={props.data?.icon}>
               {props.data?.label}
             </Avatar>
+            {children}
+          </LabelWithIcon>
+        );
+      }
+
+      if (props.data?.renderIcon) {
+        return (
+          <LabelWithIcon>
+            {props.data?.renderIcon()}
             {children}
           </LabelWithIcon>
         );

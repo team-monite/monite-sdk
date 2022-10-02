@@ -18,6 +18,8 @@ import {
 } from '@monite/ui-kit-react';
 
 import InvoiceDetailes from '../InvoiceDetailes';
+import SelectCountries from '../SelectCountries';
+
 import type { BankItem } from '../types';
 
 import styles from './style.module.scss';
@@ -66,9 +68,89 @@ type YapilyFormProps = {
   receivableData?: ReceivableResponse;
 };
 
+const countriesMock = {
+  data: [
+    {
+      name: 'Austria',
+      code: 'AT',
+    },
+    {
+      name: 'Belgium',
+      code: 'BE',
+    },
+    {
+      name: 'Denmark',
+      code: 'DK',
+    },
+    {
+      name: 'Estonia',
+      code: 'EE',
+    },
+    {
+      name: 'Finland',
+      code: 'FI',
+    },
+    {
+      name: 'France',
+      code: 'FR',
+    },
+    {
+      name: 'Germany',
+      code: 'DE',
+    },
+    {
+      name: 'Iceland',
+      code: 'IS',
+    },
+    {
+      name: 'Ireland',
+      code: 'IE',
+    },
+    {
+      name: 'Italy',
+      code: 'IT',
+    },
+    {
+      name: 'Latvia',
+      code: 'LV',
+    },
+    {
+      name: 'Lithuania',
+      code: 'LT',
+    },
+    {
+      name: 'Netherlands',
+      code: 'NL',
+    },
+    {
+      name: 'Norway',
+      code: 'NO',
+    },
+    {
+      name: 'Poland',
+      code: 'PL',
+    },
+    {
+      name: 'Portugal',
+      code: 'PT',
+    },
+    {
+      name: 'Spain',
+      code: 'ES',
+    },
+    {
+      name: 'Sweden',
+      code: 'SE',
+    },
+    {
+      name: 'United Kingdom',
+      code: 'GB',
+    },
+  ],
+};
 const YapilyForm = ({ receivableData }: YapilyFormProps) => {
   const [searchText, setSearchText] = useState('');
-
+  const [country, setCountry] = useState('DE');
   // TODO: here we should fetch an actual list of banks from the API when it will be ready
   const [banks] = useState(demoBanks);
 
@@ -90,19 +172,30 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
           }
         />
       </Routes>
-      <Box mt="24px" mb="32px">
-        <Input
-          placeholder="Search for your bank"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            updateSearchText(e.target.value);
-          }}
-          renderAddonIcon={() => (
-            <IconButton color={'lightGrey1'}>
-              <USearchAlt size={20} />
-            </IconButton>
-          )}
-        />
-      </Box>
+      <Flex mt="24px" mb="32px">
+        <Box mr={'16px'}>
+          <SelectCountries
+            value={country}
+            onChange={(val) => {
+              setCountry(val.value);
+            }}
+            data={countriesMock.data}
+          />
+        </Box>
+        <Box width={355}>
+          <Input
+            placeholder="Search for your bank"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              updateSearchText(e.target.value);
+            }}
+            renderAddonIcon={() => (
+              <IconButton color={'lightGrey1'}>
+                <USearchAlt size={20} />
+              </IconButton>
+            )}
+          />
+        </Box>
+      </Flex>
       <Box>
         {(searchText
           ? banks.filter((bank) =>
