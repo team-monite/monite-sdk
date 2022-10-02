@@ -3,7 +3,7 @@ import {
   Text,
   Button,
   Box,
-  Avatar,
+  // Avatar,
   Flex,
   List,
   ListItem,
@@ -12,14 +12,12 @@ import {
 import ReactTooltip from 'react-tooltip';
 import { useParams } from 'react-router-dom';
 
-import { ReceivableResponse } from '@monite/sdk-api';
-
-import type { BankItem } from '../types';
+import { ReceivableResponse, PaymentsPaymentsBank } from '@monite/sdk-api';
 
 import styles from './styles.module.scss';
 
 type BankFormProps = {
-  banks?: BankItem[];
+  banks?: PaymentsPaymentsBank[];
   receivableData?: ReceivableResponse;
   onFinish?: (result: any) => void;
 };
@@ -44,12 +42,13 @@ const infoPanelMap = {
 };
 
 const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
-  const { id } = useParams();
-  const bankData = banks?.find((bank) => bank.id === id);
+  const { code } = useParams();
+  const bankData = banks?.find((bank) => bank.code === code);
   return (
     <Box>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
-        <Avatar size={44} src={bankData?.logo}></Avatar>
+        {/* TODO: test with backend */}
+        {/* <Avatar size={44} src={bankData?.logo}></Avatar> */}
         <Text textSize="h3" mt="12px" textAlign="center">
           {bankData?.name}
         </Text>

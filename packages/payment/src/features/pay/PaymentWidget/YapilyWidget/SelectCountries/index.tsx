@@ -14,7 +14,7 @@ const StyledSelect = styled(Select)`
   > div > div {
     padding-right: 0px;
   }
-  > div:last-child {
+  .monite-ui-menuList {
     min-width: 240px;
   }
 `;

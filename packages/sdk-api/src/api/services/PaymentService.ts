@@ -7,6 +7,9 @@ import type { PaymentMethodsCalculateFeePayload } from '../models/PaymentMethods
 import type { PaymentMethodsCalculateFeeResponse } from '../models/PaymentMethodsCalculateFeeResponse';
 // import type { PayPaymentLinkPayload } from '../models/PaymentLinkPayload';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
+import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
+import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
+import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -92,6 +95,78 @@ export default class PaymentService {
         url: `/payment_links/${paymentLinkId}/pay`,
         body: requestBody,
         mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get PaymentsPayment Method Countries
+   * Gets countries coverage by payment method.
+   * @param paymentMethod
+   * @returns PaymentsPaymentMethodsCountriesResponse Successful Response
+   * @throws ApiError
+   */
+  public getPaymentMethodCountries(
+    paymentMethod: 'sepa_credit'
+  ): CancelablePromise<PaymentsPaymentMethodsCountriesResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: '/payment_methods/{payment_method}/countries',
+        path: {
+          payment_method: paymentMethod,
+        },
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Institutions
+   * @param paymentMethod
+   * @param country
+   * @returns PaymentsPaymentsPaymentsPaymentsBanksResponse Successful Response
+   * @throws ApiError
+   */
+  public getInstitutions(
+    paymentMethod: 'sepa_credit',
+    country?: PaymentsYapilyCountriesCoverageCodes
+  ): CancelablePromise<PaymentsPaymentsPaymentsPaymentsBanksResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: '/payment_methods/{payment_method}/banks',
+        path: {
+          payment_method: paymentMethod,
+        },
+        query: {
+          country: country,
+        },
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,

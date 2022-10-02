@@ -208,6 +208,11 @@ export type { PaymentMethodsCalculateFeeResponse } from './models/PaymentMethods
 export { PaymentMethodsEnum } from './models/PaymentMethodsEnum';
 export type { PaymentMethodsResponse } from './models/PaymentMethodsResponse';
 export { PaymentPriorityEnum } from './models/PaymentPriorityEnum';
+export type { PaymentsPaymentMethodsCountriesResponse } from './models/PaymentsPaymentMethodsCountriesResponse';
+export type { PaymentsPaymentsCountry } from './models/PaymentsPaymentsCountry';
+export type { PaymentsYapilyCountriesCoverageCodes } from './models/PaymentsYapilyCountriesCoverageCodes';
+export type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from './models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
+export type { PaymentsPaymentsBank } from './models/PaymentsPaymentsBank';
 export type { PaymentReminder } from './models/PaymentReminder';
 export type { PaymentReminderResponse } from './models/PaymentReminderResponse';
 export type { PaymentRequest } from './models/PaymentRequest';

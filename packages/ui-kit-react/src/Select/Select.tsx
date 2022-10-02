@@ -405,7 +405,6 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   const overrideMenuList = (menuListProps: MenuListProps) => {
     ReactTooltip.rebuild();
     const { selectProps, children, setValue } = menuListProps;
-
     return (
       <>
         {isCreatable && (
@@ -444,7 +443,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
             </Box>
           </>
         )}
-        <components.MenuList {...menuListProps}>{children}</components.MenuList>
+        <components.MenuList {...menuListProps} className="monite-ui-menuList">
+          {children}
+        </components.MenuList>
       </>
     );
   };
