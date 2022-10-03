@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
@@ -7,9 +7,12 @@ import { throttle } from 'lodash';
 import {
   ReceivableResponse,
   PaymentsPaymentsCountry,
-  PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentsBank,
-} from '@monite/sdk-api';
+  PaymentsYapilyCountriesCoverageCodes,
+  PaymentsPaymentMethodsCountriesResponse,
+  PaymentsPaymentsPaymentsPaymentsBanksResponse,
+  PaymentsPaymentsMedia,
+} from '@team-monite/sdk-api';
 import {
   Avatar,
   Text,
@@ -20,11 +23,12 @@ import {
   USearchAlt,
   IconButton,
   Flex,
-} from '@monite/ui-kit-react';
-import { useComponentsContext } from '@monite/ui-widgets-react';
+} from '@team-monite/ui-kit-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
-import InvoiceDetailes from '../InvoiceDetailes';
 import SelectCountries from '../SelectCountries';
+
+import { demoBanks } from '../../fixtures/banks';
 
 import styles from './style.module.scss';
 
@@ -53,12 +57,15 @@ type BankListItemProps = {
 
 const BankListItem = ({ data }: BankListItemProps) => {
   const theme = useTheme<Theme>();
+  const logo = data.media.find(
+    (item: PaymentsPaymentsMedia) => item.type === 'icon'
+  )?.source;
 
   return (
     <StyledBankListItem>
       <Flex>
         {/* TODO: test with backend */}
-        <Avatar size={24} textSize="regular" src={data.media[0].source} />
+        <Avatar size={24} textSize="regular" src={logo} />
         <Box ml={1}>
           <Text>{data.name}</Text>
         </Box>
@@ -71,35 +78,13 @@ const BankListItem = ({ data }: BankListItemProps) => {
 type YapilyFormProps = {
   receivableData?: ReceivableResponse;
 };
-
-// const countriesMock = {
-//   data: [
-//     { name: 'Austria', code: 'AT' },
-//     { name: 'Belgium', code: 'BE' },
-//     { name: 'Denmark', code: 'DK' },
-//     { name: 'Estonia', code: 'EE' },
-//     { name: 'Finland', code: 'FI' },
-//     { name: 'France', code: 'FR' },
-//     { name: 'Germany', code: 'DE' },
-//     { name: 'Iceland', code: 'IS' },
-//     { name: 'Ireland', code: 'IE' },
-//     { name: 'Italy', code: 'IT' },
-//     { name: 'Latvia', code: 'LV' },
-//     { name: 'Lithuania', code: 'LT' },
-//     { name: 'Netherlands', code: 'NL' },
-//     { name: 'Norway', code: 'NO' },
-//     { name: 'Poland', code: 'PL' },
-//     { name: 'Portugal', code: 'PT' },
-//     { name: 'Spain', code: 'ES' },
-//     { name: 'Sweden', code: 'SE' },
-//     { name: 'United Kingdom', code: 'GB' },
-//   ],
-// };
 const YapilyForm = ({ receivableData }: YapilyFormProps) => {
-  const { monite } = useComponentsContext();
+  const { t, monite } = useComponentsContext();
 
   const [searchText, setSearchText] = useState('');
-  const [country, setCountry] = useState('DE');
+  const [country, setCountry] = useState(
+    PaymentsYapilyCountriesCoverageCodes.DE
+  );
 
   const [banks, setBanks] = useState<Array<PaymentsPaymentsBank>>([]);
   const [countries, setCountries] = useState<Array<PaymentsPaymentsCountry>>();
@@ -112,7 +97,7 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
   useEffect(() => {
     monite.api.payment
       .getPaymentMethodCountries('sepa_credit')
-      .then((response) => {
+      .then((response: PaymentsPaymentMethodsCountriesResponse) => {
         setCountries(response.data);
       });
   }, [monite.api.payment]);
@@ -123,63 +108,58 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
         'sepa_credit',
         country as PaymentsYapilyCountriesCoverageCodes
       )
-      .then((response) => {
+      .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
         setBanks(response.data);
       });
+    setBanks(demoBanks.data);
   }, [country, monite.api.payment]);
 
   return (
-    <div>
-      <Text textSize="h3" align="center">
-        Continue with your bank account
-      </Text>
-      <Routes>
-        <Route
-          path={':code'}
-          element={
-            <InvoiceDetailes banks={banks} receivableData={receivableData} />
-          }
-        />
-      </Routes>
-      <Flex mt="24px" mb="32px">
-        {countries && (
-          <Box mr={'16px'}>
-            <SelectCountries
-              value={country}
-              onChange={(val) => {
-                setCountry(val.value);
+    <>
+      <div>
+        <Text textSize="h3" align="center">
+          {t('payment:widget.banksListTitle')}
+        </Text>
+        <Flex mt="24px" mb="32px">
+          {countries && (
+            <Box mr={'16px'}>
+              <SelectCountries
+                value={country}
+                onChange={(val) => {
+                  setCountry(val.value);
+                }}
+                data={countries}
+              />
+            </Box>
+          )}
+          <Box width={355}>
+            <Input
+              placeholder={t('payment:widget.banksSearchPlaceholder')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateSearchText(e.target.value);
               }}
-              data={countries}
+              renderAddonIcon={() => (
+                <IconButton color={'lightGrey1'}>
+                  <USearchAlt size={20} />
+                </IconButton>
+              )}
             />
           </Box>
-        )}
-        <Box width={355}>
-          <Input
-            placeholder="Search for your bank"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              updateSearchText(e.target.value);
-            }}
-            renderAddonIcon={() => (
-              <IconButton color={'lightGrey1'}>
-                <USearchAlt size={20} />
-              </IconButton>
-            )}
-          />
+        </Flex>
+        <Box>
+          {(searchText
+            ? banks.filter((bank) =>
+                bank.name.toLowerCase().includes(searchText.toLowerCase())
+              )
+            : banks
+          ).map((bank) => (
+            <Link to={`${bank.code}${search}`} className={styles.link}>
+              <BankListItem data={bank} />
+            </Link>
+          ))}
         </Box>
-      </Flex>
-      <Box>
-        {(searchText
-          ? banks.filter((bank) =>
-              bank.name.toLowerCase().includes(searchText.toLowerCase())
-            )
-          : banks
-        ).map((bank) => (
-          <Link to={`${bank.code}${search}`} className={styles.link}>
-            <BankListItem data={bank} />
-          </Link>
-        ))}
-      </Box>
-    </div>
+      </div>
+    </>
   );
 };
 

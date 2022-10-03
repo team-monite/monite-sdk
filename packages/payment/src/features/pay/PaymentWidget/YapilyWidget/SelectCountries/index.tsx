@@ -2,7 +2,7 @@ import React from 'react';
 import { CircleFlag } from 'react-circle-flags';
 import styled from '@emotion/styled';
 
-import { Select } from '@monite/ui-kit-react';
+import { Select } from '@team-monite/ui-kit-react';
 
 type SelectCountriesProps = {
   data: Array<{ name: string; code: string }>;

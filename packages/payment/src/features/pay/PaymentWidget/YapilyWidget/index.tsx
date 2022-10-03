@@ -14,7 +14,7 @@ type YapilyFormProps = {
 
 const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
   // TODO: here we should fetch an actual list of banks from the API when it will be ready
-  const [banks] = useState(demoBanks);
+  const [banks] = useState(demoBanks.data);
   return (
     <>
       <NavHeader />
@@ -24,7 +24,7 @@ const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
           element={<BanksListForm receivableData={receivableData} />}
         />
         <Route
-          path={'/:id'}
+          path={'/:code'}
           element={
             <InvoiceDetailes banks={banks} receivableData={receivableData} />
           }

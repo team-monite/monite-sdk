@@ -8,7 +8,7 @@
 /**
  * An enumeration.
  */
-export enum PaymentMethodsEnum {
+export enum PaymentsPaymentMethodsEnum {
   CARD = 'card',
   SEPA_DEBIT = 'sepa_debit',
   SEPA_CREDIT = 'sepa_credit',

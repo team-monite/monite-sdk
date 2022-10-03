@@ -2,7 +2,7 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
-import { PaymentMethodsEnum } from '../models/PaymentMethodsEnum';
+import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
 import type { PaymentMethodsCalculateFeePayload } from '../models/PaymentMethodsCalculateFeePayload';
 import type { PaymentMethodsCalculateFeeResponse } from '../models/PaymentMethodsCalculateFeeResponse';
 // import type { PayPaymentLinkPayload } from '../models/PaymentLinkPayload';
@@ -52,7 +52,7 @@ export default class PaymentService {
    */
 
   public getFeeByPaymentMethod(
-    paymentMethod: PaymentMethodsEnum,
+    paymentMethod: PaymentsPaymentMethodsEnum,
     requestBody: PaymentMethodsCalculateFeePayload
   ): CancelablePromise<PaymentMethodsCalculateFeeResponse> {
     return __request(
