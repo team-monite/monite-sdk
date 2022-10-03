@@ -27,6 +27,7 @@ import {
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 import SelectCountries from '../SelectCountries';
+import EmptyBankList from '../EmptyBankList';
 
 import styles from './style.module.scss';
 
@@ -111,6 +112,12 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
       });
   }, [country, monite.api.payment]);
 
+  const filteredBanks = searchText
+    ? banks.filter((bank) =>
+        bank.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : banks;
+
   return (
     <>
       <div>
@@ -144,16 +151,15 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
           </Box>
         </Flex>
         <Box>
-          {(searchText
-            ? banks.filter((bank) =>
-                bank.name.toLowerCase().includes(searchText.toLowerCase())
-              )
-            : banks
-          ).map((bank) => (
-            <Link to={`${bank.code}${search}`} className={styles.link}>
-              <BankListItem data={bank} />
-            </Link>
-          ))}
+          {filteredBanks.length ? (
+            filteredBanks.map((bank) => (
+              <Link to={`${bank.code}${search}`} className={styles.link}>
+                <BankListItem data={bank} />
+              </Link>
+            ))
+          ) : (
+            <EmptyBankList />
+          )}
         </Box>
       </div>
     </>
