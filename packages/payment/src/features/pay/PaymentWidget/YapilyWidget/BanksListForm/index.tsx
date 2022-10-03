@@ -28,8 +28,6 @@ import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 import SelectCountries from '../SelectCountries';
 
-import { demoBanks } from '../../fixtures/banks';
-
 import styles from './style.module.scss';
 
 const StyledBankListItem = styled.div(
@@ -111,7 +109,6 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
       .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
         setBanks(response.data);
       });
-    setBanks(demoBanks.data);
   }, [country, monite.api.payment]);
 
   return (

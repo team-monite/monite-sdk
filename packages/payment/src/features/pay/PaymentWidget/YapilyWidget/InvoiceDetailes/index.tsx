@@ -49,7 +49,7 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
   const { code } = useParams();
   const bankData = banks?.find((bank) => bank.code === code);
 
-  const logo = bankData.media.find(
+  const logo = bankData?.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
 
