@@ -8,7 +8,7 @@ import {
   Input,
   SidebarLayout,
   Text,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import {
   FormItem,

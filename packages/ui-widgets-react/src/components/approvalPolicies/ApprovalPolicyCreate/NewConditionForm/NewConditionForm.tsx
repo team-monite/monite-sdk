@@ -10,7 +10,7 @@ import {
   Text,
   UArrowRight,
   Theme,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import conditionTypes from '../../fixtures/conditionTypes';
 // import tags from '../../fixtures/tags';

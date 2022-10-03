@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useDeleteCounterpartBank } from 'core/queries/useCounterpart';
-import { CounterpartBankAccountResponse } from '@monite/sdk-api';
+import { CounterpartBankAccountResponse } from '@team-monite/sdk-api';
 
 export type CounterpartBankViewProps = {
   bank: CounterpartBankAccountResponse;

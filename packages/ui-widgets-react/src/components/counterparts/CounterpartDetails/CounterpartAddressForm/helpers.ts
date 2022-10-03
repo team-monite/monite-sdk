@@ -1,4 +1,7 @@
-import { AllowedCountriesCodes, CounterpartAddress } from '@monite/sdk-api';
+import {
+  AllowedCountriesCodes,
+  CounterpartAddress,
+} from '@team-monite/sdk-api';
 import { countries } from 'core/utils/countries';
 import { Option } from '../helpers';
 

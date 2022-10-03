@@ -1,5 +1,11 @@
 import React from 'react';
-import { LabelText, Card, Button, UPen, UTrashAlt } from '@monite/ui-kit-react';
+import {
+  LabelText,
+  Card,
+  Button,
+  UPen,
+  UTrashAlt,
+} from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import ConfirmDeleteDialogue, {

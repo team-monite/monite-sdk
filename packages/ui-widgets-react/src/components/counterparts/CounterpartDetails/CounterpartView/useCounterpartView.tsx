@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { CounterpartType } from '@monite/sdk-api';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 import {
   useCounterpartBankList,

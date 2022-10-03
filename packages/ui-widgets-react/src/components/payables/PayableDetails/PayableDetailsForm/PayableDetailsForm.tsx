@@ -10,7 +10,7 @@ import {
   Multiselect,
   Select,
   Spinner,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { getSymbolFromCurrency } from 'core/utils/currency';
 

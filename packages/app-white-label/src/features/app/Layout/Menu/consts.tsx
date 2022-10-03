@@ -8,7 +8,7 @@ import {
   USetting,
   UClipboardNotes,
   UPostcard,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { MenuItemType } from './types';
 

@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import {
   ApprovalPoliciesTable,
   ApprovalPolicyCreate,
-} from '@monite/ui-widgets-react';
-import { Button, Sidebar } from '@monite/ui-kit-react';
+} from '@team-monite/ui-widgets-react';
+import { Button, Sidebar } from '@team-monite/ui-kit-react';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import TestData from '@monite/ui-widgets-react/src/components/approvalPolicies/fixtures/list';
+import TestData from '@team-monite/ui-widgets-react/src/components/approvalPolicies/fixtures/list';
 
 const PageApprovalPolicies = () => {
   const { t } = useTranslation();

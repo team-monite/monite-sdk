@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, UArrowLeft, Box } from '@monite/ui-kit-react';
-import { useComponentsContext } from '@monite/ui-widgets-react';
+import { Button, UArrowLeft, Box } from '@team-monite/ui-kit-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 const NavHeader = () => {
   const navigate = useNavigate();

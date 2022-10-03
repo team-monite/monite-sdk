@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { EntityUserResponse } from '@monite/sdk-api';
+import { EntityUserResponse } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 

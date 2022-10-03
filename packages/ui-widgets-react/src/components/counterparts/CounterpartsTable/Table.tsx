@@ -13,14 +13,14 @@ import {
   UArrowLeft,
   UArrowRight,
   DropdownItem,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import {
   CounterpartIndividual,
   CounterpartOrganization,
   CounterpartResponse,
   CounterpartType,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import {
   useCounterpartList,

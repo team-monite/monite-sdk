@@ -7,7 +7,7 @@ import {
   Box,
   Text,
   Flex,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import Menu from './Menu';
 import MenuItem from './Menu/MenuItem';

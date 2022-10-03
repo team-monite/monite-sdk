@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spinner } from '@monite/ui-kit-react';
+import { Spinner } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 export const StyledLoading = styled.div`

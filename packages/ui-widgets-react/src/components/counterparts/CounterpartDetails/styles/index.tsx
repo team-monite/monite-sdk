@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Flex } from '@monite/ui-kit-react';
+import { Box, Flex } from '@team-monite/ui-kit-react';
 
 export * from './CounterpartDetailsBlock';
 

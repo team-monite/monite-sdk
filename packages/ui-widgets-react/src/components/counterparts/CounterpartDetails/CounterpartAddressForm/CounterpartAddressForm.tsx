@@ -4,7 +4,7 @@ import {
   ControllerFieldState,
   useFormContext,
 } from 'react-hook-form';
-import { FormField, Input, Select, Card } from '@monite/ui-kit-react';
+import { FormField, Input, Select, Card } from '@team-monite/ui-kit-react';
 import { countries } from 'core/utils/countries';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartAddressFormFields } from './helpers';

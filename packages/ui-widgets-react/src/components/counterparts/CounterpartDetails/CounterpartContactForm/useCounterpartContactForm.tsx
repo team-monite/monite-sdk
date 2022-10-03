@@ -13,7 +13,7 @@ import {
   CounterpartOrganizationResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import {
   CounterpartContactFields,

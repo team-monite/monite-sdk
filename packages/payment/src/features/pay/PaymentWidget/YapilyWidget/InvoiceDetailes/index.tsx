@@ -7,12 +7,12 @@ import {
   Flex,
   List,
   ListItem,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import ReactTooltip from 'react-tooltip';
 import { useParams } from 'react-router-dom';
 
-import { ReceivableResponse } from '@monite/sdk-api';
+import { ReceivableResponse } from '@team-monite/sdk-api';
 
 import type { BankItem } from '../types';
 

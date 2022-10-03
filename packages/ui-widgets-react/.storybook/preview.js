@@ -1,4 +1,4 @@
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 
 import MoniteProvider from '../src/core/context/ContextProvider';
 
