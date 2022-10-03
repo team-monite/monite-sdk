@@ -5,5 +5,5 @@ export { useComponentsContext } from './core/context/ComponentsContext';
 export { toast } from './ui/toast';
 
 export * from './core/utils';
-export * from '@monite/sdk-api';
-export * from '@monite/ui-kit-react';
+export * from '@team-monite/sdk-api';
+export * from '@team-monite/ui-kit-react';

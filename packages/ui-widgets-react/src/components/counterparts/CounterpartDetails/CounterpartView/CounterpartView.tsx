@@ -9,7 +9,7 @@ import {
   UPen,
   UTrashAlt,
   UPlusCircle,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
@@ -21,31 +21,49 @@ import {
 
 import { CounterpartDetailsBlock, CounterpartHeader } from '../styles';
 
-import CounterpartOrganizationView from './CounterpartOrganizationView';
-import CounterpartIndividualView from './CounterpartIndividualView';
-import CounterpartContactView from './CounterpartContactView';
-
 import {
   prepareCounterpartIndividual,
   prepareCounterpartOrganization,
 } from '../CounterpartForm';
-import { prepareCounterpartContact } from '../CounterpartContactForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
+import CounterpartOrganizationView from './CounterpartOrganizationView';
+import CounterpartIndividualView from './CounterpartIndividualView';
+import CounterpartContactView from './CounterpartContactView';
 import CounterpartBankView from './CounterpartBankView';
 import useCounterpartView, { CounterpartViewProps } from './useCounterpartView';
+import ConfirmDeleteDialogue, {
+  useConfirmDeleteDialogue,
+} from '../../ConfirmDeleteDialogue';
 
 const CounterpartView = (props: CounterpartViewProps) => {
   const { t } = useComponentsContext();
-  const { counterpart, banks, contacts, deleteBank, deleteContact } =
-    useCounterpartView(props);
+  const {
+    counterpart,
+    banks,
+    contacts,
+    deleteCounterpart,
+    isLoading,
+    counterpartError,
+    onEdit,
+  } = useCounterpartView(props);
 
-  if (!counterpart) return null;
+  const { showDialogue, hideDialogue, isDialogueOpen } =
+    useConfirmDeleteDialogue();
+
+  const renderTitle = (): string => {
+    if (isLoading) return t('counterparts:actions.loading');
+    if (counterpartError) return counterpartError.message;
+    if (counterpart) return getName(counterpart);
+    return '';
+  };
 
   return (
     <ModalLayout
       scrollableContent
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header
@@ -55,23 +73,42 @@ const CounterpartView = (props: CounterpartViewProps) => {
               </IconButton>
             }
           >
-            <Text textSize={'h3'}>{getName(counterpart)}</Text>
+            <Text textSize={'h3'}>{renderTitle()}</Text>
           </Header>
         </CounterpartHeader>
       }
     >
       <CounterpartDetailsBlock sx={{ gap: '32px !important', padding: 24 }}>
-        {isOrganizationCounterpart(counterpart) && (
+        {counterpart && isDialogueOpen && (
+          <ConfirmDeleteDialogue
+            isLoading={isLoading}
+            onClose={hideDialogue}
+            onDelete={deleteCounterpart}
+            type={t('counterparts:titles.counterpart')}
+            name={getName(counterpart)}
+          />
+        )}
+
+        {counterpart && isOrganizationCounterpart(counterpart) && (
           <CounterpartOrganizationView
             actions={
               <>
                 <Button
-                  onClick={() => props.onEdit(counterpart.type)}
+                  onClick={onEdit}
                   size={'sm'}
                   variant={'text'}
                   leftIcon={<UPen />}
                 >
                   {t('counterparts:actions.edit')}
+                </Button>
+                <Button
+                  onClick={showDialogue}
+                  size={'sm'}
+                  variant={'text'}
+                  color={'danger'}
+                  leftIcon={<UTrashAlt />}
+                >
+                  {t('counterparts:actions.delete')}
                 </Button>
               </>
             }
@@ -81,28 +118,39 @@ const CounterpartView = (props: CounterpartViewProps) => {
           />
         )}
 
-        {isIndividualCounterpart(counterpart) && (
+        {counterpart && isIndividualCounterpart(counterpart) && (
           <CounterpartIndividualView
             counterpart={prepareCounterpartIndividual(counterpart.individual)}
             actions={
-              <Button
-                onClick={() => props.onEdit(counterpart.type)}
-                size={'sm'}
-                variant={'text'}
-                leftIcon={<UPen />}
-              >
-                {t('counterparts:actions.edit')}
-              </Button>
+              <>
+                <Button
+                  onClick={onEdit}
+                  size={'sm'}
+                  variant={'text'}
+                  leftIcon={<UPen />}
+                >
+                  {t('counterparts:actions.edit')}
+                </Button>
+                <Button
+                  onClick={showDialogue}
+                  size={'sm'}
+                  variant={'text'}
+                  color={'danger'}
+                  leftIcon={<UTrashAlt />}
+                >
+                  {t('counterparts:actions.delete')}
+                </Button>
+              </>
             }
           />
         )}
 
-        {isOrganizationCounterpart(counterpart) && (
+        {counterpart && isOrganizationCounterpart(counterpart) && (
           <CounterpartDetailsBlock
             title={t('counterparts:contactPersons')}
             action={
               <Button
-                onClick={() => props.onContactCreate()}
+                onClick={props.onContactCreate}
                 size={'sm'}
                 variant={'text'}
                 leftIcon={<UPlusCircle />}
@@ -114,74 +162,38 @@ const CounterpartView = (props: CounterpartViewProps) => {
             {contacts?.map((contact) => (
               <CounterpartContactView
                 key={contact.id}
-                contact={prepareCounterpartContact(contact)}
-                actions={
-                  <>
-                    <Button
-                      onClick={() => props.onContactEdit(contact.id)}
-                      size={'sm'}
-                      variant={'text'}
-                      leftIcon={<UPen />}
-                    >
-                      {t('counterparts:actions.edit')}
-                    </Button>
-                    <Button
-                      onClick={deleteContact}
-                      size={'sm'}
-                      variant={'text'}
-                      color={'danger'}
-                      leftIcon={<UTrashAlt />}
-                    >
-                      {t('counterparts:actions.delete')}
-                    </Button>
-                  </>
-                }
+                contact={contact}
+                onEdit={props.onContactEdit}
+                onDelete={props.onContactDelete}
               />
             ))}
           </CounterpartDetailsBlock>
         )}
 
-        <CounterpartDetailsBlock
-          title={t('counterparts:bankAccounts')}
-          action={
-            <Button
-              onClick={() => props.onBankCreate()}
-              size={'sm'}
-              variant={'text'}
-              leftIcon={<UPlusCircle />}
-            >
-              {t('counterparts:actions.addBankAccount')}
-            </Button>
-          }
-        >
-          {banks?.map((bank) => (
-            <CounterpartBankView
-              key={bank.id}
-              bank={bank}
-              actions={
-                <>
-                  <Button
-                    onClick={() => props.onBankEdit(bank.id)}
-                    size={'sm'}
-                    variant={'text'}
-                    leftIcon={<UPen />}
-                  >
-                    {t('counterparts:actions.edit')}
-                  </Button>
-                  <Button
-                    onClick={deleteBank}
-                    size={'sm'}
-                    variant={'text'}
-                    color={'danger'}
-                    leftIcon={<UTrashAlt />}
-                  >
-                    {t('counterparts:actions.delete')}
-                  </Button>
-                </>
-              }
-            />
-          ))}
-        </CounterpartDetailsBlock>
+        {counterpart && (
+          <CounterpartDetailsBlock
+            title={t('counterparts:bankAccounts')}
+            action={
+              <Button
+                onClick={props.onBankCreate}
+                size={'sm'}
+                variant={'text'}
+                leftIcon={<UPlusCircle />}
+              >
+                {t('counterparts:actions.addBankAccount')}
+              </Button>
+            }
+          >
+            {banks?.map((bank) => (
+              <CounterpartBankView
+                key={bank.id}
+                bank={bank}
+                onEdit={props.onBankEdit}
+                onDelete={props.onBankDelete}
+              />
+            ))}
+          </CounterpartDetailsBlock>
+        )}
       </CounterpartDetailsBlock>
     </ModalLayout>
   );

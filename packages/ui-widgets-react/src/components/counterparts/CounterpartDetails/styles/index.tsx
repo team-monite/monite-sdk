@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
-import { Box, Flex } from '@monite/ui-kit-react';
+import { Box, Flex } from '@team-monite/ui-kit-react';
 
 export * from './CounterpartDetailsBlock';
 
 export const CounterpartHeader = styled(Box)`
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid ${({ theme }) => theme.neutral80};
 `;
 
 export const CounterpartFooter = styled(Box)`
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid ${({ theme }) => theme.neutral80};
   align-items: flex-end;
 `;
 

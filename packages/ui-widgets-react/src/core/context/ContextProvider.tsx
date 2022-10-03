@@ -1,11 +1,13 @@
 import React, { ReactNode, useEffect } from 'react';
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   THEMES,
   ThemeProvider as UIThemeProvider,
   tokenizedTheme,
-} from '@monite/ui-kit-react';
+  getStyles,
+} from '@team-monite/ui-kit-react';
+import { Global } from '@emotion/react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 import { merge } from 'lodash';
@@ -15,8 +17,6 @@ import GlobalToast from '../GlobalToast';
 
 import i18n from '../i18n';
 import { ComponentsContext } from './ComponentsContext';
-
-import '../../index.css';
 
 interface MoniteProviderProps {
   monite: MoniteApp;
@@ -29,7 +29,7 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       refetchOnMount: true,
-      refetchOnReconnect: false,
+      refetchOnReconnect: true,
       retry: false,
       staleTime: Infinity,
     },
@@ -47,11 +47,8 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
   }, [monite.locale, i18n.changeLanguage]);
 
   return (
-    <ComponentsContext.Provider
-      value={{
-        monite,
-      }}
-    >
+    <ComponentsContext.Provider value={{ monite }}>
+      <Global styles={getStyles(finalTheme)} />
       <QueryClientProvider contextSharing={true} client={queryClient}>
         <EmotionThemeProvider theme={finalTheme}>
           <GlobalToast />

@@ -4,7 +4,7 @@ import {
   PayableResponseSchema,
   PayableUpdateSchema,
   TagReadSchema,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import { convertToMajorUnits, convertToMinorUnits } from 'core/utils';
 import {
   getIndividualName,

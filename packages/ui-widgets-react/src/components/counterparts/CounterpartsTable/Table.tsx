@@ -13,22 +13,22 @@ import {
   UArrowLeft,
   UArrowRight,
   DropdownItem,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import {
   CounterpartIndividual,
   CounterpartOrganization,
   CounterpartResponse,
   CounterpartType,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import {
   useCounterpartList,
-  useDeleteCounterpartById,
+  useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import ConfirmDeleteDialogue from './ConfirmDeleteDialogue';
+import ConfirmDeleteDialogue from '../ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
 import { getName } from '../helpers';
@@ -46,7 +46,7 @@ import {
 
 import * as Styled from './styles';
 
-import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
+import { PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
   onRowClick?: (id: string) => void;
@@ -88,7 +88,6 @@ const CounterpartsTable = ({
     isRefetching,
     refetch,
   } = useCounterpartList(
-    MONITE_ENTITY_ID,
     undefined,
     undefined,
     PAGE_LIMIT,
@@ -136,9 +135,7 @@ const CounterpartsTable = ({
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
 
-  const deleteCounterpartMutation = useDeleteCounterpartById(
-    selectedCounterpart!
-  );
+  const deleteCounterpartMutation = useDeleteCounterpart();
 
   return (
     <>
@@ -249,12 +246,12 @@ const CounterpartsTable = ({
                         <UEnvelopeAlt width={16} height={16} />
                         {data.email}
                       </div>
-                      {contacts.length ? (
+                      {!!contacts.length && (
                         <div>
                           <UUserSquare width={16} height={16} />
                           {contacts.join(', ')}
                         </div>
-                      ) : null}
+                      )}
                       <div>
                         <UPhone width={16} height={16} />
                         {data.phone}
@@ -315,15 +312,18 @@ const CounterpartsTable = ({
       </Styled.Table>
       {openDeleteDialogue && (
         <ConfirmDeleteDialogue
+          isLoading={deleteCounterpartMutation.isLoading}
           onClose={() => {
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
           }}
           onDelete={() => {
-            deleteCounterpartMutation.mutate();
+            selectedCounterpart &&
+              deleteCounterpartMutation.mutate(selectedCounterpart);
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
           }}
+          type={t('counterparts:titles.counterpart')}
           name={selectedCounterpart ? getName(selectedCounterpart) : ''}
         />
       )}

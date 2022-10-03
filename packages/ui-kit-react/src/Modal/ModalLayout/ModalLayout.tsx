@@ -8,6 +8,7 @@ export type ModalLayoutProps = {
   children: React.ReactNode;
   header?: React.ReactNode;
   footer?: React.ReactNode;
+  loading?: React.ReactNode;
   size?: ModalLayoutSize;
   fullScreen?: boolean;
   isDrawer?: boolean;
@@ -100,6 +101,7 @@ const ModalLayout = ({
   children,
   header,
   footer,
+  loading,
   size,
   fullScreen,
   isDrawer,
@@ -118,6 +120,7 @@ const ModalLayout = ({
         ) : (
           children
         )}
+        {loading}
       </StyledModalLayoutContent>
       {footer && <StyledModalLayoutFooter>{footer}</StyledModalLayoutFooter>}
     </StyledWrap>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from '@monite/ui-kit-react';
+import { Modal } from '@team-monite/ui-kit-react';
 
 import useCounterpartDetails, {
   COUNTERPART_VIEW,
@@ -85,10 +85,13 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
           onClose={props.onClose}
           id={counterpartId}
           onEdit={onEdit}
+          onDelete={props.onDelete}
           onContactEdit={onContactEdit}
           onContactCreate={showContactForm}
+          onContactDelete={props.onContactDelete}
           onBankEdit={onBankEdit}
           onBankCreate={showBankAccountForm}
+          onBankDelete={props.onBankDelete}
         />
       )}
     </Modal>

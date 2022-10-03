@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { PayableStateEnum } from '@monite/sdk-api';
-import { DatePicker, Search, Select } from '@monite/ui-kit-react';
+import { PayableStateEnum } from '@team-monite/sdk-api';
+import { DatePicker, Search, Select } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 import { useComponentsContext } from '../../../core/context/ComponentsContext';

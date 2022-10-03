@@ -5,10 +5,10 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import { Button, Alert, Box } from '@monite/ui-kit-react';
-import { PaymentMethodsEnum } from '@monite/sdk-api';
+import { Button, Alert, Box } from '@team-monite/ui-kit-react';
+import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
-import { useComponentsContext, toast } from '@monite/ui-widgets-react';
+import { useComponentsContext, toast } from '@team-monite/ui-widgets-react';
 
 import * as Styled from './styles';
 import { formatAmountFromMinor } from '../../../consts';

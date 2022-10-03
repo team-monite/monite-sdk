@@ -1,7 +1,7 @@
 import React, { BaseSyntheticEvent, FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { UClockThree, UCheck, UExclamationTriangle } from 'unicons';
-import { ThemeColors } from '../consts';
+import { ThemeColors } from '../theme_deprecated';
 import { STYLES as TEXT_STYLES } from '../Text';
 import { ThemedStyledProps } from '../types';
 

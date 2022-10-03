@@ -8,9 +8,8 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
   UArrowRight,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -30,6 +29,7 @@ import CounterpartAddressForm from '../CounterpartAddressForm';
 import useCounterpartContactForm, {
   CounterpartContactFormProps,
 } from './useCounterpartContactForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { t } = useComponentsContext();
@@ -51,6 +51,7 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>
@@ -81,11 +82,7 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!contact
                     ? t('counterparts:actions.updateContact')
                     : t('counterparts:actions.createContact')}

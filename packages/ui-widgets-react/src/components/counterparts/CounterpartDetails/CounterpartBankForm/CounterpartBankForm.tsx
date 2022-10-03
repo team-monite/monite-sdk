@@ -8,9 +8,8 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
   UArrowRight,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -27,6 +26,7 @@ import {
 import useCounterpartBankForm, {
   CounterpartBankFormProps,
 } from './useCounterpartBankForm';
+import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { t } = useComponentsContext();
@@ -50,6 +50,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>
@@ -80,11 +81,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!bank
                     ? t('counterparts:actions.updateBank')
                     : t('counterparts:actions.createBank')}

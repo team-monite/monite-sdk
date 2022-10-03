@@ -5,7 +5,7 @@ import {
   OrderEnum,
   PayableStateEnum,
   ReceivableResponse,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import {
   Button,
   HeadCellSort,
@@ -14,7 +14,7 @@ import {
   Tag,
   UArrowLeft,
   UArrowRight,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { usePayable } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';

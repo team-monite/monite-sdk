@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text, Flex } from '@monite/ui-kit-react';
+import { Text, Flex } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 type CounterpartDetailsBlockProps = {
@@ -12,6 +12,7 @@ type CounterpartDetailsBlockProps = {
 const Root = styled(Flex)`
   flex-direction: column;
   gap: 20px;
+  position: relative;
 `;
 
 export const CounterpartDetailsBlock = ({

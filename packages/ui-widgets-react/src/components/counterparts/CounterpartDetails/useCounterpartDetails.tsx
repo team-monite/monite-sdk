@@ -1,21 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
-import { CounterpartType } from '@monite/sdk-api';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 export type CounterpartsDetailsProps = {
   id?: string;
   type?: CounterpartType;
   onClose?: () => void;
+
   onCreate?: (id: string) => void;
-  onUpdate?: () => void;
-  onEdit?: (type: CounterpartType) => void;
+  onUpdate?: (id: string) => void;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
 
   onContactCreate?: (id: string) => void;
   onContactUpdate?: (id: string) => void;
   onContactEdit?: (id: string) => void;
+  onContactDelete?: (id: string) => void;
 
   onBankCreate?: (id: string) => void;
   onBankUpdate?: (id: string) => void;
   onBankEdit?: (id: string) => void;
+  onBankDelete?: (id: string) => void;
 };
 
 export enum COUNTERPART_VIEW {
@@ -69,16 +73,19 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onCreate && props.onCreate(id);
       setCounterpartId(id);
     },
-    [props.onCreate]
+    [props.onCreate, actions]
   );
 
-  const onUpdate = useCallback(() => {
-    actions.showView();
-    props.onUpdate && props.onUpdate();
-  }, [props.onUpdate]);
+  const onUpdate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onUpdate && props.onUpdate(id);
+    },
+    [props.onUpdate, actions]
+  );
 
   const onEdit = useCallback(
-    (type: CounterpartType) => {
+    (id: string, type: CounterpartType) => {
       if (type === CounterpartType.ORGANIZATION) {
         actions.showOrganizationForm();
       }
@@ -87,15 +94,15 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
         actions.showIndividualForm();
       }
 
-      props.onEdit && props.onEdit(type);
+      props.onEdit && props.onEdit(id);
     },
-    [props.onEdit]
+    [props.onEdit, actions]
   );
 
   const onContactCancel = useCallback(() => {
     actions.showView();
     setContactId(undefined);
-  }, [props.onContactCreate]);
+  }, [actions]);
 
   const onContactCreate = useCallback(
     (id: string) => {
@@ -103,7 +110,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onContactCreate && props.onContactCreate(id);
       setContactId(undefined);
     },
-    [props.onContactCreate]
+    [props.onContactCreate, actions]
   );
 
   const onContactUpdate = useCallback(
@@ -112,7 +119,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onContactUpdate && props.onContactUpdate(id);
       setContactId(undefined);
     },
-    [props.onContactUpdate]
+    [props.onContactUpdate, actions]
   );
 
   const onContactEdit = useCallback(
@@ -121,13 +128,13 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       actions.showContactForm();
       props.onContactEdit && props.onContactEdit(id);
     },
-    [props.onContactEdit]
+    [props.onContactEdit, actions]
   );
 
   const onBankCancel = useCallback(() => {
     actions.showView();
     setBankId(undefined);
-  }, [props.onBankCreate]);
+  }, [actions]);
 
   const onBankCreate = useCallback(
     (id: string) => {
@@ -135,7 +142,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onBankCreate && props.onBankCreate(id);
       setBankId(undefined);
     },
-    [props.onBankCreate]
+    [props.onBankCreate, actions]
   );
 
   const onBankUpdate = useCallback(
@@ -144,7 +151,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onBankUpdate && props.onBankUpdate(id);
       setBankId(undefined);
     },
-    [props.onBankUpdate]
+    [props.onBankUpdate, actions]
   );
 
   const onBankEdit = useCallback(
@@ -153,7 +160,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       actions.showBankAccountForm();
       props.onBankEdit && props.onBankEdit(id);
     },
-    [props.onBankEdit]
+    [props.onBankEdit, actions]
   );
 
   return {

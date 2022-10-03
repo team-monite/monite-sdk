@@ -8,14 +8,14 @@ import {
 import {
   CounterpartCreatePayload,
   CounterpartUpdatePayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 export type CounterpartsFormProps = {
   id?: string;
-  onCreate?: (id: string) => void;
   onClose?: () => void;
   onCancel?: () => void;
-  onUpdate?: () => void;
+  onCreate?: (id: string) => void;
+  onUpdate?: (id: string) => void;
 };
 
 export default function useCounterpartForm({
@@ -45,7 +45,7 @@ export default function useCounterpartForm({
         },
       });
     },
-    [counterpartCreateMutation]
+    [counterpartCreateMutation, onCreate]
   );
 
   const updateCounterpart = useCallback(
@@ -58,13 +58,13 @@ export default function useCounterpartForm({
           counterpart: req,
         },
         {
-          onSuccess: () => {
-            onUpdate && onUpdate();
+          onSuccess: ({ id }) => {
+            onUpdate && onUpdate(id);
           },
         }
       );
     },
-    [counterpartCreateMutation]
+    [counterpartCreateMutation, onUpdate]
   );
 
   return {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 
-import { Text, UAngleDown, THEMES } from '@monite/ui-kit-react';
+import { Text, UAngleDown, THEMES } from '@team-monite/ui-kit-react';
 import { MenuItemType } from '../types';
 
 type MenuItemProps = {

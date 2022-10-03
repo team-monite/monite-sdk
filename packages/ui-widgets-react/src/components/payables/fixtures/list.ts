@@ -3,7 +3,7 @@ import {
   ReceivableResponse,
   CurrencyEnum,
   ReceivablesStatusEnum,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 const data: ReceivableResponse[] = [
   {

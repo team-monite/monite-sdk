@@ -1,6 +1,6 @@
 import React from 'react';
-import { CounterpartType } from '@monite/sdk-api';
-import { Search, Select } from '@monite/ui-kit-react';
+import { CounterpartType } from '@team-monite/sdk-api';
+import { Search, Select } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';

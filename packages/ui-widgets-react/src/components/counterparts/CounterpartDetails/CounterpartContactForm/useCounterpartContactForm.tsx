@@ -13,7 +13,7 @@ import {
   CounterpartOrganizationResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import {
   CounterpartContactFields,
@@ -105,7 +105,7 @@ export default function useCounterpartContactForm({
         ? updateContact(payload as UpdateCounterpartContactPayload)
         : createContact(payload as CreateCounterpartContactPayload);
     },
-    [updateContact, createContact]
+    [contact, updateContact, createContact]
   );
 
   return {

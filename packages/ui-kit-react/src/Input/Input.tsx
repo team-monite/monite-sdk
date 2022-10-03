@@ -124,8 +124,9 @@ const Input = styled(RebassInput)`
   padding: 11px 16px;
   background-color: ${({ theme }) => theme.colors.lightGrey3};
 
-  font-size: 16px;
-  font-weight: 400;
+  font-family: ${({ theme }) => theme.input.fontFamily};
+  font-size: ${({ theme }) => theme.input.fontSize};
+  font-weight: ${({ theme }) => theme.input.fontWeight};
   line-height: 24px;
 
   color: ${({ theme }) => theme.colors.black};

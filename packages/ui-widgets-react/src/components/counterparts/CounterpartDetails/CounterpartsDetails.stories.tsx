@@ -1,5 +1,5 @@
 import CounterpartsDetails from './CounterpartsDetails';
-import { CounterpartType } from '@monite/sdk-api';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 const Story = {
   title: 'In Progress/Counterparts — Details',
@@ -10,10 +10,7 @@ export default Story;
 
 export const OrganizationCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
-    <CounterpartsDetails
-      id={'31cf1d41-0d4e-4ebf-8700-831d467a1c94'}
-      type={CounterpartType.ORGANIZATION}
-    />
+    <CounterpartsDetails id={'f15ca7ef-ca6a-4fc1-ba53-da63b4af503c'} />
   </div>
 );
 

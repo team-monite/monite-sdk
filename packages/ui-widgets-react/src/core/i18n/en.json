@@ -98,10 +98,10 @@
       "all": "All invoices",
       "new": "New",
       "approve_in_progress": "Approve in Progress",
-      "waiting_to_be_paid": "Waiting to be Paid",
+      "waiting_to_be_paid": "Waiting to Be Paid",
       "paid": "Paid",
       "canceled": "Canceled",
-      "rejected": "rejected"
+      "rejected": "Rejected"
     }
   },
   "counterparts": {
@@ -149,10 +149,14 @@
     },
     "titles": {
       "create": "Create Counterpart – {{name}}",
+      "counterpart": "Counterpart",
+      "contact": "Contact Person",
+      "bank": "Bank Account",
       "organization": "Company",
       "individual": "Individual"
     },
     "actions": {
+      "loading": "Loading...",
       "call": "Call",
       "sendEmail": "Send email",
       "setCounterpart": "Set this counterpart as",
@@ -168,11 +172,11 @@
       "createBank": "Add bank account",
       "updateBank": "Update bank account"
     },
-    "confirmDialogue": {
-      "title": "Delete Counterpart?",
-      "content": "Are you sure you want to delete “{{name}}”? This action can’t be undone.",
-      "successNotification": "Counterpart “{{name}}” was deleted.",
-      "errorNotification": "Failed to delete counterpart “{{name}}”."
+    "confirmDeleteDialogue": {
+      "title": "Delete {{type}} “{{name}}”?",
+      "content": "This action can’t be undone.",
+      "successNotification": "{{type}} “{{name}}” was deleted.",
+      "errorNotification": "Failed to delete {{type}} “{{name}}”."
     },
     "filters": {
       "isCustomer": {

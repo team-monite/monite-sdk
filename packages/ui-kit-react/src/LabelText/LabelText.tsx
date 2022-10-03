@@ -10,7 +10,7 @@ type LabelTextProps = {
 const LabelTextRoot = styled(Flex)``;
 
 const Label = styled(Box)`
-  width: 132px;
+  min-width: 132px;
   font-size: 14px;
   color: #707070;
 `;

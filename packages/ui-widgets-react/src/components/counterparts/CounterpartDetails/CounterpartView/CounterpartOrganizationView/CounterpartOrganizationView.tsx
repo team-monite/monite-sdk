@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { LabelText, Card } from '@monite/ui-kit-react';
+import { LabelText, Card } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { printAddress } from '../../CounterpartAddressForm';

@@ -3,8 +3,8 @@ import {
   CounterpartsTable,
   CounterpartDetails,
   Button,
-} from '@monite/ui-widgets-react';
-import { CounterpartType } from '@monite/sdk-api';
+} from '@team-monite/ui-widgets-react';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
@@ -46,6 +46,7 @@ const PageCounterparts = () => {
           id={counterpartId}
           type={counterpartType}
           onClose={closeModal}
+          onDelete={closeModal}
         />
       )}
     </Layout>

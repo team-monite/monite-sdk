@@ -79,6 +79,8 @@ data:
             error_log /dev/stderr;
             error_page   500 502 503 504  /50x.html;
             location /api/ {
+                add_header Access-Control-Allow-Origin "*";
+
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/;
             }

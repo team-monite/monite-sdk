@@ -1,16 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
-  CounterpartCreatePayload,
-  CounterpartsService,
-  CounterpartPaginationResponse,
-  CounterpartResponse,
-  CounterpartUpdatePayload,
-  CounterpartContactResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
   CounterpartBankAccount,
   CounterpartBankAccountResponse,
-} from '@monite/sdk-api';
+  CounterpartContactResponse,
+  CounterpartCreatePayload,
+  CounterpartPaginationResponse,
+  CounterpartResponse,
+  CounterpartsService,
+  CounterpartUpdatePayload,
+  CreateCounterpartContactPayload,
+  UpdateCounterpartContactPayload,
+} from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 import { getName } from 'components/counterparts/helpers';
@@ -35,16 +35,20 @@ type CounterpartBankUpdate = {
   payload: CounterpartBankAccount;
 };
 
-export const useCounterpartBankList = (counterpartId: string) => {
+export const useCounterpartBankList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartBankAccountResponse[], Error>(
+  return useQuery<CounterpartBankAccountResponse[] | undefined, Error>(
     [COUNTERPARTS_BANKS_QUERY],
-    () => monite.api.counterparts.getBankAccounts(counterpartId),
+    () =>
+      !!counterpartId
+        ? monite.api.counterparts.getBankAccounts(counterpartId)
+        : undefined,
     {
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!counterpartId,
     }
   );
 };
@@ -59,12 +63,12 @@ export const useCreateCounterpartBank = (counterpartId: string) => {
     CounterpartBankAccount
   >((bank) => monite.api.counterparts.createBankAccount(counterpartId, bank), {
     onSuccess: async (bank) => {
-      await queryClient.setQueryData(
+      queryClient.setQueryData(
         [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
         bank
       );
 
-      await queryClient.setQueryData<
+      queryClient.setQueryData<
         Updater<
           CounterpartBankAccountResponse[],
           CounterpartBankAccountResponse[]
@@ -92,7 +96,7 @@ export const useCounterpartBankById = (
   const queryClient = useQueryClient();
 
   return useQuery<CounterpartBankAccountResponse | undefined, Error>(
-    [COUNTERPARTS_BANKS_QUERY, { bankId }],
+    [COUNTERPARTS_BANKS_QUERY, { id: bankId }],
     () => {
       if (!bankId) return undefined;
 
@@ -133,7 +137,7 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
       monite.api.counterparts.updateBankAccount(counterpartId, bankId, payload),
     {
       onSuccess: async (bank) => {
-        await queryClient.setQueryData<
+        queryClient.setQueryData<
           Updater<
             CounterpartBankAccountResponse[],
             CounterpartBankAccountResponse[]
@@ -144,7 +148,7 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
             banks.map((oldBank) => (oldBank.id === bank.id ? bank : oldBank))
         );
 
-        await queryClient.setQueryData(
+        queryClient.setQueryData(
           [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
           bank
         );
@@ -168,8 +172,8 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
     (bankId) =>
       monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
     {
-      onSuccess: async (_, bankId) => {
-        await queryClient.setQueryData<
+      onSuccess: (_, bankId) => {
+        queryClient.setQueryData<
           Updater<
             CounterpartBankAccountResponse[],
             CounterpartBankAccountResponse[]
@@ -180,11 +184,6 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
             banks.filter((bank) => bank.id !== bankId)
         );
 
-        // await queryClient.setQueryData(
-        //   [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
-        //   bank
-        // );
-
         toast.success('Bank was deleted');
       },
       onError: (error) => {
@@ -194,16 +193,20 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   );
 };
 
-export const useCounterpartContactList = (counterpartId: string) => {
+export const useCounterpartContactList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartContactResponse[], Error>(
+  return useQuery<CounterpartContactResponse[] | undefined, Error>(
     [COUNTERPARTS_CONTACTS_QUERY],
-    () => monite.api.counterparts.getContacts(counterpartId),
+    () =>
+      counterpartId
+        ? monite.api.counterparts.getContacts(counterpartId)
+        : undefined,
     {
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!counterpartId,
     }
   );
 };
@@ -220,12 +223,12 @@ export const useCreateCounterpartContact = (counterpartId: string) => {
     (contact) => monite.api.counterparts.createContact(counterpartId, contact),
     {
       onSuccess: async (contact) => {
-        await queryClient.setQueryData(
+        queryClient.setQueryData(
           [COUNTERPARTS_CONTACTS_QUERY, { id: contact.id }],
           contact
         );
 
-        await queryClient.setQueryData<
+        queryClient.setQueryData<
           Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
         >(
           [COUNTERPARTS_CONTACTS_QUERY],
@@ -251,7 +254,7 @@ export const useCounterpartContactById = (
   const queryClient = useQueryClient();
 
   return useQuery<CounterpartContactResponse | undefined, Error>(
-    [COUNTERPARTS_CONTACTS_QUERY, { contactId }],
+    [COUNTERPARTS_CONTACTS_QUERY, { id: contactId }],
     () => {
       if (!contactId) return undefined;
 
@@ -290,7 +293,7 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
       monite.api.counterparts.updateContact(counterpartId, contactId, payload),
     {
       onSuccess: async (contact) => {
-        await queryClient.setQueryData<
+        queryClient.setQueryData<
           Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
         >(
           [COUNTERPARTS_CONTACTS_QUERY],
@@ -300,7 +303,7 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
             )
         );
 
-        await queryClient.setQueryData(
+        queryClient.setQueryData(
           [COUNTERPARTS_CONTACTS_QUERY, { id: contact.id }],
           contact
         );
@@ -324,19 +327,14 @@ export const useDeleteCounterpartContact = (counterpartId: string) => {
     (contactId) =>
       monite.api.counterparts.deleteContact(counterpartId, contactId),
     {
-      onSuccess: async (_, contactId) => {
-        await queryClient.setQueryData<
+      onSuccess: (_, contactId) => {
+        queryClient.setQueryData<
           Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
         >(
           [COUNTERPARTS_CONTACTS_QUERY],
           (contacts: CounterpartContactResponse[]) =>
             contacts.filter((contact) => contact.id !== contactId)
         );
-
-        // await queryClient.setQueryData(
-        //   [COUNTERPARTS_CONTACTS_QUERY, { id: contact.id }],
-        //   contact
-        // );
 
         toast.success('Contact was deleted');
       },
@@ -358,21 +356,6 @@ export const useCounterpartList = (
       return monite.api.counterparts.getList(...args);
     },
     {
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    }
-  );
-};
-
-export const useCounterpartById = (id?: string) => {
-  const { monite } = useComponentsContext();
-
-  return useQuery<CounterpartResponse | undefined, Error>(
-    [COUNTERPARTS_QUERY, { id }],
-    () => (id ? monite.api.counterparts.getById(id) : undefined),
-    {
-      enabled: !!id,
       onError: (error) => {
         toast.error(error.message);
       },
@@ -404,6 +387,21 @@ export const useCreateCounterpart = () => {
   );
 };
 
+export const useCounterpartById = (id?: string) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<CounterpartResponse | undefined, Error>(
+    [COUNTERPARTS_QUERY, { id }],
+    () => (id ? monite.api.counterparts.getById(id) : undefined),
+    {
+      enabled: !!id,
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
+
 export const useUpdateCounterpart = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
@@ -426,25 +424,30 @@ export const useUpdateCounterpart = () => {
   );
 };
 
-export const useDeleteCounterpartById = (counterpart: CounterpartResponse) => {
+export const useDeleteCounterpart = () => {
   const queryClient = useQueryClient();
   const { monite, t } = useComponentsContext();
 
-  return useMutation(() => monite.api.counterparts.delete(counterpart.id), {
-    onSuccess: async () => {
-      toast(
-        t('counterparts:confirmDialogue.successNotification', {
-          name: getName(counterpart),
-        })
-      );
-      await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-    },
-    onError: () => {
-      toast.error(
-        t('counterparts:confirmDialogue.errorNotification', {
-          name: getName(counterpart),
-        })
-      );
-    },
-  });
+  return useMutation(
+    (counterpart: CounterpartResponse) =>
+      monite.api.counterparts.delete(counterpart.id),
+    {
+      onSuccess: async (_, counterpart) => {
+        toast(
+          t('counterparts:confirmDialogue.successNotification', {
+            name: getName(counterpart),
+          })
+        );
+
+        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
+      },
+      onError: (_, counterpart) => {
+        toast.error(
+          t('counterparts:confirmDialogue.errorNotification', {
+            name: getName(counterpart),
+          })
+        );
+      },
+    }
+  );
 };

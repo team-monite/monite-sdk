@@ -26,7 +26,9 @@ function getYearsPeriod(date: Date, yearItemNumber = DEFAULT_YEAR_ITEM_NUMBER) {
 registerLocale('en-GB', enGB);
 
 const StyledCalendarContainer = styled(CalendarContainer)`
-  font-family: 'Faktum', system-ui;
+  font-family: ${({ theme }) => theme.datePicker.fontFamily};
+  font-size: ${({ theme }) => theme.datePicker.fontSize};
+  font-weight: ${({ theme }) => theme.datePicker.fontWeight};
 
   > div {
     box-shadow: 0 6px 16px rgba(15, 15, 15, 0.12);

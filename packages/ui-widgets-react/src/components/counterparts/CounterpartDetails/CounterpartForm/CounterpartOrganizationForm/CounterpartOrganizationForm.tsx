@@ -12,14 +12,13 @@ import {
   Text,
   Header,
   Button,
-  Spinner,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import {
   CounterpartCreatePayload,
   CounterpartOrganizationResponse,
   CounterpartUpdatePayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
@@ -45,6 +44,7 @@ import useCounterpartForm, {
 } from '../useCounterpartForm';
 
 import getValidationSchema from './validation';
+import { CounterpartDetailsLoading } from '../../styles/CounterpartDetailsLoading';
 
 export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
@@ -83,6 +83,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
+      loading={isLoading && <CounterpartDetailsLoading />}
       header={
         <CounterpartHeader>
           <Header>
@@ -109,11 +110,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button
-                  onClick={submitForm}
-                  disabled={isLoading}
-                  rightIcon={isLoading && <Spinner pxSize={16} />}
-                >
+                <Button onClick={submitForm} disabled={isLoading}>
                   {!!counterpart
                     ? t('counterparts:actions.update')
                     : t('counterparts:actions.create')}

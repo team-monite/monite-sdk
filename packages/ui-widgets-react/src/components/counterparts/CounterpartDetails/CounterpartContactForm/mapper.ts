@@ -1,7 +1,7 @@
 import {
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import {
   CounterpartAddressFormFields,
   prepareCounterpartAddress,

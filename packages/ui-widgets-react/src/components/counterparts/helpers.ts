@@ -3,7 +3,7 @@ import {
   CounterpartOrganizationResponse,
   CounterpartResponse,
   CounterpartType,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 export function isIndividualCounterpart(
   counterpart: CounterpartResponse

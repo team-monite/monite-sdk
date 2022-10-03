@@ -32,6 +32,13 @@ const palette = {
   special95: '#FBF1FC',
 };
 
+const typography = {
+  fontFamily:
+    '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+  fontSize: '16px',
+  fontWeight: '400',
+};
+
 const shape = {
   borderRadiusMax: '100px',
   borderRadiusLarge: '16px',
@@ -41,6 +48,10 @@ const shape = {
 
 const components = {
   datePicker: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -56,6 +67,10 @@ const components = {
     selectedBackgroundColor: palette.primary50,
   },
   input: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -69,6 +84,10 @@ const components = {
     filterWithValueBackgroundColor: palette.neutral90,
   },
   search: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -82,6 +101,10 @@ const components = {
     filterBackgroundColorDisabled: palette.neutral90,
   },
   select: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -98,18 +121,30 @@ const components = {
     filterBackgroundColorDisabled: palette.neutral90,
   },
   tableHeader: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     textColor: palette.neutral50,
 
     backgroundColorHover: palette.neutral80,
     backgroundColorActive: palette.neutral70,
   },
   tableBody: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     textColor: palette.neutral10,
 
     backgroundColorHover: palette.neutral80,
     backgroundColorActive: palette.neutral70,
   },
   tag: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
     primaryTextColor: palette.primary50,
     primaryBackgroundColor: palette.primary95,
 
@@ -136,6 +171,7 @@ const components = {
 export const tokenizedTheme = {
   ...baseColors,
   ...palette,
+  ...typography,
   ...shape,
   ...components,
 };

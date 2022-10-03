@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { FormField, Text } from '@monite/ui-kit-react';
+import { FormField, Text } from '@team-monite/ui-kit-react';
 
 export const TextSecondary = styled(Text)`
   color: ${({ theme }) => theme.colors.lightGrey1};

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useTheme } from 'emotion-theming';
-import { Theme } from '@monite/ui-kit-react';
+import { Theme } from '@team-monite/ui-kit-react';
 
 const GlobalToast = () => {
   const theme = useTheme<Theme>();

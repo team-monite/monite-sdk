@@ -8,12 +8,11 @@ import {
 } from 'core/queries/useCounterpart';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
-
-import { CounterpartBankAccount } from '@monite/sdk-api';
-
+import { CounterpartBankAccount } from '@team-monite/sdk-api';
 import { useForm } from 'react-hook-form';
-import getValidationSchema from './validation';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+import getValidationSchema from './validation';
 import { CounterpartBankFields, prepareCounterpartBank } from './mapper';
 
 export type CounterpartBankFormProps = {

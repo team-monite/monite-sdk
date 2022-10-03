@@ -1,5 +1,5 @@
 import React from 'react';
-import { PayablesTable, PayableDetails } from '@monite/ui-widgets-react';
+import { PayablesTable, PayableDetails } from '@team-monite/ui-widgets-react';
 import { useSearchParams } from 'react-router-dom';
 
 import Layout from 'features/app/Layout';

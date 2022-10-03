@@ -1,4 +1,4 @@
-import { PaymentMethodsEnum } from '@monite/sdk-api';
+import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
 export type URLData = {
   amount: number;

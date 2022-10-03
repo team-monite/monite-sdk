@@ -1,7 +1,7 @@
 import React from 'react';
 import { format, parseISO } from 'date-fns';
-import { Table } from '@monite/ui-kit-react';
-import { WorkflowResponseSchema } from '@monite/sdk-api';
+import { Table } from '@team-monite/ui-kit-react';
+import { WorkflowResponseSchema } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 

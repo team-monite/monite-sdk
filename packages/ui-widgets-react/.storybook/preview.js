@@ -1,7 +1,6 @@
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 
 import MoniteProvider from '../src/core/context/ContextProvider';
-import './main.css';
 
 export const parameters = {
   // viewMode: 'docs',

@@ -1,62 +1,80 @@
 import { useCallback } from 'react';
 
+import { CounterpartType } from '@team-monite/sdk-api';
+
 import {
   useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
-  useDeleteCounterpartBank,
-  useDeleteCounterpartContact,
+  useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
-import { CounterpartType } from '@monite/sdk-api';
 
 export type CounterpartViewProps = {
   id: string;
   onClose?: () => void;
-  onEdit: (type: CounterpartType) => void;
-  onDelete?: () => void;
+  onEdit?: (id: string, type: CounterpartType) => void;
+  onDelete?: (id: string) => void;
 
-  onContactCreate: () => void;
-  onContactEdit: (id: string) => void;
-  onContactDelete?: () => void;
+  onContactCreate?: () => void;
+  onContactEdit?: (id: string) => void;
+  onContactDelete?: (id: string) => void;
 
-  onBankCreate: () => void;
-  onBankEdit: (id: string) => void;
-  onBankDelete?: () => void;
+  onBankCreate?: () => void;
+  onBankEdit?: (id: string) => void;
+  onBankDelete?: (id: string) => void;
 };
 
 export default function useCounterpartView({
   id,
-  onBankDelete,
-  onContactDelete,
+  onDelete,
+  onEdit: onExternalEdit,
 }: CounterpartViewProps) {
-  const { data: counterpart } = useCounterpartById(id);
-  const { data: contacts } = useCounterpartContactList(id);
-  const { data: banks } = useCounterpartBankList(id);
+  const {
+    data: counterpart,
+    isLoading: isCounterpartLoading,
+    error: counterpartError,
+  } = useCounterpartById(id);
 
-  const contactDeleteMutation = useDeleteCounterpartContact(id);
-  const bankDeleteMutation = useDeleteCounterpartBank(id);
+  const { data: contacts, isLoading: isContactsLoading } =
+    useCounterpartContactList(
+      counterpart?.type === CounterpartType.ORGANIZATION
+        ? counterpart?.id
+        : undefined
+    );
 
-  const deleteContact = useCallback(async () => {
-    return await contactDeleteMutation.mutateAsync(id, {
+  const { data: banks, isLoading: isBanksLoading } = useCounterpartBankList(
+    counterpart?.id
+  );
+
+  const counterpartDeleteMutation = useDeleteCounterpart();
+
+  const deleteCounterpart = useCallback(async () => {
+    if (!counterpart) return;
+
+    return await counterpartDeleteMutation.mutateAsync(counterpart, {
       onSuccess: () => {
-        onContactDelete && onContactDelete();
+        onDelete && onDelete(counterpart.id);
       },
     });
-  }, [contactDeleteMutation]);
+  }, [counterpartDeleteMutation, counterpart]);
 
-  const deleteBank = useCallback(async () => {
-    return await bankDeleteMutation.mutateAsync(id, {
-      onSuccess: () => {
-        onBankDelete && onBankDelete();
-      },
-    });
-  }, [bankDeleteMutation]);
+  const onEdit = useCallback(async () => {
+    if (!counterpart) return;
+
+    onExternalEdit && onExternalEdit(counterpart.id, counterpart.type);
+  }, [onExternalEdit, counterpart]);
 
   return {
     contacts,
     banks,
     counterpart,
-    deleteBank,
-    deleteContact,
+    deleteCounterpart,
+    counterpartError,
+    onEdit,
+    isLoading:
+      isBanksLoading ||
+      isCounterpartLoading ||
+      isContactsLoading ||
+      counterpartDeleteMutation.isLoading,
   };
 }

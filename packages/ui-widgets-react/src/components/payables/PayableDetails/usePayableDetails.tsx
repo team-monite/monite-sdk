@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PayableStateEnum } from '@monite/sdk-api';
+import { PayableStateEnum } from '@team-monite/sdk-api';
 import {
   useApprovePayableById,
   usePayableById,

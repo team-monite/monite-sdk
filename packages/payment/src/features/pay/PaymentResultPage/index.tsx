@@ -9,7 +9,7 @@ import {
   Button,
   UCheckSquare,
   UExclamationTriangle,
-} from '@monite/ui-widgets-react';
+} from '@team-monite/ui-widgets-react';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';

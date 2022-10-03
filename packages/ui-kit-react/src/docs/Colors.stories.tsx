@@ -8,7 +8,7 @@ import {
 } from '@storybook/addon-docs';
 import { Flex, Box } from '../Box';
 import Text from '../Text';
-import { THEMES } from '../consts';
+import { THEMES } from '../theme_deprecated';
 
 const Story = {
   title: 'DesignSystem/Colors',
