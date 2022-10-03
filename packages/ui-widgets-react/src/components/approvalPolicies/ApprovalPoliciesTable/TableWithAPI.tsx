@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { WorkflowResponseSchema } from '@monite/sdk-api';
+import { WorkflowResponseSchema } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from '../../../core/context/ComponentsContext';
 import Table from './Table';

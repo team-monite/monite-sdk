@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text, Flex } from '@monite/ui-kit-react';
+import { Text, Flex } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 type CounterpartDetailsBlockProps = {

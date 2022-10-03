@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'features/app/Layout';
-import { THEMES, Link, Text, Box } from '@monite/ui-kit-react';
+import { THEMES, Link, Text, Box } from '@team-monite/ui-kit-react';
 
 import styles from '../styles.module.scss';
 

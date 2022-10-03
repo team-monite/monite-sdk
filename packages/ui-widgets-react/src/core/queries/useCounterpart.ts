@@ -10,7 +10,7 @@ import {
   CounterpartUpdatePayload,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 import { getName } from 'components/counterparts/helpers';

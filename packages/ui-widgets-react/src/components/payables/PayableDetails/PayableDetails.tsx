@@ -16,7 +16,7 @@ import {
   FileViewer,
   Spinner,
   Modal,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../consts';
 import PayableDetailsForm from './PayableDetailsForm';

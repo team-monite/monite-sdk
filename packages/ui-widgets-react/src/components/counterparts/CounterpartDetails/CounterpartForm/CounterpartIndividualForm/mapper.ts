@@ -1,4 +1,4 @@
-import { CounterpartIndividual } from '@monite/sdk-api';
+import { CounterpartIndividual } from '@team-monite/sdk-api';
 import {
   CounterpartAddressFormFields,
   prepareCounterpartAddress,

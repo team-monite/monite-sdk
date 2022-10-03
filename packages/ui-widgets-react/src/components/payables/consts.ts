@@ -1,5 +1,5 @@
-import { PayableStateEnum } from '@monite/sdk-api';
-import { TagColorType } from '@monite/ui-kit-react';
+import { PayableStateEnum } from '@team-monite/sdk-api';
+import { TagColorType } from '@team-monite/ui-kit-react';
 
 export const ROW_TO_TAG_STATUS_MAP: Record<PayableStateEnum, TagColorType> = {
   [PayableStateEnum.NEW]: 'primary',

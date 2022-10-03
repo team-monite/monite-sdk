@@ -8,7 +8,7 @@ import {
   ModalLayout,
   Modal,
   Spinner,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 const StyledHeader = styled.div`
   display: flex;

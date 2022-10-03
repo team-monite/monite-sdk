@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
 
-import { ReceivableResponse } from '@monite/sdk-api';
+import { ReceivableResponse } from '@team-monite/sdk-api';
 import {
   Avatar,
   Text,
@@ -15,7 +15,7 @@ import {
   USearchAlt,
   IconButton,
   Flex,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import InvoiceDetailes from '../InvoiceDetailes';
 import type { BankItem } from '../types';

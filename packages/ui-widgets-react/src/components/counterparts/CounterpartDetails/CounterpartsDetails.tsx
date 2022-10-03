@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from '@monite/ui-kit-react';
+import { Modal } from '@team-monite/ui-kit-react';
 
 import useCounterpartDetails, {
   COUNTERPART_VIEW,

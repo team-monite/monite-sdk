@@ -1,12 +1,12 @@
 import React, { ReactNode, useEffect } from 'react';
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   THEMES,
   ThemeProvider as UIThemeProvider,
   tokenizedTheme,
   getStyles,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 import { Global } from '@emotion/react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';

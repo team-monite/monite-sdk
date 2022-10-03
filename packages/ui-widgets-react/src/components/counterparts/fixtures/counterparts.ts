@@ -1,4 +1,4 @@
-import { CounterpartType, AllowedCountriesCodes } from '@monite/sdk-api';
+import { CounterpartType, AllowedCountriesCodes } from '@team-monite/sdk-api';
 
 const data = {
   firstPage: {

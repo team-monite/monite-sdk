@@ -4,7 +4,7 @@ import {
   PayableStateEnum,
   SourceOfPayableDataEnum,
   PayableOriginEnum,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 const data: PayableResponseSchema = {
   id: 'eca6c85b-0a45-4164-a1dd-82f0b05ff7a9',

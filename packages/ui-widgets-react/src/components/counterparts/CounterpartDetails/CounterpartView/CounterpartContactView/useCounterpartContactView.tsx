@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useDeleteCounterpartContact } from 'core/queries/useCounterpart';
-import { CounterpartContactResponse } from '@monite/sdk-api';
+import { CounterpartContactResponse } from '@team-monite/sdk-api';
 
 export type CounterpartContactViewProps = {
   onEdit?: (id: string) => void;

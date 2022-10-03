@@ -9,7 +9,7 @@ import {
   Header,
   Button,
   UArrowRight,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import { useComponentsContext } from 'core/context/ComponentsContext';

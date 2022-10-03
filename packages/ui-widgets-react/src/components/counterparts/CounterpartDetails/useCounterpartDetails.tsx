@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { CounterpartType } from '@monite/sdk-api';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 export type CounterpartsDetailsProps = {
   id?: string;

@@ -1,6 +1,11 @@
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, FormField, Input, PasswordInput } from '@monite/ui-kit-react';
+import {
+  Button,
+  FormField,
+  Input,
+  PasswordInput,
+} from '@team-monite/ui-kit-react';
 import { useTranslation, TFunction } from 'react-i18next';
 import * as yup from 'yup';
 import React from 'react';

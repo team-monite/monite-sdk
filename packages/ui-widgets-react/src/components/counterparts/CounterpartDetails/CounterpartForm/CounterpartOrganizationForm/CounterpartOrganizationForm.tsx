@@ -12,13 +12,13 @@ import {
   Text,
   Header,
   Button,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import {
   CounterpartCreatePayload,
   CounterpartOrganizationResponse,
   CounterpartUpdatePayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 

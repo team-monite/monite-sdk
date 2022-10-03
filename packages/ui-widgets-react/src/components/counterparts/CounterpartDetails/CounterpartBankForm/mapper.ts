@@ -1,4 +1,4 @@
-import { CounterpartBankAccount } from '@monite/sdk-api';
+import { CounterpartBankAccount } from '@team-monite/sdk-api';
 
 export type CounterpartBankFields = Required<CounterpartBankAccount>;
 

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 import { useTranslation } from 'react-i18next';
 
 type ComponentsContextValue = {

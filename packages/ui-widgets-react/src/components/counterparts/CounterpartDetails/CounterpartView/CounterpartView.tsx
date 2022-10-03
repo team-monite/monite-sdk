@@ -9,7 +9,7 @@ import {
   UPen,
   UTrashAlt,
   UPlusCircle,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 
 import { state } from 'features/mobx/State';
 import { State } from 'features/types';

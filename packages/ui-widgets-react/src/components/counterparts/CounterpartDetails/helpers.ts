@@ -1,5 +1,5 @@
 import { CountriesType } from 'core/utils/countries';
-import { AllowedCountriesCodes } from '@monite/sdk-api';
+import { AllowedCountriesCodes } from '@team-monite/sdk-api';
 
 export type Option = { label: string; value: string };
 

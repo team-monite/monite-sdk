@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { Flex, Box } from '@monite/ui-kit-react';
+import { Flex, Box } from '@team-monite/ui-kit-react';
 
 import { ROUTES, fromBase64 } from 'features/app/consts';
 

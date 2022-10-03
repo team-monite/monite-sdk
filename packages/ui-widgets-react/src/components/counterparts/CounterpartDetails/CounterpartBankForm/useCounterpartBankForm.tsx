@@ -8,7 +8,7 @@ import {
 } from 'core/queries/useCounterpart';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { CounterpartBankAccount } from '@monite/sdk-api';
+import { CounterpartBankAccount } from '@team-monite/sdk-api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 

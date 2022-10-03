@@ -1,5 +1,5 @@
 import { create } from '@storybook/theming';
-import { THEMES } from '@monite/ui-kit-react';
+import { THEMES } from '@team-monite/ui-kit-react';
 import Logo from './monite_logo.svg';
 
 export default create({

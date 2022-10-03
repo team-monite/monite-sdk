@@ -8,7 +8,7 @@ import {
 import {
   CounterpartCreatePayload,
   CounterpartUpdatePayload,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 export type CounterpartsFormProps = {
   id?: string;

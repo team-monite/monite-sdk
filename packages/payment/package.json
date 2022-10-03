@@ -31,7 +31,7 @@
     ]
   },
   "dependencies": {
-    "@monite/ui-widgets-react": "^0.0.3",
+    "@team-monite/ui-widgets-react": "^0.0.3",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",

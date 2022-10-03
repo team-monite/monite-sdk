@@ -1,5 +1,5 @@
 import CounterpartsDetails from './CounterpartsDetails';
-import { CounterpartType } from '@monite/sdk-api';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 const Story = {
   title: 'In Progress/Counterparts — Details',

@@ -1,6 +1,9 @@
 {
-  "name": "@monite/ui-widgets-react",
+  "name": "@team-monite/ui-widgets-react",
   "version": "0.0.3",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -20,8 +23,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@monite/sdk-api": "^0.0.3",
-    "@monite/ui-kit-react": "^0.0.3",
+    "@team-monite/sdk-api": "^0.0.4",
+    "@team-monite/ui-kit-react": "^0.0.3",
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
     "@tanstack/react-query-devtools": "~4.2.3",
