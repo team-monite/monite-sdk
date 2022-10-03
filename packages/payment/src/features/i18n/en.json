@@ -9,7 +9,9 @@
       "submit": "Pay",
       "back": "Back",
       "emptyTitle": "No payment methods available",
-      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later.",
+      "banksListTitle": "Continue with your bank account",
+      "banksSearchPlaceholder": "Search for your bank"
     },
     "result": {
       "processingTitle": "Payment initiated",

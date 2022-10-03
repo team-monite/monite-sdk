@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
 
-import { ReceivableResponse } from '@team-monite/sdk-api';
+import {
+  ReceivableResponse,
+  PaymentsPaymentsCountry,
+  PaymentsPaymentsBank,
+  PaymentsYapilyCountriesCoverageCodes,
+  PaymentsPaymentMethodsCountriesResponse,
+  PaymentsPaymentsPaymentsPaymentsBanksResponse,
+  PaymentsPaymentsMedia,
+} from '@team-monite/sdk-api';
 import {
   Avatar,
   Text,
@@ -16,13 +24,11 @@ import {
   IconButton,
   Flex,
 } from '@team-monite/ui-kit-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
-import InvoiceDetailes from '../InvoiceDetailes';
-import type { BankItem } from '../types';
+import SelectCountries from '../SelectCountries';
 
 import styles from './style.module.scss';
-
-import { demoBanks } from '../../fixtures/banks';
 
 const StyledBankListItem = styled.div(
   ({ theme }) => `
@@ -44,15 +50,20 @@ const StyledBankListItem = styled.div(
 );
 
 type BankListItemProps = {
-  data: BankItem;
+  data: PaymentsPaymentsBank;
 };
+
 const BankListItem = ({ data }: BankListItemProps) => {
   const theme = useTheme<Theme>();
+  const logo = data.media.find(
+    (item: PaymentsPaymentsMedia) => item.type === 'icon'
+  )?.source;
 
   return (
     <StyledBankListItem>
       <Flex>
-        <Avatar size={24} textSize="regular" src={data.logo} />
+        {/* TODO: test with backend */}
+        <Avatar size={24} textSize="regular" src={logo} />
         <Box ml={1}>
           <Text>{data.name}</Text>
         </Box>
@@ -65,57 +76,87 @@ const BankListItem = ({ data }: BankListItemProps) => {
 type YapilyFormProps = {
   receivableData?: ReceivableResponse;
 };
-
 const YapilyForm = ({ receivableData }: YapilyFormProps) => {
-  const [searchText, setSearchText] = useState('');
+  const { t, monite } = useComponentsContext();
 
-  // TODO: here we should fetch an actual list of banks from the API when it will be ready
-  const [banks] = useState(demoBanks);
+  const [searchText, setSearchText] = useState('');
+  const [country, setCountry] = useState(
+    PaymentsYapilyCountriesCoverageCodes.DE
+  );
+
+  const [banks, setBanks] = useState<Array<PaymentsPaymentsBank>>([]);
+  const [countries, setCountries] = useState<Array<PaymentsPaymentsCountry>>();
 
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
   const { search } = useLocation();
 
+  useEffect(() => {
+    monite.api.payment
+      .getPaymentMethodCountries('sepa_credit')
+      .then((response: PaymentsPaymentMethodsCountriesResponse) => {
+        setCountries(response.data);
+      });
+  }, [monite.api.payment]);
+
+  useEffect(() => {
+    monite.api.payment
+      .getInstitutions(
+        'sepa_credit',
+        country as PaymentsYapilyCountriesCoverageCodes
+      )
+      .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
+        setBanks(response.data);
+      });
+  }, [country, monite.api.payment]);
+
   return (
-    <div>
-      <Text textSize="h3" align="center">
-        Continue with your bank account
-      </Text>
-      <Routes>
-        <Route
-          path={':id'}
-          element={
-            <InvoiceDetailes banks={banks} receivableData={receivableData} />
-          }
-        />
-      </Routes>
-      <Box mt="24px" mb="32px">
-        <Input
-          placeholder="Search for your bank"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            updateSearchText(e.target.value);
-          }}
-          renderAddonIcon={() => (
-            <IconButton color={'lightGrey1'}>
-              <USearchAlt size={20} />
-            </IconButton>
+    <>
+      <div>
+        <Text textSize="h3" align="center">
+          {t('payment:widget.banksListTitle')}
+        </Text>
+        <Flex mt="24px" mb="32px">
+          {countries && (
+            <Box mr={'16px'}>
+              <SelectCountries
+                value={country}
+                onChange={(val) => {
+                  setCountry(val.value);
+                }}
+                data={countries}
+              />
+            </Box>
           )}
-        />
-      </Box>
-      <Box>
-        {(searchText
-          ? banks.filter((bank) =>
-              bank.name.toLowerCase().includes(searchText.toLowerCase())
-            )
-          : banks
-        ).map((bank) => (
-          <Link to={`${bank.id}${search}`} className={styles.link}>
-            <BankListItem data={bank} />
-          </Link>
-        ))}
-      </Box>
-    </div>
+          <Box width={355}>
+            <Input
+              placeholder={t('payment:widget.banksSearchPlaceholder')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateSearchText(e.target.value);
+              }}
+              renderAddonIcon={() => (
+                <IconButton color={'lightGrey1'}>
+                  <USearchAlt size={20} />
+                </IconButton>
+              )}
+            />
+          </Box>
+        </Flex>
+        <Box>
+          {(searchText
+            ? banks.filter((bank) =>
+                bank.name.toLowerCase().includes(searchText.toLowerCase())
+              )
+            : banks
+          ).map((bank) => (
+            <Link to={`${bank.code}${search}`} className={styles.link}>
+              <BankListItem data={bank} />
+            </Link>
+          ))}
+        </Box>
+      </div>
+    </>
   );
 };
 

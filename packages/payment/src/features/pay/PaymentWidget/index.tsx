@@ -8,7 +8,7 @@ import { Card } from '@team-monite/ui-kit-react';
 import { ROUTES } from 'features/app/consts';
 
 import StripeWidget from './StripeWidget';
-// import YapilyWidget from './YapilyWidget';
+import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import EmptyScreen from 'features/pay/EmptyScreen';
 
@@ -109,10 +109,11 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
             )
           }
         />
-        {/* <Route
+        <Route
           path={ROUTES.bank}
-          element={<YapilyWidget {...props} receivableData={receivableData} />}
-        /> */}
+          //@ts-ignore
+          element={<YapilyWidget {...props} paymentData={paymentData} />}
+        />
       </Routes>
     </Card>
   );
