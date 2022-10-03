@@ -24,7 +24,7 @@
     "prepare": "husky install"
   },
   "author": "monite.com",
-  "license": "ISC",
+  "license": "MIT",
   "workspaces": [
     "packages/*"
   ],

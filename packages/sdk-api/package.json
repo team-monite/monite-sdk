@@ -19,5 +19,5 @@
     "gen:openapi": "npx openapi-typescript-codegen -i https://api.dev.monite.com/openapi.json --exportCore false --exportServices false -o ./src/api"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

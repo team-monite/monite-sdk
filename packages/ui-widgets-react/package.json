@@ -21,7 +21,7 @@
     "chromatic": "npx chromatic --project-token=52f2e25e515b"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@team-monite/sdk-api": "^0.0.4",
     "@team-monite/ui-kit-react": "^0.0.3",
