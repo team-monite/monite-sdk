@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
@@ -9,8 +10,6 @@ import {
   PaymentsPaymentsCountry,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentMethodsCountriesResponse,
-  PaymentsPaymentsPaymentsPaymentsBanksResponse,
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 import {
@@ -27,6 +26,7 @@ import {
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 import SelectCountries from '../SelectCountries';
+import EmptyBankList from '../EmptyBankList';
 
 import styles from './style.module.scss';
 
@@ -75,41 +75,33 @@ const BankListItem = ({ data }: BankListItemProps) => {
 
 type YapilyFormProps = {
   receivableData?: ReceivableResponse;
+  banks: PaymentsPaymentsBank[];
+  countries?: Array<PaymentsPaymentsCountry>;
+  selectedCountry: PaymentsYapilyCountriesCoverageCodes;
+  onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
 };
-const YapilyForm = ({ receivableData }: YapilyFormProps) => {
-  const { t, monite } = useComponentsContext();
+const YapilyForm = ({
+  receivableData,
+  banks = [],
+  countries,
+  selectedCountry,
+  onChangeCountry,
+}: YapilyFormProps) => {
+  const { t } = useComponentsContext();
 
   const [searchText, setSearchText] = useState('');
-  const [country, setCountry] = useState(
-    PaymentsYapilyCountriesCoverageCodes.DE
-  );
-
-  const [banks, setBanks] = useState<Array<PaymentsPaymentsBank>>([]);
-  const [countries, setCountries] = useState<Array<PaymentsPaymentsCountry>>();
 
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
+
   const { search } = useLocation();
 
-  useEffect(() => {
-    monite.api.payment
-      .getPaymentMethodCountries('sepa_credit')
-      .then((response: PaymentsPaymentMethodsCountriesResponse) => {
-        setCountries(response.data);
-      });
-  }, [monite.api.payment]);
-
-  useEffect(() => {
-    monite.api.payment
-      .getInstitutions(
-        'sepa_credit',
-        country as PaymentsYapilyCountriesCoverageCodes
+  const filteredBanks = searchText
+    ? banks.filter((bank) =>
+        bank.name.toLowerCase().includes(searchText.toLowerCase())
       )
-      .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
-        setBanks(response.data);
-      });
-  }, [country, monite.api.payment]);
+    : banks;
 
   return (
     <>
@@ -121,9 +113,9 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
           {countries && (
             <Box mr={'16px'}>
               <SelectCountries
-                value={country}
+                value={selectedCountry}
                 onChange={(val) => {
-                  setCountry(val.value);
+                  onChangeCountry(val.value);
                 }}
                 data={countries}
               />
@@ -144,16 +136,15 @@ const YapilyForm = ({ receivableData }: YapilyFormProps) => {
           </Box>
         </Flex>
         <Box>
-          {(searchText
-            ? banks.filter((bank) =>
-                bank.name.toLowerCase().includes(searchText.toLowerCase())
-              )
-            : banks
-          ).map((bank) => (
-            <Link to={`${bank.code}${search}`} className={styles.link}>
-              <BankListItem data={bank} />
-            </Link>
-          ))}
+          {filteredBanks.length ? (
+            filteredBanks.map((bank) => (
+              <Link to={`${bank.code}${search}`} className={styles.link}>
+                <BankListItem data={bank} />
+              </Link>
+            ))
+          ) : (
+            <EmptyBankList />
+          )}
         </Box>
       </div>
     </>
