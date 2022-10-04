@@ -50,7 +50,8 @@
       "banksListTitle": "Continue with your bank account",
       "banksSearchPlaceholder": "Search for your bank",
       "emptyBankListTitle": "No results",
-      "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country."
+      "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
+      "changeMethod": "Change method"
     }
   },
   "payables": {

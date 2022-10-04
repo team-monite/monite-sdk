@@ -2,7 +2,13 @@ import React from 'react';
 import { useTheme } from 'emotion-theming';
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
-import { Text, UMinusCircle, Theme, Flex, Box } from '@team-monite/ui-kit-react';
+import {
+  Text,
+  UMinusCircle,
+  Theme,
+  Flex,
+  Box,
+} from '@team-monite/ui-kit-react';
 
 const EmptyScreen = () => {
   const { t } = useComponentsContext();
