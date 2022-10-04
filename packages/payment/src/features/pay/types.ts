@@ -1,10 +1,10 @@
-import { PaymentMethodsEnum } from '@team-monite/sdk-api';
+import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 
 export type URLData = {
   amount: number;
   payment_reference: string;
   currency: string;
-  payment_methods: PaymentMethodsEnum[];
+  payment_methods: PaymentsPaymentMethodsEnum[];
   stripe: { secret: { card: string; others: string }; publishable: string };
   return_url: string;
   payee: {
