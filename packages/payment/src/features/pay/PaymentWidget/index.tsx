@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 
-import { CurrencyEnum, PaymentMethodsEnum } from '@team-monite/sdk-api';
+import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 import { Card } from '@team-monite/ui-kit-react';
 
 import { ROUTES } from 'features/app/consts';
@@ -29,6 +29,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   // const [receivableData, setReceivableData] = useState<ReceivableResponse>();
 
   const { paymentData } = props;
+  const paymentMethods = paymentData?.payment_methods || [];
 
   const { search } = useLocation();
 
@@ -47,17 +48,22 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     // })();
 
     if (
-      paymentData?.payment_methods?.length === 1 &&
-      paymentData?.payment_methods?.[0] === PaymentMethodsEnum.CARD
+      paymentMethods?.length === 1 &&
+      paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
     ) {
       navigate(`card${search}`, { replace: true });
+    } else if (
+      paymentMethods?.length === 1 &&
+      paymentMethods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
+    ) {
+      navigate(`bank${search}`, { replace: true });
+    } else if (
+      paymentMethods?.length > 0 &&
+      !paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) &&
+      !paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
+    ) {
+      navigate(`other${search}`, { replace: true });
     }
-    //  else if (
-    //   paymentData?.payment_methods?.length === 1 &&
-    //   paymentData?.payment_methods?.[0] === 'bank'
-    // ) {
-    //   navigate(`bank${search}`, { replace: true });
-    // }
     // eslint-disable-next-line
   }, []);
 
@@ -67,10 +73,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path="/"
           element={
-            paymentData && paymentData?.payment_methods?.length ? (
-              <SelectPaymentMethod
-                paymentMethods={paymentData?.payment_methods}
-              />
+            paymentData && paymentMethods?.length ? (
+              <SelectPaymentMethod paymentMethods={paymentMethods} />
             ) : (
               <EmptyScreen />
             )
@@ -85,7 +89,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
-                navButton={paymentData?.payment_methods?.length > 1}
+                navButton={paymentMethods?.length > 1}
                 paymentLinkId={paymentData?.id}
                 returnUrl={paymentData?.return_url}
               />
@@ -101,7 +105,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
-                navButton={paymentData?.payment_methods?.length > 1}
+                navButton={paymentMethods?.length > 1}
                 paymentLinkId={paymentData?.id}
                 returnUrl={paymentData?.return_url}
                 onFinish={props.onFinish}

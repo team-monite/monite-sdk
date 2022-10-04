@@ -12,10 +12,10 @@ import {
   UUniversity,
   UMoneyBill,
 } from '@team-monite/ui-kit-react';
-import { PaymentMethodsEnum } from '@team-monite/sdk-api';
+import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 
 type SelectPaymentMethodProps = {
-  paymentMethods: PaymentMethodsEnum[];
+  paymentMethods: PaymentsPaymentMethodsEnum[];
 };
 
 const StyledListItem = styled.div(
@@ -70,7 +70,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
       </Text>
 
       <Box mt={24}>
-        {paymentMethods.includes(PaymentMethodsEnum.CARD) && (
+        {paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) && (
           <StyledLink to={`card${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
@@ -94,32 +94,35 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
           </StyledLink>
         )}
 
-        {/* {paymentMethods.includes('bank') && ( */}
-        <StyledLink to={`bank${search}`}>
-          <StyledListItem>
-            <Flex alignItems="center">
-              <StyledIconBlock>
-                <UUniversity
-                  width={16}
-                  height={16}
-                  color={theme.colors.black}
-                />
-              </StyledIconBlock>
-              <Box ml={1}>
-                <Text>Bank transfer</Text>
-              </Box>
-            </Flex>
-            <UAngleRight
-              width={16}
-              height={16}
-              color={theme.colors.lightGrey2}
-            />
-          </StyledListItem>
-        </StyledLink>
-        {/* )} */}
+        {paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT) && (
+          <StyledLink to={`bank${search}`}>
+            <StyledListItem>
+              <Flex alignItems="center">
+                <StyledIconBlock>
+                  <UUniversity
+                    width={16}
+                    height={16}
+                    color={theme.colors.black}
+                  />
+                </StyledIconBlock>
+                <Box ml={1}>
+                  <Text>Bank transfer</Text>
+                </Box>
+              </Flex>
+              <UAngleRight
+                width={16}
+                height={16}
+                color={theme.colors.lightGrey2}
+              />
+            </StyledListItem>
+          </StyledLink>
+        )}
 
-        {paymentMethods.filter((method) => method !== PaymentMethodsEnum.CARD)
-          .length > 0 && (
+        {paymentMethods.filter(
+          (method) =>
+            method !== PaymentsPaymentMethodsEnum.CARD &&
+            method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
+        ).length > 0 && (
           <StyledLink to={`other${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
