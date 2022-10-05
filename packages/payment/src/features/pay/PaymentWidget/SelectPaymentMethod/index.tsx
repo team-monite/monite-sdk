@@ -15,7 +15,7 @@ import {
 import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 
 type SelectPaymentMethodProps = {
-  paymentMethods: PaymentsPaymentMethodsEnum[];
+  paymentMethods: string[];
 };
 
 const StyledListItem = styled.div(
