@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { THEMES } from '@monite/ui-widgets-react';
+import { THEMES } from '@team-monite/ui-widgets-react';
 import { ThemeProvider } from 'emotion-theming';
 
 import App from 'features/app/App';

@@ -1,13 +1,13 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-import { CurrencyEnum } from '@monite/sdk-api';
-import { Card } from '@monite/ui-kit-react';
+import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
+import { Card } from '@team-monite/ui-kit-react';
 
-import { PaymentsPaymentLinkResponse } from '@monite/sdk-api';
+import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import StripeWidget from './StripeWidget';
-// import YapilyWidget from './YapilyWidget';
+import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import EmptyScreen from 'features/pay/EmptyScreen';
 
@@ -26,6 +26,7 @@ type PaymentWidgetProps = {
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
   const { paymentData } = props;
+  const paymentMethods = paymentData?.payment_methods || [];
 
   const stripeCardData = paymentData?.payment_intents?.find(
     (elem) => elem.provider === 'stripe' && elem.payment_method.includes('card')
@@ -35,6 +36,30 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     (elem) =>
       elem.provider === 'stripe' && elem.payment_method.includes('others')
   );
+  const { search } = useLocation();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      paymentMethods?.length === 1 &&
+      paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
+    ) {
+      navigate(`card${search}`, { replace: true });
+    } else if (
+      paymentMethods?.length === 1 &&
+      paymentMethods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
+    ) {
+      navigate(`bank${search}`, { replace: true });
+    } else if (
+      paymentMethods?.length > 0 &&
+      !paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) &&
+      !paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
+    ) {
+      navigate(`other${search}`, { replace: true });
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Card shadow p="32px" className={styles.card}>
@@ -42,10 +67,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path="/"
           element={
-            paymentData && paymentData?.payment_methods?.length ? (
-              <SelectPaymentMethod
-                paymentMethods={paymentData?.payment_methods}
-              />
+            paymentData && paymentMethods?.length ? (
+              <SelectPaymentMethod paymentMethods={paymentMethods} />
             ) : (
               <EmptyScreen />
             )
@@ -60,7 +83,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
-                navButton={paymentData?.payment_methods?.length > 1}
+                navButton={paymentMethods?.length > 1}
                 paymentLinkId={paymentData?.id}
                 returnUrl={paymentData?.return_url}
               />
@@ -76,7 +99,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 price={paymentData?.amount}
                 currency={paymentData?.currency}
-                navButton={paymentData?.payment_methods?.length > 1}
+                navButton={paymentMethods?.length > 1}
                 paymentLinkId={paymentData?.id}
                 returnUrl={paymentData?.return_url}
                 onFinish={props.onFinish}
@@ -84,10 +107,11 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
             )
           }
         />
-        {/* <Route
+        <Route
           path={ROUTES.bank}
+          //@ts-ignore
           element={<YapilyWidget {...props} paymentData={paymentData} />}
-        /> */}
+        />
       </Routes>
     </Card>
   );

@@ -18,7 +18,7 @@ import { useTheme } from '@emotion/react';
 import { Box } from '../Box';
 import Text from '../Text';
 import Tag from '../Tag';
-import { THEMES } from '../consts';
+import { THEMES } from '../theme_deprecated';
 import { UAngleDown, UTimes } from '../unicons';
 import Avatar from '../Avatar';
 
@@ -56,6 +56,7 @@ export type Option = {
   value: string;
   label: string;
   icon?: string;
+  renderIcon?: () => React.ReactElement;
 };
 
 interface SelectProps {
@@ -128,9 +129,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   };
 
   const customStyles: StylesConfig = {
-    singleValue: (provided: any) => ({
+    singleValue: (provided: any, state: any) => ({
       ...provided,
-      ...(isFilter && { color: theme.select.filterTextColor }),
+      ...(isFilter && {
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
+      }),
       ...(isDisabled && { color: theme.select.filterTextColorDisabled }),
     }),
     multiValue: (provided: any) => ({
@@ -143,8 +150,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
     }),
     multiValueLabel: (provided: any) => ({
       ...provided,
-      fontSize: '16px',
-      fontWeight: 400,
+      fontFamily: theme.select.fontFamily,
+      fontSize: theme.select.fontSize,
+      fontWeight: theme.select.fontWeight,
       lineHeight: optionAsTag ? '24px' : '20px',
       padding: 0,
       paddingLeft: 0,
@@ -246,13 +254,17 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         background: getBackgroundColor(),
       };
     },
-    input: (provided: any) => {
+    input: (provided: any, state: any) => {
       return {
         ...provided,
         padding: 0,
         margin: 0,
         outline: 0,
-        color: isFilter && theme.select.filterTextColor,
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
       };
     },
     valueContainer: (provided: any) => {
@@ -260,8 +272,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
         padding: '11px 16px',
-        fontSize: '16px',
-        fontWeight: 400,
+        fontFamily: theme.select.fontFamily,
+        fontSize: theme.select.fontSize,
+        fontWeight: theme.select.fontWeight,
         lineHeight: '24px',
         ':hover': {
           color: isFilter ? THEMES.default.colors.white : 'inherit',
@@ -271,11 +284,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         gap: '4px',
       };
     },
-    clearIndicator: (provided: any) => {
+    clearIndicator: (provided: any, state: any) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
-        color: THEMES.default.colors.black,
+        color:
+          isFilter &&
+          (state.hasValue
+            ? theme.select.filterWithValueTextColor
+            : theme.select.filterTextColor),
         paddingRight: '16px',
       };
     },
@@ -338,6 +355,15 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         );
       }
 
+      if (props.data?.renderIcon) {
+        return (
+          <LabelWithIcon>
+            {props.data?.renderIcon()}
+            {children}
+          </LabelWithIcon>
+        );
+      }
+
       return children;
     };
 
@@ -381,7 +407,6 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   const overrideMenuList = (menuListProps: MenuListProps) => {
     ReactTooltip.rebuild();
     const { selectProps, children, setValue } = menuListProps;
-
     return (
       <>
         {isCreatable && (
@@ -420,7 +445,9 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
             </Box>
           </>
         )}
-        <components.MenuList {...menuListProps}>{children}</components.MenuList>
+        <components.MenuList {...menuListProps} className="monite-ui-menuList">
+          {children}
+        </components.MenuList>
       </>
     );
   };

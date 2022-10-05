@@ -1,5 +1,5 @@
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import { Theme } from 'consts';
+import { Theme } from '../../theme_deprecated';
 
 type ThemeProviderProps = {
   theme: Theme;

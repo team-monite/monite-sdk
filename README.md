@@ -14,12 +14,12 @@ This repository is a monorepo, which consists of:
 - To make sales process much easier.
 - To provide Monite's services out-of-the-box.
 
-It uses @monite/ui-widgets-react as the dependency, to test and verify that our SDK actually works, so:
+It uses @team-monite/ui-widgets-react as the dependency, to test and verify that our SDK actually works, so:
 
 - Monite will be the first user of our own js SDK.
 - Monite will be the first user of our own White-Label solution.
 
-## package: @monite/sdk-api
+## package: @team-monite/sdk-api
 
 The core package of the Monite's non-UI functionality.
 
@@ -33,9 +33,9 @@ This package will be used in our other packages as a core of the Monite's functi
 ### Use case
 
 ```
-npm install @monite/sdk-api
+npm install @team-monite/sdk-api
 
-import { MoniteApp } from '@monite/sdk-api';
+import { MoniteApp } from '@team-monite/sdk-api';
 
 const monite = new MoniteApp({
   // here should be provided an end-user API key to retrieve end user data, such as the list of the counterparts for this specific user
@@ -48,7 +48,7 @@ const monite = new MoniteApp({
 const data = monite.api.counterparts.getList();
 ```
 
-## package: @monite/ui-widgets-react
+## package: @team-monite/ui-widgets-react
 
 This package is the library of ready-to-use react.js UI components.
 
@@ -62,9 +62,9 @@ This package is the library of ready-to-use react.js UI components.
 ### Use case
 
 ```
-npm install @monite/ui-widgets-react;
+npm install @team-monite/ui-widgets-react;
 
-import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@monite/ui-widgets-react';
+import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@team-monite/ui-widgets-react';
 
 const monite = new MoniteApp({
   // end-user API key

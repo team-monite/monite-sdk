@@ -37,8 +37,9 @@ const StyledTable = styled(RCTable)`
 
   th {
     text-align: left;
-    font-size: 16px;
-    font-weight: 400;
+    font-family: ${({ theme }) => theme.tableHeader.fontFamily};
+    font-size: ${({ theme }) => theme.tableHeader.fontSize};
+    font-weight: ${({ theme }) => theme.tableHeader.fontWeight};
     line-height: 24px;
     color: ${({ theme }) => theme.tableHeader.textColor};
 
@@ -61,8 +62,9 @@ const StyledTable = styled(RCTable)`
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    font-size: 16px;
-    font-weight: 400;
+    font-family: ${({ theme }) => theme.tableBody.fontFamily};
+    font-size: ${({ theme }) => theme.tableBody.fontSize};
+    font-weight: ${({ theme }) => theme.tableBody.fontWeight};
     line-height: 24px;
     color: ${({ theme }) => theme.tableBody.textColor};
 

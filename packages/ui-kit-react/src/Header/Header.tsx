@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Box, BoxProps } from '../Box';
 
 export interface HeaderProps extends BoxProps {
-  children: ReactNode;
+  children?: ReactNode;
   leftBtn?: ReactNode;
   rightBtn?: ReactNode;
   actions?: ReactNode;

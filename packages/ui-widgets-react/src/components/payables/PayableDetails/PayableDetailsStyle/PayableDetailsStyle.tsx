@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Box, Flex, FormField, Text } from '@monite/ui-kit-react';
+import { Box, Flex, FormField, Text } from '@team-monite/ui-kit-react';
 
 export const FormItem = styled(FormField)`
   margin-bottom: 24px;

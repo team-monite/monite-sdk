@@ -9,12 +9,13 @@ import {
   Theme,
   Flex,
   UCreditCard,
-  // UUniversity,
+  UUniversity,
   UMoneyBill,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
+import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 
 type SelectPaymentMethodProps = {
-  paymentMethods: Array<string>;
+  paymentMethods: PaymentsPaymentMethodsEnum[];
 };
 
 const StyledListItem = styled.div(
@@ -69,7 +70,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
       </Text>
 
       <Box mt={24}>
-        {paymentMethods.includes('card') && (
+        {paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) && (
           <StyledLink to={`card${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
@@ -93,7 +94,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
           </StyledLink>
         )}
 
-        {/* {paymentMethods.includes('bank') && (
+        {paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT) && (
           <StyledLink to={`bank${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
@@ -115,9 +116,13 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
               />
             </StyledListItem>
           </StyledLink>
-        )} */}
+        )}
 
-        {paymentMethods.filter((method) => method !== 'card').length > 0 && (
+        {paymentMethods.filter(
+          (method) =>
+            method !== PaymentsPaymentMethodsEnum.CARD &&
+            method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
+        ).length > 0 && (
           <StyledLink to={`other${search}`}>
             <StyledListItem>
               <Flex alignItems="center">

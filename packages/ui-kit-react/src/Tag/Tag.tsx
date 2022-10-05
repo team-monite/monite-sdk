@@ -28,6 +28,10 @@ const StyledTag = styled.span<
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
+  font-family: ${({ theme }) => theme.tag.fontFamily};
+  font-size: ${({ theme }) => theme.tag.fontSize};
+  font-weight: ${({ theme }) => theme.tag.fontWeight};
+  line-height: 20px;
   color: ${({ theme, $color = 'primary' }) => theme.tag[`${$color}TextColor`]};
 
   border-radius: 4px;
@@ -36,10 +40,6 @@ const StyledTag = styled.span<
 
   padding: 1px 8px;
   height: 24px;
-
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
 
   white-space: nowrap;
   cursor: ${({ $isClickable }) => ($isClickable ? 'pointer' : 'default')};

@@ -3,30 +3,50 @@ import {
   CounterpartsTable,
   CounterpartDetails,
   Button,
-} from '@monite/ui-widgets-react';
-import { CounterpartType } from '@monite/sdk-api';
+} from '@team-monite/ui-widgets-react';
+import { CounterpartType } from '@team-monite/sdk-api';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
 
 const PageCounterparts = () => {
-  const [isCreateVisible, setCreateVisible] = useState<boolean>(false);
+  const [counterpartId, setCounterpartId] = useState<string | undefined>(
+    undefined
+  );
+
+  const [counterpartType, setCounterpartType] = useState<
+    CounterpartType | undefined
+  >(undefined);
+
+  const onRowClick = (id: string) => {
+    setCounterpartId(id);
+  };
+
+  const closeModal = () => {
+    counterpartId && setCounterpartId(undefined);
+    counterpartType && setCounterpartType(undefined);
+  };
 
   return (
     <Layout>
       <PageHeader
         title="Counterparts"
         extra={[
-          <Button key="1" onClick={() => setCreateVisible(true)}>
+          <Button
+            key="1"
+            onClick={() => setCounterpartType(CounterpartType.ORGANIZATION)}
+          >
             Create New
           </Button>,
         ]}
       />
-      <CounterpartsTable />
-      {isCreateVisible && (
+      <CounterpartsTable onRowClick={onRowClick} />
+      {(counterpartId || counterpartType) && (
         <CounterpartDetails
-          type={CounterpartType.ORGANIZATION}
-          onClose={() => setCreateVisible(false)}
+          id={counterpartId}
+          type={counterpartType}
+          onClose={closeModal}
+          onDelete={closeModal}
         />
       )}
     </Layout>

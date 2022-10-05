@@ -2,13 +2,13 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { Flex, Box } from '@monite/ui-kit-react';
+import { Flex, Box } from '@team-monite/ui-kit-react';
 // import { useComponentsContext } from '@monite/ui-widgets-react';
 import {
   PaymentMethodsEnum,
   PaymentsPaymentLinkStatuses,
   PaymentsPaymentsCurrencyEnum,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 import { ROUTES, fromBase64 } from 'features/app/consts';
 

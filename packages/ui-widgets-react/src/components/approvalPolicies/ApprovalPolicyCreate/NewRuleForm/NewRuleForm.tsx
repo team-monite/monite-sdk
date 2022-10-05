@@ -12,7 +12,7 @@ import {
   Text,
   Theme,
   UArrowRight,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
 
 import users from '../../fixtures/users';
 

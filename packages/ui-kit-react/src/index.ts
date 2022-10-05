@@ -37,7 +37,8 @@ export { default as Alert } from './Alert';
 export { default as FileViewer } from './FileViewer';
 export { default as ThemeProvider } from './core/ThemeProvider';
 
+export * from './globalStyles';
+export * from './theme';
+export * from './theme_deprecated';
 export * from './unicons';
-export * from './consts';
 export * from './types';
-export * from './theme/theme';

@@ -26,11 +26,11 @@ const CardRoot = styled(Box)<CardProps>`
 `;
 
 const Actions = styled(Flex)`
-  padding: 0 23px;
+  padding: 0 24px;
   border-top: 1px solid #dddddd;
   height: 64px;
   align-items: center;
-  gap: 25px;
+  gap: 24px;
 `;
 
 const Card: React.FC<CardProps> = ({

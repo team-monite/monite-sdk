@@ -1,5 +1,5 @@
 import React from 'react';
-import { Theme } from 'consts';
+import { Theme } from '../theme_deprecated';
 
 export interface ThemeProps {
   theme: Theme;

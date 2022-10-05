@@ -1,30 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Routes, Route } from 'react-router-dom';
+
+import {
+  ReceivableResponse,
+  PaymentsPaymentsCountry,
+  PaymentsPaymentsBank,
+  PaymentsYapilyCountriesCoverageCodes,
+  PaymentsPaymentMethodsCountriesResponse,
+  PaymentsPaymentsPaymentsPaymentsBanksResponse,
+  PaymentsPaymentMethodsEnum,
+} from '@team-monite/sdk-api';
+
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 import InvoiceDetailes from './InvoiceDetailes';
 import BanksListForm from './BanksListForm';
 import NavHeader from '../NavHeader';
-import { ReceivableResponse } from '@monite/sdk-api';
-import { demoBanks } from '../fixtures/banks';
 
 type YapilyFormProps = {
   receivableData?: ReceivableResponse;
 };
 
 const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
-  // TODO: here we should fetch an actual list of banks from the API when it will be ready
-  const [banks] = useState(demoBanks);
+  const { monite } = useComponentsContext();
+
+  const [selectedCountry, setSelectedCountry] = useState(
+    PaymentsYapilyCountriesCoverageCodes.DE
+  );
+
+  const [banks, setBanks] = useState<Array<PaymentsPaymentsBank>>([]);
+
+  const [countries, setCountries] = useState<Array<PaymentsPaymentsCountry>>();
+
+  useEffect(() => {
+    monite.api.payment
+      .getPaymentMethodCountries(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
+      .then((response: PaymentsPaymentMethodsCountriesResponse) => {
+        setCountries(response.data);
+      });
+  }, [monite.api.payment]);
+
+  useEffect(() => {
+    monite.api.payment
+      .getInstitutions(
+        PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+        selectedCountry as PaymentsYapilyCountriesCoverageCodes
+      )
+      .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
+        setBanks(response.data);
+      });
+  }, [selectedCountry, monite.api.payment]);
+
   return (
     <>
       <NavHeader />
       <Routes>
         <Route
           path={'/'}
-          element={<BanksListForm receivableData={receivableData} />}
+          element={
+            <BanksListForm
+              banks={banks}
+              countries={countries}
+              selectedCountry={selectedCountry}
+              onChangeCountry={setSelectedCountry}
+              receivableData={receivableData}
+            />
+          }
         />
         <Route
-          path={'/:id'}
+          path={'/:code'}
           element={
             <InvoiceDetailes banks={banks} receivableData={receivableData} />
           }

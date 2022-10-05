@@ -46,7 +46,12 @@
       "submit": "Pay",
       "back": "Back",
       "emptyTitle": "No payment methods available",
-      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later.",
+      "banksListTitle": "Continue with your bank account",
+      "banksSearchPlaceholder": "Search for your bank",
+      "emptyBankListTitle": "No results",
+      "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
+      "changeMethod": "Change method"
     }
   },
   "payables": {
@@ -98,10 +103,10 @@
       "all": "All invoices",
       "new": "New",
       "approve_in_progress": "Approve in Progress",
-      "waiting_to_be_paid": "Waiting to be Paid",
+      "waiting_to_be_paid": "Waiting to Be Paid",
       "paid": "Paid",
       "canceled": "Canceled",
-      "rejected": "rejected"
+      "rejected": "Rejected"
     }
   },
   "counterparts": {
@@ -119,8 +124,9 @@
     },
     "individual": {
       "address": "Address",
+      "fullName": "Full name",
       "firstName": "First name",
-      "lastName": "Second name",
+      "lastName": "Last name",
       "taxId": "Tax number",
       "phone": "Phone number",
       "email": "Email"
@@ -129,9 +135,14 @@
       "address": "Address",
       "fullName": "Full name",
       "firstName": "First name",
-      "lastName": "Second name",
+      "lastName": "Last name",
       "phone": "Phone number",
       "email": "Email"
+    },
+    "bank": {
+      "name": "Account name",
+      "iban": "IBAN",
+      "bic": "BIC"
     },
     "address": {
       "line1": "Address line 1",
@@ -141,20 +152,36 @@
       "country": "Country",
       "postalCode": "ZIP code"
     },
+    "titles": {
+      "create": "Create Counterpart – {{name}}",
+      "counterpart": "Counterpart",
+      "contact": "Contact Person",
+      "bank": "Bank Account",
+      "organization": "Company",
+      "individual": "Individual"
+    },
     "actions": {
+      "loading": "Loading...",
       "call": "Call",
       "sendEmail": "Send email",
-      "editDetails": "Edit details",
       "setCounterpart": "Set this counterpart as",
       "addContactPerson": "Add contact person",
+      "addBankAccount": "Add bank account",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "createContact": "Add contact",
+      "updateContact": "Update contact",
+      "createBank": "Add bank account",
+      "updateBank": "Update bank account"
     },
-    "confirmDialogue": {
-      "title": "Delete Counterpart?",
-      "content": "Are you sure you want to delete “{{name}}”? This action can’t be undone.",
-      "successNotification": "Counterpart “{{name}}” was deleted.",
-      "errorNotification": "Failed to delete counterpart “{{name}}”."
+    "confirmDeleteDialogue": {
+      "title": "Delete {{type}} “{{name}}”?",
+      "content": "This action can’t be undone.",
+      "successNotification": "{{type}} “{{name}}” was deleted.",
+      "errorNotification": "Failed to delete {{type}} “{{name}}”."
     },
     "filters": {
       "isCustomer": {
@@ -170,6 +197,7 @@
       "search": "Search by name"
     },
     "contactPersons": "Contact persons",
+    "bankAccounts": "Bank accounts",
     "customer": "Customer",
     "vendor": "Vendor"
   },

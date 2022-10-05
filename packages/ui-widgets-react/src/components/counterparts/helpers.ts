@@ -1,50 +1,41 @@
 import {
-  CounterpartAddress,
-  CounterpartIndividualResponse as CounterpartIndividual,
-  CounterpartOrganizationResponse as CounterpartOrganization,
+  CounterpartIndividualResponse,
+  CounterpartOrganizationResponse,
   CounterpartResponse,
   CounterpartType,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 
 export function isIndividualCounterpart(
   counterpart: CounterpartResponse
-): counterpart is CounterpartIndividual {
+): counterpart is CounterpartIndividualResponse {
   return counterpart.type === CounterpartType.INDIVIDUAL;
 }
 
 export function isOrganizationCounterpart(
   counterpart: CounterpartResponse
-): counterpart is CounterpartOrganization {
+): counterpart is CounterpartOrganizationResponse {
   return counterpart.type === CounterpartType.ORGANIZATION;
 }
 
-// todo how to generate the full address?
-export function getAddress({
-  line1,
-  line2,
-  postal_code,
-  city,
-  country,
-  state,
-}: CounterpartAddress): string {
-  const street2 = line2 ? `${line2}, ` : '';
-
-  return `${line1}, ${street2}${postal_code} ${city}, ${state}, ${country}`;
-}
-
-export function getFullName(firstName: string, lastName: string): string {
+export function getIndividualName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
 }
 
 export function getName(counterpart: CounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
-    const data = counterpart as CounterpartIndividual;
-    return getFullName(data.individual.first_name, data.individual.last_name);
+    const {
+      individual: { first_name, last_name },
+    } = counterpart as CounterpartIndividualResponse;
+
+    return getIndividualName(first_name, last_name);
   }
 
   if (isOrganizationCounterpart(counterpart)) {
-    const data = counterpart as CounterpartOrganization;
-    return data.organization.legal_name;
+    const {
+      organization: { legal_name },
+    } = counterpart as CounterpartOrganizationResponse;
+
+    return legal_name;
   }
 
   return '';

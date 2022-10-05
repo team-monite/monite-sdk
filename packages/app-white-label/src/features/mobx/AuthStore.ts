@@ -1,6 +1,6 @@
 import { action, makeObservable } from 'mobx';
 import { nanoid } from 'nanoid';
-import { GrantType } from '@monite/sdk-api';
+import { GrantType } from '@team-monite/sdk-api';
 
 import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
 

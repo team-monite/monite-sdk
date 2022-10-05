@@ -1,6 +1,9 @@
 import { useCallback } from 'react';
 
-import { PayableResponseSchema, PayableUpdateSchema } from '@monite/sdk-api';
+import {
+  PayableResponseSchema,
+  PayableUpdateSchema,
+} from '@team-monite/sdk-api';
 import { useUpdatePayableById } from 'core/queries/usePayable';
 import { useCreateTag, useTagList } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';

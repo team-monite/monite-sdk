@@ -4,7 +4,7 @@ import {
   TagCreateOrUpdateSchema,
   TagReadSchema,
   TagsResponse,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 import { PAYABLE_QUERY_ID } from './usePayable';

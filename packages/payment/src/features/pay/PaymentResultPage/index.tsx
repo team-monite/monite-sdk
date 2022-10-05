@@ -9,7 +9,7 @@ import {
   Button,
   UCheckSquare,
   UExclamationTriangle,
-} from '@monite/ui-widgets-react';
+} from '@team-monite/ui-widgets-react';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -222,10 +222,14 @@ export const PaymentResultPage = () => {
               </Box>
             )}
 
-            {showReturnButton() && (
+            {paymentData?.return_url && (
               <Flex justifyContent="center">
                 <Box width={'160px'}>
-                  <Button mt="24px" block onClick={() => navigate(returnUrl)}>
+                  <Button
+                    mt="24px"
+                    block
+                    onClick={() => navigate(paymentData?.return_url)}
+                  >
                     {getStatus(status as StripeResultStatuses) ===
                       ResultStatuses.Succeeded ||
                     getStatus(status as StripeResultStatuses) ===

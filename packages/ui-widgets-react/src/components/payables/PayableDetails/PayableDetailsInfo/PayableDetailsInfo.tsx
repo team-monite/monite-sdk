@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { PayableResponseSchema } from '@monite/sdk-api';
-import { Tag } from '@monite/ui-kit-react';
+import { PayableResponseSchema } from '@team-monite/sdk-api';
+import { Tag } from '@team-monite/ui-kit-react';
 import { formatDate, getReadableAmount } from 'core/utils';
 import {
   FormSection,

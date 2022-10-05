@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Global } from '@emotion/react';
 import { useTheme } from 'emotion-theming';
-import { Theme } from '@monite/ui-widgets-react';
+import { Theme } from '@team-monite/ui-widgets-react';
 
 import logo from 'assets/logo/logo2x.png';
 import * as Styled from './styles';

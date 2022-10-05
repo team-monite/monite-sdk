@@ -43,7 +43,6 @@ export default class CounterpartsService {
 
   /**
    * Get Counterparts
-   * @param xMoniteEntityId monite entity_id
    * @param iban The IBAN of the entity’s bank account.
    * @param order Order by
    * @param limit Max is 100
@@ -67,7 +66,6 @@ export default class CounterpartsService {
    * @throws ApiError
    */
   public getList(
-    xMoniteEntityId: string,
     iban?: string,
     order?: OrderEnum,
     limit: number = 100,
@@ -92,9 +90,6 @@ export default class CounterpartsService {
       {
         method: 'GET',
         url: `/${COUNTERPARTS_ENDPOINT}`,
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         query: {
           iban: iban,
           order: order,
@@ -221,7 +216,7 @@ export default class CounterpartsService {
     return __request(
       {
         method: 'GET',
-        url: `/${COUNTERPARTS_ENDPOINT}/${counterpartId}`,
+        url: `/${COUNTERPARTS_ENDPOINT}/${counterpartId}/${COUNTERPARTS_CONTACT_ENDPOINT}`,
         errors,
       },
       this.openapiConfig

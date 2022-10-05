@@ -79,6 +79,20 @@ data:
             error_log /dev/stderr;
             error_page   500 502 503 504  /50x.html;
             location /api/ {
+
+                if ($request_method = 'OPTIONS') {
+                    add_header 'Access-Control-Allow-Origin' '*';
+                    add_header 'access-control-allow-headers' 'Accept,Accept-Version,Content-Length,Content-Type,Date,x-monite-version,x-service-name,x-monite-data-source,x-monite-entity-id,Authorization,authorization';
+                    add_header 'Access-Control-Allow-Methods' 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,TRACE,CONNECT';
+                    add_header 'Access-Control-Max-Age' 3600;
+                    add_header 'Content-Type' 'text/plain charset=UTF-8';
+                    add_header 'Content-Length' 0;
+
+                    return 200;
+                }
+
+                add_header Access-Control-Allow-Origin "*";
+
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/;
             }

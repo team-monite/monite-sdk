@@ -1,5 +1,8 @@
-import { PayableStateEnum, ReceivablesCounterpartType } from '@monite/sdk-api';
-import { SortOrderEnum } from '@monite/ui-kit-react';
+import {
+  PayableStateEnum,
+  ReceivablesCounterpartType,
+} from '@team-monite/sdk-api';
+import { SortOrderEnum } from '@team-monite/ui-kit-react';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,

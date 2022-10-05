@@ -5,7 +5,7 @@ import {
   PayableUpdateSchema,
   PartnerApiService,
   PaginationResponse,
-} from '@monite/sdk-api';
+} from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 
 export const PAYABLE_QUERY_ID = 'payable';

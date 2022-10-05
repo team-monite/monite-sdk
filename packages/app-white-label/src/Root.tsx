@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreContext, store } from 'features/mobx';
-import { MoniteProvider, MoniteApp } from '@monite/ui-widgets-react';
+import { MoniteProvider, MoniteApp } from '@team-monite/ui-widgets-react';
 
 import App from 'features/app/App';
 import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';

@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
 
-import { ReceivableResponse } from '@monite/sdk-api';
+import {
+  ReceivableResponse,
+  PaymentsPaymentsCountry,
+  PaymentsPaymentsBank,
+  PaymentsYapilyCountriesCoverageCodes,
+  PaymentsPaymentsMedia,
+} from '@team-monite/sdk-api';
 import {
   Avatar,
   Text,
@@ -15,14 +22,13 @@ import {
   USearchAlt,
   IconButton,
   Flex,
-} from '@monite/ui-kit-react';
+} from '@team-monite/ui-kit-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
-import InvoiceDetailes from '../InvoiceDetailes';
-import type { BankItem } from '../types';
+import SelectCountries from '../SelectCountries';
+import EmptyBankList from '../EmptyBankList';
 
 import styles from './style.module.scss';
-
-import { demoBanks } from '../../fixtures/banks';
 
 const StyledBankListItem = styled.div(
   ({ theme }) => `
@@ -44,15 +50,20 @@ const StyledBankListItem = styled.div(
 );
 
 type BankListItemProps = {
-  data: BankItem;
+  data: PaymentsPaymentsBank;
 };
+
 const BankListItem = ({ data }: BankListItemProps) => {
   const theme = useTheme<Theme>();
+  const logo = data.media.find(
+    (item: PaymentsPaymentsMedia) => item.type === 'icon'
+  )?.source;
 
   return (
     <StyledBankListItem>
       <Flex>
-        <Avatar size={24} textSize="regular" src={data.logo} />
+        {/* TODO: test with backend */}
+        <Avatar size={24} textSize="regular" src={logo} />
         <Box ml={1}>
           <Text>{data.name}</Text>
         </Box>
@@ -64,58 +75,79 @@ const BankListItem = ({ data }: BankListItemProps) => {
 
 type YapilyFormProps = {
   receivableData?: ReceivableResponse;
+  banks: PaymentsPaymentsBank[];
+  countries?: Array<PaymentsPaymentsCountry>;
+  selectedCountry: PaymentsYapilyCountriesCoverageCodes;
+  onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
 };
+const YapilyForm = ({
+  receivableData,
+  banks = [],
+  countries,
+  selectedCountry,
+  onChangeCountry,
+}: YapilyFormProps) => {
+  const { t } = useComponentsContext();
 
-const YapilyForm = ({ receivableData }: YapilyFormProps) => {
   const [searchText, setSearchText] = useState('');
-
-  // TODO: here we should fetch an actual list of banks from the API when it will be ready
-  const [banks] = useState(demoBanks);
 
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
+
   const { search } = useLocation();
 
+  const filteredBanks = searchText
+    ? banks.filter((bank) =>
+        bank.name.toLowerCase().includes(searchText.toLowerCase())
+      )
+    : banks;
+
   return (
-    <div>
-      <Text textSize="h3" align="center">
-        Continue with your bank account
-      </Text>
-      <Routes>
-        <Route
-          path={':id'}
-          element={
-            <InvoiceDetailes banks={banks} receivableData={receivableData} />
-          }
-        />
-      </Routes>
-      <Box mt="24px" mb="32px">
-        <Input
-          placeholder="Search for your bank"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            updateSearchText(e.target.value);
-          }}
-          renderAddonIcon={() => (
-            <IconButton color={'lightGrey1'}>
-              <USearchAlt size={20} />
-            </IconButton>
+    <>
+      <div>
+        <Text textSize="h3" align="center">
+          {t('payment:widget.banksListTitle')}
+        </Text>
+        <Flex mt="24px" mb="32px">
+          {countries && (
+            <Box mr={'16px'}>
+              <SelectCountries
+                value={selectedCountry}
+                onChange={(val) => {
+                  onChangeCountry(val.value);
+                }}
+                data={countries}
+              />
+            </Box>
           )}
-        />
-      </Box>
-      <Box>
-        {(searchText
-          ? banks.filter((bank) =>
-              bank.name.toLowerCase().includes(searchText.toLowerCase())
-            )
-          : banks
-        ).map((bank) => (
-          <Link to={`${bank.id}${search}`} className={styles.link}>
-            <BankListItem data={bank} />
-          </Link>
-        ))}
-      </Box>
-    </div>
+          <Box width={355}>
+            <Input
+              placeholder={t('payment:widget.banksSearchPlaceholder')}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateSearchText(e.target.value);
+              }}
+              renderAddonIcon={() => (
+                <IconButton color={'lightGrey1'}>
+                  <USearchAlt size={20} />
+                </IconButton>
+              )}
+            />
+          </Box>
+        </Flex>
+        <Box>
+          {filteredBanks.length ? (
+            filteredBanks.map((bank) => (
+              <Link to={`${bank.code}${search}`} className={styles.link}>
+                <BankListItem data={bank} />
+              </Link>
+            ))
+          ) : (
+            <EmptyBankList />
+          )}
+        </Box>
+      </div>
+    </>
   );
 };
 

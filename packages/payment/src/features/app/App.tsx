@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { MoniteProvider, MoniteApp } from '@monite/ui-widgets-react';
+import { MoniteProvider, MoniteApp } from '@team-monite/ui-widgets-react';
 
 import Routes from 'features/app/routes';
 

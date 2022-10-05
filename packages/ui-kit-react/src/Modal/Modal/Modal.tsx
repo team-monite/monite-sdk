@@ -17,7 +17,6 @@ type StyledModalProps = {
 const StyledBackdrop = styled.div`
   opacity: 0.85;
   position: fixed;
-  z-index: 940;
   top: 0;
   left: 0;
   width: 100vw;
@@ -35,7 +34,6 @@ const StyledModal = styled(Flex)<StyledModalProps>`
   display: flex;
   align-items: center;
   justify-content: ${({ $anchor }) => $anchor};
-  z-index: 950;
 `;
 
 const ModalLayout = ({

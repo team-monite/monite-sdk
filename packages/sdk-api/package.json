@@ -1,6 +1,9 @@
 {
-  "name": "@monite/sdk-api",
-  "version": "0.0.3",
+  "name": "@team-monite/sdk-api",
+  "version": "0.0.4",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -16,5 +19,5 @@
     "gen:openapi": "npx openapi-typescript-codegen -i https://api.dev.monite.com/openapi.json --exportCore false --exportServices false -o ./src/api"
   },
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

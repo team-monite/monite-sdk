@@ -1,4 +1,4 @@
-import { CurrencyEnum } from '@monite/sdk-api';
+import { CurrencyEnum } from '@team-monite/sdk-api';
 
 const CURRENCY_LIST: Readonly<Record<CurrencyEnum, string>> = {
   AUD: '$',

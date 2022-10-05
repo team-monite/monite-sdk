@@ -1,4 +1,4 @@
-import { ActionEnum, WorkflowsPaginationResponse } from '@monite/sdk-api';
+import { ActionEnum, WorkflowsPaginationResponse } from '@team-monite/sdk-api';
 
 const data: WorkflowsPaginationResponse = {
   data: [

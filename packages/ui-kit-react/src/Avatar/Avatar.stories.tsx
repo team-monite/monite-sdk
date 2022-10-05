@@ -1,7 +1,7 @@
 import Avatar from '.';
 
 import { action } from '@storybook/addon-actions';
-import { THEMES } from '../consts';
+import { THEMES } from '../theme_deprecated';
 import { STYLES } from '../Text';
 
 const Story = {
