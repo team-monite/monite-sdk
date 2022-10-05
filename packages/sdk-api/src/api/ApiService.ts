@@ -15,7 +15,7 @@ const isLocalhost = (url: string) =>
   url.includes('localhost') || url.includes('127.0.0.1');
 
 const PAYMENT_BASE_URL = isLocalhost(window.location.origin)
-  ? 'http://pay.dev.monite.com/api/v1'
+  ? 'https://pay.dev.monite.com/api/v1'
   : '/api/v1';
 
 class ApiService {

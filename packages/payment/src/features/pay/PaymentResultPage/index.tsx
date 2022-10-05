@@ -125,19 +125,6 @@ export const PaymentResultPage = () => {
     currency: currency || 'EUR',
   });
 
-  const showReturnButton = () => {
-    if (
-      (getStatus(status as StripeResultStatuses) === ResultStatuses.Succeeded &&
-        recipientType === RecipientType.ENTITY) ||
-      (getStatus(status as StripeResultStatuses) ===
-        ResultStatuses.Processing &&
-        recipientType === RecipientType.ENTITY)
-    ) {
-      return false;
-    }
-    return true;
-  };
-
   return (
     <Layout>
       <Flex justifyContent="center">
@@ -222,14 +209,10 @@ export const PaymentResultPage = () => {
               </Box>
             )}
 
-            {paymentData?.return_url && (
+            {returnUrl && (
               <Flex justifyContent="center">
                 <Box width={'160px'}>
-                  <Button
-                    mt="24px"
-                    block
-                    onClick={() => navigate(paymentData?.return_url)}
-                  >
+                  <Button mt="24px" block onClick={() => navigate(returnUrl)}>
                     {getStatus(status as StripeResultStatuses) ===
                       ResultStatuses.Succeeded ||
                     getStatus(status as StripeResultStatuses) ===

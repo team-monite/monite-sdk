@@ -4,7 +4,10 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 import { Card } from '@team-monite/ui-kit-react';
 
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import {
+  PaymentsPaymentLinkResponse,
+  PaymentsPaymentsPaymentIntent,
+} from '@team-monite/sdk-api';
 
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
@@ -21,7 +24,6 @@ type PaymentWidgetProps = {
   currency?: CurrencyEnum;
   onFinish?: (result: any) => void;
   returnUrl?: string;
-  stripeEnabled?: boolean;
 };
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
@@ -29,12 +31,14 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const paymentMethods = paymentData?.payment_methods || [];
 
   const stripeCardData = paymentData?.payment_intents?.find(
-    (elem) => elem.provider === 'stripe' && elem.payment_method.includes('card')
+    (elem: PaymentsPaymentsPaymentIntent) =>
+      elem.provider === 'stripe' && elem.payment_method.includes('card')
   );
 
   const stripeOthersData = paymentData?.payment_intents?.find(
-    (elem) =>
-      elem.provider === 'stripe' && elem.payment_method.includes('others')
+    (elem: PaymentsPaymentsPaymentIntent) =>
+      elem.provider === 'stipe' &&
+      !elem.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
   );
   const { search } = useLocation();
 
@@ -81,11 +85,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
               <StripeWidget
                 clientSecret={stripeCardData?.key.secret}
                 {...props}
-                price={paymentData?.amount}
-                currency={paymentData?.currency}
                 navButton={paymentMethods?.length > 1}
-                paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.return_url}
+                paymentData={paymentData}
               />
             )
           }
@@ -97,12 +98,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
               <StripeWidget
                 clientSecret={stripeOthersData?.key.secret}
                 {...props}
-                price={paymentData?.amount}
-                currency={paymentData?.currency}
                 navButton={paymentMethods?.length > 1}
-                paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.return_url}
-                onFinish={props.onFinish}
+                paymentData={paymentData}
               />
             )
           }

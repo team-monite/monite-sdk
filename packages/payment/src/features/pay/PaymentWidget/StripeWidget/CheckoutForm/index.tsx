@@ -6,7 +6,10 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import { Button, Alert, Box } from '@team-monite/ui-kit-react';
-import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
+import {
+  PaymentsPaymentMethodsEnum,
+  PaymentsPaymentLinkResponse,
+} from '@team-monite/sdk-api';
 
 import { useComponentsContext, toast } from '@team-monite/ui-widgets-react';
 
@@ -14,23 +17,10 @@ import * as Styled from './styles';
 import { formatAmountFromMinor } from '../../../consts';
 
 type CheckoutFormProps = {
-  clientSecret: string;
-  returnUrl?: string;
-  onFinish?: (result: any) => void;
-  price: number;
-  fee?: number;
-  currency: string;
-  paymentLinkId: string;
+  paymentData: PaymentsPaymentLinkResponse;
 };
 
-export default function CheckoutForm({
-  onFinish,
-  price,
-  returnUrl,
-  currency,
-  paymentLinkId,
-  clientSecret,
-}: CheckoutFormProps) {
+export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
   const { t, monite } = useComponentsContext();
 
   const stripe = useStripe();
@@ -45,6 +35,16 @@ export default function CheckoutForm({
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState('');
 
+  const {
+    id,
+    amount,
+    currency,
+    return_url,
+    payment_reference,
+    recipient,
+    status,
+  } = paymentData;
+
   const setMessage = (message: string) => {
     toast(message);
   };
@@ -56,21 +56,10 @@ export default function CheckoutForm({
     [elements]
   );
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      if (onFinish) {
-        onFinish({ status: paymentIntent?.status });
-      }
-    });
-  }, [clientSecret, onFinish, stripe]);
-
   const handleChangeFee = async (paymentMethod: PaymentsPaymentMethodsEnum) => {
     monite.api.payment
       .getFeeByPaymentMethod(paymentMethod, {
-        payment_link_id: paymentLinkId,
+        payment_link_id: id,
       })
       .then((response) => {
         setFee(formatAmountFromMinor(response.total.fee, currency));
@@ -99,7 +88,7 @@ export default function CheckoutForm({
         elements,
         confirmParams: {
           return_url:
-            `${window.location.origin}/result?data=${rawPaymentData}` ||
+            `${window.location.origin}/result?data=${rawPaymentData}&payment_reference=${payment_reference}&amount=${amount}&currency=${currency}&recipient_type=${recipient.type}&redirect_status=${status}&return_url=${return_url}` ||
             `${window.location.href}`,
         },
       });
@@ -128,7 +117,7 @@ export default function CheckoutForm({
     currency,
   });
 
-  const formattedFromMinorPrice = formatAmountFromMinor(price, currency);
+  const formattedFromMinorAmount = formatAmountFromMinor(amount, currency);
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
@@ -143,7 +132,7 @@ export default function CheckoutForm({
       <Styled.Prices>
         <Styled.PriceRow>
           <div>{t('payment:widget.amount')}</div>
-          <div>{formatter.format(formattedFromMinorPrice)}</div>
+          <div>{formatter.format(formattedFromMinorAmount)}</div>
         </Styled.PriceRow>
         {fee ? (
           <Styled.PriceRow>
@@ -160,7 +149,7 @@ export default function CheckoutForm({
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
-              percent: ((fee * 100.0) / formattedFromMinorPrice).toFixed(2),
+              percent: ((fee * 100.0) / formattedFromMinorAmount).toFixed(2),
             })}
           </Alert>
         </Box>

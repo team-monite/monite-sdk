@@ -1,34 +1,25 @@
 import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from './CheckoutForm';
 import React, { useEffect, useState } from 'react';
 import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 import { Theme } from '@team-monite/ui-kit-react';
+import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+
+import CheckoutForm from './CheckoutForm';
 import NavHeader from '../NavHeader';
 
 let stripePromise: Promise<Stripe | null> | null = null;
 
 type StripeFormProps = {
   clientSecret: string;
-  price: number;
-  fee?: number;
-  currency: string;
-  onFinish?: (result: any) => void;
-  returnUrl?: string;
-  stripeEnabled?: boolean;
   navButton?: boolean;
-  paymentLinkId: string;
+  paymentData: PaymentsPaymentLinkResponse;
 };
 
 const StripeForm = ({
   clientSecret,
-  onFinish,
-  price,
-  fee,
   navButton,
-  currency,
-  paymentLinkId,
-  returnUrl,
+  paymentData,
 }: StripeFormProps) => {
   const theme = useTheme<Theme>();
 
@@ -40,7 +31,7 @@ const StripeForm = ({
     }
 
     stripePromise = loadStripe(
-      // TODO: make it as ENV variable?
+      // TODO: change it to key from backend
       'pk_test_51IJivRCq0HpJYRYNxdxMiSromL6P4QicTwwdfYKICAXXTNzkVVkBzF308zNVoYXHw53TPb7aGBptDupflQjxzmGW00jBrBoehE'
     );
 
@@ -80,15 +71,7 @@ const StripeForm = ({
         <>
           {navButton && <NavHeader />}
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm
-              clientSecret={clientSecret}
-              returnUrl={returnUrl}
-              onFinish={onFinish}
-              price={price}
-              fee={fee}
-              currency={currency}
-              paymentLinkId={paymentLinkId}
-            />
+            <CheckoutForm paymentData={paymentData} />
           </Elements>
         </>
       )}
