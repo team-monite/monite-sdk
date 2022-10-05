@@ -37,7 +37,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
 
   const stripeOthersData = paymentData?.payment_intents?.find(
     (elem: PaymentsPaymentsPaymentIntent) =>
-      elem.provider === 'stipe' &&
+      elem.provider === 'stripe' &&
       !elem.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
   );
   const { search } = useLocation();
