@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { Flex, Box } from '@team-monite/ui-kit-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
 import { ROUTES, fromBase64 } from 'features/app/consts';
 
@@ -13,38 +15,63 @@ import { URLData } from '../types';
 
 const PaymentPage = () => {
   const { search } = useLocation();
+  const navigate = useNavigate();
 
   const rawPaymentData = new URLSearchParams(search).get('data');
 
-  const paymentData = useMemo(() => {
+  const linkData = useMemo(() => {
     if (rawPaymentData) {
       return fromBase64(rawPaymentData) as URLData;
     }
   }, [rawPaymentData]);
 
-  const navigate = useNavigate();
+  const [paymentData, setPaymentData] = useState<any>();
+
+  const { monite } = useComponentsContext() || {};
+
+  useEffect(() => {
+    (async () => {
+      if (linkData?.id) {
+        const data = await monite.api.payment.getPaymentLinkById(linkData.id);
+        setPaymentData(data);
+      }
+    })();
+
+    if (
+      paymentData?.payment_methods?.length === 1 &&
+      paymentData?.payment_methods?.[0] === PaymentMethodsEnum.CARD
+    ) {
+      navigate(`card${search}`, { replace: true });
+    }
+    //  else if (
+    //   paymentData?.payment_methods?.length === 1 &&
+    //   paymentData?.payment_methods?.[0] === 'bank'
+    // ) {
+    //   navigate(`bank${search}`, { replace: true });
+    // }
+    // eslint-disable-next-line
+  }, [linkData]);
+
+  useEffect(() => {
+    if (
+      paymentData?.status === 'succeeded' ||
+      paymentData?.status === 'canceled'
+    ) {
+      navigate(
+        `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
+        {
+          replace: true,
+        }
+      );
+    }
+  }, [paymentData, navigate, rawPaymentData]);
+
   return (
     <Layout>
-      <Helmet title={`Pay invoice ${paymentData?.object?.id || ''}`} />
+      <Helmet title={`Pay invoice ${linkData?.id || ''}`} />
       <Flex justifyContent="center">
         <Box width={600} p={4} pt={80}>
-          <PaymentWidget
-            paymentData={paymentData}
-            onFinish={(res) => {
-              if (
-                res.status !== 'requires_payment_method' &&
-                res.status !== 'requires_action' &&
-                res.status !== 'requires_confirmation'
-              ) {
-                navigate(
-                  `${ROUTES.payResult}?data=${rawPaymentData}&redirect_status=${res.status}`,
-                  {
-                    replace: true,
-                  }
-                );
-              }
-            }}
-          />
+          {paymentData && <PaymentWidget paymentData={paymentData} />}
         </Box>
       </Flex>
     </Layout>

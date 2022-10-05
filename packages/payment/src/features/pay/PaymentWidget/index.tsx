@@ -1,52 +1,50 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 import { Card } from '@team-monite/ui-kit-react';
 
-import { ROUTES } from 'features/app/consts';
+import {
+  PaymentsPaymentLinkResponse,
+  PaymentsPaymentsPaymentIntent,
+} from '@team-monite/sdk-api';
 
 import StripeWidget from './StripeWidget';
 import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import EmptyScreen from 'features/pay/EmptyScreen';
 
-import { URLData } from '../types';
+import { ROUTES } from 'features/app/consts';
 
 import styles from './styles.module.scss';
 
 type PaymentWidgetProps = {
-  paymentData?: URLData;
+  paymentData: PaymentsPaymentLinkResponse;
   fee?: number;
   currency?: CurrencyEnum;
   onFinish?: (result: any) => void;
   returnUrl?: string;
-  stripeEnabled?: boolean;
 };
 
 const PaymentWidget = (props: PaymentWidgetProps) => {
-  // const [receivableData, setReceivableData] = useState<ReceivableResponse>();
-
   const { paymentData } = props;
   const paymentMethods = paymentData?.payment_methods || [];
 
+  const stripeCardData = paymentData?.payment_intents?.find(
+    (elem: PaymentsPaymentsPaymentIntent) =>
+      elem.provider === 'stripe' && elem.payment_method.includes('card')
+  );
+
+  const stripeOthersData = paymentData?.payment_intents?.find(
+    (elem: PaymentsPaymentsPaymentIntent) =>
+      elem.provider === 'stripe' &&
+      !elem.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
+  );
   const { search } = useLocation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // (async () => {
-    //   if (paymentData?.object?.id) {
-    //     const receivableData =
-    //       await monite.api.payment.getPaymentReceivableById(
-    //         paymentData?.object.id
-    //       );
-
-    //     setReceivableData(receivableData);
-    //   }
-    // })();
-
     if (
       paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
@@ -83,15 +81,12 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path={ROUTES.card}
           element={
-            paymentData?.stripe?.secret && (
+            stripeCardData?.key.secret && (
               <StripeWidget
-                clientSecret={paymentData?.stripe.secret.card}
+                clientSecret={stripeCardData?.key.secret}
                 {...props}
-                price={paymentData?.amount}
-                currency={paymentData?.currency}
                 navButton={paymentMethods?.length > 1}
-                paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.return_url}
+                paymentData={paymentData}
               />
             )
           }
@@ -99,16 +94,12 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path={ROUTES.other}
           element={
-            paymentData?.stripe?.secret && (
+            stripeOthersData?.key.secret && (
               <StripeWidget
-                clientSecret={paymentData?.stripe.secret.others}
+                clientSecret={stripeOthersData?.key.secret}
                 {...props}
-                price={paymentData?.amount}
-                currency={paymentData?.currency}
                 navButton={paymentMethods?.length > 1}
-                paymentLinkId={paymentData?.id}
-                returnUrl={paymentData?.return_url}
-                onFinish={props.onFinish}
+                paymentData={paymentData}
               />
             )
           }
