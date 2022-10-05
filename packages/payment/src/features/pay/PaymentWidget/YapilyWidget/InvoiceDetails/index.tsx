@@ -18,7 +18,6 @@ import {
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 
-import PayerInfoForm from './PayerInfoForm';
 import styles from './styles.module.scss';
 
 type BankFormProps = {
@@ -46,7 +45,7 @@ const infoPanelMap = {
   },
 };
 
-const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
+const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
   const { code } = useParams();
   const bankData = banks?.find((bank) => bank.code === code);
 
@@ -61,7 +60,6 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
           {bankData?.name}
         </Text>
       </Flex>
-      <PayerInfoForm />
       <List className={styles.detailesBlock}>
         <ListItem>
           <Flex justifyContent="space-between">
@@ -104,7 +102,7 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
         these details with your bank, where you will then be asked to confirm
         the following payment setup.
       </Text>
-      <Flex mt={1}>
+      <Flex mt={1} flexWrap="wrap" mb="32px">
         {Object.keys(infoPanelMap).map((key) => (
           <Box mr={3}>
             <Button
@@ -122,11 +120,11 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
         ))}
       </Flex>
 
-      <Button mt="56px" type="submit" block>
+      <Button type="submit" block>
         Continue
       </Button>
     </Box>
   );
 };
 
-export default InvoiceDetailes;
+export default InvoiceDetails;
