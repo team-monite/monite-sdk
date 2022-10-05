@@ -18,6 +18,7 @@ import {
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 
+import PayerInfoForm from './PayerInfoForm';
 import styles from './styles.module.scss';
 
 type BankFormProps = {
@@ -52,7 +53,6 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
   const logo = bankData?.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
-
   return (
     <Box>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
@@ -61,6 +61,7 @@ const InvoiceDetailes = ({ banks, receivableData }: BankFormProps) => {
           {bankData?.name}
         </Text>
       </Flex>
+      <PayerInfoForm />
       <List className={styles.detailesBlock}>
         <ListItem>
           <Flex justifyContent="space-between">
