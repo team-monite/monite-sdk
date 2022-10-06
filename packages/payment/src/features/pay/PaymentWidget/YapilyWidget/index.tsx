@@ -14,8 +14,9 @@ import {
 
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
-import InvoiceDetailes from './InvoiceDetailes';
+import InvoiceDetails from './InvoiceDetails';
 import BanksListForm from './BanksListForm';
+import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
 type YapilyFormProps = {
@@ -69,10 +70,14 @@ const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
           }
         />
         <Route
-          path={'/:code'}
+          path={'/:code/confirm'}
           element={
-            <InvoiceDetailes banks={banks} receivableData={receivableData} />
+            <InvoiceDetails banks={banks} receivableData={receivableData} />
           }
+        />
+        <Route
+          path={'/:code/payer_form'}
+          element={<PayerForm banks={banks} />}
         />
       </Routes>
     </>

@@ -138,7 +138,14 @@ const YapilyForm = ({
         <Box>
           {filteredBanks.length ? (
             filteredBanks.map((bank) => (
-              <Link to={`${bank.code}${search}`} className={styles.link}>
+              <Link
+                to={
+                  bank.payer_required
+                    ? `${bank.code}/payer_form${search}`
+                    : `${bank.code}/confirm${search}`
+                }
+                className={styles.link}
+              >
                 <BankListItem data={bank} />
               </Link>
             ))
