@@ -36,23 +36,23 @@ const getBg = ({
 }: ThemedStyledProps<InputProps>) => {
   if (isInvalid) {
     return `
-      background-color: ${theme.colors.white};
-      border-color: ${theme.colors.red};
-      box-shadow: 0px 0px 0px 4px ${theme.colors.red}33;
+      color: ${theme.input.isInvalidColor};
+      background-color: ${theme.input.isInvalidBackgroundColor};
+      border-color: ${theme.input.isInvalidBorderColor};
+      box-shadow: 0px 0px 0px 4px ${theme.input.isInvalidBorderColor}33;
     `;
   }
 
   if (readOnly) {
     if (value) {
       return `
-        border-color: ${theme.colors.lightGrey2};
-        background-color: ${theme.colors.white};
-        color: ${theme.colors.lightGrey1};
+        border-color: ${theme.input.isReadonlyBorderColor};
+        background-color: ${theme.input.isReadonlyBackgroundColor};
+        color: ${theme.input.isReadonlyTextColor};
       `;
     }
     return `
       &:hover, &:focus {
-        border-color: ${theme.colors.lightGrey3};
         box-shadow: none;
       }
     `;
@@ -60,12 +60,12 @@ const getBg = ({
 
   if (value && !isFilter) {
     return `
-      border-color: ${theme.colors.lightGrey2};
-      background-color: ${theme.colors.white};
+      border-color: ${theme.input.withValueBorderColor};
+      background-color: ${theme.input.withValueBackgroundColor};
 
       &:hover, &:focus {
-        border-color: ${theme.colors.blue};
-        box-shadow: 0px 0px 0px 4px ${theme.colors.blue}33;
+        border-color: ${theme.input.borderColorHover};
+        box-shadow: 0px 0px 0px 4px ${theme.input.borderShadowHover}33;
       }
     `;
   }
@@ -83,28 +83,25 @@ const getBg = ({
       };
       box-shadow: none;
 
-      &:hover {
+      &:hover, &:focus {
         background-color: ${theme.input.filterBackgroundColorHover};
         color: ${theme.input.filterTextColorHover};
         border-color: ${theme.input.filterBorderColorHover};
+        box-shadow: none;
 
         &::placeholder {
           color: ${theme.input.filterTextColorHover};
         }
-      }
-
-      &:hover, &:focus {
-        border-color: ${theme.colors.lightGrey2};
-        box-shadow: none;
       }
     `;
   }
 
   return `
     &:hover, &:focus {
-      border-color: ${theme.colors.blue};
-      background-color: ${theme.colors.white};
-      box-shadow: 0px 0px 0px 4px ${theme.colors.blue}33;
+      color: ${theme.input.textColorHover};
+      background-color: ${theme.input.backgroundColorHover};
+      border-color: ${theme.input.borderColorHover};
+      box-shadow: 0px 0px 0px 4px ${theme.input.borderShadowHover}33;
     }
   `;
 };
@@ -119,19 +116,21 @@ const Input = styled(RebassInput)`
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
   border-radius: ${({ theme, isFilter }) =>
-    isFilter ? theme.input.filterBorderRadius : '8px'};
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
+    isFilter ? theme.input.filterBorderRadius : theme.input.borderRadius};
+  border: 1px solid ${({ theme }) => theme.input.borderColor};
   padding: 11px 16px;
-  background-color: ${({ theme }) => theme.colors.lightGrey3};
+  background-color: ${({ theme }) => theme.input.backgroundColor};
 
   font-family: ${({ theme }) => theme.input.fontFamily};
   font-size: ${({ theme }) => theme.input.fontSize};
   font-weight: ${({ theme }) => theme.input.fontWeight};
   line-height: 24px;
 
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.input.textColor};
 
-  ${getBg}
+  cursor: ${({ readOnly }) => (readOnly ? 'not-allowed' : 'auto')};
+
+  ${getBg};
 `;
 
 const Textarea = styled(RebassTextarea)`
@@ -145,15 +144,18 @@ const Textarea = styled(RebassTextarea)`
 
   border-radius: ${({ theme, isFilter }) =>
     isFilter ? theme.input.filterBorderRadius : '8px'};
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey3};
+  border: 1px solid ${({ theme }) => theme.input.borderColor};
   padding: 11px 16px;
-  background-color: ${({ theme }) => theme.colors.lightGrey3};
+  background-color: ${({ theme }) => theme.input.backgroundColor};
 
-  font-size: 16px;
-  font-weight: 400;
+  font-family: ${({ theme }) => theme.input.fontFamily};
+  font-size: ${({ theme }) => theme.input.fontSize};
+  font-weight: ${({ theme }) => theme.input.fontWeight};
   line-height: 24px;
 
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.input.textColor};
+
+  cursor: ${({ readOnly }) => (readOnly ? 'not-allowed' : 'auto')};
 
   ${getBg}
 `;

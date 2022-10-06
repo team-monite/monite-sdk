@@ -1,3 +1,6 @@
+import { tokenizedTheme as defaultTokenizedTheme } from './theme';
+import { tokenizedTheme as niobiTokenizedTheme } from './theme/niobi';
+
 export { default as Button } from './Button';
 export { default as IconButton } from './IconButton';
 export { default as Spinner } from './Spinner';
@@ -38,7 +41,20 @@ export { default as FileViewer } from './FileViewer';
 export { default as ThemeProvider } from './core/ThemeProvider';
 
 export * from './globalStyles';
-export * from './theme';
-export * from './theme_deprecated';
 export * from './unicons';
 export * from './types';
+export * from './theme';
+export * from './theme_deprecated';
+
+// for theme demo, set theme by url query parameter
+let currentTheme = defaultTokenizedTheme;
+
+if (window && window.location.href) {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  if (searchParams.get('theme') === 'niobi') {
+    currentTheme = niobiTokenizedTheme;
+  }
+}
+
+export const tokenizedTheme = currentTheme;

@@ -10,6 +10,8 @@ export const Wrapper = styled.div`
   position: relative;
 
   &:hover {
+    z-index: 1;
+
     &:after {
       position: absolute;
       content: '';

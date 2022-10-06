@@ -5,7 +5,7 @@ const baseColors = {
   white: '#FFFFFF',
   green: '#1FBCA0',
   orange: '#E27E46',
-  error: '#CC394B',
+  red: '#CC394B',
   purple: '#A06DC8',
 };
 
@@ -26,7 +26,7 @@ const palette = {
   success95: '#EEFBF9',
   warning50: baseColors.orange,
   warning95: '#FFF5EB',
-  error50: baseColors.error,
+  error50: baseColors.red,
   error95: '#FFF8F9',
   special50: baseColors.purple,
   special95: '#FBF1FC',
@@ -52,6 +52,9 @@ const components = {
     fontSize: typography.fontSize,
     fontWeight: typography.fontWeight,
 
+    iconColor: palette.neutral70,
+    headerUnderline: palette.neutral80,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -65,11 +68,33 @@ const components = {
     filterWithValueBackgroundColor: palette.neutral90,
 
     selectedBackgroundColor: palette.primary50,
+    selectedIconColor: palette.neutral10,
   },
   input: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
     fontWeight: typography.fontWeight,
+
+    textColor: palette.neutral10,
+    backgroundColor: palette.neutral90,
+    borderColor: palette.neutral90,
+    borderRadius: shape.borderRadiusSmall,
+
+    textColorHover: palette.neutral10,
+    backgroundColorHover: palette.neutral100,
+    borderColorHover: palette.primary50,
+    borderShadowHover: palette.primary50,
+
+    withValueBackgroundColor: palette.neutral100,
+    withValueBorderColor: palette.neutral80,
+
+    isReadonlyTextColor: palette.neutral70,
+    isReadonlyBackgroundColor: palette.neutral100,
+    isReadonlyBorderColor: palette.neutral80,
+
+    isInvalidColor: palette.neutral10,
+    isInvalidBackgroundColor: palette.neutral100,
+    isInvalidBorderColor: palette.error50,
 
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
@@ -77,7 +102,7 @@ const components = {
     filterBorderRadius: shape.borderRadiusMax,
 
     filterTextColorHover: palette.neutral100,
-    filterBackgroundColorHover: palette.primary95,
+    filterBackgroundColorHover: palette.neutral10,
     filterBorderColorHover: palette.neutral10,
 
     filterWithValueColor: palette.neutral10,
@@ -105,6 +130,22 @@ const components = {
     fontSize: typography.fontSize,
     fontWeight: typography.fontWeight,
 
+    textColor: palette.neutral10,
+    backgroundColor: palette.neutral90,
+    borderColor: 'transparent',
+    borderRadius: shape.borderRadiusSmall,
+
+    textColorHover: palette.neutral10,
+    backgroundColorHover: palette.neutral100,
+    borderColorHover: palette.primary50,
+    borderShadowHover: palette.primary50,
+
+    withValueBackgroundColor: palette.neutral100,
+
+    isCreatableInputTagsBackground: palette.neutral90,
+
+    isReadonlyTextColor: palette.neutral50,
+
     filterTextColor: palette.neutral10,
     filterBackgroundColor: palette.neutral100,
     filterBorderColor: palette.neutral80,
@@ -116,9 +157,22 @@ const components = {
 
     filterWithValueTextColor: palette.neutral10,
     filterWithValueBackgroundColor: palette.neutral90,
+    filterWithValueBorderColor: palette.neutral80,
 
     filterTextColorDisabled: palette.neutral50,
     filterBackgroundColorDisabled: palette.neutral90,
+
+    optionTextColor: palette.neutral10,
+    optionBackgroundColor: palette.neutral100,
+
+    optionTextColorHover: palette.neutral10,
+    optionBackgroundColorHover: palette.neutral90,
+
+    optionTextColorSelected: palette.neutral10,
+    optionBackgroundColorSelected: palette.neutral90,
+
+    creatableMessageTextColor: palette.primary50,
+    creatableMessageTextColorSecondary: palette.neutral50,
   },
   tableHeader: {
     fontFamily: typography.fontFamily,

@@ -19,6 +19,7 @@ export type PayablesDetailsInfoProps = {
   payable: PayableResponseSchema;
 };
 
+// TODO in order to customize style rewrite with one of ui kit components (Card or List)
 const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
 
