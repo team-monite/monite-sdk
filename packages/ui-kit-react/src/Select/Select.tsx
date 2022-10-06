@@ -18,7 +18,6 @@ import { useTheme } from '@emotion/react';
 import { Box } from '../Box';
 import Text from '../Text';
 import Tag from '../Tag';
-import { THEMES } from '../theme_deprecated';
 import { UAngleDown, UTimes } from '../unicons';
 import Avatar from '../Avatar';
 
@@ -34,9 +33,10 @@ const LabelWithIcon = styled.div`
 
 const CreateInputWrapper = styled.div`
   padding: 16px 12px;
-  background-color: ${({ theme }) => theme.colors.lightGrey3};
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  background-color: ${({ theme }) =>
+    theme.select.isCreatableInputTagsBackground};
+  border-top-left-radius: ${({ theme }) => theme.select.borderRadius};
+  border-top-right-radius: ${({ theme }) => theme.select.borderRadius};
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
@@ -131,14 +131,16 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
   const customStyles: StylesConfig = {
     singleValue: (provided: any, state: any) => ({
       ...provided,
-      ...(isFilter && {
-        color:
-          isFilter &&
-          (state.hasValue
-            ? theme.select.filterWithValueTextColor
-            : theme.select.filterTextColor),
-      }),
-      ...(isDisabled && { color: theme.select.filterTextColorDisabled }),
+      ...(isFilter
+        ? {
+            color: state.hasValue
+              ? theme.select.filterWithValueTextColor
+              : theme.select.filterTextColor,
+          }
+        : { color: theme.select.textColor }),
+      ...(isFilter &&
+        state.isFocused && { color: theme.select.filterTextColorHover }),
+      ...(isDisabled && { color: theme.select.isReadonlyTextColor }),
     }),
     multiValue: (provided: any) => ({
       ...provided,
@@ -158,13 +160,13 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
       paddingLeft: 0,
       display: 'inline-flex',
       borderRadius: 0,
-      color: THEMES.default.colors.black,
+      color: theme.select.textColor,
     }),
     menu: (provided: any) => ({
       ...provided,
       border: 0,
       boxShadow: '0px 4px 8px 0px #1111111F',
-      borderRadius: 8,
+      borderRadius: theme.select.borderRadius,
     }),
     menuList: (provided: any) => {
       return {
@@ -172,39 +174,45 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         margin: 0,
         padding: 0,
         ':first-of-type': {
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
+          borderTopLeftRadius: theme.select.borderRadius,
+          borderTopRightRadius: theme.select.borderRadius,
         },
         ':last-child': {
-          borderBottomLeftRadius: 8,
-          borderBottomRightRadius: 8,
+          borderBottomLeftRadius: theme.select.borderRadius,
+          borderBottomRightRadius: theme.select.borderRadius,
         },
       };
     },
     option: (provided: any, state: any) => {
       const backgroundColor = state.isSelected
-        ? THEMES.default.colors.lightGrey3
-        : THEMES.default.colors.white;
+        ? theme.select.optionBackgroundColorSelected
+        : theme.select.optionBackgroundColor;
 
       return {
         ...provided,
-        color: THEMES.default.colors.black,
+        color: state.isSelected
+          ? theme.select.optionTextColorSelected
+          : theme.select.optionTextColor,
         backgroundColor,
         padding: '12px 16px',
         cursor: 'pointer',
         display: 'inline-flex',
         ':hover': {
-          backgroundColor: THEMES.default.colors.lightGrey3,
+          color: theme.select.optionTextColorHover,
+          backgroundColor: theme.select.optionBackgroundColorHover,
         },
       };
     },
     control: (provided: any, state: any) => {
-      const borderColor =
-        state.isFocused && !isFilter
-          ? THEMES.default.colors.blue
-          : state.hasValue
-          ? THEMES.default.colors.lightGrey2
-          : theme.select.filterBorderColor;
+      let borderColor = theme.select.borderColor;
+
+      if (state.isFocused && !isFilter) {
+        borderColor = theme.select.borderColorHover;
+      } else if (state.hasValue) {
+        borderColor = theme.select.filterWithValueBorderColor;
+      } else if (isFilter) {
+        borderColor = theme.select.filterBorderColor;
+      }
 
       const getBackgroundColor = () => {
         if (isFilter) {
@@ -217,37 +225,39 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
           }
         } else {
           return state.hasValue || isFocused
-            ? THEMES.default.colors.white
-            : THEMES.default.colors.lightGrey3;
+            ? theme.select.withValueBackgroundColor
+            : theme.select.backgroundColor;
         }
       };
 
       const boxShadow =
         state.isFocused && !isFilter
-          ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
+          ? `0px 0px 0px 4px ${theme.select.borderShadowHover}33`
           : 'none';
 
       return {
         ...provided,
-        borderRadius: isFilter ? theme.select.filterBorderRadius : 8,
+        borderRadius: isFilter
+          ? theme.select.filterBorderRadius
+          : theme.select.borderRadius,
         borderColor,
         boxShadow,
         padding: 0,
         paddingLeft: leftIcon ? 10 : 0,
-        ':hover, :focus': {
+        ':hover, :focus, :active, :focus-within': {
           borderColor: !isFilter
-            ? THEMES.default.colors.blue
+            ? theme.select.borderColorHover
             : theme.select.filterBorderColorHover,
           boxShadow: !isFilter
-            ? `0px 0px 0px 4px ${THEMES.default.colors.blue}33`
+            ? `0px 0px 0px 4px ${theme.select.borderShadowHover}33`
             : 'none',
           backgroundColor: isFilter
             ? theme.select.filterBackgroundColorHover
-            : THEMES.default.colors.white,
+            : theme.select.backgroundColorHover,
           color: isFilter
             ? theme.select.filterTextColorHover
-            : THEMES.default.colors.black,
-          '*': {
+            : theme.select.textColorHover,
+          'svg, div': {
             color: isFilter && theme.select.filterTextColorHover,
           },
         },
@@ -260,11 +270,16 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         padding: 0,
         margin: 0,
         outline: 0,
-        color:
-          isFilter &&
-          (state.hasValue
+        color: isFilter
+          ? state.hasValue
             ? theme.select.filterWithValueTextColor
-            : theme.select.filterTextColor),
+            : theme.select.filterTextColor
+          : theme.select.textColor,
+        ':hover, :focus, :focus-within': {
+          color: isFilter
+            ? theme.select.filterTextColorHover
+            : theme.select.textColorHover,
+        },
       };
     },
     valueContainer: (provided: any) => {
@@ -276,9 +291,6 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         fontSize: theme.select.fontSize,
         fontWeight: theme.select.fontWeight,
         lineHeight: '24px',
-        ':hover': {
-          color: isFilter ? THEMES.default.colors.white : 'inherit',
-        },
         flexWrap: 'nowrap',
         overflow: 'auto',
         gap: '4px',
@@ -288,11 +300,11 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
       return {
         ...provided,
         ...(isDisabled ? {} : { cursor: 'pointer' }),
-        color:
-          isFilter &&
-          (state.hasValue
+        color: isFilter
+          ? state.hasValue
             ? theme.select.filterWithValueTextColor
-            : theme.select.filterTextColor),
+            : theme.select.filterTextColor
+          : theme.select.textColor,
         paddingRight: '16px',
       };
     },
@@ -373,7 +385,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Text
-              color={THEMES.default.colors.primary}
+              color={theme.select.creatableMessageTextColor}
               style={{ display: 'inline-block', flexShrink: 0 }}
             >
               Create new
@@ -382,7 +394,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
             <Tag>{inputValue}</Tag>
             &nbsp;
             <Text
-              color={THEMES.default.colors.primary}
+              color={theme.select.creatableMessageTextColor}
               style={{ display: 'inline-block', flexShrink: 0 }}
             >
               tag
@@ -439,7 +451,11 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
               />
             </CreateInputWrapper>
             <Box sx={{ padding: '16px 14px' }}>
-              <Text textSize="small" color={THEMES.default.colors.grey}>
+              {/* TODO add localization */}
+              <Text
+                textSize="small"
+                color={theme.select.creatableMessageTextColorSecondary}
+              >
                 Choose one of the options or create a new one
               </Text>
             </Box>
