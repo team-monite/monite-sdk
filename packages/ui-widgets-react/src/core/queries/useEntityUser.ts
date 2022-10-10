@@ -6,10 +6,10 @@ import { toast } from 'react-hot-toast';
 export const useEntityUserById = (id: string | undefined) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<EntityUserResponse, Error>(
+  return useQuery<EntityUserResponse | undefined, Error>(
     ['entity-user', { id }],
     () => {
-      return monite.api!.entityUser.getById(id || '');
+      return id ? monite.api!.entityUser.getById(id) : undefined;
     },
     {
       enabled: !!id,

@@ -319,7 +319,7 @@ const CounterpartsTable = ({
           }}
           onDelete={() => {
             selectedCounterpart &&
-              deleteCounterpartMutation.mutate(selectedCounterpart);
+              deleteCounterpartMutation.mutate(selectedCounterpart.id);
             setOpenDeleteDialogue(false);
             setSelectedCounterpart(undefined);
           }}
