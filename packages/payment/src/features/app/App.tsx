@@ -14,7 +14,7 @@ function App() {
   }, [location]);
 
   const monite = new MoniteApp({
-    apiKey: '',
+    token: '',
     locale: 'en',
   });
 

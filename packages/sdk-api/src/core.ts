@@ -1,7 +1,7 @@
 import ApiService from './api/ApiService';
 
 export type CoreConfig = {
-  apiKey: string;
+  token: string;
   locale?: string;
   entityId?: string;
 };
@@ -11,10 +11,10 @@ class Core {
 
   locale: string = 'en';
 
-  constructor({ locale, apiKey, entityId }: CoreConfig) {
+  constructor({ locale, token, entityId }: CoreConfig) {
     this.api = new ApiService({
       config: {
-        TOKEN: apiKey,
+        TOKEN: token,
         HEADERS: {
           'x-monite-entity-id': entityId || '',
         },

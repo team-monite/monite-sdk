@@ -42,7 +42,7 @@ const monite = new MoniteApp({
   // BUT how to get this token?
   // proposed solution is to retrieve this token on the backend side!
   // using the client id, client secret and user credentials (email, password) our Partner should be able to exchange these inputs for the active end-user API key
-  apiKey: '123',
+  token: '123',
 });
 
 const data = monite.api.counterparts.getList();
@@ -68,7 +68,7 @@ import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@
 
 const monite = new MoniteApp({
   // end-user API key
-  apiKey: '123',
+  token: '123',
 });
 
 <MoniteProvider monite={monite}>

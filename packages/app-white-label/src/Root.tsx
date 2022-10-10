@@ -8,7 +8,7 @@ import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
 
 const Root = () => {
   const monite = new MoniteApp({
-    apiKey:
+    token:
       store.auth.authUserToken ||
       localStorage.getItem(AUTH_TOKEN_STORAGE_KEY) ||
       '',
