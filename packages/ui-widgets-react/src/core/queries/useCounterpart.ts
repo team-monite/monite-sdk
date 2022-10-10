@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import {
   CounterpartBankAccount,
   CounterpartBankAccountResponse,
@@ -14,7 +14,7 @@ import {
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
 import { getName } from 'components/counterparts/helpers';
-import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/src/utils';
+import { useEntityCache, useEntityListCache } from './hooks';
 
 const COUNTERPARTS_QUERY = 'counterparts';
 const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
@@ -54,8 +54,10 @@ export const useCounterpartBankList = (counterpartId?: string) => {
 };
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { add } = useEntityListCache<CounterpartBankAccountResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -63,23 +65,7 @@ export const useCreateCounterpartBank = (counterpartId: string) => {
     CounterpartBankAccount
   >((bank) => monite.api.counterparts.createBankAccount(counterpartId, bank), {
     onSuccess: async (bank) => {
-      queryClient.setQueryData(
-        [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
-        bank
-      );
-
-      queryClient.setQueryData<
-        Updater<
-          CounterpartBankAccountResponse[],
-          CounterpartBankAccountResponse[]
-        >
-      >(
-        [COUNTERPARTS_BANKS_QUERY],
-        (banks: CounterpartBankAccountResponse[]) => [...banks, bank]
-      );
-
-      await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-
+      add(bank);
       toast.success('Bank was created');
     },
     onError: (error) => {
@@ -93,24 +79,21 @@ export const useCounterpartBankById = (
   bankId?: string
 ) => {
   const { monite } = useComponentsContext();
-  const queryClient = useQueryClient();
+  const { findById, update } =
+    useEntityListCache<CounterpartBankAccountResponse>(
+      COUNTERPARTS_BANKS_QUERY
+    );
 
   return useQuery<CounterpartBankAccountResponse | undefined, Error>(
     [COUNTERPARTS_BANKS_QUERY, { id: bankId }],
     () => {
       if (!bankId) return undefined;
 
-      const existedBank = queryClient
-        .getQueryData<CounterpartBankAccountResponse[]>(
-          COUNTERPARTS_BANKS_QUERY
-        )
-        ?.find((bank) => bank.id === bankId);
+      const existedBank = findById(bankId);
 
       if (existedBank) {
-        return queryClient.setQueryData(
-          [COUNTERPARTS_BANKS_QUERY, { id: existedBank.id }],
-          existedBank
-        );
+        update(existedBank);
+        return undefined;
       }
 
       return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
@@ -125,8 +108,10 @@ export const useCounterpartBankById = (
 };
 
 export const useUpdateCounterpartBank = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { update } = useEntityListCache<CounterpartBankAccountResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -137,24 +122,7 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
       monite.api.counterparts.updateBankAccount(counterpartId, bankId, payload),
     {
       onSuccess: async (bank) => {
-        queryClient.setQueryData<
-          Updater<
-            CounterpartBankAccountResponse[],
-            CounterpartBankAccountResponse[]
-          >
-        >(
-          [COUNTERPARTS_BANKS_QUERY],
-          (banks: CounterpartBankAccountResponse[]) =>
-            banks.map((oldBank) => (oldBank.id === bank.id ? bank : oldBank))
-        );
-
-        queryClient.setQueryData(
-          [COUNTERPARTS_BANKS_QUERY, { id: bank.id }],
-          bank
-        );
-
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-
+        update(bank);
         toast.success('Bank was updated');
       },
       onError: (error) => {
@@ -165,25 +133,17 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
 };
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { remove } = useEntityListCache<CounterpartBankAccountResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useMutation<void, Error, string>(
     (bankId) =>
       monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
     {
       onSuccess: (_, bankId) => {
-        queryClient.setQueryData<
-          Updater<
-            CounterpartBankAccountResponse[],
-            CounterpartBankAccountResponse[]
-          >
-        >(
-          [COUNTERPARTS_BANKS_QUERY],
-          (banks: CounterpartBankAccountResponse[]) =>
-            banks.filter((bank) => bank.id !== bankId)
-        );
-
+        remove(bankId);
         toast.success('Bank was deleted');
       },
       onError: (error) => {
@@ -212,8 +172,10 @@ export const useCounterpartContactList = (counterpartId?: string) => {
 };
 
 export const useCreateCounterpartContact = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { add } = useEntityListCache<CounterpartContactResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useMutation<
     CounterpartContactResponse,
@@ -223,20 +185,7 @@ export const useCreateCounterpartContact = (counterpartId: string) => {
     (contact) => monite.api.counterparts.createContact(counterpartId, contact),
     {
       onSuccess: async (contact) => {
-        queryClient.setQueryData(
-          [COUNTERPARTS_CONTACTS_QUERY, { id: contact.id }],
-          contact
-        );
-
-        queryClient.setQueryData<
-          Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
-        >(
-          [COUNTERPARTS_CONTACTS_QUERY],
-          (contacts: CounterpartContactResponse[]) => [...contacts, contact]
-        );
-
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-
+        add(contact);
         toast.success('Contact was created');
       },
       onError: (error) => {
@@ -251,22 +200,20 @@ export const useCounterpartContactById = (
   contactId?: string
 ) => {
   const { monite } = useComponentsContext();
-  const queryClient = useQueryClient();
+  const { findById, update } = useEntityListCache<CounterpartContactResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useQuery<CounterpartContactResponse | undefined, Error>(
     [COUNTERPARTS_CONTACTS_QUERY, { id: contactId }],
     () => {
       if (!contactId) return undefined;
 
-      const existedContact = queryClient
-        .getQueryData<CounterpartContactResponse[]>(COUNTERPARTS_CONTACTS_QUERY)
-        ?.find((contact) => contact.id === contactId);
+      const existedContact = findById(contactId);
 
       if (existedContact) {
-        return queryClient.setQueryData(
-          [COUNTERPARTS_CONTACTS_QUERY, { id: existedContact.id }],
-          existedContact
-        );
+        update(existedContact);
+        return undefined;
       }
 
       return monite.api.counterparts.getContactById(counterpartId, contactId);
@@ -281,8 +228,10 @@ export const useCounterpartContactById = (
 };
 
 export const useUpdateCounterpartContact = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { update } = useEntityListCache<CounterpartContactResponse>(
+    COUNTERPARTS_CONTACTS_QUERY
+  );
 
   return useMutation<
     CounterpartContactResponse,
@@ -293,23 +242,7 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
       monite.api.counterparts.updateContact(counterpartId, contactId, payload),
     {
       onSuccess: async (contact) => {
-        queryClient.setQueryData<
-          Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
-        >(
-          [COUNTERPARTS_CONTACTS_QUERY],
-          (contacts: CounterpartContactResponse[]) =>
-            contacts.map((oldContact) =>
-              oldContact.id === contact.id ? contact : oldContact
-            )
-        );
-
-        queryClient.setQueryData(
-          [COUNTERPARTS_CONTACTS_QUERY, { id: contact.id }],
-          contact
-        );
-
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-
+        update(contact);
         toast.success('Contact was updated');
       },
       onError: (error) => {
@@ -320,22 +253,17 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
 };
 
 export const useDeleteCounterpartContact = (counterpartId: string) => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { remove } = useEntityListCache<CounterpartContactResponse>(
+    COUNTERPARTS_CONTACTS_QUERY
+  );
 
   return useMutation<void, Error, string>(
     (contactId) =>
       monite.api.counterparts.deleteContact(counterpartId, contactId),
     {
       onSuccess: (_, contactId) => {
-        queryClient.setQueryData<
-          Updater<CounterpartContactResponse[], CounterpartContactResponse[]>
-        >(
-          [COUNTERPARTS_CONTACTS_QUERY],
-          (contacts: CounterpartContactResponse[]) =>
-            contacts.filter((contact) => contact.id !== contactId)
-        );
-
+        remove(contactId);
         toast.success('Contact was deleted');
       },
       onError: (error) => {
@@ -364,20 +292,17 @@ export const useCounterpartList = (
 };
 
 export const useCreateCounterpart = () => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } =
+    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { setEntity } = useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
 
   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>(
     (body) => monite.api.counterparts.create(body),
     {
       onSuccess: async (counterpart) => {
-        queryClient.setQueryData(
-          [COUNTERPARTS_QUERY, { id: counterpart.id }],
-          counterpart
-        );
-
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
-
+        setEntity(counterpart);
+        await invalidate();
         toast.success('Created');
       },
       onError: (error) => {
@@ -403,18 +328,17 @@ export const useCounterpartById = (id?: string) => {
 };
 
 export const useUpdateCounterpart = () => {
-  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } =
+    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { setEntity } = useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
 
   return useMutation<CounterpartResponse, Error, CounterpartUpdate>(
     ({ id, counterpart }) => monite.api.counterparts.update(id, counterpart),
     {
       onSuccess: async (counterpart) => {
-        queryClient.setQueryData(
-          [COUNTERPARTS_QUERY, { id: counterpart.id }],
-          counterpart
-        );
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
+        setEntity(counterpart);
+        await invalidate();
         toast.success('Updated');
       },
       onError: (error) => {
@@ -425,27 +349,36 @@ export const useUpdateCounterpart = () => {
 };
 
 export const useDeleteCounterpart = () => {
-  const queryClient = useQueryClient();
   const { monite, t } = useComponentsContext();
+  const { invalidate } =
+    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { getEntity, removeEntity } =
+    useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
 
-  return useMutation(
-    (counterpart: CounterpartResponse) =>
-      monite.api.counterparts.delete(counterpart.id),
+  return useMutation<void, Error, string, CounterpartResponse>(
+    (id) => monite.api.counterparts.delete(id),
     {
-      onSuccess: async (_, counterpart) => {
+      onMutate: (id) => getEntity(id),
+      onSuccess: async (_, id, counterpart) => {
         toast(
-          t('counterparts:confirmDialogue.successNotification', {
-            name: getName(counterpart),
-          })
+          counterpart
+            ? t('counterparts:confirmDialogue.successNotification', {
+                name: getName(counterpart),
+              })
+            : ''
         );
 
-        await queryClient.invalidateQueries([COUNTERPARTS_QUERY]);
+        removeEntity(id);
+
+        await invalidate();
       },
-      onError: (_, counterpart) => {
+      onError: (_, __, counterpart) => {
         toast.error(
-          t('counterparts:confirmDialogue.errorNotification', {
-            name: getName(counterpart),
-          })
+          counterpart
+            ? t('counterparts:confirmDialogue.errorNotification', {
+                name: getName(counterpart),
+              })
+            : ''
         );
       },
     }

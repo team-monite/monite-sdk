@@ -51,7 +51,7 @@ export default function useCounterpartView({
   const deleteCounterpart = useCallback(async () => {
     if (!counterpart) return;
 
-    return await counterpartDeleteMutation.mutateAsync(counterpart, {
+    return await counterpartDeleteMutation.mutateAsync(counterpart.id, {
       onSuccess: () => {
         onDelete && onDelete(counterpart.id);
       },
