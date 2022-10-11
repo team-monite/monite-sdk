@@ -1,30 +1,15 @@
 import { usePopper } from 'react-popper';
 import { useState } from 'react';
 
-type UseDropdownPopperProps = {
-  offsetOptions?: {
-    offset?: [number, number];
-  };
-};
-const useDropdownPopper = ({ offsetOptions }: UseDropdownPopperProps = {}) => {
+const useDropdownPopper = () => {
   const [shownDropdownMenu, toggleDropdownMenu] = useState<number | boolean>(
     false
   );
   const [referenceElement, setReferenceElement] = useState<any>(null);
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
+  const [popperElement, setPopperElement] = useState<any>(null);
 
-  const popper = usePopper(referenceElement, popperElement, {
-    placement: 'bottom-start',
-    modifiers: [
-      {
-        name: 'offset',
-        enabled: true,
-        options: {
-          offset: [0, 10],
-          ...(offsetOptions || {}),
-        },
-      },
-    ],
+  const popper = usePopper(referenceElement?.current, popperElement?.current, {
+    placement: 'bottom-end',
   });
 
   return {

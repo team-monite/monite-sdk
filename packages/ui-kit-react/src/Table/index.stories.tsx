@@ -11,7 +11,7 @@ const Story = {
 export default Story;
 
 export const DefaultTable = () => (
-  <div style={{ maxWidth: 500 }}>
+  <div>
     <Table
       columns={[
         {
@@ -24,7 +24,7 @@ export const DefaultTable = () => (
             <HeadCellSort
               isActive={false}
               title="Col2"
-              onChangeOrder={(order) => console.log(order)}
+              onChangeOrder={() => {}}
             />
           ),
           dataIndex: 'col2',
