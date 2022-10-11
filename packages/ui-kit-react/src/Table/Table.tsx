@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { default as RCTable } from 'rc-table';
 import { TableProps as RCTableProps } from 'rc-table/lib/Table';
 import styled from '@emotion/styled';
@@ -24,13 +24,28 @@ const SpinnerWrapper = styled.div`
   height: 100%;
   display: flex;
   background-color: rgba(255, 255, 255, 0.8);
+  z-index: 10;
 `;
 
 const StyledTable = styled(RCTable)`
+  height: 100%;
+
+  .rc-table,
+  .rc-table-content,
+  .rc-table-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rc-table-body {
+    flex: 1 1 0;
+  }
+
   table {
-    ${({ data }) => data?.length === 0 && 'height: 100%;'}
     border-collapse: collapse;
     width: 100%;
+    height: 100%;
     padding: 0;
     margin: 0;
   }
@@ -122,7 +137,12 @@ const DropdownToggler = styled(IconButton)`
   }
 `;
 
+const Popper = styled.div`
+  z-index: 10;
+`;
+
 const NoData = styled(Text)`
+  text-align: center;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -148,6 +168,14 @@ export const Table = ({
     popper,
   } = useDropdownPopper();
 
+  const referenceRef = useRef(null);
+  const popperRef = useRef(null);
+
+  useEffect(() => {
+    setReferenceElement(referenceRef);
+    setPopperElement(popperRef);
+  }, [referenceRef, popperRef]);
+
   return (
     <TableWrapper>
       {loading && (
@@ -166,60 +194,58 @@ export const Table = ({
                   title: '',
                   dataIndex: '',
                   key: 'operations',
-                  onCell: (value, index) => ({
-                    onClick(e) {
-                      if (e.target) {
-                        //@ts-ignore
-                        setReferenceElement(e.target.querySelector('button'));
-                      }
-                    },
-                  }),
                   render: (value, row, index) => {
                     // TODO move to separate component
                     return (
-                      <ActionsMenu>
-                        <Dropdown
-                          onClickOutside={() => {
-                            toggleDropdownMenu(false);
-                          }}
-                        >
-                          <DropdownToggler
-                            color="lightGrey1"
-                            onClick={(e: React.BaseSyntheticEvent) => {
-                              e.stopPropagation();
-                              toggleDropdownMenu((shown) =>
-                                !shown ? index : false
-                              );
-                            }}
-                          >
-                            <UEllipsisV width={20} height={20} />
-                          </DropdownToggler>
-                          {shownDropdownMenu === index && (
-                            <DropdownMenu
-                              innerRef={setPopperElement}
-                              style={popper.styles.popper}
-                              onClick={(e: React.BaseSyntheticEvent) => {
-                                e.stopPropagation();
+                      <>
+                        <div ref={referenceRef}>
+                          <ActionsMenu>
+                            <Dropdown
+                              onClickOutside={() => {
                                 toggleDropdownMenu(false);
                               }}
-                              {...popper.attributes.popper}
                             >
-                              {renderDropdownActions(value)}
-                            </DropdownMenu>
-                          )}
-                        </Dropdown>
-                      </ActionsMenu>
+                              <DropdownToggler
+                                color="lightGrey1"
+                                onClick={(e: React.BaseSyntheticEvent) => {
+                                  e.stopPropagation();
+                                  toggleDropdownMenu((shown) =>
+                                    !shown ? index : false
+                                  );
+                                  // @ts-ignore
+                                  popper.update();
+                                }}
+                              >
+                                <UEllipsisV width={20} height={20} />
+                              </DropdownToggler>
+                              <Popper
+                                ref={popperRef}
+                                style={popper.styles.popper}
+                                {...popper.attributes.popper}
+                              >
+                                {shownDropdownMenu === index && (
+                                  <DropdownMenu
+                                    style={popper.styles.offset}
+                                    onClick={(e: React.BaseSyntheticEvent) => {
+                                      e.stopPropagation();
+                                      toggleDropdownMenu(false);
+                                    }}
+                                  >
+                                    {renderDropdownActions(value)}
+                                  </DropdownMenu>
+                                )}
+                              </Popper>
+                            </Dropdown>
+                          </ActionsMenu>
+                        </div>
+                      </>
                     );
                   },
                 },
               ]
             : columns
         }
-        emptyText={
-          <NoData textSize="h2" align="center">
-            No Data
-          </NoData>
-        }
+        emptyText={<NoData textSize="h2">No Data</NoData>}
         {...restProps}
       />
     </TableWrapper>
