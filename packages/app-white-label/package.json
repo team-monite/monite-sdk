@@ -5,7 +5,7 @@
   "dependencies": {
     "@craco/craco": "^6.4.3",
     "@hookform/resolvers": "~2.9.3",
-    "@team-monite/ui-widgets-react": "^0.0.3",
+    "@team-monite/ui-widgets-react": "^0.0.4",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",

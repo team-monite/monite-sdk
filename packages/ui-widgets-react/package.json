@@ -1,6 +1,6 @@
 {
   "name": "@team-monite/ui-widgets-react",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publishConfig": {
     "access": "public"
   },
@@ -23,8 +23,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@team-monite/sdk-api": "^0.0.4",
-    "@team-monite/ui-kit-react": "^0.0.3",
+    "@team-monite/sdk-api": "^0.0.6",
+    "@team-monite/ui-kit-react": "^0.0.4",
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
     "@tanstack/react-query-devtools": "~4.2.3",
