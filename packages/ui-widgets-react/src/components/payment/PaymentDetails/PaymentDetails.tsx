@@ -1,10 +1,10 @@
 import React from 'react';
 
 import {
-  Spinner,
   Card,
   Text,
   Flex,
+  IconButton,
   Button,
   useModal,
   FileViewer,
@@ -18,13 +18,9 @@ import { useTranslation } from 'react-i18next';
 
 import { formatDate } from 'core/utils';
 
-import {
-  StyledInfoTable,
-  StyledLoading,
-} from '../../payables/PayableDetails/PayableDetailsStyle';
+import { StyledInfoTable } from '../../payables/PayableDetails/PayableDetailsStyle';
 import usePaymentDetails, { UsePayableDetailsProps } from './usePaymentDetails';
 import PaymentDetailsRow from './PaymentDetailsRow';
-import IconButton from '@team-monite/ui-kit-react/src/IconButton';
 
 const StyledCard = styled(Card)`
   position: relative;
@@ -47,21 +43,11 @@ const StyledAction = styled(Flex)`
 const PaymentDetails = (props: UsePayableDetailsProps) => {
   const { t } = useTranslation();
   const { show, hide, isOpen } = useModal();
-  const { recipient, amount, paymentReference, invoice, isLoading, error } =
+  const { recipient, amount, paymentReference, invoice } =
     usePaymentDetails(props);
-
-  if (error) {
-    return <>{error?.message}</>;
-  }
 
   return (
     <StyledCard shadow>
-      {isLoading && (
-        <StyledLoading>
-          <Spinner color={'primary'} pxSize={45} />
-        </StyledLoading>
-      )}
-
       {isOpen && invoice && (
         <Modal>
           <ModalLayout fullHeight size={'md'}>
@@ -71,8 +57,9 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
                   <UMultiply size={18} />
                 </IconButton>
               }
-              url={invoice.file_url}
-              mimetype={'application/pdf'}
+              name={invoice.file.name}
+              url={invoice.file.url}
+              mimetype={invoice.file.mimetype}
             />
           </ModalLayout>
         </Modal>
@@ -90,7 +77,7 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
             download
             target={'_blank'}
             variant={'contained'}
-            href={invoice.file_url}
+            href={invoice.file.url}
             color={'secondary'}
           >
             {t('payment:actions.downloadInvoice')}

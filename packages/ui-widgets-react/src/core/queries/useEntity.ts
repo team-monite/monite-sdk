@@ -8,9 +8,7 @@ export const useEntityById = (id: string | undefined) => {
 
   return useQuery<EntityResponse | undefined, Error>(
     ['entity', { id }],
-    () => {
-      return id ? monite.api!.entity.getById(id) : undefined;
-    },
+    () => (id ? monite.api.entity.getById(id) : undefined),
     {
       enabled: !!id,
       onError: (error) => {
