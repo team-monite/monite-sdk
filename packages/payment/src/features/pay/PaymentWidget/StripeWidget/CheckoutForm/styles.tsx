@@ -12,6 +12,7 @@ export const Prices = styled.div`
   }
 `;
 
+// TODO how it works? :-)
 export const PriceRow = styled.div<{ total?: boolean }>(
   ({ total }) => `
   display: flex;

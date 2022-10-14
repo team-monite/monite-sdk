@@ -14,7 +14,7 @@ import {
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import { getName } from '../../helpers';
+import { getCounterpartName } from '../../helpers';
 
 import {
   CounterpartFooter,
@@ -56,7 +56,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           <Header>
             <CounterpartEntityTitle>
               <Text textSize={'bold'} color={'#B8B8B8'}>
-                {getName(counterpart)}
+                {getCounterpartName(counterpart)}
               </Text>
               <UArrowRight size={20} color={'#B8B8B8'} />
               <Text textSize={'bold'}>

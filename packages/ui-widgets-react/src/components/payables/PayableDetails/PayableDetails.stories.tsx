@@ -7,7 +7,7 @@ const Story = {
 
 export default Story;
 
-export const DefaultForm = () => (
+export const Default = () => (
   <PayableDetails
     id={'c987a274-e361-46da-a815-eda5f6905caa'}
     onClose={() => {

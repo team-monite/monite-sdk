@@ -10,6 +10,7 @@ import PayablesService from './services/PayableService';
 import RoleService from './services/RoleService';
 import TagService from './services/TagService';
 import EntityUserService from './services/EntityUserService';
+import EntityService from './services/EntityService';
 
 const isLocalhost = (url: string) =>
   url.includes('localhost') || url.includes('127.0.0.1');
@@ -31,6 +32,7 @@ class ApiService {
   workflows: WorkflowsService;
   payment: PaymentService;
   entityUser: EntityUserService;
+  entity: EntityService;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
     this.openapiConfig = config;
@@ -44,6 +46,7 @@ class ApiService {
     this.role = new RoleService({ config });
     this.workflows = new WorkflowsService({ config });
     this.entityUser = new EntityUserService({ config });
+    this.entity = new EntityService({ config });
     this.payment = new PaymentService({
       config: {
         ...config,

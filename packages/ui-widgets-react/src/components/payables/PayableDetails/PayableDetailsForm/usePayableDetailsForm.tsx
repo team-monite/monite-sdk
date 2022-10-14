@@ -7,7 +7,7 @@ import {
 import { useUpdatePayableById } from 'core/queries/usePayable';
 import { useCreateTag, useTagList } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';
-import { useEntityUserById } from 'core/queries/useEntityUser';
+import { useEntityById } from 'core/queries/useEntity';
 
 import { MONITE_ENTITY_ID } from '../../../../constants';
 
@@ -24,7 +24,7 @@ export default function usePayableDetailsForm({
 }: UsePayableDetailsFormProps) {
   const tagQuery = useTagList();
   const counterpartQuery = useCounterpartList(MONITE_ENTITY_ID);
-  const entityUserQuery = useEntityUserById(payable.was_created_by_user_id);
+  const entityUserQuery = useEntityById(payable.was_created_by_user_id);
   const payableSaveMutation = useUpdatePayableById(payable.id);
   const tagCreateMutation = useCreateTag(payable.id);
 

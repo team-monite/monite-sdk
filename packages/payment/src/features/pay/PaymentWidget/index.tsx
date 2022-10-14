@@ -29,19 +29,21 @@ type PaymentWidgetProps = {
 const PaymentWidget = (props: PaymentWidgetProps) => {
   const { paymentData } = props;
   const paymentMethods = paymentData?.payment_methods || [];
+  const paymentIntents = paymentData?.payment_intents || [];
 
-  const stripeCardData = paymentData?.payment_intents?.find(
-    (elem: PaymentsPaymentsPaymentIntent) =>
-      elem.provider === 'stripe' && elem.payment_method.includes('card')
+  const stripeCardData = paymentIntents?.find(
+    (intent: PaymentsPaymentsPaymentIntent) =>
+      intent.provider === 'stripe' &&
+      intent.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
   );
 
-  const stripeOthersData = paymentData?.payment_intents?.find(
-    (elem: PaymentsPaymentsPaymentIntent) =>
-      elem.provider === 'stripe' &&
-      !elem.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
+  const stripeOthersData = paymentIntents?.find(
+    (intent: PaymentsPaymentsPaymentIntent) =>
+      intent.provider === 'stripe' &&
+      !intent.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
   );
+
   const { search } = useLocation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,11 +64,13 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     ) {
       navigate(`other${search}`, { replace: true });
     }
+    // TODO enable linter
     // eslint-disable-next-line
   }, []);
 
   return (
-    <Card shadow p="32px" className={styles.card}>
+    // TODO use emotion
+    <Card shadow p={32} className={styles.card}>
       <Routes>
         <Route
           path="/"
@@ -106,6 +110,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         />
         <Route
           path={ROUTES.bank}
+          // TODO How it works? :-)
+          // if I understand correctly YapilyWidget expects receivableData instead of paymentData
           //@ts-ignore
           element={<YapilyWidget {...props} paymentData={paymentData} />}
         />

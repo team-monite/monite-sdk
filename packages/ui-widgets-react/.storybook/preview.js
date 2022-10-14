@@ -16,9 +16,10 @@ export const decorators = [
   (Story) => {
     const monite = new MoniteApp({
       locale: 'en',
-      entityId: 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
+      entityId: '805622a2-3926-4eae-92ec-3d9bd375cfa9',
+      apiUrl: 'https://api.dev.monite.com/v1',
       token:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImNsaWVudF9pZCI6ImQ0ZmM5M2MzLWRhZjctNDQ0Yi04YzNiLTZhOWU2MmJmN2FhMyIsImNyZWF0ZWRfYXQiOiIyMDIyLTA5LTA5VDA4OjI1OjE1Ljc5NDE0NiJ9LCJleHAiOjE2NjI3MTM3MTV9.liueD5GpAXRvCvTZrUrryxnI66SdxrtllzY6hapCAPA',
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImNsaWVudF9pZCI6IjU5YTIzMGUyLWRjMzctNGNmMC04Njk3LTNiMDBhMjM3NTY0MSIsImNyZWF0ZWRfYXQiOiIyMDIyLTA5LTE1VDE2OjEyOjAzLjAwMjQ4NiJ9LCJleHAiOjE2NjMyNjAxMjN9.VsazsTnL3IelhSJGrIHuVqSJVhDM5NXjBJGpu0lkRSI',
     });
 
     return (

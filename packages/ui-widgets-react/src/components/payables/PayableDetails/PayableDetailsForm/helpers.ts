@@ -5,7 +5,7 @@ import {
   PayableUpdateSchema,
   TagReadSchema,
 } from '@team-monite/sdk-api';
-import { convertToMajorUnits, convertToMinorUnits } from 'core/utils';
+import { formatFromMinorUnits, formatToMinorUnits } from 'core/utils';
 import {
   getIndividualName,
   isIndividualCounterpart,
@@ -81,7 +81,7 @@ export const prepareDefaultValues = ({
   invoiceDate: issued_at ?? '',
   suggestedPaymentDate: suggested_payment_term?.date ?? '',
   dueDate: due_date ?? '',
-  total: convertToMajorUnits(amount ?? 0, currency ?? CurrencyEnum.EUR),
+  total: formatFromMinorUnits(amount ?? 0, currency ?? CurrencyEnum.EUR),
   tags: tagsToSelect(tags),
   iban: counterpart_account_id ?? '',
   bic: counterpart_bank_id ?? '',
@@ -99,7 +99,7 @@ export const prepareSubmit = ({
   tags,
 }: PayableDetailsFormFields): PayableUpdateSchema => ({
   currency,
-  amount: convertToMinorUnits(total, currency),
+  amount: formatToMinorUnits(total, currency),
   due_date: dateToString(dueDate),
   suggested_payment_term: {
     date: dateToString(suggestedPaymentDate),

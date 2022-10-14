@@ -9,13 +9,13 @@ import {
   Button,
   UCheckSquare,
   UExclamationTriangle,
+  getReadableAmount,
 } from '@team-monite/ui-widgets-react';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import Layout from '../Layout';
-import { formatAmountFromMinor } from '../consts';
 import { RecipientType } from '../types';
 
 enum StripeResultStatuses {
@@ -120,11 +120,6 @@ export const PaymentResultPage = () => {
     }
   };
 
-  const formatter = new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: currency || 'EUR',
-  });
-
   return (
     <Layout>
       <Flex justifyContent="center">
@@ -167,9 +162,7 @@ export const PaymentResultPage = () => {
                     </Box>
                     <Box width={2 / 3}>
                       <Text textSize="bold" color={theme.colors.black}>
-                        {formatter.format(
-                          formatAmountFromMinor(amount, currency)
-                        )}
+                        {getReadableAmount(amount, currency)}
                       </Text>
                     </Box>
                   </Flex>

@@ -31,7 +31,7 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import ConfirmDeleteDialogue from '../ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
-import { getName } from '../helpers';
+import { getCounterpartName } from '../helpers';
 import {
   Sort,
   Filters,
@@ -324,7 +324,9 @@ const CounterpartsTable = ({
             setSelectedCounterpart(undefined);
           }}
           type={t('counterparts:titles.counterpart')}
-          name={selectedCounterpart ? getName(selectedCounterpart) : ''}
+          name={
+            selectedCounterpart ? getCounterpartName(selectedCounterpart) : ''
+          }
         />
       )}
     </>

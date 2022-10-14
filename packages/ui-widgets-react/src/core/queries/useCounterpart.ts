@@ -13,7 +13,7 @@ import {
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
-import { getName } from 'components/counterparts/helpers';
+import { getCounterpartName } from 'components/counterparts/helpers';
 import { useEntityCache, useEntityListCache } from './hooks';
 
 const COUNTERPARTS_QUERY = 'counterparts';
@@ -363,7 +363,7 @@ export const useDeleteCounterpart = () => {
         toast(
           counterpart
             ? t('counterparts:confirmDialogue.successNotification', {
-                name: getName(counterpart),
+                name: getCounterpartName(counterpart),
               })
             : ''
         );
@@ -376,7 +376,7 @@ export const useDeleteCounterpart = () => {
         toast.error(
           counterpart
             ? t('counterparts:confirmDialogue.errorNotification', {
-                name: getName(counterpart),
+                name: getCounterpartName(counterpart),
               })
             : ''
         );

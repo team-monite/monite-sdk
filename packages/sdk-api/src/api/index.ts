@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export type { PaymentsRecipientEnum } from './models/PaymentsRecipientEnum';
 export type { AccessTokenResponse } from './models/AccessTokenResponse';
 export type { Account } from './models/Account';
 export type { AccountIdentification } from './models/AccountIdentification';

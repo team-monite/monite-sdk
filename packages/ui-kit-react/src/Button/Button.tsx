@@ -190,7 +190,7 @@ const getHover = ({
     if ($color === 'primary') {
       return `
         &:hover {
-          color: ${primaryDarker}
+          color: ${primaryDarker};
         }
       `;
     }
@@ -198,7 +198,7 @@ const getHover = ({
     if ($color === 'danger') {
       return `
         &:hover {
-          color: ${dangerDarker}
+          color: ${dangerDarker};
         }
       `;
     }
