@@ -23,33 +23,41 @@ const CURRENCY_LIST: Readonly<Record<CurrencyEnum, string>> = {
   ZAR: 'R',
 };
 
+function isSpecificCurrency(currency: CurrencyEnum): boolean {
+  return currency === CurrencyEnum.JPY || currency === CurrencyEnum.SEK;
+}
+
 export function getSymbolFromCurrency(currency: CurrencyEnum): string {
   if (!CURRENCY_LIST[currency]) return currency;
   return CURRENCY_LIST[currency];
 }
 
-export function convertToMajorUnits(
+export function formatFromMinorUnits(
   amount: number,
   currency: CurrencyEnum
 ): number {
-  if (currency === CurrencyEnum.JPY) return amount;
+  if (isSpecificCurrency(currency)) return amount;
   return Number((amount / 100).toFixed(2));
 }
 
-export function convertToMinorUnits(
+export function formatToMinorUnits(
   amount: string | number,
   currency: CurrencyEnum
 ): number {
-  if (currency === CurrencyEnum.JPY) return Number(amount);
+  if (isSpecificCurrency(currency)) return Number(amount);
   return Number(amount) * 100;
 }
 
 export function getReadableAmount(
   amount: string | number,
-  currency: CurrencyEnum
+  currency: string
 ): string {
-  return `${convertToMajorUnits(
-    Number(amount),
-    currency
-  )} ${getSymbolFromCurrency(currency)}`;
+  const formatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency,
+  });
+
+  return formatter.format(
+    formatFromMinorUnits(Number(amount), `${currency}` as CurrencyEnum)
+  );
 }

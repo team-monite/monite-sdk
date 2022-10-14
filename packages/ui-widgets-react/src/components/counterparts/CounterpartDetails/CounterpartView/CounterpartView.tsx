@@ -4,6 +4,7 @@ import {
   Header,
   IconButton,
   ModalLayout,
+  useModal,
   Text,
   UMultiply,
   UPen,
@@ -14,7 +15,7 @@ import {
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import {
-  getName,
+  getCounterpartName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '../../helpers';
@@ -32,9 +33,7 @@ import CounterpartIndividualView from './CounterpartIndividualView';
 import CounterpartContactView from './CounterpartContactView';
 import CounterpartBankView from './CounterpartBankView';
 import useCounterpartView, { CounterpartViewProps } from './useCounterpartView';
-import ConfirmDeleteDialogue, {
-  useConfirmDeleteDialogue,
-} from '../../ConfirmDeleteDialogue';
+import ConfirmDeleteDialogue from '../../ConfirmDeleteDialogue';
 
 const CounterpartView = (props: CounterpartViewProps) => {
   const { t } = useComponentsContext();
@@ -48,13 +47,12 @@ const CounterpartView = (props: CounterpartViewProps) => {
     onEdit,
   } = useCounterpartView(props);
 
-  const { showDialogue, hideDialogue, isDialogueOpen } =
-    useConfirmDeleteDialogue();
+  const { show, hide, isOpen } = useModal();
 
   const renderTitle = (): string => {
     if (isLoading) return t('counterparts:actions.loading');
     if (counterpartError) return counterpartError.message;
-    if (counterpart) return getName(counterpart);
+    if (counterpart) return getCounterpartName(counterpart);
     return '';
   };
 
@@ -79,13 +77,13 @@ const CounterpartView = (props: CounterpartViewProps) => {
       }
     >
       <CounterpartDetailsBlock sx={{ gap: '32px !important', padding: 24 }}>
-        {counterpart && isDialogueOpen && (
+        {counterpart && isOpen && (
           <ConfirmDeleteDialogue
             isLoading={isLoading}
-            onClose={hideDialogue}
+            onClose={hide}
             onDelete={deleteCounterpart}
             type={t('counterparts:titles.counterpart')}
-            name={getName(counterpart)}
+            name={getCounterpartName(counterpart)}
           />
         )}
 
@@ -102,7 +100,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
                   {t('counterparts:actions.edit')}
                 </Button>
                 <Button
-                  onClick={showDialogue}
+                  onClick={show}
                   size={'sm'}
                   variant={'text'}
                   color={'danger'}
@@ -132,7 +130,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
                   {t('counterparts:actions.edit')}
                 </Button>
                 <Button
-                  onClick={showDialogue}
+                  onClick={show}
                   size={'sm'}
                   variant={'text'}
                   color={'danger'}

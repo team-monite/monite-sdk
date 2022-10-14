@@ -3,7 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 import { Flex, Box } from '@team-monite/ui-kit-react';
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import {
+  useComponentsContext,
+  PaymentDetails,
+} from '@team-monite/ui-widgets-react';
 import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
 import { ROUTES, fromBase64 } from 'features/app/consts';
@@ -66,11 +69,17 @@ const PaymentPage = () => {
     }
   }, [paymentData, navigate, rawPaymentData]);
 
+  console.log(paymentData);
+  // PaymentsPaymentLinkResponse
+
   return (
     <Layout>
       <Helmet title={`Pay invoice ${linkData?.id || ''}`} />
-      <Flex justifyContent="center">
-        <Box width={600} p={4} pt={80}>
+      <Flex p={32} sx={{ gap: 32 }} justifyContent="space-between">
+        <Box width={'50%'}>
+          {paymentData && <PaymentDetails payment={paymentData} />}
+        </Box>
+        <Box width={'50%'}>
           {paymentData && <PaymentWidget paymentData={paymentData} />}
         </Box>
       </Flex>

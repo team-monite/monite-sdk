@@ -26,6 +26,8 @@ type YapilyFormProps = {
 const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
   const { monite } = useComponentsContext();
 
+  // TODO use react-query
+
   const [selectedCountry, setSelectedCountry] = useState(
     PaymentsYapilyCountriesCoverageCodes.DE
   );

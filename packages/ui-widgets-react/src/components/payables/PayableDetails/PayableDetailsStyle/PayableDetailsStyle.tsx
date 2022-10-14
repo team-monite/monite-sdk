@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
-import { Box, Flex, FormField, Text } from '@team-monite/ui-kit-react';
+import {
+  Box,
+  Flex,
+  FormField,
+  Text,
+  TextProps,
+} from '@team-monite/ui-kit-react';
 
 export const FormItem = styled(FormField)`
   margin-bottom: 24px;
@@ -101,9 +107,9 @@ export const StyledInfoRow = styled(Box)`
   }
 `;
 
-export const StyledInfoLabel = styled(Text)`
+export const StyledInfoLabel = styled(Text)<TextProps>`
   width: 50%;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme, $color }) => ($color ? $color : theme.colors.black)};
 `;
 
 export const StyledInfoValue = styled(Text)`

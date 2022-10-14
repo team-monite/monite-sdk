@@ -1,6 +1,6 @@
 {
   "name": "@monite/payment",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "start": "craco start",
@@ -31,7 +31,7 @@
     ]
   },
   "dependencies": {
-    "@team-monite/ui-widgets-react": "^0.0.4",
+    "@team-monite/ui-widgets-react": "^0.0.5",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",

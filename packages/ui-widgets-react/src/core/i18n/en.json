@@ -37,6 +37,16 @@
     "noApprovalRequired": "No approval required"
   },
   "payment": {
+    "details": {
+      "paymentReference": "Payment reference",
+      "recipient": "Recipient",
+      "issueDate": "Issue Date",
+      "dueDate": "Due Date"
+    },
+    "actions": {
+      "viewInvoice": "View Invoice",
+      "downloadInvoice": "Download Invoice"
+    },
     "widget": {
       "method": "Payment method",
       "amount": "Invoice amount",

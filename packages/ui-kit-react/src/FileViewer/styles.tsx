@@ -11,4 +11,5 @@ export const ControlPanel = styled(Flex)<{ isPdf: boolean }>`
 export const StyledScroll = styled.div`
   width: 100%;
   overflow: auto;
+  height: 100%;
 `;

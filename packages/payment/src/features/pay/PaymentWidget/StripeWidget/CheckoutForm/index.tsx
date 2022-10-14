@@ -106,7 +106,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
       } else {
         setMessage('An unexpected error occurred.');
       }
-    } catch (e: any) {
+    } catch (e) {
       setMessage('An unexpected error occurred.');
     }
     setIsLoading(false);
@@ -119,13 +119,15 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
 
   const formattedFromMinorAmount = formatAmountFromMinor(amount, currency);
 
+  // TODO why is the form used instead of div?
+
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <div>
         <PaymentElement
-          onChange={(value) => {
-            setPaymentMethod(value.value.type as PaymentsPaymentMethodsEnum);
-            handleChangeFee(value.value.type as PaymentsPaymentMethodsEnum);
+          onChange={(e) => {
+            setPaymentMethod(e.value.type as PaymentsPaymentMethodsEnum);
+            handleChangeFee(e.value.type as PaymentsPaymentMethodsEnum);
           }}
         />
       </div>
@@ -149,6 +151,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
+              // TODO use ui-widgets-react/src/core/utils/currency.ts
               percent: ((fee * 100.0) / formattedFromMinorAmount).toFixed(2),
             })}
           </Alert>

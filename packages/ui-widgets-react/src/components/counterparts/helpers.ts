@@ -21,7 +21,7 @@ export function getIndividualName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
 }
 
-export function getName(counterpart: CounterpartResponse): string {
+export function getCounterpartName(counterpart: CounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
     const {
       individual: { first_name, last_name },

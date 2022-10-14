@@ -21,12 +21,12 @@ export const usePayable = (
   );
 };
 
-export const usePayableById = (id: string) => {
+export const usePayableById = (id?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<PayableResponseSchema, Error>(
+  return useQuery<PayableResponseSchema | undefined, Error>(
     [PAYABLE_QUERY_ID, { id }],
-    () => monite.api!.payable.getById(id),
+    () => (id ? monite.api!.payable.getById(id) : undefined),
     {
       onError: (error) => {
         toast.error(error.message);

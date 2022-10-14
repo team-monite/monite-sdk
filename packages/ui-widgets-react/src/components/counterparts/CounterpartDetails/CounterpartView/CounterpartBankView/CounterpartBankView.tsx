@@ -5,12 +5,11 @@ import {
   Button,
   UPen,
   UTrashAlt,
+  useModal,
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
-import ConfirmDeleteDialogue, {
-  useConfirmDeleteDialogue,
-} from '../../../ConfirmDeleteDialogue';
+import ConfirmDeleteDialogue from '../../../ConfirmDeleteDialogue';
 
 import { CounterpartContainer } from '../../styles';
 
@@ -22,8 +21,7 @@ const CounterpartBankView = (props: CounterpartBankViewProps) => {
   const { t } = useComponentsContext();
   const { deleteBank, onEdit, isLoading } = useCounterpartBankView(props);
 
-  const { showDialogue, hideDialogue, isDialogueOpen } =
-    useConfirmDeleteDialogue();
+  const { show, hide, isOpen } = useModal();
 
   const {
     bank: { name, bic, iban },
@@ -42,7 +40,7 @@ const CounterpartBankView = (props: CounterpartBankViewProps) => {
             {t('counterparts:actions.edit')}
           </Button>
           <Button
-            onClick={showDialogue}
+            onClick={show}
             size={'sm'}
             variant={'text'}
             color={'danger'}
@@ -59,10 +57,10 @@ const CounterpartBankView = (props: CounterpartBankViewProps) => {
         {iban && <LabelText label={t('counterparts:bank.iban')} text={iban} />}
       </CounterpartContainer>
 
-      {isDialogueOpen && (
+      {isOpen && (
         <ConfirmDeleteDialogue
           isLoading={isLoading}
-          onClose={hideDialogue}
+          onClose={hide}
           onDelete={deleteBank}
           type={t('counterparts:titles.bank')}
           name={name ? name : ''}

@@ -11,6 +11,7 @@ export type ModalLayoutProps = {
   loading?: React.ReactNode;
   size?: ModalLayoutSize;
   fullScreen?: boolean;
+  fullHeight?: boolean;
   isDrawer?: boolean;
   scrollableContent?: boolean;
 };
@@ -18,6 +19,7 @@ export type ModalLayoutProps = {
 type StyledModalLayoutProps = {
   $size?: ModalLayoutSize;
   $fullScreen?: boolean;
+  $fullHeight?: boolean;
   $isDrawer?: boolean;
 };
 
@@ -32,8 +34,18 @@ const getWidth = ({ $size = 'sm', $fullScreen }: StyledModalLayoutProps) => {
   return '';
 };
 
-const getHeight = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
-  if ($fullScreen || $isDrawer) return 'height: 100%;';
+const getHeight = ({
+  $fullScreen,
+  $isDrawer,
+  $fullHeight,
+}: StyledModalLayoutProps) => {
+  if ($fullScreen || $isDrawer || $fullHeight) return 'height: 100%;';
+
+  return '';
+};
+
+const getMaxHeight = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
+  if ($fullScreen || $isDrawer) return '';
 
   return 'max-height: calc(100% - 64px);';
 };
@@ -50,10 +62,11 @@ const getBoxStyles = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
   return `
     box-shadow: 0 8px 12px 0 #1111111f;
     border-radius: 8px;
+    overflow: hidden;
   `;
 };
 
-const StyledWrap = styled.div<StyledModalLayoutProps>`
+const StyledWrap = styled(Box)<StyledModalLayoutProps>`
   background-color: ${({ theme }) => theme.colors.white};
   position: relative;
   display: flex;
@@ -62,6 +75,7 @@ const StyledWrap = styled.div<StyledModalLayoutProps>`
 
   ${getWidth}
   ${getHeight}
+  ${getMaxHeight}
   ${getMargin}
   ${getBoxStyles}
 `;
@@ -104,11 +118,17 @@ const ModalLayout = ({
   loading,
   size,
   fullScreen,
+  fullHeight,
   isDrawer,
   scrollableContent,
 }: ModalLayoutProps) => {
   return (
-    <StyledWrap $size={size} $fullScreen={fullScreen} $isDrawer={isDrawer}>
+    <StyledWrap
+      $size={size}
+      $fullScreen={fullScreen}
+      $fullHeight={fullHeight}
+      $isDrawer={isDrawer}
+    >
       {header && <StyledModalLayoutHeader>{header}</StyledModalLayoutHeader>}
       <StyledModalLayoutContent>
         {scrollableContent ? (

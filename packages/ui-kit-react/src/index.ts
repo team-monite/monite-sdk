@@ -21,7 +21,7 @@ export { default as Select } from './Select';
 export { default as Checkbox } from './Checkbox';
 export { default as List } from './List';
 export { default as ListItem } from './ListItem';
-export { Modal, ModalLayout } from './Modal';
+export * from './Modal';
 export { default as Header } from './Header';
 export { default as Multiselect } from './Multiselect';
 export { default as Tooltip } from './Tooltip';

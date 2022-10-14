@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Document, Page } from 'react-pdf';
 
 import {
@@ -36,9 +36,10 @@ export interface FileViewerProps {
   url: any;
   mimetype: string;
   name?: string;
+  rightIcon?: ReactNode;
 }
 
-const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
+const FileViewer = ({ url, mimetype, name, rightIcon }: FileViewerProps) => {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
@@ -114,6 +115,8 @@ const FileViewer = ({ url, mimetype, name }: FileViewerProps) => {
           <IconButton color={'black'} target={'_blank'} href={url} download>
             <UFileDownload width={24} height={24} color="black" />
           </IconButton>
+
+          {rightIcon}
         </Flex>
       </ControlPanel>
 

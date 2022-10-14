@@ -5,15 +5,14 @@ import {
   Button,
   UPen,
   UTrashAlt,
+  useModal,
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { printAddress } from '../../CounterpartAddressForm';
 import { getIndividualName } from '../../../helpers';
 import { CounterpartContainer } from '../../styles';
 
-import ConfirmDeleteDialogue, {
-  useConfirmDeleteDialogue,
-} from '../../../ConfirmDeleteDialogue';
+import ConfirmDeleteDialogue from '../../../ConfirmDeleteDialogue';
 
 import { prepareCounterpartContact } from '../../CounterpartContactForm';
 
@@ -24,6 +23,8 @@ import {
 
 const CounterpartContactView = (props: CounterpartContactViewProps) => {
   const { t } = useComponentsContext();
+
+  const { show, hide, isOpen } = useModal();
 
   const {
     firstName,
@@ -37,9 +38,6 @@ const CounterpartContactView = (props: CounterpartContactViewProps) => {
     country,
     state,
   } = prepareCounterpartContact(props.contact);
-
-  const { showDialogue, hideDialogue, isDialogueOpen } =
-    useConfirmDeleteDialogue();
 
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
 
@@ -56,7 +54,7 @@ const CounterpartContactView = (props: CounterpartContactViewProps) => {
             {t('counterparts:actions.edit')}
           </Button>
           <Button
-            onClick={showDialogue}
+            onClick={show}
             size={'sm'}
             variant={'text'}
             color={'danger'}
@@ -91,10 +89,10 @@ const CounterpartContactView = (props: CounterpartContactViewProps) => {
         )}
       </CounterpartContainer>
 
-      {isDialogueOpen && (
+      {isOpen && (
         <ConfirmDeleteDialogue
           isLoading={isLoading}
-          onClose={hideDialogue}
+          onClose={hide}
           onDelete={deleteContact}
           type={t('counterparts:titles.contact')}
           name={getIndividualName(firstName, lastName)}
