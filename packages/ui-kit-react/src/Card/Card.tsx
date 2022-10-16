@@ -12,22 +12,27 @@ type CardProps = {
 } & BoxProps;
 
 const CardRoot = styled(Box)<CardProps>`
-  ${({ shadow }) =>
+  font-family: ${({ theme }) => theme.card.fontFamily};
+  font-size: ${({ theme }) => theme.card.fontSize};
+  font-weight: ${({ theme }) => theme.card.fontWeight};
+
+  background-color: ${({ theme }) => theme.card.backgroundColor};
+
+  ${({ shadow, theme }) =>
     shadow
       ? `
-        box-shadow: 0 4px 8px 0 #1111110f;
-        background: white;
-        border-radius: 8px;
+        box-shadow: 0 4px 8px 0 ${theme.card.borderColorShadow}0f;
+        border-radius: ${theme.card.borderRadiusShadow};
   `
       : `
-        border: 1px solid #dddddd;
-        border-radius: 17px;
+        border: 1px solid ${theme.card.borderColor};
+        border-radius: ${theme.card.borderRadius};
   `};
 `;
 
 const Actions = styled(Flex)`
   padding: 0 24px;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid ${({ theme }) => theme.card.borderColor};
   height: 64px;
   align-items: center;
   gap: 24px;

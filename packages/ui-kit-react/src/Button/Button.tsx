@@ -9,18 +9,26 @@ import React, {
 import styled from '@emotion/styled';
 
 import Spinner from '../Spinner';
-import { STYLES as TEXT_STYLES } from '../Text';
 import { Box, BoxProps } from '../Box';
-import { THEMES, ThemeColors } from '../theme_deprecated';
+import { Theme } from '../index';
 import type { TooltipProps, ThemedStyledProps } from '../types';
 
 type ButtonSize = 'sm' | 'md';
 export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link' | 'icon';
 type ButtonType = 'button' | 'submit' | 'reset';
-type ButtonTextSize = keyof typeof TEXT_STYLES;
-export type ButtonColor = ThemeColors | 'inherit';
+type ButtonTextSize = keyof Theme['typographyStyles'];
+export type ButtonColor =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'special'
+  | 'inherit'
+  | string;
 
 export interface ButtonProps extends BoxProps {
+  theme?: Theme;
   onClick?: (e: BaseSyntheticEvent) => void;
   children: ReactNode;
   variant?: ButtonVariant;
@@ -43,6 +51,7 @@ export interface ButtonProps extends BoxProps {
 }
 
 type StyledButtonProps = {
+  theme?: Theme;
   $size?: ButtonSize;
   $textSize?: ButtonTextSize;
   $color?: ButtonColor;
@@ -61,33 +70,38 @@ const Dimensions: Record<ButtonSize, number> = {
   md: 48,
 };
 
-export const TextSize: Record<ButtonSize, string> = {
+export const TextSize = (theme: Theme): Record<ButtonSize, string> => ({
   sm: `
-    font-size: 14px;
-    font-weight: 400;
+    font-size: ${theme.button.fontSizeSm};
+    font-weight: ${theme.button.fontWeightSm};
     line-height: 24px;
   `,
   md: `
-    font-size: 16px;
-    font-weight: 500;
+    font-size: ${theme.button.fontSizeMd};
+    font-weight: ${theme.button.fontWeightMd};
     line-height: 24px;
   `,
-};
+});
 
-export const Themes: Record<string, string> = {
-  primary: THEMES.default.colors.primary,
-  secondary: THEMES.default.colors.secondary,
-  danger: THEMES.default.colors.danger,
-};
+export const Themes = [
+  'primary',
+  'secondary',
+  'success',
+  'danger',
+  'warning',
+  'special',
+] as const;
 
 const getSize = ({ $size = 'md', $variant }: StyledButtonProps) => {
   if ($variant === 'text') return '';
   return `height: ${Dimensions[$size]}px;`;
 };
 
-const getTextSize = ({ $textSize, $size = 'md' }: StyledButtonProps) => {
-  if (!$textSize) return TextSize[$size];
-  if (TEXT_STYLES[$textSize]) return TEXT_STYLES[$textSize];
+const getTextSize = ({ theme, $textSize, $size = 'md' }: StyledButtonProps) => {
+  if (!$textSize) {
+    if (theme) return TextSize(theme)[$size];
+  } else if (theme?.typographyStyles[$textSize])
+    return theme?.typographyStyles[$textSize];
 };
 
 const getColor = ({ $color, theme }: ThemedStyledProps<StyledButtonProps>) => {
@@ -95,11 +109,11 @@ const getColor = ({ $color, theme }: ThemedStyledProps<StyledButtonProps>) => {
 
   if ($color === 'inherit') return 'inherit';
 
-  if (Themes[$color]) return Themes[$color];
+  if (theme.button[`${$color as typeof Themes[number]}Color`]) {
+    return theme.button[`${$color as typeof Themes[number]}Color`];
+  }
 
-  if (theme.colors[$color]) return theme.colors[$color];
-
-  return '';
+  return $color;
 };
 
 const getVariant = ({
@@ -107,28 +121,27 @@ const getVariant = ({
   $color,
   theme,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
-  const { white, lightGrey2 } = THEMES.default.colors;
   const color = getColor({ $color, theme });
 
   if ($variant === 'contained') {
     return `
       background-color: ${color};
-      color: ${white};
+      color: ${theme.button.textColorContained};
       border-color: ${color};
     `;
   }
 
   if ($variant === 'outlined') {
     return `
-      background-color: ${white};
+      background-color: ${theme.button.backgroundColorOutlined};
       color: ${color};
-      border-color: ${lightGrey2};
+      border-color: ${theme.button.borderColorOutlined};
     `;
   }
 
   if ($variant === 'link') {
     return `
-      background-color: ${white};
+      background-color: ${theme.button.backgroundColorLink};
       color: ${color};
     `;
   }
@@ -154,7 +167,6 @@ const getHover = ({
   theme,
   disabled,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
-  const { white, black, primaryDarker, dangerDarker } = THEMES.default.colors;
   const color = $hover ? $hover : getColor({ $color, theme });
 
   if (disabled || $isLoading) return '';
@@ -162,8 +174,8 @@ const getHover = ({
   if ($variant === 'contained') {
     return `
       &:hover {
-        background-color: ${black};
-        border-color: ${black};
+        background-color: ${theme.button.backgroundContainedHover};
+        border-color: ${theme.button.borderColorContainedHover};
       }
     `;
   }
@@ -172,7 +184,7 @@ const getHover = ({
     return `
       &:hover {
         background-color: ${color};
-        color: ${white};
+        color: ${theme.button.textColorOutlinedHover};
         border-color: ${color};
       }
     `;
@@ -187,21 +199,11 @@ const getHover = ({
   }
 
   if ($variant === 'text') {
-    if ($color === 'primary') {
-      return `
-        &:hover {
-          color: ${primaryDarker};
-        }
-      `;
-    }
-
-    if ($color === 'danger') {
-      return `
-        &:hover {
-          color: ${dangerDarker};
-        }
-      `;
-    }
+    return `
+      &:hover {
+        filter: brightness(0.6);
+      }
+    `;
   }
 
   return '';
@@ -209,16 +211,14 @@ const getHover = ({
 
 // todo this is a hack to style secondary button
 const getSecondaryColor = ({
+  theme,
   $color,
   $variant,
   $isLoading,
 }: ThemedStyledProps<ButtonProps & StyledButtonProps>) => {
   if ($color !== 'secondary') return '';
 
-  // TODO remove THEMES. use useTheme()
-  const { white, black, grey } = THEMES.default.colors;
-
-  const secondaryColor = `color: ${black};`;
+  const secondaryColor = `color: ${theme.button.textColorContainedSecondary};`;
   const getHover = (style: string) => (!$isLoading ? `&:hover {${style}}` : '');
 
   if ($variant === 'contained') {
@@ -226,9 +226,9 @@ const getSecondaryColor = ({
       ${secondaryColor}
 
       ${getHover(`
-        background-color: ${grey};
-        border-color: ${grey};
-        color: ${white};
+        background-color: ${theme.button.backgroundContainedSecondaryHover};
+        border-color: ${theme.button.borderColorContainedSecondaryHover};
+        color: ${theme.button.textColorContainedSecondaryHover};
       `)}
     `;
   }
@@ -238,7 +238,7 @@ const getSecondaryColor = ({
       ${secondaryColor}
 
       ${getHover(`
-        border-color: ${grey};
+        border-color: ${theme.button.borderColorLinkHover};
       `)}
     `;
   }
@@ -298,7 +298,8 @@ const getDisabled = ({ disabled }: ThemedStyledProps<ButtonProps>) => {
 };
 
 const StyledButton = styled(Box)<ButtonProps & StyledButtonProps>`
-  border-radius: 6px;
+  font-family: ${({ theme }) => theme.button.fontFamily};
+  border-radius: ${({ theme }) => theme.button.borderRadius};
   display: inline-flex;
   text-align: center;
   align-items: center;
@@ -344,7 +345,7 @@ const StyledIcon = styled.i`
   }
 `;
 
-const StyledSecondaryIcon = styled(StyledIcon)<StyledButtonProps>`
+const StyledSecondaryIcon = styled(StyledIcon)<ButtonProps & StyledButtonProps>`
   ${({ $variant, $hasLeftIcon, $hasRightIcon }) => {
     const margin = $variant === 'text' ? '6' : '8';
 

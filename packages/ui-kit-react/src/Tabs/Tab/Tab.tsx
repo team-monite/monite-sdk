@@ -2,12 +2,13 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Tab as ReactTab, TabProps as ReactTabProps } from 'react-tabs';
 
-import Text, { STYLES } from 'Text';
+import Text from 'Text';
 import { tab, disabledTab, selectedTab } from '../TabsClassNames';
 import { ReactTabsFC } from '../typings';
+import { Theme } from '../../index';
 
 type TabProps = ReactTabProps & {
-  textSize?: keyof typeof STYLES;
+  textSize?: keyof Theme['typographyStyles'];
   count?: string | number;
 };
 

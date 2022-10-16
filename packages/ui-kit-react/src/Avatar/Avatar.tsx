@@ -3,15 +3,22 @@ import React from 'react';
 
 import { Box, BoxProps } from '../Box';
 import { TextProps } from '../Text';
-import { ThemeColors } from '../theme_deprecated';
 import { ThemedStyledProps } from '../types';
+
+export type AvatarColors =
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'special';
 
 type AvatarProps = {
   src?: string;
   children?: string;
   to?: string;
   disabled?: boolean;
-  color?: ThemeColors;
+  color?: AvatarColors;
   size?: number;
   textSize?: TextProps['textSize'];
   onClick?: () => void;
@@ -21,7 +28,7 @@ type AvatarProps = {
 type StyledProps = {
   $size?: number;
   $hasHover?: boolean;
-  $color: ThemeColors;
+  $color: AvatarColors;
   $disabled?: boolean;
   $withStatus?: boolean;
 };
@@ -40,8 +47,8 @@ const getStatus = ({ $withStatus, theme }: ThemedStyledProps<StyledProps>) => {
         right: -3px;
         top: -3px;
         border-radius: 50%;
-        background-color: ${theme.colors.primary};
-        border: 3px solid ${theme.colors.white};
+        background-color: ${theme.avatar.primaryColor};
+        border: 3px solid ${theme.neutral100};
       }
     `;
 };
@@ -51,7 +58,7 @@ const Icon = styled(Box)<StyledProps>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-color: ${({ theme, $color }) => theme.colors[$color]};
+  background-color: ${({ theme, $color }) => theme.avatar[`${$color}Color`]};
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -59,10 +66,11 @@ const Icon = styled(Box)<StyledProps>`
   height: ${({ $size }) => $size || defaultSize}px;
   flex-shrink: 0;
   font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
+  font-family: ${({ theme }) => theme.avatar.fontFamily};
+  font-weight: ${({ theme }) => theme.avatar.fontWeight};
+  font-size: ${({ theme }) => theme.avatar.fontSize};
   border-radius: 50%;
-  color: white;
+  color: ${({ theme }) => theme.avatar.textColor};
   text-transform: uppercase;
   cursor: default;
 
@@ -78,7 +86,7 @@ const Avatar = ({
   size,
   textSize, // TODO unused prop
   onClick,
-  color = 'grey',
+  color = 'secondary',
   withStatus,
   ...rest
 }: AvatarProps) => {

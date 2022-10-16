@@ -2,7 +2,6 @@ import React, { BaseSyntheticEvent, FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { UClockThree, UCheck, UExclamationTriangle } from 'unicons';
 import { ThemeColors } from '../theme_deprecated';
-import { STYLES as TEXT_STYLES } from '../Text';
 import { ThemedStyledProps } from '../types';
 
 export type AlertVariant = 'info' | 'success' | 'error';
@@ -68,7 +67,7 @@ const StyledText = styled.div<AlertProps>`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  ${TEXT_STYLES['small']}
+  ${({ theme }) => theme.typographyStyles['small']}
 `;
 
 const StyledIcon = styled.i`

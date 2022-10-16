@@ -10,14 +10,23 @@ type LabelTextProps = {
 const LabelTextRoot = styled(Flex)``;
 
 const Label = styled(Box)`
+  font-family: ${({ theme }) => theme.labelText.fontFamilyLabel};
+  font-size: ${({ theme }) => theme.labelText.fontSizeLabel};
+  font-weight: ${({ theme }) => theme.labelText.fontWeightLabel};
+
+  color: ${({ theme }) => theme.labelText.textColorLabel};
+
   min-width: 132px;
-  font-size: 14px;
-  color: #707070;
 `;
 
 const Text = styled(Box)`
+  font-family: ${({ theme }) => theme.labelText.fontFamilyText};
+  font-size: ${({ theme }) => theme.labelText.fontSizeText};
+  font-weight: ${({ theme }) => theme.labelText.fontWeightText};
+
+  color: ${({ theme }) => theme.labelText.textColorText};
+
   flex-grow: 1;
-  color: #111111;
 `;
 
 const LabelText = ({ label, text }: LabelTextProps) => (
