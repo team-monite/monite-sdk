@@ -35,8 +35,90 @@ const palette = {
 const typography = {
   fontFamily:
     '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
+  fontSizeSm: '14px',
   fontSize: '16px',
   fontWeight: '400',
+  fontWeightBold: '500',
+
+  typographyStyles: {
+    h1: {
+      //styleName: Titles/H1;
+      fontSize: '48px',
+      fontWeight: '600',
+      lineHeight: '64px',
+    },
+    h2: {
+      //styleName: Titles/H2;
+      fontSize: '32px',
+      fontWeight: '600',
+      lineHeight: '40px',
+    },
+    h3: {
+      //styleName: Titles/H3;
+      fontSize: '24px',
+      fontWeight: '600',
+      lineHeight: '36px',
+    },
+    h4: {
+      //styleName: Titles/H4;
+      fontSize: '18px',
+      fontWeight: '600',
+      lineHeight: '24px',
+      letterSpacing: '1px',
+    },
+    regular: {
+      //styleName: Regular/Regular;
+      fontSize: '16px',
+      fontWeight: '400',
+      lineHeight: '24px',
+    },
+    bold: {
+      //styleName: Regular/Bold;
+      fontSize: '16px',
+      fontWeight: '500',
+      lineHeight: '24px',
+    },
+    regularLink: {
+      //styleName: Regular/RegularLink;
+      fontSize: '16px',
+      fontWeight: '400',
+      lineHeight: '24px',
+      textDecoration: 'underline',
+    },
+    regularBoldLink: {
+      //styleName: Regular/RegularBoldLink;
+      fontSize: '16px',
+      fontWeight: '500',
+      lineHeight: '24px',
+      textDecoration: 'underline',
+    },
+    small: {
+      //styleName: Small/Small;
+      fontSize: '14px',
+      fontWeight: '400',
+      lineHeight: '20px',
+    },
+    smallBold: {
+      //styleName: Small/Bold;
+      fontSize: '14px',
+      fontWeight: '500',
+      lineHeight: '20px',
+    },
+    smallLink: {
+      //styleName: Small/SmallLink;
+      fontSize: '14px',
+      fontWeight: '400',
+      lineHeight: '20px',
+      textDecoration: 'underline',
+    },
+    smallBoldLink: {
+      //styleName: Small/Bold Link;
+      fontSize: '14px',
+      fontWeight: '500',
+      lineHeight: '20px',
+      textDecoration: 'underline',
+    },
+  },
 };
 
 const shape = {
@@ -47,6 +129,87 @@ const shape = {
 };
 
 const components = {
+  avatar: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeightBold,
+
+    primaryColor: palette.primary50,
+    secondaryColor: palette.neutral50,
+    successColor: palette.success50,
+    dangerColor: palette.error50,
+    warningColor: palette.warning50,
+    specialColor: palette.special50,
+
+    textColor: palette.neutral100,
+  },
+  button: {
+    fontFamily: typography.fontFamily,
+    fontSizeSm: typography.fontSizeSm,
+    fontSizeMd: typography.fontSize,
+    fontWeightSm: typography.fontWeight,
+    fontWeightMd: '500',
+
+    primaryColor: palette.primary50,
+    secondaryColor: palette.neutral90,
+    successColor: palette.success50,
+    dangerColor: palette.error50,
+    warningColor: palette.warning50,
+    specialColor: palette.special50,
+
+    textColorContained: palette.neutral100,
+    textColorContainedSecondary: palette.neutral10,
+    backgroundColorOutlined: palette.neutral100,
+    backgroundColorLink: palette.neutral100,
+    borderColorOutlined: palette.neutral80,
+    borderRadius: shape.borderRadiusSmall,
+
+    textColorContainedSecondaryHover: palette.neutral100,
+    backgroundContainedHover: palette.neutral10,
+    backgroundContainedSecondaryHover: palette.neutral50,
+    borderColorContainedHover: palette.neutral10,
+    borderColorContainedSecondaryHover: palette.neutral50,
+    borderColorLinkHover: palette.neutral50,
+
+    textColorOutlinedHover: palette.neutral100,
+  },
+  card: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize,
+    fontWeight: typography.fontWeight,
+
+    backgroundColor: 'transparent',
+    borderColor: palette.neutral80,
+    borderRadius: shape.borderRadiusLarge,
+
+    borderColorShadow: palette.neutral10,
+    borderRadiusShadow: shape.borderRadiusSmall,
+  },
+  checkbox: {
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSizeSm,
+    fontWeight: typography.fontWeight,
+
+    textColor: palette.neutral10,
+
+    textColorHover: palette.neutral10,
+
+    checkMarkColor: palette.neutral80,
+    checkMarkColorError: palette.error50,
+
+    checkMarkColorHover: palette.primary50,
+    checkMarkColorErrorHover: palette.error50,
+
+    checkMarkBackgroundColorDisabled: palette.neutral90,
+
+    borderColor: palette.neutral80,
+    borderColorChecked: palette.neutral10,
+    borderColorCheckedDisabled: palette.neutral80,
+    borderColorInvalid: palette.error50,
+    borderColorDisabled: palette.neutral80,
+
+    borderColorHover: palette.primary50,
+  },
   datePicker: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
@@ -69,6 +232,9 @@ const components = {
 
     selectedBackgroundColor: palette.primary50,
     selectedIconColor: palette.neutral10,
+  },
+  header: {
+    backgroundColor: palette.neutral100,
   },
   input: {
     fontFamily: typography.fontFamily,
@@ -107,6 +273,19 @@ const components = {
 
     filterWithValueColor: palette.neutral10,
     filterWithValueBackgroundColor: palette.neutral90,
+  },
+  labelText: {
+    fontFamilyLabel: typography.fontFamily,
+    fontSizeLabel: typography.fontSizeSm,
+    fontWeightLabel: typography.fontWeight,
+
+    textColorLabel: palette.neutral50,
+
+    fontFamilyText: typography.fontFamily,
+    fontSizeText: typography.fontSize,
+    fontWeightText: typography.fontWeight,
+
+    textColorText: palette.neutral10,
   },
   search: {
     fontFamily: typography.fontFamily,

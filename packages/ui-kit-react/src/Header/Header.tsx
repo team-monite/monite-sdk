@@ -16,7 +16,7 @@ const StyledHeader = styled(Box)`
   align-items: center;
   width: 100%;
   height: 96px;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.header.backgroundColor};
   padding: 0 24px;
   gap: 24px;
 `;

@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 
 import IconButton from '../IconButton';
 import { UQuestionCircle } from '../unicons';
-import Text, { STYLES } from '../Text';
+import Text from '../Text';
+import { Theme } from '../index';
 
 const Field = styled.div<Partial<FormFieldProps>>`
   display: flex;
@@ -80,7 +81,7 @@ type FormFieldProps = {
   text?: string | React.ReactNode;
   label: string;
   children: React.ReactNode;
-  labelTextSize?: keyof typeof STYLES;
+  labelTextSize?: keyof Theme['typographyStyles'];
   readOnly?: boolean;
   required?: boolean;
   onClickInfo?: (e: React.BaseSyntheticEvent) => void;

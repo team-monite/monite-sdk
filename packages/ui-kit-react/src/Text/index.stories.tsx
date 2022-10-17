@@ -1,10 +1,13 @@
-import Text, { STYLES } from '.';
+import Text from '.';
 import FlexTable from '../FlexTable';
 import { Flex, Box } from '../Box';
+import { tokenizedTheme } from '../index';
+
 const Story = {
   title: 'Data Display/Text',
   component: Text,
 };
+
 export default Story;
 
 export const DefaultText = () => (
@@ -25,7 +28,7 @@ export const Sizes = () => (
         <Box width={'25%'}>Text variant</Box>
         <Box width={1}>Example</Box>
       </Flex>
-      {Object.keys(STYLES).map((textVariant) => (
+      {Object.keys(tokenizedTheme.typographyStyles).map((textVariant) => (
         <Flex key={textVariant}>
           <Box width={'25%'}>
             <Text textSize={textVariant}>{textVariant}</Text>

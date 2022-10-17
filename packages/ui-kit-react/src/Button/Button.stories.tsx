@@ -4,8 +4,9 @@ import Button, { ButtonColor } from '.';
 import { Box, Flex } from '../Box';
 
 import { UInfoCircle } from '../unicons';
-import { STYLES as TEXT_STYLES } from '../Text';
-import { TextSize, Themes } from './Button';
+import { Themes } from './Button';
+
+import { tokenizedTheme } from '../index';
 
 const Story = {
   title: 'Data Input/Button',
@@ -64,15 +65,20 @@ export const LinkButton = () => {
 export const ButtonSizes = () => {
   return (
     <Wrap>
-      {Object.keys(TextSize).map((size: keyof typeof TextSize) => (
-        <Wrap key={size}>
-          {buttonVariant.map((variant: keyof typeof ButtonVariants) => (
-            <Button key={`${size}-${variant}`} variant={variant} size={size}>
-              {variant} {size}
-            </Button>
-          ))}
-        </Wrap>
-      ))}
+      <Wrap key="sm">
+        {buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+          <Button key={`sm-${variant}`} variant={variant} size="sm">
+            {variant} sm
+          </Button>
+        ))}
+      </Wrap>
+      <Wrap key="md">
+        {buttonVariant.map((variant: keyof typeof ButtonVariants) => (
+          <Button key={`md-${variant}`} variant={variant} size="md">
+            {variant} md
+          </Button>
+        ))}
+      </Wrap>
     </Wrap>
   );
 };
@@ -80,7 +86,7 @@ export const ButtonSizes = () => {
 export const ButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button key={`${variant}-${color}`} variant={variant} color={color}>
           {variant} {color}
         </Button>
@@ -92,7 +98,7 @@ export const ButtonColors = () => {
 export const LoadingButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button
           isLoading
           key={color}
@@ -110,7 +116,7 @@ export const LoadingButtonColors = () => {
 export const DisabledButtonColors = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button
           disabled
           key={`${variant}-${color}`}
@@ -128,7 +134,7 @@ export const DisabledButtonColors = () => {
 export const ButtonWithLeftIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
           leftIcon={<UInfoCircle />}
@@ -145,7 +151,7 @@ export const ButtonWithLeftIcon = () => {
 export const ButtonWithRightIcon = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
           rightIcon={<UInfoCircle />}
@@ -162,7 +168,7 @@ export const ButtonWithRightIcon = () => {
 export const ButtonWithLeftAndRightIcons = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(Themes).map((color: ButtonColor) => (
+      {Themes.map((color: ButtonColor) => (
         <Button
           key={`${variant}-${color}`}
           leftIcon={<UInfoCircle />}
@@ -180,7 +186,7 @@ export const ButtonWithLeftAndRightIcons = () => {
 export const ColoredButton = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      <Button variant={variant} color={'tagViolet'}>
+      <Button variant={variant} color={'violet'}>
         {variant} tagViolet
       </Button>
       <Button variant={variant} color={'orange'}>
@@ -196,9 +202,9 @@ export const ColoredButton = () => {
 export const CustomSizeButton = () => {
   return buttonVariant.map((variant: keyof typeof ButtonVariants) => (
     <Wrap key={variant}>
-      {Object.keys(TEXT_STYLES)
+      {Object.keys(tokenizedTheme.typographyStyles)
         .reverse()
-        .map((style: keyof typeof TEXT_STYLES) => (
+        .map((style: keyof typeof tokenizedTheme.typographyStyles) => (
           <Button
             key={`${variant}-${style}`}
             variant={variant}

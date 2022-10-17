@@ -1,8 +1,7 @@
 import Avatar from '.';
 
 import { action } from '@storybook/addon-actions';
-import { THEMES } from '../theme_deprecated';
-import { STYLES } from '../Text';
+import { tokenizedTheme } from '../index';
 
 const Story = {
   title: 'Data Display/Avatar',
@@ -55,11 +54,18 @@ Playground.argTypes = {
   },
   color: {
     control: 'select',
-    options: Object.keys(THEMES.default.colors),
+    options: [
+      'primary',
+      'secondary',
+      'success',
+      'danger',
+      'warning',
+      'special',
+    ],
   },
   textSize: {
     control: 'select',
-    options: Object.keys(STYLES),
+    options: Object.keys(tokenizedTheme.typographyStyles),
   },
   withStatus: {
     control: 'boolean',
@@ -91,10 +97,19 @@ export const Colors = (args) => (
     <Avatar {...args} color="primary">
       Monite
     </Avatar>{' '}
-    <Avatar {...args} color="danger">
+    <Avatar {...args} color="secondary">
       Monite
     </Avatar>{' '}
     <Avatar {...args} color="success">
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} color="danger">
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} color="warning">
+      Monite
+    </Avatar>{' '}
+    <Avatar {...args} color="special">
       Monite
     </Avatar>
   </div>
