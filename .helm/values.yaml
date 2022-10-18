@@ -3,12 +3,14 @@ ingress:
     _default: pay-%s.review.monite.com
     dev: pay.dev.monite.com
     production: pay.monite.com
+    zaf-production: pay.zaf.monite.com
     sandbox: pay.sandbox.monite.com
   secretName:
     _default: wildcard-review-monite-com
     dev: wildcard-dev-monite-com
     sandbox: wildcard-sandbox-monite-com
     production: wildcard-monite-com
+    zaf-production: wildcard-zaf-monite-com
 nginx:
   replicas:
     _default: 1
@@ -47,7 +49,7 @@ nginx:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: node-role.kubernetes.io/production
+                - key: node-role.kubernetes.io/nodes
                   operator: Exists
 
 
