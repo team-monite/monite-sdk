@@ -10,14 +10,17 @@ export default Story;
 
 export const OrganizationCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
-    <CounterpartsDetails id={'f15ca7ef-ca6a-4fc1-ba53-da63b4af503c'} />
+    <CounterpartsDetails
+      id={'b8784fb4-1b33-433f-aa6d-57e137e9d34f'}
+      type={CounterpartType.ORGANIZATION}
+    />
   </div>
 );
 
 export const IndividualCounterpart = () => (
   <div style={{ maxWidth: 536 }}>
     <CounterpartsDetails
-      // id={'6c81b7b8-82ad-432e-ae39-44b7de4e4fef'}
+      id={'72b00f64-b9ed-4c59-ab58-2c19c01a21a7'}
       type={CounterpartType.INDIVIDUAL}
     />
   </div>

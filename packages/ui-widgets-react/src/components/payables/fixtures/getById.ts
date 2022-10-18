@@ -10,7 +10,7 @@ const data: PayableResponseSchema = {
   id: 'eca6c85b-0a45-4164-a1dd-82f0b05ff7a9',
   entity_id: 'd219e7ce-862e-4113-8306-644360c8dfaa',
   document_id: 'DE2287',
-  status: PayableStateEnum.NEW,
+  status: PayableStateEnum.WAITING_TO_BE_PAID,
   source_of_payable_data: SourceOfPayableDataEnum.OCR,
   currency: CurrencyEnum.EUR,
   amount: 117,

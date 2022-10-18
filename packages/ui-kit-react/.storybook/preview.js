@@ -13,7 +13,7 @@ import { Global } from '@emotion/react';
 
 import ThemeProvider from '../src/core/ThemeProvider';
 import { THEMES, tokenizedTheme } from '../src';
-import { getStyles } from '../src/globalStyles';
+import { getStyles } from '../src';
 
 export const parameters = {
   viewMode: 'story',

@@ -36,10 +36,11 @@ export const useEntityListCache = <TInput extends EntityType>(key: string) => {
   const { setEntity, removeEntity } = useEntityCache(key);
 
   const findById = useCallback(
-    (id: string): TInput | undefined =>
-      queryClient
+    (id: string): TInput | undefined => {
+      return queryClient
         .getQueryData<TInput[]>([key])
-        ?.find((entity) => entity.id === id),
+        ?.find((entity) => entity.id === id);
+    },
     [queryClient, key]
   );
 
