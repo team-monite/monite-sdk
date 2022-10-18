@@ -1,4 +1,6 @@
 import React from 'react';
+import styled from '@emotion/styled';
+
 import {
   Text,
   Button,
@@ -18,13 +20,23 @@ import {
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 
-import styles from './styles.module.scss';
-
 type BankFormProps = {
   banks?: PaymentsPaymentsBank[];
   receivableData?: ReceivableResponse;
   onFinish?: (result: any) => void;
 };
+
+const StyledLabel = styled(Box)`
+  flex-basis: 220px;
+`;
+
+const StyledValueBlock = styled(Box)`
+  flex-grow: 1;
+`;
+
+const StyledDetails = styled(List)`
+  margin: 32px 0;
+`;
 
 const infoPanelMap = {
   dataSharing: {
@@ -45,6 +57,7 @@ const infoPanelMap = {
   },
 };
 
+//TODO add localization and fix tooltips
 const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
   const { code } = useParams();
   const bankData = banks?.find((bank) => bank.code === code);
@@ -52,6 +65,7 @@ const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
   const logo = bankData?.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
+
   return (
     <Box>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
@@ -60,37 +74,37 @@ const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
           {bankData?.name}
         </Text>
       </Flex>
-      <List className={styles.detailesBlock}>
+      <StyledDetails>
         <ListItem>
           <Flex justifyContent="space-between">
-            <Box className={styles.label}>Amount</Box>
+            <Box className={'styles.label'}>Amount</Box>
             {/* TODO: format amount by exponent */}
-            <Box className={styles.value}>{receivableData?.total_amount}</Box>
+            <Box className={'styles.value'}>{receivableData?.total_amount}</Box>
           </Flex>
         </ListItem>
         <ListItem>
           <Flex justifyContent="space-between">
-            <Box className={styles.label}>Account holder’s name</Box>
+            <StyledLabel>Account holder’s name</StyledLabel>
             {/* @ts-ignore */}
-            <Box className={styles.value}>{receivableData?.entity?.name}</Box>
+            <StyledValueBlock>{receivableData?.entity?.name}</StyledValueBlock>
           </Flex>
         </ListItem>
 
         <ListItem>
           <Flex justifyContent="space-between">
-            <Box className={styles.label}>IBAN</Box>
-            <Box className={styles.value}>
+            <StyledLabel>IBAN</StyledLabel>
+            <StyledValueBlock>
               {receivableData?.entity_bank_account?.iban}
-            </Box>
+            </StyledValueBlock>
           </Flex>
         </ListItem>
         <ListItem>
           <Flex justifyContent="space-between">
-            <Box className={styles.label}>Payment reference</Box>
-            <Box className={styles.value}>{receivableData?.document_id}</Box>
+            <StyledLabel>Payment reference</StyledLabel>
+            <StyledValueBlock>{receivableData?.document_id}</StyledValueBlock>
           </Flex>
         </ListItem>
-      </List>
+      </StyledDetails>
 
       <ReactTooltip />
 

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import {
-  ReceivableResponse,
   PaymentsPaymentsCountry,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
@@ -12,18 +11,14 @@ import {
   PaymentsPaymentMethodsEnum,
 } from '@team-monite/sdk-api';
 
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import InvoiceDetails from './InvoiceDetails';
 import BanksListForm from './BanksListForm';
 import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
-type YapilyFormProps = {
-  receivableData?: ReceivableResponse;
-};
-
-const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
+const YapilyWidget = () => {
   const { monite } = useComponentsContext();
 
   // TODO use react-query
@@ -55,6 +50,7 @@ const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
       });
   }, [selectedCountry, monite.api.payment]);
 
+  //TODO move routing to payment app
   return (
     <>
       <NavHeader />
@@ -67,15 +63,12 @@ const YapilyWidget = ({ receivableData }: YapilyFormProps) => {
               countries={countries}
               selectedCountry={selectedCountry}
               onChangeCountry={setSelectedCountry}
-              receivableData={receivableData}
             />
           }
         />
         <Route
           path={'/:code/confirm'}
-          element={
-            <InvoiceDetails banks={banks} receivableData={receivableData} />
-          }
+          element={<InvoiceDetails banks={banks} />}
         />
         <Route
           path={'/:code/payer_form'}

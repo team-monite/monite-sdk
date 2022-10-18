@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from 'emotion-theming';
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Text,
@@ -12,8 +12,8 @@ import {
   Button,
 } from '@team-monite/ui-kit-react';
 
-const EmptyScreen = () => {
-  const { t } = useComponentsContext();
+const EmptyBankList = () => {
+  const { t } = useTranslation();
   const theme = useTheme<Theme>();
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -40,4 +40,4 @@ const EmptyScreen = () => {
   );
 };
 
-export default EmptyScreen;
+export default EmptyBankList;
