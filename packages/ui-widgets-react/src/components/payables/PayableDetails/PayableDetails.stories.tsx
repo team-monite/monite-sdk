@@ -9,7 +9,7 @@ export default Story;
 
 export const Default = () => (
   <PayableDetails
-    id={'c987a274-e361-46da-a815-eda5f6905caa'}
+    id={'242fd40a-1c81-49b4-8578-d6b4a4c89da7'}
     onClose={() => {
       console.log('onClose');
     }}

@@ -3,6 +3,7 @@ import {
   Box,
   Flex,
   FormField,
+  StyledModalLayoutScroll,
   Text,
   TextProps,
 } from '@team-monite/ui-kit-react';
@@ -87,7 +88,7 @@ export const StyledTabs = styled(Box)`
   padding-left: 16px;
 `;
 
-export const StyledInfoScroll = styled(StyledScroll)`
+export const StyledInfoScroll = styled(StyledModalLayoutScroll)`
   padding-top: 48px;
 `;
 

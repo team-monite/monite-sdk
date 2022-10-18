@@ -38,12 +38,14 @@ type CounterpartBankUpdate = {
 export const useCounterpartBankList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartBankAccountResponse[] | undefined, Error>(
+  return useQuery<CounterpartBankAccountResponse[], Error>(
     [COUNTERPARTS_BANKS_QUERY],
     () =>
       !!counterpartId
-        ? monite.api.counterparts.getBankAccounts(counterpartId)
-        : undefined,
+        ? monite.api.counterparts
+            .getBankAccounts(counterpartId)
+            .then((response) => response.data)
+        : [],
     {
       onError: (error) => {
         toast.error(error.message);
@@ -79,10 +81,10 @@ export const useCounterpartBankById = (
   bankId?: string
 ) => {
   const { monite } = useComponentsContext();
-  const { findById, update } =
-    useEntityListCache<CounterpartBankAccountResponse>(
-      COUNTERPARTS_BANKS_QUERY
-    );
+
+  const { findById } = useEntityListCache<CounterpartBankAccountResponse>(
+    COUNTERPARTS_BANKS_QUERY
+  );
 
   return useQuery<CounterpartBankAccountResponse | undefined, Error>(
     [COUNTERPARTS_BANKS_QUERY, { id: bankId }],
@@ -92,8 +94,7 @@ export const useCounterpartBankById = (
       const existedBank = findById(bankId);
 
       if (existedBank) {
-        update(existedBank);
-        return undefined;
+        return existedBank;
       }
 
       return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
@@ -156,12 +157,10 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
 export const useCounterpartContactList = (counterpartId?: string) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<CounterpartContactResponse[] | undefined, Error>(
+  return useQuery<CounterpartContactResponse[], Error>(
     [COUNTERPARTS_CONTACTS_QUERY],
     () =>
-      counterpartId
-        ? monite.api.counterparts.getContacts(counterpartId)
-        : undefined,
+      counterpartId ? monite.api.counterparts.getContacts(counterpartId) : [],
     {
       onError: (error) => {
         toast.error(error.message);
@@ -174,7 +173,7 @@ export const useCounterpartContactList = (counterpartId?: string) => {
 export const useCreateCounterpartContact = (counterpartId: string) => {
   const { monite } = useComponentsContext();
   const { add } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_BANKS_QUERY
+    COUNTERPARTS_CONTACTS_QUERY
   );
 
   return useMutation<
@@ -200,8 +199,8 @@ export const useCounterpartContactById = (
   contactId?: string
 ) => {
   const { monite } = useComponentsContext();
-  const { findById, update } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_BANKS_QUERY
+  const { findById } = useEntityListCache<CounterpartContactResponse>(
+    COUNTERPARTS_CONTACTS_QUERY
   );
 
   return useQuery<CounterpartContactResponse | undefined, Error>(
@@ -212,8 +211,7 @@ export const useCounterpartContactById = (
       const existedContact = findById(contactId);
 
       if (existedContact) {
-        update(existedContact);
-        return undefined;
+        return existedContact;
       }
 
       return monite.api.counterparts.getContactById(counterpartId, contactId);
@@ -298,7 +296,7 @@ export const useCreateCounterpart = () => {
   const { setEntity } = useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
 
   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>(
-    (body) => monite.api.counterparts.create(body),
+    (payload) => monite.api.counterparts.create(payload),
     {
       onSuccess: async (counterpart) => {
         setEntity(counterpart);

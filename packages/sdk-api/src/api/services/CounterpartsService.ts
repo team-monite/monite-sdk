@@ -34,6 +34,10 @@ const errors = {
   500: `Internal Server Error`,
 };
 
+type CounterpartData<T> = {
+  data: T;
+};
+
 export default class CounterpartsService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -343,7 +347,7 @@ export default class CounterpartsService {
    */
   public getBankAccounts(
     counterpartId: string
-  ): CancelablePromise<Array<CounterpartBankAccountResponse>> {
+  ): CancelablePromise<CounterpartData<Array<CounterpartBankAccountResponse>>> {
     return __request(
       {
         method: 'GET',

@@ -14,6 +14,8 @@ import {
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
+import ConfirmDeleteDialogue from '../../ConfirmDeleteDialogue';
+
 import {
   getCounterpartName,
   isIndividualCounterpart,
@@ -33,7 +35,6 @@ import CounterpartIndividualView from './CounterpartIndividualView';
 import CounterpartContactView from './CounterpartContactView';
 import CounterpartBankView from './CounterpartBankView';
 import useCounterpartView, { CounterpartViewProps } from './useCounterpartView';
-import ConfirmDeleteDialogue from '../../ConfirmDeleteDialogue';
 
 const CounterpartView = (props: CounterpartViewProps) => {
   const { t } = useComponentsContext();
@@ -55,6 +56,23 @@ const CounterpartView = (props: CounterpartViewProps) => {
     if (counterpart) return getCounterpartName(counterpart);
     return '';
   };
+
+  const actions = (
+    <>
+      <Button onClick={onEdit} size={'sm'} variant={'text'} leftIcon={<UPen />}>
+        {t('counterparts:actions.edit')}
+      </Button>
+      <Button
+        onClick={show}
+        size={'sm'}
+        variant={'text'}
+        color={'danger'}
+        leftIcon={<UTrashAlt />}
+      >
+        {t('counterparts:actions.delete')}
+      </Button>
+    </>
+  );
 
   return (
     <ModalLayout
@@ -89,27 +107,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
 
         {counterpart && isOrganizationCounterpart(counterpart) && (
           <CounterpartOrganizationView
-            actions={
-              <>
-                <Button
-                  onClick={onEdit}
-                  size={'sm'}
-                  variant={'text'}
-                  leftIcon={<UPen />}
-                >
-                  {t('counterparts:actions.edit')}
-                </Button>
-                <Button
-                  onClick={show}
-                  size={'sm'}
-                  variant={'text'}
-                  color={'danger'}
-                  leftIcon={<UTrashAlt />}
-                >
-                  {t('counterparts:actions.delete')}
-                </Button>
-              </>
-            }
+            actions={actions}
             counterpart={prepareCounterpartOrganization(
               counterpart.organization
             )}
@@ -118,28 +116,8 @@ const CounterpartView = (props: CounterpartViewProps) => {
 
         {counterpart && isIndividualCounterpart(counterpart) && (
           <CounterpartIndividualView
+            actions={actions}
             counterpart={prepareCounterpartIndividual(counterpart.individual)}
-            actions={
-              <>
-                <Button
-                  onClick={onEdit}
-                  size={'sm'}
-                  variant={'text'}
-                  leftIcon={<UPen />}
-                >
-                  {t('counterparts:actions.edit')}
-                </Button>
-                <Button
-                  onClick={show}
-                  size={'sm'}
-                  variant={'text'}
-                  color={'danger'}
-                  leftIcon={<UTrashAlt />}
-                >
-                  {t('counterparts:actions.delete')}
-                </Button>
-              </>
-            }
           />
         )}
 

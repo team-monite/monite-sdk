@@ -56,17 +56,17 @@ export default function useCounterpartView({
         onDelete && onDelete(counterpart.id);
       },
     });
-  }, [counterpartDeleteMutation, counterpart]);
+  }, [counterpartDeleteMutation, counterpart, onDelete]);
 
-  const onEdit = useCallback(async () => {
+  const onEdit = useCallback(() => {
     if (!counterpart) return;
 
     onExternalEdit && onExternalEdit(counterpart.id, counterpart.type);
   }, [onExternalEdit, counterpart]);
 
   return {
-    contacts,
-    banks,
+    contacts: contacts || [],
+    banks: banks || [],
     counterpart,
     deleteCounterpart,
     counterpartError,
