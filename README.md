@@ -1,77 +1,21 @@
-# SDK
+# Monite SDK
+Use Monite SDK to embed invoicing and payables powered by [Monite](https://monite.com/) into your products.
+The SDK provides React UI components for displaying and managing data served via the Monite API, as well as a standalone JavaScript API client for those whose prefer to build a UI from scratch.
 
-This is a draft of the Proposed Structure of the SDK repository.
-Any comments and suggestions are extremely welcome.
+## Packages
+This repository is a monorepo that contains several npm packages. The packages can be installed individually so you can use only what you need. For the usage examples, see the READMEs of the individual packages (linked below):
 
-This repository is a monorepo, which consists of:
+* [**@team-monite/ui-widgets-react**](./packages/ui-widgets-react/) - A library of ready-to-use React UI components connected to the Monite API. Can be used to display and manage data served by the API.
 
-## package: White-Label App
+* [**@team-monite/ui-kit-react**](./packages/ui-kit-react/) - Low-level UI components (buttons, labels, input fields, and others) that implement Monite's design system. Used as building blocks for more advanced components from the `ui-widgets-react` package.
 
-@see https://code-related.monite.com/architecture/frontend/Whitelabel/
+* [**@team-monite/sdk-api**](./packages/sdk-api/) - A JavaScript library for making requests to the Monite API.
 
-### Why
+## Requirements
+Before using any of these packages, you need to register a partner account with Monite, get API credentials, and generate an access token. For details, see [Get started with Monite API](https://docs.monite.com/docs/get-started).
 
-- To make sales process much easier.
-- To provide Monite's services out-of-the-box.
+## Further information
+* [Monite documentation](https://docs.monite.com/docs/)
 
-It uses @team-monite/ui-widgets-react as the dependency, to test and verify that our SDK actually works, so:
-
-- Monite will be the first user of our own js SDK.
-- Monite will be the first user of our own White-Label solution.
-
-## package: @team-monite/sdk-api
-
-The core package of the Monite's non-UI functionality.
-
-### Why
-
-There are can be situations when our Partner's are not interested in the ready-to-use UI components, since they are intended to create the UI completely on their side.
-But it would be helpful for them to use an API methods or other non-UI services.
-This package should include all the non-UI methods to make it easier to use Monite's services out-of-the-box.
-This package will be used in our other packages as a core of the Monite's functionality.
-
-### Use case
-
-```
-npm install @team-monite/sdk-api
-
-import { MoniteApp } from '@team-monite/sdk-api';
-
-const monite = new MoniteApp({
-  // here should be provided an end-user API key to retrieve end user data, such as the list of the counterparts for this specific user
-  // BUT how to get this token?
-  // proposed solution is to retrieve this token on the backend side!
-  // using the client id, client secret and user credentials (email, password) our Partner should be able to exchange these inputs for the active end-user API key
-  token: '123',
-});
-
-const data = monite.api.counterparts.getList();
-```
-
-## package: @team-monite/ui-widgets-react
-
-This package is the library of ready-to-use react.js UI components.
-
-### Why
-
-- It will provide an easy and customizable way to integrate with the Monite's functionality.
-- White-Label App is based on top of this package.
-- React.js is the most popular library to build the UI nowadays.
-- By providing react.js components we can support customization on the nested components level (e.g. allow to override the Row component in the Table component).
-
-### Use case
-
-```
-npm install @team-monite/ui-widgets-react;
-
-import { MoniteProvider, MoniteApp, MoniteAppConfig, CounterpartsTable } from '@team-monite/ui-widgets-react';
-
-const monite = new MoniteApp({
-  // end-user API key
-  token: '123',
-});
-
-<MoniteProvider monite={monite}>
-  <CounterpartsTable someProp />
-</MoniteProvider>
-```
+## License
+MIT
