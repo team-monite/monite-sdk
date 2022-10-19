@@ -76,7 +76,7 @@ const BankListItem = ({ data }: BankListItemProps) => {
 };
 
 type YapilyFormProps = {
-  banks: PaymentsPaymentsBank[];
+  banks?: PaymentsPaymentsBank[];
   countries?: Array<PaymentsPaymentsCountry>;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
   onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;

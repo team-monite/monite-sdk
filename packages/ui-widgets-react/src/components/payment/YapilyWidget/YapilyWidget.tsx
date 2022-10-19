@@ -3,15 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import {
-  PaymentsPaymentsCountry,
-  PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentMethodsCountriesResponse,
-  PaymentsPaymentsPaymentsPaymentsBanksResponse,
   PaymentsPaymentMethodsEnum,
 } from '@team-monite/sdk-api';
 
-import { useComponentsContext } from 'core/context/ComponentsContext';
+import { useInstitutionList, useCountriesList } from 'core/queries/usePayment';
 
 import InvoiceDetails from './InvoiceDetails';
 import BanksListForm from './BanksListForm';
@@ -19,36 +15,22 @@ import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
 const YapilyWidget = () => {
-  const { monite } = useComponentsContext();
-
-  // TODO use react-query
-
   const [selectedCountry, setSelectedCountry] = useState(
     PaymentsYapilyCountriesCoverageCodes.DE
   );
 
-  const [banks, setBanks] = useState<Array<PaymentsPaymentsBank>>([]);
+  const { data: countries } = useCountriesList(
+    PaymentsPaymentMethodsEnum.SEPA_CREDIT
+  );
 
-  const [countries, setCountries] = useState<Array<PaymentsPaymentsCountry>>();
-
-  useEffect(() => {
-    monite.api.payment
-      .getPaymentMethodCountries(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
-      .then((response: PaymentsPaymentMethodsCountriesResponse) => {
-        setCountries(response.data);
-      });
-  }, [monite.api.payment]);
+  const { data: banks, refetch: refetchInstitutionList } = useInstitutionList(
+    PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+    selectedCountry as PaymentsYapilyCountriesCoverageCodes
+  );
 
   useEffect(() => {
-    monite.api.payment
-      .getInstitutions(
-        PaymentsPaymentMethodsEnum.SEPA_CREDIT,
-        selectedCountry as PaymentsYapilyCountriesCoverageCodes
-      )
-      .then((response: PaymentsPaymentsPaymentsPaymentsBanksResponse) => {
-        setBanks(response.data);
-      });
-  }, [selectedCountry, monite.api.payment]);
+    refetchInstitutionList();
+  }, [selectedCountry]);
 
   //TODO move routing to payment app
   return (
@@ -59,8 +41,8 @@ const YapilyWidget = () => {
           path={'/'}
           element={
             <BanksListForm
-              banks={banks}
-              countries={countries}
+              banks={banks?.data}
+              countries={countries?.data}
               selectedCountry={selectedCountry}
               onChangeCountry={setSelectedCountry}
             />
@@ -68,11 +50,11 @@ const YapilyWidget = () => {
         />
         <Route
           path={'/:code/confirm'}
-          element={<InvoiceDetails banks={banks} />}
+          element={<InvoiceDetails banks={banks?.data} />}
         />
         <Route
           path={'/:code/payer_form'}
-          element={<PayerForm banks={banks} />}
+          element={<PayerForm banks={banks?.data} />}
         />
       </Routes>
     </>
