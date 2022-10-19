@@ -13,6 +13,7 @@ import { ROUTES, fromBase64 } from 'features/app/consts';
 
 import Layout from 'features/pay/Layout';
 import PaymentWidget from 'features/pay/PaymentWidget';
+import EmptyScreen from 'features/pay/EmptyScreen';
 
 import { URLData } from '../types';
 
@@ -69,12 +70,16 @@ const PaymentPage = () => {
     }
   }, [paymentData, navigate, rawPaymentData]);
 
-  console.log(paymentData);
-  // PaymentsPaymentLinkResponse
-
   return (
     <Layout>
       <Helmet title={`Pay invoice ${linkData?.id || ''}`} />
+
+      {!paymentData && (
+        <Box width={'100%'} padding={'80px'}>
+          <EmptyScreen />
+        </Box>
+      )}
+
       <Flex p={32} sx={{ gap: 32 }} justifyContent="space-between">
         <Box width={'50%'}>
           {paymentData && <PaymentDetails payment={paymentData} />}
