@@ -12,7 +12,6 @@ import {
   ListItem,
 } from '@team-monite/ui-kit-react';
 
-import ReactTooltip from 'react-tooltip';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -119,14 +118,12 @@ const InvoiceDetails = ({ banks, paymentData }: InvoiceDetailsProps) => {
         </ListItem>
       </StyledDetails>
 
-      <ReactTooltip />
-
       <Text color="grey">
         {t('payment:bankWidget.yapilyCopy', { name: recipient })}
       </Text>
       <Flex mt={1} flexWrap="wrap" mb="32px">
-        {Object.keys(infoPanelMap).map((key) => (
-          <Box mr={3}>
+        {Object.keys(infoPanelMap).map((key, index) => (
+          <Box mr={3} key={index}>
             <Button
               variant="text"
               color="grey"
