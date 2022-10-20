@@ -48,7 +48,7 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
 
   return (
     <StyledCard shadow>
-      {isOpen && invoice && (
+      {isOpen && invoice?.file && (
         <Modal>
           <ModalLayout fullHeight size={'md'}>
             <FileViewer
@@ -67,7 +67,7 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
 
       <Text textSize={'h2'}>{amount}</Text>
 
-      {invoice && (
+      {invoice?.file && (
         <StyledAction>
           <Button color={'secondary'} onClick={show}>
             {t('payment:actions.viewInvoice')}
@@ -98,14 +98,14 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
           value={recipient}
         />
 
-        {invoice && (
+        {invoice?.issue_date && (
           <PaymentDetailsRow
             label={t('payment:details.issueDate')}
             value={formatDate(invoice.issue_date, 'dd LLL yyyy')}
           />
         )}
 
-        {invoice && (
+        {invoice?.due_date && (
           <PaymentDetailsRow
             label={t('payment:details.dueDate')}
             value={formatDate(invoice.due_date, 'dd LLL yyyy')}
