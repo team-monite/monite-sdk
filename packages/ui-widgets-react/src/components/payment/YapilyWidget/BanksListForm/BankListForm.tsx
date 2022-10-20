@@ -64,7 +64,6 @@ const BankListItem = ({ data }: BankListItemProps) => {
   return (
     <StyledBankListItem>
       <Flex>
-        {/* TODO: test with backend */}
         <Avatar size={24} textSize="regular" src={logo} />
         <Box ml={1}>
           <Text>{data.name}</Text>
@@ -107,7 +106,7 @@ const YapilyForm = ({
     <>
       <div>
         <Text textSize="h3" align="center">
-          {t('payment:widget.banksListTitle')}
+          {t('payment:bankWidget.banksListTitle')}
         </Text>
         <Flex mt="24px" mb="32px">
           {countries && (
@@ -123,7 +122,7 @@ const YapilyForm = ({
           )}
           <Box width={355}>
             <Input
-              placeholder={t('payment:widget.banksSearchPlaceholder')}
+              placeholder={t('payment:bankWidget.banksSearchPlaceholder')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateSearchText(e.target.value);
               }}

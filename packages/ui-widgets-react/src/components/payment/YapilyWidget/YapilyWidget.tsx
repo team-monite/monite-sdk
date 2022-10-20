@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import {
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentMethodsEnum,
+  PaymentsPaymentLinkResponse,
 } from '@team-monite/sdk-api';
 
 import { useInstitutionList, useCountriesList } from 'core/queries/usePayment';
@@ -14,7 +15,10 @@ import BanksListForm from './BanksListForm';
 import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
-const YapilyWidget = () => {
+type YapilyWidgetProps = {
+  paymentData: PaymentsPaymentLinkResponse;
+};
+const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
   const [selectedCountry, setSelectedCountry] = useState(
     PaymentsYapilyCountriesCoverageCodes.DE
   );
@@ -50,7 +54,9 @@ const YapilyWidget = () => {
         />
         <Route
           path={'/:code/confirm'}
-          element={<InvoiceDetails banks={banks?.data} />}
+          element={
+            <InvoiceDetails banks={banks?.data} paymentData={paymentData} />
+          }
         />
         <Route
           path={'/:code/payer_form'}

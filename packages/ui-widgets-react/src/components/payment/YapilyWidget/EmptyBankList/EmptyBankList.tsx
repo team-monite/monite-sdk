@@ -25,15 +25,15 @@ const EmptyBankList = () => {
       </Box>
       <Box padding={'0px 80px'}>
         <Text textSize="h3" textAlign="center" color={theme.colors.grey}>
-          {t('payment:widget.emptyBankListTitle')}
+          {t('payment:bankWidget.emptyBankListTitle')}
         </Text>
         <Text textAlign="center" color={theme.colors.grey}>
-          {t('payment:widget.emptyBankListContent')}
+          {t('payment:bankWidget.emptyBankListContent')}
         </Text>
       </Box>
       <Box padding={'16px'}>
         <Button color="secondary" onClick={() => navigate(`/${search}`)}>
-          {t('payment:widget.changeMethod')}
+          {t('payment:bankWidget.changeMethod')}
         </Button>
       </Box>
     </Flex>

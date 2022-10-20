@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 
 import {
   Text,
@@ -15,15 +16,16 @@ import ReactTooltip from 'react-tooltip';
 import { useParams } from 'react-router-dom';
 
 import {
-  ReceivableResponse,
+  PaymentsPaymentLinkResponse,
   PaymentsPaymentsBank,
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 
-type BankFormProps = {
+import usePaymentDetails from '../../PaymentDetails/usePaymentDetails';
+
+type InvoiceDetailsProps = {
   banks?: PaymentsPaymentsBank[];
-  receivableData?: ReceivableResponse;
-  onFinish?: (result: any) => void;
+  paymentData: PaymentsPaymentLinkResponse;
 };
 
 const StyledLabel = styled(Box)`
@@ -38,33 +40,38 @@ const StyledDetails = styled(List)`
   margin: 32px 0;
 `;
 
-const infoPanelMap = {
-  dataSharing: {
-    label: 'Data sharing',
-    tip: 'Yapily Connect will retrieve bank data needed to facilitate this payment based on your request and provide this information to [Name of your app].',
-  },
-  secureConnection: {
-    label: 'Secure Connection',
-    tip: 'Data is securely accessed in read-only format and only for the purposes of this payment request. This request is a one off, you will not receive any other requests from Yapily Connect for this payment.',
-  },
-  access: {
-    label: 'About the access',
-    tip: 'This consent request is a one-off, you will not receive additional requests once completed.',
-  },
-  authorization: {
-    label: 'FCA Authorization',
-    tip: 'Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.',
-  },
-};
-
-//TODO add localization and fix tooltips
-const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
+const InvoiceDetails = ({ banks, paymentData }: InvoiceDetailsProps) => {
   const { code } = useParams();
+  const { t } = useTranslation();
+
   const bankData = banks?.find((bank) => bank.code === code);
 
   const logo = bankData?.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
+
+  const { recipient, amount, paymentReference } = usePaymentDetails({
+    payment: paymentData,
+  });
+
+  const infoPanelMap = {
+    dataSharing: {
+      label: t('payment:bankWidget.dataSharingLabel'),
+      tip: t('payment:bankWidget.dataSharingTip', { name: recipient }),
+    },
+    secureConnection: {
+      label: t('payment:bankWidget.secureConnectionLabel'),
+      tip: t('payment:bankWidget.secureConnectionTip'),
+    },
+    access: {
+      label: t('payment:bankWidget.accessLabel'),
+      tip: t('payment:bankWidget.accessTip'),
+    },
+    authorization: {
+      label: t('payment:bankWidget.authorizationLabel'),
+      tip: t('payment:bankWidget.authorizationTip'),
+    },
+  };
 
   return (
     <Box>
@@ -77,31 +84,37 @@ const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
       <StyledDetails>
         <ListItem>
           <Flex justifyContent="space-between">
-            <Box className={'styles.label'}>Amount</Box>
-            {/* TODO: format amount by exponent */}
-            <Box className={'styles.value'}>{receivableData?.total_amount}</Box>
-          </Flex>
-        </ListItem>
-        <ListItem>
-          <Flex justifyContent="space-between">
-            <StyledLabel>Account holder’s name</StyledLabel>
-            {/* @ts-ignore */}
-            <StyledValueBlock>{receivableData?.entity?.name}</StyledValueBlock>
-          </Flex>
-        </ListItem>
-
-        <ListItem>
-          <Flex justifyContent="space-between">
-            <StyledLabel>IBAN</StyledLabel>
-            <StyledValueBlock>
-              {receivableData?.entity_bank_account?.iban}
+            <StyledLabel className={'styles.label'}>
+              {t('payment:bankWidget.amount')}
+            </StyledLabel>
+            <StyledValueBlock className={'styles.value'}>
+              {amount}
             </StyledValueBlock>
           </Flex>
         </ListItem>
         <ListItem>
           <Flex justifyContent="space-between">
-            <StyledLabel>Payment reference</StyledLabel>
-            <StyledValueBlock>{receivableData?.document_id}</StyledValueBlock>
+            <StyledLabel>{t('payment:bankWidget.holdersName')}</StyledLabel>
+            <StyledValueBlock>
+              {paymentData.payer?.bank_account?.name}
+            </StyledValueBlock>
+          </Flex>
+        </ListItem>
+
+        <ListItem>
+          <Flex justifyContent="space-between">
+            <StyledLabel>{t('payment:bankWidget.iban')}</StyledLabel>
+            <StyledValueBlock>
+              {paymentData.payer?.bank_account?.iban}
+            </StyledValueBlock>
+          </Flex>
+        </ListItem>
+        <ListItem>
+          <Flex justifyContent="space-between">
+            <StyledLabel>
+              {t('payment:bankWidget.paymentReference')}
+            </StyledLabel>
+            <StyledValueBlock>{paymentReference}</StyledValueBlock>
           </Flex>
         </ListItem>
       </StyledDetails>
@@ -109,12 +122,7 @@ const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
       <ReactTooltip />
 
       <Text color="grey">
-        To easily set up payments from your bank to [Name of your app] , we are
-        about to securely re-direct you to your bank where you will be asked to
-        confirm the payment via Yapily Connect, an FCA regulated payment
-        initiation provider for [Name of your app]. Yapily Connect will share
-        these details with your bank, where you will then be asked to confirm
-        the following payment setup.
+        {t('payment:bankWidget.yapilyCopy', { name: recipient })}
       </Text>
       <Flex mt={1} flexWrap="wrap" mb="32px">
         {Object.keys(infoPanelMap).map((key) => (
@@ -135,7 +143,7 @@ const InvoiceDetails = ({ banks, receivableData }: BankFormProps) => {
       </Flex>
 
       <Button type="submit" block>
-        Continue
+        {t('payment:bankWidget.continue')}
       </Button>
     </Box>
   );
