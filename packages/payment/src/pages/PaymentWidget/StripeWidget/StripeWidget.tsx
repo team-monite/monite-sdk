@@ -4,9 +4,9 @@ import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 import { Theme } from '@team-monite/ui-kit-react';
 import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import { NavHeader } from '@team-monite/ui-widgets-react';
 
 import CheckoutForm from './CheckoutForm';
-import NavHeader from '../NavHeader';
 
 let stripePromise: Promise<Stripe | null> | null = null;
 

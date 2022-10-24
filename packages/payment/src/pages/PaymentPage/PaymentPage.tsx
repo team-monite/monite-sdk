@@ -6,6 +6,7 @@ import { Flex, Box } from '@team-monite/ui-kit-react';
 import {
   useComponentsContext,
   PaymentDetails,
+  EmptyScreen,
 } from '@team-monite/ui-widgets-react';
 import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
@@ -14,7 +15,6 @@ import { fromBase64 } from 'helpers';
 
 import Layout from 'pages/Layout';
 import PaymentWidget from 'pages/PaymentWidget';
-import EmptyScreen from 'pages/EmptyScreen';
 
 import { URLData } from '../types';
 

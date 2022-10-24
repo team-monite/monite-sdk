@@ -59,6 +59,7 @@ const StyledIconBlock = styled.div(
 `
 );
 
+// TODO add localization
 const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
   const { search } = useLocation();
   const theme = useTheme<Theme>();

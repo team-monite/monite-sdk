@@ -2,11 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, UArrowLeft, Box } from '@team-monite/ui-kit-react';
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import { useTranslation } from 'react-i18next';
 
 const NavHeader = () => {
   const navigate = useNavigate();
-  const { t } = useComponentsContext();
+  const { t } = useTranslation();
 
   return (
     <Box height={48} ml={'-10px'}>
