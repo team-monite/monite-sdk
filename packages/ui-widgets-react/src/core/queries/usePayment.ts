@@ -13,7 +13,7 @@ const PAYMENT_COUNTRIES = 'paymentCountries';
 
 export const useInstitutionList = (
   paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
-  country: PaymentsYapilyCountriesCoverageCodes
+  country?: PaymentsYapilyCountriesCoverageCodes
 ) => {
   const { monite } = useComponentsContext();
 
@@ -30,11 +30,12 @@ export const useInstitutionList = (
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!country,
     }
   );
 };
 
-export const useCountriesList = (
+export const useCountryList = (
   paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT
 ) => {
   const { monite } = useComponentsContext();

@@ -8,7 +8,7 @@ import {
   PaymentsPaymentLinkResponse,
 } from '@team-monite/sdk-api';
 
-import { useInstitutionList, useCountriesList } from 'core/queries/usePayment';
+import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
 
 import InvoiceDetails from './InvoiceDetails';
 import BanksListForm from './BanksListForm';
@@ -23,7 +23,7 @@ const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
     PaymentsYapilyCountriesCoverageCodes.DE
   );
 
-  const { data: countries } = useCountriesList(
+  const { data: countries } = useCountryList(
     PaymentsPaymentMethodsEnum.SEPA_CREDIT
   );
 
