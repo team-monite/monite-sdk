@@ -186,7 +186,7 @@ export default class PaymentService {
    * @throws ApiError
    */
   public getInstitutions(
-    paymentMethod: 'sepa_credit',
+    paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
     country?: PaymentsYapilyCountriesCoverageCodes
   ): CancelablePromise<PaymentsPaymentsPaymentsPaymentsBanksResponse> {
     return __request(

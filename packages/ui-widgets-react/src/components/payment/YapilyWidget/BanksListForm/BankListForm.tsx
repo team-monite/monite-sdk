@@ -4,9 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import {
-  ReceivableResponse,
   PaymentsPaymentsCountry,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
@@ -23,12 +23,9 @@ import {
   IconButton,
   Flex,
 } from '@team-monite/ui-kit-react';
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
 
 import SelectCountries from '../SelectCountries';
 import EmptyBankList from '../EmptyBankList';
-
-import styles from './style.module.scss';
 
 const StyledBankListItem = styled.div(
   ({ theme }) => `
@@ -49,6 +46,11 @@ const StyledBankListItem = styled.div(
 `
 );
 
+const StyledLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+`;
+
 type BankListItemProps = {
   data: PaymentsPaymentsBank;
 };
@@ -62,7 +64,6 @@ const BankListItem = ({ data }: BankListItemProps) => {
   return (
     <StyledBankListItem>
       <Flex>
-        {/* TODO: test with backend */}
         <Avatar size={24} textSize="regular" src={logo} />
         <Box ml={1}>
           <Text>{data.name}</Text>
@@ -74,20 +75,18 @@ const BankListItem = ({ data }: BankListItemProps) => {
 };
 
 type YapilyFormProps = {
-  receivableData?: ReceivableResponse;
-  banks: PaymentsPaymentsBank[];
+  banks?: PaymentsPaymentsBank[];
   countries?: Array<PaymentsPaymentsCountry>;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
   onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
 };
 const YapilyForm = ({
-  receivableData,
   banks = [],
   countries,
   selectedCountry,
   onChangeCountry,
 }: YapilyFormProps) => {
-  const { t } = useComponentsContext();
+  const { t } = useTranslation();
 
   const [searchText, setSearchText] = useState('');
 
@@ -107,7 +106,7 @@ const YapilyForm = ({
     <>
       <div>
         <Text textSize="h3" align="center">
-          {t('payment:widget.banksListTitle')}
+          {t('payment:bankWidget.banksListTitle')}
         </Text>
         <Flex mt="24px" mb="32px">
           {countries && (
@@ -123,7 +122,7 @@ const YapilyForm = ({
           )}
           <Box width={355}>
             <Input
-              placeholder={t('payment:widget.banksSearchPlaceholder')}
+              placeholder={t('payment:bankWidget.banksSearchPlaceholder')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateSearchText(e.target.value);
               }}
@@ -138,16 +137,15 @@ const YapilyForm = ({
         <Box>
           {filteredBanks.length ? (
             filteredBanks.map((bank) => (
-              <Link
+              <StyledLink
                 to={
                   bank.payer_required
                     ? `${bank.code}/payer_form${search}`
                     : `${bank.code}/confirm${search}`
                 }
-                className={styles.link}
               >
                 <BankListItem data={bank} />
-              </Link>
+              </StyledLink>
             ))
           ) : (
             <EmptyBankList />

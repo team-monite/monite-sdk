@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { MoniteProvider, MoniteApp } from '@team-monite/ui-widgets-react';
-
+import { Tooltip } from '@team-monite/ui-kit-react';
 import Routes from 'features/app/routes';
 
 import styles from './styles.module.scss';
@@ -26,6 +26,7 @@ function App() {
       <div className={styles.app}>
         <Routes />
       </div>
+      <Tooltip />
     </MoniteProvider>
   );
 }

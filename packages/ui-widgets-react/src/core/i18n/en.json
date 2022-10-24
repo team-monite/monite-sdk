@@ -56,12 +56,28 @@
       "submit": "Pay",
       "back": "Back",
       "emptyTitle": "No payment methods available",
-      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later.",
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
+    },
+    "bankWidget": {
       "banksListTitle": "Continue with your bank account",
       "banksSearchPlaceholder": "Search for your bank",
       "emptyBankListTitle": "No results",
       "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
-      "changeMethod": "Change method"
+      "changeMethod": "Change method",
+      "amount": "Amount",
+      "holdersName": "Account holder’s name",
+      "iban": "IBAN",
+      "paymentReference": "Payment reference",
+      "continue": "Continue",
+      "dataSharingLabel": "Data sharing",
+      "dataSharingTip": "Yapily Connect will retrieve bank data needed to facilitate this payment based on your request and provide this information to {{name}}.",
+      "secureConnectionLabel": "Secure Connection",
+      "secureConnectionTip": "Data is securely accessed in read-only format and only for the purposes of this payment request. This request is a one off, you will not receive any other requests from Yapily Connect for this payment.",
+      "accessLabel": "About the access",
+      "accessTip": "This consent request is a one-off, you will not receive additional requests once completed.",
+      "authorizationLabel": "FCA Authorization",
+      "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
+      "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup."
     }
   },
   "payables": {

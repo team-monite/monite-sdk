@@ -3,14 +3,13 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 import { Card } from '@team-monite/ui-kit-react';
-
+import { YapilyWidget } from '@team-monite/ui-widgets-react';
 import {
   PaymentsPaymentLinkResponse,
   PaymentsPaymentsPaymentIntent,
 } from '@team-monite/sdk-api';
 
 import StripeWidget from './StripeWidget';
-import YapilyWidget from './YapilyWidget';
 import SelectPaymentMethod from './SelectPaymentMethod';
 import EmptyScreen from 'features/pay/EmptyScreen';
 

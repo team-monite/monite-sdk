@@ -178,7 +178,7 @@ const components = {
     fontSize: typography.fontSize,
     fontWeight: typography.fontWeight,
 
-    backgroundColor: 'transparent',
+    backgroundColor: palette.neutral100,
     borderColor: palette.neutral80,
     borderRadius: shape.borderRadiusLarge,
 
