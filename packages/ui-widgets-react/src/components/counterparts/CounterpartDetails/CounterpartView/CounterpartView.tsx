@@ -10,6 +10,8 @@ import {
   UPen,
   UTrashAlt,
   UPlusCircle,
+  Loading,
+  FlexContainer,
 } from '@team-monite/ui-kit-react';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -22,13 +24,12 @@ import {
   isOrganizationCounterpart,
 } from '../../helpers';
 
-import { CounterpartDetailsBlock, CounterpartHeader } from '../styles';
+import { CounterpartHeader } from '../styles';
 
 import {
   prepareCounterpartIndividual,
   prepareCounterpartOrganization,
 } from '../CounterpartForm';
-import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 import CounterpartOrganizationView from './CounterpartOrganizationView';
 import CounterpartIndividualView from './CounterpartIndividualView';
@@ -44,18 +45,11 @@ const CounterpartView = (props: CounterpartViewProps) => {
     contacts,
     deleteCounterpart,
     isLoading,
-    counterpartError,
     onEdit,
+    getTitle,
   } = useCounterpartView(props);
 
   const { show, hide, isOpen } = useModal();
-
-  const renderTitle = (): string => {
-    if (isLoading) return t('counterparts:actions.loading');
-    if (counterpartError) return counterpartError.message;
-    if (counterpart) return getCounterpartName(counterpart);
-    return '';
-  };
 
   const actions = (
     <>
@@ -79,7 +73,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
       scrollableContent
       size={'md'}
       isDrawer
-      loading={isLoading && <CounterpartDetailsLoading />}
+      loading={isLoading && <Loading />}
       header={
         <CounterpartHeader>
           <Header
@@ -89,12 +83,17 @@ const CounterpartView = (props: CounterpartViewProps) => {
               </IconButton>
             }
           >
-            <Text textSize={'h3'}>{renderTitle()}</Text>
+            <Text textSize={'h3'}>{getTitle()}</Text>
           </Header>
         </CounterpartHeader>
       }
     >
-      <CounterpartDetailsBlock sx={{ gap: '32px !important', padding: 24 }}>
+      <FlexContainer
+        flexDirection={'column'}
+        position={'relative'}
+        gap={32}
+        p={24}
+      >
         {counterpart && isOpen && (
           <ConfirmDeleteDialogue
             isLoading={isLoading}
@@ -122,19 +121,9 @@ const CounterpartView = (props: CounterpartViewProps) => {
         )}
 
         {counterpart && isOrganizationCounterpart(counterpart) && (
-          <CounterpartDetailsBlock
-            title={t('counterparts:contactPersons')}
-            action={
-              <Button
-                onClick={props.onContactCreate}
-                size={'sm'}
-                variant={'text'}
-                leftIcon={<UPlusCircle />}
-              >
-                {t('counterparts:actions.addContactPerson')}
-              </Button>
-            }
-          >
+          <FlexContainer flexDirection={'column'} gap={20}>
+            <Text textSize={'h4'}>{t('counterparts:contactPersons')}</Text>
+
             {contacts?.map((contact) => (
               <CounterpartContactView
                 key={contact.id}
@@ -143,23 +132,22 @@ const CounterpartView = (props: CounterpartViewProps) => {
                 onDelete={props.onContactDelete}
               />
             ))}
-          </CounterpartDetailsBlock>
+
+            <Button
+              onClick={props.onContactCreate}
+              size={'sm'}
+              variant={'text'}
+              leftIcon={<UPlusCircle />}
+            >
+              {t('counterparts:actions.addContactPerson')}
+            </Button>
+          </FlexContainer>
         )}
 
         {counterpart && (
-          <CounterpartDetailsBlock
-            title={t('counterparts:bankAccounts')}
-            action={
-              <Button
-                onClick={props.onBankCreate}
-                size={'sm'}
-                variant={'text'}
-                leftIcon={<UPlusCircle />}
-              >
-                {t('counterparts:actions.addBankAccount')}
-              </Button>
-            }
-          >
+          <FlexContainer flexDirection={'column'} gap={20}>
+            <Text textSize={'h4'}>{t('counterparts:bankAccounts')}</Text>
+
             {banks?.map((bank) => (
               <CounterpartBankView
                 key={bank.id}
@@ -168,9 +156,18 @@ const CounterpartView = (props: CounterpartViewProps) => {
                 onDelete={props.onBankDelete}
               />
             ))}
-          </CounterpartDetailsBlock>
+
+            <Button
+              onClick={props.onBankCreate}
+              size={'sm'}
+              variant={'text'}
+              leftIcon={<UPlusCircle />}
+            >
+              {t('counterparts:actions.addBankAccount')}
+            </Button>
+          </FlexContainer>
         )}
-      </CounterpartDetailsBlock>
+      </FlexContainer>
     </ModalLayout>
   );
 };

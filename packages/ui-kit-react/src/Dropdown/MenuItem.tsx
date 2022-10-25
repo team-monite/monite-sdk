@@ -9,7 +9,7 @@ const StyledItem = styled(Box)<DropdownMenuItemProps>`
   padding: 12px 16px;
   white-space: nowrap;
 
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.black};
 
   font-size: 16px;
   font-weight: 400;

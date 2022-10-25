@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { FormField, Text } from '@team-monite/ui-kit-react';
 
 export const TextSecondary = styled(Text)`
-  color: ${({ theme }) => theme.colors.lightGrey1};
+  color: ${({ theme }) => theme.neutral70};
 `;
 
 export const FormItem = styled(FormField)`
@@ -26,15 +26,15 @@ export const CardTable = styled.table`
 
   tr:not(:last-child) {
     td {
-      border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+      border-bottom: 1px solid ${({ theme }) => theme.neutral80};
     }
   }
 `;
 
 export const CardTableHeaderCell = styled.th`
   padding: 16px 12px;
-  color: ${({ theme }) => theme.colors.grey};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  color: ${({ theme }) => theme.neutral50};
+  border-bottom: 1px solid ${({ theme }) => theme.neutral80};
 `;
 
 export const CardTableBodyCell = styled.td`
