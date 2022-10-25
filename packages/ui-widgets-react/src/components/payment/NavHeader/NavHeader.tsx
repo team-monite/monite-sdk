@@ -1,10 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { Button, UArrowLeft, Box } from '@team-monite/ui-kit-react';
 import { useTranslation } from 'react-i18next';
 
-const NavHeader = () => {
+import { Button, UArrowLeft, Box } from '@team-monite/ui-kit-react';
+
+type NavHeaderProps = {
+  handleBack?: () => void;
+};
+
+const NavHeader = ({ handleBack }: NavHeaderProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -14,7 +18,7 @@ const NavHeader = () => {
         color="grey"
         leftIcon={<UArrowLeft width={24} height={24} />}
         variant="text"
-        onClick={() => navigate(-1)}
+        onClick={handleBack ? handleBack : () => navigate(-1)}
       >
         {t('payment:widget.back')}
       </Button>

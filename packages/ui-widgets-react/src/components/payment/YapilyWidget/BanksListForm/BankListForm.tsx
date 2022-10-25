@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
@@ -7,11 +6,13 @@ import { throttle } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import {
-  PaymentsPaymentsCountry,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentsMedia,
+  PaymentsPaymentMethodsEnum,
 } from '@team-monite/sdk-api';
+import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
+
 import {
   Avatar,
   Text,
@@ -46,7 +47,7 @@ const StyledBankListItem = styled.div(
 `
 );
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.span`
   color: inherit;
   text-decoration: none;
 `;
@@ -75,26 +76,40 @@ const BankListItem = ({ data }: BankListItemProps) => {
 };
 
 type BankListFormProps = {
-  banks?: PaymentsPaymentsBank[];
-  countries?: Array<PaymentsPaymentsCountry>;
+  setSelectedBank: (bank: PaymentsPaymentsBank) => void;
+  handleNextStep: () => void;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
-  onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
 };
 const BankListForm = ({
-  banks = [],
-  countries,
+  setSelectedBank,
+  handleNextStep,
   selectedCountry,
-  onChangeCountry,
+  setSelectedCountry,
 }: BankListFormProps) => {
   const { t } = useTranslation();
+  const { data: countriesData } = useCountryList(
+    PaymentsPaymentMethodsEnum.SEPA_CREDIT
+  );
+
+  const { data: banksData, refetch: refetchInstitutionList } =
+    useInstitutionList(
+      PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+      selectedCountry as PaymentsYapilyCountriesCoverageCodes
+    );
+
+  const banks = banksData?.data || [];
+  const countries = countriesData?.data || [];
+
+  useEffect(() => {
+    refetchInstitutionList();
+  }, [selectedCountry]);
 
   const [searchText, setSearchText] = useState('');
 
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
-
-  const { search } = useLocation();
 
   const filteredBanks = searchText
     ? banks.filter((bank) =>
@@ -114,7 +129,7 @@ const BankListForm = ({
               <SelectCountries
                 value={selectedCountry}
                 onChange={(val) => {
-                  onChangeCountry(val.value);
+                  setSelectedCountry(val.value);
                 }}
                 data={countries}
               />
@@ -138,11 +153,10 @@ const BankListForm = ({
           {filteredBanks.length ? (
             filteredBanks.map((bank) => (
               <StyledLink
-                to={
-                  bank.payer_required
-                    ? `${bank.code}/payer_form${search}`
-                    : `${bank.code}/confirm${search}`
-                }
+                onClick={() => {
+                  setSelectedBank(bank);
+                  handleNextStep();
+                }}
               >
                 <BankListItem data={bank} />
               </StyledLink>
