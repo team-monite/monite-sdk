@@ -30,7 +30,7 @@ const inactive = ({
 const StyledTableRow = styled.tr<StyledTableRowProps>`
   ${inactive}
   &:hover td {
-    background: ${({ theme }) => theme.colors.lightGrey3};
+    background: ${({ theme }) => theme.neutral90};
     ${({ onClick }) => (onClick ? 'cursor: pointer' : '')};
   }
 `;
@@ -51,7 +51,7 @@ const DropdownToggler = styled(IconButton)`
   width: 32px;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.hoverAction};
+    color: ${({ theme }) => theme.black};
   }
 `;
 

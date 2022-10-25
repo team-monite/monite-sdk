@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Global, useTheme } from '@emotion/react';
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.colors.lightGrey3};
+  background: ${({ theme }) => theme.neutral90};
   min-height: 100vh;
 `;
 

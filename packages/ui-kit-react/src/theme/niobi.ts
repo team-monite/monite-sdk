@@ -1,3 +1,5 @@
+import { ComponentTokens } from './index';
+
 const baseColors = {
   green: '#025041',
   black: '#111111',
@@ -128,7 +130,7 @@ const shape = {
   borderRadiusSmall: '8px',
 };
 
-const components = {
+const components: ComponentTokens = {
   avatar: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
@@ -287,6 +289,11 @@ const components = {
 
     textColorText: palette.neutral10,
   },
+  loading: {
+    color: palette.primary50,
+    backgroundColor: `${palette.neutral100}b8`,
+    size: 45,
+  },
   search: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
@@ -398,6 +405,10 @@ const components = {
 
     specialTextColor: palette.special50,
     specialBackgroundColor: palette.special95,
+  },
+  tooltip: {
+    textColor: baseColors.white,
+    backgroundColor: baseColors.black,
   },
 };
 

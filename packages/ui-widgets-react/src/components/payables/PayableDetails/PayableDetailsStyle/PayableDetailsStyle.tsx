@@ -35,7 +35,7 @@ export const StyledHeaderActions = styled(Flex)`
 
 export const StyledContent = styled(Flex)`
   padding: 40px 40px 0 40px;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${({ theme }) => theme.neutral90};
   gap: 48px;
   height: 100%;
 `;
@@ -48,20 +48,6 @@ export const StyledSection = styled(Box)`
   flex-direction: column;
 `;
 
-export const StyledScrollContent = styled(Box)`
-  height: 100%;
-  position: relative;
-`;
-
-export const StyledScroll = styled(Box)`
-  overflow: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
-
 export const CurrencyAddon = styled(Text)`
   position: absolute;
   right: 10px;
@@ -69,19 +55,6 @@ export const CurrencyAddon = styled(Text)`
   display: flex;
   justify-content: center;
   transform: translateY(-50%);
-`;
-
-export const StyledLoading = styled(Text)`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  background-color: #ffffffb8;
-  color: ${({ theme }) => theme.colors.primary};
-  z-index: 1;
 `;
 
 export const StyledTabs = styled(Box)`
@@ -93,13 +66,13 @@ export const StyledInfoScroll = styled(StyledModalLayoutScroll)`
 `;
 
 export const StyledInfoTable = styled(Box)`
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border: 1px solid ${({ theme }) => theme.neutral80};
   border-radius: 6px;
 `;
 
 export const StyledInfoRow = styled(Box)`
   display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border-bottom: 1px solid ${({ theme }) => theme.neutral80};
   align-items: center;
   padding: 11px 16px;
 

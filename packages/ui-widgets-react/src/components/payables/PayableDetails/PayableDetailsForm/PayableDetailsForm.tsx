@@ -1,6 +1,10 @@
 import React, { forwardRef, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Controller, useForm, ControllerFieldState } from 'react-hook-form';
+import {
+  StyledModalLayoutScrollContent,
+  StyledModalLayoutScroll,
+} from '@team-monite/ui-kit-react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
@@ -9,7 +13,7 @@ import {
   DatePicker,
   Multiselect,
   Select,
-  Spinner,
+  Loading,
 } from '@team-monite/ui-kit-react';
 
 import { getSymbolFromCurrency } from 'core/utils/currency';
@@ -19,9 +23,6 @@ import {
   FormItem,
   FormSection,
   FormTitle,
-  StyledLoading,
-  StyledScroll,
-  StyledScrollContent,
 } from '../PayableDetailsStyle';
 
 import usePayableDetailsForm, {
@@ -90,13 +91,9 @@ const PayableDetailsForm = forwardRef<
   });
 
   return (
-    <StyledScrollContent>
-      {isFormLoading && (
-        <StyledLoading>
-          <Spinner color={'primary'} pxSize={45} />
-        </StyledLoading>
-      )}
-      <StyledScroll>
+    <StyledModalLayoutScrollContent>
+      {isFormLoading && <Loading />}
+      <StyledModalLayoutScroll>
         <form
           ref={ref}
           id="payableDetailsForm"
@@ -324,8 +321,8 @@ const PayableDetailsForm = forwardRef<
             />
           </FormSection>
         </form>
-      </StyledScroll>
-    </StyledScrollContent>
+      </StyledModalLayoutScroll>
+    </StyledModalLayoutScrollContent>
   );
 });
 

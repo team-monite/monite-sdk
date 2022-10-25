@@ -17,7 +17,7 @@ const Wrapper = styled(List)`
       font-weight: 500;
       line-height: 20px;
 
-      color: ${({ theme }) => theme.colors.lightGrey1};
+      color: ${({ theme }) => theme.neutral70};
     }
 
     > * + * {

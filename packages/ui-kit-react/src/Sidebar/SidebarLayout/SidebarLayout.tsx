@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
   flex: 0 0 auto;
   padding: 30px 32px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border-bottom: 1px solid ${({ theme }) => theme.neutral80};
 `;
 
 const Content = styled.div`
@@ -22,7 +22,7 @@ const Content = styled.div`
 const Footer = styled.div`
   flex: 0 0 auto;
   padding: 16px 32px;
-  border-top: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border-top: 1px solid ${({ theme }) => theme.neutral80};
 `;
 
 interface Props {

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   width: 80vw;
   max-width: 604px;
   background: white;
-  box-shadow: -8px 0px 16px 0px #00000014;
+  box-shadow: -8px 0 16px 0 #00000014;
 
   display: flex;
   flex-direction: column;
@@ -26,7 +26,7 @@ const Backdrop = styled.div`
   z-index: 920;
   width: 100vw;
   height: 100vh;
-  background-color: ${({ theme }) => theme.colors.lightGrey3};
+  background-color: ${({ theme }) => theme.neutral90};
 `;
 
 type SidebarProps = {

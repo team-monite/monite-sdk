@@ -14,7 +14,7 @@ type TabProps = ReactTabProps & {
 
 const Counter = styled.div`
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.red};
+  background-color: ${({ theme }) => theme.red};
   font-weight: 600;
   font-size: 8px;
   line-height: 20px;
@@ -23,7 +23,7 @@ const Counter = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.white};
   margin-left: 8px;
 `;
 
@@ -37,7 +37,7 @@ const StyledTab = styled(ReactTab)<TabProps>`
   padding: 0;
   height: 38px;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.grey};
+  color: ${({ theme }) => theme.neutral50};
   transition: color 0.2s;
   white-space: nowrap;
 
@@ -46,11 +46,11 @@ const StyledTab = styled(ReactTab)<TabProps>`
   }
 
   &:hover {
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
   }
 
   &.${selectedTab} {
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
 
     &:after {
       border-radius: 5px 5px 0 0;
@@ -60,7 +60,7 @@ const StyledTab = styled(ReactTab)<TabProps>`
       left: 0;
       right: 0;
       bottom: -4px;
-      background-color: ${({ theme }) => theme.colors.black};
+      background-color: ${({ theme }) => theme.black};
     }
   }
 

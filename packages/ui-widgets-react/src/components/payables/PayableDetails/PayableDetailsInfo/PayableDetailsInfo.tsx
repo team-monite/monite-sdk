@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PayableResponseSchema } from '@team-monite/sdk-api';
-import { Tag } from '@team-monite/ui-kit-react';
+import { Tag, StyledModalLayoutScrollContent } from '@team-monite/ui-kit-react';
 import { formatDate, getReadableAmount } from 'core/utils';
 import {
   FormSection,
@@ -10,7 +10,6 @@ import {
   StyledInfoRow,
   StyledInfoTable,
   StyledInfoValue,
-  StyledScrollContent,
   StyledInfoScroll,
   StyledTags,
 } from '../PayableDetailsStyle';
@@ -24,7 +23,7 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
 
   return (
-    <StyledScrollContent>
+    <StyledModalLayoutScrollContent>
       <StyledInfoScroll>
         <FormSection>
           <FormTitle textSize={'bold'}>
@@ -133,7 +132,7 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
           </StyledInfoTable>
         </FormSection>
       </StyledInfoScroll>
-    </StyledScrollContent>
+    </StyledModalLayoutScrollContent>
   );
 };
 

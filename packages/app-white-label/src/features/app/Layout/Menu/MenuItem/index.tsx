@@ -21,7 +21,7 @@ const MenuItemLink = styled(NavLink)<MenuItemLInkProps>`
   border-radius: 4px;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.lightGrey2};
+    background: ${({ theme }) => theme.neutral80};
   }
 
   ${({ hasChildren, theme }) =>
@@ -38,7 +38,7 @@ const MenuSubItemLink = styled(MenuItemLink)`
   padding-left: 40px;
 
   &.active {
-    background: ${({ theme }) => theme.colors.lightGrey2};
+    background: ${({ theme }) => theme.neutral80};
   }
 `;
 

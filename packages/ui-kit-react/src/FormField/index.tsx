@@ -48,11 +48,11 @@ const Label = styled(Text)`
 `;
 
 const Error = styled(Text)<{}>`
-  color: ${({ theme }) => theme.colors.danger};
+  color: ${({ theme }) => theme.red};
   margin-top: 8px;
 
   a {
-    color: ${({ theme }) => theme.colors.danger};
+    color: ${({ theme }) => theme.red};
     text-decoration: underline;
   }
 `;
@@ -63,14 +63,14 @@ const FormText = styled.div`
   font-weight: 400;
   line-height: 20px;
 
-  color: ${({ theme }) => theme.colors.grey};
+  color: ${({ theme }) => theme.neutral50};
 
   a {
-    color: ${({ theme }) => theme.colors.grey};
+    color: ${({ theme }) => theme.neutral50};
     text-decoration: underline;
 
     &:hover {
-      color: ${({ theme }) => theme.colors.blue};
+      color: ${({ theme }) => theme.blue};
     }
   }
 `;

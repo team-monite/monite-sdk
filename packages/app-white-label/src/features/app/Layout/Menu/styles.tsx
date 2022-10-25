@@ -10,7 +10,7 @@ export const Menu = styled(Flex)`
   }
 
   a {
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
     text-decoration: none;
   }
 `;
