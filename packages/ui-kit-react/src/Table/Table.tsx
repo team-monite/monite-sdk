@@ -133,7 +133,7 @@ const DropdownToggler = styled(IconButton)`
   width: 32px;
 
   &:hover {
-    color: ${({ theme }) => theme.colors.hoverAction};
+    color: ${({ theme }) => theme.black};
   }
 `;
 

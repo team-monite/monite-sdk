@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import { Box, Flex } from '@team-monite/ui-kit-react';
 
-export * from './CounterpartDetailsBlock';
-
 export const CounterpartHeader = styled(Box)`
   border-bottom: 1px solid ${({ theme }) => theme.neutral80};
 `;

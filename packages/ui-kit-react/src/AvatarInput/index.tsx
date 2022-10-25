@@ -11,7 +11,7 @@ const Wrapper = styled.div<{ size: number } & Partial<AvatarInputProps>>`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  background-color: ${({ theme }) => theme.colors.grey};
+  background-color: ${({ theme }) => theme.neutral50};
   border-radius: 100%;
 
   input {

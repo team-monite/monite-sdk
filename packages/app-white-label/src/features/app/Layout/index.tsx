@@ -21,10 +21,10 @@ const Sider = styled(Flex)`
   height: 100vh;
 
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.lightGrey3};
+  background: ${({ theme }) => theme.neutral90};
 
   a {
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
     text-decoration: none;
   }
 `;

@@ -48,6 +48,7 @@ const getBorderColor = ({
     }
   `;
 };
+
 const getOutlineColor = ({
   theme,
   $disabled,
@@ -147,7 +148,7 @@ const Wrapper = styled.label<StyledProps>`
   }
 `;
 
-type RadioProps = {
+type CheckboxProps = {
   label?: string;
   name: string;
   id: string;
@@ -169,7 +170,7 @@ const Checkbox = ({
   tooltip,
   isInvalid,
   onChange,
-}: RadioProps) => {
+}: CheckboxProps) => {
   const tooltipAttributes = tooltip
     ? Object.keys(tooltip).reduce<Record<string, any>>((acc, key) => {
         acc[`data-${key}`] = tooltip[key];
@@ -196,7 +197,7 @@ const Checkbox = ({
         onChange={onChange}
         disabled={disabled}
       />
-      {label ? <span>{label}</span> : null}
+      {label && <span>{label}</span>}
     </Wrapper>
   );
 };

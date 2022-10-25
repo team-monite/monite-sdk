@@ -5,7 +5,7 @@ const baseColors = {
   white: '#FFFFFF',
   green: '#1FBCA0',
   orange: '#E27E46',
-  red: '#CC394B',
+  red: '#FF475D',
   purple: '#A06DC8',
 };
 
@@ -128,7 +128,29 @@ const shape = {
   borderRadiusSmall: '8px',
 };
 
-const components = {
+type ComponentListType =
+  | 'avatar'
+  | 'button'
+  | 'card'
+  | 'checkbox'
+  | 'datePicker'
+  | 'header'
+  | 'input'
+  | 'labelText'
+  | 'loading'
+  | 'search'
+  | 'select'
+  | 'tableHeader'
+  | 'tableBody'
+  | 'tag'
+  | 'tooltip';
+
+export type ComponentTokens = Record<
+  ComponentListType,
+  { [key: string]: string | number }
+>;
+
+const components: ComponentTokens = {
   avatar: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
@@ -287,6 +309,11 @@ const components = {
 
     textColorText: palette.neutral10,
   },
+  loading: {
+    color: palette.primary50,
+    backgroundColor: `${palette.neutral100}b8`,
+    size: 45,
+  },
   search: {
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize,
@@ -398,6 +425,10 @@ const components = {
 
     specialTextColor: palette.special50,
     specialBackgroundColor: palette.special95,
+  },
+  tooltip: {
+    textColor: baseColors.white,
+    backgroundColor: baseColors.black,
   },
 };
 

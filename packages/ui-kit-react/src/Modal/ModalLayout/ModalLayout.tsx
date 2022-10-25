@@ -67,7 +67,7 @@ const getBoxStyles = ({ $fullScreen, $isDrawer }: StyledModalLayoutProps) => {
 };
 
 const StyledWrap = styled(Box)<StyledModalLayoutProps>`
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.white};
   position: relative;
   display: flex;
   flex-direction: column;

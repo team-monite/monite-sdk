@@ -12,6 +12,8 @@ import {
   Text,
   Header,
   Button,
+  Loading,
+  FlexContainer,
 } from '@team-monite/ui-kit-react';
 
 import {
@@ -31,7 +33,6 @@ import {
 import CounterpartAddressForm from '../../CounterpartAddressForm';
 
 import {
-  CounterpartDetailsBlock,
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
@@ -44,7 +45,6 @@ import useCounterpartForm, {
 } from '../useCounterpartForm';
 
 import getValidationSchema from './validation';
-import { CounterpartDetailsLoading } from '../../styles/CounterpartDetailsLoading';
 
 export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { t } = useComponentsContext();
@@ -83,7 +83,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
-      loading={isLoading && <CounterpartDetailsLoading />}
+      loading={isLoading && <Loading />}
       header={
         <CounterpartHeader>
           <Header>
@@ -243,11 +243,12 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
             )}
           />
 
-          <CounterpartDetailsBlock
-            title={t('counterparts:organization.address')}
-          >
+          <FlexContainer flexDirection={'column'} gap={20}>
+            <Text textSize={'h4'}>
+              {t('counterparts:organization.address')}
+            </Text>
             <CounterpartAddressForm />
-          </CounterpartDetailsBlock>
+          </FlexContainer>
         </CounterpartForm>
       </FormProvider>
     </ModalLayout>
