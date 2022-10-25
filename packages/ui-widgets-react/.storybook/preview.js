@@ -6,7 +6,7 @@ export const parameters = {
   // viewMode: 'docs',
   options: {
     storySort: {
-      order: ['Common', 'Payables', 'In Progress'],
+      order: ['Payables', 'Counterparts', 'Approval Policies', 'Payments'],
     },
   },
   actions: { argTypesRegex: '^on[A-Z].*' },
