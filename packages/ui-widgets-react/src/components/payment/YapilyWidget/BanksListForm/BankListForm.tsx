@@ -74,18 +74,18 @@ const BankListItem = ({ data }: BankListItemProps) => {
   );
 };
 
-type YapilyFormProps = {
+type BankListFormProps = {
   banks?: PaymentsPaymentsBank[];
   countries?: Array<PaymentsPaymentsCountry>;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
   onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
 };
-const YapilyForm = ({
+const BankListForm = ({
   banks = [],
   countries,
   selectedCountry,
   onChangeCountry,
-}: YapilyFormProps) => {
+}: BankListFormProps) => {
   const { t } = useTranslation();
 
   const [searchText, setSearchText] = useState('');
@@ -120,7 +120,7 @@ const YapilyForm = ({
               />
             </Box>
           )}
-          <Box width={355}>
+          <Box width={'85%'}>
             <Input
               placeholder={t('payment:bankWidget.banksSearchPlaceholder')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,4 +156,4 @@ const YapilyForm = ({
   );
 };
 
-export default YapilyForm;
+export default BankListForm;

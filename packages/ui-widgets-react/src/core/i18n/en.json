@@ -77,7 +77,9 @@
       "accessTip": "This consent request is a one-off, you will not receive additional requests once completed.",
       "authorizationLabel": "FCA Authorization",
       "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
-      "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup."
+      "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup.",
+      "payerFormName": "Your account name",
+      "payerFormIban": "Your IBAN"
     }
   },
   "payables": {

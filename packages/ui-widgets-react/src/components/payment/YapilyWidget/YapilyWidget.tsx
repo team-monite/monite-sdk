@@ -23,6 +23,13 @@ const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
     PaymentsYapilyCountriesCoverageCodes.DE
   );
 
+  const [payerName, setPayerName] = useState(
+    paymentData.payer?.bank_account?.name || ''
+  );
+  const [payerIban, setPayerIban] = useState(
+    paymentData.payer?.bank_account?.iban || ''
+  );
+
   const { data: countries } = useCountryList(
     PaymentsPaymentMethodsEnum.SEPA_CREDIT
   );
@@ -60,7 +67,16 @@ const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
         />
         <Route
           path={'/:code/payer_form'}
-          element={<PayerForm banks={banks?.data} />}
+          element={
+            <PayerForm
+              banks={banks?.data}
+              paymentData={paymentData}
+              name={payerName}
+              iban={payerIban}
+              onChangeName={setPayerName}
+              onChangeIban={setPayerIban}
+            />
+          }
         />
       </Routes>
     </>
