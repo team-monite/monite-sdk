@@ -52,7 +52,7 @@ The `MoniteProvider` element serves as a wrapper for other Monite-connected comp
 Any other components imported from `@team-monite/ui-widgets-react` must be placed inside this element.
 
 ## Documentation
-* [Storybook](https://degw4zlm5v519.cloudfront.net/) (component explorer)
+* [Storybook](https://sdk.dev.monite.com/) (component explorer)
 * [Monite API docs](https://docs.monite.com/docs)
 
 ## License
