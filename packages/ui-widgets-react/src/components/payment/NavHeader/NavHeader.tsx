@@ -13,7 +13,7 @@ const NavHeader = ({ handleBack }: NavHeaderProps) => {
   const { t } = useTranslation();
 
   return (
-    <Box height={48} ml={'-10px'}>
+    <Box height={48} ml={-10}>
       <Button
         color="grey"
         leftIcon={<UArrowLeft width={24} height={24} />}
