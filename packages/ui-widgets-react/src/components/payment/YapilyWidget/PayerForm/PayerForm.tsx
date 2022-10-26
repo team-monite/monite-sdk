@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -13,36 +12,32 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import {
-  PaymentsPaymentsBank,
   PaymentsPaymentsMedia,
-  PaymentsPaymentLinkResponse,
+  PaymentsPaymentsBank,
 } from '@team-monite/sdk-api';
 
 type PayerFormProps = {
-  banks?: PaymentsPaymentsBank[];
-  paymentData: PaymentsPaymentLinkResponse;
+  bank?: PaymentsPaymentsBank;
   name: string;
   iban: string;
   onChangeName: (name: string) => void;
   onChangeIban: (iban: string) => void;
+  handleNextStep: () => void;
 };
 
 const PayerForm = ({
-  banks,
+  bank,
   name,
   iban,
   onChangeName,
   onChangeIban,
+  handleNextStep,
 }: PayerFormProps) => {
   const { t } = useTranslation();
-  const { code } = useParams();
-  const { search } = useLocation();
-  const navigate = useNavigate();
-  const bankData = banks?.find((bank) => bank.code === code);
 
-  if (!bankData) return null;
+  if (!bank) return null;
 
-  const logo = bankData.media.find(
+  const logo = bank.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
 
@@ -51,7 +46,7 @@ const PayerForm = ({
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         <Avatar size={44} src={logo}></Avatar>
         <Text textSize="h3" mt="12px" textAlign="center">
-          {bankData?.name}
+          {bank?.name}
         </Text>
       </Flex>
 
@@ -77,14 +72,7 @@ const PayerForm = ({
           />
         </FormField>
       </Box>
-      <Button
-        mt="56px"
-        type="submit"
-        block
-        onClick={() => {
-          navigate(`../${bankData.code}/confirm${search}`);
-        }}
-      >
+      <Button mt="56px" type="submit" block onClick={handleNextStep}>
         Continue
       </Button>
     </Box>
