@@ -21,7 +21,7 @@ yarn add @team-monite/ui-kit-react
 ```
 
 ## Documentation
-* [Storybook](https://d1ycnyw9drklmc.cloudfront.net/) (component explorer)
+* [Storybook](https://ui-kit.monite.com/) (component explorer)
 
 ## License
 MIT
