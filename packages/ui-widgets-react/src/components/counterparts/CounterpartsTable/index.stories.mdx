@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import counterpartsMock from '../fixtures/counterparts';
 
 <Meta
-  title="In Progress/Counterparts — Table View"
+  title="Counterparts/Counterparts — Table View"
   component={Table}
   decorators={[withMock]}
   parameters={{
@@ -39,30 +39,85 @@ export const Template = (args) => (
   </div>
 );
 
-# Counterparts Table
 
-#### The Counterparts table is a component for displaying the list of counterparts for the current entity user.
+# CounterpartsTable
 
-It displays
+Displays a table with a list of [counterparts](https://docs.monite.com/docs/manage-counterparts) available to the authenticated entity user.
+The table displays the counterpart name, type (customer or vendor), country and city, and the default contact (if any).
+This component calls the [`GET /counterparts`](https://docs.monite.com/reference/get_counterparts_v1_counterparts_get) endpoint to fetch the data.
 
-- Name, country, city
-- Counterpart's type
-- Contact information
-- Actions dropdown for each row
+The table supports the following functionality out-of-the-box:
+* Pagination: the user can navigate to the next or previous page only. The default page size is 10 items per page.
+* Sorting by the counterpart name.
+* Searching counterparts by name.
+* Filtering by the counterpart type: customer or vendor, organization or individual.
 
-It has sorting column: Name. First click set up ASC order, second — DESC order, third — disable sorting.
+Search, sorting, filtering, and pagination are done at the server side rather than the client side.
+That is, any change to the table display options triggers a new request to the Monite API to return the adjusted data set.
 
-It has a search field by Name. It sends a request after a user types a search string.
+## Props
 
-It has the filter by type "Customer" or "Vendor". The user can select specific type or the "Customers & Vendors" option (it means the same as no selection at all). After every select change, the filter settings will be updated and a new request will be fired with updated values.
+### `currentSort`
 
-It has the filter by type "Individuals" or "Companies". The user can select specific type or the "All" option (it means the same as no selection at all). After every select change, the filter settings will be updated and a new request will be fired with updated values.
+An object that contains the current sort field and order:
+```json
+{
+  "sort": "counterpart_name",
+  "order": "asc" | "desc"
+}
+```
+or `null`.
 
-It has pagination. The user can go to the previous/next page only. The current limit for 1 page is 10 rows.
+### `onChangeFilter`
+This callback is triggered when the filtering options are changed.
+
+### `onChangeSort`
+
+Type:
+```json
+(
+  "sort": "counterpart_name",
+  "order": "asc" | "desc" | null
+) => void;
+```
+
+Callback. Called when the current sort is changed. Returns the new sort field and order.
+
+### `onNext`
+Type: `() => void`
+
+Callback. Called when the "next" button in the pagination controls is clicked.
+
+### `onPrev`
+Type: `() => void`
+
+Callback. Called when the "previous" button in the pagination controls is clicked.
+
+### `onRowClick`
+Type: `(id: string) => void`
+
+Callback. Called when a table row is clicked. Returns the ID of the clicked record.
+
+### `paginationTokens`
+
+An object containing the available [pagination tokens](https://docs.monite.com/reference/getting-started-with-monite-api#pagination-sorting-and-filtering).
+It is used to determine the availability of the "next" and "previous" buttons at the bottom of the table.
+
+```json
+{
+  "next_pagination_token": "string" | null | undefined,
+  "prev_pagination_token": "string" | null | undefined
+}
+```
+
+## Related documentation
+* [Counterparts](https://docs.monite.com/docs/manage-counterparts)
+* [GET /counterparts](https://docs.monite.com/reference/get_payables_v1_payables_get)
+
 
 <Canvas>
   <Story
-    name="Playground"
+    name="Default"
     args={{
       onRowClick: action('onRowClick'),
       onChangeSort: action('onChangeSort'),

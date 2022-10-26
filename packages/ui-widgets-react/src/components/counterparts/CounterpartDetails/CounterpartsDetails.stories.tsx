@@ -2,7 +2,7 @@ import CounterpartsDetails from './CounterpartsDetails';
 import { CounterpartType } from '@team-monite/sdk-api';
 
 const Story = {
-  title: 'In Progress/Counterparts — Details',
+  title: 'Counterparts/Counterparts — Details',
   component: CounterpartsDetails,
 };
 

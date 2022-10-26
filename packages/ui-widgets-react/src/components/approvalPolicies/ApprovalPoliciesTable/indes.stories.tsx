@@ -2,7 +2,7 @@ import Table from './Table';
 import TestData from '../fixtures/list';
 
 const Story = {
-  title: 'In Progress/Approval Policies — Table View',
+  title: 'Approval Policies/Approval Policies — Table View',
   component: Table,
 };
 export default Story;

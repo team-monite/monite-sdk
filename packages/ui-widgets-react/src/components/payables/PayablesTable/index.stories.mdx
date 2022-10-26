@@ -35,31 +35,86 @@ import payableMock from '../fixtures/getPayables';
 
 export const Template = (args) => <div style={{ display: 'flex', height: 600 }}><Table {...args} /></div>;
 
-# Payables Table
+# PayablesTable
 
-#### The Payables table is a component for displaying the list of payables for the current entity user.
+Displays a table with a list of payables that the authenticated entity user has access to.
+This component calls the [`GET /payables`](https://docs.monite.com/reference/get_payables_v1_payables_get) endpoint to fetch the data.
+ 
+The table supports the following functionality out-of-the-box:
+* Pagination: the user can navigate to the next or previous page only. The default page size is 10 items per page.
+* Sorting by:
+	* amount
+	* due date
+* Searching payables by the document number (exact match, case-sensitive)
+* Filtering by:
+	* document status (for example, `draft` or `approved`)
+	* due date (exact date)
+ 
+Search, sorting, filtering, and pagination are done at the server side rather than the client side.
+That is, any change to the table display options triggers a new request to the Monite API to return the adjusted data set.
+ 
+## Props
 
-It displays
-- Invoice #
-- Supplier’s name
-- Invoice date
-- Due date
-- Status
-- Amount
+### `currentSort`
 
-It has several sorting columns: Due date, Amount. First click set up ASC order, second — DESC order, third — disable sorting. Only one sort column could be active at a time.
+An object that contains the current sort field and order:
+```json
+{
+  "sort": "id" | "amount" | "due_date",
+  "order": "asc" | "desc"
+}
+```
+or `null`.
 
-It has a search field. It sends a request after a user types a search string. Currently, API does not have a full-text search, so the search field looks through invoice numbers only, and it should be an exact match.
+### `onChangeFilter`
+This callback is triggered when the filtering options are changed.
 
-It has the filter by status. The user can select specific status or the 'All statuses' option (it means the same as no selection at all). After every select change, the filter settings will be updated and a new request will be fired with updated values.
+### `onChangeSort`
 
-It has the Due date and Invoice date filters. It is a date picker. After every date change, the filter settings will be updated and a new request will be fired with updated values.
+Type:
+```json
+(
+  "sort": "id" | "amount" | "due_date",
+  "order": "asc" | "desc" | null
+) => void;
+```
 
-It has pagination. The user can go to the previous/next page only. The current limit for 1 page is 10 rows.
+Callback. Called when the current sort is changed. Returns the new sort field and order.
+
+### `onNext`
+Type: `() => void`
+
+Callback. Called when the "next" button in the pagination controls is clicked.
+
+### `onPrev`
+Type: `() => void`
+
+Callback. Called when the "previous" button in the pagination controls is clicked.
+
+### `onRowClick`
+Type: `(id: string) => void`
+
+Callback. Called when a table row is clicked. Returns the ID of the clicked record.
+
+### `paginationTokens`
+
+An object containing the available [pagination tokens](https://docs.monite.com/reference/getting-started-with-monite-api#pagination-sorting-and-filtering).
+It is used to determine the availability of the "next" and "previous" buttons at the bottom of the table.
+
+```json
+{
+  "next_pagination_token": "string" | null | undefined,
+  "prev_pagination_token": "string" | null | undefined
+}
+```
+
+## Related documentation
+* [GET /payables](https://docs.monite.com/reference/get_payables_v1_payables_get)
+
 
 <Canvas>
   <Story
-    name='Playground'
+    name='Default'
     args={{
       onRowClick: action('onRowClick'),
       onChangeSort: action('onChangeSort'),
