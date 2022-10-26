@@ -12,8 +12,6 @@ import {
   ListItem,
 } from '@team-monite/ui-kit-react';
 
-import { useParams } from 'react-router-dom';
-
 import {
   PaymentsPaymentLinkResponse,
   PaymentsPaymentsBank,
@@ -23,7 +21,7 @@ import {
 import usePaymentDetails from '../../PaymentDetails/usePaymentDetails';
 
 type InvoiceDetailsProps = {
-  banks?: PaymentsPaymentsBank[];
+  bank?: PaymentsPaymentsBank;
   paymentData: PaymentsPaymentLinkResponse;
 };
 
@@ -39,13 +37,10 @@ const StyledDetails = styled(List)`
   margin: 32px 0;
 `;
 
-const InvoiceDetails = ({ banks, paymentData }: InvoiceDetailsProps) => {
-  const { code } = useParams();
+const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
   const { t } = useTranslation();
 
-  const bankData = banks?.find((bank) => bank.code === code);
-
-  const logo = bankData?.media.find(
+  const logo = bank?.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
 
@@ -77,7 +72,7 @@ const InvoiceDetails = ({ banks, paymentData }: InvoiceDetailsProps) => {
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         <Avatar size={44} src={logo}></Avatar>
         <Text textSize="h3" mt="12px" textAlign="center">
-          {bankData?.name}
+          {bank?.name}
         </Text>
       </Flex>
       <StyledDetails>

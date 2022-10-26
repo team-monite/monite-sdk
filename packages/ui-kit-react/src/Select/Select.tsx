@@ -85,6 +85,7 @@ interface SelectProps {
   controlShouldRenderValue?: boolean;
   onCreateOption?: (value: string) => void;
   leftIcon?: () => ReactNode;
+  isSearchable?: boolean;
 }
 
 const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
@@ -103,6 +104,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
     isClearable,
     isFocused,
     isDisabled,
+    isSearchable = true,
     onFocus,
     onBlur,
     hideSelectedOptions = false,
@@ -530,6 +532,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
       onMenuClose={handleOnMenuClose}
       isMulti={isMulti}
       isClearable={isClearable}
+      isSearchable={isSearchable}
       closeMenuOnSelect={!isMulti}
       placeholder={placeholder}
       isDisabled={isDisabled}

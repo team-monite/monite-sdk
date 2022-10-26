@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
@@ -7,11 +6,13 @@ import { throttle } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import {
-  PaymentsPaymentsCountry,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentsMedia,
+  PaymentsPaymentMethodsEnum,
 } from '@team-monite/sdk-api';
+import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
+
 import {
   Avatar,
   Text,
@@ -22,6 +23,7 @@ import {
   USearchAlt,
   IconButton,
   Flex,
+  Button,
 } from '@team-monite/ui-kit-react';
 
 import SelectCountries from '../SelectCountries';
@@ -46,11 +48,10 @@ const StyledBankListItem = styled.div(
 `
 );
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.span`
   color: inherit;
   text-decoration: none;
 `;
-
 type BankListItemProps = {
   data: PaymentsPaymentsBank;
 };
@@ -74,27 +75,43 @@ const BankListItem = ({ data }: BankListItemProps) => {
   );
 };
 
-type YapilyFormProps = {
-  banks?: PaymentsPaymentsBank[];
-  countries?: Array<PaymentsPaymentsCountry>;
+type BankListFormProps = {
+  setSelectedBank: (bank: PaymentsPaymentsBank) => void;
+  handleNextStep: () => void;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
-  onChangeCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  onChangeMethod: () => void;
 };
-const YapilyForm = ({
-  banks = [],
-  countries,
+const BankListForm = ({
+  setSelectedBank,
+  handleNextStep,
   selectedCountry,
-  onChangeCountry,
-}: YapilyFormProps) => {
+  setSelectedCountry,
+  onChangeMethod,
+}: BankListFormProps) => {
   const { t } = useTranslation();
+  const { data: countriesData } = useCountryList(
+    PaymentsPaymentMethodsEnum.SEPA_CREDIT
+  );
+
+  const { data: banksData, refetch: refetchInstitutionList } =
+    useInstitutionList(
+      PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+      selectedCountry as PaymentsYapilyCountriesCoverageCodes
+    );
+
+  const banks = banksData?.data || [];
+  const countries = countriesData?.data || [];
+
+  useEffect(() => {
+    refetchInstitutionList();
+  }, [selectedCountry]);
 
   const [searchText, setSearchText] = useState('');
 
   const updateSearchText = throttle((phrase: string) => {
     setSearchText(phrase);
   }, 200);
-
-  const { search } = useLocation();
 
   const filteredBanks = searchText
     ? banks.filter((bank) =>
@@ -114,13 +131,13 @@ const YapilyForm = ({
               <SelectCountries
                 value={selectedCountry}
                 onChange={(val) => {
-                  onChangeCountry(val.value);
+                  setSelectedCountry(val.value);
                 }}
                 data={countries}
               />
             </Box>
           )}
-          <Box width={355}>
+          <Box width={'85%'}>
             <Input
               placeholder={t('payment:bankWidget.banksSearchPlaceholder')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,19 +153,25 @@ const YapilyForm = ({
         </Flex>
         <Box>
           {filteredBanks.length ? (
-            filteredBanks.map((bank) => (
-              <StyledLink
-                to={
-                  bank.payer_required
-                    ? `${bank.code}/payer_form${search}`
-                    : `${bank.code}/confirm${search}`
-                }
-              >
-                <BankListItem data={bank} />
-              </StyledLink>
-            ))
+            <>
+              {filteredBanks.map((bank) => (
+                <StyledLink
+                  onClick={() => {
+                    setSelectedBank(bank);
+                    handleNextStep();
+                  }}
+                >
+                  <BankListItem data={bank} />
+                </StyledLink>
+              ))}
+              <Box mt={'20px'}>
+                <Button variant={'text'} onClick={onChangeMethod}>
+                  {t('payment:bankWidget.selectMethodLink')}
+                </Button>
+              </Box>
+            </>
           ) : (
-            <EmptyBankList />
+            <EmptyBankList onChangeMethod={onChangeMethod} />
           )}
         </Box>
       </div>
@@ -156,4 +179,4 @@ const YapilyForm = ({
   );
 };
 
-export default YapilyForm;
+export default BankListForm;

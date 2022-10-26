@@ -38,6 +38,7 @@ const SelectCountries = ({ value, onChange, data }: SelectCountriesProps) => {
           value,
           label: '',
         }}
+        isSearchable={false}
         onChange={onChange}
         options={countriesWithFlag}
         leftIcon={() =>

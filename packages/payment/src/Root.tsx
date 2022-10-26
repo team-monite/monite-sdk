@@ -1,16 +1,42 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { THEMES } from '@team-monite/ui-widgets-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'emotion-theming';
 
-import App from 'features/app/App';
+import { MoniteProvider, MoniteApp } from '@team-monite/ui-widgets-react';
+import { Tooltip } from '@team-monite/ui-kit-react';
+import { THEMES } from '@team-monite/ui-widgets-react';
+
+import { ROUTES } from './consts';
+
+import PaymentPage from 'pages/PaymentPage';
+import PaymentResultPage from 'pages/PaymentResultPage';
 
 const Root = () => {
+  //TODO why do we need it?
+  const monite = new MoniteApp({
+    apiUrl: 'https://api.dev.monite.com/v1',
+    entityId: '805622a2-3926-4eae-92ec-3d9bd375cfa9',
+    token:
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjp7ImNsaWVudF9pZCI6IjU5YTIzMGUyLWRjMzctNGNmMC04Njk3LTNiMDBhMjM3NTY0MSIsImNyZWF0ZWRfYXQiOiIyMDIyLTA5LTE1VDE2OjEyOjAzLjAwMjQ4NiJ9LCJleHAiOjE2NjMyNjAxMjN9.VsazsTnL3IelhSJGrIHuVqSJVhDM5NXjBJGpu0lkRSI',
+    locale: 'en',
+  });
+
   return (
     <React.StrictMode>
       <BrowserRouter>
         <ThemeProvider theme={THEMES.default}>
-          <App />
+          <MoniteProvider monite={monite}>
+            <div style={{ minHeight: '100vh' }}>
+              <Routes>
+                <Route path={'/*'} element={<PaymentPage />} />
+                <Route
+                  path={ROUTES.payResult}
+                  element={<PaymentResultPage />}
+                />
+              </Routes>
+            </div>
+            <Tooltip />
+          </MoniteProvider>
         </ThemeProvider>
       </BrowserRouter>
     </React.StrictMode>

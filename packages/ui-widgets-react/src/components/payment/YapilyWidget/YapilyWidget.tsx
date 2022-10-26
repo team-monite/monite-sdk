@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
 
-import { Routes, Route } from 'react-router-dom';
-
-import {
-  PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentMethodsEnum,
-  PaymentsPaymentLinkResponse,
-} from '@team-monite/sdk-api';
-
-import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
+import { useBankPayment, BankPaymentSteps } from './useBankPayment';
 
 import InvoiceDetails from './InvoiceDetails';
 import BanksListForm from './BanksListForm';
@@ -17,52 +9,48 @@ import NavHeader from '../NavHeader';
 
 type YapilyWidgetProps = {
   paymentData: PaymentsPaymentLinkResponse;
+  onChangeMethod: () => void;
 };
-const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
-  const [selectedCountry, setSelectedCountry] = useState(
-    PaymentsYapilyCountriesCoverageCodes.DE
-  );
+const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
+  const {
+    currentStep,
+    selectedBank,
+    setSelectedBank,
+    selectedCountry,
+    setSelectedCountry,
+    handleNextStep,
+    handlePrevStep,
+    payerName,
+    setPayerName,
+    payerIban,
+    setPayerIban,
+  } = useBankPayment({ paymentData });
 
-  const { data: countries } = useCountryList(
-    PaymentsPaymentMethodsEnum.SEPA_CREDIT
-  );
-
-  const { data: banks, refetch: refetchInstitutionList } = useInstitutionList(
-    PaymentsPaymentMethodsEnum.SEPA_CREDIT,
-    selectedCountry as PaymentsYapilyCountriesCoverageCodes
-  );
-
-  useEffect(() => {
-    refetchInstitutionList();
-  }, [selectedCountry]);
-
-  //TODO move routing to payment app
   return (
     <>
-      <NavHeader />
-      <Routes>
-        <Route
-          path={'/'}
-          element={
-            <BanksListForm
-              banks={banks?.data}
-              countries={countries?.data}
-              selectedCountry={selectedCountry}
-              onChangeCountry={setSelectedCountry}
-            />
-          }
+      <NavHeader handleBack={handlePrevStep} />
+      {currentStep === BankPaymentSteps.BANK_LIST && (
+        <BanksListForm
+          setSelectedBank={setSelectedBank}
+          handleNextStep={handleNextStep}
+          selectedCountry={selectedCountry}
+          setSelectedCountry={setSelectedCountry}
+          onChangeMethod={onChangeMethod}
         />
-        <Route
-          path={'/:code/confirm'}
-          element={
-            <InvoiceDetails banks={banks?.data} paymentData={paymentData} />
-          }
+      )}
+      {currentStep === BankPaymentSteps.PAYER_FORM && (
+        <PayerForm
+          bank={selectedBank}
+          handleNextStep={handleNextStep}
+          name={payerName}
+          iban={payerIban}
+          onChangeName={setPayerName}
+          onChangeIban={setPayerIban}
         />
-        <Route
-          path={'/:code/payer_form'}
-          element={<PayerForm banks={banks?.data} />}
-        />
-      </Routes>
+      )}
+      {currentStep === BankPaymentSteps.CONFIRM && (
+        <InvoiceDetails bank={selectedBank} paymentData={paymentData} />
+      )}
     </>
   );
 };
