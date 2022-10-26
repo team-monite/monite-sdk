@@ -69,6 +69,8 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
     // eslint-disable-next-line
   }, []);
 
+  const onChangeMethod = () => navigate(`/${search}`);
+
   return (
     // TODO use emotion
     <Card shadow p={32} className={styles.card}>
@@ -92,6 +94,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 navButton={paymentMethods?.length > 1}
                 paymentData={paymentData}
+                handleBack={onChangeMethod}
               />
             )
           }
@@ -105,16 +108,20 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
                 {...props}
                 navButton={paymentMethods?.length > 1}
                 paymentData={paymentData}
+                handleBack={onChangeMethod}
               />
             )
           }
         />
         <Route
           path={ROUTES.bank}
-          // TODO How it works? :-)
-          // if I understand correctly YapilyWidget expects receivableData instead of paymentData
-          //@ts-ignore
-          element={<YapilyWidget {...props} paymentData={paymentData} />}
+          element={
+            <YapilyWidget
+              {...props}
+              paymentData={paymentData}
+              onChangeMethod={onChangeMethod}
+            />
+          }
         />
       </Routes>
     </Card>

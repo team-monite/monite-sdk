@@ -9,8 +9,9 @@ import NavHeader from '../NavHeader';
 
 type YapilyWidgetProps = {
   paymentData: PaymentsPaymentLinkResponse;
+  onChangeMethod: () => void;
 };
-const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
+const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
   const {
     currentStep,
     selectedBank,
@@ -34,6 +35,7 @@ const YapilyWidget = ({ paymentData }: YapilyWidgetProps) => {
           handleNextStep={handleNextStep}
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
+          onChangeMethod={onChangeMethod}
         />
       )}
       {currentStep === BankPaymentSteps.PAYER_FORM && (

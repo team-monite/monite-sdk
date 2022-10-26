@@ -23,6 +23,7 @@ import {
   USearchAlt,
   IconButton,
   Flex,
+  Button,
 } from '@team-monite/ui-kit-react';
 
 import SelectCountries from '../SelectCountries';
@@ -51,7 +52,6 @@ const StyledLink = styled.span`
   color: inherit;
   text-decoration: none;
 `;
-
 type BankListItemProps = {
   data: PaymentsPaymentsBank;
 };
@@ -80,12 +80,14 @@ type BankListFormProps = {
   handleNextStep: () => void;
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
   setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  onChangeMethod: () => void;
 };
 const BankListForm = ({
   setSelectedBank,
   handleNextStep,
   selectedCountry,
   setSelectedCountry,
+  onChangeMethod,
 }: BankListFormProps) => {
   const { t } = useTranslation();
   const { data: countriesData } = useCountryList(
@@ -151,18 +153,25 @@ const BankListForm = ({
         </Flex>
         <Box>
           {filteredBanks.length ? (
-            filteredBanks.map((bank) => (
-              <StyledLink
-                onClick={() => {
-                  setSelectedBank(bank);
-                  handleNextStep();
-                }}
-              >
-                <BankListItem data={bank} />
-              </StyledLink>
-            ))
+            <>
+              {filteredBanks.map((bank) => (
+                <StyledLink
+                  onClick={() => {
+                    setSelectedBank(bank);
+                    handleNextStep();
+                  }}
+                >
+                  <BankListItem data={bank} />
+                </StyledLink>
+              ))}
+              <Box mt={'20px'}>
+                <Button variant={'text'} onClick={onChangeMethod}>
+                  {t('payment:bankWidget.selectMethodLink')}
+                </Button>
+              </Box>
+            </>
           ) : (
-            <EmptyBankList />
+            <EmptyBankList onChangeMethod={onChangeMethod} />
           )}
         </Box>
       </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 
@@ -12,11 +11,9 @@ import {
   Button,
 } from '@team-monite/ui-kit-react';
 
-const EmptyBankList = () => {
+const EmptyBankList = ({ onChangeMethod }: { onChangeMethod: () => void }) => {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
-  const navigate = useNavigate();
-  const { search } = useLocation();
 
   return (
     <Flex flexDirection="column" alignItems="center">
@@ -32,7 +29,7 @@ const EmptyBankList = () => {
         </Text>
       </Box>
       <Box padding={'16px'}>
-        <Button color="secondary" onClick={() => navigate(`/${search}`)}>
+        <Button color="secondary" onClick={onChangeMethod}>
           {t('payment:bankWidget.changeMethod')}
         </Button>
       </Box>
