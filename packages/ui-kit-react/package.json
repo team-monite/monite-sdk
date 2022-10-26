@@ -59,7 +59,7 @@
     "react-pdf": "~5.7.2",
     "react-select": "^5.2.2",
     "react-tabs": "~4.2.1",
-    "styled-system": "^5.1.5"
+    "rebass": "~4.0.7"
   },
   "peerDependencies": {
     "@emotion/react": "^11.9.3",

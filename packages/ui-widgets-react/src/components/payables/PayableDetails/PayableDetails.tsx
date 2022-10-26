@@ -14,7 +14,7 @@ import {
   Tab,
   TabPanel,
   FileViewer,
-  Spinner,
+  Loading,
   Modal,
 } from '@team-monite/ui-kit-react';
 
@@ -25,7 +25,6 @@ import {
   StyledContent,
   StyledHeaderActions,
   StyledHeaderContent,
-  StyledLoading,
   StyledSection,
   StyledTabs,
 } from './PayableDetailsStyle';
@@ -107,9 +106,7 @@ const PayableDetails = ({
     return (
       <Modal>
         <ModalLayout fullScreen>
-          <StyledLoading>
-            <Spinner color={'primary'} pxSize={45} />
-          </StyledLoading>
+          <Loading />
         </ModalLayout>
       </Modal>
     );

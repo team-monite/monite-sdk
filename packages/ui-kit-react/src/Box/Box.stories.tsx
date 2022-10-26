@@ -1,11 +1,13 @@
 import { ComponentStory } from '@storybook/react';
 
-import { Box, Flex, BoxProps } from '.';
+import { Box, Flex, BoxProps } from './';
+import { ReactNode } from 'react';
 
 const Story = {
   title: 'Layout/Box',
   component: Box,
 };
+
 export default Story;
 
 const Template: ComponentStory<typeof Box> = (args) => <Box {...args} />;
@@ -16,6 +18,7 @@ DefaultBox.args = {
 };
 
 export const StyledBox = Template.bind({});
+
 StyledBox.args = {
   children: <span>Styled Box</span>,
   border: 'red solid 1px',
@@ -26,8 +29,11 @@ StyledBox.args = {
 };
 
 const FlexTemplate: ComponentStory<typeof Flex> = (args) => <Flex {...args} />;
-const BorderedBox = ({ children, ...props }: BoxProps) => (
-  <Box border="black solid 1px;" {...props}>
+const BorderedBox = ({
+  children,
+  ...props
+}: BoxProps & { children: ReactNode }) => (
+  <Box sx={{ border: '1px black solid' }} {...props}>
     {children}
   </Box>
 );

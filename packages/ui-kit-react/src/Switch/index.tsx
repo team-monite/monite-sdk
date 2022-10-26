@@ -46,7 +46,7 @@ const Slider = styled.i<StyledProps>`
     height: 24px;
     left: 4px;
     bottom: 4px;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.white};
     border-radius: 100px;
     ${({ $checked }) => `transform: ${$checked ? 'translateX(24px)' : 'none'};`}
   }

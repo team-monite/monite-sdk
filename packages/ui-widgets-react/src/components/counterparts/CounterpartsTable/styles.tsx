@@ -21,7 +21,7 @@ export const Table = styled.div<{
     font-weight: 400;
     line-height: 24px;
 
-    color: ${({ theme }) => theme.colors.grey};
+    color: ${({ theme }) => theme.neutral50};
 
     white-space: nowrap;
     overflow: hidden;
@@ -30,7 +30,7 @@ export const Table = styled.div<{
 
   table td {
     padding: 22px 12px;
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
     vertical-align: top;
 
     white-space: nowrap;
@@ -82,12 +82,12 @@ export const OldTable = styled.div`
     font-weight: 500;
     line-height: 20px;
 
-    color: ${({ theme }) => theme.colors.grey};
+    color: ${({ theme }) => theme.neutral50};
   }
 
   table td {
     padding: 10px 12px;
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.black};
     vertical-align: top;
   }
 `;

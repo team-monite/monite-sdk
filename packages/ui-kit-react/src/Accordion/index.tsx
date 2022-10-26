@@ -5,10 +5,10 @@ import AccordionItem, { AccordionItemProps } from '../AccordionItem';
 
 const Wrapper = styled.div`
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+  border: 1px solid ${({ theme }) => theme.neutral80};
 
   > * + * {
-    border-top: 1px solid ${({ theme }) => theme.colors.lightGrey2};
+    border-top: 1px solid ${({ theme }) => theme.neutral80};
   }
 
   div:last-child {

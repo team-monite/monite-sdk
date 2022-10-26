@@ -9,6 +9,8 @@ import {
   Header,
   Button,
   UArrowRight,
+  Loading,
+  FlexContainer,
 } from '@team-monite/ui-kit-react';
 
 import { StyledHeaderActions } from 'components/payables/PayableDetails/PayableDetailsStyle';
@@ -17,7 +19,6 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import { getIndividualName, getCounterpartName } from '../../helpers';
 
 import {
-  CounterpartDetailsBlock,
   CounterpartFooter,
   CounterpartHeader,
   CounterpartForm,
@@ -29,7 +30,6 @@ import CounterpartAddressForm from '../CounterpartAddressForm';
 import useCounterpartContactForm, {
   CounterpartContactFormProps,
 } from './useCounterpartContactForm';
-import { CounterpartDetailsLoading } from '../styles/CounterpartDetailsLoading';
 
 const CounterpartContactForm = (props: CounterpartContactFormProps) => {
   const { t } = useComponentsContext();
@@ -51,7 +51,7 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
       scrollableContent={true}
       size={'md'}
       isDrawer
-      loading={isLoading && <CounterpartDetailsLoading />}
+      loading={isLoading && <Loading />}
       header={
         <CounterpartHeader>
           <Header>
@@ -171,9 +171,10 @@ const CounterpartContactForm = (props: CounterpartContactFormProps) => {
             )}
           />
 
-          <CounterpartDetailsBlock title={t('counterparts:contact.address')}>
+          <FlexContainer flexDirection={'column'} gap={20}>
+            <Text textSize={'h4'}>{t('counterparts:contact.address')}</Text>
             <CounterpartAddressForm />
-          </CounterpartDetailsBlock>
+          </FlexContainer>
         </CounterpartForm>
       </FormProvider>
     </ModalLayout>

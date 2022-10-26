@@ -9,7 +9,7 @@ import {
   UArrowLeft,
   UArrowRight,
   Flex,
-} from '../index';
+} from '../';
 
 import { pdfjs } from 'react-pdf';
 
@@ -85,7 +85,7 @@ const FileViewer = ({ url, mimetype, name, rightIcon }: FileViewerProps) => {
               disabled={pageNumber <= 1}
               minWidth={48}
             >
-              <UArrowLeft width={24} height={24} />
+              <UArrowLeft size={24} />
             </IconButton>
             <div>
               {pageNumber || (numPages ? 1 : '-')} of {numPages || '-'}
@@ -96,7 +96,7 @@ const FileViewer = ({ url, mimetype, name, rightIcon }: FileViewerProps) => {
               onClick={onNextPage}
               minWidth={48}
             >
-              <UArrowRight width={24} height={24} />
+              <UArrowRight size={24} />
             </IconButton>
           </Flex>
         )}
@@ -104,16 +104,16 @@ const FileViewer = ({ url, mimetype, name, rightIcon }: FileViewerProps) => {
           {isPdf && (
             <>
               <IconButton color={'black'} onClick={onZoomOut}>
-                <USearchMinus width={24} height={24} />
+                <USearchMinus size={24} />
               </IconButton>
               <IconButton color={'black'} onClick={onZoomIn}>
-                <USearchPlus width={24} height={24} />
+                <USearchPlus size={24} />
               </IconButton>
             </>
           )}
 
           <IconButton color={'black'} target={'_blank'} href={url} download>
-            <UFileDownload width={24} height={24} color="black" />
+            <UFileDownload size={24} />
           </IconButton>
 
           {rightIcon}

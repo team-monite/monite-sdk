@@ -2,12 +2,14 @@ import { useCallback } from 'react';
 
 import { CounterpartType } from '@team-monite/sdk-api';
 
+import { useComponentsContext } from 'core/context/ComponentsContext';
 import {
   useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
   useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
+import { getCounterpartName } from '../../helpers';
 
 export type CounterpartViewProps = {
   id: string;
@@ -29,6 +31,8 @@ export default function useCounterpartView({
   onDelete,
   onEdit: onExternalEdit,
 }: CounterpartViewProps) {
+  const { t } = useComponentsContext();
+
   const {
     data: counterpart,
     isLoading: isCounterpartLoading,
@@ -48,10 +52,10 @@ export default function useCounterpartView({
 
   const counterpartDeleteMutation = useDeleteCounterpart();
 
-  const deleteCounterpart = useCallback(async () => {
+  const deleteCounterpart = useCallback(() => {
     if (!counterpart) return;
 
-    return await counterpartDeleteMutation.mutateAsync(counterpart.id, {
+    return counterpartDeleteMutation.mutate(counterpart.id, {
       onSuccess: () => {
         onDelete && onDelete(counterpart.id);
       },
@@ -64,17 +68,26 @@ export default function useCounterpartView({
     onExternalEdit && onExternalEdit(counterpart.id, counterpart.type);
   }, [onExternalEdit, counterpart]);
 
+  const isLoading =
+    isBanksLoading ||
+    isCounterpartLoading ||
+    isContactsLoading ||
+    counterpartDeleteMutation.isLoading;
+
+  const getTitle = useCallback((): string => {
+    if (isLoading) return t('counterparts:actions.loading');
+    if (counterpartError) return counterpartError.message;
+    if (counterpart) return getCounterpartName(counterpart);
+    return '';
+  }, [t, isLoading, counterpart, counterpartError]);
+
   return {
     contacts: contacts || [],
     banks: banks || [],
     counterpart,
     deleteCounterpart,
-    counterpartError,
     onEdit,
-    isLoading:
-      isBanksLoading ||
-      isCounterpartLoading ||
-      isContactsLoading ||
-      counterpartDeleteMutation.isLoading,
+    isLoading,
+    getTitle,
   };
 }

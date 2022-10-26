@@ -20,7 +20,7 @@ const StyledHeader = styled.div`
 const Separator = styled.div`
   margin: 24px 0;
   height: 1px;
-  background: ${({ theme }) => theme.colors.lightGrey2};
+  background: ${({ theme }) => theme.neutral80};
 `;
 
 const Content = styled.div`
