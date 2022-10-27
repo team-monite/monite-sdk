@@ -2,7 +2,7 @@ import { Table } from './Table';
 import { HeadCellSort } from './HeadCellSort';
 import Button from '../Button';
 import Select from '../Select/Select';
-import DropdownItem from '../Dropdown/MenuItem';
+import { DropdownMenuItem } from '../';
 
 const Story = {
   title: 'Data Display/Table',
@@ -92,8 +92,20 @@ export const DefaultTable = () => (
       ]}
       renderDropdownActions={() => (
         <>
-          <DropdownItem onClick={() => {}}>Edit</DropdownItem>
-          <DropdownItem onClick={() => {}}>Delete</DropdownItem>
+          <DropdownMenuItem
+            onClick={() => {
+              console.log('Edit');
+            }}
+          >
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              console.log('Delete');
+            }}
+          >
+            Delete
+          </DropdownMenuItem>
         </>
       )}
     />
