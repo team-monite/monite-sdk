@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import {
-  CounterpartsTable,
-  CounterpartDetails,
   Button,
+  CounterpartDetails,
+  CounterpartsTable,
+  CounterpartType,
 } from '@team-monite/ui-widgets-react';
-import { CounterpartType } from '@team-monite/sdk-api';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
@@ -22,20 +22,20 @@ const PageCounterparts = () => {
     counterpartType && setType(undefined);
   }, [counterpartId, counterpartType]);
 
-  const setCounterpartType = useCallback((type: CounterpartType) => {
-    setType(type);
-  }, []);
-
   return (
     <Layout>
       <PageHeader
         title="Counterparts"
         extra={
           <Dropdown button={<Button>Create New</Button>}>
-            <DropdownMenuItem onClick={setCounterpartType}>
+            <DropdownMenuItem
+              onClick={() => setType(CounterpartType.ORGANIZATION)}
+            >
               Organization
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={setCounterpartType}>
+            <DropdownMenuItem
+              onClick={() => setType(CounterpartType.INDIVIDUAL)}
+            >
               Individual
             </DropdownMenuItem>
           </Dropdown>
