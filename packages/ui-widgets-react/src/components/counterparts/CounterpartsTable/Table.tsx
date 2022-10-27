@@ -12,7 +12,7 @@ import {
   SortOrderEnum,
   UArrowLeft,
   UArrowRight,
-  DropdownItem,
+  DropdownMenuItem,
 } from '@team-monite/ui-kit-react';
 
 import {
@@ -264,24 +264,25 @@ const CounterpartsTable = ({
               },
             },
           ]}
-          //TODO: doesn't work, fix it'
-          renderDropdownActions={(value: any) => {
-            return (
-              <>
-                <DropdownItem onClick={() => {}}>
-                  {t('counterparts:actions.edit')}
-                </DropdownItem>
-                <DropdownItem
-                  onClick={() => {
-                    setSelectedCounterpart(value);
-                    setOpenDeleteDialogue(true);
-                  }}
-                >
-                  {t('counterparts:actions.delete')}
-                </DropdownItem>
-              </>
-            );
-          }}
+          renderDropdownActions={(value: any) => (
+            <>
+              <DropdownMenuItem
+                onClick={() => {
+                  onRowClick && onRowClick(value.id);
+                }}
+              >
+                {t('counterparts:actions.edit')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  setSelectedCounterpart(value);
+                  setOpenDeleteDialogue(true);
+                }}
+              >
+                {t('counterparts:actions.delete')}
+              </DropdownMenuItem>
+            </>
+          )}
           data={counterparts?.data}
           onRow={(record) => ({
             onClick: () =>

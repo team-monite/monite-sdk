@@ -1,17 +1,10 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { ReactNode } from 'react';
 import { default as RCTable } from 'rc-table';
 import { TableProps as RCTableProps } from 'rc-table/lib/Table';
 import styled from '@emotion/styled';
 
 import { UEllipsisV } from '../unicons';
-import {
-  Dropdown,
-  DropdownMenu,
-  IconButton,
-  Spinner,
-  Text,
-  useDropdownPopper,
-} from '../index';
+import { IconButton, Spinner, Text, Dropdown } from '../';
 
 const TableWrapper = styled.div`
   position: relative;
@@ -137,10 +130,6 @@ const DropdownToggler = styled(IconButton)`
   }
 `;
 
-const Popper = styled.div`
-  z-index: 10;
-`;
-
 const NoData = styled(Text)`
   text-align: center;
   height: 100%;
@@ -160,22 +149,6 @@ export const Table = ({
   loading,
   ...restProps
 }: TableProps) => {
-  const {
-    shownDropdownMenu,
-    toggleDropdownMenu,
-    setReferenceElement,
-    setPopperElement,
-    popper,
-  } = useDropdownPopper();
-
-  const referenceRef = useRef(null);
-  const popperRef = useRef(null);
-
-  useEffect(() => {
-    setReferenceElement(referenceRef);
-    setPopperElement(popperRef);
-  }, [referenceRef, popperRef]);
-
   return (
     <TableWrapper>
       {loading && (
@@ -194,51 +167,19 @@ export const Table = ({
                   title: '',
                   dataIndex: '',
                   key: 'operations',
-                  render: (value, row, index) => {
-                    // TODO move to separate component
+                  render: (value) => {
                     return (
-                      <>
-                        <div ref={referenceRef}>
-                          <ActionsMenu>
-                            <Dropdown
-                              onClickOutside={() => {
-                                toggleDropdownMenu(false);
-                              }}
-                            >
-                              <DropdownToggler
-                                color="lightGrey1"
-                                onClick={(e: React.BaseSyntheticEvent) => {
-                                  e.stopPropagation();
-                                  toggleDropdownMenu((shown) =>
-                                    !shown ? index : false
-                                  );
-                                  // @ts-ignore
-                                  popper.update();
-                                }}
-                              >
-                                <UEllipsisV width={20} height={20} />
-                              </DropdownToggler>
-                              <Popper
-                                ref={popperRef}
-                                style={popper.styles.popper}
-                                {...popper.attributes.popper}
-                              >
-                                {shownDropdownMenu === index && (
-                                  <DropdownMenu
-                                    style={popper.styles.offset}
-                                    onClick={(e: React.BaseSyntheticEvent) => {
-                                      e.stopPropagation();
-                                      toggleDropdownMenu(false);
-                                    }}
-                                  >
-                                    {renderDropdownActions(value)}
-                                  </DropdownMenu>
-                                )}
-                              </Popper>
-                            </Dropdown>
-                          </ActionsMenu>
-                        </div>
-                      </>
+                      <ActionsMenu>
+                        <Dropdown
+                          button={
+                            <DropdownToggler color="lightGrey1">
+                              <UEllipsisV width={20} height={20} />
+                            </DropdownToggler>
+                          }
+                        >
+                          {renderDropdownActions(value)}
+                        </Dropdown>
+                      </ActionsMenu>
                     );
                   },
                 },

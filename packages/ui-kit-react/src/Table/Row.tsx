@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 import { ThemedStyledProps } from '../types';
-import { IconButton, Dropdown, DropdownMenu, useDropdownPopper } from '..';
+import { IconButton, Dropdown } from '..';
 
 import { UEllipsisV } from '../unicons';
 
@@ -70,14 +70,6 @@ const TableRow = ({
   buttonActions,
   onClick,
 }: TableRowProps) => {
-  const {
-    shownDropdownMenu,
-    toggleDropdownMenu,
-    setReferenceElement,
-    setPopperElement,
-    popper,
-  } = useDropdownPopper();
-
   return (
     <StyledTableRow $inactive={inactive} onClick={onClick}>
       {children}
@@ -87,33 +79,13 @@ const TableRow = ({
             {buttonActions && buttonActions()}
             {dropdownActions && (
               <Dropdown
-                onClickOutside={() => {
-                  toggleDropdownMenu(false);
-                }}
+                button={
+                  <DropdownToggler color="lightGrey1">
+                    <UEllipsisV width={20} height={20} />
+                  </DropdownToggler>
+                }
               >
-                <DropdownToggler
-                  color="lightGrey1"
-                  onClick={(e: React.BaseSyntheticEvent) => {
-                    e.stopPropagation();
-                    toggleDropdownMenu((shown) => !shown);
-                  }}
-                  ref={setReferenceElement}
-                >
-                  <UEllipsisV width={20} height={20} />
-                </DropdownToggler>
-                {shownDropdownMenu ? (
-                  <DropdownMenu
-                    innerRef={setPopperElement}
-                    style={popper.styles.popper}
-                    onClick={(e: React.BaseSyntheticEvent) => {
-                      e.stopPropagation();
-                      toggleDropdownMenu(false);
-                    }}
-                    {...popper.attributes.popper}
-                  >
-                    {dropdownActions()}
-                  </DropdownMenu>
-                ) : null}
+                {dropdownActions()}{' '}
               </Dropdown>
             )}
           </ActionsMenu>

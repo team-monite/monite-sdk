@@ -24,7 +24,7 @@ export function useCounterpartContactView({
     });
   }, [contactDeleteMutation, onDelete]);
 
-  const onEdit = useCallback(async () => {
+  const onEdit = useCallback(() => {
     onExternalEdit && onExternalEdit(id);
   }, [onExternalEdit]);
 
