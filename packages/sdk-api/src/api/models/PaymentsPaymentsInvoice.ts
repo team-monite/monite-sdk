@@ -7,5 +7,6 @@ import type { PaymentsPaymentsPaymentsPaymentsInvoiceFile } from './PaymentsPaym
 export type PaymentsPaymentsInvoice = {
   issue_date?: string;
   due_date?: string;
+  name?: string;
   file?: PaymentsPaymentsPaymentsPaymentsInvoiceFile;
 };
