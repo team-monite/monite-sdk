@@ -43,7 +43,8 @@ const StyledAction = styled(Flex)`
 const PaymentDetails = (props: UsePayableDetailsProps) => {
   const { t } = useTranslation();
   const { show, hide, isOpen } = useModal();
-  const { amount, paymentReference, invoice } = usePaymentDetails(props);
+  const { recipient, amount, paymentReference, invoice } =
+    usePaymentDetails(props);
 
   return (
     <StyledCard shadow>
@@ -92,10 +93,10 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
           />
         )}
 
-        {invoice?.name && (
+        {recipient && (
           <PaymentDetailsRow
             label={t('payment:details.recipient')}
-            value={invoice.name}
+            value={recipient}
           />
         )}
 
