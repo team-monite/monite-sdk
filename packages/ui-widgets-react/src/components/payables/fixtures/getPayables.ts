@@ -490,7 +490,7 @@ const data = {
         entity_id: 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
         marked_as_paid_with_comment: null,
         marked_as_paid_by_entity_user_id: null,
-        status: 'paid',
+        status: 'waiting_to_be_paid',
         source_of_payable_data: 'ocr',
         currency: 'EUR',
         amount: null,

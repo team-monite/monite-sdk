@@ -3,6 +3,7 @@ import { formatISO, addDays, format } from 'date-fns';
 import {
   api__v1__payables__pagination__CursorFields,
   OrderEnum,
+  PayableResponseSchema,
   PayableStateEnum,
   ReceivableResponse,
 } from '@team-monite/sdk-api';
@@ -32,6 +33,7 @@ import * as Styled from './styles';
 
 interface Props {
   onRowClick?: (id: string) => void;
+  onPay?: (id: string) => void;
   onChangeSort?: (params: {
     sort: api__v1__payables__pagination__CursorFields;
     order: SortOrderEnum | null;
@@ -49,6 +51,7 @@ const formatter = new Intl.NumberFormat('de-DE', {
 
 const PayablesTable = ({
   onRowClick,
+  onPay,
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
 }: Props) => {
@@ -179,6 +182,7 @@ const PayablesTable = ({
             dataIndex: 'due_date',
             key: 'due_date',
             render: (value: string) =>
+              // TODO use date-fns
               value ? value.split('-').reverse().join('.') : '',
           },
           {
@@ -209,6 +213,29 @@ const PayablesTable = ({
             key: 'amount',
             render: (value: number | undefined) =>
               value ? formatter.format(value) : '',
+          },
+          {
+            dataIndex: ['status', 'id'],
+            key: 'pay',
+            render: (_, record) => {
+              const payable = record as PayableResponseSchema;
+
+              if (payable.status !== PayableStateEnum.WAITING_TO_BE_PAID)
+                return null;
+
+              return (
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!payable || !onPay) return;
+                    onPay(payable.id);
+                  }}
+                  variant={'link'}
+                >
+                  {t('common:pay')}
+                </Button>
+              );
+            },
           },
           // {
           //   title: t('payables:columns.addedBy'),
