@@ -56,9 +56,7 @@
       "submit": "Pay",
       "back": "Back",
       "emptyTitle": "No payment methods available",
-      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later.",
-      "expiredTitle": "This link is expired",
-      "expiredContent": "This link was not used in time and has been deactivated for security reasons. You can ask your counterpart to update the link."
+      "emptyDescription": "Unfortunately, right now there are no approachable payment methods. Please try again later."
     },
     "bankWidget": {
       "banksListTitle": "Continue with your bank account",
