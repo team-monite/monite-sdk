@@ -46,7 +46,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
     deleteCounterpart,
     isLoading,
     onEdit,
-    getTitle,
+    title,
   } = useCounterpartView(props);
 
   const { show, hide, isOpen } = useModal();
@@ -83,7 +83,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
               </IconButton>
             }
           >
-            <Text textSize={'h3'}>{getTitle()}</Text>
+            <Text textSize={'h3'}>{title}</Text>
           </Header>
         </CounterpartHeader>
       }

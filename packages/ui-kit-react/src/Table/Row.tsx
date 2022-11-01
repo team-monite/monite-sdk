@@ -85,7 +85,7 @@ const TableRow = ({
                   </DropdownToggler>
                 }
               >
-                {dropdownActions()}{' '}
+                {dropdownActions()}
               </Dropdown>
             )}
           </ActionsMenu>
