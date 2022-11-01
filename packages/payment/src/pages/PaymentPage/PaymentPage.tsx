@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { Flex, Box } from '@team-monite/ui-kit-react';
+import { Flex, Box, Loading } from '@team-monite/ui-kit-react';
 import {
   useComponentsContext,
   PaymentDetails,
@@ -31,34 +31,37 @@ const PaymentPage = () => {
 
   const [paymentData, setPaymentData] = useState<any>();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
-    //TODO add loader
     (async () => {
       if (linkData?.id) {
         const data = await monite.api.payment.getPaymentLinkById(linkData.id);
         setPaymentData(data);
+
+        // TODO: backend will add enum for statuses
+        if (data?.status === 'succeeded') {
+          navigate(ROUTES.payResult);
+        }
+        // if (data?.status === 'expired') {
+        //   navigate(ROUTES.expired);
+        // }
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
       }
     })();
-    // eslint-disable-next-line
-  }, [linkData]);
-
-  useEffect(() => {
-    // TODO: backend will add enum for statuses
-    if (paymentData?.status === 'succeeded') {
-      navigate(ROUTES.payResult);
-    }
-    if (paymentData?.status === 'expired') {
-      navigate(ROUTES.expired);
-    }
-  }, [paymentData, navigate, rawPaymentData]);
+  }, [linkData, navigate, monite.api.payment]);
 
   return (
     <Layout>
       <Helmet title={`Pay invoice ${linkData?.id || ''}`} />
 
-      {!paymentData && (
+      {isLoading && <Loading />}
+
+      {!paymentData && !isLoading && (
         <Box width={'100%'} padding={'80px'}>
           <EmptyScreen />
         </Box>

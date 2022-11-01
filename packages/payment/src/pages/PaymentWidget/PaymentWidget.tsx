@@ -17,8 +17,6 @@ import StripeWidget from './StripeWidget';
 
 import { ROUTES } from 'consts';
 
-import styles from './styles.module.scss';
-
 type PaymentWidgetProps = {
   paymentData: PaymentsPaymentLinkResponse;
   fee?: number;
@@ -52,18 +50,18 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
       paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
     ) {
-      navigate(`card${search}`, { replace: true });
+      navigate(`${ROUTES.card}${search}`, { replace: true });
     } else if (
       paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
     ) {
-      navigate(`bank${search}`, { replace: true });
+      navigate(`${ROUTES.bank}${search}`, { replace: true });
     } else if (
       paymentMethods?.length > 0 &&
       !paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) &&
       !paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
     ) {
-      navigate(`other${search}`, { replace: true });
+      navigate(`${ROUTES.other}${search}`, { replace: true });
     }
     // TODO enable linter
     // eslint-disable-next-line
@@ -72,8 +70,7 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
   const onChangeMethod = () => navigate(`/${search}`);
 
   return (
-    // TODO use emotion
-    <Card shadow p={32} className={styles.card}>
+    <Card shadow p={32}>
       <Routes>
         <Route
           path="/"
