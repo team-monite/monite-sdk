@@ -6,10 +6,10 @@ export type UsePayableDetailsProps = {
 };
 
 export default function usePaymentDetails({
-  payment: { currency, amount, payment_reference, invoice },
+  payment: { currency, amount, payment_reference, invoice, recipient },
 }: UsePayableDetailsProps) {
   return {
-    recipient: invoice?.name,
+    recipient: recipient?.name,
     paymentReference: payment_reference,
     amount: getReadableAmount(amount, currency),
     invoice,
