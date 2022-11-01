@@ -10,6 +10,7 @@ import { ROUTES } from './consts';
 
 import PaymentPage from 'pages/PaymentPage';
 import PaymentResultPage from 'pages/PaymentResultPage';
+import PaymentExpiredPage from 'pages/PaymentExpiredPage';
 
 const Root = () => {
   //TODO why do we need it?
@@ -33,6 +34,7 @@ const Root = () => {
                   path={ROUTES.payResult}
                   element={<PaymentResultPage />}
                 />
+                <Route path={ROUTES.expired} element={<PaymentExpiredPage />} />
               </Routes>
             </div>
             <Tooltip />

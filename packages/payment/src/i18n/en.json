@@ -14,7 +14,9 @@
       "banksSearchPlaceholder": "Search for your bank",
       "emptyBankListTitle": "No results",
       "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
-      "changeMethod": "Change method"
+      "changeMethod": "Change method",
+      "expiredTitle": "This link is expired",
+      "expiredContent": "This link was not used in time and has been deactivated for security reasons. You can ask your counterpart to update the link."
     },
     "result": {
       "processingTitle": "Payment initiated",

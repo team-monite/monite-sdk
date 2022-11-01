@@ -8,7 +8,6 @@ import {
   PaymentDetails,
   EmptyScreen,
 } from '@team-monite/ui-widgets-react';
-import { PaymentMethodsEnum } from '@team-monite/sdk-api';
 
 import { ROUTES } from 'consts';
 import { fromBase64 } from 'helpers';
@@ -35,39 +34,23 @@ const PaymentPage = () => {
   const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
+    //TODO add loader
     (async () => {
       if (linkData?.id) {
         const data = await monite.api.payment.getPaymentLinkById(linkData.id);
         setPaymentData(data);
       }
     })();
-
-    if (
-      paymentData?.payment_methods?.length === 1 &&
-      paymentData?.payment_methods?.[0] === PaymentMethodsEnum.CARD
-    ) {
-      navigate(`card${search}`, { replace: true });
-    }
-    //  else if (
-    //   paymentData?.payment_methods?.length === 1 &&
-    //   paymentData?.payment_methods?.[0] === 'bank'
-    // ) {
-    //   navigate(`bank${search}`, { replace: true });
-    // }
     // eslint-disable-next-line
   }, [linkData]);
 
   useEffect(() => {
-    if (
-      paymentData?.status === 'succeeded' ||
-      paymentData?.status === 'canceled'
-    ) {
-      navigate(
-        `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
-        {
-          replace: true,
-        }
-      );
+    // TODO: backend will add enum for statuses
+    if (paymentData?.status === 'succeeded') {
+      navigate(ROUTES.payResult);
+    }
+    if (paymentData?.status === 'expired') {
+      navigate(ROUTES.expired);
     }
   }, [paymentData, navigate, rawPaymentData]);
 
