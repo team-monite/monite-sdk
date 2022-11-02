@@ -36,8 +36,10 @@ export default function usePaymentResult() {
   const redirect_status = urlParams.get('redirect_status');
   const amount = Number(urlParams.get('amount'));
   const currency = urlParams.get('currency');
-  const returnUrl = urlParams.get('return_url');
+  const return_url = urlParams.get('return_url');
   const paymentReference = urlParams.get('payment_reference');
+
+  const returnUrl = return_url === 'null' ? '' : return_url;
 
   const statusesMap: Record<
     ResultStatuses,
