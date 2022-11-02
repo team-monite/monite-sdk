@@ -122,7 +122,9 @@ const CounterpartView = (props: CounterpartViewProps) => {
 
         {counterpart && isOrganizationCounterpart(counterpart) && (
           <FlexContainer flexDirection={'column'} gap={20}>
-            <Text textSize={'h4'}>{t('counterparts:contactPersons')}</Text>
+            <Text textSize={'h4'}>
+              {t('counterparts:titles.contactPersons')}
+            </Text>
 
             {contacts?.map((contact) => (
               <CounterpartContactView
@@ -146,7 +148,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
 
         {counterpart && (
           <FlexContainer flexDirection={'column'} gap={20}>
-            <Text textSize={'h4'}>{t('counterparts:bankAccounts')}</Text>
+            <Text textSize={'h4'}>{t('counterparts:titles.bankAccounts')}</Text>
 
             {banks?.map((bank) => (
               <CounterpartBankView

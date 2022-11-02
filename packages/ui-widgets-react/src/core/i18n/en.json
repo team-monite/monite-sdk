@@ -184,10 +184,13 @@
     "titles": {
       "create": "Create Counterpart – {{name}}",
       "counterpart": "Counterpart",
+      "counterparts": "Counterparts",
       "contact": "Contact Person",
       "bank": "Bank Account",
       "organization": "Company",
-      "individual": "Individual"
+      "individual": "Individual",
+      "contactPersons": "Contact persons",
+      "bankAccounts": "Bank accounts"
     },
     "actions": {
       "loading": "Loading...",
@@ -206,11 +209,18 @@
       "createBank": "Add bank account",
       "updateBank": "Update bank account"
     },
+    "notifications": {
+      "getError": "Failed to load {{type}}.",
+      "createSuccess": "{{type}} “{{name}}” was created.",
+      "createError": "Failed to create {{type}}.",
+      "updateSuccess": "{{type}} “{{name}}” was updated.",
+      "updateError": "Failed to update {{type}}.",
+      "deleteSuccess": "{{type}} was deleted.",
+      "deleteError": "Failed to delete {{type}}."
+    },
     "confirmDeleteDialogue": {
       "title": "Delete {{type}} “{{name}}”?",
-      "content": "This action can’t be undone.",
-      "successNotification": "{{type}} “{{name}}” was deleted.",
-      "errorNotification": "Failed to delete {{type}} “{{name}}”."
+      "content": "This action can’t be undone."
     },
     "filters": {
       "isCustomer": {
@@ -225,8 +235,6 @@
       },
       "search": "Search by name"
     },
-    "contactPersons": "Contact persons",
-    "bankAccounts": "Bank accounts",
     "customer": "Customer",
     "vendor": "Vendor"
   },
