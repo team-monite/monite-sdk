@@ -1,5 +1,4 @@
 import { action, makeObservable } from 'mobx';
-import { nanoid } from 'nanoid';
 import { GrantType } from '@team-monite/sdk-api';
 
 import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
@@ -46,17 +45,13 @@ class AuthStore extends BaseStore {
 
     let res;
     try {
-      res = await this.rootStore.monite?.api.auth.getAuthToken(
-        nanoid(),
-        'white-label',
-        {
-          grant_type: GrantType.ENTITY_USER,
-          client_id: data.email,
-          client_secret: data.password,
-          // TODO remove hardcoded value
-          entity_user_id: '5b4daced-6b9a-4707-83c6-08193d999fab',
-        }
-      );
+      res = await this.rootStore.monite?.api.auth.getAuthToken({
+        grant_type: GrantType.ENTITY_USER,
+        client_id: data.email,
+        client_secret: data.password,
+        // TODO remove hardcoded value
+        entity_user_id: '5b4daced-6b9a-4707-83c6-08193d999fab',
+      });
     } catch (err) {
       res = null;
     }
