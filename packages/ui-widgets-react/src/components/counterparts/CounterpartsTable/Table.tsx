@@ -24,9 +24,9 @@ import {
 } from '@team-monite/sdk-api';
 
 import {
+  useCounterpartCache,
   useCounterpartList,
   useDeleteCounterpart,
-  useInvalidateCounterpart,
 } from 'core/queries/useCounterpart';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
@@ -86,10 +86,10 @@ const CounterpartsTable = ({
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
 
-  const { invalidate } = useInvalidateCounterpart();
+  const { destroy } = useCounterpartCache();
 
   // clear cache before unmount
-  useEffect(() => invalidate, [invalidate]);
+  useEffect(() => destroy, [destroy]);
 
   const {
     data: counterparts,

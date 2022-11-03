@@ -210,7 +210,7 @@
       "updateBank": "Update bank account"
     },
     "notifications": {
-      "getError": "Failed to load {{type}}.",
+      "loadError": "Failed to load {{type}}.",
       "createSuccess": "{{type}} “{{name}}” was created.",
       "createError": "Failed to create {{type}}.",
       "updateSuccess": "{{type}} “{{name}}” was updated.",

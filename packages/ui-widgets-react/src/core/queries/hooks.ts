@@ -9,12 +9,6 @@ export const useEntityCache = <TInput extends EntityType>(
 ) => {
   const queryClient = useQueryClient();
 
-  const getEntity = useCallback(
-    (id: string): TInput | undefined =>
-      queryClient.getQueryData<TInput>(key(id)),
-    [queryClient, key]
-  );
-
   const setEntity = useCallback(
     (entity: TInput) => {
       queryClient.setQueryData(key(entity.id), entity);
@@ -28,7 +22,6 @@ export const useEntityCache = <TInput extends EntityType>(
   );
 
   return {
-    getEntity,
     setEntity,
     removeEntity,
   };
@@ -83,11 +76,17 @@ export const useEntityListCache = <TInput extends EntityType>(
     (async () => await queryClient.invalidateQueries(key()))();
   }, [queryClient, key]);
 
+  const destroy = useCallback(
+    () => queryClient.removeQueries(key()),
+    [queryClient, key]
+  );
+
   return {
     findById,
     add,
     update,
     remove,
     invalidate,
+    destroy,
   };
 };

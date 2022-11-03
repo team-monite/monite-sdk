@@ -57,7 +57,7 @@ export default function useCounterpartContactForm({
 
   useEffect(() => {
     methods.reset(prepareCounterpartContact(contact));
-  }, [contact]);
+  }, [methods, contact]);
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -75,7 +75,7 @@ export default function useCounterpartContactForm({
         },
       });
     },
-    [contactCreateMutation]
+    [contactCreateMutation, onCreate]
   );
 
   const updateContact = useCallback(
@@ -94,11 +94,11 @@ export default function useCounterpartContactForm({
         }
       );
     },
-    [contactUpdateMutation]
+    [contactUpdateMutation, contact, onUpdate]
   );
 
   const saveContact = useCallback(
-    async (values: CounterpartContactFields) => {
+    (values: CounterpartContactFields) => {
       const payload = prepareCounterpartContactSubmit(values);
 
       return !!contact
