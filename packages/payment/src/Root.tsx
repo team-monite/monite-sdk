@@ -2,12 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'emotion-theming';
 
-import {
-  MoniteProvider,
-  MoniteApp,
-  THEMES,
-} from '@team-monite/ui-widgets-react';
-import { Tooltip } from '@team-monite/ui-kit-react';
+import { MoniteProvider } from '@team-monite/ui-widgets-react';
+import { MoniteApp } from '@team-monite/sdk-api';
+import { Tooltip, THEMES } from '@team-monite/ui-kit-react';
 
 import { ROUTES } from './consts';
 
