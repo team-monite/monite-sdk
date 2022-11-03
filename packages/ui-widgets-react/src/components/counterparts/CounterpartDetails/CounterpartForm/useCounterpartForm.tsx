@@ -49,13 +49,13 @@ export default function useCounterpartForm({
   );
 
   const updateCounterpart = useCallback(
-    (req: CounterpartUpdatePayload) => {
+    (payload: CounterpartUpdatePayload) => {
       if (!counterpart) return;
 
       counterpartUpdateMutation.mutate(
         {
           id: counterpart.id,
-          counterpart: req,
+          payload,
         },
         {
           onSuccess: ({ id }) => {

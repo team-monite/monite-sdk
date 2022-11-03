@@ -14,7 +14,7 @@ const Root = () => {
       '',
     apiUrl: 'https://api.dev.monite.com/v1',
     locale: 'en',
-    entityId: 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
+    entityId: '805622a2-3926-4eae-92ec-3d9bd375cfa9',
   });
 
   store.setMoniteApp(monite);

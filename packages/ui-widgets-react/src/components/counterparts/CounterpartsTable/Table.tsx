@@ -13,6 +13,7 @@ import {
   UArrowLeft,
   UArrowRight,
   DropdownMenuItem,
+  useModal,
 } from '@team-monite/ui-kit-react';
 
 import {
@@ -23,6 +24,7 @@ import {
 } from '@team-monite/sdk-api';
 
 import {
+  useCounterpartCache,
   useCounterpartList,
   useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
@@ -71,16 +73,23 @@ const CounterpartsTable = ({
 }: CounterpartsTableProps) => {
   const { t } = useComponentsContext();
 
-  const [openDeleteDialogue, setOpenDeleteDialogue] = useState(false);
-  const [selectedCounterpart, setSelectedCounterpart] = useState<
-    CounterpartResponse | undefined
-  >();
+  const {
+    show,
+    hide,
+    isOpen,
+    entity: selectedCounterpart,
+  } = useModal<CounterpartResponse>();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
+
+  const { destroy } = useCounterpartCache();
+
+  // clear cache before unmount
+  useEffect(() => destroy, [destroy]);
 
   const {
     data: counterparts,
@@ -264,19 +273,18 @@ const CounterpartsTable = ({
               },
             },
           ]}
-          renderDropdownActions={(value: any) => (
+          renderDropdownActions={(counterpart: CounterpartResponse) => (
             <>
               <DropdownMenuItem
                 onClick={() => {
-                  onRowClick && onRowClick(value.id);
+                  onRowClick && onRowClick(counterpart.id);
                 }}
               >
                 {t('counterparts:actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  setSelectedCounterpart(value);
-                  setOpenDeleteDialogue(true);
+                  show(counterpart);
                 }}
               >
                 {t('counterparts:actions.delete')}
@@ -311,18 +319,16 @@ const CounterpartsTable = ({
           )}
         />
       </Styled.Table>
-      {openDeleteDialogue && (
+      {isOpen && (
         <ConfirmDeleteDialogue
           isLoading={deleteCounterpartMutation.isLoading}
-          onClose={() => {
-            setOpenDeleteDialogue(false);
-            setSelectedCounterpart(undefined);
-          }}
-          onDelete={() => {
+          onClose={hide}
+          onDelete={async () => {
             selectedCounterpart &&
-              deleteCounterpartMutation.mutate(selectedCounterpart.id);
-            setOpenDeleteDialogue(false);
-            setSelectedCounterpart(undefined);
+              (await deleteCounterpartMutation.mutateAsync(
+                selectedCounterpart
+              ));
+            hide();
           }}
           type={t('counterparts:titles.counterpart')}
           name={
