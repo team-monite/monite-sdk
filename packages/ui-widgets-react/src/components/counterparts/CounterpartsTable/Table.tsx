@@ -51,6 +51,8 @@ import * as Styled from './styles';
 import { PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
   onRowClick?: (id: string) => void;
   onChangeSort?: (params: {
     sort: Receivablesapi__v1__counterparts__pagination__CursorFields;
@@ -68,6 +70,8 @@ type CounterpartsTableRow = CounterpartResponse & {
 
 const CounterpartsTable = ({
   onRowClick,
+  onEdit,
+  onDelete,
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
 }: CounterpartsTableProps) => {
@@ -277,7 +281,7 @@ const CounterpartsTable = ({
             <>
               <DropdownMenuItem
                 onClick={() => {
-                  onRowClick && onRowClick(counterpart.id);
+                  onEdit && onEdit(counterpart.id);
                 }}
               >
                 {t('counterparts:actions.edit')}
@@ -324,10 +328,12 @@ const CounterpartsTable = ({
           isLoading={deleteCounterpartMutation.isLoading}
           onClose={hide}
           onDelete={async () => {
-            selectedCounterpart &&
-              (await deleteCounterpartMutation.mutateAsync(
-                selectedCounterpart
-              ));
+            if (selectedCounterpart) {
+              await deleteCounterpartMutation.mutateAsync(selectedCounterpart);
+
+              onDelete && onDelete(selectedCounterpart.id);
+            }
+
             hide();
           }}
           type={t('counterparts:titles.counterpart')}
