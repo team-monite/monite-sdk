@@ -14,11 +14,11 @@ These components display the data served from the Monite API and also provide da
 ## Installation
 
 ```sh
-npm install @team-monite/ui-react-widgets --save --force
+npm install @team-monite/ui-widgets-react --save --force
 ```
 or
 ```sh
-yarn add @team-monite/ui-react-widgets
+yarn add @team-monite/ui-widgets-react
 ```
 
 ## Usage
