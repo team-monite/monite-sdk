@@ -1,4 +1,4 @@
-import { Flex } from '@team-monite/ui-widgets-react';
+import { Flex } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 export const Menu = styled(Flex)`

@@ -5,7 +5,7 @@ import {
   Card,
   Theme,
   UClockThree,
-} from '@team-monite/ui-widgets-react';
+} from '@team-monite/ui-kit-react';
 
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';

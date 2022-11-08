@@ -1,3 +1,4 @@
+import { getReadableAmount } from '@team-monite/ui-widgets-react';
 import {
   FlexTable,
   Flex,
@@ -5,10 +6,8 @@ import {
   Text,
   Card,
   Button,
-  getReadableAmount,
   Theme,
-} from '@team-monite/ui-widgets-react';
-
+} from '@team-monite/ui-kit-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';

@@ -7,7 +7,7 @@ import {
   UCheckSquare,
   UClockThree,
   UExclamationTriangle,
-} from '@team-monite/ui-widgets-react';
+} from '@team-monite/ui-kit-react';
 import { useLocation } from 'react-router-dom';
 
 enum StripeResultStatuses {

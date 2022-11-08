@@ -80,15 +80,11 @@ export default class AuthNSettingsService {
 
   /**
    * Obtain New Token
-   * @param xRequestId Id of a request. Helps to trace logs
-   * @param xServiceName Client name. Helps to trace logs
    * @param requestBody
    * @returns AccessTokenResponse Successful Response
    * @throws ApiError
    */
   public getAuthToken(
-    xRequestId: string,
-    xServiceName: string,
     requestBody: ObtainTokenPayload
   ): CancelablePromise<AccessTokenResponse> {
     return __request(
