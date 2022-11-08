@@ -42,7 +42,8 @@ const PageCounterparts = () => {
         }
       />
 
-      <CounterpartsTable onRowClick={setId} />
+      <CounterpartsTable onRowClick={setId} onEdit={setId} />
+
       {(counterpartId || counterpartType) && (
         <CounterpartDetails
           id={counterpartId}

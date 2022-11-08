@@ -83,6 +83,18 @@ Type:
 
 Callback. Called when the current sort is changed. Returns the new sort field and order.
 
+### `onDelete`
+Type: `(id: string) => void`
+
+Callback. Called when a user deletes a specific counterpart.
+Specifically, after a user selected "Delete" from the "Actions" menu of a counterpart and confirmed the deletion.
+Returns the ID of the deleted counterpart.
+
+### `onEdit`
+Type: `(id: string) => void`
+
+Callback. Called when a user selects "Edit" from the "Actions" menu of a specific counterpart. Returns the ID of that counterpart.
+
 ### `onNext`
 Type: `() => void`
 
@@ -119,6 +131,8 @@ It is used to determine the availability of the "next" and "previous" buttons at
   <Story
     name="Default"
     args={{
+      onEdit: action('onEdit'),
+      onDelete: action('onDelete'),
       onRowClick: action('onRowClick'),
       onChangeSort: action('onChangeSort'),
       onChangeFilter: action('onChangeFilter'),
