@@ -49,7 +49,7 @@ nginx:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: node-role.kubernetes.io/modes
+                - key: node-role.kubernetes.io/nodes
                   operator: Exists
 
 
