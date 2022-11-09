@@ -1,6 +1,7 @@
 import ReceivablesTable from './ReceivablesTable';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import withMock from 'storybook-addon-mock';
+import { action } from '@storybook/addon-actions';
 import receivablesMock from '../fixtures/receivables';
 import customersMock from '../fixtures/customers';
 
@@ -47,6 +48,10 @@ export const Template = (args) => (
 <Canvas>
   <Story
     name="Default"
+    args={{
+      onChangeSort: action('onChangeSort'),
+      onChangeFilter: action('onChangeFilter')
+    }}
   >
     {Template.bind({})}
   </Story>

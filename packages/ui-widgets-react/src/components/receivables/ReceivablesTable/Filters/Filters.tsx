@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Search, Select } from '@team-monite/ui-kit-react';
+import { Box, Search, Select } from '@team-monite/ui-kit-react';
 import { ReceivablesReceivablesStatusEnum } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useCounterpartList } from 'core/queries';
-import { counterpartsToSelect } from '../../payables/PayableDetails/PayableDetailsForm/helpers';
+import { counterpartsToSelect } from '../../../payables/PayableDetails/PayableDetailsForm/helpers';
 
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CUSTOMER,
-} from './consts';
-import { FilterTypes, FilterValue } from './types';
+} from '../consts';
+import { FilterTypes, FilterValue } from '../types';
 
 const Wrapper = styled.div`
   padding: 24px 12px 32px;
@@ -30,7 +30,7 @@ const Filters = ({ onChangeFilter }: Props) => {
 
   return (
     <Wrapper>
-      <div style={{ width: 300 }}>
+      <Box width={300}>
         <Search
           placeholder={t('common:search')}
           isFilter
@@ -38,8 +38,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search || null)
           }
         />
-      </div>
-      <div style={{ width: 235 }}>
+      </Box>
+      <Box width={235}>
         <Select
           placeholder={t('common:status')}
           options={[
@@ -57,8 +57,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_STATUS, selected && selected.value)
           }
         />
-      </div>
-      <div style={{ width: 300 }}>
+      </Box>
+      <Box width={300}>
         <Select
           placeholder={t('common:customer')}
           isFilter
@@ -68,7 +68,7 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_CUSTOMER, selected && selected.label)
           }
         />
-      </div>
+      </Box>
     </Wrapper>
   );
 };

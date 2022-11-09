@@ -21,15 +21,15 @@ import {
 
 import { useReceivables } from 'core/queries/useReceivables';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
-import { ROW_TO_TAG_STATUS_MAP } from '../consts';
+import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../../constants';
+import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CUSTOMER,
-} from './consts';
+} from '../consts';
 import * as Styled from './styles';
-import { FilterTypes, Sort } from './types';
+import { FilterTypes, Sort } from '../types';
 
 const formatter = (currency: string) =>
   new Intl.NumberFormat('de-DE', {
@@ -40,6 +40,12 @@ const formatter = (currency: string) =>
 interface Props {
   type: ReceivablesReceivableType;
   currentFilters: FilterTypes;
+  onChangeSort?: (
+    params: {
+      sort: api__v1__receivables__pagination__CursorFields;
+      order: SortOrderEnum | null;
+    } | null
+  ) => void;
 }
 
 const mapTypeToColumns = (
@@ -220,7 +226,11 @@ const mapTypeToColumns = (
   ],
 });
 
-const ReceivableTypeTab = ({ type, currentFilters }: Props) => {
+const ReceivableTypeTab = ({
+  type,
+  currentFilters,
+  onChangeSort: onChangeSortCallback,
+}: Props) => {
   const { t } = useComponentsContext();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -265,6 +275,7 @@ const ReceivableTypeTab = ({ type, currentFilters }: Props) => {
 
   useEffect(() => {
     setCurrentSort(null);
+    onChangeSortCallback && onChangeSortCallback(null);
   }, [type]);
 
   useEffect(() => {
@@ -287,11 +298,13 @@ const ReceivableTypeTab = ({ type, currentFilters }: Props) => {
         sort,
         order,
       });
+
+      onChangeSortCallback && onChangeSortCallback({ sort, order });
     } else if (currentSort?.sort === sort && order === null) {
       setCurrentSort(null);
-    }
 
-    // onChangeSortCallback && onChangeSortCallback({ sort, order });
+      onChangeSortCallback && onChangeSortCallback(null);
+    }
   };
 
   const columns = mapTypeToColumns(t, currentSort, onChangeSort)[type];
