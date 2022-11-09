@@ -56,7 +56,7 @@ const PaymentPage = () => {
       );
     }
     if (paymentData?.status === 'expired') {
-      // navigate(ROUTES.expired);
+      navigate(ROUTES.expired);
     }
   }, [paymentData, navigate, rawPaymentData]);
 
