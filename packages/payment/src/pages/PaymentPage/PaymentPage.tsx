@@ -8,6 +8,7 @@ import {
   PaymentDetails,
   EmptyScreen,
 } from '@team-monite/ui-widgets-react';
+import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import { ROUTES } from 'consts';
 import { fromBase64 } from 'helpers';
@@ -29,7 +30,7 @@ const PaymentPage = () => {
     }
   }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<any>();
+  const [paymentData, setPaymentData] = useState<PaymentsPaymentLinkResponse>();
 
   const { monite } = useComponentsContext() || {};
 
@@ -61,7 +62,7 @@ const PaymentPage = () => {
 
   return (
     <Layout>
-      <Helmet title={`Pay invoice ${linkData?.id || ''}`} />
+      <Helmet title={`Pay invoice ${paymentData?.payment_reference || ''}`} />
 
       {!paymentData && (
         <Box width={'100%'} padding={'80px'}>

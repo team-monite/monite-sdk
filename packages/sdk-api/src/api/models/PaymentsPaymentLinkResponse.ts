@@ -2,18 +2,18 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { PaymentsPaymentLinkStatuses } from './PaymentsPaymentLinkStatuses';
 import type { PaymentsPaymentsAccountResponse } from './PaymentsPaymentsAccountResponse';
 import type { PaymentsPaymentsCurrencyEnum } from './PaymentsPaymentsCurrencyEnum';
 import type { PaymentsPaymentsInvoice } from './PaymentsPaymentsInvoice';
 import type { PaymentsPaymentsPaymentIntent } from './PaymentsPaymentsPaymentIntent';
+import type { PaymentsRecipientPaymentsPaymentsAccountResponse } from './PaymentsRecipientPaymentsPaymentsAccountResponse';
 
 export type PaymentsPaymentLinkResponse = {
   payer?: PaymentsPaymentsAccountResponse;
-  recipient: PaymentsPaymentsAccountResponse;
+  recipient: PaymentsRecipientPaymentsPaymentsAccountResponse;
   id: string;
   currency: PaymentsPaymentsCurrencyEnum;
-  status: PaymentsPaymentLinkStatuses;
+  status: string;
   payment_reference?: string;
   amount: number;
   payment_intents: Array<PaymentsPaymentsPaymentIntent>;
@@ -21,4 +21,5 @@ export type PaymentsPaymentLinkResponse = {
   total?: number;
   return_url?: string;
   invoice?: PaymentsPaymentsInvoice;
+  expires_at: string;
 };
