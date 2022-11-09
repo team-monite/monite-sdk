@@ -93,10 +93,12 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
           />
         )}
 
-        <PaymentDetailsRow
-          label={t('payment:details.recipient')}
-          value={recipient}
-        />
+        {recipient && (
+          <PaymentDetailsRow
+            label={t('payment:details.recipient')}
+            value={recipient}
+          />
+        )}
 
         {invoice?.issue_date && (
           <PaymentDetailsRow

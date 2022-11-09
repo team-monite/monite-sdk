@@ -7,6 +7,7 @@ import type { PaymentsPaymentsPaymentsPaymentsBankAccount } from './PaymentsPaym
 
 export type PaymentsPaymentsAccountResponse = {
   id: string;
+  name?: string;
   type: PaymentsPaymentsAccountType;
   bank_account?: PaymentsPaymentsPaymentsPaymentsBankAccount;
 };

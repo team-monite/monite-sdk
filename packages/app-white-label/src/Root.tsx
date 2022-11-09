@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreContext, store } from 'features/mobx';
-import { MoniteProvider, MoniteApp } from '@team-monite/ui-widgets-react';
+import { MoniteProvider } from '@team-monite/ui-widgets-react';
+import { MoniteApp } from '@team-monite/sdk-api';
 
 import App from 'features/app/App';
 import { AUTH_TOKEN_STORAGE_KEY } from 'features/app/consts';
@@ -14,7 +15,7 @@ const Root = () => {
       '',
     apiUrl: 'https://api.dev.monite.com/v1',
     locale: 'en',
-    entityId: 'ec74ceb6-d1ef-4898-b5b3-d2520a52c073',
+    entityId: '805622a2-3926-4eae-92ec-3d9bd375cfa9',
   });
 
   store.setMoniteApp(monite);

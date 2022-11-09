@@ -43,17 +43,23 @@ const PaymentPage = () => {
 
         // TODO: backend will add enum for statuses
         if (data?.status === 'succeeded') {
-          navigate(ROUTES.payResult);
+          navigate(
+            `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
+            {
+              replace: true,
+            }
+          );
         }
-        // if (data?.status === 'expired') {
-        //   navigate(ROUTES.expired);
-        // }
+        if (data?.status === 'expired') {
+          navigate(ROUTES.expired);
+        }
         setIsLoading(false);
       } else {
         setIsLoading(false);
       }
     })();
-  }, [linkData, navigate, monite.api.payment]);
+    // eslint-disable-next-line
+  }, [linkData]);
 
   return (
     <Layout>

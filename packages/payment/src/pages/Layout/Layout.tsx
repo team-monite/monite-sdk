@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Global, useTheme } from '@emotion/react';
 
 const Wrapper = styled.div`
-  background: ${({ theme }) => theme.neutral90};
+  background: '#F3F3F3';
   min-height: 100vh;
 `;
 
@@ -14,13 +14,15 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
   const theme = useTheme();
-
+  console.log('theme', theme);
   return (
     <Wrapper>
       <Global
         styles={() => ({
           body: {
-            backgroundColor: theme.colors.lightGrey3,
+            //TODO: remove
+            //@ts-ignore
+            backgroundColor: theme?.colors?.lightGrey3,
           },
         })}
       />

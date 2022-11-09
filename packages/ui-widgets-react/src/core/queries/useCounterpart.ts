@@ -11,18 +11,17 @@ import {
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
 } from '@team-monite/sdk-api';
-import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
-import { getCounterpartName } from 'components/counterparts/helpers';
+import {
+  getCounterpartName,
+  getIndividualName,
+} from 'components/counterparts/helpers';
+import { useComponentsContext } from '../context/ComponentsContext';
 import { useEntityCache, useEntityListCache } from './hooks';
-
-const COUNTERPARTS_QUERY = 'counterparts';
-const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
-const COUNTERPARTS_BANKS_QUERY = 'counterpartBanks';
 
 type CounterpartUpdate = {
   id: string;
-  counterpart: CounterpartUpdatePayload;
+  payload: CounterpartUpdatePayload;
 };
 
 type CounterpartContactUpdate = {
@@ -35,11 +34,62 @@ type CounterpartBankUpdate = {
   payload: CounterpartBankAccount;
 };
 
+const COUNTERPARTS_QUERY = 'counterparts';
+const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
+const COUNTERPARTS_BANKS_QUERY = 'counterpartBanks';
+
+export const counterpartQueryKeys = {
+  all: () => [COUNTERPARTS_QUERY],
+  list: () => [...counterpartQueryKeys.all(), 'list'],
+  detail: (id?: string) => [...counterpartQueryKeys.all(), 'detail', id],
+  contactList: () => [
+    ...counterpartQueryKeys.all(),
+    COUNTERPARTS_CONTACTS_QUERY,
+    'list',
+  ],
+  contactDetail: (id?: string) => [
+    ...counterpartQueryKeys.all(),
+    COUNTERPARTS_CONTACTS_QUERY,
+    'detail',
+    id,
+  ],
+  bankList: () => [
+    ...counterpartQueryKeys.all(),
+    COUNTERPARTS_BANKS_QUERY,
+    'list',
+  ],
+  bankDetail: (id?: string) => [
+    ...counterpartQueryKeys.all(),
+    COUNTERPARTS_BANKS_QUERY,
+    'detail',
+    id,
+  ],
+};
+
+export const useCounterpartCache = () =>
+  useEntityListCache(counterpartQueryKeys.all);
+
+const useCounterpartListCache = () =>
+  useEntityListCache<CounterpartResponse>(counterpartQueryKeys.list);
+
+const useCounterpartDetailCache = () =>
+  useEntityCache<CounterpartResponse>(counterpartQueryKeys.detail);
+
+const useCounterpartBankListCache = () =>
+  useEntityListCache<CounterpartBankAccountResponse>(
+    counterpartQueryKeys.bankList
+  );
+
+const useCounterpartContactListCache = () =>
+  useEntityListCache<CounterpartContactResponse>(
+    counterpartQueryKeys.contactList
+  );
+
 export const useCounterpartBankList = (counterpartId?: string) => {
-  const { monite } = useComponentsContext();
+  const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartBankAccountResponse[], Error>(
-    [COUNTERPARTS_BANKS_QUERY],
+    counterpartQueryKeys.bankList(),
     () =>
       !!counterpartId
         ? monite.api.counterparts
@@ -47,8 +97,12 @@ export const useCounterpartBankList = (counterpartId?: string) => {
             .then((response) => response.data)
         : [],
     {
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.bankAccounts'),
+          })
+        );
       },
       enabled: !!counterpartId,
     }
@@ -56,10 +110,8 @@ export const useCounterpartBankList = (counterpartId?: string) => {
 };
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { add } = useEntityListCache<CounterpartBankAccountResponse>(
-    COUNTERPARTS_BANKS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { add } = useCounterpartBankListCache();
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -68,10 +120,20 @@ export const useCreateCounterpartBank = (counterpartId: string) => {
   >((bank) => monite.api.counterparts.createBankAccount(counterpartId, bank), {
     onSuccess: async (bank) => {
       add(bank);
-      toast.success('Bank was created');
+
+      toast.success(
+        t('counterparts:notifications.createSuccess', {
+          type: t('counterparts:titles.bank'),
+          name: bank.name,
+        })
+      );
     },
-    onError: (error) => {
-      toast.error(error.message);
+    onError: () => {
+      toast.error(
+        t('counterparts:notifications.createError', {
+          type: t('counterparts:titles.bank'),
+        })
+      );
     },
   });
 };
@@ -80,39 +142,36 @@ export const useCounterpartBankById = (
   counterpartId: string,
   bankId?: string
 ) => {
-  const { monite } = useComponentsContext();
-
-  const { findById } = useEntityListCache<CounterpartBankAccountResponse>(
-    COUNTERPARTS_BANKS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { findById } = useCounterpartBankListCache();
 
   return useQuery<CounterpartBankAccountResponse | undefined, Error>(
-    [COUNTERPARTS_BANKS_QUERY, { id: bankId }],
+    counterpartQueryKeys.bankDetail(bankId),
     () => {
       if (!bankId) return undefined;
 
       const existedBank = findById(bankId);
 
-      if (existedBank) {
-        return existedBank;
-      }
+      if (existedBank) return existedBank;
 
       return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
     },
     {
       enabled: !!bankId,
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.bank'),
+          })
+        );
       },
     }
   );
 };
 
 export const useUpdateCounterpartBank = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { update } = useEntityListCache<CounterpartBankAccountResponse>(
-    COUNTERPARTS_BANKS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { update } = useCounterpartBankListCache();
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -124,20 +183,28 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
     {
       onSuccess: async (bank) => {
         update(bank);
-        toast.success('Bank was updated');
+
+        toast.success(
+          t('counterparts:notifications.updateSuccess', {
+            type: t('counterparts:titles.bank'),
+            name: bank.name,
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.updateError', {
+            type: t('counterparts:titles.bank'),
+          })
+        );
       },
     }
   );
 };
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { remove } = useEntityListCache<CounterpartBankAccountResponse>(
-    COUNTERPARTS_BANKS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { remove } = useCounterpartBankListCache();
 
   return useMutation<void, Error, string>(
     (bankId) =>
@@ -145,25 +212,38 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
     {
       onSuccess: (_, bankId) => {
         remove(bankId);
-        toast.success('Bank was deleted');
+
+        toast.success(
+          t('counterparts:notifications.deleteSuccess', {
+            type: t('counterparts:titles.bank'),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.deleteError', {
+            type: t('counterparts:titles.bank'),
+          })
+        );
       },
     }
   );
 };
 
 export const useCounterpartContactList = (counterpartId?: string) => {
-  const { monite } = useComponentsContext();
+  const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartContactResponse[], Error>(
-    [COUNTERPARTS_CONTACTS_QUERY],
+    counterpartQueryKeys.contactList(),
     () =>
       counterpartId ? monite.api.counterparts.getContacts(counterpartId) : [],
     {
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.contactPersons'),
+          })
+        );
       },
       enabled: !!counterpartId,
     }
@@ -171,10 +251,9 @@ export const useCounterpartContactList = (counterpartId?: string) => {
 };
 
 export const useCreateCounterpartContact = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { add } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_CONTACTS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { invalidate } = useCounterpartListCache();
+  const { add } = useCounterpartContactListCache();
 
   return useMutation<
     CounterpartContactResponse,
@@ -183,12 +262,22 @@ export const useCreateCounterpartContact = (counterpartId: string) => {
   >(
     (contact) => monite.api.counterparts.createContact(counterpartId, contact),
     {
-      onSuccess: async (contact) => {
+      onSuccess: (contact) => {
         add(contact);
-        toast.success('Contact was created');
+        invalidate();
+        toast.success(
+          t('counterparts:notifications.createSuccess', {
+            type: t('counterparts:titles.contact'),
+            name: getIndividualName(contact.first_name, contact.last_name),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.createError', {
+            type: t('counterparts:titles.contact'),
+          })
+        );
       },
     }
   );
@@ -198,38 +287,37 @@ export const useCounterpartContactById = (
   counterpartId: string,
   contactId?: string
 ) => {
-  const { monite } = useComponentsContext();
-  const { findById } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_CONTACTS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { findById } = useCounterpartContactListCache();
 
   return useQuery<CounterpartContactResponse | undefined, Error>(
-    [COUNTERPARTS_CONTACTS_QUERY, { id: contactId }],
+    counterpartQueryKeys.contactDetail(contactId),
     () => {
       if (!contactId) return undefined;
 
       const existedContact = findById(contactId);
 
-      if (existedContact) {
-        return existedContact;
-      }
+      if (existedContact) return existedContact;
 
       return monite.api.counterparts.getContactById(counterpartId, contactId);
     },
     {
       enabled: !!contactId,
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.contact'),
+          })
+        );
       },
     }
   );
 };
 
 export const useUpdateCounterpartContact = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { update } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_CONTACTS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { invalidate } = useCounterpartListCache();
+  const { update } = useCounterpartContactListCache();
 
   return useMutation<
     CounterpartContactResponse,
@@ -239,22 +327,32 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
     ({ contactId, payload }) =>
       monite.api.counterparts.updateContact(counterpartId, contactId, payload),
     {
-      onSuccess: async (contact) => {
+      onSuccess: (contact) => {
         update(contact);
-        toast.success('Contact was updated');
+        invalidate();
+
+        toast.success(
+          t('counterparts:notifications.updateSuccess', {
+            type: t('counterparts:titles.contact'),
+            name: getIndividualName(contact.first_name, contact.last_name),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.updateError', {
+            type: t('counterparts:titles.contact'),
+          })
+        );
       },
     }
   );
 };
 
 export const useDeleteCounterpartContact = (counterpartId: string) => {
-  const { monite } = useComponentsContext();
-  const { remove } = useEntityListCache<CounterpartContactResponse>(
-    COUNTERPARTS_CONTACTS_QUERY
-  );
+  const { monite, t } = useComponentsContext();
+  const { invalidate } = useCounterpartListCache();
+  const { remove } = useCounterpartContactListCache();
 
   return useMutation<void, Error, string>(
     (contactId) =>
@@ -262,10 +360,20 @@ export const useDeleteCounterpartContact = (counterpartId: string) => {
     {
       onSuccess: (_, contactId) => {
         remove(contactId);
-        toast.success('Contact was deleted');
+        invalidate();
+
+        toast.success(
+          t('counterparts:notifications.deleteSuccess', {
+            type: t('counterparts:titles.contact'),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.deleteError', {
+            type: t('counterparts:titles.contact'),
+          })
+        );
       },
     }
   );
@@ -274,73 +382,97 @@ export const useDeleteCounterpartContact = (counterpartId: string) => {
 export const useCounterpartList = (
   ...args: Parameters<CounterpartsService['getList']>
 ) => {
-  const { monite } = useComponentsContext();
+  const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartPaginationResponse, Error>(
-    [COUNTERPARTS_QUERY],
-    () => {
-      return monite.api.counterparts.getList(...args);
-    },
+    counterpartQueryKeys.list(),
+    () => monite.api.counterparts.getList(...args),
     {
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.counterparts'),
+          })
+        );
       },
     }
   );
 };
 
 export const useCreateCounterpart = () => {
-  const { monite } = useComponentsContext();
-  const { invalidate } =
-    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
-  const { setEntity } = useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { monite, t } = useComponentsContext();
+  const { invalidate } = useCounterpartListCache();
+  const { setEntity } = useCounterpartDetailCache();
 
   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>(
     (payload) => monite.api.counterparts.create(payload),
     {
-      onSuccess: async (counterpart) => {
+      onSuccess: (counterpart) => {
         setEntity(counterpart);
-        await invalidate();
-        toast.success('Created');
+        invalidate();
+
+        toast.success(
+          t('counterparts:notifications.createSuccess', {
+            type: t('counterparts:titles.counterpart'),
+            name: getCounterpartName(counterpart),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.createError', {
+            type: t('counterparts:titles.counterpart'),
+          })
+        );
       },
     }
   );
 };
 
 export const useCounterpartById = (id?: string) => {
-  const { monite } = useComponentsContext();
+  const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartResponse | undefined, Error>(
-    [COUNTERPARTS_QUERY, { id }],
+    counterpartQueryKeys.detail(id),
     () => (id ? monite.api.counterparts.getById(id) : undefined),
     {
       enabled: !!id,
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.counterpart'),
+          })
+        );
       },
     }
   );
 };
 
 export const useUpdateCounterpart = () => {
-  const { monite } = useComponentsContext();
-  const { invalidate } =
-    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
-  const { setEntity } = useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { monite, t } = useComponentsContext();
+  const { invalidate } = useCounterpartListCache();
+  const { setEntity } = useCounterpartDetailCache();
 
   return useMutation<CounterpartResponse, Error, CounterpartUpdate>(
-    ({ id, counterpart }) => monite.api.counterparts.update(id, counterpart),
+    ({ id, payload }) => monite.api.counterparts.update(id, payload),
     {
-      onSuccess: async (counterpart) => {
+      onSuccess: (counterpart) => {
         setEntity(counterpart);
-        await invalidate();
-        toast.success('Updated');
+        invalidate();
+
+        toast.success(
+          t('counterparts:notifications.updateSuccess', {
+            type: t('counterparts:titles.counterpart'),
+            name: getCounterpartName(counterpart),
+          })
+        );
       },
-      onError: (error) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.updateError', {
+            type: t('counterparts:titles.counterpart'),
+          })
+        );
       },
     }
   );
@@ -348,35 +480,29 @@ export const useUpdateCounterpart = () => {
 
 export const useDeleteCounterpart = () => {
   const { monite, t } = useComponentsContext();
-  const { invalidate } =
-    useEntityListCache<CounterpartResponse>(COUNTERPARTS_QUERY);
-  const { getEntity, removeEntity } =
-    useEntityCache<CounterpartResponse>(COUNTERPARTS_QUERY);
+  const { invalidate } = useCounterpartListCache();
+  const { removeEntity } = useCounterpartDetailCache();
 
-  return useMutation<void, Error, string, CounterpartResponse>(
-    (id) => monite.api.counterparts.delete(id),
+  return useMutation<void, Error, CounterpartResponse, CounterpartResponse>(
+    (counterpart) => monite.api.counterparts.delete(counterpart.id),
     {
-      onMutate: (id) => getEntity(id),
-      onSuccess: async (_, id, counterpart) => {
-        toast(
-          counterpart
-            ? t('counterparts:confirmDialogue.successNotification', {
-                name: getCounterpartName(counterpart),
-              })
-            : ''
+      onSuccess: (_, counterpart) => {
+        toast.success(
+          t('counterparts:notifications.deleteSuccess', {
+            type: t('counterparts:titles.counterpart'),
+            name: getCounterpartName(counterpart),
+          })
         );
 
-        removeEntity(id);
-
-        await invalidate();
+        removeEntity(counterpart.id);
+        invalidate();
       },
-      onError: (_, __, counterpart) => {
+      onError: (_, counterpart) => {
         toast.error(
-          counterpart
-            ? t('counterparts:confirmDialogue.errorNotification', {
-                name: getCounterpartName(counterpart),
-              })
-            : ''
+          t('counterparts:notifications.deleteError', {
+            type: t('counterparts:titles.counterpart'),
+            name: getCounterpartName(counterpart),
+          })
         );
       },
     }

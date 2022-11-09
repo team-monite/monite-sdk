@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { CounterpartType } from '@team-monite/sdk-api';
 
@@ -50,17 +50,18 @@ export default function useCounterpartView({
     counterpart?.id
   );
 
-  const counterpartDeleteMutation = useDeleteCounterpart();
+  const { mutate: deleteMutate, isLoading: isCounterpartDeleteLoading } =
+    useDeleteCounterpart();
 
   const deleteCounterpart = useCallback(() => {
     if (!counterpart) return;
 
-    return counterpartDeleteMutation.mutate(counterpart.id, {
+    return deleteMutate(counterpart, {
       onSuccess: () => {
         onDelete && onDelete(counterpart.id);
       },
     });
-  }, [counterpartDeleteMutation, counterpart, onDelete]);
+  }, [deleteMutate, counterpart, onDelete]);
 
   const onEdit = useCallback(() => {
     if (!counterpart) return;
@@ -72,9 +73,9 @@ export default function useCounterpartView({
     isBanksLoading ||
     isCounterpartLoading ||
     isContactsLoading ||
-    counterpartDeleteMutation.isLoading;
+    isCounterpartDeleteLoading;
 
-  const getTitle = useCallback((): string => {
+  const title = useMemo((): string => {
     if (isLoading) return t('counterparts:actions.loading');
     if (counterpartError) return counterpartError.message;
     if (counterpart) return getCounterpartName(counterpart);
@@ -88,6 +89,6 @@ export default function useCounterpartView({
     deleteCounterpart,
     onEdit,
     isLoading,
-    getTitle,
+    title,
   };
 }

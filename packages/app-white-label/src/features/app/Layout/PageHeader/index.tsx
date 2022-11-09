@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@team-monite/ui-widgets-react';
+import { Text } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 const Wrapper = styled.div`

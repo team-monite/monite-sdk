@@ -13,6 +13,7 @@ import {
   UArrowLeft,
   UArrowRight,
   DropdownMenuItem,
+  useModal,
 } from '@team-monite/ui-kit-react';
 
 import {
@@ -23,6 +24,7 @@ import {
 } from '@team-monite/sdk-api';
 
 import {
+  useCounterpartCache,
   useCounterpartList,
   useDeleteCounterpart,
 } from 'core/queries/useCounterpart';
@@ -49,6 +51,8 @@ import * as Styled from './styles';
 import { PAGE_LIMIT } from '../../../constants';
 
 export interface CounterpartsTableProps {
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
   onRowClick?: (id: string) => void;
   onChangeSort?: (params: {
     sort: Receivablesapi__v1__counterparts__pagination__CursorFields;
@@ -66,21 +70,30 @@ type CounterpartsTableRow = CounterpartResponse & {
 
 const CounterpartsTable = ({
   onRowClick,
+  onEdit,
+  onDelete,
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
 }: CounterpartsTableProps) => {
   const { t } = useComponentsContext();
 
-  const [openDeleteDialogue, setOpenDeleteDialogue] = useState(false);
-  const [selectedCounterpart, setSelectedCounterpart] = useState<
-    CounterpartResponse | undefined
-  >();
+  const {
+    show,
+    hide,
+    isOpen,
+    entity: selectedCounterpart,
+  } = useModal<CounterpartResponse>();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
+
+  const { destroy } = useCounterpartCache();
+
+  // clear cache before unmount
+  useEffect(() => destroy, [destroy]);
 
   const {
     data: counterparts,
@@ -264,19 +277,18 @@ const CounterpartsTable = ({
               },
             },
           ]}
-          renderDropdownActions={(value: any) => (
+          renderDropdownActions={(counterpart: CounterpartResponse) => (
             <>
               <DropdownMenuItem
                 onClick={() => {
-                  onRowClick && onRowClick(value.id);
+                  onEdit && onEdit(counterpart.id);
                 }}
               >
                 {t('counterparts:actions.edit')}
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
-                  setSelectedCounterpart(value);
-                  setOpenDeleteDialogue(true);
+                  show(counterpart);
                 }}
               >
                 {t('counterparts:actions.delete')}
@@ -311,18 +323,18 @@ const CounterpartsTable = ({
           )}
         />
       </Styled.Table>
-      {openDeleteDialogue && (
+      {isOpen && (
         <ConfirmDeleteDialogue
           isLoading={deleteCounterpartMutation.isLoading}
-          onClose={() => {
-            setOpenDeleteDialogue(false);
-            setSelectedCounterpart(undefined);
-          }}
-          onDelete={() => {
-            selectedCounterpart &&
-              deleteCounterpartMutation.mutate(selectedCounterpart.id);
-            setOpenDeleteDialogue(false);
-            setSelectedCounterpart(undefined);
+          onClose={hide}
+          onDelete={async () => {
+            if (selectedCounterpart) {
+              await deleteCounterpartMutation.mutateAsync(selectedCounterpart);
+
+              onDelete && onDelete(selectedCounterpart.id);
+            }
+
+            hide();
           }}
           type={t('counterparts:titles.counterpart')}
           name={
