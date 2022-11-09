@@ -14,6 +14,7 @@ import {
   PaymentsPaymentLinkResponse,
 } from '@team-monite/sdk-api';
 
+import { useFeeByPaymentMethod } from 'core/queries/usePayment';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { getReadableAmount } from 'core/utils';
 
@@ -34,9 +35,9 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
   const rawPaymentData = new URLSearchParams(search).get('data');
 
   const [isLoading, setIsLoading] = useState(false);
-  const [fee, setFee] = useState<number>();
-  const [totalAmount, setTotalAmount] = useState<number>(0);
-  const [paymentMethod, setPaymentMethod] = useState('');
+
+  const [paymentMethod, setPaymentMethod] =
+    useState<PaymentsPaymentMethodsEnum>();
 
   const {
     id,
@@ -59,16 +60,18 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     [elements]
   );
 
-  const handleChangeFee = async (paymentMethod: PaymentsPaymentMethodsEnum) => {
-    monite.api.payment
-      .getFeeByPaymentMethod(paymentMethod, {
-        payment_link_id: id,
-      })
-      .then((response) => {
-        setFee(response.total.fee);
-        setTotalAmount(response.total.amount);
-      });
-  };
+  const { data: feeData, refetch: refetchFee } = useFeeByPaymentMethod(
+    paymentMethod,
+    id
+  );
+  const fee = feeData?.total.fee;
+  const totalAmount = feeData?.total.amount || 0;
+
+  console.log('data____ total', feeData?.total);
+
+  useEffect(() => {
+    refetchFee();
+  }, [paymentMethod]);
 
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
@@ -80,8 +83,9 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     }
 
     setIsLoading(true);
+
     try {
-      if (paymentMethod !== PaymentsPaymentMethodsEnum.CARD) {
+      if (paymentMethod && paymentMethod !== PaymentsPaymentMethodsEnum.CARD) {
         await monite.api.payment.payByPaymentLinkId(id, {
           payment_method: paymentMethod,
         });
@@ -121,7 +125,6 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         <PaymentElement
           onChange={(e) => {
             setPaymentMethod(e.value.type as PaymentsPaymentMethodsEnum);
-            handleChangeFee(e.value.type as PaymentsPaymentMethodsEnum);
           }}
         />
       </div>
