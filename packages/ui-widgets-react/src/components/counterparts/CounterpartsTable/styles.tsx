@@ -6,35 +6,8 @@ export const Table = styled.div<{
   clickableRow?: boolean;
 }>`
   flex: 1 1 auto;
-  font-family: 'Faktum', sans-serif;
   display: flex;
   flex-direction: column;
-
-  * {
-    box-sizing: border-box;
-  }
-
-  table th {
-    padding: 12px;
-
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-
-    color: ${({ theme }) => theme.neutral50};
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  table td {
-    padding: 22px 12px;
-    color: ${({ theme }) => theme.black};
-    vertical-align: top;
-
-    white-space: nowrap;
-  }
 
   // for fixed header
   .rc-table,
@@ -46,49 +19,6 @@ export const Table = styled.div<{
 
   .rc-table-body {
     flex: 1 1 0;
-
-    ${({ theme, clickableRow }) =>
-      clickableRow &&
-      `
-        tr:not(.rc-table-placeholder) {
-          cursor: pointer;
-
-          &:hover {
-            background-color: ${theme.colors.lightGrey3};
-          }
-        }
-      `}
-  }
-`;
-
-export const Footer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  padding-top: 16px;
-`;
-
-export const OldTable = styled.div`
-  font-family: 'Faktum', sans-serif;
-
-  * {
-    box-sizing: border-box;
-  }
-
-  table th {
-    padding: 12px;
-
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-
-    color: ${({ theme }) => theme.neutral50};
-  }
-
-  table td {
-    padding: 10px 12px;
-    color: ${({ theme }) => theme.black};
-    vertical-align: top;
   }
 `;
 

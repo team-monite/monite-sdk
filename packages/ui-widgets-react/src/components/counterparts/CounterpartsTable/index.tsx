@@ -1,1 +1,1 @@
-export { default as CounterpartsTable } from './Table';
+export { default as CounterpartsTable } from './CounterpartsTable';

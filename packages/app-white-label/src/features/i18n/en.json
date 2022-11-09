@@ -22,6 +22,9 @@
   "approvalPolicies": {
     "approvalPolicies": "Approval Policies"
   },
+  "receivables": {
+    "sales": "Sales"
+  },
   "forms": {
     "fields": {
       "email": "Email",

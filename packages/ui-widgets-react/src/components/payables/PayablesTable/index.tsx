@@ -1,1 +1,1 @@
-export { default as PayablesTable } from './Table';
+export { default as PayablesTable } from './PayablesTable';

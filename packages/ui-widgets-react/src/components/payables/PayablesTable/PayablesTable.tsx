@@ -11,6 +11,7 @@ import {
   HeadCellSort,
   SortOrderEnum,
   Table,
+  TableFooter,
   Tag,
   UArrowLeft,
   UArrowRight,
@@ -19,7 +20,7 @@ import {
 import { usePayable } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { default as FiltersComponent } from './Filters';
-import { Sort, Filters, FilterValue } from './types';
+import { Sort, FilterTypes, FilterValue } from './types';
 import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
 import {
   FILTER_TYPE_SEARCH,
@@ -37,7 +38,7 @@ interface Props {
     order: SortOrderEnum | null;
   }) => void;
   onChangeFilter?: (filter: {
-    field: keyof Filters;
+    field: keyof FilterTypes;
     value: FilterValue;
   }) => void;
 }
@@ -57,7 +58,7 @@ const PayablesTable = ({
     string | null
   >(null);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
-  const [currentFilter, setCurrentFilter] = useState<Filters>({});
+  const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
   const {
     data: payables,
@@ -125,7 +126,7 @@ const PayablesTable = ({
     onChangeSortCallback && onChangeSortCallback({ sort, order });
   };
 
-  const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
+  const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
       ...prevFilter,
@@ -230,7 +231,7 @@ const PayablesTable = ({
         scroll={{ y: 'auto' }}
         // TODO create footer component and move to UI
         footer={() => (
-          <Styled.Footer>
+          <TableFooter>
             <Button
               variant="contained"
               color="secondary"
@@ -247,7 +248,7 @@ const PayablesTable = ({
             >
               <UArrowRight width={24} height={24} />
             </Button>
-          </Styled.Footer>
+          </TableFooter>
         )}
       />
     </Styled.Table>

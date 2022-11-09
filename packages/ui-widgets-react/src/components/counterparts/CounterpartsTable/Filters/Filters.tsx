@@ -1,6 +1,6 @@
 import React from 'react';
 import { CounterpartType } from '@team-monite/sdk-api';
-import { Search, Select } from '@team-monite/ui-kit-react';
+import { Box, Search, Select } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -8,16 +8,14 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
   FILTER_TYPE_IS_CUSTOMER,
-} from './consts';
-import { Filters as FiltersType, FilterValue } from './types';
+} from '../consts';
+import { Filters as FiltersType, FilterValue } from '../types';
 
 const Wrapper = styled.div`
   padding: 12px 12px 32px;
   display: flex;
   gap: 8px;
 `;
-
-const Item = styled.div``;
 
 interface Props {
   onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
@@ -28,7 +26,7 @@ const Filters = ({ onChangeFilter }: Props) => {
 
   return (
     <Wrapper>
-      <Item style={{ width: 300 }}>
+      <Box width={300}>
         <Search
           placeholder={t('counterparts:filters.search')}
           isFilter
@@ -36,8 +34,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search || null)
           }
         />
-      </Item>
-      <Item style={{ width: 285 }}>
+      </Box>
+      <Box width={285}>
         <Select
           placeholder={t('counterparts:filters.isCustomer.all')}
           options={[
@@ -57,8 +55,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_IS_CUSTOMER, selected && selected.value)
           }
         />
-      </Item>
-      <Item style={{ width: 235 }}>
+      </Box>
+      <Box width={235}>
         <Select
           placeholder={t('counterparts:filters.type.all')}
           options={[
@@ -78,7 +76,7 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_TYPE, selected && selected.value)
           }
         />
-      </Item>
+      </Box>
     </Wrapper>
   );
 };

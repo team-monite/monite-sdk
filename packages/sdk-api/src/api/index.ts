@@ -270,6 +270,10 @@ export { ReceivableTemplateCreatePayload } from './models/ReceivableTemplateCrea
 export { ReceivableType } from './models/ReceivableType';
 export type { ReceivableUpdatePayload } from './models/ReceivableUpdatePayload';
 export type { ReceivableVariablesResponse } from './models/ReceivableVariablesResponse';
+export { ReceivablesOrderEnum } from './models/ReceivablesOrderEnum';
+export type { ReceivablesPaginationResponse } from './models/ReceivablesPaginationResponse';
+export { ReceivablesReceivablesStatusEnum } from './models/ReceivablesReceivablesStatusEnum';
+export { ReceivablesReceivableType } from './models/ReceivablesReceivableType';
 export type { Recurrence } from './models/Recurrence';
 export type { RecurrenceIteration } from './models/RecurrenceIteration';
 export type { Receivablesapi__v1__counterparts__pagination__CursorFields } from './models/Receivablesapi__v1__counterparts__pagination__CursorFields';
@@ -359,3 +363,4 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
+export { default as ReceivableService } from './services/ReceivableService';

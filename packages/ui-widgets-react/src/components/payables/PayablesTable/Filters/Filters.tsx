@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { PayableStateEnum } from '@team-monite/sdk-api';
-import { DatePicker, Search, Select } from '@team-monite/ui-kit-react';
+import { Box, DatePicker, Search, Select } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 
-import { useComponentsContext } from '../../../core/context/ComponentsContext';
+import { useComponentsContext } from '../../../../core/context/ComponentsContext';
 import {
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-} from './consts';
-import { Filters as FiltersType, FilterValue } from './types';
+} from '../consts';
+import { FilterTypes, FilterValue } from '../types';
 
 const Wrapper = styled.div`
   padding: 12px 12px 32px;
@@ -18,10 +18,8 @@ const Wrapper = styled.div`
   gap: 8px;
 `;
 
-const Item = styled.div``;
-
 interface Props {
-  onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
+  onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
 const Filters = ({ onChangeFilter }: Props) => {
@@ -39,7 +37,7 @@ const Filters = ({ onChangeFilter }: Props) => {
 
   return (
     <Wrapper>
-      <Item style={{ width: 300 }}>
+      <Box width={300}>
         <Search
           placeholder={t('common:search')}
           isFilter
@@ -47,8 +45,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_SEARCH, search || null)
           }
         />
-      </Item>
-      <Item style={{ width: 235 }}>
+      </Box>
+      <Box width={235}>
         <Select
           placeholder={t('common:status')}
           options={[
@@ -64,8 +62,8 @@ const Filters = ({ onChangeFilter }: Props) => {
             onChangeFilter(FILTER_TYPE_STATUS, selected && selected.value)
           }
         />
-      </Item>
-      <Item style={{ width: 160 }}>
+      </Box>
+      <Box width={160}>
         <DatePicker
           date={createdAt}
           onChange={setCreatedAt}
@@ -73,8 +71,8 @@ const Filters = ({ onChangeFilter }: Props) => {
           isFilter
           isClearable
         />
-      </Item>
-      <Item style={{ width: 160 }}>
+      </Box>
+      <Box width={160}>
         <DatePicker
           date={dueDate}
           onChange={setDueDate}
@@ -82,7 +80,7 @@ const Filters = ({ onChangeFilter }: Props) => {
           isFilter
           isClearable
         />
-      </Item>
+      </Box>
     </Wrapper>
   );
 };
