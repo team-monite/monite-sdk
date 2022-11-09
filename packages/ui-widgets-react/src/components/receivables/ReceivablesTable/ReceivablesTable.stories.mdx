@@ -1,0 +1,53 @@
+import ReceivablesTable from './ReceivablesTable';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import withMock from 'storybook-addon-mock';
+import receivablesMock from '../fixtures/receivables';
+import customersMock from '../fixtures/customers';
+
+<Meta
+  title="Receivables/Receivables — Table View"
+  component={ReceivablesTable}
+  decorators={[withMock]}
+  parameters={{
+    mockData: [
+      {
+        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=quote',
+        method: 'GET',
+        status: 200,
+        response: receivablesMock.quotes,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=invoice',
+        method: 'GET',
+        status: 200,
+        response: receivablesMock.invoices,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=credit_note',
+        method: 'GET',
+        status: 200,
+        response: receivablesMock.credit_notes,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/counterparts?limit=100',
+        method: 'GET',
+        status: 200,
+        response: customersMock,
+      },
+    ],
+  }}
+/>
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <ReceivablesTable {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story
+    name="Default"
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

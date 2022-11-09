@@ -23,7 +23,7 @@ export { default as Multiselect } from './Multiselect';
 export { default as Tooltip } from './Tooltip';
 export { default as Accordion } from './Accordion';
 export * from './Box';
-export { Table, HeadCellSort } from './Table';
+export { Table, HeadCellSort, TableFooter } from './Table';
 export { Sidebar, SidebarLayout } from './Sidebar';
 export { default as Loading } from './Loading';
 export { default as FlexContainer } from './FlexContainer';

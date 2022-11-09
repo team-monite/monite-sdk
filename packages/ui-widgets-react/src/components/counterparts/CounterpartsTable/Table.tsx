@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Table,
+  TableFooter,
   Tag,
   Text,
   UEnvelopeAlt,
@@ -302,7 +303,7 @@ const CounterpartsTable = ({
           })}
           scroll={{ y: 'auto' }}
           footer={() => (
-            <Styled.Footer>
+            <TableFooter>
               <Button
                 variant="contained"
                 color="secondary"
@@ -319,7 +320,7 @@ const CounterpartsTable = ({
               >
                 <UArrowRight width={24} height={24} />
               </Button>
-            </Styled.Footer>
+            </TableFooter>
           )}
         />
       </Styled.Table>

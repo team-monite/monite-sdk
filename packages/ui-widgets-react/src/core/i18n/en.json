@@ -83,61 +83,6 @@
       "selectMethodLink": "Didn't find your bank? Try another payment method"
     }
   },
-  "payables": {
-    "columns": {
-      "invoice": "Invoice #",
-      "supplier": "Supplier’s name",
-      "invoiceDate": "Invoice date",
-      "dueDate": "Due date",
-      "status": "Status",
-      "appliedPolicy": "Applied policy",
-      "amount": "Amount",
-      "addedBy": "Added by"
-    },
-    "status": {
-      "new": "Draft",
-      "approve_in_progress": "Pending",
-      "waiting_to_be_paid": "Waiting to be paid",
-      "paid": "Paid",
-      "canceled": "Canceled",
-      "rejected": "Rejected"
-    },
-    "tabs": {
-      "document": "Document",
-      "payment": "Payment",
-      "status": "Status",
-      "history": "History"
-    },
-    "tabPanels": {
-      "document": "Document details",
-      "payment": "Payment details",
-      "status": "Status",
-      "history": "Comments"
-    },
-    "details": {
-      "suppliersName": "Suppliers name",
-      "invoiceNumber": "Invoice Number",
-      "invoiceDate": "Invoice date",
-      "suggestedPaymentDate": "Suggested payment date",
-      "dueDate": "Due date",
-      "total": "Total",
-      "submittedBy": "Submitted by",
-      "tags": "Tags",
-      "iban": "IBAN",
-      "bic": "BIC",
-      "subtotal": "Subtotal",
-      "tax": "VAT"
-    },
-    "statuses": {
-      "all": "All invoices",
-      "new": "New",
-      "approve_in_progress": "Approve in Progress",
-      "waiting_to_be_paid": "Waiting to Be Paid",
-      "paid": "Paid",
-      "canceled": "Canceled",
-      "rejected": "Rejected"
-    }
-  },
   "counterparts": {
     "columns": {
       "name": "Name, country, city",
@@ -238,6 +183,89 @@
     "customer": "Customer",
     "vendor": "Vendor"
   },
+  "payables": {
+    "columns": {
+      "invoice": "Invoice #",
+      "supplier": "Supplier’s name",
+      "invoiceDate": "Invoice date",
+      "dueDate": "Due date",
+      "status": "Status",
+      "appliedPolicy": "Applied policy",
+      "amount": "Amount",
+      "addedBy": "Added by"
+    },
+    "status": {
+      "new": "Draft",
+      "approve_in_progress": "Pending",
+      "waiting_to_be_paid": "Waiting to be paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "Rejected"
+    },
+    "tabs": {
+      "document": "Document",
+      "payment": "Payment",
+      "status": "Status",
+      "history": "History"
+    },
+    "tabPanels": {
+      "document": "Document details",
+      "payment": "Payment details",
+      "status": "Status",
+      "history": "Comments"
+    },
+    "details": {
+      "suppliersName": "Suppliers name",
+      "invoiceNumber": "Invoice Number",
+      "invoiceDate": "Invoice date",
+      "suggestedPaymentDate": "Suggested payment date",
+      "dueDate": "Due date",
+      "total": "Total",
+      "submittedBy": "Submitted by",
+      "tags": "Tags",
+      "iban": "IBAN",
+      "bic": "BIC",
+      "subtotal": "Subtotal",
+      "tax": "VAT"
+    },
+    "statuses": {
+      "all": "All invoices",
+      "new": "New",
+      "approve_in_progress": "Approve in Progress",
+      "waiting_to_be_paid": "Waiting to Be Paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "Rejected"
+    }
+  },
+  "receivables": {
+    "quotes": "Quotes",
+    "invoices": "Invoices",
+    "creditNotes": "Credit notes",
+    "columns": {
+      "number": "Number",
+      "issueDate": "Issue date",
+      "customer": "Customer",
+      "dueDate": "Due date",
+      "status": "Status",
+      "amount": "Amount"
+    },
+    "statuses": {
+      "all": "All statuses",
+      "draft": "Draft",
+      "issued": "Issued",
+      "accepted": "Accepted",
+      "expired": "Expired",
+      "declined": "Declined",
+      "recurring": "Recurring",
+      "partially_paid": "Partially Paid",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "uncollectible": "Uncollectible",
+      "canceled": "Canceled",
+      "deleted": "Deleted"
+    }
+  },
   "errors": {
     "requiredField": " is required",
     "validEmail": " must be a valid email"
@@ -255,6 +283,7 @@
     "reject": "Reject",
     "type": "Type",
     "search": "Search",
-    "status": "Status"
+    "status": "Status",
+    "customer": "Customer"
   }
 }

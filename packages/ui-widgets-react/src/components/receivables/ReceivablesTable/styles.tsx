@@ -8,6 +8,7 @@ export const Table = styled.div<{
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   // for fixed header
   .rc-table,

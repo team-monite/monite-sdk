@@ -10,3 +10,4 @@ export { default as NavHeader } from './payment/NavHeader';
 export * from './approvalPolicies/ApprovalPoliciesTable';
 export * from './approvalPolicies/ApprovalPolicyCreate';
 export * from './payables/PayablesTable';
+export * from './receivables/ReceivablesTable';

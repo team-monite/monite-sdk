@@ -15,7 +15,7 @@ export type Sort = {
   order: SortOrderEnum;
 };
 
-export type Filters = {
+export type FilterTypes = {
   [FILTER_TYPE_SEARCH]?: string | null;
   [FILTER_TYPE_STATUS]?: PayableStateEnum | null;
   [FILTER_TYPE_DUE_DATE]?: Date | null;

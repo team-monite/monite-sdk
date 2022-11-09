@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PagePayables from 'features/payables/PagePayables';
+import PageReceivables from 'features/receivables/PageReceivables';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
 import { ROUTES } from 'features/app/consts';
@@ -44,16 +45,7 @@ const AuthorizedArea = () => {
           />
         }
       />
-      <Route
-        path={ROUTES.receivables}
-        element={
-          <EmptyPage
-            label={navigationData.receivables.label}
-            renderIcon={navigationData.receivables.renderIcon}
-            apiLink={navigationData.receivables.apiLink}
-          />
-        }
-      />
+      <Route path={ROUTES.receivables} element={<PageReceivables />} />
       <Route
         path={ROUTES.products}
         element={

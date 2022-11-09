@@ -10,7 +10,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from './consts';
-import { Filters as FiltersType, FilterValue } from './types';
+import { FilterTypes, FilterValue } from './types';
 
 const Wrapper = styled.div`
   padding: 12px 12px 32px;
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 const Item = styled.div``;
 
 interface Props {
-  onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
+  onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
 const Filters = ({ onChangeFilter }: Props) => {

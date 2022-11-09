@@ -51,7 +51,11 @@ const StyledTable = styled(RCTable)`
     line-height: 24px;
     color: ${({ theme }) => theme.tableHeader.textColor};
 
-    padding: 20px 16px;
+    padding: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:first-of-type {
       border-bottom-left-radius: 4px;
@@ -67,6 +71,7 @@ const StyledTable = styled(RCTable)`
   }
 
   td {
+    vertical-align: top;
     text-overflow: ellipsis;
     white-space: nowrap;
 
@@ -76,7 +81,7 @@ const StyledTable = styled(RCTable)`
     line-height: 24px;
     color: ${({ theme }) => theme.tableBody.textColor};
 
-    padding: 20px 16px;
+    padding: 22px 12px;
 
     &:first-of-type {
       padding-left: 16px;
