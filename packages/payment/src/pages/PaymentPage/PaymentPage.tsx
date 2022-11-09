@@ -78,7 +78,9 @@ const PaymentPage = () => {
           {paymentData && <PaymentDetails payment={paymentData} />}
         </Box>
         <Box width={'50%'}>
-          {paymentData && <PaymentWidget paymentData={paymentData} />}
+          {paymentData && linkData?.id && (
+            <PaymentWidget paymentData={paymentData} id={linkData?.id} />
+          )}
         </Box>
       </Flex>
     </Layout>

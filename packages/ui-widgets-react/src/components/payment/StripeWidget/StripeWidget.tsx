@@ -2,9 +2,10 @@ import { Elements } from '@stripe/react-stripe-js';
 import React, { useEffect, useState } from 'react';
 import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
+
 import { Theme } from '@team-monite/ui-kit-react';
 import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
-import { NavHeader } from '@team-monite/ui-widgets-react';
+import NavHeader from '../NavHeader';
 
 import CheckoutForm from './CheckoutForm';
 
@@ -12,6 +13,7 @@ let stripePromise: Promise<Stripe | null> | null = null;
 
 type StripeFormProps = {
   clientSecret: string;
+  publishableSecret: string;
   navButton?: boolean;
   paymentData: PaymentsPaymentLinkResponse;
   handleBack: () => void;
@@ -19,6 +21,7 @@ type StripeFormProps = {
 
 const StripeForm = ({
   clientSecret,
+  publishableSecret,
   navButton,
   paymentData,
   handleBack,
@@ -31,14 +34,9 @@ const StripeForm = ({
     if (stripePromise) {
       return;
     }
-
-    stripePromise = loadStripe(
-      // TODO: change it to key from backend
-      'pk_test_51IJivRCq0HpJYRYNxdxMiSromL6P4QicTwwdfYKICAXXTNzkVVkBzF308zNVoYXHw53TPb7aGBptDupflQjxzmGW00jBrBoehE'
-    );
-
+    stripePromise = loadStripe(publishableSecret);
     setStripePromise(stripePromise);
-  }, []);
+  }, [publishableSecret]);
 
   const appearance: Appearance = {
     theme: 'stripe',

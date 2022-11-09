@@ -5,24 +5,27 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import { toast } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
+
 import { Button, Alert, Box } from '@team-monite/ui-kit-react';
 import {
   PaymentsPaymentMethodsEnum,
   PaymentsPaymentLinkResponse,
 } from '@team-monite/sdk-api';
 
-import { useComponentsContext, toast } from '@team-monite/ui-widgets-react';
+import { useComponentsContext } from 'core/context/ComponentsContext';
+import { getReadableAmount } from 'core/utils';
 
 import * as Styled from './styles';
-import { formatAmountFromMinor } from 'pages/consts';
 
 type CheckoutFormProps = {
   paymentData: PaymentsPaymentLinkResponse;
 };
 
 export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
-  const { t, monite } = useComponentsContext();
-
+  const { monite } = useComponentsContext();
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -62,8 +65,8 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         payment_link_id: id,
       })
       .then((response) => {
-        setFee(formatAmountFromMinor(response.total.fee, currency));
-        setTotalAmount(formatAmountFromMinor(response.total.amount, currency));
+        setFee(response.total.fee);
+        setTotalAmount(response.total.amount);
       });
   };
 
@@ -112,17 +115,8 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     setIsLoading(false);
   };
 
-  const formatter = new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency,
-  });
-
-  const formattedFromMinorAmount = formatAmountFromMinor(amount, currency);
-
-  // TODO why is the form used instead of div?
-
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <div>
       <div>
         <PaymentElement
           onChange={(e) => {
@@ -134,25 +128,24 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
       <Styled.Prices>
         <Styled.PriceRow>
           <div>{t('payment:widget.amount')}</div>
-          <div>{formatter.format(formattedFromMinorAmount)}</div>
+          <div>{getReadableAmount(amount, currency)}</div>
         </Styled.PriceRow>
         {fee ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
-            <div>{formatter.format(fee)}</div>
+            <div>{getReadableAmount(fee, currency)}</div>
           </Styled.PriceRow>
         ) : null}
         <Styled.PriceRow total>
           <div>{t('payment:widget.total')}</div>
-          <div>{formatter.format(totalAmount)}</div>
+          <div>{getReadableAmount(totalAmount, currency)}</div>
         </Styled.PriceRow>
       </Styled.Prices>
       {fee ? (
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
-              // TODO use ui-widgets-react/src/core/utils/currency.ts
-              percent: ((fee * 100.0) / formattedFromMinorAmount).toFixed(2),
+              percent: ((fee * 100.0) / amount).toFixed(2),
             })}
           </Alert>
         </Box>
@@ -161,14 +154,14 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         mt="24px"
         block
         disabled={isLoading || !stripe || !elements}
-        id="submit"
-        type="submit"
         isLoading={isLoading}
+        onClick={handleSubmit}
       >
         <span id="button-text">
-          {t('payment:widget.submit')} {formatter.format(totalAmount)}
+          {t('payment:widget.submit')}{' '}
+          {getReadableAmount(totalAmount, currency)}
         </span>
       </Button>
-    </form>
+    </div>
   );
 }
