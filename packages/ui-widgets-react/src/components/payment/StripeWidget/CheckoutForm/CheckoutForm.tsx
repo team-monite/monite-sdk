@@ -60,18 +60,9 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     [elements]
   );
 
-  const { data: feeData, refetch: refetchFee } = useFeeByPaymentMethod(
-    paymentMethod,
-    id
-  );
+  const { data: feeData } = useFeeByPaymentMethod(paymentMethod, id);
   const fee = feeData?.total.fee;
   const totalAmount = feeData?.total.amount || 0;
-
-  console.log('data____ total', feeData?.total);
-
-  useEffect(() => {
-    refetchFee();
-  }, [paymentMethod]);
 
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();

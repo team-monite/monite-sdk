@@ -60,7 +60,7 @@ export const useFeeByPaymentMethod = (
   const { monite } = useComponentsContext();
 
   return useQuery<PaymentMethodsCalculateFeeResponse | undefined, Error>(
-    [PAYMENT_FEE],
+    [PAYMENT_FEE, paymentMethod],
     () =>
       !!paymentMethod && !!id
         ? monite.api.payment.getFeeByPaymentMethod(paymentMethod, {
