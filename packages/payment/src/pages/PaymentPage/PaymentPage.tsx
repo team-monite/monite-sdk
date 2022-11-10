@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
-import { Flex, Box } from '@team-monite/ui-kit-react';
+import { Flex, Box, Loading } from '@team-monite/ui-kit-react';
 import {
   useComponentsContext,
   PaymentDetails,
@@ -32,39 +32,43 @@ const PaymentPage = () => {
 
   const [paymentData, setPaymentData] = useState<PaymentsPaymentLinkResponse>();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const { monite } = useComponentsContext() || {};
 
   useEffect(() => {
-    //TODO add loader
     (async () => {
       if (linkData?.id) {
         const data = await monite.api.payment.getPaymentLinkById(linkData.id);
         setPaymentData(data);
+
+        // TODO: backend will add enum for statuses
+        if (data?.status === 'succeeded') {
+          navigate(
+            `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
+            {
+              replace: true,
+            }
+          );
+        }
+        if (data?.status === 'expired') {
+          navigate(ROUTES.expired);
+        }
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
       }
     })();
     // eslint-disable-next-line
   }, [linkData]);
 
-  useEffect(() => {
-    // TODO: backend will add enum for statuses
-    if (paymentData?.status === 'succeeded') {
-      navigate(
-        `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
-        {
-          replace: true,
-        }
-      );
-    }
-    if (paymentData?.status === 'expired') {
-      navigate(ROUTES.expired);
-    }
-  }, [paymentData, navigate, rawPaymentData]);
-
   return (
     <Layout>
       <Helmet title={`Pay invoice ${paymentData?.payment_reference || ''}`} />
 
-      {!paymentData && (
+      {isLoading && <Loading />}
+
+      {!paymentData && !isLoading && (
         <Box width={'100%'} padding={'80px'}>
           <EmptyScreen />
         </Box>
@@ -75,7 +79,9 @@ const PaymentPage = () => {
           {paymentData && <PaymentDetails payment={paymentData} />}
         </Box>
         <Box width={'50%'}>
-          {paymentData && <PaymentWidget paymentData={paymentData} />}
+          {paymentData && linkData?.id && (
+            <PaymentWidget paymentData={paymentData} id={linkData?.id} />
+          )}
         </Box>
       </Flex>
     </Layout>
