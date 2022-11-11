@@ -1,0 +1,138 @@
+import PayableDetails from './PayableDetails';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import withMock from 'storybook-addon-mock';
+import { action } from '@storybook/addon-actions';
+import { PayableDetailsNew } from '../fixtures/getById';
+
+<Meta
+  title="Payables/Payables — Details View"
+  component={PayableDetails}
+  decorators={[withMock]}
+  parameters={{
+    mockData: [
+      {
+        url: 'https://api.dev.monite.com/v1/counterparts?limit=10&pagination_token=:pagination_token',
+        method: 'GET',
+        status: 200,
+        response: (request) => {
+          switch (request.searchParams.pagination_token) {
+            case 'next_page':
+              return counterpartsMock.secondPage;
+            case 'prev_page':
+              return counterpartsMock.firstPage;
+          }
+        },
+      },
+    ],
+  }}
+/>
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <PayableDetails {...args} />
+  </div>
+);
+
+
+# CounterpartsTable
+
+Displays a table with a list of [counterparts](https://docs.monite.com/docs/manage-counterparts) available to the authenticated entity user.
+The table displays the counterpart name, type (customer or vendor), country and city, and the default contact (if any).
+This component calls the [`GET /counterparts`](https://docs.monite.com/reference/get_counterparts_v1_counterparts_get) endpoint to fetch the data.
+
+The table supports the following functionality out-of-the-box:
+* Pagination: the user can navigate to the next or previous page only. The default page size is 10 items per page.
+* Sorting by the counterpart name.
+* Searching counterparts by name.
+* Filtering by the counterpart type: customer or vendor, organization or individual.
+
+Search, sorting, filtering, and pagination are done at the server side rather than the client side.
+That is, any change to the table display options triggers a new request to the Monite API to return the adjusted data set.
+
+## Props
+
+### `currentSort`
+
+An object that contains the current sort field and order:
+```json
+{
+  "sort": "counterpart_name",
+  "order": "asc" | "desc"
+}
+```
+or `null`.
+
+### `onChangeFilter`
+This callback is triggered when the filtering options are changed.
+
+### `onChangeSort`
+
+Type:
+```json
+(
+  "sort": "counterpart_name",
+  "order": "asc" | "desc" | null
+) => void;
+```
+
+Callback. Called when the current sort is changed. Returns the new sort field and order.
+
+### `onDelete`
+Type: `(id: string) => void`
+
+Callback. Called when a user deletes a specific counterpart.
+Specifically, after a user selected "Delete" from the "Actions" menu of a counterpart and confirmed the deletion.
+Returns the ID of the deleted counterpart.
+
+### `onEdit`
+Type: `(id: string) => void`
+
+Callback. Called when a user selects "Edit" from the "Actions" menu of a specific counterpart. Returns the ID of that counterpart.
+
+### `onNext`
+Type: `() => void`
+
+Callback. Called when the "next" button in the pagination controls is clicked.
+
+### `onPrev`
+Type: `() => void`
+
+Callback. Called when the "previous" button in the pagination controls is clicked.
+
+### `onRowClick`
+Type: `(id: string) => void`
+
+Callback. Called when a table row is clicked. Returns the ID of the clicked record.
+
+### `paginationTokens`
+
+An object containing the available [pagination tokens](https://docs.monite.com/reference/getting-started-with-monite-api#pagination-sorting-and-filtering).
+It is used to determine the availability of the "next" and "previous" buttons at the bottom of the table.
+
+```json
+{
+  "next_pagination_token": "string" | null | undefined,
+  "prev_pagination_token": "string" | null | undefined
+}
+```
+
+## Related documentation
+* [Counterparts](https://docs.monite.com/docs/manage-counterparts)
+* [GET /counterparts](https://docs.monite.com/reference/get_payables_v1_payables_get)
+
+
+<Canvas>
+  <Story
+    name="Default"
+    args={{
+      id: 'test',
+      onEdit: action('onEdit'),
+      onDelete: action('onDelete'),
+      onRowClick: action('onRowClick'),
+      onChangeSort: action('onChangeSort'),
+      onChangeFilter: action('onChangeFilter'),
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
