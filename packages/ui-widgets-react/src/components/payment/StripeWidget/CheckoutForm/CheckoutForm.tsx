@@ -76,7 +76,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     setIsLoading(true);
 
     try {
-      if (paymentMethod && paymentMethod !== PaymentsPaymentMethodsEnum.CARD) {
+      if (paymentMethod) {
         await monite.api.payment.payByPaymentLinkId(id, {
           payment_method: paymentMethod,
         });
