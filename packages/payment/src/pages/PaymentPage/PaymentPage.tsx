@@ -45,7 +45,7 @@ const PaymentPage = () => {
         // TODO: backend will add enum for statuses
         if (data?.status === 'succeeded') {
           navigate(
-            `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${paymentData.payment_reference}&amount=${paymentData.amount}&currency=${paymentData.currency}&recipient_type=${paymentData.recipient.type}&redirect_status=${paymentData.status}&return_url=${paymentData.return_url}`,
+            `${ROUTES.payResult}?data=${rawPaymentData}&payment_reference=${data.payment_reference}&amount=${data.amount}&currency=${data.currency}&recipient_type=${data.recipient.type}&redirect_status=${data.status}&return_url=${data.return_url}`,
             {
               replace: true,
             }
