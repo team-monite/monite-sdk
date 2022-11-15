@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { Text } from '@team-monite/ui-kit-react';
@@ -26,4 +25,4 @@ const PageLogin = () => {
   );
 };
 
-export default observer(PageLogin);
+export default PageLogin;

@@ -21,7 +21,7 @@ import {
 
 import { useReceivables } from 'core/queries/useReceivables';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../../constants';
+import { PAGE_LIMIT } from '../../../../constants';
 import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
 import {
   FILTER_TYPE_SEARCH,
@@ -231,7 +231,7 @@ const ReceivableTypeTab = ({
   currentFilters,
   onChangeSort: onChangeSortCallback,
 }: Props) => {
-  const { t } = useComponentsContext();
+  const { t, monite } = useComponentsContext();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -243,7 +243,7 @@ const ReceivableTypeTab = ({
     isLoading,
     isRefetching,
   } = useReceivables(
-    MONITE_ENTITY_ID,
+    monite.entityId,
     currentSort
       ? (currentSort.order as unknown as ReceivablesOrderEnum)
       : undefined,

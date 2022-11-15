@@ -1,6 +1,5 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
 import Routes from 'features/app/routes';
 
@@ -20,4 +19,4 @@ function App() {
   );
 }
 
-export default observer(App);
+export default App;
