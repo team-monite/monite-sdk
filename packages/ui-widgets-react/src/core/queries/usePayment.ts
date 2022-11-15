@@ -4,7 +4,7 @@ import {
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentMethodsEnum,
   PaymentsPaymentMethodsCountriesResponse,
-  PaymentMethodsCalculateFeeResponse,
+  PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -59,7 +59,10 @@ export const useFeeByPaymentMethod = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<PaymentMethodsCalculateFeeResponse | undefined, Error>(
+  return useQuery<
+    PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse | undefined,
+    Error
+  >(
     [PAYMENT_FEE, paymentMethod],
     () =>
       !!paymentMethod && !!id

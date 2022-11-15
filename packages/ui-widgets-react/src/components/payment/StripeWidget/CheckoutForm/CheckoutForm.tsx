@@ -12,6 +12,7 @@ import { Button, Alert, Box } from '@team-monite/ui-kit-react';
 import {
   PaymentsPaymentMethodsEnum,
   PaymentsPaymentLinkResponse,
+  PaymentsPaymentsPaidBy,
 } from '@team-monite/sdk-api';
 
 import { useFeeByPaymentMethod } from 'core/queries/usePayment';
@@ -120,11 +121,13 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         />
       </div>
       <Styled.Prices>
-        <Styled.PriceRow>
-          <div>{t('payment:widget.amount')}</div>
-          <div>{getReadableAmount(amount, currency)}</div>
-        </Styled.PriceRow>
-        {fee ? (
+        {fee && feeData?.paid_by !== PaymentsPaymentsPaidBy.PAYER && (
+          <Styled.PriceRow>
+            <div>{t('payment:widget.amount')}</div>
+            <div>{getReadableAmount(amount, currency)}</div>
+          </Styled.PriceRow>
+        )}
+        {fee && feeData.paid_by !== PaymentsPaymentsPaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
             <div>{getReadableAmount(fee, currency)}</div>
@@ -135,7 +138,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
           <div>{getReadableAmount(totalAmount, currency)}</div>
         </Styled.PriceRow>
       </Styled.Prices>
-      {fee ? (
+      {fee && feeData.paid_by !== PaymentsPaymentsPaidBy.PAYER ? (
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
@@ -153,7 +156,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
       >
         <span id="button-text">
           {t('payment:widget.submit')}{' '}
-          {getReadableAmount(totalAmount, currency)}
+          {!!totalAmount && getReadableAmount(totalAmount, currency)}
         </span>
       </Button>
     </div>

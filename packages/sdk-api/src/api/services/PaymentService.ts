@@ -4,7 +4,7 @@ import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
 import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
 import type { PaymentMethodsCalculateFeePayload } from '../models/PaymentMethodsCalculateFeePayload';
-import type { PaymentMethodsCalculateFeeResponse } from '../models/PaymentMethodsCalculateFeeResponse';
+import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
 import { PaymentsPaymentLinkResponse } from '../models/PaymentsPaymentLinkResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
 import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
@@ -47,14 +47,14 @@ export default class PaymentService {
    * Calculate fee for payment_method from payment_link
    * @param paymentMethod
    * @param requestBody
-   * @returns PaymentMethodsCalculateFeeResponse Successful Response
+   * @returns PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse Successful Response
    * @throws ApiError
    */
 
   public getFeeByPaymentMethod(
     paymentMethod: PaymentsPaymentMethodsEnum,
     requestBody: PaymentMethodsCalculateFeePayload
-  ): CancelablePromise<PaymentMethodsCalculateFeeResponse> {
+  ): CancelablePromise<PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse> {
     return __request(
       {
         method: 'POST',
