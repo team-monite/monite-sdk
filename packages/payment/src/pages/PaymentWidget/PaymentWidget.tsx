@@ -64,7 +64,7 @@ const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
   const onChangeMethod = () => navigate(`/${search}`);
 
   return (
-    <Card shadow p={32}>
+    <Card shadow p={[16, 32]}>
       <Routes>
         <Route
           path="/"

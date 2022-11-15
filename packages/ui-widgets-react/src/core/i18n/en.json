@@ -38,14 +38,15 @@
   },
   "payment": {
     "details": {
-      "paymentReference": "Payment reference",
+      "paymentReference": "Reference",
       "recipient": "Recipient",
       "issueDate": "Issue Date",
       "dueDate": "Due Date"
     },
     "actions": {
-      "viewInvoice": "View Invoice",
-      "downloadInvoice": "Download Invoice"
+      "viewInvoice": "View",
+      "downloadInvoice": "Download",
+      "invoice": "Invoice"
     },
     "widget": {
       "method": "Payment method",
@@ -60,7 +61,7 @@
     },
     "bankWidget": {
       "banksListTitle": "Continue with your bank account",
-      "banksSearchPlaceholder": "Search for your bank",
+      "banksSearchPlaceholder": "Search",
       "emptyBankListTitle": "No results",
       "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
       "changeMethod": "Change method",
@@ -78,7 +79,7 @@
       "authorizationLabel": "FCA Authorization",
       "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
       "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup.",
-      "payerFormName": "Your account name",
+      "payerFormName": "Your account holder’s name",
       "payerFormIban": "Your IBAN",
       "selectMethodLink": "Didn't find your bank? Try another payment method"
     }
