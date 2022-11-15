@@ -1,12 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PagePayables from 'features/payables/PagePayables';
 import PageReceivables from 'features/receivables/PageReceivables';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
-import { ROUTES } from 'features/app/consts';
+import { ROUTES } from 'consts';
 import { navigationData } from 'features/app/Layout/Menu/consts';
 
 const AuthorizedArea = () => {
@@ -71,4 +70,4 @@ const AuthorizedArea = () => {
   );
 };
 
-export default observer(AuthorizedArea);
+export default AuthorizedArea;

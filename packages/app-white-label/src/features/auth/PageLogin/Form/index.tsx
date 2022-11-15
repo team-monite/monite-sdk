@@ -1,4 +1,7 @@
+import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { useTranslation, TFunction } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -6,16 +9,9 @@ import {
   Input,
   PasswordInput,
 } from '@team-monite/ui-kit-react';
-import { useTranslation, TFunction } from 'react-i18next';
-import * as yup from 'yup';
-import React from 'react';
+import useAuth from '../../useAuth';
 
-import { useRootStore } from 'features/mobx';
-
-interface IFormInputs {
-  email: string;
-  password: string;
-}
+import { LoginFormValues } from '../../types';
 
 const getValidationSchema = ({ t }: { t: TFunction }) => {
   return yup
@@ -37,17 +33,18 @@ const getValidationSchema = ({ t }: { t: TFunction }) => {
 
 const LoginBaseForm = () => {
   const { t } = useTranslation();
-  const rootStore = useRootStore();
+  const appAuth = useAuth();
 
   const { control, handleSubmit, formState, getValues, setError } =
-    useForm<IFormInputs>({
+    useForm<LoginFormValues>({
       resolver: yupResolver(getValidationSchema({ t })),
       mode: 'onChange',
     });
 
-  const onSubmit = async (data: IFormInputs) => {
-    const res = await rootStore.auth.authorizeByLoginPassword(data);
-    if (!res.success) {
+  const onSubmit = async (data: LoginFormValues) => {
+    const token = await appAuth?.onLogin(data);
+
+    if (!token) {
       setError('password', {
         type: 'custom',
         message: t('login:errors.emailPassword'),

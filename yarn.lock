@@ -14308,21 +14308,6 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mobx-react-lite@~3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.4.0.tgz#d59156a96889cdadad751e5e4dab95f28926dfff"
-  integrity sha512-bRuZp3C0itgLKHu/VNxi66DN/XVkQG7xtoBVWxpvC5FhAqbOCP21+nPhULjnzEqd7xBMybp6KwytdUpZKEgpIQ==
-
-mobx-utils@~6.0.5:
-  version "6.0.5"
-  resolved "https://registry.yarnpkg.com/mobx-utils/-/mobx-utils-6.0.5.tgz#0cce9afb07fbba1fb559f959f8cea1f44baa7252"
-  integrity sha512-QOduwicYedD4mwYZRl8+c3BalljFDcubg+PUGqBkn8tOuBoj2q7GhjXBP6JXM9J+Zh+2mePK8IoToeLfqr3Z/w==
-
-mobx@~6.6.1:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/mobx/-/mobx-6.6.2.tgz#9d9102a0e337e3fc09cb2d8ca0c6f00b61270d5a"
-  integrity sha512-IOpS0bf3+hXIhDIy+CmlNMBfFpAbHS0aVHcNC+xH/TFYEKIIVDKNYRh9eKlXuVfJ1iRKAp0cRVmO145CyJAMVQ==
-
 mock-xmlhttprequest@^7.0.3:
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/mock-xmlhttprequest/-/mock-xmlhttprequest-7.0.4.tgz#5e188da009cf46900e522f690cbea8d26274a872"
