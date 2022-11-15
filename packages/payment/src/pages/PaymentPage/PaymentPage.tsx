@@ -74,11 +74,18 @@ const PaymentPage = () => {
         </Box>
       )}
 
-      <Flex p={32} sx={{ gap: 32 }} justifyContent="space-between">
-        <Box width={'50%'}>
+      <Flex
+        p={32}
+        justifyContent="space-between"
+        sx={{
+          gap: [16, 32],
+        }}
+        flexDirection={['column', 'row']}
+      >
+        <Box width={['100%', '50%']}>
           {paymentData && <PaymentDetails payment={paymentData} />}
         </Box>
-        <Box width={'50%'}>
+        <Box width={['100%', '50%']}>
           {paymentData && linkData?.id && (
             <PaymentWidget paymentData={paymentData} id={linkData?.id} />
           )}

@@ -79,41 +79,55 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
         <ListItem>
           <Flex justifyContent="space-between">
             <StyledLabel className={'styles.label'}>
-              {t('payment:bankWidget.amount')}
+              <Text textSize="small">{t('payment:bankWidget.amount')}</Text>
             </StyledLabel>
             <StyledValueBlock className={'styles.value'}>
-              {amount}
-            </StyledValueBlock>
-          </Flex>
-        </ListItem>
-        <ListItem>
-          <Flex justifyContent="space-between">
-            <StyledLabel>{t('payment:bankWidget.holdersName')}</StyledLabel>
-            <StyledValueBlock>
-              {paymentData.payer?.bank_account?.name}
-            </StyledValueBlock>
-          </Flex>
-        </ListItem>
-
-        <ListItem>
-          <Flex justifyContent="space-between">
-            <StyledLabel>{t('payment:bankWidget.iban')}</StyledLabel>
-            <StyledValueBlock>
-              {paymentData.payer?.bank_account?.iban}
+              <Text textSize="small">{amount}</Text>
             </StyledValueBlock>
           </Flex>
         </ListItem>
         <ListItem>
           <Flex justifyContent="space-between">
             <StyledLabel>
-              {t('payment:bankWidget.paymentReference')}
+              <Text textSize="small">
+                {t('payment:bankWidget.holdersName')}
+              </Text>
             </StyledLabel>
-            <StyledValueBlock>{paymentReference}</StyledValueBlock>
+            <StyledValueBlock>
+              <Text textSize="small">
+                {paymentData.payer?.bank_account?.name}
+              </Text>
+            </StyledValueBlock>
+          </Flex>
+        </ListItem>
+
+        <ListItem>
+          <Flex justifyContent="space-between">
+            <StyledLabel>
+              <Text textSize="small">{t('payment:bankWidget.iban')}</Text>
+            </StyledLabel>
+            <StyledValueBlock>
+              <Text textSize="small">
+                {paymentData.payer?.bank_account?.iban}
+              </Text>
+            </StyledValueBlock>
+          </Flex>
+        </ListItem>
+        <ListItem>
+          <Flex justifyContent="space-between">
+            <StyledLabel>
+              <Text textSize="small">
+                {t('payment:bankWidget.paymentReference')}
+              </Text>
+            </StyledLabel>
+            <StyledValueBlock>
+              <Text textSize="small">{paymentReference}</Text>
+            </StyledValueBlock>
           </Flex>
         </ListItem>
       </StyledDetails>
 
-      <Text color="grey">
+      <Text color="grey" textSize="small">
         {t('payment:bankWidget.yapilyCopy', { name: recipient })}
       </Text>
       <Flex mt={1} flexWrap="wrap" mb="32px">
@@ -128,7 +142,7 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
               }}
             >
               {/* @ts-ignore */}
-              {infoPanelMap[key].label}
+              <Text textSize="small"> {infoPanelMap[key].label}</Text>
             </Button>
           </Box>
         ))}

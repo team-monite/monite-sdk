@@ -66,7 +66,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
 
   return (
     <>
-      <Text textSize="h3" align="center">
+      <Text textSize="h3" textAlign="center">
         How would you like to pay?
       </Text>
 

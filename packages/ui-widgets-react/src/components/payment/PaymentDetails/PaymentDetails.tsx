@@ -12,6 +12,7 @@ import {
   ModalLayout,
   Modal,
   UMultiply,
+  Box,
 } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,6 @@ const StyledCard = styled(Card)`
   position: relative;
   display: flex;
   gap: 16px;
-  padding: 32px;
   flex-direction: column;
 `;
 
@@ -47,7 +47,7 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
     usePaymentDetails(props);
 
   return (
-    <StyledCard shadow>
+    <StyledCard shadow p={[16, 32]}>
       {isOpen && invoice?.file && (
         <Modal>
           <ModalLayout fullHeight size={'md'}>
@@ -71,6 +71,12 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
         <StyledAction>
           <Button color={'secondary'} onClick={show}>
             {t('payment:actions.viewInvoice')}
+            <Box
+              display={['none', 'block']}
+              sx={{ whiteSpace: 'break-spaces' }}
+            >
+              {` ${t('payment:actions.invoice')}`}
+            </Box>
           </Button>
           <Link
             size={'md'}
@@ -81,6 +87,12 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
             color={'secondary'}
           >
             {t('payment:actions.downloadInvoice')}
+            <Box
+              display={['none', 'block']}
+              sx={{ whiteSpace: 'break-spaces' }}
+            >
+              {` ${t('payment:actions.invoice')}`}
+            </Box>
           </Link>
         </StyledAction>
       )}
