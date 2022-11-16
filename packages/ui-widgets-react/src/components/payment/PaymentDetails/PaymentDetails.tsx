@@ -96,7 +96,9 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
             )} ${t('payment:actions.invoice')}`}</Box>
 
             <Box display={['block', 'none']}>
-              {t('payment:actions.viewInvoice')}
+              {`${t('payment:actions.viewInvoice')} ${t(
+                'payment:actions.invoice'
+              )}`}
             </Box>
           </Link>
         </StyledAction>
