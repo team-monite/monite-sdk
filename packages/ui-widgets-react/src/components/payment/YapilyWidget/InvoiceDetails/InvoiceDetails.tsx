@@ -26,11 +26,11 @@ type InvoiceDetailsProps = {
 };
 
 const StyledLabel = styled(Box)`
-  flex-basis: 220px;
+  width: 50%;
 `;
 
 const StyledValueBlock = styled(Box)`
-  flex-grow: 1;
+  width: 50%;
 `;
 
 const StyledDetails = styled(List)`
@@ -95,7 +95,7 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
             </StyledLabel>
             <StyledValueBlock>
               <Text textSize="small">
-                {paymentData.payer?.bank_account?.name}
+                {paymentData.recipient?.bank_account?.name}
               </Text>
             </StyledValueBlock>
           </Flex>
@@ -108,7 +108,7 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
             </StyledLabel>
             <StyledValueBlock>
               <Text textSize="small">
-                {paymentData.payer?.bank_account?.iban}
+                {paymentData.recipient?.bank_account?.iban}
               </Text>
             </StyledValueBlock>
           </Flex>

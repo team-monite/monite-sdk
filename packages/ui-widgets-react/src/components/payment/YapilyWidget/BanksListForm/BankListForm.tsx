@@ -159,6 +159,7 @@ const BankListForm = ({
             <>
               {filteredBanks.map((bank) => (
                 <StyledLink
+                  key={bank.code}
                   onClick={() => {
                     setSelectedBank(bank);
                     handleNextStep();

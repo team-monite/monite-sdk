@@ -68,7 +68,7 @@
       "amount": "Amount",
       "holdersName": "Account holder’s name",
       "iban": "IBAN",
-      "paymentReference": "Payment reference",
+      "paymentReference": "Reference",
       "continue": "Continue",
       "dataSharingLabel": "Data sharing",
       "dataSharingTip": "Yapily Connect will retrieve bank data needed to facilitate this payment based on your request and provide this information to {{name}}.",
