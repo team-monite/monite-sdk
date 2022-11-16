@@ -20,9 +20,9 @@
     },
     "result": {
       "processingTitle": "Payment initiated",
-      "processingText": "Thanks for your time! The payment is initiated. It may take a few minutes for the payment to be processed.  We will notify you once the payment is complete.",
-      "succeededTitle": "Payment completed",
-      "succeededText": "We’re glad to inform you that your payment has been completed successfully . Thanks for your time!",
+      "processingText": "Your payment is being processed. We will notify you once the payment is complete.",
+      "succeededTitle": "Payment successfull",
+      "succeededText": "Thank you! Payment was successfully completed",
       "errorTitle": "Payment error",
       "errorText": "An unexpected error occured while paying. Please try again later or choose another payment method.",
       "canceledTitle": "Payment declined",
@@ -30,7 +30,7 @@
       "reference": "Reference",
       "iban": "IBAN",
       "payee": "Payee Name",
-      "amount": "Invoice amount",
+      "amount": "Amount",
       "return": "Return to account",
       "tryAgain": "Try again"
     }

@@ -7,7 +7,7 @@ module.exports = {
     {
       plugin: cracoBabelLoader,
       options: {
-        includes: [resolvePackage('../kit')],
+        includes: [resolvePackage('../ui-widgets-react')],
         excludes: [/node_modules/],
       },
     },
