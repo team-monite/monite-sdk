@@ -38,6 +38,15 @@ const StyledAction = styled(Flex)`
   a {
     width: 50%;
   }
+
+  @media (max-width: 480px) {
+    a {
+      width: 100%;
+    }
+    button {
+      display: none;
+    }
+  }
 `;
 
 const PaymentDetails = (props: UsePayableDetailsProps) => {
@@ -70,13 +79,9 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
       {invoice?.file && (
         <StyledAction>
           <Button color={'secondary'} onClick={show}>
-            {t('payment:actions.viewInvoice')}
-            <Box
-              display={['none', 'block']}
-              sx={{ whiteSpace: 'break-spaces' }}
-            >
-              {` ${t('payment:actions.invoice')}`}
-            </Box>
+            {`${t('payment:actions.viewInvoice')} ${t(
+              'payment:actions.invoice'
+            )}`}
           </Button>
           <Link
             size={'md'}
@@ -86,12 +91,14 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
             href={invoice.file.url}
             color={'secondary'}
           >
-            {t('payment:actions.downloadInvoice')}
-            <Box
-              display={['none', 'block']}
-              sx={{ whiteSpace: 'break-spaces' }}
-            >
-              {` ${t('payment:actions.invoice')}`}
+            <Box display={['none', 'block']}>{`${t(
+              'payment:actions.downloadInvoice'
+            )} ${t('payment:actions.invoice')}`}</Box>
+
+            <Box display={['block', 'none']}>
+              {`${t('payment:actions.viewInvoice')} ${t(
+                'payment:actions.invoice'
+              )}`}
             </Box>
           </Link>
         </StyledAction>
