@@ -56,8 +56,8 @@ export default function useCounterpartBankForm({
   }, [formRef]);
 
   const createBank = useCallback(
-    async (req: CounterpartBankAccount) => {
-      return await bankCreateMutation.mutateAsync(req, {
+    (req: CounterpartBankAccount) => {
+      return bankCreateMutation.mutate(req, {
         onSuccess: ({ id }) => {
           onCreate && onCreate(id);
         },
@@ -67,10 +67,10 @@ export default function useCounterpartBankForm({
   );
 
   const updateBank = useCallback(
-    async (payload: CounterpartBankAccount) => {
+    (payload: CounterpartBankAccount) => {
       if (!bank) return;
 
-      return await bankUpdateMutation.mutateAsync(
+      return bankUpdateMutation.mutate(
         {
           bankId: bank.id,
           payload,

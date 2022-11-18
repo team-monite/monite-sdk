@@ -21,9 +21,9 @@ import { CounterpartBankAccount } from '../models/CounterpartBankAccount';
 import { CounterpartBankAccountResponse } from '../models/CounterpartBankAccountResponse';
 import { CounterpartUpdatePayload } from '../models/CounterpartUpdatePayload';
 
-const COUNTERPARTS_ENDPOINT = 'counterparts';
-const COUNTERPARTS_CONTACT_ENDPOINT = 'contacts';
-const COUNTERPARTS_BANK_ENDPOINT = 'bank_accounts';
+export const COUNTERPARTS_ENDPOINT = 'counterparts';
+export const COUNTERPARTS_CONTACT_ENDPOINT = 'contacts';
+export const COUNTERPARTS_BANK_ENDPOINT = 'bank_accounts';
 
 const errors = {
   400: `Bad Request`,
