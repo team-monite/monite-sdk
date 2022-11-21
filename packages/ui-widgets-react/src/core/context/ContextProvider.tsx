@@ -36,7 +36,11 @@ export const queryClient = new QueryClient({
   },
 });
 
-const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
+export const MoniteProviderStyles = ({
+  monite,
+  theme,
+  children,
+}: MoniteProviderProps) => {
   const finalTheme = theme
     ? merge(THEMES.default, tokenizedTheme, theme || {})
     : // REPLACE {} WITH CUSTOM THEME OBJECT OR SET INDIVIDUAL COLORS
@@ -49,16 +53,24 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
   return (
     <ComponentsContext.Provider value={{ monite }}>
       <Global styles={getStyles(finalTheme)} />
-      <QueryClientProvider contextSharing={true} client={queryClient}>
-        <EmotionThemeProvider theme={finalTheme}>
-          <GlobalToast />
-          <UIThemeProvider theme={finalTheme}>
-            <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
-          </UIThemeProvider>
-        </EmotionThemeProvider>
-        {/*<ReactQueryDevtools />*/}
-      </QueryClientProvider>
+      <EmotionThemeProvider theme={finalTheme}>
+        <GlobalToast />
+        <UIThemeProvider theme={finalTheme}>
+          <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+        </UIThemeProvider>
+      </EmotionThemeProvider>
     </ComponentsContext.Provider>
+  );
+};
+
+const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MoniteProviderStyles monite={monite} theme={theme}>
+        {children}
+      </MoniteProviderStyles>
+      {/*<ReactQueryDevtools />*/}
+    </QueryClientProvider>
   );
 };
 

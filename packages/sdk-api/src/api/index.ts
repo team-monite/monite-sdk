@@ -364,4 +364,5 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
+export * from './services/CounterpartsService';
 export { default as ReceivableService } from './services/ReceivableService';
