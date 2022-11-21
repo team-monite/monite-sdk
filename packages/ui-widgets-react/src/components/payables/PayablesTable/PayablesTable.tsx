@@ -21,7 +21,7 @@ import { usePayable } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { default as FiltersComponent } from './Filters';
 import { Sort, FilterTypes, FilterValue } from './types';
-import { MONITE_ENTITY_ID, PAGE_LIMIT } from '../../../constants';
+import { PAGE_LIMIT } from '../../../constants';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_CREATED_AT,
@@ -53,7 +53,7 @@ const PayablesTable = ({
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
 }: Props) => {
-  const { t } = useComponentsContext();
+  const { t, monite } = useComponentsContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -66,7 +66,7 @@ const PayablesTable = ({
     isRefetching,
     refetch,
   } = usePayable(
-    MONITE_ENTITY_ID,
+    monite.entityId,
     currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,

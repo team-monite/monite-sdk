@@ -20,7 +20,7 @@ const PaymentResultPage = () => {
     <Layout>
       <Flex justifyContent="center">
         <Box width={600} p={4} pt={80}>
-          <Card shadow p="48px">
+          <Card shadow p={[16, 32]}>
             <Flex alignItems="center" flexDirection="column">
               <UClockThree width={44} height={44} color={theme.colors.danger} />
               <Box mt="12px">

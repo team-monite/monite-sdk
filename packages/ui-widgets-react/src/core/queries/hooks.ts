@@ -42,9 +42,6 @@ export const useEntityListCache = <TInput extends EntityType>(
 
   const add = useCallback(
     (entity: TInput) => {
-      console.log(key());
-      console.log(entity);
-
       return queryClient.setQueryData<Updater<TInput[], TInput[]>>(
         key(),
         (list: TInput[]) => (list ? [...list, entity] : [entity])

@@ -206,7 +206,8 @@ export { PaymentAuthorisationTypes } from './models/PaymentAuthorisationTypes';
 export type { PaymentDetailsResponse } from './models/PaymentDetailsResponse';
 export type { PaymentLinkResponse } from './models/PaymentLinkResponse';
 export type { PaymentMethodsCalculateFeePayload } from './models/PaymentMethodsCalculateFeePayload';
-export type { PaymentMethodsCalculateFeeResponse } from './models/PaymentMethodsCalculateFeeResponse';
+export type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from './models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
+export { PaymentsPaymentsPaidBy } from './models/PaymentsPaymentsPaidBy';
 export { PaymentMethodsEnum } from './models/PaymentMethodsEnum';
 export { PaymentsPaymentMethodsEnum } from './models/PaymentsPaymentMethodsEnum';
 export type { PaymentMethodsResponse } from './models/PaymentMethodsResponse';
@@ -363,4 +364,5 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
+export * from './services/CounterpartsService';
 export { default as ReceivableService } from './services/ReceivableService';

@@ -1,34 +1,27 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-import { CurrencyEnum, PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 import { Card } from '@team-monite/ui-kit-react';
 import {
   YapilyWidget,
   EmptyScreen,
   SelectPaymentMethod,
+  StripeWidget,
 } from '@team-monite/ui-widgets-react';
 import {
   PaymentsPaymentLinkResponse,
   PaymentsPaymentsPaymentIntent,
+  PaymentsPaymentMethodsEnum,
 } from '@team-monite/sdk-api';
-
-import StripeWidget from './StripeWidget';
 
 import { ROUTES } from 'consts';
 
-import styles from './styles.module.scss';
-
 type PaymentWidgetProps = {
   paymentData: PaymentsPaymentLinkResponse;
-  fee?: number;
-  currency?: CurrencyEnum;
-  onFinish?: (result: any) => void;
-  returnUrl?: string;
+  id: string;
 };
 
-const PaymentWidget = (props: PaymentWidgetProps) => {
-  const { paymentData } = props;
+const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
   const paymentMethods = paymentData?.payment_methods || [];
   const paymentIntents = paymentData?.payment_intents || [];
 
@@ -52,28 +45,26 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
       paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
     ) {
-      navigate(`card${search}`, { replace: true });
+      navigate(`${ROUTES.card}${search}`, { replace: true });
     } else if (
       paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
     ) {
-      navigate(`bank${search}`, { replace: true });
+      navigate(`${ROUTES.bank}${search}`, { replace: true });
     } else if (
       paymentMethods?.length > 0 &&
       !paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) &&
       !paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
     ) {
-      navigate(`other${search}`, { replace: true });
+      navigate(`${ROUTES.other}${search}`, { replace: true });
     }
-    // TODO enable linter
     // eslint-disable-next-line
-  }, []);
+  }, [navigate, search]);
 
   const onChangeMethod = () => navigate(`/${search}`);
 
   return (
-    // TODO use emotion
-    <Card shadow p={32} className={styles.card}>
+    <Card shadow p={[16, 32]}>
       <Routes>
         <Route
           path="/"
@@ -88,10 +79,11 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path={ROUTES.card}
           element={
-            stripeCardData?.key.secret && (
+            stripeCardData?.key.secret &&
+            stripeCardData?.key.publishable && (
               <StripeWidget
                 clientSecret={stripeCardData?.key.secret}
-                {...props}
+                publishableSecret={stripeCardData?.key.publishable}
                 navButton={paymentMethods?.length > 1}
                 paymentData={paymentData}
                 handleBack={onChangeMethod}
@@ -102,10 +94,11 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
         <Route
           path={ROUTES.other}
           element={
-            stripeOthersData?.key.secret && (
+            stripeOthersData?.key.secret &&
+            stripeOthersData?.key.publishable && (
               <StripeWidget
                 clientSecret={stripeOthersData?.key.secret}
-                {...props}
+                publishableSecret={stripeOthersData?.key.publishable}
                 navButton={paymentMethods?.length > 1}
                 paymentData={paymentData}
                 handleBack={onChangeMethod}
@@ -117,7 +110,6 @@ const PaymentWidget = (props: PaymentWidgetProps) => {
           path={ROUTES.bank}
           element={
             <YapilyWidget
-              {...props}
               paymentData={paymentData}
               onChangeMethod={onChangeMethod}
             />

@@ -20,7 +20,7 @@ const EmptyBankList = ({ onChangeMethod }: { onChangeMethod: () => void }) => {
       <Box>
         <UMinusCircle width={40} height={40} color={theme.colors.grey} />
       </Box>
-      <Box padding={'0px 80px'}>
+      <Box padding={['0', '0px 80px']}>
         <Text textSize="h3" textAlign="center" color={theme.colors.grey}>
           {t('payment:bankWidget.emptyBankListTitle')}
         </Text>

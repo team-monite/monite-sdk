@@ -1,22 +1,21 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
-import { useRootStore } from 'features/mobx';
+import useAuth from 'features/auth/useAuth';
 
 const PublicArea = lazy(() => import('./PublicArea'));
 const AuthorizedArea = lazy(() => import('./AuthorizedArea'));
 
-const AreaRoutes = observer(() => {
-  const rootStore = useRootStore();
-  const { isAuth } = rootStore.auth;
+const AreaRoutes = () => {
+  const appAuth = useAuth();
+  const isAuth = appAuth?.token;
 
   return (
     <Suspense fallback={null}>
       {isAuth ? <AuthorizedArea /> : <PublicArea />}
     </Suspense>
   );
-});
+};
 
 const AppRoutes = () => {
   return (
@@ -26,4 +25,4 @@ const AppRoutes = () => {
   );
 };
 
-export default observer(AppRoutes);
+export default AppRoutes;
