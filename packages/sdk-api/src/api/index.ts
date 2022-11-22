@@ -274,6 +274,8 @@ export type { ReceivableVariablesResponse } from './models/ReceivableVariablesRe
 export { ReceivablesOrderEnum } from './models/ReceivablesOrderEnum';
 export type { ReceivablesPaginationResponse } from './models/ReceivablesPaginationResponse';
 export { ReceivablesReceivablesStatusEnum } from './models/ReceivablesReceivablesStatusEnum';
+export { ReceivablesQuoteStateEnum } from './models/ReceivablesQuoteStateEnum';
+export { ReceivablesCreditNoteStateEnum } from './models/ReceivablesCreditNoteStateEnum';
 export { ReceivablesReceivableType } from './models/ReceivablesReceivableType';
 export type { Recurrence } from './models/Recurrence';
 export type { RecurrenceIteration } from './models/RecurrenceIteration';

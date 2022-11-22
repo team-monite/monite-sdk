@@ -163,24 +163,14 @@ export default class ReceivableService {
   /**
    * Get Receivable By Id
    * @param receivableId
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @returns ReceivableResponse Successful Response
    * @throws ApiError
    */
-  public getReceivableByIdV1ReceivablesReceivableIdGet(
-    receivableId: string,
-    xMoniteEntityId: string
-  ): CancelablePromise<ReceivableResponse> {
+  public getById(receivableId: string): CancelablePromise<ReceivableResponse> {
     return __request(
       {
         method: 'GET',
-        url: '/receivables/{receivable_id}',
-        path: {
-          receivable_id: receivableId,
-        },
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
+        url: `/receivables/${receivableId}`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
