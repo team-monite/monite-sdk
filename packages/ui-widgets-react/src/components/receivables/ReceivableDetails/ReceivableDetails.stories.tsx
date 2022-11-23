@@ -1,6 +1,6 @@
 import withMock from 'storybook-addon-mock';
 import ReceivableDetails from './ReceivableDetails';
-import data from '../fixtures/getById';
+import { receivableByIdFixture } from 'mocks/receivables';
 
 const Story = {
   title: 'Receivables/Receivables — Details',
@@ -12,7 +12,7 @@ const Story = {
         url: 'https://api.dev.monite.com/v1/receivables/1b2fe86b-f02a-4f3f-a258-a19e53bd06ec',
         method: 'GET',
         status: 200,
-        response: data,
+        response: receivableByIdFixture,
       },
     ],
   },

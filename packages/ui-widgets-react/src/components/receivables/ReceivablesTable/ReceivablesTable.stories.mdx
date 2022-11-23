@@ -2,8 +2,7 @@ import ReceivablesTable from './ReceivablesTable';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import withMock from 'storybook-addon-mock';
 import { action } from '@storybook/addon-actions';
-import receivablesMock from '../fixtures/receivables';
-import customersMock from '../fixtures/customers';
+import { customersFixture, receivablesFixture } from 'mocks/receivables';
 
 <Meta
   title="Receivables/Receivables — Table View"
@@ -15,25 +14,25 @@ import customersMock from '../fixtures/customers';
         url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=quote',
         method: 'GET',
         status: 200,
-        response: receivablesMock.quotes,
+        response: receivablesFixture.quotes,
       },
       {
         url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=invoice',
         method: 'GET',
         status: 200,
-        response: receivablesMock.invoices,
+        response: receivablesFixture.invoices,
       },
       {
         url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=credit_note',
         method: 'GET',
         status: 200,
-        response: receivablesMock.credit_notes,
+        response: receivablesFixture.credit_notes,
       },
       {
         url: 'https://api.dev.monite.com/v1/counterparts?limit=100',
         method: 'GET',
         status: 200,
-        response: customersMock,
+        response: customersFixture,
       },
     ],
   }}
@@ -50,7 +49,7 @@ export const Template = (args) => (
     name="Default"
     args={{
       onChangeSort: action('onChangeSort'),
-      onChangeFilter: action('onChangeFilter')
+      onChangeFilter: action('onChangeFilter'),
     }}
   >
     {Template.bind({})}

@@ -38,7 +38,6 @@ const StyledTable = styled(RCTable)`
   table {
     border-collapse: collapse;
     width: 100%;
-    height: 100%;
     padding: 0;
     margin: 0;
   }
