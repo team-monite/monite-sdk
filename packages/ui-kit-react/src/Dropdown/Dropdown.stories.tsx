@@ -15,7 +15,7 @@ export const DefaultDropdown = () => (
     <DropdownMenuItem onClick={() => console.log('Link2')}>
       Link2
     </DropdownMenuItem>
-    <DropdownMenuItem onClick={() => console.log('Link3')}>
+    <DropdownMenuItem disabled onClick={() => console.log('Link3')}>
       Link3
     </DropdownMenuItem>
   </Dropdown>

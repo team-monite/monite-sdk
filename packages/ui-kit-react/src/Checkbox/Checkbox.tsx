@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 import { UCheck } from 'unicons';
@@ -9,6 +9,7 @@ type StyledProps = {
   $checked?: boolean;
   $disabled?: boolean;
   $invalid?: boolean;
+  $fullWidth?: boolean;
 };
 const getBorderColor = ({
   $checked,
@@ -122,6 +123,8 @@ const Wrapper = styled.label<StyledProps>`
   cursor: pointer;
 
   span {
+    ${({ $fullWidth }) => $fullWidth && 'width: 100%;'}
+
     display: inline-block;
     margin-left: 12px;
 
@@ -149,7 +152,7 @@ const Wrapper = styled.label<StyledProps>`
 `;
 
 type CheckboxProps = {
-  label?: string;
+  label?: string | ReactNode;
   name: string;
   id: string;
   value: string | number;
@@ -157,6 +160,7 @@ type CheckboxProps = {
   disabled?: boolean;
   tooltip?: TooltipProps;
   isInvalid?: boolean;
+  fullWidth?: boolean;
   onChange?: (e: React.BaseSyntheticEvent) => void;
 };
 
@@ -169,6 +173,7 @@ const Checkbox = ({
   disabled,
   tooltip,
   isInvalid,
+  fullWidth,
   onChange,
 }: CheckboxProps) => {
   const tooltipAttributes = tooltip
@@ -183,6 +188,7 @@ const Checkbox = ({
       htmlFor={id}
       $disabled={disabled}
       $invalid={isInvalid}
+      $fullWidth={fullWidth}
       {...tooltipAttributes}
     >
       <Checkmark $checked={checked} $disabled={disabled} $invalid={isInvalid}>

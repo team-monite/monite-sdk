@@ -1,0 +1,55 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import withMock from 'storybook-addon-mock';
+
+import ReceivablesDetails from './ReceivablesDetails';
+import customersMock from '../fixtures/customers';
+import paymentTermsMock from '../fixtures/paymentTerms';
+import productsTermsMock from '../fixtures/productsTerms';
+
+import { RECEIVABLE_TYPES } from '../types';
+
+<Meta
+  title="Receivables/Receivables — Details"
+  component={ReceivablesDetails}
+  decorators={[withMock]}
+  parameters={{
+    mockData: [
+      {
+        url: 'https://api.dev.monite.com/v1/counterparts?limit=100',
+        method: 'GET',
+        status: 200,
+        response: customersMock,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/payment_terms',
+        method: 'GET',
+        status: 200,
+        response: paymentTermsMock,
+      },
+      {
+        url: 'https://api.dev.monite.com/v1/products?limit=100',
+        method: 'GET',
+        status: 200,
+        response: productsTermsMock,
+      },
+    ],
+  }}
+  argTypes={{
+    type: {
+      options: Object.values(RECEIVABLE_TYPES),
+    },
+  }}
+/>
+
+export const Template = (args) => <ReceivablesDetails {...args} />;
+
+<Canvas>
+  <Story
+    name="Invoice Form"
+    args={{
+      type: RECEIVABLE_TYPES.INVOICE,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
