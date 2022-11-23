@@ -21,7 +21,7 @@
     "result": {
       "processingTitle": "Payment initiated",
       "processingText": "Your payment is being processed. We will notify you once the payment is complete.",
-      "succeededTitle": "Payment successfull",
+      "succeededTitle": "Payment successful",
       "succeededText": "Thank you! Payment was successfully completed",
       "errorTitle": "Payment error",
       "errorText": "An unexpected error occured while paying. Please try again later or choose another payment method.",
