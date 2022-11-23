@@ -2,13 +2,15 @@ import {
   ReceivablesStatusEnum,
   ReceivablesQuoteStateEnum,
   ReceivablesCreditNoteStateEnum,
+  ReceivablesReceivablesStatusEnum,
 } from '@team-monite/sdk-api';
 import { TagColorType } from '@team-monite/ui-kit-react';
 
 export const ROW_TO_TAG_STATUS_MAP: Record<
   | ReceivablesStatusEnum
   | ReceivablesQuoteStateEnum
-  | ReceivablesCreditNoteStateEnum,
+  | ReceivablesCreditNoteStateEnum
+  | ReceivablesReceivablesStatusEnum,
   TagColorType
 > = {
   [ReceivablesStatusEnum.DRAFT]: 'secondary',
@@ -22,4 +24,5 @@ export const ROW_TO_TAG_STATUS_MAP: Record<
   [ReceivablesStatusEnum.DELETED]: 'error',
   [ReceivablesStatusEnum.RECURRING]: 'disabled',
   [ReceivablesQuoteStateEnum.DECLINED]: 'error',
+  [ReceivablesReceivablesStatusEnum.OVERDUE]: 'warning',
 };

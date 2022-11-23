@@ -91,7 +91,7 @@ const ReceivableDetails = ({ id, onClose }: ReceivableDetailsProps) => {
               <StyledHeaderContent>
                 <Avatar size={44}>{receivable.counterpart_name || '/'}</Avatar>
                 <Text textSize={'h3'}>{`${t('receivables:invoice')} ${
-                  receivable.document_id
+                  receivable.document_id || ''
                 }`}</Text>
                 <Tag color={ROW_TO_TAG_STATUS_MAP[receivable.status]}>
                   {t(`receivables:statuses.${receivable.status}`)}

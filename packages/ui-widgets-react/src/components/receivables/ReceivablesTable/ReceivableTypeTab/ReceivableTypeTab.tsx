@@ -46,6 +46,7 @@ interface Props {
       order: SortOrderEnum | null;
     } | null
   ) => void;
+  onRowClick?: (id: string) => void;
 }
 
 const mapTypeToColumns = (
@@ -230,6 +231,7 @@ const ReceivableTypeTab = ({
   type,
   currentFilters,
   onChangeSort: onChangeSortCallback,
+  onRowClick,
 }: Props) => {
   const { t, monite } = useComponentsContext();
 
@@ -318,6 +320,10 @@ const ReceivableTypeTab = ({
         columns={columns}
         data={receivables?.data}
         scroll={{ y: 'auto' }}
+        onRow={(record) => ({
+          onClick: () =>
+            onRowClick && onRowClick((record as ReceivableResponse).id),
+        })}
         footer={() => (
           <TableFooter>
             <Button
