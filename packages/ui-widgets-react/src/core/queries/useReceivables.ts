@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useInfiniteQuery, useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
 import {
   ReceivableService,
@@ -9,6 +9,7 @@ import {
   ReceivablesReceivablesCounterpartBankAccountsResponse,
   ReceivablesReceivableFacadeCreatePayload,
   ReceivablesUnitListResponse,
+  ReceivablesVatRateListResponse,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from '../context/ComponentsContext';
@@ -96,9 +97,17 @@ export const useProducts = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<ProductServiceReceivablesPaginationResponse, Error>(
+  return useInfiniteQuery<ProductServiceReceivablesPaginationResponse, Error>(
     [PRODUCT_QUERY_ID, { variables: args }],
-    () => monite.api!.receivable.getProductsV1ProductsGet(...args)
+    ({ pageParam }) => {
+      args[3] = pageParam;
+      return monite.api!.receivable.getProductsV1ProductsGet(...args);
+    },
+    {
+      getNextPageParam: (res) => {
+        return res.next_pagination_token;
+      },
+    }
   );
 };
 
@@ -110,6 +119,21 @@ export const useMeasureUnits = (
   return useQuery<ReceivablesUnitListResponse, Error>(
     [MEASURE_UNITS_ID, { variables: args }],
     () => monite.api!.receivable.getUnitsV1MeasureUnitsGet(...args)
+  );
+};
+
+export const useVATRates = (
+  enabled: boolean,
+  ...args: Parameters<ReceivableService['getVatRatesV1VatRatesGet']>
+) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<ReceivablesVatRateListResponse, Error>(
+    [MEASURE_UNITS_ID, { variables: args }],
+    () => monite.api!.receivable.getVatRatesV1VatRatesGet(...args),
+    {
+      enabled,
+    }
   );
 };
 

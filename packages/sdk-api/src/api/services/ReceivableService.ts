@@ -17,6 +17,7 @@ import {
   ReceivableResponse,
   ReceivablesReceivableFacadeCreatePayload,
   ReceivablesUnitListResponse,
+  ReceivablesVatRateListResponse,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -139,6 +140,30 @@ export default class ReceivableService {
           405: `Method Not Allowed`,
           406: `Not Acceptable`,
           409: `Possible responses: \`Action for {object_type} at permissions not found: {action}\`,\`Object type at permissions not found: {object_type}\`,\`Action {action} for {object_type} not allowed\``,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Receivable Pdf link by Id
+   * @returns string Successful Response
+   * @throws ApiError
+   */
+  public getReceivablePdfLink(receivableId: string): CancelablePromise<string> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/${RECEIVABLES_ENDPOINT}/${receivableId}/pdf_link`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
           422: `Validation Error`,
           500: `Internal Server Error`,
         },
@@ -369,20 +394,30 @@ export default class ReceivableService {
   }
 
   /**
-   * Get Receivable Pdf link by Id
-   * @returns string Successful Response
+   * Get Vat Rates
+   * @param counterpartId
+   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
+   * @returns ReceivablesVatRateListResponse Successful Response
    * @throws ApiError
    */
-  public getReceivablePdfLink(receivableId: string): CancelablePromise<string> {
+  public getVatRatesV1VatRatesGet(
+    counterpartId: string,
+    xMoniteEntityId: string
+  ): CancelablePromise<ReceivablesVatRateListResponse> {
     return __request(
       {
         method: 'GET',
-        url: `/${RECEIVABLES_ENDPOINT}/${receivableId}/pdf_link`,
+        url: '/vat_rates',
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
+        },
+        query: {
+          counterpart_id: counterpartId,
+        },
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
           403: `Forbidden`,
-          404: `Not found`,
           405: `Method Not Allowed`,
           422: `Validation Error`,
           500: `Internal Server Error`,

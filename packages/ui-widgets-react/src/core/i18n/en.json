@@ -304,6 +304,9 @@
     "notifications": {
       "createSuccess": "Invoice “{{name}}” was created",
       "createError": "Failed to create invoice"
+    },
+    "errors": {
+      "selectCounterpart": "Select Counterpart"
     }
   },
   "errors": {

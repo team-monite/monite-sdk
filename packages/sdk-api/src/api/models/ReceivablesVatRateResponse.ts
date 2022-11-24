@@ -38,10 +38,10 @@ export type ReceivablesVatRateResponse = {
     /**
      * Status for this vat rate: active | inactive.
      */
-    status: VatRateReceivablesStatusEnum;
+    status?: VatRateReceivablesStatusEnum;
     /**
      * By whom this rate was recorded: monite employee | accounting system.
      */
-    created_by: ReceivablesVatRateCreator;
+    created_by?: ReceivablesVatRateCreator;
 };
 

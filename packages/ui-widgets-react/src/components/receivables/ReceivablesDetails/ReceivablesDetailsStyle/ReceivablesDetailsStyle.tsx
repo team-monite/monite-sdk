@@ -4,6 +4,7 @@ import {
   Card,
   Flex,
   FormField,
+  List,
   Table,
   TableProps,
 } from '@team-monite/ui-kit-react';
@@ -46,6 +47,23 @@ export const StyledHeaderActions = styled(Flex)`
 
 export const ItemsContent = styled.div`
   padding: 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledItemsList = styled(List)`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
+
+  .infinite-scroll-component__outerdiv {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    overflow: auto;
+  }
 `;
 
 export const ItemsFilterWrapper = styled.div`
@@ -62,4 +80,8 @@ export const StyledItemsTable = styled(Table)<TableProps>`
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+`;
+
+export const ItemsTableError = styled(Box)`
+  color: ${({ theme }) => theme.error50};
 `;

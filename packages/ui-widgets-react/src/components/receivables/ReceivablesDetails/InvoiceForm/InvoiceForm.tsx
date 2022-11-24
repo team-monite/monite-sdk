@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { TFunction } from 'react-i18next';
 import * as yup from 'yup';
@@ -28,6 +28,7 @@ import {
   useCounterpartBankAccounts,
   useCreateReceivable,
   useMeasureUnits,
+  useVATRates,
 } from 'core/queries';
 import { counterpartsToSelect } from '../../../payables/PayableDetails/PayableDetailsForm/helpers';
 import AddItemsModal from '../AddItemsModal';
@@ -36,6 +37,7 @@ import {
   StyledItemsCard,
   FormItem,
   StyledItemsTable,
+  ItemsTableError,
 } from '../ReceivablesDetailsStyle';
 import { currencyFormatter } from '../helpers';
 
@@ -121,11 +123,16 @@ const InvoiceForm = () => {
     currentCounterpart?.value,
     monite.entityId
   );
+  const VATRatesQuery = useVATRates(
+    !!currentCounterpart?.value,
+    currentCounterpart?.value,
+    monite.entityId
+  );
 
   // TODO delete before commit
-  // useEffect(() => {
-  //   setModalItemsIsOpen(true);
-  // }, []);
+  useEffect(() => {
+    setModalItemsIsOpen(true);
+  }, []);
 
   const subtotal = selectedItems.reduce((total, current) => {
     const { price, quantity } = current;
@@ -144,7 +151,7 @@ const InvoiceForm = () => {
       line_items: selectedItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.id || '',
-        vat_rate_id: '8d4c2c10-f7d7-4d7c-a1f5-5f3a9d56371e', // TODO set real VAT id
+        vat_rate_id: VATRatesQuery.data?.data[0].id || '', // TODO set real VAT id from select
       })),
     };
 
@@ -410,6 +417,22 @@ const InvoiceForm = () => {
                     dataIndex: 'vat',
                     key: 'vat',
                     title: t('receivables:itemsColumns.VAT'),
+                    render: () => {
+                      if (!currentCounterpart)
+                        return (
+                          <ItemsTableError sx={{ whiteSpace: 'break-spaces' }}>
+                            {t('receivables:errors.selectCounterpart')}
+                          </ItemsTableError>
+                        );
+
+                      if (
+                        !VATRatesQuery.data ||
+                        VATRatesQuery.data.data.length === 0
+                      )
+                        return '—';
+
+                      return VATRatesQuery.data.data[0].value;
+                    },
                   },
                   {
                     dataIndex: 'price',
@@ -474,9 +497,9 @@ const InvoiceForm = () => {
             </Flex>
           </ListItem>
           <ListItem>
-            <Flex justifyContent="space-between">
+            <Flex justifyContent="space-between" alignItems="center">
               <span>{t('receivables:total')}</span>
-              <span>{formatter.format(total)}</span>
+              <Text textSize="h3">{formatter.format(total)}</Text>
             </Flex>
           </ListItem>
         </List>

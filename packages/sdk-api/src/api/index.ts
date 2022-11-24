@@ -298,6 +298,7 @@ export { ReceivablesReceivableFacadeCreatePayload } from './models/ReceivablesRe
 export { ReceivablesReceivableFacadeCreateQuotePayload } from './models/ReceivablesReceivableFacadeCreateQuotePayload';
 export { ReceivablesReceivablesCounterpartBankAccountResponse } from './models/ReceivablesReceivablesCounterpartBankAccountResponse';
 export { ReceivablesUnitListResponse } from './models/ReceivablesUnitListResponse';
+export { ReceivablesVatRateListResponse } from './models/ReceivablesVatRateListResponse';
 export { ReceivablesReceivablesCounterpartBankAccountsResponse } from './models/ReceivablesReceivablesCounterpartBankAccountsResponse';
 export { RecurrenceStatus } from './models/RecurrenceStatus';
 export type { RegulatorySettingsResponse } from './models/RegulatorySettingsResponse';

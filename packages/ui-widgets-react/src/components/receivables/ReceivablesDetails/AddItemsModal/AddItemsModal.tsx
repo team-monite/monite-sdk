@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ReceivablesProductServiceResponse,
   ReceivablesProductServiceTypeEnum,
@@ -9,7 +9,6 @@ import {
   Checkbox,
   Flex,
   Header,
-  List,
   ListItem,
   Modal,
   ModalLayout,
@@ -17,6 +16,7 @@ import {
   Select,
   Text,
 } from '@team-monite/ui-kit-react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useProducts } from 'core/queries';
@@ -26,6 +26,7 @@ import {
   ItemsHeader,
   StyledHeaderActions,
   ItemsContent,
+  StyledItemsList,
   ItemsFilterWrapper,
 } from '../ReceivablesDetailsStyle';
 import { currencyFormatter } from '../helpers';
@@ -56,6 +57,15 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
     filter.nameContains,
     undefined,
     filter.type
+  );
+  const products = useMemo(
+    () =>
+      productsQuery.data?.pages.reduce((prev, page) => {
+        return {
+          data: [...prev.data, ...page.data],
+        };
+      }),
+    [productsQuery.data]
   );
 
   const handleSelect = (e: React.BaseSyntheticEvent) => {
@@ -105,7 +115,7 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
                   <Button
                     onClick={() => {
                       onSubmit(
-                        productsQuery.data?.data?.filter((item) =>
+                        products?.data.filter((item) =>
                           selectedItems.includes(item.id || '')
                         ) || []
                       );
@@ -142,32 +152,43 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
               />
             </Box>
           </ItemsFilterWrapper>
-          <List>
-            {productsQuery.data?.data?.map((item) => (
-              <ListItem key={item.id || item.name}>
-                <Checkbox
-                  fullWidth
-                  checked={selectedItems.findIndex((i) => i === item.id) !== -1}
-                  label={
-                    <Flex justifyContent="space-between">
-                      <div>{item.name}</div>
-                      <div>
-                        {item.price
-                          ? currencyFormatter(item.price.currency).format(
-                              item.price.value
-                            )
-                          : null}
-                      </div>
-                    </Flex>
-                  }
-                  value={item.id || ''}
-                  id={item.id || ''}
-                  name={item.name}
-                  onChange={handleSelect}
-                />
-              </ListItem>
-            ))}
-          </List>
+          <StyledItemsList>
+            <InfiniteScroll
+              height="auto"
+              style={{ position: 'initial' }}
+              dataLength={productsQuery.data?.pages.length || 0}
+              next={() => productsQuery.fetchNextPage()}
+              hasMore={!!productsQuery.hasNextPage}
+              loader={productsQuery.isLoading}
+            >
+              {products?.data.map((item) => (
+                <ListItem key={item.id || item.name}>
+                  <Checkbox
+                    fullWidth
+                    checked={
+                      selectedItems.findIndex((i) => i === item.id) !== -1
+                    }
+                    label={
+                      <Flex justifyContent="space-between">
+                        <div>{item.name}</div>
+                        <div>
+                          {item.price
+                            ? currencyFormatter(item.price.currency).format(
+                                item.price.value
+                              )
+                            : null}
+                        </div>
+                      </Flex>
+                    }
+                    value={item.id || ''}
+                    id={item.id || ''}
+                    name={item.name}
+                    onChange={handleSelect}
+                  />
+                </ListItem>
+              ))}
+            </InfiniteScroll>
+          </StyledItemsList>
         </ItemsContent>
       </ModalLayout>
     </Modal>
