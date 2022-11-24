@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
-import { Box, Card, Flex, FormField, Table } from '@team-monite/ui-kit-react';
+import {
+  Box,
+  Card,
+  Flex,
+  FormField,
+  Table,
+  TableProps,
+} from '@team-monite/ui-kit-react';
 
 export const StyledContent = styled(Flex)`
   padding: 24px 144px;
@@ -41,7 +48,7 @@ export const ItemsContent = styled.div`
   padding: 32px;
 `;
 
-export const StyledItemsTable = styled(Table)`
+export const StyledItemsTable = styled(Table)<TableProps>`
   td {
     vertical-align: middle;
   }

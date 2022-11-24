@@ -13,6 +13,9 @@ import {
   Receivablesapi__v1__products_services__pagination__CursorFields,
   ReceivablesCurrencyEnum,
   ReceivablesProductServiceTypeEnum,
+  ReceivablesReceivablesCounterpartBankAccountsResponse,
+  ReceivableResponse,
+  ReceivablesReceivableFacadeCreatePayload,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -135,6 +138,79 @@ export default class ReceivableService {
           405: `Method Not Allowed`,
           406: `Not Acceptable`,
           409: `Possible responses: \`Action for {object_type} at permissions not found: {action}\`,\`Object type at permissions not found: {object_type}\`,\`Action {action} for {object_type} not allowed\``,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Create New Receivable
+   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
+   * @param requestBody
+   * @returns ReceivableResponse Successful Response
+   * @throws ApiError
+   */
+  public createNewReceivableV1ReceivablesPost(
+    xMoniteEntityId: string,
+    requestBody: ReceivablesReceivableFacadeCreatePayload
+  ): CancelablePromise<ReceivableResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: '/receivables',
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
+        },
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          409: `Biz logic error`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Counterparts Bank Accounts
+   * @param counterpartId
+   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
+   * @returns ReceivablesReceivablesCounterpartBankAccountsResponse Successful Response
+   * @throws ApiError
+   */
+  public getCounterpartsBankAccountsV1CounterpartsCounterpartIdBankAccountsGet(
+    counterpartId: string,
+    xMoniteEntityId: string
+  ): CancelablePromise<ReceivablesReceivablesCounterpartBankAccountsResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: '/counterparts/{counterpart_id}/bank_accounts',
+        path: {
+          counterpart_id: counterpartId,
+        },
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
+        },
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
           422: `Validation Error`,
           500: `Internal Server Error`,
         },

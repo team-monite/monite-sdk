@@ -3,7 +3,12 @@ import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { TFunction } from 'react-i18next';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ReceivablesProductServiceResponse } from '@team-monite/sdk-api';
+import {
+  ReceivablesProductServiceResponse,
+  ReceivablesReceivableFacadeCreatePayload,
+  ReceivablesReceivableFacadeCreateInvoicePayload,
+  ReceivablesCurrencyEnum,
+} from '@team-monite/sdk-api';
 import {
   Box,
   Button,
@@ -17,7 +22,12 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { useCounterpartList, usePaymentTerms } from 'core/queries';
+import {
+  useCounterpartList,
+  usePaymentTerms,
+  useCounterpartBankAccounts,
+  useCreateReceivable,
+} from 'core/queries';
 import { counterpartsToSelect } from '../../../payables/PayableDetails/PayableDetailsForm/helpers';
 import AddItemsModal from '../AddItemsModal';
 import {
@@ -87,13 +97,21 @@ const InvoiceForm = () => {
   const { t, monite } = useComponentsContext();
   const counterpartQuery = useCounterpartList();
   const paymentTermsQuery = usePaymentTerms(monite.entityId);
+  const createReceivableMutation = useCreateReceivable();
 
   const [modalItemsIsOpen, setModalItemsIsOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
 
-  const { control, handleSubmit } = useForm<FormFields>({
+  const { control, watch, handleSubmit } = useForm<FormFields>({
     resolver: yupResolver(getValidationSchema(t)),
   });
+  const currentCounterpart = watch('customer');
+
+  const counterpartBankAccountsQuery = useCounterpartBankAccounts(
+    !!currentCounterpart?.value,
+    currentCounterpart?.value,
+    monite.entityId
+  );
 
   const subtotal = selectedItems.reduce((total, current) => {
     const { price, quantity } = current;
@@ -103,8 +121,26 @@ const InvoiceForm = () => {
   const totalVAT = 0;
   const total = subtotal + totalVAT;
 
-  const onSubmit = (data: any) => console.log(data);
-  const onError = (errors: any) => console.log(errors);
+  // TODO create real methods
+  const onSubmit = (data: FormFields) => {
+    const preparedData: ReceivablesReceivableFacadeCreatePayload = {
+      ...data,
+      counterpart_id: data.customer.value,
+      type: ReceivablesReceivableFacadeCreateInvoicePayload.type.INVOICE,
+      currency: ReceivablesCurrencyEnum.USD, // TODO set currency from Items
+      line_items: selectedItems.map((item) => ({
+        quantity: item.quantity,
+        product_id: item.id || '',
+        vat_rate_id: '8d4c2c10-f7d7-4d7c-a1f5-5f3a9d56371e', // TODO set real VAT id
+      })),
+    };
+
+    createReceivableMutation.mutateAsync(preparedData, {
+      onSuccess: () => console.log('create ok'),
+      onError: () => console.log('create fail'),
+    });
+  };
+  const onError = (errors: any) => console.error(errors);
 
   const handleDeleteItem = (id: string) => {
     setSelectedItems(selectedItems.filter((item) => item.id !== id));
@@ -115,8 +151,11 @@ const InvoiceForm = () => {
 
     items.forEach((item) => {
       const selectedIndex = selectedItems.findIndex((i) => i.id === item.id);
+      const newQuantity = item.smallest_amount
+        ? Math.ceil(item.smallest_amount)
+        : 1;
       if (selectedIndex === -1) {
-        newItems.push({ ...item, quantity: 1 });
+        newItems.push({ ...item, quantity: newQuantity });
       } else {
         newItems[selectedIndex].quantity++;
       }
@@ -307,7 +346,16 @@ const InvoiceForm = () => {
                     required
                     error={error?.value?.message || error?.label?.message}
                   >
-                    <Select {...field} options={[]} isInvalid={!!error} />
+                    <Select
+                      {...field}
+                      options={counterpartBankAccountsQuery.data?.data?.map(
+                        (item) => ({
+                          label: item.name,
+                          value: item.id,
+                        })
+                      )}
+                      isInvalid={!!error}
+                    />
                   </FormItem>
                 )}
               />

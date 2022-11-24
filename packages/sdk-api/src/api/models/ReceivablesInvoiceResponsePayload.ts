@@ -120,6 +120,10 @@ export type ReceivablesInvoiceResponsePayload = {
      * The total price of the receivable (in [minor units](https://docs.monite.com/docs/currencies#minor-units)), including VAT and excluding all issued credit notes.
      */
     total_amount_with_credit_notes: number;
+    /**
+     * How much is left to be paid.
+     */
+    amount_due?: number;
     payment_terms?: ReceivablesReceivablesPaymentTerms;
     /**
      * The status of the receivable inside the receivable workflow.
@@ -138,6 +142,10 @@ export type ReceivablesInvoiceResponsePayload = {
      * Ids of documents that relate to invoice. I.e credit notes, proforma invoices, etc.
      */
     related_documents: ReceivablesRelatedDocuments;
+    /**
+     * Field with a comment for pay/partially/uncollectible info on this Invoice
+     */
+    comment?: string;
 };
 
 export namespace ReceivablesInvoiceResponsePayload {

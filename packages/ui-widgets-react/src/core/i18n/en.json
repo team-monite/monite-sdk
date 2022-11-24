@@ -297,6 +297,10 @@
       "uncollectible": "Uncollectible",
       "canceled": "Canceled",
       "deleted": "Deleted"
+    },
+    "notifications": {
+      "createSuccess": "Invoice “{{name}}” was created",
+      "createError": "Failed to create invoice"
     }
   },
   "errors": {

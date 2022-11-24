@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { toast } from 'react-hot-toast';
 import {
   ReceivableService,
@@ -6,13 +6,16 @@ import {
   ReceivableResponse,
   ReceivablesReceivablesReceivablesPaymentTermsListResponse,
   ProductServiceReceivablesPaginationResponse,
+  ReceivablesReceivablesCounterpartBankAccountsResponse,
+  ReceivablesReceivableFacadeCreatePayload,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from '../context/ComponentsContext';
 
 const RECEIVABLE_QUERY_ID = 'receivable';
-const PAYMENT_TERM_ID = 'paymentTerm';
-const PRODUCT_ID = 'product';
+const COUNTERPART_BANK_ACCOUNT_QUERY_ID = 'counterpartBankAccount';
+const PAYMENT_TERM_QUERY_ID = 'paymentTerm';
+const PRODUCT_QUERY_ID = 'product';
 
 export const useReceivables = (
   ...args: Parameters<ReceivableService['getAllReceivables']>
@@ -25,6 +28,54 @@ export const useReceivables = (
   );
 };
 
+export const useCreateReceivable = () => {
+  const { monite, t } = useComponentsContext();
+
+  return useMutation<
+    ReceivableResponse,
+    Error,
+    ReceivablesReceivableFacadeCreatePayload
+  >(
+    (payload) =>
+      monite.api!.receivable.createNewReceivableV1ReceivablesPost(
+        monite.entityId,
+        payload
+      ),
+    {
+      onSuccess: (receivable) => {
+        toast.success(
+          t('receivables:notifications.createSuccess', {
+            name: receivable.counterpart_name,
+          })
+        );
+      },
+      onError: () => {
+        toast.error(t('receivables:notifications.createError'));
+      },
+    }
+  );
+};
+
+export const useCounterpartBankAccounts = (
+  enabled: boolean,
+  ...args: Parameters<
+    ReceivableService['getCounterpartsBankAccountsV1CounterpartsCounterpartIdBankAccountsGet']
+  >
+) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<ReceivablesReceivablesCounterpartBankAccountsResponse, Error>(
+    [COUNTERPART_BANK_ACCOUNT_QUERY_ID, { variables: args }],
+    () =>
+      monite.api!.receivable.getCounterpartsBankAccountsV1CounterpartsCounterpartIdBankAccountsGet(
+        ...args
+      ),
+    {
+      enabled,
+    }
+  );
+};
+
 export const usePaymentTerms = (
   ...args: Parameters<ReceivableService['getItemsV1PaymentTermsGet']>
 ) => {
@@ -33,7 +84,7 @@ export const usePaymentTerms = (
   return useQuery<
     ReceivablesReceivablesReceivablesPaymentTermsListResponse,
     Error
-  >([PAYMENT_TERM_ID, { variables: args }], () =>
+  >([PAYMENT_TERM_QUERY_ID, { variables: args }], () =>
     monite.api!.receivable.getItemsV1PaymentTermsGet(...args)
   );
 };
@@ -44,7 +95,7 @@ export const useProducts = (
   const { monite } = useComponentsContext();
 
   return useQuery<ProductServiceReceivablesPaginationResponse, Error>(
-    [PRODUCT_ID, { variables: args }],
+    [PRODUCT_QUERY_ID, { variables: args }],
     () => monite.api!.receivable.getProductsV1ProductsGet(...args)
   );
 };

@@ -290,6 +290,14 @@ export { Receivablesapi__v1__products_services__pagination__CursorFields } from 
 export { ReceivablesCurrencyEnum } from './models/ReceivablesCurrencyEnum';
 export { ReceivablesProductServiceResponse } from './models/ReceivablesProductServiceResponse';
 export { ReceivablesProductServiceTypeEnum } from './models/ReceivablesProductServiceTypeEnum';
+export { ReceivablesCreditNoteResponsePayload } from './models/ReceivablesCreditNoteResponsePayload';
+export { ReceivablesInvoiceResponsePayload } from './models/ReceivablesInvoiceResponsePayload';
+export { ReceivablesQuoteResponsePayload } from './models/ReceivablesQuoteResponsePayload';
+export { ReceivablesReceivableFacadeCreateInvoicePayload } from './models/ReceivablesReceivableFacadeCreateInvoicePayload';
+export { ReceivablesReceivableFacadeCreatePayload } from './models/ReceivablesReceivableFacadeCreatePayload';
+export { ReceivablesReceivableFacadeCreateQuotePayload } from './models/ReceivablesReceivableFacadeCreateQuotePayload';
+export { ReceivablesReceivablesCounterpartBankAccountResponse } from './models/ReceivablesReceivablesCounterpartBankAccountResponse';
+export { ReceivablesReceivablesCounterpartBankAccountsResponse } from './models/ReceivablesReceivablesCounterpartBankAccountsResponse';
 export { RecurrenceStatus } from './models/RecurrenceStatus';
 export type { RegulatorySettingsResponse } from './models/RegulatorySettingsResponse';
 export type { Reminder } from './models/Reminder';
