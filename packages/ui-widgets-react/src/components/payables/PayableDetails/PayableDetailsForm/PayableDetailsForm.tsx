@@ -81,7 +81,7 @@ const PayableDetailsForm = forwardRef<
   const {
     tagQuery,
     counterpartQuery,
-    entityUserQuery,
+    // entityUserQuery,
     saveInvoice,
     isFormLoading,
     createTag,
@@ -252,7 +252,7 @@ const PayableDetailsForm = forwardRef<
               id="submittedBy"
             >
               {/*TODO Waiting design*/}
-              {entityUserQuery.error && entityUserQuery.error.message}
+              {/*{entityUserQuery.error && entityUserQuery.error.message}*/}
             </FormItem>
 
             {!!tagQuery?.data?.data?.length && (

@@ -1,36 +1,10 @@
 import Table from './PayablesTable';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import withMock from 'storybook-addon-mock';
 import { action } from '@storybook/addon-actions';
-import payableMock from '../fixtures/getPayables';
 
 <Meta
   title="Payables/Payables — Table View"
   component={Table}
-  decorators={[withMock]}
-  parameters={{
-    mockData: [
-      {
-        url: 'https://api.dev.monite.com/v1/payables?limit=10',
-        method: 'GET',
-        status: 200,
-        response: payableMock.firstPage,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/payables?limit=10&pagination_token=:pagination_token',
-        method: 'GET',
-        status: 200,
-        response: (request) => {
-          switch (request.searchParams.pagination_token) {
-            case 'next_page':
-              return payableMock.secondPage;
-            case 'prev_page':
-              return payableMock.firstPage;
-          }
-        },
-      },
-    ],
-  }}
 />
 
 export const Template = (args) => <div style={{ display: 'flex', height: 600 }}><Table {...args} /></div>;

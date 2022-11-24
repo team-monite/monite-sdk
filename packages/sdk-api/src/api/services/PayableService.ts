@@ -4,7 +4,6 @@
 import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
-import type { PaginationResponse } from '../models/PaginationResponse';
 import type { PayableStateEnum } from '../models/PayableStateEnum';
 
 import type { CancelablePromise } from '../CancelablePromise';
@@ -12,6 +11,9 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { PayableResponseSchema } from '../models/PayableResponseSchema';
 import { PayableUpdateSchema } from '../models/PayableUpdateSchema';
+import { api__schemas__payables__schemas__PaginationResponse } from '../models/api__schemas__payables__schemas__PaginationResponse';
+
+export const PAYABLES_ENDPOINT = 'payables';
 
 export default class PayablesService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -71,11 +73,11 @@ export default class PayablesService {
     dueDateLt?: string,
     dueDateGte?: string,
     dueDateLte?: string
-  ): CancelablePromise<PaginationResponse> {
+  ): CancelablePromise<api__schemas__payables__schemas__PaginationResponse> {
     return __request(
       {
         method: 'GET',
-        url: '/payables',
+        url: `/${PAYABLES_ENDPOINT}`,
         query: {
           order: order,
           limit: limit,
@@ -125,7 +127,7 @@ export default class PayablesService {
     return __request(
       {
         method: 'GET',
-        url: `/payables/${id}`,
+        url: `/${PAYABLES_ENDPOINT}/${id}`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
@@ -142,19 +144,19 @@ export default class PayablesService {
 
   /**
    * Update Payable By Id
-   * @param payableId
+   * @param id
    * @param body
    * @returns PayableResponse Successful Response
    * @throws ApiError
    */
   public update(
-    payableId: string,
+    id: string,
     body: PayableUpdateSchema
   ): CancelablePromise<PayableResponseSchema> {
     return __request(
       {
         method: 'PATCH',
-        url: `/payables/${payableId}`,
+        url: `/${PAYABLES_ENDPOINT}/${id}`,
         body,
         errors: {
           400: `Bad Request`,
@@ -180,7 +182,7 @@ export default class PayablesService {
     return __request(
       {
         method: 'POST',
-        url: `/payables/${payableId}/submit_for_approval`,
+        url: `/${PAYABLES_ENDPOINT}/${payableId}/submit_for_approval`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
@@ -205,7 +207,7 @@ export default class PayablesService {
     return __request(
       {
         method: 'POST',
-        url: `/payables/${payableId}/approve_payment_operation`,
+        url: `/${PAYABLES_ENDPOINT}/${payableId}/approve_payment_operation`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
@@ -230,7 +232,7 @@ export default class PayablesService {
     return __request(
       {
         method: 'POST',
-        url: `/payables/${payableId}/reject`,
+        url: `/${PAYABLES_ENDPOINT}/${payableId}/reject`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
@@ -255,7 +257,7 @@ export default class PayablesService {
     return __request(
       {
         method: 'POST',
-        url: `/payables/${payableId}/pay`,
+        url: `/${PAYABLES_ENDPOINT}/${payableId}/pay`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
