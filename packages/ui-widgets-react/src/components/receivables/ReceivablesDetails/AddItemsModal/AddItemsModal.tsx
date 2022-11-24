@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { ReceivablesProductServiceResponse } from '@team-monite/sdk-api';
 import {
+  ReceivablesProductServiceResponse,
+  ReceivablesProductServiceTypeEnum,
+} from '@team-monite/sdk-api';
+import {
+  Box,
   Button,
   Checkbox,
   Flex,
@@ -9,6 +13,8 @@ import {
   ListItem,
   Modal,
   ModalLayout,
+  Search,
+  Select,
   Text,
 } from '@team-monite/ui-kit-react';
 
@@ -20,7 +26,16 @@ import {
   ItemsHeader,
   StyledHeaderActions,
   ItemsContent,
+  ItemsFilterWrapper,
 } from '../ReceivablesDetailsStyle';
+import { currencyFormatter } from '../helpers';
+
+type FilterValues = {
+  nameContains?: string;
+  type?: ReceivablesProductServiceTypeEnum;
+};
+
+type FilterTypes = keyof FilterValues;
 
 type Props = {
   onSubmit: (items: ReceivablesProductServiceResponse[]) => void;
@@ -29,8 +44,19 @@ type Props = {
 
 const AddItemsModal = ({ onSubmit, onClose }: Props) => {
   const { t, monite } = useComponentsContext();
-  const productsQuery = useProducts(monite.entityId);
+  const [filter, setFilter] = useState<FilterValues>({});
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const productsQuery = useProducts(
+    monite.entityId,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    filter.nameContains,
+    undefined,
+    filter.type
+  );
 
   const handleSelect = (e: React.BaseSyntheticEvent) => {
     const selectedId = e.target.value;
@@ -43,6 +69,13 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
       if (index === -1) return [...selectedItems, selectedId];
       return selectedItems.filter((item) => item !== selectedId);
     });
+  };
+
+  const onChangeFilter = (
+    type: FilterTypes,
+    value: string | undefined | null
+  ) => {
+    setFilter((filter) => ({ ...filter, [type]: value || undefined }));
   };
 
   return (
@@ -88,6 +121,27 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
         }
       >
         <ItemsContent>
+          <ItemsFilterWrapper>
+            <Box width={200}>
+              <Search
+                placeholder={t('common:search')}
+                isFilter
+                onSearch={(search) => onChangeFilter('nameContains', search)}
+              />
+            </Box>
+            <Box width={200}>
+              <Select
+                placeholder={t('receivables:AllTypes')}
+                isFilter
+                isClearable
+                options={[
+                  { label: t('receivables:product'), value: 'product' },
+                  { label: t('receivables:service'), value: 'service' },
+                ]}
+                onChange={(selected) => onChangeFilter('type', selected?.value)}
+              />
+            </Box>
+          </ItemsFilterWrapper>
           <List>
             {productsQuery.data?.data?.map((item) => (
               <ListItem key={item.id || item.name}>
@@ -97,7 +151,13 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
                   label={
                     <Flex justifyContent="space-between">
                       <div>{item.name}</div>
-                      <div>{`${item.price?.value} ${item.price?.currency}`}</div>
+                      <div>
+                        {item.price
+                          ? currencyFormatter(item.price.currency).format(
+                              item.price.value
+                            )
+                          : null}
+                      </div>
                     </Flex>
                   }
                   value={item.id || ''}

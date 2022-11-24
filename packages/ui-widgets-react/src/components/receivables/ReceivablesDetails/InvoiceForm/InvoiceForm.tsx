@@ -36,6 +36,7 @@ import {
   FormItem,
   StyledItemsTable,
 } from '../ReceivablesDetailsStyle';
+import { currencyFormatter } from '../helpers';
 
 const getValidationSchema = (t: TFunction) =>
   yup
@@ -93,6 +94,12 @@ interface SelectedItem extends ReceivablesProductServiceResponse {
   quantity: number;
 }
 
+// TODO remove formatter with hardcoded currency
+const formatter = new Intl.NumberFormat('de-DE', {
+  style: 'currency',
+  currency: 'EUR',
+});
+
 const InvoiceForm = () => {
   const { t, monite } = useComponentsContext();
   const counterpartQuery = useCounterpartList();
@@ -113,6 +120,11 @@ const InvoiceForm = () => {
     monite.entityId
   );
 
+  // TODO delete before commit
+  // useEffect(() => {
+  //   setModalItemsIsOpen(true);
+  // }, []);
+
   const subtotal = selectedItems.reduce((total, current) => {
     const { price, quantity } = current;
     if (price) return total + quantity * price.value;
@@ -121,13 +133,12 @@ const InvoiceForm = () => {
   const totalVAT = 0;
   const total = subtotal + totalVAT;
 
-  // TODO create real methods
   const onSubmit = (data: FormFields) => {
     const preparedData: ReceivablesReceivableFacadeCreatePayload = {
       ...data,
       counterpart_id: data.customer.value,
       type: ReceivablesReceivableFacadeCreateInvoicePayload.type.INVOICE,
-      currency: ReceivablesCurrencyEnum.USD, // TODO set currency from Items
+      currency: selectedItems[0].price?.currency || ReceivablesCurrencyEnum.USD, // TODO currency in items could be different
       line_items: selectedItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.id || '',
@@ -136,11 +147,10 @@ const InvoiceForm = () => {
     };
 
     createReceivableMutation.mutateAsync(preparedData, {
-      onSuccess: () => console.log('create ok'),
-      onError: () => console.log('create fail'),
+      onSuccess: () => console.log('create ok'), // TODO update list
+      onError: () => console.log('create fail'), // TODO remove before commit
     });
   };
-  const onError = (errors: any) => console.error(errors);
 
   const handleDeleteItem = (id: string) => {
     setSelectedItems(selectedItems.filter((item) => item.id !== id));
@@ -166,7 +176,7 @@ const InvoiceForm = () => {
 
   return (
     <>
-      <form id="createInvoice" onSubmit={handleSubmit(onSubmit, onError)}>
+      <form id="createInvoice" onSubmit={handleSubmit(onSubmit)}>
         <Box mb={16}>
           <Text textSize="h3">{t('receivables:details')}</Text>
         </Box>
@@ -395,7 +405,14 @@ const InvoiceForm = () => {
                     dataIndex: 'price',
                     key: 'price',
                     title: t('receivables:itemsColumns.cost'),
-                    render: (price) => `${price.value} ${price.currency}`,
+                    render: (price) => {
+                      if (price)
+                        return currencyFormatter(price.currency).format(
+                          price.value
+                        );
+
+                      return null;
+                    },
                   },
                   {
                     dataIndex: 'total',
@@ -405,7 +422,9 @@ const InvoiceForm = () => {
                       const { price, quantity } = record as SelectedItem;
 
                       if (price?.value && quantity)
-                        return `${price?.value * quantity} ${price.currency}`;
+                        return currencyFormatter(price.currency).format(
+                          price?.value * quantity
+                        );
 
                       return null;
                     },
@@ -435,19 +454,19 @@ const InvoiceForm = () => {
           <ListItem>
             <Flex justifyContent="space-between">
               <span>{t('receivables:subtotal')}</span>
-              <span>{`${subtotal} EUR`}</span>
+              <span>{formatter.format(subtotal)}</span>
             </Flex>
           </ListItem>
           <ListItem>
             <Flex justifyContent="space-between">
               <span>{t('receivables:totalVAT')}</span>
-              <span>{`${totalVAT} EUR`}</span>
+              <span>{formatter.format(totalVAT)}</span>
             </Flex>
           </ListItem>
           <ListItem>
             <Flex justifyContent="space-between">
               <span>{t('receivables:total')}</span>
-              <span>{`${total} EUR`}</span>
+              <span>{formatter.format(total)}</span>
             </Flex>
           </ListItem>
         </List>

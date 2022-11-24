@@ -48,6 +48,12 @@ export const ItemsContent = styled.div`
   padding: 32px;
 `;
 
+export const ItemsFilterWrapper = styled.div`
+  margin-bottom: 24px;
+  display: flex;
+  gap: 8px;
+`;
+
 export const StyledItemsTable = styled(Table)<TableProps>`
   td {
     vertical-align: middle;
