@@ -27,6 +27,7 @@ import {
   usePaymentTerms,
   useCounterpartBankAccounts,
   useCreateReceivable,
+  useMeasureUnits,
 } from 'core/queries';
 import { counterpartsToSelect } from '../../../payables/PayableDetails/PayableDetailsForm/helpers';
 import AddItemsModal from '../AddItemsModal';
@@ -104,6 +105,7 @@ const InvoiceForm = () => {
   const { t, monite } = useComponentsContext();
   const counterpartQuery = useCounterpartList();
   const paymentTermsQuery = usePaymentTerms(monite.entityId);
+  const measureUnitsQuery = useMeasureUnits(monite.entityId);
   const createReceivableMutation = useCreateReceivable();
 
   const [modalItemsIsOpen, setModalItemsIsOpen] = useState(false);
@@ -392,9 +394,17 @@ const InvoiceForm = () => {
                     render: (value) => value,
                   },
                   {
-                    dataIndex: 'unit',
-                    key: 'unit',
+                    dataIndex: 'measure_unit_id',
+                    key: 'measure_unit_id',
                     title: t('receivables:itemsColumns.unit'),
+                    render: (value) => {
+                      const currentMeasureUnit =
+                        measureUnitsQuery.data?.data.find(
+                          (measureUnit) => measureUnit.id === value
+                        );
+
+                      return currentMeasureUnit?.name || null;
+                    },
                   },
                   {
                     dataIndex: 'vat',

@@ -297,6 +297,7 @@ export { ReceivablesReceivableFacadeCreateInvoicePayload } from './models/Receiv
 export { ReceivablesReceivableFacadeCreatePayload } from './models/ReceivablesReceivableFacadeCreatePayload';
 export { ReceivablesReceivableFacadeCreateQuotePayload } from './models/ReceivablesReceivableFacadeCreateQuotePayload';
 export { ReceivablesReceivablesCounterpartBankAccountResponse } from './models/ReceivablesReceivablesCounterpartBankAccountResponse';
+export { ReceivablesUnitListResponse } from './models/ReceivablesUnitListResponse';
 export { ReceivablesReceivablesCounterpartBankAccountsResponse } from './models/ReceivablesReceivablesCounterpartBankAccountsResponse';
 export { RecurrenceStatus } from './models/RecurrenceStatus';
 export type { RegulatorySettingsResponse } from './models/RegulatorySettingsResponse';

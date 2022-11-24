@@ -8,6 +8,7 @@ import {
   ProductServiceReceivablesPaginationResponse,
   ReceivablesReceivablesCounterpartBankAccountsResponse,
   ReceivablesReceivableFacadeCreatePayload,
+  ReceivablesUnitListResponse,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from '../context/ComponentsContext';
@@ -16,6 +17,7 @@ const RECEIVABLE_QUERY_ID = 'receivable';
 const COUNTERPART_BANK_ACCOUNT_QUERY_ID = 'counterpartBankAccount';
 const PAYMENT_TERM_QUERY_ID = 'paymentTerm';
 const PRODUCT_QUERY_ID = 'product';
+const MEASURE_UNITS_ID = 'product';
 
 export const useReceivables = (
   ...args: Parameters<ReceivableService['getAllReceivables']>
@@ -97,6 +99,17 @@ export const useProducts = (
   return useQuery<ProductServiceReceivablesPaginationResponse, Error>(
     [PRODUCT_QUERY_ID, { variables: args }],
     () => monite.api!.receivable.getProductsV1ProductsGet(...args)
+  );
+};
+
+export const useMeasureUnits = (
+  ...args: Parameters<ReceivableService['getUnitsV1MeasureUnitsGet']>
+) => {
+  const { monite } = useComponentsContext();
+
+  return useQuery<ReceivablesUnitListResponse, Error>(
+    [MEASURE_UNITS_ID, { variables: args }],
+    () => monite.api!.receivable.getUnitsV1MeasureUnitsGet(...args)
   );
 };
 

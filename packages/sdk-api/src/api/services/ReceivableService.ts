@@ -16,6 +16,7 @@ import {
   ReceivablesReceivablesCounterpartBankAccountsResponse,
   ReceivableResponse,
   ReceivablesReceivableFacadeCreatePayload,
+  ReceivablesUnitListResponse,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -324,6 +325,35 @@ export default class ReceivableService {
           created_at__lt: createdAtLt,
           created_at__gte: createdAtGte,
           created_at__lte: createdAtLte,
+        },
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Units
+   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
+   * @returns ReceivablesUnitListResponse Successful Response
+   * @throws ApiError
+   */
+  public getUnitsV1MeasureUnitsGet(
+    xMoniteEntityId: string
+  ): CancelablePromise<ReceivablesUnitListResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: '/measure_units',
+        headers: {
+          'x-monite-entity-id': xMoniteEntityId,
         },
         errors: {
           400: `Bad Request`,
