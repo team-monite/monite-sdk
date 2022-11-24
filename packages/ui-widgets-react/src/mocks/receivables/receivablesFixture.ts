@@ -1,5 +1,3 @@
-import { ReceivableResponse } from '@team-monite/sdk-api';
-
 export const receivableListFixture = {
   quote: [
     {
@@ -396,4 +394,4 @@ export const receivableListFixture = {
       purchase_order: 'string',
     },
   ],
-} as Record<string, ReceivableResponse[]>;
+} as Record<string, any>;
