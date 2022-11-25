@@ -1,36 +1,10 @@
 import Table from './CounterpartsTable';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import withMock from 'storybook-addon-mock';
 import { action } from '@storybook/addon-actions';
-import counterpartsMock from '../fixtures/counterparts';
 
 <Meta
   title="Counterparts/Counterparts — Table View"
   component={Table}
-  decorators={[withMock]}
-  parameters={{
-    mockData: [
-      {
-        url: 'https://api.dev.monite.com/v1/counterparts?limit=10',
-        method: 'GET',
-        status: 200,
-        response: counterpartsMock.firstPage,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/counterparts?limit=10&pagination_token=:pagination_token',
-        method: 'GET',
-        status: 200,
-        response: (request) => {
-          switch (request.searchParams.pagination_token) {
-            case 'next_page':
-              return counterpartsMock.secondPage;
-            case 'prev_page':
-              return counterpartsMock.firstPage;
-          }
-        },
-      },
-    ],
-  }}
 />
 
 export const Template = (args) => (

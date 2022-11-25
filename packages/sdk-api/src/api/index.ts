@@ -23,6 +23,7 @@ export { api__v1__export__pagination__CursorFields } from './models/api__v1__exp
 export { api__v1__fees__pagination__CursorFields } from './models/api__v1__fees__pagination__CursorFields';
 export { api__v1__payables__pagination__CursorFields } from './models/api__v1__payables__pagination__CursorFields';
 export { api__v1__products_services__pagination__CursorFields } from './models/api__v1__products_services__pagination__CursorFields';
+export { api__schemas__payables__schemas__PaginationResponse } from './models/api__schemas__payables__schemas__PaginationResponse';
 export { api__v1__receivables__pagination__CursorFields } from './models/api__v1__receivables__pagination__CursorFields';
 export { api__v1__roles__pagination__CursorFields } from './models/api__v1__roles__pagination__CursorFields';
 export type { api__v1__route__schemas__RouteResponse } from './models/api__v1__route__schemas__RouteResponse';
@@ -365,4 +366,7 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
 export * from './services/CounterpartsService';
+export * from './services/PayableService';
+export * from './services/TagService';
+export * from './services/ReceivableService';
 export { default as ReceivableService } from './services/ReceivableService';
