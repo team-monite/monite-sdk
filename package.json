@@ -12,6 +12,7 @@
     "sdk-api:build": "yarn workspace @team-monite/sdk-api build",
     "ui-widgets-react:build": "yarn workspace @team-monite/ui-widgets-react build",
     "ui-widgets-react:story": "yarn workspace @team-monite/ui-widgets-react storybook",
+    "ui-widgets-react:test": "yarn workspace @team-monite/ui-widgets-react test",
     "ui-widgets-react:build-storybook": "yarn workspace @team-monite/ui-widgets-react build-storybook",
     "ui-kit-react:story": "yarn workspace @team-monite/ui-kit-react storybook",
     "ui-kit-react:build": "yarn workspace @team-monite/ui-kit-react build",

@@ -11,7 +11,7 @@ import {
 
 import Menu from './Menu';
 import MenuItem from './Menu/MenuItem';
-import { useRootStore } from 'features/mobx';
+import useAuth from 'features/auth/useAuth';
 
 import styles from './styles.module.scss';
 
@@ -33,7 +33,7 @@ type DefaultLayoutProps = {
   children?: React.ReactNode;
 };
 const DefaultLayout = ({ children }: DefaultLayoutProps) => {
-  const rootStore = useRootStore();
+  const appAuth = useAuth();
 
   return (
     <Flex className={styles.layout}>
@@ -55,7 +55,7 @@ const DefaultLayout = ({ children }: DefaultLayoutProps) => {
                 e.stopPropagation();
                 e.preventDefault();
 
-                rootStore.auth.logout();
+                appAuth?.onLogout();
               },
               label: 'Logout',
               renderIcon: () => (

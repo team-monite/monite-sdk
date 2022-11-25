@@ -1,0 +1,26 @@
+import ReceivablesTable from './ReceivablesTable';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+
+<Meta
+  title="Receivables/Receivables — Table View"
+  component={ReceivablesTable}
+/>
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <ReceivablesTable {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story
+    name="Default"
+    args={{
+      onChangeSort: action('onChangeSort'),
+      onChangeFilter: action('onChangeFilter')
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

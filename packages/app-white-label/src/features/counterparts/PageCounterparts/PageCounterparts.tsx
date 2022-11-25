@@ -1,14 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import {
-  Button,
   CounterpartDetails,
   CounterpartsTable,
-  CounterpartType,
 } from '@team-monite/ui-widgets-react';
-
+import { CounterpartType } from '@team-monite/sdk-api';
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import { Dropdown, DropdownMenuItem } from '@team-monite/ui-kit-react';
+import { Dropdown, DropdownMenuItem, Button } from '@team-monite/ui-kit-react';
 
 const PageCounterparts = () => {
   const [counterpartId, setId] = useState<string | undefined>(undefined);
@@ -42,7 +40,8 @@ const PageCounterparts = () => {
         }
       />
 
-      <CounterpartsTable onRowClick={setId} />
+      <CounterpartsTable onRowClick={setId} onEdit={setId} />
+
       {(counterpartId || counterpartType) && (
         <CounterpartDetails
           id={counterpartId}

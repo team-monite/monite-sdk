@@ -7,9 +7,8 @@ import {
   UCheckSquare,
   UClockThree,
   UExclamationTriangle,
-} from '@team-monite/ui-widgets-react';
+} from '@team-monite/ui-kit-react';
 import { useLocation } from 'react-router-dom';
-import { RecipientType } from '../types';
 
 enum StripeResultStatuses {
   // RequiresPaymentMethod = 'requires_payment_method',
@@ -37,15 +36,10 @@ export default function usePaymentResult() {
   const redirect_status = urlParams.get('redirect_status');
   const amount = Number(urlParams.get('amount'));
   const currency = urlParams.get('currency');
-  const recipientType = urlParams.get('recipient_type');
-  const linkData = urlParams.get('data');
   const return_url = urlParams.get('return_url');
   const paymentReference = urlParams.get('payment_reference');
 
-  const returnUrl =
-    recipientType === RecipientType.COUNTERPART
-      ? return_url || ''
-      : `/?data=${linkData}`;
+  const returnUrl = return_url === 'null' ? '' : return_url;
 
   const statusesMap: Record<
     ResultStatuses,

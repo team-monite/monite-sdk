@@ -9,8 +9,8 @@ export type CoreConfig = {
 
 class Core {
   api: ApiService;
-
   locale: string = 'en';
+  entityId: string = '';
 
   constructor({ token, apiUrl, locale, entityId }: CoreConfig) {
     this.api = new ApiService({
@@ -23,9 +23,8 @@ class Core {
       },
     });
 
-    if (locale) {
-      this.locale = locale;
-    }
+    if (locale) this.locale = locale;
+    if (entityId) this.entityId = entityId;
   }
 }
 

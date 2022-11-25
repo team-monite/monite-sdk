@@ -28,7 +28,13 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
 
   return (
     <>
-      <NavHeader handleBack={handlePrevStep} />
+      <NavHeader
+        handleBack={
+          currentStep === BankPaymentSteps.BANK_LIST
+            ? onChangeMethod
+            : handlePrevStep
+        }
+      />
       {currentStep === BankPaymentSteps.BANK_LIST && (
         <BanksListForm
           setSelectedBank={setSelectedBank}

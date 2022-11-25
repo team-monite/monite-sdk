@@ -20,7 +20,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Global
         styles={() => ({
           body: {
-            backgroundColor: theme.colors.lightGrey3,
+            backgroundColor: theme?.colors?.lightGrey3,
           },
         })}
       />

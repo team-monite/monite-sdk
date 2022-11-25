@@ -3,4 +3,5 @@ export const ROUTES = {
   card: 'card/*',
   bank: 'bank/*',
   other: 'other/*',
+  expired: '/expired',
 };

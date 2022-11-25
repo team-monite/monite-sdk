@@ -38,14 +38,15 @@
   },
   "payment": {
     "details": {
-      "paymentReference": "Payment reference",
+      "paymentReference": "Reference",
       "recipient": "Recipient",
       "issueDate": "Issue Date",
       "dueDate": "Due Date"
     },
     "actions": {
-      "viewInvoice": "View Invoice",
-      "downloadInvoice": "Download Invoice"
+      "viewInvoice": "View",
+      "downloadInvoice": "Download",
+      "invoice": "Invoice"
     },
     "widget": {
       "method": "Payment method",
@@ -60,14 +61,14 @@
     },
     "bankWidget": {
       "banksListTitle": "Continue with your bank account",
-      "banksSearchPlaceholder": "Search for your bank",
+      "banksSearchPlaceholder": "Search",
       "emptyBankListTitle": "No results",
       "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
       "changeMethod": "Change method",
       "amount": "Amount",
       "holdersName": "Account holder’s name",
       "iban": "IBAN",
-      "paymentReference": "Payment reference",
+      "paymentReference": "Reference",
       "continue": "Continue",
       "dataSharingLabel": "Data sharing",
       "dataSharingTip": "Yapily Connect will retrieve bank data needed to facilitate this payment based on your request and provide this information to {{name}}.",
@@ -78,10 +79,110 @@
       "authorizationLabel": "FCA Authorization",
       "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
       "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup.",
-      "payerFormName": "Your account name",
+      "payerFormName": "Your account holder’s name",
       "payerFormIban": "Your IBAN",
       "selectMethodLink": "Didn't find your bank? Try another payment method"
     }
+  },
+  "counterparts": {
+    "columns": {
+      "name": "Name, country, city",
+      "type": "Type",
+      "contacts": "Contact information"
+    },
+    "organization": {
+      "address": "Business address",
+      "companyName": "Company name",
+      "phone": "Phone number",
+      "email": "Email",
+      "vatNumber": "VAT ID"
+    },
+    "individual": {
+      "address": "Address",
+      "fullName": "Full name",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "taxId": "Tax number",
+      "phone": "Phone number",
+      "email": "Email"
+    },
+    "contact": {
+      "address": "Address",
+      "fullName": "Full name",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone number",
+      "email": "Email"
+    },
+    "bank": {
+      "name": "Account name",
+      "iban": "IBAN",
+      "bic": "BIC"
+    },
+    "address": {
+      "line1": "Address line 1",
+      "line2": "Address line 2",
+      "city": "City",
+      "state": "State / Area / Province",
+      "country": "Country",
+      "postalCode": "ZIP code"
+    },
+    "titles": {
+      "create": "Create Counterpart – {{name}}",
+      "counterpart": "Counterpart",
+      "counterparts": "Counterparts",
+      "contact": "Contact Person",
+      "bank": "Bank Account",
+      "organization": "Company",
+      "individual": "Individual",
+      "contactPersons": "Contact persons",
+      "bankAccounts": "Bank accounts"
+    },
+    "actions": {
+      "loading": "Loading...",
+      "call": "Call",
+      "sendEmail": "Send email",
+      "setCounterpart": "Set this counterpart as",
+      "addContactPerson": "Add contact person",
+      "addBankAccount": "Add bank account",
+      "cancel": "Cancel",
+      "create": "Create",
+      "update": "Update",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createContact": "Add contact",
+      "updateContact": "Update contact",
+      "createBank": "Add bank account",
+      "updateBank": "Update bank account"
+    },
+    "notifications": {
+      "loadError": "Failed to load {{type}}.",
+      "createSuccess": "{{type}} “{{name}}” was created.",
+      "createError": "Failed to create {{type}}.",
+      "updateSuccess": "{{type}} “{{name}}” was updated.",
+      "updateError": "Failed to update {{type}}.",
+      "deleteSuccess": "{{type}} was deleted.",
+      "deleteError": "Failed to delete {{type}}."
+    },
+    "confirmDeleteDialogue": {
+      "title": "Delete {{type}} “{{name}}”?",
+      "content": "This action can’t be undone."
+    },
+    "filters": {
+      "isCustomer": {
+        "all": "Customers & Vendors",
+        "customers": "Customers",
+        "vendors": "Vendors"
+      },
+      "type": {
+        "all": "All",
+        "companies": "Companies",
+        "individuals": "Individuals"
+      },
+      "search": "Search by name"
+    },
+    "customer": "Customer",
+    "vendor": "Vendor"
   },
   "payables": {
     "columns": {
@@ -138,97 +239,33 @@
       "rejected": "Rejected"
     }
   },
-  "counterparts": {
+  "receivables": {
+    "quotes": "Quotes",
+    "invoices": "Invoices",
+    "creditNotes": "Credit notes",
     "columns": {
-      "name": "Name, country, city",
-      "type": "Type",
-      "contacts": "Contact information"
+      "number": "Number",
+      "issueDate": "Issue date",
+      "customer": "Customer",
+      "dueDate": "Due date",
+      "status": "Status",
+      "amount": "Amount"
     },
-    "organization": {
-      "address": "Business address",
-      "companyName": "Company name",
-      "phone": "Phone number",
-      "email": "Email",
-      "vatNumber": "VAT ID"
-    },
-    "individual": {
-      "address": "Address",
-      "fullName": "Full name",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "taxId": "Tax number",
-      "phone": "Phone number",
-      "email": "Email"
-    },
-    "contact": {
-      "address": "Address",
-      "fullName": "Full name",
-      "firstName": "First name",
-      "lastName": "Last name",
-      "phone": "Phone number",
-      "email": "Email"
-    },
-    "bank": {
-      "name": "Account name",
-      "iban": "IBAN",
-      "bic": "BIC"
-    },
-    "address": {
-      "line1": "Address line 1",
-      "line2": "Address line 2",
-      "city": "City",
-      "state": "State / Area / Province",
-      "country": "Country",
-      "postalCode": "ZIP code"
-    },
-    "titles": {
-      "create": "Create Counterpart – {{name}}",
-      "counterpart": "Counterpart",
-      "contact": "Contact Person",
-      "bank": "Bank Account",
-      "organization": "Company",
-      "individual": "Individual"
-    },
-    "actions": {
-      "loading": "Loading...",
-      "call": "Call",
-      "sendEmail": "Send email",
-      "setCounterpart": "Set this counterpart as",
-      "addContactPerson": "Add contact person",
-      "addBankAccount": "Add bank account",
-      "cancel": "Cancel",
-      "create": "Create",
-      "update": "Update",
-      "edit": "Edit",
-      "delete": "Delete",
-      "createContact": "Add contact",
-      "updateContact": "Update contact",
-      "createBank": "Add bank account",
-      "updateBank": "Update bank account"
-    },
-    "confirmDeleteDialogue": {
-      "title": "Delete {{type}} “{{name}}”?",
-      "content": "This action can’t be undone.",
-      "successNotification": "{{type}} “{{name}}” was deleted.",
-      "errorNotification": "Failed to delete {{type}} “{{name}}”."
-    },
-    "filters": {
-      "isCustomer": {
-        "all": "Customers & Vendors",
-        "customers": "Customers",
-        "vendors": "Vendors"
-      },
-      "type": {
-        "all": "All",
-        "companies": "Companies",
-        "individuals": "Individuals"
-      },
-      "search": "Search by name"
-    },
-    "contactPersons": "Contact persons",
-    "bankAccounts": "Bank accounts",
-    "customer": "Customer",
-    "vendor": "Vendor"
+    "statuses": {
+      "all": "All statuses",
+      "draft": "Draft",
+      "issued": "Issued",
+      "accepted": "Accepted",
+      "expired": "Expired",
+      "declined": "Declined",
+      "recurring": "Recurring",
+      "partially_paid": "Partially Paid",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "uncollectible": "Uncollectible",
+      "canceled": "Canceled",
+      "deleted": "Deleted"
+    }
   },
   "errors": {
     "requiredField": " is required",
@@ -247,6 +284,7 @@
     "reject": "Reject",
     "type": "Type",
     "search": "Search",
-    "status": "Status"
+    "status": "Status",
+    "customer": "Customer"
   }
 }

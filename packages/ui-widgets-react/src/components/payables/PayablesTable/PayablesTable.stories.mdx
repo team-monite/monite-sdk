@@ -1,0 +1,106 @@
+import Table from './PayablesTable';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+
+<Meta
+  title="Payables/Payables — Table View"
+  component={Table}
+/>
+
+export const Template = (args) => <div style={{ display: 'flex', height: 600 }}><Table {...args} /></div>;
+
+# PayablesTable
+
+Displays a table with a list of payables that the authenticated entity user has access to.
+This component calls the [`GET /payables`](https://docs.monite.com/reference/get_payables_v1_payables_get) endpoint to fetch the data.
+
+The table supports the following functionality out-of-the-box:
+* Pagination: the user can navigate to the next or previous page only. The default page size is 10 items per page.
+* Sorting by:
+	* amount
+	* due date
+* Searching payables by the document number (exact match, case-sensitive)
+* Filtering by:
+	* document status (for example, `draft` or `approved`)
+	* due date (exact date)
+
+Search, sorting, filtering, and pagination are done at the server side rather than the client side.
+That is, any change to the table display options triggers a new request to the Monite API to return the adjusted data set.
+
+## Props
+
+### `currentSort`
+
+An object that contains the current sort field and order:
+```json
+{
+  "sort": "id" | "amount" | "due_date",
+  "order": "asc" | "desc"
+}
+```
+or `null`.
+
+### `onChangeFilter`
+This callback is triggered when the filtering options are changed.
+
+### `onChangeSort`
+
+Type:
+```json
+(
+  "sort": "id" | "amount" | "due_date",
+  "order": "asc" | "desc" | null
+) => void;
+```
+
+Callback. Called when the current sort is changed. Returns the new sort field and order.
+
+### `onNext`
+Type: `() => void`
+
+Callback. Called when the "next" button in the pagination controls is clicked.
+
+### `onPrev`
+Type: `() => void`
+
+Callback. Called when the "previous" button in the pagination controls is clicked.
+
+### `onRowClick`
+Type: `(id: string) => void`
+
+Callback. Called when a table row is clicked. Returns the ID of the clicked record.
+
+### `onPay`
+Type: `(id: string) => void`
+
+Callback. Called when the “Pay” button next to a specific payable is clicked. The id of that payable is passed as an argument.
+
+### `paginationTokens`
+
+An object containing the available [pagination tokens](https://docs.monite.com/reference/getting-started-with-monite-api#pagination-sorting-and-filtering).
+It is used to determine the availability of the "next" and "previous" buttons at the bottom of the table.
+
+```json
+{
+  "next_pagination_token": "string" | null | undefined,
+  "prev_pagination_token": "string" | null | undefined
+}
+```
+
+## Related documentation
+* [GET /payables](https://docs.monite.com/reference/get_payables_v1_payables_get)
+
+
+<Canvas>
+  <Story
+    name='Default'
+    args={{
+      onPay: action('onPay'),
+      onRowClick: action('onRowClick'),
+      onChangeSort: action('onChangeSort'),
+      onChangeFilter: action('onChangeFilter')
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

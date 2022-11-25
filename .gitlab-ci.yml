@@ -17,6 +17,7 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn ui-kit-react:build
     - yarn ui-kit-react:build-storybook
     - yarn sdk-api:build
+    - yarn ui-widgets-react:test
     - yarn ui-widgets-react:build
     - yarn ui-widgets-react:build-storybook
     - yarn payment:build

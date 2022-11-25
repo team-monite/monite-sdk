@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import {
   PaymentsPaymentLinkResponse,
@@ -30,27 +30,30 @@ export enum BankPaymentSteps {
   CONFIRM = 'confirm',
 }
 
+const getSteps = (selectedBank?: PaymentsPaymentsBank) => [
+  BankPaymentSteps.BANK_LIST,
+  ...(selectedBank?.payer_required ? [BankPaymentSteps.PAYER_FORM] : []),
+  BankPaymentSteps.CONFIRM,
+];
+
 export function useBankPayment({
   paymentData,
 }: UseBankPaymentProps): UseBankPaymentReturnType {
   const [currentStep, setCurrentStep] = useState(BankPaymentSteps.BANK_LIST);
-  const [selectedBank, setSelectedBank] = useState<PaymentsPaymentsBank>();
+  const selectedBankRef = useRef<PaymentsPaymentsBank>();
   const [selectedCountry, setSelectedCountry] = useState(
     PaymentsYapilyCountriesCoverageCodes.DE
   );
 
-  const steps = [
-    BankPaymentSteps.BANK_LIST,
-    ...(selectedBank?.payer_required ? [BankPaymentSteps.PAYER_FORM] : []),
-    BankPaymentSteps.CONFIRM,
-  ];
-
   const handleNextStep = () => {
+    const steps = getSteps(selectedBankRef.current);
     const nextStepIndex = steps.findIndex((step) => step === currentStep) + 1;
     setCurrentStep(steps[nextStepIndex]);
   };
 
   const handlePrevStep = () => {
+    const steps = getSteps(selectedBankRef.current);
+
     const prevStepIndex = steps.findIndex((step) => step === currentStep) - 1;
     setCurrentStep(steps[prevStepIndex]);
   };
@@ -63,9 +66,13 @@ export function useBankPayment({
     paymentData.payer?.bank_account?.iban || ''
   );
 
+  const setSelectedBank = (bank: PaymentsPaymentsBank) => {
+    selectedBankRef.current = bank;
+  };
+
   return {
     currentStep,
-    selectedBank,
+    selectedBank: selectedBankRef.current,
     setSelectedBank,
     selectedCountry,
     setSelectedCountry,

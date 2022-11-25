@@ -11,6 +11,7 @@ type SelectCountriesProps = {
 };
 
 const StyledSelect = styled(Select)`
+  min-width: 100px;
   > div > div {
     padding-right: 0px;
   }

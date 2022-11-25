@@ -73,7 +73,7 @@ export const StyledInfoTable = styled(Box)`
 export const StyledInfoRow = styled(Box)`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.neutral80};
-  align-items: center;
+  align-items: flex-start;
   padding: 11px 16px;
 
   &:last-child {

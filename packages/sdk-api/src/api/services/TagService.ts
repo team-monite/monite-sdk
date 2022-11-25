@@ -9,6 +9,8 @@ import { TagsResponse } from '../models/TagsResponse';
 import { TagReadSchema } from '../models/TagReadSchema';
 import { TagCreateOrUpdateSchema } from '../models/TagCreateOrUpdateSchema';
 
+export const TAGS_ENDPOINT = 'tags';
+
 export default class TagService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -24,7 +26,7 @@ export default class TagService {
     return __request(
       {
         method: 'GET',
-        url: '/tags',
+        url: `/${TAGS_ENDPOINT}`,
         query: {},
         errors: {
           400: `Bad Request`,
@@ -52,7 +54,7 @@ export default class TagService {
     return __request(
       {
         method: 'POST',
-        url: '/tags',
+        url: `/${TAGS_ENDPOINT}`,
         query: {},
         body,
         errors: {

@@ -41,10 +41,9 @@ export const navigationData: Record<string, MenuItemType> = {
     renderIcon: (props) => <UUsdCircle {...props} />,
   },
   receivables: {
-    label: 'Receivables',
+    label: 'Sales',
     url: '/receivables',
     renderIcon: (props) => <UInvoice {...props} />,
-    apiLink: 'https://docs.monite.com/docs/receivables-lifecycle',
   },
   counterparts: {
     label: 'Counterparts',

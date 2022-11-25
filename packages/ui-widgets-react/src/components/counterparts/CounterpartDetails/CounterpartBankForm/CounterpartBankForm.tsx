@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, FormProvider } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 import {
   Input,
@@ -32,7 +32,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   const { t } = useComponentsContext();
 
   const {
-    methods,
+    methods: { control, handleSubmit, watch },
     counterpart,
     bank,
     formRef,
@@ -40,8 +40,6 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     saveBank,
     isLoading,
   } = useCounterpartBankForm(props);
-
-  const { control, handleSubmit, watch } = methods;
 
   if (!counterpart) return null;
 
@@ -59,7 +57,7 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 {getCounterpartName(counterpart)}
               </Text>
               <UArrowRight size={20} color={'#B8B8B8'} />
-              <Text textSize={'bold'}>
+              <Text data-testid={'bankName'} textSize={'bold'}>
                 {!!bank
                   ? watch('name')
                   : t('counterparts:actions.addBankAccount')}
@@ -81,7 +79,11 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
                 >
                   {t('counterparts:actions.cancel')}
                 </Button>
-                <Button onClick={submitForm} disabled={isLoading}>
+                <Button
+                  onClick={submitForm}
+                  type={'submit'}
+                  disabled={isLoading}
+                >
                   {!!bank
                     ? t('counterparts:actions.updateBank')
                     : t('counterparts:actions.createBank')}
@@ -92,71 +94,54 @@ const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         </CounterpartFooter>
       }
     >
-      <FormProvider {...methods}>
-        <CounterpartForm
-          id="counterpartBankForm"
-          ref={formRef}
-          onSubmit={handleSubmit(saveBank)}
-        >
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormField
-                label={t('counterparts:bank.name')}
-                id={field.name}
-                required
-                error={error?.message}
-              >
-                <Input
-                  {...field}
-                  id={field.name}
-                  isInvalid={!!error}
-                  required
-                />
-              </FormField>
-            )}
-          />
-          <Controller
-            name="iban"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormField
-                label={t('counterparts:bank.iban')}
-                id={field.name}
-                required
-                error={error?.message}
-              >
-                <Input
-                  {...field}
-                  id={field.name}
-                  isInvalid={!!error}
-                  required
-                />
-              </FormField>
-            )}
-          />
-          <Controller
-            name="bic"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormField
-                label={t('counterparts:bank.bic')}
-                id={field.name}
-                required
-                error={error?.message}
-              >
-                <Input
-                  {...field}
-                  id={field.name}
-                  isInvalid={!!error}
-                  required
-                />
-              </FormField>
-            )}
-          />
-        </CounterpartForm>
-      </FormProvider>
+      <CounterpartForm
+        id="counterpartBankForm"
+        ref={formRef}
+        onSubmit={handleSubmit(saveBank)}
+      >
+        <Controller
+          name="name"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <FormField
+              label={t('counterparts:bank.name')}
+              id={field.name}
+              required
+              error={error?.message}
+            >
+              <Input {...field} id={field.name} isInvalid={!!error} required />
+            </FormField>
+          )}
+        />
+        <Controller
+          name="iban"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <FormField
+              label={t('counterparts:bank.iban')}
+              id={field.name}
+              required
+              error={error?.message}
+            >
+              <Input {...field} id={field.name} isInvalid={!!error} required />
+            </FormField>
+          )}
+        />
+        <Controller
+          name="bic"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <FormField
+              label={t('counterparts:bank.bic')}
+              id={field.name}
+              required
+              error={error?.message}
+            >
+              <Input {...field} id={field.name} isInvalid={!!error} required />
+            </FormField>
+          )}
+        />
+      </CounterpartForm>
     </ModalLayout>
   );
 };

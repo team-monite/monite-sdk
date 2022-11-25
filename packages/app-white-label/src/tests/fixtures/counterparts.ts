@@ -2,7 +2,7 @@ import {
   CounterpartType,
   CounterpartResponse as Counterpart,
   AllowedCountriesCodes,
-} from '@team-monite/ui-widgets-react';
+} from '@team-monite/sdk-api';
 
 const data: Counterpart[] = [
   {

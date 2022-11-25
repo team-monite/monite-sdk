@@ -6,24 +6,15 @@
     "@craco/craco": "^6.4.3",
     "@hookform/resolvers": "~2.9.3",
     "@team-monite/ui-widgets-react": "^0.0.5",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.2.0",
-    "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.1",
     "@types/node": "^16.11.36",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",
-    "classnames": "^2.3.1",
-    "craco-less": "^2.0.0",
     "i18next": "^21.8.4",
-    "mobx": "~6.6.1",
-    "mobx-react-lite": "~3.4.0",
-    "mobx-utils": "~6.0.5",
     "nanoid": "~4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-helmet": "^6.1.0",
     "react-i18next": "^11.16.9",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
@@ -36,7 +27,6 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "analyze": "craco build --config analyze.config.js",
     "deploy:demo": "npm run build && mv build/index.html build/200.html && npx surge build --domain monite-wlapp-demo.surge.sh",
@@ -61,8 +51,7 @@
     ]
   },
   "devDependencies": {
-    "craco-babel-loader": "^1.0.3",
-    "webpack-bundle-analyzer": "^4.5.0"
+    "craco-babel-loader": "^1.0.3"
   },
   "peerDependencies": {
     "@emotion/react": "^11.9.3",

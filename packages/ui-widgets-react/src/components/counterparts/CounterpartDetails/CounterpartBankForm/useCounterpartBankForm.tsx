@@ -45,7 +45,7 @@ export default function useCounterpartBankForm({
 
   useEffect(() => {
     methods.reset(prepareCounterpartBank(bank));
-  }, [bank]);
+  }, [methods, bank]);
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -56,21 +56,21 @@ export default function useCounterpartBankForm({
   }, [formRef]);
 
   const createBank = useCallback(
-    async (req: CounterpartBankAccount) => {
-      return await bankCreateMutation.mutateAsync(req, {
+    (req: CounterpartBankAccount) => {
+      return bankCreateMutation.mutate(req, {
         onSuccess: ({ id }) => {
           onCreate && onCreate(id);
         },
       });
     },
-    [bankCreateMutation]
+    [bankCreateMutation, onCreate]
   );
 
   const updateBank = useCallback(
-    async (payload: CounterpartBankAccount) => {
+    (payload: CounterpartBankAccount) => {
       if (!bank) return;
 
-      return await bankUpdateMutation.mutateAsync(
+      return bankUpdateMutation.mutate(
         {
           bankId: bank.id,
           payload,
@@ -82,14 +82,14 @@ export default function useCounterpartBankForm({
         }
       );
     },
-    [bankUpdateMutation]
+    [bankUpdateMutation, bank, onUpdate]
   );
 
   const saveBank = useCallback(
-    async (values: CounterpartBankFields) => {
+    (values: CounterpartBankFields) => {
       return !!bank ? updateBank(values) : createBank(values);
     },
-    [updateBank, createBank]
+    [bank, updateBank, createBank]
   );
 
   return {

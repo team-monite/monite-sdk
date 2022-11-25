@@ -95,6 +95,10 @@ data:
 
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/;
+
+                location /api/v1/payment_links/ {
+                    proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/v1/internal/payment_links/;
+                }
             }
 
             location / {

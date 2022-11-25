@@ -52,6 +52,7 @@ const StyledLink = styled.span`
   color: inherit;
   text-decoration: none;
 `;
+
 type BankListItemProps = {
   data: PaymentsPaymentsBank;
 };
@@ -90,6 +91,8 @@ const BankListForm = ({
   onChangeMethod,
 }: BankListFormProps) => {
   const { t } = useTranslation();
+  const theme = useTheme<Theme>();
+
   const { data: countriesData } = useCountryList(
     PaymentsPaymentMethodsEnum.SEPA_CREDIT
   );
@@ -122,12 +125,12 @@ const BankListForm = ({
   return (
     <>
       <div>
-        <Text textSize="h3" align="center">
+        <Text textSize="h3" textAlign="center">
           {t('payment:bankWidget.banksListTitle')}
         </Text>
         <Flex mt="24px" mb="32px">
           {countries && (
-            <Box mr={'16px'}>
+            <Box mr={'12px'}>
               <SelectCountries
                 value={selectedCountry}
                 onChange={(val) => {
@@ -137,14 +140,14 @@ const BankListForm = ({
               />
             </Box>
           )}
-          <Box width={'85%'}>
+          <Box width={['65%', '85%']}>
             <Input
               placeholder={t('payment:bankWidget.banksSearchPlaceholder')}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 updateSearchText(e.target.value);
               }}
               renderAddonIcon={() => (
-                <IconButton color={'lightGrey1'}>
+                <IconButton color={theme.colors.lightGrey1}>
                   <USearchAlt size={20} />
                 </IconButton>
               )}
@@ -156,6 +159,7 @@ const BankListForm = ({
             <>
               {filteredBanks.map((bank) => (
                 <StyledLink
+                  key={bank.code}
                   onClick={() => {
                     setSelectedBank(bank);
                     handleNextStep();
@@ -165,8 +169,18 @@ const BankListForm = ({
                 </StyledLink>
               ))}
               <Box mt={'20px'}>
-                <Button variant={'text'} onClick={onChangeMethod}>
-                  {t('payment:bankWidget.selectMethodLink')}
+                <Button
+                  variant={'text'}
+                  onClick={onChangeMethod}
+                  style={{
+                    whiteSpace: 'normal',
+                    wordWrap: 'break-word',
+                    width: '100%',
+                  }}
+                >
+                  <Text textAlign="center">
+                    {t('payment:bankWidget.selectMethodLink')}
+                  </Text>
                 </Button>
               </Box>
             </>
