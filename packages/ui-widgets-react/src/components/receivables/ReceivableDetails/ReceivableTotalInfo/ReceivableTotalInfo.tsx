@@ -17,6 +17,7 @@ export type PayablesDetailsInfoProps = {
 
 const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
+  const { currency, total_amount, total_vat_amount } = receivable;
 
   return (
     <StyledContent>
@@ -25,25 +26,25 @@ const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
         <StyledInfoRow>
           <StyledInfoLabel>{t('receivables:subtotal')}</StyledInfoLabel>
           <StyledInfoValue>
-            {getReadableAmount(
-              receivable.total_amount - receivable.total_vat_amount,
-              receivable.currency
-            )}
+            {currency &&
+              total_vat_amount &&
+              getReadableAmount(total_amount - total_vat_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>
         <StyledInfoRow>
           <StyledInfoLabel>{t('receivables:vat')}</StyledInfoLabel>
           <StyledInfoValue>
-            {getReadableAmount(
-              receivable.total_vat_amount,
-              receivable.currency
-            )}
+            {currency &&
+              total_vat_amount &&
+              getReadableAmount(total_vat_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>
         <StyledInfoRow>
           <StyledInfoLabel>{t('receivables:total')}</StyledInfoLabel>
           <StyledInfoValue textSize={'h3'}>
-            {getReadableAmount(receivable.total_amount, receivable.currency)}
+            {currency &&
+              total_amount &&
+              getReadableAmount(total_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>
       </StyledInfoTable>

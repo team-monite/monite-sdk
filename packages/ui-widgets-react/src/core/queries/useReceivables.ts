@@ -31,6 +31,7 @@ export const useReceivableById = (id?: string) => {
       onError: (error) => {
         toast.error(error.message);
       },
+      enabled: !!id,
     }
   );
 };

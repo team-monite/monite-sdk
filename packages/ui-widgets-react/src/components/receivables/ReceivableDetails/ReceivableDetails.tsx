@@ -89,7 +89,7 @@ const ReceivableDetails = ({ id, onClose }: ReceivableDetailsProps) => {
               }
             >
               <StyledHeaderContent>
-                <Avatar size={44}>{receivable.counterpart_name || '/'}</Avatar>
+                <Avatar size={44}>{receivable?.counterpart_name || '/'}</Avatar>
                 <Text textSize={'h3'}>{`${t('receivables:invoice')} ${
                   receivable.document_id || ''
                 }`}</Text>
@@ -101,7 +101,7 @@ const ReceivableDetails = ({ id, onClose }: ReceivableDetailsProps) => {
           </ReceivableDetailsHeader>
         }
       >
-        {receivable.line_items.length === 0 ? (
+        {receivable?.line_items?.length === 0 ? (
           <Flex
             height={'100%'}
             flexDirection="column"

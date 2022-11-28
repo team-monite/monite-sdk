@@ -28,7 +28,7 @@ const ReceivableItemsInfo = ({ receivable }: PayablesDetailsInfoProps) => {
           </Box>
         </Flex>
 
-        {receivable.line_items.map((item) => (
+        {receivable?.line_items?.map((item) => (
           <Flex>
             <Box width={'45%'}>
               <Text>{item.product.name}</Text>
@@ -39,6 +39,7 @@ const ReceivableItemsInfo = ({ receivable }: PayablesDetailsInfoProps) => {
             <Box width={'30%'}>
               <Text>
                 {item.product.price &&
+                  item.product.price.currency &&
                   getReadableAmount(
                     item.quantity * item.product.price.value,
                     item.product.price.currency

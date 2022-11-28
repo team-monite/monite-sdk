@@ -87,7 +87,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
@@ -143,7 +143,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
@@ -199,7 +199,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
