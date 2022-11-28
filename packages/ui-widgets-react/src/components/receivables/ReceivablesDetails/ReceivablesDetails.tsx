@@ -35,7 +35,6 @@ const ReceivablesDetails = ({ type, onClose }: Props) => {
                 <UMultiply size={18} />
               </IconButton>
             }
-            // TODO submit form
             actions={
               <Button type="submit" form="createInvoice">
                 {t('common:create')}

@@ -52,11 +52,14 @@ export const ItemsContent = styled.div`
   flex-direction: column;
 `;
 
-export const StyledItemsList = styled(List)`
+export const StyledItemsList = styled(List)<{ isLoading: boolean }>`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   overflow: auto;
+  ${({ isLoading }) =>
+    isLoading &&
+    'position: relative;'} // HACK: infinite-scroll works wierd with position relative in parent element
 
   .infinite-scroll-component__outerdiv {
     display: flex;
@@ -64,6 +67,17 @@ export const StyledItemsList = styled(List)`
     flex: 1 1 auto;
     overflow: auto;
   }
+`;
+
+export const StyledItemsLoaderWrapper = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 1;
 `;
 
 export const ItemsFilterWrapper = styled.div`

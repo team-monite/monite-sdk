@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { TFunction } from 'react-i18next';
 import * as yup from 'yup';
@@ -18,6 +18,7 @@ import {
   List,
   ListItem,
   Select,
+  Spinner,
   Text,
 } from '@team-monite/ui-kit-react';
 
@@ -129,11 +130,6 @@ const InvoiceForm = () => {
     monite.entityId
   );
 
-  // TODO delete before commit
-  useEffect(() => {
-    setModalItemsIsOpen(true);
-  }, []);
-
   const subtotal = selectedItems.reduce((total, current) => {
     const { price, quantity } = current;
     if (price) return total + quantity * price.value;
@@ -147,7 +143,13 @@ const InvoiceForm = () => {
       ...data,
       counterpart_id: data.customer.value,
       type: ReceivablesReceivableFacadeCreateInvoicePayload.type.INVOICE,
-      currency: selectedItems[0].price?.currency || ReceivablesCurrencyEnum.USD, // TODO currency in items could be different
+      currency:
+        selectedItems[0]?.price?.currency || ReceivablesCurrencyEnum.USD, // TODO currency in items could be different
+      purchase_order: data.purchaseOrder,
+      memo: data.message,
+      commercial_condition_description: data.termsAndConditions,
+      payment_terms_id: data.paymentTerm.value,
+      entity_bank_account: undefined, // TODO save bank account full object
       line_items: selectedItems.map((item) => ({
         quantity: item.quantity,
         product_id: item.id || '',
@@ -418,6 +420,8 @@ const InvoiceForm = () => {
                     key: 'vat',
                     title: t('receivables:itemsColumns.VAT'),
                     render: () => {
+                      if (VATRatesQuery.isLoading)
+                        return <Spinner pxSize={16} />;
                       if (!currentCounterpart)
                         return (
                           <ItemsTableError sx={{ whiteSpace: 'break-spaces' }}>

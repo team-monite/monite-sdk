@@ -14,6 +14,7 @@ import {
   ModalLayout,
   Search,
   Select,
+  Spinner,
   Text,
 } from '@team-monite/ui-kit-react';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -28,6 +29,7 @@ import {
   ItemsContent,
   StyledItemsList,
   ItemsFilterWrapper,
+  StyledItemsLoaderWrapper,
 } from '../ReceivablesDetailsStyle';
 import { currencyFormatter } from '../helpers';
 
@@ -152,10 +154,14 @@ const AddItemsModal = ({ onSubmit, onClose }: Props) => {
               />
             </Box>
           </ItemsFilterWrapper>
-          <StyledItemsList>
+          <StyledItemsList isLoading={productsQuery.isFetching}>
+            {productsQuery.isFetching && (
+              <StyledItemsLoaderWrapper>
+                <Spinner pxSize={36} />
+              </StyledItemsLoaderWrapper>
+            )}
             <InfiniteScroll
               height="auto"
-              style={{ position: 'initial' }}
               dataLength={productsQuery.data?.pages.length || 0}
               next={() => productsQuery.fetchNextPage()}
               hasMore={!!productsQuery.hasNextPage}

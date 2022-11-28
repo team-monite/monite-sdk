@@ -13,20 +13,7 @@ import { RECEIVABLE_TYPES } from '../types';
   component={ReceivablesDetails}
   decorators={[withMock]}
   parameters={{
-    mockData: [
-      {
-        url: 'https://api.dev.monite.com/v1/counterparts?limit=100',
-        method: 'GET',
-        status: 200,
-        response: customersMock,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/payment_terms',
-        method: 'GET',
-        status: 200,
-        response: paymentTermsMock,
-      },
-    ],
+    mockData: [],
   }}
   argTypes={{
     type: {
