@@ -63,4 +63,7 @@ module.exports = {
     // Return the altered config
     return config;
   },
+  core: {
+    disableTelemetry: true,
+  },
 };
