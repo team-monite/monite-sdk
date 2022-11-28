@@ -46,6 +46,7 @@ interface Props {
       order: SortOrderEnum | null;
     } | null
   ) => void;
+  onRowClick?: (id: string) => void;
 }
 
 const mapTypeToColumns = (
@@ -86,7 +87,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
@@ -142,7 +143,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
@@ -198,7 +199,7 @@ const mapTypeToColumns = (
       dataIndex: 'status',
       key: 'status',
       render: (value: ReceivablesStatusEnum) => (
-        <Tag color={ROW_TO_TAG_STATUS_MAP[value]}>{value}</Tag>
+        <Tag color={ROW_TO_TAG_STATUS_MAP?.[value]}>{value}</Tag>
       ),
     },
     {
@@ -230,6 +231,7 @@ const ReceivableTypeTab = ({
   type,
   currentFilters,
   onChangeSort: onChangeSortCallback,
+  onRowClick,
 }: Props) => {
   const { t, monite } = useComponentsContext();
 
@@ -318,6 +320,10 @@ const ReceivableTypeTab = ({
         columns={columns}
         data={receivables?.data}
         scroll={{ y: 'auto' }}
+        onRow={(record) => ({
+          onClick: () =>
+            onRowClick && onRowClick((record as ReceivableResponse).id),
+        })}
         footer={() => (
           <TableFooter>
             <Button

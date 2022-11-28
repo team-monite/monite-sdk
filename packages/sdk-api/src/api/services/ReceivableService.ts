@@ -7,6 +7,7 @@ import {
   ReceivablesPaginationResponse,
   ReceivablesReceivablesStatusEnum,
   ReceivablesReceivableType,
+  ReceivableResponse,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -147,6 +148,31 @@ export default class ReceivableService {
       {
         method: 'GET',
         url: `/${RECEIVABLES_ENDPOINT}/${receivableId}/pdf_link`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Get Receivable By Id
+   * @param receivableId
+   * @returns ReceivableResponse Successful Response
+   * @throws ApiError
+   */
+  public getById(receivableId: string): CancelablePromise<ReceivableResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/receivables/${receivableId}`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,

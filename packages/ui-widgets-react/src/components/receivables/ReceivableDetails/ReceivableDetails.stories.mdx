@@ -1,0 +1,23 @@
+import ReceivableDetails from './ReceivableDetails';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+
+<Meta title="Receivables/Receivables — Details" component={ReceivableDetails} />
+
+export const Template = (args) => (
+  <div style={{ maxWidth: 600 }}>
+    <ReceivableDetails {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story
+    name="Default"
+    args={{
+      id: '1',
+      onClose: action('onClose'),
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

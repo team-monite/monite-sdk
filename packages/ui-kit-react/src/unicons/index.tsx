@@ -610,7 +610,7 @@ export { default as UClipboardNotes } from './icons/UClipboardNotes';
 // export { default as UCopyAlt } from './icons/UCopyAlt';
 // export { default as UCopyLandscape } from './icons/UCopyLandscape';
 // export { default as UDocumentInfo } from './icons/UDocumentInfo';
-// export { default as UFile } from './icons/UFile';
+export { default as UFile } from './icons/UFile';
 // export { default as UFileAlt } from './icons/UFileAlt';
 // export { default as UFileBlank } from './icons/UFileBlank';
 // export { default as UFileBlockAlt } from './icons/UFileBlockAlt';
