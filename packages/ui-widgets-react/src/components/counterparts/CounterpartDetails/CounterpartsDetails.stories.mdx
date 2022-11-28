@@ -1,0 +1,62 @@
+import CounterpartsDetails from './CounterpartsDetails';
+import {Canvas, Meta, Story} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+
+<Meta
+  title="Counterparts/Counterparts — Details View"
+  component={CounterpartsDetails}
+/>
+
+export const Template = (args) => (
+  <CounterpartsDetails {...args} />
+);
+const actions = {
+  onClose: action('onClose'),
+  onCreate: action('onCreate'),
+  onUpdate: action('onUpdate'),
+  onEdit: action('onEdit'),
+  onDelete: action('onDelete'),
+  onContactCreate: action('onContactCreate'),
+  onContactUpdate: action('onContactUpdate'),
+  onContactEdit: action('onContactEdit'),
+  onContactDelete: action('onContactDelete'),
+  onBankCreate: action('onBankCreate'),
+  onBankUpdate: action('onBankUpdate'),
+  onBankEdit: action('onBankEdit'),
+  onBankDelete: action('onBankDelete'),
+}
+
+
+# CounterpartsDetails
+
+## Props
+
+### `onDelete`
+Type: `(id: string) => void`
+
+Callback. Called when a user deletes a specific counterpart.
+
+## Related documentation
+* [Counterparts](https://docs.monite.com/docs/manage-counterparts)
+* [GET /counterparts](https://docs.monite.com/reference/get_payable_by_id_v1_payables__payable_id__get)
+
+<Canvas>
+  <Story
+    name="Individual"
+    args={{
+      id: 'individual',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Organization"
+    args={{
+      id: 'organization',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

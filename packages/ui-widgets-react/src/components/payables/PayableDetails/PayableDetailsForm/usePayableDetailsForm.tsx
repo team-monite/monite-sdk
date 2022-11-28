@@ -8,7 +8,7 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useUpdatePayableById } from 'core/queries/usePayable';
 import { useCreateTag, useTagList } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';
-import { useEntityById } from 'core/queries/useEntity';
+// import { useEntityById } from 'core/queries/useEntity';
 
 import type { Option } from './helpers';
 
@@ -24,7 +24,7 @@ export default function usePayableDetailsForm({
   const { monite } = useComponentsContext();
   const tagQuery = useTagList();
   const counterpartQuery = useCounterpartList(monite.entityId);
-  const entityUserQuery = useEntityById(payable.was_created_by_user_id);
+  // const entityUserQuery = useEntityById(payable.was_created_by_user_id);
   const payableSaveMutation = useUpdatePayableById(payable.id);
   const tagCreateMutation = useCreateTag(payable.id);
 
@@ -48,7 +48,7 @@ export default function usePayableDetailsForm({
   return {
     tagQuery,
     counterpartQuery,
-    entityUserQuery,
+    // entityUserQuery,
     saveInvoice,
     createTag,
     isFormLoading: payableSaveMutation.isLoading,

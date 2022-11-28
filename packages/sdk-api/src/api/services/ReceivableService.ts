@@ -10,6 +10,8 @@ import {
   ReceivableResponse,
 } from '../../api';
 
+export const RECEIVABLES_ENDPOINT = 'receivables';
+
 export default class ReceivableService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -87,7 +89,7 @@ export default class ReceivableService {
     return __request(
       {
         method: 'GET',
-        url: '/receivables',
+        url: `/${RECEIVABLES_ENDPOINT}`,
         headers: {
           'x-monite-entity-id': xMoniteEntityId,
         },
@@ -145,7 +147,7 @@ export default class ReceivableService {
     return __request(
       {
         method: 'GET',
-        url: `/receivables/${receivableId}/pdf_link`,
+        url: `/${RECEIVABLES_ENDPOINT}/${receivableId}/pdf_link`,
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,

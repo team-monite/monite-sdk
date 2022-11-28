@@ -1,41 +1,10 @@
 import ReceivablesTable from './ReceivablesTable';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import withMock from 'storybook-addon-mock';
 import { action } from '@storybook/addon-actions';
-import { customersFixture, receivablesFixture } from 'mocks/receivables';
 
 <Meta
   title="Receivables/Receivables — Table View"
   component={ReceivablesTable}
-  decorators={[withMock]}
-  parameters={{
-    mockData: [
-      {
-        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=quote',
-        method: 'GET',
-        status: 200,
-        response: receivablesFixture.quotes,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=invoice',
-        method: 'GET',
-        status: 200,
-        response: receivablesFixture.invoices,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/receivables?limit=10&type=credit_note',
-        method: 'GET',
-        status: 200,
-        response: receivablesFixture.credit_notes,
-      },
-      {
-        url: 'https://api.dev.monite.com/v1/counterparts?limit=100',
-        method: 'GET',
-        status: 200,
-        response: customersFixture,
-      },
-    ],
-  }}
 />
 
 export const Template = (args) => (

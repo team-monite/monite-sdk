@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 
 import {
+  CounterpartData,
   COUNTERPARTS_BANK_ENDPOINT,
   COUNTERPARTS_ENDPOINT,
 } from '@team-monite/sdk-api';
@@ -10,7 +11,10 @@ import type {
   CounterpartBankAccountResponse,
 } from '@team-monite/sdk-api';
 
-import { counterpartBankFixture } from './counterpartBankFixture';
+import {
+  counterpartBankFixture,
+  counterpartBankListFixture,
+} from './counterpartBankFixture';
 
 type CreateCounterpartBankAccountParams = { counterpartId: string };
 type UpdateCounterpartBankAccountParams = CreateCounterpartBankAccountParams & {
@@ -22,13 +26,13 @@ const bankAccountIdPath = `${bankAccountPath}/:bankAccountId`;
 
 export const counterpartBankHandlers = [
   // read list
-  // rest.get<
-  //   CounterpartBankAccount,
-  //   CreateCounterpartBankAccountParams,
-  //   CounterpartBankAccountResponse[]
-  // >(bankAccountPath, (req, res, ctx) => {
-  //   return res(ctx.json([counterpartBankFixture]));
-  // }),
+  rest.get<
+    undefined,
+    CreateCounterpartBankAccountParams,
+    CounterpartData<CounterpartBankAccountResponse[]>
+  >(bankAccountPath, (req, res, ctx) => {
+    return res(ctx.json({ data: counterpartBankListFixture }));
+  }),
 
   // create
   rest.post<
@@ -36,7 +40,7 @@ export const counterpartBankHandlers = [
     CreateCounterpartBankAccountParams,
     CounterpartBankAccountResponse
   >(bankAccountPath, (req, res, ctx) => {
-    return res(ctx.json({ ...counterpartBankFixture, ...req.json() }));
+    return res(ctx.json(counterpartBankFixture));
   }),
 
   // read
@@ -54,7 +58,7 @@ export const counterpartBankHandlers = [
     UpdateCounterpartBankAccountParams,
     CounterpartBankAccountResponse
   >(bankAccountIdPath, (req, res, ctx) => {
-    return res(ctx.json({ ...counterpartBankFixture, ...req.json() }));
+    return res(ctx.json(counterpartBankFixture));
   }),
 
   // delete

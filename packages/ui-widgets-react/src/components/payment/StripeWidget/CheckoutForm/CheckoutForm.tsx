@@ -77,12 +77,6 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     setIsLoading(true);
 
     try {
-      if (paymentMethod) {
-        await monite.api.payment.payByPaymentLinkId(id, {
-          payment_method: paymentMethod,
-        });
-      }
-
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -91,23 +85,32 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
             `${window.location.href}`,
         },
       });
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Otherwise, your customer will be redirected to
-      // your `return_url`. For some payment methods like iDEAL, your customer will
-      // be redirected to an intermediate site first to authorize the payment, then
-      // redirected to the `return_url`.
-      if (
-        error.type === 'card_error' ||
-        error.type === 'validation_error' ||
-        error.type === 'invalid_request_error'
-      ) {
-        setMessage(error.message || '');
+      if (error) {
+        // This point will only be reached if there is an immediate error when
+        // confirming the payment. Otherwise, your customer will be redirected to
+        // your `return_url`. For some payment methods like iDEAL, your customer will
+        // be redirected to an intermediate site first to authorize the payment, then
+        // redirected to the `return_url`.
+        if (
+          error.type === 'card_error' ||
+          error.type === 'validation_error' ||
+          error.type === 'invalid_request_error'
+        ) {
+          setMessage(error.message || '');
+        } else {
+          setMessage('An unexpected error occurred.');
+        }
       } else {
-        setMessage('An unexpected error occurred.');
+        if (paymentMethod) {
+          await monite.api.payment.payByPaymentLinkId(id, {
+            payment_method: paymentMethod,
+          });
+        }
       }
     } catch (e) {
       setMessage('An unexpected error occurred.');
     }
+
     setIsLoading(false);
   };
 
@@ -121,13 +124,13 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         />
       </div>
       <Styled.Prices>
-        {fee && feeData?.paid_by !== PaymentsPaymentsPaidBy.PAYER && (
+        {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
           <Styled.PriceRow>
             <div>{t('payment:widget.amount')}</div>
             <div>{getReadableAmount(amount, currency)}</div>
           </Styled.PriceRow>
         )}
-        {fee && feeData.paid_by !== PaymentsPaymentsPaidBy.PAYER ? (
+        {fee && feeData.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
             <div>{getReadableAmount(fee, currency)}</div>

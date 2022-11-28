@@ -34,7 +34,7 @@ const errors = {
   500: `Internal Server Error`,
 };
 
-type CounterpartData<T> = {
+export type CounterpartData<T> = {
   data: T;
 };
 

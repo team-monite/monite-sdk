@@ -1,0 +1,83 @@
+import PayableDetails from './PayableDetails';
+import {Canvas, Meta, Story} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+
+<Meta
+  title="Payables/Payables — Details View"
+  component={PayableDetails}
+/>
+
+export const Template = (args) => (
+  <PayableDetails {...args} />
+);
+const actions = {
+  onSubmit: action('onSubmit'),
+  onSave: action('onSave'),
+  onPay: action('onPay'),
+  onApprove: action('onApprove'),
+  onReject: action('onReject'),
+}
+
+# PayableDetails
+
+## Props
+
+### `onDelete`
+Type: `(id: string) => void`
+
+<Canvas>
+  <Story
+    name="New"
+    args={{
+      id: 'new',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Approval in progress"
+    args={{
+      id: 'approve_in_progress',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Waiting to be paid"
+    args={{
+      id: 'waiting_to_be_paid',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Paid"
+    args={{
+      id: 'paid',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Canceled"
+    args={{
+      id: 'canceled',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Rejected"
+    args={{
+      id: 'rejected',
+      ...actions
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
