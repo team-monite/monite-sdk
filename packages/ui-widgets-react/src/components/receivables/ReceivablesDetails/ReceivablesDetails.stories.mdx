@@ -1,20 +1,12 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
-import withMock from 'storybook-addon-mock';
 
 import ReceivablesDetails from './ReceivablesDetails';
-import customersMock from '../fixtures/customers';
-import paymentTermsMock from '../fixtures/paymentTerms';
-import productsTermsMock from '../fixtures/productsTerms';
 
 import { RECEIVABLE_TYPES } from '../types';
 
 <Meta
   title="Receivables/Receivables — Details"
   component={ReceivablesDetails}
-  decorators={[withMock]}
-  parameters={{
-    mockData: [],
-  }}
   argTypes={{
     type: {
       options: Object.values(RECEIVABLE_TYPES),
