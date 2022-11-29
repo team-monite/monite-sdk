@@ -30,7 +30,7 @@ import {
   StyledItemsList,
   ItemsFilterWrapper,
   StyledItemsLoaderWrapper,
-} from '../ReceivablesDetailsStyle';
+} from '../CreateInvoiceStyle';
 import { currencyFormatter } from '../helpers';
 
 type FilterValues = {

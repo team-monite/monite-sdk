@@ -10,7 +10,7 @@ import {
 import {
   ReceivablesTable,
   ReceivableDetails,
-  ReceivablesDetails,
+  CreateInvoice,
   RECEIVABLE_TYPES,
 } from '@team-monite/ui-widgets-react';
 
@@ -79,7 +79,7 @@ const PageReceivables = () => {
         Object.values(RECEIVABLE_TYPES).some(
           (type) => type === creationType
         ) && (
-          <ReceivablesDetails
+          <CreateInvoice
             type={creationType as RECEIVABLE_TYPES}
             onClose={closeCreateNew}
           />

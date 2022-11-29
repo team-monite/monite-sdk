@@ -1,12 +1,12 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 
-import ReceivablesDetails from './ReceivablesDetails';
+import CreateInvoice from './CreateInvoice';
 
 import { RECEIVABLE_TYPES } from '../types';
 
 <Meta
-  title="Receivables/Receivables — Details"
-  component={ReceivablesDetails}
+  title="Receivables/Receivables — Create Invoice"
+  component={CreateInvoice}
   argTypes={{
     type: {
       options: Object.values(RECEIVABLE_TYPES),
@@ -14,7 +14,7 @@ import { RECEIVABLE_TYPES } from '../types';
   }}
 />
 
-export const Template = (args) => <ReceivablesDetails {...args} />;
+export const Template = (args) => <CreateInvoice {...args} />;
 
 <Canvas>
   <Story

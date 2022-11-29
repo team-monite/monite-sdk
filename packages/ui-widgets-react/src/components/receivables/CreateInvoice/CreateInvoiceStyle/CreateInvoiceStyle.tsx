@@ -9,12 +9,36 @@ import {
   TableProps,
 } from '@team-monite/ui-kit-react';
 
-export const StyledContent = styled(Flex)`
+export const StyledContent = styled(Flex)<{ isLoading: boolean }>`
   padding: 24px 144px;
   flex-direction: column;
   width: 100%;
   height: 100%;
   overflow: auto;
+  ${({ isLoading }) =>
+    isLoading &&
+    `
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  `}
+`;
+
+export const StyledSpinnerWrapper = styled(Box)`
+  position: sticky;
+  top: 50%;
+  display: flex;
+  z-index: 2;
 `;
 
 export const StyledCard = styled(Card)`

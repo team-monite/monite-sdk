@@ -13,6 +13,7 @@ import {
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from '../context/ComponentsContext';
+import { useEntityListCache } from './hooks';
 
 const RECEIVABLE_QUERY_ID = 'receivable';
 const COUNTERPART_BANK_ACCOUNT_QUERY_ID = 'counterpartBankAccount';
@@ -20,19 +21,23 @@ const PAYMENT_TERM_QUERY_ID = 'paymentTerm';
 const PRODUCT_QUERY_ID = 'product';
 const MEASURE_UNITS_ID = 'product';
 
+const useReceivableListCache = () =>
+  useEntityListCache<ReceivableResponse>(() => [RECEIVABLE_QUERY_ID, 'list']);
+
 export const useReceivables = (
   ...args: Parameters<ReceivableService['getAllReceivables']>
 ) => {
   const { monite } = useComponentsContext();
 
   return useQuery<PaginationResponse, Error>(
-    [RECEIVABLE_QUERY_ID, { variables: args }],
+    [[RECEIVABLE_QUERY_ID, 'list'], { variables: args }],
     () => monite.api!.receivable.getAllReceivables(...args)
   );
 };
 
 export const useCreateReceivable = () => {
   const { monite, t } = useComponentsContext();
+  const { invalidate } = useReceivableListCache();
 
   return useMutation<
     ReceivableResponse,
@@ -46,6 +51,7 @@ export const useCreateReceivable = () => {
       ),
     {
       onSuccess: (receivable) => {
+        invalidate();
         toast.success(
           t('receivables:notifications.createSuccess', {
             name: receivable.counterpart_name,

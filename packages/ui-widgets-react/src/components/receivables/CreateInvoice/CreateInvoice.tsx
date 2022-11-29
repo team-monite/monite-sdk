@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -6,23 +6,25 @@ import {
   IconButton,
   Modal,
   ModalLayout,
+  Spinner,
   Text,
   UMultiply,
 } from '@team-monite/ui-kit-react';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import InvoiceForm from './InvoiceForm';
-import { StyledContent } from './ReceivablesDetailsStyle';
+import { StyledContent, StyledSpinnerWrapper } from './CreateInvoiceStyle';
 
 import { RECEIVABLE_TYPES } from '../types';
 
 type Props = {
   type: RECEIVABLE_TYPES;
-  onClose?: () => void;
+  onClose: () => void;
 };
 
-const ReceivablesDetails = ({ type, onClose }: Props) => {
+const CreateInvoice = ({ type, onClose }: Props) => {
   const { t } = useComponentsContext();
+  const [isCreating, setIsCreating] = useState(false);
 
   return (
     <Modal>
@@ -36,22 +38,36 @@ const ReceivablesDetails = ({ type, onClose }: Props) => {
               </IconButton>
             }
             actions={
-              <Button type="submit" form="createInvoice">
-                {/* TODO add loading state */}
+              <Button
+                type="submit"
+                form="createInvoice"
+                isLoading={isCreating}
+                disabled={isCreating}
+              >
                 {t('common:create')}
               </Button>
             }
           />
         }
       >
-        <StyledContent>
+        <StyledContent isLoading={isCreating}>
+          {isCreating && (
+            <StyledSpinnerWrapper>
+              <Spinner pxSize={24} />
+            </StyledSpinnerWrapper>
+          )}
           <Box mb={48}>
             <Text textSize="h1">{t('receivables:newInvoice')}</Text>
           </Box>
           {(() => {
             switch (type) {
               case RECEIVABLE_TYPES.INVOICE:
-                return <InvoiceForm onClose={onClose} />;
+                return (
+                  <InvoiceForm
+                    onClose={onClose}
+                    setIsCreating={setIsCreating}
+                  />
+                );
               default:
                 return null;
             }
@@ -62,4 +78,4 @@ const ReceivablesDetails = ({ type, onClose }: Props) => {
   );
 };
 
-export default ReceivablesDetails;
+export default CreateInvoice;

@@ -24,11 +24,12 @@ import {
   FormItem,
   StyledItemsTable,
   ItemsTableError,
-} from '../ReceivablesDetailsStyle';
+} from '../CreateInvoiceStyle';
 import { currencyFormatter } from '../helpers';
 
 interface Props {
-  onClose?: () => void;
+  setIsCreating: (isCreating: boolean) => void;
+  onClose: () => void;
 }
 
 // TODO remove formatter with hardcoded currency
@@ -37,7 +38,7 @@ const formatter = new Intl.NumberFormat('de-DE', {
   currency: 'EUR',
 });
 
-const InvoiceForm = ({ onClose }: Props) => {
+const InvoiceForm = ({ setIsCreating, onClose }: Props) => {
   const { t } = useComponentsContext();
   const {
     formMethods,
@@ -56,7 +57,7 @@ const InvoiceForm = ({ onClose }: Props) => {
     total,
     handleItemsSubmit,
     onSubmit,
-  } = useInvoiceForm({ onClose });
+  } = useInvoiceForm({ setIsCreating, onClose });
   const { control, handleSubmit } = formMethods;
 
   return (
