@@ -16,6 +16,7 @@ import {
 } from '@team-monite/sdk-api';
 
 import { useFeeByPaymentMethod } from 'core/queries/usePayment';
+import { useComponentsContext } from 'core/context/ComponentsContext';
 import { getReadableAmount } from 'core/utils';
 
 import * as Styled from './styles';
@@ -25,6 +26,7 @@ type CheckoutFormProps = {
 };
 
 export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
+  const { monite } = useComponentsContext();
   const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
@@ -97,6 +99,12 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
           setMessage(error.message || '');
         } else {
           setMessage('An unexpected error occurred.');
+        }
+      } else {
+        if (paymentMethod) {
+          await monite.api.payment.payByPaymentLinkId(id, {
+            payment_method: paymentMethod,
+          });
         }
       }
     } catch (e) {
