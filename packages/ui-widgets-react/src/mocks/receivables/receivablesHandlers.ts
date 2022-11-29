@@ -73,7 +73,7 @@ export const receivableHandlers = [
   ),
 
   rest.get<undefined, {}, ReceivablesVatRateListResponse>(
-    '*/vat_rates?counterpart_id=:counterpartId',
+    '*/vat_rates?counterpart_id=*',
     (_, res, ctx) => {
       return res(ctx.json(vatRatesByCounterpartId));
     }
