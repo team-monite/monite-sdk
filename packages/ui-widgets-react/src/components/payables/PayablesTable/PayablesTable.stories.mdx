@@ -70,6 +70,11 @@ Type: `(id: string) => void`
 
 Callback. Called when a table row is clicked. Returns the ID of the clicked record.
 
+### `onPay`
+Type: `(id: string) => void`
+
+Callback. Called when the “Pay” button next to a specific payable is clicked. The id of that payable is passed as an argument.
+
 ### `paginationTokens`
 
 An object containing the available [pagination tokens](https://docs.monite.com/reference/getting-started-with-monite-api#pagination-sorting-and-filtering).
@@ -90,6 +95,7 @@ It is used to determine the availability of the "next" and "previous" buttons at
   <Story
     name='Default'
     args={{
+      onPay: action('onPay'),
       onRowClick: action('onRowClick'),
       onChangeSort: action('onChangeSort'),
       onChangeFilter: action('onChangeFilter')
