@@ -50,7 +50,7 @@ const ReceivablesDetails = ({ type, onClose }: Props) => {
           {(() => {
             switch (type) {
               case RECEIVABLE_TYPES.INVOICE:
-                return <InvoiceForm />;
+                return <InvoiceForm onClose={onClose} />;
               default:
                 return null;
             }
