@@ -36,7 +36,6 @@ const PageReceivables = () => {
     setSearchParams(searchParams);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams();
   const id = searchParams.get(RECEIVABLE_ID);
 
   const onRowClick = (id: string) => {

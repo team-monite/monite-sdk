@@ -37,6 +37,7 @@ const ReceivablesDetails = ({ type, onClose }: Props) => {
             }
             actions={
               <Button type="submit" form="createInvoice">
+                {/* TODO add loading state */}
                 {t('common:create')}
               </Button>
             }

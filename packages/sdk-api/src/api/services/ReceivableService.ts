@@ -14,7 +14,6 @@ import {
   ReceivablesCurrencyEnum,
   ReceivablesProductServiceTypeEnum,
   ReceivablesReceivablesCounterpartBankAccountsResponse,
-  ReceivableResponse,
   ReceivablesReceivableFacadeCreatePayload,
   ReceivablesUnitListResponse,
   ReceivablesVatRateListResponse,
