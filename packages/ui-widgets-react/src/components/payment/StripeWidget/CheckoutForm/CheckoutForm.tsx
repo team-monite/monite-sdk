@@ -77,6 +77,12 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
     setIsLoading(true);
 
     try {
+      if (paymentMethod) {
+        await monite.api.payment.payByPaymentLinkId(id, {
+          payment_method: paymentMethod,
+        });
+      }
+
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
@@ -99,12 +105,6 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
           setMessage(error.message || '');
         } else {
           setMessage('An unexpected error occurred.');
-        }
-      } else {
-        if (paymentMethod) {
-          await monite.api.payment.payByPaymentLinkId(id, {
-            payment_method: paymentMethod,
-          });
         }
       }
     } catch (e) {
