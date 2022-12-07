@@ -31,11 +31,11 @@ const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
       intent.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
   );
 
-  const stripeOthersData = paymentIntents?.find(
-    (intent: PaymentsPaymentsPaymentIntent) =>
-      intent.provider === 'stripe' &&
-      !intent.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
-  );
+  // const stripeOthersData = paymentIntents?.find(
+  //   (intent: PaymentsPaymentsPaymentIntent) =>
+  //     intent.provider === 'stripe' &&
+  //     !intent.payment_method.includes(PaymentsPaymentMethodsEnum.CARD)
+  // );
 
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -43,20 +43,14 @@ const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
   useEffect(() => {
     if (
       paymentMethods?.length === 1 &&
-      paymentMethods?.[0] === PaymentsPaymentMethodsEnum.CARD
-    ) {
-      navigate(`${ROUTES.card}${search}`, { replace: true });
-    } else if (
-      paymentMethods?.length === 1 &&
       paymentMethods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
     ) {
       navigate(`${ROUTES.bank}${search}`, { replace: true });
     } else if (
       paymentMethods?.length > 0 &&
-      !paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) &&
       !paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
     ) {
-      navigate(`${ROUTES.other}${search}`, { replace: true });
+      navigate(`${ROUTES.checkout}${search}`, { replace: true });
     }
     // eslint-disable-next-line
   }, [navigate, search]);
@@ -77,22 +71,24 @@ const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
           }
         />
         <Route
-          path={ROUTES.card}
+          path={ROUTES.checkout}
           element={
             stripeCardData?.key.secret &&
             stripeCardData?.key.publishable && (
               <StripeWidget
                 clientSecret={stripeCardData?.key.secret}
                 publishableSecret={stripeCardData?.key.publishable}
-                navButton={paymentMethods?.length > 1}
+                navButton={paymentMethods.includes(
+                  PaymentsPaymentMethodsEnum.SEPA_CREDIT
+                )}
                 paymentData={paymentData}
                 handleBack={onChangeMethod}
               />
             )
           }
         />
-        <Route
-          path={ROUTES.other}
+        {/* <Route
+          path={ROUTES.checkout}
           element={
             stripeOthersData?.key.secret &&
             stripeOthersData?.key.publishable && (
@@ -105,7 +101,7 @@ const PaymentWidget = ({ paymentData }: PaymentWidgetProps) => {
               />
             )
           }
-        />
+        /> */}
         <Route
           path={ROUTES.bank}
           element={

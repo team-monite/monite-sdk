@@ -29,10 +29,7 @@ const Root = () => {
             <div style={{ minHeight: '100vh' }}>
               <Routes>
                 <Route path={'/*'} element={<PaymentPage />} />
-                <Route
-                  path={ROUTES.payResult}
-                  element={<PaymentResultPage />}
-                />
+                <Route path={ROUTES.result} element={<PaymentResultPage />} />
                 <Route path={ROUTES.expired} element={<PaymentExpiredPage />} />
               </Routes>
             </div>
