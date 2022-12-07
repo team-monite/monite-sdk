@@ -115,7 +115,7 @@ export const usePayPayableById = () => {
     (id) => monite.api!.payable.pay(id),
     {
       onSuccess: () => {
-        toast.success('Payed');
+        toast.success('Paid');
       },
       onError: (error) => {
         toast.error(error.message);
