@@ -20,6 +20,7 @@ import { FilterTypes, FilterValue } from './types';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 interface Props {
+  onRowClick?: (id: string) => void;
   onChangeSort?: (
     params: {
       sort: api__v1__receivables__pagination__CursorFields;
@@ -57,6 +58,7 @@ const StyledWrapper = styled.div`
 const ReceivablesTable = ({
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
+  onRowClick,
 }: Props) => {
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
@@ -85,6 +87,7 @@ const ReceivablesTable = ({
             type={ReceivablesReceivableType.QUOTE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
+            onRowClick={onRowClick}
           />
         </TabPanel>
         <TabPanel>
@@ -92,6 +95,7 @@ const ReceivablesTable = ({
             type={ReceivablesReceivableType.INVOICE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
+            onRowClick={onRowClick}
           />
         </TabPanel>
         <TabPanel>
@@ -99,6 +103,7 @@ const ReceivablesTable = ({
             type={ReceivablesReceivableType.CREDIT_NOTE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
+            onRowClick={onRowClick}
           />
         </TabPanel>
       </Tabs>

@@ -243,13 +243,21 @@
     "quotes": "Quotes",
     "invoices": "Invoices",
     "creditNotes": "Credit notes",
+    "invoice": "Invoice",
+    "items": "Items",
+    "subtotal": "Subtotal",
+    "vat": "VAT",
+    "total": "Total",
+    "emptyDetails": "There are no items here",
     "columns": {
       "number": "Number",
       "issueDate": "Issue date",
       "customer": "Customer",
       "dueDate": "Due date",
       "status": "Status",
-      "amount": "Amount"
+      "amount": "Amount",
+      "name": "Name",
+      "total": "Total"
     },
     "statuses": {
       "all": "All statuses",

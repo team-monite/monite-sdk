@@ -2,8 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { InvoiceResponsePayload } from './InvoiceResponsePayload';
-import type { QuoteResponsePayload } from './QuoteResponsePayload';
+import type { ReceivablesCreditNoteResponsePayload } from './ReceivablesCreditNoteResponsePayload';
+import type { ReceivablesInvoiceResponsePayload } from './ReceivablesInvoiceResponsePayload';
+import type { ReceivablesQuoteResponsePayload } from './ReceivablesQuoteResponsePayload';
 
-export type ReceivableResponse = (QuoteResponsePayload | InvoiceResponsePayload);
-
+export type ReceivableResponse =
+  | ReceivablesQuoteResponsePayload
+  | ReceivablesInvoiceResponsePayload
+  | ReceivablesCreditNoteResponsePayload;

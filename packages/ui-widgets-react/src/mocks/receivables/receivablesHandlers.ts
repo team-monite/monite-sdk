@@ -7,9 +7,13 @@ import {
 } from '@team-monite/sdk-api';
 
 import { geMockPagination } from '../utils';
-import { receivableListFixture } from './receivablesFixture';
+import {
+  receivableListFixture,
+  receivableByIdFixture,
+} from './receivablesFixture';
 
 const receivablePath = `*/${RECEIVABLES_ENDPOINT}`;
+const receivableDetailPath = `${RECEIVABLES_ENDPOINT}/:id`;
 
 export const receivableHandlers = [
   // read list
@@ -32,6 +36,18 @@ export const receivableHandlers = [
           test: url.searchParams.get('type'),
         })
       );
+    }
+  ),
+
+  // get by id
+  rest.get<undefined, { id: string }, any>(
+    receivableDetailPath,
+    ({ params }, res, ctx) => {
+      if (!params.id) return res(ctx.status(404));
+
+      if (params.id === '1') {
+        return res(ctx.json(receivableByIdFixture));
+      }
     }
   ),
 ];
