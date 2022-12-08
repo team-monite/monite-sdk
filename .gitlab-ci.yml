@@ -21,6 +21,7 @@ test-job: # This job runs in the build stage, which runs first.
     - yarn ui-widgets-react:build
     - yarn ui-widgets-react:build-storybook
     - yarn payment:build
+    - yarn onboarding:build
     - yarn app-white-label:build
   tags:
     - docker
@@ -29,6 +30,7 @@ test-job: # This job runs in the build stage, which runs first.
   artifacts:
     paths:
       - packages/payment/build
+      - packages/onboarding/build
       - packages/ui-widgets-react/storybook_static
       - packages/ui-kit-react/storybook_static
       - packages/app-white-label/build
