@@ -1,0 +1,52 @@
+{
+  "name": "@monite/onboarding",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
+    "analyze": "craco build --config analyze.config.js",
+    "serve": "npx serve -s build -p 3006"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 5 chrome version",
+      "last 5 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "dependencies": {
+    "@team-monite/ui-widgets-react": "^0.0.5",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.4",
+    "@types/react-helmet": "^6.1.5",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.3.0",
+    "typescript": "^4.6.4",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "craco-babel-loader": "^1.0.3",
+    "webpack-bundle-analyzer": "^4.5.0"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "emotion-theming": "~10.3.0"
+  }
+}
