@@ -116,6 +116,25 @@ data:
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/v1/internal/payment_links/;
             }
 
+            location /api/v1/payment_intents/ {
+
+                if ($request_method = 'OPTIONS') {
+                    add_header 'Access-Control-Allow-Origin' '*';
+                    add_header 'access-control-allow-headers' 'Accept,Accept-Version,Content-Length,Content-Type,Date,x-monite-version,x-service-name,x-monite-data-source,x-monite-entity-id,Authorization,authorization';
+                    add_header 'Access-Control-Allow-Methods' 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,TRACE,CONNECT';
+                    add_header 'Access-Control-Max-Age' 3600;
+                    add_header 'Content-Type' 'text/plain charset=UTF-8';
+                    add_header 'Content-Length' 0;
+
+                    return 200;
+                }
+
+                add_header Access-Control-Allow-Origin "*";
+                proxy_set_header x-monite-version 2022-11-16;
+                proxy_set_header x-service-name payment-page;
+                proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/v1/internal/payment_intents/;
+            }
+
             location / {
               add_header Last-Modified $date_gmt;
               add_header Cache-Control 'no-store, no-cache';
