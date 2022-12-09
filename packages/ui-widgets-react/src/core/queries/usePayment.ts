@@ -66,8 +66,8 @@ export const useFeeByPaymentMethod = (
     [PAYMENT_FEE, paymentMethod],
     () =>
       !!paymentMethod && !!id
-        ? monite.api.payment.getFeeByPaymentMethod(paymentMethod, {
-            payment_link_id: id,
+        ? monite.api.payment.getFeeByPaymentMethod(id, {
+            payment_method: paymentMethod,
           })
         : undefined,
     {

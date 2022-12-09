@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useMemo, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -8,7 +9,7 @@ import {
   PaymentDetails,
   EmptyScreen,
 } from '@team-monite/ui-widgets-react';
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import { ROUTES } from 'consts';
 import { fromBase64 } from 'helpers';
@@ -30,7 +31,7 @@ const PaymentPage = () => {
     }
   }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<PaymentsPaymentLinkResponse>();
+  const [paymentData, setPaymentData] = useState<PublicPaymentLinkResponse>();
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,25 +39,25 @@ const PaymentPage = () => {
 
   useEffect(() => {
     (async () => {
-      if (linkData?.id) {
-        const data = await monite.api.payment.getPaymentLinkById(linkData.id);
-        setPaymentData(data);
-
-        // TODO: backend will add enum for statuses
-        if (data?.status === 'succeeded') {
-          navigate(
-            `${ROUTES.result}?data=${rawPaymentData}&payment_reference=${data.payment_reference}&amount=${data.amount}&currency=${data.currency}&recipient_type=${data.recipient.type}&redirect_status=${data.status}&return_url=${data.return_url}`,
-            {
+      try {
+        if (linkData?.id) {
+          const data = await monite.api.payment.getPaymentLinkById(linkData.id);
+          setPaymentData(data);
+          // TODO: backend will add enum for statuses
+          if (data?.status === 'succeeded') {
+            navigate(`${ROUTES.result}?data=${rawPaymentData}`, {
               replace: true,
-            }
-          );
+            });
+          }
+          if (data?.status === 'expired') {
+            navigate(ROUTES.expired);
+          }
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
         }
-        if (data?.status === 'expired') {
-          navigate(ROUTES.expired);
-        }
-        setIsLoading(false);
-      } else {
-        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
       }
     })();
     // eslint-disable-next-line
@@ -87,7 +88,10 @@ const PaymentPage = () => {
         </Box>
         <Box width={['100%', '50%']}>
           {paymentData && linkData?.id && (
-            <PaymentWidget paymentData={paymentData} id={linkData?.id} />
+            <PaymentWidget
+              paymentData={paymentData.payment_intent}
+              linkId={paymentData.id}
+            />
           )}
         </Box>
       </Flex>

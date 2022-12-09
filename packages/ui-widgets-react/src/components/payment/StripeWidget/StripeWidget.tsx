@@ -17,6 +17,7 @@ type StripeFormProps = {
   navButton?: boolean;
   paymentData: PaymentsPaymentLinkResponse;
   handleBack: () => void;
+  linkId: string;
 };
 
 const StripeForm = ({
@@ -25,6 +26,7 @@ const StripeForm = ({
   navButton,
   paymentData,
   handleBack,
+  linkId,
 }: StripeFormProps) => {
   const theme = useTheme<Theme>();
 
@@ -71,7 +73,7 @@ const StripeForm = ({
         <>
           {navButton && <NavHeader handleBack={handleBack} />}
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm paymentData={paymentData} />
+            <CheckoutForm paymentData={paymentData} linkId={linkId} />
           </Elements>
         </>
       )}

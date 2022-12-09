@@ -23,9 +23,13 @@ import * as Styled from './styles';
 
 type CheckoutFormProps = {
   paymentData: PaymentsPaymentLinkResponse;
+  linkId: string;
 };
 
-export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
+export default function CheckoutForm({
+  paymentData,
+  linkId,
+}: CheckoutFormProps) {
   const { monite } = useComponentsContext();
   const { t } = useTranslation();
   const stripe = useStripe();
@@ -40,15 +44,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
   const [paymentMethod, setPaymentMethod] =
     useState<PaymentsPaymentMethodsEnum>();
 
-  const {
-    id,
-    amount,
-    currency,
-    return_url,
-    payment_reference,
-    recipient,
-    status,
-  } = paymentData;
+  const { amount, currency, id } = paymentData;
 
   const setMessage = (message: string) => {
     toast(message);
@@ -78,7 +74,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
 
     try {
       if (paymentMethod) {
-        await monite.api.payment.payByPaymentLinkId(id, {
+        await monite.api.payment.payByPaymentLinkId(linkId, {
           payment_method: paymentMethod,
         });
       }
@@ -87,7 +83,7 @@ export default function CheckoutForm({ paymentData }: CheckoutFormProps) {
         elements,
         confirmParams: {
           return_url:
-            `${window.location.origin}/result?data=${rawPaymentData}&payment_reference=${payment_reference}&amount=${amount}&currency=${currency}&recipient_type=${recipient.type}&redirect_status=${status}&return_url=${return_url}` ||
+            `${window.location.origin}/result?data=${rawPaymentData}&payment_method=${paymentMethod}` ||
             `${window.location.href}`,
         },
       });

@@ -75,7 +75,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
         {paymentMethods.filter(
           (method) => method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
         ).length > 0 && (
-          <StyledLink to={`card${search}`}>
+          <StyledLink to={`checkout${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
                 <StyledIconBlock>
