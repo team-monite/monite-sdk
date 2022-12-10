@@ -1,7 +1,6 @@
 export const ROUTES = {
-  payResult: '/result',
-  card: 'card/*',
+  result: '/result',
+  checkout: 'checkout',
   bank: 'bank/*',
-  other: 'other/*',
   expired: '/expired',
 };

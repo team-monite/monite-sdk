@@ -11,4 +11,5 @@ export type PaymentsPaymentsPaymentIntent = {
   payment_method: string;
   key: PaymentsStripe;
   provider: string;
+  status: string;
 };

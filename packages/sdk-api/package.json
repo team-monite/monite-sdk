@@ -16,7 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
-    "gen:openapi": "npx openapi-typescript-codegen -i https://api.dev.monite.com/openapi.json --exportCore false --exportServices true -o ./src/api2"
+    "gen:openapi": "npx openapi-typescript-codegen -i https://api.dev.monite.com/openapi.json?version=2022-11-16 --exportCore false --exportServices true -o ./src/api2"
   },
   "author": "",
   "license": "MIT"

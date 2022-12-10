@@ -252,6 +252,7 @@ export type { ProductServiceRequest } from './models/ProductServiceRequest';
 export type { ProductServiceResponse } from './models/ProductServiceResponse';
 export type { ProductServiceUpdate } from './models/ProductServiceUpdate';
 export type { Project } from './models/Project';
+export type { PublicPaymentLinkResponse } from './models/PublicPaymentLinkResponse';
 export { QuoteResponsePayload } from './models/QuoteResponsePayload';
 export type { ReceivableCounterpartContact } from './models/ReceivableCounterpartContact';
 export type { ReceivableCreateBasedOnPayload } from './models/ReceivableCreateBasedOnPayload';

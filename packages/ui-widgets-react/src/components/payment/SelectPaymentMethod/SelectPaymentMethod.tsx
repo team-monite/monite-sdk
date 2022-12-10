@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
+import { useTranslation } from 'react-i18next';
+
 import {
   Text,
   Box,
@@ -10,7 +12,6 @@ import {
   Flex,
   UCreditCard,
   UUniversity,
-  UMoneyBill,
 } from '@team-monite/ui-kit-react';
 import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
 
@@ -59,20 +60,22 @@ const StyledIconBlock = styled.div(
 `
 );
 
-// TODO add localization
 const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
   const { search } = useLocation();
   const theme = useTheme<Theme>();
+  const { t } = useTranslation();
 
   return (
     <>
       <Text textSize="h3" textAlign="center">
-        How would you like to pay?
+        {t('payment:widget.selectTitle')}
       </Text>
 
       <Box mt={24}>
-        {paymentMethods.includes(PaymentsPaymentMethodsEnum.CARD) && (
-          <StyledLink to={`card${search}`}>
+        {paymentMethods.filter(
+          (method) => method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
+        ).length > 0 && (
+          <StyledLink to={`checkout${search}`}>
             <StyledListItem>
               <Flex alignItems="center">
                 <StyledIconBlock>
@@ -83,7 +86,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
                   />
                 </StyledIconBlock>
                 <Box ml={1}>
-                  <Text>Credit card</Text>
+                  <Text>{t('payment:widget.cardPlusOther')} </Text>
                 </Box>
               </Flex>
               <UAngleRight
@@ -107,35 +110,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
                   />
                 </StyledIconBlock>
                 <Box ml={1}>
-                  <Text>Bank transfer</Text>
-                </Box>
-              </Flex>
-              <UAngleRight
-                width={16}
-                height={16}
-                color={theme.colors.lightGrey2}
-              />
-            </StyledListItem>
-          </StyledLink>
-        )}
-
-        {paymentMethods.filter(
-          (method) =>
-            method !== PaymentsPaymentMethodsEnum.CARD &&
-            method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
-        ).length > 0 && (
-          <StyledLink to={`other${search}`}>
-            <StyledListItem>
-              <Flex alignItems="center">
-                <StyledIconBlock>
-                  <UMoneyBill
-                    width={16}
-                    height={16}
-                    color={theme.colors.black}
-                  />
-                </StyledIconBlock>
-                <Box ml={1}>
-                  <Text>Other payment methods</Text>
+                  <Text>{t('payment:widget.bankTransfer')}</Text>
                 </Box>
               </Flex>
               <UAngleRight

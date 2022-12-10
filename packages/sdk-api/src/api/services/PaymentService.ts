@@ -3,13 +3,12 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
 import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
-import type { PaymentMethodsCalculateFeePayload } from '../models/PaymentMethodsCalculateFeePayload';
 import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
-import { PaymentsPaymentLinkResponse } from '../models/PaymentsPaymentLinkResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
 import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
 import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
 import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
+import type { PublicPaymentLinkResponse } from '../models/PublicPaymentLinkResponse';
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -52,13 +51,13 @@ export default class PaymentService {
    */
 
   public getFeeByPaymentMethod(
-    paymentMethod: PaymentsPaymentMethodsEnum,
-    requestBody: PaymentMethodsCalculateFeePayload
+    id: string,
+    requestBody: any
   ): CancelablePromise<PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse> {
     return __request(
       {
         method: 'POST',
-        url: `/payment_methods/${paymentMethod}/calculate_fee`,
+        url: `/payment_intents/${id}/calculate_fee`,
         body: requestBody,
         mediaType: 'application/json',
         errors: {
@@ -120,7 +119,7 @@ export default class PaymentService {
    */
   public getPaymentLinkById(
     paymentLinkId: string
-  ): CancelablePromise<PaymentsPaymentLinkResponse> {
+  ): CancelablePromise<PublicPaymentLinkResponse> {
     return __request(
       {
         method: 'GET',
