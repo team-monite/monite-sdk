@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PagePayables from 'features/payables/PagePayables';
 import PageReceivables from 'features/receivables/PageReceivables';
+import PageTags from 'features/tags/PageTags';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
 import { ROUTES } from 'consts';
@@ -34,6 +35,7 @@ const AuthorizedArea = () => {
           />
         }
       />
+      <Route path={ROUTES.tags} element={<PageTags />} />
       <Route
         path={ROUTES.dashboard}
         element={

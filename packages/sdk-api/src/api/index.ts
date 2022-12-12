@@ -26,6 +26,7 @@ export { api__v1__products_services__pagination__CursorFields } from './models/a
 export { api__schemas__payables__schemas__PaginationResponse } from './models/api__schemas__payables__schemas__PaginationResponse';
 export { api__v1__receivables__pagination__CursorFields } from './models/api__v1__receivables__pagination__CursorFields';
 export { api__v1__roles__pagination__CursorFields } from './models/api__v1__roles__pagination__CursorFields';
+export { api__v1__tags__pagination__CursorFields } from './models/api__v1__tags__pagination__CursorFields';
 export type { api__v1__route__schemas__RouteResponse } from './models/api__v1__route__schemas__RouteResponse';
 export type { api__v1__routes__schemas__RouteResponse } from './models/api__v1__routes__schemas__RouteResponse';
 export { api__v1__tiers__pagination__CursorFields } from './models/api__v1__tiers__pagination__CursorFields';
@@ -326,6 +327,7 @@ export type { SystemTemplateDataSchema } from './models/SystemTemplateDataSchema
 export type { TagCreateOrUpdateSchema } from './models/TagCreateOrUpdateSchema';
 export type { TagReadSchema } from './models/TagReadSchema';
 export type { TagsResponse } from './models/TagsResponse';
+export type { TagsPaginationResponse } from './models/TagsPaginationResponse';
 export type { TasksCountSchema } from './models/TasksCountSchema';
 export type { Template } from './models/Template';
 export type { TemplateBaseResponse } from './models/TemplateBaseResponse';
@@ -394,3 +396,4 @@ export { default as ProductsService } from './services/ProductsService';
 export { default as PaymentTermsService } from './services/PaymentTermsService';
 export { default as MeasureUnitsService } from './services/MeasureUnitsService';
 export { default as VatRatesService } from './services/VatRatesService';
+export { default as TagService } from './services/TagService';

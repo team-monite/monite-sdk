@@ -21,6 +21,18 @@ export const tagsHandlers = [
     );
   }),
 
+  // read tag list with limit
+  rest.get<undefined, {}, TagsResponse>(
+    `${tagsPath}?limit=10`,
+    ({ url }, res, ctx) => {
+      return res(
+        ctx.json({
+          data: tagListFixture,
+        })
+      );
+    }
+  ),
+
   // create tag
   rest.post<TagCreateOrUpdateSchema, {}, TagReadSchema>(
     tagsPath,

@@ -3,7 +3,9 @@ import {
   PayableResponseSchema,
   TagCreateOrUpdateSchema,
   TagReadSchema,
+  TagsPaginationResponse,
   TagsResponse,
+  TagService,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -12,12 +14,12 @@ import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/s
 
 const TAG_QUERY_ID = 'tags';
 
-export const useTagList = () => {
+export const useTagList = (...args: Parameters<TagService['getList']>) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<TagsResponse, Error>(
-    [TAG_QUERY_ID],
-    () => monite.api!.tag.getList(),
+  return useQuery<TagsPaginationResponse, Error>(
+    [TAG_QUERY_ID, { variables: args }],
+    () => monite.api!.tag.getList(...args),
     {
       onError: (error) => {
         toast.error(error.message);
@@ -26,12 +28,12 @@ export const useTagList = () => {
   );
 };
 
-export const useCreateTag = (id: string) => {
+export const useCreateTag = (...args: Parameters<TagService['create']>) => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
 
   return useMutation<TagReadSchema, Error, TagCreateOrUpdateSchema>(
-    (body) => monite.api!.tag.create(body),
+    () => monite.api!.tag.create(...args),
     {
       onSuccess: async (tag) => {
         await queryClient.setQueryData<Updater<TagsResponse, TagsResponse>>(
@@ -44,10 +46,13 @@ export const useCreateTag = (id: string) => {
 
         await queryClient.setQueryData<
           Updater<PayableResponseSchema, PayableResponseSchema>
-        >([PAYABLE_QUERY_ID, { id }], (payable: PayableResponseSchema) => ({
-          ...payable,
-          tags: payable.tags ? [...payable.tags, tag] : [tag],
-        }));
+        >(
+          [PAYABLE_QUERY_ID, { id: args[0].name }],
+          (payable: PayableResponseSchema) => ({
+            ...payable,
+            tags: payable.tags ? [...payable.tags, tag] : [tag],
+          })
+        );
 
         toast.success('Tag created');
       },

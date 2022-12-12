@@ -843,7 +843,7 @@ export { default as UEye } from './icons/UEye';
 // export { default as UShoppingCartAlt } from './icons/UShoppingCartAlt';
 // export { default as UStore } from './icons/UStore';
 // export { default as UStoreAlt } from './icons/UStoreAlt';
-// export { default as UTag } from './icons/UTag';
+export { default as UTag } from './icons/UTag';
 // export { default as UTagAlt } from './icons/UTagAlt';
 // export { default as UTransaction } from './icons/UTransaction';
 // export { default as UAccessibleIconAlt } from './icons/UAccessibleIconAlt';

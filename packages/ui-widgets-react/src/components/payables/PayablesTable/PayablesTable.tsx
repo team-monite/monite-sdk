@@ -255,7 +255,6 @@ const PayablesTable = ({
             onRowClick && onRowClick((record as ReceivableResponse).id),
         })}
         scroll={{ y: 'auto' }}
-        // TODO create footer component and move to UI
         footer={() => (
           <TableFooter>
             <Button

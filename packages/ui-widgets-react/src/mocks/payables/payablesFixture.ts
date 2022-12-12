@@ -227,10 +227,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221637587623',
         id: 'fd73da5f-1ece-425f-a324-fd7216e9b920',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 08302022163758885',
         id: '818eea0f-9f51-4c5d-b748-5346a9742f59',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:37:59.949505+00:00',
@@ -281,10 +285,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221638001878',
         id: 'f3713120-5909-4776-adf0-4c6cd659c0b4',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 083020221638004821',
         id: '19e92fbb-9e4d-415c-b8fe-acb07d7af2a6',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:38:02.165618+00:00',
@@ -335,10 +343,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221638029470',
         id: '673f2a63-7a41-4c44-9cc1-7ea99d73e3c6',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 083020221638026975',
         id: 'ca452ef0-4564-4920-895d-8e955f738c08',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:38:04.500284+00:00',
@@ -389,10 +401,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221638048234',
         id: 'fdf72bb4-1012-4568-bb84-450f845ee0be',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 083020221638053848',
         id: '29474e57-0f6d-4945-ae72-27fce4dbac4c',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:38:06.724962+00:00',
@@ -443,10 +459,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221638074417',
         id: 'ea69abf8-dfaf-4fec-9c3d-aa58eade851b',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 083020221638071856',
         id: '46c38454-a2c9-4d54-9b8d-990ab7d74971',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:38:09.041500+00:00',
@@ -497,10 +517,14 @@ export const payableListFixture: PayableResponseSchema[] = [
       {
         name: 'Company 083020221638094812',
         id: 'c44ea5c6-91c7-44a4-9949-1b865cade9ac',
+        created_at: '',
+        updated_at: '',
       },
       {
         name: 'Company 083020221638092412',
         id: '87eba32c-09a0-424b-84b3-e56aa220dd67',
+        created_at: '',
+        updated_at: '',
       },
     ],
     created_at: '2022-08-30T13:38:11.342149+00:00',

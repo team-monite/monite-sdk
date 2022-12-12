@@ -309,6 +309,19 @@
       "selectCounterpart": "Select Counterpart"
     }
   },
+  "tags": {
+    "columns": {
+      "name": "Name",
+      "createdAt": "Created at",
+      "updatedAt": "Updated at",
+      "createdBy": "Created by"
+    },
+    "actions": {
+      "edit": "Edit name",
+      "delete": "Delete"
+    },
+    "createNewTag": "Create New Tag"
+  },
   "errors": {
     "requiredField": " is required",
     "validEmail": " must be a valid email"

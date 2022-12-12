@@ -1,0 +1,12 @@
+import CreateTagModal from './CreateTagModal';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Tags/Tags — Create Tag Modal" component={CreateTagModal} />
+
+export const Template = (args) => (
+  <CreateTagModal {...args}/>
+);
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>

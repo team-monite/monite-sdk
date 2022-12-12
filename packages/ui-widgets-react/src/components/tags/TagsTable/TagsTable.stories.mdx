@@ -1,0 +1,14 @@
+import TagsTable from './TagsTable';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Tags/Tags — Table View" component={TagsTable} />
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <TagsTable {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>
