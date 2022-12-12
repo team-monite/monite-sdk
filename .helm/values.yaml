@@ -3,11 +3,13 @@ ingress:
     _default: pay-%s.review.monite.com
     dev: pay.dev.monite.com
     production: pay.monite.com
+    staging: pay.staging.monite.com
     zaf-production: pay.zaf.monite.com
     sandbox: pay.sandbox.monite.com
   secretName:
     _default: wildcard-review-monite-com
     dev: wildcard-dev-monite-com
+    staging: wildcard-staging-monite-com
     sandbox: wildcard-sandbox-monite-com
     production: wildcard-monite-com
     zaf-production: wildcard-zaf-monite-com
