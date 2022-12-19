@@ -58,6 +58,7 @@ const PaymentPage = () => {
         }
       } catch (error) {
         console.error(error);
+        setIsLoading(false);
       }
     })();
     // eslint-disable-next-line
