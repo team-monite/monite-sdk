@@ -47,7 +47,7 @@ const App = () => {
           setPaymentData(data);
           // TODO: backend will add enum for statuses
           if (data?.status === 'succeeded') {
-            navigate(`${ROUTES.result}?data=${rawPaymentData}`, {
+            navigate(`${ROUTES.result}${search}`, {
               replace: true,
             });
           }
@@ -64,19 +64,22 @@ const App = () => {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData]);
+  }, [linkData?.id]);
 
   useEffect(() => {
     if (stripePromise) {
       return;
     }
-    stripePromise = loadStripe(paymentData?.payment_intent?.key.publishable);
-    setStripePromise(stripePromise);
+    if (paymentData?.payment_intent?.key.publishable) {
+      stripePromise = loadStripe(paymentData?.payment_intent?.key.publishable);
+      setStripePromise(stripePromise);
+    }
   }, [paymentData?.payment_intent?.key.publishable]);
 
   if (!stripePromise) {
     return null;
   }
+
   return (
     <Elements options={{}} stripe={stripePromise}>
       <div style={{ minHeight: '100vh' }}>
@@ -84,7 +87,9 @@ const App = () => {
           <Route
             path={'/*'}
             element={
-              <PaymentPage paymentData={paymentData} isLoading={isLoading} />
+              paymentData?.payment_intent?.key.publishable ? (
+                <PaymentPage paymentData={paymentData} isLoading={isLoading} />
+              ) : null
             }
           />
           <Route path={ROUTES.result} element={<PaymentResultPage />} />
