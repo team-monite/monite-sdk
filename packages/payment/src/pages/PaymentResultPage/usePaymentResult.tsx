@@ -3,6 +3,7 @@ import { ReactNode, useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'emotion-theming';
+import { useStripe } from '@stripe/react-stripe-js';
 import {
   Theme,
   UCheckSquare,
@@ -44,8 +45,9 @@ export default function usePaymentResult() {
 
   const rawPaymentData = urlParams.get('data');
 
-  // const clientSecret = urlParams.get('payment_intent_client_secret');
+  const clientSecret = urlParams.get('payment_intent_client_secret');
 
+  const stripe = useStripe();
   const linkData = useMemo(() => {
     if (rawPaymentData) {
       return fromBase64(rawPaymentData) as URLData;
@@ -79,20 +81,21 @@ export default function usePaymentResult() {
       if (linkData?.id) {
         const data = await monite.api.payment.getPaymentLinkById(linkData.id);
         setPaymentData(data);
-
-        if (data?.status !== 'created') {
+        if (data?.payment_intent.status !== 'created') {
           setPaymentStatus(getStatus(data?.payment_intent.status));
-        }
-        // else if (data?.status === 'created' && clientSecret && stripe) {
-        //   const { paymentIntent } = await stripe.retrievePaymentIntent(
-        //     clientSecret
-        //   );
+        } else if (
+          data?.payment_intent.status === 'created' &&
+          clientSecret &&
+          stripe
+        ) {
+          const { paymentIntent } = await stripe.retrievePaymentIntent(
+            clientSecret
+          );
 
-        //   console.log('paymentIntent', paymentIntent);
-        //   if (paymentIntent && paymentIntent.status) {
-        //     setPaymentStatus(getStatus(paymentIntent?.status));
-        //   }
-        // }
+          if (paymentIntent && paymentIntent.status) {
+            setPaymentStatus(getStatus(paymentIntent?.status));
+          }
+        }
 
         setIsLoading(false);
       } else {
@@ -100,7 +103,7 @@ export default function usePaymentResult() {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData?.id]);
+  }, [linkData?.id, stripe]);
 
   const { amount, currency, return_url, payment_reference } =
     paymentData?.payment_intent || {};
