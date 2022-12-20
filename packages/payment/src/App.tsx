@@ -5,9 +5,12 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-import { useComponentsContext } from '@team-monite/ui-widgets-react';
+import {
+  useComponentsContext,
+  EmptyScreen,
+} from '@team-monite/ui-widgets-react';
 import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
-import { Tooltip } from '@team-monite/ui-kit-react';
+import { Tooltip, Box } from '@team-monite/ui-kit-react';
 
 import PaymentPage from 'pages/PaymentPage';
 import PaymentResultPage from 'pages/PaymentResultPage';
@@ -47,7 +50,7 @@ const App = () => {
           setPaymentData(data);
           // TODO: backend will add enum for statuses
           if (data?.status === 'succeeded') {
-            navigate(`${ROUTES.result}?data=${rawPaymentData}`, {
+            navigate(`${ROUTES.result}${search}`, {
               replace: true,
             });
           }
@@ -64,19 +67,26 @@ const App = () => {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData]);
+  }, [linkData?.id]);
 
   useEffect(() => {
     if (stripePromise) {
       return;
     }
-    stripePromise = loadStripe(paymentData?.payment_intent?.key.publishable);
-    setStripePromise(stripePromise);
+    if (paymentData?.payment_intent?.key.publishable) {
+      stripePromise = loadStripe(paymentData?.payment_intent?.key.publishable);
+      setStripePromise(stripePromise);
+    }
   }, [paymentData?.payment_intent?.key.publishable]);
 
-  if (!stripePromise) {
-    return null;
+  if (!stripePromise && paymentData?.payment_intent?.key.publishable) {
+    return (
+      <Box width={'100%'} padding={'80px'}>
+        <EmptyScreen />
+      </Box>
+    );
   }
+
   return (
     <Elements options={{}} stripe={stripePromise}>
       <div style={{ minHeight: '100vh' }}>
