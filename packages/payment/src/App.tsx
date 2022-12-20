@@ -67,7 +67,7 @@ const App = () => {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData?.id]);
+  }, []);
 
   useEffect(() => {
     if (stripePromise) {
