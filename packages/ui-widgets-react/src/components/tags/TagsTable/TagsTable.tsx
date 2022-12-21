@@ -10,7 +10,10 @@ import {
   TableFooter,
   UArrowLeft,
   UArrowRight,
+  useModal,
 } from '@team-monite/ui-kit-react';
+import { TagFormModal } from '../TagFormModal';
+import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import {
   api__v1__tags__pagination__CursorFields,
   OrderEnum,
@@ -62,6 +65,18 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     string | null
   >(null);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const {
+    show: showEdit,
+    hide: hideEdit,
+    isOpen: isOpenEdit,
+    entity: tagToEdit,
+  } = useModal<TagReadSchema>();
+  const {
+    show: showDelete,
+    hide: hideDelete,
+    isOpen: isOpenDelete,
+    entity: tagToDelete,
+  } = useModal<TagReadSchema>();
 
   const { data: tags, isLoading } = useTagList(
     currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
@@ -155,10 +170,10 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
         data={tags?.data}
         renderDropdownActions={(tag: TagReadSchema) => (
           <>
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem onClick={() => showEdit(tag)}>
               {t('tags:actions.edit')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {}}>
+            <DropdownMenuItem onClick={() => showDelete(tag)}>
               {t('tags:actions.delete')}
             </DropdownMenuItem>
           </>
@@ -185,6 +200,19 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
           </TableFooter>
         )}
       />
+      {isOpenEdit && tagToEdit && (
+        <TagFormModal
+          onClose={hideEdit}
+          tag={{ id: tagToEdit.id, name: tagToEdit.name }}
+        />
+      )}
+      {isOpenDelete && tagToDelete && (
+        <ConfirmDeleteModal
+          onClose={hideDelete}
+          onDelete={hideDelete}
+          tag={{ id: tagToDelete.id, name: tagToDelete.name }}
+        />
+      )}
     </StyledWrapper>
   );
 };

@@ -1,0 +1,19 @@
+import ConfirmDeleteModal from './ConfirmDeleteModal';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta
+  title="Tags/Tags — Confirm Delete Modal"
+  component={ConfirmDeleteModal}
+  args={{
+    tag: {
+      id: '1',
+      name: 'Tag Name',
+    },
+  }}
+/>
+
+export const Template = (args) => <ConfirmDeleteModal {...args} />;
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>

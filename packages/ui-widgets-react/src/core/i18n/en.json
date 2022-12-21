@@ -320,7 +320,18 @@
       "edit": "Edit name",
       "delete": "Delete"
     },
-    "createNewTag": "Create New Tag"
+    "createNewTag": "Create New Tag",
+    "editTag": "Edit tag ”{{name}}”",
+    "name": "Name",
+    "messages": {
+      "createSuccess": "New tag “{{name}}” created",
+      "updateSuccess": "Tag “{{oldName}}” renamed to “{{newName}}”",
+      "deleteSuccess": "Tag “{{name}}” was deleted"
+    },
+    "confirmDeleteDialogue": {
+      "title": "Delete “{{name}}” tag?",
+      "content": "This action can’t be undone."
+    }
   },
   "errors": {
     "requiredField": " is required",

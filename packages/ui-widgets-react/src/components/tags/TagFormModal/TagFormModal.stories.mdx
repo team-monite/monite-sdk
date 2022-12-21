@@ -1,0 +1,16 @@
+import TagFormModal from './TagFormModal';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta
+  title="Tags/Tags — Create Tag Modal"
+  component={TagFormModal}
+  // args={{
+  //  tag: { id: '1', name: 'tag1'}
+  //}}
+/>
+
+export const Template = (args) => <TagFormModal {...args} />;
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>

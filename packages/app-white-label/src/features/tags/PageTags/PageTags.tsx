@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { TagsTable, CreateTagModal } from '@team-monite/ui-widgets-react';
+import { TagsTable, TagFormModal } from '@team-monite/ui-widgets-react';
 import { Button, useModal } from '@team-monite/ui-kit-react';
 
 import Layout from 'features/app/Layout';
@@ -17,7 +17,7 @@ const PageTags = () => {
         extra={<Button onClick={show}>{t('tags:createNewTag')}</Button>}
       />
       <TagsTable />
-      {isOpen && <CreateTagModal onClose={hide} />}
+      {isOpen && <TagFormModal onClose={hide} />}
     </Layout>
   );
 };
