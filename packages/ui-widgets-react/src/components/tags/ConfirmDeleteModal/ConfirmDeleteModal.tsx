@@ -48,7 +48,6 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
   const handleDelete = useCallback(async () => {
     await deleteTagMutation.mutateAsync(tag.id, {
       onSuccess: () => {
-        console.log('success delete in modal');
         toast.success(
           t('tags:messages.deleteSuccess', {
             name: tag.name,

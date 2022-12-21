@@ -71,7 +71,6 @@ export const useDeleteTag = () => {
     (tagId) => monite.api.tag.delete(tagId),
     {
       onSuccess: () => {
-        console.log('success delete in useTag');
         invalidate();
       },
       onError: (error) => {
