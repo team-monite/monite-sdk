@@ -8,8 +8,12 @@ These components display the data served from the Monite API and also provide da
 **Note:** This package is part of a [monorepo](https://github.com/team-monite/monite-sdk). See the main [README](https://github.com/team-monite/monite-sdk/#readme) for more information.
 
 ## Requirements
-* Node.js 16 or later
+* Node.js 16 or later.
+* At least 8 GB RAM on each development workstation.
 * A partner account registered with Monite. For details, see [Get started with Monite API](https://docs.monite.com/docs/get-started).
+
+## Supported browsers
+Monite UI Widgets support the five latest versions of major browsers: Chrome, Firefox, Safari, Edge, Opera.
 
 ## Installation
 

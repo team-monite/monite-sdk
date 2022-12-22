@@ -10,8 +10,12 @@ It can also be used as a standalone API client.
 **Note:** This library is part of a [monorepo](https://github.com/team-monite/monite-sdk). See the main [README](https://github.com/team-monite/monite-sdk/#readme) for more information.
 
 ## Requirements
-To use `@team-monite/sdk-api`, you need a partner account registered with Monite.
-Follow the [Get started with Monite API](https://docs.monite.com/docs/get-started) guide to set up your partner account, get API credentials, and generate an access token.
+
+* Runtime:
+  * Node.js 16 or later.
+  * Supported browsers: five latest versions of Chrome, Firefox, Safari, Edge, and Opera.
+* At least 8 GB RAM on each development workstation.
+* A partner account registered with Monite. Follow the [Get started with Monite API](https://docs.monite.com/docs/get-started) guide to set up your partner account, get API credentials, and generate an access token.
 
 ## Installation
 

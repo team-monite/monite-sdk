@@ -9,6 +9,10 @@ They are used as building blocks for [Monite UI Widgets](https://github.com/team
 
 ## Requirements
 * Node.js 16 or later
+* At least 8 GB RAM on each development workstation
+
+## Supported browsers
+Monite UI components support the five latest versions of major browsers: Chrome, Firefox, Safari, Edge, Opera.
 
 ## Installation
 
