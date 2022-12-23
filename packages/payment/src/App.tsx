@@ -73,13 +73,13 @@ const App = () => {
     if (stripePromise) {
       return;
     }
-    if (paymentData?.payment_intent?.key.publishable) {
-      stripePromise = loadStripe(paymentData?.payment_intent?.key.publishable);
+    if (paymentData?.payment_intent?.key?.publishable) {
+      stripePromise = loadStripe(paymentData?.payment_intent?.key?.publishable);
       setStripePromise(stripePromise);
     }
-  }, [paymentData?.payment_intent?.key.publishable]);
+  }, [paymentData?.payment_intent?.key?.publishable]);
 
-  if (!stripePromise && paymentData?.payment_intent?.key.publishable) {
+  if (!stripePromise && paymentData?.payment_intent?.key?.publishable) {
     return (
       <Box width={'100%'} padding={'80px'}>
         <EmptyScreen />

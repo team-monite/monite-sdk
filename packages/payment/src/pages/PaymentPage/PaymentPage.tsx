@@ -30,7 +30,9 @@ const PaymentPage = ({ paymentData, isLoading }) => {
         flexDirection={['column', 'row']}
       >
         <Box width={['100%', '50%']}>
-          {paymentData && <PaymentDetails payment={paymentData} />}
+          {paymentData && (
+            <PaymentDetails payment={paymentData.payment_intent} />
+          )}
         </Box>
         <Box width={['100%', '50%']}>
           {paymentData && (

@@ -58,8 +58,8 @@ const PaymentWidget = ({ paymentData, linkId }: PaymentWidgetProps) => {
         <Route
           path={ROUTES.checkout}
           element={
-            key.secret &&
-            key.publishable && (
+            key?.secret &&
+            key?.publishable && (
               <StripeWidget
                 clientSecret={key.secret}
                 publishableSecret={key.publishable}
