@@ -95,8 +95,9 @@ export default function usePaymentResult() {
           if (paymentIntent && paymentIntent.status) {
             setPaymentStatus(getStatus(paymentIntent?.status));
           }
+        } else {
+          setPaymentStatus(ResultStatuses.Error);
         }
-
         setIsLoading(false);
       } else {
         setIsLoading(false);

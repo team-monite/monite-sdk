@@ -1,6 +1,6 @@
 export const ROUTES = {
   result: '/result',
   checkout: 'checkout',
-  bank: 'bank/*',
+  bank: 'bank',
   expired: '/expired',
 };

@@ -7,9 +7,7 @@ export type UsePayableDetailsProps = {
 };
 
 export default function usePaymentDetails({
-  payment: {
-    payment_intent: { currency, amount, payment_reference, invoice, recipient },
-  },
+  payment: { currency, amount, payment_reference, invoice, recipient },
 }: UsePayableDetailsProps) {
   return {
     recipient: recipient?.name,
