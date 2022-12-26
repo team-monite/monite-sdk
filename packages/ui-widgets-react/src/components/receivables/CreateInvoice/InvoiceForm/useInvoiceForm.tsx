@@ -9,12 +9,12 @@ import {
 } from '@team-monite/sdk-api';
 
 import {
-  useCounterpartBankAccounts,
   useCounterpartList,
   useCreateReceivable,
   useMeasureUnits,
   usePaymentTerms,
   useVATRates,
+  useCounterpartBankList,
 } from 'core/queries';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import getValidationSchema from './validation';
@@ -42,7 +42,7 @@ interface Props {
 export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
   const { t, monite } = useComponentsContext();
   const { data: counterparts } = useCounterpartList();
-  const { data: paymentTerms } = usePaymentTerms(monite.entityId);
+  const { data: paymentTerms } = usePaymentTerms();
   const { data: measureUnits } = useMeasureUnits(monite.entityId);
   const createReceivableMutation = useCreateReceivable();
 
@@ -60,16 +60,13 @@ export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
 
   const currentCounterpart = watch('customer');
 
-  const { data: counterpartBankAccounts } = useCounterpartBankAccounts(
-    !!currentCounterpart?.value,
-    currentCounterpart?.value,
-    monite.entityId
+  const { data: counterpartBankAccounts } = useCounterpartBankList(
+    currentCounterpart?.value
   );
 
   const VATRatesQuery = useVATRates(
     !!currentCounterpart?.value,
-    currentCounterpart?.value,
-    monite.entityId
+    currentCounterpart?.value
   );
 
   const subtotal = useMemo(
@@ -114,7 +111,7 @@ export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
 
   const onSubmit = useCallback(
     (data: FormFields) => {
-      const entityBankAccount = counterpartBankAccounts?.data?.find(
+      const entityBankAccount = counterpartBankAccounts?.find(
         (account) => account.id === data.bankAccount.value
       );
       const preparedData: ReceivablesReceivableFacadeCreatePayload = {

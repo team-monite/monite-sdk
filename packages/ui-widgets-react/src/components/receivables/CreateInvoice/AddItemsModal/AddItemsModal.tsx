@@ -46,11 +46,10 @@ type Props = {
 };
 
 const AddItemsModal = ({ onSubmit, onClose }: Props) => {
-  const { t, monite } = useComponentsContext();
+  const { t } = useComponentsContext();
   const [filter, setFilter] = useState<FilterValues>({});
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const productsQuery = useProducts(
-    monite.entityId,
     undefined,
     undefined,
     undefined,

@@ -390,3 +390,7 @@ export * from './services/PayableService';
 export * from './services/TagService';
 export * from './services/ReceivableService';
 export { default as ReceivableService } from './services/ReceivableService';
+export { default as ProductsService } from './services/ProductsService';
+export { default as PaymentTermsService } from './services/PaymentTermsService';
+export { default as MeasureUnitsService } from './services/MeasureUnitsService';
+export { default as VatRatesService } from './services/VatRatesService';

@@ -242,7 +242,7 @@ const InvoiceForm = ({ setIsCreating, onClose }: Props) => {
                   >
                     <Select
                       {...field}
-                      options={counterpartBankAccounts?.data?.map((item) => ({
+                      options={counterpartBankAccounts?.map((item) => ({
                         label: item.name,
                         value: item.id,
                       }))}
