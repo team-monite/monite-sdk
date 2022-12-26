@@ -5,6 +5,10 @@ import PartnerApiService from './services/PartnerApiService';
 import PaymentService from './services/PaymentService';
 import AuthService from './services/AuthService';
 import ReceivableService from './services/ReceivableService';
+import PaymentTermsService from './services/PaymentTermsService';
+import ProductsService from './services/ProductsService';
+import MeasureUnitsService from './services/MeasureUnitsService';
+import VatRatesService from './services/VatRatesService';
 import WorkflowsService from './services/WorkflowsService';
 import PayablesService from './services/PayableService';
 import RoleService from './services/RoleService';
@@ -29,6 +33,11 @@ class ApiService {
   tag: TagService;
   role: RoleService;
   receivable: ReceivableService;
+  paymentTerms: PaymentTermsService;
+  products: ProductsService;
+
+  vatRates: VatRatesService;
+  measureUnits: MeasureUnitsService;
   workflows: WorkflowsService;
   payment: PaymentService;
   entityUser: EntityUserService;
@@ -41,6 +50,10 @@ class ApiService {
     this.partnerApi = new PartnerApiService({ config });
     this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });
+    this.paymentTerms = new PaymentTermsService({ config });
+    this.products = new ProductsService({ config });
+    this.measureUnits = new MeasureUnitsService({ config });
+    this.vatRates = new VatRatesService({ config });
     this.payable = new PayablesService({ config });
     this.tag = new TagService({ config });
     this.role = new RoleService({ config });

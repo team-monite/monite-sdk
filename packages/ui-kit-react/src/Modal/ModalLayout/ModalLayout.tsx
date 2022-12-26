@@ -21,6 +21,7 @@ type StyledModalLayoutProps = {
   $fullScreen?: boolean;
   $fullHeight?: boolean;
   $isDrawer?: boolean;
+  $scrollableContent?: boolean;
 };
 
 const SIZE_MAP: Record<ModalLayoutSize, string> = {
@@ -86,7 +87,8 @@ const StyledModalLayoutContent = styled.div<StyledModalLayoutProps>`
   outline: 0;
   flex-grow: 1;
   overflow: hidden;
-  position: relative;
+  ${({ $scrollableContent }) =>
+    $scrollableContent ? 'position: relative;' : ''}
 `;
 
 const StyledModalLayoutHeader = styled.div`
@@ -128,9 +130,10 @@ const ModalLayout = ({
       $fullScreen={fullScreen}
       $fullHeight={fullHeight}
       $isDrawer={isDrawer}
+      $scrollableContent={scrollableContent}
     >
       {header && <StyledModalLayoutHeader>{header}</StyledModalLayoutHeader>}
-      <StyledModalLayoutContent>
+      <StyledModalLayoutContent $scrollableContent={scrollableContent}>
         {scrollableContent ? (
           <StyledModalLayoutScroll>
             <StyledModalLayoutScrollContent>

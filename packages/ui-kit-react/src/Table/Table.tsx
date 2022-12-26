@@ -142,7 +142,7 @@ const NoData = styled(Text)`
   justify-content: center;
 `;
 
-interface TableProps extends RCTableProps {
+export interface TableProps extends RCTableProps {
   loading?: boolean;
   renderDropdownActions?: (value: any) => ReactNode;
 }

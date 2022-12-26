@@ -8,6 +8,7 @@ import {
   ReceivablesReceivablesStatusEnum,
   ReceivablesReceivableType,
   ReceivableResponse,
+  ReceivablesReceivableFacadeCreatePayload,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -21,7 +22,6 @@ export default class ReceivableService {
 
   /**
    * Get All
-   * @param xMoniteEntityId monite entity_id
    * @param order Order by
    * @param limit Max is 100
    * @param paginationToken A token, obtained from previous page. Prior over other filters
@@ -55,7 +55,6 @@ export default class ReceivableService {
    * @throws ApiError
    */
   public getAllReceivables(
-    xMoniteEntityId: string,
     order?: ReceivablesOrderEnum,
     limit: number = 100,
     paginationToken?: string,
@@ -90,9 +89,6 @@ export default class ReceivableService {
       {
         method: 'GET',
         url: `/${RECEIVABLES_ENDPOINT}`,
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         query: {
           order: order,
           limit: limit,
@@ -154,6 +150,36 @@ export default class ReceivableService {
           403: `Forbidden`,
           404: `Not found`,
           405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Create New Receivable
+   * @param requestBody
+   * @returns ReceivableResponse Successful Response
+   * @throws ApiError
+   */
+  public createNewReceivable(
+    requestBody: ReceivablesReceivableFacadeCreatePayload
+  ): CancelablePromise<ReceivableResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: '/receivables',
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          409: `Biz logic error`,
           422: `Validation Error`,
           500: `Internal Server Error`,
         },

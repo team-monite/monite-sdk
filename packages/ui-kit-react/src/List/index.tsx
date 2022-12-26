@@ -4,10 +4,6 @@ import styled from '@emotion/styled';
 const Wrapper = styled.div`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.neutral80};
-
-  > * + * {
-    border-top: 1px solid ${({ theme }) => theme.neutral80};
-  }
 `;
 
 type ListProps = {

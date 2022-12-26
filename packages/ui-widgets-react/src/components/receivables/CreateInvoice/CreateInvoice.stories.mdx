@@ -1,0 +1,28 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+import CreateInvoice from './CreateInvoice';
+
+import { RECEIVABLE_TYPES } from '../types';
+
+<Meta
+  title="Receivables/Receivables — Create Invoice"
+  component={CreateInvoice}
+  argTypes={{
+    type: {
+      options: Object.values(RECEIVABLE_TYPES),
+    },
+  }}
+/>
+
+export const Template = (args) => <CreateInvoice {...args} />;
+
+<Canvas>
+  <Story
+    name="Invoice Form"
+    args={{
+      type: RECEIVABLE_TYPES.INVOICE,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>

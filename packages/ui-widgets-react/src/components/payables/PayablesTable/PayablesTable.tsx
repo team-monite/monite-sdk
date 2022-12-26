@@ -56,7 +56,7 @@ const PayablesTable = ({
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
 }: Props) => {
-  const { t, monite } = useComponentsContext();
+  const { t } = useComponentsContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -69,7 +69,6 @@ const PayablesTable = ({
     isRefetching,
     refetch,
   } = usePayable(
-    monite.entityId,
     currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,

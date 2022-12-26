@@ -1,4 +1,11 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  Dropdown,
+  DropdownMenuItem,
+  Button,
+  UAngleDown,
+} from '@team-monite/ui-kit-react';
 import {
   CounterpartDetails,
   CounterpartsTable,
@@ -6,11 +13,11 @@ import {
 import { CounterpartType } from '@team-monite/sdk-api';
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import { Dropdown, DropdownMenuItem, Button } from '@team-monite/ui-kit-react';
 
 const PageCounterparts = () => {
-  const [counterpartId, setId] = useState<string | undefined>(undefined);
+  const { t } = useTranslation();
 
+  const [counterpartId, setId] = useState<string | undefined>(undefined);
   const [counterpartType, setType] = useState<CounterpartType | undefined>(
     undefined
   );
@@ -25,7 +32,13 @@ const PageCounterparts = () => {
       <PageHeader
         title="Counterparts"
         extra={
-          <Dropdown button={<Button>Create New</Button>}>
+          <Dropdown
+            button={
+              <Button rightIcon={<UAngleDown />}>
+                {t('common:createNew')}
+              </Button>
+            }
+          >
             <DropdownMenuItem
               onClick={() => setType(CounterpartType.ORGANIZATION)}
             >

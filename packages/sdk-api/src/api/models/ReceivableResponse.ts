@@ -10,3 +10,4 @@ export type ReceivableResponse =
   | ReceivablesQuoteResponsePayload
   | ReceivablesInvoiceResponsePayload
   | ReceivablesCreditNoteResponsePayload;
+

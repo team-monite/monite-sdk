@@ -11,6 +11,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
 
+  :not(:first-of-type) {
+    border-top: 1px solid ${({ theme }) => theme.neutral80};
+  }
+
   > div {
     flex: 1;
   }

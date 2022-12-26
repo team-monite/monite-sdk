@@ -233,7 +233,7 @@ const ReceivableTypeTab = ({
   onChangeSort: onChangeSortCallback,
   onRowClick,
 }: Props) => {
-  const { t, monite } = useComponentsContext();
+  const { t } = useComponentsContext();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -245,7 +245,6 @@ const ReceivableTypeTab = ({
     isLoading,
     isRefetching,
   } = useReceivables(
-    monite.entityId,
     currentSort
       ? (currentSort.order as unknown as ReceivablesOrderEnum)
       : undefined,

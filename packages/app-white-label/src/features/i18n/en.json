@@ -23,7 +23,10 @@
     "approvalPolicies": "Approval Policies"
   },
   "receivables": {
-    "sales": "Sales"
+    "sales": "Sales",
+    "invoice": "Invoice",
+    "quote": "Quote",
+    "creditNote": "Credit Note"
   },
   "forms": {
     "fields": {
