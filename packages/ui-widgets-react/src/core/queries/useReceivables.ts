@@ -34,23 +34,19 @@ export const useCreateReceivable = () => {
     ReceivableResponse,
     Error,
     ReceivablesReceivableFacadeCreatePayload
-  >(
-    (payload) =>
-      monite.api!.receivable.createNewReceivable(monite.entityId, payload),
-    {
-      onSuccess: (receivable) => {
-        invalidate();
-        toast.success(
-          t('receivables:notifications.createSuccess', {
-            name: receivable.counterpart_name,
-          })
-        );
-      },
-      onError: () => {
-        toast.error(t('receivables:notifications.createError'));
-      },
-    }
-  );
+  >((payload) => monite.api!.receivable.createNewReceivable(payload), {
+    onSuccess: (receivable) => {
+      invalidate();
+      toast.success(
+        t('receivables:notifications.createSuccess', {
+          name: receivable.counterpart_name,
+        })
+      );
+    },
+    onError: () => {
+      toast.error(t('receivables:notifications.createError'));
+    },
+  });
 };
 
 export const useReceivableById = (id?: string) => {

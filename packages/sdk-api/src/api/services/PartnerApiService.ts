@@ -1,7 +1,3 @@
-/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-
 import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
@@ -23,7 +19,6 @@ export default class PartnerApiService {
   /**
    * Get Payables
    * Lists all payables from the connected entity.
-   * @param xMoniteEntityId monite entity_id
    * @param order Sort order: `asc` (ascending) or `desc` (descending).
    * @param limit The maximum number of results to return per page.
    * @param paginationToken The pagination token to access the next or previous page of results. If `pagination_token` is specified, the `sort`, `order`, and filtering parameters are ignored.
@@ -52,7 +47,6 @@ export default class PartnerApiService {
    */
 
   public getPayables(
-    xMoniteEntityId: string,
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
@@ -81,9 +75,6 @@ export default class PartnerApiService {
       {
         method: 'GET',
         url: '/payables',
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         query: {
           order: order,
           limit: limit,

@@ -40,10 +40,10 @@ interface Props {
 }
 
 export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
-  const { t, monite } = useComponentsContext();
+  const { t } = useComponentsContext();
   const { data: counterparts } = useCounterpartList();
   const { data: paymentTerms } = usePaymentTerms();
-  const { data: measureUnits } = useMeasureUnits(monite.entityId);
+  const { data: measureUnits } = useMeasureUnits();
   const createReceivableMutation = useCreateReceivable();
 
   const formMethods = useForm<FormFields>({

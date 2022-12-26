@@ -1,6 +1,3 @@
-/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
 import type { api__v1__roles__pagination__CursorFields } from '../models/api__v1__roles__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
@@ -10,7 +7,6 @@ import type { PayableStateEnum } from '../models/PayableStateEnum';
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
-import { PayableResponseSchema } from '../models/PayableResponseSchema';
 
 export default class RoleService {
   openapiConfig: Partial<OpenAPIConfig>;

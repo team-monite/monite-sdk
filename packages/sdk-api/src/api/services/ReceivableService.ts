@@ -22,7 +22,6 @@ export default class ReceivableService {
 
   /**
    * Get All
-   * @param xMoniteEntityId monite entity_id
    * @param order Order by
    * @param limit Max is 100
    * @param paginationToken A token, obtained from previous page. Prior over other filters
@@ -56,7 +55,6 @@ export default class ReceivableService {
    * @throws ApiError
    */
   public getAllReceivables(
-    xMoniteEntityId: string,
     order?: ReceivablesOrderEnum,
     limit: number = 100,
     paginationToken?: string,
@@ -91,9 +89,6 @@ export default class ReceivableService {
       {
         method: 'GET',
         url: `/${RECEIVABLES_ENDPOINT}`,
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         query: {
           order: order,
           limit: limit,
@@ -165,22 +160,17 @@ export default class ReceivableService {
 
   /**
    * Create New Receivable
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @param requestBody
    * @returns ReceivableResponse Successful Response
    * @throws ApiError
    */
   public createNewReceivable(
-    xMoniteEntityId: string,
     requestBody: ReceivablesReceivableFacadeCreatePayload
   ): CancelablePromise<ReceivableResponse> {
     return __request(
       {
         method: 'POST',
         url: '/receivables',
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         body: requestBody,
         mediaType: 'application/json',
         errors: {

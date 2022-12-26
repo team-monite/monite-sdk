@@ -12,20 +12,14 @@ export default class ProductsService {
 
   /**
    * Get Units
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @returns ReceivablesUnitListResponse Successful Response
    * @throws ApiError
    */
-  public getUnits(
-    xMoniteEntityId: string
-  ): CancelablePromise<ReceivablesUnitListResponse> {
+  public getUnits(): CancelablePromise<ReceivablesUnitListResponse> {
     return __request(
       {
         method: 'GET',
         url: '/measure_units',
-        headers: {
-          'x-monite-entity-id': xMoniteEntityId,
-        },
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
