@@ -15,3 +15,6 @@ export * from './approvalPolicies/ApprovalPolicyCreate';
 export * from './payables/PayablesTable';
 export * from './receivables/ReceivablesTable';
 export * from './receivables/types';
+export * from './tags/TagsTable';
+export * from './tags/TagFormModal';
+export * from './tags/ConfirmDeleteModal';

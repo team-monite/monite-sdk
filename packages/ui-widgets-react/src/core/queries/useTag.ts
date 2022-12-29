@@ -1,23 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
+import { toast } from 'react-hot-toast';
 import {
-  PayableResponseSchema,
   TagCreateOrUpdateSchema,
   TagReadSchema,
-  TagsResponse,
+  TagsPaginationResponse,
+  TagService,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
-import { toast } from 'react-hot-toast';
-import { PAYABLE_QUERY_ID } from './usePayable';
-import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/src/utils';
+import { useEntityListCache } from './hooks';
 
-const TAG_QUERY_ID = 'tags';
+export const TAG_QUERY_ID = 'tags';
 
-export const useTagList = () => {
+const useTagListCache = () =>
+  useEntityListCache<TagReadSchema>(() => [TAG_QUERY_ID]);
+
+export const useTagList = (...args: Parameters<TagService['getList']>) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<TagsResponse, Error>(
-    [TAG_QUERY_ID],
-    () => monite.api!.tag.getList(),
+  return useQuery<TagsPaginationResponse, Error>(
+    [TAG_QUERY_ID, { variables: args }],
+    () => monite.api.tag.getList(...args),
     {
       onError: (error) => {
         toast.error(error.message);
@@ -26,30 +28,50 @@ export const useTagList = () => {
   );
 };
 
-export const useCreateTag = (id: string) => {
-  const queryClient = useQueryClient();
+export const useCreateTag = (...args: Parameters<TagService['create']>) => {
   const { monite } = useComponentsContext();
+  const { invalidate } = useTagListCache();
 
   return useMutation<TagReadSchema, Error, TagCreateOrUpdateSchema>(
-    (body) => monite.api!.tag.create(body),
+    (args) => monite.api.tag.create(args),
     {
-      onSuccess: async (tag) => {
-        await queryClient.setQueryData<Updater<TagsResponse, TagsResponse>>(
-          [TAG_QUERY_ID],
-          (tags: TagsResponse) => ({
-            ...tags,
-            tag,
-          })
-        );
+      onSuccess: () => {
+        invalidate();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
 
-        await queryClient.setQueryData<
-          Updater<PayableResponseSchema, PayableResponseSchema>
-        >([PAYABLE_QUERY_ID, { id }], (payable: PayableResponseSchema) => ({
-          ...payable,
-          tags: payable.tags ? [...payable.tags, tag] : [tag],
-        }));
+export const useUpdateTag = () => {
+  const { monite } = useComponentsContext();
+  const { invalidate } = useTagListCache();
 
-        toast.success('Tag created');
+  return useMutation<
+    TagReadSchema,
+    Error,
+    { id: string; payload: { name: string } }
+  >(({ id, payload }) => monite.api.tag.update(id, payload), {
+    onSuccess: () => {
+      invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+export const useDeleteTag = () => {
+  const { monite } = useComponentsContext();
+  const { invalidate } = useTagListCache();
+
+  return useMutation<void, Error, string>(
+    (tagId) => monite.api.tag.delete(tagId),
+    {
+      onSuccess: () => {
+        invalidate();
       },
       onError: (error) => {
         toast.error(error.message);

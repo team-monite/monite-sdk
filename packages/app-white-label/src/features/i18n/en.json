@@ -28,6 +28,10 @@
     "quote": "Quote",
     "creditNote": "Credit Note"
   },
+  "tags": {
+    "tags": "Tags",
+    "createNewTag": "Create new tag"
+  },
   "forms": {
     "fields": {
       "email": "Email",

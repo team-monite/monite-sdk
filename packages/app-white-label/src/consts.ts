@@ -10,6 +10,7 @@ export const ROUTES = {
   payResult: '/pay/:id/result',
   settings: '/settings',
   approvalPolicies: '/settings/approval-policies',
+  tags: '/settings/tags',
   dashboard: '/dashboard',
   receivables: '/receivables',
   products: '/products',
