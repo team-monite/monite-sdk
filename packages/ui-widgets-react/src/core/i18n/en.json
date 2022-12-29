@@ -242,6 +242,19 @@
       "rejected": "Rejected"
     }
   },
+
+  "onboarding": {
+    "actions": {
+      "save": "Save and close",
+      "continue": "Continue"
+    },
+    "footer": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "english": "English (US)",
+      "monite": "Powered by Monite"
+    }
+  },
   "receivables": {
     "quotes": "Quotes",
     "invoices": "Invoices",

@@ -9,7 +9,7 @@ const baseColors = {
   purple: '#A06DC8',
 };
 
-const palette = {
+export const palette = {
   primary30: '#1D59CC',
   primary50: baseColors.blue,
   primary60: '#5790FF',
