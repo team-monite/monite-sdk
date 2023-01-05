@@ -5,10 +5,10 @@ import type { ReceivableResponse } from '../models/ReceivableResponse';
 import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
 import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
+import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkResponse';
 import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
 import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
 import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
-import type { PublicPaymentLinkResponse } from '../models/PublicPaymentLinkResponse';
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -114,12 +114,12 @@ export default class PaymentService {
   /**
    * Get PaymentsPayment Link
    * @param paymentLinkId
-   * @returns PaymentsPaymentLinkResponse Successful Response
+   * @returns InternalPaymentLinkResponse Successful Response
    * @throws ApiError
    */
   public getPaymentLinkById(
     paymentLinkId: string
-  ): CancelablePromise<PublicPaymentLinkResponse> {
+  ): CancelablePromise<InternalPaymentLinkResponse> {
     return __request(
       {
         method: 'GET',

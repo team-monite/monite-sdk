@@ -1,5 +1,3 @@
-//@ts-nocheck
-//TODO: add types when on backend will be ready
 import React, { useEffect, useState, useMemo } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
@@ -9,7 +7,7 @@ import {
   useComponentsContext,
   EmptyScreen,
 } from '@team-monite/ui-widgets-react';
-import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 import { Tooltip, Box } from '@team-monite/ui-kit-react';
 
 import PaymentPage from 'pages/PaymentPage';
@@ -36,7 +34,7 @@ const App = () => {
     }
   }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<PublicPaymentLinkResponse>();
+  const [paymentData, setPaymentData] = useState<InternalPaymentLinkResponse>();
 
   const [isLoading, setIsLoading] = useState(true);
 

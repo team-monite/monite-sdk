@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { ReactNode, useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +10,7 @@ import {
   UExclamationTriangle,
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
-import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import { fromBase64 } from 'helpers';
 
@@ -54,7 +53,7 @@ export default function usePaymentResult() {
     }
   }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<PublicPaymentLinkResponse>();
+  const [paymentData, setPaymentData] = useState<InternalPaymentLinkResponse>();
   const [isLoading, setIsLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState<string>();
 

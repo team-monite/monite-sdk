@@ -9,13 +9,16 @@ import {
   StripeWidget,
 } from '@team-monite/ui-widgets-react';
 
-import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
+import {
+  PaymentsPaymentMethodsEnum,
+  PaymentIntentWithSecrets,
+} from '@team-monite/sdk-api';
 
 import { ROUTES } from 'consts';
 
 //TODO: add types
 type PaymentWidgetProps = {
-  paymentData: any;
+  paymentData: PaymentIntentWithSecrets;
   linkId: string;
 };
 

@@ -1,17 +1,25 @@
-//@ts-nocheck
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Flex, Box, Loading } from '@team-monite/ui-kit-react';
 import { PaymentDetails, EmptyScreen } from '@team-monite/ui-widgets-react';
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import Layout from 'pages/Layout';
 import PaymentWidget from 'pages/PaymentWidget';
 
-const PaymentPage = ({ paymentData, isLoading }) => {
+type PaymentPageProps = {
+  paymentData: InternalPaymentLinkResponse;
+  isLoading: boolean;
+};
+const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
   return (
     <Layout>
-      <Helmet title={`Pay invoice ${paymentData?.payment_reference || ''}`} />
+      <Helmet
+        title={`Pay invoice ${
+          paymentData?.payment_intent?.payment_reference || ''
+        }`}
+      />
 
       {isLoading && <Loading />}
 

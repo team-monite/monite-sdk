@@ -1,9 +1,9 @@
-//@ts-nocheck
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import { PaymentIntentWithSecrets } from '@team-monite/sdk-api';
+
 import { getReadableAmount } from 'core/utils';
 
 export type UsePayableDetailsProps = {
-  payment: PaymentsPaymentLinkResponse;
+  payment: PaymentIntentWithSecrets;
 };
 
 export default function usePaymentDetails({
