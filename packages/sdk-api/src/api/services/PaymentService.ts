@@ -2,7 +2,7 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
-import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
+import { MoniteAllPaymentMethodsTypes } from '../models/MoniteAllPaymentMethodsTypes';
 import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
 import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkResponse';
@@ -185,7 +185,7 @@ export default class PaymentService {
    * @throws ApiError
    */
   public getInstitutions(
-    paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+    paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
     country?: PaymentsYapilyCountriesCoverageCodes
   ): CancelablePromise<PaymentsPaymentsPaymentsPaymentsBanksResponse> {
     return __request(

@@ -1,13 +1,15 @@
 import { useState, useRef } from 'react';
 
 import {
-  PaymentsPaymentLinkResponse,
+  PaymentIntentWithSecrets,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
 } from '@team-monite/sdk-api';
 
+import { getDefaultBankAccount } from '../helpers';
+
 type UseBankPaymentProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
 };
 
 type UseBankPaymentReturnType = {
@@ -37,7 +39,7 @@ const getSteps = (selectedBank?: PaymentsPaymentsBank) => [
 ];
 
 export function useBankPayment({
-  paymentData,
+  paymentIntent,
 }: UseBankPaymentProps): UseBankPaymentReturnType {
   const [currentStep, setCurrentStep] = useState(BankPaymentSteps.BANK_LIST);
   const selectedBankRef = useRef<PaymentsPaymentsBank>();
@@ -58,13 +60,13 @@ export function useBankPayment({
     setCurrentStep(steps[prevStepIndex]);
   };
 
-  const [payerName, setPayerName] = useState(
-    paymentData.payer?.bank_account?.name || ''
-  );
+  const bankAccount = paymentIntent.payer?.bank_accounts
+    ? getDefaultBankAccount(paymentIntent.payer?.bank_accounts)
+    : null;
 
-  const [payerIban, setPayerIban] = useState(
-    paymentData.payer?.bank_account?.iban || ''
-  );
+  const [payerName, setPayerName] = useState(bankAccount?.name || '');
+
+  const [payerIban, setPayerIban] = useState(bankAccount?.iban || '');
 
   const setSelectedBank = (bank: PaymentsPaymentsBank) => {
     selectedBankRef.current = bank;

@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Alert, Box } from '@team-monite/ui-kit-react';
 import {
-  PaymentsPaymentMethodsEnum,
-  PaymentsPaymentLinkResponse,
+  MoniteAllPaymentMethodsTypes,
+  PaymentIntentWithSecrets,
   PaymentsPaymentsPaidBy,
 } from '@team-monite/sdk-api';
 
@@ -22,12 +22,12 @@ import { getReadableAmount } from 'core/utils';
 import * as Styled from './styles';
 
 type CheckoutFormProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
   linkId: string;
 };
 
 export default function CheckoutForm({
-  paymentData,
+  paymentIntent,
   linkId,
 }: CheckoutFormProps) {
   const { monite } = useComponentsContext();
@@ -42,9 +42,9 @@ export default function CheckoutForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentsPaymentMethodsEnum>();
+    useState<MoniteAllPaymentMethodsTypes>();
 
-  const { amount, currency, id } = paymentData;
+  const { amount, currency, id } = paymentIntent;
 
   const setMessage = (message: string) => {
     toast(message);
@@ -115,7 +115,7 @@ export default function CheckoutForm({
       <div>
         <PaymentElement
           onChange={(e) => {
-            setPaymentMethod(e.value.type as PaymentsPaymentMethodsEnum);
+            setPaymentMethod(e.value.type as MoniteAllPaymentMethodsTypes);
           }}
         />
       </div>

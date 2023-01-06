@@ -9,7 +9,7 @@ import Layout from 'pages/Layout';
 import PaymentWidget from 'pages/PaymentWidget';
 
 type PaymentPageProps = {
-  paymentData: InternalPaymentLinkResponse;
+  paymentData?: InternalPaymentLinkResponse;
   isLoading: boolean;
 };
 const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
@@ -39,13 +39,13 @@ const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
       >
         <Box width={['100%', '50%']}>
           {paymentData && (
-            <PaymentDetails payment={paymentData.payment_intent} />
+            <PaymentDetails paymentIntent={paymentData.payment_intent} />
           )}
         </Box>
         <Box width={['100%', '50%']}>
           {paymentData && (
             <PaymentWidget
-              paymentData={paymentData.payment_intent}
+              paymentIntent={paymentData.payment_intent}
               linkId={paymentData.id}
             />
           )}

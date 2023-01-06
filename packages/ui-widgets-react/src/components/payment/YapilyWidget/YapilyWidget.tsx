@@ -1,4 +1,4 @@
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import { PaymentIntentWithSecrets } from '@team-monite/sdk-api';
 
 import { useBankPayment, BankPaymentSteps } from './useBankPayment';
 
@@ -8,10 +8,10 @@ import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
 type YapilyWidgetProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
   onChangeMethod: () => void;
 };
-const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
+const YapilyWidget = ({ paymentIntent, onChangeMethod }: YapilyWidgetProps) => {
   const {
     currentStep,
     selectedBank,
@@ -24,7 +24,7 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
     setPayerName,
     payerIban,
     setPayerIban,
-  } = useBankPayment({ paymentData });
+  } = useBankPayment({ paymentIntent });
 
   return (
     <>
@@ -55,7 +55,7 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
         />
       )}
       {currentStep === BankPaymentSteps.CONFIRM && (
-        <InvoiceDetails bank={selectedBank} paymentData={paymentData} />
+        <InvoiceDetails bank={selectedBank} paymentIntent={paymentIntent} />
       )}
     </>
   );

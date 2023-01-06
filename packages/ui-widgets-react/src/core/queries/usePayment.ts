@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import {
   PaymentsPaymentsPaymentsPaymentsBanksResponse,
   PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentMethodsEnum,
+  MoniteAllPaymentMethodsTypes,
   PaymentsPaymentMethodsCountriesResponse,
   PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse,
 } from '@team-monite/sdk-api';
@@ -14,7 +14,7 @@ const PAYMENT_COUNTRIES = 'paymentCountries';
 const PAYMENT_FEE = 'paymentFee';
 
 export const useInstitutionList = (
-  paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+  paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
   country?: PaymentsYapilyCountriesCoverageCodes
 ) => {
   const { monite } = useComponentsContext();
@@ -38,7 +38,7 @@ export const useInstitutionList = (
 };
 
 export const useCountryList = (
-  paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT
+  paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT
 ) => {
   const { monite } = useComponentsContext();
 
@@ -54,7 +54,7 @@ export const useCountryList = (
 };
 
 export const useFeeByPaymentMethod = (
-  paymentMethod?: PaymentsPaymentMethodsEnum,
+  paymentMethod?: MoniteAllPaymentMethodsTypes,
   id?: string
 ) => {
   const { monite } = useComponentsContext();

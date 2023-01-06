@@ -10,20 +10,19 @@ import {
 } from '@team-monite/ui-widgets-react';
 
 import {
-  PaymentsPaymentMethodsEnum,
+  MoniteAllPaymentMethodsTypes,
   PaymentIntentWithSecrets,
 } from '@team-monite/sdk-api';
 
 import { ROUTES } from 'consts';
 
-//TODO: add types
 type PaymentWidgetProps = {
-  paymentData: PaymentIntentWithSecrets;
+  paymentIntent: PaymentIntentWithSecrets;
   linkId: string;
 };
 
-const PaymentWidget = ({ paymentData, linkId }: PaymentWidgetProps) => {
-  const { payment_methods, key } = paymentData;
+const PaymentWidget = ({ paymentIntent, linkId }: PaymentWidgetProps) => {
+  const { payment_methods, key } = paymentIntent;
 
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -31,12 +30,12 @@ const PaymentWidget = ({ paymentData, linkId }: PaymentWidgetProps) => {
   useEffect(() => {
     if (
       payment_methods?.length === 1 &&
-      payment_methods?.[0] === PaymentsPaymentMethodsEnum.SEPA_CREDIT
+      payment_methods?.[0] === MoniteAllPaymentMethodsTypes.SEPA_CREDIT
     ) {
       navigate(`${ROUTES.bank}${search}`, { replace: true });
     } else if (
       payment_methods?.length > 0 &&
-      !payment_methods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT)
+      !payment_methods.includes(MoniteAllPaymentMethodsTypes.SEPA_CREDIT)
     ) {
       navigate(`${ROUTES.checkout}${search}`, { replace: true });
     }
@@ -67,9 +66,9 @@ const PaymentWidget = ({ paymentData, linkId }: PaymentWidgetProps) => {
                 clientSecret={key.secret}
                 publishableSecret={key.publishable}
                 navButton={payment_methods?.includes(
-                  PaymentsPaymentMethodsEnum.SEPA_CREDIT
+                  MoniteAllPaymentMethodsTypes.SEPA_CREDIT
                 )}
-                paymentData={paymentData}
+                paymentIntent={paymentIntent}
                 handleBack={onChangeMethod}
                 linkId={linkId}
               />
@@ -80,7 +79,7 @@ const PaymentWidget = ({ paymentData, linkId }: PaymentWidgetProps) => {
           path={ROUTES.bank}
           element={
             <YapilyWidget
-              paymentData={paymentData}
+              paymentIntent={paymentIntent}
               onChangeMethod={onChangeMethod}
             />
           }

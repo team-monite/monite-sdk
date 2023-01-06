@@ -39,6 +39,7 @@ export { api__v1__payment_links__schemas__Recipient } from './models/api__v1__pa
 export type { ApprovalResponse } from './models/ApprovalResponse';
 export { ApprovalStatusEnum } from './models/ApprovalStatusEnum';
 export { AvailableCapabilitiesEnum } from './models/AvailableCapabilitiesEnum';
+export type { BankAccount } from './models/BankAccount';
 export type { BizObjectsSchema } from './models/BizObjectsSchema';
 export type { Body_upload_new_payable_payables_post } from './models/Body_upload_new_payable_payables_post';
 export { BusinessTypes } from './models/BusinessTypes';
@@ -165,6 +166,7 @@ export { MeasureUnitEnum } from './models/MeasureUnitEnum';
 export type { MentionSchema } from './models/MentionSchema';
 export type { MergedSettingsResponse } from './models/MergedSettingsResponse';
 export type { MessageResponse } from './models/MessageResponse';
+export { MoniteAllPaymentMethodsTypes } from './models/MoniteAllPaymentMethodsTypes';
 export type { Object } from './models/Object';
 export { ObjectType } from './models/ObjectType';
 export { ObjectTypeAvailableComment } from './models/ObjectTypeAvailableComment';

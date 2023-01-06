@@ -105,10 +105,11 @@ export default function usePaymentResult() {
     // eslint-disable-next-line
   }, [linkData?.id, stripe]);
 
-  const { amount, currency, return_url, payment_reference } =
+  const { amount, currency, payment_reference } =
     paymentData?.payment_intent || {};
 
-  const returnUrl = return_url === 'null' ? '' : return_url;
+  const returnUrl =
+    paymentData?.return_url === 'null' ? '' : paymentData?.return_url;
 
   const statusesMap: Record<
     ResultStatuses,

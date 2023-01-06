@@ -3,11 +3,11 @@ import { PaymentIntentWithSecrets } from '@team-monite/sdk-api';
 import { getReadableAmount } from 'core/utils';
 
 export type UsePayableDetailsProps = {
-  payment: PaymentIntentWithSecrets;
+  paymentIntent: PaymentIntentWithSecrets;
 };
 
 export default function usePaymentDetails({
-  payment: { currency, amount, payment_reference, invoice, recipient },
+  paymentIntent: { currency, amount, payment_reference, invoice, recipient },
 }: UsePayableDetailsProps) {
   return {
     recipient: recipient?.name,
