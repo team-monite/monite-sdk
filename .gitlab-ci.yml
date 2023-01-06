@@ -1,7 +1,8 @@
 include:
   - project: monite/infra/common-ci
     file: 'deploys.yml'
-
+  - project: monite/infra/common-ci
+    file: 'security.yaml'
 default:
   image: cimg/node:16.14.2-browsers #lts
 
