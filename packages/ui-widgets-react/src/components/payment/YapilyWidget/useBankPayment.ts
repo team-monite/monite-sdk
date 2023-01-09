@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 import {
   PaymentIntentWithSecrets,
@@ -7,6 +7,7 @@ import {
 } from '@team-monite/sdk-api';
 
 import { getDefaultBankAccount } from '../helpers';
+import { useAuthorizePaymentLink } from 'core/queries/usePayment';
 
 type UseBankPaymentProps = {
   paymentIntent: PaymentIntentWithSecrets;
@@ -24,6 +25,7 @@ type UseBankPaymentReturnType = {
   setPayerName: (name: string) => void;
   payerIban: string;
   setPayerIban: (iban: string) => void;
+  authorizePayment: () => void;
 };
 
 export enum BankPaymentSteps {
@@ -72,6 +74,19 @@ export function useBankPayment({
     selectedBankRef.current = bank;
   };
 
+  const authorizePaymentMutation = useAuthorizePaymentLink(paymentIntent.id);
+
+  const authorizePayment = useCallback(async () => {
+    selectedBankRef.current &&
+      (await authorizePaymentMutation.mutateAsync({
+        bank_id: selectedBankRef.current?.id,
+        payer_account_identification: {
+          type: 'IBAN',
+          value: payerIban,
+        },
+      }));
+  }, [authorizePaymentMutation]);
+
   return {
     currentStep,
     selectedBank: selectedBankRef.current,
@@ -84,5 +99,6 @@ export function useBankPayment({
     setPayerName,
     payerIban,
     setPayerIban,
+    authorizePayment,
   };
 }

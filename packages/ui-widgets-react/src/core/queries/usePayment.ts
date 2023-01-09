@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import {
   PaymentsPaymentsPaymentsPaymentsBanksResponse,
   PaymentsYapilyCountriesCoverageCodes,
@@ -12,6 +12,7 @@ import { toast } from 'react-hot-toast';
 const PAYMENT_INSTITUTIONS = 'paymentInstitutions';
 const PAYMENT_COUNTRIES = 'paymentCountries';
 const PAYMENT_FEE = 'paymentFee';
+const PAYMENT_AUTHORIZE = 'paymentAuthorize';
 
 export const useInstitutionList = (
   paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
@@ -75,6 +76,37 @@ export const useFeeByPaymentMethod = (
         toast.error(error.message);
       },
       enabled: !!paymentMethod && !!id,
+    }
+  );
+};
+
+export type AuthorizePaymentLinkPayload = {
+  bank_id: string;
+  payer_account_identification: {
+    type: string;
+    value: string;
+  };
+};
+
+export const useAuthorizePaymentLink = (id: string) => {
+  const { monite } = useComponentsContext();
+
+  return useMutation<
+    { authorization_link: string } | undefined,
+    Error,
+    AuthorizePaymentLinkPayload
+  >(
+    [PAYMENT_AUTHORIZE],
+    (body) => {
+      return monite.api.payment.authorizePaymentLink(id, body);
+    },
+    {
+      onSuccess: () => {
+        // toast.success('Saved');
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     }
   );
 };

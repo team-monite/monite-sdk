@@ -214,4 +214,44 @@ export default class PaymentService {
       this.openapiConfig
     );
   }
+
+  /**
+   * Authorize Payment Link
+   * @param paymentLinkId
+   * @param requestBody
+   * @returns Successful Response
+   * @throws ApiError
+   */
+  public authorizePaymentLink(
+    paymentIntentId: string,
+    requestBody: {
+      bank_id: string;
+      payer_account_identification: {
+        type: string;
+        value: string;
+      };
+    }
+  ): CancelablePromise<any> {
+    return __request(
+      {
+        method: 'POST',
+        url: `/internal/payment_intents/${paymentIntentId}/authorize`,
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
 }

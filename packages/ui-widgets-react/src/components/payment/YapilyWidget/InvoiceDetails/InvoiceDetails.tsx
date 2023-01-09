@@ -24,6 +24,7 @@ import { getDefaultBankAccount } from '../../helpers';
 type InvoiceDetailsProps = {
   bank?: PaymentsPaymentsBank;
   paymentIntent: PaymentIntentWithSecrets;
+  authorizePayment: () => void;
 };
 
 const StyledLabel = styled(Box)`
@@ -38,7 +39,11 @@ const StyledDetails = styled(List)`
   margin: 32px 0;
 `;
 
-const InvoiceDetails = ({ bank, paymentIntent }: InvoiceDetailsProps) => {
+const InvoiceDetails = ({
+  bank,
+  paymentIntent,
+  authorizePayment,
+}: InvoiceDetailsProps) => {
   const { t } = useTranslation();
 
   const logo = bank?.media.find(
@@ -153,7 +158,7 @@ const InvoiceDetails = ({ bank, paymentIntent }: InvoiceDetailsProps) => {
         ))}
       </Flex>
 
-      <Button type="submit" block>
+      <Button type="submit" block onClick={authorizePayment}>
         {t('payment:bankWidget.continue')}
       </Button>
     </Box>

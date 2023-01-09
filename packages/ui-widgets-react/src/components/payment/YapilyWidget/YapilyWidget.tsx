@@ -24,6 +24,7 @@ const YapilyWidget = ({ paymentIntent, onChangeMethod }: YapilyWidgetProps) => {
     setPayerName,
     payerIban,
     setPayerIban,
+    authorizePayment,
   } = useBankPayment({ paymentIntent });
 
   return (
@@ -55,7 +56,11 @@ const YapilyWidget = ({ paymentIntent, onChangeMethod }: YapilyWidgetProps) => {
         />
       )}
       {currentStep === BankPaymentSteps.CONFIRM && (
-        <InvoiceDetails bank={selectedBank} paymentIntent={paymentIntent} />
+        <InvoiceDetails
+          bank={selectedBank}
+          paymentIntent={paymentIntent}
+          authorizePayment={authorizePayment}
+        />
       )}
     </>
   );
