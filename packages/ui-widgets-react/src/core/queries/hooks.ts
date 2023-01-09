@@ -66,6 +66,16 @@ export const useEntityListCache = <TInput extends EntityType>(
         key(),
         (list: TInput[]) => list.filter((entity) => entity.id !== id)
       ),
+    // async (id: string) => {
+    //   return queryClient.setQueryData<
+    //     Updater<{ data: TInput[] }, { data: TInput[] }>
+    //   >(
+    //     ['tags', { variables: [null, 10, null, null] }],
+    //     (list: { data: TInput[] }) => {
+    //       return { data: list.data.filter((entity) => entity.id !== id) };
+    //     }
+    //   );
+    // },
     [queryClient, key]
   );
 

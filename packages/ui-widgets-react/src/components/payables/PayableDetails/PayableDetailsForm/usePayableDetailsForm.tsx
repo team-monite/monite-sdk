@@ -34,7 +34,7 @@ export default function usePayableDetailsForm({
   const counterpartQuery = useCounterpartList(monite.entityId);
   // const entityUserQuery = useEntityById(payable.was_created_by_user_id);
   const payableSaveMutation = useUpdatePayableById(payable.id);
-  const tagCreateMutation = useCreateTag({ name: payable.id });
+  const tagCreateMutation = useCreateTag();
 
   const saveInvoice = useCallback(
     async (data: PayableUpdateSchema) => {
