@@ -1,11 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  Button,
-  Modal,
-  ModalLayout,
-  Spinner,
-  Text,
-} from '@team-monite/ui-kit-react';
+import { Button, Modal, ModalLayout, Text } from '@team-monite/ui-kit-react';
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
@@ -84,9 +78,7 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
                 color="danger"
                 onClick={handleDelete}
                 disabled={deleteTagMutation.isLoading}
-                rightIcon={
-                  deleteTagMutation.isLoading && <Spinner pxSize={16} />
-                }
+                isLoading={deleteTagMutation.isLoading}
               >
                 {t('common:delete')}
               </Button>

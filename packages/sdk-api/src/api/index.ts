@@ -397,3 +397,4 @@ export { default as PaymentTermsService } from './services/PaymentTermsService';
 export { default as MeasureUnitsService } from './services/MeasureUnitsService';
 export { default as VatRatesService } from './services/VatRatesService';
 export { default as TagService } from './services/TagService';
+export * from './ApiError';
