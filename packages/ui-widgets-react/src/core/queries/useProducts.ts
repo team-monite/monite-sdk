@@ -15,7 +15,7 @@ export const useProducts = (
   return useInfiniteQuery<ProductServiceReceivablesPaginationResponse, Error>(
     [PRODUCT_QUERY_ID, { variables: args }],
     ({ pageParam }) => {
-      args[3] = pageParam;
+      args[2] = pageParam;
       return monite.api.products.getProducts(...args);
     },
     {
