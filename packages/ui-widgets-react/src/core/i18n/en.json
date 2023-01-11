@@ -337,6 +337,12 @@
     "requiredField": " is required",
     "validEmail": " must be a valid email"
   },
+  "validation": {
+    "string": {
+      "min": "Value must be at least {{min}} characters",
+      "max": "Value must be at most {{max}} characters"
+    }
+  },
   "common": {
     "welcome": "Welcome",
     "edit": "Edit",

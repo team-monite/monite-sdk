@@ -40,18 +40,6 @@ export const tagsHandlers = [
       return res(ctx.json(tagListFixture[0]));
     }
   ),
-  // create tag error
-  // rest.post<TagCreateOrUpdateSchema, {}, ErrorSchema>(
-  //   tagsPath,
-  //   (req, res, ctx) => {
-  //     return res(
-  //       ctx.status(400),
-  //       ctx.json({
-  //         message: 'Error',
-  //       })
-  //     );
-  //   }
-  // ),
 
   // update tag
   rest.patch<TagCreateOrUpdateSchema, {}, TagReadSchema>(

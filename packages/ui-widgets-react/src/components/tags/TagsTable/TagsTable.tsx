@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import {
@@ -84,6 +84,12 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     currentPaginationToken || undefined,
     currentSort ? currentSort.sort : undefined
   );
+
+  useEffect(() => {
+    if (currentPaginationToken && tags?.data.length === 0) {
+      setCurrentPaginationToken(null);
+    }
+  }, [tags]);
 
   const onPrev = () =>
     setCurrentPaginationToken(tags?.prev_pagination_token || null);
