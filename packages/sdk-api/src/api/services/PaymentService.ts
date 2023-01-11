@@ -9,6 +9,9 @@ import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkR
 import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
 import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
 import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
+import type { AuthPaymentIntentPayload } from '../models/AuthPaymentIntentPayload';
+import type { AuthPaymentIntentResponse } from '../models/AuthPaymentIntentResponse';
+
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -224,14 +227,8 @@ export default class PaymentService {
    */
   public authorizePaymentLink(
     paymentIntentId: string,
-    requestBody: {
-      bank_id: string;
-      payer_account_identification: {
-        type: string;
-        value: string;
-      };
-    }
-  ): CancelablePromise<any> {
+    requestBody: AuthPaymentIntentPayload
+  ): CancelablePromise<AuthPaymentIntentResponse> {
     return __request(
       {
         method: 'POST',

@@ -46,6 +46,8 @@ export default function usePaymentResult() {
 
   const clientSecret = urlParams.get('payment_intent_client_secret');
 
+  const yapilyConsent = urlParams.get('consent');
+
   const stripe = useStripe();
   const linkData = useMemo(() => {
     if (rawPaymentData) {
@@ -90,10 +92,11 @@ export default function usePaymentResult() {
           const { paymentIntent } = await stripe.retrievePaymentIntent(
             clientSecret
           );
-
           if (paymentIntent && paymentIntent.status) {
             setPaymentStatus(getStatus(paymentIntent?.status));
           }
+        } else if (data?.payment_intent.status === 'created' && yapilyConsent) {
+          setPaymentStatus(ResultStatuses.Processing);
         } else {
           setPaymentStatus(ResultStatuses.Error);
         }

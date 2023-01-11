@@ -4,6 +4,7 @@ import {
   PaymentIntentWithSecrets,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
+  api__endpoints__payment_intents__schemas__AccountType,
 } from '@team-monite/sdk-api';
 
 import { getDefaultBankAccount } from '../helpers';
@@ -11,6 +12,7 @@ import { useAuthorizePaymentLink } from 'core/queries/usePayment';
 
 type UseBankPaymentProps = {
   paymentIntent: PaymentIntentWithSecrets;
+  onAuthorizePayment: (url: string) => void;
 };
 
 type UseBankPaymentReturnType = {
@@ -42,6 +44,7 @@ const getSteps = (selectedBank?: PaymentsPaymentsBank) => [
 
 export function useBankPayment({
   paymentIntent,
+  onAuthorizePayment,
 }: UseBankPaymentProps): UseBankPaymentReturnType {
   const [currentStep, setCurrentStep] = useState(BankPaymentSteps.BANK_LIST);
   const selectedBankRef = useRef<PaymentsPaymentsBank>();
@@ -74,14 +77,17 @@ export function useBankPayment({
     selectedBankRef.current = bank;
   };
 
-  const authorizePaymentMutation = useAuthorizePaymentLink(paymentIntent.id);
+  const authorizePaymentMutation = useAuthorizePaymentLink(
+    paymentIntent.id,
+    onAuthorizePayment
+  );
 
   const authorizePayment = useCallback(async () => {
     selectedBankRef.current &&
       (await authorizePaymentMutation.mutateAsync({
-        bank_id: selectedBankRef.current?.id,
+        bank_id: selectedBankRef.current?.code,
         payer_account_identification: {
-          type: 'IBAN',
+          type: api__endpoints__payment_intents__schemas__AccountType.IBAN,
           value: payerIban,
         },
       }));

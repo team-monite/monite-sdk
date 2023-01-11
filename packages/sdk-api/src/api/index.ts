@@ -36,9 +36,12 @@ export { api__v1__webhook_settings__pagination__CursorFields } from './models/ap
 export { api__v1__webhooks__pagination__CursorFields } from './models/api__v1__webhooks__pagination__CursorFields';
 export { api__v1__workflows__pagination__CursorFields } from './models/api__v1__workflows__pagination__CursorFields';
 export { api__v1__payment_links__schemas__Recipient } from './models/api__v1__payment_links__schemas__Recipient';
+export { api__endpoints__payment_intents__schemas__AccountType } from './models/api__endpoints__payment_intents__schemas__AccountType';
 export type { ApprovalResponse } from './models/ApprovalResponse';
 export { ApprovalStatusEnum } from './models/ApprovalStatusEnum';
 export { AvailableCapabilitiesEnum } from './models/AvailableCapabilitiesEnum';
+export type { AuthPaymentIntentPayload } from './models/AuthPaymentIntentPayload';
+export type { AuthPaymentIntentResponse } from './models/AuthPaymentIntentResponse';
 export type { BankAccount } from './models/BankAccount';
 export type { BizObjectsSchema } from './models/BizObjectsSchema';
 export type { Body_upload_new_payable_payables_post } from './models/Body_upload_new_payable_payables_post';

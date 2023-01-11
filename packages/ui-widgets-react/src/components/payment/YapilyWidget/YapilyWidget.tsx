@@ -10,8 +10,13 @@ import NavHeader from '../NavHeader';
 type YapilyWidgetProps = {
   paymentIntent: PaymentIntentWithSecrets;
   onChangeMethod: () => void;
+  onAuthorizePayment: (url: string) => void;
 };
-const YapilyWidget = ({ paymentIntent, onChangeMethod }: YapilyWidgetProps) => {
+const YapilyWidget = ({
+  paymentIntent,
+  onChangeMethod,
+  onAuthorizePayment,
+}: YapilyWidgetProps) => {
   const {
     currentStep,
     selectedBank,
@@ -25,7 +30,7 @@ const YapilyWidget = ({ paymentIntent, onChangeMethod }: YapilyWidgetProps) => {
     payerIban,
     setPayerIban,
     authorizePayment,
-  } = useBankPayment({ paymentIntent });
+  } = useBankPayment({ paymentIntent, onAuthorizePayment });
 
   return (
     <>

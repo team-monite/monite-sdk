@@ -81,6 +81,7 @@ const PaymentWidget = ({ paymentIntent, linkId }: PaymentWidgetProps) => {
             <YapilyWidget
               paymentIntent={paymentIntent}
               onChangeMethod={onChangeMethod}
+              onAuthorizePayment={(url: string) => window.location.replace(url)}
             />
           }
         />

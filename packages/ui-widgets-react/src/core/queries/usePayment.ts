@@ -5,6 +5,8 @@ import {
   MoniteAllPaymentMethodsTypes,
   PaymentsPaymentMethodsCountriesResponse,
   PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse,
+  AuthPaymentIntentResponse,
+  AuthPaymentIntentPayload,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -80,29 +82,23 @@ export const useFeeByPaymentMethod = (
   );
 };
 
-export type AuthorizePaymentLinkPayload = {
-  bank_id: string;
-  payer_account_identification: {
-    type: string;
-    value: string;
-  };
-};
-
-export const useAuthorizePaymentLink = (id: string) => {
+export const useAuthorizePaymentLink = (
+  id: string,
+  onAuthorizePayment: (url: string) => void
+) => {
   const { monite } = useComponentsContext();
 
   return useMutation<
-    { authorization_link: string } | undefined,
+    AuthPaymentIntentResponse | undefined,
     Error,
-    AuthorizePaymentLinkPayload
+    AuthPaymentIntentPayload
   >(
     [PAYMENT_AUTHORIZE],
-    (body) => {
-      return monite.api.payment.authorizePaymentLink(id, body);
-    },
+    (body) => monite.api.payment.authorizePaymentLink(id, body),
     {
-      onSuccess: () => {
-        // toast.success('Saved');
+      onSuccess: (response) => {
+        response?.authorization_url &&
+          onAuthorizePayment(response?.authorization_url);
       },
       onError: (error) => {
         toast.error(error.message);
