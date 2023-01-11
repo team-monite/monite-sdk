@@ -31,7 +31,9 @@ enum ResultStatuses {
   Error = 'error',
 }
 
-export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
+export default function usePaymentResult(
+  paymentData?: InternalPaymentLinkResponse
+) {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
   const { search } = useLocation();
@@ -44,9 +46,6 @@ export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
 
   const stripe = useStripe();
 
-  const [paymentData, setPaymentData] = useState<
-    InternalPaymentLinkResponse | undefined
-  >(data);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState<string>();
 
@@ -70,12 +69,11 @@ export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
 
   useEffect(() => {
     (async () => {
-      if (data) {
-        setPaymentData(data);
-        if (data?.payment_intent.status !== 'created') {
-          setPaymentStatus(getStatus(data?.payment_intent.status));
+      if (paymentData) {
+        if (paymentData?.payment_intent.status !== 'created') {
+          setPaymentStatus(getStatus(paymentData?.payment_intent.status));
         } else if (
-          data?.payment_intent.status === 'created' &&
+          paymentData?.payment_intent.status === 'created' &&
           clientSecret &&
           stripe
         ) {
@@ -85,7 +83,10 @@ export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
           if (paymentIntent && paymentIntent.status) {
             setPaymentStatus(getStatus(paymentIntent?.status));
           }
-        } else if (data?.payment_intent.status === 'created' && yapilyConsent) {
+        } else if (
+          paymentData?.payment_intent.status === 'created' &&
+          yapilyConsent
+        ) {
           setPaymentStatus(ResultStatuses.Processing);
         } else {
           setPaymentStatus(ResultStatuses.Error);
@@ -96,15 +97,24 @@ export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
       }
     })();
     // eslint-disable-next-line
-  }, [stripe, data]);
+  }, [stripe, paymentData]);
 
   useEffect(() => {
-    if (yapilyConsent && paymentData?.payment_intent.id) {
+    if (
+      yapilyConsent &&
+      paymentData?.payment_intent.id &&
+      paymentData?.payment_intent.status === 'created'
+    ) {
       monite.api.payment.createYapilyPayment(paymentData?.payment_intent?.id, {
         consent: yapilyConsent,
       });
     }
-  }, [paymentData?.payment_intent.id, yapilyConsent, monite.api.payment]);
+  }, [
+    paymentData?.payment_intent.id,
+    yapilyConsent,
+    monite.api.payment,
+    paymentData?.payment_intent.status,
+  ]);
 
   const { amount, currency, payment_reference } =
     paymentData?.payment_intent || {};
