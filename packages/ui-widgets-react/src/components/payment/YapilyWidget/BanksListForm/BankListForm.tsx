@@ -9,7 +9,7 @@ import {
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentsMedia,
-  PaymentsPaymentMethodsEnum,
+  MoniteAllPaymentMethodsTypes,
 } from '@team-monite/sdk-api';
 import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
 
@@ -94,12 +94,12 @@ const BankListForm = ({
   const theme = useTheme<Theme>();
 
   const { data: countriesData } = useCountryList(
-    PaymentsPaymentMethodsEnum.SEPA_CREDIT
+    MoniteAllPaymentMethodsTypes.SEPA_CREDIT
   );
 
   const { data: banksData, refetch: refetchInstitutionList } =
     useInstitutionList(
-      PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+      MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
       selectedCountry as PaymentsYapilyCountriesCoverageCodes
     );
 

@@ -1,10 +1,12 @@
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import {
   PaymentsPaymentsPaymentsPaymentsBanksResponse,
   PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentMethodsEnum,
+  MoniteAllPaymentMethodsTypes,
   PaymentsPaymentMethodsCountriesResponse,
   PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse,
+  AuthPaymentIntentResponse,
+  AuthPaymentIntentPayload,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { toast } from 'react-hot-toast';
@@ -12,9 +14,10 @@ import { toast } from 'react-hot-toast';
 const PAYMENT_INSTITUTIONS = 'paymentInstitutions';
 const PAYMENT_COUNTRIES = 'paymentCountries';
 const PAYMENT_FEE = 'paymentFee';
+const PAYMENT_AUTHORIZE = 'paymentAuthorize';
 
 export const useInstitutionList = (
-  paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+  paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
   country?: PaymentsYapilyCountriesCoverageCodes
 ) => {
   const { monite } = useComponentsContext();
@@ -38,7 +41,7 @@ export const useInstitutionList = (
 };
 
 export const useCountryList = (
-  paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT
+  paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT
 ) => {
   const { monite } = useComponentsContext();
 
@@ -54,7 +57,7 @@ export const useCountryList = (
 };
 
 export const useFeeByPaymentMethod = (
-  paymentMethod?: PaymentsPaymentMethodsEnum,
+  paymentMethod?: MoniteAllPaymentMethodsTypes,
   id?: string
 ) => {
   const { monite } = useComponentsContext();
@@ -75,6 +78,31 @@ export const useFeeByPaymentMethod = (
         toast.error(error.message);
       },
       enabled: !!paymentMethod && !!id,
+    }
+  );
+};
+
+export const useAuthorizePaymentLink = (
+  id: string,
+  onAuthorizePayment: (url: string) => void
+) => {
+  const { monite } = useComponentsContext();
+
+  return useMutation<
+    AuthPaymentIntentResponse | undefined,
+    Error,
+    AuthPaymentIntentPayload
+  >(
+    [PAYMENT_AUTHORIZE],
+    (body) => monite.api.payment.authorizePaymentLink(id, body),
+    {
+      onSuccess: (response) => {
+        response?.authorization_url &&
+          onAuthorizePayment(response?.authorization_url);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     }
   );
 };

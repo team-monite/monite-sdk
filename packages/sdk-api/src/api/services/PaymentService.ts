@@ -2,13 +2,17 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
-import { PaymentsPaymentMethodsEnum } from '../models/PaymentsPaymentMethodsEnum';
+import { MoniteAllPaymentMethodsTypes } from '../models/MoniteAllPaymentMethodsTypes';
 import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
 import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
+import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkResponse';
 import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
 import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
 import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
-import type { PublicPaymentLinkResponse } from '../models/PublicPaymentLinkResponse';
+import type { AuthPaymentIntentPayload } from '../models/AuthPaymentIntentPayload';
+import type { AuthPaymentIntentResponse } from '../models/AuthPaymentIntentResponse';
+import type { ConsentPayload } from '../models/ConsentPayload';
+
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
 
@@ -114,12 +118,12 @@ export default class PaymentService {
   /**
    * Get PaymentsPayment Link
    * @param paymentLinkId
-   * @returns PaymentsPaymentLinkResponse Successful Response
+   * @returns InternalPaymentLinkResponse Successful Response
    * @throws ApiError
    */
   public getPaymentLinkById(
     paymentLinkId: string
-  ): CancelablePromise<PublicPaymentLinkResponse> {
+  ): CancelablePromise<InternalPaymentLinkResponse> {
     return __request(
       {
         method: 'GET',
@@ -185,7 +189,7 @@ export default class PaymentService {
    * @throws ApiError
    */
   public getInstitutions(
-    paymentMethod: PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+    paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
     country?: PaymentsYapilyCountriesCoverageCodes
   ): CancelablePromise<PaymentsPaymentsPaymentsPaymentsBanksResponse> {
     return __request(
@@ -198,6 +202,74 @@ export default class PaymentService {
         query: {
           country: country,
         },
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Authorize Payment Link
+   * @param paymentIntentId
+   * @param requestBody
+   * @returns Successful Response
+   * @throws ApiError
+   */
+  public authorizePaymentLink(
+    paymentIntentId: string,
+    requestBody: AuthPaymentIntentPayload
+  ): CancelablePromise<AuthPaymentIntentResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: `/internal/payment_intents/${paymentIntentId}/authorize`,
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Create Yapily Payment
+   * @param paymentIntentId
+   * @param requestBody
+   * @returns Successful Response
+   * @throws ApiError
+   */
+  public createYapilyPayment(
+    paymentIntentId: string,
+    requestBody: ConsentPayload
+  ): CancelablePromise<AuthPaymentIntentResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: `/internal/payment_intents/${paymentIntentId}/payments`,
+        body: requestBody,
+        mediaType: 'application/json',
         errors: {
           400: `Bad Request`,
           401: `Unauthorized`,
