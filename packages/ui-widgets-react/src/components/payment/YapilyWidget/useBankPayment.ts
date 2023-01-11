@@ -28,6 +28,7 @@ type UseBankPaymentReturnType = {
   payerIban: string;
   setPayerIban: (iban: string) => void;
   authorizePayment: () => void;
+  isLoadingAuthorize: boolean;
 };
 
 export enum BankPaymentSteps {
@@ -106,5 +107,6 @@ export function useBankPayment({
     payerIban,
     setPayerIban,
     authorizePayment,
+    isLoadingAuthorize: authorizePaymentMutation.isLoading,
   };
 }

@@ -11,6 +11,7 @@ import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYap
 import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
 import type { AuthPaymentIntentPayload } from '../models/AuthPaymentIntentPayload';
 import type { AuthPaymentIntentResponse } from '../models/AuthPaymentIntentResponse';
+import type { ConsentPayload } from '../models/ConsentPayload';
 
 export default class PaymentService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -220,7 +221,7 @@ export default class PaymentService {
 
   /**
    * Authorize Payment Link
-   * @param paymentLinkId
+   * @param paymentIntentId
    * @param requestBody
    * @returns Successful Response
    * @throws ApiError
@@ -233,6 +234,40 @@ export default class PaymentService {
       {
         method: 'POST',
         url: `/internal/payment_intents/${paymentIntentId}/authorize`,
+        body: requestBody,
+        mediaType: 'application/json',
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          404: `Not found`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          409: `Biz logic error`,
+          416: `Requested Range Not Satisfiable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
+  /**
+   * Create Yapily Payment
+   * @param paymentIntentId
+   * @param requestBody
+   * @returns Successful Response
+   * @throws ApiError
+   */
+  public createYapilyPayment(
+    paymentIntentId: string,
+    requestBody: ConsentPayload
+  ): CancelablePromise<AuthPaymentIntentResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: `/internal/payment_intents/${paymentIntentId}/payments`,
         body: requestBody,
         mediaType: 'application/json',
         errors: {

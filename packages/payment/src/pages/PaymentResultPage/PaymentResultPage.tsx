@@ -12,10 +12,16 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
+
 import Layout from '../Layout';
 import usePaymentResult from './usePaymentResult';
 
-export const PaymentResultPage = () => {
+export const PaymentResultPage = ({
+  paymentData,
+}: {
+  paymentData?: InternalPaymentLinkResponse;
+}) => {
   const theme = useTheme<Theme>();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -28,7 +34,7 @@ export const PaymentResultPage = () => {
     currency,
     returnUrl,
     paymentReference,
-  } = usePaymentResult();
+  } = usePaymentResult(paymentData);
 
   return (
     <Layout>

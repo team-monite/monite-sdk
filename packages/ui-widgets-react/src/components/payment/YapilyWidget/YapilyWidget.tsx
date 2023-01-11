@@ -30,6 +30,7 @@ const YapilyWidget = ({
     payerIban,
     setPayerIban,
     authorizePayment,
+    isLoadingAuthorize,
   } = useBankPayment({ paymentIntent, onAuthorizePayment });
 
   return (
@@ -65,6 +66,7 @@ const YapilyWidget = ({
           bank={selectedBank}
           paymentIntent={paymentIntent}
           authorizePayment={authorizePayment}
+          isLoading={isLoadingAuthorize}
         />
       )}
     </>

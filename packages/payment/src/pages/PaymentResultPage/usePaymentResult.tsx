@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect, useMemo } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'emotion-theming';
@@ -11,10 +11,6 @@ import {
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
 import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
-
-import { fromBase64 } from 'helpers';
-
-import { URLData } from '../types';
 
 enum StripeResultStatuses {
   // RequiresPaymentMethod = 'requires_payment_method',
@@ -35,27 +31,22 @@ enum ResultStatuses {
   Error = 'error',
 }
 
-export default function usePaymentResult() {
+export default function usePaymentResult(data?: InternalPaymentLinkResponse) {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
   const { search } = useLocation();
 
   const urlParams = new URLSearchParams(search);
 
-  const rawPaymentData = urlParams.get('data');
-
   const clientSecret = urlParams.get('payment_intent_client_secret');
 
   const yapilyConsent = urlParams.get('consent');
 
   const stripe = useStripe();
-  const linkData = useMemo(() => {
-    if (rawPaymentData) {
-      return fromBase64(rawPaymentData) as URLData;
-    }
-  }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<InternalPaymentLinkResponse>();
+  const [paymentData, setPaymentData] = useState<
+    InternalPaymentLinkResponse | undefined
+  >(data);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState<string>();
 
@@ -79,8 +70,7 @@ export default function usePaymentResult() {
 
   useEffect(() => {
     (async () => {
-      if (linkData?.id) {
-        const data = await monite.api.payment.getPaymentLinkById(linkData.id);
+      if (data) {
         setPaymentData(data);
         if (data?.payment_intent.status !== 'created') {
           setPaymentStatus(getStatus(data?.payment_intent.status));
@@ -106,7 +96,15 @@ export default function usePaymentResult() {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData?.id, stripe]);
+  }, [stripe, data]);
+
+  useEffect(() => {
+    if (yapilyConsent && paymentData?.payment_intent.id) {
+      monite.api.payment.createYapilyPayment(paymentData?.payment_intent?.id, {
+        consent: yapilyConsent,
+      });
+    }
+  }, [paymentData?.payment_intent.id, yapilyConsent, monite.api.payment]);
 
   const { amount, currency, payment_reference } =
     paymentData?.payment_intent || {};

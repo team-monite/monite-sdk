@@ -10,6 +10,7 @@ import {
   Flex,
   List,
   ListItem,
+  Spinner,
 } from '@team-monite/ui-kit-react';
 
 import {
@@ -25,6 +26,7 @@ type InvoiceDetailsProps = {
   bank?: PaymentsPaymentsBank;
   paymentIntent: PaymentIntentWithSecrets;
   authorizePayment: () => void;
+  isLoading: boolean;
 };
 
 const StyledLabel = styled(Box)`
@@ -43,6 +45,7 @@ const InvoiceDetails = ({
   bank,
   paymentIntent,
   authorizePayment,
+  isLoading,
 }: InvoiceDetailsProps) => {
   const { t } = useTranslation();
 
@@ -158,7 +161,12 @@ const InvoiceDetails = ({
         ))}
       </Flex>
 
-      <Button type="submit" block onClick={authorizePayment}>
+      <Button
+        type="submit"
+        block
+        onClick={authorizePayment}
+        rightIcon={isLoading && <Spinner pxSize={16} />}
+      >
         {t('payment:bankWidget.continue')}
       </Button>
     </Box>
