@@ -53,6 +53,7 @@ nginx:
             - matchExpressions:
                 - key: node-role.kubernetes.io/nodes
                   operator: Exists
+  priorityClassName: production-high
 
 
 payments_backend_url:
