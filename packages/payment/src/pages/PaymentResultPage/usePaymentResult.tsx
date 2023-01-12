@@ -70,10 +70,7 @@ export default function usePaymentResult(
   useEffect(() => {
     (async () => {
       if (paymentData) {
-        if (
-          paymentData?.payment_intent.status !== 'created' &&
-          paymentData?.payment_intent.status !== 'authorizing'
-        ) {
+        if (paymentData?.payment_intent.status !== 'created') {
           setPaymentStatus(getStatus(paymentData?.payment_intent.status));
         } else if (
           paymentData?.payment_intent.status === 'created' &&
@@ -87,7 +84,7 @@ export default function usePaymentResult(
             setPaymentStatus(getStatus(paymentIntent?.status));
           }
         } else if (
-          paymentData?.payment_intent.status === 'authorizing' &&
+          paymentData?.payment_intent.status === 'created' &&
           yapilyConsent
         ) {
           setPaymentStatus(ResultStatuses.Processing);

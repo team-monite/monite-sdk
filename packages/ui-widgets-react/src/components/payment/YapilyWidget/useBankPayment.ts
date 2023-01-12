@@ -64,6 +64,8 @@ export function useBankPayment({
 
     const prevStepIndex = steps.findIndex((step) => step === currentStep) - 1;
     setCurrentStep(steps[prevStepIndex]);
+    setPayerIban(bankAccount?.iban || '');
+    setPayerName(bankAccount?.name || '');
   };
 
   const bankAccount = paymentIntent.payer?.bank_accounts
