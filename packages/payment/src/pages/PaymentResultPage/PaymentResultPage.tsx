@@ -8,7 +8,7 @@ import {
   Button,
   Theme,
 } from '@team-monite/ui-kit-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from 'emotion-theming';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +25,7 @@ export const PaymentResultPage = ({
   const theme = useTheme<Theme>();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { search } = useLocation();
 
   const {
     currentStatus: { icon, title, text },
@@ -88,13 +89,29 @@ export const PaymentResultPage = ({
               </Box>
             )}
 
-            {returnUrl && (
+            {!isSuccess && (
               <Flex justifyContent="center">
                 <Box width={'160px'}>
-                  <Button mt="24px" block onClick={() => navigate(returnUrl)}>
-                    {isSuccess
-                      ? t('payment:result.return')
-                      : t('payment:result.tryAgain')}
+                  <Button
+                    mt="24px"
+                    block
+                    onClick={() => navigate(`/${search}`)}
+                  >
+                    {t('payment:result.tryAgain')}
+                  </Button>
+                </Box>
+              </Flex>
+            )}
+
+            {returnUrl && isSuccess && (
+              <Flex justifyContent="center">
+                <Box width={'160px'}>
+                  <Button
+                    mt="24px"
+                    block
+                    onClick={() => (window.location.href = returnUrl)}
+                  >
+                    {t('payment:result.return')}
                   </Button>
                 </Box>
               </Flex>
