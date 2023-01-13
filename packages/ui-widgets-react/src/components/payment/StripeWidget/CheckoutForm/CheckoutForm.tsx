@@ -109,24 +109,24 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
         />
       </div>
       <Styled.Prices>
-        {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
+        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
           <Styled.PriceRow>
             <div>{t('payment:widget.amount')}</div>
-            <div>{getReadableAmount(amount, currency)}</div>
+            {fee && <div>{getReadableAmount(amount, currency)}</div>}
           </Styled.PriceRow>
         )}
-        {fee && feeData.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
+        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
-            <div>{getReadableAmount(fee, currency)}</div>
+            {fee && <div>{getReadableAmount(fee, currency)}</div>}
           </Styled.PriceRow>
         ) : null}
         <Styled.PriceRow total>
           <div>{t('payment:widget.total')}</div>
-          <div>{getReadableAmount(totalAmount, currency)}</div>
+          {fee && <div>{getReadableAmount(totalAmount, currency)}</div>}
         </Styled.PriceRow>
       </Styled.Prices>
-      {fee && feeData.paid_by !== PaymentsPaymentsPaidBy.PAYER ? (
+      {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {
