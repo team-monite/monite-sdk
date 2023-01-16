@@ -437,7 +437,7 @@ const ReactSelect = forwardRef<any, SelectProps>((props, ref) => {
                         (selectProps.value as Option[])?.filter(
                           (item) => item.value !== selected.value
                         ),
-                        'select-option'
+                        'deselect-option'
                       )
                     }
                   >
