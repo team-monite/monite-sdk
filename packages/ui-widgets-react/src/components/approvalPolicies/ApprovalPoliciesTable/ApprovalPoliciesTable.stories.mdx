@@ -1,0 +1,14 @@
+import ApprovalPoliciesTable from './ApprovalPoliciesTable';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+
+<Meta title="Approval Policies/Approval Policies — Table View" component={ApprovalPoliciesTable} />
+
+export const Template = (args) => (
+  <div style={{ display: 'flex', height: 600 }}>
+    <ApprovalPoliciesTable {...args} />
+  </div>
+);
+
+<Canvas>
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>

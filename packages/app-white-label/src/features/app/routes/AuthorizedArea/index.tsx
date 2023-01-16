@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import PageCounterparts from 'features/counterparts/PageCounterparts';
 import PagePayables from 'features/payables/PagePayables';
 import PageReceivables from 'features/receivables/PageReceivables';
+import PageApprovalPolicies from 'features/approvalPolicies/PageApprovalPolicies';
 import PageTags from 'features/tags/PageTags';
 import EmptyPage from 'features/app/Layout/EmptyPage';
 
@@ -23,17 +24,7 @@ const AuthorizedArea = () => {
       />
       <Route
         path={ROUTES.approvalPolicies}
-        element={
-          <EmptyPage
-            label={navigationData.settings?.children?.approvalPolicies.label}
-            renderIcon={
-              navigationData.settings?.children?.approvalPolicies.renderIcon
-            }
-            apiLink={
-              navigationData.settings?.children?.approvalPolicies.apiLink
-            }
-          />
-        }
+        element={<PageApprovalPolicies />}
       />
       <Route path={ROUTES.tags} element={<PageTags />} />
       <Route

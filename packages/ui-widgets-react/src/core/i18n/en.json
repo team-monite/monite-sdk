@@ -2,10 +2,22 @@
   "approvalPolicies": {
     "columns": {
       "policyName": "Policy name",
-      "status": "Status",
-      "createdBy": "Created by",
-      "date": "Date",
-      "rules": "Rules"
+      "triggers": "Triggers",
+      "rule": "Rule",
+      "createdAt": "Created at",
+      "createdBy": "Created by"
+    },
+    "triggerTypes": {
+      "amount": "Amount",
+      "counterparts": "Counterparts",
+      "createByRole": "Created by role",
+      "createByUser": "Created by user",
+      "tags": "Tags"
+    },
+    "rulesTypes": {
+      "usersFromTheList": "Users from the list",
+      "roleApproval": "Role approval",
+      "approvalChain": "Approval Chain"
     },
     "newPolicy": "New policy",
     "savePolicy": "Save policy",
@@ -348,6 +360,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "create": "Create",
+    "createdAt": "Created at",
+    "createdBy": "Created by",
     "createNew": "Create New",
     "cancel": "Cancel",
     "submit": "Submit",
