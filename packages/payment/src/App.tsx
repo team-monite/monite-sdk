@@ -97,7 +97,12 @@ const App = () => {
           />
           <Route
             path={ROUTES.result}
-            element={<PaymentResultPage paymentData={paymentData} />}
+            element={
+              <PaymentResultPage
+                paymentData={paymentData}
+                isLoading={isLoading}
+              />
+            }
           />
           <Route path={ROUTES.expired} element={<PaymentExpiredPage />} />
         </Routes>
