@@ -15,6 +15,7 @@ import {
   PaymentsPaymentsPaidBy,
 } from '@team-monite/sdk-api';
 
+import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useFeeByPaymentMethod } from 'core/queries/usePayment';
 import { getReadableAmount } from 'core/utils';
 
@@ -56,6 +57,8 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
   const fee = feeData?.total.fee;
   const totalAmount = feeData?.total.amount || 0;
 
+  const { monite } = useComponentsContext();
+
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
 
@@ -66,6 +69,10 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
     }
 
     setIsLoading(true);
+
+    monite.api.payment.getFeeByPaymentMethod(id, {
+      payment_method: paymentMethod,
+    });
 
     try {
       const { error } = await stripe.confirmPayment({
