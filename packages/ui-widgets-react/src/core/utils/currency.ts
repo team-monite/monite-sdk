@@ -23,8 +23,35 @@ const CURRENCY_LIST: Readonly<Record<CurrencyEnum, string>> = {
   ZAR: 'R',
 };
 
-function isSpecificCurrency(currency: CurrencyEnum): boolean {
-  return currency === CurrencyEnum.JPY || currency === CurrencyEnum.SEK;
+//https://stripe.com/docs/currencies?presentment-currency=EE#zero-decimal
+const zeroDecimalCurrencyList = [
+  'BIF',
+  'CLP',
+  'DJF',
+  'GNF',
+  'JPY',
+  'KMF',
+  'KRW',
+  'MGA',
+  'PYG',
+  'RWF',
+  'UGX',
+  'VND',
+  'VUV',
+  'XAF',
+  'XOF',
+  'XPF',
+];
+
+//https://stripe.com/docs/currencies?presentment-currency=EE#three-decimal
+const threeDecimalCurrencyList = ['BHD', 'JOD', 'KWD', 'OMR', 'TND'];
+
+function isZeroDecimalCurrency(currency: CurrencyEnum): boolean {
+  return zeroDecimalCurrencyList.includes(currency);
+}
+
+function isThreeDecimalCurrency(currency: CurrencyEnum): boolean {
+  return threeDecimalCurrencyList.includes(currency);
 }
 
 export function getSymbolFromCurrency(currency: CurrencyEnum): string {
@@ -36,7 +63,12 @@ export function formatFromMinorUnits(
   amount: number,
   currency: CurrencyEnum
 ): number {
-  if (isSpecificCurrency(currency)) return amount;
+  if (isZeroDecimalCurrency(currency)) {
+    return amount;
+  }
+  if (isThreeDecimalCurrency(currency)) {
+    return Number((amount / 1000).toFixed(3));
+  }
   return Number((amount / 100).toFixed(2));
 }
 
@@ -44,7 +76,12 @@ export function formatToMinorUnits(
   amount: string | number,
   currency: CurrencyEnum
 ): number {
-  if (isSpecificCurrency(currency)) return Number(amount);
+  if (isZeroDecimalCurrency(currency)) {
+    return Number(amount);
+  }
+  if (isThreeDecimalCurrency(currency)) {
+    return Number(amount) * 1000;
+  }
   return Number(amount) * 100;
 }
 
