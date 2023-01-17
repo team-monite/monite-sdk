@@ -70,6 +70,7 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
 
     setIsLoading(true);
 
+    // extra call because of this https://gemms.atlassian.net/browse/DEV-4711
     monite.api.payment.getFeeByPaymentMethod(id, {
       payment_method: paymentMethod,
     });
