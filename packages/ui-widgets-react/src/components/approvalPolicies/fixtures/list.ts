@@ -1,6 +1,6 @@
-import { ActionEnum, WorkflowsPaginationResponse } from '@team-monite/sdk-api';
+import { ActionEnum } from '@team-monite/sdk-api';
 
-const data: WorkflowsPaginationResponse = {
+const data = {
   data: [
     {
       id: '501b9be3-88dc-4a6e-9bf2-f11ec98b835d',

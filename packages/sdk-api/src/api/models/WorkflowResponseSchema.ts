@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import type { ActionEnum } from './ActionEnum';
+import type { EntityUserResponse } from './EntityUserResponse';
 
 /**
  * A Workflow object represents an approval policy for payable status transitions.
@@ -15,9 +16,9 @@ export type WorkflowResponseSchema = {
      */
     id: string;
     /**
-     * The ID of the entity user that created this workflow.
+     * Data of the entity user that created this workflow.
      */
-    created_by_entity_user_id: string;
+    created_by_entity_user: EntityUserResponse;
     /**
      * The type of objects associated with this workflow.
      */
