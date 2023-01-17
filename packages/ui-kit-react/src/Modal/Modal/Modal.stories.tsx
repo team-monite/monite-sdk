@@ -86,7 +86,7 @@ export const Drawer = () => {
 
       {open && (
         <Modal anchor={'right'} onClose={hide}>
-          <ModalLayout isDrawer>
+          <ModalLayout isDrawer scrollableContent>
             {[...new Array(10)].map((key) => (
               <p key={key}>
                 Cras mattis consectetur purus sit amet fermentum. Cras justo
