@@ -267,10 +267,14 @@ const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                     /** onMouseDown and onClick are needed for proper opening when user is clicking on icon */
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => {
-                      // if (inputRef.current !== document.activeElement) {
-                      // TODO fix focus
-                      // originalRef?.current?.focus();
-                      // }
+                      // TODO: doesn't work with react-hook-form, need to research
+                      if (
+                        ref &&
+                        'current' in ref &&
+                        ref?.current !== document.activeElement
+                      ) {
+                        ref?.current?.focus();
+                      }
                     }}
                   >
                     <UCalendarAlt width={20} height={20} />
