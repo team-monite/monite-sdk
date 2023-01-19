@@ -35,7 +35,7 @@ export const DefaultModalLayout = () => {
 
 export const ModalLayoutWithScroll = () => {
   return (
-    <ModalLayout scrollableContent>
+    <ModalLayout scrollableContent fullHeight>
       <div style={{ padding: 20 }}>
         {[...new Array(10)].map((key) => (
           <p key={key}>
