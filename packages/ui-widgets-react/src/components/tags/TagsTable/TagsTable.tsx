@@ -12,6 +12,7 @@ import {
   UArrowRight,
   useModal,
 } from '@team-monite/ui-kit-react';
+import { UserCell } from './UserCell';
 import { TagFormModal } from '../TagFormModal';
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import {
@@ -171,6 +172,7 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
             title: t('tags:columns.createdBy'),
             dataIndex: 'created_by_entity_user_id',
             key: 'created_by_entity_user_id',
+            render: (value: string) => <UserCell id={value} />,
           },
         ]}
         data={tags?.data}
