@@ -10,27 +10,23 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, Alert, Box } from '@team-monite/ui-kit-react';
 import {
-  PaymentsPaymentMethodsEnum,
-  PaymentsPaymentLinkResponse,
+  MoniteAllPaymentMethodsTypes,
+  PaymentIntentWithSecrets,
   PaymentsPaymentsPaidBy,
 } from '@team-monite/sdk-api';
 
-import { useFeeByPaymentMethod } from 'core/queries/usePayment';
 import { useComponentsContext } from 'core/context/ComponentsContext';
+import { useFeeByPaymentMethod } from 'core/queries/usePayment';
 import { getReadableAmount } from 'core/utils';
 
 import * as Styled from './styles';
 
 type CheckoutFormProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
   linkId: string;
 };
 
-export default function CheckoutForm({
-  paymentData,
-  linkId,
-}: CheckoutFormProps) {
-  const { monite } = useComponentsContext();
+export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
   const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
@@ -42,9 +38,9 @@ export default function CheckoutForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentsPaymentMethodsEnum>();
+    useState<MoniteAllPaymentMethodsTypes>();
 
-  const { amount, currency, id } = paymentData;
+  const { amount, currency, id } = paymentIntent;
 
   const setMessage = (message: string) => {
     toast(message);
@@ -61,6 +57,8 @@ export default function CheckoutForm({
   const fee = feeData?.total.fee;
   const totalAmount = feeData?.total.amount || 0;
 
+  const { monite } = useComponentsContext();
+
   const handleSubmit = async (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
 
@@ -72,39 +70,43 @@ export default function CheckoutForm({
 
     setIsLoading(true);
 
-    try {
-      if (paymentMethod) {
-        await monite.api.payment.payByPaymentLinkId(linkId, {
-          payment_method: paymentMethod,
-        });
+    // extra call because of this https://gemms.atlassian.net/browse/DEV-4711
+    const calculateFeeResponse = await monite.api.payment.getFeeByPaymentMethod(
+      id,
+      {
+        payment_method: paymentMethod,
       }
+    );
 
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url:
-            `${window.location.origin}/result?data=${rawPaymentData}&payment_method=${paymentMethod}` ||
-            `${window.location.href}`,
-        },
-      });
-      if (error) {
-        // This point will only be reached if there is an immediate error when
-        // confirming the payment. Otherwise, your customer will be redirected to
-        // your `return_url`. For some payment methods like iDEAL, your customer will
-        // be redirected to an intermediate site first to authorize the payment, then
-        // redirected to the `return_url`.
-        if (
-          error.type === 'card_error' ||
-          error.type === 'validation_error' ||
-          error.type === 'invalid_request_error'
-        ) {
-          setMessage(error.message || '');
-        } else {
-          setMessage('An unexpected error occurred.');
+    if (calculateFeeResponse) {
+      try {
+        const { error } = await stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url:
+              `${window.location.origin}/result?data=${rawPaymentData}&payment_method=${paymentMethod}` ||
+              `${window.location.href}`,
+          },
+        });
+        if (error) {
+          // This point will only be reached if there is an immediate error when
+          // confirming the payment. Otherwise, your customer will be redirected to
+          // your `return_url`. For some payment methods like iDEAL, your customer will
+          // be redirected to an intermediate site first to authorize the payment, then
+          // redirected to the `return_url`.
+          if (
+            error.type === 'card_error' ||
+            error.type === 'validation_error' ||
+            error.type === 'invalid_request_error'
+          ) {
+            setMessage(error.message || '');
+          } else {
+            setMessage('An unexpected error occurred.');
+          }
         }
+      } catch (e) {
+        setMessage('An unexpected error occurred.');
       }
-    } catch (e) {
-      setMessage('An unexpected error occurred.');
     }
 
     setIsLoading(false);
@@ -115,29 +117,29 @@ export default function CheckoutForm({
       <div>
         <PaymentElement
           onChange={(e) => {
-            setPaymentMethod(e.value.type as PaymentsPaymentMethodsEnum);
+            setPaymentMethod(e.value.type as MoniteAllPaymentMethodsTypes);
           }}
         />
       </div>
       <Styled.Prices>
-        {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
+        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
           <Styled.PriceRow>
             <div>{t('payment:widget.amount')}</div>
-            <div>{getReadableAmount(amount, currency)}</div>
+            {fee && <div>{getReadableAmount(amount, currency)}</div>}
           </Styled.PriceRow>
         )}
-        {fee && feeData.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
+        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
-            <div>{getReadableAmount(fee, currency)}</div>
+            {fee && <div>{getReadableAmount(fee, currency)}</div>}
           </Styled.PriceRow>
         ) : null}
         <Styled.PriceRow total>
           <div>{t('payment:widget.total')}</div>
-          <div>{getReadableAmount(totalAmount, currency)}</div>
+          {fee && <div>{getReadableAmount(totalAmount, currency)}</div>}
         </Styled.PriceRow>
       </Styled.Prices>
-      {fee && feeData.paid_by !== PaymentsPaymentsPaidBy.PAYER ? (
+      {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {

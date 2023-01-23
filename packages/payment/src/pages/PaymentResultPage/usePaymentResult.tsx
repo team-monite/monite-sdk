@@ -1,5 +1,4 @@
-//@ts-nocheck
-import { ReactNode, useState, useEffect, useMemo } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from 'emotion-theming';
@@ -11,11 +10,7 @@ import {
   UExclamationTriangle,
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from '@team-monite/ui-widgets-react';
-import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
-
-import { fromBase64 } from 'helpers';
-
-import { URLData } from '../types';
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 
 enum StripeResultStatuses {
   // RequiresPaymentMethod = 'requires_payment_method',
@@ -36,25 +31,21 @@ enum ResultStatuses {
   Error = 'error',
 }
 
-export default function usePaymentResult() {
+export default function usePaymentResult(
+  paymentData?: InternalPaymentLinkResponse
+) {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
   const { search } = useLocation();
 
   const urlParams = new URLSearchParams(search);
 
-  const rawPaymentData = urlParams.get('data');
-
   const clientSecret = urlParams.get('payment_intent_client_secret');
 
-  const stripe = useStripe();
-  const linkData = useMemo(() => {
-    if (rawPaymentData) {
-      return fromBase64(rawPaymentData) as URLData;
-    }
-  }, [rawPaymentData]);
+  const yapilyConsent = urlParams.get('consent');
 
-  const [paymentData, setPaymentData] = useState<PublicPaymentLinkResponse>();
+  const stripe = useStripe();
+
   const [isLoading, setIsLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState<string>();
 
@@ -78,23 +69,25 @@ export default function usePaymentResult() {
 
   useEffect(() => {
     (async () => {
-      if (linkData?.id) {
-        const data = await monite.api.payment.getPaymentLinkById(linkData.id);
-        setPaymentData(data);
-        if (data?.payment_intent.status !== 'created') {
-          setPaymentStatus(getStatus(data?.payment_intent.status));
+      if (paymentData) {
+        if (paymentData?.payment_intent.status !== 'created') {
+          setPaymentStatus(getStatus(paymentData?.payment_intent.status));
         } else if (
-          data?.payment_intent.status === 'created' &&
+          paymentData?.payment_intent.status === 'created' &&
           clientSecret &&
           stripe
         ) {
           const { paymentIntent } = await stripe.retrievePaymentIntent(
             clientSecret
           );
-
           if (paymentIntent && paymentIntent.status) {
             setPaymentStatus(getStatus(paymentIntent?.status));
           }
+        } else if (
+          paymentData?.payment_intent.status === 'created' &&
+          yapilyConsent
+        ) {
+          setPaymentStatus(ResultStatuses.Processing);
         } else {
           setPaymentStatus(ResultStatuses.Error);
         }
@@ -104,12 +97,30 @@ export default function usePaymentResult() {
       }
     })();
     // eslint-disable-next-line
-  }, [linkData?.id, stripe]);
+  }, [stripe, paymentData]);
 
-  const { amount, currency, return_url, payment_reference } =
+  useEffect(() => {
+    if (
+      yapilyConsent &&
+      paymentData?.payment_intent.id &&
+      paymentData?.payment_intent.status === 'created'
+    ) {
+      monite.api.payment.createYapilyPayment(paymentData?.payment_intent?.id, {
+        consent: yapilyConsent,
+      });
+    }
+  }, [
+    paymentData?.payment_intent.id,
+    yapilyConsent,
+    monite.api.payment,
+    paymentData?.payment_intent.status,
+  ]);
+
+  const { amount, currency, payment_reference } =
     paymentData?.payment_intent || {};
 
-  const returnUrl = return_url === 'null' ? '' : return_url;
+  const returnUrl =
+    paymentData?.return_url === 'null' ? '' : paymentData?.return_url;
 
   const statusesMap: Record<
     ResultStatuses,

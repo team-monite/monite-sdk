@@ -8,13 +8,27 @@ import {
 } from '@team-monite/sdk-api';
 
 import { geMockPagination } from '../utils';
-import { payableListFixture } from './payablesFixture';
+import {
+  payableListFixtureFirstPage,
+  payableListFixtureSecondPage,
+  payableListFixtureThirdPage,
+} from './payablesFixture';
 
 type PayableParams = { payableStatus: string };
 
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
 const payableStatusPath = `${payablePath}/:payableStatus`;
 
+const getPayableFixtureByPage = (prevPage?: string) => {
+  switch (prevPage) {
+    case '0':
+      return payableListFixtureSecondPage;
+    case '1':
+      return payableListFixtureThirdPage;
+    default:
+      return payableListFixtureFirstPage;
+  }
+};
 export const payableHandlers = [
   // read list
   rest.get<undefined, {}, api__schemas__payables__schemas__PaginationResponse>(
@@ -23,10 +37,9 @@ export const payableHandlers = [
       const { prevPage, nextPage } = geMockPagination(
         url.searchParams.get('pagination_token')
       );
-
       return res(
         ctx.json({
-          data: payableListFixture,
+          data: getPayableFixtureByPage(prevPage),
           prev_pagination_token: prevPage,
           next_pagination_token: nextPage,
         })
@@ -45,7 +58,7 @@ export const payableHandlers = [
       ) {
         return res(
           ctx.json({
-            ...payableListFixture[0],
+            ...payableListFixtureFirstPage[0],
             status: params.payableStatus as PayableStateEnum,
           })
         );

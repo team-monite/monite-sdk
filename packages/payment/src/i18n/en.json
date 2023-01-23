@@ -31,7 +31,7 @@
       "iban": "IBAN",
       "payee": "Payee Name",
       "amount": "Amount",
-      "return": "Return to account",
+      "return": "Return to platform",
       "tryAgain": "Try again"
     }
   }

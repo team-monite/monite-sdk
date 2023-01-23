@@ -2,6 +2,7 @@ import {
   EntityIndividualResponse,
   EntityOrganizationResponse,
   EntityResponse,
+  BankAccount,
 } from '@team-monite/sdk-api';
 import { getIndividualName } from '../counterparts/helpers';
 
@@ -35,4 +36,12 @@ export function getEntityName(entity: EntityResponse): string {
   }
 
   return '';
+}
+
+export function getDefaultBankAccount(
+  bankAccountsList: BankAccount[]
+): BankAccount | undefined {
+  return bankAccountsList.find((bankAccount) => bankAccount?.is_default)
+    ? bankAccountsList.find((bankAccount) => bankAccount?.is_default)
+    : bankAccountsList[0];
 }

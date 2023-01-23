@@ -91,7 +91,7 @@ data:
                     return 200;
                 }
 
-                add_header Access-Control-Allow-Origin "*";
+                add_header 'Access-Control-Allow-Origin' '*' always;
                 proxy_set_header x-monite-version 2022-11-16;
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/;
@@ -110,7 +110,7 @@ data:
                     return 200;
                 }
 
-                add_header Access-Control-Allow-Origin "*";
+                add_header 'Access-Control-Allow-Origin' '*' always;
                 proxy_set_header x-monite-version 2022-11-16;
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/v1/internal/payment_links/;
@@ -129,7 +129,7 @@ data:
                     return 200;
                 }
 
-                add_header Access-Control-Allow-Origin "*";
+                add_header 'Access-Control-Allow-Origin' '*' always;
                 proxy_set_header x-monite-version 2022-11-16;
                 proxy_set_header x-service-name payment-page;
                 proxy_pass {{ pluck .Values.werf.env .Values.payments_backend_url | first | default .Values.payments_backend_url._default }}/v1/internal/payment_intents/;

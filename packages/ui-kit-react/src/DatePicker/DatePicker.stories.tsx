@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import DatePicker from '.';
 
@@ -60,10 +60,17 @@ export const DefaultDatePicker = () => {
   const [date, setDate] = useState<Date | null>(
     new Date('Tue Jun 07 2022 10:00:00 GMT+0300 (GMT+03:00)')
   );
+  const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div style={{ height: 350, width: 300 }}>
-      <DatePicker id={'test'} name={'test'} date={date} onChange={setDate} />
+      <DatePicker
+        id={'test'}
+        name={'test'}
+        date={date}
+        onChange={setDate}
+        ref={inputRef}
+      />
     </div>
   );
 };

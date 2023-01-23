@@ -9,7 +9,7 @@ import {
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
   PaymentsPaymentsMedia,
-  PaymentsPaymentMethodsEnum,
+  MoniteAllPaymentMethodsTypes,
 } from '@team-monite/sdk-api';
 import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
 
@@ -82,24 +82,27 @@ type BankListFormProps = {
   selectedCountry: PaymentsYapilyCountriesCoverageCodes;
   setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
   onChangeMethod: () => void;
+  isOnlyYapilyAvailable: boolean;
 };
+
 const BankListForm = ({
   setSelectedBank,
   handleNextStep,
   selectedCountry,
   setSelectedCountry,
   onChangeMethod,
+  isOnlyYapilyAvailable,
 }: BankListFormProps) => {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
 
   const { data: countriesData } = useCountryList(
-    PaymentsPaymentMethodsEnum.SEPA_CREDIT
+    MoniteAllPaymentMethodsTypes.SEPA_CREDIT
   );
 
   const { data: banksData, refetch: refetchInstitutionList } =
     useInstitutionList(
-      PaymentsPaymentMethodsEnum.SEPA_CREDIT,
+      MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
       selectedCountry as PaymentsYapilyCountriesCoverageCodes
     );
 
@@ -168,24 +171,28 @@ const BankListForm = ({
                   <BankListItem data={bank} />
                 </StyledLink>
               ))}
-              <Box mt={'20px'}>
-                <Button
-                  variant={'text'}
-                  onClick={onChangeMethod}
-                  style={{
-                    whiteSpace: 'normal',
-                    wordWrap: 'break-word',
-                    width: '100%',
-                  }}
-                >
-                  <Text textAlign="center">
-                    {t('payment:bankWidget.selectMethodLink')}
-                  </Text>
-                </Button>
-              </Box>
+              {!isOnlyYapilyAvailable && (
+                <Box mt={'20px'}>
+                  <Button
+                    variant={'text'}
+                    onClick={onChangeMethod}
+                    style={{
+                      whiteSpace: 'normal',
+                      wordWrap: 'break-word',
+                      width: '100%',
+                    }}
+                  >
+                    <Text textAlign="center">
+                      {t('payment:bankWidget.selectMethodLink')}
+                    </Text>
+                  </Button>
+                </Box>
+              )}
             </>
           ) : (
-            <EmptyBankList onChangeMethod={onChangeMethod} />
+            <EmptyBankList
+              onChangeMethod={isOnlyYapilyAvailable ? null : onChangeMethod}
+            />
           )}
         </Box>
       </div>

@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 
-import Multiselect from './Multiseclect';
+import Multiselect from './Multiselect';
 
 const options = [
   {

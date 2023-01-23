@@ -1,13 +1,18 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 import {
-  PaymentsPaymentLinkResponse,
+  PaymentIntentWithSecrets,
   PaymentsPaymentsBank,
   PaymentsYapilyCountriesCoverageCodes,
+  api__endpoints__payment_intents__schemas__AccountType,
 } from '@team-monite/sdk-api';
 
+import { getDefaultBankAccount } from '../helpers';
+import { useAuthorizePaymentLink } from 'core/queries/usePayment';
+
 type UseBankPaymentProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
+  onAuthorizePayment: (url: string) => void;
 };
 
 type UseBankPaymentReturnType = {
@@ -22,6 +27,8 @@ type UseBankPaymentReturnType = {
   setPayerName: (name: string) => void;
   payerIban: string;
   setPayerIban: (iban: string) => void;
+  authorizePayment: () => void;
+  isLoadingAuthorize: boolean;
 };
 
 export enum BankPaymentSteps {
@@ -37,7 +44,8 @@ const getSteps = (selectedBank?: PaymentsPaymentsBank) => [
 ];
 
 export function useBankPayment({
-  paymentData,
+  paymentIntent,
+  onAuthorizePayment,
 }: UseBankPaymentProps): UseBankPaymentReturnType {
   const [currentStep, setCurrentStep] = useState(BankPaymentSteps.BANK_LIST);
   const selectedBankRef = useRef<PaymentsPaymentsBank>();
@@ -56,19 +64,37 @@ export function useBankPayment({
 
     const prevStepIndex = steps.findIndex((step) => step === currentStep) - 1;
     setCurrentStep(steps[prevStepIndex]);
+    setPayerIban(bankAccount?.iban || '');
+    setPayerName(bankAccount?.name || '');
   };
 
-  const [payerName, setPayerName] = useState(
-    paymentData.payer?.bank_account?.name || ''
-  );
+  const bankAccount = paymentIntent.payer?.bank_accounts
+    ? getDefaultBankAccount(paymentIntent.payer?.bank_accounts)
+    : null;
 
-  const [payerIban, setPayerIban] = useState(
-    paymentData.payer?.bank_account?.iban || ''
-  );
+  const [payerName, setPayerName] = useState(bankAccount?.name || '');
+
+  const [payerIban, setPayerIban] = useState(bankAccount?.iban || '');
 
   const setSelectedBank = (bank: PaymentsPaymentsBank) => {
     selectedBankRef.current = bank;
   };
+
+  const authorizePaymentMutation = useAuthorizePaymentLink(
+    paymentIntent.id,
+    onAuthorizePayment
+  );
+
+  const authorizePayment = useCallback(async () => {
+    selectedBankRef.current &&
+      (await authorizePaymentMutation.mutateAsync({
+        bank_id: selectedBankRef.current?.code,
+        payer_account_identification: {
+          type: api__endpoints__payment_intents__schemas__AccountType.IBAN,
+          value: payerIban,
+        },
+      }));
+  }, [authorizePaymentMutation]);
 
   return {
     currentStep,
@@ -82,5 +108,7 @@ export function useBankPayment({
     setPayerName,
     payerIban,
     setPayerIban,
+    authorizePayment,
+    isLoadingAuthorize: authorizePaymentMutation.isLoading,
   };
 }

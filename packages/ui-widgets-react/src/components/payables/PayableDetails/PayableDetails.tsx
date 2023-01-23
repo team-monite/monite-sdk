@@ -9,16 +9,12 @@ import {
   UMultiply,
   Header,
   Tag,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
   FileViewer,
   Loading,
   Modal,
 } from '@team-monite/ui-kit-react';
 
-import { PAYABLE_TAB_LIST, ROW_TO_TAG_STATUS_MAP } from '../consts';
+import { ROW_TO_TAG_STATUS_MAP } from '../consts';
 import PayableDetailsForm from './PayableDetailsForm';
 
 import {
@@ -26,7 +22,6 @@ import {
   StyledHeaderActions,
   StyledHeaderContent,
   StyledSection,
-  StyledTabs,
 } from './PayableDetailsStyle';
 
 import usePayableDetails, {
@@ -172,7 +167,8 @@ const PayableDetails = ({
             )}
           </StyledSection>
           <StyledSection>
-            {isEdit && (
+            {/* Uncomment when history and status tabs will be added */}
+            {/* {isEdit && (
               <StyledTabs>
                 <Tabs>
                   <TabList>
@@ -185,7 +181,7 @@ const PayableDetails = ({
                   ))}
                 </Tabs>
               </StyledTabs>
-            )}
+            )} */}
             {isEdit && (
               <PayableDetailsForm
                 ref={formRef}

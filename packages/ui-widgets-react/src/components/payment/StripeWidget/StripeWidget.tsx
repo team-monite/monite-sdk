@@ -4,7 +4,7 @@ import { Appearance, loadStripe, Stripe } from '@stripe/stripe-js';
 import { useTheme } from 'emotion-theming';
 
 import { Theme } from '@team-monite/ui-kit-react';
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import { PaymentIntentWithSecrets } from '@team-monite/sdk-api';
 import NavHeader from '../NavHeader';
 
 import CheckoutForm from './CheckoutForm';
@@ -15,7 +15,7 @@ type StripeFormProps = {
   clientSecret: string;
   publishableSecret: string;
   navButton?: boolean;
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
   handleBack: () => void;
   linkId: string;
 };
@@ -24,7 +24,7 @@ const StripeForm = ({
   clientSecret,
   publishableSecret,
   navButton,
-  paymentData,
+  paymentIntent,
   handleBack,
   linkId,
 }: StripeFormProps) => {
@@ -73,7 +73,7 @@ const StripeForm = ({
         <>
           {navButton && <NavHeader handleBack={handleBack} />}
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm paymentData={paymentData} linkId={linkId} />
+            <CheckoutForm paymentIntent={paymentIntent} linkId={linkId} />
           </Elements>
         </>
       )}

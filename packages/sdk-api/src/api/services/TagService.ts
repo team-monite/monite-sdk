@@ -1,7 +1,3 @@
-/* istanbul ignore file */
-/* tslint:disable */
-/* eslint-disable */
-
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
@@ -26,8 +22,6 @@ export default class TagService {
    * Get Tags
    * Get a list of all tags that can be assigned to payables.
    * Tags can be used, for example, as trigger conditions in payable approval workflows.
-   * @param xMoniteVersion
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @param order Order by
    * @param limit Max is 100
    * @param paginationToken A token, obtained from previous page. Prior over other filters
@@ -76,8 +70,6 @@ export default class TagService {
    *
    * The response returns an auto-generated ID assigned to this tag.
    * To assign this tag to a payable, send the tag ID in the `tag_ids` list when creating or updating a payable.
-   * @param xMoniteVersion
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @param requestBody
    * @returns TagReadSchema Successful Response
    * @throws ApiError
@@ -109,9 +101,7 @@ export default class TagService {
   /**
    * Delete Tag
    * Delete a tag with the given ID. This tag will be automatically deleted from all payables where it's used.
-   * @param xMoniteVersion
    * @param tagId
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @returns void
    * @throws ApiError
    */
@@ -141,9 +131,7 @@ export default class TagService {
    * Update Tag
    * Change the tag name. The new name must be unique among existing tags.
    * Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.
-   * @param xMoniteVersion
    * @param tagId
-   * @param xMoniteEntityId The ID of the entity that owns the requested resource.
    * @param requestBody
    * @returns TagReadSchema Successful Response
    * @throws ApiError

@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { TFunction } from 'react-i18next';
+import { toast } from 'react-hot-toast';
 import {
   Box,
   Button,
@@ -14,13 +16,15 @@ import {
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useCreateTag, useUpdateTag } from 'core/queries';
-import { toast } from 'react-hot-toast';
 
-const getValidationSchema = () =>
+const getValidationSchema = (t: TFunction) =>
   yup
     .object()
     .shape({
-      name: yup.string().required(),
+      name: yup
+        .string()
+        .required()
+        .max(255, t('validation:string.max', { max: '255' })),
     })
     .required();
 
@@ -56,10 +60,10 @@ interface FormFields {
 
 const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
   const { t } = useComponentsContext();
-  const tagCreateMutation = useCreateTag({ name: '' });
+  const tagCreateMutation = useCreateTag();
   const tagUpdateMutation = useUpdateTag();
   const { control, handleSubmit } = useForm<FormFields>({
-    resolver: yupResolver(getValidationSchema()),
+    resolver: yupResolver(getValidationSchema(t)),
     defaultValues: { name: tag?.name || '' },
   });
 
@@ -127,7 +131,12 @@ const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
               <Button
                 type="submit"
                 form="createTagForm"
-                isLoading={tagCreateMutation.isLoading}
+                disabled={
+                  tagCreateMutation.isLoading || tagUpdateMutation.isLoading
+                }
+                isLoading={
+                  tagCreateMutation.isLoading || tagUpdateMutation.isLoading
+                }
               >
                 {tag ? t('common:save') : t('common:create')}
               </Button>

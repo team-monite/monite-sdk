@@ -10,19 +10,23 @@ import {
   Flex,
   List,
   ListItem,
+  Spinner,
 } from '@team-monite/ui-kit-react';
 
 import {
-  PaymentsPaymentLinkResponse,
+  PaymentIntentWithSecrets,
   PaymentsPaymentsBank,
   PaymentsPaymentsMedia,
 } from '@team-monite/sdk-api';
 
 import usePaymentDetails from '../../PaymentDetails/usePaymentDetails';
+import { getDefaultBankAccount } from '../../helpers';
 
 type InvoiceDetailsProps = {
   bank?: PaymentsPaymentsBank;
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
+  authorizePayment: () => void;
+  isLoading: boolean;
 };
 
 const StyledLabel = styled(Box)`
@@ -37,7 +41,12 @@ const StyledDetails = styled(List)`
   margin: 32px 0;
 `;
 
-const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
+const InvoiceDetails = ({
+  bank,
+  paymentIntent,
+  authorizePayment,
+  isLoading,
+}: InvoiceDetailsProps) => {
   const { t } = useTranslation();
 
   const logo = bank?.media.find(
@@ -45,7 +54,7 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
   )?.source;
 
   const { recipient, amount, paymentReference } = usePaymentDetails({
-    payment: paymentData,
+    paymentIntent,
   });
 
   const infoPanelMap = {
@@ -95,7 +104,9 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
             </StyledLabel>
             <StyledValueBlock>
               <Text textSize="small">
-                {paymentData.recipient?.bank_account?.name}
+                {paymentIntent.recipient?.bank_accounts &&
+                  getDefaultBankAccount(paymentIntent.recipient?.bank_accounts)
+                    ?.name}
               </Text>
             </StyledValueBlock>
           </Flex>
@@ -108,7 +119,9 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
             </StyledLabel>
             <StyledValueBlock>
               <Text textSize="small">
-                {paymentData.recipient?.bank_account?.iban}
+                {paymentIntent.recipient?.bank_accounts &&
+                  getDefaultBankAccount(paymentIntent.recipient?.bank_accounts)
+                    ?.iban}
               </Text>
             </StyledValueBlock>
           </Flex>
@@ -148,7 +161,12 @@ const InvoiceDetails = ({ bank, paymentData }: InvoiceDetailsProps) => {
         ))}
       </Flex>
 
-      <Button type="submit" block>
+      <Button
+        type="submit"
+        block
+        onClick={authorizePayment}
+        rightIcon={isLoading && <Spinner pxSize={16} />}
+      >
         {t('payment:bankWidget.continue')}
       </Button>
     </Box>

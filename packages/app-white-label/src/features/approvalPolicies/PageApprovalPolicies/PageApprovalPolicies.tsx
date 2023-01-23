@@ -4,11 +4,10 @@ import {
   ApprovalPoliciesTable,
   ApprovalPolicyCreate,
 } from '@team-monite/ui-widgets-react';
-import { Button, Sidebar } from '@team-monite/ui-kit-react';
+import { Sidebar } from '@team-monite/ui-kit-react';
 
 import Layout from 'features/app/Layout';
 import PageHeader from 'features/app/Layout/PageHeader';
-import TestData from '@team-monite/ui-widgets-react/src/components/approvalPolicies/fixtures/list';
 
 const PageApprovalPolicies = () => {
   const { t } = useTranslation();
@@ -18,13 +17,13 @@ const PageApprovalPolicies = () => {
     <Layout>
       <PageHeader
         title={t('approvalPolicies:approvalPolicies')}
-        extra={[
-          <Button key="1" onClick={() => setSidebarIsOpen(true)}>
-            {t('common:createNew')}
-          </Button>,
-        ]}
+        // extra={[
+        //   <Button key="1" onClick={() => setSidebarIsOpen(true)}>
+        //     {t('common:createNew')}
+        //   </Button>,
+        // ]}
       />
-      <ApprovalPoliciesTable data={TestData.data} />
+      <ApprovalPoliciesTable />
       {sidebarIsOpen && (
         <Sidebar
           isOpen={sidebarIsOpen}

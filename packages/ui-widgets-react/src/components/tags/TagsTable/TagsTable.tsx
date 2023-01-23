@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
 import {
@@ -12,6 +12,7 @@ import {
   UArrowRight,
   useModal,
 } from '@team-monite/ui-kit-react';
+import { UserCell } from './UserCell';
 import { TagFormModal } from '../TagFormModal';
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import {
@@ -84,6 +85,12 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     currentPaginationToken || undefined,
     currentSort ? currentSort.sort : undefined
   );
+
+  useEffect(() => {
+    if (currentPaginationToken && tags?.data.length === 0) {
+      setCurrentPaginationToken(null);
+    }
+  }, [tags]);
 
   const onPrev = () =>
     setCurrentPaginationToken(tags?.prev_pagination_token || null);
@@ -165,6 +172,7 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
             title: t('tags:columns.createdBy'),
             dataIndex: 'created_by_entity_user_id',
             key: 'created_by_entity_user_id',
+            render: (value: string) => <UserCell id={value} />,
           },
         ]}
         data={tags?.data}

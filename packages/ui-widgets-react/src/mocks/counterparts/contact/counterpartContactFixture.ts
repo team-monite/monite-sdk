@@ -18,9 +18,9 @@ const genCounterpartContactFixture = (
     country: AllowedCountriesCodes.DE,
     city: 'Berlin',
     postal_code: '10115',
-    state: 'string',
+    state: 'state',
     line1: 'Flughafenstrasse 52',
-    line2: 'string',
+    line2: '',
   },
 });
 

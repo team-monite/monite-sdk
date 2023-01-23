@@ -11,7 +11,11 @@ import {
   Button,
 } from '@team-monite/ui-kit-react';
 
-const EmptyBankList = ({ onChangeMethod }: { onChangeMethod: () => void }) => {
+const EmptyBankList = ({
+  onChangeMethod,
+}: {
+  onChangeMethod?: null | (() => void);
+}) => {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
 
@@ -28,11 +32,13 @@ const EmptyBankList = ({ onChangeMethod }: { onChangeMethod: () => void }) => {
           {t('payment:bankWidget.emptyBankListContent')}
         </Text>
       </Box>
-      <Box padding={'16px'}>
-        <Button color="secondary" onClick={onChangeMethod}>
-          {t('payment:bankWidget.changeMethod')}
-        </Button>
-      </Box>
+      {onChangeMethod && (
+        <Box padding={'16px'}>
+          <Button color="secondary" onClick={onChangeMethod}>
+            {t('payment:bankWidget.changeMethod')}
+          </Button>
+        </Box>
+      )}
     </Flex>
   );
 };

@@ -1,4 +1,7 @@
-import { PaymentsPaymentLinkResponse } from '@team-monite/sdk-api';
+import {
+  PaymentIntentWithSecrets,
+  MoniteAllPaymentMethodsTypes,
+} from '@team-monite/sdk-api';
 
 import { useBankPayment, BankPaymentSteps } from './useBankPayment';
 
@@ -8,10 +11,15 @@ import PayerForm from './PayerForm';
 import NavHeader from '../NavHeader';
 
 type YapilyWidgetProps = {
-  paymentData: PaymentsPaymentLinkResponse;
+  paymentIntent: PaymentIntentWithSecrets;
   onChangeMethod: () => void;
+  onAuthorizePayment: (url: string) => void;
 };
-const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
+const YapilyWidget = ({
+  paymentIntent,
+  onChangeMethod,
+  onAuthorizePayment,
+}: YapilyWidgetProps) => {
   const {
     currentStep,
     selectedBank,
@@ -24,17 +32,29 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
     setPayerName,
     payerIban,
     setPayerIban,
-  } = useBankPayment({ paymentData });
+    authorizePayment,
+    isLoadingAuthorize,
+  } = useBankPayment({ paymentIntent, onAuthorizePayment });
+
+  const isOnlyYapilyAvailable =
+    paymentIntent.payment_methods.length === 1 &&
+    paymentIntent.payment_methods[0] ===
+      MoniteAllPaymentMethodsTypes.SEPA_CREDIT;
+
+  const isNavHeaderHidden =
+    isOnlyYapilyAvailable && currentStep === BankPaymentSteps.BANK_LIST;
 
   return (
     <>
-      <NavHeader
-        handleBack={
-          currentStep === BankPaymentSteps.BANK_LIST
-            ? onChangeMethod
-            : handlePrevStep
-        }
-      />
+      {!isNavHeaderHidden && (
+        <NavHeader
+          handleBack={
+            currentStep === BankPaymentSteps.BANK_LIST
+              ? onChangeMethod
+              : handlePrevStep
+          }
+        />
+      )}
       {currentStep === BankPaymentSteps.BANK_LIST && (
         <BanksListForm
           setSelectedBank={setSelectedBank}
@@ -42,6 +62,7 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
           selectedCountry={selectedCountry}
           setSelectedCountry={setSelectedCountry}
           onChangeMethod={onChangeMethod}
+          isOnlyYapilyAvailable={isOnlyYapilyAvailable}
         />
       )}
       {currentStep === BankPaymentSteps.PAYER_FORM && (
@@ -55,7 +76,12 @@ const YapilyWidget = ({ paymentData, onChangeMethod }: YapilyWidgetProps) => {
         />
       )}
       {currentStep === BankPaymentSteps.CONFIRM && (
-        <InvoiceDetails bank={selectedBank} paymentData={paymentData} />
+        <InvoiceDetails
+          bank={selectedBank}
+          paymentIntent={paymentIntent}
+          authorizePayment={authorizePayment}
+          isLoading={isLoadingAuthorize}
+        />
       )}
     </>
   );

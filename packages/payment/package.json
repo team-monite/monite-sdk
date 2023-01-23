@@ -30,7 +30,8 @@
     ]
   },
   "dependencies": {
-    "@team-monite/ui-widgets-react": "^0.0.5",
+    "@team-monite/ui-widgets-react": "^0.0.7",
+    "@team-monite/sdk-api": "^0.0.8",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@types/react-helmet": "^6.1.5",

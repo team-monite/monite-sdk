@@ -13,7 +13,7 @@ import {
   UCreditCard,
   UUniversity,
 } from '@team-monite/ui-kit-react';
-import { PaymentsPaymentMethodsEnum } from '@team-monite/sdk-api';
+import { MoniteAllPaymentMethodsTypes } from '@team-monite/sdk-api';
 
 type SelectPaymentMethodProps = {
   paymentMethods: string[];
@@ -73,7 +73,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
 
       <Box mt={24}>
         {paymentMethods.filter(
-          (method) => method !== PaymentsPaymentMethodsEnum.SEPA_CREDIT
+          (method) => method !== MoniteAllPaymentMethodsTypes.SEPA_CREDIT
         ).length > 0 && (
           <StyledLink to={`checkout${search}`}>
             <StyledListItem>
@@ -98,7 +98,7 @@ const SelectPaymentMethod = ({ paymentMethods }: SelectPaymentMethodProps) => {
           </StyledLink>
         )}
 
-        {paymentMethods.includes(PaymentsPaymentMethodsEnum.SEPA_CREDIT) && (
+        {paymentMethods.includes(MoniteAllPaymentMethodsTypes.SEPA_CREDIT) && (
           <StyledLink to={`bank${search}`}>
             <StyledListItem>
               <Flex alignItems="center">

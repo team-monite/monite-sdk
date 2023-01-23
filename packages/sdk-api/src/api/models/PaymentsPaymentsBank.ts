@@ -6,6 +6,7 @@ import type { PaymentsPaymentsAllowedCountriesCodes } from './PaymentsPaymentsAl
 import type { PaymentsPaymentsMedia } from './PaymentsPaymentsMedia';
 
 export type PaymentsPaymentsBank = {
+  id: string;
   code: string;
   name: string;
   full_name: string;

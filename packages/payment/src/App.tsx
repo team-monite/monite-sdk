@@ -1,6 +1,4 @@
-//@ts-nocheck
-//TODO: add types when on backend will be ready
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -9,7 +7,7 @@ import {
   useComponentsContext,
   EmptyScreen,
 } from '@team-monite/ui-widgets-react';
-import { PublicPaymentLinkResponse } from '@team-monite/sdk-api';
+import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 import { Tooltip, Box } from '@team-monite/ui-kit-react';
 
 import PaymentPage from 'pages/PaymentPage';
@@ -36,38 +34,38 @@ const App = () => {
     }
   }, [rawPaymentData]);
 
-  const [paymentData, setPaymentData] = useState<PublicPaymentLinkResponse>();
+  const [paymentData, setPaymentData] = useState<InternalPaymentLinkResponse>();
 
   const [isLoading, setIsLoading] = useState(true);
 
   const { monite } = useComponentsContext() || {};
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (linkData?.id) {
-          const data = await monite.api.payment.getPaymentLinkById(linkData.id);
-          setPaymentData(data);
-          // TODO: backend will add enum for statuses
-          if (data?.status === 'succeeded') {
-            navigate(`${ROUTES.result}${search}`, {
-              replace: true,
-            });
-          }
-          if (data?.status === 'expired') {
-            navigate(ROUTES.expired);
-          }
-          setIsLoading(false);
-        } else {
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
+  const fetchPaymentData = useCallback(async () => {
+    if (linkData?.id && !paymentData) {
+      const data = await monite.api.payment.getPaymentLinkById(linkData.id);
+      setPaymentData(data);
+      // TODO: backend will add enum for statuses
+      if (data?.status === 'succeeded') {
+        navigate(`${ROUTES.result}${search}`, {
+          replace: true,
+        });
       }
-    })();
+      if (data?.status === 'expired') {
+        navigate(ROUTES.expired);
+      }
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [linkData?.id, monite.api.payment, navigate, search, paymentData]);
+
+  useEffect(() => {
+    fetchPaymentData().catch((error) => {
+      console.error(error);
+      setIsLoading(false);
+    });
     // eslint-disable-next-line
-  }, []);
+  }, [fetchPaymentData]);
 
   useEffect(() => {
     if (stripePromise) {
@@ -97,7 +95,15 @@ const App = () => {
               <PaymentPage paymentData={paymentData} isLoading={isLoading} />
             }
           />
-          <Route path={ROUTES.result} element={<PaymentResultPage />} />
+          <Route
+            path={ROUTES.result}
+            element={
+              <PaymentResultPage
+                paymentData={paymentData}
+                isLoading={isLoading}
+              />
+            }
+          />
           <Route path={ROUTES.expired} element={<PaymentExpiredPage />} />
         </Routes>
       </div>
