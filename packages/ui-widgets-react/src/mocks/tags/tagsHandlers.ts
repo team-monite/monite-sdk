@@ -22,6 +22,7 @@ export const tagsHandlers = [
   }),
 
   // read tag list with limit
+  // TODO should combine with above handler using path params
   rest.get<undefined, {}, TagsResponse>(
     `${tagsPath}?limit=10`,
     ({ url }, res, ctx) => {

@@ -2,6 +2,15 @@ import { createTheme } from '@mui/material';
 import { tokenizedTheme } from '@team-monite/ui-kit-react';
 
 const materialTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 360,
+      sm: 500,
+      md: 720,
+      lg: 1024,
+      xl: 1536,
+    },
+  },
   palette: {
     primary: {
       main: tokenizedTheme.primary50,
@@ -41,15 +50,14 @@ const materialTheme = createTheme({
     MuiSelect: {
       styleOverrides: {
         select: {
-          paddingTop: 12.5,
-          paddingBottom: 12.5,
+          padding: '13px 16px',
         },
       },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
-          borderColor: tokenizedTheme.primary60,
+          borderColor: tokenizedTheme.neutral80,
         },
       },
     },
@@ -64,10 +72,24 @@ const materialTheme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ ownerState }) => ({
           padding: '11px 16px',
-        },
+          ...(ownerState.color === 'primary' && {
+            '&:hover': {
+              backgroundColor: tokenizedTheme.neutral10,
+            },
+          }),
+          ...(ownerState.color === 'secondary' && {
+            backgroundColor: tokenizedTheme.neutral90,
+            color: tokenizedTheme.neutral10,
+            '&:hover': {
+              backgroundColor: tokenizedTheme.neutral50,
+              color: tokenizedTheme.neutral100,
+            },
+          }),
+        }),
       },
+
       defaultProps: {
         size: 'large',
         sx: {

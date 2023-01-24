@@ -22,7 +22,6 @@ const StyledProgress = styled(Box)`
     left: 50%;
     top: calc(72px / 2);
     width: 120px;
-    top: calc(72px / 2);
     transform: translateX(-50%);
   }
 `;
@@ -33,8 +32,12 @@ const StyledProgressValue = styled(Box)`
   transition: width 0.3s ease-in-out;
   display: flex;
   justify-content: flex-end;
+  position: relative;
 
   &:after {
+    position: absolute;
+    right: -2px;
+    top: 0;
     content: '';
     height: 100%;
     width: 2px;
@@ -46,7 +49,7 @@ export default function OnboardingProgress({ value }: OnboardingProgressProps) {
   if (value < 0 || value > 100) return null;
 
   return (
-    <StyledProgress data-value={value}>
+    <StyledProgress>
       {value > 0 && <StyledProgressValue sx={{ width: `${value}%` }} />}
     </StyledProgress>
   );

@@ -24,6 +24,7 @@ export const palette = {
   neutral100: baseColors.white,
   success50: baseColors.green,
   success95: '#EEFBF9',
+  warning30: '#C78032',
   warning50: baseColors.orange,
   warning95: '#FFF5EB',
   error50: baseColors.red,

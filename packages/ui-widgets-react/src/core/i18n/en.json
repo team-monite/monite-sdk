@@ -256,6 +256,8 @@
   },
 
   "onboarding": {
+    "notification": "Enty partners with Monite to secure financial services.",
+    "step": "Step",
     "actions": {
       "save": "Save and close",
       "continue": "Continue"
@@ -264,7 +266,11 @@
       "terms": "Terms",
       "privacy": "Privacy",
       "english": "English (US)",
-      "monite": "Powered by Monite"
+      "monite": "Powered by"
+    },
+    "basicInformation": {
+      "title": "Basic information",
+      "description": "Please, tell us a little about your business first so we can help you meet the requirements of financial regulators."
     }
   },
   "receivables": {
