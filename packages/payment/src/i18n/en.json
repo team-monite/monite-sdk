@@ -33,6 +33,11 @@
       "amount": "Amount",
       "return": "Return to platform",
       "tryAgain": "Try again"
+    },
+    "footer": {
+      "poweredBy": "Powered by",
+      "terms": "Terms",
+      "privacy": "Privacy"
     }
   }
 }
