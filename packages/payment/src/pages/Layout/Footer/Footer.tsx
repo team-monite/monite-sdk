@@ -32,12 +32,12 @@ const Footer = () => {
         </Flex>
 
         <Flex width={['100%', 'auto']}>
-          <Link href="https://monite.com/terms/">
+          <Link href="https://monite.com/terms/" target="blank">
             <Text textSize={'smallLink'} color={theme.colors.grey} ml={'16px'}>
               {t('payment:footer.terms')}
             </Text>
           </Link>
-          <Link href="https://monite.com/data-privacy/">
+          <Link href="https://monite.com/data-privacy/" target="blank">
             <Text textSize={'smallLink'} color={theme.colors.grey} ml={'16px'}>
               {t('payment:footer.privacy')}
             </Text>
