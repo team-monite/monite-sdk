@@ -2,11 +2,12 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Flex, Box, Loading } from '@team-monite/ui-kit-react';
-import { PaymentDetails, EmptyScreen } from '@team-monite/ui-widgets-react';
+import { PaymentDetails } from '@team-monite/ui-widgets-react';
 import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
 
 import Layout from 'pages/Layout';
 import PaymentWidget from 'pages/PaymentWidget';
+import PaymentNotFoundPage from 'pages/PaymentNotFoundPage';
 
 type PaymentPageProps = {
   paymentData?: InternalPaymentLinkResponse;
@@ -23,11 +24,7 @@ const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
 
       {isLoading && <Loading />}
 
-      {!paymentData && !isLoading && (
-        <Box width={'100%'} padding={'80px'}>
-          <EmptyScreen />
-        </Box>
-      )}
+      {!paymentData && !isLoading && <PaymentNotFoundPage />}
 
       <Flex
         p={32}

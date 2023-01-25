@@ -3,16 +3,14 @@ import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 
-import {
-  useComponentsContext,
-  EmptyScreen,
-} from '@team-monite/ui-widgets-react';
+import { useComponentsContext } from '@team-monite/ui-widgets-react';
 import { InternalPaymentLinkResponse } from '@team-monite/sdk-api';
-import { Tooltip, Box } from '@team-monite/ui-kit-react';
+import { Tooltip } from '@team-monite/ui-kit-react';
 
 import PaymentPage from 'pages/PaymentPage';
 import PaymentResultPage from 'pages/PaymentResultPage';
 import PaymentExpiredPage from 'pages/PaymentExpiredPage';
+import PaymentNotFoundPage from 'pages/PaymentNotFoundPage';
 
 import { fromBase64 } from 'helpers';
 import { ROUTES } from 'consts';
@@ -78,11 +76,7 @@ const App = () => {
   }, [paymentData?.payment_intent?.key?.publishable]);
 
   if (!stripePromise && paymentData?.payment_intent?.key?.publishable) {
-    return (
-      <Box width={'100%'} padding={'80px'}>
-        <EmptyScreen />
-      </Box>
-    );
+    return <PaymentNotFoundPage />;
   }
 
   return (
