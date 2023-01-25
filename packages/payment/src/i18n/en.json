@@ -18,7 +18,7 @@
       "expiredTitle": "This link is expired",
       "expiredContent": "This link was not used in time and has been deactivated for security reasons. You can ask your counterpart to update the link.",
       "notFoundTitle": "Page not found",
-      "notFoundContent": "We're sorry, but the page with this address does not exist. Please, contact the person who provided it to get a new link."
+      "notFoundContent": "Sorry, we couldn't find the page you were looking for. Please check the URL and try again."
     },
     "result": {
       "processingTitle": "Payment initiated",

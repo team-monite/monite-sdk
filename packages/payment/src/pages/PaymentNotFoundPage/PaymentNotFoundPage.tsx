@@ -4,7 +4,7 @@ import {
   Text,
   Card,
   Theme,
-  UClockThree,
+  UExclamationTriangle,
 } from '@team-monite/ui-kit-react';
 
 import { useTheme } from 'emotion-theming';
@@ -22,7 +22,11 @@ const PaymentNotFoundPage = () => {
         <Box width={600} p={4} pt={80}>
           <Card shadow p={[16, 32]}>
             <Flex alignItems="center" flexDirection="column">
-              <UClockThree width={44} height={44} color={theme.colors.danger} />
+              <UExclamationTriangle
+                width={44}
+                height={44}
+                color={theme.colors.danger}
+              />
               <Box mt="12px">
                 <Text as="h3" textSize="h3" color={theme.colors.danger}>
                   {t('payment:widget.notFoundTitle')}
