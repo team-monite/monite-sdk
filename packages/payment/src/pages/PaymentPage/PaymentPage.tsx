@@ -14,6 +14,8 @@ type PaymentPageProps = {
   isLoading: boolean;
 };
 const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
+  if (!paymentData && !isLoading) return <PaymentNotFoundPage />;
+
   return (
     <Layout>
       <Helmet
@@ -23,8 +25,6 @@ const PaymentPage = ({ paymentData, isLoading }: PaymentPageProps) => {
       />
 
       {isLoading && <Loading />}
-
-      {!paymentData && !isLoading && <PaymentNotFoundPage />}
 
       <Flex
         p={32}
