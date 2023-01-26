@@ -16,7 +16,9 @@
       "emptyBankListContent": "We support many banks in dozens of countries, but there may be exceptions. Please, try another payment method if you didn’t find your bank or country.",
       "changeMethod": "Change method",
       "expiredTitle": "This link is expired",
-      "expiredContent": "This link was not used in time and has been deactivated for security reasons. You can ask your counterpart to update the link."
+      "expiredContent": "This link was not used in time and has been deactivated for security reasons. You can ask your counterpart to update the link.",
+      "notFoundTitle": "Page not found",
+      "notFoundContent": "Sorry, we couldn't find the page you were looking for. Please check the URL and try again."
     },
     "result": {
       "processingTitle": "Payment initiated",
