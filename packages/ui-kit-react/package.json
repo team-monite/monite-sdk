@@ -1,6 +1,6 @@
 {
   "name": "@team-monite/ui-kit-react",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },

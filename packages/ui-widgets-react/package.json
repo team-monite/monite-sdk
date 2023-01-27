@@ -1,6 +1,6 @@
 {
   "name": "@team-monite/ui-widgets-react",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -27,8 +27,8 @@
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
     "@tanstack/react-query-devtools": "~4.2.3",
-    "@team-monite/sdk-api": "^0.0.8",
-    "@team-monite/ui-kit-react": "^0.0.6",
+    "@team-monite/sdk-api": "^1.0.0",
+    "@team-monite/ui-kit-react": "^1.0.0",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
     "react-infinite-scroll-component": "~6.1.0",
