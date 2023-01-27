@@ -204,7 +204,7 @@
   "payables": {
     "columns": {
       "invoice": "Invoice #",
-      "supplier": "Supplier’s name",
+      "supplier": "Counterpart",
       "invoiceDate": "Invoice date",
       "dueDate": "Due date",
       "status": "Status",
@@ -213,7 +213,8 @@
       "addedBy": "Added by"
     },
     "status": {
-      "new": "Draft",
+      "draft": "Draft",
+      "new": "New",
       "approve_in_progress": "Pending",
       "waiting_to_be_paid": "Waiting to be paid",
       "paid": "Paid",
@@ -233,7 +234,7 @@
       "history": "Comments"
     },
     "details": {
-      "suppliersName": "Suppliers name",
+      "suppliersName": "Counterpart name",
       "invoiceNumber": "Invoice Number",
       "invoiceDate": "Invoice date",
       "suggestedPaymentDate": "Suggested payment date",

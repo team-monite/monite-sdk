@@ -18,7 +18,7 @@ import {
 
 import {
   CounterpartCreatePayload,
-  CounterpartOrganizationResponse,
+  CounterpartOrganizationRootResponse,
   CounterpartUpdatePayload,
 } from '@team-monite/sdk-api';
 
@@ -59,7 +59,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   } = useCounterpartForm(props);
 
   const organizationCounterpart =
-    counterpart as CounterpartOrganizationResponse;
+    counterpart as CounterpartOrganizationRootResponse;
 
   const methods = useForm<CounterpartOrganizationFields>({
     resolver: yupResolver(getValidationSchema(t)),
@@ -192,25 +192,25 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
               </ListItem>
             </List>
           </FormField>
-          <Controller
-            name="vatNumber"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormField
-                label={t('counterparts:organization.vatNumber')}
-                id={field.name}
-                required
-                error={error?.message}
-              >
-                <Input
-                  {...field}
-                  id={field.name}
-                  isInvalid={!!error}
-                  required
-                />
-              </FormField>
-            )}
-          />
+          {/*<Controller*/}
+          {/*  name="vatNumber"*/}
+          {/*  control={control}*/}
+          {/*  render={({ field, fieldState: { error } }) => (*/}
+          {/*    <FormField*/}
+          {/*      label={t('counterparts:organization.vatNumber')}*/}
+          {/*      id={field.name}*/}
+          {/*      required*/}
+          {/*      error={error?.message}*/}
+          {/*    >*/}
+          {/*      <Input*/}
+          {/*        {...field}*/}
+          {/*        id={field.name}*/}
+          {/*        isInvalid={!!error}*/}
+          {/*        required*/}
+          {/*      />*/}
+          {/*    </FormField>*/}
+          {/*  )}*/}
+          {/*/>*/}
           <Controller
             name="email"
             control={control}

@@ -247,6 +247,25 @@ export default class PayablesService {
     );
   }
 
+  public cancel(payableId: string): CancelablePromise<PayableResponseSchema> {
+    return __request(
+      {
+        method: 'POST',
+        url: `/${PAYABLES_ENDPOINT}/${payableId}/cancel`,
+        errors: {
+          400: `Bad Request`,
+          401: `Unauthorized`,
+          403: `Forbidden`,
+          405: `Method Not Allowed`,
+          406: `Not Acceptable`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openapiConfig
+    );
+  }
+
   /**
    * Pay Payable By Id
    * @param payableId

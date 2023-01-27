@@ -71,9 +71,11 @@ export type { CounterpartCreatePayload } from './models/CounterpartCreatePayload
 export type { CounterpartIndividual } from './models/CounterpartIndividual';
 export { CounterpartIndividualFieldsEnum } from './models/CounterpartIndividualFieldsEnum';
 export type { CounterpartIndividualResponse } from './models/CounterpartIndividualResponse';
+export type { CounterpartIndividualRootResponse } from './models/CounterpartIndividualRootResponse';
 export type { CounterpartOrganization } from './models/CounterpartOrganization';
 export { CounterpartOrganizationFieldsEnum } from './models/CounterpartOrganizationFieldsEnum';
 export type { CounterpartOrganizationResponse } from './models/CounterpartOrganizationResponse';
+export type { CounterpartOrganizationRootResponse } from './models/CounterpartOrganizationRootResponse';
 export type { CounterpartPaginationResponse } from './models/CounterpartPaginationResponse';
 export type { CounterpartResponse } from './models/CounterpartResponse';
 export { CounterpartType } from './models/CounterpartType';
@@ -187,6 +189,7 @@ export { OptionalOrganizationPayload } from './models/OptionalOrganizationPayloa
 export type { OptionalOrganizationSchema } from './models/OptionalOrganizationSchema';
 export { OrderEnum } from './models/OrderEnum';
 export type { OrganizationSchema } from './models/OrganizationSchema';
+export type { package__payables__schemas__PaginationResponse } from './models/package__payables__schemas__PaginationResponse';
 export type { PageSchema } from './models/PageSchema';
 export type { PaginatedApprovalResponse } from './models/PaginatedApprovalResponse';
 export type { PaginatedTodoTask } from './models/PaginatedTodoTask';

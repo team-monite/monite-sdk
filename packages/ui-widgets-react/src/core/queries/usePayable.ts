@@ -4,7 +4,7 @@ import {
   PayableResponseSchema,
   PayableUpdateSchema,
   PartnerApiService,
-  PaginationResponse,
+  package__payables__schemas__PaginationResponse,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 
@@ -15,9 +15,11 @@ export const usePayable = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<PaginationResponse, Error>([PAYABLE_QUERY_ID], () =>
-    // TODO use partnerApi because `payables.getList` does not have documentId filter yet
-    monite.api!.partnerApi.getPayables(...args)
+  return useQuery<package__payables__schemas__PaginationResponse, Error>(
+    [PAYABLE_QUERY_ID],
+    () =>
+      // TODO use partnerApi because `payables.getList` does not have documentId filter yet
+      monite.api!.partnerApi.getPayables(...args)
   );
 };
 
@@ -99,6 +101,24 @@ export const useRejectPayableById = () => {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
         toast.success('Rejected');
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+};
+
+export const useCancelPayableById = () => {
+  const queryClient = useQueryClient();
+  const { monite } = useComponentsContext();
+
+  return useMutation<PayableResponseSchema, Error, string>(
+    (id) => monite.api!.payable.cancel(id),
+    {
+      onSuccess: (payable, id) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        toast.success('Canceled');
       },
       onError: (error) => {
         toast.error(error.message);

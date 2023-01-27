@@ -5,6 +5,7 @@ import {
   usePayableById,
   usePayPayableById,
   useRejectPayableById,
+  useCancelPayableById,
   useSubmitPayableById,
 } from 'core/queries/usePayable';
 
@@ -14,6 +15,7 @@ export type UsePayableDetailsProps = {
   onSave?: () => void;
   onPay?: () => void;
   onApprove?: () => void;
+  onCancel?: () => void;
   onReject?: () => void;
 };
 
@@ -22,6 +24,7 @@ export type PayableDetailsPermissions =
   | 'submit'
   | 'reject'
   | 'approve'
+  | 'cancel'
   | 'pay';
 
 export default function usePayableDetails({
@@ -30,6 +33,7 @@ export default function usePayableDetails({
   onSave,
   onReject,
   onApprove,
+  onCancel,
   onPay,
 }: UsePayableDetailsProps) {
   const { data: payable, error, isLoading } = usePayableById(id);
@@ -42,6 +46,7 @@ export default function usePayableDetails({
   const submitMutation = useSubmitPayableById();
   const approveMutation = useApprovePayableById();
   const rejectMutation = useRejectPayableById();
+  const cancelMutation = useCancelPayableById();
   const payMutation = usePayPayableById();
 
   const status = payable?.status;
@@ -53,6 +58,10 @@ export default function usePayableDetails({
     setPermissions([]);
 
     switch (status) {
+      case PayableStateEnum.DRAFT:
+        setPermissions(['save']);
+        setEdit(true);
+        break;
       case PayableStateEnum.NEW:
         setPermissions(['save', 'submit']);
         setEdit(true);
@@ -61,7 +70,7 @@ export default function usePayableDetails({
         setPermissions(['reject', 'approve']);
         break;
       case PayableStateEnum.WAITING_TO_BE_PAID:
-        setPermissions(['pay']);
+        setPermissions(['cancel', 'pay']);
         break;
     }
   }, [status]);
@@ -93,6 +102,11 @@ export default function usePayableDetails({
     onReject && onReject();
   }, [rejectMutation, id, onReject]);
 
+  const cancelInvoice = useCallback(async () => {
+    await cancelMutation.mutateAsync(id);
+    onCancel && onCancel();
+  }, [cancelMutation, id, onCancel]);
+
   const payInvoice = useCallback(async () => {
     await payMutation.mutateAsync(id);
     onPay && onPay();
@@ -111,6 +125,7 @@ export default function usePayableDetails({
       saveInvoice,
       approveInvoice,
       rejectInvoice,
+      cancelInvoice,
       payInvoice,
     },
   };

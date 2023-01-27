@@ -41,6 +41,7 @@ const PayableDetails = ({
   onSubmit,
   onSave,
   onReject,
+  onCancel,
   onApprove,
   onPay,
 }: PayablesDetailsProps) => {
@@ -58,6 +59,7 @@ const PayableDetails = ({
       submitInvoice,
       rejectInvoice,
       approveInvoice,
+      cancelInvoice,
       payInvoice,
     },
   } = usePayableDetails({
@@ -65,6 +67,7 @@ const PayableDetails = ({
     onSubmit,
     onSave,
     onReject,
+    onCancel,
     onPay,
     onApprove,
   });
@@ -88,6 +91,11 @@ const PayableDetails = ({
     approve: (
       <Button key={'approve'} onClick={approveInvoice}>
         {t('common:approve')}
+      </Button>
+    ),
+    cancel: (
+      <Button key={'cancel'} onClick={cancelInvoice} color={'danger'}>
+        {t('common:cancel')}
       </Button>
     ),
     pay: (

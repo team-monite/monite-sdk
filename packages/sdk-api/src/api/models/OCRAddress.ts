@@ -2,24 +2,28 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AllowedCountriesCodes } from './AllowedCountriesCodes';
-
 /**
- * Address information.
+ * In general it's compatible with CounterpartAddress model but
+ * * All fields are optional
+ * * There is an additional field original_country_name
  */
-export type CounterpartAddress = {
+export type OCRAddress = {
     /**
      * Two-letter ISO country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
      */
-    country: AllowedCountriesCodes;
+    country?: string;
+    /**
+     * Country name as it is stated in the document.
+     */
+    original_country_name?: string;
     /**
      * City name.
      */
-    city: string;
+    city?: string;
     /**
      * ZIP or postal code.
      */
-    postal_code: string;
+    postal_code?: string;
     /**
      * State, region, province, or county.
      */
@@ -27,7 +31,7 @@ export type CounterpartAddress = {
     /**
      * Street address.
      */
-    line1: string;
+    line1?: string;
     /**
      * Additional address information (if any).
      */

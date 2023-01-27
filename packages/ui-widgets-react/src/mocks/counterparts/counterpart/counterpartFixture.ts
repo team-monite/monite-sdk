@@ -1,36 +1,26 @@
 import {
-  AllowedCountriesCodes,
-  CounterpartIndividualResponse,
-  CounterpartOrganizationResponse,
+  CounterpartIndividualRootResponse,
+  CounterpartOrganizationRootResponse,
   CounterpartResponse,
   CounterpartType,
 } from '@team-monite/sdk-api';
 
-export const counterpartOrganizationFixture: CounterpartOrganizationResponse = {
-  id: 'organization',
-  created_at: '2022-05-20T14:37:04.383441+00:00',
-  updated_at: '2022-05-20T14:37:04.383455+00:00',
-  type: CounterpartType.ORGANIZATION,
-  organization: {
-    legal_name: 'SMART Agency',
-    vat_number: 'vat_number1',
-    is_vendor: true,
-    is_customer: true,
-    phone: '+31 6 12 34 56 78',
-    email: 'zachary.walters@hotmail.com',
-    registered_address: {
-      country: AllowedCountriesCodes.AF,
-      city: 'Berlin',
-      postal_code: 'code123',
-      state: 'state',
-      line1: 'line1',
-      line2: 'line2',
+export const counterpartOrganizationFixture: CounterpartOrganizationRootResponse =
+  {
+    id: 'organization',
+    created_at: '2022-05-20T14:37:04.383441+00:00',
+    updated_at: '2022-05-20T14:37:04.383455+00:00',
+    type: CounterpartType.ORGANIZATION,
+    organization: {
+      legal_name: 'SMART Agency',
+      is_vendor: true,
+      is_customer: true,
+      phone: '+31 6 12 34 56 78',
+      email: 'zachary.walters@hotmail.com',
     },
-    contacts: [],
-  },
-};
+  };
 
-export const counterpartIndividualFixture: CounterpartIndividualResponse = {
+export const counterpartIndividualFixture: CounterpartIndividualRootResponse = {
   id: 'individual',
   created_at: '2022-05-22T20:09:17.890428+00:00',
   updated_at: '2022-05-22T20:09:17.890440+00:00',
@@ -42,14 +32,6 @@ export const counterpartIndividualFixture: CounterpartIndividualResponse = {
     is_customer: true,
     phone: '+31 6 12 34 56 78',
     email: 'john@mixmax.com',
-    residential_address: {
-      country: AllowedCountriesCodes.NE,
-      city: 'Amsterdam',
-      postal_code: 'code123',
-      state: 'state',
-      line1: 'line1',
-      line2: 'line2',
-    },
   },
 };
 
@@ -61,37 +43,10 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     organization: {
       legal_name: 'SMART Agency',
-      vat_number: 'vat_number1',
       is_vendor: true,
       is_customer: true,
       phone: '+31 6 12 34 56 78',
       email: 'zachary.walters@hotmail.com',
-      registered_address: {
-        country: AllowedCountriesCodes.AF,
-        city: 'Berlin',
-        postal_code: 'code123',
-        state: 'state',
-        line1: 'line1',
-        line2: 'line2',
-      },
-      contacts: [
-        {
-          first_name: 'John Doe',
-          last_name: 'last_name',
-          email: 'user@example.com',
-          phone: '123',
-          is_default: true,
-          address: {
-            country: AllowedCountriesCodes.AF,
-            city: 'city',
-            postal_code: 'code123',
-            state: 'state',
-            line1: 'line1',
-            line2: 'line2',
-          },
-          title: undefined,
-        },
-      ],
     },
   },
   {
@@ -107,15 +62,6 @@ export const counterpartListFixture: CounterpartResponse[] = [
       is_customer: true,
       phone: '+31 6 12 34 56 78',
       email: 'john@mixmax.com',
-      // tax_id: null,
-      residential_address: {
-        country: AllowedCountriesCodes.NE,
-        city: 'Amsterdam',
-        postal_code: 'code123',
-        state: 'state',
-        line1: 'line1',
-        line2: 'line2',
-      },
     },
   },
   {
@@ -125,37 +71,10 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     organization: {
       legal_name: 'SMART Agency 1',
-      vat_number: 'vat_number1',
       is_vendor: true,
       is_customer: false,
       phone: '+31 6 12 34 56 78',
       email: 'zachary.walters@hotmail.com',
-      registered_address: {
-        country: AllowedCountriesCodes.AF,
-        city: 'Berlin',
-        postal_code: 'code123',
-        state: 'state',
-        line1: 'line1',
-        line2: 'line2',
-      },
-      contacts: [
-        {
-          first_name: 'Nina Bridgit',
-          last_name: 'last_name',
-          email: 'user@example.com',
-          phone: '123',
-          is_default: true,
-          address: {
-            country: AllowedCountriesCodes.AF,
-            city: 'city',
-            postal_code: 'code123',
-            state: 'state',
-            line1: 'line1',
-            line2: 'line2',
-          },
-          title: undefined,
-        },
-      ],
     },
   },
   {
@@ -165,37 +84,10 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     organization: {
       legal_name: 'legal_name2',
-      vat_number: 'vat_number1',
       is_vendor: false,
       is_customer: true,
       phone: '123',
       email: 'email@legal_name1.com',
-      registered_address: {
-        country: AllowedCountriesCodes.AF,
-        city: 'city',
-        postal_code: 'code123',
-        state: 'state',
-        line1: 'line1',
-        line2: 'line2',
-      },
-      contacts: [
-        {
-          first_name: 'first_name',
-          last_name: 'last_name',
-          email: 'user@example.com',
-          phone: '123',
-          is_default: true,
-          address: {
-            country: AllowedCountriesCodes.AF,
-            city: 'city',
-            postal_code: 'code123',
-            state: 'state',
-            line1: 'line1',
-            line2: 'line2',
-          },
-          title: undefined,
-        },
-      ],
     },
   },
 ];

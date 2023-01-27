@@ -5,6 +5,7 @@ import {
   PayableResponseSchema,
   PayableStateEnum,
   api__schemas__payables__schemas__PaginationResponse,
+  PayableUpdateSchema,
 } from '@team-monite/sdk-api';
 
 import { geMockPagination } from '../utils';
@@ -18,6 +19,7 @@ type PayableParams = { payableStatus: string };
 
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
 const payableStatusPath = `${payablePath}/:payableStatus`;
+const payableIdPath = `${payablePath}/:payableId`;
 
 const getPayableFixtureByPage = (prevPage?: string) => {
   switch (prevPage) {
@@ -65,6 +67,80 @@ export const payableHandlers = [
       }
 
       return res(ctx.status(404));
+    }
+  ),
+
+  // update (patch) payable by id
+  rest.patch<PayableUpdateSchema, { payableId: string }, PayableResponseSchema>(
+    payableIdPath,
+    async (req, res, ctx) => {
+      const body = await req.json();
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+          ...body,
+        })
+      );
+    }
+  ),
+
+  // submit payable by id
+  rest.post<undefined, { payableId: string }, PayableResponseSchema>(
+    `${payableIdPath}/submit_for_approval`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+        })
+      );
+    }
+  ),
+
+  // reject payable by id
+  rest.post<undefined, { payableId: string }, PayableResponseSchema>(
+    `${payableIdPath}/reject`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+        })
+      );
+    }
+  ),
+
+  // reject payable by id
+  rest.post<undefined, { payableId: string }, PayableResponseSchema>(
+    `${payableIdPath}/cancel`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+        })
+      );
+    }
+  ),
+
+  // approve payable by id
+  rest.post<undefined, { payableId: string }, PayableResponseSchema>(
+    `${payableIdPath}/approve_payment_operation`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+        })
+      );
+    }
+  ),
+
+  // pay payable by id
+  rest.post<undefined, { payableId: string }, PayableResponseSchema>(
+    `${payableIdPath}/pay`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.json({
+          ...payableListFixtureFirstPage[0],
+        })
+      );
     }
   ),
 ];

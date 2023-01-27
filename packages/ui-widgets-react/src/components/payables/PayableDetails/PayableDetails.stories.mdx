@@ -1,36 +1,79 @@
+import { useState } from 'react';
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+import { useModal, Button } from '@team-monite/ui-kit-react';
+import { PayableStateEnum } from '@team-monite/sdk-api';
 import PayableDetails from './PayableDetails';
-import {Canvas, Meta, Story} from '@storybook/addon-docs';
-import {action} from '@storybook/addon-actions';
 
-<Meta
-  title="Payables/Payables — Details View"
-  component={PayableDetails}
-/>
+<Meta title="Payables/Payables — Details View" component={PayableDetails} />
 
-export const Template = (args) => (
-  <PayableDetails {...args} />
-);
+export const Template = (args) => <PayableDetails {...args} />;
 const actions = {
   onSubmit: action('onSubmit'),
   onSave: action('onSave'),
   onPay: action('onPay'),
   onApprove: action('onApprove'),
   onReject: action('onReject'),
-}
+  onCancel: action('onCancel'),
+};
 
 # PayableDetails
 
 ## Props
 
 ### `onDelete`
+
 Type: `(id: string) => void`
 
 <Canvas>
   <Story
+    name="Default"
+    args={{
+      id: 'draft',
+      ...actions,
+    }}
+  >
+    {(args) => {
+      const { show, hide, isOpen } = useModal();
+      const [status, setStatus] = useState(PayableStateEnum.DRAFT);
+      const handleStart = () => {
+        setStatus(PayableStateEnum.DRAFT);
+        show(true);
+      };
+      return (
+        <div>
+          <Button onClick={handleStart}>Start</Button>
+          {isOpen && (
+            <PayableDetails
+              {...args}
+              id={status}
+              onClose={hide}
+              onSave={() => setStatus(PayableStateEnum.NEW)}
+              onSubmit={() => setStatus(PayableStateEnum.APPROVE_IN_PROGRESS)}
+              onReject={() => setStatus(PayableStateEnum.REJECTED)}
+              onApprove={() => setStatus(PayableStateEnum.WAITING_TO_BE_PAID)}
+              onPay={() => setStatus(PayableStateEnum.PAID)}
+              onCancel={() => setStatus(PayableStateEnum.CANCELED)}
+            />
+          )}
+        </div>
+      );
+    }}
+  </Story>
+  <Story
+    name="Draft"
+    args={{
+      id: 'draft',
+      ...actions,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
     name="New"
     args={{
       id: 'new',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}
@@ -39,7 +82,7 @@ Type: `(id: string) => void`
     name="Approval in progress"
     args={{
       id: 'approve_in_progress',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}
@@ -48,7 +91,7 @@ Type: `(id: string) => void`
     name="Waiting to be paid"
     args={{
       id: 'waiting_to_be_paid',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}
@@ -57,7 +100,7 @@ Type: `(id: string) => void`
     name="Paid"
     args={{
       id: 'paid',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}
@@ -66,7 +109,7 @@ Type: `(id: string) => void`
     name="Canceled"
     args={{
       id: 'canceled',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}
@@ -75,7 +118,7 @@ Type: `(id: string) => void`
     name="Rejected"
     args={{
       id: 'rejected',
-      ...actions
+      ...actions,
     }}
   >
     {Template.bind({})}

@@ -101,10 +101,12 @@ export const prepareSubmit = ({
   currency,
   amount: formatToMinorUnits(total, currency),
   due_date: dateToString(dueDate),
-  suggested_payment_term: {
-    date: dateToString(suggestedPaymentDate),
-    // discount: 0,
-  },
+  suggested_payment_term: suggestedPaymentDate
+    ? {
+        date: dateToString(suggestedPaymentDate),
+        // discount: 0,
+      }
+    : undefined,
   counterpart_bank_id: bic,
   counterpart_account_id: iban,
   counterpart_id: suppliersName.value,

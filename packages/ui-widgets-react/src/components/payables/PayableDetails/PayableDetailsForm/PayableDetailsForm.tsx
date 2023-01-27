@@ -49,8 +49,6 @@ const getValidationSchema = () =>
         })
         .required(),
       invoiceNumber: yup.string().required(),
-      invoiceDate: yup.string().required(),
-      suggestedPaymentDate: yup.string().required(),
       dueDate: yup.string().required(),
       total: yup.number().positive().required(),
       tags: yup.array(
@@ -162,12 +160,10 @@ const PayableDetailsForm = forwardRef<
                   label={t('payables:details.invoiceDate')}
                   id={field.name}
                   error={error?.message}
-                  required
                 >
                   <DatePicker
                     {...field}
                     id={field.name}
-                    required
                     isInvalid={!!error}
                     date={field.value ? new Date(field.value) : null}
                   />
@@ -184,14 +180,12 @@ const PayableDetailsForm = forwardRef<
                   label={t('payables:details.suggestedPaymentDate')}
                   id={field.name}
                   error={error?.message}
-                  required
                 >
                   <DatePicker
                     {...field}
                     id={field.name}
                     date={field.value ? new Date(field.value) : null}
                     isInvalid={!!error}
-                    required
                   />
                 </FormItem>
               )}
@@ -247,13 +241,13 @@ const PayableDetailsForm = forwardRef<
               )}
             />
 
-            <FormItem
-              label={t('payables:details.submittedBy')}
-              id="submittedBy"
-            >
-              {/*TODO Waiting design*/}
-              {/*{entityUserQuery.error && entityUserQuery.error.message}*/}
-            </FormItem>
+            {/*<FormItem*/}
+            {/*  label={t('payables:details.submittedBy')}*/}
+            {/*  id="submittedBy"*/}
+            {/*>*/}
+            {/*  /!*TODO Waiting design*!/*/}
+            {/*  /!*{entityUserQuery.error && entityUserQuery.error.message}*!/*/}
+            {/*</FormItem>*/}
 
             {!!tagQuery?.data?.data?.length && (
               <Controller
