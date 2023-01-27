@@ -12,10 +12,9 @@ Notable changes since v. 0.0.4 of `ui-widgets-react`:
     * `<TagsTable>` - a table that displays the list of existing tags with built-in sorting, pagination, rename and delete capabilities.
     * `<TagFormModal>` - the "create new tag" modal.
     * `<ConfirmDeleteModal>` - a confirmation modal displayed before a tag is deleted.
-* Added new components for approval policies:
+* Added new component for approval policies:
     * `<ApprovalPoliciesTable>` - a table that displays the list of existing approval policies with built-in pagination, sorting, and filtering capabilities.
-    * `<ApprovalPolicyCreate>` - the "create new approval policy" modal.
-* Added new components for Accounts Receivable:
+* Added new component for Accounts Receivable:
     * `<CreateInvoice>` - the "create invoice" modal.
 
 Browse all available components in our interactive explorer at https://sdk.dev.monite.com.
