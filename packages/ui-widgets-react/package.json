@@ -29,6 +29,7 @@
     "@tanstack/react-query-devtools": "~4.2.3",
     "@team-monite/sdk-api": "^1.0.0",
     "@team-monite/ui-kit-react": "^1.0.0",
+    "ibantools": "~4.2.2",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
     "react-infinite-scroll-component": "~6.1.0",

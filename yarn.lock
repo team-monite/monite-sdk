@@ -5913,6 +5913,41 @@
     "@types/use-sync-external-store" "^0.0.3"
     use-sync-external-store "^1.2.0"
 
+"@team-monite/sdk-api@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@team-monite/sdk-api/-/sdk-api-0.0.8.tgz#75d10bcc5dbba90c7fe79c3e325dab792e8d078f"
+  integrity sha512-XUPYi53XpZ4DAAeU/lvcU7fnfhUlHwpLQIQwzyq6BJGg+72JLkWRqNAYrTZMyjfbzwIYcT3obhF11ne0P92STQ==
+
+"@team-monite/ui-kit-react@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@team-monite/ui-kit-react/-/ui-kit-react-0.0.6.tgz#d21151c42fee1d482e1dff27687fb1d004d04be2"
+  integrity sha512-YJ8AOCAyweFF24+yVofvxwnL+FZD8QZ21EcewshVv3XAQbWYzr1vhjGu415S/T/yeH+Yu5nhXtCV1UOiw+GiTw==
+  dependencies:
+    "@rebass/forms" "~4.0.6"
+    date-fns "^2.28.0"
+    eslint-config-react-app "~7.0.1"
+    rc-table "~7.26.0"
+    react-datepicker "^4.8.0"
+    react-pdf "~5.7.2"
+    react-select "^5.2.2"
+    react-tabs "~4.2.1"
+    rebass "~4.0.7"
+
+"@team-monite/ui-widgets-react@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@team-monite/ui-widgets-react/-/ui-widgets-react-0.0.7.tgz#b664648f80cb3b15e5bdf2cd16dec96e00379f0a"
+  integrity sha512-Mz4XJZ0VsHxPJI0nadG65rYtnw91UNMlAGLQAj0i6lzHqOQqrCD2q92B7a6l+qkDrEp14RjLhi4UwvZhuw+Ixw==
+  dependencies:
+    "@stripe/react-stripe-js" "~1.9.0"
+    "@stripe/stripe-js" "~1.32.0"
+    "@tanstack/react-query-devtools" "~4.2.3"
+    "@team-monite/sdk-api" "^0.0.8"
+    "@team-monite/ui-kit-react" "^0.0.6"
+    react-hook-form "~7.33.0"
+    react-hot-toast "~2.2.0"
+    react-infinite-scroll-component "~6.1.0"
+    react-query "~3.39.2"
+
 "@testing-library/dom@^8.3.0", "@testing-library/dom@^8.5.0":
   version "8.19.0"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.19.0.tgz#bd3f83c217ebac16694329e413d9ad5fdcfd785f"
@@ -12229,6 +12264,11 @@ i18next@~21.8.10:
   integrity sha512-acJLCk38YMfEPjBR/1vS13SFY7rBQLs9E5m1tSRnWc9UW3f+SZszgH+NP1fZRA1+O+CdG2eLGGmuUMJW52EwzQ==
   dependencies:
     "@babel/runtime" "^7.17.2"
+
+ibantools@~4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/ibantools/-/ibantools-4.2.2.tgz#7936ffc1469eb22c03c78491149eca95dd6c53de"
+  integrity sha512-2JgIzNINavUEm9iooU/5Z0MWuEJSX2RcSqUY0uQhVsx9dtrVwAsVEVD7ygUYRogcJpwWFGnCU0X3vYCLaBxcAA==
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"

@@ -1201,5 +1201,3 @@ export { default as UUsersAlt } from './icons/UUsersAlt';
 // export { default as UWindSun } from './icons/UWindSun';
 // export { default as UWindsock } from './icons/UWindsock';
 // export { default as UWindy } from './icons/UWindy';
-
-export type { UniconProps } from './types/Unicon';

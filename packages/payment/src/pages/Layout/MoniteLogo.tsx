@@ -1,5 +1,10 @@
 import { FC } from 'react';
-import { UniconProps } from '@team-monite/ui-kit-react';
+import { SVGProps } from 'react';
+
+export type UniconProps = {
+  color?: string;
+  size?: string | number;
+} & SVGProps<SVGElement>;
 
 const MoniteLogo: FC<UniconProps> = ({ color = 'currentColor' }) => (
   <svg
