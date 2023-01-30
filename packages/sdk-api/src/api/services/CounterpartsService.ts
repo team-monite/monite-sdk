@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartContactsResourceList } from '../models/CounterpartContactsResourceList';
 import type { CounterpartContactResponse } from '../models/CounterpartContactResponse';
 import type { CounterpartCreatePayload } from '../models/CounterpartCreatePayload';
 import type { CounterpartResponse } from '../models/CounterpartResponse';
@@ -211,12 +212,12 @@ export default class CounterpartsService {
   /**
    * Get Counterpart Contacts
    * @param counterpartId
-   * @returns CounterpartContactResponse Successful Response
+   * @returns CounterpartContactsResourceList Successful Response
    * @throws ApiError
    */
   public getContacts(
     counterpartId: string
-  ): CancelablePromise<Array<CounterpartContactResponse>> {
+  ): CancelablePromise<CounterpartContactsResourceList> {
     return __request(
       {
         method: 'GET',
