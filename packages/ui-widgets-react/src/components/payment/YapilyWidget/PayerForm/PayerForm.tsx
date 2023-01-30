@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isValidIBAN } from 'ibantools';
 
 import {
   Text,
@@ -34,12 +35,26 @@ const PayerForm = ({
   handleNextStep,
 }: PayerFormProps) => {
   const { t } = useTranslation();
+  const [ibanError, setIbanError] = useState(isValidIBAN(iban));
+  const [nameError, setNameError] = useState(false);
 
   if (!bank) return null;
 
   const logo = bank.media.find(
     (item: PaymentsPaymentsMedia) => item.type === 'icon'
   )?.source;
+
+  const validateInputs = () => {
+    setIbanError(!isValidIBAN(iban));
+    setNameError(!name);
+    return isValidIBAN(iban) && !!name;
+  };
+
+  const handleSubmit = () => {
+    if (validateInputs()) {
+      handleNextStep();
+    }
+  };
 
   return (
     <Box>
@@ -51,7 +66,11 @@ const PayerForm = ({
       </Flex>
 
       <Box mt="32px">
-        <FormField id="name" label={t('payment:bankWidget.payerFormName')}>
+        <FormField
+          id="name"
+          label={t('payment:bankWidget.payerFormName')}
+          error={nameError ? t('payment:bankWidget:payerFormNameError') : ''}
+        >
           <Input
             value={name}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -62,7 +81,11 @@ const PayerForm = ({
         </FormField>
       </Box>
       <Box mt="24px">
-        <FormField id="iban" label={t('payment:bankWidget.payerFormIban')}>
+        <FormField
+          id="iban"
+          label={t('payment:bankWidget.payerFormIban')}
+          error={ibanError ? t('payment:bankWidget:payerFormIbanError') : ''}
+        >
           <Input
             value={iban}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -72,7 +95,7 @@ const PayerForm = ({
           />
         </FormField>
       </Box>
-      <Button mt="56px" type="submit" block onClick={handleNextStep}>
+      <Button mt="56px" type="submit" block onClick={handleSubmit}>
         Continue
       </Button>
     </Box>

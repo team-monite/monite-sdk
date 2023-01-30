@@ -95,7 +95,9 @@
       "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
       "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup.",
       "payerFormName": "Your account holder’s name",
+      "payerFormNameError": "Please enter your account holder’s name",
       "payerFormIban": "Your IBAN",
+      "payerFormIbanError": "Invalid IBAN. Please check and try again",
       "selectMethodLink": "Didn't find your bank? Try another payment method"
     }
   },
