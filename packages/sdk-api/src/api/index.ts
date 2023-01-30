@@ -63,6 +63,7 @@ export type { ContentResponse } from './models/ContentResponse';
 export type { CounterpartAddress } from './models/CounterpartAddress';
 export type { CounterpartBankAccount } from './models/CounterpartBankAccount';
 export type { CounterpartBankAccountResponse } from './models/CounterpartBankAccountResponse';
+export type { CounterpartContactsResourceList } from './models/CounterpartContactsResourceList';
 export type { CounterpartContactResponse } from './models/CounterpartContactResponse';
 export { CounterpartCreateIndividualPayload } from './models/CounterpartCreateIndividualPayload';
 export { CounterpartCreateOrganizationPayload } from './models/CounterpartCreateOrganizationPayload';

@@ -236,7 +236,11 @@ export const useCounterpartContactList = (counterpartId?: string) => {
   return useQuery<CounterpartContactResponse[], Error>(
     counterpartQueryKeys.contactList(),
     () =>
-      counterpartId ? monite.api.counterparts.getContacts(counterpartId) : [],
+      counterpartId
+        ? monite.api.counterparts
+            .getContacts(counterpartId)
+            .then((response) => response.data)
+        : [],
     {
       onError: () => {
         toast.error(
