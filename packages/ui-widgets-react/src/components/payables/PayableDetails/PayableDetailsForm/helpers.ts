@@ -1,5 +1,5 @@
 import {
-  CounterpartAddressResponseWithCounterpartID,
+  CounterpartAddress,
   CounterpartResponse as Counterpart,
   CurrencyEnum,
   PayableResponseSchema,
@@ -61,7 +61,7 @@ export interface PayableDetailsFormFields {
 }
 
 export interface SubmitPayload extends PayableDetailsFormFields {
-  counterpartAddress: CounterpartAddressResponseWithCounterpartID;
+  counterpartAddress: CounterpartAddress;
 }
 
 export const prepareDefaultValues = ({

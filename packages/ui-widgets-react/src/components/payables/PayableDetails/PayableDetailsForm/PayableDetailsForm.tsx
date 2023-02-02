@@ -129,7 +129,14 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                 await saveInvoice(
                   prepareSubmit({
                     ...values,
-                    counterpartAddress,
+                    counterpartAddress: {
+                      country: counterpartAddress.country,
+                      city: counterpartAddress.city,
+                      postal_code: counterpartAddress.postal_code,
+                      state: counterpartAddress.state,
+                      line1: counterpartAddress.line1,
+                      line2: counterpartAddress.line2,
+                    },
                   })
                 );
 

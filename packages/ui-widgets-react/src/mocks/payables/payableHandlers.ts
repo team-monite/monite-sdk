@@ -15,11 +15,12 @@ import {
   payableListFixtureThirdPage,
 } from './payablesFixture';
 
-type PayableParams = { payableStatus: string };
+type PayableParams = { payableId: string };
 
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
-const payableStatusPath = `${payablePath}/:payableStatus`;
 const payableIdPath = `${payablePath}/:payableId`;
+
+let payable: PayableResponseSchema = payableListFixtureFirstPage[0];
 
 const getPayableFixtureByPage = (prevPage?: string) => {
   switch (prevPage) {
@@ -49,21 +50,31 @@ export const payableHandlers = [
     }
   ),
 
-  // read payable by status (id)
+  // get payable by id
   rest.get<undefined, PayableParams, PayableResponseSchema>(
-    payableStatusPath,
+    payableIdPath,
     ({ params }, res, ctx) => {
       if (
         Object.values(PayableStateEnum).find(
-          (status) => status === params.payableStatus
+          (status) => status === params.payableId
         )
       ) {
         return res(
           ctx.json({
             ...payableListFixtureFirstPage[0],
-            status: params.payableStatus as PayableStateEnum,
+            status: params.payableId as PayableStateEnum,
           })
         );
+      } else {
+        const payableById = payableListFixtureFirstPage.find(
+          (item) => item.id === params.payableId
+        );
+
+        if (payableById) {
+          return res(
+            ctx.json(payable ? { ...payableById, ...payable } : payableById)
+          );
+        }
       }
 
       return res(ctx.status(404));
@@ -75,12 +86,14 @@ export const payableHandlers = [
     payableIdPath,
     async (req, res, ctx) => {
       const body = await req.json();
-      return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-          ...body,
-        })
-      );
+
+      payable = {
+        ...payableListFixtureFirstPage[0],
+        ...body,
+        status: PayableStateEnum.NEW,
+      };
+
+      return res(ctx.json(payable));
     }
   ),
 
@@ -88,10 +101,14 @@ export const payableHandlers = [
   rest.post<undefined, { payableId: string }, PayableResponseSchema>(
     `${payableIdPath}/submit_for_approval`,
     async (req, res, ctx) => {
+      payable = { ...payable, status: PayableStateEnum.APPROVE_IN_PROGRESS };
+
       return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-        })
+        ctx.json(
+          payable || {
+            ...payableListFixtureFirstPage[0],
+          }
+        )
       );
     }
   ),
@@ -100,22 +117,30 @@ export const payableHandlers = [
   rest.post<undefined, { payableId: string }, PayableResponseSchema>(
     `${payableIdPath}/reject`,
     async (req, res, ctx) => {
+      payable.status = PayableStateEnum.REJECTED;
+
       return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-        })
+        ctx.json(
+          payable || {
+            ...payableListFixtureFirstPage[0],
+          }
+        )
       );
     }
   ),
 
-  // reject payable by id
+  // cancel payable by id
   rest.post<undefined, { payableId: string }, PayableResponseSchema>(
     `${payableIdPath}/cancel`,
     async (req, res, ctx) => {
+      payable.status = PayableStateEnum.CANCELED;
+
       return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-        })
+        ctx.json(
+          payable || {
+            ...payableListFixtureFirstPage[0],
+          }
+        )
       );
     }
   ),
@@ -124,10 +149,14 @@ export const payableHandlers = [
   rest.post<undefined, { payableId: string }, PayableResponseSchema>(
     `${payableIdPath}/approve_payment_operation`,
     async (req, res, ctx) => {
+      payable.status = PayableStateEnum.WAITING_TO_BE_PAID;
+
       return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-        })
+        ctx.json(
+          payable || {
+            ...payableListFixtureFirstPage[0],
+          }
+        )
       );
     }
   ),
@@ -136,10 +165,14 @@ export const payableHandlers = [
   rest.post<undefined, { payableId: string }, PayableResponseSchema>(
     `${payableIdPath}/pay`,
     async (req, res, ctx) => {
+      payable.status = PayableStateEnum.PAID;
+
       return res(
-        ctx.json({
-          ...payableListFixtureFirstPage[0],
-        })
+        ctx.json(
+          payable || {
+            ...payableListFixtureFirstPage[0],
+          }
+        )
       );
     }
   ),

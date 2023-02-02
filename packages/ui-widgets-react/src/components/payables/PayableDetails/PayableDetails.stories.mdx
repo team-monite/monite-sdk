@@ -35,9 +35,7 @@ Type: `(id: string) => void`
   >
     {(args) => {
       const { show, hide, isOpen } = useModal();
-      const [status, setStatus] = useState(PayableStateEnum.DRAFT);
       const handleStart = () => {
-        setStatus(PayableStateEnum.DRAFT);
         show(true);
       };
       return (
@@ -46,14 +44,8 @@ Type: `(id: string) => void`
           {isOpen && (
             <PayableDetails
               {...args}
-              id={status}
+              id="9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0"
               onClose={hide}
-              onSave={() => setStatus(PayableStateEnum.NEW)}
-              onSubmit={() => setStatus(PayableStateEnum.APPROVE_IN_PROGRESS)}
-              onReject={() => setStatus(PayableStateEnum.REJECTED)}
-              onApprove={() => setStatus(PayableStateEnum.WAITING_TO_BE_PAID)}
-              onPay={() => setStatus(PayableStateEnum.PAID)}
-              onCancel={() => setStatus(PayableStateEnum.CANCELED)}
             />
           )}
         </div>

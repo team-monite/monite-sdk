@@ -20,6 +20,7 @@ import {
 
 import { usePayable } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
+import { getReadableAmount } from 'core/utils';
 import { default as FiltersComponent } from './Filters';
 import { Sort, FilterTypes, FilterValue } from './types';
 import { PAGE_LIMIT } from '../../../constants';
@@ -44,11 +45,6 @@ interface Props {
     value: FilterValue;
   }) => void;
 }
-
-const formatter = new Intl.NumberFormat('de-DE', {
-  style: 'currency',
-  currency: 'EUR',
-});
 
 const PayablesTable = ({
   onRowClick,
@@ -211,8 +207,13 @@ const PayablesTable = ({
             ),
             dataIndex: 'amount',
             key: 'amount',
-            render: (value: number | undefined) =>
-              value ? formatter.format(value) : '',
+            render: (_, record) => {
+              const payable = record as PayableResponseSchema;
+
+              return payable.amount && payable.currency
+                ? getReadableAmount(payable.amount, payable.currency)
+                : '';
+            },
           },
           {
             dataIndex: ['status', 'id'],
