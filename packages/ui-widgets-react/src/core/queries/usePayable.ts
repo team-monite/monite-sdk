@@ -7,8 +7,12 @@ import {
   package__payables__schemas__PaginationResponse,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
+import { useEntityListCache } from './hooks';
 
 export const PAYABLE_QUERY_ID = 'payable';
+
+export const usePayableListCache = () =>
+  useEntityListCache<PayableResponseSchema>(() => [PAYABLE_QUERY_ID]);
 
 export const usePayable = (
   ...args: Parameters<PartnerApiService['getPayables']>
@@ -40,12 +44,14 @@ export const usePayableById = (id?: string) => {
 export const useUpdatePayableById = (id: string) => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, PayableUpdateSchema>(
     (body) => monite.api!.payable.update(id, body),
     {
       onSuccess: (payable) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Saved');
       },
       onError: (error) => {
@@ -58,12 +64,14 @@ export const useUpdatePayableById = (id: string) => {
 export const useSubmitPayableById = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.submit(id),
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Submitted');
       },
       onError: (error) => {
@@ -76,12 +84,14 @@ export const useSubmitPayableById = () => {
 export const useApprovePayableById = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.approve(id),
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Approved');
       },
       onError: (error) => {
@@ -94,12 +104,14 @@ export const useApprovePayableById = () => {
 export const useRejectPayableById = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.reject(id),
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Rejected');
       },
       onError: (error) => {
@@ -112,12 +124,14 @@ export const useRejectPayableById = () => {
 export const useCancelPayableById = () => {
   const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, string>(
     (id) => monite.api!.payable.cancel(id),
     {
       onSuccess: (payable, id) => {
         queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Canceled');
       },
       onError: (error) => {
@@ -128,13 +142,17 @@ export const useCancelPayableById = () => {
 };
 
 export const usePayPayableById = () => {
+  const queryClient = useQueryClient();
   const { monite } = useComponentsContext();
+  const { invalidate } = usePayableListCache();
 
   return useMutation<PayableResponseSchema, Error, string>(
     [PAYABLE_QUERY_ID],
     (id) => monite.api!.payable.pay(id),
     {
-      onSuccess: () => {
+      onSuccess: (payable, id) => {
+        queryClient.setQueryData([PAYABLE_QUERY_ID, { id }], payable);
+        invalidate();
         toast.success('Paid');
       },
       onError: (error) => {

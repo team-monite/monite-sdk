@@ -61,6 +61,8 @@ export type { CompanyAddress } from './models/CompanyAddress';
 export type { ConsentPayload } from './models/ConsentPayload';
 export type { ContentResponse } from './models/ContentResponse';
 export type { CounterpartAddress } from './models/CounterpartAddress';
+export type { CounterpartAddressResourceList } from './models/CounterpartAddressResourceList';
+export type { CounterpartAddressResponseWithCounterpartID } from './models/CounterpartAddressResponseWithCounterpartID';
 export type { CounterpartBankAccount } from './models/CounterpartBankAccount';
 export type { CounterpartBankAccountResponse } from './models/CounterpartBankAccountResponse';
 export type { CounterpartContactsResourceList } from './models/CounterpartContactsResourceList';
@@ -399,7 +401,9 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
+export { default as CounterpartsAddressesService } from './services/CounterpartsAddressesService';
 export * from './services/CounterpartsService';
+export * from './services/CounterpartsAddressesService';
 export * from './services/PayableService';
 export * from './services/TagService';
 export * from './services/ReceivableService';

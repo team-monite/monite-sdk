@@ -1,6 +1,7 @@
 import { OpenAPIConfig } from './OpenAPI';
 
 import CounterpartsService from './services/CounterpartsService';
+import CounterpartsAddressesService from './services/CounterpartsAddressesService';
 import PartnerApiService from './services/PartnerApiService';
 import PaymentService from './services/PaymentService';
 import AuthService from './services/AuthService';
@@ -27,6 +28,7 @@ class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   counterparts: CounterpartsService;
+  counterpartsAddresses: CounterpartsAddressesService;
   partnerApi: PartnerApiService;
   auth: AuthService;
   payable: PayablesService;
@@ -47,6 +49,7 @@ class ApiService {
     this.openapiConfig = config;
 
     this.counterparts = new CounterpartsService({ config });
+    this.counterpartsAddresses = new CounterpartsAddressesService({ config });
     this.partnerApi = new PartnerApiService({ config });
     this.auth = new AuthService({ config });
     this.receivable = new ReceivableService({ config });

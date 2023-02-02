@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState, useEffect, cloneElement, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -51,10 +51,11 @@ const PayableDetails = ({
     formRef,
     isEdit,
     isLoading,
+    isFormLoading,
+    isButtonLoading,
     error,
     permissions,
     actions: {
-      onFormSave,
       saveInvoice,
       submitInvoice,
       rejectInvoice,
@@ -72,14 +73,37 @@ const PayableDetails = ({
     onApprove,
   });
 
-  const [actions] = useState<Record<PayableDetailsPermissions, ReactNode>>({
+  const [isInvoiceSubmitting, setIsInvoiceSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isInvoiceSubmitting) {
+      formRef.current?.dispatchEvent(
+        new Event('submit', {
+          bubbles: true,
+        })
+      );
+    }
+  }, [isInvoiceSubmitting]);
+
+  const [actions] = useState<Record<PayableDetailsPermissions, ReactElement>>({
     save: (
-      <Button key={'save'} onClick={saveInvoice} color={'secondary'}>
+      <Button
+        key={'save'}
+        color={'secondary'}
+        type="submit"
+        form="payableDetailsForm"
+      >
         {t('common:save')}
       </Button>
     ),
     submit: (
-      <Button key={'submit'} onClick={submitInvoice}>
+      <Button
+        key={'submit'}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsInvoiceSubmitting(true);
+        }}
+      >
         {t('common:submit')}
       </Button>
     ),
@@ -151,7 +175,12 @@ const PayableDetails = ({
             }
             actions={
               <StyledHeaderActions>
-                {permissions.map((permission) => actions[permission])}
+                {permissions.map((permission) =>
+                  cloneElement(actions[permission], {
+                    isLoading: isButtonLoading,
+                    disabled: isButtonLoading,
+                  })
+                )}
               </StyledHeaderActions>
             }
           >
@@ -193,8 +222,12 @@ const PayableDetails = ({
             {isEdit && (
               <PayableDetailsForm
                 ref={formRef}
-                onSubmit={onFormSave}
+                saveInvoice={saveInvoice}
+                isInvoiceSubmitting={isInvoiceSubmitting}
+                setIsInvoiceSubmitting={setIsInvoiceSubmitting}
+                submitInvoice={submitInvoice}
                 payable={payable}
+                isFormLoading={isFormLoading}
               />
             )}
             {!isEdit && <PayableDetailsInfo payable={payable} />}

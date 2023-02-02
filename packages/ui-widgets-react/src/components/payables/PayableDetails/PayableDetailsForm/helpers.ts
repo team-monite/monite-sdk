@@ -1,4 +1,5 @@
 import {
+  CounterpartAddressResponseWithCounterpartID,
   CounterpartResponse as Counterpart,
   CurrencyEnum,
   PayableResponseSchema,
@@ -47,7 +48,7 @@ export const dateToString = (date: string): string => {
 };
 
 export interface PayableDetailsFormFields {
-  suppliersName: Option;
+  counterpart: Option;
   invoiceNumber: string;
   currency: CurrencyEnum;
   invoiceDate: string;
@@ -57,6 +58,10 @@ export interface PayableDetailsFormFields {
   tags: Option[];
   iban: string;
   bic: string;
+}
+
+export interface SubmitPayload extends PayableDetailsFormFields {
+  counterpartAddress: CounterpartAddressResponseWithCounterpartID;
 }
 
 export const prepareDefaultValues = ({
@@ -73,10 +78,16 @@ export const prepareDefaultValues = ({
   counterpart_account_id,
 }: PayableResponseSchema): PayableDetailsFormFields => ({
   currency: currency ?? CurrencyEnum.EUR,
-  suppliersName: {
-    value: counterpart_id ?? '',
-    label: counterpart_name ?? '',
-  },
+  counterpart:
+    counterpart_id && counterpart_name
+      ? {
+          value: counterpart_id ?? '',
+          label: counterpart_name ?? '',
+        }
+      : {
+          value: '',
+          label: '',
+        },
   invoiceNumber: document_id ?? '',
   invoiceDate: issued_at ?? '',
   suggestedPaymentDate: suggested_payment_term?.date ?? '',
@@ -95,9 +106,10 @@ export const prepareSubmit = ({
   bic,
   iban,
   invoiceNumber,
-  suppliersName,
+  counterpart,
   tags,
-}: PayableDetailsFormFields): PayableUpdateSchema => ({
+  counterpartAddress,
+}: SubmitPayload): PayableUpdateSchema => ({
   currency,
   amount: formatToMinorUnits(total, currency),
   due_date: dateToString(dueDate),
@@ -109,10 +121,11 @@ export const prepareSubmit = ({
     : undefined,
   counterpart_bank_id: bic,
   counterpart_account_id: iban,
-  counterpart_id: suppliersName.value,
-  counterpart_name: suppliersName.label,
+  counterpart_id: counterpart.value,
+  counterpart_name: counterpart.label,
   tag_ids: tags.map((tag) => tag.value),
   document_id: invoiceNumber,
+  counterpart_address: counterpartAddress,
 
   // TODO: need to mapping
   // description: '',

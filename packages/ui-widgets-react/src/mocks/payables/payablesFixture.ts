@@ -4,6 +4,7 @@ import {
   PayableResponseSchema,
   PayableStateEnum,
   SourceOfPayableDataEnum,
+  AllowedCountriesCodes,
 } from '@team-monite/sdk-api';
 
 export const payableListFixtureFirstPage: PayableResponseSchema[] = [
@@ -22,11 +23,18 @@ export const payableListFixtureFirstPage: PayableResponseSchema[] = [
     suggested_payment_term: undefined,
     issued_at: undefined,
     counterpart_bank_id: 'DEUTDE2HXXX',
-    counterpart_id: '44ac3882-1d32-415e-a3bb-fa375c576855',
+    counterpart_id: 'dee7b04d-c977-449e-b5dd-93702a04f20d',
     counterpart_account_id: '123456789012',
-    counterpart_name: 'SMART Agency',
+    counterpart_name: 'Acme Inc. 11222123123',
     counterpart_tax_id: undefined,
-    counterpart_address: undefined,
+    counterpart_address: {
+      country: AllowedCountriesCodes.GE,
+      city: 'City',
+      postal_code: 'ZIP code',
+      state: '123',
+      line1: 'Address line 1',
+      line2: 'Address line 2',
+    },
     payable_origin: PayableOriginEnum.UPLOAD,
     was_created_by_user_id: undefined,
     was_created_by_external_user_name: undefined,

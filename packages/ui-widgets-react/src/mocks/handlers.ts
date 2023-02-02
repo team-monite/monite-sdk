@@ -3,6 +3,7 @@ import {
   counterpartBankHandlers,
   counterpartContactHandlers,
 } from './counterparts';
+import { counterpartsAddressesHandlers } from './counterpartsAddresses';
 import { payableHandlers } from './payables';
 import { tagsHandlers } from './tags';
 import { workflowsHandlers } from './workflows';
@@ -13,6 +14,7 @@ export const handlers = [
   ...counterpartHandlers,
   ...counterpartBankHandlers,
   ...counterpartContactHandlers,
+  ...counterpartsAddressesHandlers,
   ...payableHandlers,
   ...tagsHandlers,
   ...workflowsHandlers,

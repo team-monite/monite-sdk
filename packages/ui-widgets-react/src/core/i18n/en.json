@@ -234,7 +234,7 @@
       "history": "Comments"
     },
     "details": {
-      "suppliersName": "Counterpart name",
+      "counterpart": "Counterpart",
       "invoiceNumber": "Invoice Number",
       "invoiceDate": "Invoice date",
       "suggestedPaymentDate": "Suggested payment date",
@@ -376,6 +376,7 @@
     "type": "Type",
     "search": "Search",
     "status": "Status",
-    "customer": "Customer"
+    "customer": "Customer",
+    "counterpart": "Counterpart"
   }
 }

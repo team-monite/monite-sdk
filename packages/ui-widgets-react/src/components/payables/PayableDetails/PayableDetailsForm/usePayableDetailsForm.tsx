@@ -3,46 +3,31 @@ import { toast } from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/src/utils';
 
-import {
-  PayableResponseSchema,
-  PayableUpdateSchema,
-  TagsResponse,
-} from '@team-monite/sdk-api';
-import { useComponentsContext } from 'core/context/ComponentsContext';
-import {
-  PAYABLE_QUERY_ID,
-  useUpdatePayableById,
-} from 'core/queries/usePayable';
+import { PayableResponseSchema, TagsResponse } from '@team-monite/sdk-api';
+import { PAYABLE_QUERY_ID } from 'core/queries/usePayable';
 import { useCreateTag, useTagList, TAG_QUERY_ID } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';
+import { useCounterpartsAddresses } from 'core/queries/useCounterpartsAddresses';
 // import { useEntityById } from 'core/queries/useEntity';
 
 import type { Option } from './helpers';
 
 export type UsePayableDetailsFormProps = {
   payable: PayableResponseSchema;
-  onSubmit?: () => void;
+  currentCounterpartId: string;
 };
 
 export default function usePayableDetailsForm({
   payable,
-  onSubmit,
+  currentCounterpartId,
 }: UsePayableDetailsFormProps) {
-  const { monite } = useComponentsContext();
   const queryClient = useQueryClient();
   const tagQuery = useTagList();
-  const counterpartQuery = useCounterpartList(monite.entityId);
+  const counterpartQuery = useCounterpartList();
+  const counterpartAddressQuery =
+    useCounterpartsAddresses(currentCounterpartId);
   // const entityUserQuery = useEntityById(payable.was_created_by_user_id);
-  const payableSaveMutation = useUpdatePayableById(payable.id);
   const tagCreateMutation = useCreateTag();
-
-  const saveInvoice = useCallback(
-    async (data: PayableUpdateSchema) => {
-      await payableSaveMutation.mutateAsync(data);
-      onSubmit && onSubmit();
-    },
-    [payableSaveMutation]
-  );
 
   const createTag = useCallback(
     ({ label: name }: Option) => {
@@ -81,9 +66,8 @@ export default function usePayableDetailsForm({
   return {
     tagQuery,
     counterpartQuery,
+    counterpartAddressQuery,
     // entityUserQuery,
-    saveInvoice,
     createTag,
-    isFormLoading: payableSaveMutation.isLoading,
   };
 }
