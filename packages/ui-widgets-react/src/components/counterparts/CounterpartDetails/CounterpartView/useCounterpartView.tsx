@@ -13,6 +13,7 @@ import { getCounterpartName } from '../../helpers';
 
 export type CounterpartViewProps = {
   id: string;
+  disableBankAccounts?: boolean;
   onClose?: () => void;
   onEdit?: (id: string, type: CounterpartType) => void;
   onDelete?: (id: string) => void;
