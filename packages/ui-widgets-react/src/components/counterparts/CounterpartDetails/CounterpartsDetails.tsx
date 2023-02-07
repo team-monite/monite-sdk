@@ -84,7 +84,7 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
         <CounterpartView
           onClose={props.onClose}
           id={counterpartId}
-          disableBankAccounts={props.disableBankAccounts}
+          showBankAccounts={props.showBankAccounts}
           onEdit={onEdit}
           onDelete={props.onDelete}
           onContactEdit={onContactEdit}
