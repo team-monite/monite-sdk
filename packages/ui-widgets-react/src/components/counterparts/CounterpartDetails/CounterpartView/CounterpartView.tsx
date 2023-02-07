@@ -146,7 +146,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
           </FlexContainer>
         )}
 
-        {counterpart && (
+        {counterpart && props.showBankAccounts && (
           <FlexContainer flexDirection={'column'} gap={20}>
             <Text textSize={'h4'}>{t('counterparts:titles.bankAccounts')}</Text>
 

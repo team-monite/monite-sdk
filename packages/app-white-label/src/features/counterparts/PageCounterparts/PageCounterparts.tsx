@@ -59,6 +59,7 @@ const PageCounterparts = () => {
         <CounterpartDetails
           id={counterpartId}
           type={counterpartType}
+          showBankAccounts={true}
           onClose={closeModal}
           onDelete={closeModal}
         />
