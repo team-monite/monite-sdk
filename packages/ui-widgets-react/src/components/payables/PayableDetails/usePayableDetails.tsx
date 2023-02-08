@@ -40,6 +40,7 @@ export default function usePayableDetails({
   const { data: payable, error, isLoading } = usePayableById(id);
   const formRef = useRef<HTMLFormElement>(null);
   const [isEdit, setEdit] = useState<boolean>(false);
+  const [submitWithSave, setSubmitWithSave] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [permissions, setPermissions] = useState<PayableDetailsPermissions[]>(
@@ -101,17 +102,33 @@ export default function usePayableDetails({
     payMutation.isLoading,
   ]);
 
+  useEffect(() => {
+    if (submitWithSave) {
+      formRef.current?.dispatchEvent(new Event('submit', { bubbles: true }));
+    }
+  }, [submitWithSave]);
+
   const saveInvoice = useCallback(
     async (data: PayableUpdateSchema) => {
       await saveMutation.mutateAsync(data);
       onSave && onSave();
+
+      if (submitWithSave) {
+        await submitInvoice();
+      }
     },
     [saveMutation]
   );
 
   const submitInvoice = useCallback(async () => {
-    await submitMutation.mutateAsync(id);
-    onSubmit && onSubmit();
+    if (!submitWithSave) {
+      setSubmitWithSave(true);
+    } else {
+      await submitMutation.mutateAsync(id);
+      onSubmit && onSubmit();
+
+      setSubmitWithSave(false);
+    }
   }, [submitMutation, id, onSubmit]);
 
   const approveInvoice = useCallback(async () => {

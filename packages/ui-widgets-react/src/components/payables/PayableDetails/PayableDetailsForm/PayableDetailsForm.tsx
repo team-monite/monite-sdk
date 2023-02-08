@@ -42,9 +42,6 @@ import {
 interface PayableDetailsFormProps {
   payable: PayableResponseSchema;
   saveInvoice: (data: PayableUpdateSchema) => void;
-  isInvoiceSubmitting: boolean;
-  setIsInvoiceSubmitting: (value: boolean) => void;
-  submitInvoice: (id: string) => void;
   isFormLoading: boolean;
 }
 
@@ -78,17 +75,7 @@ const getValidationSchema = (t: TFunction) =>
     .required();
 
 const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
-  (
-    {
-      payable,
-      saveInvoice,
-      submitInvoice,
-      isInvoiceSubmitting,
-      setIsInvoiceSubmitting,
-      isFormLoading,
-    },
-    ref
-  ) => {
+  ({ payable, saveInvoice, isFormLoading }, ref) => {
     const { t } = useTranslation();
     const { control, handleSubmit, reset, watch } =
       useForm<PayableDetailsFormFields>({
@@ -139,11 +126,6 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                     },
                   })
                 );
-
-                if (isInvoiceSubmitting) {
-                  submitInvoice(payable.id);
-                  setIsInvoiceSubmitting(false);
-                }
               }
             })}
           >
@@ -290,15 +272,6 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                   </FormItem>
                 )}
               />
-
-              {/*<FormItem*/}
-              {/*  label={t('payables:details.submittedBy')}*/}
-              {/*  id="submittedBy"*/}
-              {/*>*/}
-              {/*  /!*TODO Waiting design*!/*/}
-              {/*  /!*{entityUserQuery.error && entityUserQuery.error.message}*!/*/}
-              {/*</FormItem>*/}
-
               {!!tagQuery?.data?.data?.length && (
                 <Controller
                   name={'tags'}

@@ -213,25 +213,6 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               </ListItem>
             </List>
           </FormField>
-          {/*<Controller*/}
-          {/*  name="taxId"*/}
-          {/*  control={control}*/}
-          {/*  render={({ field, fieldState: { error } }) => (*/}
-          {/*    <FormField*/}
-          {/*      label={t('counterparts:individual.taxId')}*/}
-          {/*      id={field.name}*/}
-          {/*      required*/}
-          {/*      error={error?.message}*/}
-          {/*    >*/}
-          {/*      <Input*/}
-          {/*        {...field}*/}
-          {/*        id={field.name}*/}
-          {/*        isInvalid={!!error}*/}
-          {/*        required*/}
-          {/*      />*/}
-          {/*    </FormField>*/}
-          {/*  )}*/}
-          {/*/>*/}
           <Controller
             name="email"
             control={control}

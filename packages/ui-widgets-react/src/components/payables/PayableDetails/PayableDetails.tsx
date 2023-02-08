@@ -1,4 +1,4 @@
-import React, { useState, useEffect, cloneElement, ReactElement } from 'react';
+import React, { useState, cloneElement, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -73,18 +73,6 @@ const PayableDetails = ({
     onApprove,
   });
 
-  const [isInvoiceSubmitting, setIsInvoiceSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (isInvoiceSubmitting) {
-      formRef.current?.dispatchEvent(
-        new Event('submit', {
-          bubbles: true,
-        })
-      );
-    }
-  }, [isInvoiceSubmitting]);
-
   const [actions] = useState<Record<PayableDetailsPermissions, ReactElement>>({
     save: (
       <Button
@@ -97,13 +85,7 @@ const PayableDetails = ({
       </Button>
     ),
     submit: (
-      <Button
-        key={'submit'}
-        onClick={(e) => {
-          e.preventDefault();
-          setIsInvoiceSubmitting(true);
-        }}
-      >
+      <Button key={'submit'} onClick={submitInvoice}>
         {t('common:submit')}
       </Button>
     ),
@@ -223,9 +205,6 @@ const PayableDetails = ({
               <PayableDetailsForm
                 ref={formRef}
                 saveInvoice={saveInvoice}
-                isInvoiceSubmitting={isInvoiceSubmitting}
-                setIsInvoiceSubmitting={setIsInvoiceSubmitting}
-                submitInvoice={submitInvoice}
                 payable={payable}
                 isFormLoading={isFormLoading}
               />
