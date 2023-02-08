@@ -1,5 +1,12 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## ui-widgets-react 1.1.0
+### New features
+* The `<CounterpartDetails>` component has a new `showBankAccounts` prop that controls whether to display the "Bank accounts" section.
+
+### Bug fixes
+* Fixed an issue with the `<CounterpartDetails>` component that caused a blank page.
+
 ## ui-widgets-react 1.0.0
 
 This is the first major release of Monite UI Widgets (`@team-monite/ui-widgets-react`) - a React component library for building embedded finance capabilities into your products, powered by Monite API.
