@@ -23,7 +23,7 @@ export type CounterpartAddress = {
     /**
      * State, region, province, or county.
      */
-    state: string;
+    state?: string;
     /**
      * Street address.
      */

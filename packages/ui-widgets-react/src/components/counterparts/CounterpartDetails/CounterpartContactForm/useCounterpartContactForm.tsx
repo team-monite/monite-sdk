@@ -10,7 +10,7 @@ import {
 import { useComponentsContext } from 'core/context/ComponentsContext';
 
 import {
-  CounterpartOrganizationResponse,
+  CounterpartOrganizationRootResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
 } from '@team-monite/sdk-api';
@@ -48,7 +48,8 @@ export default function useCounterpartContactForm({
   const contactCreateMutation = useCreateCounterpartContact(counterpartId);
   const contactUpdateMutation = useUpdateCounterpartContact(counterpartId);
 
-  const counterpart = counterpartResponse as CounterpartOrganizationResponse;
+  const counterpart =
+    counterpartResponse as CounterpartOrganizationRootResponse;
 
   const methods = useForm<CounterpartContactFields>({
     resolver: yupResolver(getValidationSchema(t)),

@@ -19,7 +19,7 @@ import {
 
 import {
   CounterpartCreatePayload,
-  CounterpartIndividualResponse,
+  CounterpartIndividualRootResponse,
   CounterpartUpdatePayload,
 } from '@team-monite/sdk-api';
 
@@ -61,7 +61,8 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     isLoading,
   } = useCounterpartForm(props);
 
-  const individualCounterpart = counterpart as CounterpartIndividualResponse;
+  const individualCounterpart =
+    counterpart as CounterpartIndividualRootResponse;
 
   const methods = useForm<CounterpartIndividualFields>({
     resolver: yupResolver(getValidationSchema(t)),
@@ -212,25 +213,6 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               </ListItem>
             </List>
           </FormField>
-          <Controller
-            name="taxId"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormField
-                label={t('counterparts:individual.taxId')}
-                id={field.name}
-                required
-                error={error?.message}
-              >
-                <Input
-                  {...field}
-                  id={field.name}
-                  isInvalid={!!error}
-                  required
-                />
-              </FormField>
-            )}
-          />
           <Controller
             name="email"
             control={control}

@@ -2,10 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartAddress } from './CounterpartAddress';
 import type { CurrencyEnum } from './CurrencyEnum';
-import type { CurrencyExchangeSchema } from './CurrencyExchangeSchema';
+import type { CurrencyExchangeSchemaV2 } from './CurrencyExchangeSchemaV2';
 import type { FileSchema } from './FileSchema';
+import type { OcrExperimentalRecognitionResponse } from './OcrExperimentalRecognitionResponse';
 import type { OcrRecognitionResponse } from './OcrRecognitionResponse';
+import type { PayableLineItemsSchema } from './PayableLineItemsSchema';
 import type { PayableOriginEnum } from './PayableOriginEnum';
 import type { PayableStateEnum } from './PayableStateEnum';
 import type { PaymentTermsCreatePayload } from './PaymentTermsCreatePayload';
@@ -33,10 +36,6 @@ export type PayableResponseSchema = {
      * The ID of the entity user who marked this document as paid.
      */
     marked_as_paid_by_entity_user_id?: string;
-    /**
-     * The ID of the entity who marked this document as paid.
-     */
-    marked_as_paid_by_entity_id?: string;
     /**
      * The [status](https://docs.monite.com/docs/payables-lifecycle) of the payable.
      */
@@ -90,13 +89,21 @@ export type PayableResponseSchema = {
      */
     counterpart_name?: string;
     /**
+     * The tax id of the counterpart.
+     */
+    counterpart_tax_id?: string;
+    /**
+     * The address of the vendor or supplier.
+     */
+    counterpart_address?: CounterpartAddress;
+    /**
      * Specifies how this payable was created in Monite: `upload` - created via an API call, `email` - sent via email to the entity's mailbox.
      */
     payable_origin: PayableOriginEnum;
     was_created_by_user_id?: string;
     was_created_by_external_user_name?: string;
     was_created_by_external_user_id?: string;
-    currency_exchange?: CurrencyExchangeSchema;
+    currency_exchange?: CurrencyExchangeSchemaV2;
     /**
      * The original file from which this payable was created.
      */
@@ -116,7 +123,7 @@ export type PayableResponseSchema = {
     /**
      * Data extracted from the uploaded payable by OCR.
      */
-    other_extracted_data?: OcrRecognitionResponse;
+    other_extracted_data?: (OcrRecognitionResponse | OcrExperimentalRecognitionResponse);
     /**
      * The name of an existing workflow (approval policy) that applies to this payable, if any. A workflow is applied if the payable matches the workflow trigger conditions.
      */
@@ -133,5 +140,13 @@ export type PayableResponseSchema = {
      * Registered tax applied for a service price, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
      */
     tax?: number;
+    /**
+     * The email address from which the invoice was sent to the entity.
+     */
+    sender?: string;
+    /**
+     * The list of items present in the payable.
+     */
+    line_items?: Array<PayableLineItemsSchema>;
 };
 

@@ -2,33 +2,37 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CounterpartIndividual } from './CounterpartIndividual';
-import type { CounterpartType } from './CounterpartType';
-
 /**
  * Represents counterparts that are individuals (natural persons).
  */
 export type CounterpartIndividualResponse = {
     /**
-     * Unique ID of the counterpart.
+     * The person's first name.
      */
-    id: string;
+    first_name: string;
     /**
-     * Date and time when the counterpart was created. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+     * The person's last name.
      */
-    created_at: string;
+    last_name: string;
     /**
-     * Date and time when the counterpart was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+     * The person's title or honorific. Examples: Mr., Ms., Dr., Prof.
      */
-    updated_at: string;
+    title?: string;
     /**
-     * The counterpart type: `organization` (juridical person) or `individual` (natural person).
+     * Indicates if the counterpart is a vendor.
      */
-    type: CounterpartType;
+    is_vendor: boolean;
     /**
-     * `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
+     * Indicates if the counterpart is a customer.
      */
-    created_automatically?: boolean;
-    individual: CounterpartIndividual;
+    is_customer: boolean;
+    /**
+     * The person's phone number.
+     */
+    phone?: string;
+    /**
+     * The person's email address.
+     */
+    email?: string;
 };
 

@@ -20,4 +20,11 @@ export const Table = styled.div<{
   .rc-table-body {
     flex: 1 1 0;
   }
+
+  td {
+    vertical-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;

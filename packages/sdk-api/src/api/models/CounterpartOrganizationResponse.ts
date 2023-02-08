@@ -2,33 +2,29 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CounterpartOrganization } from './CounterpartOrganization';
-import type { CounterpartType } from './CounterpartType';
-
 /**
  * Represents counterparts that are organizations (juridical persons).
  */
 export type CounterpartOrganizationResponse = {
     /**
-     * Unique ID of the counterpart.
+     * The legal name of the organization.
      */
-    id: string;
+    legal_name: string;
     /**
-     * Date and time when the counterpart was created. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+     * Indicates if the counterpart is a vendor.
      */
-    created_at: string;
+    is_vendor: boolean;
     /**
-     * Date and time when the counterpart was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+     * Indicates if the counterpart is a customer.
      */
-    updated_at: string;
+    is_customer: boolean;
     /**
-     * The counterpart type: `organization` (juridical person) or `individual` (natural person).
+     * The phone number of the organization
      */
-    type: CounterpartType;
+    phone?: string;
     /**
-     * `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
+     * The email address of the organization
      */
-    created_automatically?: boolean;
-    organization: CounterpartOrganization;
+    email?: string;
 };
 

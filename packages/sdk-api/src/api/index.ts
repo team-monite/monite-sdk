@@ -61,6 +61,8 @@ export type { CompanyAddress } from './models/CompanyAddress';
 export type { ConsentPayload } from './models/ConsentPayload';
 export type { ContentResponse } from './models/ContentResponse';
 export type { CounterpartAddress } from './models/CounterpartAddress';
+export type { CounterpartAddressResourceList } from './models/CounterpartAddressResourceList';
+export type { CounterpartAddressResponseWithCounterpartID } from './models/CounterpartAddressResponseWithCounterpartID';
 export type { CounterpartBankAccount } from './models/CounterpartBankAccount';
 export type { CounterpartBankAccountResponse } from './models/CounterpartBankAccountResponse';
 export type { CounterpartContactsResourceList } from './models/CounterpartContactsResourceList';
@@ -71,9 +73,11 @@ export type { CounterpartCreatePayload } from './models/CounterpartCreatePayload
 export type { CounterpartIndividual } from './models/CounterpartIndividual';
 export { CounterpartIndividualFieldsEnum } from './models/CounterpartIndividualFieldsEnum';
 export type { CounterpartIndividualResponse } from './models/CounterpartIndividualResponse';
+export type { CounterpartIndividualRootResponse } from './models/CounterpartIndividualRootResponse';
 export type { CounterpartOrganization } from './models/CounterpartOrganization';
 export { CounterpartOrganizationFieldsEnum } from './models/CounterpartOrganizationFieldsEnum';
 export type { CounterpartOrganizationResponse } from './models/CounterpartOrganizationResponse';
+export type { CounterpartOrganizationRootResponse } from './models/CounterpartOrganizationRootResponse';
 export type { CounterpartPaginationResponse } from './models/CounterpartPaginationResponse';
 export type { CounterpartResponse } from './models/CounterpartResponse';
 export { CounterpartType } from './models/CounterpartType';
@@ -187,6 +191,7 @@ export { OptionalOrganizationPayload } from './models/OptionalOrganizationPayloa
 export type { OptionalOrganizationSchema } from './models/OptionalOrganizationSchema';
 export { OrderEnum } from './models/OrderEnum';
 export type { OrganizationSchema } from './models/OrganizationSchema';
+export type { package__payables__schemas__PaginationResponse } from './models/package__payables__schemas__PaginationResponse';
 export type { PageSchema } from './models/PageSchema';
 export type { PaginatedApprovalResponse } from './models/PaginatedApprovalResponse';
 export type { PaginatedTodoTask } from './models/PaginatedTodoTask';
@@ -396,7 +401,9 @@ export { YapilyCountriesCoverageCodes } from './models/YapilyCountriesCoverageCo
 
 export { default as PartnerApiService } from './services/PartnerApiService';
 export { default as CounterpartsService } from './services/CounterpartsService';
+export { default as CounterpartsAddressesService } from './services/CounterpartsAddressesService';
 export * from './services/CounterpartsService';
+export * from './services/CounterpartsAddressesService';
 export * from './services/PayableService';
 export * from './services/TagService';
 export * from './services/ReceivableService';

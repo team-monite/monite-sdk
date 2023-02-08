@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { LabelText, Card } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
-import { printAddress } from '../../CounterpartAddressForm';
 import { printCounterpartType } from '../../helpers';
 import { CounterpartContainer } from '../../styles';
 
@@ -17,13 +16,13 @@ const CounterpartOrganizationView = ({
     companyName,
     phone,
     email,
-    vatNumber,
-    line1,
-    line2,
-    postalCode,
-    city,
-    country,
-    state,
+    // vatNumber,
+    // line1,
+    // line2,
+    // postalCode,
+    // city,
+    // country,
+    // state,
     isVendor,
     isCustomer,
   },
@@ -44,17 +43,17 @@ const CounterpartOrganizationView = ({
             isVendor ? t('counterparts:vendor') : undefined
           )}
         />
-        <LabelText
-          label={t('counterparts:organization.address')}
-          text={printAddress({
-            line1,
-            line2,
-            postalCode,
-            city,
-            country,
-            state,
-          })}
-        />
+        {/*<LabelText*/}
+        {/*  label={t('counterparts:organization.address')}*/}
+        {/*  text={printAddress({*/}
+        {/*    line1,*/}
+        {/*    line2,*/}
+        {/*    postalCode,*/}
+        {/*    city,*/}
+        {/*    country,*/}
+        {/*    state,*/}
+        {/*  })}*/}
+        {/*/>*/}
         {phone && (
           <LabelText
             label={t('counterparts:organization.phone')}
@@ -67,12 +66,12 @@ const CounterpartOrganizationView = ({
             text={email}
           />
         )}
-        {vatNumber && (
-          <LabelText
-            label={t('counterparts:organization.vatNumber')}
-            text={vatNumber}
-          />
-        )}
+        {/*{vatNumber && (*/}
+        {/*  <LabelText*/}
+        {/*    label={t('counterparts:organization.vatNumber')}*/}
+        {/*    text={vatNumber}*/}
+        {/*  />*/}
+        {/*)}*/}
       </CounterpartContainer>
     </Card>
   );

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState, cloneElement, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -41,6 +41,7 @@ const PayableDetails = ({
   onSubmit,
   onSave,
   onReject,
+  onCancel,
   onApprove,
   onPay,
 }: PayablesDetailsProps) => {
@@ -50,14 +51,16 @@ const PayableDetails = ({
     formRef,
     isEdit,
     isLoading,
+    isFormLoading,
+    isButtonLoading,
     error,
     permissions,
     actions: {
-      onFormSave,
       saveInvoice,
       submitInvoice,
       rejectInvoice,
       approveInvoice,
+      cancelInvoice,
       payInvoice,
     },
   } = usePayableDetails({
@@ -65,13 +68,19 @@ const PayableDetails = ({
     onSubmit,
     onSave,
     onReject,
+    onCancel,
     onPay,
     onApprove,
   });
 
-  const [actions] = useState<Record<PayableDetailsPermissions, ReactNode>>({
+  const [actions] = useState<Record<PayableDetailsPermissions, ReactElement>>({
     save: (
-      <Button key={'save'} onClick={saveInvoice} color={'secondary'}>
+      <Button
+        key={'save'}
+        color={'secondary'}
+        type="submit"
+        form="payableDetailsForm"
+      >
         {t('common:save')}
       </Button>
     ),
@@ -88,6 +97,11 @@ const PayableDetails = ({
     approve: (
       <Button key={'approve'} onClick={approveInvoice}>
         {t('common:approve')}
+      </Button>
+    ),
+    cancel: (
+      <Button key={'cancel'} onClick={cancelInvoice} color={'danger'}>
+        {t('common:cancel')}
       </Button>
     ),
     pay: (
@@ -143,7 +157,12 @@ const PayableDetails = ({
             }
             actions={
               <StyledHeaderActions>
-                {permissions.map((permission) => actions[permission])}
+                {permissions.map((permission) =>
+                  cloneElement(actions[permission], {
+                    isLoading: isButtonLoading,
+                    disabled: isButtonLoading,
+                  })
+                )}
               </StyledHeaderActions>
             }
           >
@@ -185,8 +204,9 @@ const PayableDetails = ({
             {isEdit && (
               <PayableDetailsForm
                 ref={formRef}
-                onSubmit={onFormSave}
+                saveInvoice={saveInvoice}
                 payable={payable}
+                isFormLoading={isFormLoading}
               />
             )}
             {!isEdit && <PayableDetailsInfo payable={payable} />}

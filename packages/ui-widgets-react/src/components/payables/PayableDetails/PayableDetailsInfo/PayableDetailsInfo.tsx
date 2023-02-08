@@ -33,7 +33,7 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
           <StyledInfoTable>
             <StyledInfoRow>
               <StyledInfoLabel>
-                {t('payables:details.suppliersName')}
+                {t('payables:details.counterpart')}
               </StyledInfoLabel>
               <StyledInfoValue>
                 {payable.counterpart_name && (
@@ -65,12 +65,12 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
               <StyledInfoLabel>{t('payables:details.dueDate')}</StyledInfoLabel>
               <StyledInfoValue>{formatDate(payable?.due_date)}</StyledInfoValue>
             </StyledInfoRow>
-            <StyledInfoRow>
-              <StyledInfoLabel>
-                {t('payables:details.submittedBy')}
-              </StyledInfoLabel>
-              <StyledInfoValue>{''}</StyledInfoValue>
-            </StyledInfoRow>
+            {/*<StyledInfoRow>*/}
+            {/*  <StyledInfoLabel>*/}
+            {/*    {t('payables:details.submittedBy')}*/}
+            {/*  </StyledInfoLabel>*/}
+            {/*  <StyledInfoValue>{''}</StyledInfoValue>*/}
+            {/*</StyledInfoRow>*/}
             <StyledInfoRow>
               <StyledInfoLabel>{t('payables:details.tags')}</StyledInfoLabel>
               <StyledTags>

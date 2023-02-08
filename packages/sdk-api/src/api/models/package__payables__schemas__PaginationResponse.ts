@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CounterpartResponse } from './CounterpartResponse';
+import type { PayableResponseSchema } from './PayableResponseSchema';
 
 /**
- * A paginated list of counterparts
+ * A paginated list of payables.
  */
-export type CounterpartPaginationResponse = {
-    data: Array<CounterpartResponse>;
+export type package__payables__schemas__PaginationResponse = {
+    data: Array<PayableResponseSchema>;
     /**
      * A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page).
      */

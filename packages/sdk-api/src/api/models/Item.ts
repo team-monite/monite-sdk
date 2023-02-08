@@ -21,6 +21,6 @@ export type Item = {
      *
      * If `text` is not a currency amount or a date, `processed_text` is `null`.
      */
-    processed_text?: (number | string);
+    processed_text?: any;
 };
 

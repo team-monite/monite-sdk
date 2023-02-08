@@ -1,22 +1,15 @@
-import { CounterpartOrganization } from '@team-monite/sdk-api';
-import {
-  CounterpartAddressFormFields,
-  prepareCounterpartAddress,
-  prepareCounterpartAddressSubmit,
-} from '../../CounterpartAddressForm';
+import { CounterpartOrganizationResponse } from '@team-monite/sdk-api';
 
-export interface CounterpartOrganizationFields
-  extends CounterpartAddressFormFields {
+export interface CounterpartOrganizationFields {
   companyName: string;
   email: string;
   phone?: string;
   isVendor: boolean;
   isCustomer: boolean;
-  vatNumber: string;
 }
 
 export const prepareCounterpartOrganization = (
-  organization?: CounterpartOrganization
+  organization?: CounterpartOrganizationResponse
 ): CounterpartOrganizationFields => {
   return {
     companyName: organization?.legal_name ?? '',
@@ -24,8 +17,6 @@ export const prepareCounterpartOrganization = (
     phone: organization?.phone ?? '',
     isCustomer: organization?.is_customer ?? false,
     isVendor: organization?.is_vendor ?? false,
-    vatNumber: organization?.vat_number ?? '',
-    ...prepareCounterpartAddress(organization?.registered_address),
   };
 };
 
@@ -35,17 +26,13 @@ export const prepareCounterpartOrganizationSubmit = ({
   phone,
   isCustomer,
   isVendor,
-  vatNumber,
   ...address
-}: CounterpartOrganizationFields): CounterpartOrganization => {
+}: CounterpartOrganizationFields): CounterpartOrganizationResponse => {
   return {
     legal_name: companyName,
-    vat_number: vatNumber,
     is_customer: isCustomer,
     is_vendor: isVendor,
     phone,
     email,
-    registered_address: prepareCounterpartAddressSubmit(address),
-    contacts: [],
   };
 };
