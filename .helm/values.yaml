@@ -1,18 +1,26 @@
 ingress:
-  host:
-    _default: pay-%s.review.monite.com
-    dev: pay.dev.monite.com
-    production: pay.monite.com
-    staging: pay.staging.monite.com
-    zaf-production: pay.zaf.monite.com
-    sandbox: pay.sandbox.monite.com
-  secretName:
-    _default: wildcard-review-monite-com
-    dev: wildcard-dev-monite-com
-    staging: wildcard-staging-monite-com
-    sandbox: wildcard-sandbox-monite-com
-    production: wildcard-monite-com
-    zaf-production: wildcard-zaf-monite-com
+  _default:
+    - host: pay-%s.review.monite.com
+      secretName: wildcard-review-monite-com
+  dev:
+    - host: pay.dev.monite.com
+      secretName: wildcard-dev-monite-com
+  production:
+    - host: pay.monite.com
+      secretName: wildcard-monite-com
+    - host: payment.enty.io
+      secretName: payment-enty-io
+      letsencrypt: true
+      name: enty-io
+  staging:
+    - host: pay.staging.monite.com
+      secretName: wildcard-staging-monite-com
+  zaf-production:
+    - host: pay.zaf.monite.com
+      secretName: wildcard-zaf-monite-com
+  sandbox:
+    - host: pay.sandbox.monite.com
+      secretName: wildcard-sandbox-monite-com
 nginx:
   replicas:
     _default: 1
