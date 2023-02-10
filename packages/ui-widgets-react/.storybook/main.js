@@ -10,9 +10,6 @@ module.exports = {
   ],
   framework: '@storybook/react',
   webpackFinal: async (config) => {
-    // add nodejs 18 support
-    config.output.hashFunction = 'xxhash64';
-
     config.resolve.modules = [
       ...(config.resolve.modules || []),
       path.resolve(__dirname, '../src'),
@@ -21,6 +18,7 @@ module.exports = {
     return config;
   },
   core: {
+    builder: 'webpack5',
     disableTelemetry: true,
   },
 };

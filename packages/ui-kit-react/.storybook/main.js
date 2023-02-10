@@ -19,9 +19,6 @@ module.exports = {
     // Make whatever fine-grained changes you need
 
     // ========================================================
-    // add nodejs 18 support
-    config.output.hashFunction = 'xxhash64';
-
     // Add SVGR Loader:
     const assetRule = config.module.rules.find(({ test }) => test.test('.svg'));
 
@@ -67,6 +64,7 @@ module.exports = {
     return config;
   },
   core: {
+    builder: 'webpack5',
     disableTelemetry: true,
   },
 };
