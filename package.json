@@ -34,6 +34,8 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@storybook/builder-webpack5": "~6.5.16",
+    "@storybook/manager-webpack5": "~6.5.16",
     "emotion-theming": "~10.3.0"
   },
   "devDependencies": {
