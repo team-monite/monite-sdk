@@ -18,7 +18,7 @@ import {
   UArrowRight,
 } from '@team-monite/ui-kit-react';
 
-import { usePayable } from 'core/queries/usePayable';
+import { usePayable, usePayPayableById } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { getReadableAmount } from 'core/utils';
 import { default as FiltersComponent } from './Filters';
@@ -96,6 +96,7 @@ const PayablesTable = ({
     undefined,
     currentFilter[FILTER_TYPE_SEARCH] || undefined
   );
+  const payMutation = usePayPayableById();
 
   useEffect(() => {
     refetch();
@@ -226,12 +227,15 @@ const PayablesTable = ({
 
               return (
                 <Button
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.stopPropagation();
-                    if (!payable || !onPay) return;
-                    onPay(payable.id);
+                    if (!payable) return;
+
+                    await payMutation.mutateAsync(payable.id);
+                    onPay && onPay(payable.id);
                   }}
                   variant={'link'}
+                  isLoading={payMutation.isLoading}
                 >
                   {t('common:pay')}
                 </Button>
