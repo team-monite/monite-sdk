@@ -43,7 +43,7 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     created_automatically: false,
     organization: {
-      legal_name: 'Acme Inc. 11222123123',
+      legal_name: 'Acme Inc.',
       is_vendor: false,
       is_customer: true,
       phone: '8889',
@@ -57,8 +57,8 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.INDIVIDUAL,
     created_automatically: false,
     individual: {
-      first_name: 'Ololo',
-      last_name: 'Test',
+      first_name: 'John',
+      last_name: 'Doe',
       title: 'test',
       is_vendor: true,
       is_customer: false,
@@ -87,7 +87,7 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     created_automatically: false,
     organization: {
-      legal_name: 'dsa',
+      legal_name: 'Acme Inc. 1',
       is_vendor: false,
       is_customer: true,
       phone: 'sadasdas',
@@ -101,7 +101,7 @@ export const counterpartListFixture: CounterpartResponse[] = [
     type: CounterpartType.ORGANIZATION,
     created_automatically: false,
     organization: {
-      legal_name: '',
+      legal_name: 'Acme Inc. 2',
       is_vendor: false,
       is_customer: false,
       phone: '',

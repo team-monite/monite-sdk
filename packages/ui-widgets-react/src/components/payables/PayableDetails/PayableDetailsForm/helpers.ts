@@ -106,13 +106,15 @@ export const prepareSubmit = ({
   bic,
   iban,
   invoiceNumber,
+  invoiceDate,
   counterpart,
   tags,
   counterpartAddress,
 }: SubmitPayload): PayableUpdateSchema => ({
   currency,
   amount: formatToMinorUnits(total, currency),
-  due_date: dateToString(dueDate),
+  due_date: dueDate && dateToString(dueDate),
+  issued_at: invoiceDate && dateToString(invoiceDate),
   suggested_payment_term: suggestedPaymentDate
     ? {
         date: dateToString(suggestedPaymentDate),

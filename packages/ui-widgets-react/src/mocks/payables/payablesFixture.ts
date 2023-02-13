@@ -25,7 +25,7 @@ export const payableListFixtureFirstPage: PayableResponseSchema[] = [
     counterpart_bank_id: 'DEUTDE2HXXX',
     counterpart_id: 'dee7b04d-c977-449e-b5dd-93702a04f20d',
     counterpart_account_id: '123456789012',
-    counterpart_name: 'Acme Inc. 11222123123',
+    counterpart_name: 'Acme Inc.',
     counterpart_tax_id: undefined,
     counterpart_address: {
       country: AllowedCountriesCodes.GE,

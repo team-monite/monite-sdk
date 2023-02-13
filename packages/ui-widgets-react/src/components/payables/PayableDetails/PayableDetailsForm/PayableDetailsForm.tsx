@@ -69,8 +69,6 @@ const getValidationSchema = (t: TFunction) =>
           label: yup.string().required(),
         })
       ),
-      iban: yup.string().required(),
-      bic: yup.string().required(),
     })
     .required();
 
@@ -106,6 +104,7 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
           <form
             ref={ref}
             id="payableDetailsForm"
+            noValidate
             onSubmit={handleSubmit(async (values) => {
               const counterpartAddress =
                 counterpartAddressQuery?.data?.data.find(
@@ -266,6 +265,7 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                       }}
                       required
                       type="number"
+                      min={0}
                       id={field.name}
                       isInvalid={!!error}
                     />
@@ -305,14 +305,8 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                     label={t('payables:details.iban')}
                     id={field.name}
                     error={error?.message}
-                    required
                   >
-                    <Input
-                      {...field}
-                      id={field.name}
-                      isInvalid={!!error}
-                      required
-                    />
+                    <Input {...field} id={field.name} isInvalid={!!error} />
                   </FormItem>
                 )}
               />
@@ -325,14 +319,8 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                     label={t('payables:details.bic')}
                     id={field.name}
                     error={error?.message}
-                    required
                   >
-                    <Input
-                      {...field}
-                      id={field.name}
-                      isInvalid={!!error}
-                      required
-                    />
+                    <Input {...field} id={field.name} isInvalid={!!error} />
                   </FormItem>
                 )}
               />

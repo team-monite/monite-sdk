@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import { action } from '@storybook/addon-actions';
 import { useModal, Button } from '@team-monite/ui-kit-react';
-import { PayableStateEnum } from '@team-monite/sdk-api';
 import PayableDetails from './PayableDetails';
 
 <Meta title="Payables/Payables — Details View" component={PayableDetails} />
@@ -51,68 +49,5 @@ Type: `(id: string) => void`
         </div>
       );
     }}
-  </Story>
-  <Story
-    name="Draft"
-    args={{
-      id: 'draft',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="New"
-    args={{
-      id: 'new',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Approval in progress"
-    args={{
-      id: 'approve_in_progress',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Waiting to be paid"
-    args={{
-      id: 'waiting_to_be_paid',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Paid"
-    args={{
-      id: 'paid',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Canceled"
-    args={{
-      id: 'canceled',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Rejected"
-    args={{
-      id: 'rejected',
-      ...actions,
-    }}
-  >
-    {Template.bind({})}
   </Story>
 </Canvas>

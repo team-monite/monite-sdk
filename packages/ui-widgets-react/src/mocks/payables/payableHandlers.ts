@@ -14,6 +14,7 @@ import {
   payableListFixtureSecondPage,
   payableListFixtureThirdPage,
 } from './payablesFixture';
+import { tagListFixture } from '../tags/tagsFixture';
 
 type PayableParams = { payableId: string };
 
@@ -90,6 +91,9 @@ export const payableHandlers = [
       payable = {
         ...payableListFixtureFirstPage[0],
         ...body,
+        tags: body.tag_ids.map((tagId: string) => {
+          return tagListFixture.find((tag) => tag.id === tagId);
+        }),
         status: PayableStateEnum.NEW,
       };
 
