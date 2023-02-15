@@ -31,12 +31,22 @@ import usePayableDetails, {
 
 import PayableDetailsInfo from './PayableDetailsInfo';
 
+export type OptionalFields = {
+  invoiceDate?: boolean;
+  suggestedPaymentDate?: boolean;
+  tags?: boolean;
+  iban?: boolean;
+  bic?: boolean;
+};
+
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
+  optionalFields?: OptionalFields;
 }
 
 const PayableDetails = ({
   id,
+  optionalFields,
   onClose,
   onSubmit,
   onSave,
@@ -207,6 +217,7 @@ const PayableDetails = ({
                 saveInvoice={saveInvoice}
                 payable={payable}
                 isFormLoading={isFormLoading}
+                optionalFields={optionalFields}
               />
             )}
             {!isEdit && <PayableDetailsInfo payable={payable} />}
