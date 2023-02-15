@@ -220,7 +220,12 @@ const PayableDetails = ({
                 optionalFields={optionalFields}
               />
             )}
-            {!isEdit && <PayableDetailsInfo payable={payable} />}
+            {!isEdit && (
+              <PayableDetailsInfo
+                payable={payable}
+                optionalFields={optionalFields}
+              />
+            )}
           </StyledSection>
         </StyledContent>
       </ModalLayout>
