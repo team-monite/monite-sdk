@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { PayableResponseSchema } from '@team-monite/sdk-api';
 import { Tag, StyledModalLayoutScrollContent } from '@team-monite/ui-kit-react';
 import { formatDate, getReadableAmount } from 'core/utils';
+import useOptionalFields from 'core/hooks/useOptionalFields';
 import {
   FormSection,
   FormTitle,
@@ -14,13 +15,32 @@ import {
   StyledTags,
 } from '../PayableDetailsStyle';
 
+import { OptionalFields } from '../PayableDetails';
+
 export type PayablesDetailsInfoProps = {
   payable: PayableResponseSchema;
+  optionalFields?: OptionalFields;
 };
 
 // TODO in order to customize style rewrite with one of ui kit components (Card or List)
-const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
+const PayableDetailsInfo = ({
+  payable,
+  optionalFields,
+}: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
+  const {
+    showInvoiceDate,
+    showSuggestedPaymentDate,
+    showTags,
+    showIban,
+    showBic,
+  } = useOptionalFields<OptionalFields>(optionalFields, {
+    showInvoiceDate: true,
+    showSuggestedPaymentDate: true,
+    showTags: true,
+    showIban: true,
+    showBic: true,
+  });
 
   return (
     <StyledModalLayoutScrollContent>
@@ -47,20 +67,26 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
               </StyledInfoLabel>
               <StyledInfoValue>{payable.document_id ?? ''}</StyledInfoValue>
             </StyledInfoRow>
-            <StyledInfoRow>
-              <StyledInfoLabel>
-                {t('payables:details.invoiceDate')}
-              </StyledInfoLabel>
-              <StyledInfoValue>{formatDate(payable.issued_at)}</StyledInfoValue>
-            </StyledInfoRow>
-            <StyledInfoRow>
-              <StyledInfoLabel>
-                {t('payables:details.suggestedPaymentDate')}
-              </StyledInfoLabel>
-              <StyledInfoValue>
-                {formatDate(payable?.suggested_payment_term?.date)}
-              </StyledInfoValue>
-            </StyledInfoRow>
+            {showInvoiceDate && (
+              <StyledInfoRow>
+                <StyledInfoLabel>
+                  {t('payables:details.invoiceDate')}
+                </StyledInfoLabel>
+                <StyledInfoValue>
+                  {formatDate(payable.issued_at)}
+                </StyledInfoValue>
+              </StyledInfoRow>
+            )}
+            {showSuggestedPaymentDate && (
+              <StyledInfoRow>
+                <StyledInfoLabel>
+                  {t('payables:details.suggestedPaymentDate')}
+                </StyledInfoLabel>
+                <StyledInfoValue>
+                  {formatDate(payable?.suggested_payment_term?.date)}
+                </StyledInfoValue>
+              </StyledInfoRow>
+            )}
             <StyledInfoRow>
               <StyledInfoLabel>{t('payables:details.dueDate')}</StyledInfoLabel>
               <StyledInfoValue>{formatDate(payable?.due_date)}</StyledInfoValue>
@@ -71,14 +97,16 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
             {/*  </StyledInfoLabel>*/}
             {/*  <StyledInfoValue>{''}</StyledInfoValue>*/}
             {/*</StyledInfoRow>*/}
-            <StyledInfoRow>
-              <StyledInfoLabel>{t('payables:details.tags')}</StyledInfoLabel>
-              <StyledTags>
-                {payable?.tags?.map(({ id, name }) => (
-                  <Tag key={id}>{name}</Tag>
-                ))}
-              </StyledTags>
-            </StyledInfoRow>
+            {showTags && (
+              <StyledInfoRow>
+                <StyledInfoLabel>{t('payables:details.tags')}</StyledInfoLabel>
+                <StyledTags>
+                  {payable?.tags?.map(({ id, name }) => (
+                    <Tag key={id}>{name}</Tag>
+                  ))}
+                </StyledTags>
+              </StyledInfoRow>
+            )}
           </StyledInfoTable>
         </FormSection>
 
@@ -87,16 +115,20 @@ const PayableDetailsInfo = ({ payable }: PayablesDetailsInfoProps) => {
             {t('payables:tabPanels.payment')}
           </FormTitle>
           <StyledInfoTable>
-            <StyledInfoRow>
-              <StyledInfoLabel>{t('payables:details.iban')}</StyledInfoLabel>
-              <StyledInfoValue>
-                {payable.counterpart_account_id}
-              </StyledInfoValue>
-            </StyledInfoRow>
-            <StyledInfoRow>
-              <StyledInfoLabel>{t('payables:details.bic')}</StyledInfoLabel>
-              <StyledInfoValue>{payable.counterpart_bank_id}</StyledInfoValue>
-            </StyledInfoRow>
+            {showIban && (
+              <StyledInfoRow>
+                <StyledInfoLabel>{t('payables:details.iban')}</StyledInfoLabel>
+                <StyledInfoValue>
+                  {payable.counterpart_account_id}
+                </StyledInfoValue>
+              </StyledInfoRow>
+            )}
+            {showBic && (
+              <StyledInfoRow>
+                <StyledInfoLabel>{t('payables:details.bic')}</StyledInfoLabel>
+                <StyledInfoValue>{payable.counterpart_bank_id}</StyledInfoValue>
+              </StyledInfoRow>
+            )}
             <StyledInfoRow>
               <StyledInfoLabel>
                 {t('payables:details.subtotal')}

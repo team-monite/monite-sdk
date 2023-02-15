@@ -20,6 +20,7 @@ import {
   Loading,
 } from '@team-monite/ui-kit-react';
 
+import useOptionalFields from 'core/hooks/useOptionalFields';
 import { getSymbolFromCurrency } from 'core/utils/currency';
 
 import {
@@ -39,10 +40,13 @@ import {
   tagsToSelect,
 } from './helpers';
 
+import { OptionalFields } from '../PayableDetails';
+
 interface PayableDetailsFormProps {
   payable: PayableResponseSchema;
   saveInvoice: (data: PayableUpdateSchema) => void;
   isFormLoading: boolean;
+  optionalFields?: OptionalFields;
 }
 
 const getValidationSchema = (t: TFunction) =>
@@ -73,7 +77,7 @@ const getValidationSchema = (t: TFunction) =>
     .required();
 
 const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
-  ({ payable, saveInvoice, isFormLoading }, ref) => {
+  ({ payable, saveInvoice, isFormLoading, optionalFields }, ref) => {
     const { t } = useTranslation();
     const { control, handleSubmit, reset, watch } =
       useForm<PayableDetailsFormFields>({
@@ -95,6 +99,19 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
     } = usePayableDetailsForm({
       payable,
       currentCounterpartId: currentCounterpart.value,
+    });
+    const {
+      showInvoiceDate,
+      showSuggestedPaymentDate,
+      showTags,
+      showIban,
+      showBic,
+    } = useOptionalFields<OptionalFields>(optionalFields, {
+      showInvoiceDate: true,
+      showSuggestedPaymentDate: true,
+      showTags: true,
+      showIban: true,
+      showBic: true,
     });
 
     return (
@@ -183,44 +200,48 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                 )}
               />
 
-              <Controller
-                name="invoiceDate"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormItem
-                    label={t('payables:details.invoiceDate')}
-                    id={field.name}
-                    error={error?.message}
-                  >
-                    <DatePicker
-                      {...field}
+              {showInvoiceDate && (
+                <Controller
+                  name="invoiceDate"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormItem
+                      label={t('payables:details.invoiceDate')}
                       id={field.name}
-                      isInvalid={!!error}
-                      date={field.value ? new Date(field.value) : null}
-                    />
-                  </FormItem>
-                )}
-              />
+                      error={error?.message}
+                    >
+                      <DatePicker
+                        {...field}
+                        id={field.name}
+                        isInvalid={!!error}
+                        date={field.value ? new Date(field.value) : null}
+                      />
+                    </FormItem>
+                  )}
+                />
+              )}
 
-              <Controller
-                name="suggestedPaymentDate"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  // TODO Add discount
-                  <FormItem
-                    label={t('payables:details.suggestedPaymentDate')}
-                    id={field.name}
-                    error={error?.message}
-                  >
-                    <DatePicker
-                      {...field}
+              {showSuggestedPaymentDate && (
+                <Controller
+                  name="suggestedPaymentDate"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    // TODO Add discount
+                    <FormItem
+                      label={t('payables:details.suggestedPaymentDate')}
                       id={field.name}
-                      date={field.value ? new Date(field.value) : null}
-                      isInvalid={!!error}
-                    />
-                  </FormItem>
-                )}
-              />
+                      error={error?.message}
+                    >
+                      <DatePicker
+                        {...field}
+                        id={field.name}
+                        date={field.value ? new Date(field.value) : null}
+                        isInvalid={!!error}
+                      />
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <Controller
                 name="dueDate"
@@ -272,7 +293,7 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
                   </FormItem>
                 )}
               />
-              {!!tagQuery?.data?.data?.length && (
+              {!!tagQuery?.data?.data?.length && showTags && (
                 <Controller
                   name={'tags'}
                   control={control}
@@ -293,38 +314,44 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
               )}
             </FormSection>
 
-            <FormSection>
-              <FormTitle textSize={'bold'}>
-                {t('payables:tabPanels.payment')}
-              </FormTitle>
-              <Controller
-                name="iban"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormItem
-                    label={t('payables:details.iban')}
-                    id={field.name}
-                    error={error?.message}
-                  >
-                    <Input {...field} id={field.name} isInvalid={!!error} />
-                  </FormItem>
+            {(showIban || showBic) && (
+              <FormSection>
+                <FormTitle textSize={'bold'}>
+                  {t('payables:tabPanels.payment')}
+                </FormTitle>
+                {showIban && (
+                  <Controller
+                    name="iban"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormItem
+                        label={t('payables:details.iban')}
+                        id={field.name}
+                        error={error?.message}
+                      >
+                        <Input {...field} id={field.name} isInvalid={!!error} />
+                      </FormItem>
+                    )}
+                  />
                 )}
-              />
 
-              <Controller
-                name="bic"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormItem
-                    label={t('payables:details.bic')}
-                    id={field.name}
-                    error={error?.message}
-                  >
-                    <Input {...field} id={field.name} isInvalid={!!error} />
-                  </FormItem>
+                {showBic && (
+                  <Controller
+                    name="bic"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormItem
+                        label={t('payables:details.bic')}
+                        id={field.name}
+                        error={error?.message}
+                      >
+                        <Input {...field} id={field.name} isInvalid={!!error} />
+                      </FormItem>
+                    )}
+                  />
                 )}
-              />
-            </FormSection>
+              </FormSection>
+            )}
           </form>
         </StyledModalLayoutScroll>
       </StyledModalLayoutScrollContent>
