@@ -376,6 +376,22 @@
     "type": "Type",
     "search": "Search",
     "status": "Status",
+    "statuses": {
+      "draft": "Draft",
+      "issued": "Issued",
+      "accepted": "Accepted",
+      "partially_paid": "Partially Paid",
+      "expired": "Expired",
+      "uncollectible": "Uncollectible",
+      "deleted": "Deleted",
+      "recurring": "Recurring",
+      "new": "New",
+      "approve_in_progress": "Pending",
+      "waiting_to_be_paid": "Waiting to be paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "Rejected"
+    },
     "customer": "Customer",
     "counterpart": "Counterpart"
   }
