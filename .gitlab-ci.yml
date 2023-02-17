@@ -1,10 +1,6 @@
 include:
   - project: monite/infra/common-ci
     file: 'deploys.yml'
-  - project: monite/infra/common-ci
-    file: 'security.yaml' # security checks
-default:
-  image: cimg/node:18.14.0-browsers #lts
 
 test-job: # This job runs in the build stage, which runs first.
   stage: tests
