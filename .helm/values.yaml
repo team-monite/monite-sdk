@@ -5,8 +5,12 @@ ingress:
   dev:
     - host: pay.dev.monite.com
       secretName: wildcard-dev-monite-com
+    - host: onboarding.dev.monite.com
+      secretName: wildcard-dev-monite-com
   production:
     - host: pay.monite.com
+      secretName: wildcard-monite-com
+    - host: onboarding.monite.com
       secretName: wildcard-monite-com
     - host: payment.enty.io
       secretName: payment-enty-io
@@ -15,11 +19,12 @@ ingress:
   staging:
     - host: pay.staging.monite.com
       secretName: wildcard-staging-monite-com
-  zaf-production:
-    - host: pay.zaf.monite.com
-      secretName: wildcard-zaf-monite-com
+    - host: onboarding.staging.monite.com
+      secretName: wildcard-staging-monite-com
   sandbox:
     - host: pay.sandbox.monite.com
+      secretName: wildcard-sandbox-monite-com
+    - host: onboarding.sandbox.monite.com
       secretName: wildcard-sandbox-monite-com
 nginx:
   replicas:
