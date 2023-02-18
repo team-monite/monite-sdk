@@ -2,16 +2,21 @@ ingress:
   _default:
     - host: pay-%s.review.monite.com
       secretName: wildcard-review-monite-com
+      name: pay
   dev:
     - host: pay.dev.monite.com
       secretName: wildcard-dev-monite-com
+      name: pay
     - host: onboarding.dev.monite.com
       secretName: wildcard-dev-monite-com
+      name: onboarding
   production:
     - host: pay.monite.com
       secretName: wildcard-monite-com
+      name: pay
     - host: onboarding.monite.com
       secretName: wildcard-monite-com
+      name: onboarding
     - host: payment.enty.io
       secretName: payment-enty-io
       letsencrypt: true
@@ -19,13 +24,17 @@ ingress:
   staging:
     - host: pay.staging.monite.com
       secretName: wildcard-staging-monite-com
+      name: pay
     - host: onboarding.staging.monite.com
       secretName: wildcard-staging-monite-com
+      name: onboarding
   sandbox:
     - host: pay.sandbox.monite.com
       secretName: wildcard-sandbox-monite-com
+      name: pay
     - host: onboarding.sandbox.monite.com
       secretName: wildcard-sandbox-monite-com
+      name: onboarding
 nginx:
   replicas:
     _default: 1
