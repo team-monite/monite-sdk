@@ -1,5 +1,5 @@
 import React from 'react';
-import type { OnboardingFormProps } from '../types';
+import { OnboardingFormProps } from '../hooks/useOnboardingForm';
 
 const OnboardingEmpty = ({ formKey }: OnboardingFormProps) => {
   return <>{formKey}</>;
