@@ -296,7 +296,11 @@
       "country": "Country",
       "iban": "IBAN"
     },
-    "businessDetailsStep": {
+    "businessProfileFields": {
+      "mcc": "Industry",
+      "url": "Business website"
+    },
+    "businessProfileStep": {
       "title": "Business details",
       "description": "Share some more specific details about your business including contacts and address."
     },

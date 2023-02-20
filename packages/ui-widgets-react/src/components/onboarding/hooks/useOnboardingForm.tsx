@@ -35,9 +35,7 @@ export default function useOnboardingForm({
   useScrollToError(methods.formState.errors, requirements);
 
   const onSubmit = useCallback(
-    (data: Partial<OnboardingDataPayload>) => {
-      onParentSubmit(data);
-    },
+    (data: Partial<OnboardingDataPayload>) => onParentSubmit(data),
     [onParentSubmit, data]
   );
 

@@ -9,6 +9,7 @@ import {
 import OnboardingBusinessRepresentative from './OnboardingBusinessRepresentative';
 import OnboardingEmpty from './OnboardingEmpty';
 import OnboardingBankAccount from './OnboardingBankAccount';
+import OnboardingBusinessProfile from './OnboardingBusinessProfile';
 import { OnboardingFormProps } from './hooks/useOnboardingForm';
 
 export enum LocalRequirements {
@@ -44,7 +45,7 @@ const componentList: Record<
 > = {
   [LocalRequirements.businessRepresentative]: OnboardingBusinessRepresentative,
   [LocalRequirements.bankAccount]: OnboardingBankAccount,
-  [LocalRequirements.businessProfile]: OnboardingEmpty,
+  [LocalRequirements.businessProfile]: OnboardingBusinessProfile,
   [LocalRequirements.summary]: OnboardingEmpty,
 };
 

@@ -3,6 +3,7 @@ import { AnyObjectSchema, object, string, StringSchema } from 'yup';
 import {
   OnboardingAddress,
   OnboardingBankAccount,
+  OnboardingBusinessProfile,
   OnboardingData,
   OnboardingIndividual,
   OnboardingRequirement,
@@ -73,14 +74,25 @@ const bankAccountSchema: Record<
   iban: string().required(),
 };
 
+const businessProfileSchema: Record<
+  keyof OnboardingBusinessProfile,
+  StringSchema | AnyObjectSchema
+> = {
+  mcc: string().required(),
+  url: string().url().required(),
+};
+
 const schemas: Partial<
   Record<
     OnboardingRequirement,
-    typeof individualSchema | typeof bankAccountSchema
+    | typeof individualSchema
+    | typeof bankAccountSchema
+    | typeof businessProfileSchema
   >
 > = {
   [OnboardingRequirement.INDIVIDUAL]: individualSchema,
   [OnboardingRequirement.BANK_ACCOUNT]: bankAccountSchema,
+  [OnboardingRequirement.BUSINESS_PROFILE]: businessProfileSchema,
 };
 
 export default function useValidation(
