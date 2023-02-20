@@ -257,6 +257,74 @@
       "rejected": "Rejected"
     }
   },
+  "onboarding": {
+    "notification": "Enty partners with Monite to secure financial services.",
+    "step": "Step",
+    "actions": {
+      "save": "Save and close",
+      "submit": "Submit",
+      "next": "Continue"
+    },
+    "errors": {
+      "dobInvalid": "Managers and owners must be at least 18 years old to use this service."
+    },
+    "footer": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "english": "English (US)",
+      "monite": "Powered by"
+    },
+    "individualFields": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "date_of_birth": "Date of birth",
+      "ssn_last_4": "Last 4 digits of Social Security number",
+      "id_number": "Security number"
+    },
+    "addressFields": {
+      "country": "Country",
+      "line1": "Address line 1",
+      "line2": "Address line 2",
+      "city": "City",
+      "state": "State",
+      "postal_code": "Postal code"
+    },
+    "bankAccountFields": {
+      "currency": "Currency",
+      "country": "Country",
+      "iban": "IBAN"
+    },
+    "businessProfileFields": {
+      "mcc": "Industry",
+      "url": "Business website"
+    },
+    "businessProfileStep": {
+      "title": "Business details",
+      "description": "Share some more specific details about your business including contacts and address."
+    },
+    "businessOwnersStep": {
+      "title": "Business owners",
+      "description": "Due to regulatory guidelines, we are required to collect information on anyone who has significant ownership of your business."
+    },
+    "bankAccountStep": {
+      "title": "Bank account",
+      "description": "Add or select a bank to receive transfers of funds fom Enty to your bank account.",
+      "agreement": "I, the account holder, am the only person required to authorise debits. y submitting a bank account, I authorise Monite to transfer to and from this bank account through the Single Euro Payments Area (SEPA) debit system and confirm that I have read and agree to the <link1>Service Agreement</link1>, including, the SEPA Direct Debit Mandate."
+    },
+    "businessRepresentativeStep": {
+      "title": "Business representative",
+      "description": "What person presents your company, if it’s not you, please ask a proper person to fill out form on this step.",
+      "legalName": "Legal name of person",
+      "homeAddress": "Home address",
+      "verifyIdentity": "Verify identity"
+    },
+    "reviewStep": {
+      "title": "Review",
+      "description": "Please review and confirm your information before sending it to review."
+    }
+  },
   "receivables": {
     "quotes": "Quotes",
     "invoices": "Invoices",

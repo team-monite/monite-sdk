@@ -87,6 +87,7 @@ const PaymentDetails = (props: UsePayableDetailsProps) => {
             size={'md'}
             download
             target={'_blank'}
+            rel="noopener noreferrer"
             variant={'contained'}
             href={invoice.file.url}
             color={'secondary'}

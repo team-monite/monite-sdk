@@ -26,6 +26,7 @@ const palette = {
   neutral100: baseColors.white,
   success50: '#80A46D',
   success95: '#ECF7E7',
+  warning30: '#C78032',
   warning50: '#EECC76',
   warning95: '#FCF6D4',
   error50: '#CF443D',

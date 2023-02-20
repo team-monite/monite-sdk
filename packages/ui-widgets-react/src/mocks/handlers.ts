@@ -9,6 +9,7 @@ import { tagsHandlers } from './tags';
 import { workflowsHandlers } from './workflows';
 import { receivableHandlers } from './receivables';
 import { entityUsersHandlers } from './entityUsers';
+import { onboardingHandlers } from './onboarding';
 
 export const handlers = [
   ...counterpartHandlers,
@@ -20,4 +21,5 @@ export const handlers = [
   ...workflowsHandlers,
   ...receivableHandlers,
   ...entityUsersHandlers,
+  ...onboardingHandlers,
 ];

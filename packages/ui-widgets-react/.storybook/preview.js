@@ -5,6 +5,7 @@ import MoniteProvider from '../src/core/context/ContextProvider';
 import { handlers } from '../src/mocks/handlers';
 
 export const parameters = {
+  layout: 'fullscreen',
   options: {
     storySort: {
       order: ['Payables', 'Counterparts', 'Approval Policies', 'Payments'],

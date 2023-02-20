@@ -1,6 +1,8 @@
 import { tokenizedTheme as defaultTokenizedTheme } from './theme';
 import { tokenizedTheme as niobiTokenizedTheme } from './theme/niobi';
 
+export { palette } from './theme';
+
 export { default as Button } from './Button';
 export { default as IconButton } from './IconButton';
 export { default as Spinner } from './Spinner';

@@ -12,8 +12,8 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "react-scripts test --watchAll=false",
-    "test:coverage": "react-scripts test --watchAll=false --coverage",
+    "test": "craco test --watchAll=false",
+    "test:coverage": "craco test --watchAll=false --coverage",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "dev": "cross-env NODE_ENV=development rollup --watch --config config/rollup.config.js",
@@ -24,6 +24,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@mui/material": "~5.11.2",
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
     "@tanstack/react-query-devtools": "~4.2.3",
@@ -32,6 +33,7 @@
     "ibantools": "~4.2.2",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
+    "react-imask": "~6.4.3",
     "react-infinite-scroll-component": "~6.1.0",
     "react-query": "~3.39.2"
   },

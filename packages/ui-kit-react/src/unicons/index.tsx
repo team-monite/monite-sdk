@@ -1,3 +1,5 @@
+export type { UniconProps } from './types/Unicon';
+
 // export { default as UAlignCenterH } from './icons/UAlignCenterH';
 // export { default as UAlignCenterV } from './icons/UAlignCenterV';
 // export { default as UAngleDoubleDown } from './icons/UAngleDoubleDown';
@@ -813,7 +815,7 @@ export { default as UEye } from './icons/UEye';
 // export { default as ULockOpenAlt } from './icons/ULockOpenAlt';
 // export { default as UPadlock } from './icons/UPadlock';
 // export { default as UShield } from './icons/UShield';
-// export { default as UShieldCheck } from './icons/UShieldCheck';
+export { default as UShieldCheck } from './icons/UShieldCheck';
 // export { default as UShieldExclamation } from './icons/UShieldExclamation';
 // export { default as UShieldQuestion } from './icons/UShieldQuestion';
 // export { default as UShieldSlash } from './icons/UShieldSlash';

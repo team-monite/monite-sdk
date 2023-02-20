@@ -1,5 +1,6 @@
 import { OpenAPIConfig } from './OpenAPI';
 
+import OnboardingService from '../onboarding/services/OnboardingService';
 import CounterpartsService from './services/CounterpartsService';
 import CounterpartsAddressesService from './services/CounterpartsAddressesService';
 import PartnerApiService from './services/PartnerApiService';
@@ -44,6 +45,7 @@ class ApiService {
   payment: PaymentService;
   entityUser: EntityUserService;
   entity: EntityService;
+  onboarding: OnboardingService;
 
   constructor({ config }: { config: Partial<OpenAPIConfig> }) {
     this.openapiConfig = config;
@@ -63,6 +65,7 @@ class ApiService {
     this.workflows = new WorkflowsService({ config });
     this.entityUser = new EntityUserService({ config });
     this.entity = new EntityService({ config });
+    this.onboarding = new OnboardingService({ config });
     this.payment = new PaymentService({
       config: {
         ...config,

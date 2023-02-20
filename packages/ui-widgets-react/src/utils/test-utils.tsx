@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { MoniteApp } from '@team-monite/sdk-api';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { MoniteProviderStyles } from 'core/context/ContextProvider';
+import MaterialThemeProvider from '../core/MaterialThemeProvider';
 
 const createTestQueryClient = () =>
   new QueryClient({
@@ -22,27 +23,52 @@ const monite = new MoniteApp({
 const Provider = ({
   children,
   client,
+  material,
 }: {
   children: ReactNode;
   client: QueryClient;
-}) => (
-  <QueryClientProvider client={client}>
-    <MoniteProviderStyles monite={monite}>{children}</MoniteProviderStyles>
-  </QueryClientProvider>
-);
+  material?: boolean;
+}) => {
+  if (!material) {
+    return (
+      <QueryClientProvider client={client}>
+        <MoniteProviderStyles monite={monite}>{children}</MoniteProviderStyles>
+      </QueryClientProvider>
+    );
+  }
+
+  return (
+    <QueryClientProvider client={client}>
+      <MaterialThemeProvider>{children}</MaterialThemeProvider>
+    </QueryClientProvider>
+  );
+};
 
 // for component testing
-export function renderWithClient(children: ReactElement) {
+export function renderWithClient(
+  children: ReactElement,
+  material: boolean = false
+) {
   const testQueryClient = createTestQueryClient();
 
   const { rerender, ...result } = render(
-    <Provider client={testQueryClient} children={children} />
+    <Provider
+      client={testQueryClient}
+      children={children}
+      material={material}
+    />
   );
 
   return {
     ...result,
     rerender: (children: ReactElement) =>
-      rerender(<Provider client={testQueryClient} children={children} />),
+      rerender(
+        <Provider
+          client={testQueryClient}
+          children={children}
+          material={material}
+        />
+      ),
   };
 }
 
