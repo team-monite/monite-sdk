@@ -33,8 +33,6 @@ const Filters = ({ onChangeFilter }: Props) => {
   const [createdBy, setCreatedBy] = useState<string | null>(null);
   const { data: users } = useEntityUsersList();
 
-  console.log(createdBy);
-
   useEffect(() => {
     onChangeFilter(FILTER_TYPE_CREATED_AT, createdAt);
   }, [createdAt]);
@@ -65,7 +63,6 @@ const Filters = ({ onChangeFilter }: Props) => {
       </Box>
       <Box width={300}>
         <Select
-          // isMulti
           isClearable
           isFilter
           placeholder={t('common:createdBy')}

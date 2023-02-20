@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { PayableStateEnum } from '@team-monite/sdk-api';
+import { PayableStateEnum, PayableUpdateSchema } from '@team-monite/sdk-api';
 import {
   useApprovePayableById,
   usePayableById,
   usePayPayableById,
   useRejectPayableById,
+  useCancelPayableById,
   useSubmitPayableById,
+  useUpdatePayableById,
 } from 'core/queries/usePayable';
 
 export type UsePayableDetailsProps = {
@@ -14,6 +16,7 @@ export type UsePayableDetailsProps = {
   onSave?: () => void;
   onPay?: () => void;
   onApprove?: () => void;
+  onCancel?: () => void;
   onReject?: () => void;
 };
 
@@ -22,6 +25,7 @@ export type PayableDetailsPermissions =
   | 'submit'
   | 'reject'
   | 'approve'
+  | 'cancel'
   | 'pay';
 
 export default function usePayableDetails({
@@ -30,18 +34,24 @@ export default function usePayableDetails({
   onSave,
   onReject,
   onApprove,
+  onCancel,
   onPay,
 }: UsePayableDetailsProps) {
   const { data: payable, error, isLoading } = usePayableById(id);
   const formRef = useRef<HTMLFormElement>(null);
   const [isEdit, setEdit] = useState<boolean>(false);
+  const [submitWithSave, setSubmitWithSave] = useState(false);
+  const [isFormLoading, setIsFormLoading] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [permissions, setPermissions] = useState<PayableDetailsPermissions[]>(
     []
   );
 
+  const saveMutation = useUpdatePayableById(id);
   const submitMutation = useSubmitPayableById();
   const approveMutation = useApprovePayableById();
   const rejectMutation = useRejectPayableById();
+  const cancelMutation = useCancelPayableById();
   const payMutation = usePayPayableById();
 
   const status = payable?.status;
@@ -53,8 +63,12 @@ export default function usePayableDetails({
     setPermissions([]);
 
     switch (status) {
+      case PayableStateEnum.DRAFT:
+        setPermissions(['cancel', 'save']);
+        setEdit(true);
+        break;
       case PayableStateEnum.NEW:
-        setPermissions(['save', 'submit']);
+        setPermissions(['cancel', 'save', 'submit']);
         setEdit(true);
         break;
       case PayableStateEnum.APPROVE_IN_PROGRESS:
@@ -66,21 +80,55 @@ export default function usePayableDetails({
     }
   }, [status]);
 
-  const saveInvoice = useCallback(() => {
-    formRef.current?.dispatchEvent(
-      new Event('submit', {
-        bubbles: true,
-      })
-    );
-  }, [formRef]);
+  useEffect(() => {
+    setIsFormLoading(saveMutation.isLoading || submitMutation.isLoading);
+  }, [saveMutation.isLoading, submitMutation.isLoading]);
 
-  const onFormSave = useCallback(() => {
-    onSave && onSave();
-  }, [onSave]);
+  useEffect(() => {
+    setIsButtonLoading(
+      saveMutation.isLoading ||
+        submitMutation.isLoading ||
+        approveMutation.isLoading ||
+        rejectMutation.isLoading ||
+        cancelMutation.isLoading ||
+        payMutation.isLoading
+    );
+  }, [
+    saveMutation.isLoading,
+    submitMutation.isLoading,
+    approveMutation.isLoading,
+    rejectMutation.isLoading,
+    cancelMutation.isLoading,
+    payMutation.isLoading,
+  ]);
+
+  useEffect(() => {
+    if (submitWithSave) {
+      formRef.current?.dispatchEvent(new Event('submit', { bubbles: true }));
+    }
+  }, [submitWithSave]);
+
+  const saveInvoice = useCallback(
+    async (data: PayableUpdateSchema) => {
+      await saveMutation.mutateAsync(data);
+      onSave && onSave();
+
+      if (submitWithSave) {
+        await submitInvoice();
+      }
+    },
+    [saveMutation]
+  );
 
   const submitInvoice = useCallback(async () => {
-    await submitMutation.mutateAsync(id);
-    onSubmit && onSubmit();
+    if (!submitWithSave) {
+      setSubmitWithSave(true);
+    } else {
+      await submitMutation.mutateAsync(id);
+      onSubmit && onSubmit();
+
+      setSubmitWithSave(false);
+    }
   }, [submitMutation, id, onSubmit]);
 
   const approveInvoice = useCallback(async () => {
@@ -93,6 +141,11 @@ export default function usePayableDetails({
     onReject && onReject();
   }, [rejectMutation, id, onReject]);
 
+  const cancelInvoice = useCallback(async () => {
+    await cancelMutation.mutateAsync(id);
+    onCancel && onCancel();
+  }, [cancelMutation, id, onCancel]);
+
   const payInvoice = useCallback(async () => {
     await payMutation.mutateAsync(id);
     onPay && onPay();
@@ -102,15 +155,17 @@ export default function usePayableDetails({
     payable,
     formRef,
     isLoading,
+    isFormLoading,
+    isButtonLoading,
     error,
     isEdit,
     permissions,
     actions: {
-      onFormSave,
       submitInvoice,
       saveInvoice,
       approveInvoice,
       rejectInvoice,
+      cancelInvoice,
       payInvoice,
     },
   };

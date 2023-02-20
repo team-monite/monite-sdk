@@ -4,6 +4,7 @@ import { CounterpartType } from '@team-monite/sdk-api';
 export type CounterpartsDetailsProps = {
   id?: string;
   type?: CounterpartType;
+  showBankAccounts?: boolean;
   onClose?: () => void;
 
   onCreate?: (id: string) => void;

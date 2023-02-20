@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 
 import Layout from '../Layout';
 
-const PaymentResultPage = () => {
+const PaymentExpiredPage = () => {
   const theme = useTheme<Theme>();
   const { t } = useTranslation();
 
@@ -41,4 +41,4 @@ const PaymentResultPage = () => {
   );
 };
 
-export default PaymentResultPage;
+export default PaymentExpiredPage;

@@ -139,6 +139,7 @@ const ApprovalPoliciesTable = ({
   };
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
+    setCurrentPaginationToken(null);
     setCurrentFilters((prevFilters) => ({
       ...prevFilters,
       [field]: value === 'all' ? null : value,

@@ -1,7 +1,7 @@
 import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
-import type { PaginationResponse } from '../models/PaginationResponse';
+import type { package__payables__schemas__PaginationResponse } from '../models/package__payables__schemas__PaginationResponse';
 import type { PayableStateEnum } from '../models/PayableStateEnum';
 
 import type { CancelablePromise } from '../CancelablePromise';
@@ -70,7 +70,7 @@ export default class PartnerApiService {
     dueDateGte?: string,
     dueDateLte?: string,
     documentId?: string
-  ): CancelablePromise<PaginationResponse> {
+  ): CancelablePromise<package__payables__schemas__PaginationResponse> {
     return __request(
       {
         method: 'GET',

@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartAddress } from './CounterpartAddress';
 import type { CurrencyEnum } from './CurrencyEnum';
+import type { PayableLineItemsSchema } from './PayableLineItemsSchema';
 import type { PaymentTermsCreatePayload } from './PaymentTermsCreatePayload';
 import type { SuggestedPaymentTerm } from './SuggestedPaymentTerm';
 
@@ -47,6 +49,10 @@ export type PayableUpdateSchema = {
      */
     counterpart_id?: string;
     /**
+     * The tax id of the counterpart.
+     */
+    counterpart_tax_id?: string;
+    /**
      * Vendor's bank account number, IBAN, or similar.
      */
     counterpart_account_id?: string;
@@ -54,6 +60,10 @@ export type PayableUpdateSchema = {
      * Vendor or supplier name.
      */
     counterpart_name?: string;
+    /**
+     * The address of the vendor or supplier.
+     */
+    counterpart_address?: CounterpartAddress;
     /**
      * A list of IDs of user-defined tags (labels) assigned to this payable. Tags can be used to trigger a specific approval policy for this payable.
      */
@@ -70,5 +80,13 @@ export type PayableUpdateSchema = {
      * Registered tax applied for a service price, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
      */
     tax?: number;
+    /**
+     * The email address from which the invoice was sent to the entity.
+     */
+    sender?: string;
+    /**
+     * The list of items present in the payable.
+     */
+    line_items?: Array<PayableLineItemsSchema>;
 };
 

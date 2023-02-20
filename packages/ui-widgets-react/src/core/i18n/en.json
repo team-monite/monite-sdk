@@ -95,7 +95,9 @@
       "authorizationTip": "Yapily Connect Ltd is authorised and regulated by the Financial Conduct Authority under the Payment Service Regulations 2017 [827001] for the provision of Account Information and Payment Initiation services.",
       "yapilyCopy": "To easily set up payments from your bank to {{name}}, we are about to securely re-direct you to your bank where you will be asked to confirm the payment via Yapily Connect, an FCA regulated payment initiation provider for {{name}}. Yapily Connect will share these details with your bank, where you will then be asked to confirm the following payment setup.",
       "payerFormName": "Your account holder’s name",
+      "payerFormNameError": "Please enter your account holder’s name",
       "payerFormIban": "Your IBAN",
+      "payerFormIbanError": "Invalid IBAN. Please check and try again",
       "selectMethodLink": "Didn't find your bank? Try another payment method"
     }
   },
@@ -202,7 +204,7 @@
   "payables": {
     "columns": {
       "invoice": "Invoice #",
-      "supplier": "Supplier’s name",
+      "supplier": "Counterpart",
       "invoiceDate": "Invoice date",
       "dueDate": "Due date",
       "status": "Status",
@@ -211,7 +213,8 @@
       "addedBy": "Added by"
     },
     "status": {
-      "new": "Draft",
+      "draft": "Draft",
+      "new": "New",
       "approve_in_progress": "Pending",
       "waiting_to_be_paid": "Waiting to be paid",
       "paid": "Paid",
@@ -231,7 +234,7 @@
       "history": "Comments"
     },
     "details": {
-      "suppliersName": "Suppliers name",
+      "counterpart": "Counterpart",
       "invoiceNumber": "Invoice Number",
       "invoiceDate": "Invoice date",
       "suggestedPaymentDate": "Suggested payment date",
@@ -437,6 +440,23 @@
     "type": "Type",
     "search": "Search",
     "status": "Status",
-    "customer": "Customer"
+    "statuses": {
+      "draft": "Draft",
+      "issued": "Issued",
+      "accepted": "Accepted",
+      "partially_paid": "Partially Paid",
+      "expired": "Expired",
+      "uncollectible": "Uncollectible",
+      "deleted": "Deleted",
+      "recurring": "Recurring",
+      "new": "New",
+      "approve_in_progress": "Pending",
+      "waiting_to_be_paid": "Waiting to be paid",
+      "paid": "Paid",
+      "canceled": "Canceled",
+      "rejected": "Rejected"
+    },
+    "customer": "Customer",
+    "counterpart": "Counterpart"
   }
 }

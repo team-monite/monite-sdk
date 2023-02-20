@@ -6,6 +6,7 @@
  * An enumeration.
  */
 export enum PayableStateEnum {
+    DRAFT = 'draft',
     NEW = 'new',
     APPROVE_IN_PROGRESS = 'approve_in_progress',
     WAITING_TO_BE_PAID = 'waiting_to_be_paid',

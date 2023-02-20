@@ -1,12 +1,20 @@
 {{- $env := .Values.werf.env }}
-{{- $host := pluck $env .Values.ingress.host | first | default (printf .Values.ingress.host._default (default $env .Values.werf.review_env)) }}
-{{- $secretName := pluck $env .Values.ingress.secretName | first | default .Values.ingress.secretName._default }}
-
+{{- $ingress := pluck $env .Values.ingress | first | default .Values.ingress._default }}
+{{- range $domain := $ingress }}
 ---
+{{- $host := $domain.host }}
+{{- if contains "%s" $host }}
+  {{- $host = ( printf $host (default $env $.Values.werf.review_env) ) }}
+{{- end }}
+{{- $secretName := $domain.secretName }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
+{{- if $domain.name }}
+  name: {{ printf "%s-%s" $.Chart.Name $domain.name }}
+{{- else }}
+  name: {{ $.Chart.Name }}
+{{- end }}
   annotations:
     kubernetes.io/ingress.class: nginx
 spec:
@@ -18,10 +26,27 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Chart.Name }}
+            name: {{ $.Chart.Name }}
             port:
               number: 80
   tls:
     - hosts:
         - {{ $host }}
       secretName: {{ $secretName }}
+
+{{- if $domain.letsencrypt }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $secretName }}
+spec:
+  secretName: {{ $secretName }}
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  commonName: {{ $host }}
+  dnsNames:
+  - {{ $host }}
+{{- end }}
+{{- end }}

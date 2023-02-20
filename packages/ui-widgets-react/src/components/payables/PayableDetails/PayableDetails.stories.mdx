@@ -1,83 +1,53 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { action } from '@storybook/addon-actions';
+import { useModal, Button } from '@team-monite/ui-kit-react';
 import PayableDetails from './PayableDetails';
-import {Canvas, Meta, Story} from '@storybook/addon-docs';
-import {action} from '@storybook/addon-actions';
 
-<Meta
-  title="Payables/Payables — Details View"
-  component={PayableDetails}
-/>
+<Meta title="Payables/Payables — Details View" component={PayableDetails} />
 
-export const Template = (args) => (
-  <PayableDetails {...args} />
-);
+export const Template = (args) => <PayableDetails {...args} />;
 const actions = {
   onSubmit: action('onSubmit'),
   onSave: action('onSave'),
   onPay: action('onPay'),
   onApprove: action('onApprove'),
   onReject: action('onReject'),
-}
+  onCancel: action('onCancel'),
+};
 
 # PayableDetails
 
 ## Props
 
 ### `onDelete`
+
 Type: `(id: string) => void`
 
 <Canvas>
   <Story
-    name="New"
+    name="Default"
     args={{
-      id: 'new',
-      ...actions
+      id: 'draft',
+      ...actions,
     }}
   >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Approval in progress"
-    args={{
-      id: 'approve_in_progress',
-      ...actions
+    {(args) => {
+      const { show, hide, isOpen } = useModal();
+      const handleStart = () => {
+        show(true);
+      };
+      return (
+        <div>
+          <Button onClick={handleStart}>Start</Button>
+          {isOpen && (
+            <PayableDetails
+              {...args}
+              id="9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0"
+              onClose={hide}
+            />
+          )}
+        </div>
+      );
     }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Waiting to be paid"
-    args={{
-      id: 'waiting_to_be_paid',
-      ...actions
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Paid"
-    args={{
-      id: 'paid',
-      ...actions
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Canceled"
-    args={{
-      id: 'canceled',
-      ...actions
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-  <Story
-    name="Rejected"
-    args={{
-      id: 'rejected',
-      ...actions
-    }}
-  >
-    {Template.bind({})}
   </Story>
 </Canvas>

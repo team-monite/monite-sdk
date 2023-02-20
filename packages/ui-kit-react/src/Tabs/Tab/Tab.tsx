@@ -57,8 +57,8 @@ const StyledTab = styled(ReactTab)<TabProps>`
       content: '';
       position: absolute;
       height: 4px;
-      left: 0;
-      right: 0;
+      left: -10px;
+      right: -10px;
       bottom: -4px;
       background-color: ${({ theme }) => theme.black};
     }

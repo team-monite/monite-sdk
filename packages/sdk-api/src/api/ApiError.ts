@@ -17,5 +17,6 @@ export class ApiError extends Error {
     this.status = response.status;
     this.statusText = response.statusText;
     this.body = response.body;
+    this.message = message;
   }
 }
