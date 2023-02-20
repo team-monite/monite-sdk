@@ -20,7 +20,7 @@ const StyledProgress = styled(Box)`
     height: 8px;
     border-radius: 100px;
     left: 50%;
-    top: calc(72px / 2);
+    top: ${({ theme }) => theme.spacing(4)};
     width: 120px;
     transform: translateX(-50%);
   }

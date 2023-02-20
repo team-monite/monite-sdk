@@ -13,7 +13,11 @@ const StyledPaper = styled(Paper)`
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
     padding: ${({ theme }) => theme.spacing(4)};
-    border-radius: ${({ theme }) => theme.spacing(1.5, 1.5, 0, 0)};
+    border-radius: ${({ theme }) => theme.spacing(1.5)};
+
+    &:last-child {
+      border-radius: ${({ theme }) => theme.spacing(1.5, 1.5, 0, 0)};
+    }
   }
 `;
 

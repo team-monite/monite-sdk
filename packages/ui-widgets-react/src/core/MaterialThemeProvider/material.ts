@@ -29,6 +29,17 @@ const materialTheme = createTheme({
         disableRipple: true, // No more ripple, on the whole application 💣!
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: tokenizedTheme.neutral10,
+          padding: '8px 12px',
+        },
+        arrow: {
+          color: tokenizedTheme.neutral10,
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -36,7 +47,11 @@ const materialTheme = createTheme({
           transform: 'none',
           color: tokenizedTheme.neutral10,
           fontWeight: 500,
+          fontSize: '14px',
           marginBottom: 8,
+          '&:not(.Mui-disabled):hover, &.Mui-focused': {
+            color: tokenizedTheme.neutral10,
+          },
         },
       },
     },
@@ -44,13 +59,19 @@ const materialTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '8px !important',
-        },
-      },
-    },
-    MuiSelect: {
-      styleOverrides: {
-        select: {
-          padding: '13px 16px',
+          '& .MuiOutlinedInput-notchedOutline': {
+            transition:
+              'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+          },
+
+          '&:not(.Mui-disabled):hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(0, 0, 0, 0.23)',
+          },
+
+          '&:not(.Mui-disabled).Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: tokenizedTheme.primary50,
+            boxShadow: '0px 0px 0px 4px rgba(36, 111, 255, 0.2)',
+          },
         },
       },
     },
@@ -61,12 +82,28 @@ const materialTheme = createTheme({
         },
       },
     },
+    // MuiSelect: {
+    //   styleOverrides: {
+    //     root: {
+    //       '& .MuiOutlinedInput-notchedOutline': {
+    //         // top: 0,
+    //         // background: '#F3F3F3',
+    //         transition:
+    //           'border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+    //       },
+    //
+    //     }
+    //   }
+    // },
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: {
           '& legend span': {
             display: 'none',
           },
+        },
+        input: {
+          padding: '13px 16px',
         },
       },
     },
@@ -82,6 +119,7 @@ const materialTheme = createTheme({
           ...(ownerState.color === 'secondary' && {
             backgroundColor: tokenizedTheme.neutral90,
             color: tokenizedTheme.neutral10,
+
             '&:hover': {
               backgroundColor: tokenizedTheme.neutral50,
               color: tokenizedTheme.neutral100,

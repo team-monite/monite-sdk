@@ -57,6 +57,7 @@ function OnboardingFooterContent() {
           <StyledLink
             underline={'hover'}
             target={'_blank'}
+            rel="noopener noreferrer"
             href={'https://monite.com/terms/'}
           >
             {t('onboarding:footer.terms')}
@@ -66,20 +67,25 @@ function OnboardingFooterContent() {
           <StyledLink
             underline={'hover'}
             target={'_blank'}
+            rel="noopener noreferrer"
             href={'https://monite.com/data-privacy/'}
           >
             {t('onboarding:footer.privacy')}
           </StyledLink>
         </li>
-        <li>
-          <StyledText>{t('onboarding:footer.english')}</StyledText>
-        </li>
+        {/*<li>*/}
+        {/*  <StyledText>{t('onboarding:footer.english')}</StyledText>*/}
+        {/*</li>*/}
         <li>
           <StyledText>
             {t('onboarding:footer.monite')}
-            <Link href={'https://monite.com/'} target={'_blank'}>
+            <StyledLink
+              href={'https://monite.com/'}
+              rel="noopener noreferrer"
+              target={'_blank'}
+            >
               <MoniteLogo />
-            </Link>
+            </StyledLink>
           </StyledText>
         </li>
       </StyledList>

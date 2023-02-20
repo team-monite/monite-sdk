@@ -9,12 +9,12 @@ import OnboardingHeader from './OnboardingHeader';
 import OnboardingFooter from './OnboardingFooter';
 import OnboardingNotification from './OnboardingNotification';
 import OnboardingContainer from './OnboardingContainer';
-import OnboardingTitle from './OnboardingTitle';
-import { useTranslation } from 'react-i18next';
 
 export type OnboardingLayoutProps = {
   progress: ReactNode;
-  children: ReactNode;
+  actions?: ReactNode;
+  content: ReactNode;
+  title: ReactNode;
 };
 
 const StyledLayout = styled(Box)`
@@ -27,12 +27,19 @@ const StyledLayout = styled(Box)`
   }
 `;
 
+const StyledContent = styled(Box)`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
 export default function OnboardingLayout({
   progress,
-  children,
+  content,
+  title,
+  actions,
 }: OnboardingLayoutProps) {
-  const { t } = useTranslation();
-
   return (
     <MaterialThemeProvider>
       <Global
@@ -42,12 +49,9 @@ export default function OnboardingLayout({
         <OnboardingHeader />
         <OnboardingContainer>
           <OnboardingNotification />
-          <OnboardingTitle
-            step={`${t('onboarding:step')} 1`}
-            title={t('onboarding:basicInformation.title')}
-            description={t('onboarding:basicInformation.description')}
-          />
-          {children}
+          {title}
+          <StyledContent>{content}</StyledContent>
+          {actions}
         </OnboardingContainer>
         <OnboardingFooter />
         {progress}

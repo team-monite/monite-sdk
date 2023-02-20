@@ -1,9 +1,9 @@
 import React from 'react';
-import { styled } from '@mui/material';
+import { Box, styled, Tooltip, Link } from '@mui/material';
 import { palette, UAngleRight, UShieldCheck } from '@team-monite/ui-kit-react';
 import { useTranslation } from 'react-i18next';
 
-const StyledNotification = styled('a')`
+const StyledNotification = styled(Box)`
   background-color: ${palette.warning95};
   color: ${palette.warning30};
   display: flex;
@@ -12,12 +12,9 @@ const StyledNotification = styled('a')`
   text-decoration: none;
   padding: 12px;
   gap: 10px;
+  cursor: default;
   transition: border-color 0.2s ease-in-out;
   border: 1px solid ${palette.warning95};
-
-  &:hover {
-    border-color: ${palette.warning30};
-  }
 
   ${({ theme }) => theme.breakpoints.up('sm')} {
     border-radius: 8px;
@@ -40,12 +37,31 @@ export default function OnboardingNotification() {
   const { t } = useTranslation();
 
   return (
-    <StyledNotification href={'#'}>
-      <UShieldCheck width={22} />
-      <StyledNotificationText>
-        {t('onboarding:notification')}
-      </StyledNotificationText>
-      <UAngleRight width={22} />
-    </StyledNotification>
+    <Tooltip
+      arrow
+      title={
+        <>
+          Monit powers online business for
+          <br /> millions of companies around
+          <br /> the world.&nbsp;
+          <Link
+            target={'_blank'}
+            rel="noopener noreferrer"
+            color={palette.neutral100}
+            href={'#'}
+          >
+            Learn more
+          </Link>
+        </>
+      }
+    >
+      <StyledNotification>
+        <UShieldCheck width={22} />
+        <StyledNotificationText>
+          {t('onboarding:notification')}
+        </StyledNotificationText>
+        <UAngleRight width={22} />
+      </StyledNotification>
+    </Tooltip>
   );
 }
