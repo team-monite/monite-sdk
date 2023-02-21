@@ -1,5 +1,36 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## ui-widgets-react 1.2.0
+
+### New features
+* The `<PayableDetails>` component has a new `optionalFields` prop that controls whether to display or hide some optional fields in payable details, specifically: "Invoice date", "Suggested payment date", "Tags", "IBAN", and "BIC". By default, these fields are displayed. Usage example:
+
+  ```
+  <PayableDetails
+    id="9df6c614-f25f-4b2f-807c-f1e2c919019c"
+    ...
+    optionalFields={{
+      invoiceDate: true,
+      suggestedPaymentDate: true,
+      tags: false,
+      iban: false,
+      bic: false
+    }}
+  />
+  ```
+
+### Improvements
+* The `<PayableDetails>` component demo in the Storybook was reworked to better illustrate the entire payable lifecycle flow starting from the `draft` status until `paid`/`canceled`.
+
+* Monite SDK is now built using Node.js v. 18.14.0 instead of v. 16.14.2.
+
+### Bug fixes
+* Fixed an issue where currencies other than Euro did not work properly in payable components.
+
+* Fixed an issue with applying filters in the `<ApprovalPoliciesTable>` component after pagination.
+
+* Fixed a display issue with the `<PaymentDetails>` component in the Storybook.
+
 ## ui-widgets-react 1.1.0
 ### New features
 * The `<CounterpartDetails>` component has a new `showBankAccounts` prop that controls whether to display the "Bank accounts" section.
