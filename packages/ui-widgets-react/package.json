@@ -1,6 +1,6 @@
 {
   "name": "@team-monite/ui-widgets-react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publishConfig": {
     "access": "public"
   },
@@ -28,8 +28,8 @@
     "@stripe/react-stripe-js": "~1.9.0",
     "@stripe/stripe-js": "~1.32.0",
     "@tanstack/react-query-devtools": "~4.2.3",
-    "@team-monite/sdk-api": "^1.1.0",
-    "@team-monite/ui-kit-react": "^1.1.0",
+    "@team-monite/sdk-api": "^1.2.0",
+    "@team-monite/ui-kit-react": "^1.2.0",
     "ibantools": "~4.2.2",
     "react-hook-form": "~7.33.0",
     "react-hot-toast": "~2.2.0",
