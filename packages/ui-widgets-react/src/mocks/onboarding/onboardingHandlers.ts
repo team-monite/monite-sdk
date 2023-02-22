@@ -39,6 +39,8 @@ export const onboardingHandlers = [
       'link_id'
     ) as OnboardingBusinessTypeFixture;
 
+    localStorage.setItem('onboarding', JSON.stringify(body));
+
     return res(ctx.json(onboardingIndividualFixture(linkId, body)));
   }),
 ];

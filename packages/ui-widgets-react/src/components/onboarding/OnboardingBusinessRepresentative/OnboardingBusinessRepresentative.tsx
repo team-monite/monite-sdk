@@ -1,15 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem } from '@mui/material';
 
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
 import OnboardingSubTitle from '../OnboardingLayout/OnboardingSubTitle';
+import OnboardingCountryOption from '../OnboardingLayout/OnboardingCountryOption';
+import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 
 import RHFTextField from '../components/RHFTextField';
-import OnboardingForm from '../OnboardingLayout/OnboardingForm';
+import RHFAutocomplete from '../components/RHFAutocomplete';
+
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
+import { countries } from '../Countries';
 
 const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
   const { t } = useTranslation();
@@ -83,17 +86,25 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           {translateTitles('homeAddress')}
         </OnboardingSubTitle>
 
-        <RHFTextField
-          disabled={props.isLoading}
-          label={translateAddressFields('country')}
+        <RHFAutocomplete
+          disabled
           name="individual.address.country"
           control={control}
-          select
-        >
-          <MenuItem value={10}>Georgia</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </RHFTextField>
+          label={translateAddressFields('country')}
+          options={countries}
+          optionKey={'code'}
+          getOptionLabel={(option) =>
+            typeof option === 'string' ? option : option?.label ?? ''
+          }
+          renderOption={(props, option, state) => (
+            <OnboardingCountryOption
+              key={option.code}
+              props={props}
+              option={option}
+              state={state}
+            />
+          )}
+        />
 
         <RHFTextField
           disabled={props.isLoading}

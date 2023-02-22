@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Loading, UArrowLeft } from '@team-monite/ui-kit-react';
+import { Loading } from '@team-monite/ui-kit-react';
 
 import OnboardingLayout from './OnboardingLayout';
 import OnboardingProgress from './OnboardingLayout/OnboardingProgress';
@@ -15,7 +15,6 @@ export default function Onboarding(props: OnboardingProps) {
 
   const {
     step,
-    isFirstStep,
     isLastStep,
     Component,
     progress,
@@ -51,14 +50,6 @@ export default function Onboarding(props: OnboardingProps) {
       }
       actions={
         <OnboardingFormActions
-          back={
-            !isFirstStep &&
-            !isLastStep && (
-              <Button variant="contained" color="secondary">
-                <UArrowLeft width={18} />
-              </Button>
-            )
-          }
           next={
             !isLastStep && (
               <Button

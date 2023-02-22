@@ -33,10 +33,19 @@ export const onboardingIndividualFixture = (
     tos_acceptance_date,
   }: OnboardingDataPayload = payload || {};
 
+  const onboarding = localStorage.getItem('onboarding');
+
+  let cache = onboarding && JSON.parse(onboarding);
+
+  if (cache?.tos_acceptance_date !== '') {
+    localStorage.removeItem('onboarding');
+    cache = null;
+  }
+
   return {
     business_type: OnboardingBusinessType.INDIVIDUAL,
-    requirements: getRequirements(payload),
-    data: {
+    requirements: getRequirements(payload || cache),
+    data: cache || {
       [OnboardingRequirement.INDIVIDUAL]: getIndividual(individual),
       [OnboardingRequirement.BUSINESS_PROFILE]:
         getBusinessProfile(business_profile),
@@ -57,21 +66,21 @@ const getRequirements = (
       OnboardingRequirement.TOS_ACCEPTANCE_DATE,
     ];
 
-  if (payload.individual)
+  if (payload.business_profile?.mcc !== '')
+    return [OnboardingRequirement.TOS_ACCEPTANCE_DATE];
+
+  if (payload.bank_account?.iban !== '')
+    return [
+      OnboardingRequirement.BUSINESS_PROFILE,
+      OnboardingRequirement.TOS_ACCEPTANCE_DATE,
+    ];
+
+  if (payload.individual?.first_name !== '')
     return [
       OnboardingRequirement.BANK_ACCOUNT,
       OnboardingRequirement.BUSINESS_PROFILE,
       OnboardingRequirement.TOS_ACCEPTANCE_DATE,
     ];
-
-  if (payload.bank_account)
-    return [
-      OnboardingRequirement.BUSINESS_PROFILE,
-      OnboardingRequirement.TOS_ACCEPTANCE_DATE,
-    ];
-
-  if (payload.business_profile)
-    return [OnboardingRequirement.TOS_ACCEPTANCE_DATE];
 
   return [];
 };
@@ -99,7 +108,7 @@ const getAddress = (
   city: '',
   // state: address?.state || '',
   postal_code: '',
-  country: '',
+  country: 'GE',
   ...address,
 });
 

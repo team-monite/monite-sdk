@@ -1,0 +1,1437 @@
+[
+  {
+    "name": "A/C, Refrigeration Repair",
+    "short": "ac_refrigeration_repair",
+    "code": 7623
+  },
+  {
+    "name": "Accounting/Bookkeeping Services",
+    "short": "accounting_bookkeeping_services",
+    "code": 8931
+  },
+  {
+    "name": "Advertising Services",
+    "short": "advertising_services",
+    "code": 7311
+  },
+  {
+    "name": "Agricultural Cooperative",
+    "short": "agricultural_cooperative",
+    "code": 763
+  },
+  {
+    "name": "Airlines, Air Carriers",
+    "short": "airlines_air_carriers",
+    "code": 4511
+  },
+  {
+    "name": "Airports, Flying Fields",
+    "short": "airports_flying_fields",
+    "code": 4582
+  },
+  {
+    "name": "Ambulance Services",
+    "short": "ambulance_services",
+    "code": 4119
+  },
+  {
+    "name": "Amusement Parks/Carnivals",
+    "short": "amusement_parks_carnivals",
+    "code": 7996
+  },
+  {
+    "name": "Antique Reproductions",
+    "short": "antique_reproductions",
+    "code": 5937
+  },
+  {
+    "name": "Antique Shops",
+    "short": "antique_shops",
+    "code": 5932
+  },
+  {
+    "name": "Aquariums",
+    "short": "aquariums",
+    "code": 7998
+  },
+  {
+    "name": "Architectural/Surveying Services",
+    "short": "architectural_surveying_services",
+    "code": 8911
+  },
+  {
+    "name": "Art Dealers and Galleries",
+    "short": "art_dealers_and_galleries",
+    "code": 5971
+  },
+  {
+    "name": "Artists Supply and Craft Shops",
+    "short": "artists_supply_and_craft_shops",
+    "code": 5970
+  },
+  {
+    "name": "Auto Body Repair Shops",
+    "short": "auto_body_repair_shops",
+    "code": 7531
+  },
+  {
+    "name": "Auto Paint Shops",
+    "short": "auto_paint_shops",
+    "code": 7535
+  },
+  {
+    "name": "Auto Service Shops",
+    "short": "auto_service_shops",
+    "code": 7538
+  },
+  {
+    "name": "Auto and Home Supply Stores",
+    "short": "auto_and_home_supply_stores",
+    "code": 5531
+  },
+  {
+    "name": "Automated Cash Disburse",
+    "short": "automated_cash_disburse",
+    "code": 6011
+  },
+  {
+    "name": "Automated Fuel Dispensers",
+    "short": "automated_fuel_dispensers",
+    "code": 5542
+  },
+  {
+    "name": "Automobile Associations",
+    "short": "automobile_associations",
+    "code": 8675
+  },
+  {
+    "name": "Automotive Parts and Accessories Stores",
+    "short": "automotive_parts_and_accessories_stores",
+    "code": 5533
+  },
+  {
+    "name": "Automotive Tire Stores",
+    "short": "automotive_tire_stores",
+    "code": 5532
+  },
+  {
+    "name": "Bail and Bond Payments (payment to the surety for the bond, not the actual bond paid to the government agency)",
+    "short": "bail_and_bond_payments",
+    "code": 9223
+  },
+  {
+    "name": "Bakeries",
+    "short": "bakeries",
+    "code": 5462
+  },
+  {
+    "name": "Bands, Orchestras",
+    "short": "bands_orchestras",
+    "code": 7929
+  },
+  {
+    "name": "Barber and Beauty Shops",
+    "short": "barber_and_beauty_shops",
+    "code": 7230
+  },
+  {
+    "name": "Betting/Casino Gambling",
+    "short": "betting_casino_gambling",
+    "code": 7995
+  },
+  {
+    "name": "Bicycle Shops",
+    "short": "bicycle_shops",
+    "code": 5940
+  },
+  {
+    "name": "Billiard/Pool Establishments",
+    "short": "billiard_pool_establishments",
+    "code": 7932
+  },
+  {
+    "name": "Boat Dealers",
+    "short": "boat_dealers",
+    "code": 5551
+  },
+  {
+    "name": "Boat Rentals and Leases",
+    "short": "boat_rentals_and_leases",
+    "code": 4457
+  },
+  {
+    "name": "Book Stores",
+    "short": "book_stores",
+    "code": 5942
+  },
+  {
+    "name": "Books, Periodicals, and Newspapers",
+    "short": "books_periodicals_and_newspapers",
+    "code": 5192
+  },
+  {
+    "name": "Bowling Alleys",
+    "short": "bowling_alleys",
+    "code": 7933
+  },
+  {
+    "name": "Bus Lines",
+    "short": "bus_lines",
+    "code": 4131
+  },
+  {
+    "name": "Business/Secretarial Schools",
+    "short": "business_secretarial_schools",
+    "code": 8244
+  },
+  {
+    "name": "Buying/Shopping Services",
+    "short": "buying_shopping_services",
+    "code": 7278
+  },
+  {
+    "name": "Cable, Satellite, and Other Pay Television and Radio",
+    "short": "cable_satellite_and_other_pay_television_and_radio",
+    "code": 4899
+  },
+  {
+    "name": "Camera and Photographic Supply Stores",
+    "short": "camera_and_photographic_supply_stores",
+    "code": 5946
+  },
+  {
+    "name": "Candy, Nut, and Confectionery Stores",
+    "short": "candy_nut_and_confectionery_stores",
+    "code": 5441
+  },
+  {
+    "name": "Car Rental Agencies",
+    "short": "car_rental_agencies",
+    "code": 7512
+  },
+  {
+    "name": "Car Washes",
+    "short": "car_washes",
+    "code": 7542
+  },
+  {
+    "name": "Car and Truck Dealers (New &amp; Used) Sales, Service, Repairs Parts and Leasing",
+    "short": "car_and_truck_dealers_new_used",
+    "code": 5511
+  },
+  {
+    "name": "Car and Truck Dealers (Used Only) Sales, Service, Repairs Parts and Leasing",
+    "short": "car_and_truck_dealers_used_only",
+    "code": 5521
+  },
+  {
+    "name": "Carpentry Services",
+    "short": "carpentry_services",
+    "code": 1750
+  },
+  {
+    "name": "Carpet/Upholstery Cleaning",
+    "short": "carpet_upholstery_cleaning",
+    "code": 7217
+  },
+  {
+    "name": "Caterers",
+    "short": "caterers",
+    "code": 5811
+  },
+  {
+    "name": "Charitable and Social Service Organizations - Fundraising",
+    "short": "charitable_and_social_service_organizations_fundraising",
+    "code": 8398
+  },
+  {
+    "name": "Chemicals and Allied Products (Not Elsewhere Classified)",
+    "short": "chemicals_and_allied_products",
+    "code": 5169
+  },
+  {
+    "name": "Child Care Services",
+    "short": "child_care_services",
+    "code": 8351
+  },
+  {
+    "name": "Childrens and Infants Wear Stores",
+    "short": "childrens_and_infants_wear_stores",
+    "code": 5641
+  },
+  {
+    "name": "Chiropodists, Podiatrists",
+    "short": "chiropodists_podiatrists",
+    "code": 8049
+  },
+  {
+    "name": "Chiropractors",
+    "short": "chiropractors",
+    "code": 8041
+  },
+  {
+    "name": "Cigar Stores and Stands",
+    "short": "cigar_stores_and_stands",
+    "code": 5993
+  },
+  {
+    "name": "Civic, Social, Fraternal Associations",
+    "short": "civic_social_fraternal_associations",
+    "code": 8641
+  },
+  {
+    "name": "Cleaning and Maintenance",
+    "short": "cleaning_and_maintenance",
+    "code": 7349
+  },
+  {
+    "name": "Clothing Rental",
+    "short": "clothing_rental",
+    "code": 7296
+  },
+  {
+    "name": "Colleges, Universities",
+    "short": "colleges_universities",
+    "code": 8220
+  },
+  {
+    "name": "Commercial Equipment (Not Elsewhere Classified)",
+    "short": "commercial_equipment",
+    "code": 5046
+  },
+  {
+    "name": "Commercial Footwear",
+    "short": "commercial_footwear",
+    "code": 5139
+  },
+  {
+    "name": "Commercial Photography, Art and Graphics",
+    "short": "commercial_photography_art_and_graphics",
+    "code": 7333
+  },
+  {
+    "name": "Commuter Transport, Ferries",
+    "short": "commuter_transport_and_ferries",
+    "code": 4111
+  },
+  {
+    "name": "Computer Network Services",
+    "short": "computer_network_services",
+    "code": 4816
+  },
+  {
+    "name": "Computer Programming",
+    "short": "computer_programming",
+    "code": 7372
+  },
+  {
+    "name": "Computer Repair",
+    "short": "computer_repair",
+    "code": 7379
+  },
+  {
+    "name": "Computer Software Stores",
+    "short": "computer_software_stores",
+    "code": 5734
+  },
+  {
+    "name": "Computers, Peripherals, and Software",
+    "short": "computers_peripherals_and_software",
+    "code": 5045
+  },
+  {
+    "name": "Concrete Work Services",
+    "short": "concrete_work_services",
+    "code": 1771
+  },
+  {
+    "name": "Construction Materials (Not Elsewhere Classified)",
+    "short": "construction_materials",
+    "code": 5039
+  },
+  {
+    "name": "Consulting, Public Relations",
+    "short": "consulting_public_relations",
+    "code": 7392
+  },
+  {
+    "name": "Correspondence Schools",
+    "short": "correspondence_schools",
+    "code": 8241
+  },
+  {
+    "name": "Cosmetic Stores",
+    "short": "cosmetic_stores",
+    "code": 5977
+  },
+  {
+    "name": "Counseling Services",
+    "short": "counseling_services",
+    "code": 7277
+  },
+  {
+    "name": "Country Clubs",
+    "short": "country_clubs",
+    "code": 7997
+  },
+  {
+    "name": "Courier Services",
+    "short": "courier_services",
+    "code": 4215
+  },
+  {
+    "name": "Court Costs, Including Alimony and Child Support - Courts of Law",
+    "short": "court_costs",
+    "code": 9211
+  },
+  {
+    "name": "Credit Reporting Agencies",
+    "short": "credit_reporting_agencies",
+    "code": 7321
+  },
+  {
+    "name": "Cruise Lines",
+    "short": "cruise_lines",
+    "code": 4411
+  },
+  {
+    "name": "Dairy Products Stores",
+    "short": "dairy_products_stores",
+    "code": 5451
+  },
+  {
+    "name": "Dance Hall, Studios, Schools",
+    "short": "dance_hall_studios_schools",
+    "code": 7911
+  },
+  {
+    "name": "Dating/Escort Services",
+    "short": "dating_escort_services",
+    "code": 7273
+  },
+  {
+    "name": "Dentists, Orthodontists",
+    "short": "dentists_orthodontists",
+    "code": 8021
+  },
+  {
+    "name": "Department Stores",
+    "short": "department_stores",
+    "code": 5311
+  },
+  {
+    "name": "Detective Agencies",
+    "short": "detective_agencies",
+    "code": 7393
+  },
+  {
+    "name": "Digital Goods Media \u2013 Books, Movies, Music",
+    "short": "digital_goods_media",
+    "code": 5815
+  },
+  {
+    "name": "Digital Goods \u2013 Applications (Excludes Games)",
+    "short": "digital_goods_applications",
+    "code": 5817
+  },
+  {
+    "name": "Digital Goods \u2013 Games",
+    "short": "digital_goods_games",
+    "code": 5816
+  },
+  {
+    "name": "Digital Goods \u2013 Large Digital Goods Merchant",
+    "short": "digital_goods_large_volume",
+    "code": 5818
+  },
+  {
+    "name": "Direct Marketing - Catalog Merchant",
+    "short": "direct_marketing_catalog_merchant",
+    "code": 5964
+  },
+  {
+    "name": "Direct Marketing - Combination Catalog and Retail Merchant",
+    "short": "direct_marketing_combination_catalog_and_retail_merchant",
+    "code": 5965
+  },
+  {
+    "name": "Direct Marketing - Inbound Telemarketing",
+    "short": "direct_marketing_inbound_telemarketing",
+    "code": 5967
+  },
+  {
+    "name": "Direct Marketing - Insurance Services",
+    "short": "direct_marketing_insurance_services",
+    "code": 5960
+  },
+  {
+    "name": "Direct Marketing - Other",
+    "short": "direct_marketing_other",
+    "code": 5969
+  },
+  {
+    "name": "Direct Marketing - Outbound Telemarketing",
+    "short": "direct_marketing_outbound_telemarketing",
+    "code": 5966
+  },
+  {
+    "name": "Direct Marketing - Subscription",
+    "short": "direct_marketing_subscription",
+    "code": 5968
+  },
+  {
+    "name": "Direct Marketing - Travel",
+    "short": "direct_marketing_travel",
+    "code": 5962
+  },
+  {
+    "name": "Discount Stores",
+    "short": "discount_stores",
+    "code": 5310
+  },
+  {
+    "name": "Doctors",
+    "short": "doctors",
+    "code": 8011
+  },
+  {
+    "name": "Door-To-Door Sales",
+    "short": "door_to_door_sales",
+    "code": 5963
+  },
+  {
+    "name": "Drapery, Window Covering, and Upholstery Stores",
+    "short": "drapery_window_covering_and_upholstery_stores",
+    "code": 5714
+  },
+  {
+    "name": "Drinking Places",
+    "short": "drinking_places",
+    "code": 5813
+  },
+  {
+    "name": "Drug Stores and Pharmacies",
+    "short": "drug_stores_and_pharmacies",
+    "code": 5912
+  },
+  {
+    "name": "Drugs, Drug Proprietaries, and Druggist Sundries",
+    "short": "drugs_drug_proprietaries_and_druggist_sundries",
+    "code": 5122
+  },
+  {
+    "name": "Dry Cleaners",
+    "short": "dry_cleaners",
+    "code": 7216
+  },
+  {
+    "name": "Durable Goods (Not Elsewhere Classified)",
+    "short": "durable_goods",
+    "code": 5099
+  },
+  {
+    "name": "Duty Free Stores",
+    "short": "duty_free_stores",
+    "code": 5309
+  },
+  {
+    "name": "Eating Places, Restaurants",
+    "short": "eating_places_restaurants",
+    "code": 5812
+  },
+  {
+    "name": "Educational Services",
+    "short": "educational_services",
+    "code": 8299
+  },
+  {
+    "name": "Electric Razor Stores",
+    "short": "electric_razor_stores",
+    "code": 5997
+  },
+  {
+    "name": "Electrical Parts and Equipment",
+    "short": "electrical_parts_and_equipment",
+    "code": 5065
+  },
+  {
+    "name": "Electrical Services",
+    "short": "electrical_services",
+    "code": 1731
+  },
+  {
+    "name": "Electronics Repair Shops",
+    "short": "electronics_repair_shops",
+    "code": 7622
+  },
+  {
+    "name": "Electronics Stores",
+    "short": "electronics_stores",
+    "code": 5732
+  },
+  {
+    "name": "Elementary, Secondary Schools",
+    "short": "elementary_secondary_schools",
+    "code": 8211
+  },
+  {
+    "name": "Employment/Temp Agencies",
+    "short": "employment_temp_agencies",
+    "code": 7361
+  },
+  {
+    "name": "Equipment Rental",
+    "short": "equipment_rental",
+    "code": 7394
+  },
+  {
+    "name": "Exterminating Services",
+    "short": "exterminating_services",
+    "code": 7342
+  },
+  {
+    "name": "Family Clothing Stores",
+    "short": "family_clothing_stores",
+    "code": 5651
+  },
+  {
+    "name": "Fast Food Restaurants",
+    "short": "fast_food_restaurants",
+    "code": 5814
+  },
+  {
+    "name": "Financial Institutions",
+    "short": "financial_institutions",
+    "code": 6012
+  },
+  {
+    "name": "Fines - Government Administrative Entities",
+    "short": "fines_government_administrative_entities",
+    "code": 9222
+  },
+  {
+    "name": "Fireplace, Fireplace Screens, and Accessories Stores",
+    "short": "fireplace_fireplace_screens_and_accessories_stores",
+    "code": 5718
+  },
+  {
+    "name": "Floor Covering Stores",
+    "short": "floor_covering_stores",
+    "code": 5713
+  },
+  {
+    "name": "Florists",
+    "short": "florists",
+    "code": 5992
+  },
+  {
+    "name": "Florists Supplies, Nursery Stock, and Flowers",
+    "short": "florists_supplies_nursery_stock_and_flowers",
+    "code": 5193
+  },
+  {
+    "name": "Freezer and Locker Meat Provisioners",
+    "short": "freezer_and_locker_meat_provisioners",
+    "code": 5422
+  },
+  {
+    "name": "Fuel Dealers (Non Automotive)",
+    "short": "fuel_dealers_non_automotive",
+    "code": 5983
+  },
+  {
+    "name": "Funeral Services, Crematories",
+    "short": "funeral_services_crematories",
+    "code": 7261
+  },
+  {
+    "name": "Furniture Repair, Refinishing",
+    "short": "furniture_repair_refinishing",
+    "code": 7641
+  },
+  {
+    "name": "Furniture, Home Furnishings, and Equipment Stores, Except Appliances",
+    "short": "furniture_home_furnishings_and_equipment_stores_except_appliances",
+    "code": 5712
+  },
+  {
+    "name": "Furriers and Fur Shops",
+    "short": "furriers_and_fur_shops",
+    "code": 5681
+  },
+  {
+    "name": "General Services",
+    "short": "general_services",
+    "code": 1520
+  },
+  {
+    "name": "Gift, Card, Novelty, and Souvenir Shops",
+    "short": "gift_card_novelty_and_souvenir_shops",
+    "code": 5947
+  },
+  {
+    "name": "Glass, Paint, and Wallpaper Stores",
+    "short": "glass_paint_and_wallpaper_stores",
+    "code": 5231
+  },
+  {
+    "name": "Glassware, Crystal Stores",
+    "short": "glassware_crystal_stores",
+    "code": 5950
+  },
+  {
+    "name": "Golf Courses - Public",
+    "short": "golf_courses_public",
+    "code": 7992
+  },
+  {
+    "name": "Government Services (Not Elsewhere Classified)",
+    "short": "government_services",
+    "code": 9399
+  },
+  {
+    "name": "Grocery Stores, Supermarkets",
+    "short": "grocery_stores_supermarkets",
+    "code": 5411
+  },
+  {
+    "name": "Hardware Stores",
+    "short": "hardware_stores",
+    "code": 5251
+  },
+  {
+    "name": "Hardware, Equipment, and Supplies",
+    "short": "hardware_equipment_and_supplies",
+    "code": 5072
+  },
+  {
+    "name": "Health and Beauty Spas",
+    "short": "health_and_beauty_spas",
+    "code": 7298
+  },
+  {
+    "name": "Hearing Aids Sales and Supplies",
+    "short": "hearing_aids_sales_and_supplies",
+    "code": 5975
+  },
+  {
+    "name": "Heating, Plumbing, A/C",
+    "short": "heating_plumbing_a_c",
+    "code": 1711
+  },
+  {
+    "name": "Hobby, Toy, and Game Shops",
+    "short": "hobby_toy_and_game_shops",
+    "code": 5945
+  },
+  {
+    "name": "Home Supply Warehouse Stores",
+    "short": "home_supply_warehouse_stores",
+    "code": 5200
+  },
+  {
+    "name": "Hospitals",
+    "short": "hospitals",
+    "code": 8062
+  },
+  {
+    "name": "Hotels, Motels, and Resorts",
+    "short": "hotels_motels_and_resorts",
+    "code": 7011
+  },
+  {
+    "name": "Household Appliance Stores",
+    "short": "household_appliance_stores",
+    "code": 5722
+  },
+  {
+    "name": "Industrial Supplies (Not Elsewhere Classified)",
+    "short": "industrial_supplies",
+    "code": 5085
+  },
+  {
+    "name": "Information Retrieval Services",
+    "short": "information_retrieval_services",
+    "code": 7375
+  },
+  {
+    "name": "Insurance - Default",
+    "short": "insurance_default",
+    "code": 6399
+  },
+  {
+    "name": "Insurance Underwriting, Premiums",
+    "short": "insurance_underwriting_premiums",
+    "code": 6300
+  },
+  {
+    "name": "Intra-Company Purchases",
+    "short": "intra_company_purchases",
+    "code": 9950
+  },
+  {
+    "name": "Jewelry Stores, Watches, Clocks, and Silverware Stores",
+    "short": "jewelry_stores_watches_clocks_and_silverware_stores",
+    "code": 5944
+  },
+  {
+    "name": "Landscaping Services",
+    "short": "landscaping_services",
+    "code": 780
+  },
+  {
+    "name": "Laundries",
+    "short": "laundries",
+    "code": 7211
+  },
+  {
+    "name": "Laundry, Cleaning Services",
+    "short": "laundry_cleaning_services",
+    "code": 7210
+  },
+  {
+    "name": "Legal Services, Attorneys",
+    "short": "legal_services_attorneys",
+    "code": 8111
+  },
+  {
+    "name": "Luggage and Leather Goods Stores",
+    "short": "luggage_and_leather_goods_stores",
+    "code": 5948
+  },
+  {
+    "name": "Lumber, Building Materials Stores",
+    "short": "lumber_building_materials_stores",
+    "code": 5211
+  },
+  {
+    "name": "Manual Cash Disburse",
+    "short": "manual_cash_disburse",
+    "code": 6010
+  },
+  {
+    "name": "Marinas, Service and Supplies",
+    "short": "marinas_service_and_supplies",
+    "code": 4468
+  },
+  {
+    "name": "Masonry, Stonework, and Plaster",
+    "short": "masonry_stonework_and_plaster",
+    "code": 1740
+  },
+  {
+    "name": "Massage Parlors",
+    "short": "massage_parlors",
+    "code": 7297
+  },
+  {
+    "name": "Medical Services",
+    "short": "medical_services",
+    "code": 8099
+  },
+  {
+    "name": "Medical and Dental Labs",
+    "short": "medical_and_dental_labs",
+    "code": 8071
+  },
+  {
+    "name": "Medical, Dental, Ophthalmic, and Hospital Equipment and Supplies",
+    "short": "medical_dental_ophthalmic_and_hospital_equipment_and_supplies",
+    "code": 5047
+  },
+  {
+    "name": "Membership Organizations",
+    "short": "membership_organizations",
+    "code": 8699
+  },
+  {
+    "name": "Mens and Boys Clothing and Accessories Stores",
+    "short": "mens_and_boys_clothing_and_accessories_stores",
+    "code": 5611
+  },
+  {
+    "name": "Mens, Womens Clothing Stores",
+    "short": "mens_womens_clothing_stores",
+    "code": 5691
+  },
+  {
+    "name": "Metal Service Centers",
+    "short": "metal_service_centers",
+    "code": 5051
+  },
+  {
+    "name": "Miscellaneous Apparel and Accessory Shops",
+    "short": "miscellaneous_apparel_and_accessory_shops",
+    "code": 5699
+  },
+  {
+    "name": "Miscellaneous Auto Dealers",
+    "short": "miscellaneous_auto_dealers",
+    "code": 5599
+  },
+  {
+    "name": "Miscellaneous Business Services",
+    "short": "miscellaneous_business_services",
+    "code": 7399
+  },
+  {
+    "name": "Miscellaneous Food Stores - Convenience Stores and Specialty Markets",
+    "short": "miscellaneous_food_stores",
+    "code": 5499
+  },
+  {
+    "name": "Miscellaneous General Merchandise",
+    "short": "miscellaneous_general_merchandise",
+    "code": 5399
+  },
+  {
+    "name": "Miscellaneous General Services",
+    "short": "miscellaneous_general_services",
+    "code": 7299
+  },
+  {
+    "name": "Miscellaneous Home Furnishing Specialty Stores",
+    "short": "miscellaneous_home_furnishing_specialty_stores",
+    "code": 5719
+  },
+  {
+    "name": "Miscellaneous Publishing and Printing",
+    "short": "miscellaneous_publishing_and_printing",
+    "code": 2741
+  },
+  {
+    "name": "Miscellaneous Recreation Services",
+    "short": "miscellaneous_recreation_services",
+    "code": 7999
+  },
+  {
+    "name": "Miscellaneous Repair Shops",
+    "short": "miscellaneous_repair_shops",
+    "code": 7699
+  },
+  {
+    "name": "Miscellaneous Specialty Retail",
+    "short": "miscellaneous_specialty_retail",
+    "code": 5999
+  },
+  {
+    "name": "Mobile Home Dealers",
+    "short": "mobile_home_dealers",
+    "code": 5271
+  },
+  {
+    "name": "Motion Picture Theaters",
+    "short": "motion_picture_theaters",
+    "code": 7832
+  },
+  {
+    "name": "Motor Freight Carriers and Trucking - Local and Long Distance, Moving and Storage Companies, and Local Delivery Services",
+    "short": "motor_freight_carriers_and_trucking",
+    "code": 4214
+  },
+  {
+    "name": "Motor Homes Dealers",
+    "short": "motor_homes_dealers",
+    "code": 5592
+  },
+  {
+    "name": "Motor Vehicle Supplies and New Parts",
+    "short": "motor_vehicle_supplies_and_new_parts",
+    "code": 5013
+  },
+  {
+    "name": "Motorcycle Shops and Dealers",
+    "short": "motorcycle_shops_and_dealers",
+    "code": 5571
+  },
+  {
+    "name": "Motorcycle Shops, Dealers",
+    "short": "motorcycle_shops_dealers",
+    "code": 5561
+  },
+  {
+    "name": "Music Stores-Musical Instruments, Pianos, and Sheet Music",
+    "short": "music_stores_musical_instruments_pianos_and_sheet_music",
+    "code": 5733
+  },
+  {
+    "name": "News Dealers and Newsstands",
+    "short": "news_dealers_and_newsstands",
+    "code": 5994
+  },
+  {
+    "name": "Non-FI, Money Orders",
+    "short": "non_fi_money_orders",
+    "code": 6051
+  },
+  {
+    "name": "Non-FI, Stored Value Card Purchase/Load",
+    "short": "non_fi_stored_value_card_purchase_load",
+    "code": 6540
+  },
+  {
+    "name": "Nondurable Goods (Not Elsewhere Classified)",
+    "short": "nondurable_goods",
+    "code": 5199
+  },
+  {
+    "name": "Nurseries, Lawn and Garden Supply Stores",
+    "short": "nurseries_lawn_and_garden_supply_stores",
+    "code": 5261
+  },
+  {
+    "name": "Nursing/Personal Care",
+    "short": "nursing_personal_care",
+    "code": 8050
+  },
+  {
+    "name": "Office and Commercial Furniture",
+    "short": "office_and_commercial_furniture",
+    "code": 5021
+  },
+  {
+    "name": "Opticians, Eyeglasses",
+    "short": "opticians_eyeglasses",
+    "code": 8043
+  },
+  {
+    "name": "Optometrists, Ophthalmologist",
+    "short": "optometrists_ophthalmologist",
+    "code": 8042
+  },
+  {
+    "name": "Orthopedic Goods - Prosthetic Devices",
+    "short": "orthopedic_goods_prosthetic_devices",
+    "code": 5976
+  },
+  {
+    "name": "Osteopaths",
+    "short": "osteopaths",
+    "code": 8031
+  },
+  {
+    "name": "Package Stores-Beer, Wine, and Liquor",
+    "short": "package_stores_beer_wine_and_liquor",
+    "code": 5921
+  },
+  {
+    "name": "Paints, Varnishes, and Supplies",
+    "short": "paints_varnishes_and_supplies",
+    "code": 5198
+  },
+  {
+    "name": "Parking Lots, Garages",
+    "short": "parking_lots_garages",
+    "code": 7523
+  },
+  {
+    "name": "Passenger Railways",
+    "short": "passenger_railways",
+    "code": 4112
+  },
+  {
+    "name": "Pawn Shops",
+    "short": "pawn_shops",
+    "code": 5933
+  },
+  {
+    "name": "Pet Shops, Pet Food, and Supplies",
+    "short": "pet_shops_pet_food_and_supplies",
+    "code": 5995
+  },
+  {
+    "name": "Petroleum and Petroleum Products",
+    "short": "petroleum_and_petroleum_products",
+    "code": 5172
+  },
+  {
+    "name": "Photo Developing",
+    "short": "photo_developing",
+    "code": 7395
+  },
+  {
+    "name": "Photographic Studios",
+    "short": "photographic_studios",
+    "code": 7221
+  },
+  {
+    "name": "Photographic, Photocopy, Microfilm Equipment, and Supplies",
+    "short": "photographic_photocopy_microfilm_equipment_and_supplies",
+    "code": 5044
+  },
+  {
+    "name": "Picture/Video Production",
+    "short": "picture_video_production",
+    "code": 7829
+  },
+  {
+    "name": "Piece Goods, Notions, and Other Dry Goods",
+    "short": "piece_goods_notions_and_other_dry_goods",
+    "code": 5131
+  },
+  {
+    "name": "Plumbing, Heating Equipment, and Supplies",
+    "short": "plumbing_heating_equipment_and_supplies",
+    "code": 5074
+  },
+  {
+    "name": "Political Organizations",
+    "short": "political_organizations",
+    "code": 8651
+  },
+  {
+    "name": "Postal Services - Government Only",
+    "short": "postal_services_government_only",
+    "code": 9402
+  },
+  {
+    "name": "Precious Stones and Metals, Watches and Jewelry",
+    "short": "precious_stones_and_metals_watches_and_jewelry",
+    "code": 5094
+  },
+  {
+    "name": "Professional Services",
+    "short": "professional_services",
+    "code": 8999
+  },
+  {
+    "name": "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Household Goods, and Storage",
+    "short": "public_warehousing_and_storage",
+    "code": 4225
+  },
+  {
+    "name": "Quick Copy, Repro, and Blueprint",
+    "short": "quick_copy_repro_and_blueprint",
+    "code": 7338
+  },
+  {
+    "name": "Railroads",
+    "short": "railroads",
+    "code": 4011
+  },
+  {
+    "name": "Real Estate Agents and Managers - Rentals",
+    "short": "real_estate_agents_and_managers_rentals",
+    "code": 6513
+  },
+  {
+    "name": "Record Stores",
+    "short": "record_stores",
+    "code": 5735
+  },
+  {
+    "name": "Recreational Vehicle Rentals",
+    "short": "recreational_vehicle_rentals",
+    "code": 7519
+  },
+  {
+    "name": "Religious Goods Stores",
+    "short": "religious_goods_stores",
+    "code": 5973
+  },
+  {
+    "name": "Religious Organizations",
+    "short": "religious_organizations",
+    "code": 8661
+  },
+  {
+    "name": "Roofing/Siding, Sheet Metal",
+    "short": "roofing_siding_sheet_metal",
+    "code": 1761
+  },
+  {
+    "name": "Secretarial Support Services",
+    "short": "secretarial_support_services",
+    "code": 7339
+  },
+  {
+    "name": "Security Brokers/Dealers",
+    "short": "security_brokers_dealers",
+    "code": 6211
+  },
+  {
+    "name": "Service Stations",
+    "short": "service_stations",
+    "code": 5541
+  },
+  {
+    "name": "Sewing, Needlework, Fabric, and Piece Goods Stores",
+    "short": "sewing_needlework_fabric_and_piece_goods_stores",
+    "code": 5949
+  },
+  {
+    "name": "Shoe Repair/Hat Cleaning",
+    "short": "shoe_repair_hat_cleaning",
+    "code": 7251
+  },
+  {
+    "name": "Shoe Stores",
+    "short": "shoe_stores",
+    "code": 5661
+  },
+  {
+    "name": "Small Appliance Repair",
+    "short": "small_appliance_repair",
+    "code": 7629
+  },
+  {
+    "name": "Snowmobile Dealers",
+    "short": "snowmobile_dealers",
+    "code": 5598
+  },
+  {
+    "name": "Special Trade Services",
+    "short": "special_trade_services",
+    "code": 1799
+  },
+  {
+    "name": "Specialty Cleaning",
+    "short": "specialty_cleaning",
+    "code": 2842
+  },
+  {
+    "name": "Sporting Goods Stores",
+    "short": "sporting_goods_stores",
+    "code": 5941
+  },
+  {
+    "name": "Sporting/Recreation Camps",
+    "short": "sporting_recreation_camps",
+    "code": 7032
+  },
+  {
+    "name": "Sports Clubs/Fields",
+    "short": "sports_clubs_fields",
+    "code": 7941
+  },
+  {
+    "name": "Sports and Riding Apparel Stores",
+    "short": "sports_and_riding_apparel_stores",
+    "code": 5655
+  },
+  {
+    "name": "Stamp and Coin Stores",
+    "short": "stamp_and_coin_stores",
+    "code": 5972
+  },
+  {
+    "name": "Stationary, Office Supplies, Printing and Writing Paper",
+    "short": "stationary_office_supplies_printing_and_writing_paper",
+    "code": 5111
+  },
+  {
+    "name": "Stationery Stores, Office, and School Supply Stores",
+    "short": "stationery_stores_office_and_school_supply_stores",
+    "code": 5943
+  },
+  {
+    "name": "Swimming Pools Sales",
+    "short": "swimming_pools_sales",
+    "code": 5996
+  },
+  {
+    "name": "TUI Travel - Germany",
+    "short": "t_ui_travel_germany",
+    "code": 4723
+  },
+  {
+    "name": "Tailors, Alterations",
+    "short": "tailors_alterations",
+    "code": 5697
+  },
+  {
+    "name": "Tax Payments - Government Agencies",
+    "short": "tax_payments_government_agencies",
+    "code": 9311
+  },
+  {
+    "name": "Tax Preparation Services",
+    "short": "tax_preparation_services",
+    "code": 7276
+  },
+  {
+    "name": "Taxicabs/Limousines",
+    "short": "taxicabs_limousines",
+    "code": 4121
+  },
+  {
+    "name": "Telecommunication Equipment and Telephone Sales",
+    "short": "telecommunication_equipment_and_telephone_sales",
+    "code": 4812
+  },
+  {
+    "name": "Telecommunication Services",
+    "short": "telecommunication_services",
+    "code": 4814
+  },
+  {
+    "name": "Telegraph Services",
+    "short": "telegraph_services",
+    "code": 4821
+  },
+  {
+    "name": "Tent and Awning Shops",
+    "short": "tent_and_awning_shops",
+    "code": 5998
+  },
+  {
+    "name": "Testing Laboratories",
+    "short": "testing_laboratories",
+    "code": 8734
+  },
+  {
+    "name": "Theatrical Ticket Agencies",
+    "short": "theatrical_ticket_agencies",
+    "code": 7922
+  },
+  {
+    "name": "Timeshares",
+    "short": "timeshares",
+    "code": 7012
+  },
+  {
+    "name": "Tire Retreading and Repair",
+    "short": "tire_retreading_and_repair",
+    "code": 7534
+  },
+  {
+    "name": "Tolls/Bridge Fees",
+    "short": "tolls_bridge_fees",
+    "code": 4784
+  },
+  {
+    "name": "Tourist Attractions and Exhibits",
+    "short": "tourist_attractions_and_exhibits",
+    "code": 7991
+  },
+  {
+    "name": "Towing Services",
+    "short": "towing_services",
+    "code": 7549
+  },
+  {
+    "name": "Trailer Parks, Campgrounds",
+    "short": "trailer_parks_campgrounds",
+    "code": 7033
+  },
+  {
+    "name": "Transportation Services (Not Elsewhere Classified)",
+    "short": "transportation_services",
+    "code": 4789
+  },
+  {
+    "name": "Travel Agencies, Tour Operators",
+    "short": "travel_agencies_tour_operators",
+    "code": 4722
+  },
+  {
+    "name": "Truck StopIteration",
+    "short": "truck_stop_iteration",
+    "code": 7511
+  },
+  {
+    "name": "Truck/Utility Trailer Rentals",
+    "short": "truck_utility_trailer_rentals",
+    "code": 7513
+  },
+  {
+    "name": "Typesetting, Plate Making, and Related Services",
+    "short": "typesetting_plate_making_and_related_services",
+    "code": 2791
+  },
+  {
+    "name": "Typewriter Stores",
+    "short": "typewriter_stores",
+    "code": 5978
+  },
+  {
+    "name": "U.S. Federal Government Agencies or Departments",
+    "short": "u_s_federal_government_agencies_or_departments",
+    "code": 9405
+  },
+  {
+    "name": "Uniforms, Commercial Clothing",
+    "short": "uniforms_commercial_clothing",
+    "code": 5137
+  },
+  {
+    "name": "Used Merchandise and Secondhand Stores",
+    "short": "used_merchandise_and_secondhand_stores",
+    "code": 5931
+  },
+  {
+    "name": "Utilities",
+    "short": "utilities",
+    "code": 4900
+  },
+  {
+    "name": "Variety Stores",
+    "short": "variety_stores",
+    "code": 5331
+  },
+  {
+    "name": "Veterinary Services",
+    "short": "veterinary_services",
+    "code": 742
+  },
+  {
+    "name": "Video Amusement Game Supplies",
+    "short": "video_amusement_game_supplies",
+    "code": 7993
+  },
+  {
+    "name": "Video Game Arcades",
+    "short": "video_game_arcades",
+    "code": 7994
+  },
+  {
+    "name": "Video Tape Rental Stores",
+    "short": "video_tape_rental_stores",
+    "code": 7841
+  },
+  {
+    "name": "Vocational/Trade Schools",
+    "short": "vocational_trade_schools",
+    "code": 8249
+  },
+  {
+    "name": "Watch/Jewelry Repair",
+    "short": "watch_jewelry_repair",
+    "code": 7631
+  },
+  {
+    "name": "Welding Repair",
+    "short": "welding_repair",
+    "code": 7692
+  },
+  {
+    "name": "Wholesale Clubs",
+    "short": "wholesale_clubs",
+    "code": 5300
+  },
+  {
+    "name": "Wig and Toupee Stores",
+    "short": "wig_and_toupee_stores",
+    "code": 5698
+  },
+  {
+    "name": "Wires, Money Orders",
+    "short": "wires_money_orders",
+    "code": 4829
+  },
+  {
+    "name": "Womens Accessory and Specialty Shops",
+    "short": "womens_accessory_and_specialty_shops",
+    "code": 5631
+  },
+  {
+    "name": "Womens Ready-To-Wear Stores",
+    "short": "womens_ready_to_wear_stores",
+    "code": 5621
+  },
+  {
+    "name": "Wrecking and Salvage Yards",
+    "short": "wrecking_and_salvage_yards",
+    "code": 5935
+  }
+]

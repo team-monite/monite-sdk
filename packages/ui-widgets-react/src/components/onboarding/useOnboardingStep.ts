@@ -7,9 +7,9 @@ import {
 } from '@team-monite/sdk-api';
 
 import OnboardingBusinessRepresentative from './OnboardingBusinessRepresentative';
-import OnboardingEmpty from './OnboardingEmpty';
 import OnboardingBankAccount from './OnboardingBankAccount';
 import OnboardingBusinessProfile from './OnboardingBusinessProfile';
+import OnboardingSummary from './OnboardingSummary';
 import { OnboardingFormProps } from './hooks/useOnboardingForm';
 
 export enum LocalRequirements {
@@ -46,7 +46,7 @@ const componentList: Record<
   [LocalRequirements.businessRepresentative]: OnboardingBusinessRepresentative,
   [LocalRequirements.bankAccount]: OnboardingBankAccount,
   [LocalRequirements.businessProfile]: OnboardingBusinessProfile,
-  [LocalRequirements.summary]: OnboardingEmpty,
+  [LocalRequirements.summary]: OnboardingSummary,
 };
 
 export type OnboardingProps = {
