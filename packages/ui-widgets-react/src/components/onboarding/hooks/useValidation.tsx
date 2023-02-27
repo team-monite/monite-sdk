@@ -1,4 +1,5 @@
 import { AnyObjectSchema, object, string, StringSchema } from 'yup';
+import { isValidIBAN } from 'ibantools';
 
 import {
   OnboardingAddress,
@@ -71,7 +72,19 @@ const bankAccountSchema: Record<
 > = {
   country: string().required(),
   currency: string().required(),
-  iban: string().required(),
+  iban: string()
+    .test('iban', '', (value, ctx) => {
+      if (!value)
+        return ctx.createError({
+          message: 'Please enter your account number.',
+        });
+
+      if (!isValidIBAN(value))
+        return ctx.createError({ message: 'Invalid IBAN' });
+
+      return true;
+    })
+    .required(),
 };
 
 const businessProfileSchema: Record<
@@ -79,7 +92,7 @@ const businessProfileSchema: Record<
   StringSchema | AnyObjectSchema
 > = {
   mcc: string().required(),
-  url: string().url().required(),
+  url: string().required(),
 };
 
 const schemas: Partial<

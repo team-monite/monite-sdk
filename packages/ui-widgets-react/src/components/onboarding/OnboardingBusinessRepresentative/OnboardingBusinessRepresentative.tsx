@@ -89,7 +89,6 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
         </OnboardingSubTitle>
 
         <RHFAutocomplete
-          disabled
           name="individual.address.country"
           control={control}
           label={translateAddressFields('country')}
