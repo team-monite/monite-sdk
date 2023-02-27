@@ -21,13 +21,17 @@ const RHFTextField = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState: { error } }) => (
+      render={({
+        field,
+        fieldState: { error, isTouched },
+        formState: { isValid },
+      }) => (
         <TextField
           {...field}
           {...other}
           id={name}
-          error={!!error?.message}
-          helperText={error?.message}
+          error={(isTouched || !isValid) && !!error?.message}
+          helperText={(isTouched || !isValid) && error?.message}
           InputProps={
             maskProps
               ? {

@@ -121,7 +121,7 @@ const getIndividual = (
   email: '',
   phone: '',
   // id_number: '',
-  // ssn_last_4: '',
+  ssn_last_4: '',
   ...individual,
   address: getAddress(individual?.address),
 });

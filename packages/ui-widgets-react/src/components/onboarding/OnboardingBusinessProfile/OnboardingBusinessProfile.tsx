@@ -33,15 +33,14 @@ const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
           label={translateFields('mcc')}
           options={mcc}
           optionKey={'code'}
-          getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option?.name ?? ''
-          }
+          labelKey={'name'}
         />
 
         <RHFTextField
           disabled={props.isLoading}
           label={translateFields('url')}
           name="business_profile.url"
+          type={'url'}
           control={control}
         />
       </OnboardingStepContent>

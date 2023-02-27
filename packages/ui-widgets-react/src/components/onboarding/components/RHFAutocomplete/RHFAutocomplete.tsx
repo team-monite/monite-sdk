@@ -18,14 +18,15 @@ interface RHFAutocompleteProps<T> extends UseControllerProps<T> {
   label: string;
 }
 
-interface CustomAutoCompleteProps<T>
+interface CustomAutoCompleteProps<A>
   extends AutocompleteProps<
-    T,
+    A,
     boolean | undefined,
     boolean | undefined,
     boolean | undefined
   > {
-  optionKey?: keyof T;
+  optionKey?: keyof A;
+  labelKey?: keyof A;
 }
 
 const RHFAutocomplete = <F extends FieldValues, A>({
@@ -34,6 +35,7 @@ const RHFAutocomplete = <F extends FieldValues, A>({
   label,
   renderInput,
   optionKey,
+  labelKey,
   options,
   ...other
 }: RHFAutocompleteProps<F> &
@@ -59,28 +61,42 @@ const RHFAutocomplete = <F extends FieldValues, A>({
     return value;
   };
 
-  const getDefaultValue = (value: any): A | null => {
-    if (value === '') return null;
+  const getValue = (value: any): A | null => {
+    if (!value) return null;
+
     if (optionKey)
       return options.find((option) => option[optionKey] === value) ?? null;
 
     return options.find((option) => option === value) ?? null;
   };
 
+  const getOptionLabel = (option: string | A): string => {
+    if (typeof option === 'string') return option;
+    if (!labelKey) return '';
+    return `${option[labelKey]}`;
+  };
+
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field, fieldState: { error } }) => (
+      render={({
+        field,
+        fieldState: { error, isTouched },
+        formState: { isValid },
+      }) => (
         <Autocomplete
           {...field}
           {...other}
           options={options}
           blurOnSelect
           onChange={(_, value) => field.onChange(getChangedValue(value))}
-          value={getDefaultValue(field.value)}
+          value={getValue(field.value)}
           id={name}
-          renderInput={getRenderInput(error)}
+          getOptionLabel={getOptionLabel}
+          renderInput={getRenderInput(
+            isTouched || !isValid ? error : undefined
+          )}
         />
       )}
     />

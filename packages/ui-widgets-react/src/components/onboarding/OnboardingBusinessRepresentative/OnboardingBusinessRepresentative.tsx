@@ -66,6 +66,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           disabled={props.isLoading}
           label={translateIndividualFields('phone')}
           name="individual.phone"
+          type={'tel'}
           control={control}
         />
 
@@ -74,6 +75,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           label={translateIndividualFields('date_of_birth')}
           name="individual.date_of_birth"
           control={control}
+          type={'tel'}
           placeholder={'MM / DD / YYYY'}
           maskProps={{
             mask: '00 / 00 / 0000',
@@ -93,9 +95,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           label={translateAddressFields('country')}
           options={countries}
           optionKey={'code'}
-          getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option?.label ?? ''
-          }
+          labelKey={'label'}
           renderOption={(props, option, state) => (
             <OnboardingCountryOption
               key={option.code}
@@ -138,6 +138,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
         <RHFTextField
           disabled={props.isLoading}
+          type={'tel'}
           label={translateAddressFields('postal_code')}
           name="individual.address.postal_code"
           control={control}
@@ -157,6 +158,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
               label={translateIndividualFields('ssn_last_4')}
               name="individual.ssn_last_4"
               control={control}
+              type={'tel'}
               maskProps={{
                 mask: '0000',
               }}
@@ -166,6 +168,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           {individual.id_number !== undefined && (
             <RHFTextField
               disabled={props.isLoading}
+              type={'tel'}
               label={translateIndividualFields('id_number')}
               name="individual.id_number"
               control={control}

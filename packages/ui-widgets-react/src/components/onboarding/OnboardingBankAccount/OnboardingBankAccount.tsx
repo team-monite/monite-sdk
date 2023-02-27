@@ -51,9 +51,7 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
             AllowCountries.find((item) => item === country.code)
           )}
           optionKey={'code'}
-          getOptionLabel={(option) =>
-            typeof option === 'string' ? option : option?.label ?? ''
-          }
+          labelKey={'label'}
           renderOption={(props, option, state) => (
             <OnboardingCountryOption
               key={option.code}
