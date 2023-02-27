@@ -31,36 +31,35 @@ const individualSchema: Record<
   last_name: string().required(),
   email: string().email().required(),
   phone: string().required(),
-  date_of_birth: string()
-    .required()
-    .test('dob', '', (value, ctx) => {
-      if (!value) return true;
+  date_of_birth: string().test('dob', '', (value, ctx) => {
+    if (!value) return true;
 
-      const format = 'MM / dd / yyyy';
-      const currentDate = new Date();
+    const format = 'MM / dd / yyyy';
 
-      if (!isMatch(value, format)) {
-        return ctx.createError({
-          message: `Please provide a valid date.`,
-        });
-      }
+    if (!isMatch(value, format)) {
+      return ctx.createError({
+        message: `Please provide a valid date.`,
+      });
+    }
 
-      const date = parse(value, format, currentDate);
+    const currentDate = new Date();
+    const date = parse(value, format, currentDate);
+    const difference = differenceInYears(currentDate, date);
 
-      if (differenceInYears(currentDate, date) < 18) {
-        return ctx.createError({
-          message: `Managers and owners must be at least 18 years old to use this service.`,
-        });
-      }
+    if (difference < 18) {
+      return ctx.createError({
+        message: `Managers and owners must be at least 18 years old to use this service.`,
+      });
+    }
 
-      if (differenceInYears(currentDate, date) > 120) {
-        return ctx.createError({
-          message: `Managers and owners must be under 120 years old.`,
-        });
-      }
+    if (difference > 120) {
+      return ctx.createError({
+        message: `Managers and owners must be under 120 years old.`,
+      });
+    }
 
-      return true;
-    }),
+    return true;
+  }),
   id_number: string().required(),
   ssn_last_4: string().required().trim().min(4),
   address: object(addressSchema),
@@ -72,19 +71,17 @@ const bankAccountSchema: Record<
 > = {
   country: string().required(),
   currency: string().required(),
-  iban: string()
-    .test('iban', '', (value, ctx) => {
-      if (!value)
-        return ctx.createError({
-          message: 'Please enter your account number.',
-        });
+  iban: string().test('iban', '', (value, ctx) => {
+    if (!value)
+      return ctx.createError({
+        message: 'Please enter your account number.',
+      });
 
-      if (!isValidIBAN(value))
-        return ctx.createError({ message: 'Invalid IBAN' });
+    if (!isValidIBAN(value))
+      return ctx.createError({ message: 'Invalid IBAN' });
 
-      return true;
-    })
-    .required(),
+    return true;
+  }),
 };
 
 const businessProfileSchema: Record<
