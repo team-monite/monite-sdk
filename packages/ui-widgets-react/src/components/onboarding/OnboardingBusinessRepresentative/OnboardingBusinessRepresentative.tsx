@@ -1,15 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem } from '@mui/material';
 
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
 import OnboardingSubTitle from '../OnboardingLayout/OnboardingSubTitle';
+import OnboardingCountryOption from '../OnboardingLayout/OnboardingCountryOption';
+import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 
 import RHFTextField from '../components/RHFTextField';
-import OnboardingForm from '../OnboardingLayout/OnboardingForm';
+import RHFAutocomplete from '../components/RHFAutocomplete';
+
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
+import { countries } from '../Countries';
 
 const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
   const { t } = useTranslation();
@@ -63,6 +66,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           disabled={props.isLoading}
           label={translateIndividualFields('phone')}
           name="individual.phone"
+          type={'tel'}
           control={control}
         />
 
@@ -71,6 +75,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           label={translateIndividualFields('date_of_birth')}
           name="individual.date_of_birth"
           control={control}
+          type={'tel'}
           placeholder={'MM / DD / YYYY'}
           maskProps={{
             mask: '00 / 00 / 0000',
@@ -83,17 +88,23 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           {translateTitles('homeAddress')}
         </OnboardingSubTitle>
 
-        <RHFTextField
-          disabled={props.isLoading}
-          label={translateAddressFields('country')}
+        <RHFAutocomplete
+          disabled
           name="individual.address.country"
           control={control}
-          select
-        >
-          <MenuItem value={10}>Georgia</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </RHFTextField>
+          label={translateAddressFields('country')}
+          options={countries}
+          optionKey={'code'}
+          labelKey={'label'}
+          renderOption={(props, option, state) => (
+            <OnboardingCountryOption
+              key={option.code}
+              props={props}
+              option={option}
+              state={state}
+            />
+          )}
+        />
 
         <RHFTextField
           disabled={props.isLoading}
@@ -127,6 +138,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
         <RHFTextField
           disabled={props.isLoading}
+          type={'tel'}
           label={translateAddressFields('postal_code')}
           name="individual.address.postal_code"
           control={control}
@@ -146,6 +158,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
               label={translateIndividualFields('ssn_last_4')}
               name="individual.ssn_last_4"
               control={control}
+              type={'tel'}
               maskProps={{
                 mask: '0000',
               }}
@@ -155,6 +168,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
           {individual.id_number !== undefined && (
             <RHFTextField
               disabled={props.isLoading}
+              type={'tel'}
               label={translateIndividualFields('id_number')}
               name="individual.id_number"
               control={control}

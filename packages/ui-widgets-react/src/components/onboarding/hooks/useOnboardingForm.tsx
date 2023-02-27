@@ -30,6 +30,7 @@ export default function useOnboardingForm({
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: data,
+    mode: 'onTouched',
   });
 
   useScrollToError(methods.formState.errors, requirements);

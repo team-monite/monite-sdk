@@ -1,15 +1,18 @@
 import { useEffect, useState, ComponentType } from 'react';
 
-import { useOnboarding, useUpdateOnboarding } from 'core/queries/useOnboarding';
+import {
+  useOnboardingById,
+  useUpdateOnboarding,
+} from 'core/queries/useOnboardingById';
 import {
   OnboardingBusinessType,
   OnboardingRequirement,
 } from '@team-monite/sdk-api';
 
 import OnboardingBusinessRepresentative from './OnboardingBusinessRepresentative';
-import OnboardingEmpty from './OnboardingEmpty';
 import OnboardingBankAccount from './OnboardingBankAccount';
 import OnboardingBusinessProfile from './OnboardingBusinessProfile';
+import OnboardingSummary from './OnboardingSummary';
 import { OnboardingFormProps } from './hooks/useOnboardingForm';
 
 export enum LocalRequirements {
@@ -46,7 +49,7 @@ const componentList: Record<
   [LocalRequirements.businessRepresentative]: OnboardingBusinessRepresentative,
   [LocalRequirements.bankAccount]: OnboardingBankAccount,
   [LocalRequirements.businessProfile]: OnboardingBusinessProfile,
-  [LocalRequirements.summary]: OnboardingEmpty,
+  [LocalRequirements.summary]: OnboardingSummary,
 };
 
 export type OnboardingProps = {
@@ -64,7 +67,7 @@ export const useOnboardingStep = ({ linkId }: OnboardingProps) => {
     | undefined
   >(undefined);
 
-  const { data: onboarding, isLoading } = useOnboarding(linkId);
+  const { data: onboarding, isLoading } = useOnboardingById(linkId);
 
   useEffect(() => window.scrollTo(0, 0), [step]);
 

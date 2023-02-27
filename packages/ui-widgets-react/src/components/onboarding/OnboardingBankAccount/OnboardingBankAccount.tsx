@@ -11,6 +11,10 @@ import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
+import { countries } from '../Countries';
+import AllowCountries from '../AllowedCountries.json';
+import OnboardingCountryOption from '../OnboardingLayout/OnboardingCountryOption';
+import RHFAutocomplete from '../components/RHFAutocomplete';
 
 const OnboardingBankAccount = (props: OnboardingFormProps) => {
   const { t } = useTranslation();
@@ -27,6 +31,7 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
     <OnboardingForm formKey={props.formKey} onSubmit={handleSubmit(onSubmit)}>
       <OnboardingStepContent>
         <RHFTextField
+          disabled={props.isLoading}
           label={translateFields('currency')}
           name="bank_account.currency"
           control={control}
@@ -37,16 +42,25 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
           <MenuItem value={30}>Thirty</MenuItem>
         </RHFTextField>
 
-        <RHFTextField
-          label={translateFields('country')}
+        <RHFAutocomplete
+          disabled={props.isLoading}
           name="bank_account.country"
           control={control}
-          select
-        >
-          <MenuItem value={10}>Georgia</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </RHFTextField>
+          label={translateFields('country')}
+          options={countries.filter((country) =>
+            AllowCountries.find((item) => item === country.code)
+          )}
+          optionKey={'code'}
+          labelKey={'label'}
+          renderOption={(props, option, state) => (
+            <OnboardingCountryOption
+              key={option.code}
+              props={props}
+              option={option}
+              state={state}
+            />
+          )}
+        />
 
         <RHFTextField
           disabled={props.isLoading}
