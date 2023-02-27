@@ -98,7 +98,9 @@
       "payerFormNameError": "Please enter your account holder’s name",
       "payerFormIban": "Your IBAN",
       "payerFormIbanError": "Invalid IBAN. Please check and try again",
-      "selectMethodLink": "Didn't find your bank? Try another payment method"
+      "selectMethodLink": "Didn't find your bank? Try another payment method",
+      "termsAndConditions": "By using the service, you agree to Yapily’s <1>Terms & Conditions</1> and <3>Privacy Policy</3>.<br />Yapily will retrieve your account information <7>Read more</7>.",
+      "readMore": "By using this service you will be securely redirected to your bank to confirm your consent for Yapily Connect to read and receive the following information: Identification details, Account(s) details, Balances, Interest rates, Other transactional and account information. For more information please refer to the Yapily Connect’s <1>Terms & Conditions</1>"
     }
   },
   "counterparts": {

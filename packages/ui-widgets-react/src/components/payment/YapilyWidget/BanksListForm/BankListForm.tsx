@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useTheme } from 'emotion-theming';
 import { throttle } from 'lodash';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 import {
   PaymentsPaymentsBank,
@@ -17,6 +17,7 @@ import {
   Avatar,
   Text,
   Input,
+  Link,
   Box,
   UAngleRight,
   Theme,
@@ -95,6 +96,7 @@ const BankListForm = ({
 }: BankListFormProps) => {
   const { t } = useTranslation();
   const theme = useTheme<Theme>();
+  const [showReadMore, setShowReadMore] = useState(false);
 
   const { data: countriesData } = useCountryList(
     MoniteAllPaymentMethodsTypes.SEPA_CREDIT
@@ -186,6 +188,24 @@ const BankListForm = ({
                       {t('payment:bankWidget.selectMethodLink')}
                     </Text>
                   </Button>
+                </Box>
+              )}
+              <Box mt={30}>
+                <Text textSize="small" $color="grey">
+                  <Trans i18nKey="payment:bankWidget.termsAndConditions">
+                    {/*eslint-disable-next-line*/}
+                    By using the service, you agree to Yapily’s <Link href="https://docs.yapily.com/590afe32d4002480e93f75b9793471dc/YapilyConnect-Ltd-v20200908.pdf" color="grey" textSize="smallLink">Terms & Conditions</Link> and <Link href="https://www.yapily.com/legal/privacy-policy" color="grey" textSize="smallLink">Privacy Policy</Link>.<br />Yapily will retrieve your account information <Link href="#" color="grey" textSize="smallLink" onClick={() => setShowReadMore((prev) => !prev)}>Read more</Link>.
+                  </Trans>
+                </Text>
+              </Box>
+              {showReadMore && (
+                <Box mt={20}>
+                  <Text textSize="small" $color="grey">
+                    <Trans i18nKey="payment:bankWidget.readMore">
+                      {/*eslint-disable-next-line*/}
+                      By using this service you will be securely redirected to your bank to confirm your consent for Yapily Connect to read and receive the following information: Identification details, Account(s) details, Balances, Interest rates, Other transactional and account information. For more information please refer to the Yapily Connect’s <Link href="https://docs.yapily.com/590afe32d4002480e93f75b9793471dc/YapilyConnect-Ltd-v20200908.pdf" color="grey" textSize="smallLink">Terms & Conditions</Link>
+                    </Trans>
+                  </Text>
                 </Box>
               )}
             </>
