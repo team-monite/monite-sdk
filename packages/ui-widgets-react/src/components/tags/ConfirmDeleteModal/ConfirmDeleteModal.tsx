@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { useDeleteTag } from 'core/queries';
+import { ConfirmDeleteModalTestId } from './ConfirmDeleteModal.types';
 
 const StyledHeader = styled.div`
   display: flex;
@@ -29,8 +30,17 @@ const Content = styled.div`
 `;
 
 interface Props {
+  /** The tag what we want to delete */
   tag: { id: string; name: string };
+
+  /**
+   * Callback which fires when the user
+   *  decided to close the modal
+   *  or deletion was successful
+   */
   onClose: () => void;
+
+  /** Callback which fires when the tag has been deleted */
   onDelete: () => void;
 }
 
@@ -71,7 +81,11 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
           <>
             <Separator />
             <ActionsWrapper>
-              <Button color="secondary" onClick={onClose}>
+              <Button
+                color="secondary"
+                onClick={onClose}
+                data-testid={ConfirmDeleteModalTestId.CancelButton}
+              >
                 {t('common:cancel')}
               </Button>
               <Button
@@ -79,6 +93,7 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
                 onClick={handleDelete}
                 disabled={deleteTagMutation.isLoading}
                 isLoading={deleteTagMutation.isLoading}
+                data-testid={ConfirmDeleteModalTestId.DeleteButton}
               >
                 {t('common:delete')}
               </Button>
