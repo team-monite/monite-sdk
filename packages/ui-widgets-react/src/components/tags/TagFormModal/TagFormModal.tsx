@@ -16,6 +16,7 @@ import {
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useCreateTag, useUpdateTag } from 'core/queries';
+import { TagFormModalTestId } from './TagFormModal.types';
 
 const getValidationSchema = (t: TFunction) =>
   yup
@@ -48,8 +49,13 @@ const ActionsWrapper = styled.div`
   margin: 0 24px 24px 24px;
 `;
 
+interface ITag {
+  id: string;
+  name: string;
+}
+
 interface Props {
-  tag?: { id: string; name: string };
+  tag?: ITag;
   onCreate?: () => void;
   onClose?: () => void;
 }
@@ -58,6 +64,12 @@ interface FormFields {
   name: string;
 }
 
+/**
+ * `TagFormModal` is responsible for creating or updating
+ *   the tag.
+ *  If no `tag` provided then the form is working on `creating` mode
+ *  If `tag` provided then the form is working on `updating` mode
+ */
 const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
   const { t } = useComponentsContext();
   const tagCreateMutation = useCreateTag();
@@ -86,17 +98,17 @@ const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
   );
 
   const updateTag = useCallback(
-    (name: string) => {
+    (tag: ITag, name: string) => {
       tagUpdateMutation.mutate(
         {
-          id: tag!.id,
+          id: tag.id,
           payload: { name },
         },
         {
           onSuccess: (updatedTag) => {
             toast.success(
               t('tags:messages.updateSuccess', {
-                oldName: tag!.name,
+                oldName: tag.name,
                 newName: updatedTag.name,
               })
             );
@@ -147,8 +159,9 @@ const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
         <Content>
           <form
             id="createTagForm"
+            name="createTagForm"
             onSubmit={handleSubmit((values) => {
-              tag ? updateTag(values.name) : createTag(values.name);
+              tag ? updateTag(tag, values.name) : createTag(values.name);
             })}
           >
             <Controller
@@ -161,7 +174,12 @@ const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
                   error={error?.message}
                   required
                 >
-                  <Input id={field.name} {...field} isInvalid={!!error} />
+                  <Input
+                    id={field.name}
+                    data-testid={TagFormModalTestId.Input}
+                    {...field}
+                    isInvalid={!!error}
+                  />
                 </FormField>
               )}
             />

@@ -4,7 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn workspaces run test:ci",
     "app-white-label:start": "yarn workspace @monite/app-white-label start",
     "app-white-label:serve": "yarn workspace @monite/app-white-label serve",
     "app-white-label:build": "yarn workspace @monite/app-white-label build",
