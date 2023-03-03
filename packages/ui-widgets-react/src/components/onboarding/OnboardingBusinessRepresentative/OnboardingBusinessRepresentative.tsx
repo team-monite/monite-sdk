@@ -12,17 +12,22 @@ import RHFAutocomplete from '../components/RHFAutocomplete';
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
-import { countries } from '../Countries';
 
-const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
+import countries from '../dicts/countries';
+import OnboardingFormActions from '../OnboardingFormActions';
+
+export default function OnboardingBusinessRepresentative(
+  props: OnboardingFormProps
+) {
+  const { individual } = props.data;
   const { t } = useTranslation();
 
   const {
     methods: { control, handleSubmit },
-    onSubmit,
+    isLoading,
+    onNext,
+    onSave,
   } = useOnboardingForm(props);
-
-  const { individual } = props.data;
 
   const translateIndividualFields = (key: string): string =>
     t(`onboarding:individualFields.${key}`);
@@ -34,19 +39,22 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
     t(`onboarding:businessRepresentativeStep.${key}`);
 
   return (
-    <OnboardingForm formKey={props.formKey} onSubmit={handleSubmit(onSubmit)}>
+    <OnboardingForm
+      onSubmit={handleSubmit(onNext)}
+      actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
+    >
       <OnboardingStepContent>
         <OnboardingSubTitle>{translateTitles('legalName')}</OnboardingSubTitle>
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateIndividualFields('first_name')}
           name="individual.first_name"
           control={control}
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateIndividualFields('last_name')}
           name="individual.last_name"
           control={control}
@@ -55,7 +63,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
       <OnboardingStepContent>
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateIndividualFields('email')}
           name="individual.email"
           type={'email'}
@@ -63,7 +71,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateIndividualFields('phone')}
           name="individual.phone"
           type={'tel'}
@@ -71,7 +79,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateIndividualFields('date_of_birth')}
           name="individual.date_of_birth"
           control={control}
@@ -106,21 +114,21 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateAddressFields('line1')}
           name="individual.address.line1"
           control={control}
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateAddressFields('line2')}
           name="individual.address.line2"
           control={control}
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateAddressFields('city')}
           name="individual.address.city"
           control={control}
@@ -128,7 +136,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
         {individual?.address?.state !== undefined && (
           <RHFTextField
-            disabled={props.isLoading}
+            disabled={isLoading}
             label={translateAddressFields('state')}
             name="individual.address.state"
             control={control}
@@ -136,7 +144,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
         )}
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           type={'tel'}
           label={translateAddressFields('postal_code')}
           name="individual.address.postal_code"
@@ -153,7 +161,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
           {individual.ssn_last_4 !== undefined && (
             <RHFTextField
-              disabled={props.isLoading}
+              disabled={isLoading}
               label={translateIndividualFields('ssn_last_4')}
               name="individual.ssn_last_4"
               control={control}
@@ -166,7 +174,7 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
 
           {individual.id_number !== undefined && (
             <RHFTextField
-              disabled={props.isLoading}
+              disabled={isLoading}
               type={'tel'}
               label={translateIndividualFields('id_number')}
               name="individual.id_number"
@@ -177,6 +185,4 @@ const OnboardingBusinessRepresentative = (props: OnboardingFormProps) => {
       )}
     </OnboardingForm>
   );
-};
-
-export default OnboardingBusinessRepresentative;
+}

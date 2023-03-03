@@ -18,7 +18,7 @@ type OnboardingParams = { link_id: string };
 export const onboardingHandlers = [
   rest.get<undefined, OnboardingParams, OnboardingIndividualResponse>(
     path,
-    ({ url }, res, ctx) => {
+    ({ url }, res, { delay, json }) => {
       const linkId = JSON.parse(url.searchParams.get('link_id') || '');
 
       if (
@@ -27,20 +27,22 @@ export const onboardingHandlers = [
           linkId.type as OnboardingBusinessTypeFixture
         ]
       )
-        return res(ctx.json(onboardingIndividualFixture(linkId)));
+        return res(delay(), json(onboardingIndividualFixture(linkId)));
     }
   ),
   rest.patch<
     OnboardingDataPayload,
     OnboardingParams,
     OnboardingIndividualResponse
-  >(path, async ({ url, body }, res, ctx) => {
-    const linkId = url.searchParams.get(
-      'link_id'
-    ) as OnboardingBusinessTypeFixture;
+  >(path, ({ url, body }, res, { delay, json }) => {
+    const linkId = JSON.parse(url.searchParams.get('link_id') || '');
 
-    localStorage.setItem('onboarding', JSON.stringify(body));
-
-    return res(ctx.json(onboardingIndividualFixture(linkId, body)));
+    if (
+      linkId &&
+      OnboardingBusinessTypeFixture[
+        linkId.type as OnboardingBusinessTypeFixture
+      ]
+    )
+      return res(delay(), json(onboardingIndividualFixture(linkId, body)));
   }),
 ];

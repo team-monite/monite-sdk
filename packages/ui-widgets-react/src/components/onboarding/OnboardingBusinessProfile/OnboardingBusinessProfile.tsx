@@ -1,43 +1,50 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+import RHFTextField from '../components/RHFTextField';
+import RHFAutocomplete from '../components/RHFAutocomplete';
+
+import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
 
-import RHFTextField from '../components/RHFTextField';
-import OnboardingForm from '../OnboardingLayout/OnboardingForm';
+import mccCodes from '../dicts/mccCodes';
 
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
-import RHFAutocomplete from '../components/RHFAutocomplete';
-import mcc from '../MCC.json';
+import OnboardingFormActions from '../OnboardingFormActions';
 
 const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
   const { t } = useTranslation();
 
   const {
     methods: { control, handleSubmit },
-    onSubmit,
+    isLoading,
+    onNext,
+    onSave,
   } = useOnboardingForm(props);
 
   const translateFields = (key: string): string =>
     t(`onboarding:businessProfileFields.${key}`);
 
   return (
-    <OnboardingForm formKey={props.formKey} onSubmit={handleSubmit(onSubmit)}>
+    <OnboardingForm
+      onSubmit={handleSubmit(onNext)}
+      actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
+    >
       <OnboardingStepContent>
         <RHFAutocomplete
-          disabled={props.isLoading}
+          disabled={isLoading}
           name="business_profile.mcc"
           control={control}
           label={translateFields('mcc')}
-          options={mcc}
+          options={mccCodes}
           optionKey={'code'}
-          labelKey={'name'}
+          labelKey={'label'}
         />
 
         <RHFTextField
-          disabled={props.isLoading}
+          disabled={isLoading}
           label={translateFields('url')}
           name="business_profile.url"
           type={'url'}

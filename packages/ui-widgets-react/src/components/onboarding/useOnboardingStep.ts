@@ -1,9 +1,6 @@
 import { useEffect, useState, ComponentType } from 'react';
 
-import {
-  useOnboardingById,
-  useUpdateOnboarding,
-} from 'core/queries/useOnboardingById';
+import { useOnboardingById } from 'core/queries/useOnboardingById';
 import {
   OnboardingBusinessType,
   OnboardingRequirement,
@@ -12,20 +9,20 @@ import {
 import OnboardingBusinessRepresentative from './OnboardingBusinessRepresentative';
 import OnboardingBankAccount from './OnboardingBankAccount';
 import OnboardingBusinessProfile from './OnboardingBusinessProfile';
-import OnboardingSummary from './OnboardingSummary';
+import OnboardingReview from './OnboardingReview';
 import { OnboardingFormProps } from './hooks/useOnboardingForm';
 
 export enum LocalRequirements {
   businessRepresentative = 'businessRepresentative',
   bankAccount = 'bankAccount',
   businessProfile = 'businessProfile',
-  summary = 'summary',
+  review = 'review',
 }
 
-const getLocalRequirements = (
-  type: OnboardingBusinessType
+export const getLocalRequirements = (
+  type?: OnboardingBusinessType
 ): Partial<Record<LocalRequirements, OnboardingRequirement[]>> => {
-  const { businessRepresentative, bankAccount, businessProfile, summary } =
+  const { businessRepresentative, bankAccount, businessProfile, review } =
     LocalRequirements;
 
   const { INDIVIDUAL, BANK_ACCOUNT, BUSINESS_PROFILE, TOS_ACCEPTANCE_DATE } =
@@ -36,7 +33,7 @@ const getLocalRequirements = (
       [businessRepresentative]: [INDIVIDUAL],
       [bankAccount]: [BANK_ACCOUNT],
       [businessProfile]: [BUSINESS_PROFILE],
-      [summary]: [TOS_ACCEPTANCE_DATE],
+      [review]: [TOS_ACCEPTANCE_DATE],
     };
 
   return {};
@@ -49,23 +46,22 @@ const componentList: Record<
   [LocalRequirements.businessRepresentative]: OnboardingBusinessRepresentative,
   [LocalRequirements.bankAccount]: OnboardingBankAccount,
   [LocalRequirements.businessProfile]: OnboardingBusinessProfile,
-  [LocalRequirements.summary]: OnboardingSummary,
+  [LocalRequirements.review]: OnboardingReview,
 };
 
 export type OnboardingProps = {
   linkId: string;
 };
 
+type OnboardingStep = {
+  key: LocalRequirements;
+  requirements: OnboardingRequirement[];
+  index: number;
+};
+
 export const useOnboardingStep = ({ linkId }: OnboardingProps) => {
   const [length, setLength] = useState<number>(0);
-  const [step, setStep] = useState<
-    | {
-        key: LocalRequirements;
-        requirements: OnboardingRequirement[];
-        index: number;
-      }
-    | undefined
-  >(undefined);
+  const [step, setStep] = useState<OnboardingStep | null>(null);
 
   const { data: onboarding, isLoading } = useOnboardingById(linkId);
 
@@ -97,19 +93,13 @@ export const useOnboardingStep = ({ linkId }: OnboardingProps) => {
         requirements,
       });
     }
-  }, [onboarding]);
-
-  const updateMutation = useUpdateOnboarding(linkId);
+  }, [onboarding, getLocalRequirements]);
 
   return {
-    isFirstStep: step?.index === 0,
-    isLastStep: step?.index === length - 1,
-
     data: onboarding?.data,
     isLoading,
     progress: step ? ((step?.index + 1) / length) * 100 : 0,
     step,
     Component: step?.key && componentList[step.key],
-    updateMutation,
   };
 };

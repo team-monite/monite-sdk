@@ -322,7 +322,7 @@
       "homeAddress": "Home address",
       "verifyIdentity": "Verify identity"
     },
-    "summaryStep": {
+    "reviewStep": {
       "title": "Review",
       "description": "Please review and confirm your information before sending it to review."
     }

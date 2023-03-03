@@ -1,12 +1,13 @@
-import React, { ReactNode } from 'react';
-import { Box, Paper, styled } from '@mui/material';
+import React from 'react';
+import { Box, Button, Paper, styled } from '@mui/material';
 import { palette } from '@team-monite/ui-kit-react';
+import { useTranslation } from 'react-i18next';
 
 export type OnboardingFormActionsProps = {
-  save?: ReactNode;
-  back?: ReactNode;
-  next?: ReactNode;
-  submit?: ReactNode;
+  onSave?: () => void;
+  onSubmit?: () => void;
+  onBack?: () => void;
+  isLoading: boolean;
 };
 
 const StyledActions = styled(Paper)`
@@ -32,18 +33,44 @@ const StyledRightBlock = styled(Box)`
 `;
 
 export default function OnboardingFormActions({
-  save,
-  back,
-  next,
-  submit,
+  onSave,
+  onSubmit,
+  isLoading,
 }: OnboardingFormActionsProps) {
+  const { t } = useTranslation();
+
   return (
     <StyledActions square elevation={0}>
-      {save}
+      {onSave && (
+        <Button
+          disabled={isLoading}
+          onClick={onSave}
+          variant="contained"
+          color="secondary"
+        >
+          {t('onboarding:actions.save')}
+        </Button>
+      )}
       <StyledRightBlock>
-        {back}
-        {next}
-        {submit}
+        {onSubmit ? (
+          <Button
+            disabled={isLoading}
+            onClick={onSubmit}
+            variant="contained"
+            color="primary"
+          >
+            {t(`onboarding:actions.submit`)}
+          </Button>
+        ) : (
+          <Button
+            disabled={isLoading}
+            type={'submit'}
+            variant="contained"
+            color="primary"
+          >
+            {t(`onboarding:actions.next`)}
+          </Button>
+        )}
       </StyledRightBlock>
     </StyledActions>
   );

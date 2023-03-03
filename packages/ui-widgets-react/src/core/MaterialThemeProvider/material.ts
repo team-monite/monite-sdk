@@ -55,6 +55,19 @@ const materialTheme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-root': {
+            paddingTop: '6px',
+            paddingBootom: '6px',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            height: '54px',
+          },
+        },
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: {

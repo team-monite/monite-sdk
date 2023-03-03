@@ -11,6 +11,8 @@ const StyledFooter = styled(Box)`
 
   ${({ theme }) => theme.breakpoints.up('lg')} {
     padding: ${({ theme }) => theme.spacing(4)};
+    position: absolute;
+    bottom: 0;
   }
 `;
 
