@@ -4,10 +4,10 @@
 
 import type { CounterpartAddress } from './CounterpartAddress';
 import type { CurrencyEnum } from './CurrencyEnum';
-import type { CurrencyExchangeSchemaV2 } from './CurrencyExchangeSchemaV2';
+import type { CurrencyExchangeSchema } from './CurrencyExchangeSchema';
 import type { FileSchema } from './FileSchema';
-import type { OcrExperimentalRecognitionResponse } from './OcrExperimentalRecognitionResponse';
 import type { OcrRecognitionResponse } from './OcrRecognitionResponse';
+import type { OCRResponseInvoiceReceiptData } from './OCRResponseInvoiceReceiptData';
 import type { PayableLineItemsSchema } from './PayableLineItemsSchema';
 import type { PayableOriginEnum } from './PayableOriginEnum';
 import type { PayableStateEnum } from './PayableStateEnum';
@@ -103,7 +103,7 @@ export type PayableResponseSchema = {
     was_created_by_user_id?: string;
     was_created_by_external_user_name?: string;
     was_created_by_external_user_id?: string;
-    currency_exchange?: CurrencyExchangeSchemaV2;
+    currency_exchange?: CurrencyExchangeSchema;
     /**
      * The original file from which this payable was created.
      */
@@ -123,7 +123,7 @@ export type PayableResponseSchema = {
     /**
      * Data extracted from the uploaded payable by OCR.
      */
-    other_extracted_data?: (OcrRecognitionResponse | OcrExperimentalRecognitionResponse);
+    other_extracted_data?: (OcrRecognitionResponse | OCRResponseInvoiceReceiptData);
     /**
      * The name of an existing workflow (approval policy) that applies to this payable, if any. A workflow is applied if the payable matches the workflow trigger conditions.
      */
@@ -148,5 +148,9 @@ export type PayableResponseSchema = {
      * The list of items present in the payable.
      */
     line_items?: Array<PayableLineItemsSchema>;
+    /**
+     * Id of OCR request to match asynchronous result of processing payable.
+     */
+    ocr_request_id?: string;
 };
 

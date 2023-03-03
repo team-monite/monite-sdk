@@ -9,7 +9,7 @@ export type api__v1__route__schemas__RouteResponse = {
     id: string;
     partner_id?: string;
     status: string;
-    belongs_to_mailbox_domain_id: number;
+    mailbox_domain_id: number;
     provider: string;
     remote_route_id: string;
     webhook: string;

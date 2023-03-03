@@ -1,9 +1,9 @@
 import {
   ReceivableResponse,
-  ReceivablesProductServiceResponse,
-  ReceivablesReceivablesReceivablesPaymentTermsListResponse,
-  ReceivablesUnitListResponse,
-  ReceivablesVatRateListResponse,
+  ProductServiceResponse,
+  PaymentTermsListResponse,
+  UnitListResponse,
+  VatRateListResponse,
 } from '@team-monite/sdk-api';
 
 export const receivableByIdFixture = {
@@ -1869,7 +1869,7 @@ export const paymentTermsListFixture = {
       id: 'b909d1dc-7db3-4223-a860-8c4c41d3c607',
     },
   ],
-} as ReceivablesReceivablesReceivablesPaymentTermsListResponse;
+} as PaymentTermsListResponse;
 
 export const measureUnitsListFixture = {
   data: [
@@ -1986,7 +1986,7 @@ export const measureUnitsListFixture = {
       updated_at: '2022-11-22T21:53:47.937414+00:00',
     },
   ],
-} as ReceivablesUnitListResponse;
+} as UnitListResponse;
 
 export const vatRatesByCounterpartId = {
   data: [
@@ -2024,7 +2024,7 @@ export const vatRatesByCounterpartId = {
       created_by: 'monite',
     },
   ],
-} as ReceivablesVatRateListResponse;
+} as VatRateListResponse;
 
 export const productsListFixture = [
   {
@@ -3427,4 +3427,4 @@ export const productsListFixture = [
     created_at: '2022-11-22T21:53:16.098871+00:00',
     updated_at: '2022-11-22T21:53:16.098882+00:00',
   },
-] as ReceivablesProductServiceResponse[];
+] as ProductServiceResponse[];

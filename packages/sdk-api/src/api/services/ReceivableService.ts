@@ -2,13 +2,13 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import {
-  api__v1__receivables__pagination__CursorFields,
-  ReceivablesOrderEnum,
-  ReceivablesPaginationResponse,
-  ReceivablesReceivablesStatusEnum,
-  ReceivablesReceivableType,
+  ReceivableCursorFields,
+  OrderEnum,
+  ReceivablePaginationResponse,
+  ReceivablesStatusEnum,
+  ReceivableType,
   ReceivableResponse,
-  ReceivablesReceivableFacadeCreatePayload,
+  ReceivableFacadeCreatePayload,
 } from '../../api';
 
 export const RECEIVABLES_ENDPOINT = 'receivables';
@@ -51,15 +51,15 @@ export default class ReceivableService {
    * @param entityUserId
    * @param entityUserIdIn
    * @param basedOn
-   * @returns ReceivablesPaginationResponse Successful Response
+   * @returns ReceivablePaginationResponse Successful Response
    * @throws ApiError
    */
   public getAllReceivables(
-    order?: ReceivablesOrderEnum,
+    order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__receivables__pagination__CursorFields,
-    type?: ReceivablesReceivableType,
+    sort?: ReceivableCursorFields,
+    type?: ReceivableType,
     documentId?: string,
     documentIdContains?: string,
     documentIdIcontains?: string,
@@ -79,12 +79,12 @@ export default class ReceivableService {
     amountLt?: number,
     amountGte?: number,
     amountLte?: number,
-    status?: ReceivablesReceivablesStatusEnum,
-    statusIn?: Array<ReceivablesReceivablesStatusEnum>,
+    status?: ReceivablesStatusEnum,
+    statusIn?: Array<ReceivablesStatusEnum>,
     entityUserId?: string,
     entityUserIdIn?: Array<string>,
     basedOn?: string
-  ): CancelablePromise<ReceivablesPaginationResponse> {
+  ): CancelablePromise<ReceivablePaginationResponse> {
     return __request(
       {
         method: 'GET',
@@ -165,7 +165,7 @@ export default class ReceivableService {
    * @throws ApiError
    */
   public createNewReceivable(
-    requestBody: ReceivablesReceivableFacadeCreatePayload
+    requestBody: ReceivableFacadeCreatePayload
   ): CancelablePromise<ReceivableResponse> {
     return __request(
       {

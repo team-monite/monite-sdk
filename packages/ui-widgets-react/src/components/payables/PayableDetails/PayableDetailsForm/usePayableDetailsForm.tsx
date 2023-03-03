@@ -3,7 +3,10 @@ import { toast } from 'react-hot-toast';
 import { useQueryClient } from 'react-query';
 import { Updater } from '@tanstack/react-query-devtools/build/types/query-core/src/utils';
 
-import { PayableResponseSchema, TagsResponse } from '@team-monite/sdk-api';
+import {
+  PayableResponseSchema,
+  TagsPaginationResponse,
+} from '@team-monite/sdk-api';
 import { PAYABLE_QUERY_ID } from 'core/queries/usePayable';
 import { useCreateTag, useTagList, TAG_QUERY_ID } from 'core/queries/useTag';
 import { useCounterpartList } from 'core/queries/useCounterpart';
@@ -37,13 +40,12 @@ export default function usePayableDetailsForm({
         },
         {
           onSuccess: async (tag) => {
-            await queryClient.setQueryData<Updater<TagsResponse, TagsResponse>>(
-              [TAG_QUERY_ID],
-              (tags: TagsResponse) => ({
-                ...tags,
-                tag,
-              })
-            );
+            await queryClient.setQueryData<
+              Updater<TagsPaginationResponse, TagsPaginationResponse>
+            >([TAG_QUERY_ID], (tags: TagsPaginationResponse) => ({
+              ...tags,
+              tag,
+            }));
 
             await queryClient.setQueryData<
               Updater<PayableResponseSchema, PayableResponseSchema>

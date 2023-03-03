@@ -3,14 +3,19 @@
 /* eslint-disable */
 
 import type { Price } from './Price';
+import type { ProductServiceTypeEnum } from './ProductServiceTypeEnum';
 import type { UnitResponse } from './UnitResponse';
-import type { VatClassResponse } from './VatClassResponse';
+import type { VatRateResponse } from './VatRateResponse';
 
 export type LineItemProduct = {
     /**
      * Name of the product.
      */
     name: string;
+    /**
+     * Specifies whether this offering is a product or service. This may affect the applicable tax rates.
+     */
+    type?: ProductServiceTypeEnum;
     /**
      * Description of the product.
      */
@@ -21,13 +26,10 @@ export type LineItemProduct = {
      */
     measure_unit_id: string;
     /**
-     * The list of unique ID references of VAT classes for the product.
-     */
-    vat_classes: Array<string>;
-    /**
      * The smallest amount allowed for this product.
      */
     smallest_amount?: number;
+    ledger_account_id?: string;
     /**
      * Unique ID of the product.
      */
@@ -42,7 +44,7 @@ export type LineItemProduct = {
      * Time at which the product was last updated. Timestamps follow the ISO 8601 standard.
      */
     updated_at: string;
-    vat_class: VatClassResponse;
+    vat_rate: VatRateResponse;
     measure_unit: UnitResponse;
 };
 

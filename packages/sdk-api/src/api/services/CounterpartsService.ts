@@ -8,8 +8,8 @@ import type { CounterpartCreatePayload } from '../models/CounterpartCreatePayloa
 import type { CounterpartResponse } from '../models/CounterpartResponse';
 import type { CounterpartPaginationResponse } from '../models/CounterpartPaginationResponse';
 import type { OrderEnum } from '../models/OrderEnum';
-import type { Receivablesapi__v1__counterparts__pagination__CursorFields } from '../models/Receivablesapi__v1__counterparts__pagination__CursorFields';
-import type { ReceivablesCounterpartType } from '../models/ReceivablesCounterpartType';
+import type { CounterpartCursorFields } from '../models/CounterpartCursorFields';
+import type { CounterpartType } from '../models/CounterpartType';
 
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
@@ -75,8 +75,8 @@ export default class CounterpartsService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: Receivablesapi__v1__counterparts__pagination__CursorFields,
-    type?: ReceivablesCounterpartType,
+    sort?: CounterpartCursorFields,
+    type?: CounterpartType,
     counterpartName?: string,
     counterpartNameContains?: string,
     counterpartNameIcontains?: string,

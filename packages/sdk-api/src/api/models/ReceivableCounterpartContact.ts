@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartAddress } from './CounterpartAddress';
+
 export type ReceivableCounterpartContact = {
     /**
      * The first name of the counterpart contact.
@@ -14,14 +16,18 @@ export type ReceivableCounterpartContact = {
     /**
      * The contact email of the counterpart.
      */
-    email: string;
+    email?: string;
     /**
      * The contact phone number of the counterpart.
      */
-    phone: string;
+    phone?: string;
     /**
      * The counterpart contact title (e.g. Dr., Mr., Mrs., Ms., etc).
      */
     title?: string;
+    /**
+     * The contact address of the counterpart
+     */
+    address: CounterpartAddress;
 };
 

@@ -12,20 +12,7 @@ type CounterpartOrganizationViewProps = {
 
 const CounterpartOrganizationView = ({
   actions,
-  counterpart: {
-    companyName,
-    phone,
-    email,
-    // vatNumber,
-    // line1,
-    // line2,
-    // postalCode,
-    // city,
-    // country,
-    // state,
-    isVendor,
-    isCustomer,
-  },
+  counterpart: { companyName, phone, email, isVendor, isCustomer },
 }: CounterpartOrganizationViewProps) => {
   const { t } = useComponentsContext();
 
@@ -43,17 +30,6 @@ const CounterpartOrganizationView = ({
             isVendor ? t('counterparts:vendor') : undefined
           )}
         />
-        {/*<LabelText*/}
-        {/*  label={t('counterparts:organization.address')}*/}
-        {/*  text={printAddress({*/}
-        {/*    line1,*/}
-        {/*    line2,*/}
-        {/*    postalCode,*/}
-        {/*    city,*/}
-        {/*    country,*/}
-        {/*    state,*/}
-        {/*  })}*/}
-        {/*/>*/}
         {phone && (
           <LabelText
             label={t('counterparts:organization.phone')}
@@ -66,12 +42,6 @@ const CounterpartOrganizationView = ({
             text={email}
           />
         )}
-        {/*{vatNumber && (*/}
-        {/*  <LabelText*/}
-        {/*    label={t('counterparts:organization.vatNumber')}*/}
-        {/*    text={vatNumber}*/}
-        {/*  />*/}
-        {/*)}*/}
       </CounterpartContainer>
     </Card>
   );

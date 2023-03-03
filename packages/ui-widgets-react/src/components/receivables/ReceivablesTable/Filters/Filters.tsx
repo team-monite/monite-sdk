@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Box, Search, Select } from '@team-monite/ui-kit-react';
-import { ReceivablesReceivablesStatusEnum } from '@team-monite/sdk-api';
+import { ReceivablesStatusEnum } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useCounterpartList } from 'core/queries';
@@ -44,12 +44,10 @@ const Filters = ({ onChangeFilter }: Props) => {
           placeholder={t('common:status')}
           options={[
             { label: t('receivables:statuses.all'), value: 'all' },
-            ...Object.values(ReceivablesReceivablesStatusEnum).map(
-              (status) => ({
-                label: t(`receivables:statuses.${status}`),
-                value: status,
-              })
-            ),
+            ...Object.values(ReceivablesStatusEnum).map((status) => ({
+              label: t(`receivables:statuses.${status}`),
+              value: status,
+            })),
           ]}
           isFilter
           isClearable

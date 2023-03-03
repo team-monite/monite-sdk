@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { Discount } from './Discount';
 import type { LineItemProduct } from './LineItemProduct';
 
 export type ResponseItem = {
@@ -10,5 +11,9 @@ export type ResponseItem = {
      */
     quantity: number;
     product: LineItemProduct;
+    /**
+     * The discount for a product.
+     */
+    discount?: Discount;
 };
 

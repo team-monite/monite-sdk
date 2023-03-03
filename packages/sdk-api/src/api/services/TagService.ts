@@ -2,7 +2,7 @@ import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import {
-  api__v1__tags__pagination__CursorFields,
+  TagCursorFields,
   TagsPaginationResponse,
   TagCreateOrUpdateSchema,
   OrderEnum,
@@ -34,7 +34,7 @@ export default class TagService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__tags__pagination__CursorFields,
+    sort?: TagCursorFields,
     createdByEntityUserId?: string
   ): CancelablePromise<TagsPaginationResponse> {
     return __request(

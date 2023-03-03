@@ -6,6 +6,6 @@
  * An enumeration.
  */
 export enum LanguageEnum {
-    EN = 'EN',
-    DE = 'DE',
+    EN = 'en',
+    DE = 'de',
 }

@@ -35,5 +35,6 @@ export type SendEmailSchema = {
      * External user ID
      */
     external_user_id?: string;
+    sender?: string;
 };
 

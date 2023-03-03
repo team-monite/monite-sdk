@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { AccountType } from './AccountType';
 import type { BankAccount } from './BankAccount';
+import type { PaymentAccountType } from './PaymentAccountType';
 
 export type RecipientAccountResponse = {
     id: string;
-    type: AccountType;
+    type: PaymentAccountType;
     bank_accounts?: Array<BankAccount>;
     name?: string;
 };

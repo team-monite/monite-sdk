@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import {
   PaymentTermsService,
-  ReceivablesReceivablesReceivablesPaymentTermsListResponse,
+  PaymentTermsListResponse,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 
@@ -12,10 +12,8 @@ export const usePaymentTerms = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<
-    ReceivablesReceivablesReceivablesPaymentTermsListResponse,
-    Error
-  >([PAYMENT_TERM_QUERY_ID, { variables: args }], () =>
-    monite.api!.paymentTerms.getPaymentTerms(...args)
+  return useQuery<PaymentTermsListResponse, Error>(
+    [PAYMENT_TERM_QUERY_ID, { variables: args }],
+    () => monite.api!.paymentTerms.getPaymentTerms(...args)
   );
 };

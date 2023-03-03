@@ -1,5 +1,5 @@
 import {
-  ProductServiceReceivablesPaginationResponse,
+  ProductServicePaginationResponse,
   ProductsService,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
@@ -12,7 +12,7 @@ export const useProducts = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useInfiniteQuery<ProductServiceReceivablesPaginationResponse, Error>(
+  return useInfiniteQuery<ProductServicePaginationResponse, Error>(
     [PRODUCT_QUERY_ID, { variables: args }],
     ({ pageParam }) => {
       args[2] = pageParam;

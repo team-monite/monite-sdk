@@ -19,7 +19,7 @@ import {
 } from '@team-monite/ui-kit-react';
 import {
   WorkflowResponseSchema,
-  CursorFieldsWorkflows,
+  WorkflowCursorFields,
   OrderEnum,
 } from '@team-monite/sdk-api';
 import styled from '@emotion/styled';
@@ -68,7 +68,7 @@ export const StyledWrapper = styled.div<{
 
 interface Props {
   onChangeSort?: (params: {
-    sort: CursorFieldsWorkflows;
+    sort: WorkflowCursorFields;
     order: SortOrderEnum | null;
   }) => void;
   onChangeFilter?: (filter: {
@@ -122,7 +122,7 @@ const ApprovalPoliciesTable = ({
     setCurrentPaginationToken(workflows?.next_pagination_token || null);
 
   const onChangeSort = (
-    sort: CursorFieldsWorkflows,
+    sort: WorkflowCursorFields,
     order: SortOrderEnum | null
   ) => {
     setCurrentPaginationToken(null);
@@ -159,11 +159,11 @@ const ApprovalPoliciesTable = ({
             title: (
               <HeadCellSort
                 isActive={
-                  currentSort?.sort === CursorFieldsWorkflows.POLICY_NAME
+                  currentSort?.sort === WorkflowCursorFields.POLICY_NAME
                 }
                 title={t('approvalPolicies:columns.policyName')}
                 onChangeOrder={(order) =>
-                  onChangeSort(CursorFieldsWorkflows.POLICY_NAME, order)
+                  onChangeSort(WorkflowCursorFields.POLICY_NAME, order)
                 }
               />
             ),
@@ -268,12 +268,10 @@ const ApprovalPoliciesTable = ({
           {
             title: (
               <HeadCellSort
-                isActive={
-                  currentSort?.sort === CursorFieldsWorkflows.CREATED_AT
-                }
+                isActive={currentSort?.sort === WorkflowCursorFields.CREATED_AT}
                 title={t('approvalPolicies:columns.createdAt')}
                 onChangeOrder={(order) =>
-                  onChangeSort(CursorFieldsWorkflows.CREATED_AT, order)
+                  onChangeSort(WorkflowCursorFields.CREATED_AT, order)
                 }
               />
             ),

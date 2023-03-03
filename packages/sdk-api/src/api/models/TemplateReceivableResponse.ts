@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { FileSchema } from './FileSchema';
 import type { LanguageEnum } from './LanguageEnum';
 
 export type TemplateReceivableResponse = {
@@ -10,11 +11,11 @@ export type TemplateReceivableResponse = {
     name: string;
     template_type: TemplateReceivableResponse.template_type;
     template: string;
-    preview: string;
     id: string;
     created_at: string;
     updated_at: string;
     blocks: Array<string>;
+    preview?: FileSchema;
 };
 
 export namespace TemplateReceivableResponse {

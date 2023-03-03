@@ -4,7 +4,7 @@ import {
   PAYABLES_ENDPOINT,
   PayableResponseSchema,
   PayableStateEnum,
-  api__schemas__payables__schemas__PaginationResponse,
+  PayablePaginationResponse,
   PayableUpdateSchema,
 } from '@team-monite/sdk-api';
 
@@ -35,7 +35,7 @@ const getPayableFixtureByPage = (prevPage?: string) => {
 };
 export const payableHandlers = [
   // read list
-  rest.get<undefined, {}, api__schemas__payables__schemas__PaginationResponse>(
+  rest.get<undefined, {}, PayablePaginationResponse>(
     payablePath,
     ({ url }, res, ctx) => {
       const { prevPage, nextPage } = geMockPagination(

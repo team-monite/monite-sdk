@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-  ReceivablesCurrencyEnum,
-  ReceivablesProductServiceResponse,
-  ReceivablesReceivableFacadeCreateInvoicePayload,
-  ReceivablesReceivableFacadeCreatePayload,
+  CurrencyEnum,
+  ProductServiceResponse,
+  ReceivableFacadeCreateInvoicePayload,
+  ReceivableFacadeCreatePayload,
 } from '@team-monite/sdk-api';
 
 import {
@@ -30,7 +30,7 @@ type FormFields = {
   bankAccount: { label: string; value: string };
 };
 
-export interface SelectedItem extends ReceivablesProductServiceResponse {
+export interface SelectedItem extends ProductServiceResponse {
   quantity: number;
 }
 
@@ -89,7 +89,7 @@ export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
   );
 
   const handleItemsSubmit = useCallback(
-    (items: ReceivablesProductServiceResponse[]) => {
+    (items: ProductServiceResponse[]) => {
       const newItems = [...selectedItems];
 
       items.forEach((item) => {
@@ -114,10 +114,9 @@ export default function useInvoiceForm({ setIsCreating, onClose }: Props) {
       const entityBankAccount = counterpartBankAccounts?.find(
         (account) => account.id === data.bankAccount.value
       );
-      const preparedData: ReceivablesReceivableFacadeCreatePayload = {
-        type: ReceivablesReceivableFacadeCreateInvoicePayload.type.INVOICE,
-        currency:
-          selectedItems[0]?.price?.currency || ReceivablesCurrencyEnum.USD, // TODO currency in items could be different
+      const preparedData: ReceivableFacadeCreatePayload = {
+        type: ReceivableFacadeCreateInvoicePayload.type.INVOICE,
+        currency: selectedItems[0]?.price?.currency || CurrencyEnum.USD, // TODO currency in items could be different
         line_items: selectedItems.map((item) => ({
           quantity: item.quantity,
           product_id: item.id || '',

@@ -4,6 +4,7 @@
 
 export type Reminder = {
     days_before: number;
-    content_id: string;
+    body: string;
+    subject: string;
 };
 

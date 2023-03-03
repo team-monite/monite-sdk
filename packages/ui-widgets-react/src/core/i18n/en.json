@@ -143,11 +143,13 @@
       "line2": "Address line 2",
       "city": "City",
       "state": "State / Area / Province",
+      "stateShort": "State",
       "country": "Country",
       "postalCode": "ZIP code"
     },
     "titles": {
       "create": "Create Counterpart – {{name}}",
+      "address": "Address",
       "counterpart": "Counterpart",
       "counterparts": "Counterparts",
       "contact": "Contact Person",
@@ -179,7 +181,9 @@
       "createSuccess": "{{type}} “{{name}}” was created.",
       "createError": "Failed to create {{type}}.",
       "updateSuccess": "{{type}} “{{name}}” was updated.",
+      "updateSuccessGeneral": "Successful update.",
       "updateError": "Failed to update {{type}}.",
+      "updateErrorGeneral": "Failed to update.",
       "deleteSuccess": "{{type}} was deleted.",
       "deleteError": "Failed to delete {{type}}."
     },

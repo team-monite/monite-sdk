@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 import {
   TAGS_ENDPOINT,
-  TagsResponse,
+  TagsPaginationResponse,
   TagCreateOrUpdateSchema,
   TagReadSchema,
 } from '@team-monite/sdk-api';
@@ -13,17 +13,20 @@ const tagsPath = `*/${TAGS_ENDPOINT}`;
 
 export const tagsHandlers = [
   // read tag list
-  rest.get<undefined, {}, TagsResponse>(tagsPath, ({ url }, res, ctx) => {
-    return res(
-      ctx.json({
-        data: tagListFixture,
-      })
-    );
-  }),
+  rest.get<undefined, {}, TagsPaginationResponse>(
+    tagsPath,
+    ({ url }, res, ctx) => {
+      return res(
+        ctx.json({
+          data: tagListFixture,
+        })
+      );
+    }
+  ),
 
   // read tag list with limit
   // TODO should combine with above handler using path params
-  rest.get<undefined, {}, TagsResponse>(
+  rest.get<undefined, {}, TagsPaginationResponse>(
     `${tagsPath}?limit=10`,
     ({ url }, res, ctx) => {
       return res(

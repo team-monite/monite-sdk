@@ -17,7 +17,6 @@ export type PublicPaymentLinkResponse = {
     payment_reference?: string;
     amount: number;
     payment_methods: Array<string>;
-    total?: number;
     return_url?: string;
     invoice?: Invoice;
     expires_at: string;

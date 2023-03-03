@@ -6,9 +6,9 @@ import { throttle } from 'lodash';
 import { useTranslation, Trans } from 'react-i18next';
 
 import {
-  PaymentsPaymentsBank,
-  PaymentsYapilyCountriesCoverageCodes,
-  PaymentsPaymentsMedia,
+  Bank,
+  YapilyCountriesCoverageCodes,
+  Media,
   MoniteAllPaymentMethodsTypes,
 } from '@team-monite/sdk-api';
 import { useInstitutionList, useCountryList } from 'core/queries/usePayment';
@@ -55,14 +55,12 @@ const StyledLink = styled.span`
 `;
 
 type BankListItemProps = {
-  data: PaymentsPaymentsBank;
+  data: Bank;
 };
 
 const BankListItem = ({ data }: BankListItemProps) => {
   const theme = useTheme<Theme>();
-  const logo = data.media.find(
-    (item: PaymentsPaymentsMedia) => item.type === 'icon'
-  )?.source;
+  const logo = data.media.find((item: Media) => item.type === 'icon')?.source;
 
   return (
     <StyledBankListItem>
@@ -78,10 +76,10 @@ const BankListItem = ({ data }: BankListItemProps) => {
 };
 
 type BankListFormProps = {
-  setSelectedBank: (bank: PaymentsPaymentsBank) => void;
+  setSelectedBank: (bank: Bank) => void;
   handleNextStep: () => void;
-  selectedCountry: PaymentsYapilyCountriesCoverageCodes;
-  setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  selectedCountry: YapilyCountriesCoverageCodes;
+  setSelectedCountry: (country: YapilyCountriesCoverageCodes) => void;
   onChangeMethod: () => void;
   isOnlyYapilyAvailable: boolean;
 };
@@ -105,7 +103,7 @@ const BankListForm = ({
   const { data: banksData, refetch: refetchInstitutionList } =
     useInstitutionList(
       MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
-      selectedCountry as PaymentsYapilyCountriesCoverageCodes
+      selectedCountry as YapilyCountriesCoverageCodes
     );
 
   const banks = banksData?.data || [];

@@ -4,7 +4,7 @@ import {
   PayableResponseSchema,
   PayableUpdateSchema,
   PartnerApiService,
-  package__payables__schemas__PaginationResponse,
+  PayablePaginationResponse,
 } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { useEntityListCache } from './hooks';
@@ -19,11 +19,9 @@ export const usePayable = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<package__payables__schemas__PaginationResponse, Error>(
-    [PAYABLE_QUERY_ID],
-    () =>
-      // TODO use partnerApi because `payables.getList` does not have documentId filter yet
-      monite.api!.partnerApi.getPayables(...args)
+  return useQuery<PayablePaginationResponse, Error>([PAYABLE_QUERY_ID], () =>
+    // TODO use partnerApi because `payables.getList` does not have documentId filter yet
+    monite.api!.partnerApi.getPayables(...args)
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
-  ReceivablesProductServiceResponse,
-  ReceivablesProductServiceTypeEnum,
+  ProductServiceResponse,
+  ProductServiceTypeEnum,
 } from '@team-monite/sdk-api';
 import {
   Box,
@@ -35,13 +35,13 @@ import { currencyFormatter } from '../helpers';
 
 type FilterValues = {
   nameContains?: string;
-  type?: ReceivablesProductServiceTypeEnum;
+  type?: ProductServiceTypeEnum;
 };
 
 type FilterTypes = keyof FilterValues;
 
 type Props = {
-  onSubmit: (items: ReceivablesProductServiceResponse[]) => void;
+  onSubmit: (items: ProductServiceResponse[]) => void;
   onClose: () => void;
 };
 

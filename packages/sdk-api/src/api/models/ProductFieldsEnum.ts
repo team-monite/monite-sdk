@@ -12,5 +12,5 @@ export enum ProductFieldsEnum {
     QUANTITY = 'quantity',
     DESCRIPTION = 'description',
     MEASURE_UNIT = 'measure_unit',
-    VAT_CLASSES = 'vat_classes',
+    VAT_RATE = 'vat_rate',
 }

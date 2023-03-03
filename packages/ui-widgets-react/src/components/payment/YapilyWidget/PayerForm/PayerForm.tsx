@@ -12,13 +12,10 @@ import {
   Input,
 } from '@team-monite/ui-kit-react';
 
-import {
-  PaymentsPaymentsMedia,
-  PaymentsPaymentsBank,
-} from '@team-monite/sdk-api';
+import { Bank, Media } from '@team-monite/sdk-api';
 
 type PayerFormProps = {
-  bank?: PaymentsPaymentsBank;
+  bank?: Bank;
   name: string;
   iban: string;
   onChangeName: (name: string) => void;
@@ -40,9 +37,7 @@ const PayerForm = ({
 
   if (!bank) return null;
 
-  const logo = bank.media.find(
-    (item: PaymentsPaymentsMedia) => item.type === 'icon'
-  )?.source;
+  const logo = bank.media.find((item: Media) => item.type === 'icon')?.source;
 
   const validateInputs = () => {
     setIbanError(!isValidIBAN(iban));

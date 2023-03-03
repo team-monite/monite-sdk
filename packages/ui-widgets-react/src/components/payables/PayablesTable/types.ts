@@ -1,7 +1,4 @@
-import {
-  api__v1__payables__pagination__CursorFields,
-  PayableStateEnum,
-} from '@team-monite/sdk-api';
+import { PayableCursorFields, PayableStateEnum } from '@team-monite/sdk-api';
 import { SortOrderEnum } from '@team-monite/ui-kit-react';
 import {
   FILTER_TYPE_CREATED_AT,
@@ -11,7 +8,7 @@ import {
 } from './consts';
 
 export type Sort = {
-  sort: api__v1__payables__pagination__CursorFields;
+  sort: PayableCursorFields;
   order: SortOrderEnum;
 };
 

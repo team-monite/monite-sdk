@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import type { EntityAddressSchema } from './EntityAddressSchema';
-import type { OrganizationSchema } from './OrganizationSchema';
+import type { OrganizationSchemaRequest } from './OrganizationSchemaRequest';
 
 /**
  * A base for an entity request schema
@@ -24,22 +24,10 @@ export type CreateOrganizationEntityRequest = {
     /**
      * A type for an organization
      */
-    type: CreateOrganizationEntityRequest.type;
+    type: 'organization';
     /**
      * A set of meta data describing the organization
      */
-    organization: OrganizationSchema;
+    organization: OrganizationSchemaRequest;
 };
-
-export namespace CreateOrganizationEntityRequest {
-
-    /**
-     * A type for an organization
-     */
-    export enum type {
-        ORGANIZATION = 'organization',
-    }
-
-
-}
 

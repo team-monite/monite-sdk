@@ -7,7 +7,6 @@ import {
   Text,
   UEnvelopeAlt,
   UPhone,
-  UUserSquare,
   Button,
   HeadCellSort,
   SortOrderEnum,
@@ -18,10 +17,11 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import {
-  CounterpartIndividual,
-  CounterpartOrganization,
+  CounterpartIndividualResponse,
+  CounterpartOrganizationResponse,
   CounterpartResponse,
   CounterpartType,
+  CounterpartCursorFields,
 } from '@team-monite/sdk-api';
 
 import {
@@ -35,12 +35,7 @@ import ConfirmDeleteDialogue from '../ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
 import { getCounterpartName } from '../helpers';
-import {
-  Sort,
-  Filters,
-  FilterValue,
-  Receivablesapi__v1__counterparts__pagination__CursorFields,
-} from './types';
+import { Sort, Filters, FilterValue } from './types';
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
@@ -56,7 +51,7 @@ export interface CounterpartsTableProps {
   onDelete?: (id: string) => void;
   onRowClick?: (id: string) => void;
   onChangeSort?: (params: {
-    sort: Receivablesapi__v1__counterparts__pagination__CursorFields;
+    sort: CounterpartCursorFields;
     order: SortOrderEnum | null;
   }) => void;
   onChangeFilter?: (filter: {
@@ -164,12 +159,12 @@ const CounterpartsTable = ({
                 <HeadCellSort
                   isActive={
                     currentSort?.sort ===
-                    Receivablesapi__v1__counterparts__pagination__CursorFields.COUNTERPART_NAME
+                    CounterpartCursorFields.COUNTERPART_NAME
                   }
                   title={t('counterparts:columns.name')}
                   onChangeOrder={(order) =>
                     onChangeSort(
-                      Receivablesapi__v1__counterparts__pagination__CursorFields.COUNTERPART_NAME,
+                      CounterpartCursorFields.COUNTERPART_NAME,
                       order
                     )
                   }
@@ -180,38 +175,30 @@ const CounterpartsTable = ({
               render: (value, row) => {
                 const type: CounterpartType = (row as CounterpartsTableRow)
                   .type;
-                const data: CounterpartIndividual | CounterpartOrganization = (
-                  row as any
-                )[type];
+                const data:
+                  | CounterpartIndividualResponse
+                  | CounterpartOrganizationResponse = (row as any)[type];
 
                 if (type === CounterpartType.ORGANIZATION) {
-                  const orgData = data as CounterpartOrganization;
+                  const orgData = data as CounterpartOrganizationResponse;
 
                   return (
                     <Styled.ColName>
                       <Avatar size={44}>{orgData?.legal_name}</Avatar>
                       <div>
                         <Text textSize="bold">{orgData.legal_name}</Text>
-                        <Styled.AddressText>
-                          {orgData?.registered_address?.country} •{' '}
-                          {orgData?.registered_address?.city}
-                        </Styled.AddressText>
                       </div>
                     </Styled.ColName>
                   );
                 }
 
-                const indData = data as CounterpartIndividual;
+                const indData = data as CounterpartIndividualResponse;
 
                 return (
                   <Styled.ColName>
                     <Avatar size={44}>{indData?.first_name[0]}</Avatar>
                     <div>
                       <Text textSize="bold">{indData?.first_name}</Text>
-                      <Styled.AddressText>
-                        {indData?.residential_address?.country} •{' '}
-                        {indData?.residential_address?.city}
-                      </Styled.AddressText>
                     </div>
                   </Styled.ColName>
                 );
@@ -224,9 +211,9 @@ const CounterpartsTable = ({
               render: (value, row) => {
                 const type: CounterpartType = (row as CounterpartsTableRow)
                   .type;
-                const data: CounterpartIndividual | CounterpartOrganization = (
-                  row as any
-                )[type];
+                const data:
+                  | CounterpartIndividualResponse
+                  | CounterpartOrganizationResponse = (row as any)[type];
 
                 return (
                   <Styled.ColType>
@@ -245,27 +232,17 @@ const CounterpartsTable = ({
               render: (value, row) => {
                 const type: CounterpartType = (row as CounterpartsTableRow)
                   .type;
-                const data: CounterpartIndividual | CounterpartOrganization = (
-                  row as any
-                )[type];
+                const data:
+                  | CounterpartIndividualResponse
+                  | CounterpartOrganizationResponse = (row as any)[type];
 
                 if (type === CounterpartType.ORGANIZATION) {
-                  const contacts = (
-                    (data as CounterpartOrganization).contacts || []
-                  ).map((c: any) => c.first_name);
-
                   return (
                     <Styled.ColContacts>
                       <div>
                         <UEnvelopeAlt width={16} height={16} />
                         {data.email}
                       </div>
-                      {!!contacts.length && (
-                        <div>
-                          <UUserSquare width={16} height={16} />
-                          {contacts.join(', ')}
-                        </div>
-                      )}
                       <div>
                         <UPhone width={16} height={16} />
                         {data.phone}

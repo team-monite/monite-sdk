@@ -6,7 +6,7 @@ export type PayableLineItemsSchema = {
     /**
      * Name of the product.
      */
-    name: string;
+    name?: string;
     /**
      * Description of the product.
      */
@@ -18,14 +18,14 @@ export type PayableLineItemsSchema = {
     /**
      * The actual price of the product.
      */
-    price: number;
+    price?: number;
     /**
      * VAT rate in percent [minor units](https://docs.monite.com/docs/currencies#minor-units). Example: 12.5% is 1250.
      */
-    vat: number;
+    vat?: number;
     /**
      * The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
      */
-    subtotal: number;
+    subtotal?: number;
 };
 

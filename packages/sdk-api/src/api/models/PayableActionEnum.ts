@@ -13,4 +13,5 @@ export enum PayableActionEnum {
     PAY = 'pay',
     APPROVE = 'approve',
     SUBMIT = 'submit',
+    CREATE_FROM_MAIL = 'create_from_mail',
 }

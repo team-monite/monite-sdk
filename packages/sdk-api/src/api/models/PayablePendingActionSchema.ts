@@ -2,12 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ObjectTypeEnum } from './ObjectTypeEnum';
+import type { ObjectType } from './ObjectType';
 import type { PayablePendingActionEnum } from './PayablePendingActionEnum';
 
 export type PayablePendingActionSchema = {
     action_type: PayablePendingActionEnum;
     object_id: string;
-    object_type: ObjectTypeEnum;
+    object_type: ObjectType;
 };
 

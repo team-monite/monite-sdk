@@ -13,17 +13,13 @@ import {
   Spinner,
 } from '@team-monite/ui-kit-react';
 
-import {
-  PaymentIntentWithSecrets,
-  PaymentsPaymentsBank,
-  PaymentsPaymentsMedia,
-} from '@team-monite/sdk-api';
+import { PaymentIntentWithSecrets, Bank, Media } from '@team-monite/sdk-api';
 
 import usePaymentDetails from '../../PaymentDetails/usePaymentDetails';
 import { getDefaultBankAccount } from '../../helpers';
 
 type InvoiceDetailsProps = {
-  bank?: PaymentsPaymentsBank;
+  bank?: Bank;
   paymentIntent: PaymentIntentWithSecrets;
   authorizePayment: () => void;
   isLoading: boolean;
@@ -49,9 +45,7 @@ const InvoiceDetails = ({
 }: InvoiceDetailsProps) => {
   const { t } = useTranslation();
 
-  const logo = bank?.media.find(
-    (item: PaymentsPaymentsMedia) => item.type === 'icon'
-  )?.source;
+  const logo = bank?.media.find((item: Media) => item.type === 'icon')?.source;
 
   const { recipient, amount, paymentReference } = usePaymentDetails({
     paymentIntent,

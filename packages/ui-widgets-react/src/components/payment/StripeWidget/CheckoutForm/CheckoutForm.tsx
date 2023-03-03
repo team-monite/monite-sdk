@@ -12,7 +12,7 @@ import { Button, Alert, Box } from '@team-monite/ui-kit-react';
 import {
   MoniteAllPaymentMethodsTypes,
   PaymentIntentWithSecrets,
-  PaymentsPaymentsPaidBy,
+  PaidBy,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -122,13 +122,13 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
         />
       </div>
       <Styled.Prices>
-        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER && (
+        {feeData?.paid_by === PaidBy.PAYER && (
           <Styled.PriceRow>
             <div>{t('payment:widget.amount')}</div>
             {fee && <div>{getReadableAmount(amount, currency)}</div>}
           </Styled.PriceRow>
         )}
-        {feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
+        {feeData?.paid_by === PaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
             {fee && <div>{getReadableAmount(fee, currency)}</div>}
@@ -139,7 +139,7 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
           {fee && <div>{getReadableAmount(totalAmount, currency)}</div>}
         </Styled.PriceRow>
       </Styled.Prices>
-      {fee && feeData?.paid_by === PaymentsPaymentsPaidBy.PAYER ? (
+      {fee && feeData?.paid_by === PaidBy.PAYER ? (
         <Box mt="16px">
           <Alert>
             {t('payment:widget.feeAlert', {

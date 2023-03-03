@@ -1,4 +1,4 @@
-import type { api__v1__roles__pagination__CursorFields } from '../models/api__v1__roles__pagination__CursorFields';
+import type { RoleCursorFields } from '../models/RoleCursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
 import type { RoleResponse } from '../models/RoleResponse';
@@ -47,7 +47,7 @@ export default class RoleService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__roles__pagination__CursorFields,
+    sort?: RoleCursorFields,
     createdAt?: string,
     createdAtGt?: string,
     createdAtLt?: string,

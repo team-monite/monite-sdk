@@ -29,7 +29,7 @@ export type EntityIndividual = {
     /**
      * The Tax ID of the entity issuing the receivable
      */
-    tax_id: string;
+    tax_id?: string;
     /**
      * The entity type
      */

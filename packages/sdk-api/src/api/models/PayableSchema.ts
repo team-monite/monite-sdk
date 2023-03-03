@@ -8,22 +8,10 @@ export type PayableSchema = {
     /**
      * Object type
      */
-    object_type?: PayableSchema.object_type;
+    object_type?: 'payable';
     /**
      * List of actions
      */
     actions?: Array<PayableActionSchema>;
 };
-
-export namespace PayableSchema {
-
-    /**
-     * Object type
-     */
-    export enum object_type {
-        PAYABLE = 'payable',
-    }
-
-
-}
 

@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import {
+  ApiError,
+  CounterpartAddressResponseWithCounterpartID,
   CounterpartBankAccount,
   CounterpartBankAccountResponse,
   CounterpartContactResponse,
@@ -7,6 +9,7 @@ import {
   CounterpartPaginationResponse,
   CounterpartResponse,
   CounterpartsService,
+  CounterpartUpdateAddress,
   CounterpartUpdatePayload,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
@@ -36,16 +39,31 @@ type CounterpartBankUpdate = {
 
 const COUNTERPARTS_QUERY = 'counterparts';
 const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
+const COUNTERPARTS_ADDRESS_QUERY = 'counterpartAddress';
 const COUNTERPARTS_BANKS_QUERY = 'counterpartBanks';
 
 export const counterpartQueryKeys = {
   all: () => [COUNTERPARTS_QUERY],
   list: () => [...counterpartQueryKeys.all(), 'list'],
-  detail: (id?: string) => [...counterpartQueryKeys.all(), 'detail', id],
-  contactList: () => [
+  detail: (id?: string) =>
+    id ? [...counterpartQueryKeys.all(), 'detail', id] : [],
+  addressList: (id?: string) => [
+    ...counterpartQueryKeys.detail(id),
+    COUNTERPARTS_ADDRESS_QUERY,
+    'list',
+    id || '',
+  ],
+  addressDetail: (id?: string) => [
     ...counterpartQueryKeys.all(),
+    COUNTERPARTS_ADDRESS_QUERY,
+    'detail',
+    id,
+  ],
+  contactList: (id?: string) => [
+    ...counterpartQueryKeys.detail(id),
     COUNTERPARTS_CONTACTS_QUERY,
     'list',
+    id || '',
   ],
   contactDetail: (id?: string) => [
     ...counterpartQueryKeys.all(),
@@ -53,10 +71,11 @@ export const counterpartQueryKeys = {
     'detail',
     id,
   ],
-  bankList: () => [
-    ...counterpartQueryKeys.all(),
+  bankList: (id?: string) => [
+    ...counterpartQueryKeys.detail(id),
     COUNTERPARTS_BANKS_QUERY,
     'list',
+    id || '',
   ],
   bankDetail: (id?: string) => [
     ...counterpartQueryKeys.all(),
@@ -75,21 +94,81 @@ const useCounterpartListCache = () =>
 const useCounterpartDetailCache = () =>
   useEntityCache<CounterpartResponse>(counterpartQueryKeys.detail);
 
-const useCounterpartBankListCache = () =>
-  useEntityListCache<CounterpartBankAccountResponse>(
-    counterpartQueryKeys.bankList
-  );
+const useCounterpartAddressListCache = (id: string) =>
+  useEntityListCache<CounterpartAddressResponseWithCounterpartID>(() => [
+    ...counterpartQueryKeys.addressList(id),
+  ]);
 
-const useCounterpartContactListCache = () =>
-  useEntityListCache<CounterpartContactResponse>(
-    counterpartQueryKeys.contactList
+const useCounterpartBankListCache = (id: string) =>
+  useEntityListCache<CounterpartBankAccountResponse>(() => [
+    ...counterpartQueryKeys.bankList(id),
+  ]);
+
+const useCounterpartContactListCache = (id: string) =>
+  useEntityListCache<CounterpartContactResponse>(() => [
+    ...counterpartQueryKeys.contactList(id),
+  ]);
+
+export const useCounterpartAddress = (counterpartId?: string) => {
+  const { monite, t } = useComponentsContext();
+
+  return useQuery<CounterpartAddressResponseWithCounterpartID[], Error>(
+    counterpartQueryKeys.addressList(counterpartId),
+    () =>
+      !!counterpartId
+        ? monite.api.counterpartsAddresses
+            .getCounterpartAddresses(counterpartId)
+            .then((response) => response.data)
+        : [],
+    {
+      onError: () => {
+        toast.error(
+          t('counterparts:notifications.loadError', {
+            type: t('counterparts:titles.address'),
+          })
+        );
+      },
+      enabled: !!counterpartId,
+    }
   );
+};
+
+export const useUpdateCounterpartAddress = (
+  addressId: string,
+  counterpartId: string
+) => {
+  const { monite, t } = useComponentsContext();
+  const { update } = useCounterpartAddressListCache(counterpartId);
+
+  return useMutation<
+    CounterpartAddressResponseWithCounterpartID,
+    ApiError,
+    CounterpartUpdateAddress
+  >(
+    (payload) =>
+      monite.api.counterpartsAddresses.updateCounterpartsAddress(
+        addressId,
+        counterpartId,
+        payload
+      ),
+    {
+      onSuccess: async (address) => {
+        update(address);
+
+        toast.success(t('counterparts:notifications.updateSuccessGeneral'));
+      },
+      onError: () => {
+        toast.error(t('counterparts:notifications.updateErrorGeneral'));
+      },
+    }
+  );
+};
 
 export const useCounterpartBankList = (counterpartId?: string) => {
   const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartBankAccountResponse[], Error>(
-    counterpartQueryKeys.bankList(),
+    counterpartQueryKeys.bankList(counterpartId),
     () =>
       !!counterpartId
         ? monite.api.counterparts
@@ -111,7 +190,7 @@ export const useCounterpartBankList = (counterpartId?: string) => {
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
-  const { add } = useCounterpartBankListCache();
+  const { add } = useCounterpartBankListCache(counterpartId);
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -143,7 +222,7 @@ export const useCounterpartBankById = (
   bankId?: string
 ) => {
   const { monite, t } = useComponentsContext();
-  const { findById } = useCounterpartBankListCache();
+  const { findById } = useCounterpartBankListCache(counterpartId);
 
   return useQuery<CounterpartBankAccountResponse | undefined, Error>(
     counterpartQueryKeys.bankDetail(bankId),
@@ -171,7 +250,7 @@ export const useCounterpartBankById = (
 
 export const useUpdateCounterpartBank = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
-  const { update } = useCounterpartBankListCache();
+  const { update } = useCounterpartBankListCache(counterpartId);
 
   return useMutation<
     CounterpartBankAccountResponse,
@@ -204,7 +283,7 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
-  const { remove } = useCounterpartBankListCache();
+  const { remove } = useCounterpartBankListCache(counterpartId);
 
   return useMutation<void, Error, string>(
     (bankId) =>
@@ -234,7 +313,7 @@ export const useCounterpartContactList = (counterpartId?: string) => {
   const { monite, t } = useComponentsContext();
 
   return useQuery<CounterpartContactResponse[], Error>(
-    counterpartQueryKeys.contactList(),
+    counterpartQueryKeys.contactList(counterpartId),
     () =>
       counterpartId
         ? monite.api.counterparts
@@ -257,7 +336,7 @@ export const useCounterpartContactList = (counterpartId?: string) => {
 export const useCreateCounterpartContact = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
   const { invalidate } = useCounterpartListCache();
-  const { add } = useCounterpartContactListCache();
+  const { add } = useCounterpartContactListCache(counterpartId);
 
   return useMutation<
     CounterpartContactResponse,
@@ -292,7 +371,7 @@ export const useCounterpartContactById = (
   contactId?: string
 ) => {
   const { monite, t } = useComponentsContext();
-  const { findById } = useCounterpartContactListCache();
+  const { findById } = useCounterpartContactListCache(counterpartId);
 
   return useQuery<CounterpartContactResponse | undefined, Error>(
     counterpartQueryKeys.contactDetail(contactId),
@@ -321,7 +400,7 @@ export const useCounterpartContactById = (
 export const useUpdateCounterpartContact = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
   const { invalidate } = useCounterpartListCache();
-  const { update } = useCounterpartContactListCache();
+  const { update } = useCounterpartContactListCache(counterpartId);
 
   return useMutation<
     CounterpartContactResponse,
@@ -356,7 +435,7 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
 export const useDeleteCounterpartContact = (counterpartId: string) => {
   const { monite, t } = useComponentsContext();
   const { invalidate } = useCounterpartListCache();
-  const { remove } = useCounterpartContactListCache();
+  const { remove } = useCounterpartContactListCache(counterpartId);
 
   return useMutation<void, Error, string>(
     (contactId) =>

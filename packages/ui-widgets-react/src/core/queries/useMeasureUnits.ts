@@ -1,7 +1,4 @@
-import {
-  MeasureUnitsService,
-  ReceivablesUnitListResponse,
-} from '@team-monite/sdk-api';
+import { MeasureUnitsService, UnitListResponse } from '@team-monite/sdk-api';
 import { useComponentsContext } from '../context/ComponentsContext';
 import { useQuery } from 'react-query';
 
@@ -12,7 +9,7 @@ export const useMeasureUnits = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<ReceivablesUnitListResponse, Error>(
+  return useQuery<UnitListResponse, Error>(
     [MEASURE_UNITS_ID, { variables: args }],
     () => monite.api!.measureUnits.getUnits(...args)
   );

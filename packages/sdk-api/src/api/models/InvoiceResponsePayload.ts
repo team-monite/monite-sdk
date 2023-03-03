@@ -5,13 +5,16 @@
 import type { CounterpartAddress } from './CounterpartAddress';
 import type { CounterpartType } from './CounterpartType';
 import type { CurrencyEnum } from './CurrencyEnum';
+import type { Discount } from './Discount';
 import type { EntityAddressSchema } from './EntityAddressSchema';
 import type { EntityBankAccountRequest } from './EntityBankAccountRequest';
 import type { EntityIndividual } from './EntityIndividual';
 import type { EntityOrganization } from './EntityOrganization';
+import type { FileSchema } from './FileSchema';
 import type { PaymentTerms } from './PaymentTerms';
 import type { ReceivableCounterpartContact } from './ReceivableCounterpartContact';
 import type { ReceivablesStatusEnum } from './ReceivablesStatusEnum';
+import type { RelatedDocuments } from './RelatedDocuments';
 import type { ResponseItem } from './ResponseItem';
 
 export type InvoiceResponsePayload = {
@@ -19,6 +22,13 @@ export type InvoiceResponsePayload = {
      * The type of the document uploaded.
      */
     type: InvoiceResponsePayload.type;
+    /**
+     * The date when the goods are shipped or the service is provided.
+     *
+     * If omitted, defaults to the invoice issue date,
+     * and the value is automatically set when the invoice status changes to `issued`.
+     */
+    fulfillment_date?: string;
     id: string;
     /**
      * Time at which the receivable was created. Timestamps follow the ISO 8601 standard.
@@ -37,9 +47,9 @@ export type InvoiceResponsePayload = {
      */
     currency: CurrencyEnum;
     /**
-     * The total price of the receivable.
+     * The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
      */
-    total_amount: number;
+    subtotal: number;
     line_items: Array<ResponseItem>;
     entity_address: EntityAddressSchema;
     entity: (EntityOrganization | EntityIndividual);
@@ -65,18 +75,19 @@ export type InvoiceResponsePayload = {
      */
     counterpart_name?: string;
     file_url?: string;
+    file?: FileSchema;
     /**
      * The commercial terms of the receivable (e.g. The products must be delivered in X days).
      */
     commercial_condition_description?: string;
     /**
-     * The status of the receivable inside the receivable workflow.
+     * This field is calculated as a subtotal + total_vat_amount.
      */
-    status: ReceivablesStatusEnum;
+    total_amount?: number;
     /**
-     * The sum from the VAT of the individual line items monetary amount.
+     * The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units).
      */
-    total_vat_amount: string;
+    total_vat_amount: number;
     entity_bank_account?: EntityBankAccountRequest;
     /**
      * Indicates whether the goods, materials, or services listed in the receivable are exempt from VAT or not.
@@ -91,15 +102,64 @@ export type InvoiceResponsePayload = {
      */
     based_on?: string;
     /**
-     * A note with additional information for a receivable
+     * The unique document ID of a previous document related to the receivable if applicable.
+     */
+    based_on_document_id?: string;
+    /**
+     * A note with additional information for a receivable.
      */
     memo?: string;
+    /**
+     * Optional field for the issue of the entry.
+     */
+    issue_date?: string;
+    /**
+     * Address where goods were shipped / where services were provided.
+     */
+    counterpart_shipping_address?: CounterpartAddress;
+    /**
+     * Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company.
+     */
+    counterpart_billing_address?: CounterpartAddress;
+    /**
+     * Different types of companies for different countries, ex. GmbH, SAS, SNC, etc.
+     */
+    counterpart_business_type?: string;
+    /**
+     * The discount for a receivable.
+     */
+    discount?: Discount;
+    /**
+     * The total price of the receivable (in [minor units](https://docs.monite.com/docs/currencies#minor-units)), including VAT and excluding all issued credit notes.
+     */
+    total_amount_with_credit_notes: number;
+    /**
+     * How much is left to be paid. Equal 0 if the Invoice is fully paid.
+     */
+    amount_due: number;
+    payment_terms?: PaymentTerms;
+    /**
+     * The status of the receivable inside the receivable workflow.
+     */
+    status: ReceivablesStatusEnum;
     payment_reminder_id?: string;
+    overdue_reminder_id?: string;
     /**
      * Stores an unique ID of a recurrence if the receivable is in a recurring status
      */
     recurrence_id?: string;
-    payment_terms?: PaymentTerms;
+    /**
+     * Contain purchase order number.
+     */
+    purchase_order?: string;
+    /**
+     * Ids of documents that relate to invoice. I.e credit notes, proforma invoices, etc.
+     */
+    related_documents: RelatedDocuments;
+    /**
+     * Field with a comment for pay/partially/uncollectible info on this Invoice
+     */
+    comment?: string;
 };
 
 export namespace InvoiceResponsePayload {

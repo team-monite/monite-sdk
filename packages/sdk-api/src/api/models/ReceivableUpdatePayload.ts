@@ -2,11 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { UpdateCreditNotePayload } from './UpdateCreditNotePayload';
 import type { UpdateInvoicePayload } from './UpdateInvoicePayload';
+import type { UpdateIssuedInvoicePayload } from './UpdateIssuedInvoicePayload';
 import type { UpdateQuotePayload } from './UpdateQuotePayload';
 
-/**
- * An abstract which provides interfaces for managing polymorphic schemas
- */
-export type ReceivableUpdatePayload = (UpdateQuotePayload | UpdateInvoicePayload);
+export type ReceivableUpdatePayload = (UpdateQuotePayload | UpdateInvoicePayload | UpdateCreditNotePayload | UpdateIssuedInvoicePayload);
 

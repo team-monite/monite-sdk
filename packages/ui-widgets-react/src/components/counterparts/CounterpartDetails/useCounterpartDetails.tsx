@@ -7,6 +7,9 @@ export type CounterpartsDetailsProps = {
   showBankAccounts?: boolean;
   onClose?: () => void;
 
+  onAddressEdit?: (id: string) => void;
+  onAddressUpdate?: (id: string) => void;
+
   onCreate?: (id: string) => void;
   onUpdate?: (id: string) => void;
   onEdit?: (id: string) => void;
@@ -27,6 +30,7 @@ export enum COUNTERPART_VIEW {
   view = 'view',
   organizationForm = 'organizationForm',
   individualForm = 'individualForm',
+  addressForm = 'addressForm',
   contactForm = 'contactForm',
   bankAccountForm = 'bankAccountForm',
 }
@@ -39,12 +43,15 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
     props.id
   );
 
+  const [addressId, setAddressId] = useState<string | undefined>();
+
   const [contactId, setContactId] = useState<string | undefined>();
 
   const [bankId, setBankId] = useState<string | undefined>();
 
   const actions = {
     showView: () => setCounterpartView(COUNTERPART_VIEW.view),
+    showAddressForm: () => setCounterpartView(COUNTERPART_VIEW.addressForm),
     showOrganizationForm: () =>
       setCounterpartView(COUNTERPART_VIEW.organizationForm),
     showIndividualForm: () =>
@@ -98,6 +105,29 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
       props.onEdit && props.onEdit(id);
     },
     [props.onEdit, actions]
+  );
+
+  const onAddressCancel = useCallback(() => {
+    actions.showView();
+    setAddressId(undefined);
+  }, [actions]);
+
+  const onAddressEdit = useCallback(
+    (id: string) => {
+      setAddressId(id);
+      actions.showAddressForm();
+      props.onAddressEdit && props.onAddressEdit(id);
+    },
+    [props.onAddressEdit, actions]
+  );
+
+  const onAddressUpdate = useCallback(
+    (id: string) => {
+      actions.showView();
+      props.onAddressUpdate && props.onAddressUpdate(id);
+      setAddressId(undefined);
+    },
+    [props.onAddressUpdate, actions]
   );
 
   const onContactCancel = useCallback(() => {
@@ -166,6 +196,7 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
 
   return {
     counterpartId,
+    addressId,
     contactId,
     bankId,
     counterpartView,
@@ -173,6 +204,9 @@ export default function useCounterpartDetails(props: CounterpartsDetailsProps) {
     onCreate,
     onUpdate,
     onEdit,
+    onAddressCancel,
+    onAddressEdit,
+    onAddressUpdate,
     onContactCreate,
     onContactUpdate,
     onContactEdit,

@@ -2,9 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AccessTokenResponse } from '../models/AccessTokenResponse';
-import type { api__v1__entities__pagination__CursorFields } from '../models/api__v1__entities__pagination__CursorFields';
-import type { api__v1__entity_users__pagination__CursorFields } from '../models/api__v1__entity_users__pagination__CursorFields';
-import type { api__v1__roles__pagination__CursorFields } from '../models/api__v1__roles__pagination__CursorFields';
 import type { CreateEntityRequest } from '../models/CreateEntityRequest';
 import type { CreateEntityUserRequest } from '../models/CreateEntityUserRequest';
 import type { CreateRoleRequest } from '../models/CreateRoleRequest';
