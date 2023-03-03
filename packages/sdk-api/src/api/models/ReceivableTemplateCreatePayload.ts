@@ -10,7 +10,6 @@ export type ReceivableTemplateCreatePayload = {
     name: string;
     template_type: ReceivableTemplateCreatePayload.template_type;
     template: string;
-    preview: string;
 };
 
 export namespace ReceivableTemplateCreatePayload {

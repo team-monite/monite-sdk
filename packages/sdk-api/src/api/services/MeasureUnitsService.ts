@@ -1,6 +1,6 @@
 import { OpenAPIConfig } from '../OpenAPI';
 import { CancelablePromise } from '../CancelablePromise';
-import { ReceivablesUnitListResponse } from '../models/ReceivablesUnitListResponse';
+import { UnitListResponse } from '../models/UnitListResponse';
 import { request as __request } from '../request';
 
 export default class ProductsService {
@@ -15,7 +15,7 @@ export default class ProductsService {
    * @returns ReceivablesUnitListResponse Successful Response
    * @throws ApiError
    */
-  public getUnits(): CancelablePromise<ReceivablesUnitListResponse> {
+  public getUnits(): CancelablePromise<UnitListResponse> {
     return __request(
       {
         method: 'GET',

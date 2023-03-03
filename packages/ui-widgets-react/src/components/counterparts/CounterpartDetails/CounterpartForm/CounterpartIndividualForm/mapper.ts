@@ -1,6 +1,14 @@
-import { CounterpartIndividualResponse } from '@team-monite/sdk-api';
+import {
+  CounterpartIndividualResponse,
+  AllowedCountriesCodes,
+  CounterpartIndividualUpdatePayload,
+  CounterpartIndividualCreatePayload,
+} from '@team-monite/sdk-api';
 
-export interface CounterpartIndividualFields {
+import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
+
+export interface CounterpartIndividualFields
+  extends CounterpartAddressFormFields {
   firstName: string;
   lastName: string;
   email: string;
@@ -19,10 +27,16 @@ export const prepareCounterpartIndividual = (
     phone: individual?.phone ?? '',
     isCustomer: individual?.is_customer ?? false,
     isVendor: individual?.is_vendor ?? false,
+    line1: '',
+    line2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: { label: '', value: '' },
   };
 };
 
-export const prepareCounterpartIndividualSubmit = ({
+export const prepareCounterpartIndividualCreate = ({
   firstName,
   lastName,
   email,
@@ -30,7 +44,31 @@ export const prepareCounterpartIndividualSubmit = ({
   isCustomer,
   isVendor,
   ...address
-}: CounterpartIndividualFields): CounterpartIndividualResponse => {
+}: CounterpartIndividualFields): CounterpartIndividualCreatePayload => {
+  const { postalCode, ...restAddress } = address;
+  return {
+    first_name: firstName,
+    last_name: lastName,
+    is_customer: isCustomer,
+    is_vendor: isVendor,
+    phone,
+    email,
+    residential_address: {
+      ...restAddress,
+      country: restAddress.country.value as AllowedCountriesCodes,
+      postal_code: postalCode,
+    },
+  };
+};
+
+export const prepareCounterpartIndividualUpdate = ({
+  firstName,
+  lastName,
+  email,
+  phone,
+  isCustomer,
+  isVendor,
+}: CounterpartIndividualFields): CounterpartIndividualUpdatePayload => {
   return {
     first_name: firstName,
     last_name: lastName,

@@ -18,9 +18,9 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import {
-  CounterpartCreatePayload,
+  CounterpartIndividualRootCreatePayload,
   CounterpartIndividualRootResponse,
-  CounterpartUpdatePayload,
+  CounterpartIndividualRootUpdatePayload,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -28,7 +28,8 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import {
   CounterpartIndividualFields,
   prepareCounterpartIndividual,
-  prepareCounterpartIndividualSubmit,
+  prepareCounterpartIndividualCreate,
+  prepareCounterpartIndividualUpdate,
 } from './mapper';
 
 import CounterpartAddressForm from '../../CounterpartAddressForm';
@@ -65,7 +66,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     counterpart as CounterpartIndividualRootResponse;
 
   const methods = useForm<CounterpartIndividualFields>({
-    resolver: yupResolver(getValidationSchema(t)),
+    resolver: yupResolver(getValidationSchema(t, !!individualCounterpart)),
     defaultValues: useMemo(
       () => prepareCounterpartIndividual(individualCounterpart?.individual),
       [counterpart]
@@ -126,14 +127,21 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
           id="counterpartIndividualForm"
           ref={formRef}
           onSubmit={handleSubmit((values) => {
-            const payload = {
-              type: 'individual',
-              individual: prepareCounterpartIndividualSubmit(values),
+            if (!!counterpart) {
+              const payload: CounterpartIndividualRootUpdatePayload = {
+                type: CounterpartIndividualRootUpdatePayload.type.INDIVIDUAL,
+                individual: prepareCounterpartIndividualUpdate(values),
+              };
+
+              return updateCounterpart(payload);
+            }
+
+            const payload: CounterpartIndividualRootCreatePayload = {
+              type: CounterpartIndividualRootCreatePayload.type.INDIVIDUAL,
+              individual: prepareCounterpartIndividualCreate(values),
             };
 
-            return !!counterpart
-              ? updateCounterpart(payload as CounterpartUpdatePayload)
-              : createCounterpart(payload as CounterpartCreatePayload);
+            return createCounterpart(payload);
           })}
         >
           <CounterpartContactName>
@@ -245,10 +253,14 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
             )}
           />
 
-          <FlexContainer flexDirection={'column'} gap={20}>
-            <Text textSize={'h4'}>{t('counterparts:individual.address')}</Text>
-            <CounterpartAddressForm />
-          </FlexContainer>
+          {!counterpart && (
+            <FlexContainer flexDirection={'column'} gap={20}>
+              <Text textSize={'h4'}>
+                {t('counterparts:individual.address')}
+              </Text>
+              <CounterpartAddressForm />
+            </FlexContainer>
+          )}
         </CounterpartForm>
       </FormProvider>
     </ModalLayout>

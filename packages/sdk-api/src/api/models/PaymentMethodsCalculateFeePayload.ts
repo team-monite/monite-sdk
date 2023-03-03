@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { MoniteAllPaymentMethodsTypes } from './MoniteAllPaymentMethodsTypes';
+
 export type PaymentMethodsCalculateFeePayload = {
-    payment_link_id: string;
+    payment_method: MoniteAllPaymentMethodsTypes;
 };
 

@@ -46,22 +46,10 @@ export type EntityOrganizationResponse = {
     /**
      * A type for an organization
      */
-    type: EntityOrganizationResponse.type;
+    type: 'organization';
     /**
      * A set of metadata describing an organization
      */
     organization: OrganizationSchema;
 };
-
-export namespace EntityOrganizationResponse {
-
-    /**
-     * A type for an organization
-     */
-    export enum type {
-        ORGANIZATION = 'organization',
-    }
-
-
-}
 

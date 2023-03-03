@@ -1,7 +1,7 @@
 import { SortOrderEnum } from '@team-monite/ui-kit-react';
 import {
-  api__v1__receivables__pagination__CursorFields,
-  ReceivablesReceivablesStatusEnum,
+  ReceivableCursorFields,
+  ReceivablesStatusEnum,
 } from '@team-monite/sdk-api';
 import {
   FILTER_TYPE_SEARCH,
@@ -11,13 +11,13 @@ import {
 
 export type FilterTypes = {
   [FILTER_TYPE_SEARCH]?: string | null;
-  [FILTER_TYPE_STATUS]?: ReceivablesReceivablesStatusEnum | null;
+  [FILTER_TYPE_STATUS]?: ReceivablesStatusEnum | null;
   [FILTER_TYPE_CUSTOMER]?: string | null;
 };
 
 export type Sort = {
-  sort: api__v1__receivables__pagination__CursorFields;
+  sort: ReceivableCursorFields;
   order: SortOrderEnum;
 };
 
-export type FilterValue = ReceivablesReceivablesStatusEnum | string | null;
+export type FilterValue = ReceivablesStatusEnum | string | null;

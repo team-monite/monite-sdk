@@ -3,17 +3,22 @@
 /* eslint-disable */
 
 /**
- * An enumeration.
+ * This Enum the results of combining two types of statuses from
+ * QuoteStateEnum, CreditNoteStateEnum and InvoiceStateEnum. You shouldn't use
+ * it in your scenarios if only for edge cases in workers, but ideally need to
+ * remove this shared Enum.
  */
 export enum ReceivablesStatusEnum {
     DRAFT = 'draft',
     ISSUED = 'issued',
     ACCEPTED = 'accepted',
+    EXPIRED = 'expired',
+    DECLINED = 'declined',
+    RECURRING = 'recurring',
     PARTIALLY_PAID = 'partially_paid',
     PAID = 'paid',
-    EXPIRED = 'expired',
+    OVERDUE = 'overdue',
     UNCOLLECTIBLE = 'uncollectible',
     CANCELED = 'canceled',
     DELETED = 'deleted',
-    RECURRING = 'recurring',
 }

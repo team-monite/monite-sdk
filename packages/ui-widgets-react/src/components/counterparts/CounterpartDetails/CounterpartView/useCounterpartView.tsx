@@ -4,6 +4,7 @@ import { CounterpartType } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import {
+  useCounterpartAddress,
   useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
@@ -17,6 +18,8 @@ export type CounterpartViewProps = {
   onClose?: () => void;
   onEdit?: (id: string, type: CounterpartType) => void;
   onDelete?: (id: string) => void;
+
+  onAddressEdit?: (id: string) => void;
 
   onContactCreate?: () => void;
   onContactEdit?: (id: string) => void;
@@ -39,6 +42,9 @@ export default function useCounterpartView({
     isLoading: isCounterpartLoading,
     error: counterpartError,
   } = useCounterpartById(id);
+
+  const { data: addresses, isLoading: isAddressesLoading } =
+    useCounterpartAddress(counterpart?.id);
 
   const { data: contacts, isLoading: isContactsLoading } =
     useCounterpartContactList(
@@ -71,6 +77,7 @@ export default function useCounterpartView({
   }, [onExternalEdit, counterpart]);
 
   const isLoading =
+    isAddressesLoading ||
     isBanksLoading ||
     isCounterpartLoading ||
     isContactsLoading ||
@@ -84,6 +91,7 @@ export default function useCounterpartView({
   }, [t, isLoading, counterpart, counterpartError]);
 
   return {
+    addresses: addresses || [],
     contacts: contacts || [],
     banks: banks || [],
     counterpart,

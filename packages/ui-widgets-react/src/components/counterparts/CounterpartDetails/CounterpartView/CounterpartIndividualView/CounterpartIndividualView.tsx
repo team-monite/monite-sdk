@@ -13,21 +13,7 @@ type CounterpartIndividualViewProps = {
 
 const CounterpartIndividualView = ({
   actions,
-  counterpart: {
-    firstName,
-    lastName,
-    phone,
-    email,
-    // taxId,
-    // line1,
-    // line2,
-    // postalCode,
-    // city,
-    // country,
-    // state,
-    isVendor,
-    isCustomer,
-  },
+  counterpart: { firstName, lastName, phone, email, isVendor, isCustomer },
 }: CounterpartIndividualViewProps) => {
   const { t } = useComponentsContext();
 
@@ -45,26 +31,12 @@ const CounterpartIndividualView = ({
             isVendor ? t('counterparts:vendor') : undefined
           )}
         />
-        {/*<LabelText*/}
-        {/*  label={t('counterparts:individual.address')}*/}
-        {/*  text={printAddress({*/}
-        {/*    line1,*/}
-        {/*    line2,*/}
-        {/*    postalCode,*/}
-        {/*    city,*/}
-        {/*    country,*/}
-        {/*    state,*/}
-        {/*  })}*/}
-        {/*/>*/}
         {phone && (
           <LabelText label={t('counterparts:individual.phone')} text={phone} />
         )}
         {email && (
           <LabelText label={t('counterparts:individual.email')} text={email} />
         )}
-        {/*{taxId && (*/}
-        {/*  <LabelText label={t('counterparts:individual.taxId')} text={taxId} />*/}
-        {/*)}*/}
       </CounterpartContainer>
     </Card>
   );

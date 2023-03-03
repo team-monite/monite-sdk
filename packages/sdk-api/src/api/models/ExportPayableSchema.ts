@@ -5,16 +5,7 @@
 import type { PayableStateEnum } from './PayableStateEnum';
 
 export type ExportPayableSchema = {
-    name: ExportPayableSchema.name;
+    name: 'payable';
     statuses: Array<PayableStateEnum>;
 };
-
-export namespace ExportPayableSchema {
-
-    export enum name {
-        PAYABLE = 'payable',
-    }
-
-
-}
 

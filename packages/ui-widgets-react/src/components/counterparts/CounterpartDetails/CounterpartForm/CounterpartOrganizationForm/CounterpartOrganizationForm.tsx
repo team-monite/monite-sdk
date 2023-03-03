@@ -17,9 +17,9 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import {
-  CounterpartCreatePayload,
+  CounterpartOrganizationRootCreatePayload,
+  CounterpartOrganizationRootUpdatePayload,
   CounterpartOrganizationRootResponse,
-  CounterpartUpdatePayload,
 } from '@team-monite/sdk-api';
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
@@ -27,7 +27,8 @@ import { useComponentsContext } from 'core/context/ComponentsContext';
 import {
   CounterpartOrganizationFields,
   prepareCounterpartOrganization,
-  prepareCounterpartOrganizationSubmit,
+  prepareCounterpartOrganizationUpdate,
+  prepareCounterpartOrganizationCreate,
 } from './mapper';
 
 import CounterpartAddressForm from '../../CounterpartAddressForm';
@@ -62,7 +63,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
     counterpart as CounterpartOrganizationRootResponse;
 
   const methods = useForm<CounterpartOrganizationFields>({
-    resolver: yupResolver(getValidationSchema(t)),
+    resolver: yupResolver(getValidationSchema(t, !!organizationCounterpart)),
     defaultValues: useMemo(
       () =>
         prepareCounterpartOrganization(organizationCounterpart?.organization),
@@ -126,14 +127,22 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
           id="counterpartOrganizationForm"
           ref={formRef}
           onSubmit={handleSubmit((values) => {
-            const payload = {
-              type: 'organization',
-              organization: prepareCounterpartOrganizationSubmit(values),
+            if (!!counterpart) {
+              const payload: CounterpartOrganizationRootUpdatePayload = {
+                type: CounterpartOrganizationRootUpdatePayload.type
+                  .ORGANIZATION,
+                organization: prepareCounterpartOrganizationUpdate(values),
+              };
+
+              return updateCounterpart(payload);
+            }
+
+            const payload: CounterpartOrganizationRootCreatePayload = {
+              type: CounterpartOrganizationRootCreatePayload.type.ORGANIZATION,
+              organization: prepareCounterpartOrganizationCreate(values),
             };
 
-            return !!counterpart
-              ? updateCounterpart(payload as CounterpartUpdatePayload)
-              : createCounterpart(payload as CounterpartCreatePayload);
+            return createCounterpart(payload);
           })}
         >
           <Controller
@@ -224,12 +233,14 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
             )}
           />
 
-          <FlexContainer flexDirection={'column'} gap={20}>
-            <Text textSize={'h4'}>
-              {t('counterparts:organization.address')}
-            </Text>
-            <CounterpartAddressForm />
-          </FlexContainer>
+          {!counterpart && (
+            <FlexContainer flexDirection={'column'} gap={20}>
+              <Text textSize={'h4'}>
+                {t('counterparts:organization.address')}
+              </Text>
+              <CounterpartAddressForm />
+            </FlexContainer>
+          )}
         </CounterpartForm>
       </FormProvider>
     </ModalLayout>

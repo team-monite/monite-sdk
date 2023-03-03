@@ -16,7 +16,7 @@ import { UserCell } from './UserCell';
 import { TagFormModal } from '../TagFormModal';
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import {
-  api__v1__tags__pagination__CursorFields,
+  TagCursorFields,
   OrderEnum,
   TagReadSchema,
 } from '@team-monite/sdk-api';
@@ -56,7 +56,7 @@ export const StyledWrapper = styled.div<{
 
 interface Props {
   onChangeSort?: (params: {
-    sort: api__v1__tags__pagination__CursorFields;
+    sort: TagCursorFields;
     order: SortOrderEnum | null;
   }) => void;
 }
@@ -98,10 +98,7 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
   const onNext = () =>
     setCurrentPaginationToken(tags?.next_pagination_token || null);
 
-  const onChangeSort = (
-    sort: api__v1__tags__pagination__CursorFields,
-    order: SortOrderEnum | null
-  ) => {
+  const onChangeSort = (sort: TagCursorFields, order: SortOrderEnum | null) => {
     setCurrentPaginationToken(null);
     if (order) {
       setCurrentSort({
@@ -129,16 +126,10 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
           {
             title: (
               <HeadCellSort
-                isActive={
-                  currentSort?.sort ===
-                  api__v1__tags__pagination__CursorFields.CREATED_AT
-                }
+                isActive={currentSort?.sort === TagCursorFields.CREATED_AT}
                 title={t('tags:columns.createdAt')}
                 onChangeOrder={(order) =>
-                  onChangeSort(
-                    api__v1__tags__pagination__CursorFields.CREATED_AT,
-                    order
-                  )
+                  onChangeSort(TagCursorFields.CREATED_AT, order)
                 }
               />
             ),
@@ -150,16 +141,10 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
           {
             title: (
               <HeadCellSort
-                isActive={
-                  currentSort?.sort ===
-                  api__v1__tags__pagination__CursorFields.UPDATED_AT
-                }
+                isActive={currentSort?.sort === TagCursorFields.UPDATED_AT}
                 title={t('tags:columns.updatedAt')}
                 onChangeOrder={(order) =>
-                  onChangeSort(
-                    api__v1__tags__pagination__CursorFields.UPDATED_AT,
-                    order
-                  )
+                  onChangeSort(TagCursorFields.UPDATED_AT, order)
                 }
               />
             ),

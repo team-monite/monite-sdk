@@ -3,12 +3,11 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import type { ReceivableResponse } from '../models/ReceivableResponse';
 import { MoniteAllPaymentMethodsTypes } from '../models/MoniteAllPaymentMethodsTypes';
-import type { PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse } from '../models/PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse';
-import type { PaymentLinkPayResponse } from '../models/PaymentLinkPayResponse';
+import type { PaymentMethodsCalculateFeeResponse } from '../models/PaymentMethodsCalculateFeeResponse';
 import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkResponse';
-import type { PaymentsPaymentMethodsCountriesResponse } from '../models/PaymentsPaymentMethodsCountriesResponse';
-import type { PaymentsYapilyCountriesCoverageCodes } from '../models/PaymentsYapilyCountriesCoverageCodes';
-import type { PaymentsPaymentsPaymentsPaymentsBanksResponse } from '../models/PaymentsPaymentsPaymentsPaymentsBanksResponse';
+import type { PaymentMethodsCountriesResponse } from '../models/PaymentMethodsCountriesResponse';
+import type { YapilyCountriesCoverageCodes } from '../models/YapilyCountriesCoverageCodes';
+import type { BanksResponse } from '../models/BanksResponse';
 import type { AuthPaymentIntentPayload } from '../models/AuthPaymentIntentPayload';
 import type { AuthPaymentIntentResponse } from '../models/AuthPaymentIntentResponse';
 import type { ConsentPayload } from '../models/ConsentPayload';
@@ -50,52 +49,18 @@ export default class PaymentService {
    * Calculate fee for payment_method from payment_link
    * @param paymentMethod
    * @param requestBody
-   * @returns PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse Successful Response
+   * @returns PaymentMethodsCalculateFeeResponse Successful Response
    * @throws ApiError
    */
 
   public getFeeByPaymentMethod(
     id: string,
     requestBody: any
-  ): CancelablePromise<PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse> {
+  ): CancelablePromise<PaymentMethodsCalculateFeeResponse> {
     return __request(
       {
         method: 'POST',
         url: `/payment_intents/${id}/calculate_fee`,
-        body: requestBody,
-        mediaType: 'application/json',
-        errors: {
-          400: `Bad Request`,
-          401: `Unauthorized`,
-          403: `Forbidden`,
-          404: `Not found`,
-          405: `Method Not Allowed`,
-          406: `Not Acceptable`,
-          409: `Biz logic error`,
-          416: `Requested Range Not Satisfiable`,
-          422: `Validation Error`,
-          500: `Internal Server Error`,
-        },
-      },
-      this.openapiConfig
-    );
-  }
-
-  /**
-   * Pay Payment Link
-   * @param paymentLinkId
-   * @param requestBody
-   * @returns PaymentLinkPayResponse Successful Response
-   * @throws ApiError
-   */
-  public payByPaymentLinkId(
-    paymentLinkId: string,
-    requestBody: { payment_method: string }
-  ): CancelablePromise<PaymentLinkPayResponse> {
-    return __request(
-      {
-        method: 'POST',
-        url: `/payment_links/${paymentLinkId}/pay`,
         body: requestBody,
         mediaType: 'application/json',
         errors: {
@@ -151,12 +116,12 @@ export default class PaymentService {
    * Get PaymentsPayment Method Countries
    * Gets countries coverage by payment method.
    * @param paymentMethod
-   * @returns PaymentsPaymentMethodsCountriesResponse Successful Response
+   * @returns PaymentMethodsCountriesResponse Successful Response
    * @throws ApiError
    */
   public getPaymentMethodCountries(
     paymentMethod: 'sepa_credit'
-  ): CancelablePromise<PaymentsPaymentMethodsCountriesResponse> {
+  ): CancelablePromise<PaymentMethodsCountriesResponse> {
     return __request(
       {
         method: 'GET',
@@ -185,13 +150,13 @@ export default class PaymentService {
    * Get Institutions
    * @param paymentMethod
    * @param country
-   * @returns PaymentsPaymentsPaymentsPaymentsBanksResponse Successful Response
+   * @returns BanksResponse Successful Response
    * @throws ApiError
    */
   public getInstitutions(
     paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
-    country?: PaymentsYapilyCountriesCoverageCodes
-  ): CancelablePromise<PaymentsPaymentsPaymentsPaymentsBanksResponse> {
+    country?: YapilyCountriesCoverageCodes
+  ): CancelablePromise<BanksResponse> {
     return __request(
       {
         method: 'GET',

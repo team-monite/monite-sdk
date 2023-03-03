@@ -1,6 +1,6 @@
 import { OpenAPIConfig } from '../OpenAPI';
 import { CancelablePromise } from '../CancelablePromise';
-import { ReceivablesReceivablesReceivablesPaymentTermsListResponse } from '../models/ReceivablesReceivablesReceivablesPaymentTermsListResponse';
+import { PaymentTermsListResponse } from '../models/PaymentTermsListResponse';
 import { request as __request } from '../request';
 
 export default class ProductsService {
@@ -12,10 +12,10 @@ export default class ProductsService {
 
   /**
    * Get Items
-   * @returns ReceivablesReceivablesReceivablesPaymentTermsListResponse Successful Response
+   * @returns PaymentTermsListResponse Successful Response
    * @throws ApiError
    */
-  public getPaymentTerms(): CancelablePromise<ReceivablesReceivablesReceivablesPaymentTermsListResponse> {
+  public getPaymentTerms(): CancelablePromise<PaymentTermsListResponse> {
     return __request(
       {
         method: 'GET',

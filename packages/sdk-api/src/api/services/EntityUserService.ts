@@ -3,7 +3,7 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { EntityUserResponse } from '../models/EntityUserResponse';
 import {
-  api__v1__entity_users__pagination__CursorFields,
+  EntityUserCursorFields,
   EntityUserPaginationResponse,
   OrderEnum,
 } from '../../api';
@@ -36,7 +36,7 @@ export default class EntityUserService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__entity_users__pagination__CursorFields,
+    sort?: EntityUserCursorFields,
     firstName?: string,
     createdAt?: string,
     createdAtGt?: string,

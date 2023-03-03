@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { CounterpartAddress } from './CounterpartAddress';
 import type { CurrencyEnum } from './CurrencyEnum';
+import type { PayableLineItemsUploadWithDataSchema } from './PayableLineItemsUploadWithDataSchema';
 import type { PaymentTermsCreatePayload } from './PaymentTermsCreatePayload';
 import type { SuggestedPaymentTerm } from './SuggestedPaymentTerm';
 
@@ -39,6 +41,10 @@ export type PayableUploadWithDataSchema = {
      */
     issued_at?: string;
     /**
+     * UUID of the vendor or supplier in the system.
+     */
+    counterpart_id?: string;
+    /**
      * SWIFT code (BIC) of the vendor's bank.
      */
     counterpart_bank_id?: string;
@@ -51,11 +57,23 @@ export type PayableUploadWithDataSchema = {
      */
     counterpart_name?: string;
     /**
+     * The address of the vendor or supplier.
+     */
+    counterpart_address?: CounterpartAddress;
+    /**
+     * The tax id of the counterpart.
+     */
+    counterpart_tax_id?: string;
+    /**
      * Base64-encoded contents of the original issued payable. The file is provided for reference purposes as the original source of the data.
      *
      * Any file formats are allowed. The most common formats are PDF, PNG, JPG, GIF.
      */
-    base64_encoded_file: string;
+    base64_encoded_file?: string;
+    /**
+     * The original file name.
+     */
+    file_name?: string;
     /**
      * A list of IDs of user-defined tags (labels) assigned to this payable. Tags can be used to trigger a specific approval policy for this payable.
      */
@@ -72,5 +90,13 @@ export type PayableUploadWithDataSchema = {
      * Registered tax applied for a service price, in [minor units](https://docs.monite.com/docs/currencies#minor-units). For example, $12.50 is represented as 1250.
      */
     tax?: number;
+    /**
+     * The email address from which the invoice was sent to the entity.
+     */
+    sender?: string;
+    /**
+     * The list of items present in the payable.
+     */
+    line_items?: Array<PayableLineItemsUploadWithDataSchema>;
 };
 

@@ -1,10 +1,10 @@
 import { OpenAPIConfig } from '../OpenAPI';
-import { ReceivablesOrderEnum } from '../models/ReceivablesOrderEnum';
-import { Receivablesapi__v1__products_services__pagination__CursorFields } from '../models/Receivablesapi__v1__products_services__pagination__CursorFields';
-import { ReceivablesProductServiceTypeEnum } from '../models/ReceivablesProductServiceTypeEnum';
-import { ReceivablesCurrencyEnum } from '../models/ReceivablesCurrencyEnum';
+import { OrderEnum } from '../models/OrderEnum';
+import { ProductCursorFields } from '../models/ProductCursorFields';
+import { ProductServiceTypeEnum } from '../models/ProductServiceTypeEnum';
+import { CurrencyEnum } from '../models/CurrencyEnum';
 import { CancelablePromise } from '../CancelablePromise';
-import { ProductServiceReceivablesPaginationResponse } from '../models/ProductServiceReceivablesPaginationResponse';
+import { ProductServicePaginationResponse } from '../models/ProductServicePaginationResponse';
 import { request as __request } from '../request';
 
 export default class ProductsService {
@@ -36,31 +36,31 @@ export default class ProductsService {
    * @param createdAtLt
    * @param createdAtGte
    * @param createdAtLte
-   * @returns ProductServiceReceivablesPaginationResponse Successful Response
+   * @returns ProductServicePaginationResponse Successful Response
    * @throws ApiError
    */
   public getProducts(
-    order?: ReceivablesOrderEnum,
+    order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: Receivablesapi__v1__products_services__pagination__CursorFields,
+    sort?: ProductCursorFields,
     name?: string,
     nameContains?: string,
     nameIcontains?: string,
-    type?: ReceivablesProductServiceTypeEnum,
+    type?: ProductServiceTypeEnum,
     price?: number,
     priceGt?: number,
     priceLt?: number,
     priceGte?: number,
     priceLte?: number,
-    currency?: ReceivablesCurrencyEnum,
-    currencyIn?: Array<ReceivablesCurrencyEnum>,
+    currency?: CurrencyEnum,
+    currencyIn?: Array<CurrencyEnum>,
     measureUnitId?: string,
     createdAtGt?: string,
     createdAtLt?: string,
     createdAtGte?: string,
     createdAtLte?: string
-  ): CancelablePromise<ProductServiceReceivablesPaginationResponse> {
+  ): CancelablePromise<ProductServicePaginationResponse> {
     return __request(
       {
         method: 'GET',

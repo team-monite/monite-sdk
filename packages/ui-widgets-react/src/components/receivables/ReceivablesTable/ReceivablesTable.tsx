@@ -7,10 +7,7 @@ import {
   TabPanel,
   SortOrderEnum,
 } from '@team-monite/ui-kit-react';
-import {
-  api__v1__receivables__pagination__CursorFields,
-  ReceivablesReceivableType,
-} from '@team-monite/sdk-api';
+import { ReceivableCursorFields, ReceivableType } from '@team-monite/sdk-api';
 
 import Filters from './Filters';
 import ReceivableTypeTab from './ReceivableTypeTab';
@@ -23,7 +20,7 @@ interface Props {
   onRowClick?: (id: string) => void;
   onChangeSort?: (
     params: {
-      sort: api__v1__receivables__pagination__CursorFields;
+      sort: ReceivableCursorFields;
       order: SortOrderEnum | null;
     } | null
   ) => void;
@@ -84,7 +81,7 @@ const ReceivablesTable = ({
         <Filters onChangeFilter={onChangeFilter} />
         <TabPanel>
           <ReceivableTypeTab
-            type={ReceivablesReceivableType.QUOTE}
+            type={ReceivableType.QUOTE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
             onRowClick={onRowClick}
@@ -92,7 +89,7 @@ const ReceivablesTable = ({
         </TabPanel>
         <TabPanel>
           <ReceivableTypeTab
-            type={ReceivablesReceivableType.INVOICE}
+            type={ReceivableType.INVOICE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
             onRowClick={onRowClick}
@@ -100,7 +97,7 @@ const ReceivablesTable = ({
         </TabPanel>
         <TabPanel>
           <ReceivableTypeTab
-            type={ReceivablesReceivableType.CREDIT_NOTE}
+            type={ReceivableType.CREDIT_NOTE}
             currentFilters={currentFilters}
             onChangeSort={onChangeSortCallback}
             onRowClick={onRowClick}

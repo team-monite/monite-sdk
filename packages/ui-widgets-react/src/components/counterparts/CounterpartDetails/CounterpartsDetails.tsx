@@ -12,6 +12,7 @@ import {
 } from './CounterpartForm';
 
 import CounterpartView from './CounterpartView';
+import CounterpartAddressFormUpdate from './CounterpartAddressFormUpdate';
 import CounterpartContactForm from './CounterpartContactForm';
 import CounterpartBankForm from './CounterpartBankForm';
 
@@ -22,6 +23,10 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
     onCreate,
     onUpdate,
     onEdit,
+    addressId,
+    onAddressCancel,
+    onAddressEdit,
+    onAddressUpdate,
     contactId,
     onContactEdit,
     onContactCreate,
@@ -59,6 +64,17 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
         />
       )}
 
+      {counterpartId &&
+        addressId &&
+        counterpartView === COUNTERPART_VIEW.addressForm && (
+          <CounterpartAddressFormUpdate
+            counterpartId={counterpartId}
+            addressId={addressId}
+            onCancel={onAddressCancel}
+            onUpdate={onAddressUpdate}
+          />
+        )}
+
       {counterpartId && counterpartView === COUNTERPART_VIEW.contactForm && (
         <CounterpartContactForm
           counterpartId={counterpartId}
@@ -87,6 +103,7 @@ const CounterpartsDetails = (props: CounterpartsDetailsProps) => {
           showBankAccounts={props.showBankAccounts}
           onEdit={onEdit}
           onDelete={props.onDelete}
+          onAddressEdit={onAddressEdit}
           onContactEdit={onContactEdit}
           onContactCreate={showContactForm}
           onContactDelete={props.onContactDelete}

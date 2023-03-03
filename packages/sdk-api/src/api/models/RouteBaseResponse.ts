@@ -9,7 +9,7 @@ export type RouteBaseResponse = {
     id: string;
     partner_id?: string;
     status: string;
-    belongs_to_mailbox_domain_id: number;
+    mailbox_domain_id: string;
     provider: string;
     remote_route_id: string;
     webhook: string;

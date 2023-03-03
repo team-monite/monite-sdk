@@ -1,6 +1,6 @@
 import { OpenAPIConfig } from '../OpenAPI';
 import { CancelablePromise } from '../CancelablePromise';
-import { ReceivablesVatRateListResponse } from '../models/ReceivablesVatRateListResponse';
+import { VatRateListResponse } from '../models/VatRateListResponse';
 import { request as __request } from '../request';
 
 export default class ProductsService {
@@ -13,12 +13,12 @@ export default class ProductsService {
   /**
    * Get Vat Rates
    * @param counterpartId
-   * @returns ReceivablesVatRateListResponse Successful Response
+   * @returns VatRateListResponse Successful Response
    * @throws ApiError
    */
   public getVatRates(
     counterpartId: string
-  ): CancelablePromise<ReceivablesVatRateListResponse> {
+  ): CancelablePromise<VatRateListResponse> {
     return __request(
       {
         method: 'GET',

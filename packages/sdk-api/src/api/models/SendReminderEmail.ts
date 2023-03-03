@@ -15,10 +15,8 @@ export type SendReminderEmail = {
      * Partner ID
      */
     partner_id: string;
-    /**
-     * Content ID of subject and body text templates
-     */
-    content_id: string;
+    body: string;
+    subject: string;
     /**
      * The names of email recipients
      */

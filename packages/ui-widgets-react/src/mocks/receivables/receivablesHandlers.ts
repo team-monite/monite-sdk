@@ -1,14 +1,14 @@
 import { rest } from 'msw';
 
 import {
-  ReceivablesPaginationResponse,
+  ReceivablePaginationResponse,
   RECEIVABLES_ENDPOINT,
   ReceivableResponse,
-  ReceivablesReceivablesReceivablesPaymentTermsListResponse,
-  ReceivablesUnitListResponse,
-  ReceivablesVatRateListResponse,
-  ProductServiceReceivablesPaginationResponse,
-  ReceivablesReceivableFacadeCreatePayload,
+  PaymentTermsListResponse,
+  UnitListResponse,
+  VatRateListResponse,
+  ProductServicePaginationResponse,
+  ReceivableFacadeCreatePayload,
 } from '@team-monite/sdk-api';
 
 import { geMockPagination } from '../utils';
@@ -27,7 +27,7 @@ const receivableDetailPath = `${RECEIVABLES_ENDPOINT}/:id`;
 
 export const receivableHandlers = [
   // read list
-  rest.get<undefined, {}, ReceivablesPaginationResponse>(
+  rest.get<undefined, {}, ReceivablePaginationResponse>(
     receivablePath,
     ({ url }, res, ctx) => {
       const type = url.searchParams.get('type');
@@ -50,36 +50,32 @@ export const receivableHandlers = [
   ),
 
   // create
-  rest.post<ReceivablesReceivableFacadeCreatePayload, {}, ReceivableResponse>(
+  rest.post<ReceivableFacadeCreatePayload, {}, ReceivableResponse>(
     receivablePath,
     (req, res, ctx) => {
       return res(ctx.json(receivableFixture));
     }
   ),
 
-  rest.get<
-    undefined,
-    {},
-    ReceivablesReceivablesReceivablesPaymentTermsListResponse
-  >('*/payment_terms', (_, res, ctx) => {
-    return res(ctx.json(paymentTermsListFixture));
-  }),
+  rest.get<undefined, {}, PaymentTermsListResponse>(
+    '*/payment_terms',
+    (_, res, ctx) => {
+      return res(ctx.json(paymentTermsListFixture));
+    }
+  ),
 
-  rest.get<undefined, {}, ReceivablesUnitListResponse>(
+  rest.get<undefined, {}, UnitListResponse>(
     '*/measure_units',
     (_, res, ctx) => {
       return res(ctx.json(measureUnitsListFixture));
     }
   ),
 
-  rest.get<undefined, {}, ReceivablesVatRateListResponse>(
-    '*/vat_rates',
-    (_, res, ctx) => {
-      return res(ctx.json(vatRatesByCounterpartId));
-    }
-  ),
+  rest.get<undefined, {}, VatRateListResponse>('*/vat_rates', (_, res, ctx) => {
+    return res(ctx.json(vatRatesByCounterpartId));
+  }),
 
-  rest.get<undefined, {}, ProductServiceReceivablesPaginationResponse>(
+  rest.get<undefined, {}, ProductServicePaginationResponse>(
     '*/products',
     ({ url }, res, ctx) => {
       const { prevPage, nextPage } = geMockPagination(

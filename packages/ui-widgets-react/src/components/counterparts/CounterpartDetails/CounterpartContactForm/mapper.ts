@@ -41,7 +41,6 @@ export const prepareCounterpartContactSubmit = ({
     last_name: lastName,
     phone,
     email,
-    is_default: false,
     address: prepareCounterpartAddressSubmit(address),
   };
 };

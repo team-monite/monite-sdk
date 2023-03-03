@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ReceivablesBasedOnTransitionType } from './ReceivablesBasedOnTransitionType';
+import type { BasedOnTransitionType } from './BasedOnTransitionType';
 
 export type ReceivableCreateBasedOnPayload = {
     /**
@@ -12,6 +12,6 @@ export type ReceivableCreateBasedOnPayload = {
     /**
      * The type of a created receivable. Currently supported transitions:quote -> invoice; invoice -> credit_note
      */
-    type: ReceivablesBasedOnTransitionType;
+    type: BasedOnTransitionType;
 };
 

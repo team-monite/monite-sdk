@@ -25,10 +25,6 @@ export type UpdateCounterpartContactPayload = {
      */
     phone?: string;
     /**
-     * Specifies if this contact person is the default one in case the organization has multiple contacts.
-     */
-    is_default?: boolean;
-    /**
      * The title or honorific of a contact person. Examples: Mr., Ms., Dr., Prof.
      */
     title?: string;

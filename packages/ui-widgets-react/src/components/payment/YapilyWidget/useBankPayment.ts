@@ -2,9 +2,9 @@ import { useState, useRef, useCallback } from 'react';
 
 import {
   PaymentIntentWithSecrets,
-  PaymentsPaymentsBank,
-  PaymentsYapilyCountriesCoverageCodes,
-  api__endpoints__payment_intents__schemas__AccountType,
+  Bank,
+  YapilyCountriesCoverageCodes,
+  PaymentIntentAccountType,
 } from '@team-monite/sdk-api';
 
 import { getDefaultBankAccount } from '../helpers';
@@ -17,10 +17,10 @@ type UseBankPaymentProps = {
 
 type UseBankPaymentReturnType = {
   currentStep: BankPaymentSteps;
-  selectedBank?: PaymentsPaymentsBank;
-  setSelectedBank: (bank: PaymentsPaymentsBank) => void;
-  selectedCountry: PaymentsYapilyCountriesCoverageCodes;
-  setSelectedCountry: (country: PaymentsYapilyCountriesCoverageCodes) => void;
+  selectedBank?: Bank;
+  setSelectedBank: (bank: Bank) => void;
+  selectedCountry: YapilyCountriesCoverageCodes;
+  setSelectedCountry: (country: YapilyCountriesCoverageCodes) => void;
   handleNextStep: () => void;
   handlePrevStep: () => void;
   payerName: string;
@@ -37,7 +37,7 @@ export enum BankPaymentSteps {
   CONFIRM = 'confirm',
 }
 
-const getSteps = (selectedBank?: PaymentsPaymentsBank) => [
+const getSteps = (selectedBank?: Bank) => [
   BankPaymentSteps.BANK_LIST,
   ...(selectedBank?.payer_required ? [BankPaymentSteps.PAYER_FORM] : []),
   BankPaymentSteps.CONFIRM,
@@ -48,9 +48,9 @@ export function useBankPayment({
   onAuthorizePayment,
 }: UseBankPaymentProps): UseBankPaymentReturnType {
   const [currentStep, setCurrentStep] = useState(BankPaymentSteps.BANK_LIST);
-  const selectedBankRef = useRef<PaymentsPaymentsBank>();
+  const selectedBankRef = useRef<Bank>();
   const [selectedCountry, setSelectedCountry] = useState(
-    PaymentsYapilyCountriesCoverageCodes.DE
+    YapilyCountriesCoverageCodes.DE
   );
 
   const handleNextStep = () => {
@@ -76,7 +76,7 @@ export function useBankPayment({
 
   const [payerIban, setPayerIban] = useState(bankAccount?.iban || '');
 
-  const setSelectedBank = (bank: PaymentsPaymentsBank) => {
+  const setSelectedBank = (bank: Bank) => {
     selectedBankRef.current = bank;
   };
 
@@ -90,7 +90,7 @@ export function useBankPayment({
       (await authorizePaymentMutation.mutateAsync({
         bank_id: selectedBankRef.current?.code,
         payer_account_identification: {
-          type: api__endpoints__payment_intents__schemas__AccountType.IBAN,
+          type: PaymentIntentAccountType.IBAN,
           value: payerIban,
         },
       }));

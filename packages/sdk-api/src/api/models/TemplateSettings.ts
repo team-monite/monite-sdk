@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type TemplateSettings = {
-    receivables_pdf_template_id: string;
+    receivables_pdf_template_id?: string;
+    purchase_orders_pdf_template_id?: string;
 };
 

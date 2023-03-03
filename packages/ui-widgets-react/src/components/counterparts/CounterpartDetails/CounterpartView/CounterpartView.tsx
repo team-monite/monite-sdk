@@ -33,6 +33,7 @@ import {
 
 import CounterpartOrganizationView from './CounterpartOrganizationView';
 import CounterpartIndividualView from './CounterpartIndividualView';
+import CounterpartAddressView from './CounterpartAddressView';
 import CounterpartContactView from './CounterpartContactView';
 import CounterpartBankView from './CounterpartBankView';
 import useCounterpartView, { CounterpartViewProps } from './useCounterpartView';
@@ -41,6 +42,7 @@ const CounterpartView = (props: CounterpartViewProps) => {
   const { t } = useComponentsContext();
   const {
     counterpart,
+    addresses,
     banks,
     contacts,
     deleteCounterpart,
@@ -118,6 +120,16 @@ const CounterpartView = (props: CounterpartViewProps) => {
             actions={actions}
             counterpart={prepareCounterpartIndividual(counterpart.individual)}
           />
+        )}
+
+        {counterpart && addresses[0] && (
+          <FlexContainer flexDirection={'column'} gap={20}>
+            <Text textSize={'h4'}>{t('counterparts:individual.address')}</Text>
+            <CounterpartAddressView
+              address={addresses[0]}
+              onEdit={props.onAddressEdit}
+            />
+          </FlexContainer>
         )}
 
         {counterpart && isOrganizationCounterpart(counterpart) && (

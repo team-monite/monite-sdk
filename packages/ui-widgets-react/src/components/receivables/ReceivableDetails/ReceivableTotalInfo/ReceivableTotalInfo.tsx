@@ -28,6 +28,7 @@ const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
           <StyledInfoValue>
             {currency &&
               total_vat_amount &&
+              total_amount &&
               getReadableAmount(total_amount - total_vat_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>

@@ -5,6 +5,6 @@
 import type { FileSchema } from './FileSchema';
 
 export type FileInfoResponse = {
-    data: FileSchema;
+    data?: FileSchema;
 };
 

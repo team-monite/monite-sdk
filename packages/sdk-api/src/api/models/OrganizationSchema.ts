@@ -13,7 +13,7 @@ export type OrganizationSchema = {
     /**
      * A VAT number of the entity which points to the registered tax applied for a service price
      */
-    vat_id: string;
+    vat_id?: string;
     /**
      * A code which identifies uniquely a party of a transaction worldwide
      */

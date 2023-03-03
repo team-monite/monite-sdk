@@ -4,7 +4,7 @@ import type { WorkflowsPaginationResponse } from '../models/WorkflowsPaginationR
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
-import { ActionEnum, OrderEnum, CursorFieldsWorkflows } from '../../api';
+import { ActionEnum, OrderEnum, WorkflowCursorFields } from '../../api';
 
 export const WORKFLOWS_ENDPOINT = 'workflows';
 
@@ -44,7 +44,7 @@ export default class WorkflowsService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: CursorFieldsWorkflows,
+    sort?: WorkflowCursorFields,
     objectType?: ObjectType,
     action?: ActionEnum,
     policyName?: string,

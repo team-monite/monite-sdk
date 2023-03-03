@@ -24,22 +24,10 @@ export type CreateIndividualEntityRequest = {
     /**
      * A type for an organization
      */
-    type: CreateIndividualEntityRequest.type;
+    type: 'individual';
     /**
      * A set of meta data describing the individual
      */
     individual: IndividualSchema;
 };
-
-export namespace CreateIndividualEntityRequest {
-
-    /**
-     * A type for an organization
-     */
-    export enum type {
-        INDIVIDUAL = 'individual',
-    }
-
-
-}
 

@@ -5,16 +5,7 @@
 import type { ReceivablesStatusEnum } from './ReceivablesStatusEnum';
 
 export type ExportReceivableSchema = {
-    name: ExportReceivableSchema.name;
+    name: 'receivable';
     statuses: Array<ReceivablesStatusEnum>;
 };
-
-export namespace ExportReceivableSchema {
-
-    export enum name {
-        RECEIVABLE = 'receivable',
-    }
-
-
-}
 

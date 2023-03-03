@@ -1,10 +1,10 @@
 import { useQuery, useMutation } from 'react-query';
 import {
-  PaymentsPaymentsPaymentsPaymentsBanksResponse,
-  PaymentsYapilyCountriesCoverageCodes,
+  BanksResponse,
+  YapilyCountriesCoverageCodes,
   MoniteAllPaymentMethodsTypes,
-  PaymentsPaymentMethodsCountriesResponse,
-  PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse,
+  PaymentMethodsCountriesResponse,
+  PaymentMethodsCalculateFeeResponse,
   AuthPaymentIntentResponse,
   AuthPaymentIntentPayload,
 } from '@team-monite/sdk-api';
@@ -18,14 +18,11 @@ const PAYMENT_AUTHORIZE = 'paymentAuthorize';
 
 export const useInstitutionList = (
   paymentMethod: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
-  country?: PaymentsYapilyCountriesCoverageCodes
+  country?: YapilyCountriesCoverageCodes
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<
-    PaymentsPaymentsPaymentsPaymentsBanksResponse | undefined,
-    Error
-  >(
+  return useQuery<BanksResponse | undefined, Error>(
     [PAYMENT_INSTITUTIONS],
     () =>
       !!country
@@ -45,7 +42,7 @@ export const useCountryList = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<PaymentsPaymentMethodsCountriesResponse | undefined, Error>(
+  return useQuery<PaymentMethodsCountriesResponse | undefined, Error>(
     [PAYMENT_COUNTRIES],
     () => monite.api.payment.getPaymentMethodCountries(paymentMethod),
     {
@@ -62,10 +59,7 @@ export const useFeeByPaymentMethod = (
 ) => {
   const { monite } = useComponentsContext();
 
-  return useQuery<
-    PaymentsPaymentMethodsCalculatePaymentsPaymentsFeeResponse | undefined,
-    Error
-  >(
+  return useQuery<PaymentMethodsCalculateFeeResponse | undefined, Error>(
     [PAYMENT_FEE, paymentMethod],
     () =>
       !!paymentMethod && !!id

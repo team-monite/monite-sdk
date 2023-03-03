@@ -16,5 +16,9 @@ export type EntityBankAccountRequest = {
      */
     bank_name: string;
     display_name?: string;
+    /**
+     * Marks if a bank account should be used by default. Only 1 can be True
+     */
+    is_default?: boolean;
 };
 

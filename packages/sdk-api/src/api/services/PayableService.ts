@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
+import { PayableCursorFields } from '../models/PayableCursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
 import type { PayableStateEnum } from '../models/PayableStateEnum';
@@ -11,7 +11,7 @@ import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { PayableResponseSchema } from '../models/PayableResponseSchema';
 import { PayableUpdateSchema } from '../models/PayableUpdateSchema';
-import { api__schemas__payables__schemas__PaginationResponse } from '../models/api__schemas__payables__schemas__PaginationResponse';
+import { PayablePaginationResponse } from '../models/PayablePaginationResponse';
 
 export const PAYABLES_ENDPOINT = 'payables';
 
@@ -54,7 +54,7 @@ export default class PayablesService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__payables__pagination__CursorFields,
+    sort?: PayableCursorFields,
     createdAt?: string,
     createdAtGt?: string,
     createdAtLt?: string,
@@ -73,7 +73,7 @@ export default class PayablesService {
     dueDateLt?: string,
     dueDateGte?: string,
     dueDateLte?: string
-  ): CancelablePromise<api__schemas__payables__schemas__PaginationResponse> {
+  ): CancelablePromise<PayablePaginationResponse> {
     return __request(
       {
         method: 'GET',

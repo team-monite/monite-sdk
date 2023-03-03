@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type Stripe = {
-  publishable?: string;
-  secret: string;
+    publishable?: string;
+    secret: string;
 };
+

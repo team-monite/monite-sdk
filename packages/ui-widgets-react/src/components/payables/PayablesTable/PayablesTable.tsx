@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { formatISO, addDays, format } from 'date-fns';
 import {
-  api__v1__payables__pagination__CursorFields,
-  OrderEnum,
+  PayableCursorFields,
   PayableResponseSchema,
   PayableStateEnum,
   ReceivableResponse,
 } from '@team-monite/sdk-api';
 import {
   Button,
-  HeadCellSort,
   SortOrderEnum,
   Table,
   TableFooter,
@@ -22,7 +20,7 @@ import { usePayable, usePayPayableById } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { getReadableAmount } from 'core/utils';
 import { default as FiltersComponent } from './Filters';
-import { Sort, FilterTypes, FilterValue } from './types';
+import { FilterTypes, FilterValue } from './types';
 import { PAGE_LIMIT } from '../../../constants';
 import {
   FILTER_TYPE_SEARCH,
@@ -37,7 +35,7 @@ interface Props {
   onRowClick?: (id: string) => void;
   onPay?: (id: string) => void;
   onChangeSort?: (params: {
-    sort: api__v1__payables__pagination__CursorFields;
+    sort: PayableCursorFields;
     order: SortOrderEnum | null;
   }) => void;
   onChangeFilter?: (filter: {
@@ -56,7 +54,6 @@ const PayablesTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
   const {
@@ -65,10 +62,10 @@ const PayablesTable = ({
     isRefetching,
     refetch,
   } = usePayable(
-    currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
+    undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,
-    currentSort ? currentSort.sort : undefined,
+    undefined,
     undefined,
     undefined,
     // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
@@ -100,30 +97,13 @@ const PayablesTable = ({
 
   useEffect(() => {
     refetch();
-  }, [currentPaginationToken, currentSort, currentFilter]);
+  }, [currentPaginationToken, currentFilter]);
 
   const onPrev = () =>
     setCurrentPaginationToken(payables?.prev_pagination_token || null);
 
   const onNext = () =>
     setCurrentPaginationToken(payables?.next_pagination_token || null);
-
-  const onChangeSort = (
-    sort: api__v1__payables__pagination__CursorFields,
-    order: SortOrderEnum | null
-  ) => {
-    setCurrentPaginationToken(null);
-    if (order) {
-      setCurrentSort({
-        sort,
-        order,
-      });
-    } else if (currentSort?.sort === sort && order === null) {
-      setCurrentSort(null);
-    }
-
-    onChangeSortCallback && onChangeSortCallback({ sort, order });
-  };
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -161,21 +141,7 @@ const PayablesTable = ({
               value ? format(new Date(value), 'dd.MM.yyyy') : '',
           },
           {
-            title: (
-              <HeadCellSort
-                isActive={
-                  currentSort?.sort ===
-                  api__v1__payables__pagination__CursorFields.DUE_DATE
-                }
-                title={t('payables:columns.dueDate')}
-                onChangeOrder={(order) =>
-                  onChangeSort(
-                    api__v1__payables__pagination__CursorFields.DUE_DATE,
-                    order
-                  )
-                }
-              />
-            ),
+            title: t('payables:columns.dueDate'),
             dataIndex: 'due_date',
             key: 'due_date',
             render: (value: string) =>
@@ -191,21 +157,7 @@ const PayablesTable = ({
             ),
           },
           {
-            title: (
-              <HeadCellSort
-                isActive={
-                  currentSort?.sort ===
-                  api__v1__payables__pagination__CursorFields.AMOUNT
-                }
-                title={t('payables:columns.amount')}
-                onChangeOrder={(order) =>
-                  onChangeSort(
-                    api__v1__payables__pagination__CursorFields.AMOUNT,
-                    order
-                  )
-                }
-              />
-            ),
+            title: t('payables:columns.amount'),
             dataIndex: 'amount',
             key: 'amount',
             render: (_, record) => {

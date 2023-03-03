@@ -46,22 +46,10 @@ export type EntityIndividualResponse = {
     /**
      * A type for an individual
      */
-    type: EntityIndividualResponse.type;
+    type: 'individual';
     /**
      * A set of metadata describing an individual
      */
     individual: IndividualSchema;
 };
-
-export namespace EntityIndividualResponse {
-
-    /**
-     * A type for an individual
-     */
-    export enum type {
-        INDIVIDUAL = 'individual',
-    }
-
-
-}
 

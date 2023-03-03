@@ -19,15 +19,11 @@ export type CreateCounterpartContactPayload = {
     /**
      * The email address of a contact person.
      */
-    email: string;
+    email?: string;
     /**
      * The phone number of a contact person
      */
-    phone: string;
-    /**
-     * Specifies if this contact person is the default one in case the organization has multiple contacts.
-     */
-    is_default: boolean;
+    phone?: string;
     /**
      * The address of a contact person.
      */

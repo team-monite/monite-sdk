@@ -2,7 +2,7 @@ import { TFunction } from 'react-i18next';
 import { getAddressValidationSchema } from '../../CounterpartAddressForm/validation';
 import * as yup from 'yup';
 
-const getValidationSchema = (t: TFunction) =>
+const getValidationSchema = (t: TFunction, isUpdate: boolean) =>
   yup.object().shape({
     firstName: yup
       .string()
@@ -22,12 +22,7 @@ const getValidationSchema = (t: TFunction) =>
       ),
     phone: yup.string(),
     counterpartType: yup.string(),
-    taxId: yup
-      .string()
-      .required(
-        `${t('counterparts:individual.taxId')}${t('errors:requiredField')}`
-      ),
-    ...getAddressValidationSchema(t),
+    ...(!isUpdate && getAddressValidationSchema(t)),
   });
 
 export default getValidationSchema;

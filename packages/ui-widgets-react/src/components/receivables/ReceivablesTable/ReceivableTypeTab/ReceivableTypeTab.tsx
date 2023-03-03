@@ -12,11 +12,11 @@ import {
   UArrowRight,
 } from '@team-monite/ui-kit-react';
 import {
-  api__v1__receivables__pagination__CursorFields,
+  ReceivableCursorFields,
   ReceivableResponse,
-  ReceivablesReceivableType,
+  ReceivableType,
   ReceivablesStatusEnum,
-  ReceivablesOrderEnum,
+  OrderEnum,
 } from '@team-monite/sdk-api';
 
 import { useReceivables } from 'core/queries/useReceivables';
@@ -38,11 +38,11 @@ const formatter = (currency: string) =>
   });
 
 interface Props {
-  type: ReceivablesReceivableType;
+  type: ReceivableType;
   currentFilters: FilterTypes;
   onChangeSort?: (
     params: {
-      sort: api__v1__receivables__pagination__CursorFields;
+      sort: ReceivableCursorFields;
       order: SortOrderEnum | null;
     } | null
   ) => void;
@@ -53,11 +53,11 @@ const mapTypeToColumns = (
   t: TFunction,
   currentSort: Sort | null,
   onChangeSort: (
-    sort: api__v1__receivables__pagination__CursorFields,
+    sort: ReceivableCursorFields,
     order: SortOrderEnum | null
   ) => void
 ) => ({
-  [ReceivablesReceivableType.QUOTE]: [
+  [ReceivableType.QUOTE]: [
     {
       title: t('receivables:columns.number'),
       dataIndex: 'document_id',
@@ -95,16 +95,10 @@ const mapTypeToColumns = (
     {
       title: (
         <HeadCellSort
-          isActive={
-            currentSort?.sort ===
-            api__v1__receivables__pagination__CursorFields.AMOUNT
-          }
+          isActive={currentSort?.sort === ReceivableCursorFields.AMOUNT}
           title={t('receivables:columns.amount')}
           onChangeOrder={(order: SortOrderEnum | null) =>
-            onChangeSort(
-              api__v1__receivables__pagination__CursorFields.AMOUNT,
-              order
-            )
+            onChangeSort(ReceivableCursorFields.AMOUNT, order)
           }
         />
       ),
@@ -115,7 +109,7 @@ const mapTypeToColumns = (
         value ? formatter(record.currency).format(value) : '',
     },
   ],
-  [ReceivablesReceivableType.INVOICE]: [
+  [ReceivableType.INVOICE]: [
     {
       title: t('receivables:columns.number'),
       dataIndex: 'document_id',
@@ -153,16 +147,10 @@ const mapTypeToColumns = (
     {
       title: (
         <HeadCellSort
-          isActive={
-            currentSort?.sort ===
-            api__v1__receivables__pagination__CursorFields.AMOUNT
-          }
+          isActive={currentSort?.sort === ReceivableCursorFields.AMOUNT}
           title={t('receivables:columns.amount')}
           onChangeOrder={(order: SortOrderEnum | null) =>
-            onChangeSort(
-              api__v1__receivables__pagination__CursorFields.AMOUNT,
-              order
-            )
+            onChangeSort(ReceivableCursorFields.AMOUNT, order)
           }
         />
       ),
@@ -173,7 +161,7 @@ const mapTypeToColumns = (
         value ? formatter(record.currency).format(value) : '',
     },
   ],
-  [ReceivablesReceivableType.CREDIT_NOTE]: [
+  [ReceivableType.CREDIT_NOTE]: [
     {
       title: t('receivables:columns.number'),
       dataIndex: 'document_id',
@@ -211,16 +199,10 @@ const mapTypeToColumns = (
     {
       title: (
         <HeadCellSort
-          isActive={
-            currentSort?.sort ===
-            api__v1__receivables__pagination__CursorFields.AMOUNT
-          }
+          isActive={currentSort?.sort === ReceivableCursorFields.AMOUNT}
           title={t('receivables:columns.amount')}
           onChangeOrder={(order: SortOrderEnum | null) =>
-            onChangeSort(
-              api__v1__receivables__pagination__CursorFields.AMOUNT,
-              order
-            )
+            onChangeSort(ReceivableCursorFields.AMOUNT, order)
           }
         />
       ),
@@ -251,9 +233,7 @@ const ReceivableTypeTab = ({
     isLoading,
     isRefetching,
   } = useReceivables(
-    currentSort
-      ? (currentSort.order as unknown as ReceivablesOrderEnum)
-      : undefined,
+    currentSort ? (currentSort.order as unknown as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,
     currentSort ? currentSort.sort : undefined,
@@ -296,7 +276,7 @@ const ReceivableTypeTab = ({
     setCurrentPaginationToken(receivables?.next_pagination_token || null);
 
   const onChangeSort = (
-    sort: api__v1__receivables__pagination__CursorFields,
+    sort: ReceivableCursorFields,
     order: SortOrderEnum | null
   ) => {
     setCurrentPaginationToken(null);

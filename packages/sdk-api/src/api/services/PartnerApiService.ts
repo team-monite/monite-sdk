@@ -1,13 +1,13 @@
-import type { api__v1__payables__pagination__CursorFields } from '../models/api__v1__payables__pagination__CursorFields';
 import type { CurrencyEnum } from '../models/CurrencyEnum';
 import type { OrderEnum } from '../models/OrderEnum';
-import type { package__payables__schemas__PaginationResponse } from '../models/package__payables__schemas__PaginationResponse';
+import type { PayablePaginationResponse } from '../models/PayablePaginationResponse';
 import type { PayableStateEnum } from '../models/PayableStateEnum';
 
 import type { CancelablePromise } from '../CancelablePromise';
 import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { PayableResponseSchema } from '../models/PayableResponseSchema';
+import { PayableCursorFields } from '../models/PayableCursorFields';
 
 export default class PartnerApiService {
   openapiConfig: Partial<OpenAPIConfig>;
@@ -50,7 +50,7 @@ export default class PartnerApiService {
     order?: OrderEnum,
     limit: number = 100,
     paginationToken?: string,
-    sort?: api__v1__payables__pagination__CursorFields,
+    sort?: PayableCursorFields,
     createdAt?: string,
     createdAtGt?: string,
     createdAtLt?: string,
@@ -70,7 +70,7 @@ export default class PartnerApiService {
     dueDateGte?: string,
     dueDateLte?: string,
     documentId?: string
-  ): CancelablePromise<package__payables__schemas__PaginationResponse> {
+  ): CancelablePromise<PayablePaginationResponse> {
     return __request(
       {
         method: 'GET',

@@ -2,10 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ObjectType } from './ObjectType';
+import type { WebhookObjectType } from './WebhookObjectType';
 
 export type CreateWebhookRequest = {
-    object_type: ObjectType;
+    object_type: WebhookObjectType;
     url: string;
 };
 
