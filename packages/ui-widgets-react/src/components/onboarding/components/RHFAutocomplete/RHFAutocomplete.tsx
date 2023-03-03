@@ -56,7 +56,7 @@ const RHFAutocomplete = <F extends FieldValues, A>({
     );
   };
   const getChangedValue = (value: any) => {
-    if (value === '') return null;
+    if (!value) return '';
     if (optionKey) return value[optionKey];
     return value;
   };

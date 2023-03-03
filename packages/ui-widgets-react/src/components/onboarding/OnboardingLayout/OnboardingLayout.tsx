@@ -38,7 +38,6 @@ export default function OnboardingLayout({
   progress,
   content,
   title,
-  actions,
 }: OnboardingLayoutProps) {
   return (
     <MaterialThemeProvider>
@@ -51,7 +50,6 @@ export default function OnboardingLayout({
           <OnboardingNotification />
           {title}
           <StyledContent>{content}</StyledContent>
-          {actions}
         </OnboardingContainer>
         <OnboardingFooter />
         {progress}

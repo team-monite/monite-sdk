@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper, styled } from '@mui/material';
 import { palette } from '@team-monite/ui-kit-react';
-import ElevationScroll from '../../ElevationScroll';
+import ElevationScroll from '../../components/ElevationScroll';
 
 const StyledHeader = styled(Paper)`
   display: flex;

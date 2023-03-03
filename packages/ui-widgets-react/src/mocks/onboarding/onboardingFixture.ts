@@ -9,48 +9,49 @@ import {
   OnboardingDataPayload,
 } from '@team-monite/sdk-api';
 
-// type OnboardingIndividualFixture = {
-//   requirements?: OnboardingRequirement[];
-//   data?: OnboardingData;
-// };
-//
-// type OnboardingFixtureProps = {
-//   type: OnboardingBusinessType;
-// };
-
 export enum OnboardingBusinessTypeFixture {
   emptyIndividual = 'emptyIndividual',
 }
+
+const prepareCache = (
+  type: OnboardingBusinessTypeFixture,
+  payload?: OnboardingDataPayload
+): OnboardingDataPayload | undefined => {
+  const onboarding = localStorage.getItem('onboarding');
+  const cache: OnboardingDataPayload | undefined =
+    onboarding && JSON.parse(onboarding);
+
+  if (!payload) return cache;
+
+  if (!!payload.tos_acceptance_date) {
+    localStorage.removeItem('onboarding');
+    return undefined;
+  }
+
+  const res = {
+    ...cache,
+    ...payload,
+  };
+
+  localStorage.setItem('onboarding', JSON.stringify(res));
+
+  return res;
+};
 
 export const onboardingIndividualFixture = (
   type: OnboardingBusinessTypeFixture,
   payload?: OnboardingDataPayload
 ): OnboardingIndividualResponse => {
-  const {
-    individual,
-    business_profile,
-    bank_account,
-    tos_acceptance_date,
-  }: OnboardingDataPayload = payload || {};
-
-  const onboarding = localStorage.getItem('onboarding');
-
-  let cache = onboarding && JSON.parse(onboarding);
-
-  if (cache?.tos_acceptance_date !== '') {
-    localStorage.removeItem('onboarding');
-    cache = null;
-  }
+  const cache = prepareCache(type, payload);
 
   return {
     business_type: OnboardingBusinessType.INDIVIDUAL,
-    requirements: getRequirements(payload || cache),
+    requirements: getRequirements(cache),
     data: cache || {
-      [OnboardingRequirement.INDIVIDUAL]: getIndividual(individual),
-      [OnboardingRequirement.BUSINESS_PROFILE]:
-        getBusinessProfile(business_profile),
-      [OnboardingRequirement.BANK_ACCOUNT]: getBankAccount(bank_account),
-      [OnboardingRequirement.TOS_ACCEPTANCE_DATE]: tos_acceptance_date || '',
+      [OnboardingRequirement.INDIVIDUAL]: getIndividual(),
+      [OnboardingRequirement.BUSINESS_PROFILE]: getBusinessProfile(),
+      [OnboardingRequirement.BANK_ACCOUNT]: getBankAccount(),
+      [OnboardingRequirement.TOS_ACCEPTANCE_DATE]: '',
     },
   };
 };
@@ -58,7 +59,7 @@ export const onboardingIndividualFixture = (
 const getRequirements = (
   payload?: OnboardingDataPayload
 ): OnboardingRequirement[] => {
-  if (!payload)
+  if (!payload || payload.individual?.first_name === '')
     return [
       OnboardingRequirement.INDIVIDUAL,
       OnboardingRequirement.BANK_ACCOUNT,
@@ -88,16 +89,18 @@ const getRequirements = (
 const getBusinessProfile = (
   businessProfile?: Partial<OnboardingBusinessProfile>
 ): OnboardingBusinessProfile => ({
-  mcc: businessProfile?.mcc || '',
-  url: businessProfile?.url || '',
+  mcc: '',
+  url: '',
+  ...businessProfile,
 });
 
 const getBankAccount = (
   bankAccount?: Partial<OnboardingBankAccount>
 ): OnboardingBankAccount => ({
-  country: bankAccount?.country || '',
-  currency: bankAccount?.currency || '',
-  iban: bankAccount?.iban || '',
+  country: '',
+  currency: '',
+  iban: '',
+  ...bankAccount,
 });
 
 const getAddress = (
@@ -108,7 +111,7 @@ const getAddress = (
   city: '',
   // state: address?.state || '',
   postal_code: '',
-  country: 'GE',
+  country: '',
   ...address,
 });
 

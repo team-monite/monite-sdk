@@ -4,7 +4,7 @@ export type CountryType = {
   phone: string;
 };
 
-export const countries: readonly CountryType[] = [
+const countries: readonly CountryType[] = [
   {
     code: 'AD',
     label: 'Andorra',
@@ -1246,3 +1246,5 @@ export const countries: readonly CountryType[] = [
     phone: '263',
   },
 ];
+
+export default countries;

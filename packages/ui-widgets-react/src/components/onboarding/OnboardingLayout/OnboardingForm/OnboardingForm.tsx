@@ -1,30 +1,27 @@
 import React, { ReactNode } from 'react';
-import { Box } from '@mui/material';
+import { Box, styled } from '@mui/material';
 
 export type OnboardingFormProps = {
   children: ReactNode;
-  formKey: string;
-  onSubmit: () => void;
+  onSubmit?: () => void;
+  actions: ReactNode;
 };
+
+const StyledContent = styled(Box)`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(1)};
+  flex-direction: column;
+`;
 
 export default function OnboardingForm({
   children,
-  formKey,
   onSubmit,
+  actions,
 }: OnboardingFormProps) {
   return (
-    <Box
-      id={formKey}
-      component="form"
-      sx={{
-        display: 'flex',
-        gap: 1,
-        flexDirection: 'column',
-      }}
-      noValidate
-      onSubmit={onSubmit}
-    >
-      {children}
-    </Box>
+    <form noValidate onSubmit={onSubmit}>
+      <StyledContent>{children}</StyledContent>
+      {actions}
+    </form>
   );
 }

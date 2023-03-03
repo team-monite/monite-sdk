@@ -1,31 +1,30 @@
-import { useCallback } from 'react';
-
-import {
-  OnboardingData,
-  OnboardingDataPayload,
-  OnboardingRequirement,
-} from '@team-monite/sdk-api';
+import { OnboardingData, OnboardingRequirement } from '@team-monite/sdk-api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import {
+  useOnboardingById,
+  useUpdateOnboarding,
+} from 'core/queries/useOnboardingById';
 
-import useScrollToError from './useScrollToError';
+// import useScrollToError from './useScrollToError';
 import useValidation from './useValidation';
-import { LocalRequirements } from '../useOnboardingStep';
 
 export type OnboardingFormProps = {
-  onSubmit: (payload: Partial<OnboardingDataPayload>) => void;
-  formKey: LocalRequirements;
   requirements: OnboardingRequirement[];
   data: Partial<OnboardingData>;
-  isLoading: boolean;
+  linkId: string;
 };
 
 export default function useOnboardingForm({
   data,
   requirements,
-  onSubmit: onParentSubmit,
+  linkId,
 }: OnboardingFormProps) {
   const validationSchema = useValidation(data, requirements);
+  const { isLoading, mutate } = useUpdateOnboarding(linkId);
+  const { data: onboarding } = useOnboardingById(linkId);
+
+  // useScrollToError(methods.formState.errors, requirements);
 
   const methods = useForm({
     resolver: yupResolver(validationSchema),
@@ -33,15 +32,20 @@ export default function useOnboardingForm({
     mode: 'onTouched',
   });
 
-  useScrollToError(methods.formState.errors, requirements);
-
-  const onSubmit = useCallback(
-    (data: Partial<OnboardingDataPayload>) => onParentSubmit(data),
-    [onParentSubmit, data]
-  );
+  const onSave = () => mutate(methods.getValues());
+  const onNext = (payload: Partial<OnboardingData>) => mutate(payload);
+  const onSubmit = () =>
+    mutate({
+      ...methods.getValues(),
+      tos_acceptance_date: new Date().toISOString(),
+    });
 
   return {
+    onboarding,
     methods,
+    isLoading,
+    onNext,
+    onSave,
     onSubmit,
   };
 }

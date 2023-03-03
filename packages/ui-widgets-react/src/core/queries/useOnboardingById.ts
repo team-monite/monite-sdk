@@ -44,7 +44,7 @@ export const useUpdateOnboarding = (linkId: string) => {
   return useMutation<
     OnboardingIndividualResponse,
     Error,
-    OnboardingDataPayload
+    Partial<OnboardingDataPayload>
   >((payload) => monite.api.onboarding.updateRequirements(linkId, payload), {
     onSuccess: (onboarding) => {
       queryClient.setQueryData(onboardingQueryKeys.detail(), onboarding);

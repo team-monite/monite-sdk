@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { CountryType } from '../../Countries';
+import { CountryType } from '../../dicts/countries';
 import { AutocompleteRenderOptionState } from '@mui/material/Autocomplete/Autocomplete';
 
 export type OnboardingCountryOptionProps = {
