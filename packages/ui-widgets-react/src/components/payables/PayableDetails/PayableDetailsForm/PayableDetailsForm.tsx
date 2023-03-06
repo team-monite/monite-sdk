@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useMemo } from 'react';
+import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
 import { TFunction, useTranslation } from 'react-i18next';
 import { Controller, useForm, ControllerFieldState } from 'react-hook-form';
 import {
@@ -45,6 +45,7 @@ import { OptionalFields } from '../PayableDetails';
 interface PayableDetailsFormProps {
   payable: PayableResponseSchema;
   saveInvoice: (data: PayableUpdateSchema) => void;
+  submitInvoice: (data: PayableUpdateSchema) => void;
   isFormLoading: boolean;
   optionalFields?: OptionalFields;
 }
@@ -77,7 +78,10 @@ const getValidationSchema = (t: TFunction) =>
     .required();
 
 const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
-  ({ payable, saveInvoice, isFormLoading, optionalFields }, ref) => {
+  (
+    { payable, saveInvoice, submitInvoice, isFormLoading, optionalFields },
+    ref
+  ) => {
     const { t } = useTranslation();
     const { control, handleSubmit, reset, watch } =
       useForm<PayableDetailsFormFields>({
@@ -114,6 +118,8 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
       showBic: true,
     });
 
+    const isSubmittedByKeyboardRef = useRef(false);
+
     return (
       <StyledModalLayoutScrollContent>
         {isFormLoading && <Loading />}
@@ -122,26 +128,50 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
             ref={ref}
             id="payableDetailsForm"
             noValidate
-            onSubmit={handleSubmit(async (values) => {
+            onBlur={() => {
+              isSubmittedByKeyboardRef.current = false;
+            }}
+            onKeyDown={(event) => {
+              isSubmittedByKeyboardRef.current = event.key === 'Enter';
+            }}
+            onSubmit={handleSubmit(async (values, event) => {
+              const submissionType =
+                ((): 'save' | 'submit' | undefined => {
+                  if (isSubmittedByKeyboardRef.current) return 'save';
+
+                  const nativeEvent = event?.nativeEvent;
+                  if (!(nativeEvent instanceof SubmitEvent)) return;
+                  if (!(nativeEvent.submitter instanceof HTMLButtonElement))
+                    return;
+
+                  const submitterType = nativeEvent.submitter.value;
+                  if (submitterType === 'save' || submitterType === 'submit')
+                    return submitterType;
+                })() ?? 'save';
+
               const counterpartAddress =
                 counterpartAddressQuery?.data?.data.find(
                   (address) => address.is_default
                 );
 
-              if (counterpartAddress) {
-                await saveInvoice(
-                  prepareSubmit({
-                    ...values,
-                    counterpartAddress: {
-                      country: counterpartAddress.country,
-                      city: counterpartAddress.city,
-                      postal_code: counterpartAddress.postal_code,
-                      state: counterpartAddress.state,
-                      line1: counterpartAddress.line1,
-                      line2: counterpartAddress.line2,
-                    },
-                  })
-                );
+              if (!counterpartAddress) return;
+
+              const invoiceData = prepareSubmit({
+                ...values,
+                counterpartAddress: {
+                  country: counterpartAddress.country,
+                  city: counterpartAddress.city,
+                  postal_code: counterpartAddress.postal_code,
+                  state: counterpartAddress.state,
+                  line1: counterpartAddress.line1,
+                  line2: counterpartAddress.line2,
+                },
+              });
+
+              if (submissionType === 'submit') {
+                await submitInvoice(invoiceData);
+              } else {
+                await saveInvoice(invoiceData);
               }
             })}
           >

@@ -89,13 +89,19 @@ const PayableDetails = ({
         key={'save'}
         color={'secondary'}
         type="submit"
+        value="save"
         form="payableDetailsForm"
       >
         {t('common:save')}
       </Button>
     ),
     submit: (
-      <Button key={'submit'} onClick={submitInvoice}>
+      <Button
+        key="submit"
+        type="submit"
+        value="submit"
+        form="payableDetailsForm"
+      >
         {t('common:submit')}
       </Button>
     ),
@@ -215,6 +221,7 @@ const PayableDetails = ({
               <PayableDetailsForm
                 ref={formRef}
                 saveInvoice={saveInvoice}
+                submitInvoice={submitInvoice}
                 payable={payable}
                 isFormLoading={isFormLoading}
                 optionalFields={optionalFields}
