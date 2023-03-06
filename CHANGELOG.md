@@ -1,5 +1,13 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## ui-widgets-react 1.2.1
+
+This is a bugfix release that fixes some issues in countepart-related components.
+
+## Bug fixes
+* Fixed an issue where new counterparts could not be created.
+* Fixed displaying of counterpart addresses.
+
 ## ui-widgets-react 1.2.0
 
 ### New features
