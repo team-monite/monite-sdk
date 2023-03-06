@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
 import { useDeleteTag } from 'core/queries';
-import { ConfirmDeleteModalTestId } from './ConfirmDeleteModal.types';
 
 const StyledHeader = styled.div`
   display: flex;
@@ -81,11 +80,7 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
           <>
             <Separator />
             <ActionsWrapper>
-              <Button
-                color="secondary"
-                onClick={onClose}
-                data-testid={ConfirmDeleteModalTestId.CancelButton}
-              >
+              <Button color="secondary" onClick={onClose}>
                 {t('common:cancel')}
               </Button>
               <Button
@@ -93,7 +88,6 @@ const ConfirmDeleteModal = ({ tag, onClose, onDelete }: Props) => {
                 onClick={handleDelete}
                 disabled={deleteTagMutation.isLoading}
                 isLoading={deleteTagMutation.isLoading}
-                data-testid={ConfirmDeleteModalTestId.DeleteButton}
               >
                 {t('common:delete')}
               </Button>

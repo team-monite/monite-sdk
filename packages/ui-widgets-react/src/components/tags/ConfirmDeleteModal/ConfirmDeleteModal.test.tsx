@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithClient } from 'utils/test-utils';
 import ConfirmDeleteModal from './ConfirmDeleteModal';
-import { ConfirmDeleteModalTestId } from './ConfirmDeleteModal.types';
+import i18n from '../../../core/i18n';
 
 describe('ConfirmDeleteModal', () => {
   test('should trigger `onClose` callback when click on "cancel" button', () => {
@@ -19,9 +19,9 @@ describe('ConfirmDeleteModal', () => {
       />
     );
 
-    const cancelButton = screen.getByTestId(
-      ConfirmDeleteModalTestId.CancelButton
-    );
+    const cancelButton = screen.getByRole('button', {
+      name: i18n.t('common:cancel'),
+    });
 
     expect(cancelButton).toBeInTheDocument();
 
@@ -45,9 +45,9 @@ describe('ConfirmDeleteModal', () => {
       />
     );
 
-    const deleteButton = screen.getByTestId(
-      ConfirmDeleteModalTestId.DeleteButton
-    );
+    const deleteButton = screen.getByRole('button', {
+      name: i18n.t('common:delete'),
+    });
 
     expect(deleteButton).toBeInTheDocument();
     expect(onCloseMock).not.toHaveBeenCalled();
@@ -60,5 +60,37 @@ describe('ConfirmDeleteModal', () => {
 
     expect(onCloseMock).toHaveBeenCalledTimes(1);
     expect(onDeleteMock).toHaveBeenCalledTimes(1);
+  });
+
+  test('should NOT trigger `onDelete` and `onClose` callbacks when response failed', async () => {
+    const onDeleteMock = jest.fn();
+    const onCloseMock = jest.fn();
+
+    renderWithClient(
+      <ConfirmDeleteModal
+        tag={{
+          id: '0',
+          name: 'Tag name',
+        }}
+        onClose={onCloseMock}
+        onDelete={onDeleteMock}
+      />
+    );
+
+    const deleteButton = screen.getByRole('button', {
+      name: i18n.t('common:delete'),
+    });
+
+    expect(deleteButton).toBeInTheDocument();
+    expect(onCloseMock).not.toHaveBeenCalled();
+    expect(onDeleteMock).not.toHaveBeenCalled();
+
+    fireEvent.click(deleteButton);
+
+    /** Wait until we see tooltip that the tag has been deleted */
+    await screen.findByText(/was deleted/);
+
+    expect(onCloseMock).not.toHaveBeenCalled();
+    expect(onDeleteMock).not.toHaveBeenCalled();
   });
 });
