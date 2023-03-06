@@ -29,8 +29,17 @@ const Content = styled.div`
 `;
 
 interface Props {
+  /** The tag what we want to delete */
   tag: { id: string; name: string };
+
+  /**
+   * Callback which fires when the user
+   *  decided to close the modal
+   *  or deletion was successful
+   */
   onClose: () => void;
+
+  /** Callback which fires when the tag has been deleted */
   onDelete: () => void;
 }
 

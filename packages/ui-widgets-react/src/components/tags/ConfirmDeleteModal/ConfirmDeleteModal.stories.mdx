@@ -6,14 +6,19 @@ import { Canvas, Meta, Story } from '@storybook/addon-docs';
   component={ConfirmDeleteModal}
   args={{
     tag: {
-      id: '1',
+      id: 'tag-1',
       name: 'Tag Name',
     },
   }}
 />
 
 export const Template = (args) => <ConfirmDeleteModal {...args} />;
+export const WithError = (args) => <ConfirmDeleteModal {...args} tag={{
+  id: '0',
+  name: 'Tag with error'
+}} />;
 
 <Canvas>
   <Story name="Default">{Template.bind({})}</Story>
+  <Story name="WithError">{WithError.bind({})}</Story>
 </Canvas>
