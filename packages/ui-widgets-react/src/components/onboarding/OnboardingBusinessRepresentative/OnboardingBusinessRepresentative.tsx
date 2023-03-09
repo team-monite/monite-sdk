@@ -1,10 +1,12 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { OnboardingAddress, OnboardingIndividual } from '@team-monite/sdk-api';
 
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
 import OnboardingSubTitle from '../OnboardingLayout/OnboardingSubTitle';
 import OnboardingCountryOption from '../OnboardingLayout/OnboardingCountryOption';
 import OnboardingForm from '../OnboardingLayout/OnboardingForm';
+import OnboardingFormActions from '../OnboardingLayout/OnboardingFormActions';
 
 import RHFTextField from '../components/RHFTextField';
 import RHFAutocomplete from '../components/RHFAutocomplete';
@@ -14,13 +16,14 @@ import useOnboardingForm, {
 } from '../hooks/useOnboardingForm';
 
 import countries from '../dicts/countries';
-import OnboardingFormActions from '../OnboardingFormActions';
+import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
+import useOnboardingTranslateTitle from '../hooks/useOnboardingTranslateTitle';
+import { LocalRequirements } from '../useOnboardingStep';
 
 export default function OnboardingBusinessRepresentative(
   props: OnboardingFormProps
 ) {
   const { individual } = props.data;
-  const { t } = useTranslation();
 
   const {
     methods: { control, handleSubmit },
@@ -29,14 +32,15 @@ export default function OnboardingBusinessRepresentative(
     onSave,
   } = useOnboardingForm(props);
 
-  const translateIndividualFields = (key: string): string =>
-    t(`onboarding:individualFields.${key}`);
+  const translateTitle = useOnboardingTranslateTitle(
+    LocalRequirements.businessRepresentative
+  );
 
-  const translateAddressFields = (key: string): string =>
-    t(`onboarding:addressFields.${key}`);
+  const translateIndividualField =
+    useOnboardingTranslateField<OnboardingIndividual>('individual');
 
-  const translateTitles = (key: string): string =>
-    t(`onboarding:businessRepresentativeStep.${key}`);
+  const translateAddressField =
+    useOnboardingTranslateField<OnboardingAddress>('address');
 
   return (
     <OnboardingForm
@@ -44,18 +48,18 @@ export default function OnboardingBusinessRepresentative(
       actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
     >
       <OnboardingStepContent>
-        <OnboardingSubTitle>{translateTitles('legalName')}</OnboardingSubTitle>
+        <OnboardingSubTitle>{translateTitle('legalName')}</OnboardingSubTitle>
 
         <RHFTextField
           disabled={isLoading}
-          label={translateIndividualFields('first_name')}
+          label={translateIndividualField('first_name')}
           name="individual.first_name"
           control={control}
         />
 
         <RHFTextField
           disabled={isLoading}
-          label={translateIndividualFields('last_name')}
+          label={translateIndividualField('last_name')}
           name="individual.last_name"
           control={control}
         />
@@ -64,7 +68,7 @@ export default function OnboardingBusinessRepresentative(
       <OnboardingStepContent>
         <RHFTextField
           disabled={isLoading}
-          label={translateIndividualFields('email')}
+          label={translateIndividualField('email')}
           name="individual.email"
           type={'email'}
           control={control}
@@ -72,7 +76,7 @@ export default function OnboardingBusinessRepresentative(
 
         <RHFTextField
           disabled={isLoading}
-          label={translateIndividualFields('phone')}
+          label={translateIndividualField('phone')}
           name="individual.phone"
           type={'tel'}
           control={control}
@@ -80,7 +84,7 @@ export default function OnboardingBusinessRepresentative(
 
         <RHFTextField
           disabled={isLoading}
-          label={translateIndividualFields('date_of_birth')}
+          label={translateIndividualField('date_of_birth')}
           name="individual.date_of_birth"
           control={control}
           type={'tel'}
@@ -92,14 +96,12 @@ export default function OnboardingBusinessRepresentative(
       </OnboardingStepContent>
 
       <OnboardingStepContent>
-        <OnboardingSubTitle>
-          {translateTitles('homeAddress')}
-        </OnboardingSubTitle>
+        <OnboardingSubTitle>{translateTitle('homeAddress')}</OnboardingSubTitle>
 
         <RHFAutocomplete
           name="individual.address.country"
           control={control}
-          label={translateAddressFields('country')}
+          label={translateAddressField('country')}
           options={countries}
           optionKey={'code'}
           labelKey={'label'}
@@ -115,21 +117,21 @@ export default function OnboardingBusinessRepresentative(
 
         <RHFTextField
           disabled={isLoading}
-          label={translateAddressFields('line1')}
+          label={translateAddressField('line1')}
           name="individual.address.line1"
           control={control}
         />
 
         <RHFTextField
           disabled={isLoading}
-          label={translateAddressFields('line2')}
+          label={translateAddressField('line2')}
           name="individual.address.line2"
           control={control}
         />
 
         <RHFTextField
           disabled={isLoading}
-          label={translateAddressFields('city')}
+          label={translateAddressField('city')}
           name="individual.address.city"
           control={control}
         />
@@ -137,7 +139,7 @@ export default function OnboardingBusinessRepresentative(
         {individual?.address?.state !== undefined && (
           <RHFTextField
             disabled={isLoading}
-            label={translateAddressFields('state')}
+            label={translateAddressField('state')}
             name="individual.address.state"
             control={control}
           />
@@ -146,7 +148,7 @@ export default function OnboardingBusinessRepresentative(
         <RHFTextField
           disabled={isLoading}
           type={'tel'}
-          label={translateAddressFields('postal_code')}
+          label={translateAddressField('postal_code')}
           name="individual.address.postal_code"
           control={control}
         />
@@ -156,13 +158,13 @@ export default function OnboardingBusinessRepresentative(
         individual?.ssn_last_4 !== undefined) && (
         <OnboardingStepContent>
           <OnboardingSubTitle>
-            {translateTitles('verifyIdentity')}
+            {translateTitle('verifyIdentity')}
           </OnboardingSubTitle>
 
           {individual.ssn_last_4 !== undefined && (
             <RHFTextField
               disabled={isLoading}
-              label={translateIndividualFields('ssn_last_4')}
+              label={translateIndividualField('ssn_last_4')}
               name="individual.ssn_last_4"
               control={control}
               type={'tel'}
@@ -176,7 +178,7 @@ export default function OnboardingBusinessRepresentative(
             <RHFTextField
               disabled={isLoading}
               type={'tel'}
-              label={translateIndividualFields('id_number')}
+              label={translateIndividualField('id_number')}
               name="individual.id_number"
               control={control}
             />

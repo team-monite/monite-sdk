@@ -1,22 +1,21 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { OnboardingBusinessProfile as OnboardingBusinessProfileType } from '@team-monite/sdk-api';
+
+import mccCodes from '../dicts/mccCodes';
 
 import RHFTextField from '../components/RHFTextField';
 import RHFAutocomplete from '../components/RHFAutocomplete';
 
 import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
-
-import mccCodes from '../dicts/mccCodes';
+import OnboardingFormActions from '../OnboardingLayout/OnboardingFormActions';
 
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
-import OnboardingFormActions from '../OnboardingFormActions';
+import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
 
 const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
-  const { t } = useTranslation();
-
   const {
     methods: { control, handleSubmit },
     isLoading,
@@ -24,8 +23,10 @@ const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
     onSave,
   } = useOnboardingForm(props);
 
-  const translateFields = (key: string): string =>
-    t(`onboarding:businessProfileFields.${key}`);
+  const translateField =
+    useOnboardingTranslateField<OnboardingBusinessProfileType>(
+      'business_profile'
+    );
 
   return (
     <OnboardingForm
@@ -37,7 +38,7 @@ const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
           disabled={isLoading}
           name="business_profile.mcc"
           control={control}
-          label={translateFields('mcc')}
+          label={translateField('mcc')}
           options={mccCodes}
           optionKey={'code'}
           labelKey={'label'}
@@ -45,7 +46,7 @@ const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
 
         <RHFTextField
           disabled={isLoading}
-          label={translateFields('url')}
+          label={translateField('url')}
           name="business_profile.url"
           type={'url'}
           control={control}

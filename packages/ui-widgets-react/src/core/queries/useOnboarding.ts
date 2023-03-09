@@ -13,7 +13,7 @@ export const onboardingQueryKeys = {
   detail: () => [...onboardingQueryKeys.all(), 'detail'],
 };
 
-export const useOnboardingById = (linkId: string) => {
+export const useOnboarding = (linkId: string) => {
   const { monite, t } = useComponentsContext();
 
   return useQuery<OnboardingIndividualResponse | undefined, Error>(
@@ -48,6 +48,7 @@ export const useUpdateOnboarding = (linkId: string) => {
   >((payload) => monite.api.onboarding.updateRequirements(linkId, payload), {
     onSuccess: (onboarding) => {
       queryClient.setQueryData(onboardingQueryKeys.detail(), onboarding);
+      toast.success('Saved');
     },
     onError: () => {
       toast.error(

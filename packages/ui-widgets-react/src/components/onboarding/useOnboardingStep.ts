@@ -1,6 +1,6 @@
 import { useEffect, useState, ComponentType } from 'react';
 
-import { useOnboardingById } from 'core/queries/useOnboardingById';
+import { useOnboarding } from 'core/queries/useOnboarding';
 import {
   OnboardingBusinessType,
   OnboardingRequirement,
@@ -63,7 +63,7 @@ export const useOnboardingStep = ({ linkId }: OnboardingProps) => {
   const [length, setLength] = useState<number>(0);
   const [step, setStep] = useState<OnboardingStep | null>(null);
 
-  const { data: onboarding, isLoading } = useOnboardingById(linkId);
+  const { data: onboarding, isLoading } = useOnboarding(linkId);
 
   useEffect(() => window.scrollTo(0, 0), [step]);
 
