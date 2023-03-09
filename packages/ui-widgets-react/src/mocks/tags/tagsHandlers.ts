@@ -22,29 +22,74 @@ interface ErrorResponse {
   };
 }
 
-export const tagsHandlers = [
-  // read tag list
-  rest.get<undefined, {}, TagsPaginationResponse>(
-    tagsPath,
-    ({ url }, res, ctx) => {
-      return res(
-        ctx.json({
-          data: tagListFixture,
-        })
-      );
-    }
-  ),
+interface GetRequest {
+  order: 'desc' | 'asc';
+  limit: string;
+  sort: 'updated_at' | 'created_at';
+  pagination_token: string;
+}
 
-  // read tag list with limit
-  // TODO should combine with above handler using path params
-  rest.get<undefined, {}, TagsPaginationResponse>(
-    `${tagsPath}?limit=10`,
-    ({ url }, res, ctx) => {
-      return res(
-        ctx.json({
-          data: tagListFixture,
-        })
-      );
+export const tagsHandlers = [
+  /**
+   * Get all tags
+   *
+   * Also supports sorting, limits and ordering
+   */
+  rest.get<undefined, GetRequest, TagsPaginationResponse>(
+    tagsPath,
+    (req, res, ctx) => {
+      const sort =
+        (req.url.searchParams.get('sort') as GetRequest['sort']) || null;
+
+      const order =
+        (req.url.searchParams.get('order') as GetRequest['order']) || null;
+
+      const limit =
+        (req.url.searchParams.get('limit') as GetRequest['limit']) || null;
+
+      const pagination_token =
+        (req.url.searchParams.get(
+          'pagination_token'
+        ) as GetRequest['pagination_token']) || null;
+
+      const sortedData = tagListFixture.sort((a, b) => {
+        if (sort === null) {
+          return 0;
+        }
+
+        const aTime = new Date(a[sort]);
+        const bTime = new Date(b[sort]);
+
+        if (order === 'desc') {
+          return aTime.getTime() - bTime.getTime();
+        } else if (order === 'asc') {
+          return bTime.getTime() - aTime.getTime();
+        }
+
+        return 0;
+      });
+
+      const filteredData: TagsPaginationResponse = (() => {
+        const parsedLimit = Number(limit);
+
+        /** We should return next elements */
+        if (pagination_token === '1') {
+          return {
+            data: sortedData.slice(parsedLimit),
+            next_pagination_token: undefined,
+            prev_pagination_token: '-1',
+          };
+        }
+
+        /** We should return first `limit` elements */
+        return {
+          data: sortedData.slice(0, parsedLimit),
+          next_pagination_token: '1',
+          prev_pagination_token: undefined,
+        };
+      })();
+
+      return res(ctx.json(filteredData));
     }
   ),
 
