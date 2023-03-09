@@ -7,12 +7,15 @@ import OnboardingLayout from './OnboardingLayout';
 import OnboardingProgress from './OnboardingLayout/OnboardingProgress';
 import OnboardingTitle from './OnboardingLayout/OnboardingTitle';
 import { OnboardingProps, useOnboardingStep } from './useOnboardingStep';
+import useOnboardingTranslateTitle from './hooks/useOnboardingTranslateTitle';
 
 export default function Onboarding(props: OnboardingProps) {
   const { t } = useTranslation();
 
   const { step, Component, progress, isLoading, data } =
     useOnboardingStep(props);
+
+  const translateTitle = useOnboardingTranslateTitle(step?.key);
 
   // TODO Add error handling
   if (isLoading || !step || !data) {
@@ -24,9 +27,9 @@ export default function Onboarding(props: OnboardingProps) {
       progress={<OnboardingProgress value={progress} />}
       title={
         <OnboardingTitle
+          title={translateTitle('title')}
+          description={translateTitle('description')}
           step={`${t('onboarding:step')} ${step.index + 1}`}
-          title={t(`onboarding:${step.key}Step.title`)}
-          description={t(`onboarding:${step.key}Step.description`)}
         />
       }
       content={

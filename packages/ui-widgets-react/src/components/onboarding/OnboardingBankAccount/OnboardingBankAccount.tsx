@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { MenuItem } from '@mui/material';
+import { OnboardingBankAccount as OnboardingBankAccountType } from '@team-monite/sdk-api';
 
 import countries from '../dicts/countries';
 import currencies from '../dicts/currencies';
@@ -12,17 +12,16 @@ import RHFAutocomplete from '../components/RHFAutocomplete';
 import OnboardingStepContent from '../OnboardingLayout/OnboardingStepContent';
 import OnboardingForm from '../OnboardingLayout/OnboardingForm';
 import OnboardingCountryOption from '../OnboardingLayout/OnboardingCountryOption';
+import OnboardingFormActions from '../OnboardingLayout/OnboardingFormActions';
 
 import OnboardingAgreement from './OnboardingAgreement';
-import OnboardingFormActions from '../OnboardingFormActions';
 
 import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
+import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
 
 const OnboardingBankAccount = (props: OnboardingFormProps) => {
-  const { t } = useTranslation();
-
   const {
     methods: { control, handleSubmit },
     onNext,
@@ -30,8 +29,8 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
     isLoading,
   } = useOnboardingForm(props);
 
-  const translateFields = (key: string): string =>
-    t(`onboarding:bankAccountFields.${key}`);
+  const translateField =
+    useOnboardingTranslateField<OnboardingBankAccountType>('bank_account');
 
   return (
     <OnboardingForm
@@ -41,7 +40,7 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
       <OnboardingStepContent>
         <RHFTextField
           disabled={isLoading}
-          label={translateFields('currency')}
+          label={translateField('currency')}
           name="bank_account.currency"
           control={control}
           select
@@ -57,7 +56,7 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
           disabled={isLoading}
           name="bank_account.country"
           control={control}
-          label={translateFields('country')}
+          label={translateField('country')}
           options={countries.filter((country) =>
             allowCountries.find((item) => item === country.code)
           )}
@@ -75,7 +74,7 @@ const OnboardingBankAccount = (props: OnboardingFormProps) => {
 
         <RHFTextField
           disabled={isLoading}
-          label={translateFields('iban')}
+          label={translateField('iban')}
           name="bank_account.iban"
           control={control}
         />

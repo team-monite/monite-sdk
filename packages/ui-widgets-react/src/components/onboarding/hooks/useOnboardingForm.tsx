@@ -1,10 +1,7 @@
 import { OnboardingData, OnboardingRequirement } from '@team-monite/sdk-api';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  useOnboardingById,
-  useUpdateOnboarding,
-} from 'core/queries/useOnboardingById';
+import { useOnboarding, useUpdateOnboarding } from 'core/queries/useOnboarding';
 
 // import useScrollToError from './useScrollToError';
 import useValidation from './useValidation';
@@ -22,7 +19,7 @@ export default function useOnboardingForm({
 }: OnboardingFormProps) {
   const validationSchema = useValidation(data, requirements);
   const { isLoading, mutate } = useUpdateOnboarding(linkId);
-  const { data: onboarding } = useOnboardingById(linkId);
+  const { data: onboarding } = useOnboarding(linkId);
 
   // useScrollToError(methods.formState.errors, requirements);
 
