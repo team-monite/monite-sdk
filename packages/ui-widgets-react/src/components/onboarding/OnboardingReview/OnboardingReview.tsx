@@ -37,6 +37,22 @@ const OnboardingReview = (props: OnboardingFormProps) => {
     data: { individual, bank_account, business_profile },
   } = onboarding;
 
+  const addressCountry = countries.find(
+    ({ code }) => code === individual?.address?.country
+  )?.label;
+
+  const bankAccountCountry = countries.find(
+    ({ code }) => code === bank_account?.country
+  )?.label;
+
+  const bankAccountCurrency = currencies.find(
+    ({ code }) => code === bank_account?.currency
+  )?.label;
+
+  const mcc = mccCodes.find(
+    ({ code }) => `${code}` === business_profile?.mcc
+  )?.label;
+
   return (
     <OnboardingForm
       actions={
@@ -51,27 +67,23 @@ const OnboardingReview = (props: OnboardingFormProps) => {
         <OnboardingStepContent key={key}>
           <OnboardingSubTitle>{translateTitle(key)}</OnboardingSubTitle>
           {key === LocalRequirements.businessRepresentative && (
-            <OnboardingBusinessRepresentativeView {...individual} />
+            <OnboardingBusinessRepresentativeView
+              {...individual}
+              address={{
+                ...individual?.address,
+                country: addressCountry,
+              }}
+            />
           )}
           {key === LocalRequirements.bankAccount && (
             <OnboardingBankAccountView
               {...bank_account}
-              country={
-                countries.find((c) => c.code === bank_account?.country)?.label
-              }
-              currency={
-                currencies.find((c) => c.code === bank_account?.currency)?.label
-              }
+              country={bankAccountCountry}
+              currency={bankAccountCurrency}
             />
           )}
           {key === LocalRequirements.businessProfile && (
-            <OnboardingBusinessProfileView
-              {...business_profile}
-              mcc={
-                mccCodes.find((c) => `${c.code}` === business_profile?.mcc)
-                  ?.label
-              }
-            />
+            <OnboardingBusinessProfileView {...business_profile} mcc={mcc} />
           )}
         </OnboardingStepContent>
       ))}

@@ -1,9 +1,10 @@
 import React from 'react';
 import { OnboardingAddress, OnboardingIndividual } from '@team-monite/sdk-api';
+
 import { LocalRequirements } from '../../useOnboardingStep';
 import useOnboardingTranslateTitle from '../../hooks/useOnboardingTranslateTitle';
 import useOnboardingTranslateField from '../../hooks/useOnboardingTranslateField';
-import countries from '../../dicts/countries';
+
 import {
   OnboardingViewRow,
   OnboardingViewLabel,
@@ -71,7 +72,7 @@ export default function OnboardingBusinessRepresentativeView({
 
         <OnboardingViewRow
           label={translateAddressField('country')}
-          value={countries.find((c) => c.code === country)?.label}
+          value={country}
         />
         <OnboardingViewRow
           label={translateAddressField('line1')}
