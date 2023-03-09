@@ -2,7 +2,6 @@ import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
 import { renderWithClient } from 'utils/test-utils';
 import TagFormModal from './TagFormModal';
-import { TagFormModalTestId } from './TagFormModal.types';
 import i18n from '../../../core/i18n';
 
 function generateRandomText(customMessage?: string) {
@@ -59,7 +58,7 @@ describe('TagFormModal', () => {
       expect(onCreateMock).not.toHaveBeenCalled();
 
       const text = generateRandomText();
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: text },
       });
       fireEvent.submit(form);
@@ -85,7 +84,7 @@ describe('TagFormModal', () => {
       expect(onCreateMock).not.toHaveBeenCalled();
 
       const text = generateRandomText();
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: text },
       });
       fireEvent.click(createButton);
@@ -113,7 +112,7 @@ describe('TagFormModal', () => {
       expect(onCreateMock).not.toHaveBeenCalled();
 
       const text = generateRandomText(' error');
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: text },
       });
       fireEvent.click(createButton);
@@ -150,7 +149,7 @@ describe('TagFormModal', () => {
       expect(updateButton).toBeInTheDocument();
       expect(onUpdateMock).not.toHaveBeenCalled();
 
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: '[UPDATED] Tag name' },
       });
       fireEvent.click(updateButton);
@@ -183,7 +182,7 @@ describe('TagFormModal', () => {
       expect(onUpdateMock).not.toHaveBeenCalled();
 
       const text = generateRandomText();
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: text },
       });
       fireEvent.submit(form);
@@ -219,7 +218,7 @@ describe('TagFormModal', () => {
       expect(onCloseMock).not.toHaveBeenCalled();
 
       const errorText = generateRandomText(' error');
-      fireEvent.change(screen.getByTestId(TagFormModalTestId.Input), {
+      fireEvent.change(screen.getByRole('textbox', { name: /name/i }), {
         target: { value: errorText },
       });
       fireEvent.click(updateButton);

@@ -71,9 +71,7 @@ export const tagsHandlers = [
       }
 
       /** Response already existing texture but with the name what the user provided */
-      const responseJson = Object.assign({}, tagListFixture[0], {
-        name: json.name,
-      });
+      const responseJson = { ...tagListFixture[0], name: json.name };
 
       return res(ctx.json(responseJson));
     }
@@ -102,9 +100,7 @@ export const tagsHandlers = [
       }
 
       /** Response already existing texture but with the name what the user provided */
-      const responseJson = Object.assign({}, tagListFixture[0], {
-        name: json.name,
-      });
+      const responseJson = { ...tagListFixture[0], name: json.name };
 
       return res(ctx.json(responseJson));
     }

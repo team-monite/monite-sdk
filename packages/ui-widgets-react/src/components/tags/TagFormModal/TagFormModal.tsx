@@ -16,7 +16,6 @@ import {
 } from '@team-monite/ui-kit-react';
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useCreateTag, useUpdateTag } from 'core/queries';
-import { TagFormModalTestId } from './TagFormModal.types';
 
 const getValidationSchema = (t: TFunction) =>
   yup
@@ -174,12 +173,7 @@ const TagFormModal = ({ tag, onCreate, onClose }: Props) => {
                   error={error?.message}
                   required
                 >
-                  <Input
-                    id={field.name}
-                    data-testid={TagFormModalTestId.Input}
-                    {...field}
-                    isInvalid={!!error}
-                  />
+                  <Input id={field.name} {...field} isInvalid={!!error} />
                 </FormField>
               )}
             />
