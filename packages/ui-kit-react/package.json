@@ -15,6 +15,8 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "test:ci": "echo \"Error: no test specified\" && exit 0",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
     "storybook": "start-storybook -p 6007 --no-manager-cache",
     "build-storybook": "build-storybook -o storybook_static",

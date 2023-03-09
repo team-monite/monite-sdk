@@ -4,7 +4,7 @@
   "private": true,
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn workspaces run test:ci",
     "app-white-label:start": "yarn workspace @monite/app-white-label start",
     "app-white-label:serve": "yarn workspace @monite/app-white-label serve",
     "app-white-label:build": "yarn workspace @monite/app-white-label build",
@@ -12,7 +12,7 @@
     "sdk-api:build": "yarn workspace @team-monite/sdk-api build",
     "ui-widgets-react:build": "yarn workspace @team-monite/ui-widgets-react build",
     "ui-widgets-react:story": "yarn workspace @team-monite/ui-widgets-react storybook",
-    "ui-widgets-react:test": "yarn workspace @team-monite/ui-widgets-react test",
+    "ui-widgets-react:test": "yarn workspace @team-monite/ui-widgets-react test:ci",
     "ui-widgets-react:build-storybook": "yarn workspace @team-monite/ui-widgets-react build-storybook",
     "ui-kit-react:story": "yarn workspace @team-monite/ui-kit-react storybook",
     "ui-kit-react:build": "yarn workspace @team-monite/ui-kit-react build",

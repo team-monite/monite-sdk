@@ -48,19 +48,61 @@ export const tagsHandlers = [
     }
   ),
 
-  // create tag
-  rest.post<TagCreateOrUpdateSchema, {}, TagReadSchema>(
+  /**
+   * The mock for Create a Tag.
+   * Rejects the request if tag name includes `error` string
+   *
+   * @returns A default fixtures with provided `name`
+   */
+  rest.post<TagCreateOrUpdateSchema, {}, TagReadSchema | ErrorResponse>(
     tagsPath,
-    ({ params }, res, ctx) => {
-      return res(ctx.json(tagListFixture[0]));
+    async (req, res, ctx) => {
+      const json = await req.json<{ name: string }>();
+
+      if (json.name.includes('error')) {
+        return res(
+          ctx.status(403),
+          ctx.json({
+            error: {
+              message: json.name,
+            },
+          })
+        );
+      }
+
+      /** Response already existing texture but with the name what the user provided */
+      const responseJson = { ...tagListFixture[0], name: json.name };
+
+      return res(ctx.json(responseJson));
     }
   ),
 
-  // update tag
-  rest.patch<TagCreateOrUpdateSchema, {}, TagReadSchema>(
+  /**
+   * The mock for Update a Tag.
+   * Rejects the request if tag name includes `error` string
+   *
+   * @returns A default fixtures with provided `name`
+   */
+  rest.patch<TagCreateOrUpdateSchema, {}, TagReadSchema | ErrorResponse>(
     `${tagsPath}/:id`,
-    ({ params }, res, ctx) => {
-      return res(ctx.json(tagListFixture[0]));
+    async (req, res, ctx) => {
+      const json = await req.json<{ name: string }>();
+
+      if (json.name.includes('error')) {
+        return res(
+          ctx.status(403),
+          ctx.json({
+            error: {
+              message: json.name,
+            },
+          })
+        );
+      }
+
+      /** Response already existing texture but with the name what the user provided */
+      const responseJson = { ...tagListFixture[0], name: json.name };
+
+      return res(ctx.json(responseJson));
     }
   ),
 

@@ -12,7 +12,8 @@
   ],
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "craco test --watchAll=false",
+    "test": "craco test",
+    "test:ci": "yarn run test -- --watchAll=false",
     "test:coverage": "craco test --watchAll=false --coverage",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
