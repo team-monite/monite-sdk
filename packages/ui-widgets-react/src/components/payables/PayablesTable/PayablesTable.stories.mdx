@@ -16,44 +16,18 @@ This component calls the [`GET /payables`](https://docs.monite.com/reference/get
 
 The table supports the following functionality out-of-the-box:
 * Pagination: the user can navigate to the next or previous page only. The default page size is 10 items per page.
-* Sorting by:
-	* amount
-	* due date
 * Searching payables by the document number (exact match, case-sensitive)
 * Filtering by:
 	* document status (for example, `draft` or `approved`)
 	* due date (exact date)
 
-Search, sorting, filtering, and pagination are done at the server side rather than the client side.
+Search, filtering, and pagination are done at the server side rather than the client side.
 That is, any change to the table display options triggers a new request to the Monite API to return the adjusted data set.
 
 ## Props
 
-### `currentSort`
-
-An object that contains the current sort field and order:
-```json
-{
-  "sort": "id" | "amount" | "due_date",
-  "order": "asc" | "desc"
-}
-```
-or `null`.
-
 ### `onChangeFilter`
 This callback is triggered when the filtering options are changed.
-
-### `onChangeSort`
-
-Type:
-```json
-(
-  "sort": "id" | "amount" | "due_date",
-  "order": "asc" | "desc" | null
-) => void;
-```
-
-Callback. Called when the current sort is changed. Returns the new sort field and order.
 
 ### `onNext`
 Type: `() => void`
@@ -97,7 +71,6 @@ It is used to determine the availability of the "next" and "previous" buttons at
     args={{
       onPay: action('onPay'),
       onRowClick: action('onRowClick'),
-      onChangeSort: action('onChangeSort'),
       onChangeFilter: action('onChangeFilter')
     }}
   >
