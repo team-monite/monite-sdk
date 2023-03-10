@@ -52,7 +52,28 @@ export const tagsHandlers = [
           'pagination_token'
         ) as GetRequest['pagination_token']) || null;
 
-      const sortedData = tagListFixture.sort((a, b) => {
+      let next_pagination_token = undefined;
+      let prev_pagination_token = undefined;
+
+      const filteredData = (() => {
+        const parsedLimit = Number(limit);
+
+        /** We should return next elements */
+        if (pagination_token === '1') {
+          next_pagination_token = undefined;
+          prev_pagination_token = '-1';
+
+          return tagListFixture.slice(parsedLimit);
+        }
+
+        /** We should return first `limit` elements */
+        next_pagination_token = '1';
+        prev_pagination_token = undefined;
+
+        return tagListFixture.slice(0, parsedLimit);
+      })();
+
+      const sortedData = filteredData.sort((a, b) => {
         if (sort === null) {
           return 0;
         }
@@ -61,35 +82,21 @@ export const tagsHandlers = [
         const bTime = new Date(b[sort]);
 
         if (order === 'desc') {
-          return aTime.getTime() - bTime.getTime();
-        } else if (order === 'asc') {
           return bTime.getTime() - aTime.getTime();
+        } else if (order === 'asc') {
+          return aTime.getTime() - bTime.getTime();
         }
 
         return 0;
       });
 
-      const filteredData: TagsPaginationResponse = (() => {
-        const parsedLimit = Number(limit);
-
-        /** We should return next elements */
-        if (pagination_token === '1') {
-          return {
-            data: sortedData.slice(parsedLimit),
-            next_pagination_token: undefined,
-            prev_pagination_token: '-1',
-          };
-        }
-
-        /** We should return first `limit` elements */
-        return {
-          data: sortedData.slice(0, parsedLimit),
-          next_pagination_token: '1',
-          prev_pagination_token: undefined,
-        };
-      })();
-
-      return res(ctx.json(filteredData));
+      return res(
+        ctx.json({
+          data: sortedData,
+          next_pagination_token,
+          prev_pagination_token,
+        })
+      );
     }
   ),
 

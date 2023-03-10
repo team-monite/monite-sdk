@@ -178,6 +178,7 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
               variant="contained"
               color="secondary"
               onClick={onPrev}
+              aria-label="previous"
               disabled={!tags?.prev_pagination_token}
             >
               <UArrowLeft width={24} height={24} />
@@ -186,6 +187,7 @@ const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
               variant="contained"
               color="secondary"
               onClick={onNext}
+              aria-label="next"
               disabled={!tags?.next_pagination_token}
             >
               <UArrowRight width={24} height={24} />
