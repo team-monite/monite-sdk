@@ -13,7 +13,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "craco test",
-    "test:ci": "yarn run test -- --watchAll=false",
+    "test:ci": "yarn run test -- --watchAll=false --coverage",
     "test:coverage": "craco test --watchAll=false --coverage",
     "build": "rm -rf dist/ && cross-env NODE_ENV=production rollup --config config/rollup.config.js",
     "lint": "eslint \"./src/**/*.{ts,tsx}\" --max-warnings=0",
@@ -87,6 +87,12 @@
         "functions": 1,
         "lines": 1,
         "statements": 1
+      },
+      "./src/components/tags": {
+        "branches": 90,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
       }
     }
   },
