@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import {
   Avatar,
+  Button,
+  DropdownMenuItem,
+  HeadCellSort,
+  SortOrderEnum,
   Table,
   TableFooter,
   Tag,
   Text,
-  UEnvelopeAlt,
-  UPhone,
-  Button,
-  HeadCellSort,
-  SortOrderEnum,
   UArrowLeft,
   UArrowRight,
-  DropdownMenuItem,
+  UEnvelopeAlt,
+  UPhone,
   useModal,
+  UUserSquare,
 } from '@team-monite/ui-kit-react';
 
 import {
+  CounterpartCursorFields,
   CounterpartIndividualResponse,
   CounterpartOrganizationResponse,
   CounterpartResponse,
   CounterpartType,
-  CounterpartCursorFields,
 } from '@team-monite/sdk-api';
 
 import {
@@ -35,11 +36,11 @@ import ConfirmDeleteDialogue from '../ConfirmDeleteDialogue';
 import { default as FiltersComponent } from './Filters';
 
 import { getCounterpartName } from '../helpers';
-import { Sort, Filters, FilterValue } from './types';
+import { Filters, FilterValue, Sort } from './types';
 import {
+  FILTER_TYPE_IS_CUSTOMER,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_TYPE,
-  FILTER_TYPE_IS_CUSTOMER,
 } from './consts';
 
 import * as Styled from './styles';
@@ -232,26 +233,61 @@ const CounterpartsTable = ({
               render: (value, row) => {
                 const type: CounterpartType = (row as CounterpartsTableRow)
                   .type;
-                const data:
-                  | CounterpartIndividualResponse
-                  | CounterpartOrganizationResponse = (row as any)[type];
 
-                if (type === CounterpartType.ORGANIZATION) {
-                  return (
-                    <Styled.ColContacts>
-                      <div>
-                        <UEnvelopeAlt width={16} height={16} />
-                        {data.email}
-                      </div>
-                      <div>
-                        <UPhone width={16} height={16} />
-                        {data.phone}
-                      </div>
-                    </Styled.ColContacts>
-                  );
+                switch (type) {
+                  case CounterpartType.ORGANIZATION: {
+                    const data: CounterpartOrganizationResponse = (row as any)[
+                      type
+                    ];
+
+                    return (
+                      <Styled.ColContacts>
+                        {data.email && (
+                          <div>
+                            <UEnvelopeAlt width={16} height={16} />
+                            {data.email}
+                          </div>
+                        )}
+                        {data.phone && (
+                          <div>
+                            <UPhone width={16} height={16} />
+                            {data.phone}
+                          </div>
+                        )}
+                      </Styled.ColContacts>
+                    );
+                  }
+
+                  case CounterpartType.INDIVIDUAL: {
+                    const data: CounterpartIndividualResponse = (row as any)[
+                      type
+                    ];
+
+                    return (
+                      <Styled.ColContacts>
+                        {data.email && (
+                          <div>
+                            <UEnvelopeAlt width={16} height={16} />
+                            {data.email}
+                          </div>
+                        )}
+                        <div>
+                          <UUserSquare width={16} height={16} />
+                          {data.first_name} {data.last_name}
+                        </div>
+                        {data.phone && (
+                          <div>
+                            <UPhone width={16} height={16} />
+                            {data.phone}
+                          </div>
+                        )}
+                      </Styled.ColContacts>
+                    );
+                  }
+
+                  default:
+                    return null;
                 }
-
-                return null;
               },
             },
           ]}
