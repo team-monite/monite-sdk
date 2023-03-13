@@ -102,7 +102,7 @@ export const counterpartListFixture: CounterpartResponse[] = [
     created_automatically: false,
     organization: {
       legal_name: 'Acme Inc. 2',
-      is_vendor: false,
+      is_vendor: true,
       is_customer: false,
       phone: '',
       email: 'qwe@qwe.da',
