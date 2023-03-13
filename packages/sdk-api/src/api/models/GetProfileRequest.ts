@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import type { EntityResponse } from './EntityResponse';
-import type { EntityUserResponse } from './EntityUserResponse';
+import type { package__auth_n_settings__schemas__entity_users__EntityUserResponse } from './package__auth_n_settings__schemas__entity_users__EntityUserResponse';
 
-export type GetProfileRequest = (EntityResponse | EntityUserResponse);
+export type GetProfileRequest = (EntityResponse | package__auth_n_settings__schemas__entity_users__EntityUserResponse);
 

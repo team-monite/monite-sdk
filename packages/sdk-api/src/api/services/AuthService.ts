@@ -2,34 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { AccessTokenResponse } from '../models/AccessTokenResponse';
-import type { CreateEntityRequest } from '../models/CreateEntityRequest';
-import type { CreateEntityUserRequest } from '../models/CreateEntityUserRequest';
-import type { CreateRoleRequest } from '../models/CreateRoleRequest';
-import type { EntityPaginationResponse } from '../models/EntityPaginationResponse';
-import type { EntityResponse } from '../models/EntityResponse';
-import type { EntityTypeEnum } from '../models/EntityTypeEnum';
-import type { EntityUserPaginationResponse } from '../models/EntityUserPaginationResponse';
-import type { EntityUserResponse } from '../models/EntityUserResponse';
-import type { MessageResponse } from '../models/MessageResponse';
 import type { ObtainTokenPayload } from '../models/ObtainTokenPayload';
-import type { OrderEnum } from '../models/OrderEnum';
-import type { PartnerProjectSettingsPayload } from '../models/PartnerProjectSettingsPayload';
-import type { PartnerProjectSettingsResponse } from '../models/PartnerProjectSettingsResponse';
-import type { PatchSettingsPayload } from '../models/PatchSettingsPayload';
-import type { RevokeTokenPayload } from '../models/RevokeTokenPayload';
-import type { RolePaginationResponse } from '../models/RolePaginationResponse';
-import type { RoleResponse } from '../models/RoleResponse';
-import type { SearchEntitiesPayload } from '../models/SearchEntitiesPayload';
-import type { SearchRolesPayload } from '../models/SearchRolesPayload';
-import type { SettingsResponse } from '../models/SettingsResponse';
-import type { UpdateEntityRequest } from '../models/UpdateEntityRequest';
-import type { UpdateEntityUserRequest } from '../models/UpdateEntityUserRequest';
-import type { UpdateRoleRequest } from '../models/UpdateRoleRequest';
 
 import type { CancelablePromise } from '../CancelablePromise';
-import { OpenAPI } from '../OpenAPI';
-import { request as __request } from '../request';
 import { OpenAPIConfig } from '../OpenAPI';
+import { request as __request } from '../request';
 
 export default class AuthNSettingsService {
   openapiConfig: Partial<OpenAPIConfig>;
