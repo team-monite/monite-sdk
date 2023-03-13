@@ -2,7 +2,8 @@ This file contains a list of changes, new features, and fixes in each release of
 
 ## ui-widgets-react 1.2.1
 
-This is a bugfix release that fixes some issues in countepart-related components.
+## Removed functionality
+* Column sorting was removed from the `<PayablesTable>` component.
 
 ## Bug fixes
 * Fixed an issue where new counterparts could not be created.
