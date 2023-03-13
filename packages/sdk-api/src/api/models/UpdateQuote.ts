@@ -44,5 +44,9 @@ export type UpdateQuote = {
      * The date (in ISO 8601 format) until which the quote is valid.
      */
     expiry_date?: string;
+    /**
+     * Link for custom quote accept page
+     */
+    quote_accept_page_url?: string;
 };
 

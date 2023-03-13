@@ -10,6 +10,9 @@ export type ConnectionChangedPayload = {
     AlertId: string;
     Message: string;
     RuleType: ConnectionChangedPayload.RuleType;
+    ClientId: string;
+    ClientName: string;
+    DataConnectionId: string;
     Data: ConnectionChangedData;
 };
 
