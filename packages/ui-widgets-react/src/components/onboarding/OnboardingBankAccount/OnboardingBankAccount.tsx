@@ -21,21 +21,28 @@ import useOnboardingForm, {
 } from '../hooks/useOnboardingForm';
 import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
 
-const OnboardingBankAccount = (props: OnboardingFormProps) => {
+const OnboardingBankAccount = ({ linkId }: OnboardingFormProps) => {
   const {
     methods: { control, handleSubmit },
-    onNext,
-    onSave,
+    actions,
+    submitAction,
+    submitLabel,
     isLoading,
-  } = useOnboardingForm(props);
+  } = useOnboardingForm(linkId);
 
   const translateField =
-    useOnboardingTranslateField<OnboardingBankAccountType>('bank_account');
+    useOnboardingTranslateField<OnboardingBankAccountType>('bankAccount');
 
   return (
     <OnboardingForm
-      onSubmit={handleSubmit(onNext)}
-      actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
+      onSubmit={handleSubmit(submitAction)}
+      actions={
+        <OnboardingFormActions
+          submitLabel={submitLabel}
+          isLoading={isLoading}
+          {...actions}
+        />
+      }
     >
       <OnboardingStepContent>
         <RHFTextField

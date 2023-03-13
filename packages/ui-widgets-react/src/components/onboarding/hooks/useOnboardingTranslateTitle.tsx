@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { LocalRequirements } from '../useOnboardingStep';
+import { LocalRequirements } from './useOnboardingRequirements';
 
 export default function useOnboardingTranslateTitle(
   localRequirement?: LocalRequirements

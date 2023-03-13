@@ -267,9 +267,12 @@
     "notification": "Enty partners with Monite to secure financial services.",
     "step": "Step",
     "actions": {
-      "save": "Save and close",
+      "saveClose": "Save and close",
+      "save": "Save changes",
       "submit": "Submit",
-      "next": "Continue"
+      "next": "Continue",
+      "edit": "Edit",
+      "cancel": "Cancel"
     },
     "errors": {
       "dobInvalid": "Managers and owners must be at least 18 years old to use this service."

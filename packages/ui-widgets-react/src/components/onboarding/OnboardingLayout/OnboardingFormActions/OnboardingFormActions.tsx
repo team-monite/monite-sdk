@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 export type OnboardingFormActionsProps = {
   onSave?: () => void;
-  onSubmit?: () => void;
-  onBack?: () => void;
+  onCancel?: () => void;
+  submitLabel: string;
   isLoading: boolean;
 };
 
@@ -34,7 +34,8 @@ const StyledRightBlock = styled(Box)`
 
 export default function OnboardingFormActions({
   onSave,
-  onSubmit,
+  onCancel,
+  submitLabel,
   isLoading,
 }: OnboardingFormActionsProps) {
   const { t } = useTranslation();
@@ -48,29 +49,28 @@ export default function OnboardingFormActions({
           variant="contained"
           color="secondary"
         >
-          {t('onboarding:actions.save')}
+          {t('onboarding:actions.saveClose')}
+        </Button>
+      )}
+      {onCancel && (
+        <Button
+          disabled={isLoading}
+          onClick={onCancel}
+          variant="contained"
+          color="secondary"
+        >
+          {t(`onboarding:actions.cancel`)}
         </Button>
       )}
       <StyledRightBlock>
-        {onSubmit ? (
-          <Button
-            disabled={isLoading}
-            onClick={onSubmit}
-            variant="contained"
-            color="primary"
-          >
-            {t(`onboarding:actions.submit`)}
-          </Button>
-        ) : (
-          <Button
-            disabled={isLoading}
-            type={'submit'}
-            variant="contained"
-            color="primary"
-          >
-            {t(`onboarding:actions.next`)}
-          </Button>
-        )}
+        <Button
+          disabled={isLoading}
+          type={'submit'}
+          variant="contained"
+          color="primary"
+        >
+          {t(`onboarding:actions.${submitLabel}`)}
+        </Button>
       </StyledRightBlock>
     </StyledActions>
   );
