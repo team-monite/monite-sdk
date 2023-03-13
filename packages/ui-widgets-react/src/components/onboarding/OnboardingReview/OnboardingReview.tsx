@@ -31,8 +31,14 @@ const StyledLink = styled(Link)`
 
 const OnboardingReview = ({ linkId }: OnboardingFormProps) => {
   const { t } = useTranslation();
-  const { isLoading, onboarding, actions, submitLabel, setCurrentRequirement } =
-    useOnboardingForm(linkId);
+  const {
+    isLoading,
+    onboarding,
+    actions,
+    submitLabel,
+    setCurrentRequirement,
+    onSubmit,
+  } = useOnboardingForm(linkId);
 
   if (!onboarding) return null;
 
@@ -69,6 +75,7 @@ const OnboardingReview = ({ linkId }: OnboardingFormProps) => {
         <OnboardingFormActions
           submitLabel={submitLabel}
           isLoading={isLoading}
+          onSubmit={onSubmit}
           {...actions}
         />
       }

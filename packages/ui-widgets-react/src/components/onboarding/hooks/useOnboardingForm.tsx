@@ -83,6 +83,7 @@ export default function useOnboardingForm(
   const submitAction = submitActions[submitLabel];
 
   return {
+    onSubmit,
     onboarding,
     methods,
     isLoading,
