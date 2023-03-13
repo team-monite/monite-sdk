@@ -2,11 +2,11 @@ type ShowFields<T> = {
   [K in keyof T as `show${Capitalize<string & K>}`]: boolean;
 };
 
-const isAnOptionalFieldsProperty = <T>(key: string, obj: T): boolean => {
+const isAnOptionalFieldsProperty = (key: string, obj: object): boolean => {
   return Object.keys(obj).includes(key);
 };
 
-const useOptionalFields = <T>(
+const useOptionalFields = <T extends object>(
   optionalFields: T | boolean | undefined,
   defaultOptionalFields: ShowFields<T>
 ): ShowFields<T> => {
@@ -33,10 +33,7 @@ const useOptionalFields = <T>(
         optionalFields[currentOptionalFieldKey as keyof T];
 
       if (
-        isAnOptionalFieldsProperty<T>(
-          currentOptionalFieldKey,
-          optionalFields
-        ) &&
+        isAnOptionalFieldsProperty(currentOptionalFieldKey, optionalFields) &&
         typeof currentOptionalField === 'boolean'
       ) {
         return {

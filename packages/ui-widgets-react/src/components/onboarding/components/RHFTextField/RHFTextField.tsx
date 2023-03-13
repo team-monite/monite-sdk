@@ -7,7 +7,8 @@ import { AnyMaskedOptions } from 'imask';
 
 import MaskInput from './MaskInput';
 
-interface RHFTextFieldProps<T> extends UseControllerProps<T> {
+interface RHFTextFieldProps<T extends FieldValues>
+  extends UseControllerProps<T> {
   maskProps?: AnyMaskedOptions;
 }
 
