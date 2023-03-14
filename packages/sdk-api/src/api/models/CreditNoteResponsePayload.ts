@@ -14,6 +14,7 @@ import type { EntityOrganization } from './EntityOrganization';
 import type { FileSchema } from './FileSchema';
 import type { ReceivableCounterpartContact } from './ReceivableCounterpartContact';
 import type { ResponseItem } from './ResponseItem';
+import type { TotalVatAmountItem } from './TotalVatAmountItem';
 
 export type CreditNoteResponsePayload = {
     id: string;
@@ -36,7 +37,7 @@ export type CreditNoteResponsePayload = {
     /**
      * The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
      */
-    subtotal: number;
+    subtotal?: number;
     line_items: Array<ResponseItem>;
     entity_address: EntityAddressSchema;
     entity: (EntityOrganization | EntityIndividual);
@@ -68,7 +69,7 @@ export type CreditNoteResponsePayload = {
      */
     commercial_condition_description?: string;
     /**
-     * This field is calculated as a subtotal + total_vat_amount.
+     * Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount.
      */
     total_amount?: number;
     /**
@@ -116,6 +117,14 @@ export type CreditNoteResponsePayload = {
      * The discount for a receivable.
      */
     discount?: Discount;
+    /**
+     * Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units).
+     */
+    discounted_subtotal?: number;
+    /**
+     * List of total vat amount for each VAT, presented in receivable
+     */
+    total_vat_amounts?: Array<TotalVatAmountItem>;
     /**
      * The type of the receivable
      */

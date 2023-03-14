@@ -18,7 +18,7 @@ import {
 
 import { usePayable, usePayPayableById } from 'core/queries/usePayable';
 import { useComponentsContext } from 'core/context/ComponentsContext';
-import { getReadableAmount } from 'core/utils';
+import useCurrencies from 'core/hooks/useCurrencies';
 import { default as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
 import { PAGE_LIMIT } from '../../../constants';
@@ -55,6 +55,8 @@ const PayablesTable = ({
     string | null
   >(null);
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
+
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const {
     data: payables,
@@ -164,7 +166,7 @@ const PayablesTable = ({
               const payable = record as PayableResponseSchema;
 
               return payable.amount && payable.currency
-                ? getReadableAmount(payable.amount, payable.currency)
+                ? formatCurrencyToDisplay(payable.amount, payable.currency)
                 : '';
             },
           },

@@ -16,7 +16,7 @@ export type LineItemUpdate = {
     /**
      * Percent minor units. Example: 12.5% is 1250
      */
-    vat: number;
+    vat?: number;
     /**
      * The discount for a product.
      */

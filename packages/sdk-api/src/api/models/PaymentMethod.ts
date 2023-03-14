@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MoniteOnboardingPaymentMethods } from './MoniteOnboardingPaymentMethods';
-import type { MoniteOnboardingPaymentMethodsTypes } from './MoniteOnboardingPaymentMethodsTypes';
+import type { MoniteAllPaymentMethods } from './MoniteAllPaymentMethods';
+import type { MoniteAllPaymentMethodsTypes } from './MoniteAllPaymentMethodsTypes';
 import type { PaymentMethodStatus } from './PaymentMethodStatus';
 
 export type PaymentMethod = {
-    name: MoniteOnboardingPaymentMethods;
-    type: MoniteOnboardingPaymentMethodsTypes;
+    name: MoniteAllPaymentMethods;
+    type: MoniteAllPaymentMethodsTypes;
     status: PaymentMethodStatus;
 };
 

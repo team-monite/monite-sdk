@@ -2,6 +2,7 @@ import { OpenAPIConfig } from './OpenAPI';
 
 import OnboardingService from '../onboarding/services/OnboardingService';
 import CounterpartsService from './services/CounterpartsService';
+import CurrenciesInternalService from './services/CurrenciesInternalService';
 import CounterpartsAddressesService from './services/CounterpartsAddressesService';
 import PartnerApiService from './services/PartnerApiService';
 import PaymentService from './services/PaymentService';
@@ -29,6 +30,7 @@ class ApiService {
   openapiConfig: Partial<OpenAPIConfig>;
 
   counterparts: CounterpartsService;
+  currencies: CurrenciesInternalService;
   counterpartsAddresses: CounterpartsAddressesService;
   partnerApi: PartnerApiService;
   auth: AuthService;
@@ -51,6 +53,7 @@ class ApiService {
     this.openapiConfig = config;
 
     this.counterparts = new CounterpartsService({ config });
+    this.currencies = new CurrenciesInternalService({ config });
     this.counterpartsAddresses = new CounterpartsAddressesService({ config });
     this.partnerApi = new PartnerApiService({ config });
     this.auth = new AuthService({ config });

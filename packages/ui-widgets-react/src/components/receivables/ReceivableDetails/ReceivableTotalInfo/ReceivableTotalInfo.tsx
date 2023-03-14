@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ReceivableResponse } from '@team-monite/sdk-api';
-import { getReadableAmount } from 'core/utils';
+import useCurrencies from 'core/hooks/useCurrencies';
 import {
   Title,
   StyledContent,
@@ -17,6 +17,7 @@ export type PayablesDetailsInfoProps = {
 
 const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
+  const { formatCurrencyToDisplay } = useCurrencies();
   const { currency, total_amount, total_vat_amount } = receivable;
 
   return (
@@ -29,7 +30,10 @@ const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
             {currency &&
               total_vat_amount &&
               total_amount &&
-              getReadableAmount(total_amount - total_vat_amount, currency)}
+              formatCurrencyToDisplay(
+                total_amount - total_vat_amount,
+                currency
+              )}
           </StyledInfoValue>
         </StyledInfoRow>
         <StyledInfoRow>
@@ -37,7 +41,7 @@ const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
           <StyledInfoValue>
             {currency &&
               total_vat_amount &&
-              getReadableAmount(total_vat_amount, currency)}
+              formatCurrencyToDisplay(total_vat_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>
         <StyledInfoRow>
@@ -45,7 +49,7 @@ const ReceivableTotalInfo = ({ receivable }: PayablesDetailsInfoProps) => {
           <StyledInfoValue textSize={'h3'}>
             {currency &&
               total_amount &&
-              getReadableAmount(total_amount, currency)}
+              formatCurrencyToDisplay(total_amount, currency)}
           </StyledInfoValue>
         </StyledInfoRow>
       </StyledInfoTable>

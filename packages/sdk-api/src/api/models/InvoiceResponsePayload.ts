@@ -16,6 +16,7 @@ import type { ReceivableCounterpartContact } from './ReceivableCounterpartContac
 import type { ReceivablesStatusEnum } from './ReceivablesStatusEnum';
 import type { RelatedDocuments } from './RelatedDocuments';
 import type { ResponseItem } from './ResponseItem';
+import type { TotalVatAmountItem } from './TotalVatAmountItem';
 
 export type InvoiceResponsePayload = {
     /**
@@ -49,7 +50,7 @@ export type InvoiceResponsePayload = {
     /**
      * The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units).
      */
-    subtotal: number;
+    subtotal?: number;
     line_items: Array<ResponseItem>;
     entity_address: EntityAddressSchema;
     entity: (EntityOrganization | EntityIndividual);
@@ -81,7 +82,7 @@ export type InvoiceResponsePayload = {
      */
     commercial_condition_description?: string;
     /**
-     * This field is calculated as a subtotal + total_vat_amount.
+     * Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount.
      */
     total_amount?: number;
     /**
@@ -130,11 +131,19 @@ export type InvoiceResponsePayload = {
      */
     discount?: Discount;
     /**
-     * The total price of the receivable (in [minor units](https://docs.monite.com/docs/currencies#minor-units)), including VAT and excluding all issued credit notes.
+     * Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units).
+     */
+    discounted_subtotal?: number;
+    /**
+     * List of total vat amount for each VAT, presented in receivable
+     */
+    total_vat_amounts?: Array<TotalVatAmountItem>;
+    /**
+     * The total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units), including VAT and excluding all issued credit notes.
      */
     total_amount_with_credit_notes: number;
     /**
-     * How much is left to be paid. Equal 0 if the Invoice is fully paid.
+     * How much is left to be paid in [minor units](https://docs.monite.com/docs/currencies#minor-units). Equal 0 if the Invoice is fully paid.
      */
     amount_due: number;
     payment_terms?: PaymentTerms;

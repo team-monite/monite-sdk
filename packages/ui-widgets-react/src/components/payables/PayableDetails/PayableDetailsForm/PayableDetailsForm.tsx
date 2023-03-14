@@ -21,7 +21,7 @@ import {
 } from '@team-monite/ui-kit-react';
 
 import useOptionalFields from 'core/hooks/useOptionalFields';
-import { getSymbolFromCurrency } from 'core/utils/currency';
+import useCurrencies from 'core/hooks/useCurrencies';
 
 import {
   CurrencyAddon,
@@ -83,16 +83,21 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
     ref
   ) => {
     const { t } = useTranslation();
+    const { getSymbolFromCurrency, formatFromMinorUnits, formatToMinorUnits } =
+      useCurrencies();
     const { control, handleSubmit, reset, watch } =
       useForm<PayableDetailsFormFields>({
         resolver: yupResolver(getValidationSchema(t)),
-        defaultValues: useMemo(() => prepareDefaultValues(payable), [payable]),
+        defaultValues: useMemo(
+          () => prepareDefaultValues(payable, formatFromMinorUnits),
+          [payable]
+        ),
       });
     const currentCounterpart = watch('counterpart');
 
     useEffect(() => {
-      reset(prepareDefaultValues(payable));
-    }, [payable]);
+      reset(prepareDefaultValues(payable, formatFromMinorUnits));
+    }, [payable, formatFromMinorUnits]);
 
     const {
       tagQuery,
@@ -156,17 +161,20 @@ const PayableDetailsForm = forwardRef<HTMLFormElement, PayableDetailsFormProps>(
 
               if (!counterpartAddress) return;
 
-              const invoiceData = prepareSubmit({
-                ...values,
-                counterpartAddress: {
-                  country: counterpartAddress.country,
-                  city: counterpartAddress.city,
-                  postal_code: counterpartAddress.postal_code,
-                  state: counterpartAddress.state,
-                  line1: counterpartAddress.line1,
-                  line2: counterpartAddress.line2,
+              const invoiceData = prepareSubmit(
+                {
+                  ...values,
+                  counterpartAddress: {
+                    country: counterpartAddress.country,
+                    city: counterpartAddress.city,
+                    postal_code: counterpartAddress.postal_code,
+                    state: counterpartAddress.state,
+                    line1: counterpartAddress.line1,
+                    line2: counterpartAddress.line2,
+                  },
                 },
-              });
+                formatToMinorUnits
+              );
 
               if (submissionType === 'submit') {
                 await submitInvoice(invoiceData);

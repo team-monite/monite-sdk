@@ -5,4 +5,5 @@ export { useComponentsContext } from './core/context/ComponentsContext';
 export { toast } from './ui/toast';
 
 export * from './core/utils';
+export * from './core/hooks';
 export * from './core/queries';

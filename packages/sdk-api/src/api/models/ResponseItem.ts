@@ -15,5 +15,9 @@ export type ResponseItem = {
      * The discount for a product.
      */
     discount?: Discount;
+    /**
+     * Total of line_item before VAT in [minor units](https://docs.monite.com/docs/currencies#minor-units).
+     */
+    total_before_tax?: number;
 };
 

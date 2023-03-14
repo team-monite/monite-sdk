@@ -29,6 +29,7 @@ export type CounterpartOrganizationRootResponse = {
      * `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
      */
     created_automatically?: boolean;
+    reminders_enabled?: boolean;
     organization: CounterpartOrganizationResponse;
 };
 
