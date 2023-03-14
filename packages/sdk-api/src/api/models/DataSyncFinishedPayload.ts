@@ -10,6 +10,9 @@ export type DataSyncFinishedPayload = {
     AlertId: string;
     Message: string;
     RuleType: DataSyncFinishedPayload.RuleType;
+    ClientId: string;
+    ClientName: string;
+    DataConnectionId: string;
     Data: DataSyncFinishedData;
 };
 

@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { MoniteOnboardingPaymentMethodsTypes } from './MoniteOnboardingPaymentMethodsTypes';
+import type { MoniteAllPaymentMethodsTypes } from './MoniteAllPaymentMethodsTypes';
 
 export type EnabledPaymentMethods = {
-    payment_methods: Array<MoniteOnboardingPaymentMethodsTypes>;
+    payment_methods: Array<MoniteAllPaymentMethodsTypes>;
 };
 

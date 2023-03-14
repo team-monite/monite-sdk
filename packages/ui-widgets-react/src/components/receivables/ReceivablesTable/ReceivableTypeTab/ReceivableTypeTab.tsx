@@ -21,6 +21,7 @@ import {
 
 import { useReceivables } from 'core/queries/useReceivables';
 import { useComponentsContext } from 'core/context/ComponentsContext';
+import useCurrencies from 'core/hooks/useCurrencies';
 import { PAGE_LIMIT } from '../../../../constants';
 import { ROW_TO_TAG_STATUS_MAP } from '../../consts';
 import {
@@ -30,12 +31,6 @@ import {
 } from '../consts';
 import * as Styled from './styles';
 import { FilterTypes, Sort } from '../types';
-
-const formatter = (currency: string) =>
-  new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: currency || 'EUR',
-  });
 
 interface Props {
   type: ReceivableType;
@@ -55,7 +50,8 @@ const mapTypeToColumns = (
   onChangeSort: (
     sort: ReceivableCursorFields,
     order: SortOrderEnum | null
-  ) => void
+  ) => void,
+  formatCurrencyToDisplay: (amount: number, currency: string) => string | null
 ) => ({
   [ReceivableType.QUOTE]: [
     {
@@ -106,7 +102,7 @@ const mapTypeToColumns = (
       key: 'total_amount',
       // @ts-ignore
       render: (value: number | undefined, record: ReceivableResponse) =>
-        value ? formatter(record.currency).format(value) : '',
+        value ? formatCurrencyToDisplay(value, record.currency) : '',
     },
   ],
   [ReceivableType.INVOICE]: [
@@ -158,7 +154,7 @@ const mapTypeToColumns = (
       key: 'total_amount',
       // @ts-ignore
       render: (value: number | undefined, record: ReceivableResponse) =>
-        value ? formatter(record.currency).format(value) : '',
+        value ? formatCurrencyToDisplay(value, record.currency) : '',
     },
   ],
   [ReceivableType.CREDIT_NOTE]: [
@@ -210,7 +206,7 @@ const mapTypeToColumns = (
       key: 'total_amount',
       // @ts-ignore
       render: (value: number | undefined, record: ReceivableResponse) =>
-        value ? formatter(record.currency).format(value) : '',
+        value ? formatCurrencyToDisplay(value, record.currency) : '',
     },
   ],
 });
@@ -222,6 +218,7 @@ const ReceivableTypeTab = ({
   onRowClick,
 }: Props) => {
   const { t } = useComponentsContext();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -294,7 +291,12 @@ const ReceivableTypeTab = ({
     }
   };
 
-  const columns = mapTypeToColumns(t, currentSort, onChangeSort)[type];
+  const columns = mapTypeToColumns(
+    t,
+    currentSort,
+    onChangeSort,
+    formatCurrencyToDisplay
+  )[type];
 
   return (
     <Styled.Table>

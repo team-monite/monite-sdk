@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ReceivableResponse } from '@team-monite/sdk-api';
 import { FlexTable, Flex, Box, Text } from '@team-monite/ui-kit-react';
-import { getReadableAmount } from 'core/utils';
+import useCurrencies from 'core/hooks/useCurrencies';
 import { Title, StyledContent } from '../ReceivableDetailsStyle';
 
 export type PayablesDetailsInfoProps = {
@@ -11,6 +11,7 @@ export type PayablesDetailsInfoProps = {
 
 const ReceivableItemsInfo = ({ receivable }: PayablesDetailsInfoProps) => {
   const { t } = useTranslation();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   return (
     <StyledContent>
@@ -40,7 +41,7 @@ const ReceivableItemsInfo = ({ receivable }: PayablesDetailsInfoProps) => {
               <Text>
                 {item.product.price &&
                   item.product.price.currency &&
-                  getReadableAmount(
+                  formatCurrencyToDisplay(
                     item.quantity * item.product.price.value,
                     item.product.price.currency
                   )}

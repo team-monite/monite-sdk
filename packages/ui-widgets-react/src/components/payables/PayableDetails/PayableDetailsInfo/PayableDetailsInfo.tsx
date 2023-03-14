@@ -2,7 +2,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { PayableResponseSchema } from '@team-monite/sdk-api';
 import { Tag, StyledModalLayoutScrollContent } from '@team-monite/ui-kit-react';
-import { formatDate, getReadableAmount } from 'core/utils';
+import { formatDate } from 'core/utils';
+import useCurrencies from 'core/hooks/useCurrencies';
 import useOptionalFields from 'core/hooks/useOptionalFields';
 import {
   FormSection,
@@ -41,6 +42,7 @@ const PayableDetailsInfo = ({
     showIban: true,
     showBic: true,
   });
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   return (
     <StyledModalLayoutScrollContent>
@@ -136,7 +138,7 @@ const PayableDetailsInfo = ({
               <StyledInfoValue>
                 {payable.subtotal &&
                   payable.currency &&
-                  getReadableAmount(payable.subtotal, payable.currency)}
+                  formatCurrencyToDisplay(payable.subtotal, payable.currency)}
               </StyledInfoValue>
             </StyledInfoRow>
             <StyledInfoRow>
@@ -150,7 +152,7 @@ const PayableDetailsInfo = ({
               <StyledInfoValue>
                 {payable.tax &&
                   payable.currency &&
-                  getReadableAmount(payable.tax, payable.currency)}
+                  formatCurrencyToDisplay(payable.tax, payable.currency)}
               </StyledInfoValue>
             </StyledInfoRow>
             <StyledInfoRow>
@@ -158,7 +160,7 @@ const PayableDetailsInfo = ({
               <StyledInfoValue textSize={'h3'}>
                 {payable.amount &&
                   payable.currency &&
-                  getReadableAmount(payable.amount, payable.currency)}
+                  formatCurrencyToDisplay(payable.amount, payable.currency)}
               </StyledInfoValue>
             </StyledInfoRow>
           </StyledInfoTable>

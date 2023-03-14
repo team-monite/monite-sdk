@@ -17,7 +17,7 @@ import {
 
 import { useComponentsContext } from 'core/context/ComponentsContext';
 import { useFeeByPaymentMethod } from 'core/queries/usePayment';
-import { getReadableAmount } from 'core/utils';
+import useCurrencies from 'core/hooks/useCurrencies';
 
 import * as Styled from './styles';
 
@@ -30,6 +30,7 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
   const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const { search } = useLocation();
 
@@ -125,18 +126,18 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
         {feeData?.paid_by === PaidBy.PAYER && (
           <Styled.PriceRow>
             <div>{t('payment:widget.amount')}</div>
-            {fee && <div>{getReadableAmount(amount, currency)}</div>}
+            {fee && <div>{formatCurrencyToDisplay(amount, currency)}</div>}
           </Styled.PriceRow>
         )}
         {feeData?.paid_by === PaidBy.PAYER ? (
           <Styled.PriceRow>
             <div>{t('payment:widget.fee')}</div>
-            {fee && <div>{getReadableAmount(fee, currency)}</div>}
+            {fee && <div>{formatCurrencyToDisplay(fee, currency)}</div>}
           </Styled.PriceRow>
         ) : null}
         <Styled.PriceRow total>
           <div>{t('payment:widget.total')}</div>
-          {fee && <div>{getReadableAmount(totalAmount, currency)}</div>}
+          {fee && <div>{formatCurrencyToDisplay(totalAmount, currency)}</div>}
         </Styled.PriceRow>
       </Styled.Prices>
       {fee && feeData?.paid_by === PaidBy.PAYER ? (
@@ -157,7 +158,7 @@ export default function CheckoutForm({ paymentIntent }: CheckoutFormProps) {
       >
         <span id="button-text">
           {t('payment:widget.submit')}{' '}
-          {!!totalAmount && getReadableAmount(totalAmount, currency)}
+          {!!totalAmount && formatCurrencyToDisplay(totalAmount, currency)}
         </span>
       </Button>
     </div>

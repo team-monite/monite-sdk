@@ -6,7 +6,6 @@ import {
   PayableUpdateSchema,
   TagReadSchema,
 } from '@team-monite/sdk-api';
-import { formatFromMinorUnits, formatToMinorUnits } from 'core/utils';
 import {
   getIndividualName,
   isIndividualCounterpart,
@@ -64,19 +63,22 @@ export interface SubmitPayload extends PayableDetailsFormFields {
   counterpartAddress: CounterpartAddress;
 }
 
-export const prepareDefaultValues = ({
-  currency,
-  counterpart_id,
-  counterpart_name,
-  document_id,
-  issued_at,
-  due_date,
-  suggested_payment_term,
-  amount,
-  tags,
-  counterpart_bank_id,
-  counterpart_account_id,
-}: PayableResponseSchema): PayableDetailsFormFields => ({
+export const prepareDefaultValues = (
+  {
+    currency,
+    counterpart_id,
+    counterpart_name,
+    document_id,
+    issued_at,
+    due_date,
+    suggested_payment_term,
+    amount,
+    tags,
+    counterpart_bank_id,
+    counterpart_account_id,
+  }: PayableResponseSchema,
+  formatFromMinorUnits: (amount: number, currency: string) => number | null
+): PayableDetailsFormFields => ({
   currency: currency ?? CurrencyEnum.EUR,
   counterpart:
     counterpart_id && counterpart_name
@@ -92,27 +94,30 @@ export const prepareDefaultValues = ({
   invoiceDate: issued_at ?? '',
   suggestedPaymentDate: suggested_payment_term?.date ?? '',
   dueDate: due_date ?? '',
-  total: formatFromMinorUnits(amount ?? 0, currency ?? CurrencyEnum.EUR),
+  total: formatFromMinorUnits(amount ?? 0, currency ?? CurrencyEnum.EUR) || 0,
   tags: tagsToSelect(tags),
   iban: counterpart_account_id ?? '',
   bic: counterpart_bank_id ?? '',
 });
 
-export const prepareSubmit = ({
+export const prepareSubmit = (
+  {
+    currency,
+    total,
+    dueDate,
+    suggestedPaymentDate,
+    bic,
+    iban,
+    invoiceNumber,
+    invoiceDate,
+    counterpart,
+    tags,
+    counterpartAddress,
+  }: SubmitPayload,
+  formatToMinorUnits: (amount: number, currency: string) => number | null
+): PayableUpdateSchema => ({
   currency,
-  total,
-  dueDate,
-  suggestedPaymentDate,
-  bic,
-  iban,
-  invoiceNumber,
-  invoiceDate,
-  counterpart,
-  tags,
-  counterpartAddress,
-}: SubmitPayload): PayableUpdateSchema => ({
-  currency,
-  amount: formatToMinorUnits(total, currency),
+  amount: formatToMinorUnits(total, currency) || 0,
   due_date: dueDate && dateToString(dueDate),
   issued_at: invoiceDate && dateToString(invoiceDate),
   suggested_payment_term: suggestedPaymentDate

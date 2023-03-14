@@ -1,4 +1,4 @@
-import { getReadableAmount } from '@team-monite/ui-widgets-react';
+import { useCurrencies } from '@team-monite/ui-widgets-react';
 import {
   FlexTable,
   Flex,
@@ -30,6 +30,7 @@ export const PaymentResultPage = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { search } = useLocation();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const {
     currentStatus: { icon, title, text },
@@ -78,7 +79,7 @@ export const PaymentResultPage = ({
                       </Box>
                       <Box width={'50%'}>
                         <Text textSize="smallBold" color={theme.colors.black}>
-                          {getReadableAmount(amount, currency)}
+                          {formatCurrencyToDisplay(amount, currency)}
                         </Text>
                       </Box>
                     </Flex>
