@@ -1,11 +1,12 @@
 import React from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, AutocompleteValue, TextField } from '@mui/material';
 import type {
   AutocompleteProps,
   AutocompleteRenderInputParams,
 } from '@mui/material';
 
 import { Controller } from 'react-hook-form';
+
 import type {
   FieldValues,
   FieldError,
@@ -18,7 +19,7 @@ interface RHFAutocompleteProps<T> extends UseControllerProps<T> {
   label: string;
 }
 
-interface CustomAutoCompleteProps<A>
+interface CustomAutocompleteProps<A>
   extends AutocompleteProps<
     A,
     boolean | undefined,
@@ -28,6 +29,13 @@ interface CustomAutoCompleteProps<A>
   optionKey?: keyof A;
   labelKey?: keyof A;
 }
+
+type CustomAutocompleteValue<A> = AutocompleteValue<
+  A,
+  boolean | undefined,
+  boolean | undefined,
+  boolean | undefined
+>;
 
 const RHFAutocomplete = <F extends FieldValues, A>({
   control,
@@ -39,7 +47,7 @@ const RHFAutocomplete = <F extends FieldValues, A>({
   options,
   ...other
 }: RHFAutocompleteProps<F> &
-  Optional<CustomAutoCompleteProps<A>, 'renderInput'>) => {
+  Optional<CustomAutocompleteProps<A>, 'renderInput'>) => {
   const getRenderInput = (error?: FieldError) => {
     if (renderInput) return renderInput;
 
@@ -55,21 +63,31 @@ const RHFAutocomplete = <F extends FieldValues, A>({
       />
     );
   };
-  const getChangedValue = (value: any) => {
+
+  const getChangedValue = (
+    value: CustomAutocompleteValue<A>
+  ): CustomAutocompleteValue<A> => {
     if (!value) return '';
-    if (optionKey) return `${value[optionKey]}`;
+    if (typeof value === 'string') return value;
+    if (Array.isArray(value)) return value;
+    if (optionKey) return String(value[optionKey]);
     return value;
   };
 
-  const getValue = (value: any): A | null => {
+  /**
+   * getValue is used to get value from options
+   * !!! Note !!! now we support only single value, but we should support multiple values
+   */
+  const getValue = (value: CustomAutocompleteValue<A>): A | A[] | null => {
     if (!value) return null;
 
     if (optionKey)
       return (
-        options.find((option) => `${option[optionKey]}` === `${value}`) ?? null
+        options.find((option) => String(option[optionKey]) === String(value)) ??
+        null
       );
 
-    return options.find((option) => option === value) ?? null;
+    return options.find((option) => String(option) === String(value)) ?? null;
   };
 
   const getOptionLabel = (option: string | A): string => {

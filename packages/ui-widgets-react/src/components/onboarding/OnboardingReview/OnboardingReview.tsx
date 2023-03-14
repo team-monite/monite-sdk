@@ -73,7 +73,7 @@ const OnboardingReview = ({ linkId }: OnboardingFormProps) => {
     <OnboardingForm
       actions={
         <OnboardingFormActions
-          submitLabel={submitLabel}
+          submitType={submitLabel}
           isLoading={isLoading}
           onSubmit={onSubmit}
           {...actions}
@@ -85,7 +85,7 @@ const OnboardingReview = ({ linkId }: OnboardingFormProps) => {
           <OnboardingSubTitle
             action={
               <StyledLink
-                underline={'none'}
+                underline="none"
                 onClick={() => setCurrentRequirement(key)}
               >
                 {t('onboarding:actions.edit')}

@@ -34,7 +34,7 @@ const OnboardingBusinessProfile = ({ linkId }: OnboardingFormProps) => {
       onSubmit={handleSubmit(submitAction)}
       actions={
         <OnboardingFormActions
-          submitLabel={submitLabel}
+          submitType={submitLabel}
           isLoading={isLoading}
           {...actions}
         />

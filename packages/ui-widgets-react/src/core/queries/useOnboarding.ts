@@ -64,6 +64,9 @@ export const useUpdateOnboarding = (linkId: string) => {
   });
 };
 
+/**
+ * This is a query to store the onboarding requirement to support the edit flow
+ */
 export const useOnboardingRequirement = () => {
   return useQuery<LocalRequirements | undefined, Error>(
     onboardingQueryKeys.requirement(),
@@ -71,6 +74,9 @@ export const useOnboardingRequirement = () => {
   );
 };
 
+/**
+ * This is a mutation to set the onboarding requirement
+ */
 export const useSetOnboardingRequirement = () => {
   const queryClient = useQueryClient();
 

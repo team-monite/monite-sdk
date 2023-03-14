@@ -2,12 +2,16 @@ import React from 'react';
 import { Box, Button, Paper, styled } from '@mui/material';
 import { palette } from '@team-monite/ui-kit-react';
 import { useTranslation } from 'react-i18next';
+import { OnboardingSubmitAction } from '../../hooks/useOnboardingForm';
 
 export type OnboardingFormActionsProps = {
   onSave?: () => void;
   onCancel?: () => void;
   onSubmit?: () => void;
-  submitLabel: string;
+  /**
+   * submitType is used to display the right label on the submit button
+   */
+  submitType: OnboardingSubmitAction;
   isLoading: boolean;
 };
 
@@ -37,7 +41,7 @@ export default function OnboardingFormActions({
   onSave,
   onCancel,
   onSubmit,
-  submitLabel,
+  submitType,
   isLoading,
 }: OnboardingFormActionsProps) {
   const { t } = useTranslation();
@@ -67,12 +71,12 @@ export default function OnboardingFormActions({
       <StyledRightBlock>
         <Button
           disabled={isLoading}
-          type={submitLabel === 'submit' ? 'button' : 'submit'}
+          type={submitType === 'submit' ? 'button' : 'submit'}
           variant="contained"
           color="primary"
           onClick={onSubmit}
         >
-          {t(`onboarding:actions.${submitLabel}`)}
+          {t(`onboarding:actions.${submitType}`)}
         </Button>
       </StyledRightBlock>
     </StyledActions>

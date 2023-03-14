@@ -7,18 +7,19 @@ import {
   useSetOnboardingRequirement,
 } from 'core/queries/useOnboarding';
 
-// import useScrollToError from './useScrollToError';
 import useOnboardingValidation from './useOnboardingValidation';
+
 import {
   LocalRequirements,
   useOnboardingRequirements,
 } from './useOnboardingRequirements';
+import { useCallback } from 'react';
 
 export type OnboardingFormProps = {
   linkId: string;
 };
 
-type OnboardingSubmitAction = 'submit' | 'next' | 'save';
+export type OnboardingSubmitAction = 'submit' | 'next' | 'save';
 
 export default function useOnboardingForm(
   linkId: OnboardingFormProps['linkId']
@@ -33,30 +34,43 @@ export default function useOnboardingForm(
     requirements
   );
 
-  // useScrollToError(methods.formState.errors, requirements);
-
   const methods = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: onboarding?.data,
     mode: 'onTouched',
   });
 
-  const onSave = () => mutateAsync(methods.getValues());
+  const onSave = useCallback(
+    () => mutateAsync(methods.getValues()),
+    [mutateAsync, methods.getValues]
+  );
 
-  const onCancel = () => setCurrentRequirement(undefined);
+  const onCancel = useCallback(
+    () => setCurrentRequirement(undefined),
+    [setCurrentRequirement]
+  );
 
-  const onNext = (payload: Partial<OnboardingData>) => mutateAsync(payload);
+  const onNext = useCallback(
+    (payload: Partial<OnboardingData>) => mutateAsync(payload),
+    [mutateAsync]
+  );
 
-  const onEdit = async (payload: Partial<OnboardingData>) => {
-    await onNext(payload);
-    setCurrentRequirement(undefined);
-  };
+  const onEdit = useCallback(
+    async (payload: Partial<OnboardingData>) => {
+      await onNext(payload);
+      setCurrentRequirement(undefined);
+    },
+    [setCurrentRequirement, onNext]
+  );
 
-  const onSubmit = () =>
-    mutateAsync({
-      ...methods.getValues(),
-      tos_acceptance_date: new Date().toISOString(),
-    });
+  const onSubmit = useCallback(
+    () =>
+      mutateAsync({
+        ...methods.getValues(),
+        tos_acceptance_date: new Date().toISOString(),
+      }),
+    [mutateAsync, methods.getValues]
+  );
 
   const submitActions: Record<
     OnboardingSubmitAction,
