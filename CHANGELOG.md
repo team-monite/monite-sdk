@@ -1,5 +1,11 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## ui-widgets-react 1.2.2
+
+### Bug fixes
+* Fixed an issue where the `<CounterpartsTable>` component did not display the last name and contact information of counterparts of type=individual.
+* Fixed an issue where the Save button in the `<PayableDetails>` component also triggered the Submit action if the form was previously filled out with errors.
+
 ## ui-widgets-react 1.2.1
 
 ## Removed functionality
