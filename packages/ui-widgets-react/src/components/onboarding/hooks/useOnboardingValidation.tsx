@@ -116,7 +116,9 @@ export default function useOnboardingValidation(
     fields: F
   ): AnyObjectSchema =>
     object({
-      ...(Object.keys(fields) as Array<keyof V & keyof F>).reduce(
+      ...(
+        Object.keys(fields as unknown as object) as Array<keyof V & keyof F>
+      ).reduce(
         (acc, key) => ({
           ...acc,
           [key]:

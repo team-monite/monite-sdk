@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import type { FieldErrors } from 'react-hook-form';
 import { OnboardingRequirement } from '@team-monite/sdk-api';
+import { FieldValues } from 'react-hook-form/dist/types/fields';
 
-export default function useScrollToError<T>(
+export default function useScrollToError<T extends FieldValues>(
   errors: FieldErrors<T>,
   requirements: OnboardingRequirement[]
 ) {

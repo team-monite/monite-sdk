@@ -15,7 +15,8 @@ import type {
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-interface RHFAutocompleteProps<T> extends UseControllerProps<T> {
+interface RHFAutocompleteProps<T extends FieldValues>
+  extends UseControllerProps<T> {
   label: string;
 }
 
