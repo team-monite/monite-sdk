@@ -18,19 +18,21 @@ import useOnboardingForm, {
 import countries from '../dicts/countries';
 import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
 import useOnboardingTranslateTitle from '../hooks/useOnboardingTranslateTitle';
-import { LocalRequirements } from '../useOnboardingStep';
+import { LocalRequirements } from '../hooks/useOnboardingRequirements';
 
-export default function OnboardingBusinessRepresentative(
-  props: OnboardingFormProps
-) {
-  const { individual } = props.data;
-
+export default function OnboardingBusinessRepresentative({
+  linkId,
+}: OnboardingFormProps) {
   const {
     methods: { control, handleSubmit },
     isLoading,
-    onNext,
-    onSave,
-  } = useOnboardingForm(props);
+    actions,
+    submitAction,
+    submitLabel,
+    onboarding,
+  } = useOnboardingForm(linkId);
+
+  const individual = onboarding?.data?.individual;
 
   const translateTitle = useOnboardingTranslateTitle(
     LocalRequirements.businessRepresentative
@@ -44,8 +46,14 @@ export default function OnboardingBusinessRepresentative(
 
   return (
     <OnboardingForm
-      onSubmit={handleSubmit(onNext)}
-      actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
+      onSubmit={handleSubmit(submitAction)}
+      actions={
+        <OnboardingFormActions
+          submitType={submitLabel}
+          isLoading={isLoading}
+          {...actions}
+        />
+      }
     >
       <OnboardingStepContent>
         <OnboardingSubTitle>{translateTitle('legalName')}</OnboardingSubTitle>

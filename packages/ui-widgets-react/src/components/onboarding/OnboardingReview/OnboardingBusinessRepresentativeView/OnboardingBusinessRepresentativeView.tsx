@@ -1,9 +1,9 @@
 import React from 'react';
 import { OnboardingAddress, OnboardingIndividual } from '@team-monite/sdk-api';
 
-import { LocalRequirements } from '../../useOnboardingStep';
 import useOnboardingTranslateTitle from '../../hooks/useOnboardingTranslateTitle';
 import useOnboardingTranslateField from '../../hooks/useOnboardingTranslateField';
+import { LocalRequirements } from '../../hooks/useOnboardingRequirements';
 
 import {
   OnboardingViewRow,

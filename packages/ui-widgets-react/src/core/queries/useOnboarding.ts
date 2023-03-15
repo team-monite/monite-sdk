@@ -4,6 +4,9 @@ import {
   OnboardingIndividualResponse,
   OnboardingDataPayload,
 } from '@team-monite/sdk-api';
+
+import { LocalRequirements } from 'components/onboarding/hooks/useOnboardingRequirements';
+
 import { useComponentsContext } from '../context/ComponentsContext';
 
 const ONBOARDING_QUERY = 'onboarding';
@@ -11,6 +14,7 @@ const ONBOARDING_QUERY = 'onboarding';
 export const onboardingQueryKeys = {
   all: () => [ONBOARDING_QUERY],
   detail: () => [...onboardingQueryKeys.all(), 'detail'],
+  requirement: () => [...onboardingQueryKeys.all(), 'requirement'],
 };
 
 export const useOnboarding = (linkId: string) => {
@@ -56,6 +60,33 @@ export const useUpdateOnboarding = (linkId: string) => {
           type: 'Onboarding',
         })
       );
+    },
+  });
+};
+
+/**
+ * This is a query to store the onboarding requirement to support the edit flow
+ */
+export const useOnboardingRequirement = () => {
+  return useQuery<LocalRequirements | undefined, Error>(
+    onboardingQueryKeys.requirement(),
+    () => undefined
+  );
+};
+
+/**
+ * This is a mutation to set the onboarding requirement
+ */
+export const useSetOnboardingRequirement = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    LocalRequirements | undefined,
+    undefined,
+    LocalRequirements | undefined
+  >((requirement) => new Promise((resolve) => resolve(requirement)), {
+    onSuccess: (requirement) => {
+      queryClient.setQueryData(onboardingQueryKeys.requirement(), requirement);
     },
   });
 };

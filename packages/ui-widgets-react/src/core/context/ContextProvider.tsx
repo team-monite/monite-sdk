@@ -11,7 +11,6 @@ import { Global } from '@emotion/react';
 import { ThemeProvider as EmotionThemeProvider } from 'emotion-theming';
 import { I18nextProvider } from 'react-i18next';
 import { merge } from 'lodash';
-import { ReactQueryDevtools } from 'react-query/devtools';
 
 import GlobalToast from '../GlobalToast';
 
@@ -69,7 +68,6 @@ const MoniteProvider = ({ monite, theme, children }: MoniteProviderProps) => {
       <MoniteProviderStyles monite={monite} theme={theme}>
         {children}
       </MoniteProviderStyles>
-      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link, styled } from '@mui/material';
 
 import mccCodes from '../dicts/mccCodes';
 import countries from '../dicts/countries';
@@ -12,23 +13,38 @@ import useOnboardingForm, {
   OnboardingFormProps,
 } from '../hooks/useOnboardingForm';
 
-import { getLocalRequirements, LocalRequirements } from '../useOnboardingStep';
-
 import OnboardingFormActions from '../OnboardingLayout/OnboardingFormActions';
 import OnboardingSubTitle from '../OnboardingLayout/OnboardingSubTitle';
 import OnboardingBusinessRepresentativeView from './OnboardingBusinessRepresentativeView';
 import OnboardingBankAccountView from './OnboardingBankAccountView';
 import OnboardingBusinessProfileView from './OnboardingBusinessProfileView';
+import {
+  getLocalRequirements,
+  LocalRequirements,
+} from '../hooks/useOnboardingRequirements';
 
-const OnboardingReview = (props: OnboardingFormProps) => {
+const StyledLink = styled(Link)`
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+`;
+
+const OnboardingReview = ({ linkId }: OnboardingFormProps) => {
   const { t } = useTranslation();
-  const { onSubmit, onSave, isLoading, onboarding } = useOnboardingForm(props);
+  const {
+    isLoading,
+    onboarding,
+    actions,
+    submitLabel,
+    setCurrentRequirement,
+    onSubmit,
+  } = useOnboardingForm(linkId);
 
   if (!onboarding) return null;
 
-  const list = Object.keys(
-    getLocalRequirements(onboarding.business_type)
-  ).filter((key) => key !== LocalRequirements.review);
+  const list = getLocalRequirements(onboarding.business_type).filter(
+    ({ key }) => key !== LocalRequirements.review
+  );
 
   const translateTitle = (key: string): string =>
     t(`onboarding:${key}Step.title`);
@@ -50,22 +66,35 @@ const OnboardingReview = (props: OnboardingFormProps) => {
   )?.label;
 
   const mcc = mccCodes.find(
-    ({ code }) => `${code}` === business_profile?.mcc
+    ({ code }) => `${code}` === `${business_profile?.mcc}`
   )?.label;
 
   return (
     <OnboardingForm
       actions={
         <OnboardingFormActions
+          submitType={submitLabel}
           isLoading={isLoading}
-          onSave={onSave}
           onSubmit={onSubmit}
+          {...actions}
         />
       }
     >
-      {list.map((key) => (
+      {list.map(({ key }) => (
         <OnboardingStepContent key={key}>
-          <OnboardingSubTitle>{translateTitle(key)}</OnboardingSubTitle>
+          <OnboardingSubTitle
+            action={
+              <StyledLink
+                underline="none"
+                onClick={() => setCurrentRequirement(key)}
+              >
+                {t('onboarding:actions.edit')}
+              </StyledLink>
+            }
+          >
+            {translateTitle(key)}
+          </OnboardingSubTitle>
+
           {key === LocalRequirements.businessRepresentative && (
             <OnboardingBusinessRepresentativeView
               {...individual}
@@ -75,6 +104,7 @@ const OnboardingReview = (props: OnboardingFormProps) => {
               }}
             />
           )}
+
           {key === LocalRequirements.bankAccount && (
             <OnboardingBankAccountView
               {...bank_account}
@@ -82,6 +112,7 @@ const OnboardingReview = (props: OnboardingFormProps) => {
               currency={bankAccountCurrency}
             />
           )}
+
           {key === LocalRequirements.businessProfile && (
             <OnboardingBusinessProfileView {...business_profile} mcc={mcc} />
           )}

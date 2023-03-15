@@ -1,3 +1,5 @@
 /storybook_static
 .npmrc
 coverage
+.env
+.env*

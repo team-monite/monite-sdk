@@ -15,23 +15,30 @@ import useOnboardingForm, {
 } from '../hooks/useOnboardingForm';
 import useOnboardingTranslateField from '../hooks/useOnboardingTranslateField';
 
-const OnboardingBusinessProfile = (props: OnboardingFormProps) => {
+const OnboardingBusinessProfile = ({ linkId }: OnboardingFormProps) => {
   const {
     methods: { control, handleSubmit },
     isLoading,
-    onNext,
-    onSave,
-  } = useOnboardingForm(props);
+    actions,
+    submitLabel,
+    submitAction,
+  } = useOnboardingForm(linkId);
 
   const translateField =
     useOnboardingTranslateField<OnboardingBusinessProfileType>(
-      'business_profile'
+      'businessProfile'
     );
 
   return (
     <OnboardingForm
-      onSubmit={handleSubmit(onNext)}
-      actions={<OnboardingFormActions isLoading={isLoading} onSave={onSave} />}
+      onSubmit={handleSubmit(submitAction)}
+      actions={
+        <OnboardingFormActions
+          submitType={submitLabel}
+          isLoading={isLoading}
+          {...actions}
+        />
+      }
     >
       <OnboardingStepContent>
         <RHFAutocomplete

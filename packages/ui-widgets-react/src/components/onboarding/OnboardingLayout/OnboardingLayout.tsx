@@ -11,7 +11,7 @@ import OnboardingNotification from './OnboardingNotification';
 import OnboardingContainer from './OnboardingContainer';
 
 export type OnboardingLayoutProps = {
-  progress: ReactNode;
+  progress?: ReactNode;
   actions?: ReactNode;
   content: ReactNode;
   title: ReactNode;

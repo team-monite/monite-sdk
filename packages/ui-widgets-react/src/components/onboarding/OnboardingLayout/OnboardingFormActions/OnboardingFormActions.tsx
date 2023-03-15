@@ -2,11 +2,16 @@ import React from 'react';
 import { Box, Button, Paper, styled } from '@mui/material';
 import { palette } from '@team-monite/ui-kit-react';
 import { useTranslation } from 'react-i18next';
+import { OnboardingSubmitAction } from '../../hooks/useOnboardingForm';
 
 export type OnboardingFormActionsProps = {
   onSave?: () => void;
+  onCancel?: () => void;
   onSubmit?: () => void;
-  onBack?: () => void;
+  /**
+   * submitType is used to display the right label on the submit button
+   */
+  submitType: OnboardingSubmitAction;
   isLoading: boolean;
 };
 
@@ -34,7 +39,9 @@ const StyledRightBlock = styled(Box)`
 
 export default function OnboardingFormActions({
   onSave,
+  onCancel,
   onSubmit,
+  submitType,
   isLoading,
 }: OnboardingFormActionsProps) {
   const { t } = useTranslation();
@@ -48,29 +55,29 @@ export default function OnboardingFormActions({
           variant="contained"
           color="secondary"
         >
-          {t('onboarding:actions.save')}
+          {t('onboarding:actions.saveClose')}
+        </Button>
+      )}
+      {onCancel && (
+        <Button
+          disabled={isLoading}
+          onClick={onCancel}
+          variant="contained"
+          color="secondary"
+        >
+          {t(`onboarding:actions.cancel`)}
         </Button>
       )}
       <StyledRightBlock>
-        {onSubmit ? (
-          <Button
-            disabled={isLoading}
-            onClick={onSubmit}
-            variant="contained"
-            color="primary"
-          >
-            {t(`onboarding:actions.submit`)}
-          </Button>
-        ) : (
-          <Button
-            disabled={isLoading}
-            type={'submit'}
-            variant="contained"
-            color="primary"
-          >
-            {t(`onboarding:actions.next`)}
-          </Button>
-        )}
+        <Button
+          disabled={isLoading}
+          type={submitType === 'submit' ? 'button' : 'submit'}
+          variant="contained"
+          color="primary"
+          onClick={onSubmit}
+        >
+          {t(`onboarding:actions.${submitType}`)}
+        </Button>
       </StyledRightBlock>
     </StyledActions>
   );

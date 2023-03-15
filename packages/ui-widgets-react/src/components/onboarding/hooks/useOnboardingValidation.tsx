@@ -31,35 +31,37 @@ const individualSchema: Record<
   last_name: string().required(),
   email: string().email().required(),
   phone: string().required(),
-  date_of_birth: string().test('dob', '', (value, ctx) => {
-    if (!value) return true;
+  date_of_birth: string()
+    .required()
+    .test('dob', '', (value, ctx) => {
+      if (!value) return true;
 
-    const format = 'MM / dd / yyyy';
+      const format = 'MM / dd / yyyy';
 
-    if (!isMatch(value, format)) {
-      return ctx.createError({
-        message: `Please provide a valid date.`,
-      });
-    }
+      if (!isMatch(value, format)) {
+        return ctx.createError({
+          message: `Please provide a valid date.`,
+        });
+      }
 
-    const currentDate = new Date();
-    const date = parse(value, format, currentDate);
-    const difference = differenceInYears(currentDate, date);
+      const currentDate = new Date();
+      const date = parse(value, format, currentDate);
+      const difference = differenceInYears(currentDate, date);
 
-    if (difference < 18) {
-      return ctx.createError({
-        message: `Managers and owners must be at least 18 years old to use this service.`,
-      });
-    }
+      if (difference < 18) {
+        return ctx.createError({
+          message: `Managers and owners must be at least 18 years old to use this service.`,
+        });
+      }
 
-    if (difference > 120) {
-      return ctx.createError({
-        message: `Managers and owners must be under 120 years old.`,
-      });
-    }
+      if (difference > 120) {
+        return ctx.createError({
+          message: `Managers and owners must be under 120 years old.`,
+        });
+      }
 
-    return true;
-  }),
+      return true;
+    }),
   id_number: string().required(),
   ssn_last_4: string().required().trim().min(4),
   address: object(addressSchema),
@@ -105,9 +107,9 @@ const schemas: Partial<
   [OnboardingRequirement.BUSINESS_PROFILE]: businessProfileSchema,
 };
 
-export default function useValidation(
-  data: OnboardingData,
-  requirements: OnboardingRequirement[]
+export default function useOnboardingValidation(
+  data?: OnboardingData,
+  requirements?: OnboardingRequirement[]
 ): AnyObjectSchema {
   const generateValidationSchema = <V, F>(
     validator: V,
@@ -128,9 +130,11 @@ export default function useValidation(
       ),
     });
 
+  if (!data || !requirements) return object({});
+
   return object(
     requirements.reduce<{ [key in string]: AnyObjectSchema }>(
-      (acc, requirement: OnboardingRequirement) => ({
+      (acc, requirement) => ({
         ...acc,
         [requirement]: generateValidationSchema(
           schemas[requirement],
