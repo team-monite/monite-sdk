@@ -5,7 +5,7 @@
 /**
  * A scheme for validation an entity user additional info
  */
-export type CreateEntityUserRequest = {
+export type package__auth_n_settings__v2023_02_07__schemas__entity_users__UpdateEntityUserRequest = {
     /**
      * An entity user business email
      */
@@ -14,7 +14,6 @@ export type CreateEntityUserRequest = {
      * An entity user phone number in the international format
      */
     phone?: string;
-    login: string;
     /**
      * UUID of the role assigned to this entity user
      */
@@ -22,7 +21,7 @@ export type CreateEntityUserRequest = {
     /**
      * First name
      */
-    first_name: string;
+    first_name?: string;
     /**
      * Last name
      */
@@ -31,5 +30,9 @@ export type CreateEntityUserRequest = {
      * Title
      */
     title?: string;
+    /**
+     * Login
+     */
+    login?: string;
 };
 

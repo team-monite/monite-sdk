@@ -4,7 +4,7 @@
 
 import type { EntityInfoSchema } from './EntityInfoSchema';
 
-export type UpdateEntityUserRequest = {
+export type package__auth_n_settings__schemas__entity_users__UpdateEntityUserRequest = {
     /**
      * UUID of the role assigned to this entity user
      */

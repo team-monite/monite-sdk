@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { BizObjectsSchema } from './BizObjectsSchema';
+import type { package__auth_n_settings__schemas__roles__BizObjectsSchema } from './package__auth_n_settings__schemas__roles__BizObjectsSchema';
 
 export type UpdateRoleRequest = {
     /**
@@ -12,6 +12,6 @@ export type UpdateRoleRequest = {
     /**
      * Access permissions
      */
-    permissions?: BizObjectsSchema;
+    permissions?: package__auth_n_settings__schemas__roles__BizObjectsSchema;
 };
 
