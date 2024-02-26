@@ -1,0 +1,3 @@
+[submodule "monite-sdk"]
+	path = monite-sdk
+	url = https://github.com/radist2s/monite-sdk.git
