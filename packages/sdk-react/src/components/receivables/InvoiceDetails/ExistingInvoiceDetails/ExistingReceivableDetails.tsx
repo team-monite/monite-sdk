@@ -1,6 +1,7 @@
-import React, { cloneElement, ReactElement, useMemo, useState } from 'react';
+import React, { cloneElement, ReactElement, useMemo } from 'react';
 
 import { useDialog } from '@/components/Dialog';
+import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import {
   InvoiceDetailsPermissions,
@@ -9,10 +10,9 @@ import {
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
+import { InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
@@ -24,28 +24,29 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Typography,
-  Divider,
 } from '@mui/material';
 
 import { addDays } from 'date-fns';
 
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '../consts';
+import { ROW_TO_TAG_STATUS_MUI_MAP } from '../../consts';
 import {
-  ExistingInvoiceDetailsProps,
+  ExistingReceivableDetailsProps,
   getReceivableStatusNameMap,
-} from './InvoiceDetails.types';
-import { InvoiceError } from './InvoiceError';
-import { InvoiceFrom } from './InvoiceFrom';
-import { InvoiceItems } from './InvoiceItems';
-import { InvoicePaymentDetails } from './InvoicePaymentDetails';
-import { InvoiceTo } from './InvoiceTo';
-import { InvoiceTotal } from './InvoiceTotal';
+} from '../InvoiceDetails.types';
+import { InvoiceError } from '../InvoiceError';
+import { InvoiceItems } from '../InvoiceItems';
+import { InvoicePaymentDetails } from '../InvoicePaymentDetails';
+import { InvoiceTo } from '../InvoiceTo';
+import { InvoiceTotal } from '../InvoiceTotal';
+
+import type = InvoiceResponsePayload.type;
 
 type GetComponentProps<T> = T extends
   | React.ComponentType<infer P>
@@ -53,7 +54,10 @@ type GetComponentProps<T> = T extends
   ? P
   : never;
 
-export const ExistingInvoiceDetails = (props: ExistingInvoiceDetailsProps) => {
+/** General component for all Receivables (Invoices, Credit Notes, Quotes) */
+export const ExistingReceivableDetails = (
+  props: ExistingReceivableDetailsProps
+) => {
   const { i18n } = useLingui();
 
   const {
@@ -158,6 +162,10 @@ export const ExistingInvoiceDetails = (props: ExistingInvoiceDetailsProps) => {
     );
   }
 
+  if (invoice.type === type.INVOICE) {
+    return <ExistingInvoiceDetails {...props} />;
+  }
+
   return (
     <MoniteStyleProvider>
       <DialogTitle>
@@ -223,13 +231,6 @@ export const ExistingInvoiceDetails = (props: ExistingInvoiceDetailsProps) => {
             </Table>
           </Card>
         </Box>
-
-        {invoice.type === 'invoice' && (
-          <InvoiceFrom
-            entity={invoice.entity}
-            entityAddress={invoice.entity_address}
-          />
-        )}
 
         <InvoiceTo
           counterpartName={invoice.counterpart_name}
