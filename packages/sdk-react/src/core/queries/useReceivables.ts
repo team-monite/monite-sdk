@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { ExistingInvoiceDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -353,7 +353,7 @@ export enum InvoiceDetailsPermissions {
 type IUseInvoiceDetailsProps = {
   id: string;
 } & Pick<
-  ExistingInvoiceDetailsProps,
+  ExistingReceivableDetailsProps,
   'onIssue' | 'onDelete' | 'onCancel' | 'onMarkAsUncollectible'
 >;
 

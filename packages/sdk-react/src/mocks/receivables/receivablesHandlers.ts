@@ -163,6 +163,7 @@ export const receivableHandlers = [
       );
     }
 
+    fixture.status = ReceivablesStatusEnum.ISSUED;
     const receivable: InvoiceResponsePayload = {
       ...(fixture as InvoiceResponsePayload),
       status: ReceivablesStatusEnum.ISSUED,
@@ -294,6 +295,7 @@ export const receivableHandlers = [
       );
     }
 
+    fixture.status = ReceivablesStatusEnum.ISSUED;
     return res(delay(1_000), ctx.status(200), ctx.json(fixture));
   }),
 

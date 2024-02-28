@@ -8,7 +8,7 @@ import { useLingui } from '@lingui/react';
 import { InvoiceResponsePayload } from '@monite/sdk-api';
 
 import { CreateReceivables } from './CreateReceivable';
-import { ExistingInvoiceDetails } from './ExistingInvoiceDetails';
+import { ExistingReceivableDetails } from './ExistingInvoiceDetails/ExistingReceivableDetails';
 
 export const InvoiceDetails = (props: InvoiceDetailsProps) => {
   const { i18n } = useLingui();
@@ -29,5 +29,5 @@ export const InvoiceDetails = (props: InvoiceDetailsProps) => {
     return <CreateReceivables {...props} />;
   }
 
-  return <ExistingInvoiceDetails {...props} />;
+  return <ExistingReceivableDetails {...props} />;
 };
