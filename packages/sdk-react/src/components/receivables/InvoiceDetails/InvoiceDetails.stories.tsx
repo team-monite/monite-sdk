@@ -1,7 +1,6 @@
 import { Dialog } from '@/components/Dialog';
-import { InvoicePreviewScreen } from '@/components/receivables/InvoiceDetails/PreviewScreen';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
+import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -14,6 +13,12 @@ const meta: Meta<typeof InvoiceDetails> = {
 
 type Story = StoryObj<typeof InvoiceDetails>;
 
+const invoiceInDraftStatus = receivableListFixture.invoice.find(
+  (invoice) => invoice.status === ReceivablesStatusEnum.DRAFT
+);
+const invoiceIdInDraftStatus = invoiceInDraftStatus
+  ? invoiceInDraftStatus.id
+  : receivableListFixture.invoice[0].id;
 const invoiceId = receivableListFixture.invoice[0].id;
 
 const actions = {
@@ -55,7 +60,7 @@ export const DialogCreateView: Story = {
 
 export const IvoiceDetails: Story = {
   args: {
-    id: invoiceId,
+    id: invoiceIdInDraftStatus,
     ...actions,
   },
   render: (args) => <InvoiceDetails {...args} />,

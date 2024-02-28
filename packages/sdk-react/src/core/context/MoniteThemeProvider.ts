@@ -10,6 +10,7 @@ import type {} from '@mui/x-data-grid/themeAugmentation';
 const palette = {
   neutral50: '#707070',
   primary50: '#246FFF',
+  primaryLight: '#F4F4FE',
 };
 
 export const defaultMoniteTypography:
@@ -176,6 +177,7 @@ export const defaultMoniteLightThemeOptions: ThemeOptions = {
     mode: 'light',
     primary: {
       main: palette.primary50,
+      light: palette.primaryLight,
     },
     secondary: {
       main: palette.neutral50,

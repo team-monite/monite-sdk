@@ -19,7 +19,7 @@ export const getReceivableStatusNameMap = (
   [ReceivablesStatusEnum.DELETED]: t(i18n)`Deleted`,
 });
 
-export interface ExistingInvoiceDetailsProps {
+export interface ExistingReceivableDetailsProps {
   /** Receivable ID */
   id: string;
 
@@ -98,5 +98,5 @@ export interface InvoiceDetailsCreateProps {
 }
 
 export type InvoiceDetailsProps =
-  | ExistingInvoiceDetailsProps
+  | ExistingReceivableDetailsProps
   | InvoiceDetailsCreateProps;
