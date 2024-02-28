@@ -6,7 +6,7 @@ import {
 } from '@monite/sdk-api';
 
 export function generatePaymentTerm(): PaymentTermsResponse {
-  const days = faker.number.int({ min: 2, max: 30 });
+  const days = faker.number.int({ min: 2, max: 100 });
   const discount = faker.number.int({ min: 1, max: 100 });
 
   return {

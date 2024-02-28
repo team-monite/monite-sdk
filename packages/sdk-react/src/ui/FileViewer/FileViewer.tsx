@@ -220,7 +220,10 @@ const FileViewerComponent = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid container sx={{ flex: '1 1 auto', overflow: 'auto', height: 0 }}>
+      <Grid
+        container
+        sx={{ flex: '1 1 auto', overflow: 'auto', height: 'auto' }}
+      >
         {renderFile()}
       </Grid>
     </MoniteStyleProvider>

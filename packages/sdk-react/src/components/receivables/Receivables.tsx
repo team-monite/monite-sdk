@@ -71,8 +71,8 @@ export const Receivables = () => {
         onRowClick={onRowClick}
       />
       <Dialog
-        alignDialog="right"
         open={openDetails}
+        fullScreen
         container={root}
         onClose={closeModal}
         onClosed={closedModal}
