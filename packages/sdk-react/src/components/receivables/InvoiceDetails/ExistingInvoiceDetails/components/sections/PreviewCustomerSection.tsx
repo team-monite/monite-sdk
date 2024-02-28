@@ -61,7 +61,7 @@ export const PreviewCustomerSection = ({
         items={[
           {
             label: t(i18n)`Bill to`,
-            value: counterpartName,
+            value: <Typography fontWeight={500}>{counterpartName}</Typography>,
           },
           {
             label: t(i18n)`Contact person`,
