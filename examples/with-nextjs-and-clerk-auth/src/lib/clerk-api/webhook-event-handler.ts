@@ -287,17 +287,22 @@ const handleUserUpdateEvent = async (event: UserWebhookEvent) => {
 
     const email = user.emailAddresses.at(0)?.emailAddress;
 
-    await updateEntityUser({
-      entity_id,
-      entity_user_id: entity_user_id ?? undefined,
-      user: {
-        role_id: entityRoleId,
-        first_name: user.firstName || email || '',
-        last_name: user.lastName ?? undefined,
-        phone: user.phoneNumbers.at(0)?.phoneNumber ?? undefined,
-        email,
+    await updateEntityUser(
+      {
+        entity_id,
+        entity_user_id: entity_user_id ?? undefined,
+        user: {
+          role_id: entityRoleId,
+          first_name: user.firstName || email || '',
+          last_name: user.lastName ?? undefined,
+          phone: user.phoneNumbers.at(0)?.phoneNumber ?? undefined,
+          email,
+        },
       },
-    });
+      await fetchTokenServer({
+        grant_type: 'client_credentials',
+      })
+    );
   }
 };
 
