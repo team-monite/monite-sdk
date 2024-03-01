@@ -49,7 +49,10 @@ export const Payables = ({
 }: PayablesProps) => {
   const { i18n } = useLingui();
 
-  const [invoiceId, setInvoiceId] = useState<string | null>(null);
+  const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
+    invoiceId: string | undefined;
+    open: boolean;
+  }>({ invoiceId: undefined, open: false });
   const [isCreateInvoiceMenuOpen, setIsCreateInvoiceMenuOpen] = useState(false);
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
@@ -138,7 +141,10 @@ export const Payables = ({
           </Box>
         }
       />
-      <PayablesTable onRowClick={setInvoiceId} onPay={onPay} />
+      <PayablesTable
+        onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
+        onPay={onPay}
+      />
       <FileInput
         accept="application/pdf"
         aria-label={t(i18n)`Upload payable file`}
@@ -154,14 +160,23 @@ export const Payables = ({
         }}
       />
       <Dialog
-        open={!!invoiceId}
+        open={invoiceIdDialog.open}
         container={root}
-        onClose={() => setInvoiceId(null)}
+        onClose={() => {
+          setInvoiceIdDialog((prev) => ({ ...prev, open: false }));
+        }}
+        onClosed={() => {
+          setInvoiceIdDialog((prev) =>
+            prev.open ? prev : { open: false, invoiceId: undefined }
+          );
+        }}
         fullScreen
       >
         <PayableDetails
-          id={invoiceId!}
-          onClose={() => setInvoiceId(null)}
+          id={invoiceIdDialog.invoiceId}
+          onClose={() => {
+            setInvoiceIdDialog((prev) => ({ ...prev, open: false }));
+          }}
           onSaved={onSaved}
           onCanceled={onCanceled}
           onSubmitted={onSubmitted}
