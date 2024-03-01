@@ -3,6 +3,7 @@ import React from 'react';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
+import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetails/PayableDetailsNoAttachedFile';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -72,18 +73,25 @@ export const PayableDetails = ({
   });
   const { i18n } = useLingui();
 
-  const { data: isReadAvailable, isInitialLoading: isReadAvailableLoading } =
+  const { data: isUpdateAllowed, isInitialLoading: isUpdateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'payable',
+      action: PayableActionEnum.UPDATE,
+      entityUserId: payable?.was_created_by_user_id,
+    });
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.READ,
       entityUserId: payable?.was_created_by_user_id,
     });
 
-  if (isReadAvailableLoading) {
+  if (isReadAllowedLoading || isUpdateAllowedLoading) {
     return <LoadingPage />;
   }
 
-  if (!isReadAvailable) {
+  if (!isReadAllowed) {
     return (
       <MoniteStyleProvider>
         <AccessRestriction />
@@ -152,8 +160,11 @@ export const PayableDetails = ({
                   url={payable.file.url}
                 />
               )}
-              {!isLoading && payable?.id && !payable?.file && (
+              {isUpdateAllowed && payable?.id && !payable?.file && (
                 <PayableDetailsAttachFile payableId={payable.id} />
+              )}
+              {!isUpdateAllowed && payable?.id && !payable?.file && (
+                <PayableDetailsNoAttachedFile />
               )}
             </Grid>
             <Grid
