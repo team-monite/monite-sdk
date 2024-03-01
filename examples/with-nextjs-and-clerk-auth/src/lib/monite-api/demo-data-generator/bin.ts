@@ -19,8 +19,8 @@ import { fetchToken } from '@/lib/monite-api/fetch-token';
 import { components } from '@/lib/monite-api/schema';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
 
-dotenv.config({ path: '.env' });
-dotenv.config({ path: '.env.local', override: true });
+dotenv.config({ path: '.env.local', override: false });
+dotenv.config({ path: '.env', override: false });
 
 const commandWithEntityOptions = () =>
   new Command()
