@@ -52,11 +52,13 @@ export const createEntityRole = async (
  * @param token The access token
  * @returns Merged roles: the new roles with the previously existing roles
  */
-export const createEntityRoles = async (
+export const createEntityRoles = async <
+  Role extends keyof typeof roles_default_permissions
+>(
   entityId: string,
-  roles: Array<keyof typeof roles_default_permissions>,
+  roles: Array<Role>,
   token: AccessToken
-) => {
+): Promise<Record<Role, string>> => {
   const entityNewRoleEntries = await Promise.all(
     roles.map(async (roleName) => {
       const permissions = roles_default_permissions[roleName];
@@ -79,7 +81,10 @@ export const createEntityRoles = async (
     })
   );
 
-  return Object.fromEntries(entityNewRoleEntries);
+  return Object.fromEntries(entityNewRoleEntries) as Record<
+    (typeof entityNewRoleEntries)[number][0],
+    (typeof entityNewRoleEntries)[number][1]
+  >;
 };
 
 export const isExistingRole = (
