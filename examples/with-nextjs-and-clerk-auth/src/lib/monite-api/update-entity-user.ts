@@ -1,4 +1,4 @@
-import { fetchTokenServer } from '@/lib/monite-api/fetch-token';
+import type { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
@@ -6,20 +6,19 @@ import {
 
 import { paths } from './schema';
 
-export const updateEntityUser = async ({
-  entity_id,
-  entity_user_id,
-  user,
-}: {
-  entity_id: string;
-  entity_user_id: string;
-  user: paths['/entity_users/{entity_user_id}']['patch']['requestBody']['content']['application/json'];
-}) => {
+export const updateEntityUser = async (
+  {
+    entity_id,
+    entity_user_id,
+    user,
+  }: {
+    entity_id: string;
+    entity_user_id: string;
+    user: paths['/entity_users/{entity_user_id}']['patch']['requestBody']['content']['application/json'];
+  },
+  token: AccessToken
+) => {
   if (!entity_id) throw new Error('entity_id is empty');
-
-  const token = await fetchTokenServer({
-    grant_type: 'client_credentials',
-  });
 
   const { PATCH } = createMoniteClient({
     headers: {
