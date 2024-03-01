@@ -4,8 +4,16 @@ import { Command, program } from 'commander';
 import dotenv from 'dotenv';
 
 import { clerkClient } from '@clerk/clerk-sdk-node';
+import { faker } from '@faker-js/faker';
 
 import { recreateOrganizationEntity } from '@/lib/clerk-api/recreate-organization-entity';
+import {
+  createEntityRole,
+  isExistingRole,
+  permissionsAdapter,
+  roles_default_permissions,
+} from '@/lib/monite-api/create-entity-role';
+import { createEntityUser } from '@/lib/monite-api/create-entity-user';
 import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counterparts';
 import { getRandomItemFromArray } from '@/lib/monite-api/demo-data-generator/general.service';
 import { generateBankAccount } from '@/lib/monite-api/demo-data-generator/generate-bank-account';
@@ -17,6 +25,7 @@ import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receiva
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
 import { fetchToken } from '@/lib/monite-api/fetch-token';
 import { components } from '@/lib/monite-api/schema';
+import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
 
 dotenv.config({ path: '.env.local', override: false });
@@ -197,6 +206,123 @@ program
             token,
           }
         ).finally(() => void closeMqttConnection());
+      })
+  )
+  .addCommand(
+    commandWithEntityOptions()
+      .name('entity-user-role')
+      .description('Generate entity user role with permissions')
+      .requiredOption<keyof typeof roles_default_permissions>(
+        '--role <ROLE>',
+        `The default role permissions set to use. Available roles: ${Object.keys(
+          roles_default_permissions
+        ).join(', ')}`,
+        (role) => {
+          if (isExistingRole(role)) return role;
+          throw new Error(
+            `Invalid role, available roles: ${Object.keys(
+              roles_default_permissions
+            ).join(', ')}`
+          );
+        }
+      )
+      .option('--role-name <NAME>', 'The role name to create', String)
+      .option(
+        '--target-entity-user-id <ID>',
+        'The user to whom a new role is assigned',
+        String
+      )
+      .option('--new-entity-user', 'Create a new entity user')
+      .action(async (args) => {
+        const { entity_id } = getEntityArgs(args);
+        const token = await fetchTokenCLI(args);
+        const role = args.role;
+        const targetEntityUserId = args.targetEntityUserId;
+        const newEntityUser = args.newEntityUser;
+        if (!entity_id) throw new Error('entity_id is empty');
+        if (!isExistingRole(role)) throw new Error('role is not valid');
+        if (!targetEntityUserId && !newEntityUser)
+          throw new Error(
+            'Either `--target-entity-user-id` or `--new-entity-user` must be set'
+          );
+        if (targetEntityUserId && newEntityUser)
+          throw new Error(
+            'Both `--target-entity-user-id` and `--new-entity-user` are set'
+          );
+
+        console.log(
+          chalk.greenBright(
+            `Generating entity user role with permissions for entity_id: "${entity_id}" and role: "${role}"...`
+          )
+        );
+
+        console.log(chalk.gray(`Creating role: "${role}"...`));
+
+        try {
+          const { id: newRoleId } = await createEntityRole(
+            {
+              entity_id,
+              role: {
+                name: args.roleName ?? role,
+                permissions: permissionsAdapter(
+                  roles_default_permissions[role]
+                ),
+              },
+            },
+            token
+          );
+
+          if (targetEntityUserId) {
+            console.log(
+              chalk.gray(
+                `Updating entity_user_id "${targetEntityUserId}" with role_id: "${newRoleId}"...`
+              )
+            );
+
+            await updateEntityUser(
+              {
+                entity_id,
+                entity_user_id: targetEntityUserId,
+                user: { role_id: newRoleId },
+              },
+              token
+            );
+
+            console.log(
+              chalk.greenBright(
+                `Updated user role for entity_user_id: "${targetEntityUserId}"`
+              )
+            );
+          } else if (newEntityUser) {
+            console.log(chalk.gray(`Creating new entity user...`));
+
+            const { id: newEntityUserId } = await createEntityUser(
+              {
+                entity_id,
+                user: {
+                  login: faker.internet.userName(),
+                  role_id: newRoleId,
+                  first_name: faker.person.firstName(),
+                  last_name: faker.person.lastName(),
+                  phone: faker.phone.number().slice(0, 15),
+                  email: faker.internet.email(),
+                },
+              },
+              token
+            );
+
+            console.log(
+              chalk.greenBright(
+                `Created new entity_user_id: "${newEntityUserId}" with role_id: "${newRoleId}"`
+              )
+            );
+          }
+        } catch (error) {
+          console.error(
+            chalk.red('Failed to create role or update user'),
+            error
+          );
+        }
       })
   );
 
