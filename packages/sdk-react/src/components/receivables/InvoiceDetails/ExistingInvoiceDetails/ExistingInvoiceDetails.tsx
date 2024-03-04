@@ -69,6 +69,7 @@ const StyledMenu = styled((props: MenuProps) => {
     // borderRadius: theme.spacing(2),
     marginTop: theme.spacing(1),
     minWidth: 180,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
     boxShadow: `0px 4px 16px 0px ${alpha(theme.palette.secondary.main, 0.4)}`,
     '& .MuiMenu-list': {
       padding: '4px 0',
