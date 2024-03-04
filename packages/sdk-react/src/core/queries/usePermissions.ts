@@ -17,7 +17,12 @@ type PayableOperator = {
 };
 
 type CommonOperator = {
-  method: 'workflow' | 'counterpart' | 'product' | 'receivable';
+  method:
+    | 'workflow'
+    | 'counterpart'
+    | 'product'
+    | 'receivable'
+    | 'approval_policy';
   action: ActionEnum;
 };
 
