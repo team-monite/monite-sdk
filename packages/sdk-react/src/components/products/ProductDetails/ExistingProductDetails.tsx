@@ -63,29 +63,32 @@ export const ExistingProductDetails = ({
     isInitialLoading,
   } = useProductById(id);
 
-  const { data: isReadAvailable, isInitialLoading: isReadAvailableLoading } =
+  const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'product',
       action: ActionEnum.READ,
+      entityUserId: user?.id,
     });
 
-  const { data: user } = useEntityUserByAuthToken();
-  const { data: isUpdateSupported } = useIsActionAllowed({
+  const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'product',
     action: ActionEnum.UPDATE,
     entityUserId: user?.id,
   });
-  const { data: isDeleteSupported } = useIsActionAllowed({
+
+  const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'product',
     action: ActionEnum.DELETE,
     entityUserId: user?.id,
   });
 
-  if (isInitialLoading || isReadAvailableLoading) {
+  if (isInitialLoading || isReadAllowedLoading) {
     return <LoadingPage />;
   }
 
-  if (!isReadAvailable) {
+  if (!isReadAllowed) {
     return (
       <MoniteStyleProvider>
         <AccessRestriction />
@@ -213,29 +216,31 @@ export const ExistingProductDetails = ({
         </Box>
       </DialogContent>
       <Divider />
-      <DialogActions>
-        {isDeleteSupported && (
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              // @todo: Anashev - must be changed. We have to remove it directly from this component
-              // onDeleted?.(product);
-              setDeleteModalOpened(true);
-            }}
-          >
-            {t(i18n)`Delete`}
-          </Button>
-        )}
-        {isUpdateSupported && (
-          <Button
-            variant="outlined"
-            onClick={() => setView(ProductDetailsView.Edit)}
-          >
-            {t(i18n)`Edit`}
-          </Button>
-        )}
-      </DialogActions>
+      {(isDeleteAllowed || isUpdateAllowed) && (
+        <DialogActions>
+          {isDeleteAllowed && (
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                // @todo: Anashev - must be changed. We have to remove it directly from this component
+                // onDeleted?.(product);
+                setDeleteModalOpened(true);
+              }}
+            >
+              {t(i18n)`Delete`}
+            </Button>
+          )}
+          {isUpdateAllowed && (
+            <Button
+              variant="outlined"
+              onClick={() => setView(ProductDetailsView.Edit)}
+            >
+              {t(i18n)`Edit`}
+            </Button>
+          )}
+        </DialogActions>
+      )}
     </MoniteStyleProvider>
   );
 };
