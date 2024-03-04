@@ -94,14 +94,26 @@ export function useIsActionAllowed({
  * @param method Specific method to check permissions
  */
 export function usePermissions<T extends keyof PermissionMap>(method: T) {
-  const { data: user, ...rest } = useEntityUserByAuthToken();
-  const { data: role } = useEntityUserRoleByAuthToken();
+  const userQuery = useEntityUserByAuthToken();
+  const roleQuery = useEntityUserRoleByAuthToken();
+
+  const role = roleQuery.data;
+  const user = userQuery.data;
+
+  const rest = {
+    isInitialLoading: roleQuery.isInitialLoading || userQuery.isInitialLoading,
+    isLoading: roleQuery.isLoading || userQuery.isLoading,
+    isSuccess: roleQuery.isSuccess && userQuery.isSuccess,
+    isError: roleQuery.isError || userQuery.isError,
+    isFetching: roleQuery.isFetching || userQuery.isFetching,
+    error: roleQuery.error || userQuery.error,
+    userIdFromAuthToken: user?.id,
+  };
 
   if (!user || !role || !('permissions' in role)) {
     return {
       ...rest,
       data: undefined,
-      userIdFromAuthToken: user?.id,
     };
   }
 
@@ -111,7 +123,6 @@ export function usePermissions<T extends keyof PermissionMap>(method: T) {
     return {
       ...rest,
       data: undefined,
-      userIdFromAuthToken: user.id,
     };
   }
 
@@ -124,6 +135,5 @@ export function usePermissions<T extends keyof PermissionMap>(method: T) {
   return {
     ...rest,
     data: actions,
-    userIdFromAuthToken: user.id,
   };
 }
