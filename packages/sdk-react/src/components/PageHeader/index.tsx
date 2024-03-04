@@ -3,7 +3,7 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
 type PageHeaderProps = {
-  title: string;
+  title: React.ReactNode;
   extra?: React.ReactNode;
 };
 
