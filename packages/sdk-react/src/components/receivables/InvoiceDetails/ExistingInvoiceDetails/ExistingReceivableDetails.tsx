@@ -1,5 +1,3 @@
-import React, { cloneElement, ReactElement, useMemo } from 'react';
-
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
@@ -70,60 +68,6 @@ export const ExistingReceivableDetails = (
   } = useInvoiceDetails(props);
 
   const dialogContext = useDialog();
-
-  const actions = useMemo<
-    Record<
-      InvoiceDetailsPermissions,
-      ReactElement<GetComponentProps<typeof Button>>
-    >
-  >(() => {
-    return {
-      [InvoiceDetailsPermissions.Cancel]: (
-        <Button
-          aria-label={t(i18n)`Cancel invoice`}
-          variant="outlined"
-          color="error"
-          onClick={queryActions.cancelInvoice}
-        >
-          {t(i18n)`Cancel`}
-        </Button>
-      ),
-      [InvoiceDetailsPermissions.Delete]: (
-        <Button
-          aria-label={t(i18n)`Delete invoice`}
-          variant="outlined"
-          color="error"
-          onClick={queryActions.deleteInvoice}
-        >
-          {t(i18n)`Delete`}
-        </Button>
-      ),
-      [InvoiceDetailsPermissions.Issue]: (
-        <Button
-          aria-label={t(i18n)`Issue invoice`}
-          onClick={queryActions.issueInvoice}
-          variant="outlined"
-        >
-          {t(i18n)`Issue`}
-        </Button>
-      ),
-      [InvoiceDetailsPermissions.MarkAsUncollectible]: (
-        <Button
-          aria-label={t(i18n)`Mark as uncollectible invoice`}
-          onClick={queryActions.markAsUncollectibleInvoice}
-          variant="outlined"
-        >
-          {t(i18n)`Mark as uncollectible`}
-        </Button>
-      ),
-    };
-  }, [
-    i18n,
-    queryActions.cancelInvoice,
-    queryActions.deleteInvoice,
-    queryActions.issueInvoice,
-    queryActions.markAsUncollectibleInvoice,
-  ]);
 
   const fulfillmentDate = (invoice as InvoiceResponsePayload)?.fulfillment_date;
   const issueDate = (invoice as InvoiceResponsePayload)?.issue_date;
@@ -271,11 +215,49 @@ export const ExistingReceivableDetails = (
       </DialogContent>
       <Divider />
       <DialogActions data-testid="InvoiceDetailsFooter">
-        {permissions.map((permission, index) =>
-          cloneElement(actions[permission], {
-            disabled: isButtonsLoading,
-            key: index,
-          })
+        {permissions.includes(InvoiceDetailsPermissions.Cancel) && (
+          <Button
+            aria-label={t(i18n)`Cancel invoice`}
+            variant="outlined"
+            color="error"
+            disabled={isButtonsLoading}
+            onClick={queryActions.cancelInvoice}
+          >
+            {t(i18n)`Cancel`}
+          </Button>
+        )}
+        {permissions.includes(InvoiceDetailsPermissions.Delete) && (
+          <Button
+            aria-label={t(i18n)`Delete invoice`}
+            variant="outlined"
+            color="error"
+            disabled={isButtonsLoading}
+            onClick={queryActions.deleteInvoice}
+          >
+            {t(i18n)`Delete`}
+          </Button>
+        )}
+        {permissions.includes(InvoiceDetailsPermissions.Issue) && (
+          <Button
+            aria-label={t(i18n)`Issue invoice`}
+            onClick={queryActions.issueInvoice}
+            variant="outlined"
+            disabled={isButtonsLoading}
+          >
+            {t(i18n)`Issue`}
+          </Button>
+        )}
+        {permissions.includes(
+          InvoiceDetailsPermissions.MarkAsUncollectible
+        ) && (
+          <Button
+            aria-label={t(i18n)`Mark as uncollectible invoice`}
+            onClick={queryActions.markAsUncollectibleInvoice}
+            variant="outlined"
+            disabled={isButtonsLoading}
+          >
+            {t(i18n)`Mark as uncollectible`}
+          </Button>
         )}
       </DialogActions>
     </MoniteStyleProvider>
