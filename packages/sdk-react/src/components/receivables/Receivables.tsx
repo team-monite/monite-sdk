@@ -7,9 +7,11 @@ import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
 import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
+import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button } from '@mui/material';
 
 export const Receivables = () => {
@@ -48,6 +50,11 @@ export const Receivables = () => {
   }, []);
 
   const { root } = useRootElements();
+  const { data: isCreateAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: ActionEnum.CREATE,
+    entityUserId: useEntityUserByAuthToken().data?.id,
+  });
 
   return (
     <MoniteStyleProvider>
@@ -58,6 +65,7 @@ export const Receivables = () => {
             <Button
               id="actions"
               variant="contained"
+              disabled={!isCreateAllowed}
               onClick={() => {
                 setIsCreateInvoiceDialogOpen(true);
               }}
