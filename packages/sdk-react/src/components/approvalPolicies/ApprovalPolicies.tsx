@@ -4,9 +4,10 @@ import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPol
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ApprovalPolicyResource } from '@monite/sdk-api';
+import { ActionEnum, ApprovalPolicyResource } from '@monite/sdk-api';
 import { Box, Button } from '@mui/material';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
@@ -35,15 +36,23 @@ export const ApprovalPolicies = () => {
     setSelectedApprovalPolicyId(undefined);
   }, []);
 
+  const { data: isCreateAllowed } = useIsActionAllowed({
+    method: 'approval_policy',
+    action: ActionEnum.CREATE,
+  });
+
   return (
     <MoniteStyleProvider>
       <PageHeader
         title={t(i18n)`Approval Policies`}
         extra={
           <Box>
-            <Button id="create" variant="contained" onClick={onCreateClick}>{t(
-              i18n
-            )`Create`}</Button>
+            <Button
+              id="create"
+              variant="contained"
+              disabled={!isCreateAllowed}
+              onClick={onCreateClick}
+            >{t(i18n)`Create`}</Button>
           </Box>
         }
       />
