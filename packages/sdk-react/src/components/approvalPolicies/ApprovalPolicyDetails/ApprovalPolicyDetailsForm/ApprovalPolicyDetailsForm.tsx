@@ -6,11 +6,12 @@ import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicy
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ApprovalPolicyResource } from '@monite/sdk-api';
+import { ActionEnum, ApprovalPolicyResource } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
@@ -110,6 +111,12 @@ export const ApprovalPolicyDetailsForm = ({
     });
 
   const isUpdate = !!approvalPolicy?.id;
+
+  const { data: isUpdateAllowed } = useIsActionAllowed({
+    method: 'approval_policy',
+    action: ActionEnum.UPDATE,
+    entityUserId: approvalPolicy?.created_by,
+  });
 
   return (
     <MoniteStyleProvider>
@@ -258,7 +265,9 @@ export const ApprovalPolicyDetailsForm = ({
           type="submit"
           form="approvalPolicyForm"
           disabled={
-            isCreating || isUpdating || (isUpdate && !formState.isDirty)
+            isCreating ||
+            isUpdating ||
+            (isUpdate && (!formState.isDirty || !isUpdateAllowed))
           }
         >
           {isUpdate ? t(i18n)`Update` : t(i18n)`Create`}
