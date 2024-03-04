@@ -2,12 +2,18 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
-import { useTagList } from '@/core/queries';
+import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TagCursorFields, OrderEnum, TagReadSchema } from '@monite/sdk-api';
+import {
+  TagCursorFields,
+  OrderEnum,
+  TagReadSchema,
+  ActionEnum,
+} from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
@@ -85,6 +91,20 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     onChangeSortCallback?.(model[0]);
   };
 
+  const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isUpdateAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: ActionEnum.UPDATE,
+    entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
+  });
+
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: ActionEnum.DELETE,
+    entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
+  });
+
   return (
     <MoniteStyleProvider>
       <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
@@ -152,6 +172,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
                     openEditModal();
                   }}
                   icon={<EditIcon />}
+                  disabled={!isUpdateAllowed}
                   label={t(i18n)`Edit`}
                 />,
                 <GridActionsCellItem
@@ -159,6 +180,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
                     setSelectedTag(params.row);
                     openDeleteModal();
                   }}
+                  disabled={!isDeleteAllowed}
                   icon={<DeleteIcon />}
                   label={t(i18n)`Delete`}
                 />,
