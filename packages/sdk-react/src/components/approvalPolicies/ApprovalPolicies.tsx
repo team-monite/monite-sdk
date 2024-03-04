@@ -4,11 +4,13 @@ import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPol
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ActionEnum, ApprovalPolicyResource } from '@monite/sdk-api';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
 
@@ -36,15 +38,31 @@ export const ApprovalPolicies = () => {
     setSelectedApprovalPolicyId(undefined);
   }, []);
 
-  const { data: isCreateAllowed } = useIsActionAllowed({
-    method: 'approval_policy',
-    action: ActionEnum.CREATE,
-  });
+  const { data: user } = useEntityUserByAuthToken();
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'approval_policy',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
+  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'approval_policy',
+      action: ActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
 
   return (
     <MoniteStyleProvider>
       <PageHeader
-        title={t(i18n)`Approval Policies`}
+        title={
+          <>
+            {t(i18n)`Approval Policies`}
+            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+              <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
+            )}
+          </>
+        }
         extra={
           <Box>
             <Button
@@ -56,7 +74,10 @@ export const ApprovalPolicies = () => {
           </Box>
         }
       />
-      <ApprovalPoliciesTable onRowClick={onRowClick} />
+
+      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
+      {isReadAllowed && <ApprovalPoliciesTable onRowClick={onRowClick} />}
+
       <Dialog
         open={isCreateDialogOpened}
         alignDialog="right"
