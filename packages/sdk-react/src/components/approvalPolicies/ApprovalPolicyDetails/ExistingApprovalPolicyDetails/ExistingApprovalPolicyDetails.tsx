@@ -2,6 +2,8 @@ import React from 'react';
 
 import { useDialog } from '@/components';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApprovalPolicyResource } from '@monite/sdk-api';
@@ -40,6 +42,12 @@ export const ExistingApprovalPolicyDetails = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { palette } = useTheme();
+
+  const { data: isUpdateAllowed, isInitialLoading } = useIsActionAllowed({
+    method: 'product',
+    action: ActionEnum.UPDATE,
+    entityUserId: approvalPolicy?.created_by,
+  });
 
   return (
     <MoniteStyleProvider>
@@ -160,9 +168,11 @@ export const ExistingApprovalPolicyDetails = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button onClick={() => onChangeEditMode(true)}>
-          <EditOutlinedIcon />
-          &nbsp;
+        <Button
+          onClick={() => onChangeEditMode(true)}
+          disabled={!isUpdateAllowed}
+        >
+          <EditOutlinedIcon sx={{ mr: 1 }} />
           {t(i18n)`Edit`}
         </Button>
       </DialogActions>
