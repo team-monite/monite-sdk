@@ -1,16 +1,17 @@
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
-  InvoiceDetailsPermissions,
   useInvoiceDetails,
+  InvoiceDetailsPermissions,
 } from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
+import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
@@ -68,6 +69,16 @@ export const ExistingReceivableDetails = (
   } = useInvoiceDetails(props);
 
   const dialogContext = useDialog();
+  const { data: isDeleteAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: ActionEnum.DELETE,
+    entityUserId: invoice?.entity_user_id,
+  });
+  const { data: isUpdateAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: ActionEnum.UPDATE,
+    entityUserId: invoice?.entity_user_id,
+  });
 
   const fulfillmentDate = (invoice as InvoiceResponsePayload)?.fulfillment_date;
   const issueDate = (invoice as InvoiceResponsePayload)?.issue_date;
@@ -220,7 +231,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Cancel invoice`}
             variant="outlined"
             color="error"
-            disabled={isButtonsLoading}
+            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "Cancel"
             onClick={queryActions.cancelInvoice}
           >
             {t(i18n)`Cancel`}
@@ -231,7 +242,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Delete invoice`}
             variant="outlined"
             color="error"
-            disabled={isButtonsLoading}
+            disabled={isButtonsLoading || !isDeleteAllowed}
             onClick={queryActions.deleteInvoice}
           >
             {t(i18n)`Delete`}
@@ -242,7 +253,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Issue invoice`}
             onClick={queryActions.issueInvoice}
             variant="outlined"
-            disabled={isButtonsLoading}
+            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "Issue"
           >
             {t(i18n)`Issue`}
           </Button>
@@ -254,7 +265,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Mark as uncollectible invoice`}
             onClick={queryActions.markAsUncollectibleInvoice}
             variant="outlined"
-            disabled={isButtonsLoading}
+            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "MarkAsUncollectible"
           >
             {t(i18n)`Mark as uncollectible`}
           </Button>
