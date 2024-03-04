@@ -6,9 +6,10 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
+import { ActionEnum, CounterpartType } from '@monite/sdk-api';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, Menu, MenuItem } from '@mui/material';
@@ -58,6 +59,11 @@ export const Counterparts = () => {
     setType(undefined);
   }, []);
 
+  const { data: isCreateAllowed } = useIsActionAllowed({
+    method: 'counterpart',
+    action: ActionEnum.CREATE,
+  });
+
   const { root } = useRootElements();
 
   const counterpartDetails = (() => {
@@ -105,6 +111,7 @@ export const Counterparts = () => {
               aria-expanded={isCreateNewDropdownOpen ? 'true' : undefined}
               aria-label="actions-menu-button"
               variant="contained"
+              disabled={!isCreateAllowed}
               onClick={handleCreateNewDropdownClick}
               endIcon={
                 isCreateNewDropdownOpen ? (
