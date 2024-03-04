@@ -1,5 +1,5 @@
-import { ActionEnum } from '@/utils/types';
 import {
+  ActionEnum,
   ActionSchema,
   PayableActionEnum,
   PayableActionSchema,
@@ -16,27 +16,19 @@ type PayableOperator = {
   action: PayableActionEnum;
 };
 
-type CounterpartOperator = {
-  method: 'counterpart';
-  action: ActionEnum;
-};
-
-type ProductOperator = {
-  method: 'product';
+type CommonOperator = {
+  method: 'workflow' | 'counterpart' | 'product';
   action: ActionEnum;
 };
 
 type IsActionAllowedType = { entityUserId?: string } & (
   | PayableOperator
-  | CounterpartOperator
-  | ProductOperator
+  | CommonOperator
 );
 
-interface PermissionMap {
-  workflow: Array<ActionSchema>;
+interface PermissionMap
+  extends Record<CommonOperator['method'], Array<ActionSchema>> {
   payable: Array<PayableActionSchema>;
-  counterpart: Array<ActionSchema>;
-  product: Array<ActionSchema>;
 }
 
 /**
