@@ -22,7 +22,8 @@ type CommonOperator = {
     | 'counterpart'
     | 'product'
     | 'receivable'
-    | 'approval_policy';
+    | 'approval_policy'
+    | 'tag';
   action: ActionEnum;
 };
 
