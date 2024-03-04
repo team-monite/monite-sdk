@@ -10,11 +10,12 @@ import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ProductServiceResponse } from '@monite/sdk-api';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 
 import { ProductsTable } from './ProductsTable';
 
@@ -23,11 +24,20 @@ export const Products = () => {
   const { root } = useRootElements();
 
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isCreateSupported } = useIsActionAllowed({
-    method: 'product',
-    action: ActionEnum.CREATE,
-    entityUserId: user?.id,
-  });
+
+  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'product',
+      action: ActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'product',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   const [selectedProductId, setSelectedProductId] = useState<
     ProductServiceResponse['id'] | undefined
@@ -69,9 +79,16 @@ export const Products = () => {
   return (
     <MoniteStyleProvider>
       <PageHeader
-        title={t(i18n)`Products`}
+        title={
+          <>
+            {t(i18n)`Products`}
+            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+              <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
+            )}
+          </>
+        }
         extra={
-          isCreateSupported ? (
+          isCreateAllowed ? (
             <Button
               variant="contained"
               color="primary"
@@ -82,11 +99,14 @@ export const Products = () => {
           ) : null
         }
       />
-      <ProductsTable
-        onRowClick={onRowClick}
-        onEdit={onEdit}
-        onDeleted={onDelete}
-      />
+      {!isReadAllowedLoading && !isReadAllowed && <AccessRestriction />}
+      {isReadAllowed && (
+        <ProductsTable
+          onRowClick={onRowClick}
+          onEdit={onEdit}
+          onDeleted={onDelete}
+        />
+      )}
       <Dialog
         open={detailsModalOpened && !selectedProductId}
         alignDialog="right"
