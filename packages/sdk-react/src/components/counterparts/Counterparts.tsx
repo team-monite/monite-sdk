@@ -6,13 +6,15 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ActionEnum, CounterpartType } from '@monite/sdk-api';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Button, Menu, MenuItem } from '@mui/material';
+import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 
 export const Counterparts = () => {
   const { i18n } = useLingui();
@@ -59,10 +61,21 @@ export const Counterparts = () => {
     setType(undefined);
   }, []);
 
-  const { data: isCreateAllowed } = useIsActionAllowed({
-    method: 'counterpart',
-    action: ActionEnum.CREATE,
-  });
+  const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'counterpart',
+      action: ActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'counterpart',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   const { root } = useRootElements();
 
@@ -99,7 +112,14 @@ export const Counterparts = () => {
   return (
     <MoniteStyleProvider>
       <PageHeader
-        title={t(i18n)`Counterparts`}
+        title={
+          <>
+            {t(i18n)`Counterparts`}
+            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+              <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
+            )}
+          </>
+        }
         extra={
           <Box>
             <Button
@@ -153,7 +173,8 @@ export const Counterparts = () => {
           </Box>
         }
       />
-      <CounterpartsTable onRowClick={setId} onEdit={setId} />
+      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
+      {isReadAllowed && <CounterpartsTable onRowClick={setId} onEdit={setId} />}
       {counterpartDetails}
     </MoniteStyleProvider>
   );
