@@ -57,75 +57,36 @@ export const fullPermissionRole: RoleResponse = {
           },
         ],
       },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'approval_policy',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
-      {
-        // TODO: remove @ts-expect-error after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'counterpart',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'product',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
+      ...[
+        'approval_policy',
+        'counterpart',
+        'product',
+        'receivable',
+        'tag',
+        'workflow',
+      ].map((object_type): CommonSchema => {
+        return {
+          object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+          actions: [
+            {
+              action_name: ActionEnum.READ,
+              permission: PermissionEnum.ALLOWED,
+            },
+            {
+              action_name: ActionEnum.CREATE,
+              permission: PermissionEnum.ALLOWED,
+            },
+            {
+              action_name: ActionEnum.UPDATE,
+              permission: PermissionEnum.ALLOWED,
+            },
+            {
+              action_name: ActionEnum.DELETE,
+              permission: PermissionEnum.ALLOWED,
+            },
+          ],
+        };
+      }),
     ],
   },
   status: StatusEnum.ACTIVE,
