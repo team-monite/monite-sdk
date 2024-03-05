@@ -9,10 +9,11 @@ import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 
 export const Receivables = () => {
   const { i18n } = useLingui();
@@ -50,16 +51,34 @@ export const Receivables = () => {
   }, []);
 
   const { root } = useRootElements();
-  const { data: isCreateAllowed } = useIsActionAllowed({
-    method: 'receivable',
-    action: ActionEnum.CREATE,
-    entityUserId: useEntityUserByAuthToken().data?.id,
-  });
+
+  const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   return (
     <MoniteStyleProvider>
       <PageHeader
-        title={t(i18n)`Sales`}
+        title={
+          <>
+            {t(i18n)`Sales`}
+            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+              <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
+            )}
+          </>
+        }
         extra={
           <Box>
             <Button
@@ -73,11 +92,14 @@ export const Receivables = () => {
           </Box>
         }
       />
-      <ReceivablesTable
-        tab={activeTab}
-        onTabChange={setActiveTab}
-        onRowClick={onRowClick}
-      />
+      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
+      {isReadAllowed && (
+        <ReceivablesTable
+          tab={activeTab}
+          onTabChange={setActiveTab}
+          onRowClick={onRowClick}
+        />
+      )}
       <Dialog
         open={openDetails}
         fullScreen
