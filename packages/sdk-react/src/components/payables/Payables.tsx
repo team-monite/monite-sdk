@@ -9,9 +9,10 @@ import { PayablesTable } from '@/components/payables/PayablesTable';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFileInput } from '@/core/hooks/useFileInput';
-import { usePayableUpload } from '@/core/queries';
+import { useEntityUserByAuthToken, usePayableUpload } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getMessageInError } from '@/core/utils/getMessageInError';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { PayableActionEnum } from '@monite/sdk-api';
@@ -22,6 +23,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Box,
   Button,
+  CircularProgress,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -60,13 +62,21 @@ export const Payables = ({
   const { FileInput, openFileInput } = useFileInput();
   const payableUploadFromFileMutation = usePayableUpload();
 
-  const {
-    data: isCreateSupported,
-    isInitialLoading: isCreateSupportedLoading,
-  } = useIsActionAllowed({
-    method: 'payable',
-    action: PayableActionEnum.CREATE,
-  });
+  const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'payable',
+      action: PayableActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
+
+  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'payable',
+      action: PayableActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const { root } = useRootElements();
@@ -74,37 +84,40 @@ export const Payables = ({
   return (
     <MoniteStyleProvider>
       <PageHeader
-        title={t(i18n)`Payables`}
+        title={
+          <>
+            {t(i18n)`Payables`}
+            {(isReadAllowedLoading || isCreateAllowedLoading) && (
+              <CircularProgress size="0.7em" color="secondary" sx={{ ml: 1 }} />
+            )}
+          </>
+        }
         extra={
           <Box>
-            {isCreateSupportedLoading ? (
-              <Skeleton width={150} height={42} variant="rounded" />
-            ) : (
-              <Button
-                ref={buttonRef}
-                id="actions"
-                aria-controls={
-                  isCreateInvoiceMenuOpen ? 'actions-menu' : undefined
-                }
-                aria-haspopup="true"
-                aria-expanded={isCreateInvoiceMenuOpen ? 'true' : undefined}
-                aria-label="actions-menu-button"
-                variant="contained"
-                onClick={() =>
-                  setIsCreateInvoiceMenuOpen(!isCreateInvoiceMenuOpen)
-                }
-                disabled={!isCreateSupported}
-                endIcon={
-                  isCreateInvoiceMenuOpen ? (
-                    <KeyboardArrowUpIcon />
-                  ) : (
-                    <KeyboardArrowDownIcon />
-                  )
-                }
-              >
-                {t(i18n)`Create New`}
-              </Button>
-            )}
+            <Button
+              ref={buttonRef}
+              id="actions"
+              aria-controls={
+                isCreateInvoiceMenuOpen ? 'actions-menu' : undefined
+              }
+              aria-haspopup="true"
+              aria-expanded={isCreateInvoiceMenuOpen ? 'true' : undefined}
+              aria-label="actions-menu-button"
+              variant="contained"
+              onClick={() =>
+                setIsCreateInvoiceMenuOpen(!isCreateInvoiceMenuOpen)
+              }
+              disabled={!isCreateAllowed}
+              endIcon={
+                isCreateInvoiceMenuOpen ? (
+                  <KeyboardArrowUpIcon />
+                ) : (
+                  <KeyboardArrowDownIcon />
+                )
+              }
+            >
+              {t(i18n)`Create New`}
+            </Button>
             <Menu
               id="actions"
               open={isCreateInvoiceMenuOpen}
@@ -141,10 +154,14 @@ export const Payables = ({
           </Box>
         }
       />
-      <PayablesTable
-        onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
-        onPay={onPay}
-      />
+      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
+      {isReadAllowed && (
+        <PayablesTable
+          onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
+          onPay={onPay}
+        />
+      )}
+
       <FileInput
         accept="application/pdf"
         aria-label={t(i18n)`Upload payable file`}
