@@ -2,12 +2,11 @@ import React from 'react';
 
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
-  ENTITY_ID_FOR_LOW_PERMISSIONS,
+  ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
 import {
   loadedPermissionsValidator,
   Provider,
-  renderWithClient,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
@@ -19,9 +18,11 @@ import { Tags } from './Tags';
 
 describe('Tags', () => {
   describe('# Permissions', () => {
-    test('display "Create new tag" button if user has "create" permission', async () => {
+    test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
       });
 
       render(<Tags />, {
@@ -30,6 +31,7 @@ describe('Tags', () => {
         ),
       });
 
+      await waitUntilTableIsLoaded();
       await waitFor(() => loadedPermissionsValidator(queryClient));
       await waitFor(() => checkTagQueriesLoaded(queryClient));
 
@@ -39,11 +41,14 @@ describe('Tags', () => {
 
       await expect(createTagButton).resolves.toBeInTheDocument();
       await expect(createTagButton).resolves.not.toBeDisabled();
+
+      const tableRowTag = screen.findByText('tag 1');
+      await expect(tableRowTag).resolves.toBeInTheDocument();
     });
 
-    test('no display the "Create new tag" button if user has no "create" permission', async () => {
+    test('support empty permissions', async () => {
       const monite = new MoniteSDK({
-        entityId: ENTITY_ID_FOR_LOW_PERMISSIONS,
+        entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
             access_token: 'token',
@@ -53,7 +58,9 @@ describe('Tags', () => {
       });
 
       const queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
       });
 
       render(<Tags />, {
@@ -70,17 +77,14 @@ describe('Tags', () => {
 
       await expect(createTagButton).resolves.toBeInTheDocument();
       await expect(createTagButton).resolves.toBeDisabled();
+      await expect(
+        screen.findByText(/Access Restricted/i, { selector: 'h3' })
+      ).resolves.toBeInTheDocument();
     });
 
-    test('display `<TagsTable/>` if user has "read" permission', async () => {
-      renderWithClient(<Tags />);
-      await waitUntilTableIsLoaded();
-      await expect(screen.findByText('tag 1')).resolves.toBeInTheDocument();
-    });
-
-    test('display "Access Restriction" and disabled "Create new tag" button if user has no permissions', async () => {
+    test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
       const monite = new MoniteSDK({
-        entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+        entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
         fetchToken: () =>
           Promise.resolve({
             access_token: 'token',
@@ -90,7 +94,9 @@ describe('Tags', () => {
       });
 
       const queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
       });
 
       render(<Tags />, {
@@ -99,18 +105,19 @@ describe('Tags', () => {
         ),
       });
 
+      await waitUntilTableIsLoaded();
       await waitFor(() => loadedPermissionsValidator(queryClient));
       await waitFor(() => checkTagQueriesLoaded(queryClient));
 
-      await expect(
-        screen.findByText(/Access Restricted/i, { selector: 'h3' })
-      ).resolves.toBeInTheDocument();
+      const createTagButton = screen.findByRole('button', {
+        name: t`Create new tag`,
+      });
 
-      await expect(
-        screen.findByRole('button', {
-          name: t`Create new tag`,
-        })
-      ).resolves.toBeDisabled();
+      await expect(createTagButton).resolves.toBeInTheDocument();
+      await expect(createTagButton).resolves.not.toBeDisabled();
+
+      const tableRowTag = screen.findByText('tag 1');
+      await expect(tableRowTag).resolves.toBeInTheDocument();
     });
   });
 });
