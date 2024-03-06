@@ -88,15 +88,14 @@ export const Products = () => {
           </>
         }
         extra={
-          isCreateAllowed ? (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={openCreateModal}
-            >
-              {t(i18n)`Create New`}
-            </Button>
-          ) : null
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!isCreateAllowed}
+            onClick={openCreateModal}
+          >
+            {t(i18n)`Create New`}
+          </Button>
         }
       />
       {!isReadAllowedLoading && !isReadAllowed && <AccessRestriction />}
