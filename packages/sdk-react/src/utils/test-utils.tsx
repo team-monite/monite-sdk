@@ -3,6 +3,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import { I18nLocaleProvider } from '@/core/context/I18nLocaleProvider';
 import { MoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
+import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { entityIds } from '@/mocks/entities';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
@@ -52,7 +53,7 @@ export const cachedMoniteSDK = new MoniteSDK({
     }),
 });
 
-const Provider = ({
+export const Provider = ({
   children,
   client,
   sdk,
@@ -296,4 +297,26 @@ export async function selectAutoCompleteOption(
 
   //Verify autocomplete shows the correct value.
   expect(autoComplete.getAttribute('value')).toMatch(optionText);
+}
+
+/**
+ * Throws an error if the permissions are not loaded
+ * Could be used in `waitFor` function
+ *
+ * Example:
+ * ```tsx
+ * await waitFor(() => loadedPermissionsValidator(queryClient));
+ * await expect(screen.findByText(/Access Restricted/i)).resolves.toBeInTheDocument();
+ * ```
+ * @param queryClient QueryClient with the queries: `[ENTITY_USERS_QUERY_ID, 'my_role']` and `[ENTITY_USERS_QUERY_ID, 'me']`
+ * @throws Error if the permissions are not loaded
+ */
+export async function loadedPermissionsValidator(queryClient: QueryClient) {
+  if (
+    queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'my_role'])?.status !==
+      'success' ||
+    queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me'])?.status !==
+      'success'
+  )
+    throw new Error('Permissions not loaded');
 }
