@@ -1,12 +1,17 @@
 import React from 'react';
 
 import {
+  ENTITY_ID_FOR_OWNER_PERMISSIONS,
+  ENTITY_ID_FOR_READONLY_PERMISSIONS,
+} from '@/mocks';
+import {
   cachedMoniteSDK,
   renderWithClient,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { MoniteSDK } from '@monite/sdk-api';
+import { fireEvent, getByLabelText, screen } from '@testing-library/react';
 
 import { TagsTable } from './TagsTable';
 
@@ -365,6 +370,91 @@ describe('TagsTable', () => {
       fireEvent.click(createdAtButton);
 
       expect(onChangeSortMock).toHaveBeenLastCalledWith(undefined);
+    });
+  });
+
+  describe('# Permissions', () => {
+    test('support "update" and "delete" permissions', async () => {
+      renderWithClient(<TagsTable />);
+
+      await waitUntilTableIsLoaded();
+
+      const existsTag = screen.findByText('tag 1');
+
+      await expect(existsTag).resolves.toBeInTheDocument();
+      const tableRow = (await existsTag).closest('[role=row]');
+      if (!(tableRow instanceof HTMLElement))
+        throw new Error('Table row not found');
+
+      const editButton = getByLabelText(tableRow, t`Edit`);
+      expect(editButton).toBeInTheDocument();
+      expect(editButton).not.toBeDisabled();
+
+      const deleteButton = getByLabelText(tableRow, t`Delete`);
+      expect(deleteButton).toBeInTheDocument();
+      expect(deleteButton).not.toBeDisabled();
+    });
+
+    test('support no "update" and no "delete" permissions', async () => {
+      const monite = new MoniteSDK({
+        entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
+        fetchToken: () =>
+          Promise.resolve({
+            access_token: 'token',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          }),
+      });
+
+      renderWithClient(<TagsTable />, monite);
+
+      await waitUntilTableIsLoaded();
+
+      const existsTag = screen.findByText('tag 1');
+
+      await expect(existsTag).resolves.toBeInTheDocument();
+      const tableRow = (await existsTag).closest('[role=row]');
+      if (!(tableRow instanceof HTMLElement))
+        throw new Error('Table row not found');
+
+      const editButton = getByLabelText(tableRow, t`Edit`);
+      expect(editButton).toBeInTheDocument();
+      expect(editButton).toBeDisabled();
+
+      const deleteButton = getByLabelText(tableRow, t`Delete`);
+      expect(deleteButton).toBeInTheDocument();
+      expect(deleteButton).toBeDisabled();
+    });
+
+    test('support "allowed_for_own" access for "update" and "delete" permissions', async () => {
+      const monite = new MoniteSDK({
+        entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
+        fetchToken: () =>
+          Promise.resolve({
+            access_token: 'token',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          }),
+      });
+
+      renderWithClient(<TagsTable />, monite);
+
+      await waitUntilTableIsLoaded();
+
+      const existsTag = screen.findByText('tag 1');
+
+      await expect(existsTag).resolves.toBeInTheDocument();
+      const tableRow = (await existsTag).closest('[role=row]');
+      if (!(tableRow instanceof HTMLElement))
+        throw new Error('Table row not found');
+
+      const editButton = getByLabelText(tableRow, t`Edit`);
+      expect(editButton).toBeInTheDocument();
+      expect(editButton).not.toBeDisabled();
+
+      const deleteButton = getByLabelText(tableRow, t`Delete`);
+      expect(deleteButton).toBeInTheDocument();
+      expect(deleteButton).not.toBeDisabled();
     });
   });
 });
