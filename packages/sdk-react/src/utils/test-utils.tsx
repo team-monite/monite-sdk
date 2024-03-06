@@ -38,6 +38,8 @@ const queryClient = new QueryClient({
   queryCache,
 });
 
+export { queryClient as testQueryClient };
+
 afterEach(() => {
   queryCache.clear();
   queryClient.removeQueries();
@@ -303,7 +305,7 @@ export async function selectAutoCompleteOption(
  * Throws an error if the permissions are not loaded
  * Could be used in `waitFor` function
  *
- * Example:
+ * @example
  * ```tsx
  * await waitFor(() => loadedPermissionsValidator(queryClient));
  * await expect(screen.findByText(/Access Restricted/i)).resolves.toBeInTheDocument();
@@ -312,11 +314,19 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function loadedPermissionsValidator(queryClient: QueryClient) {
-  if (
-    queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'my_role'])?.status !==
-      'success' ||
-    queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me'])?.status !==
-      'success'
-  )
+  const roleQuery = queryClient.getQueryState(
+    [ENTITY_USERS_QUERY_ID, 'my_role'],
+    {
+      exact: true,
+    }
+  );
+
+  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me'], {
+    exact: true,
+  });
+
+  if (!roleQuery || !meQuery) throw new Error('Permissions query not exists');
+
+  if (roleQuery.status !== 'success' || meQuery.status !== 'success')
     throw new Error('Permissions not loaded');
 }
