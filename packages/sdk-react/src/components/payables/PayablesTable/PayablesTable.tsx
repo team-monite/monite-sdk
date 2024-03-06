@@ -4,7 +4,7 @@ import { CounterpartCell } from '@/components/payables/PayablesTable/Counterpart
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { usePayablesList } from '@/core/queries';
+import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -88,8 +88,15 @@ export const PayablesTable = ({
   const [pageLimit, setPageLimit] = useState<number>(PAGE_LIMIT);
 
   const { formatCurrencyToDisplay } = useCurrencies();
+
+  const { data: user } = useEntityUserByAuthToken();
+
   const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
-    useIsActionAllowed({ method: 'payable', action: PayableActionEnum.READ });
+    useIsActionAllowed({
+      method: 'payable',
+      action: PayableActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   const { data: payables, isInitialLoading } = usePayablesList(
     OrderEnum.DESC,
