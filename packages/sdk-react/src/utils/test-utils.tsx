@@ -170,7 +170,7 @@ export function renderWithClient(children: ReactElement, sdk?: MoniteSDK) {
 export async function waitUntilTableIsLoaded(
   waitForOptions?: waitForOptions
 ): Promise<void> {
-  const spinners = await screen.findAllByRole('progressbar');
+  const spinners = await screen.findAllByRole('progressbar'); // todo::Conflicts with any other progress bar on the page
 
   return await waitForElementToBeRemoved(spinners, {
     timeout: waitForOptions?.timeout ?? 30_000,
