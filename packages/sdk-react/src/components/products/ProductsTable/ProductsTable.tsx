@@ -101,8 +101,6 @@ export const ProductsTable = ({
   const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
   const sortModelItem = sortModel[0];
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
-    useIsActionAllowed({ method: 'product', action: ActionEnum.READ });
 
   /** Controls the visibility of the deleting dialog */
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
@@ -111,6 +109,12 @@ export const ProductsTable = ({
   >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
+  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+    useIsActionAllowed({
+      method: 'product',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
   const { data: isUpdateSupported } = useIsActionAllowed({
     method: 'product',
     action: ActionEnum.UPDATE,
