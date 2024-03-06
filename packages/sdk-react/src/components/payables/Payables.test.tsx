@@ -1,9 +1,21 @@
+import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { Payables } from '@/components';
-import { renderWithClient } from '@/utils/test-utils';
+import { Payables, Tags } from '@/components';
+import {
+  ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+  ENTITY_ID_FOR_OWNER_PERMISSIONS,
+  payableFixturePages,
+} from '@/mocks';
+import {
+  loadedPermissionsValidator,
+  Provider,
+  renderWithClient,
+} from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { screen, waitFor } from '@testing-library/react';
+import { MoniteSDK } from '@monite/sdk-api';
+import { QueryClient } from '@tanstack/react-query';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 jest.useFakeTimers();
@@ -33,4 +45,124 @@ describe('Payables', () => {
       ).toBeInTheDocument()
     );
   });
+
+  describe('# Permissions', () => {
+    test('support "read" and "create" permissions', async () => {
+      const queryClient = new QueryClient({
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
+      });
+
+      render(<Payables />, {
+        wrapper: ({ children }) => (
+          <Provider client={queryClient} children={children} />
+        ),
+      });
+
+      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPayableQueriesLoaded(queryClient), {
+        timeout: 5_000,
+      });
+
+      const createPayableButton = screen.findByText('Create New');
+
+      await expect(createPayableButton).resolves.toBeInTheDocument();
+      await expect(createPayableButton).resolves.not.toBeDisabled();
+
+      const payableCell = screen.findByText(
+        payableFixturePages[0].document_id!
+      );
+      await expect(payableCell).resolves.toBeInTheDocument();
+    });
+
+    test('support no "read" and no "create" permissions', async () => {
+      const queryClient = new QueryClient({
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
+      });
+
+      const monite = new MoniteSDK({
+        entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+        fetchToken: () =>
+          Promise.resolve({
+            access_token: 'token',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          }),
+      });
+
+      render(<Payables />, {
+        wrapper: ({ children }) => (
+          <Provider client={queryClient} children={children} sdk={monite} />
+        ),
+      });
+
+      await waitFor(() => loadedPermissionsValidator(queryClient));
+
+      const createPayableButton = screen.findByText('Create New');
+
+      await expect(createPayableButton).resolves.toBeInTheDocument();
+      await expect(createPayableButton).resolves.toBeDisabled();
+
+      await expect(
+        screen.findByText(/Access Restricted/i, { selector: 'h3' })
+      ).resolves.toBeInTheDocument();
+    });
+
+    test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
+      const queryClient = new QueryClient({
+        defaultOptions: {
+          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+        },
+      });
+
+      const monite = new MoniteSDK({
+        entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
+        fetchToken: () =>
+          Promise.resolve({
+            access_token: 'token',
+            token_type: 'Bearer',
+            expires_in: 3600,
+          }),
+      });
+
+      render(<Payables />, {
+        wrapper: ({ children }) => (
+          <Provider client={queryClient} children={children} sdk={monite} />
+        ),
+      });
+
+      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPayableQueriesLoaded(queryClient), {
+        timeout: 5_000,
+      });
+
+      const createPayableButton = screen.findByText('Create New');
+
+      await expect(createPayableButton).resolves.toBeInTheDocument();
+      await expect(createPayableButton).resolves.not.toBeDisabled();
+
+      const payableCell = screen.findByText(
+        payableFixturePages[0].document_id!
+      );
+      await expect(payableCell).resolves.toBeInTheDocument();
+    });
+  });
 });
+
+function checkPayableQueriesLoaded(queryClient: QueryClient) {
+  if (
+    !queryClient.getQueryState(['payable'], {
+      exact: false,
+    })
+  )
+    throw new Error('Approval Policies query is not executed');
+
+  if (
+    queryClient.getQueryState(['payable'], { exact: false })?.status !==
+    'success'
+  )
+    throw new Error('Approval Policies query failed');
+}
