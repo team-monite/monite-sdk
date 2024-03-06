@@ -159,52 +159,31 @@ export const lowPermissionRole: RoleResponse = {
           },
         ],
       },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'counterpart',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.NOT_ALLOWED,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.NOT_ALLOWED,
-          },
-        ],
-      },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'product',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.NOT_ALLOWED,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.NOT_ALLOWED,
-          },
-        ],
-      },
+      ...['counterpart', 'product', 'receivable', 'tag', 'workflow'].map(
+        (object_type): CommonSchema => {
+          return {
+            object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+            actions: [
+              {
+                action_name: ActionEnum.READ,
+                permission: PermissionEnum.ALLOWED,
+              },
+              {
+                action_name: ActionEnum.CREATE,
+                permission: PermissionEnum.NOT_ALLOWED,
+              },
+              {
+                action_name: ActionEnum.UPDATE,
+                permission: PermissionEnum.ALLOWED,
+              },
+              {
+                action_name: ActionEnum.DELETE,
+                permission: PermissionEnum.NOT_ALLOWED,
+              },
+            ],
+          };
+        }
+      ),
     ],
   },
   status: StatusEnum.ACTIVE,
@@ -226,39 +205,24 @@ export const readOnlyRole: RoleResponse = {
           },
         ],
       },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'approval_policy',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'counterpart',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'product',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED,
-          },
-        ],
-      },
+      ...[
+        'approval_policy',
+        'counterpart',
+        'product',
+        'receivable',
+        'tag',
+        'workflow',
+      ].map((object_type): CommonSchema => {
+        return {
+          object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+          actions: [
+            {
+              action_name: ActionEnum.READ,
+              permission: PermissionEnum.ALLOWED,
+            },
+          ],
+        };
+      }),
     ],
   },
   status: StatusEnum.ACTIVE,
@@ -308,29 +272,36 @@ export const allowedForOwnRole: RoleResponse = {
           },
         ],
       },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'approval_policy',
-        actions: [
-          {
-            action_name: ActionEnum.READ,
-            permission: PermissionEnum.ALLOWED_FOR_OWN,
-          },
-          {
-            action_name: ActionEnum.CREATE,
-            permission: PermissionEnum.ALLOWED_FOR_OWN,
-          },
-          {
-            action_name: ActionEnum.UPDATE,
-            permission: PermissionEnum.ALLOWED_FOR_OWN,
-          },
-          {
-            action_name: ActionEnum.DELETE,
-            permission: PermissionEnum.ALLOWED_FOR_OWN,
-          },
-        ],
-      },
+      ...[
+        'approval_policy',
+        'counterpart',
+        'product',
+        'receivable',
+        'tag',
+        'workflow',
+      ].map((object_type): CommonSchema => {
+        return {
+          object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+          actions: [
+            {
+              action_name: ActionEnum.READ,
+              permission: PermissionEnum.ALLOWED_FOR_OWN,
+            },
+            {
+              action_name: ActionEnum.CREATE,
+              permission: PermissionEnum.ALLOWED_FOR_OWN,
+            },
+            {
+              action_name: ActionEnum.UPDATE,
+              permission: PermissionEnum.ALLOWED_FOR_OWN,
+            },
+            {
+              action_name: ActionEnum.DELETE,
+              permission: PermissionEnum.ALLOWED_FOR_OWN,
+            },
+          ],
+        };
+      }),
     ],
   },
   status: StatusEnum.ACTIVE,
@@ -347,18 +318,19 @@ export const emptyPermissionRole: RoleResponse = {
         object_type: 'payable',
         actions: [],
       },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'counterpart',
-        actions: [],
-      },
-      {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
-        // @ts-expect-error We don't have CommonSchemaEnum
-        object_type: 'product',
-        actions: [],
-      },
+      ...[
+        'approval_policy',
+        'counterpart',
+        'product',
+        'receivable',
+        'tag',
+        'workflow',
+      ].map((object_type): CommonSchema => {
+        return {
+          object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+          actions: [],
+        };
+      }),
     ],
   },
   status: StatusEnum.ACTIVE,
