@@ -129,7 +129,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
         product.price?.currency as CurrencyEnum
       ) ?? undefined,
     currency: product.price?.currency,
-    description: product.description,
+    description: product.description ?? '',
   };
 
   const handleSubmit = async (values: IProductFormSubmitValues) => {
