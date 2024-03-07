@@ -20,9 +20,13 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
       id: faker.string.nanoid(),
       name: faker.commerce.productName(),
       type: getRandomProperty(ProductServiceTypeEnum),
-      description: faker.commerce.productDescription(),
+      description: faker.datatype.boolean()
+        ? faker.commerce.productDescription()
+        : undefined,
       measure_unit_id: getRandomItemFromArray(measureUnitsListFixture.data).id,
-      smallest_amount: Number(faker.commerce.price({ min: 1, max: 10 })),
+      smallest_amount: faker.datatype.boolean()
+        ? Number(faker.commerce.price({ min: 1, max: 10 }))
+        : undefined,
       entity_id: entityIds[0],
       entity_user_id: getRandomProperty(entityUsers).id,
       created_at: faker.date.past().toString(),
