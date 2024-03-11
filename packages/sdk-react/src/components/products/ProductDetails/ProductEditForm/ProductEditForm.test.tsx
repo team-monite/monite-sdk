@@ -26,7 +26,10 @@ describe('ProductEditForm', () => {
       fireEvent.click(saveButton);
 
       await waitFor(() => {
-        expect(onUpdateMock).toHaveBeenCalledWith(productsListFixture[0]);
+        expect(onUpdateMock).toHaveBeenCalledWith({
+          ...productsListFixture[0],
+          description: productsListFixture[0].description ?? '',
+        });
       });
     });
 
