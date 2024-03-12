@@ -12,7 +12,7 @@ import 'jest-fetch-mock';
 
 import { server } from './mocks/server';
 
-jest.retryTimes(3);
+jest.retryTimes(process.env.CI ? 3 : 0);
 
 /**
  * We have to disable virtualization for all data-tables
