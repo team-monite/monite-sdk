@@ -20,7 +20,7 @@ import {
   CurrencyEnum,
   UpdateCounterpartBankAccount,
 } from '@monite/sdk-api';
-import { waitFor, screen, fireEvent } from '@testing-library/react';
+import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 
 import { CounterpartBankForm } from './CounterpartBankForm';
 
@@ -173,18 +173,14 @@ describe('CounterpartBankForm', () => {
       const submitBtn = screen.getByRole('button', {
         name: t`Add bank account`,
       });
-      fireEvent.click(submitBtn);
+
+      await act(() => fireEvent.click(submitBtn));
 
       /** Get all provided parameters into the last call */
       const lastCallArguments = getCreateSpy.mock.lastCall;
+      expect(getCreateSpy.mock.lastCall).toBeDefined();
 
-      if (!lastCallArguments) {
-        throw new Error(
-          'monite.api.counterparts.createBankAccount never has been called'
-        );
-      }
-
-      const parameters = lastCallArguments[1];
+      const parameters = lastCallArguments![1];
 
       expect(parameters.name).toBe(accountName);
       expect(parameters.iban).toBe(iban);
@@ -223,7 +219,8 @@ describe('CounterpartBankForm', () => {
       const submitBtn = screen.getByRole('button', {
         name: t`Add bank account`,
       });
-      fireEvent.click(submitBtn);
+
+      await act(() => fireEvent.click(submitBtn));
 
       /** Get all provided parameters into the last call */
       const lastCallArguments = getCreateSpy.mock.lastCall;
@@ -266,7 +263,8 @@ describe('CounterpartBankForm', () => {
         const submitBtn = screen.getByRole('button', {
           name: t`Add bank account`,
         });
-        fireEvent.click(submitBtn);
+
+        await act(() => fireEvent.click(submitBtn));
 
         const [requestCounterpartId, requestBody] = await waitFor(() => {
           const request = getCreateSpy.mock.lastCall;
@@ -318,6 +316,7 @@ describe('CounterpartBankForm', () => {
         const submitBtn = screen.getByRole('button', {
           name: t`Update bank account`,
         });
+
         fireEvent.click(submitBtn);
 
         const [requestCounterpartId, requestBankId, requestBody] =
