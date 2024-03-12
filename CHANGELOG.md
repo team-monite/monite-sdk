@@ -1,20 +1,28 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
-## @monite/sdk-react@3.6.0 & @monite/sdk-api@3.6.0
+## @monite/sdk-react@3.7.0 & @monite/sdk-api@3.7.0
 This package is a minor release with no breaking changes.
 
 ## New features and improvements
+- The `Onboarding` component has been released as beta. This fully embeddable component allows customers to complete payment onboarding without leaving your application. For more information, see [Onboarding component](https://docs.monite.com/docs/onboarding) and [Onboarding via Web Component](https://docs.monite.com/docs/onboarding-web-component).
+- We added the ability to edit approval policies trigger and script within the `ApprovalPolicies` component.
+- Addressed multiple security vulnerabilities in the React SDK and SDK API packages.
+
+## @monite/sdk-react@3.6.0 & @monite/sdk-api@3.6.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
 - Added input validation for phone numbers based on countries across all form components. 
 - We improved error messages on form validation errors across form components.
 
-## Bug fixes
+### Bug fixes
 - Fixed a styling issue that prevented popup menus from rendering correctly.
 - Fixed a bug that prevented the creation of new counterparts via the SDK.
 
 ## @monite/sdk-react@3.5.0 & @monite/sdk-api@3.5.0
 This package is a minor release with no breaking changes.
 
-## New features and improvements
+### New features and improvements
 - All requests via the `MoniteSDK` instance now use Monite's `2023-09-01` API version. 
 - Added the ability to create new counterparts while creating invoices via the `InvoiceDetails` component in creation mode.
 - Added a field to view the approval policy associated with a payable on the `PayableDetails` component.
@@ -25,19 +33,19 @@ This package is a minor release with no breaking changes.
 - Updated multiple dependencies to address possible high and moderate severity vulnerabilities in the SDK packages.
 - Introduced independent scrolling between the different parts of the `PayableDetails` component.
 
-## Bug fixes
+### Bug fixes
 - Fixed an issue that affected the display of falsy values on the `PayableDetails` component.
 - Fixed an issue where fields on the Payables creation screen were not cleared on the `Payables` component.
 
 ## @monite/sdk-react@3.4.0 & @monite/sdk-api@3.4.0
 This package is a minor release with no breaking changes.
 
-## New features and improvements
+### New features and improvements
 - We added the ability to create invoices using the `type` prop on the `InvoiceDetails` component. For more information, see [InvoiceDetails](https://docs.monite.com/docs/invoicedetails#usage).
 - Deprecated and removed the `ProductCreateForm`, `ProductEditForm`, and  `ProductDeleteModal` components.
 - Added the `ProductsTable` component for viewing all products.
 
-## Bug fixes
+### Bug fixes
 - Fixed a bug that caused irregular rendering of payables PDF in the `Payables` and `PayableDetails` components.
 - Fixed a bug that disrupted the UI by allowing viewers to infinitely zoom in and out of the payables PDFs on the `Payables` and `PayableDetails` components. 
 - Fixed a bug causing incorrect rendering of calendars on the `Payables` component.
@@ -46,34 +54,35 @@ This package is a minor release with no breaking changes.
 ## @monite/sdk-react@3.3.0 & @monite/sdk-api@3.3.0
 This package is a minor release with no breaking changes.
 
-## New features and improvements
+### New features and improvements
 - Added a `ProductCreateForm` component for creating products. For more information, see [ProductCreateForm](doc:productcreateform).
 - Added a `ProductEditForm` component for updating details of an existing product. For more information, see [ProductEditForm](doc:producteditform).
 - Added a `ProductDeleteModal` component for deleting products. For more information, see [ProductDeleteModal](doc:productdeletemodal).
 
-## Bug fixes
+### Bug fixes
 - Fix a styling issue that affected the height of rows on the `CounterpartDetails` components.
 
 ## @monite/sdk-react@3.2.0 & @monite/sdk-api@3.2.0
 This package is a minor release with no breaking changes.
 
-## New features and improvements
+### New features and improvements
 - Added OCR processing state to the `PayablesTable` and `PayableDetails` components.
 - Added the `ProductDetails` component to display product information.
 - Improved validation for counterpart bank accounts on the `CounterpartDetails` component.
 
 ## @monite/sdk-react@3.1.0 & @monite/sdk-api@3.1.0
 This package is a minor release with no breaking changes.
-## New features and improvements
+### New features and improvements
 - Added a new `ProductsTable` component to display a list of an entity's products and services. For more information, see [ProductsTable](https://docs.monite.com/docs/productstable).
 - Added a new `Products` component. For more information, see [Products](https://docs.monite.com/docs/products-1).
 - Added information about subtotal, taxes, and the total amount payable while editing payables on the `PayableDetails` component.
 
-## Bug fixes
+### Bug fixes
 - Fixed and improved form validation when creating or updating payables on the `PayableDetails` form.
 - Fixed a bug that produces errors on the console whenever a counterpart is deleted.
 - Fixed form validation errors on the `CounterpartDetails` component.
 - Fixed an issue on the `TagFormModal` component that prevented tags from being updated successfully.
+
 ## @monite/sdk-react@3.0.0 & @monite/sdk-api@3.0.0 
 
 This is a major release with several breaking changes. Refer to the [Migration guide](https://docs.monite.com/docs/migration-guide) for details on how to update your application to use `v3.0.0+` of Monite's React SDK packages.
