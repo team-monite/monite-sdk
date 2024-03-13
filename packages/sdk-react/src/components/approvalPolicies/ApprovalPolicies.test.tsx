@@ -4,7 +4,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { loadedPermissionsValidator, Provider } from '@/utils/test-utils';
+import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ describe('ApprovalPolicies', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkApprovalPolicyQueriesLoaded(queryClient));
 
       const createApprovalPolicyButton = screen.findByRole('button', {
@@ -67,7 +67,7 @@ describe('ApprovalPolicies', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create`,
@@ -103,7 +103,7 @@ describe('ApprovalPolicies', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkApprovalPolicyQueriesLoaded(queryClient));
 
       const createApprovalPolicyButton = screen.findByRole('button', {

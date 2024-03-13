@@ -4,7 +4,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { loadedPermissionsValidator, Provider } from '@/utils/test-utils';
+import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ describe('Receivables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkReceivableQueriesLoaded(queryClient));
 
       const createInvoiceButton = screen.findByRole('button', {
@@ -65,7 +65,7 @@ describe('Receivables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createInvoiceButton = screen.findByRole('button', {
         name: t`Create Invoice`,
@@ -102,7 +102,7 @@ describe('Receivables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkReceivableQueriesLoaded(queryClient));
 
       const createInvoiceButton = screen.findByRole('button', {
