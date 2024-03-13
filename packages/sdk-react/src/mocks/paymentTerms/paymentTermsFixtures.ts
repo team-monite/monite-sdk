@@ -5,13 +5,13 @@ import {
   PaymentTermsResponse,
 } from '@monite/sdk-api';
 
-export function generatePaymentTerm(): PaymentTermsResponse {
+export function generatePaymentTerm(index?: number): PaymentTermsResponse {
   const days = faker.number.int({ min: 2, max: 100 });
   const discount = faker.number.int({ min: 1, max: 100 });
 
   return {
     id: faker.string.uuid(),
-    name: `${days} days`,
+    name: `${days} days ${index === 0 ? 'First Option' : ''}`.trim(),
     description: faker.datatype.boolean()
       ? `${discount}% discount before day ${faker.number.int({
           min: 1,
@@ -25,5 +25,7 @@ export function generatePaymentTerm(): PaymentTermsResponse {
 }
 
 export const paymentTermsFixtures: PaymentTermsListResponse = {
-  data: new Array(getRandomNumber(4, 20)).fill('_').map(generatePaymentTerm),
+  data: new Array(getRandomNumber(4, 20))
+    .fill('_')
+    .map((_, index) => generatePaymentTerm(index)),
 };
