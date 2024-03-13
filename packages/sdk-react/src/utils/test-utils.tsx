@@ -307,13 +307,13 @@ export async function selectAutoCompleteOption(
  *
  * @example
  * ```tsx
- * await waitFor(() => loadedPermissionsValidator(queryClient));
+ * await waitFor(() => checkPermissionQueriesLoaded(queryClient));
  * await expect(screen.findByText(/Access Restricted/i)).resolves.toBeInTheDocument();
  * ```
  * @param queryClient QueryClient with the queries: `[ENTITY_USERS_QUERY_ID, 'my_role']` and `[ENTITY_USERS_QUERY_ID, 'me']`
  * @throws Error if the permissions are not loaded
  */
-export async function loadedPermissionsValidator(queryClient: QueryClient) {
+export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
   const roleQuery = queryClient.getQueryState(
     [ENTITY_USERS_QUERY_ID, 'my_role'],
     {

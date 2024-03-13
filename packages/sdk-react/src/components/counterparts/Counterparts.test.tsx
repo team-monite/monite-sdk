@@ -5,7 +5,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { loadedPermissionsValidator, Provider } from '@/utils/test-utils';
+import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
@@ -28,7 +28,7 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkCounterpartQueriesLoaded(queryClient), {
         timeout: 5_000,
       });
@@ -68,7 +68,7 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createCounterpartButton = screen.findByText(t`Create New`);
 
@@ -103,7 +103,7 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkCounterpartQueriesLoaded(queryClient), {
         timeout: 5_000,
       });

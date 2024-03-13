@@ -8,7 +8,7 @@ import {
   payableFixturePages,
 } from '@/mocks';
 import {
-  loadedPermissionsValidator,
+  checkPermissionQueriesLoaded,
   Provider,
   renderWithClient,
 } from '@/utils/test-utils';
@@ -60,7 +60,9 @@ describe('Payables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient), {
+        timeout: 5_000,
+      });
       await waitFor(() => checkPayableQueriesLoaded(queryClient), {
         timeout: 5_000,
       });
@@ -99,7 +101,7 @@ describe('Payables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createPayableButton = screen.findByText('Create New');
 
@@ -134,7 +136,9 @@ describe('Payables', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient), {
+        timeout: 5_000,
+      });
       await waitFor(() => checkPayableQueriesLoaded(queryClient), {
         timeout: 5_000,
       });

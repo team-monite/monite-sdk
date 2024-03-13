@@ -6,8 +6,7 @@ import {
 } from '@/mocks';
 import { productsListFixture } from '@/mocks/products';
 import {
-  loadedPermissionsValidator,
-  ensurePermissionQueriesLoaded,
+  checkPermissionQueriesLoaded,
   renderWithClient,
   testQueryClient,
 } from '@/utils/test-utils';
@@ -30,7 +29,7 @@ describe('Products', () => {
     test('support "read" and "create" permissions', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => loadedPermissionsValidator(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -57,7 +56,7 @@ describe('Products', () => {
 
       renderWithClient(<Products />, monite);
 
-      await waitFor(() => loadedPermissionsValidator(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
 
       const createProductButton = screen.findByText(/Create New/i);
 
@@ -82,7 +81,7 @@ describe('Products', () => {
 
       renderWithClient(<Products />, monite);
 
-      await waitFor(() => loadedPermissionsValidator(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -101,7 +100,7 @@ describe('Products', () => {
     test('should open the details modal when a row is clicked', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -120,7 +119,7 @@ describe('Products', () => {
     test('should open the create modal when the "create" button is clicked', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -142,7 +141,7 @@ describe('Products', () => {
     test('should appear "edit" and "delete" buttons when we click on right action button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -167,7 +166,7 @@ describe('Products', () => {
     test('should appear delete modal when we click on "delete" button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -198,7 +197,7 @@ describe('Products', () => {
     test('should close modal after deletion', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
@@ -234,7 +233,7 @@ describe('Products', () => {
     test('should appear edit modal when we click on "edit" button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => ensurePermissionQueriesLoaded(testQueryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
       await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
         timeout: 5_000,
       });
