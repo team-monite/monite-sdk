@@ -1,12 +1,12 @@
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
-import { loadedPermissionsValidator } from '@/utils/test-utils';
+import { ensurePermissionQueriesLoaded } from '@/utils/test-utils';
 import { QueryClient } from '@tanstack/react-query';
 
 describe('Test Utils', () => {
-  describe('# loadedPermissionsValidator(..)', () => {
+  describe('# ensurePermissionQueriesLoaded(..)', () => {
     test('throw the error if QueryClient is empty', async () => {
       await expect(
-        loadedPermissionsValidator(new QueryClient())
+        ensurePermissionQueriesLoaded(new QueryClient())
       ).rejects.toThrow('Permissions not loaded');
     });
 
@@ -22,7 +22,7 @@ describe('Test Utils', () => {
       });
 
       await expect(
-        loadedPermissionsValidator(queryClient)
+        ensurePermissionQueriesLoaded(queryClient)
       ).resolves.toBeUndefined();
     });
 
@@ -34,7 +34,7 @@ describe('Test Utils', () => {
       });
 
       await expect(
-        loadedPermissionsValidator(new QueryClient())
+        ensurePermissionQueriesLoaded(new QueryClient())
       ).rejects.toThrow('Permissions not loaded');
     });
 
@@ -46,7 +46,7 @@ describe('Test Utils', () => {
       });
 
       await expect(
-        loadedPermissionsValidator(new QueryClient())
+        ensurePermissionQueriesLoaded(new QueryClient())
       ).rejects.toThrow('Permissions not loaded');
     });
   });

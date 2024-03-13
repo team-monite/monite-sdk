@@ -4,11 +4,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import {
-  loadedPermissionsValidator,
-  Provider,
-  waitUntilTableIsLoaded,
-} from '@/utils/test-utils';
+import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
@@ -31,8 +27,7 @@ describe('Tags', () => {
         ),
       });
 
-      await waitUntilTableIsLoaded();
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkTagQueriesLoaded(queryClient));
 
       const createTagButton = screen.findByRole('button', {
@@ -69,7 +64,7 @@ describe('Tags', () => {
         ),
       });
 
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create new tag`,
@@ -105,8 +100,7 @@ describe('Tags', () => {
         ),
       });
 
-      await waitUntilTableIsLoaded();
-      await waitFor(() => loadedPermissionsValidator(queryClient));
+      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
       await waitFor(() => checkTagQueriesLoaded(queryClient));
 
       const createTagButton = screen.findByRole('button', {
