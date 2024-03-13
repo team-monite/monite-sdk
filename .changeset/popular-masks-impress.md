@@ -4,4 +4,4 @@
 '@monite/sdk-api': minor
 ---
 
-add table for user roles
+feature(DEV-9854): add table for user roles
