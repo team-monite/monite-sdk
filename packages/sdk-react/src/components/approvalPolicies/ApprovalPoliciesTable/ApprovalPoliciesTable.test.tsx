@@ -1,5 +1,5 @@
 import { ApprovalPoliciesTable } from '@/components';
-import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { screen, waitFor } from '@testing-library/react';
 
