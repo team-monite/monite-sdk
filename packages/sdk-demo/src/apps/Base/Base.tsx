@@ -4,6 +4,7 @@ import {
   ApprovalPolicies,
   Counterparts,
   Payables,
+  Permissions,
   Receivables,
   Products,
   Tags,
@@ -22,7 +23,7 @@ export const Base = () => {
       </Route>
 
       <Route path={ROUTES.settings} element={<Navigate to={ROUTES.tags} />} />
-      <Route path={ROUTES.approvalPolicies} element={<ApprovalPolicies />} />
+      <Route path={ROUTES.permissions} element={<Permissions />} />
       <Route path={ROUTES.tags} element={<Tags />} />
       <Route path={ROUTES.receivables} element={<Receivables />} />
       <Route path={ROUTES.products} element={<Products />} />

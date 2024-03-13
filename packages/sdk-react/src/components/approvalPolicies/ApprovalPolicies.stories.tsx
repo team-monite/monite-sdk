@@ -12,19 +12,7 @@ type Story = StoryObj<typeof ApprovalPoliciesComponent>;
 
 export const ApprovalPolicies: Story = {
   args: {},
-  render: () => (
-    <div
-      css={css`
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        padding: 20px;
-      `}
-    >
-      <ApprovalPoliciesComponent />
-    </div>
-  ),
+  render: () => <ApprovalPoliciesComponent />,
 };
 
 export default Story;
