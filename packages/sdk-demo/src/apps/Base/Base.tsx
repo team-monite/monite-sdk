@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  ApprovalPolicies,
   Counterparts,
   Payables,
   Permissions,
