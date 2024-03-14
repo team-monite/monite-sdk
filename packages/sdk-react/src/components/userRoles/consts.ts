@@ -7,6 +7,11 @@ export const ROLES_PAGE_LIMIT = 5;
 export const FILTER_TYPE_SEARCH = 'search';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
 
+/**
+ * An object that maps action names to their order of appearance in the UI.
+ * The order is represented by a number, with lower numbers appearing before higher ones.
+ * This constant guarantees a consistent order of available actions in the UI.
+ */
 export const actionOrder = {
   [ActionEnum.READ]: 1,
   [ActionEnum.CREATE]: 2,
