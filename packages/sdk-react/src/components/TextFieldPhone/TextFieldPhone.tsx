@@ -36,7 +36,9 @@ export const TextFieldPhone = ({
   const { root } = useRootElements();
 
   const defaultCountry =
-    defaultCountryIso2 || i18n.locale.split('-')[1].toLowerCase();
+    defaultCountryIso2 ||
+    i18n.locale.split('-')[1]?.toLowerCase() ||
+    i18n.locale;
 
   const { inputValue, handlePhoneValueChange, inputRef, country, setCountry } =
     usePhoneInput({
