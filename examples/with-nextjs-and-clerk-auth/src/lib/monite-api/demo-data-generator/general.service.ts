@@ -15,19 +15,19 @@ export function getRandomProperty<T = unknown>(obj: Record<string, T>): T {
 }
 
 export interface ILogger {
-  logger: (message: DemoDataGenerationMessage) => void;
+  (message: DemoDataGenerationMessage): void;
 }
 
 export interface IGeneralServiceConstructor {
   token: AccessToken;
   entityId: string;
-  logger?: ILogger['logger'];
+  logger?: ILogger;
 }
 
 export abstract class GeneralService {
   protected readonly token: AccessToken;
   protected readonly entityId: string;
-  protected readonly logger?: ILogger['logger'];
+  protected readonly logger?: ILogger;
   protected readonly request: ReturnType<typeof createMoniteClient>;
 
   constructor(params: IGeneralServiceConstructor) {
