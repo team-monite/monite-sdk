@@ -17,7 +17,7 @@ import { generateCounterpartsWithPayables } from './generate-payables';
 
 export const generateEntity = async (
   { entity_id }: Record<'entity_id', string>,
-  { logger, token }: ILogger & { token: AccessToken }
+  { logger, token }: { token: AccessToken; logger: ILogger }
 ) => {
   const serviceConstructorProps = {
     token,
