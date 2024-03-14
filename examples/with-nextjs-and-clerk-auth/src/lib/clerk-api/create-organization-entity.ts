@@ -6,9 +6,9 @@ import type { AccessToken } from '@/lib/monite-api/fetch-token';
 
 type CreateOrganizationEntityParams = {
   /** Clerk User who will be the owner of the new Entity */
-  owner: User;
+  owner: Pick<User, 'emailAddresses'>;
   /** Clerk Organization that the new Entity will represent */
-  organization: Organization;
+  organization: Pick<Organization, 'name'>;
 };
 
 /**
