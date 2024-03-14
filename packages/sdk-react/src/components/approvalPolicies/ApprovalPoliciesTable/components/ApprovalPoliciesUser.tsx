@@ -33,7 +33,9 @@ export const ApprovalPoliciesUser = ({
     return null;
   }
 
-  const name = `${entityUser.first_name} ${entityUser.last_name}`;
+  const name = `${entityUser.first_name ?? ''} ${
+    entityUser.last_name ?? ''
+  }`.trim();
 
   return (
     <Box>
