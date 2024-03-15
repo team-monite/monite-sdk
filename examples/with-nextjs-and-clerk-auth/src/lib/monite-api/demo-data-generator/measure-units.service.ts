@@ -44,7 +44,7 @@ export class MeasureUnitsService extends GeneralService {
 
     if (error) {
       console.error(
-        `❌ Failed to create Measure Unit for the entity_id: "${this.entityId}"`,
+        `❌ Failed to create "Measure Unit" for the entity_id: "${this.entityId}"`,
         `x-request-id: ${response.headers.get('x-request-id')}`
       );
 
