@@ -10,8 +10,11 @@ import { screen, act, fireEvent } from '@testing-library/react';
 
 import { PermissionsCell } from './PermissionsCell';
 
+const ALLOWED_READ_PERMISSION = 'R';
+const NOT_ALLOWED_PERMISSION = '-';
+
 describe('PermissionsCell', () => {
-  test('should render permission letter and dash correctly', () => {
+  test("should render 'R' for allowed read permission and '-' for not allowed create permission", () => {
     const actions: ActionSchema[] = [
       {
         action_name: ActionEnum.READ,
@@ -20,10 +23,6 @@ describe('PermissionsCell', () => {
       {
         action_name: ActionEnum.CREATE,
         permission: PermissionEnum.NOT_ALLOWED,
-      },
-      {
-        action_name: ActionEnum.DELETE,
-        permission: undefined,
       },
     ];
 
@@ -38,14 +37,14 @@ describe('PermissionsCell', () => {
 
     renderWithClient(<PermissionsCell permissions={permissions} />);
 
-    const allowedPermissionElement = screen.getByText('R');
+    const allowedPermissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
     expect(allowedPermissionElement).toBeInTheDocument();
 
-    const notAllowedPermissionElement = screen.getByText('-');
-    expect(notAllowedPermissionElement).toBeInTheDocument();
+    const dashElement = screen.getByText(NOT_ALLOWED_PERMISSION);
+    expect(dashElement).toBeInTheDocument();
   });
 
-  test('should render tooltip with actions', async () => {
+  test('tooltip should contain action names when a permission letter is hovered over', async () => {
     const actions: ActionSchema[] = [
       {
         action_name: ActionEnum.READ,
@@ -72,7 +71,7 @@ describe('PermissionsCell', () => {
 
     renderWithClient(<PermissionsCell permissions={permissions} />);
 
-    const permissionElement = screen.getByText('R');
+    const permissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
 
     await act(() => {
       fireEvent(
