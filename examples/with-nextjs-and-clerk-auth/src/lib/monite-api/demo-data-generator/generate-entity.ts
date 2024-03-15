@@ -1,11 +1,13 @@
 import { faker } from '@faker-js/faker';
 
 import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counterparts';
+import { EntityService } from '@/lib/monite-api/demo-data-generator/entity.service';
 import {
   getRandomItemFromArray,
   ILogger,
 } from '@/lib/monite-api/demo-data-generator/general.service';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
+import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
@@ -57,6 +59,10 @@ export const generateEntity = async (
       'GBP',
     ] satisfies Array<components['schemas']['CurrencyEnum']>);
 
+    const entitiesService = new EntityService(serviceConstructorProps);
+    const entityVats = await entitiesService.createVatIds();
+    await entitiesService.createBankAccounts();
+
     const vatService = new VatRatesService(serviceConstructorProps);
     const vatRates = await vatService.getAll();
 
@@ -65,6 +71,13 @@ export const generateEntity = async (
     );
     const measureUnits = await measureUnitsService.create();
 
+    const paymentTermsService = new PaymentTermsService(
+      serviceConstructorProps
+    );
+    const paymentTerms = await paymentTermsService
+      .withOptions({ count: 3 })
+      .create();
+
     const productsService = new ProductsService(serviceConstructorProps);
     const products = await productsService
       .withOptions({
@@ -72,16 +85,49 @@ export const generateEntity = async (
         currency,
       })
       .create();
+    const services = await productsService
+      .withOptions({
+        count: 10,
+        measureUnits,
+        currency,
+        type: 'service',
+      })
+      .create();
+
+    /** Merge products & services */
+    const lineItems = [...products, ...services];
 
     const receivablesService = new ReceivablesService(serviceConstructorProps);
-    await receivablesService
+
+    /** Create 15'ing Receivables with a type `invoice` */
+    const invoices = await receivablesService
       .withOptions({
-        products,
+        products: lineItems,
         counterparts,
         vatRates,
         currency,
+        entityVats,
+        paymentTerms,
+        type: 'invoice',
+        count: 15,
       })
       .create();
+
+    /** Create 15'ing Receivables with a type `credit_note` */
+    await receivablesService
+      .withOptions({
+        products: lineItems,
+        counterparts,
+        vatRates,
+        currency,
+        entityVats,
+        paymentTerms,
+        type: 'quote',
+        count: 15,
+      })
+      .create();
+
+    await receivablesService.issueReceivables(invoices);
 
     logger({ success: 'Demo-data has been generated' });
   } catch (error) {

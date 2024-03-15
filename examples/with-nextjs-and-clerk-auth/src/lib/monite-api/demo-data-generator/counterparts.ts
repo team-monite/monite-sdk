@@ -215,7 +215,7 @@ export const createCounterpart = async ({
   });
 
   const is_vendor = faker.datatype.boolean();
-  const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
+  const addressCountries = ['DE'] satisfies Array<AllowedCountries>;
 
   const { data, error, response } = await POST('/counterparts', {
     params: {

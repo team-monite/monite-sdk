@@ -15,12 +15,14 @@ import {
 } from '@/lib/monite-api/create-entity-role';
 import { createEntityUser } from '@/lib/monite-api/create-entity-user';
 import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counterparts';
+import { EntityService } from '@/lib/monite-api/demo-data-generator/entity.service';
 import { getRandomItemFromArray } from '@/lib/monite-api/demo-data-generator/general.service';
 import { generateApprovalPolicies } from '@/lib/monite-api/demo-data-generator/generate-approval-policies';
 import { generateBankAccount } from '@/lib/monite-api/demo-data-generator/generate-bank-account';
 import { generateEntity } from '@/lib/monite-api/demo-data-generator/generate-entity';
 import { generateCounterpartsWithPayables } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
+import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
@@ -106,6 +108,10 @@ program
           'GEL',
         ] satisfies Array<components['schemas']['CurrencyEnum']>);
 
+        const entitiesService = new EntityService(serviceConstructorProps);
+        const entityVats = await entitiesService.createVatIds();
+        await entitiesService.createBankAccounts();
+
         const counterpartsService = new CounterpartsService(
           serviceConstructorProps
         );
@@ -122,28 +128,69 @@ program
         );
         const measureUnits = await measureUnitsService.create();
 
+        const paymentTermsService = new PaymentTermsService(
+          serviceConstructorProps
+        );
+        const paymentTerms = await paymentTermsService
+          .withOptions({ count: 3 })
+          .create();
+
         console.log(chalk.black.bgBlueBright(`- Preparing fetch products`));
         const productsService = new ProductsService(serviceConstructorProps);
         const products = await productsService
           .withOptions({
+            count: 10,
             measureUnits,
             currency,
+            type: 'product',
           })
           .create();
+        const services = await productsService
+          .withOptions({
+            count: 10,
+            measureUnits,
+            currency,
+            type: 'service',
+          })
+          .create();
+
+        /** Merge products & services */
+        const lineItems = [...products, ...services];
 
         console.log(chalk.black.bgBlueBright(`- Preparing fetch receivables`));
         const receivablesService = new ReceivablesService(
           serviceConstructorProps
         );
 
-        await receivablesService
+        /** Create 15'ing Receivables with a type `invoice` */
+        const invoices = await receivablesService
           .withOptions({
-            products,
+            products: lineItems,
             counterparts,
             vatRates,
             currency,
+            entityVats,
+            paymentTerms,
+            type: 'invoice',
+            count: 15,
           })
           .create();
+
+        /** Create 15'ing Receivables with a type `credit_note` */
+        await receivablesService
+          .withOptions({
+            products: lineItems,
+            counterparts,
+            vatRates,
+            currency,
+            entityVats,
+            paymentTerms,
+            type: 'quote',
+            count: 15,
+          })
+          .create();
+
+        await receivablesService.issueReceivables(invoices);
       })
   )
   .addCommand(
