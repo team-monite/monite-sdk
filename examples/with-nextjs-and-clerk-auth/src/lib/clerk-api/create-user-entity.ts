@@ -6,6 +6,12 @@ import { createEntityUser } from '@/lib/monite-api/create-entity-user';
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
 import { getEntityUserByLogin } from '@/lib/monite-api/get-entity-user-by-login';
 
+/**
+ * Creates a Monite Entity User
+ * and updates Clerk's User metadata with the `entity_user_id`.
+ *
+ * @returns Monite Entity User
+ */
 export const createUserEntity = async (
   {
     organizationId,
