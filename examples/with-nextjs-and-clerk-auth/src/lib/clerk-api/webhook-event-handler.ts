@@ -28,6 +28,7 @@ import {
   isExistingRole,
   roles_default_permissions,
 } from '@/lib/monite-api/create-entity-role';
+import { generateApprovalPolicies } from '@/lib/monite-api/demo-data-generator/generate-approval-policies';
 import { generateEntity } from '@/lib/monite-api/demo-data-generator/generate-entity';
 import { fetchTokenServer } from '@/lib/monite-api/fetch-token';
 import { updateEntity } from '@/lib/monite-api/update-entity';
@@ -94,27 +95,55 @@ const handleOrganizationMembershipCreatedEvent = async (
     );
   }
 
-  const { entity_user_id } = getEntityUserData(entity_id, user);
+  const newEntityUserId = await new Promise<string>(async (resolve, reject) => {
+    const { entity_user_id } = getEntityUserData(entity_id, user);
+    if (entity_user_id) return resolve(entity_user_id);
 
-  if (entity_user_id) return;
-
-  await createUserEntity(
-    {
-      organizationId: organization.id,
-      userId: user.id,
-      role: isExistingRole(event.data.role) ? event.data.role : 'guest_member',
-      entity: {
-        entity_id,
-        default_roles,
+    const newEntityUser = await createUserEntity(
+      {
+        organizationId: organization.id,
+        userId: user.id,
+        role: isExistingRole(event.data.role)
+          ? event.data.role
+          : 'guest_member',
+        entity: {
+          entity_id,
+          default_roles,
+        },
       },
-    },
-    {
-      token: await fetchTokenServer({
-        grant_type: 'client_credentials',
-      }),
-      clerkClient,
-    }
-  );
+      {
+        token: await fetchTokenServer({
+          grant_type: 'client_credentials',
+        }),
+        clerkClient,
+      }
+    );
+    if (newEntityUser.id) resolve(newEntityUser.id);
+    else reject(new Error('Failed to create entity user'));
+  });
+
+  if (
+    process.env.GENERATE_ENTITY_DEMO_DATA === 'true' &&
+    // Generate Approval Policies only for the organization owner
+    organization.createdBy === user.id
+  ) {
+    const { publishMessage, closeMqttConnection } = createMqttMessenger(
+      `demo-data-generation-log/${entity_id}`
+    );
+
+    await generateApprovalPolicies(
+      {
+        entity_id,
+        entity_user_id: newEntityUserId,
+        token: await fetchTokenServer({
+          // Approval Policies creation requires `{grant_type: 'entity_user'}` token
+          grant_type: 'entity_user',
+          entity_user_id: newEntityUserId,
+        }),
+      },
+      publishMessage
+    ).finally(() => void closeMqttConnection());
+  }
 };
 
 const handleOrganizationCreatedEvent = async (
