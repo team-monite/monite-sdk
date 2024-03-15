@@ -51,6 +51,18 @@ interface IReceivablesServiceOptions {
    * No default value, this option must be set explicitly
    */
   vatRates: Array<components['schemas']['VatRateResponse']>;
+
+  /**
+   * Describes, which entity vat ids should be used for receivables.
+   * No default value, this option must be set explicitly
+   */
+  entityVats: Array<components['schemas']['EntityVatIDResponse']>;
+
+  /**
+   * Describes, which payment terms should be used for receivables.
+   * No default value, this option must be set explicitly
+   */
+  paymentTerms: Array<components['schemas']['PaymentTermsResponse']>;
 }
 
 export class ReceivablesService extends GeneralService {
@@ -60,6 +72,8 @@ export class ReceivablesService extends GeneralService {
     products: [],
     counterparts: [],
     vatRates: [],
+    entityVats: [],
+    paymentTerms: [],
     currency: 'EUR',
   };
 
@@ -72,46 +86,177 @@ export class ReceivablesService extends GeneralService {
     return this;
   }
 
-  private async createReceivable(): Promise<
-    components['schemas']['ReceivableResponse']
-  > {
-    const { data, error, response } = await this.request.POST(`/receivables`, {
-      params: {
-        header: {
-          'x-monite-entity-id': this.entityId,
-          'x-monite-version': getMoniteApiVersion(),
+  private async issueReceivable(
+    receivable: components['schemas']['ReceivableResponse']
+  ) {
+    const { data, error, response } = await this.request.POST(
+      '/receivables/{receivable_id}/issue',
+      {
+        params: {
+          path: {
+            receivable_id: receivable.id,
+          },
+          header: {
+            'x-monite-entity-id': this.entityId,
+            'x-monite-version': getMoniteApiVersion(),
+          },
         },
-      },
-      body: {
-        type: 'invoice',
-        currency: this.options.currency,
-        counterpart_id: getRandomItemFromArray(this.options.counterparts).id,
-        line_items: this.options.products
-          /**
-           * Randomly take an item from `products`
-           *  (approximately products.length / 2 items)
-           */
-          .sort(() => 0.5 - Math.random())
-          .map((product) => {
-            return {
-              product_id: product.id,
-              quantity: faker.number.int({ min: 1, max: 20 }),
-              vat_rate_id: getRandomItemFromArray(this.options.vatRates).id,
-            };
-          }),
-      },
-    });
+      }
+    );
 
     if (error) {
       console.error(
-        `❌ Failed to create receivable for the entity_id: "${this.entityId}"`,
+        `❌ Failed to issue receivable for the entity_id: "${this.entityId}"`,
         `x-request-id: ${response.headers.get('x-request-id')}`
       );
 
-      throw new Error(`Receivable create failed: ${JSON.stringify(error)}`);
+      throw new Error(`Receivable issue failed: ${JSON.stringify(error)}`);
     }
 
     return data;
+  }
+
+  /**
+   * Issue invoices for the entity
+   * !!! Note !!!
+   * This method works only for invoices in status `Draft`
+   */
+  public async issueReceivables(
+    receivables: Array<components['schemas']['ReceivableResponse']>
+  ) {
+    this.logger?.({ message: 'Issuing receivables...' });
+
+    const receivablesToIssue = receivables.filter((receivable, index) => {
+      /**
+       * Issue half of the receivables
+       * We don't want to issue all of them
+       */
+      return index % 2 === 0;
+    });
+
+    for (let i = 0; i < receivablesToIssue.length; i++) {
+      console.log(
+        chalk.bgBlueBright(
+          ` - Issuing receivable (${i + 1}/${receivablesToIssue.length})`
+        )
+      );
+
+      /**
+       * We have to wait for the response, otherwise our backend
+       *  may reject us if we perform 10+ request simultaneously
+       */
+      await this.issueReceivable(receivablesToIssue[i]).catch(console.error);
+    }
+
+    this.logger?.({ message: '✅ Receivables issued' });
+    console.log(chalk.black.bgGreenBright(`✅ Receivables issued`));
+  }
+
+  private async createReceivable(): Promise<
+    components['schemas']['ReceivableResponse']
+  > {
+    switch (this.options.type) {
+      case 'invoice': {
+        const { data, error, response } = await this.request.POST(
+          `/receivables`,
+          {
+            params: {
+              header: {
+                'x-monite-entity-id': this.entityId,
+                'x-monite-version': getMoniteApiVersion(),
+              },
+            },
+            body: {
+              type: this.options.type,
+              currency: this.options.currency,
+              counterpart_id: getRandomItemFromArray(this.options.counterparts)
+                .id,
+              line_items: this.options.products
+                /**
+                 * Randomly take an item from `products`
+                 *  (approximately products.length / 2 items)
+                 */
+                .sort(() => 0.5 - Math.random())
+                .map((product) => {
+                  return {
+                    product_id: product.id,
+                    quantity: faker.number.int({ min: 1, max: 20 }),
+                    vat_rate_id: getRandomItemFromArray(this.options.vatRates)
+                      .id,
+                  };
+                }),
+              entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
+                .id,
+              payment_terms_id: getRandomItemFromArray(
+                this.options.paymentTerms
+              ).id,
+            },
+          }
+        );
+
+        if (error) {
+          console.error(
+            `❌ Failed to create receivable for the entity_id: "${this.entityId}"`,
+            `x-request-id: ${response.headers.get('x-request-id')}`
+          );
+
+          throw new Error(`Receivable create failed: ${JSON.stringify(error)}`);
+        }
+
+        return data;
+      }
+
+      case 'quote': {
+        const { data, error, response } = await this.request.POST(
+          `/receivables`,
+          {
+            params: {
+              header: {
+                'x-monite-entity-id': this.entityId,
+                'x-monite-version': getMoniteApiVersion(),
+              },
+            },
+            body: {
+              type: this.options.type,
+              currency: this.options.currency,
+              counterpart_id: getRandomItemFromArray(this.options.counterparts)
+                .id,
+              line_items: this.options.products
+                /**
+                 * Randomly take an item from `products`
+                 *  (approximately products.length / 2 items)
+                 */
+                .sort(() => 0.5 - Math.random())
+                .map((product) => {
+                  return {
+                    product_id: product.id,
+                    quantity: faker.number.int({ min: 1, max: 20 }),
+                    vat_rate_id: getRandomItemFromArray(this.options.vatRates)
+                      .id,
+                  };
+                }),
+              entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
+                .id,
+            },
+          }
+        );
+
+        if (error) {
+          console.error(
+            `❌ Failed to create receivable for the entity_id: "${this.entityId}"`,
+            `x-request-id: ${response.headers.get('x-request-id')}`
+          );
+
+          throw new Error(`Receivable create failed: ${JSON.stringify(error)}`);
+        }
+
+        return data;
+      }
+
+      case 'credit_note': {
+        throw new Error('Credit note is not supported yet');
+      }
+    }
   }
 
   public async create(): Promise<
@@ -120,20 +265,18 @@ export class ReceivablesService extends GeneralService {
     if (
       this.options.products.length === 0 ||
       this.options.counterparts.length === 0 ||
-      this.options.vatRates.length === 0
+      this.options.vatRates.length === 0 ||
+      this.options.entityVats.length === 0 ||
+      this.options.paymentTerms.length === 0
     ) {
       console.error(
         chalk.black.bgRedBright(
-          `❌ You must provide products, counterparts, and vat rates for receivables`
+          `❌ You must provide products, counterparts, entity vats, payment terms, and vat rates for receivables`
         )
       );
       throw new Error(
         'You must provide products, counterparts, and vat rates for receivables'
       );
-    }
-
-    if (this.options.type !== 'invoice') {
-      throw new Error('Only invoices are supported for now');
     }
 
     this.logger?.({ message: 'Creating receivables...' });
@@ -149,9 +292,7 @@ export class ReceivablesService extends GeneralService {
 
       await this.createReceivable()
         .then((receivable) => receivables.push(receivable))
-        .catch((error) => {
-          console.error(error);
-        });
+        .catch(console.error);
     }
 
     if (receivables.length) {

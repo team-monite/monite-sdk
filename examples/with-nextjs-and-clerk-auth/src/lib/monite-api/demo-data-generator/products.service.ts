@@ -58,6 +58,16 @@ export class ProductsService extends GeneralService {
   private async createProduct(): Promise<
     components['schemas']['ProductServiceResponse']
   > {
+    const type = (() => {
+      /** If the type is set to 'all', then we will randomly choose */
+      if (this.options.type === 'all') {
+        return faker.datatype.boolean() ? 'product' : 'service';
+      }
+
+      /** Otherwise, we should take provided `type` */
+      return this.options.type;
+    })();
+
     const { data, error, response } = await this.request.POST(`/products`, {
       params: {
         header: {
@@ -72,7 +82,7 @@ export class ProductsService extends GeneralService {
           currency: this.options.currency,
           value: Number(faker.commerce.price({ min: 9, max: 9_999 })) * 100,
         },
-        type: faker.datatype.boolean() ? 'product' : 'service',
+        type,
         measure_unit_id: getRandomItemFromArray(this.options.measureUnits).id,
       },
     });
