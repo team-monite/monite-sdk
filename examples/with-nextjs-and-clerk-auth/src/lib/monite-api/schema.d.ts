@@ -836,6 +836,25 @@ export interface paths {
      */
     post: operations['post_payables_upload_from_file'];
   };
+  '/payables/validations': {
+    /**
+     * Get payables validations
+     * @description Get payable validations.
+     */
+    get: operations['get_payables_validations'];
+    /**
+     * Update payables validations
+     * @description Update payable validations.
+     */
+    put: operations['put_payables_validations'];
+  };
+  '/payables/validations/reset': {
+    /**
+     * Reset payables validations
+     * @description Reset payable validations to default ones.
+     */
+    post: operations['post_payables_validations_reset'];
+  };
   '/payables/variables': {
     /**
      * Get the available variables for payable email templates
@@ -1212,6 +1231,10 @@ export interface paths {
     /** Send a receivable via email */
     post: operations['post_receivables_id_send'];
   };
+  '/receivables/{receivable_id}/send_test_reminder': {
+    /** Send a test reminder */
+    post: operations['post_receivables_id_send_test_reminder'];
+  };
   '/receivables/{receivable_id}/verify': {
     /** Verify a receivable */
     post: operations['post_receivables_id_verify'];
@@ -1362,6 +1385,10 @@ export interface paths {
   '/webhook_settings/{webhook_subscription_id}/enable': {
     /** Enable a webhook subscription */
     post: operations['post_webhook_settings_id_enable'];
+  };
+  '/webhook_settings/{webhook_subscription_id}/regenerate_secret': {
+    /** Regenerate a webhook secret and return the new webhook subscription */
+    post: operations['post_webhook_settings_id_regenerate_secret'];
   };
   '/webhooks': {
     /** Get aggregated webhook deliveries */
@@ -2387,7 +2414,7 @@ export interface components {
       individual: components['schemas']['CounterpartIndividualCreatePayload'];
       /** @default true */
       reminders_enabled?: boolean;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       /**
        * @description `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
@@ -2435,7 +2462,7 @@ export interface components {
        * @description Entity user ID of counterpart creator.
        */
       created_by_entity_user_id?: string;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       individual: components['schemas']['CounterpartIndividualResponse'];
     };
@@ -2453,7 +2480,7 @@ export interface components {
       default_billing_address_id?: string;
       individual: components['schemas']['CounterpartIndividualUpdatePayload'];
       reminders_enabled?: boolean;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       /**
        * @description Must be "individual".
@@ -2559,7 +2586,7 @@ export interface components {
       organization: components['schemas']['CounterpartOrganizationCreatePayload'];
       /** @default true */
       reminders_enabled?: boolean;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       /**
        * @description `true` if the counterpart was created automatically by Monite when processing incoming invoices with OCR. `false` if the counterpart was created by the API client.
@@ -2607,7 +2634,7 @@ export interface components {
        * @description Entity user ID of counterpart creator.
        */
       created_by_entity_user_id?: string;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       organization: components['schemas']['CounterpartOrganizationResponse'];
     };
@@ -2626,7 +2653,7 @@ export interface components {
       organization: components['schemas']['CounterpartOrganizationUpdatePayload'];
       /** @default true */
       reminders_enabled?: boolean;
-      /** @description An identification number of the counterpart */
+      /** @description The counterpart's taxpayer identification number or tax ID. This field is required for counterparts that are non-VAT registered. */
       tax_id?: string;
       /**
        * @description Must be "organization".
@@ -3750,17 +3777,9 @@ export interface components {
       /** @description Business information about the entity. */
       business_profile?: components['schemas']['BusinessProfile'];
       /** @description Used to attest that the beneficial owner information provided is both current and correct. */
-      ownership_declaration?: components['schemas']['OwnershipDeclaration'];
+      ownership_declaration?: components['schemas']['package__entities__v2023_09_01__schemas__entity_onboarding_data__OwnershipDeclaration'];
       /** @description Details on the entity's acceptance of the service agreement. */
-      tos_acceptance?: components['schemas']['TermsOfServiceAcceptance'];
-    };
-    EntityOnboardingDataResponse: {
-      /** @description Business information about the entity. */
-      business_profile?: components['schemas']['BusinessProfile'];
-      /** @description Used to attest that the beneficial owner information provided is both current and correct. */
-      ownership_declaration?: components['schemas']['OwnershipDeclaration'];
-      /** @description Details on the entity's acceptance of the service agreement. */
-      tos_acceptance?: components['schemas']['TermsOfServiceAcceptance'];
+      tos_acceptance?: components['schemas']['package__entities__v2023_09_01__schemas__entity_onboarding_data__TermsOfServiceAcceptance'];
     };
     EntityOnboardingDocuments: {
       /** Format: binary */
@@ -4003,6 +4022,28 @@ export interface components {
       /** @default medium */
       significance?: string;
     };
+    EventResourceForWebhookClient: {
+      /** Format: uuid */
+      id: string;
+      /**
+       * Format: date-time
+       * @description The timestamp that was generated at the time of making the database transaction that has initially caused the event
+       */
+      created_at?: string;
+      action: string;
+      api_version?: string;
+      /** Format: uuid */
+      entity_id: string;
+      name: string;
+      object?: unknown;
+      /** Format: uuid */
+      object_id: string;
+      object_type: components['schemas']['WebhookObjectType'];
+      /** @default medium */
+      significance?: string;
+      /** Format: uuid */
+      webhook_subscription_id: string;
+    };
     ExchangeRate: {
       /** @example USD */
       base: components['schemas']['CurrencyEnum'];
@@ -4194,6 +4235,25 @@ export interface components {
       ssn_last_4?: string;
       /** @description A title of an individual */
       title?: string;
+    };
+    InternalBusinessProfile: {
+      /**
+       * @description The merchant category code of the entity. MCCs are used to classify businesses based on the goods or services they provide.
+       * @example 5734
+       */
+      mcc?: string;
+      /**
+       * Format: uri
+       * @description The business's publicly available website.
+       */
+      url?: string;
+    };
+    InternalEntityOnboardingDataResponse: {
+      business_profile?: components['schemas']['InternalBusinessProfile'];
+      /** @description Used to attest that the beneficial owner information provided is both current and correct. */
+      ownership_declaration?: components['schemas']['package__entities__head__schemas__entity_onboarding_data__OwnershipDeclaration'];
+      /** @description Details on the entity's acceptance of the service agreement. */
+      tos_acceptance?: components['schemas']['package__entities__head__schemas__entity_onboarding_data__TermsOfServiceAcceptance'];
     };
     Invoice: {
       /** Format: date */
@@ -4938,6 +4998,8 @@ export interface components {
       receivable?: string[];
       /** @description List of invalid vat rates. */
       vat_rates?: string[];
+      /** @description Warning message for payment reminder */
+      warnings?: components['schemas']['ReceivablesRemindersWarningMessage'];
     };
     MissingLineItemFields: {
       /** @description Order number of line item. */
@@ -4957,7 +5019,9 @@ export interface components {
       | 'iDEAL'
       | 'Przelewy24'
       | 'SEPA Direct Debit'
-      | 'SOFORT';
+      | 'SOFORT'
+      | 'Apple Pay'
+      | 'Google Pay';
     /** @enum {string} */
     MoniteAllPaymentMethodsTypes:
       | 'sepa_credit'
@@ -4970,7 +5034,9 @@ export interface components {
       | 'ideal'
       | 'p24'
       | 'sepa_debit'
-      | 'sofort';
+      | 'sofort'
+      | 'applepay'
+      | 'googlepay';
     /**
      * @description In general it's compatible with CounterpartAddress model but
      * * All fields are optional
@@ -5009,25 +5075,45 @@ export interface components {
     };
     OCRResponseInvoiceReceiptData: {
       /**
-       * @description Total in cents/eurocents
+       * @description Total in cents/eurocents. Outdated, actual conversion happens in payables.
        * @example 7000
        */
       total?: number;
       /**
-       * @description Subtotal cents/eurocents
-       * @example 7000
+       * @description Total, without minor units
+       * @example 70
+       */
+      total_raw?: number;
+      /**
+       * @description Subtotal cents/eurocents. Outdated, actual conversion happens in payables.
+       * @example 7700
        */
       total_excl_vat?: number;
       /**
-       * @description VAT amount in cents
+       * @description Subtotal, without minor units
+       * @example 77
+       */
+      total_excl_vat_raw?: number;
+      /**
+       * @description VAT amount in cents. Outdated, actual conversion happens in payables.
        * @example 700
        */
       total_vat_amount?: number;
       /**
-       * @description VAT Percent minor units. Example: 12.5% is 1250.
+       * @description VAT amount, without minor units
+       * @example 7
+       */
+      total_vat_amount_raw?: number;
+      /**
+       * @description VAT Percent minor units. Example: 12.5% is 1250. Outdated, actual conversion happens in payables.
        * @example 1250
        */
       total_vat_rate?: number;
+      /**
+       * @description VAT Percent raw, without minor units.
+       * @example 12.5
+       */
+      total_vat_rate_raw?: number;
       /**
        * @description ISO 4217 currency code
        * @example EUR
@@ -5052,8 +5138,10 @@ export interface components {
       document_id?: string;
       /** @description Payment terms. Deprecated. */
       payment_terms?: string;
-      /** @description Payment terms parsed and calculated. */
+      /** @description Payment terms parsed and calculated. Deprecated */
       payment_terms_parsed?: components['schemas']['OCRResponsePaymentTermsPayload'];
+      /** @description Raw payment terms parsed but not calculated. */
+      payment_terms_raw?: string[];
       /**
        * @description Tax payer ID (aka VAT ID)
        * @example DE88939004
@@ -5069,8 +5157,10 @@ export interface components {
       counterpart_account_number?: string;
       /** @description The bank routing number */
       counterpart_routing_number?: string;
-      /** @description List of line items from document */
+      /** @description List of line items from document. Outdated, actual conversion happens in payables. */
       line_items?: components['schemas']['OCRResponseInvoiceReceiptLineItem'][];
+      /** @description List of line items from document raw, without minor units conversion. */
+      line_items_raw?: components['schemas']['OCRResponseInvoiceReceiptLineItemRaw'][];
     };
     OCRResponseInvoiceReceiptLineItem: {
       /** @description OCR Id of line item */
@@ -5113,6 +5203,50 @@ export interface components {
       /**
        * @description Total included VAT
        * @example 12300
+       */
+      total_incl_vat?: number;
+    };
+    OCRResponseInvoiceReceiptLineItemRaw: {
+      /** @description OCR Id of line item */
+      line_item_ocr_id?: string;
+      /**
+       * @description Human-readable line item description
+       * @example Impact Players : How to Take the Lead , Play Bigger , and Multiply Your
+       */
+      description?: string;
+      /**
+       * @description Quanity
+       * @example 1.2
+       */
+      quantity?: number;
+      /**
+       * @description Price as parsed
+       * @example 100
+       */
+      unit_price?: number;
+      /**
+       * @description Unit
+       * @example meters
+       */
+      unit?: string;
+      /**
+       * @description VAT Percent as parsed.
+       * @example 12.5
+       */
+      vat_percentage?: number;
+      /**
+       * @description VAT Amount as parsed.
+       * @example 15
+       */
+      vat_amount?: number;
+      /**
+       * @description Total excluded VAT as parsed.
+       * @example 120
+       */
+      total_excl_vat?: number;
+      /**
+       * @description Total included VAT as parsed.
+       * @example 135
        */
       total_incl_vat?: number;
     };
@@ -5390,7 +5524,7 @@ export interface components {
     OverdueReminderRequest: {
       name: string;
       /** @description Overdue reminder to send for payment term */
-      term: components['schemas']['OverdueReminderTermRequest'];
+      term: components['schemas']['OverdueReminderTerm'];
     };
     OverdueReminderResponse: {
       /** Format: uuid */
@@ -5407,29 +5541,12 @@ export interface components {
       updated_at: string;
       name: string;
       /** @description Overdue reminder to send for payment term */
-      term: components['schemas']['OverdueReminderTermResponse'];
+      term: components['schemas']['OverdueReminderTerm'];
     };
-    OverdueReminderTermRequest: {
+    OverdueReminderTerm: {
       body: string;
       days_after: number;
       subject: string;
-    };
-    OverdueReminderTermResponse: {
-      body: string;
-      days_after: number;
-      subject: string;
-    };
-    OwnershipDeclaration: {
-      /**
-       * Format: date-time
-       * @description The date and time (in the ISO 8601 format) when the beneficial owner attestation was made.
-       */
-      date?: string;
-      /**
-       * @description The IP address from which the beneficial owner attestation was made. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
-       * @example 203.0.113.24
-       */
-      ip?: string;
     };
     /**
      * @description When a PDF document is uploaded to Monite, it extracts individual pages from the document
@@ -5799,8 +5916,8 @@ export interface components {
       ocr_status?: components['schemas']['OcrStatusEnum'];
       /** @description Data extracted from the uploaded payable by OCR. */
       other_extracted_data?:
-        | components['schemas']['OcrRecognitionResponse']
-        | components['schemas']['OCRResponseInvoiceReceiptData'];
+        | components['schemas']['OCRResponseInvoiceReceiptData']
+        | components['schemas']['OcrRecognitionResponse'];
       /** @description Metadata for partner needs */
       partner_metadata?: Record<string, never>;
       /** @description Specifies how this payable was created in Monite: `upload` - created via an API call, `email` - sent via email to the entity's mailbox. */
@@ -6095,6 +6212,45 @@ export interface components {
       id: string;
       validation_errors?: Record<string, never>[];
     };
+    PayableValidationsResource: {
+      required_fields: components['schemas']['PayablesFieldsAllowedForValidate'][];
+    };
+    PayableValidationsUpdateRequest: {
+      required_fields: components['schemas']['PayablesFieldsAllowedForValidate'][];
+    };
+    /** @enum {string} */
+    PayablesFieldsAllowedForValidate:
+      | 'currency'
+      | 'document_id'
+      | 'due_date'
+      | 'issued_at'
+      | 'tax_amount'
+      | 'total_amount'
+      | 'subtotal'
+      | 'description'
+      | 'suggested_payment_term'
+      | 'payment_terms'
+      | 'currency_exchange'
+      | 'file'
+      | 'tax'
+      | 'sender'
+      | 'partner_metadata'
+      | 'counterpart_id'
+      | 'counterpart_bank_account_id'
+      | 'counterpart_address_id'
+      | 'counterpart_vat_id_id'
+      | 'line_items'
+      | 'line_items.quantity'
+      | 'line_items.unit_price'
+      | 'line_items.tax'
+      | 'line_items.ledger_account_id'
+      | 'line_items.accounting_tax_rate_id'
+      | 'line_items.unit'
+      | 'line_items.name'
+      | 'line_items.description'
+      | 'line_items.subtotal'
+      | 'line_items.total'
+      | 'line_items.tax_amount';
     PaymentAccountObject: {
       /** Format: uuid */
       id: string;
@@ -7406,6 +7562,11 @@ export interface components {
       /** Format: uuid */
       mail_id: string;
     };
+    /** @description Payload for sending a test reminder email */
+    ReceivableSendTestReminderPayload: {
+      /** @description The type of the reminder to be sent. */
+      reminder_type: components['schemas']['ReminderTypeEnum'];
+    };
     ReceivableSettingsPayload: {
       create_without_personal_info: boolean;
       deduction_title?: string;
@@ -7504,6 +7665,10 @@ export interface components {
       | 'receivable'
       | 'discount_reminder'
       | 'final_reminder';
+    ReceivablesRemindersWarningMessage: {
+      /** @description Warning message for payment reminder */
+      payment_reminders?: string;
+    };
     ReceivablesRepresentationOfEntityBankAccount: {
       /**
        * Format: uuid
@@ -7534,6 +7699,10 @@ export interface components {
       sort_code?: string;
       /** Format: uuid */
       was_created_by_user_id?: string;
+    };
+    /** @description A schema for returning a response with list of ids by which user check sending status */
+    ReceivablesSendResponse: {
+      mail_ids: string[];
     };
     /**
      * @description This Enum the results of combining two types of statuses from
@@ -7614,6 +7783,8 @@ export interface components {
       days_before: number;
       subject: string;
     };
+    /** @enum {string} */
+    ReminderTypeEnum: 'term_1' | 'term_2' | 'term_final' | 'overdue';
     RemindersSettings: {
       /** @default true */
       enabled?: boolean;
@@ -7878,18 +8049,6 @@ export interface components {
       end_date?: string;
       /** @description The amount of days after the invoice issue date. */
       number_of_days: number;
-    };
-    TermsOfServiceAcceptance: {
-      /**
-       * Format: date-time
-       * @description The date and time (in the ISO 8601 format) when the entity representative accepted the service agreement.
-       */
-      date?: string;
-      /**
-       * @description The IP address from which the entity representative accepted the service agreement. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
-       * @example 203.0.113.24
-       */
-      ip?: string;
     };
     TextTemplateResponse: {
       /** Format: uuid */
@@ -8664,6 +8823,16 @@ export interface components {
       /** Format: uri */
       url: string;
     };
+    WebhookSubscriptionResourceWithSecret: {
+      /** Format: uuid */
+      id: string;
+      event_types: string[];
+      object_type: components['schemas']['WebhookObjectType'];
+      secret: string;
+      status: components['schemas']['WebhookSubscriptionStatus'];
+      /** Format: uri */
+      url: string;
+    };
     /** @enum {string} */
     WebhookSubscriptionStatus: 'enabled' | 'disabled';
     /** @description Represents a file (such as a PDF invoice) that was uploaded to Monite. */
@@ -8880,6 +9049,30 @@ export interface components {
        */
       height: number;
     };
+    package__entities__head__schemas__entity_onboarding_data__OwnershipDeclaration: {
+      /**
+       * Format: date-time
+       * @description The date and time (in the ISO 8601 format) when the beneficial owner attestation was made.
+       */
+      date?: string;
+      /**
+       * @description The IP address from which the beneficial owner attestation was made. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
+       * @example 203.0.113.24
+       */
+      ip?: string;
+    };
+    package__entities__head__schemas__entity_onboarding_data__TermsOfServiceAcceptance: {
+      /**
+       * Format: date-time
+       * @description The date and time (in the ISO 8601 format) when the entity representative accepted the service agreement.
+       */
+      date?: string;
+      /**
+       * @description The IP address from which the entity representative accepted the service agreement. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
+       * @example 203.0.113.24
+       */
+      ip?: string;
+    };
     /** @description Represents a file (such as a PDF invoice) that was uploaded to Monite. */
     package__entities__unversioned__schemas__file_saver__FileSchema: {
       /**
@@ -8986,6 +9179,30 @@ export interface components {
        * @example 200
        */
       width: number;
+    };
+    package__entities__v2023_09_01__schemas__entity_onboarding_data__OwnershipDeclaration: {
+      /**
+       * Format: date-time
+       * @description The date and time (in the ISO 8601 format) when the beneficial owner attestation was made.
+       */
+      date?: string;
+      /**
+       * @description The IP address from which the beneficial owner attestation was made. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
+       * @example 203.0.113.24
+       */
+      ip?: string;
+    };
+    package__entities__v2023_09_01__schemas__entity_onboarding_data__TermsOfServiceAcceptance: {
+      /**
+       * Format: date-time
+       * @description The date and time (in the ISO 8601 format) when the entity representative accepted the service agreement.
+       */
+      date?: string;
+      /**
+       * @description The IP address from which the entity representative accepted the service agreement. If omitted or set to `null` in the request, the IP address is inferred from the request origin or the `X-Forwarded-For` request header.
+       * @example 203.0.113.24
+       */
+      ip?: string;
     };
   };
   responses: never;
@@ -14498,7 +14715,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['EntityOnboardingDataResponse'];
+          'application/json': components['schemas']['InternalEntityOnboardingDataResponse'];
         };
       };
       /** @description Not found */
@@ -14539,7 +14756,6 @@ export interface operations {
       header: {
         /** @example 2023-09-01 */
         'x-monite-version': string;
-        'x-forwarded-for': string;
       };
       path: {
         entity_id: string;
@@ -14554,7 +14770,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['EntityOnboardingDataResponse'];
+          'application/json': components['schemas']['InternalEntityOnboardingDataResponse'];
         };
       };
       /** @description Not found */
@@ -14595,7 +14811,6 @@ export interface operations {
       header: {
         /** @example 2023-09-01 */
         'x-monite-version': string;
-        'x-forwarded-for': string;
       };
       path: {
         entity_id: string;
@@ -14610,7 +14825,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['EntityOnboardingDataResponse'];
+          'application/json': components['schemas']['InternalEntityOnboardingDataResponse'];
         };
       };
       /** @description Not found */
@@ -18360,6 +18575,185 @@ export interface operations {
       201: {
         content: {
           'application/json': components['schemas']['PayableResponseSchema'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Method Not Allowed */
+      405: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+    };
+  };
+  /**
+   * Get payables validations
+   * @description Get payable validations.
+   */
+  get_payables_validations: {
+    parameters: {
+      header: {
+        /** @example 2023-09-01 */
+        'x-monite-version': string;
+        /** @description The ID of the entity that owns the requested resource. */
+        'x-monite-entity-id': string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['PayableValidationsResource'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Method Not Allowed */
+      405: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+    };
+  };
+  /**
+   * Update payables validations
+   * @description Update payable validations.
+   */
+  put_payables_validations: {
+    parameters: {
+      header: {
+        /** @example 2023-09-01 */
+        'x-monite-version': string;
+        /** @description The ID of the entity that owns the requested resource. */
+        'x-monite-entity-id': string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['PayableValidationsUpdateRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['PayableValidationsResource'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Method Not Allowed */
+      405: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+    };
+  };
+  /**
+   * Reset payables validations
+   * @description Reset payable validations to default ones.
+   */
+  post_payables_validations_reset: {
+    parameters: {
+      header: {
+        /** @example 2023-09-01 */
+        'x-monite-version': string;
+        /** @description The ID of the entity that owns the requested resource. */
+        'x-monite-entity-id': string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['PayableValidationsResource'];
         };
       };
       /** @description Bad Request */
@@ -23239,6 +23633,81 @@ export interface operations {
       };
     };
   };
+  /** Send a test reminder */
+  post_receivables_id_send_test_reminder: {
+    parameters: {
+      header: {
+        /** @example 2023-09-01 */
+        'x-monite-version': string;
+        /** @description The ID of the entity that owns the requested resource. */
+        'x-monite-entity-id': string;
+      };
+      path: {
+        receivable_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ReceivableSendTestReminderPayload'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['ReceivablesSendResponse'];
+        };
+      };
+      /** @description Bad Request */
+      400: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Not found */
+      404: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Method Not Allowed */
+      405: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Business logic error */
+      409: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+    };
+  };
   /** Verify a receivable */
   post_receivables_id_verify: {
     parameters: {
@@ -24731,7 +25200,7 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          'application/json': components['schemas']['WebhookSubscriptionResource'];
+          'application/json': components['schemas']['WebhookSubscriptionResourceWithSecret'];
         };
       };
       /** @description Method Not Allowed */
@@ -24927,6 +25396,44 @@ export interface operations {
       200: {
         content: {
           'application/json': components['schemas']['WebhookSubscriptionResource'];
+        };
+      };
+      /** @description Method Not Allowed */
+      405: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        content: {
+          'application/json': components['schemas']['ErrorSchemaResponse'];
+        };
+      };
+    };
+  };
+  /** Regenerate a webhook secret and return the new webhook subscription */
+  post_webhook_settings_id_regenerate_secret: {
+    parameters: {
+      header: {
+        /** @example 2023-09-01 */
+        'x-monite-version': string;
+      };
+      path: {
+        webhook_subscription_id: string;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        content: {
+          'application/json': components['schemas']['WebhookSubscriptionResourceWithSecret'];
         };
       };
       /** @description Method Not Allowed */
