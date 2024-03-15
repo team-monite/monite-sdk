@@ -16,6 +16,7 @@ import {
 import { createEntityUser } from '@/lib/monite-api/create-entity-user';
 import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counterparts';
 import { getRandomItemFromArray } from '@/lib/monite-api/demo-data-generator/general.service';
+import { generateApprovalPolicies } from '@/lib/monite-api/demo-data-generator/generate-approval-policies';
 import { generateBankAccount } from '@/lib/monite-api/demo-data-generator/generate-bank-account';
 import { generateEntity } from '@/lib/monite-api/demo-data-generator/generate-entity';
 import { generateCounterpartsWithPayables } from '@/lib/monite-api/demo-data-generator/generate-payables';
@@ -323,6 +324,29 @@ program
             error
           );
         }
+      })
+  )
+  .addCommand(
+    commandWithEntityOptions()
+      .name('approval-policies')
+      .description('Generate Approval Policies for the entity_id')
+      .action(async (args) => {
+        const { entity_id, entity_user_id } = getEntityArgs(args);
+        if (!entity_id) throw new Error('entity_id is empty');
+        if (!entity_user_id) {
+          console.error(
+            chalk.red(
+              'The "--entity-user-id" is required to generate Approval Policies'
+            )
+          );
+          process.exit(1);
+        }
+
+        await generateApprovalPolicies({
+          entity_id,
+          entity_user_id,
+          token: await fetchTokenCLI(args),
+        });
       })
   );
 
