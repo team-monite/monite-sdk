@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 
 import {
   ACTION_TO_LATTER_MAP,
@@ -14,7 +14,7 @@ import {
 } from '@monite/sdk-api';
 import { styled, Tooltip } from '@mui/material';
 
-interface Props {
+interface PermissionProps {
   /**
    *
    * @param actions - The actions data for the role to be displayed.
@@ -54,54 +54,42 @@ const StyledInactivePermission = styled(StyledPermission)(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-/**
- * @function Permission
- * @description This is the component for rendering the permissions actions of each action in a tooltip.
- * The permissions are represented by different styled spans based on the permission type.
- * The actions are normalized and sorted before rendering.
- */
-export const Permission = ({ actions }: Props) => {
+export const Permission = ({ actions }: PermissionProps) => {
   const { i18n } = useLingui();
-  const normalizedActions = useMemo(() => normalizeActions(actions), [actions]);
-  const sortedActions = useMemo(
-    () =>
-      normalizedActions.sort((a, b) => {
-        if (a.action_name === undefined && b.action_name === undefined) {
-          return 0;
-        }
+  const normalizedActions = normalizeActions(actions);
+  const sortedActions = [...normalizedActions].sort((a, b) => {
+    if (a.action_name === undefined && b.action_name === undefined) {
+      return 0;
+    }
 
-        const aOrder = a.action_name ? actionOrder[a.action_name] : undefined;
-        const bOrder = b.action_name ? actionOrder[b.action_name] : undefined;
+    const aOrder = a.action_name ? actionOrder[a.action_name] : undefined;
+    const bOrder = b.action_name ? actionOrder[b.action_name] : undefined;
 
-        if (aOrder === undefined) {
-          return 1;
-        }
-        if (bOrder === undefined) {
-          return -1;
-        }
+    if (aOrder === undefined) {
+      return 1;
+    }
+    if (bOrder === undefined) {
+      return -1;
+    }
 
-        return aOrder - bOrder;
-      }),
-    [normalizedActions]
-  );
-  const renderedActions: ReactElement[] = [];
-  const renderedActionsTooltip: ReactElement[] = [];
+    return aOrder - bOrder;
+  });
 
-  sortedActions.forEach((action) => {
+  const renderAction = (action: ActionSchema | PayableActionSchema) => {
     if (action.action_name) {
-      /** Current UI doesn't reflect the difference between ALLOWED and ALLOWED_FOR_OWN.
-       * It will be improved in further iterations
-       */
+      let element = null;
+      let tooltip = null;
+
       if (
         action.permission === PermissionEnum.ALLOWED ||
         action.permission === PermissionEnum.ALLOWED_FOR_OWN
       ) {
-        renderedActions.push(
+        element = (
           <StyledActivePermission key={action.action_name}>
             {ACTION_TO_LATTER_MAP[action.action_name]}
           </StyledActivePermission>
         );
-        renderedActionsTooltip.push(
+        tooltip = (
           <p key={action.action_name}>
             {`[${ACTION_TO_LATTER_MAP[action.action_name]}] ${
               getActionToLabelMap(i18n)[action.action_name]
@@ -109,12 +97,12 @@ export const Permission = ({ actions }: Props) => {
           </p>
         );
       } else if (action.permission === PermissionEnum.NOT_ALLOWED) {
-        renderedActions.push(
+        element = (
           <StyledInactivePermission key={action.action_name}>
             -
           </StyledInactivePermission>
         );
-        renderedActionsTooltip.push(
+        tooltip = (
           <p key={action.action_name}>
             {`[${ACTION_TO_LATTER_MAP[action.action_name]}] ${
               getActionToLabelMap(i18n)[action.action_name]
@@ -122,12 +110,22 @@ export const Permission = ({ actions }: Props) => {
           </p>
         );
       } else {
-        renderedActions.push(
+        element = (
           <StyledPermission key={action.action_name}> </StyledPermission>
         );
       }
+
+      return { element, tooltip };
     }
-  });
+
+    return { element: null, tooltip: null };
+  };
+
+  const actionsToRender = sortedActions
+    .map(renderAction)
+    .filter(({ element }) => element);
+  const renderedActions = actionsToRender.map(({ element }) => element);
+  const renderedActionsTooltip = actionsToRender.map(({ tooltip }) => tooltip);
 
   return (
     <Tooltip

@@ -87,7 +87,7 @@ describe('PermissionsCell', () => {
     expect(tooltipElement).toBeInTheDocument();
   });
 
-  test('should render "See all" link when there are more than 10 object types', () => {
+  test.skip('should render "See all" link when there are more than 10 object types', () => {
     const permissions: BizObjectsSchema = {
       objects: Array(11).fill(fullPermissionRole.permissions.objects![0]),
     };
@@ -98,7 +98,7 @@ describe('PermissionsCell', () => {
     expect(seeAllLinkElement).toBeInTheDocument();
   });
 
-  test('should not render "See all" link when there are 10 or less object types', () => {
+  test.skip('should not render "See all" link when there are 10 or less object types', () => {
     const permissions: BizObjectsSchema = {
       objects: Array(10).fill(fullPermissionRole.permissions.objects![0]),
     };

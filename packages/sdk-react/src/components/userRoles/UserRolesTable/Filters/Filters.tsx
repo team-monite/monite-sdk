@@ -12,11 +12,11 @@ import { useLingui } from '@lingui/react';
 import { Grid } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
-interface Props {
+interface FiltersProps {
   onChangeFilter: (field: keyof FilterType, value: FilterValue) => void;
 }
 
-export const Filters = ({ onChangeFilter }: Props) => {
+export const Filters = ({ onChangeFilter }: FiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -38,7 +38,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
               return;
             }
 
-            onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
+            onChangeFilter(FILTER_TYPE_CREATED_AT, String(value));
           }}
           slotProps={{
             popper: {
