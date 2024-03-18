@@ -5,11 +5,13 @@ import {
   MergedSettingsResponse,
   UpdateEntityRequest,
   EntityVatIDResourceList,
+  OnboardingPaymentMethodsResponse,
 } from '@monite/sdk-api';
 
 import { rest } from 'msw';
 
 import {
+  entityPaymentMethods,
   entitySettingsById,
   entityVatIdList,
   getCurrentEntity,
@@ -38,6 +40,14 @@ export const entitiesHandlers = [
     }
 
     return res(delay(), ctx.status(200), ctx.json(entitySettingsFixture));
+  }),
+
+  rest.get<
+    undefined,
+    { entityId: string },
+    OnboardingPaymentMethodsResponse | ErrorSchemaResponse
+  >('*/entities/:entityId/payment_methods', (req, res, ctx) => {
+    return res(delay(), ctx.status(200), ctx.json(entityPaymentMethods));
   }),
 
   rest.get<

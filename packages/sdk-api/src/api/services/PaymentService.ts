@@ -3,30 +3,52 @@ import type { AuthPaymentIntentPayload } from '../models/AuthPaymentIntentPayloa
 import type { AuthPaymentIntentResponse } from '../models/AuthPaymentIntentResponse';
 import type { BanksResponse } from '../models/BanksResponse';
 import type { ConsentPayload } from '../models/ConsentPayload';
+import { CreatePaymentLinkRequest } from '../models/CreatePaymentLinkRequest';
 import type { InternalPaymentLinkResponse } from '../models/InternalPaymentLinkResponse';
 import type { PaymentMethodsConfirmPaymentPayload } from '../models/PaymentMethodsConfirmPaymentPayload';
 import type { PaymentMethodsConfirmResponse } from '../models/PaymentMethodsConfirmResponse';
+import { PublicPaymentLinkResponse } from '../models/PublicPaymentLinkResponse';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';
 
-export const PAYMENT_LINK_ENDPOINT = '/internal/payment_links';
+export const PAYMENT_LINK_ENDPOINT = '/payment_links';
 
-export const PAYMENT_INTENT_ENDPOINT = '/internal/payment_intents';
+export const INTERNAL_PAYMENT_LINK_ENDPOINT = '/internal/payment_links';
+
+export const INTERNAL_PAYMENT_INTENT_ENDPOINT = '/internal/payment_intents';
 
 export class PaymentService extends CommonService {
+  /**
+   * Creates a new payment link
+   *
+   * @see {@link https://docs.monite.com/reference/post_payment_links} for API call
+   */
+  public createLink(
+    body: CreatePaymentLinkRequest
+  ): CancelablePromise<PublicPaymentLinkResponse> {
+    return __request(
+      {
+        method: 'POST',
+        url: PAYMENT_LINK_ENDPOINT,
+        body,
+      },
+      this.openApi
+    );
+  }
+
   /**
    * Get PaymentsPayment Link
    * @param paymentLinkId
    * @returns InternalPaymentLinkResponse Successful Response
    * @throws ApiError
    */
-  public getPaymentLinkById(
+  public getInternalPaymentLinkById(
     paymentLinkId: string
   ): CancelablePromise<InternalPaymentLinkResponse> {
     return __request(
       {
         method: 'GET',
-        url: `${PAYMENT_LINK_ENDPOINT}/${paymentLinkId}`,
+        url: `${INTERNAL_PAYMENT_LINK_ENDPOINT}/${paymentLinkId}`,
         path: {
           payment_link_id: paymentLinkId,
         },
@@ -53,11 +75,13 @@ export class PaymentService extends CommonService {
    * @returns InternalPaymentLinkResponse Successful Response
    * @throws ApiError
    */
-  public getInstitutions(intentId: string): CancelablePromise<BanksResponse> {
+  public getInternalInstitutions(
+    intentId: string
+  ): CancelablePromise<BanksResponse> {
     return __request(
       {
         method: 'GET',
-        url: `${PAYMENT_INTENT_ENDPOINT}/${intentId}/banks`,
+        url: `${INTERNAL_PAYMENT_INTENT_ENDPOINT}/${intentId}/banks`,
         mediaType: 'application/json',
         errors: {
           400: `Bad Request`,
@@ -83,14 +107,14 @@ export class PaymentService extends CommonService {
    * @returns Successful Response
    * @throws ApiError
    */
-  public authorizePaymentLink(
+  public authorizeInternalPaymentLink(
     paymentIntentId: string,
     requestBody: AuthPaymentIntentPayload
   ): CancelablePromise<AuthPaymentIntentResponse> {
     return __request(
       {
         method: 'POST',
-        url: `${PAYMENT_INTENT_ENDPOINT}/${paymentIntentId}/authorize`,
+        url: `${INTERNAL_PAYMENT_INTENT_ENDPOINT}/${paymentIntentId}/authorize`,
         body: requestBody,
         mediaType: 'application/json',
         errors: {
@@ -117,14 +141,14 @@ export class PaymentService extends CommonService {
    * @returns void
    * @throws ApiError
    */
-  public confirmPayment(
+  public confirmInternalPayment(
     paymentIntentId: string,
     requestBody: PaymentMethodsConfirmPaymentPayload
   ): CancelablePromise<PaymentMethodsConfirmResponse> {
     return __request(
       {
         method: 'POST',
-        url: `${PAYMENT_INTENT_ENDPOINT}/{payment_intent_id}/confirm_payment`,
+        url: `${INTERNAL_PAYMENT_INTENT_ENDPOINT}/{payment_intent_id}/confirm_payment`,
         path: {
           payment_intent_id: paymentIntentId,
         },
@@ -154,14 +178,14 @@ export class PaymentService extends CommonService {
    * @returns Successful Response
    * @throws ApiError
    */
-  public createYapilyPayment(
+  public createYapilyInternalPayment(
     paymentIntentId: string,
     requestBody: ConsentPayload
   ): CancelablePromise<AuthPaymentIntentResponse> {
     return __request(
       {
         method: 'POST',
-        url: `${PAYMENT_INTENT_ENDPOINT}/${paymentIntentId}/payments`,
+        url: `${INTERNAL_PAYMENT_INTENT_ENDPOINT}/${paymentIntentId}/payments`,
         body: requestBody,
         mediaType: 'application/json',
         errors: {
