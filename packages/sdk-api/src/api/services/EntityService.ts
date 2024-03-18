@@ -6,6 +6,7 @@ import { EntityVatIDResourceList } from '../models/EntityVatIDResourceList';
 import { MergedSettingsResponse } from '../models/MergedSettingsResponse';
 import { OnboardingLinksStripeData } from '../models/OnboardingLinksStripeData';
 import { OnboardingLinksStripeDataResponse } from '../models/OnboardingLinksStripeDataResponse';
+import { OnboardingPaymentMethodsResponse } from '../models/OnboardingPaymentMethodsResponse';
 import { UpdateEntityRequest } from '../models/UpdateEntityRequest';
 import { request as __request, request } from '../request';
 import { CommonService } from './CommonService';
@@ -177,6 +178,23 @@ export class EntityService extends CommonService {
         url: `/entities/${entityId}/onboarding_data`,
         body: requestBody,
         mediaType: 'application/json',
+      },
+      this.openApi
+    );
+  }
+
+  /**
+   * Get all available payment methods for the entity
+   *
+   * @see {@link https://docs.monite.com/reference/get_entities_id_payment_methods} for API call
+   */
+  public getPaymentMethods(
+    entityId: string
+  ): CancelablePromise<OnboardingPaymentMethodsResponse> {
+    return __request(
+      {
+        method: 'GET',
+        url: `/entities/${entityId}/payment_methods`,
       },
       this.openApi
     );

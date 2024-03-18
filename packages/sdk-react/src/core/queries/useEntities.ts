@@ -5,6 +5,7 @@ import {
   UpdateEntityRequest,
   ApiError,
   EntityVatIDResourceList,
+  OnboardingPaymentMethodsResponse,
 } from '@monite/sdk-api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -16,6 +17,11 @@ const entityQueryKeys = {
   myEntity: () => [ENTITIES_QUERY_ID, 'me'],
   settings: (entityId: string) => [ENTITIES_QUERY_ID, entityId, 'settings'],
   taxIds: (entityId: string) => [ENTITIES_QUERY_ID, entityId, 'taxIds'],
+  paymentMethods: (entityId: string) => [
+    ENTITIES_QUERY_ID,
+    entityId,
+    'paymentMethods',
+  ],
 };
 
 /** Retrieve all settings for this entity */
@@ -39,6 +45,15 @@ export const useUpdateEntity = () => {
         queryClient.setQueryData([...entityQueryKeys.myEntity()], data);
       },
     }
+  );
+};
+
+export const useEntityPaymentMethods = () => {
+  const { monite } = useMoniteContext();
+
+  return useQuery<OnboardingPaymentMethodsResponse, ApiError>(
+    [...entityQueryKeys.paymentMethods(monite.entityId)],
+    () => monite.api.entity.getPaymentMethods(monite.entityId)
   );
 };
 
