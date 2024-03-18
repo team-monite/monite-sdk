@@ -18,6 +18,7 @@ import { measureUnitsHandlers } from './measureUnits';
 import { onboardingHandlers } from './onboarding';
 import { onboardingDocumentsHandlers } from './onboardingDocuments';
 import { payableHandlers } from './payables';
+import { paymentHandlers } from './payment';
 import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
 import { productsHandlers } from './products';
@@ -30,6 +31,7 @@ export const handlers = [
   ...counterpartHandlers,
   ...entitiesHandlers,
   ...entityOnboardingDataHandlers,
+  ...paymentHandlers,
   ...productsHandlers,
   ...vatRatesHandlers,
   ...counterpartBankHandlers,
