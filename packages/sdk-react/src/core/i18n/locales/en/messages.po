@@ -561,7 +561,7 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:78
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:151
 msgid "Back"
 msgstr "Back"
 
@@ -752,7 +752,7 @@ msgid "Boat Rentals and Leases"
 msgstr "Boat Rentals and Leases"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:134
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:207
 msgid "Body"
 msgstr "Body"
 
@@ -1212,7 +1212,7 @@ msgstr "Company name"
 msgid "Company name is required"
 msgstr "Company name is required"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:79
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:152
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:270
 msgid "Compose email"
 msgstr "Compose email"
@@ -1595,7 +1595,7 @@ msgstr "Cuba"
 msgid "Currency"
 msgstr "Currency"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:116
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:112
 msgid "Current status"
 msgstr "Current status"
 
@@ -1610,7 +1610,7 @@ msgstr "Current status"
 #: src/components/receivables/Filters/Filters.tsx:109
 #: src/components/receivables/Filters/Filters.tsx:112
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:246
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:110
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:106
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:57
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:152
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:164
@@ -1786,7 +1786,7 @@ msgstr "Description:"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:231
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:133
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:55
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:100
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:96
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:20
 msgid "Details"
 msgstr "Details"
@@ -2861,7 +2861,7 @@ msgstr "Invoice Number *"
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:133
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:129
 msgid "Invoice total"
 msgstr "Invoice total"
 
@@ -2906,7 +2906,7 @@ msgstr "Issue"
 #~ msgid "Issue and download PDF"
 #~ msgstr "Issue and download PDF"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:95
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:168
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice.tsx:107
 msgid "Issue and send"
 msgstr "Issue and send"
@@ -3677,6 +3677,10 @@ msgstr "Niue"
 msgid "No"
 msgstr "No"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:73
+msgid "No active payment methods available. The email will be sent without a payment link"
+msgstr "No active payment methods available. The email will be sent without a payment link"
+
 #: src/components/approvalPolicies/ApprovalPolicyCreate/NewPolicyForm/NewPolicyForm.tsx:157
 #~ msgid "No approval required"
 #~ msgstr "No approval required"
@@ -3824,11 +3828,11 @@ msgstr "Osteopaths"
 msgid "Overdue"
 msgstr "Overdue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:95
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:91
 msgid "Overview"
 msgstr "Overview"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:92
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:88
 msgid "Overview or details tabs"
 msgstr "Overview or details tabs"
 
@@ -4896,7 +4900,7 @@ msgstr "Status"
 #~ msgstr "Status"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:112
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:185
 msgid "Subject"
 msgstr "Subject"
 
