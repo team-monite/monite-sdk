@@ -7,9 +7,12 @@ import {
 } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
