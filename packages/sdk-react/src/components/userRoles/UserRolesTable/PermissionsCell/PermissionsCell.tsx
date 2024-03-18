@@ -8,7 +8,7 @@ import { Link, Grid } from '@mui/material';
 
 import { Permission } from './Permission';
 
-interface IPermissionsCellProps {
+interface PermissionsCellProps {
   /**
    *
    * @param permissions - The permissions data for the role to be displayed.
@@ -16,18 +16,12 @@ interface IPermissionsCellProps {
   permissions: BizObjectsSchema;
 }
 
-/**
- * @function PermissionsCell
- * @description This is the main component for rendering the permissions of each role in a grid.
- * Each role and its corresponding permissions are rendered in a row. The permissions actions are represented by the Permission component.
- * If there are more than 10 object types, a "See all" link is rendered.
- */
-export const PermissionsCell = ({ permissions }: IPermissionsCellProps) => {
+export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
   return (
     <Grid container>
-      {permissions.objects?.slice(0, 10).map((object, index) => {
+      {permissions.objects?.map((object, index) => {
         if (object.object_type) {
           return (
             <Grid item container key={object.object_type}>
@@ -43,10 +37,6 @@ export const PermissionsCell = ({ permissions }: IPermissionsCellProps) => {
 
         return null;
       })}
-      {permissions.objects && permissions.objects.length > 10 && (
-        // TODO onClick handler will be implemented in https://monite.atlassian.net/browse/DEV-9853
-        <Link component="button" variant="body1">{t(i18n)`See all`}</Link>
-      )}
     </Grid>
   );
 };
