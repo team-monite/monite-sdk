@@ -9,6 +9,11 @@ import {
   EntityVatIDResourceList,
   EntityVatIDResponse,
   MergedSettingsResponse,
+  MoniteAllPaymentMethods,
+  MoniteAllPaymentMethodsTypes,
+  OnboardingPaymentMethodsResponse,
+  PaymentMethodDirection,
+  PaymentMethodStatus,
   StatusEnum,
   VatIDTypeEnum,
 } from '@monite/sdk-api';
@@ -114,3 +119,26 @@ export const entityVatIdList: Record<string, EntityVatIDResourceList> =
 
 export const getCurrentEntity = (): EntityResponse =>
   generateEntityData(entityIds[0]);
+
+export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
+  data: [
+    {
+      direction: PaymentMethodDirection.RECEIVE,
+      name: MoniteAllPaymentMethods.CARD_PAYMENTS,
+      status: PaymentMethodStatus.ACTIVE,
+      type: MoniteAllPaymentMethodsTypes.CARD,
+    },
+    {
+      direction: PaymentMethodDirection.RECEIVE,
+      name: MoniteAllPaymentMethods.SEPA_PAYMENTS,
+      status: PaymentMethodStatus.ACTIVE,
+      type: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
+    },
+    {
+      direction: PaymentMethodDirection.RECEIVE,
+      name: MoniteAllPaymentMethods.SEPA_PAYMENTS,
+      status: PaymentMethodStatus.INACTIVE,
+      type: MoniteAllPaymentMethodsTypes.SEPA_DEBIT,
+    },
+  ],
+};
