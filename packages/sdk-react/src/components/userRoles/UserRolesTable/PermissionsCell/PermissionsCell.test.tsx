@@ -86,26 +86,4 @@ describe('PermissionsCell', () => {
 
     expect(tooltipElement).toBeInTheDocument();
   });
-
-  test.skip('should render "See all" link when there are more than 10 object types', () => {
-    const permissions: BizObjectsSchema = {
-      objects: Array(11).fill(fullPermissionRole.permissions.objects![0]),
-    };
-
-    renderWithClient(<PermissionsCell permissions={permissions} />);
-
-    const seeAllLinkElement = screen.getByText('See all');
-    expect(seeAllLinkElement).toBeInTheDocument();
-  });
-
-  test.skip('should not render "See all" link when there are 10 or less object types', () => {
-    const permissions: BizObjectsSchema = {
-      objects: Array(10).fill(fullPermissionRole.permissions.objects![0]),
-    };
-
-    renderWithClient(<PermissionsCell permissions={permissions} />);
-
-    const seeAllLinkElement = screen.queryByText('See all');
-    expect(seeAllLinkElement).not.toBeInTheDocument();
-  });
 });
