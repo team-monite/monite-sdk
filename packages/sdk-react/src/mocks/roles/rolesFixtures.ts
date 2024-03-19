@@ -59,6 +59,7 @@ export const fullPermissionRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'role',
         'counterpart',
         'product',
         'receivable',
@@ -159,31 +160,36 @@ export const lowPermissionRole: RoleResponse = {
           },
         ],
       },
-      ...['counterpart', 'product', 'receivable', 'tag', 'workflow'].map(
-        (object_type): CommonSchema => {
-          return {
-            object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
-            actions: [
-              {
-                action_name: ActionEnum.READ,
-                permission: PermissionEnum.ALLOWED,
-              },
-              {
-                action_name: ActionEnum.CREATE,
-                permission: PermissionEnum.NOT_ALLOWED,
-              },
-              {
-                action_name: ActionEnum.UPDATE,
-                permission: PermissionEnum.ALLOWED,
-              },
-              {
-                action_name: ActionEnum.DELETE,
-                permission: PermissionEnum.NOT_ALLOWED,
-              },
-            ],
-          };
-        }
-      ),
+      ...[
+        'counterpart',
+        'product',
+        'receivable',
+        'tag',
+        'workflow',
+        'role',
+      ].map((object_type): CommonSchema => {
+        return {
+          object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
+          actions: [
+            {
+              action_name: ActionEnum.READ,
+              permission: PermissionEnum.ALLOWED,
+            },
+            {
+              action_name: ActionEnum.CREATE,
+              permission: PermissionEnum.NOT_ALLOWED,
+            },
+            {
+              action_name: ActionEnum.UPDATE,
+              permission: PermissionEnum.ALLOWED,
+            },
+            {
+              action_name: ActionEnum.DELETE,
+              permission: PermissionEnum.NOT_ALLOWED,
+            },
+          ],
+        };
+      }),
     ],
   },
   status: StatusEnum.ACTIVE,
@@ -207,6 +213,7 @@ export const readOnlyRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'role',
         'counterpart',
         'product',
         'receivable',
@@ -274,6 +281,7 @@ export const allowedForOwnRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'role',
         'counterpart',
         'product',
         'receivable',
@@ -320,6 +328,7 @@ export const emptyPermissionRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'role',
         'counterpart',
         'product',
         'receivable',
