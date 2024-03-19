@@ -1,4 +1,4 @@
-import { useState, useMemo, useId } from 'react';
+import { useState, useId, useEffect } from 'react';
 
 import { PageHeader } from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies';
@@ -8,6 +8,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
+import { TabPanel } from '@/ui/TabPanel';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -17,6 +18,7 @@ enum PermissionsTabEnum {
   UserRoles,
   ApprovalPolicies,
 }
+
 export const Permissions = () => {
   const { i18n } = useLingui();
   const [activeTab, setActiveTab] = useState<PermissionsTabEnum>(
@@ -24,6 +26,7 @@ export const Permissions = () => {
   );
   const tabId = useId();
   const { data: user } = useEntityUserByAuthToken();
+
   const {
     data: isReadRoleAllowed,
     isInitialLoading: isReadRoleAllowedLoading,
@@ -41,61 +44,81 @@ export const Permissions = () => {
     entityUserId: user?.id,
   });
 
-  const activeUITab = useMemo(() => {
-    switch (activeTab) {
-      case PermissionsTabEnum.UserRoles:
-        if (isReadRoleAllowedLoading) {
-          return <LoadingPage />;
-        }
-
-        if (!isReadRoleAllowed) {
-          return <AccessRestriction />;
-        }
-        return <UserRolesTable />;
-      case PermissionsTabEnum.ApprovalPolicies:
-        if (isReadApprovalPolicyAllowedLoading) {
-          return <LoadingPage />;
-        }
-
-        if (!isReadApprovalPolicyAllowed) {
-          return <AccessRestriction />;
-        }
-
-        return <ApprovalPoliciesTable />;
+  useEffect(() => {
+    if (!isReadRoleAllowedLoading && !isReadRoleAllowed) {
+      setActiveTab(PermissionsTabEnum.ApprovalPolicies);
     }
-  }, [
-    activeTab,
-    isReadApprovalPolicyAllowed,
-    isReadApprovalPolicyAllowedLoading,
-    isReadRoleAllowed,
-    isReadRoleAllowedLoading,
-  ]);
+  }, [isReadRoleAllowed, isReadRoleAllowedLoading]);
+
+  // TODO the behaviour of the page and its permissions will be updated after the task DEV-9443 is done
+  if (isReadRoleAllowedLoading || isReadApprovalPolicyAllowedLoading) {
+    return (
+      <MoniteStyleProvider>
+        <LoadingPage />
+      </MoniteStyleProvider>
+    );
+  }
+
+  if (!isReadRoleAllowed && !isReadApprovalPolicyAllowed) {
+    return (
+      <MoniteStyleProvider>
+        <AccessRestriction />
+      </MoniteStyleProvider>
+    );
+  }
 
   return (
     <MoniteStyleProvider>
       <PageHeader title={t(i18n)`Permissions`} />
-      <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
+      <Box sx={{ p: 2 }}>
         <Tabs
           value={activeTab}
+          onChange={(_, value) => setActiveTab(value)}
           variant="standard"
           aria-label={t(i18n)`Permissions tabs`}
-          onChange={(_, value) => setActiveTab(value)}
         >
           <Tab
-            id={`permission-tab-${PermissionsTabEnum.UserRoles}-${tabId}`}
             label={t(i18n)`User roles`}
-            area-control={`permission-tabpanel-${PermissionsTabEnum.UserRoles}`}
-            value={PermissionsTabEnum.UserRoles}
+            id={`permission-tab-${PermissionsTabEnum.UserRoles}-${tabId}`}
+            aria-controls={`permission-tabpanel-${PermissionsTabEnum.UserRoles}-${tabId}`}
+            disabled={isReadRoleAllowedLoading || !isReadRoleAllowed}
           />
           <Tab
-            id={`permission-tab-${PermissionsTabEnum.ApprovalPolicies}-${tabId}`}
             label={t(i18n)`Approval Policies`}
-            area-control={`permission-tabpanel-${PermissionsTabEnum.ApprovalPolicies}`}
-            value={PermissionsTabEnum.ApprovalPolicies}
+            id={`permission-tab-${PermissionsTabEnum.ApprovalPolicies}-${tabId}`}
+            aria-controls={`permission-tabpanel-${PermissionsTabEnum.ApprovalPolicies}-${tabId}`}
+            disabled={
+              isReadApprovalPolicyAllowedLoading || !isReadApprovalPolicyAllowed
+            }
           />
         </Tabs>
       </Box>
-      {activeUITab}
+      <TabPanel
+        value={activeTab}
+        index={PermissionsTabEnum.UserRoles}
+        id={`permission-tabpanel-${PermissionsTabEnum.UserRoles}-${tabId}`}
+        aria-labelledby={`permission-tab-${PermissionsTabEnum.UserRoles}-${tabId}`}
+      >
+        {(() => {
+          if (isReadRoleAllowed) {
+            return <UserRolesTable />;
+          }
+          return <AccessRestriction />;
+        })()}
+      </TabPanel>
+      <TabPanel
+        value={activeTab}
+        index={PermissionsTabEnum.ApprovalPolicies}
+        id={`permission-tabpanel-${PermissionsTabEnum.ApprovalPolicies}-${tabId}`}
+        aria-labelledby={`permission-tab-${PermissionsTabEnum.ApprovalPolicies}-${tabId}`}
+      >
+        {(() => {
+          if (isReadApprovalPolicyAllowed) {
+            return <ApprovalPoliciesTable />;
+          }
+          return <AccessRestriction />;
+        })()}
+      </TabPanel>
     </MoniteStyleProvider>
   );
 };

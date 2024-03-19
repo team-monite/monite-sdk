@@ -76,49 +76,47 @@ export const Permission = ({ actions }: PermissionProps) => {
   });
 
   const renderAction = (action: ActionSchema | PayableActionSchema) => {
-    if (action.action_name) {
-      let element = null;
-      let tooltip = null;
+    if (!action.action_name) return { element: null, tooltip: null };
 
-      if (
-        action.permission === PermissionEnum.ALLOWED ||
-        action.permission === PermissionEnum.ALLOWED_FOR_OWN
-      ) {
-        element = (
+    if (
+      action.permission === PermissionEnum.ALLOWED ||
+      action.permission === PermissionEnum.ALLOWED_FOR_OWN
+    ) {
+      return {
+        element: (
           <StyledActivePermission key={action.action_name}>
             {ACTION_TO_LATTER_MAP[action.action_name]}
           </StyledActivePermission>
-        );
-        tooltip = (
+        ),
+        tooltip: (
           <p key={action.action_name}>
             {`[${ACTION_TO_LATTER_MAP[action.action_name]}] ${
               getActionToLabelMap(i18n)[action.action_name]
             } — ${t(i18n)`Allowed`}`}
           </p>
-        );
-      } else if (action.permission === PermissionEnum.NOT_ALLOWED) {
-        element = (
+        ),
+      };
+    } else if (action.permission === PermissionEnum.NOT_ALLOWED) {
+      return {
+        element: (
           <StyledInactivePermission key={action.action_name}>
             -
           </StyledInactivePermission>
-        );
-        tooltip = (
+        ),
+        tooltip: (
           <p key={action.action_name}>
             {`[${ACTION_TO_LATTER_MAP[action.action_name]}] ${
               getActionToLabelMap(i18n)[action.action_name]
             } — ${t(i18n)`NOT allowed`}`}
           </p>
-        );
-      } else {
-        element = (
-          <StyledPermission key={action.action_name}> </StyledPermission>
-        );
-      }
-
-      return { element, tooltip };
+        ),
+      };
     }
 
-    return { element: null, tooltip: null };
+    return {
+      element: <StyledPermission key={action.action_name}> </StyledPermission>,
+      tooltip: null,
+    };
   };
 
   const actionsToRender = sortedActions
