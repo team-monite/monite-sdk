@@ -23,6 +23,7 @@ type CommonOperator = {
     | 'product'
     | 'receivable'
     | 'approval_policy'
+    | 'role'
     | 'tag';
   action: ActionEnum;
 };
