@@ -1,5 +1,18 @@
 # @monite/sdk-react
 
+## 3.8.0
+
+### Minor Changes
+
+- c2df30b: feat(DEV-9007): Update InvoiceDetails component based on new design
+- f00c951: feat(DEV-10049): Generate a payment link before user emails an invoice
+
+### Patch Changes
+
+- 4884312: fix(DEV-9957): fix phone input
+- Updated dependencies [f00c951]
+  - @monite/sdk-api@3.8.0
+
 ## 3.7.0
 
 ### Minor Changes
