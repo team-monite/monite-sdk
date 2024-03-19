@@ -1,5 +1,11 @@
 # @monite/sdk-api
 
+## 3.8.0
+
+### Minor Changes
+
+- f00c951: feat(DEV-10049): Generate a payment link before user emails an invoice
+
 ## 3.7.0
 
 ### Minor Changes
