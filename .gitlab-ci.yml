@@ -6,6 +6,16 @@ include:
   - project: monite/infra/common-ci
     file: 'staticCodeAnalysis.yml'
 
+.pipeline_rules:
+  default:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^release\/.*/
+      when: never
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^changeset-release\/.*/
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
 
 Test Packages Publishing:
   image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
@@ -26,9 +36,8 @@ Test Packages Publishing:
     - TEST_PROJECTS_DIR=/builds/monite/frontend/sdkapp/e2e/projects yarn run "e2e:update-projects-from-private-registry"
     - TEST_PROJECTS_DIR=/builds/monite/frontend/sdkapp/e2e/projects yarn run "e2e:build-projects"
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Types Check:
   resource_group: linters
@@ -42,9 +51,8 @@ Types Check:
     - cd /app
     - yarn typecheck
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Translations Validator:
   resource_group: linters
@@ -58,9 +66,8 @@ Translations Validator:
     - cd /app
     - ./lingui-translations-validator.sh
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Tests:
   resource_group: tests
@@ -74,9 +81,8 @@ Tests:
     - cd /app
     - yarn test
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Linters:
   resource_group: linters
@@ -91,18 +97,16 @@ Linters:
     - yarn exec e2e/bin/test-yarnrc-for-private-registry.sh
     - yarn lint
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Build Storybook:
   image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
   stage: build
   needs:
     - Build
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
   interruptible: true
   before_script:
     - hostname
@@ -140,17 +144,14 @@ Comment on MR with changesets:
   stage: linters
   needs:
     - Build
-  only:
-    - merge_requests
   before_script:
     - hostname
   script:
     - cd /app
     - GIT_DIR="/builds/monite/frontend/sdkapp/.git" GIT_WORK_TREE="/app" yarn changesets-gitlab comment
   interruptible: true
-  except:
-    refs:
-      - schedules
+  rules:
+    - !reference [ .pipeline_rules, default ]
 
 Versioning And Publishing Packages:
   image: ${WERF_SDK_DEMO_DOCKER_IMAGE_NAME}
