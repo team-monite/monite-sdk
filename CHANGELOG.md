@@ -1,9 +1,19 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
-## @monite/sdk-react@3.7.0 & @monite/sdk-api@3.7.0
+## @monite/sdk-react@3.8.0 & @monite/sdk-api@3.8.0
 This package is a minor release with no breaking changes.
 
 ## New features and improvements
+- Added the ability to preview invoices on the `InvoiceDetails` component.
+- Added the ability to issue and send an invoice to a counterpart via email using the `InvoiceDetails` component.
+
+### Bug fixes
+- Fixed a bug that prevented the display of the `Onboarding` component on screens with phone input.
+
+## @monite/sdk-react@3.7.0 & @monite/sdk-api@3.7.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
 - The `Onboarding` component has been released as beta. This fully embeddable component allows customers to complete payment onboarding without leaving your application. For more information, see [Onboarding component](https://docs.monite.com/docs/onboarding) and [Onboarding via Web Component](https://docs.monite.com/docs/onboarding-web-component).
 - We added the ability to edit approval policies trigger and script within the `ApprovalPolicies` component.
 - Addressed multiple security vulnerabilities in the React SDK and SDK API packages.
