@@ -124,12 +124,9 @@ Deploy Storybook:
   stage: deploy
   needs:
     - Build Storybook
-  only:
-    - master
-    - main
-  except:
-    refs:
-      - schedules
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
   interruptible: true
   before_script:
     - "true"
@@ -158,8 +155,9 @@ Versioning And Publishing Packages:
   needs:
     - Build
   stage: publish
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
   before_script:
     - hostname
   script:
@@ -197,9 +195,6 @@ Versioning And Publishing Packages:
     SENTRY_ORG: monite-team
     SENTRY_PROJECT: sdk
   interruptible: true
-  except:
-    refs:
-      - schedules
 
 sync to github:
   before_script:
