@@ -1,6 +1,6 @@
-import { useState, useId, useEffect } from 'react';
+import { useState, useId, useEffect, useCallback } from 'react';
 
-import { PageHeader } from '@/components';
+import { ApprovalPolicyDetails, Dialog, PageHeader } from '@/components';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies';
 import { UserRolesTable } from '@/components/userRoles';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
@@ -11,6 +11,7 @@ import { TabPanel } from '@/ui/TabPanel';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { ApprovalPolicyResource } from '@monite/sdk-api';
 import { Box, Tabs, Tab, CircularProgress } from '@mui/material';
 
 enum PermissionsTabEnum {
@@ -25,6 +26,14 @@ export const Permissions = () => {
   );
   const tabId = useId();
   const { data: user } = useEntityUserByAuthToken();
+
+  const [selectedApprovalPolicyId, setSelectedApprovalPolicyId] = useState<
+    string | undefined
+  >(undefined);
+  const [
+    isApprovalPolicyDetailsDialogOpened,
+    setIsApprovalPolicyDetailsDialogOpened,
+  ] = useState<boolean>(false);
 
   const {
     data: isReadRoleAllowed,
@@ -48,6 +57,11 @@ export const Permissions = () => {
       setActiveTab(PermissionsTabEnum.ApprovalPolicies);
     }
   }, [isReadRoleAllowed, isReadRoleAllowedLoading]);
+
+  const onRowClick = useCallback((approvalPolicy: ApprovalPolicyResource) => {
+    setSelectedApprovalPolicyId(approvalPolicy.id);
+    setIsApprovalPolicyDetailsDialogOpened(true);
+  }, []);
 
   return (
     <MoniteStyleProvider>
@@ -117,13 +131,24 @@ export const Permissions = () => {
             >
               {(() => {
                 if (isReadApprovalPolicyAllowed) {
-                  return <ApprovalPoliciesTable />;
+                  return <ApprovalPoliciesTable onRowClick={onRowClick} />;
                 }
                 return <AccessRestriction />;
               })()}
             </TabPanel>
           </>
         )}
+
+      <Dialog
+        open={isApprovalPolicyDetailsDialogOpened}
+        alignDialog="right"
+        onClose={() => setIsApprovalPolicyDetailsDialogOpened(false)}
+      >
+        <ApprovalPolicyDetails
+          id={selectedApprovalPolicyId}
+          onCreated={() => setIsApprovalPolicyDetailsDialogOpened(false)}
+        />
+      </Dialog>
     </MoniteStyleProvider>
   );
 };
