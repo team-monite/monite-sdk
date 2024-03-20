@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
+import { PAGE_LIMIT } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useApprovalPoliciesList } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -89,7 +90,7 @@ export const ApprovalPoliciesTable = ({
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
   const { data: approvalPolicies, isLoading } = useApprovalPoliciesList({
-    limit: 10,
+    limit: PAGE_LIMIT,
     name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
     created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
     paginationToken: currentPaginationToken ?? undefined,
