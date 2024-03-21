@@ -38,7 +38,9 @@ export const Filters = ({ onChangeFilter }: FiltersProps) => {
               return;
             }
 
-            onChangeFilter(FILTER_TYPE_CREATED_AT, String(value));
+            if (value instanceof Date) {
+              onChangeFilter(FILTER_TYPE_CREATED_AT, value);
+            }
           }}
           slotProps={{
             popper: {
