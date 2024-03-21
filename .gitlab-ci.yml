@@ -8,6 +8,8 @@ include:
 
 .pipeline_rules:
   default:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^release\/.*/
       when: never
     - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^changeset-release\/.*/
