@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
 
 import { ApprovalPolicies as ApprovalPoliciesComponent } from './ApprovalPolicies';
