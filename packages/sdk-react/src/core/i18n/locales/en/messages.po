@@ -68,7 +68,6 @@ msgstr "Accepted"
 
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:79
 #: src/components/counterparts/Counterparts.test.tsx:79
-#: src/components/permissions/Permissions.test.tsx:95
 #: src/components/receivables/Receivables.test.tsx:78
 #: src/ui/accessRestriction/AccessRestriction.tsx:20
 msgid "Access Restricted"
@@ -423,9 +422,6 @@ msgid "Approval chain"
 msgstr "Approval chain"
 
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:60
-#: src/components/permissions/Permissions.test.tsx:55
-#: src/components/permissions/Permissions.test.tsx:156
-#: src/components/permissions/Permissions.tsx:103
 msgid "Approval Policies"
 msgstr "Approval Policies"
 
@@ -1600,7 +1596,7 @@ msgid "Created by user"
 msgstr "Created by user"
 
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:35
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:153
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:175
 msgid "Created on"
 msgstr "Created on"
 
@@ -3624,7 +3620,7 @@ msgstr "Myanmar"
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:33
 #: src/components/tags/TagFormModal/TagFormModal.tsx:155
 #: src/components/tags/TagsTable/TagsTable.tsx:136
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:138
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:160
 msgid "Name"
 msgstr "Name"
 
@@ -4101,14 +4097,13 @@ msgstr "Pending"
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
-#: src/components/permissions/Permissions.tsx:71
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:144
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:166
 msgid "Permissions"
 msgstr "Permissions"
 
 #: src/components/permissions/Permissions.tsx:94
-msgid "Permissions tabs"
-msgstr "Permissions tabs"
+#~ msgid "Permissions tabs"
+#~ msgstr "Permissions tabs"
 
 #: src/components/userRoles/consts.ts:28
 msgid "Person"
@@ -4486,8 +4481,8 @@ msgstr "Read"
 
 #: src/components/permissions/Permissions.test.tsx:34
 #: src/components/permissions/Permissions.test.tsx:125
-msgid "Read only permission role"
-msgstr "Read only permission role"
+#~ msgid "Read only permission role"
+#~ msgstr "Read only permission role"
 
 #: src/components/onboarding/dicts/mccCodes.ts:1140
 msgid "Real Estate Agents and Managers - Rentals"
@@ -5745,15 +5740,17 @@ msgid "Used Merchandise and Secondhand Stores"
 msgstr "Used Merchandise and Secondhand Stores"
 
 #: src/components/permissions/Permissions.tsx:97
-msgid "User roles"
-msgstr "User roles"
+#~ msgid "User roles"
+#~ msgstr "User roles"
+
+#: src/components/userRoles/UserRoles.tsx:15
+msgid "User Roles"
+msgstr "User Roles"
 
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:41
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:116
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:61
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:69
-#: src/components/permissions/Permissions.test.tsx:63
-#: src/components/permissions/Permissions.test.tsx:164
 msgid "Users from the list"
 msgstr "Users from the list"
 

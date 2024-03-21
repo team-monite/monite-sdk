@@ -2,7 +2,7 @@ export const ROUTES = {
   counterparts: '/counterparts',
   payables: '/payables',
   settings: '/settings',
-  permissions: '/settings/permissions',
+  approvalPolicies: '/settings/approval-policies',
   tags: '/settings/tags',
   receivables: '/receivables',
   products: '/products',
