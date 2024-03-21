@@ -10,6 +10,8 @@ import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { LoadingPage } from '@/ui/loadingPage';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
@@ -78,6 +80,14 @@ export const UserRolesTable = ({
   );
   const sortModelItem = sortModel[0];
 
+  const { data: user } = useEntityUserByAuthToken();
+  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+    useIsActionAllowed({
+      method: 'role',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
+
   const { data: roles, isInitialLoading } = useRoles({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
@@ -120,6 +130,18 @@ export const UserRolesTable = ({
     onSortChanged?.(model[0]);
   };
 
+  if (isReadSupportedLoading) {
+    return <LoadingPage />;
+  }
+
+  if (!isReadSupported) {
+    return (
+      <MoniteStyleProvider>
+        <AccessRestriction />
+      </MoniteStyleProvider>
+    );
+  }
+
   return (
     <MoniteStyleProvider>
       <Box
@@ -143,7 +165,7 @@ export const UserRolesTable = ({
               field: 'permissions',
               headerName: t(i18n)`Permissions`,
               sortable: false,
-              flex: 1,
+              flex: 2,
               renderCell: (params) => (
                 <PermissionsCell permissions={params.value} />
               ),
