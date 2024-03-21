@@ -127,6 +127,8 @@ Deploy Storybook:
   needs:
     - Build Storybook
   rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
   interruptible: true
@@ -158,6 +160,8 @@ Versioning And Publishing Packages:
     - Build
   stage: publish
   rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
   before_script:
