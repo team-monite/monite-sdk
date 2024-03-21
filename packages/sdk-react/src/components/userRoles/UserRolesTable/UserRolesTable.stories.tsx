@@ -5,7 +5,7 @@ import { StoryObj } from '@storybook/react';
 import { UserRolesTable as UserRolesTableComponent } from './UserRolesTable';
 
 const Story = {
-  title: 'Permissions/Permissions — User Roles',
+  title: 'User Roles/User Roles — Table View',
   component: UserRolesTableComponent,
 };
 
