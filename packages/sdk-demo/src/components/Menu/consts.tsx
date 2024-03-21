@@ -2,7 +2,6 @@ import { ROUTES } from '@/apps/Base';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import {
-  Badge as BadgeIcon,
   MonetizationOn as MonetizationOnIcon,
   Receipt as ReceiptIcon,
   AccountBalance as AccountBalanceIcon,
@@ -41,10 +40,10 @@ export const getNavigationData = (
     url: ROUTES.settings,
     renderIcon: (props) => <SettingsIcon {...props} />,
     children: {
-      permissions: {
-        label: 'Permissions',
-        url: ROUTES.permissions,
-        renderIcon: (props) => <BadgeIcon {...props} />,
+      approvalPolicies: {
+        label: 'Approval Policies',
+        url: ROUTES.approvalPolicies,
+        renderIcon: (props) => <TabIcon {...props} />,
       },
       tags: {
         label: t(i18n)`Tags`,
