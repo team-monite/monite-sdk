@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
 import { StoryObj } from '@storybook/react';
 
-import { Permissions as PermissionsComponent } from './Permissions';
+import { UserRoles as UserRolesComponent } from './UserRoles';
 
 const Story = {
-  title: 'Permissions',
-  component: PermissionsComponent,
+  title: 'User Roles',
+  component: UserRolesComponent,
 };
 
-type Story = StoryObj<typeof PermissionsComponent>;
+type Story = StoryObj<typeof UserRolesComponent>;
 
-export const Permissions: Story = {
+export const UserRoles: Story = {
   args: {},
   render: () => (
     <div
@@ -22,7 +22,7 @@ export const Permissions: Story = {
         padding: 20px;
       `}
     >
-      <PermissionsComponent />
+      <UserRolesComponent />
     </div>
   ),
 };
