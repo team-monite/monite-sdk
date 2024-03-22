@@ -43,8 +43,8 @@ export const ExistingApprovalPolicyDetails = ({
   const dialogContext = useDialog();
   const { palette } = useTheme();
 
-  const { data: isUpdateAllowed, isInitialLoading } = useIsActionAllowed({
-    method: 'product',
+  const { data: isUpdateAllowed } = useIsActionAllowed({
+    method: 'approval_policy',
     action: ActionEnum.UPDATE,
     entityUserId: approvalPolicy?.created_by,
   });
