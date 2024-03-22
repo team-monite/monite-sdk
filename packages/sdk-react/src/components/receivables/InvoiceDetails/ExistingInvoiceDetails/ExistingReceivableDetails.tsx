@@ -231,7 +231,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Cancel invoice`}
             variant="outlined"
             color="error"
-            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "Cancel"
+            disabled={isButtonsLoading || !isUpdateAllowed}
             onClick={queryActions.cancelInvoice}
           >
             {t(i18n)`Cancel`}
@@ -253,7 +253,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Issue invoice`}
             onClick={queryActions.issueInvoice}
             variant="outlined"
-            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "Issue"
+            disabled={isButtonsLoading || !isUpdateAllowed}
           >
             {t(i18n)`Issue`}
           </Button>
@@ -265,7 +265,7 @@ export const ExistingReceivableDetails = (
             aria-label={t(i18n)`Mark as uncollectible invoice`}
             onClick={queryActions.markAsUncollectibleInvoice}
             variant="outlined"
-            disabled={isButtonsLoading || !isUpdateAllowed} // todo::Determinate what is the right permission to "MarkAsUncollectible"
+            disabled={isButtonsLoading || !isUpdateAllowed}
           >
             {t(i18n)`Mark as uncollectible`}
           </Button>
