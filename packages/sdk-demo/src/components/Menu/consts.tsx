@@ -2,6 +2,7 @@ import { ROUTES } from '@/apps/Base';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import {
+  Badge as BadgeIcon,
   MonetizationOn as MonetizationOnIcon,
   Receipt as ReceiptIcon,
   AccountBalance as AccountBalanceIcon,
@@ -44,6 +45,11 @@ export const getNavigationData = (
         label: 'Approval Policies',
         url: ROUTES.approvalPolicies,
         renderIcon: (props) => <TabIcon {...props} />,
+      },
+      roles: {
+        label: 'Roles',
+        url: ROUTES.roles,
+        renderIcon: (props) => <BadgeIcon {...props} />,
       },
       tags: {
         label: t(i18n)`Tags`,
