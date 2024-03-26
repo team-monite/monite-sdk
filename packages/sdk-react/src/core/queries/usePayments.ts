@@ -19,7 +19,8 @@ export const useCreatePaymentLink = () => {
     PublicPaymentLinkResponse,
     ApiError,
     CreatePaymentLinkRequest
-  >(paymentsQueryKeys.paymentLinks(), (body) =>
-    monite.api.payment.createLink(body)
-  );
+  >({
+    mutationKey: paymentsQueryKeys.paymentLinks(),
+    mutationFn: (body) => monite.api.payment.createLink(body),
+  });
 };

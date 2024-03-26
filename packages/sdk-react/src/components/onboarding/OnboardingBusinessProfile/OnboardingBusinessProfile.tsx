@@ -23,7 +23,7 @@ export const OnboardingBusinessProfile = () => {
   const { i18n } = useLingui();
   const { data: onboarding } = useOnboardingRequirementsData();
 
-  const { mutateAsync, isLoading } = useUpdateEntityOnboardingData();
+  const { mutateAsync, isPending: isLoading } = useUpdateEntityOnboardingData();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 

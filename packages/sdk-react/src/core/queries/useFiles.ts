@@ -21,17 +21,20 @@ const fileQueryKeys = {
 export const useFiles = (idIn: Array<string>) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<FilesResponse, ApiError>(fileQueryKeys.list(idIn), () =>
-    monite.api.files.getAll(idIn)
-  );
+  return useQuery<FilesResponse, ApiError>({
+    queryKey: fileQueryKeys.list(idIn),
+
+    queryFn: () => monite.api.files.getAll(idIn),
+  });
 };
 
 export const useFileById = (fileId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<FileResponse | undefined, ApiError>(
-    fileQueryKeys.detail(fileId),
-    () => {
+  return useQuery<FileResponse | undefined, ApiError>({
+    queryKey: fileQueryKeys.detail(fileId),
+
+    queryFn: () => {
       if (!fileId) {
         throw new Error(
           `Make sure you have called useFileById with a valid file id.`
@@ -40,29 +43,33 @@ export const useFileById = (fileId?: string) => {
 
       return monite.api.files.getById(fileId);
     },
-    {
-      enabled: !!fileId,
-    }
-  );
+
+    enabled: !!fileId,
+  });
 };
 
 export const useCreateFile = () => {
   const { monite } = useMoniteContext();
   const queryClient = useQueryClient();
 
-  return useMutation<FileResponse, ApiError, UploadFile>(async (payload) => {
-    const response = await monite.api.files.create(payload);
+  return useMutation<FileResponse, ApiError, UploadFile>({
+    mutationFn: async (payload) => {
+      const response = await monite.api.files.create(payload);
 
-    queryClient.setQueryData([...fileQueryKeys.detail(response.id)], response);
+      queryClient.setQueryData(
+        [...fileQueryKeys.detail(response.id)],
+        response
+      );
 
-    return response;
+      return response;
+    },
   });
 };
 
 export const useDeleteFile = () => {
   const { monite } = useMoniteContext();
 
-  return useMutation<void, ApiError, string>((fileId) =>
-    monite.api.files.deleteById(fileId)
-  );
+  return useMutation<void, ApiError, string>({
+    mutationFn: (fileId) => monite.api.files.deleteById(fileId),
+  });
 };

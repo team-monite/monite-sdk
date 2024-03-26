@@ -17,7 +17,7 @@ describe('Receivables', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -55,7 +55,7 @@ describe('Receivables', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -92,7 +92,7 @@ describe('Receivables', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -120,16 +120,9 @@ describe('Receivables', () => {
 });
 
 function checkReceivableQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['receivable'], {
-      exact: false,
-    })
-  )
+  if (!queryClient.getQueryState(['receivable']))
     throw new Error('Receivables query is not executed');
 
-  if (
-    queryClient.getQueryState(['receivable'], { exact: false })?.status !==
-    'success'
-  )
+  if (queryClient.getQueryState(['receivable'])?.status !== 'success')
     throw new Error('Receivables query failed');
 }

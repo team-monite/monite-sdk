@@ -28,27 +28,27 @@ export const useApprovalPoliciesList = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ApprovalPolicyResourceList, ApiError>(
-    [APPROVAL_POLICIES_QUERY_ID, { variables: params }],
-    () => monite.api.approvalPolicies.getAll(params)
-  );
+  return useQuery<ApprovalPolicyResourceList, ApiError>({
+    queryKey: [APPROVAL_POLICIES_QUERY_ID, { variables: params }],
+    queryFn: () => monite.api.approvalPolicies.getAll(params),
+  });
 };
 
 export const useApprovalPolicyById = (approvalPolicyId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ApprovalPolicyResource | undefined, ApiError>(
-    [APPROVAL_POLICIES_QUERY_ID, { approvalPolicyId }],
-    () => {
+  return useQuery<ApprovalPolicyResource | undefined, ApiError>({
+    queryKey: [APPROVAL_POLICIES_QUERY_ID, { approvalPolicyId }],
+
+    queryFn: () => {
       if (!approvalPolicyId) {
         throw new Error('Approval policy id is not provided');
       }
       return monite.api.approvalPolicies.getById(approvalPolicyId);
     },
-    {
-      enabled: !!approvalPolicyId,
-    }
-  );
+
+    enabled: !!approvalPolicyId,
+  });
 };
 
 export const useCreateApprovalPolicy = () => {
@@ -56,18 +56,18 @@ export const useCreateApprovalPolicy = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useApprovalPoliciesListCache();
 
-  return useMutation<ApprovalPolicyResource, ApiError, ApprovalPolicyCreate>(
-    (args) => monite.api.approvalPolicies.create(args),
-    {
-      onSuccess: () => {
-        invalidate();
-        toast.success(t(i18n)`Approval policy created`);
-      },
-      onError: async (error) => {
-        toast.error(t(i18n)`Error creating approval policy`);
-      },
-    }
-  );
+  return useMutation<ApprovalPolicyResource, ApiError, ApprovalPolicyCreate>({
+    mutationFn: (args) => monite.api.approvalPolicies.create(args),
+
+    onSuccess: () => {
+      invalidate();
+      toast.success(t(i18n)`Approval policy created`);
+    },
+
+    onError: async (error) => {
+      toast.error(t(i18n)`Error creating approval policy`);
+    },
+  });
 };
 
 export const useUpdateApprovalPolicy = () => {
@@ -79,17 +79,17 @@ export const useUpdateApprovalPolicy = () => {
     ApprovalPolicyResource,
     ApiError,
     { approvalPolicyId: string; body: ApprovalPolicyUpdate }
-  >(
-    ({ approvalPolicyId, body }) =>
+  >({
+    mutationFn: ({ approvalPolicyId, body }) =>
       monite.api.approvalPolicies.update(approvalPolicyId, body),
-    {
-      onSuccess: () => {
-        invalidate();
-        toast.success(t(i18n)`Approval policy updated`);
-      },
-      onError: async (error) => {
-        toast.error(t(i18n)`Error updating approval policy`);
-      },
-    }
-  );
+
+    onSuccess: () => {
+      invalidate();
+      toast.success(t(i18n)`Approval policy updated`);
+    },
+
+    onError: async (error) => {
+      toast.error(t(i18n)`Error updating approval policy`);
+    },
+  });
 };

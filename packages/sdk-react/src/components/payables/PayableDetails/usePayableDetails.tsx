@@ -372,32 +372,32 @@ export function usePayableDetails({
 
   useEffect(() => {
     setIsFormLoading(
-      createMutation.isLoading ||
-        saveMutation.isLoading ||
-        submitMutation.isLoading
+      createMutation.isPending ||
+        saveMutation.isPending ||
+        submitMutation.isPending
     );
   }, [
-    createMutation.isLoading,
-    saveMutation.isLoading,
-    submitMutation.isLoading,
+    createMutation.isPending,
+    saveMutation.isPending,
+    submitMutation.isPending,
   ]);
 
   useEffect(() => {
     setIsActionButtonLoading(
-      createMutation.isLoading ||
-        saveMutation.isLoading ||
-        cancelMutation.isLoading ||
-        submitMutation.isLoading ||
-        rejectMutation.isLoading ||
-        approveMutation.isLoading
+      createMutation.isPending ||
+        saveMutation.isPending ||
+        cancelMutation.isPending ||
+        submitMutation.isPending ||
+        rejectMutation.isPending ||
+        approveMutation.isPending
     );
   }, [
-    createMutation.isLoading,
-    saveMutation.isLoading,
-    cancelMutation.isLoading,
-    submitMutation.isLoading,
-    rejectMutation.isLoading,
-    approveMutation.isLoading,
+    createMutation.isPending,
+    saveMutation.isPending,
+    cancelMutation.isPending,
+    submitMutation.isPending,
+    rejectMutation.isPending,
+    approveMutation.isPending,
   ]);
 
   const createInvoice = useCallback(

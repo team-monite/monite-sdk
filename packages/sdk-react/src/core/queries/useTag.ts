@@ -20,32 +20,28 @@ const useTagListCache = () =>
 export const useTagList = (...args: Parameters<TagService['getList']>) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<TagsPaginationResponse, ApiError>(
-    [TAG_QUERY_ID, { variables: args }],
-    () => monite.api.tag.getList(...args),
-    {
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+  return useQuery<TagsPaginationResponse, ApiError>({
+    queryKey: [TAG_QUERY_ID, { variables: args }],
+
+    queryFn: () => monite.api.tag.getList(...args),
+  });
 };
 
 export const useCreateTag = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useTagListCache();
 
-  return useMutation<TagReadSchema, ApiError, TagCreateOrUpdateSchema>(
-    (args) => monite.api.tag.create(args),
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-      onError: async (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+  return useMutation<TagReadSchema, ApiError, TagCreateOrUpdateSchema>({
+    mutationFn: (args) => monite.api.tag.create(args),
+
+    onSuccess: () => {
+      invalidate();
+    },
+
+    onError: async (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 export const useUpdateTag = () => {
@@ -56,10 +52,13 @@ export const useUpdateTag = () => {
     TagReadSchema,
     ApiError,
     { id: string; payload: { name: string } }
-  >(({ id, payload }) => monite.api.tag.update(id, payload), {
+  >({
+    mutationFn: ({ id, payload }) => monite.api.tag.update(id, payload),
+
     onSuccess: () => {
       invalidate();
     },
+
     onError: (error) => {
       toast.error(error.body.error.message || error.message);
     },
@@ -70,12 +69,11 @@ export const useDeleteTag = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useTagListCache();
 
-  return useMutation<void, ApiError, string>(
-    (tagId) => monite.api.tag.delete(tagId),
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-    }
-  );
+  return useMutation<void, ApiError, string>({
+    mutationFn: (tagId) => monite.api.tag.delete(tagId),
+
+    onSuccess: () => {
+      invalidate();
+    },
+  });
 };

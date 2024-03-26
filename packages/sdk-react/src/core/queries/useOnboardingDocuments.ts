@@ -27,10 +27,12 @@ export const useCreateEntityDocuments = () => {
     EntityOnboardingDocumentsPayload,
     ApiError,
     EntityOnboardingDocumentsPayload
-  >(async (payload) => {
-    await monite.api.onboardingDocuments.createEntityDocuments(payload);
+  >({
+    mutationFn: async (payload) => {
+      await monite.api.onboardingDocuments.createEntityDocuments(payload);
 
-    return payload;
+      return payload;
+    },
   });
 };
 
@@ -44,28 +46,32 @@ export const useCreatePersonDocumentsById = () => {
       personId: string;
       payload: PersonOnboardingDocumentsPayload;
     }
-  >(async ({ personId, payload }) => {
-    await monite.api.onboardingDocuments.createPersonDocumentsById(
-      personId,
-      payload
-    );
+  >({
+    mutationFn: async ({ personId, payload }) => {
+      await monite.api.onboardingDocuments.createPersonDocumentsById(
+        personId,
+        payload
+      );
 
-    return payload;
+      return payload;
+    },
   });
 };
 
 export const useDocumentDescriptions = (country?: AllowedCountries) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<OnboardingDocumentsDescriptions | undefined, ErrorType>(
-    documentQueryKeys.descriptions(country),
-    () => {
+  return useQuery<OnboardingDocumentsDescriptions | undefined, ErrorType>({
+    queryKey: documentQueryKeys.descriptions(country),
+
+    queryFn: () => {
       if (!country) {
         throw new Error('Country is not provided');
       }
 
       return monite.api.onboardingDocuments.getDocumentDescriptions(country);
     },
-    { enabled: !!country }
-  );
+
+    enabled: !!country,
+  });
 };

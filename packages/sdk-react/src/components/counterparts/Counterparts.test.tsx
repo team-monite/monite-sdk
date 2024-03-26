@@ -18,7 +18,7 @@ describe('Counterparts', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -58,7 +58,7 @@ describe('Counterparts', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -93,7 +93,7 @@ describe('Counterparts', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -123,16 +123,9 @@ describe('Counterparts', () => {
 });
 
 function checkCounterpartQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['counterparts', 'list'], {
-      exact: false,
-    })
-  )
+  if (!queryClient.getQueryState(['counterparts', 'list']))
     throw new Error('Counterparts query is not executed');
 
-  if (
-    queryClient.getQueryState(['counterparts', 'list'], { exact: false })
-      ?.status !== 'success'
-  )
+  if (queryClient.getQueryState(['counterparts', 'list'])?.status !== 'success')
     throw new Error('Counterparts query failed');
 }

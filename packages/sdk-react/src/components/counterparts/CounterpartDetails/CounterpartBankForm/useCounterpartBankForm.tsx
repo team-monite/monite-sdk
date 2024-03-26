@@ -111,8 +111,8 @@ export function useCounterpartBankForm({
     formRef,
     submitForm,
     isLoading:
-      createBankMutation.isLoading ||
-      updateBankMutation.isLoading ||
+      createBankMutation.isPending ||
+      updateBankMutation.isPending ||
       isCounterpartLoading ||
       isBankLoading,
     error: createBankMutation.error || updateBankMutation.error,

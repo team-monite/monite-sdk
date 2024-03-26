@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: false,
       staleTime: 0,
-      cacheTime: Infinity,
+      gcTime: Infinity,
     },
   },
   queryCache,
@@ -314,16 +314,12 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
-  const roleQuery = queryClient.getQueryState(
-    [ENTITY_USERS_QUERY_ID, 'my_role'],
-    {
-      exact: true,
-    }
-  );
+  const roleQuery = queryClient.getQueryState([
+    ENTITY_USERS_QUERY_ID,
+    'my_role',
+  ]);
 
-  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me'], {
-    exact: true,
-  });
+  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me']);
 
   if (!roleQuery || !meQuery) throw new Error('Permissions query not exists');
 

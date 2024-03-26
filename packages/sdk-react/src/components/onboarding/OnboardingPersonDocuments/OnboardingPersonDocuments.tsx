@@ -31,7 +31,7 @@ export const OnboardingPersonDocuments = () => {
 
   const { personId, disableEditMode } = useOnboardingRequirementsContext();
 
-  const { mutateAsync, isLoading } = useCreatePersonDocumentsById();
+  const { mutateAsync, isPending: isLoading } = useCreatePersonDocumentsById();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 

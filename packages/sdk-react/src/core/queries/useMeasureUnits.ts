@@ -22,20 +22,21 @@ export const useMeasureUnits = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<UnitListResponse, Error>(
-    [...measureUnitsQueryKeys.all(), { variables: args }],
-    () => monite.api.measureUnits.getUnits(...args)
-  );
+  return useQuery<UnitListResponse, Error>({
+    queryKey: [...measureUnitsQueryKeys.all(), { variables: args }],
+
+    queryFn: () => monite.api.measureUnits.getUnits(...args),
+  });
 };
 
 export const useMeasureUnitById = (unitId: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<UnitResponse, Error>(
-    [...measureUnitsQueryKeys.byId(unitId)],
-    () => monite.api.measureUnits.getById(unitId),
-    {
-      enabled: Boolean(unitId),
-    }
-  );
+  return useQuery<UnitResponse, Error>({
+    queryKey: [...measureUnitsQueryKeys.byId(unitId)],
+
+    queryFn: () => monite.api.measureUnits.getById(unitId),
+
+    enabled: Boolean(unitId),
+  });
 };

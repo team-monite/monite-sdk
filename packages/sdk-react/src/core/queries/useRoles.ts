@@ -27,8 +27,9 @@ export const useRoles = (params: Parameters<RoleService['getList']>[0]) => {
 export const useRoleById = (roleId: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<RoleResponse | undefined, ApiError>(
-    [...rolesQueryKeys.detail(roleId)],
-    () => monite.api.role.getDetail(roleId)
-  );
+  return useQuery<RoleResponse | undefined, ApiError>({
+    queryKey: [...rolesQueryKeys.detail(roleId)],
+
+    queryFn: () => monite.api.role.getDetail(roleId),
+  });
 };

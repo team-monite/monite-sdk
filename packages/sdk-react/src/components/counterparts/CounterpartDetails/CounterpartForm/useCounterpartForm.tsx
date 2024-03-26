@@ -86,8 +86,8 @@ export function useCounterpartForm({
     formRef,
     submitForm,
     isLoading:
-      counterpartCreateMutation.isLoading ||
-      counterpartUpdateMutation.isLoading ||
+      counterpartCreateMutation.isPending ||
+      counterpartUpdateMutation.isPending ||
       isInitialLoading,
     error: counterpartCreateMutation.error || counterpartUpdateMutation.error,
   };

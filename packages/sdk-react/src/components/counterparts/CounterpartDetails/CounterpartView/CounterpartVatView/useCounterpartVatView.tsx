@@ -39,6 +39,6 @@ export function useCounterpartVatView({
   return {
     deleteVat,
     onEdit,
-    isLoading: vatDeleteMutation.isLoading,
+    isLoading: vatDeleteMutation.isPending,
   };
 }

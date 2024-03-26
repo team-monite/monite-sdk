@@ -3,7 +3,7 @@ import {
   EntityOnboardingDataRequest,
   EntityOnboardingDataResponse,
 } from '@monite/sdk-api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { ErrorType } from './types';
 
@@ -14,7 +14,8 @@ export const useUpdateEntityOnboardingData = () => {
     EntityOnboardingDataResponse,
     ErrorType,
     EntityOnboardingDataRequest
-  >((payload) =>
-    monite.api.entity.patchOnboardingData(monite.entityId, payload)
-  );
+  >({
+    mutationFn: (payload) =>
+      monite.api.entity.patchOnboardingData(monite.entityId, payload),
+  });
 };

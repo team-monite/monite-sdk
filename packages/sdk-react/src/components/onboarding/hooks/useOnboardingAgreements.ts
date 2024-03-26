@@ -40,7 +40,7 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
   const { data: onboarding } = useOnboardingRequirementsData();
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const { mutateAsync, isLoading } = useUpdateEntityOnboardingData();
+  const { mutateAsync, isPending: isLoading } = useUpdateEntityOnboardingData();
 
   const requirements = useMemo(() => {
     if (!onboarding?.requirements) return [];

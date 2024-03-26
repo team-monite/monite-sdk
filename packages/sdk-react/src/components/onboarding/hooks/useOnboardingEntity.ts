@@ -44,7 +44,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
   const {
     mutateAsync: updateEntityMutation,
-    isLoading,
+    isPending: isLoading,
     error,
   } = useUpdateMyEntity();
 

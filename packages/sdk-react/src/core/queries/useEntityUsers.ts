@@ -18,52 +18,53 @@ export const useEntityUsersList = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<EntityUserPaginationResponse, ApiError>(
-    [ENTITY_USERS_QUERY_ID, { variables: args }],
-    () => monite.api.entityUser.getList(...args)
-  );
+  return useQuery<EntityUserPaginationResponse, ApiError>({
+    queryKey: [ENTITY_USERS_QUERY_ID, { variables: args }],
+
+    queryFn: () => monite.api.entityUser.getList(...args),
+  });
 };
 
 export const useEntityUserById = (id?: string) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
 
-  return useQuery<EntityUserResponse | undefined, ApiError>(
-    [ENTITY_USERS_QUERY_ID, id],
-    () =>
+  return useQuery<EntityUserResponse | undefined, ApiError>({
+    queryKey: [ENTITY_USERS_QUERY_ID, id],
+
+    queryFn: () =>
       id
         ? monite.api.entityUser.getById(id)
         : Promise.reject(
             new Error(t(i18n)`Invalid id (${id}) for useEntityUserById query`)
           ),
-    {
-      enabled: Boolean(id),
-    }
-  );
+
+    enabled: Boolean(id),
+  });
 };
 
 export const useEntityUserByAuthToken = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<EntityUserResponse | undefined, ApiError>(
-    [ENTITY_USERS_QUERY_ID, 'me'],
-    () => monite.api.entityUser.getMe(),
-    {
-      /** Re-fetch user rights every minute */
-      refetchInterval: 60_000,
-    }
-  );
+  return useQuery<EntityUserResponse | undefined, ApiError>({
+    queryKey: [ENTITY_USERS_QUERY_ID, 'me'],
+
+    queryFn: () => monite.api.entityUser.getMe(),
+
+    /** Re-fetch user rights every minute */
+    refetchInterval: 60_000,
+  });
 };
 
 export const useEntityUserRoleByAuthToken = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<RoleResponse | undefined, ApiError>(
-    [ENTITY_USERS_QUERY_ID, 'my_role'],
-    () => monite.api.entityUser.getMyRole(),
-    {
-      /** Re-fetch user rights every minute */
-      refetchInterval: 60_000,
-    }
-  );
+  return useQuery<RoleResponse | undefined, ApiError>({
+    queryKey: [ENTITY_USERS_QUERY_ID, 'my_role'],
+
+    queryFn: () => monite.api.entityUser.getMyRole(),
+
+    /** Re-fetch user rights every minute */
+    refetchInterval: 60_000,
+  });
 };

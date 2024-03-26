@@ -22,17 +22,17 @@ export const usePayableLineItemCache = () =>
 export const usePayableLineItemsList = (payableId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<LineItemPaginationResponse, ApiError>(
-    [PAYABLE_LINE_ITEM_QUERY_ID, payableId],
-    () => {
+  return useQuery<LineItemPaginationResponse, ApiError>({
+    queryKey: [PAYABLE_LINE_ITEM_QUERY_ID, payableId],
+
+    queryFn: () => {
       if (!payableId) {
         throw new Error('payableId is required');
       }
 
       return monite.api.payableLineItems.getList(payableId);
     },
-    {
-      enabled: !!payableId,
-    }
-  );
+
+    enabled: !!payableId,
+  });
 };

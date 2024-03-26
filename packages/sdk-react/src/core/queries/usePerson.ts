@@ -26,43 +26,46 @@ export const personQueryKeys = {
 export const usePersonList = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<PersonsResponse, ErrorType>(personQueryKeys.all(), () =>
-    monite.api.persons.getAll()
-  );
+  return useQuery<PersonsResponse, ErrorType>({
+    queryKey: personQueryKeys.all(),
+
+    queryFn: () => monite.api.persons.getAll(),
+  });
 };
 
 export const useCreatePerson = () => {
   const { monite } = useMoniteContext();
 
-  return useMutation<PersonResponse, ErrorType, PersonRequest>((payload) =>
-    monite.api.persons.create(payload)
-  );
+  return useMutation<PersonResponse, ErrorType, PersonRequest>({
+    mutationFn: (payload) => monite.api.persons.create(payload),
+  });
 };
 
 export const usePersonById = (personId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<PersonResponse | undefined, ErrorType>(
-    personQueryKeys.detail(personId),
-    () => (personId ? monite.api.persons.getById(personId) : undefined),
-    {
-      enabled: !!personId,
-    }
-  );
+  return useQuery<PersonResponse | undefined, ErrorType>({
+    queryKey: personQueryKeys.detail(personId),
+
+    queryFn: () =>
+      personId ? monite.api.persons.getById(personId) : undefined,
+
+    enabled: !!personId,
+  });
 };
 
 export const useUpdatePerson = () => {
   const { monite } = useMoniteContext();
 
-  return useMutation<PersonResponse, ErrorType, PersonUpdateType>(
-    ({ id, payload }) => monite.api.persons.update(id, payload)
-  );
+  return useMutation<PersonResponse, ErrorType, PersonUpdateType>({
+    mutationFn: ({ id, payload }) => monite.api.persons.update(id, payload),
+  });
 };
 
 export const useDeletePerson = () => {
   const { monite } = useMoniteContext();
 
-  return useMutation<void, ErrorType, string>((personId) =>
-    monite.api.persons.delete(personId)
-  );
+  return useMutation<void, ErrorType, string>({
+    mutationFn: (personId) => monite.api.persons.delete(personId),
+  });
 };

@@ -264,19 +264,10 @@ describe('Products', () => {
 });
 
 function checkProductQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['product'], {
-      exact: false,
-    })
-  )
+  if (!queryClient.getQueryState(['product']))
     throw new Error('Product query is not executed');
 
-  if (
-    queryClient.getQueryState(['product'], {
-      exact: false,
-      predicate: (query) => query.state.fetchStatus === 'fetching',
-    })
-  ) {
+  if (queryClient.getQueryState(['product'])) {
     throw new Error('Product query is still loading');
   }
 }
