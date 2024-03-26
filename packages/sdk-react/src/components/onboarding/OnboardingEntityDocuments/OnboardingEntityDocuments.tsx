@@ -31,7 +31,7 @@ export const OnboardingEntityDocuments = () => {
     entity?.address.country
   );
 
-  const { mutateAsync, isLoading } = useCreateEntityDocuments();
+  const { mutateAsync, isPending: isLoading } = useCreateEntityDocuments();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 

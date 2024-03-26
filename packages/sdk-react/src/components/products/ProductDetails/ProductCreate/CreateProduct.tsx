@@ -124,7 +124,7 @@ export const CreateProduct = (props: IProductDetailsCreateProps) => {
         <Button
           variant="outlined"
           onClick={submitForm}
-          disabled={productCreateMutation.isLoading}
+          disabled={productCreateMutation.isPending}
         >
           {t(i18n)`Create`}
         </Button>

@@ -65,10 +65,10 @@ export function useExistingInvoiceDetails({
   const pdfMutation = usePDFReceivableByIdMutation(receivableId);
 
   const mutationInProgress =
-    deleteMutation.isLoading ||
-    sendMutation.isLoading ||
-    issueMutation.isLoading ||
-    pdfMutation.isLoading;
+    deleteMutation.isPending ||
+    sendMutation.isPending ||
+    issueMutation.isPending ||
+    pdfMutation.isPending;
 
   const handleIssueOnly = useCallback(() => {
     if (deliveryMethod !== DeliveryMethod.Download) {

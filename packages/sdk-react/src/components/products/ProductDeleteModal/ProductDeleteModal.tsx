@@ -65,7 +65,7 @@ export const ProductDeleteModal = ({
         <Button
           variant="outlined"
           color="error"
-          disabled={deleteProductMutation.isLoading || isInitialLoading}
+          disabled={deleteProductMutation.isPending || isInitialLoading}
           onClick={() => {
             deleteProductMutation.mutate(id!, {
               onSuccess: () => {

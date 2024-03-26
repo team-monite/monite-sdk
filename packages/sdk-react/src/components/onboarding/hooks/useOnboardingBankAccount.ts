@@ -56,12 +56,12 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const {
     mutateAsync: createBankAccountMutation,
-    isLoading: isCreateBankAccountLoading,
+    isPending: isCreateBankAccountLoading,
   } = useCreateBankAccount();
 
   const {
     mutateAsync: deleteBankAccountMutation,
-    isLoading: isDeleteBankAccountLoading,
+    isPending: isDeleteBankAccountLoading,
   } = useDeleteBankAccount();
 
   const {

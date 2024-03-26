@@ -34,6 +34,6 @@ export function useCounterpartContactView({
   return {
     deleteContact,
     onEdit,
-    isLoading: contactDeleteMutation.isLoading,
+    isLoading: contactDeleteMutation.isPending,
   };
 }

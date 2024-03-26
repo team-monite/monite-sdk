@@ -57,8 +57,8 @@ export const useApprovalPolicyDetails = ({
 
   return {
     createApprovalPolicy,
-    isCreating: createMutation.isLoading,
+    isCreating: createMutation.isPending,
     updateApprovalPolicy,
-    isUpdating: updateMutation.isLoading,
+    isUpdating: updateMutation.isPending,
   };
 };

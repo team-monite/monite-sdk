@@ -16,11 +16,11 @@ export const counterpartsBankAccountsQueryKeys = {
 export const useCounterpartsBankAccountsList = (counterpartId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartBankAccountResourceList, ApiError>(
-    [...counterpartsBankAccountsQueryKeys.list(counterpartId)],
-    () => monite.api.counterparts.getBankAccounts(counterpartId!),
-    {
-      enabled: !!counterpartId,
-    }
-  );
+  return useQuery<CounterpartBankAccountResourceList, ApiError>({
+    queryKey: [...counterpartsBankAccountsQueryKeys.list(counterpartId)],
+
+    queryFn: () => monite.api.counterparts.getBankAccounts(counterpartId!),
+
+    enabled: !!counterpartId,
+  });
 };

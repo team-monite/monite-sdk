@@ -35,7 +35,7 @@ export const OnboardingFileUploader = ({
 }: OnboardingFileUploaderProps) => {
   const { i18n } = useLingui();
 
-  const { mutateAsync, isLoading } = useCreateFile();
+  const { mutateAsync, isPending: isLoading } = useCreateFile();
 
   const handleSubmit = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {

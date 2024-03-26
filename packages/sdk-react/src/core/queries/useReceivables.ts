@@ -47,11 +47,12 @@ export const useReceivables = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ReceivablePaginationResponse, Error>(
-    [...receivablesQueryKeys.all(), { variables: args }],
-    () => monite.api.receivable.getAllReceivables(...args),
-    receivablesDefaultQueryConfig
-  );
+  return useQuery<ReceivablePaginationResponse, Error>({
+    queryKey: [...receivablesQueryKeys.all(), { variables: args }],
+
+    queryFn: () => monite.api.receivable.getAllReceivables(...args),
+    ...receivablesDefaultQueryConfig,
+  });
 };
 
 export const useCreateReceivable = () => {
@@ -59,26 +60,23 @@ export const useCreateReceivable = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
 
-  return useMutation<ReceivableResponse, Error, ReceivableFacadeCreatePayload>(
-    (payload) => monite.api.receivable.createNewReceivable(payload),
-    {
-      onSuccess: (receivable) => {
-        invalidate();
-        if (receivable.counterpart_name) {
-          toast.success(
-            t(i18n)`Invoice to “${receivable.counterpart_name}” was created`
-          );
+  return useMutation<ReceivableResponse, Error, ReceivableFacadeCreatePayload>({
+    mutationFn: (payload) => monite.api.receivable.createNewReceivable(payload),
 
-          return;
-        }
+    onSuccess: (receivable) => {
+      invalidate();
+      if (receivable.counterpart_name) {
+        toast.success(
+          t(i18n)`Invoice to “${receivable.counterpart_name}” was created`
+        );
 
-        toast.success(t(i18n)`Invoice with id “${receivable.id}” was created`);
-      },
-    }
-  );
+        return;
+      }
+
+      toast.success(t(i18n)`Invoice with id “${receivable.id}” was created`);
+    },
+  });
 };
-
-let receivableByIdErrorToastId: string | undefined;
 
 /**
  * Fetches receivable by provided `id`
@@ -88,25 +86,13 @@ let receivableByIdErrorToastId: string | undefined;
 export const useReceivableById = (receivableId: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ReceivableResponse | undefined, ApiError>(
-    receivablesQueryKeys.detail(receivableId),
-    () => monite.api.receivable.getById(receivableId),
-    {
-      ...receivablesDefaultQueryConfig,
-      onError: (error) => {
-        if (receivableByIdErrorToastId) {
-          toast.dismiss(receivableByIdErrorToastId);
-        }
+  return useQuery<ReceivableResponse | undefined, ApiError>({
+    queryKey: receivablesQueryKeys.detail(receivableId),
 
-        receivableByIdErrorToastId = toast.error(
-          error.body.error.message || error.message,
-          {
-            duration: 10_000,
-          }
-        );
-      },
-    }
-  );
+    queryFn: () => monite.api.receivable.getById(receivableId),
+
+    ...receivablesDefaultQueryConfig,
+  });
 };
 
 /**
@@ -120,20 +106,19 @@ export const useIssueReceivableById = () => {
   const { invalidate } = useReceivableListCache();
   const { i18n } = useLingui();
 
-  return useMutation<ReceivableResponse, ApiError, string>(
-    (receivableId) => monite.api.receivable.issueById(receivableId),
-    {
-      onSuccess: (receivable, id) => {
-        queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
-        invalidate();
+  return useMutation<ReceivableResponse, ApiError, string>({
+    mutationFn: (receivableId) => monite.api.receivable.issueById(receivableId),
 
-        toast.success(t(i18n)`Issued`);
-      },
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+    onSuccess: (receivable, id) => {
+      queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
+      invalidate();
+
+      toast.success(t(i18n)`Issued`);
+    },
+    onError: (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 /**
@@ -147,51 +132,51 @@ export const useDeleteReceivableById = () => {
   const { monite } = useMoniteContext();
   const { remove } = useReceivableListCache();
 
-  return useMutation<void, ApiError, string>(
-    (id) => monite.api.receivable.deleteById(id),
-    {
-      onSuccess: (_, receivableId) => {
-        /** Update current receivable status */
-        queryClient.setQueryData<ReceivableResponse>(
-          receivablesQueryKeys.detail(receivableId),
-          (currentReceivable) => {
-            if (!currentReceivable) {
-              return undefined;
+  return useMutation<void, ApiError, string>({
+    mutationFn: (id) => monite.api.receivable.deleteById(id),
+
+    onSuccess: (_, receivableId) => {
+      /** Update current receivable status */
+      queryClient.setQueryData<ReceivableResponse>(
+        receivablesQueryKeys.detail(receivableId),
+        (currentReceivable) => {
+          if (!currentReceivable) {
+            return undefined;
+          }
+
+          switch (currentReceivable.type) {
+            case CreditNoteResponsePayload.type.CREDIT_NOTE: {
+              return {
+                ...currentReceivable,
+                status: CreditNoteStateEnum.DELETED,
+              };
             }
 
-            switch (currentReceivable.type) {
-              case CreditNoteResponsePayload.type.CREDIT_NOTE: {
-                return {
-                  ...currentReceivable,
-                  status: CreditNoteStateEnum.DELETED,
-                };
-              }
+            case QuoteResponsePayload.type.QUOTE: {
+              return {
+                ...currentReceivable,
+                status: QuoteStateEnum.DELETED,
+              };
+            }
 
-              case QuoteResponsePayload.type.QUOTE: {
-                return {
-                  ...currentReceivable,
-                  status: QuoteStateEnum.DELETED,
-                };
-              }
-
-              case InvoiceResponsePayload.type.INVOICE: {
-                return {
-                  ...currentReceivable,
-                  status: ReceivablesStatusEnum.DELETED,
-                };
-              }
+            case InvoiceResponsePayload.type.INVOICE: {
+              return {
+                ...currentReceivable,
+                status: ReceivablesStatusEnum.DELETED,
+              };
             }
           }
-        );
-        remove(receivableId);
+        }
+      );
+      remove(receivableId);
 
-        toast.success(t(i18n)`Receivable was deleted`);
-      },
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+      toast.success(t(i18n)`Receivable was deleted`);
+    },
+
+    onError: (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 /**
@@ -205,34 +190,34 @@ export const useCancelReceivableById = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
 
-  return useMutation<void, ApiError, string>(
-    (id) => monite.api.receivable.cancelById(id),
-    {
-      onSuccess: (_, receivableId) => {
-        /** Update current receivable status */
-        queryClient.setQueryData<InvoiceResponsePayload>(
-          receivablesQueryKeys.detail(receivableId),
-          (currentReceivable) => {
-            if (!currentReceivable) {
-              return undefined;
-            }
+  return useMutation<void, ApiError, string>({
+    mutationFn: (id) => monite.api.receivable.cancelById(id),
 
-            return {
-              ...currentReceivable,
-              status: ReceivablesStatusEnum.CANCELED,
-            };
+    onSuccess: (_, receivableId) => {
+      /** Update current receivable status */
+      queryClient.setQueryData<InvoiceResponsePayload>(
+        receivablesQueryKeys.detail(receivableId),
+        (currentReceivable) => {
+          if (!currentReceivable) {
+            return undefined;
           }
-        );
 
-        invalidate();
+          return {
+            ...currentReceivable,
+            status: ReceivablesStatusEnum.CANCELED,
+          };
+        }
+      );
 
-        toast.success(t(i18n)`Canceled`);
-      },
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+      invalidate();
+
+      toast.success(t(i18n)`Canceled`);
+    },
+
+    onError: (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 /**
@@ -246,20 +231,20 @@ export const useMarkAsUncollectibleReceivableById = () => {
   const { invalidate } = useReceivableListCache();
   const { i18n } = useLingui();
 
-  return useMutation<ReceivableResponse, ApiError, string>(
-    (id) => monite.api.receivable.markAsUncollectibleById(id),
-    {
-      onSuccess: (receivable, id) => {
-        queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
-        invalidate();
+  return useMutation<ReceivableResponse, ApiError, string>({
+    mutationFn: (id) => monite.api.receivable.markAsUncollectibleById(id),
 
-        toast.success(t(i18n)`Marked as uncollectible`);
-      },
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+    onSuccess: (receivable, id) => {
+      queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
+      invalidate();
+
+      toast.success(t(i18n)`Marked as uncollectible`);
+    },
+
+    onError: (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 /**
@@ -278,19 +263,20 @@ export const useSendReceivableById = () => {
       receivableId: string;
       body: ReceivableSendRequest;
     }
-  >(
-    ({ receivableId, body }) => monite.api.receivable.send(receivableId, body),
-    {
-      onSuccess: () => {
-        invalidate();
+  >({
+    mutationFn: ({ receivableId, body }) =>
+      monite.api.receivable.send(receivableId, body),
 
-        toast.success(t(i18n)`Sent`);
-      },
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+    onSuccess: () => {
+      invalidate();
+
+      toast.success(t(i18n)`Sent`);
+    },
+
+    onError: (error) => {
+      toast.error(error.body.error.message || error.message);
+    },
+  });
 };
 
 export const usePDFReceivableByIdMutation = (
@@ -302,45 +288,42 @@ export const usePDFReceivableByIdMutation = (
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
 
-  return useMutation<ReceivableFileUrl, ApiError>(
-    receivablesQueryKeys.pdf(receivableId),
-    () => monite.api.receivable.getPdfLink(receivableId),
-    {
-      retry: false,
-      onSuccess: (response) => {
-        toast.success(t(i18n)`PDF was generated`);
+  return useMutation<ReceivableFileUrl, ApiError>({
+    mutationKey: receivablesQueryKeys.pdf(receivableId),
 
-        options?.onSuccess?.(response);
-      },
-    }
-  );
+    mutationFn: () => monite.api.receivable.getPdfLink(receivableId),
+
+    retry: false,
+
+    onSuccess: (response) => {
+      toast.success(t(i18n)`PDF was generated`);
+
+      options?.onSuccess?.(response);
+    },
+  });
 };
 
 export const usePDFReceivableById = (
   receivableId: string,
   options?: {
     enabled?: boolean;
-    onSuccess?: (data: ReceivableFileUrl) => void;
   }
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ReceivableFileUrl, ApiError>(
-    receivablesQueryKeys.pdf(receivableId),
-    () => monite.api.receivable.getPdfLink(receivableId),
-    {
-      enabled: options?.enabled,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      cacheTime: 0,
-      refetchIntervalInBackground: false,
-      staleTime: 0,
-      retry: false,
-      onSuccess: (response) => {
-        options?.onSuccess?.(response);
-      },
-    }
-  );
+  return useQuery<ReceivableFileUrl, ApiError>({
+    queryKey: receivablesQueryKeys.pdf(receivableId),
+
+    queryFn: () => monite.api.receivable.getPdfLink(receivableId),
+
+    enabled: options?.enabled,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    gcTime: 0,
+    refetchIntervalInBackground: false,
+    staleTime: 0,
+    retry: false,
+  });
 };
 
 export enum InvoiceDetailsPermissions {
@@ -468,16 +451,16 @@ export function useInvoiceDetails({
 
   useEffect(() => {
     setIsButtonsLoading(
-      issueMutation.isLoading ||
-        deleteMutation.isLoading ||
-        cancelMutation.isLoading ||
-        markAsUncollectibleMutation.isLoading
+      issueMutation.isPending ||
+        deleteMutation.isPending ||
+        cancelMutation.isPending ||
+        markAsUncollectibleMutation.isPending
     );
   }, [
-    cancelMutation.isLoading,
-    deleteMutation.isLoading,
-    issueMutation.isLoading,
-    markAsUncollectibleMutation.isLoading,
+    cancelMutation.isPending,
+    deleteMutation.isPending,
+    issueMutation.isPending,
+    markAsUncollectibleMutation.isPending,
   ]);
 
   const issueInvoice = useCallback(async () => {

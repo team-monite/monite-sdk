@@ -65,7 +65,7 @@ export function useCounterpartView({
   const { data: banks, isInitialLoading: isBanksLoading } =
     useCounterpartBankList(counterpart?.id);
 
-  const { mutate: deleteMutate, isLoading: isCounterpartDeleteLoading } =
+  const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =
     useDeleteCounterpart();
 
   const deleteCounterpart = useCallback(

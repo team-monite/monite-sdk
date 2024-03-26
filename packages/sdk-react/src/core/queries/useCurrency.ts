@@ -10,13 +10,9 @@ export const CURRENCY_QUERY_ID = 'currencies';
 export const useCurrencyList = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<Record<string, CurrencyDetails>, ApiError>(
-    [CURRENCY_QUERY_ID],
-    () => monite.api.currencies.getCurrencies(),
-    {
-      onError: (error) => {
-        toast.error(error.body.error.message || error.message);
-      },
-    }
-  );
+  return useQuery<Record<string, CurrencyDetails>, ApiError>({
+    queryKey: [CURRENCY_QUERY_ID],
+
+    queryFn: () => monite.api.currencies.getCurrencies(),
+  });
 };

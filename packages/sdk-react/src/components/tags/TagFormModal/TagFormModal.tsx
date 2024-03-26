@@ -171,7 +171,7 @@ export const TagFormModal = ({
               variant="outlined"
               color="primary"
               disabled={
-                tagCreateMutation.isLoading || tagUpdateMutation.isLoading
+                tagCreateMutation.isPending || tagUpdateMutation.isPending
               }
               type="submit"
             >

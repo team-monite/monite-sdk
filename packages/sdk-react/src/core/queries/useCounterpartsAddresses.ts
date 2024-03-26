@@ -14,11 +14,12 @@ export const useCounterpartsAddresses = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartAddressResourceList, ApiError>(
-    [COUNTERPARTS_ADDRESSES_QUERY_ID, { variables: args }],
-    () => monite.api.counterpartsAddresses.getCounterpartAddresses(...args),
-    {
-      enabled: !!args[0],
-    }
-  );
+  return useQuery<CounterpartAddressResourceList, ApiError>({
+    queryKey: [COUNTERPARTS_ADDRESSES_QUERY_ID, { variables: args }],
+
+    queryFn: () =>
+      monite.api.counterpartsAddresses.getCounterpartAddresses(...args),
+
+    enabled: !!args[0],
+  });
 };
