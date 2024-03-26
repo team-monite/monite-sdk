@@ -1,0 +1,1 @@
+export { CounterpartCell } from './CounterpartCell';

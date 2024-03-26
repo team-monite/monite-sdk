@@ -1,0 +1,7 @@
+*
+!build/assets/**
+!build/**/*.js
+!build/**/*.cjs
+!build/**/*.mjs
+!build/**/*.json
+!build/index.html
