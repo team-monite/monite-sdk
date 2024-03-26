@@ -1,0 +1,52 @@
+# This is a GitHub Action that ensures that your pull request titles match the Conventional Commits spec.
+# Refer to the `amannn/action-semantic-pull-request` documentation for more information: https://github.com/amannn/action-semantic-pull-request
+
+name: Contribution Guidelines Check
+
+on:
+  pull_request_target:
+    branches:
+      - "**"
+      - "!changeset-release/**"
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+      - labeled
+      - unlabeled
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  validate-pr-title:
+    name: Validate PR Title
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # These are regex patterns auto-wrapped in `^ $`.
+          scopes: |
+            devops
+            proposal
+            DEV-\d+
+          requireScope: true
+          subjectPattern: ^([A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title
+              ✖︎ `{title}`
+            does not start with an uppercase ⇧ character.
+
+            ✔️ Valid examples are:
+              • `feat(DEV-123): Add user profile page`
+              • `fix(DEV-321): Authenticated user can't access the Dashboard`
+              • `docs(proposal): Add contribution guidelines`
+            Please ensure that the subject doesn't start with an uppercase ⇧ character.
+          ignoreLabels: |
+            bot

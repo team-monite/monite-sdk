@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + React + TS</title>
+</head>
+<body>
+<script type="module">
+  import("@monite/sdk-drop-in");
+</script>
+<monite-app
+  entity-id="be035ef1-dd47-4f47-a6ad-eef2e7f2e608"
+  api-url="https://api.sandbox.monite.com/v1"
+  basename="/"
+>
+  <script slot="fetch-token">
+    async function fetchToken() {
+      const request = {
+        grant_type: "entity_user",
+        entity_user_id: "8ee9e41c-...-...-...",
+        client_id: "c59964ce-...-...-...",
+        client_secret: "49b55da0-...-...-..."
+      };
+      const response = await fetch(
+        "https://api.dev.monite.com/v1/auth/token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-monite-version": "2023-04-12"
+          },
+          body: JSON.stringify(request)
+        }
+      );
+      return await response.json();
+    }
+  </script>
+</monite-app>
+</body>
+</html>

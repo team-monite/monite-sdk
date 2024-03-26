@@ -1,0 +1,1 @@
+export { PayableDetailsNoAttachedFile } from './PayableDetailsNoAttachedFile';
