@@ -1,0 +1,19 @@
+{
+  "extends": ".",
+  "compilerOptions": {
+    "outDir": "./build",
+    "noEmit": false,
+    "noEmitOnError": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./build/types"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/**/*.stories.tsx",
+    "src/**/*.test.tsx",
+    "src/**/*.test.ts",
+    "src/utils/test-utils.tsx"
+  ]
+}

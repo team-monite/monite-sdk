@@ -1,0 +1,1 @@
+export { QuotesTable } from './QuotesTable';
