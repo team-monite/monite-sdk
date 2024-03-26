@@ -202,28 +202,6 @@ Versioning And Publishing Packages:
     SENTRY_PROJECT: sdk
   interruptible: true
 
-sync to github:
-  before_script:
-    - hostname
-  stage: deploy
-  image: alpine/git
-  script:
-    - git config user.email "andrey.tarasov@monite.com"
-    - git config user.name "Andrey Tarasov"
-    - git remote add github https://andreitarasov:${GITHUB_TOKEN}@github.com/team-monite/monite-sdk.git
-    - git checkout --orphan main
-    - rm -r .helm werf.yaml .gitlab-ci.yml
-    - git add .
-    - git commit -m 'updates'
-    - git push github main --force
-  tags:
-    - docker
-  only:
-    refs:
-    - schedules
-    variables:
-    - $SCHEDULE == "gitlab-sync"
-
 Deploy to review:
   variables:
     K8S_NAMESPACE: review-${CI_COMMIT_REF_SLUG}
