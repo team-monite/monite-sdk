@@ -1,5 +1,17 @@
 # @monite/sdk-drop-in
 
+## 1.4.0
+
+### Minor Changes
+
+- d90124e: add Roles menu item to demo
+- d90124e: feature(DEV-9854): add table for user roles
+
+### Patch Changes
+
+- Updated dependencies [d90124e]
+  - @monite/sdk-api@3.9.0
+
 ## 1.3.3
 
 ### Patch Changes
