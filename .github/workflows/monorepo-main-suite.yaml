@@ -1,0 +1,146 @@
+name: Main Suite
+
+on:
+  pull_request:
+    branches:
+      - "**"
+      - "!changeset-release/**"
+  push:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build
+        run: yarn build
+  lint:
+    needs: build
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Lint
+        run: yarn lint
+  type-checking:
+    needs: build
+    name: Type Checking
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Type Check
+        run: yarn typecheck
+  build-storybook:
+    needs: type-checking
+    name: Build Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build Storybook
+        run: yarn storybook:build
+  unit-testing:
+    needs: build
+    name: Unit Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Test
+        run: yarn test
+
+  translations-validation:
+    needs: build
+    name: Translations Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Translations Validator
+        run: ./lingui-translations-validator.sh
+
+  files-changed:
+    name: Checking modified files
+    runs-on: ubuntu-latest
+    outputs:
+      e2e-npm-tests-dependencies: ${{ steps.changes.outputs.e2e-npm-tests-dependencies }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            e2e-npm-tests-dependencies:
+              - 'packages/sdk-react/**'
+              - 'packages/sdk-api/**'
+              - 'packages/rollup-config/**'
+              - 'e2e/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - '.changeset/**'
+
+  e2e-npm-testing:
+    name: E2E NPM Testing
+    if: needs.files-changed.outputs.e2e-npm-tests-dependencies == 'true'
+    needs: [ build, files-changed ]
+    runs-on: ubuntu-latest
+    env:
+      NPM_PUBLISH_REGISTRY: 'http://localhost:4873'
+      UNSAFE_HTTP_WHITELIST: 'localhost'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build
+        run: yarn build
+
+      - name: Export projects directory environment variable
+        id: export-projects-directory
+        run: echo "path=${{ runner.temp }}/projects" >> $GITHUB_OUTPUT
+
+      - name: Copy Playground for E2E Tests
+        run: |
+          mkdir -p "$TEST_PROJECTS_DIR"
+          cp -a e2e/projects/. "$TEST_PROJECTS_DIR/"
+        env:
+          TEST_PROJECTS_DIR: "${{ steps.export-projects-directory.outputs.path }}"
+
+      - name: Publish to Private Registry
+        run: yarn run "e2e:publish-to-private-registry"
+        env:
+          TEST_PROJECTS_DIR: "${{ steps.export-projects-directory.outputs.path }}"
+
+      - name: Update Projects from Private Registry
+        run: yarn run "e2e:update-projects-from-private-registry"
+        env:
+          TEST_PROJECTS_DIR: "${{ steps.export-projects-directory.outputs.path }}"
+
+      - name: Build E2E Projects
+        run: yarn run "e2e:build-projects"
+        env:
+          TEST_PROJECTS_DIR: "${{ steps.export-projects-directory.outputs.path }}"
