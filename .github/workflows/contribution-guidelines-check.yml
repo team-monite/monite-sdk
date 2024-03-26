@@ -37,16 +37,5 @@ jobs:
             proposal
             DEV-\d+
           requireScope: true
-          subjectPattern: ^([A-Z]).+$
-          subjectPatternError: |
-            The subject "{subject}" found in the pull request title
-              ✖︎ `{title}`
-            does not start with an uppercase ⇧ character.
-
-            ✔️ Valid examples are:
-              • `feat(DEV-123): Add user profile page`
-              • `fix(DEV-321): Authenticated user can't access the Dashboard`
-              • `docs(proposal): Add contribution guidelines`
-            Please ensure that the subject doesn't start with an uppercase ⇧ character.
           ignoreLabels: |
             bot
