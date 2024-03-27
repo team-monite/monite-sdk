@@ -7,7 +7,6 @@ on:
   pull_request_target:
     branches:
       - "**"
-      - "!changeset-release/**"
     types:
       - opened
       - reopened
