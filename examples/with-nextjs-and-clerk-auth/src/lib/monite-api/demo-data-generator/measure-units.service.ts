@@ -1,31 +1,15 @@
 import chalk from 'chalk';
 
-import { faker } from '@faker-js/faker';
-
 import { GeneralService } from '@/lib/monite-api/demo-data-generator/general.service';
 import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-function randomIntFromInterval(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-interface IMeasureUnitsServiceOptions {
-  /**
-   * Describes, how many measure units should be created.
-   * By default, 5
-   */
-  count: number;
-}
-
 export class MeasureUnitsService extends GeneralService {
-  private options: IMeasureUnitsServiceOptions = {
-    count: 5,
-  };
+  private measureUnitNames: Array<string> = ['kg', 'g', 'lbs', 'm', 'cm'];
 
-  private async createMeasureUnit(): Promise<
-    components['schemas']['UnitResponse']
-  > {
+  private async createMeasureUnit(
+    measureUnitName: string
+  ): Promise<components['schemas']['UnitResponse']> {
     const { data, error, response } = await this.request.POST(
       `/measure_units`,
       {
@@ -36,8 +20,7 @@ export class MeasureUnitsService extends GeneralService {
           },
         },
         body: {
-          name:
-            faker.science.unit().name + '-' + randomIntFromInterval(1, 1000),
+          name: measureUnitName,
         },
       }
     );
@@ -59,9 +42,9 @@ export class MeasureUnitsService extends GeneralService {
 
     const measureUnits: Array<components['schemas']['UnitResponse']> = [];
 
-    for (let i = 0; i < this.options.count; i++) {
+    for (let i = 0; i < this.measureUnitNames.length; i++) {
       const message = ` - Creating measure unit (${i + 1}/${
-        this.options.count
+        this.measureUnitNames.length
       })`;
 
       console.log(chalk.bgBlueBright(message));
@@ -69,7 +52,7 @@ export class MeasureUnitsService extends GeneralService {
         message: message,
       });
 
-      await this.createMeasureUnit()
+      await this.createMeasureUnit(this.measureUnitNames[i])
         .then((measureUnit) => {
           measureUnits.push(measureUnit);
         })
