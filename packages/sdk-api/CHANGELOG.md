@@ -1,5 +1,11 @@
 # @monite/sdk-api
 
+## 3.9.0
+
+### Minor Changes
+
+- a61f5f0c: feature(DEV-9854): add table for user roles
+
 ## 3.8.0
 
 ### Minor Changes
