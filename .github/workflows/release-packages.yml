@@ -1,8 +1,8 @@
-# Publishes the packages to NPM when no changeset files are detected,
-# and creates a Sentry release if the packages are published.
+# If no changeset files are detected, the packages are published to NPM and a Sentry release is created.
+# If changeset files are detected, a "Version Packages" PR is created.
 # Refer to the "changesets/action" documentation for more information: https://github.com/changesets/action
 
-name: Release Packages
+name: Version or Release Packages
 
 on:
   push:
@@ -50,12 +50,13 @@ jobs:
           # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
           NPM_TOKEN: ""
 
-      - name: Publish to NPM
+      - name: Create Release Pull Request or Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.7
         with:
           publish: yarn exec .changeset/publish.sh --create-git-tags
           version: yarn exec .changeset/version.sh
+          title: "chore: Version Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
