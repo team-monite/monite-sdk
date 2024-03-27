@@ -1,0 +1,1 @@
+export { CounterpartAddressFormUpdate } from './CounterpartAddressFormUpdate';
