@@ -1,0 +1,97 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "cache": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ],
+      "outputs": ["dist/**", "build/**"]
+    },
+    "storybook": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
+    },
+    "build-storybook": {
+      "cache": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ],
+      "outputs": ["storybook_static/**"]
+    },
+    "test": {
+      "cache": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ],
+      "outputs": ["coverage/**"]
+    },
+    "typecheck": {
+      "cache": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
+    },
+    "lint": {
+      "cache": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
+    },
+    "compile-translations": {
+      "cache": true,
+      "outputs": [
+        "src/core/i18n/locales/*/messages.ts",
+        "src/core/i18n/locales/*/messages.d.ts",
+        "src/locales/*/messages.ts",
+        "src/locales/*/messages.d.ts"
+      ],
+      "inputs": [
+        "src/core/i18n/locales/*/messages.po",
+        "src/core/i18n/locales/messages.pot",
+        "src/locales/*/messages.po",
+        "src/locales/messages.pot"
+      ]
+    },
+    "extract-translations": {
+      "cache": true,
+      "outputs": [
+        "src/core/i18n/locales/*/messages.po",
+        "src/locales/*/messages.po"
+      ],
+      "inputs": ["src/**/*.{ts,tsx,js,jsx,json}", ".babelrc"]
+    },
+    "write-package-version-file": {
+      "cache": true,
+      "outputs": ["src/packageVersion.ts"],
+      "inputs": ["package.json"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
