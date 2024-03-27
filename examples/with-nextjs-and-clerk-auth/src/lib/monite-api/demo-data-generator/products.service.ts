@@ -59,12 +59,10 @@ export class ProductsService extends GeneralService {
     components['schemas']['ProductServiceResponse']
   > {
     const type = (() => {
-      /** If the type is set to 'all', then we will randomly choose */
       if (this.options.type === 'all') {
         return faker.datatype.boolean() ? 'product' : 'service';
       }
 
-      /** Otherwise, we should take provided `type` */
       return this.options.type;
     })();
 
