@@ -1,5 +1,17 @@
 # @monite/sdk-drop-in
 
+## 1.4.0
+
+### Minor Changes
+
+- a17d26a9: add Roles menu item to demo
+- 11881edb: feature(DEV-9854): add table for user roles
+
+### Patch Changes
+
+- Updated dependencies [11881edb]
+  - @monite/sdk-api@3.9.0
+
 ## 1.3.3
 
 ### Patch Changes
