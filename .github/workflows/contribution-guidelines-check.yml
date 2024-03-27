@@ -5,9 +5,8 @@ name: Contribution Guidelines Check
 
 on:
   pull_request_target:
-    branches:
-      - "**"
-      - "!changeset-release/**"
+    branches-ignore:
+      - "changeset-release/**"
     types:
       - opened
       - reopened
