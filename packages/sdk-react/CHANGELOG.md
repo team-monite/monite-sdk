@@ -1,5 +1,18 @@
 # @monite/sdk-react
 
+## 3.9.0
+
+### Minor Changes
+
+- 11881edb: feature(DEV-9854): add table for user roles
+
+### Patch Changes
+
+- 446b8114: refactor(DEV-9443): Improved user permission support for UI
+- 2990efc0: fix(DEV-9443): Do not display output `null` in `<ApprovalPoliciesUser/>`if user name is not specified
+- Updated dependencies [11881edb]
+  - @monite/sdk-api@3.9.0
+
 ## 3.8.0
 
 ### Minor Changes
