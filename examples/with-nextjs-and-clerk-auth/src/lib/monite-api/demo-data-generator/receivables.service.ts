@@ -296,8 +296,14 @@ export class ReceivablesService extends GeneralService {
     }
 
     if (receivables.length) {
-      console.log(chalk.black.bgGreenBright(`✅ Receivables created`));
-      this.logger?.({ message: '✅ Receivables created' });
+      console.log(
+        chalk.black.bgGreenBright(
+          `✅ Receivables (${this.options.type}) created`
+        )
+      );
+      this.logger?.({
+        message: `✅ Receivables (${this.options.type}) created`,
+      });
     } else {
       console.error(chalk.black.bgYellow(`❌ Receivables list is empty`));
     }
