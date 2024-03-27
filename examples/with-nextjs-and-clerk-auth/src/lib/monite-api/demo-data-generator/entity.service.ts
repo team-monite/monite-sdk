@@ -9,40 +9,6 @@ import {
 import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-const bankAccountsMockData: Array<
-  components['schemas']['CreateEntityBankAccountRequest']
-> = [
-  {
-    country: 'DE',
-    currency: 'EUR',
-    iban: 'DE89370400440532013000',
-    account_holder_name: faker.finance.accountName(),
-    display_name: 'Germany account 1',
-  },
-  {
-    country: 'US',
-    currency: 'USD',
-    account_holder_name: faker.finance.accountName(),
-    display_name: 'US account 1',
-    account_number: faker.finance.accountNumber(),
-    routing_number: faker.finance.routingNumber(),
-  },
-  {
-    country: 'FR',
-    currency: 'EUR',
-    iban: 'FR1420041010050500013M02606',
-    account_holder_name: faker.finance.accountName(),
-    display_name: 'France account 1',
-  },
-  {
-    country: 'NL',
-    currency: 'EUR',
-    iban: 'NL91ABNA0417164300',
-    account_holder_name: faker.finance.accountName(),
-    display_name: 'Netherlands account 1',
-  },
-];
-
 interface IEntityServiceOptions {
   /**
    * Describes, how many vat ids should be created.
@@ -54,6 +20,40 @@ interface IEntityServiceOptions {
 }
 
 export class EntityService extends GeneralService {
+  private generateBankAccountsMockData: () => Array<
+    components['schemas']['CreateEntityBankAccountRequest']
+  > = () => [
+    {
+      country: 'DE',
+      currency: 'EUR',
+      iban: 'DE89370400440532013000',
+      account_holder_name: faker.finance.accountName(),
+      display_name: 'Germany account 1',
+    },
+    {
+      country: 'US',
+      currency: 'USD',
+      account_holder_name: faker.finance.accountName(),
+      display_name: 'US account 1',
+      account_number: faker.finance.accountNumber(),
+      routing_number: faker.finance.routingNumber(),
+    },
+    {
+      country: 'FR',
+      currency: 'EUR',
+      iban: 'FR1420041010050500013M02606',
+      account_holder_name: faker.finance.accountName(),
+      display_name: 'France account 1',
+    },
+    {
+      country: 'NL',
+      currency: 'EUR',
+      iban: 'NL91ABNA0417164300',
+      account_holder_name: faker.finance.accountName(),
+      display_name: 'Netherlands account 1',
+    },
+  ];
+
   private options: IEntityServiceOptions = {
     vatIds: {
       count: 2,
@@ -92,6 +92,8 @@ export class EntityService extends GeneralService {
     const bankAccounts: Array<
       components['schemas']['EntityBankAccountResponse']
     > = [];
+
+    const bankAccountsMockData = this.generateBankAccountsMockData();
 
     for (let i = 0; i < bankAccountsMockData.length; i++) {
       console.log(
