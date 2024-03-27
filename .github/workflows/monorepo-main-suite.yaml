@@ -2,9 +2,8 @@ name: Main Suite
 
 on:
   pull_request:
-    branches:
-      - "**"
-      - "!changeset-release/**"
+    branches-ignore:
+      - "changeset-release/**"
   push:
     branches:
       - main
