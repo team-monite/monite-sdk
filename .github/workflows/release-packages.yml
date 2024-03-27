@@ -1,0 +1,65 @@
+# Publishes the packages to NPM when no changeset files are detected,
+# and creates a Sentry release if the packages are published.
+# Refer to the "changesets/action" documentation for more information: https://github.com/changesets/action
+
+name: Release Packages
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Do not cancel ✖︎ in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: false
+
+jobs:
+  npm-publish:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    environment: production
+    outputs:
+      e2e-npm-tests-dependencies: ${{ steps.npm-publish.outputs.published }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build
+        run: yarn build
+
+      - name: Inject Sentry Debug IDs
+        run: yarn sentry-cli sourcemaps inject packages/sdk-react/dist
+
+      - name: Create a dummy ".npmrc"
+        # Prevents creation of ".npmrc" by "changesets/action" with the 'NPM_TOKEN' content
+        # We use ".yarnrc.yml" with the Environment Variable 'NPM_TOKEN' set
+        run: touch ".npmrc"
+
+      - name: Patch ".yarnrc.yml" Monite NPM scopes
+        run: |
+          yarn config set 'npmScopes["monite"]' --home --json '{"npmAlwaysAuth":true,"npmAuthToken":"${NPM_TOKEN}"}'
+          yarn config set 'npmScopes["team-monite"]' --home --json '{"npmAlwaysAuth":true,"npmAuthToken":"${NPM_TOKEN}"}'
+        env:
+          # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
+          NPM_TOKEN: ""
+
+      - name: Publish to NPM
+        id: changesets
+        uses: changesets/action@v1.4.7
+        with:
+          publish: yarn exec .changeset/publish.sh --create-git-tags
+          version: yarn exec .changeset/version.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Upload to Sentry
+        if: steps.changesets.outputs.published == 'true'
+        run: yarn sentry-cli sourcemaps upload --release="$(node -p 'require("@monite/sdk-api/package.json").version')" packages/sdk-react/dist

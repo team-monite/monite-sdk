@@ -1,0 +1,23 @@
+{
+  "name": "@team-monite/e2e",
+  "version": "1.0.1",
+  "private": true,
+  "scripts": {
+    "verdaccio": "VERDACCIO_STORAGE_PATH=./verdaccio-storage verdaccio --config ./verdaccio-config.yaml",
+    "remove-verdaccio-storage": "rimraf ./verdaccio-storage",
+    "e2e:publish-to-private-registry": "yarn exec bin/publish-to-private-registry.sh",
+    "e2e:unpublish-from-private-registry": "yarn exec bin/unpublish-from-private-registry.sh",
+    "e2e:update-projects-from-private-registry": "yarn exec bin/update-projects-from-private-registry.sh",
+    "e2e:build-projects": "yarn exec bin/build-projects.sh",
+    "monorepo:use-private-registry": "yarn exec bin/monorepo-scopes-registry-manager.sh use-private-registry",
+    "monorepo:use-default-registry": "yarn exec bin/monorepo-scopes-registry-manager.sh use-default-registry",
+    "e2e:test": "yarn e2e:publish-to-private-registry && yarn e2e:update-projects-from-private-registry && yarn e2e:build-projects && yarn e2e:unpublish-from-private-registry"
+  },
+  "packageManager": "yarn@3.5.0",
+  "dependencies": {
+    "verdaccio": "~5.29.0"
+  },
+  "devDependencies": {
+    "rimraf": "~5.0.0"
+  }
+}

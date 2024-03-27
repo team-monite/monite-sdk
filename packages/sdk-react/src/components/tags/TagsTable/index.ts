@@ -1,0 +1,1 @@
+export { TagsTable } from './TagsTable';
