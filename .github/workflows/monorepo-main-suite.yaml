@@ -1,13 +1,13 @@
 name: Main Suite
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - "**"
   push:
     branches:
       - main
-      - changeset-release/main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
