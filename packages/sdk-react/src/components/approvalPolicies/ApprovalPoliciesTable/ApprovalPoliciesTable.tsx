@@ -194,9 +194,7 @@ export const ApprovalPoliciesTable = ({
             },
           ]}
           rows={approvalPolicies?.data || []}
-          onRowClick={(params) =>
-            onRowClick?.(params.row as ApprovalPolicyResource)
-          }
+          onRowClick={(params) => onRowClick?.(params.row)}
           slots={{
             pagination: () => (
               <TablePagination
