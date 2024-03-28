@@ -6,7 +6,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { ApprovalPolicyDetailsForm } from './ApprovalPolicyDetailsForm';
 import { ExistingApprovalPolicyDetails } from './ExistingApprovalPolicyDetails';
 
-export interface IApprovalPolicyDetailsProps {
+export interface ApprovalPolicyDetailsProps {
   /** Approval policy ID */
   id?: string;
 
@@ -34,7 +34,7 @@ export const ApprovalPolicyDetails = ({
   id,
   onCreated,
   onUpdated,
-}: IApprovalPolicyDetailsProps) => {
+}: ApprovalPolicyDetailsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const {
