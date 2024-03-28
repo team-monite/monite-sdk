@@ -105,7 +105,6 @@ export const ExistingUserRoleDetails = ({
   const rows = role.permissions.objects
     ? normalizePermissions(role.permissions.objects)
     : [];
-  console.log({ rows });
   const columns = [
     {
       id: 'name',
