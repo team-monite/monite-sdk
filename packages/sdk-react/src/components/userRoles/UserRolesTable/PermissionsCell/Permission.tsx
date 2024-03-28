@@ -39,7 +39,7 @@ const normalizeActions = (actions: (ActionSchema | PayableActionSchema)[]) => {
   );
 };
 
-const StyledPermission = styled('span')(({ theme }) => ({
+const StyledPermission = styled('span')(() => ({
   display: 'inline-block',
   fontWeight: 600,
   width: 14,
