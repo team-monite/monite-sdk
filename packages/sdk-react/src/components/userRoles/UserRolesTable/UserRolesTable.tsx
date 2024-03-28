@@ -59,6 +59,12 @@ interface IUserTableProps {
    * @param params.order - The sort order can be either SortOrderEnum values or null.
    */
   onSortChanged?: (params: UserRolesTableSortModel) => void;
+  /**
+   * Triggered when a row is clicked.
+   *
+   * @param id - The id of the row that was clicked.
+   */
+  onRowClick?: (id: string) => void;
 }
 
 interface UserRolesTableSortModel {
@@ -69,6 +75,7 @@ interface UserRolesTableSortModel {
 export const UserRolesTable = ({
   onFilterChanged,
   onSortChanged,
+  onRowClick,
 }: IUserTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -184,6 +191,7 @@ export const UserRolesTable = ({
             },
           ]}
           rows={roles?.data || []}
+          onRowClick={(params) => onRowClick?.(params.row.id)}
           getRowHeight={() => 'auto'}
           sortModel={sortModel}
           onSortModelChange={onChangeSort}
