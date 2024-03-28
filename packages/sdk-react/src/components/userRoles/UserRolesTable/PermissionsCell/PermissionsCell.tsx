@@ -20,7 +20,7 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
 
   return (
     <Grid container>
-      {permissions.objects?.map((object, index) => {
+      {permissions.objects?.map((object) => {
         if (object.object_type) {
           return (
             <Grid item container key={object.object_type}>

@@ -266,10 +266,10 @@ export const ExistingUserRoleDetails = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => {
+                {rows.map((row) => {
                   return (
                     <TableRow key={row.name}>
-                      {columns.slice(0, 1).map((column, index) => {
+                      {columns.slice(0, 1).map((column) => {
                         return (
                           <StyledTableCell
                             key={column.id}
@@ -287,7 +287,7 @@ export const ExistingUserRoleDetails = ({
                           </StyledTableCell>
                         );
                       })}
-                      {columns.slice(1).map((column, index) => {
+                      {columns.slice(1).map((column) => {
                         const action = column.id as keyof Actions;
 
                         return (
