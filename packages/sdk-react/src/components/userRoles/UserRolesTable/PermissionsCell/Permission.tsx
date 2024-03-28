@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React from 'react';
 
 import {
   ACTION_TO_LATTER_MAP,

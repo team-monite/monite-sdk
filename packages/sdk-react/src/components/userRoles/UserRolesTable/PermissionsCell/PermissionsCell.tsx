@@ -1,10 +1,9 @@
 import React from 'react';
 
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { BizObjectsSchema } from '@monite/sdk-api';
-import { Link, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { Permission } from './Permission';
 
