@@ -450,6 +450,7 @@ msgstr "Approval request"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:527
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:117
 #: src/components/userRoles/consts.ts:75
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:155
 msgid "Approve"
 msgstr "Approve"
 
@@ -977,6 +978,7 @@ msgstr "Canadian Dollar"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:79
 #: src/components/tags/TagFormModal/TagFormModal.tsx:168
 #: src/components/userRoles/consts.ts:78
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:169
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1167,6 +1169,10 @@ msgstr "Close invoice details"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:162
 msgid "Close payable details"
 msgstr "Close payable details"
+
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:207
+msgid "Close role details"
+msgstr "Close role details"
 
 #: src/components/onboarding/dicts/mccCodes.ts:303
 msgid "Clothing Rental"
@@ -1485,6 +1491,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:119
 #: src/components/tags/TagFormModal/TagFormModal.tsx:178
 #: src/components/userRoles/consts.ts:71
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:127
 msgid "Create"
 msgstr "Create"
 
@@ -1513,6 +1520,7 @@ msgstr "Create Counterpart – Company"
 #~ msgstr "Create Document"
 
 #: src/components/userRoles/consts.ts:77
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:183
 msgid "Create from mail"
 msgstr "Create from mail"
 
@@ -1596,7 +1604,7 @@ msgid "Created by user"
 msgstr "Created by user"
 
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:35
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:175
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:182
 msgid "Created on"
 msgstr "Created on"
 
@@ -1751,6 +1759,7 @@ msgstr "Declined"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:455
 #: src/components/tags/TagsTable/TagsTable.tsx:185
 #: src/components/userRoles/consts.ts:73
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:141
 msgid "Delete"
 msgstr "Delete"
 
@@ -2595,6 +2604,7 @@ msgstr "Glassware, Crystal Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:238
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:105
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:147
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:237
 msgid "Go to Docs"
 msgstr "Go to Docs"
 
@@ -3620,7 +3630,7 @@ msgstr "Myanmar"
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:33
 #: src/components/tags/TagFormModal/TagFormModal.tsx:155
 #: src/components/tags/TagsTable/TagsTable.tsx:136
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:160
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:167
 msgid "Name"
 msgstr "Name"
 
@@ -4013,6 +4023,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:137
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:49
 #: src/components/userRoles/consts.ts:76
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:162
 msgid "Pay"
 msgstr "Pay"
 
@@ -4097,7 +4108,8 @@ msgstr "Pending"
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:166
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:226
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:173
 msgid "Permissions"
 msgstr "Permissions"
 
@@ -4476,6 +4488,7 @@ msgid "Railroads"
 msgstr "Railroads"
 
 #: src/components/userRoles/consts.ts:70
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:120
 msgid "Read"
 msgstr "Read"
 
@@ -4568,12 +4581,17 @@ msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
 #: src/components/userRoles/consts.ts:79
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:176
 msgid "Reopen"
 msgstr "Reopen"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:536
 msgid "Replace items"
 msgstr "Replace items"
+
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:111
+msgid "Resource name"
+msgstr "Resource name"
 
 #: src/core/utils/countries.ts:197
 msgid "Reunion"
@@ -5051,6 +5069,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:443
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:97
 #: src/components/userRoles/consts.ts:74
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:148
 msgid "Submit"
 msgstr "Submit"
 
@@ -5679,6 +5698,7 @@ msgstr "Unsupported file type"
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:52
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:191
 #: src/components/userRoles/consts.ts:72
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:134
 msgid "Update"
 msgstr "Update"
 
@@ -5743,7 +5763,7 @@ msgstr "Used Merchandise and Secondhand Stores"
 #~ msgid "User roles"
 #~ msgstr "User roles"
 
-#: src/components/userRoles/UserRoles.tsx:15
+#: src/components/userRoles/UserRoles.tsx:35
 msgid "User Roles"
 msgstr "User Roles"
 
