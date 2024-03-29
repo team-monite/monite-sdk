@@ -22,7 +22,6 @@ import {
 } from '@mui/icons-material';
 import {
   styled,
-  useTheme,
   Box,
   DialogTitle,
   DialogContent,
@@ -88,10 +87,49 @@ const renderPermissionCell = (params: GridRenderCellParams<PermissionRow>) => {
   return <CloseRoundedIcon color="secondary" />;
 };
 
+const StyledDialogContainer = styled(DialogContent)({
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+const StyledTableTitle = styled(Typography)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+const StyledDocLink = styled(Link)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const StyledTableContainer = styled(TableContainer)({
+  minHeight: '300px',
+});
+
+const StyledTableHead = styled(TableHead)(({ theme }) => ({
+  background: theme.palette.grey[300],
+}));
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.grey[100],
     whiteSpace: 'nowrap',
+  },
+  [`&.${tableCellClasses.head}:first-child`]: {
+    position: 'sticky',
+    left: 0,
+    zIndex: '9999',
+    minWidth: '180px',
+    borderRight: `1px solid ${theme.palette.grey[300]}`,
+  },
+  [`&.${tableCellClasses.body}:first-child`]: {
+    position: 'sticky',
+    left: 0,
+    fontWeight: '600',
+    minWidth: '180px',
+    backgroundColor: theme.palette.background.default,
+    borderRight: `1px solid ${theme.palette.grey[300]}`,
   },
 }));
 
@@ -100,7 +138,6 @@ export const ExistingUserRoleDetails = ({
 }: ExistingUserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const theme = useTheme();
 
   const rows = role.permissions.objects
     ? normalizePermissions(role.permissions.objects)
@@ -212,75 +249,39 @@ export const ExistingUserRoleDetails = ({
         </Box>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Typography
-          variant="subtitle2"
-          mt={4}
-          mb={1}
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
+      <StyledDialogContainer>
+        <StyledTableTitle variant="subtitle2" mt={4} mb={1}>
           {t(i18n)`Permissions`}
-          <Link
+          <StyledDocLink
             underline="none"
             rel="noopener noreferrer"
             href="https://docs.monite.com/docs/monite-account-structure#connect-entity-users"
             target="_blank"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
           >
             {t(i18n)`Go to Docs`}
             &nbsp;
             <OpenInNewIcon />
-          </Link>
-        </Typography>
+          </StyledDocLink>
+        </StyledTableTitle>
         {role.permissions.objects && (
-          <TableContainer sx={{ minHeight: '400px' }}>
+          <StyledTableContainer>
             <Table stickyHeader>
-              <TableHead sx={{ background: theme.palette.grey[300] }}>
+              <StyledTableHead>
                 <TableRow>
                   {columns.map((column, index) => (
-                    <StyledTableCell
-                      key={column.id}
-                      sx={{
-                        ...(index === 0
-                          ? {
-                              position: 'sticky',
-                              left: 0,
-                              zIndex: '9999',
-                              minWidth: '180px',
-                              borderRight: `1px solid ${theme.palette.grey[300]}`,
-                            }
-                          : {}),
-                      }}
-                    >
+                    <StyledTableCell key={column.id}>
                       {column.headerName}
                     </StyledTableCell>
                   ))}
                 </TableRow>
-              </TableHead>
+              </StyledTableHead>
               <TableBody>
                 {rows.map((row) => {
                   return (
                     <TableRow key={row.name}>
                       {columns.slice(0, 1).map((column) => {
                         return (
-                          <StyledTableCell
-                            key={column.id}
-                            sx={{
-                              position: 'sticky',
-                              left: 0,
-                              fontWeight: '600',
-                              minWidth: '180px',
-                              backgroundColor: theme.palette.background.default,
-                              borderRight: `1px solid ${theme.palette.grey[300]}`,
-                            }}
-                          >
+                          <StyledTableCell key={column.id}>
                             {row.name &&
                               getPermissionToLabelMap(i18n)[row.name]}
                           </StyledTableCell>
@@ -306,9 +307,9 @@ export const ExistingUserRoleDetails = ({
                 })}
               </TableBody>
             </Table>
-          </TableContainer>
+          </StyledTableContainer>
         )}
-      </DialogContent>
+      </StyledDialogContainer>
     </MoniteStyleProvider>
   );
 };
