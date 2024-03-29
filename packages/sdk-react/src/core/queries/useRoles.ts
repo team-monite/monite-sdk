@@ -12,7 +12,7 @@ const ROLES_QUERY_ID = 'roles';
 
 const rolesQueryKeys = {
   all: () => [ROLES_QUERY_ID],
-  detail: (roleId: string) => [ROLES_QUERY_ID, roleId],
+  detail: (roleId?: string) => [ROLES_QUERY_ID, roleId],
 };
 
 export const useRoles = (params: Parameters<RoleService['getList']>[0]) => {
@@ -24,11 +24,19 @@ export const useRoles = (params: Parameters<RoleService['getList']>[0]) => {
   );
 };
 
-export const useRoleById = (roleId: string) => {
+export const useRoleById = (roleId?: string) => {
   const { monite } = useMoniteContext();
 
   return useQuery<RoleResponse | undefined, ApiError>(
     [...rolesQueryKeys.detail(roleId)],
-    () => monite.api.role.getDetail(roleId)
+    () => {
+      if (!roleId) {
+        throw new Error('Role ID is required');
+      }
+      return monite.api.role.getDetail(roleId);
+    },
+    {
+      enabled: !!roleId,
+    }
   );
 };
