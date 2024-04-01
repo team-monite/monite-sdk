@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useDialog } from '@/components';
-import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -15,8 +14,6 @@ import {
   PayableSchema,
 } from '@monite/sdk-api';
 import {
-  CheckRounded as CheckRoundedIcon,
-  CloseRounded as CloseRoundedIcon,
   Close as CloseIcon,
   OpenInNew as OpenInNewIcon,
 } from '@mui/icons-material';
@@ -37,13 +34,14 @@ import {
   TableBody,
   tableCellClasses,
 } from '@mui/material';
-import { GridRenderCellParams, GridValueGetterParams } from '@mui/x-data-grid';
 
-type Actions = {
+import { UserRoleRow } from './UserRoleRow';
+
+export type Actions = {
   [key in ActionEnum | PayableActionEnum]?: boolean;
 };
 
-type PermissionRow = Actions & {
+export type PermissionRow = Actions & {
   name?: (CommonSchema | PayableSchema)['object_type'];
 };
 
@@ -75,43 +73,31 @@ const normalizePermissions = (objects: RootSchema[]) => {
   });
 };
 
-const renderPermissionCell = (params: GridRenderCellParams<PermissionRow>) => {
-  const actionValue = params.row[params.field as keyof Actions];
+const StyledDialogContainer = styled(DialogContent)`
+  display: flex;
+  flex-direction: column;
+`;
 
-  if (actionValue === undefined) {
-    return null;
-  } else if (actionValue) {
-    return <CheckRoundedIcon color="primary" />;
-  }
+const StyledTableTitle = styled(Typography)`
+  display: flex;
+  justify-content: space-between;
+  align-items: 'center;
+`;
 
-  return <CloseRoundedIcon color="secondary" />;
-};
+const StyledDocLink = styled(Link)`
+  display: flex;
+  align-items: center;
+`;
 
-const StyledDialogContainer = styled(DialogContent)({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const StyledTableTitle = styled(Typography)({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-});
-
-const StyledDocLink = styled(Link)({
-  display: 'flex',
-  alignItems: 'center',
-});
-
-const StyledTableContainer = styled(TableContainer)({
-  minHeight: '300px',
-});
+const StyledTableContainer = styled(TableContainer)`
+  min-height: 300px;
+`;
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
   background: theme.palette.grey[300],
 }));
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.grey[100],
     whiteSpace: 'nowrap',
@@ -146,81 +132,47 @@ export const ExistingUserRoleDetails = ({
     {
       id: 'name',
       headerName: t(i18n)`Resource name`,
-      sortable: false,
-      width: 170,
       cellClassName: 'role-data-grid--cell',
-      valueGetter: (params: GridValueGetterParams<PermissionRow>) =>
-        params.row.name && getPermissionToLabelMap(i18n)[params.row.name],
     },
     {
       id: ActionEnum.READ,
       headerName: t(i18n)`Read`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: ActionEnum.CREATE,
       headerName: t(i18n)`Create`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: ActionEnum.UPDATE,
       headerName: t(i18n)`Update`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: ActionEnum.DELETE,
       headerName: t(i18n)`Delete`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.SUBMIT,
       headerName: t(i18n)`Submit`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.APPROVE,
       headerName: t(i18n)`Approve`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.PAY,
       headerName: t(i18n)`Pay`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.CANCEL,
       headerName: t(i18n)`Cancel`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.REOPEN,
       headerName: t(i18n)`Reopen`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
     {
       id: PayableActionEnum.CREATE_FROM_MAIL,
       headerName: t(i18n)`Create from mail`,
-      sortable: false,
-      width: 80,
-      renderCell: renderPermissionCell,
     },
   ];
 
@@ -276,35 +228,9 @@ export const ExistingUserRoleDetails = ({
                 </TableRow>
               </StyledTableHead>
               <TableBody>
-                {rows.map((row) => {
-                  return (
-                    <TableRow key={row.name}>
-                      {columns.slice(0, 1).map((column) => {
-                        return (
-                          <StyledTableCell key={column.id}>
-                            {row.name &&
-                              getPermissionToLabelMap(i18n)[row.name]}
-                          </StyledTableCell>
-                        );
-                      })}
-                      {columns.slice(1).map((column) => {
-                        const action = column.id as keyof Actions;
-
-                        return (
-                          <StyledTableCell key={column.id}>
-                            {typeof row[action] === 'boolean' ? (
-                              row[action] ? (
-                                <CheckRoundedIcon color="primary" />
-                              ) : (
-                                <CloseRoundedIcon color="secondary" />
-                              )
-                            ) : null}
-                          </StyledTableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                {rows.map((row) => (
+                  <UserRoleRow key={row.name} row={row} columns={columns} />
+                ))}
               </TableBody>
             </Table>
           </StyledTableContainer>
