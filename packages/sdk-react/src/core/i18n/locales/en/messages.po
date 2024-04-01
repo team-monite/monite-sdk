@@ -450,7 +450,7 @@ msgstr "Approval request"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:527
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:117
 #: src/components/userRoles/consts.ts:75
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:155
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:159
 msgid "Approve"
 msgstr "Approve"
 
@@ -978,7 +978,7 @@ msgstr "Canadian Dollar"
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:79
 #: src/components/tags/TagFormModal/TagFormModal.tsx:168
 #: src/components/userRoles/consts.ts:78
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:169
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:167
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1170,7 +1170,7 @@ msgstr "Close invoice details"
 msgid "Close payable details"
 msgstr "Close payable details"
 
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:207
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:196
 msgid "Close role details"
 msgstr "Close role details"
 
@@ -1491,7 +1491,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:119
 #: src/components/tags/TagFormModal/TagFormModal.tsx:178
 #: src/components/userRoles/consts.ts:71
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:127
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:143
 msgid "Create"
 msgstr "Create"
 
@@ -1520,7 +1520,7 @@ msgstr "Create Counterpart – Company"
 #~ msgstr "Create Document"
 
 #: src/components/userRoles/consts.ts:77
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:183
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:175
 msgid "Create from mail"
 msgstr "Create from mail"
 
@@ -1759,7 +1759,7 @@ msgstr "Declined"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:455
 #: src/components/tags/TagsTable/TagsTable.tsx:185
 #: src/components/userRoles/consts.ts:73
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:141
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:151
 msgid "Delete"
 msgstr "Delete"
 
@@ -2604,7 +2604,7 @@ msgstr "Glassware, Crystal Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:238
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:105
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:147
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:237
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:213
 msgid "Go to Docs"
 msgstr "Go to Docs"
 
@@ -4023,7 +4023,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:137
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:49
 #: src/components/userRoles/consts.ts:76
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:162
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:163
 msgid "Pay"
 msgstr "Pay"
 
@@ -4108,7 +4108,7 @@ msgstr "Pending"
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:226
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:206
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:173
 msgid "Permissions"
 msgstr "Permissions"
@@ -4488,7 +4488,7 @@ msgid "Railroads"
 msgstr "Railroads"
 
 #: src/components/userRoles/consts.ts:70
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:120
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:139
 msgid "Read"
 msgstr "Read"
 
@@ -4581,7 +4581,7 @@ msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
 #: src/components/userRoles/consts.ts:79
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:176
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:171
 msgid "Reopen"
 msgstr "Reopen"
 
@@ -4589,7 +4589,7 @@ msgstr "Reopen"
 msgid "Replace items"
 msgstr "Replace items"
 
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:111
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:134
 msgid "Resource name"
 msgstr "Resource name"
 
@@ -4612,6 +4612,10 @@ msgstr "Role approval"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRulesItem.tsx:54
 msgid "Role approval{0}"
 msgstr "Role approval{0}"
+
+#: src/components/userRoles/UserRoleDetails/UserRoleDetails.tsx:38
+msgid "Role not found"
+msgstr "Role not found"
 
 #: src/core/utils/countries.ts:198
 msgid "Romania"
@@ -5069,7 +5073,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:443
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:97
 #: src/components/userRoles/consts.ts:74
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:148
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:155
 msgid "Submit"
 msgstr "Submit"
 
@@ -5375,6 +5379,10 @@ msgstr "There is no product by provided id: {id}"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:104
 msgid "There is no receivable by provided id: {0}"
 msgstr "There is no receivable by provided id: {0}"
+
+#: src/components/userRoles/UserRoleDetails/UserRoleDetails.tsx:39
+msgid "There is no role by provided id: {id}"
+msgstr "There is no role by provided id: {id}"
 
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:117
 msgid "There was an issue reading the file."
@@ -5698,7 +5706,7 @@ msgstr "Unsupported file type"
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:52
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:191
 #: src/components/userRoles/consts.ts:72
-#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:134
+#: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:147
 msgid "Update"
 msgstr "Update"
 
