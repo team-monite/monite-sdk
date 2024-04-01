@@ -21,32 +21,39 @@ interface UserRoleRowProps {
   columns: { id: string }[];
 }
 
+interface ActionPermissionCellProps {
+  actionPermission: boolean | undefined;
+}
+
+const ActionPermissionCell = ({
+  actionPermission,
+}: ActionPermissionCellProps) => {
+  if (typeof actionPermission !== 'boolean') return null;
+
+  if (actionPermission) return <CheckRoundedIcon color="primary" />;
+
+  return <CloseRoundedIcon color="secondary" />;
+};
+
 export const UserRoleRow = ({ row, columns }: UserRoleRowProps) => {
   const { i18n } = useLingui();
+  const fixedLabelColumn = columns.slice(0, 1);
+  const actionPermissionsColumns = columns.slice(1);
 
   return (
     <TableRow>
-      {/* render the first column as a fixed label of the row */}
-      {columns.slice(0, 1).map((column) => (
+      {fixedLabelColumn.map((column) => (
         <StyledTableCell key={column.id}>
           {row.name && getPermissionToLabelMap(i18n)[row.name]}
         </StyledTableCell>
       ))}
-      {/* render the rest of the permissions as cells with icons.
-      It should be empty in case of action permission is undefined.*/}
-      {columns.slice(1).map((column) => {
+      {actionPermissionsColumns.map((column) => {
         const action = column.id as keyof Actions;
         const actionPermission = row[action];
 
         return (
           <StyledTableCell key={column.id}>
-            {typeof actionPermission === 'boolean' ? (
-              actionPermission ? (
-                <CheckRoundedIcon color="primary" />
-              ) : (
-                <CloseRoundedIcon color="secondary" />
-              )
-            ) : null}
+            <ActionPermissionCell actionPermission={actionPermission} />
           </StyledTableCell>
         );
       })}
