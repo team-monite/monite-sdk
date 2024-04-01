@@ -1,2 +1,3 @@
-export * from './UserRoles';
-export * from './UserRolesTable';
+export { UserRoles } from './UserRoles';
+export { UserRolesTable } from './UserRolesTable';
+export { UserRoleDetails } from './UserRoleDetails';
