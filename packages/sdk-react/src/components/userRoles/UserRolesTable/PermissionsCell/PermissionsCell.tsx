@@ -18,9 +18,13 @@ interface PermissionsCellProps {
 export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
+  if (!permissions.objects) {
+    return null;
+  }
+
   return (
     <Grid container>
-      {permissions.objects?.map((object) => {
+      {permissions.objects.map((object) => {
         if (object.object_type) {
           return (
             <Grid item container key={object.object_type}>
