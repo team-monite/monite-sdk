@@ -1,1 +1,1 @@
-export * from './UserRoleDetails';
+export { UserRoleDetails } from './UserRoleDetails';
