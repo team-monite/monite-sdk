@@ -39,12 +39,12 @@ const normalizeActions = (actions: (ActionSchema | PayableActionSchema)[]) => {
   );
 };
 
-const StyledPermission = styled('span')(() => ({
-  display: 'inline-block',
-  fontWeight: 600,
-  width: 14,
-  textAlign: 'center',
-}));
+const StyledPermission = styled('span')`
+  display: inline-block;
+  font-weight: 600;
+  width: 14px;
+  text-align: center;
+`;
 
 const StyledActivePermission = styled(StyledPermission)(({ theme }) => ({
   color: theme.palette.primary.main,
