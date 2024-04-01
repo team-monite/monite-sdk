@@ -5,6 +5,8 @@ import { useLingui } from '@lingui/react';
 import { BizObjectsSchema } from '@monite/sdk-api';
 import { Grid } from '@mui/material';
 
+import { object } from 'yup';
+
 import { Permission } from './Permission';
 
 interface PermissionsCellProps {
@@ -24,22 +26,18 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
 
   return (
     <Grid container>
-      {permissions.objects.map((object) => {
-        if (object.object_type) {
-          return (
-            <Grid item container key={object.object_type}>
-              <Grid item xs={6}>
-                {getPermissionToLabelMap(i18n)[object.object_type]}
-              </Grid>
-              <Grid item xs={6}>
-                {object.actions && <Permission actions={object.actions} />}
-              </Grid>
+      {permissions.objects
+        .filter((object) => !!object.object_type)
+        .map((object) => (
+          <Grid item container key={object.object_type}>
+            <Grid item xs={6}>
+              {getPermissionToLabelMap(i18n)[object.object_type!]}
             </Grid>
-          );
-        }
-
-        return null;
-      })}
+            <Grid item xs={6}>
+              {object.actions && <Permission actions={object.actions} />}
+            </Grid>
+          </Grid>
+        ))}
     </Grid>
   );
 };
