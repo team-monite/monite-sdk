@@ -18,10 +18,10 @@ const bankAccountsQueryKeys = {
 export const useBankAccounts = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<EntityBankAccountPaginationResponse, ApiError>(
-    [...bankAccountsQueryKeys.all()],
-    () => monite.api.bankAccounts.getAll()
-  );
+  return useQuery<EntityBankAccountPaginationResponse, ApiError>({
+    queryKey: [...bankAccountsQueryKeys.all()],
+    queryFn: () => monite.api.bankAccounts.getAll(),
+  });
 };
 
 export const useCreateBankAccount = () => {
@@ -31,13 +31,14 @@ export const useCreateBankAccount = () => {
     EntityBankAccountResponse,
     ErrorType,
     CreateEntityBankAccountRequest
-  >((payload) => monite.api.bankAccounts.create(payload));
+  >({ mutationFn: (payload) => monite.api.bankAccounts.create(payload) });
 };
 
 export const useDeleteBankAccount = () => {
   const { monite } = useMoniteContext();
 
-  return useMutation<void, ErrorType, string>((bankAccountId) =>
-    monite.api.bankAccounts.delete(bankAccountId)
-  );
+  return useMutation<void, ErrorType, string>({
+    mutationFn: (bankAccountId) =>
+      monite.api.bankAccounts.delete(bankAccountId),
+  });
 };

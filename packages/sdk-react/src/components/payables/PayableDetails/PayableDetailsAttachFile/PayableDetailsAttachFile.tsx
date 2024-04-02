@@ -41,7 +41,7 @@ export const PayableDetailsAttachFile = ({
   const { i18n } = useLingui();
   const theme = useTheme();
   const [dragIsOver, setDragIsOver] = useState(false);
-  const { mutate: attachFileToPayable, isLoading } =
+  const { mutate: attachFileToPayable, isPending: isLoading } =
     useAttachFileToPayable(payableId);
   const dragOverStyle = useMemo(
     () => ({

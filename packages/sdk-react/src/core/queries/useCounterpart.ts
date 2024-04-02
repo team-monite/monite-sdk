@@ -157,18 +157,18 @@ const useCounterpartVatListCache = (counterpartId: string) =>
 export const useCounterpartAddresses = (counterpartId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartAddressResponseWithCounterpartID[], Error>(
-    counterpartQueryKeys.addressList(counterpartId),
-    () =>
+  return useQuery<CounterpartAddressResponseWithCounterpartID[], Error>({
+    queryKey: counterpartQueryKeys.addressList(counterpartId),
+
+    queryFn: () =>
       !!counterpartId
         ? monite.api.counterpartsAddresses
             .getCounterpartAddresses(counterpartId)
             .then((response) => response.data)
         : [],
-    {
-      enabled: !!counterpartId,
-    }
-  );
+
+    enabled: !!counterpartId,
+  });
 };
 
 export const useCounterpartAddressById = (
@@ -180,9 +180,10 @@ export const useCounterpartAddressById = (
   return useQuery<
     CounterpartAddressResponseWithCounterpartID | undefined,
     Error
-  >(
-    counterpartQueryKeys.addressDetail(counterpartId!, addressId!),
-    () => {
+  >({
+    queryKey: counterpartQueryKeys.addressDetail(counterpartId!, addressId!),
+
+    queryFn: () => {
       if (!counterpartId || !addressId) {
         throw new Error(
           'MoniteReactSDK: counterpartId and addressId required.'
@@ -194,10 +195,9 @@ export const useCounterpartAddressById = (
         counterpartId
       );
     },
-    {
-      enabled: Boolean(counterpartId) && Boolean(addressId),
-    }
-  );
+
+    enabled: Boolean(counterpartId) && Boolean(addressId),
+  });
 };
 
 export const useUpdateCounterpartAddress = (
@@ -212,41 +212,41 @@ export const useUpdateCounterpartAddress = (
     CounterpartAddressResponseWithCounterpartID,
     ApiError,
     CounterpartUpdateAddress
-  >(
-    (payload) =>
+  >({
+    mutationFn: (payload) =>
       monite.api.counterpartsAddresses.updateCounterpartsAddress(
         addressId,
         counterpartId,
         payload
       ),
-    {
-      onSuccess: (address) => {
-        update(address);
 
-        toast.success(t(i18n)`Successful update.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update.`);
-      },
-    }
-  );
+    onSuccess: (address) => {
+      update(address);
+
+      toast.success(t(i18n)`Successful update.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update.`);
+    },
+  });
 };
 
 export const useCounterpartBankList = (counterpartId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartBankAccountResponse[], Error>(
-    counterpartQueryKeys.bankList(counterpartId),
-    () =>
+  return useQuery<CounterpartBankAccountResponse[], Error>({
+    queryKey: counterpartQueryKeys.bankList(counterpartId),
+
+    queryFn: () =>
       !!counterpartId
         ? monite.api.counterparts
             .getBankAccounts(counterpartId)
             .then((response) => response.data)
         : [],
-    {
-      enabled: !!counterpartId,
-    }
-  );
+
+    enabled: !!counterpartId,
+  });
 };
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
@@ -258,12 +258,16 @@ export const useCreateCounterpartBank = (counterpartId: string) => {
     CounterpartBankAccountResponse,
     Error,
     CreateCounterpartBankAccount
-  >((bank) => monite.api.counterparts.createBankAccount(counterpartId, bank), {
+  >({
+    mutationFn: (bank) =>
+      monite.api.counterparts.createBankAccount(counterpartId, bank),
+
     onSuccess: (bank) => {
       add(bank);
 
       toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
     },
+
     onError: () => {
       toast.error(t(i18n)`Failed to create Bank Account.`);
     },
@@ -277,9 +281,10 @@ export const useCounterpartBankById = (
   const { monite } = useMoniteContext();
   const { findById } = useCounterpartBankListCache(counterpartId);
 
-  return useQuery<CounterpartBankAccountResponse | undefined, Error>(
-    counterpartQueryKeys.bankDetail(counterpartId, bankId),
-    () => {
+  return useQuery<CounterpartBankAccountResponse | undefined, Error>({
+    queryKey: counterpartQueryKeys.bankDetail(counterpartId, bankId),
+
+    queryFn: () => {
       if (!bankId) return undefined;
 
       const existedBank = findById(bankId);
@@ -288,10 +293,9 @@ export const useCounterpartBankById = (
 
       return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
     },
-    {
-      enabled: !!bankId,
-    }
-  );
+
+    enabled: !!bankId,
+  });
 };
 
 export const useUpdateCounterpartBank = (counterpartId: string) => {
@@ -303,20 +307,20 @@ export const useUpdateCounterpartBank = (counterpartId: string) => {
     CounterpartBankAccountResponse,
     Error,
     CounterpartBankUpdate
-  >(
-    ({ bankId, payload }) =>
+  >({
+    mutationFn: ({ bankId, payload }) =>
       monite.api.counterparts.updateBankAccount(counterpartId, bankId, payload),
-    {
-      onSuccess: (bank) => {
-        update(bank);
 
-        toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update Bank Account.`);
-      },
-    }
-  );
+    onSuccess: (bank) => {
+      update(bank);
+
+      toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update Bank Account.`);
+    },
+  });
 };
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
@@ -324,37 +328,37 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { monite } = useMoniteContext();
   const { remove } = useCounterpartBankListCache(counterpartId);
 
-  return useMutation<void, Error, string>(
-    (bankId) =>
+  return useMutation<void, Error, string>({
+    mutationFn: (bankId) =>
       monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
-    {
-      onSuccess: (_, bankId) => {
-        remove(bankId);
 
-        toast.success(t(i18n)`Bank Account was deleted.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to delete Bank Account.`);
-      },
-    }
-  );
+    onSuccess: (_, bankId) => {
+      remove(bankId);
+
+      toast.success(t(i18n)`Bank Account was deleted.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to delete Bank Account.`);
+    },
+  });
 };
 
 export const useCounterpartVatList = (counterpartId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartVatIDResponse[], Error>(
-    counterpartQueryKeys.vatList(counterpartId),
-    () =>
+  return useQuery<CounterpartVatIDResponse[], Error>({
+    queryKey: counterpartQueryKeys.vatList(counterpartId),
+
+    queryFn: () =>
       !!counterpartId
         ? monite.api.counterparts
             .getVats(counterpartId)
             .then((response) => response.data)
         : [],
-    {
-      enabled: !!counterpartId,
-    }
-  );
+
+    enabled: !!counterpartId,
+  });
 };
 
 export const useCreateCounterpartVat = (counterpartId: string) => {
@@ -362,19 +366,19 @@ export const useCreateCounterpartVat = (counterpartId: string) => {
   const { monite } = useMoniteContext();
   const { add } = useCounterpartVatListCache(counterpartId);
 
-  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatID>(
-    (vat) => monite.api.counterparts.createVat(counterpartId, vat),
-    {
-      onSuccess: (vat) => {
-        add(vat);
+  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatID>({
+    mutationFn: (vat) => monite.api.counterparts.createVat(counterpartId, vat),
 
-        toast.success(t(i18n)`Vat “${vat.value}” was created.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to create VAT.`);
-      },
-    }
-  );
+    onSuccess: (vat) => {
+      add(vat);
+
+      toast.success(t(i18n)`Vat “${vat.value}” was created.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to create VAT.`);
+    },
+  });
 };
 
 export const useCounterpartVatById = (
@@ -384,9 +388,10 @@ export const useCounterpartVatById = (
   const { monite } = useMoniteContext();
   const { findById } = useCounterpartVatListCache(counterpartId);
 
-  return useQuery<CounterpartVatIDResponse | undefined, Error>(
-    counterpartQueryKeys.vatDetail(counterpartId, vatId),
-    () => {
+  return useQuery<CounterpartVatIDResponse | undefined, Error>({
+    queryKey: counterpartQueryKeys.vatDetail(counterpartId, vatId),
+
+    queryFn: () => {
       if (!vatId) return undefined;
 
       const existedVat = findById(vatId);
@@ -395,10 +400,9 @@ export const useCounterpartVatById = (
 
       return monite.api.counterparts.getVatById(counterpartId, vatId);
     },
-    {
-      enabled: !!vatId,
-    }
-  );
+
+    enabled: !!vatId,
+  });
 };
 
 export const useUpdateCounterpartVat = (counterpartId: string) => {
@@ -406,20 +410,20 @@ export const useUpdateCounterpartVat = (counterpartId: string) => {
   const { monite } = useMoniteContext();
   const { update } = useCounterpartVatListCache(counterpartId);
 
-  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatUpdate>(
-    ({ vatId, payload }) =>
+  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatUpdate>({
+    mutationFn: ({ vatId, payload }) =>
       monite.api.counterparts.updateVat(counterpartId, vatId, payload),
-    {
-      onSuccess: (vat) => {
-        update(vat);
 
-        toast.success(t(i18n)`Vat “${vat.value}” was updated.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update VAT.`);
-      },
-    }
-  );
+    onSuccess: (vat) => {
+      update(vat);
+
+      toast.success(t(i18n)`Vat “${vat.value}” was updated.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update VAT.`);
+    },
+  });
 };
 
 export const useDeleteCounterpartVat = (counterpartId: string) => {
@@ -427,19 +431,20 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
   const { monite } = useMoniteContext();
   const { remove } = useCounterpartVatListCache(counterpartId);
 
-  return useMutation<void, Error, string>(
-    (vatId) => monite.api.counterparts.deleteVat(counterpartId, vatId),
-    {
-      onSuccess: (_, vatId) => {
-        remove(vatId);
+  return useMutation<void, Error, string>({
+    mutationFn: (vatId) =>
+      monite.api.counterparts.deleteVat(counterpartId, vatId),
 
-        toast.success(t(i18n)`VAT was deleted.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to delete VAT.`);
-      },
-    }
-  );
+    onSuccess: (_, vatId) => {
+      remove(vatId);
+
+      toast.success(t(i18n)`VAT was deleted.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to delete VAT.`);
+    },
+  });
 };
 
 export const useCounterpartContactList = (
@@ -448,18 +453,18 @@ export const useCounterpartContactList = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<Array<CounterpartContactResponse> | undefined, ApiError>(
-    counterpartQueryKeys.contactList(counterpartId),
-    () =>
+  return useQuery<Array<CounterpartContactResponse> | undefined, ApiError>({
+    queryKey: counterpartQueryKeys.contactList(counterpartId),
+
+    queryFn: () =>
       counterpartId
         ? monite.api.counterparts
             .getContacts(counterpartId)
             .then((res) => res.data)
         : undefined,
-    {
-      enabled: !!counterpartId && isOrganization,
-    }
-  );
+
+    enabled: !!counterpartId && isOrganization,
+  });
 };
 
 export const useCreateCounterpartContact = (counterpartId: string) => {
@@ -472,24 +477,25 @@ export const useCreateCounterpartContact = (counterpartId: string) => {
     CounterpartContactResponse,
     Error,
     CreateCounterpartContactPayload
-  >(
-    (contact) => monite.api.counterparts.createContact(counterpartId, contact),
-    {
-      onSuccess: (contact) => {
-        add(contact);
-        invalidate();
-        toast.success(
-          t(i18n)`Contact Person “${getIndividualName(
-            contact.first_name,
-            contact.last_name
-          )}” was created.`
-        );
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to create Contact Person.`);
-      },
-    }
-  );
+  >({
+    mutationFn: (contact) =>
+      monite.api.counterparts.createContact(counterpartId, contact),
+
+    onSuccess: (contact) => {
+      add(contact);
+      invalidate();
+      toast.success(
+        t(i18n)`Contact Person “${getIndividualName(
+          contact.first_name,
+          contact.last_name
+        )}” was created.`
+      );
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to create Contact Person.`);
+    },
+  });
 };
 
 export const useCounterpartContactById = (
@@ -499,9 +505,10 @@ export const useCounterpartContactById = (
   const { monite } = useMoniteContext();
   const { findById } = useCounterpartContactListCache(counterpartId);
 
-  return useQuery<CounterpartContactResponse | undefined, Error>(
-    counterpartQueryKeys.contactDetail(counterpartId, contactId!),
-    () => {
+  return useQuery<CounterpartContactResponse | undefined, Error>({
+    queryKey: counterpartQueryKeys.contactDetail(counterpartId, contactId!),
+
+    queryFn: () => {
       if (!contactId) return undefined;
 
       const existedContact = findById(contactId);
@@ -510,10 +517,9 @@ export const useCounterpartContactById = (
 
       return monite.api.counterparts.getContactById(counterpartId, contactId);
     },
-    {
-      enabled: Boolean(contactId) && Boolean(counterpartId),
-    }
-  );
+
+    enabled: Boolean(contactId) && Boolean(counterpartId),
+  });
 };
 
 export const useUpdateCounterpartContact = (counterpartId: string) => {
@@ -526,26 +532,26 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
     CounterpartContactResponse,
     Error,
     CounterpartContactUpdate
-  >(
-    ({ contactId, payload }) =>
+  >({
+    mutationFn: ({ contactId, payload }) =>
       monite.api.counterparts.updateContact(counterpartId, contactId, payload),
-    {
-      onSuccess: (contact) => {
-        update(contact);
-        invalidate();
 
-        toast.success(
-          t(i18n)`Contact Person “${getIndividualName(
-            contact.first_name,
-            contact.last_name
-          )}” was updated.`
-        );
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update Contact Person.`);
-      },
-    }
-  );
+    onSuccess: (contact) => {
+      update(contact);
+      invalidate();
+
+      toast.success(
+        t(i18n)`Contact Person “${getIndividualName(
+          contact.first_name,
+          contact.last_name
+        )}” was updated.`
+      );
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update Contact Person.`);
+    },
+  });
 };
 
 export const useDeleteCounterpartContact = (counterpartId: string) => {
@@ -554,23 +560,23 @@ export const useDeleteCounterpartContact = (counterpartId: string) => {
   const { invalidate } = useCounterpartListCache();
   const { remove } = useCounterpartContactListCache(counterpartId);
 
-  return useMutation<void, Error, string>(
-    (contactId) =>
+  return useMutation<void, Error, string>({
+    mutationFn: (contactId) =>
       monite.api.counterparts.deleteContact(counterpartId, contactId),
-    {
-      onSuccess: (_, contactId) => {
-        remove(contactId);
-        invalidate();
 
-        toast.success(t(i18n)`Contact Person was deleted.`);
-      },
-      onError: (error) => {
-        toast.error(
-          getMessageInError(error) || t(i18n)`Failed to delete Contact Person.`
-        );
-      },
-    }
-  );
+    onSuccess: (_, contactId) => {
+      remove(contactId);
+      invalidate();
+
+      toast.success(t(i18n)`Contact Person was deleted.`);
+    },
+
+    onError: (error) => {
+      toast.error(
+        getMessageInError(error) || t(i18n)`Failed to delete Contact Person.`
+      );
+    },
+  });
 };
 
 export const useCounterpartList = (
@@ -578,10 +584,10 @@ export const useCounterpartList = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartPaginationResponse, Error>(
-    [...counterpartQueryKeys.list(), ...args] as const,
-    () => monite.api.counterparts.getList(...args)
-  );
+  return useQuery<CounterpartPaginationResponse, Error>({
+    queryKey: [...counterpartQueryKeys.list(), ...args] as const,
+    queryFn: () => monite.api.counterparts.getList(...args),
+  });
 };
 
 export const useCreateCounterpart = () => {
@@ -590,34 +596,34 @@ export const useCreateCounterpart = () => {
   const { invalidate } = useCounterpartListCache();
   const { setEntity } = useCounterpartDetailCache();
 
-  return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>(
-    (payload) => monite.api.counterparts.create(payload),
-    {
-      onSuccess: (counterpart) => {
-        setEntity(counterpart);
-        invalidate();
+  return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>({
+    mutationFn: (payload) => monite.api.counterparts.create(payload),
 
-        toast.success(
-          t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
-        );
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to create Counterpart.`);
-      },
-    }
-  );
+    onSuccess: (counterpart) => {
+      setEntity(counterpart);
+      invalidate();
+
+      toast.success(
+        t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
+      );
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to create Counterpart.`);
+    },
+  });
 };
 
 export const useCounterpartById = (id?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<CounterpartResponse | undefined, Error>(
-    counterpartQueryKeys.detail(id),
-    () => (id ? monite.api.counterparts.getById(id) : undefined),
-    {
-      enabled: !!id,
-    }
-  );
+  return useQuery<CounterpartResponse | undefined, Error>({
+    queryKey: counterpartQueryKeys.detail(id),
+
+    queryFn: () => (id ? monite.api.counterparts.getById(id) : undefined),
+
+    enabled: !!id,
+  });
 };
 
 export const useUpdateCounterpart = () => {
@@ -626,22 +632,23 @@ export const useUpdateCounterpart = () => {
   const { invalidate } = useCounterpartListCache();
   const { setEntity } = useCounterpartDetailCache();
 
-  return useMutation<CounterpartResponse, Error, CounterpartUpdate>(
-    ({ id, payload }) => monite.api.counterparts.update(id, payload),
-    {
-      onSuccess: (counterpart) => {
-        setEntity(counterpart);
-        invalidate();
+  return useMutation<CounterpartResponse, Error, CounterpartUpdate>({
+    mutationFn: ({ id, payload }) =>
+      monite.api.counterparts.update(id, payload),
 
-        toast.success(
-          t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
-        );
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update Counterpart.`);
-      },
-    }
-  );
+    onSuccess: (counterpart) => {
+      setEntity(counterpart);
+      invalidate();
+
+      toast.success(
+        t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
+      );
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update Counterpart.`);
+    },
+  });
 };
 
 export const useDeleteCounterpart = () => {
@@ -650,18 +657,18 @@ export const useDeleteCounterpart = () => {
   const { invalidate } = useCounterpartListCache();
   const { removeEntity } = useCounterpartDetailCache();
 
-  return useMutation<void, Error, CounterpartResponse, CounterpartResponse>(
-    (counterpart) => monite.api.counterparts.delete(counterpart.id),
-    {
-      onSuccess: (_, counterpart) => {
-        toast.success(t(i18n)`Counterpart was deleted.`);
+  return useMutation<void, Error, CounterpartResponse, CounterpartResponse>({
+    mutationFn: (counterpart) => monite.api.counterparts.delete(counterpart.id),
 
-        removeEntity(counterpart.id);
-        invalidate();
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to delete Counterpart.`);
-      },
-    }
-  );
+    onSuccess: (_, counterpart) => {
+      toast.success(t(i18n)`Counterpart was deleted.`);
+
+      removeEntity(counterpart.id);
+      invalidate();
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to delete Counterpart.`);
+    },
+  });
 };

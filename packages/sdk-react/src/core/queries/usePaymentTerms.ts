@@ -10,8 +10,9 @@ export const usePaymentTerms = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<PaymentTermsListResponse, Error>(
-    [PAYMENT_TERM_QUERY_ID, { variables: args }],
-    () => monite.api.paymentTerms.getAll(...args)
-  );
+  return useQuery<PaymentTermsListResponse, Error>({
+    queryKey: [PAYMENT_TERM_QUERY_ID, { variables: args }],
+
+    queryFn: () => monite.api.paymentTerms.getAll(...args),
+  });
 };

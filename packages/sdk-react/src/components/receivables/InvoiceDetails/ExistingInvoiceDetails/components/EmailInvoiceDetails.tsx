@@ -145,8 +145,8 @@ export const EmailInvoiceDetails = ({
                   onClick={onClose}
                   startIcon={<ArrowBackIcon />}
                   disabled={
-                    sendMutation.isLoading ||
-                    createPaymentLinkMutation.isLoading
+                    sendMutation.isPending ||
+                    createPaymentLinkMutation.isPending
                   }
                 >{t(i18n)`Back`}</Button>
                 <Typography variant="h3">{t(i18n)`Compose email`}</Typography>
@@ -164,7 +164,7 @@ export const EmailInvoiceDetails = ({
                   color="primary"
                   type="submit"
                   form="emailInvoiceDetailsForm"
-                  disabled={sendMutation.isLoading}
+                  disabled={sendMutation.isPending}
                 >{t(i18n)`Issue and send`}</Button>
               </Stack>
             </Grid>
@@ -194,7 +194,7 @@ export const EmailInvoiceDetails = ({
                     error={Boolean(error)}
                     helperText={error?.message}
                     required
-                    disabled={sendMutation.isLoading}
+                    disabled={sendMutation.isPending}
                     {...field}
                   />
                 )}
@@ -218,7 +218,7 @@ export const EmailInvoiceDetails = ({
                     required
                     multiline
                     rows={8}
-                    disabled={sendMutation.isLoading}
+                    disabled={sendMutation.isPending}
                     {...field}
                   />
                 )}

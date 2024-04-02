@@ -120,8 +120,8 @@ export function useCounterpartContactForm({
     formRef,
     submitForm,
     isLoading:
-      contactCreateMutation.isLoading ||
-      contactUpdateMutation.isLoading ||
+      contactCreateMutation.isPending ||
+      contactUpdateMutation.isPending ||
       isInitialLoading,
     error: contactCreateMutation.error || contactUpdateMutation.error,
   };

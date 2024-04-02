@@ -104,8 +104,8 @@ export function useCounterpartVatForm({
     counterpart,
     vat,
     isLoading:
-      createVatMutation.isLoading ||
-      updateVatMutation.isLoading ||
+      createVatMutation.isPending ||
+      updateVatMutation.isPending ||
       isCounterpartLoading ||
       isVatLoading,
     error: createVatMutation.error || updateVatMutation.error,

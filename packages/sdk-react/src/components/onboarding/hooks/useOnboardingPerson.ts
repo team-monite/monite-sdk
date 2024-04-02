@@ -76,19 +76,19 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const {
     mutateAsync: createPersonMutation,
-    isLoading: isCreateLoading,
+    isPending: isCreateLoading,
     error: createPersonError,
   } = useCreatePerson();
 
   const {
     mutateAsync: updatePersonMutation,
-    isLoading: isUpdateLoading,
+    isPending: isUpdateLoading,
     error: updatePersonError,
   } = useUpdatePerson();
 
   const {
     mutateAsync: deletePersonMutation,
-    isLoading: isDeleteLoading,
+    isPending: isDeleteLoading,
     error: deletePersonError,
   } = useDeletePerson();
 

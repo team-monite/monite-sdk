@@ -18,7 +18,7 @@ export const useEntityCache = <TInput extends EntityType>(
   );
 
   const removeEntity = useCallback(
-    (id: string) => queryClient.removeQueries(key(id)),
+    (id: string) => queryClient.removeQueries({ queryKey: key(id) }),
     [queryClient, key]
   );
 
@@ -87,17 +87,18 @@ export const useEntityListCache = <TInput extends EntityType>(
   const invalidate = useCallback(
     (listId?: string) => {
       if (listId) {
-        (async () => await queryClient.invalidateQueries(key(listId)))();
+        (async () =>
+          await queryClient.invalidateQueries({ queryKey: key(listId) }))();
         return;
       }
 
-      (async () => await queryClient.invalidateQueries(key()))();
+      (async () => await queryClient.invalidateQueries({ queryKey: key() }))();
     },
     [queryClient, key]
   );
 
   const destroy = useCallback(
-    () => queryClient.removeQueries(key()),
+    () => queryClient.removeQueries({ queryKey: key() }),
     [queryClient, key]
   );
 

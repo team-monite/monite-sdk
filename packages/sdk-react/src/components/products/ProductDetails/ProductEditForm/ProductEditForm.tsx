@@ -186,7 +186,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
         <Button
           variant="outlined"
           onClick={submitForm}
-          disabled={productUpdateMutation.isLoading}
+          disabled={productUpdateMutation.isPending}
         >
           {t(i18n)`Update`}
         </Button>

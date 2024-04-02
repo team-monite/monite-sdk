@@ -73,6 +73,6 @@ export function useCounterpartAddressFormUpdate({
     formRef,
     submitForm,
     updateAddress,
-    isLoading: addressUpdateMutation.isLoading,
+    isLoading: addressUpdateMutation.isPending,
   };
 }

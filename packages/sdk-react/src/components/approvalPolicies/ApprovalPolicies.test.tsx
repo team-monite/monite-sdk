@@ -17,7 +17,7 @@ describe('ApprovalPolicies', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -57,7 +57,7 @@ describe('ApprovalPolicies', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -93,7 +93,7 @@ describe('ApprovalPolicies', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -120,16 +120,11 @@ describe('ApprovalPolicies', () => {
 });
 
 function checkApprovalPolicyQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['approval_policies'], {
-      exact: false,
-    })
-  )
-    throw new Error('Approval Policies query is not executed');
+  const data = queryClient.getQueriesData({
+    exact: false,
+    queryKey: ['approval_policies'],
+    predicate: (query) => query.state.status === 'success',
+  });
 
-  if (
-    queryClient.getQueryState(['approval_policies'], { exact: false })
-      ?.status !== 'success'
-  )
-    throw new Error('Approval Policies query failed');
+  if (!data.length) throw new Error('Approval Policies query is not executed');
 }
