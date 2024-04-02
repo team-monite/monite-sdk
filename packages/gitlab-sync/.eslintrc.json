@@ -1,0 +1,4 @@
+{
+  "$schema": "http://json.schemastore.org/eslintrc",
+  "extends": ["plugin:@team-monite/vanilla"]
+}
