@@ -31,7 +31,6 @@
     "@emotion/styled": "~11.11.0",
     "@sentry/cli": "~2.28.6",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "changesets-gitlab": "~0.11.5",
     "craco-babel-loader": "^1.0.4",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "~3.6.0",
