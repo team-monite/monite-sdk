@@ -81,7 +81,7 @@ const StyledDialogContainer = styled(DialogContent)`
 const StyledTableTitle = styled(Typography)`
   display: flex;
   justify-content: space-between;
-  align-items: 'center;
+  align-items: center;
 `;
 
 const StyledDocLink = styled(Link)`
