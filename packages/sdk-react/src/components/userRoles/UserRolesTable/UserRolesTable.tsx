@@ -88,14 +88,14 @@ export const UserRolesTable = ({
   const sortModelItem = sortModel[0];
 
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'role',
       action: ActionEnum.READ,
       entityUserId: user?.id,
     });
 
-  const { data: roles, isInitialLoading } = useRoles({
+  const { data: roles, isLoading } = useRoles({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
@@ -160,7 +160,7 @@ export const UserRolesTable = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           columns={[
             {
               field: 'name',

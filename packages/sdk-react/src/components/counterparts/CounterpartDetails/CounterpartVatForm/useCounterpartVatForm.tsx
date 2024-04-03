@@ -27,9 +27,9 @@ export function useCounterpartVatForm({
   onCreate,
   onUpdate,
 }: CounterpartVatFormProps) {
-  const { data: counterpart, isInitialLoading: isCounterpartLoading } =
+  const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
-  const { data: vat, isInitialLoading: isVatLoading } = useCounterpartVatById(
+  const { data: vat, isLoading: isVatLoading } = useCounterpartVatById(
     counterpartId,
     vatId
   );

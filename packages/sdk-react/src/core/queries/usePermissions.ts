@@ -103,8 +103,8 @@ export function usePermissions<T extends keyof PermissionMap>(method: T) {
   const user = userQuery.data;
 
   const rest = {
-    isInitialLoading: roleQuery.isInitialLoading || userQuery.isInitialLoading,
     isLoading: roleQuery.isLoading || userQuery.isLoading,
+    isPending: roleQuery.isPending || userQuery.isPending,
     isSuccess: roleQuery.isSuccess && userQuery.isSuccess,
     isError: roleQuery.isError || userQuery.isError,
     isFetching: roleQuery.isFetching || userQuery.isFetching,

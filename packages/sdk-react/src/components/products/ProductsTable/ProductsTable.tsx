@@ -109,7 +109,7 @@ export const ProductsTable = ({
   >(undefined);
 
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'product',
       action: ActionEnum.READ,
@@ -126,7 +126,7 @@ export const ProductsTable = ({
     entityUserId: user?.id,
   });
 
-  const { data: products, isInitialLoading } = useProducts({
+  const { data: products, isLoading } = useProducts({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
@@ -265,7 +265,7 @@ export const ProductsTable = ({
               ),
             },
           ]}
-          loading={isInitialLoading}
+          loading={isLoading}
           sortModel={sortModel}
           onSortModelChange={onChangeSort}
           sx={{

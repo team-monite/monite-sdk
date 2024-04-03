@@ -64,7 +64,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     setDeleteModalOpened(false);
   }, []);
 
-  const { data: tags, isInitialLoading } = useTagList(
+  const { data: tags, isLoading } = useTagList(
     sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
     10,
     currentPaginationToken || undefined,
@@ -109,7 +109,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     <MoniteStyleProvider>
       <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           sortModel={sortModels}
           onSortModelChange={onChangeSort}
           sx={{

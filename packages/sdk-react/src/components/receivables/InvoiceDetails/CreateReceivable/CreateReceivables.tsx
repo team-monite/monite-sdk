@@ -92,8 +92,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isInitialLoading: isSettingsLoading } =
-    useEntitySettings();
+  const { data: settings, isLoading: isSettingsLoading } = useEntitySettings();
 
   const [actualCurrency, setActualCurrency] = useState<
     CurrencyEnum | undefined

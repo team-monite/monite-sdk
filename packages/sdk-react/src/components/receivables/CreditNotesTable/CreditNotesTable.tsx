@@ -55,7 +55,7 @@ export const CreditNotesTable = ({ onRowClick }: Props) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, currentFilters } = useReceivablesFilters();
 
-  const { data: creditNotes, isInitialLoading } = useReceivables(
+  const { data: creditNotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,
@@ -102,7 +102,7 @@ export const CreditNotesTable = ({ onRowClick }: Props) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
               borderColor: 'divider',

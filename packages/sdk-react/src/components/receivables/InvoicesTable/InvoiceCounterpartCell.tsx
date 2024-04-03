@@ -11,11 +11,11 @@ export const InvoiceCounterpartCell = ({
 }: InvoiceCounterpartCellProps) => {
   const {
     data: counterpart,
-    isInitialLoading,
+    isLoading,
     error,
   } = useCounterpartById(counterpartId);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Skeleton variant="text" height="50%" width="70%" />;
   }
 

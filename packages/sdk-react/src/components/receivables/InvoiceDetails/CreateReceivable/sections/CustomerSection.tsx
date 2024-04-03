@@ -88,20 +88,20 @@ export const CustomerSection = ({ disabled }: ISectionGeneralProps) => {
 
   const counterpartId = watch('counterpart_id');
 
-  const { data: counterparts, isInitialLoading: isCounterpartsLoading } =
+  const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
   const {
     data: counterpartContacts,
     error: contactPersonError,
-    isInitialLoading: isContactPersonsLoading,
+    isLoading: isContactPersonsLoading,
   } = useCounterpartContactList(counterpartId);
-  const { data: counterpartVats, isInitialLoading: isCounterpartVatsLoading } =
+  const { data: counterpartVats, isLoading: isCounterpartVatsLoading } =
     useCounterpartVatList(counterpartId);
-  const { data: counterpart, isInitialLoading: isCounterpartLoading } =
+  const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
   const {
     data: counterpartAddresses,
-    isInitialLoading: isCounterpartAddressesLoading,
+    isLoading: isCounterpartAddressesLoading,
   } = useCounterpartAddresses(counterpartId);
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =

@@ -42,9 +42,9 @@ export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
 
   const { root } = useRootElements();
 
-  const { data: entityVatIds, isInitialLoading: isEntityVatIdsLoading } =
+  const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
     useEntityVatIdList();
-  const { data: entity, isInitialLoading: isEntityLoading } = useMyEntity();
+  const { data: entity, isLoading: isEntityLoading } = useMyEntity();
 
   /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =

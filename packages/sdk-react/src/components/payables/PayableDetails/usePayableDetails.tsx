@@ -219,7 +219,7 @@ export function usePayableDetails({
   const {
     data: payable,
     error: payableQueryError,
-    isInitialLoading,
+    isLoading,
   } = usePayableById(payableId);
 
   const { data: lineItemsData } = usePayableLineItemsList(payableId);
@@ -271,7 +271,7 @@ export function usePayableDetails({
 
   useEffect(() => {
     if (!status) {
-      if (!isInitialLoading) {
+      if (!isLoading) {
         setIsPermissionsLoading(false);
       }
 
@@ -360,9 +360,9 @@ export function usePayableDetails({
     setIsPermissionsLoading(false);
   }, [
     isEdit,
+    isLoading,
     isCancelAvailable,
     isApproveAvailable,
-    isInitialLoading,
     isPayAvailable,
     isSubmitAvailable,
     isUpdatesAvailable,
@@ -482,7 +482,7 @@ export function usePayableDetails({
   return {
     payable,
     isLoading:
-      isInitialLoading ||
+      isLoading ||
       isActionButtonLoading ||
       isPermissionsLoading ||
       isFormLoading,

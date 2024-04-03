@@ -54,14 +54,14 @@ export const Receivables = () => {
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
       action: ActionEnum.CREATE,
       entityUserId: user?.id,
     });
 
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
       action: ActionEnum.READ,

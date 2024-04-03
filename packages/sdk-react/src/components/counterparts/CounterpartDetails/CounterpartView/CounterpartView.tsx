@@ -58,7 +58,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
   } = useCounterpartView(props);
   const dialogContext = useDialog();
 
-  const { data: isReadAvailable, isInitialLoading: isReadAvailableLoading } =
+  const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.READ,
@@ -71,14 +71,14 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     entityUserId: counterpart?.created_by_entity_user_id,
   });
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.CREATE,
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
-  const { data: isDeleteAllowed, isInitialLoading: isDeleteAllowedLoading } =
+  const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.DELETE,

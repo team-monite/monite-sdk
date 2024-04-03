@@ -134,7 +134,7 @@ export const CounterpartsTable = ({
    * https://monite.atlassian.net/browse/DEV-6311
    */
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.READ,
@@ -156,7 +156,7 @@ export const CounterpartsTable = ({
 
   const {
     data: counterparts,
-    isInitialLoading,
+    isLoading,
     refetch,
   } = useCounterpartList(
     undefined,
@@ -257,7 +257,7 @@ export const CounterpartsTable = ({
           />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           sortModel={sortModel}
           columnVisibilityModel={{

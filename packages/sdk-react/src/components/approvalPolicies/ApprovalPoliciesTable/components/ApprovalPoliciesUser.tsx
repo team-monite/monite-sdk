@@ -11,10 +11,9 @@ interface IApprovalPoliciesUserProps {
 export const ApprovalPoliciesUser = ({
   entityUserId,
 }: IApprovalPoliciesUserProps) => {
-  const { data: entityUser, isInitialLoading } =
-    useEntityUserById(entityUserId);
+  const { data: entityUser, isLoading } = useEntityUserById(entityUserId);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return (
       <Chip
         label={

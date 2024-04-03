@@ -344,7 +344,7 @@ interface IReceivableDetailsResult {
   permissions: Array<InvoiceDetailsPermissions>;
   receivable: ReceivableResponse | undefined;
 
-  isInitialLoading: boolean;
+  isLoading: boolean;
 
   /**
    * `isButtonsLoading` means that some mutation
@@ -369,7 +369,7 @@ export function useInvoiceDetails({
   onMarkAsUncollectible,
   onDelete,
 }: IUseInvoiceDetailsProps): IReceivableDetailsResult {
-  const { data: receivable, isInitialLoading, error } = useReceivableById(id);
+  const { data: receivable, isLoading, error } = useReceivableById(id);
   const [permissions, setPermissions] = useState<
     Array<InvoiceDetailsPermissions>
   >([]);
@@ -387,7 +387,7 @@ export function useInvoiceDetails({
 
   useEffect(() => {
     if (!status || !type) {
-      if (!isInitialLoading) {
+      if (!isLoading) {
         setIsPermissionsLoading(false);
       }
 
@@ -447,7 +447,7 @@ export function useInvoiceDetails({
     }
 
     setIsPermissionsLoading(false);
-  }, [isInitialLoading, status, type]);
+  }, [isLoading, status, type]);
 
   useEffect(() => {
     setIsButtonsLoading(
@@ -490,8 +490,7 @@ export function useInvoiceDetails({
   return {
     permissions,
     receivable,
-    isInitialLoading:
-      isInitialLoading || isButtonsLoading || isPermissionsLoading,
+    isLoading: isLoading || isButtonsLoading || isPermissionsLoading,
     isButtonsLoading,
     error,
     actions: {

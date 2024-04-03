@@ -161,7 +161,7 @@ export const ProductsTable = ({
   const dialogContent = useDialog();
   const {
     data: productsInfinity,
-    isInitialLoading,
+    isLoading,
     fetchNextPage,
     hasNextPage,
   } = useInfiniteProducts(
@@ -389,7 +389,7 @@ export const ProductsTable = ({
                   data={flattenProducts}
                   context={{
                     empty:
-                      isInitialLoading ||
+                      isLoading ||
                       !flattenProducts ||
                       flattenProducts.length === 0,
                   }}
@@ -410,7 +410,7 @@ export const ProductsTable = ({
                       />
                     ),
                     EmptyPlaceholder: () => {
-                      if (isInitialLoading) {
+                      if (isLoading) {
                         return (
                           <TableCell colSpan={3}>
                             <CenteredContentBox>
@@ -443,7 +443,7 @@ export const ProductsTable = ({
                     },
                   }}
                   fixedHeaderContent={() => {
-                    if (isInitialLoading) {
+                    if (isLoading) {
                       return null;
                     }
 
@@ -478,7 +478,7 @@ export const ProductsTable = ({
                     );
                   }}
                   fixedFooterContent={() => {
-                    if (isInitialLoading) {
+                    if (isLoading) {
                       return null;
                     }
 

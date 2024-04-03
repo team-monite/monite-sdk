@@ -175,7 +175,7 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
     [roles]
   );
 
-  const { data: personMask, isInitialLoading: isPersonMaskLoading } =
+  const { data: personMask, isLoading: isPersonMaskLoading } =
     useOnboardingPersonMask(
       selectedRoles.map((item) => requirementToRelationship(item.requirement)),
       country

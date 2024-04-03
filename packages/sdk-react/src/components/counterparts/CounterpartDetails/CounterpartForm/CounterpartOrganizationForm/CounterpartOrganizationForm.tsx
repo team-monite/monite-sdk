@@ -57,7 +57,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
     isLoading,
   } = useCounterpartForm(props);
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.CREATE,
