@@ -1604,7 +1604,7 @@ msgid "Created by user"
 msgstr "Created by user"
 
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:35
-#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:182
+#: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:185
 msgid "Created on"
 msgstr "Created on"
 
@@ -4794,6 +4794,10 @@ msgstr "Security Brokers/Dealers"
 #: src/components/onboarding/validators/validationSchemas.ts:117
 msgid "Security number"
 msgstr "Security number"
+
+#: src/components/userRoles/UserRolesTable/PermissionsCell/PermissionsCell.tsx:47
+msgid "See all"
+msgstr "See all"
 
 #: src/components/receivables/CreateInvoice/InvoiceForm/InvoiceForm.tsx:302
 #~ msgid "Select Counterpart"
