@@ -52,7 +52,7 @@ export const UserRoleRow = ({ row, columns }: UserRoleRowProps) => {
         const actionPermission = row[action];
 
         return (
-          <StyledTableCell key={column.id}>
+          <StyledTableCell key={column.id} align="center">
             <ActionPermissionCell actionPermission={actionPermission} />
           </StyledTableCell>
         );
