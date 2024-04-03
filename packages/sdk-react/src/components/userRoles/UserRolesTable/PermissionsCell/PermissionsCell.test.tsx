@@ -1,4 +1,3 @@
-import { fullPermissionRole } from '@/mocks/roles';
 import { renderWithClient } from '@/utils/test-utils';
 import {
   ActionEnum,
@@ -15,6 +14,7 @@ const NOT_ALLOWED_PERMISSION = '-';
 
 describe('PermissionsCell', () => {
   test("should render 'R' for allowed read permission and '-' for not allowed create permission", () => {
+    const onClickSeeAllMock = jest.fn();
     const actions: ActionSchema[] = [
       {
         action_name: ActionEnum.READ,
@@ -35,7 +35,12 @@ describe('PermissionsCell', () => {
       ],
     };
 
-    renderWithClient(<PermissionsCell permissions={permissions} />);
+    renderWithClient(
+      <PermissionsCell
+        permissions={permissions}
+        onCLickSeeAll={onClickSeeAllMock}
+      />
+    );
 
     const allowedPermissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
     expect(allowedPermissionElement).toBeInTheDocument();
@@ -45,6 +50,7 @@ describe('PermissionsCell', () => {
   });
 
   test('tooltip should contain action names when a permission letter is hovered over', async () => {
+    const onClickSeeAllMock = jest.fn();
     const actions: ActionSchema[] = [
       {
         action_name: ActionEnum.READ,
@@ -69,7 +75,12 @@ describe('PermissionsCell', () => {
       ],
     };
 
-    renderWithClient(<PermissionsCell permissions={permissions} />);
+    renderWithClient(
+      <PermissionsCell
+        permissions={permissions}
+        onCLickSeeAll={onClickSeeAllMock}
+      />
+    );
 
     const permissionElement = screen.getByText(ALLOWED_READ_PERMISSION);
 
