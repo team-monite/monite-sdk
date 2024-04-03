@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import toast from 'react-hot-toast';
 
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
@@ -64,12 +65,24 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     setDeleteModalOpened(false);
   }, []);
 
-  const { data: tags, isLoading } = useTagList(
+  const {
+    data: tags,
+    isLoading,
+    isError,
+    error,
+  } = useTagList(
     sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
     10,
     currentPaginationToken || undefined,
     sortModel ? sortModel.field : undefined
   );
+
+  //TODO: Remove this error handling and replace with proper error handling
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.body.error.message || error.message);
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     if (currentPaginationToken && tags?.data.length === 0) {

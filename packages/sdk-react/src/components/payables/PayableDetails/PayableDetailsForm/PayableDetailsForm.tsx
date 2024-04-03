@@ -6,6 +6,7 @@ import {
   FieldNamesMarkedBoolean,
   FormProvider,
 } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -172,6 +173,17 @@ export const PayableDetailsForm = forwardRef<
       showTags: true,
     }
   );
+
+  //TODO: Remove this error handling and replace with proper error handling
+  useEffect(() => {
+    if (tagQuery.isError) {
+      toast.error(tagQuery.error.body.error.message || tagQuery.error.message);
+    }
+  }, [
+    tagQuery.isError,
+    tagQuery.error?.body.error.message,
+    tagQuery.error?.message,
+  ]);
 
   const isSubmittedByKeyboardRef = useRef(false);
 

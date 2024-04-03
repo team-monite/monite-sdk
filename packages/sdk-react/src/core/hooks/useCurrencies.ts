@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 import { useCurrencyList } from '@/core/queries/useCurrency';
 import { CurrencyEnum } from '@monite/sdk-api';
@@ -11,8 +12,15 @@ import { useMoniteContext } from '../context/MoniteContext';
  *  - Convert minor units into main currency and vise-versa
  */
 export const useCurrencies = () => {
-  const { data: currencyList, isSuccess } = useCurrencyList();
+  const { data: currencyList, isSuccess, isError, error } = useCurrencyList();
   const { code } = useMoniteContext();
+
+  //TODO: Remove this error handling and replace with proper error handling
+  useEffect(() => {
+    if (isError) {
+      toast.error(error.body.error.message || error.message);
+    }
+  }, [isError, error]);
 
   /**
    * Returns currency symbol when we provide currency code
