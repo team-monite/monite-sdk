@@ -1367,25 +1367,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@monite/sdk-api@npm:^3.8.0, @monite/sdk-api@npm:~3.8.0":
-  version: 3.8.0
-  resolution: "@monite/sdk-api@npm:3.8.0"
+"@monite/sdk-api@npm:^3.9.0, @monite/sdk-api@npm:~3.9.0":
+  version: 3.9.0
+  resolution: "@monite/sdk-api@npm:3.9.0"
   peerDependencies:
     typescript: "*"
-  checksum: 7365545ea65ae2944b1501d10bd97bc2a26a8878e3c57435452eba13fc7ed184785bfcd0985ef9a061669048242141759e07d7014653d84dbd9dcc4ecca08849
+  checksum: 2e1eec193937625212b4189532e720d0ee94cdf2eeed3142195be2362d08af2852cde3ba6e94801cf01202078789cce471c09ba468e0ab5306cfc515defa952d
   languageName: node
   linkType: hard
 
-"@monite/sdk-react@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "@monite/sdk-react@npm:3.8.0"
+"@monite/sdk-react@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "@monite/sdk-react@npm:3.9.0"
   dependencies:
     "@hookform/resolvers": ~2.9.3
     "@lingui/core": ~4.7.0
     "@lingui/macro": ~4.7.0
     "@lingui/message-utils": ~4.7.0
     "@lingui/react": ~4.7.0
-    "@monite/sdk-api": ~3.8.0
+    "@monite/sdk-api": ~3.9.0
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
     "@mui/x-data-grid": ~6.10.2
@@ -1426,7 +1426,7 @@ __metadata:
       optional: false
     react-dom:
       optional: false
-  checksum: 2dd06bd96ca08177c350083e29c74758e9851f10a1d9688d3a544ff205998122d8dba668e37ce95fef166a368428361d0080a8cecc42bf919a4b11be88d3d03b
+  checksum: b67b7ea4b6b8edfdd65cd2c5bbc4fd035a0ac7971b147c00387cc92893b8e5c9681f790254b055df32fe5c955c74121fb8fbed47a3729a0fc1c69aa8f0e5cbb5
   languageName: node
   linkType: hard
 
@@ -7311,8 +7311,8 @@ __metadata:
     "@emotion/react": ~11.11.1
     "@emotion/styled": ~11.11.0
     "@faker-js/faker": ~8.3.1
-    "@monite/sdk-api": ^3.8.0
-    "@monite/sdk-react": ^3.8.0
+    "@monite/sdk-api": ^3.9.0
+    "@monite/sdk-react": ^3.9.0
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
     "@testing-library/jest-dom": ~6.1.4
