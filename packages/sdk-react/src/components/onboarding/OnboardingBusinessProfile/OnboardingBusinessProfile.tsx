@@ -23,7 +23,7 @@ export const OnboardingBusinessProfile = () => {
   const { i18n } = useLingui();
   const { data: onboarding } = useOnboardingRequirementsData();
 
-  const { mutateAsync, isPending: isLoading } = useUpdateEntityOnboardingData();
+  const { mutateAsync, isPending } = useUpdateEntityOnboardingData();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
@@ -41,7 +41,7 @@ export const OnboardingBusinessProfile = () => {
 
   return (
     <OnboardingForm
-      actions={<OnboardingFormActions isLoading={isLoading} />}
+      actions={<OnboardingFormActions isLoading={isPending} />}
       onSubmit={handleSubmit(async (values) => {
         const response = await mutateAsync({
           business_profile: values,
@@ -60,7 +60,7 @@ export const OnboardingBusinessProfile = () => {
       <OnboardingStepContent>
         {checkValue('mcc') && (
           <RHFAutocomplete
-            disabled={isLoading}
+            disabled={isPending}
             name="mcc"
             control={control}
             label={t(i18n)`Industry`}
@@ -72,7 +72,7 @@ export const OnboardingBusinessProfile = () => {
 
         {checkValue('url') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Business website`}
             name="url"
             type="url"

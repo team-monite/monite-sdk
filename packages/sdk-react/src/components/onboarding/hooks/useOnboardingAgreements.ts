@@ -19,7 +19,7 @@ import {
 } from './useOnboardingForm';
 
 type OnboardingAgreementsReturnType = {
-  isLoading: boolean;
+  isPending: boolean;
 
   form: OnboardingFormType<
     OnboardingAgreementsSchema,
@@ -40,7 +40,7 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
   const { data: onboarding } = useOnboardingRequirementsData();
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const { mutateAsync, isPending: isLoading } = useUpdateEntityOnboardingData();
+  const { mutateAsync, isPending } = useUpdateEntityOnboardingData();
 
   const requirements = useMemo(() => {
     if (!onboarding?.requirements) return [];
@@ -97,7 +97,7 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
   );
 
   return {
-    isLoading,
+    isPending,
     handleSubmitAgreements,
     form,
   };

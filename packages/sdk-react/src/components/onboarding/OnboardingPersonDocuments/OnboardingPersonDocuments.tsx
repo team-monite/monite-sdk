@@ -31,7 +31,7 @@ export const OnboardingPersonDocuments = () => {
 
   const { personId, disableEditMode } = useOnboardingRequirementsContext();
 
-  const { mutateAsync, isPending: isLoading } = useCreatePersonDocumentsById();
+  const { mutateAsync, isPending } = useCreatePersonDocumentsById();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
@@ -77,7 +77,7 @@ export const OnboardingPersonDocuments = () => {
     <OnboardingForm
       actions={
         <OnboardingFormActions
-          isLoading={isLoading}
+          isLoading={isPending}
           onSecondaryAction={disableEditMode}
         />
       }

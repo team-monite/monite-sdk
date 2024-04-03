@@ -39,7 +39,7 @@ export function OnboardingPerson() {
   const { currentRequirement, personId } = useOnboardingRequirementsContext();
 
   const {
-    isLoading,
+    isPending,
     primaryAction,
     secondaryAction,
 
@@ -82,7 +82,7 @@ export function OnboardingPerson() {
         onSubmit={handleSubmit(primaryAction)}
         actions={
           <OnboardingFormActions
-            isLoading={isLoading}
+            isLoading={isPending}
             onSecondaryAction={secondaryAction}
           />
         }
@@ -94,7 +94,7 @@ export function OnboardingPerson() {
 
           {checkValue('first_name') && (
             <RHFTextField
-              disabled={isLoading}
+              disabled={isPending}
               label={t(i18n)`First name`}
               name="first_name"
               control={control}
@@ -103,7 +103,7 @@ export function OnboardingPerson() {
 
           {checkValue('last_name') && (
             <RHFTextField
-              disabled={isLoading}
+              disabled={isPending}
               label={t(i18n)`Last name`}
               name="last_name"
               control={control}
@@ -112,7 +112,7 @@ export function OnboardingPerson() {
 
           {checkValue('email') && (
             <RHFTextField
-              disabled={isLoading}
+              disabled={isPending}
               label={t(i18n)`Email address`}
               name="email"
               type="email"
@@ -155,7 +155,7 @@ export function OnboardingPerson() {
           <OnboardingAddress
             title={t(i18n)`Address`}
             defaultValues={defaultValues.address}
-            isLoading={isLoading}
+            isLoading={isPending}
           />
         )}
 
@@ -210,7 +210,7 @@ export function OnboardingPerson() {
           <OnboardingStepContent>
             {checkRelationshipField('title') && (
               <RHFTextField
-                disabled={isLoading}
+                disabled={isPending}
                 label={t(i18n)`Job title`}
                 name="relationship.title"
                 control={control}
@@ -219,7 +219,7 @@ export function OnboardingPerson() {
 
             {checkRelationshipField('percent_ownership') && (
               <RHFTextField
-                disabled={isLoading}
+                disabled={isPending}
                 label={t(i18n)`Percent ownership`}
                 name="relationship.percent_ownership"
                 type="number"
@@ -229,7 +229,7 @@ export function OnboardingPerson() {
 
             {checkValue('phone') && (
               <RHFTextFieldPhone
-                disabled={isLoading}
+                disabled={isPending}
                 label={t(i18n)`Phone number`}
                 name="phone"
                 control={control}
@@ -238,7 +238,7 @@ export function OnboardingPerson() {
 
             {checkValue('date_of_birth') && (
               <RHFDatePicker
-                disabled={isLoading}
+                disabled={isPending}
                 label={t(i18n)`Date of birth`}
                 name="date_of_birth"
                 control={control}
@@ -253,7 +253,7 @@ export function OnboardingPerson() {
 
             {checkValue('ssn_last_4') && (
               <RHFTextField
-                disabled={isLoading}
+                disabled={isPending}
                 label={t(i18n)`Last 4 digits of Social Security number`}
                 name="ssn_last_4"
                 control={control}
@@ -263,7 +263,7 @@ export function OnboardingPerson() {
 
             {checkValue('id_number') && (
               <RHFTextField
-                disabled={isLoading}
+                disabled={isPending}
                 type="tel"
                 label={t(i18n)`Security number`}
                 name="id_number"

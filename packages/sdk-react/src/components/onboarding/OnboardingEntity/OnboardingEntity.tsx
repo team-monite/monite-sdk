@@ -23,7 +23,7 @@ import { OnboardingEntityOrganization } from './OnboardingEntityOrganization';
 export const OnboardingEntity = () => {
   const { i18n } = useLingui();
 
-  const { isLoading, updateEntity, entity } = useOnboardingEntity();
+  const { isPending, updateEntity, entity } = useOnboardingEntity();
 
   const { defaultValues, methods, checkValue, handleSubmit } =
     useOnboardingForm<UpdateEntityRequest, EntityResponse>(entity, 'entity');
@@ -47,7 +47,7 @@ export const OnboardingEntity = () => {
   return (
     <FormProvider {...methods}>
       <OnboardingForm
-        actions={<OnboardingFormActions isLoading={isLoading} />}
+        actions={<OnboardingFormActions isLoading={isPending} />}
         onSubmit={handleSubmit((values) =>
           updateEntity(enrichFieldsByValues(entity, values), [
             OnboardingRequirement.ENTITY,
@@ -58,21 +58,21 @@ export const OnboardingEntity = () => {
           {!!defaultValues.organization && (
             <OnboardingEntityOrganization
               defaultValues={defaultValues.organization}
-              isLoading={isLoading}
+              isLoading={isPending}
             />
           )}
 
           {!!defaultValues.individual && (
             <OnboardingEntityIndividual
               defaultValues={defaultValues.individual}
-              isLoading={isLoading}
+              isLoading={isPending}
             />
           )}
 
           {checkValue('email') && (
             <RHFTextField
               control={control}
-              disabled={isLoading}
+              disabled={isPending}
               label={t(i18n)`Email address`}
               name="email"
               type="email"
@@ -82,7 +82,7 @@ export const OnboardingEntity = () => {
           {checkValue('phone') && (
             <RHFTextFieldPhone
               control={control}
-              disabled={isLoading}
+              disabled={isPending}
               name="phone"
               label={getPhoneLabel()}
             />
@@ -90,7 +90,7 @@ export const OnboardingEntity = () => {
 
           {checkValue('tax_id') && (
             <RHFTextField
-              disabled={isLoading}
+              disabled={isPending}
               label={t(i18n)`Tax number`}
               name="tax_id"
               control={control}
@@ -102,7 +102,7 @@ export const OnboardingEntity = () => {
           <OnboardingAddress
             title={getAddressTitle()}
             defaultValues={defaultValues.address}
-            isLoading={isLoading}
+            isLoading={isPending}
           />
         )}
       </OnboardingForm>
