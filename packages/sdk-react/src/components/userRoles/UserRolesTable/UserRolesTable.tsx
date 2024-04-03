@@ -174,7 +174,10 @@ export const UserRolesTable = ({
               sortable: false,
               flex: 2,
               renderCell: (params) => (
-                <PermissionsCell permissions={params.value} />
+                <PermissionsCell
+                  permissions={params.value}
+                  onCLickSeeAll={() => onRowClick?.(params.row.id)}
+                />
               ),
             },
             {

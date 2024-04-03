@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
+import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { BizObjectsSchema } from '@monite/sdk-api';
-import { Grid } from '@mui/material';
-
-import { object } from 'yup';
+import { Grid, Link } from '@mui/material';
 
 import { Permission } from './Permission';
 
@@ -15,9 +14,13 @@ interface PermissionsCellProps {
    * @param permissions - The permissions data for the role to be displayed.
    */
   permissions: BizObjectsSchema;
+  onCLickSeeAll: () => void;
 }
 
-export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
+export const PermissionsCell = ({
+  permissions,
+  onCLickSeeAll,
+}: PermissionsCellProps) => {
   const { i18n } = useLingui();
 
   if (!permissions.objects) {
@@ -27,6 +30,7 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
   return (
     <Grid container>
       {permissions.objects
+        .slice(0, 10)
         .filter((object) => !!object.object_type)
         .map((object) => (
           <Grid item container key={object.object_type}>
@@ -38,6 +42,11 @@ export const PermissionsCell = ({ permissions }: PermissionsCellProps) => {
             </Grid>
           </Grid>
         ))}
+      {permissions.objects && permissions.objects.length > 10 && (
+        <Link component="button" variant="body1" onClick={onCLickSeeAll}>
+          {t(i18n)`See all`}
+        </Link>
+      )}
     </Grid>
   );
 };
