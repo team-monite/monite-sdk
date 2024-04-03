@@ -135,10 +135,6 @@ const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
 
             return;
           }
-
-          toast.error(message, {
-            id: message,
-          });
         } else {
           toast.error(t(i18n)`Unrecognized error. Please contact support.`);
         }
