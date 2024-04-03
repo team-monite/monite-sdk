@@ -64,3 +64,6 @@ jobs:
       - name: Upload to Sentry
         if: steps.changesets.outputs.published == 'true'
         run: yarn sentry-cli sourcemaps upload --release="$(node -p 'require("@monite/sdk-api/package.json").version')" packages/sdk-react/dist
+        env:
+          # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
+          NPM_TOKEN: ""
