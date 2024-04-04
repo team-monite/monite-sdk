@@ -143,6 +143,11 @@ export const navigationMenuItems: Record<string, MenuItemType> = {
         Icon: (props) => <Tab {...props} />,
       },
       {
+        label: 'User Roles',
+        url: '/user-roles',
+        Icon: (props) => <Tab {...props} />,
+      },
+      {
         label: 'Tags',
         url: '/tags',
         Icon: (props) => <Label {...props} />,

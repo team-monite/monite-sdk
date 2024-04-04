@@ -11,6 +11,7 @@ import {
   Products as ProductsBase,
   Receivables as ReceivablesBase,
   Tags as TagsBase,
+  UserRoles as UserRolesBase,
 } from '@monite/sdk-react';
 
 import { themeOptions } from '@/components/ThemeRegistry/theme';
@@ -89,4 +90,8 @@ export const ApprovalPolicies = () => {
 
 export const Tags = () => {
   return <TagsBase />;
+};
+
+export const UserRoles = () => {
+  return <UserRolesBase />;
 };
