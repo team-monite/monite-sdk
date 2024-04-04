@@ -18,7 +18,7 @@ export const UserRoles = () => {
     string | undefined
   >(undefined);
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'role',
       action: ActionEnum.READ,

@@ -73,14 +73,14 @@ export const PayableDetails = ({
   });
   const { i18n } = useLingui();
 
-  const { data: isUpdateAllowed, isInitialLoading: isUpdateAllowedLoading } =
+  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.UPDATE,
       entityUserId: payable?.was_created_by_user_id,
     });
 
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.READ,

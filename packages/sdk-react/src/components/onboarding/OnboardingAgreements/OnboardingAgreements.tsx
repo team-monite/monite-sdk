@@ -12,7 +12,7 @@ export const OnboardingAgreements = () => {
   const { i18n } = useLingui();
   const { entityName } = useOnboardingRequirements();
   const {
-    isLoading,
+    isPending,
     form: {
       methods: { control },
       handleSubmit,
@@ -26,7 +26,7 @@ export const OnboardingAgreements = () => {
 
   return (
     <OnboardingForm
-      actions={<OnboardingFormActions isLoading={isLoading} />}
+      actions={<OnboardingFormActions isLoading={isPending} />}
       onSubmit={handleSubmit(handleSubmitAgreements)}
     >
       {checkValue('ownership_declaration') && (
@@ -40,7 +40,7 @@ export const OnboardingAgreements = () => {
             </Trans>
           </Typography>
           <RHFCheckbox
-            disabled={isLoading}
+            disabled={isPending}
             control={control}
             label={t(i18n)`Accept ownership declaration`}
             name="ownership_declaration"
@@ -86,7 +86,7 @@ export const OnboardingAgreements = () => {
             </Trans>
           </Typography>
           <RHFCheckbox
-            disabled={isLoading}
+            disabled={isPending}
             control={control}
             label={t(i18n)`Accept Service Agreement`}
             name="tos_acceptance"

@@ -58,7 +58,7 @@ export const Overview = ({ invoice }: IOverviewProps) => {
 
   const {
     data: counterpart,
-    isInitialLoading: isCounterpartLoading,
+    isLoading: isCounterpartLoading,
     error: counterpartError,
   } = useCounterpartById(invoice.counterpart_id);
 

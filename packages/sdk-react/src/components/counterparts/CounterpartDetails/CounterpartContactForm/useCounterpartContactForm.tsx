@@ -40,7 +40,7 @@ export function useCounterpartContactForm({
   const formRef = useRef<HTMLFormElement>(null);
 
   const { data: counterpartResponse } = useCounterpartById(counterpartId);
-  const { data: contact, isInitialLoading } = useCounterpartContactById(
+  const { data: contact, isLoading } = useCounterpartContactById(
     counterpartId,
     contactId
   );
@@ -120,9 +120,9 @@ export function useCounterpartContactForm({
     formRef,
     submitForm,
     isLoading:
-      contactCreateMutation.isLoading ||
-      contactUpdateMutation.isLoading ||
-      isInitialLoading,
+      contactCreateMutation.isPending ||
+      contactUpdateMutation.isPending ||
+      isLoading,
     error: contactCreateMutation.error || contactUpdateMutation.error,
   };
 }

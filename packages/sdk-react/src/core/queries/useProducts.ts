@@ -8,8 +8,14 @@ import {
   ProductServiceRequest,
   ProductServiceResponse,
   ProductsService,
+  ProductsServiceGetAllRequest,
 } from '@monite/sdk-api';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityListCache } from './hooks';
@@ -49,13 +55,13 @@ export const useProducts = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ProductServicePaginationResponse, Error>(
-    [...productQueryKeys.all(), params],
-    () => monite.api.products.getAll(params),
-    {
-      enabled: options?.enabled,
-    }
-  );
+  return useQuery<ProductServicePaginationResponse, Error>({
+    queryKey: [...productQueryKeys.all(), params],
+
+    queryFn: () => monite.api.products.getAll(params),
+
+    enabled: options?.enabled,
+  });
 };
 
 export const useInfiniteProducts = (
@@ -67,7 +73,13 @@ export const useInfiniteProducts = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useInfiniteQuery<ProductServicePaginationResponse, ApiError>({
+  return useInfiniteQuery<
+    ProductServicePaginationResponse,
+    ApiError,
+    InfiniteData<ProductServicePaginationResponse, unknown>,
+    (string | ProductsServiceGetAllRequest)[],
+    string
+  >({
     queryKey: [...productQueryKeys.allInfinite(), params],
     queryFn: ({ pageParam }) => {
       return monite.api.products.getAll({
@@ -75,6 +87,7 @@ export const useInfiniteProducts = (
         paginationToken: pageParam,
       });
     },
+    initialPageParam: '0',
     getNextPageParam: (lastPage) => lastPage.next_pagination_token,
     enabled: options?.enabled ?? true,
   });
@@ -83,13 +96,13 @@ export const useInfiniteProducts = (
 export const useProductById = (id?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<ProductServiceResponse | undefined, Error>(
-    productQueryKeys.detail(id!),
-    () => (id ? monite.api.products.getById(id) : undefined),
-    {
-      enabled: !!id,
-    }
-  );
+  return useQuery<ProductServiceResponse | undefined, Error>({
+    queryKey: productQueryKeys.detail(id!),
+
+    queryFn: () => (id ? monite.api.products.getById(id) : undefined),
+
+    enabled: !!id,
+  });
 };
 
 export const useCreateProduct = () => {
@@ -97,18 +110,18 @@ export const useCreateProduct = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useProductListCache();
 
-  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>(
-    (params) => monite.api.products.createProduct(params),
-    {
-      onSuccess: (product) => {
-        invalidate();
-        toast.success(t(i18n)`Product ${product.name} was created.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to create product.`);
-      },
-    }
-  );
+  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>({
+    mutationFn: (params) => monite.api.products.createProduct(params),
+
+    onSuccess: (product) => {
+      invalidate();
+      toast.success(t(i18n)`Product ${product.name} was created.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to create product.`);
+    },
+  });
 };
 
 export const useUpdateProduct = (productId: string) => {
@@ -116,18 +129,18 @@ export const useUpdateProduct = (productId: string) => {
   const { monite } = useMoniteContext();
   const { invalidate } = useProductListCache();
 
-  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>(
-    (params) => monite.api.products.updateById(productId, params),
-    {
-      onSuccess: (product) => {
-        invalidate();
-        toast.success(t(i18n)`Product ${product.name} was updated.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to update product.`);
-      },
-    }
-  );
+  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>({
+    mutationFn: (params) => monite.api.products.updateById(productId, params),
+
+    onSuccess: (product) => {
+      invalidate();
+      toast.success(t(i18n)`Product ${product.name} was updated.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to update product.`);
+    },
+  });
 };
 
 export const useDeleteProduct = () => {
@@ -135,16 +148,16 @@ export const useDeleteProduct = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useProductListCache();
 
-  return useMutation<void, Error, string>(
-    (params) => monite.api.products.deleteById(params),
-    {
-      onSuccess: () => {
-        invalidate();
-        toast.success(t(i18n)`Product was deleted.`);
-      },
-      onError: () => {
-        toast.error(t(i18n)`Failed to delete product.`);
-      },
-    }
-  );
+  return useMutation<void, Error, string>({
+    mutationFn: (params) => monite.api.products.deleteById(params),
+
+    onSuccess: () => {
+      invalidate();
+      toast.success(t(i18n)`Product was deleted.`);
+    },
+
+    onError: () => {
+      toast.error(t(i18n)`Failed to delete product.`);
+    },
+  });
 };

@@ -64,14 +64,14 @@ export const Payables = ({
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.CREATE,
       entityUserId: user?.id,
     });
 
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.READ,

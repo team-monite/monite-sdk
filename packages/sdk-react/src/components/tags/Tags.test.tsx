@@ -17,7 +17,7 @@ describe('Tags', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -54,7 +54,7 @@ describe('Tags', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -90,7 +90,7 @@ describe('Tags', () => {
 
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -117,19 +117,11 @@ describe('Tags', () => {
 });
 
 function checkTagQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['tags'], {
-      exact: false,
-    })
-  )
-    throw new Error('Product query is not executed');
+  const data = queryClient.getQueriesData({
+    exact: false,
+    queryKey: ['tags'],
+    predicate: (query) => query.state.status === 'success',
+  });
 
-  if (
-    queryClient.getQueryState(['product'], {
-      exact: false,
-      predicate: (query) => query.state.status !== 'success',
-    })
-  ) {
-    throw new Error('Tags query is still loading');
-  }
+  if (!data.length) throw new Error('Product query is not executed');
 }

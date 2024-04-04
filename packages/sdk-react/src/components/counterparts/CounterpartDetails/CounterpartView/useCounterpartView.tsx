@@ -44,28 +44,29 @@ export function useCounterpartView({
   const { i18n } = useLingui();
   const {
     data: counterpart,
-    isInitialLoading: isCounterpartLoading,
+    isLoading: isCounterpartLoading,
     error: counterpartError,
   } = useCounterpartById(id);
 
-  const { data: addresses, isInitialLoading: isAddressesLoading } =
+  const { data: addresses, isLoading: isAddressesLoading } =
     useCounterpartAddresses(counterpart?.id);
 
-  const { data: contacts, isInitialLoading: isContactsLoading } =
+  const { data: contacts, isLoading: isContactsLoading } =
     useCounterpartContactList(
       counterpart?.type === CounterpartType.ORGANIZATION
         ? counterpart?.id
         : undefined
     );
 
-  const { data: vats, isInitialLoading: isVatsLoading } = useCounterpartVatList(
+  const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
     counterpart?.id
   );
 
-  const { data: banks, isInitialLoading: isBanksLoading } =
-    useCounterpartBankList(counterpart?.id);
+  const { data: banks, isLoading: isBanksLoading } = useCounterpartBankList(
+    counterpart?.id
+  );
 
-  const { mutate: deleteMutate, isLoading: isCounterpartDeleteLoading } =
+  const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =
     useDeleteCounterpart();
 
   const deleteCounterpart = useCallback(

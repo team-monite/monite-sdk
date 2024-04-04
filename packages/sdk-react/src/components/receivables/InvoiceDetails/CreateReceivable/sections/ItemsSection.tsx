@@ -120,7 +120,7 @@ export const ItemsSection = ({
     name: 'line_items',
   });
   const watchedLineItems = watch('line_items');
-  const { data: vatRates, isInitialLoading: vatRatesLoading } = useVatRates();
+  const { data: vatRates } = useVatRates();
   const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(

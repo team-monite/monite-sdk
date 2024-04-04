@@ -29,8 +29,8 @@ import type {
 import { useOnboardingPersonRelationships } from './useOnboardingPersonRelationships';
 
 export type OnboardingPersonReturnType = {
-  /**  isLoading a boolean flag indicating whether the form data is being loaded. */
-  isLoading: boolean;
+  /**  isPending a boolean flag indicating whether the form data is being loaded. */
+  isPending: boolean;
 
   primaryAction: (payload: PersonFormType) => Promise<PersonResponse>;
 
@@ -70,25 +70,25 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const {
     updateEntityRequirements,
-    isLoading: isEntityLoading,
+    isPending: isEntityLoading,
     error: updateEntityError,
   } = useOnboardingEntity();
 
   const {
     mutateAsync: createPersonMutation,
-    isLoading: isCreateLoading,
+    isPending: isCreateLoading,
     error: createPersonError,
   } = useCreatePerson();
 
   const {
     mutateAsync: updatePersonMutation,
-    isLoading: isUpdateLoading,
+    isPending: isUpdateLoading,
     error: updatePersonError,
   } = useUpdatePerson();
 
   const {
     mutateAsync: deletePersonMutation,
-    isLoading: isDeleteLoading,
+    isPending: isDeleteLoading,
     error: deletePersonError,
   } = useDeletePerson();
 
@@ -244,7 +244,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     ]
   );
 
-  const isLoading =
+  const isPending =
     isCreateLoading || isUpdateLoading || isDeleteLoading || isEntityLoading;
 
   const error =
@@ -260,7 +260,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     deletePerson,
     updateOrganizationRequirements,
     relationships,
-    isLoading,
+    isPending,
     error,
   };
 }

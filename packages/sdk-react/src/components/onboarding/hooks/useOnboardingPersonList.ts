@@ -27,7 +27,7 @@ import { useOnboardingPerson } from './useOnboardingPerson';
 export type OnboardingPersonListReturnType = {
   shouldRenderPersonList: boolean;
   shouldRenderMenu: boolean;
-  isLoading: boolean;
+  isPending: boolean;
 
   personsWithErrors: OnboardingPerson[];
   personsWithRequirement: OnboardingPerson[];
@@ -51,7 +51,7 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
 
   const form = useOnboardingForm({}, 'person');
 
-  const { updatePerson, isLoading, updateOrganizationRequirements } =
+  const { updatePerson, isPending, updateOrganizationRequirements } =
     useOnboardingPerson();
 
   const patchOnboardingRequirementsData = usePatchOnboardingRequirementsData();
@@ -147,7 +147,7 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
   return {
     shouldRenderPersonList,
     shouldRenderMenu,
-    isLoading,
+    isPending,
     form,
     updatePersonRelationship,
     updateOrganizationRequirements,

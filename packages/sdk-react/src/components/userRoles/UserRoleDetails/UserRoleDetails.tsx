@@ -23,12 +23,12 @@ export const UserRoleDetails = ({ id }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const {
     isLoading,
-    isInitialLoading,
+    isPending,
     data: role,
     error: roleQueryError,
   } = useRoleById(id);
 
-  if (id && (isLoading || isInitialLoading)) {
+  if (id && (isLoading || isPending)) {
     return <LoadingPage />;
   }
 

@@ -63,14 +63,14 @@ export const Counterparts = () => {
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.CREATE,
       entityUserId: user?.id,
     });
 
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.READ,

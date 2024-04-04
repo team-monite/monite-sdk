@@ -36,7 +36,7 @@ export const OnboardingPersonList = () => {
     useOnboardingRequirementsContext();
 
   const {
-    isLoading,
+    isPending,
     shouldRenderPersonList,
     shouldRenderMenu,
 
@@ -92,7 +92,7 @@ export const OnboardingPersonList = () => {
                         <span>
                           <IconButton
                             aria-label={t(i18n)`Remove person`}
-                            disabled={isLoading || isRepresentative}
+                            disabled={isPending || isRepresentative}
                             onClick={() =>
                               updatePersonRelationship(person.id, false)
                             }
@@ -110,7 +110,7 @@ export const OnboardingPersonList = () => {
 
           {shouldRenderMenu && (
             <OnboardingPersonMenu
-              disabled={isLoading}
+              disabled={isPending}
               title={title}
               variant={'outlined'}
             >
@@ -135,7 +135,7 @@ export const OnboardingPersonList = () => {
           {!shouldRenderMenu && (
             <Button
               onClick={() => enablePersonEditMode(PERSON_CREATION)}
-              disabled={isLoading}
+              disabled={isPending}
               variant="outlined"
               color="primary"
             >

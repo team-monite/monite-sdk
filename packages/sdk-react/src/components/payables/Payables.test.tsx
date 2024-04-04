@@ -50,7 +50,7 @@ describe('Payables', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -81,7 +81,7 @@ describe('Payables', () => {
     test('support no "read" and no "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -116,7 +116,7 @@ describe('Payables', () => {
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({
         defaultOptions: {
-          queries: { retry: false, cacheTime: Infinity, staleTime: Infinity },
+          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
         },
       });
 
@@ -157,16 +157,11 @@ describe('Payables', () => {
 });
 
 function checkPayableQueriesLoaded(queryClient: QueryClient) {
-  if (
-    !queryClient.getQueryState(['payable'], {
-      exact: false,
-    })
-  )
-    throw new Error('Approval Policies query is not executed');
+  const data = queryClient.getQueriesData({
+    exact: false,
+    queryKey: ['payable'],
+    predicate: (query) => query.state.status === 'success',
+  });
 
-  if (
-    queryClient.getQueryState(['payable'], { exact: false })?.status !==
-    'success'
-  )
-    throw new Error('Approval Policies query failed');
+  if (!data.length) throw new Error('Payable query is not executed');
 }

@@ -50,7 +50,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
   const {
     data: product,
     error: productQueryError,
-    isInitialLoading,
+    isLoading,
   } = useProductById(props.id);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -76,7 +76,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
     [productUpdateMutation.mutate, props]
   );
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <LoadingPage />;
   }
 
@@ -186,7 +186,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
         <Button
           variant="outlined"
           onClick={submitForm}
-          disabled={productUpdateMutation.isLoading}
+          disabled={productUpdateMutation.isPending}
         >
           {t(i18n)`Update`}
         </Button>

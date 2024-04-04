@@ -31,7 +31,7 @@ export const OnboardingEntityDocuments = () => {
     entity?.address.country
   );
 
-  const { mutateAsync, isLoading } = useCreateEntityDocuments();
+  const { mutateAsync, isPending } = useCreateEntityDocuments();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
@@ -69,7 +69,7 @@ export const OnboardingEntityDocuments = () => {
 
   return (
     <OnboardingForm
-      actions={<OnboardingFormActions isLoading={isLoading} />}
+      actions={<OnboardingFormActions isLoading={isPending} />}
       onSubmit={handleSubmit(async (values) => {
         const response = await mutateAsync(values);
 

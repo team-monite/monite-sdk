@@ -60,7 +60,7 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, currentFilters } = useReceivablesFilters();
 
-  const { data: invoices, isInitialLoading } = useReceivables(
+  const { data: invoices, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,
@@ -107,7 +107,7 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
               borderColor: 'divider',

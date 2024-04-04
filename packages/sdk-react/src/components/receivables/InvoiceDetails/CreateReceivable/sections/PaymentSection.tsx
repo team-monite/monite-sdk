@@ -53,9 +53,9 @@ export const PaymentSection = ({ disabled }: ISectionGeneralProps) => {
 
   const { root } = useRootElements();
 
-  const { data: bankAccounts, isInitialLoading: isBankAccountsLoading } =
+  const { data: bankAccounts, isLoading: isBankAccountsLoading } =
     useBankAccounts();
-  const { data: paymentTerms, isInitialLoading: isPaymentTermsLoading } =
+  const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
     usePaymentTerms();
 
   const noPaymentTerms = useMemo(() => {

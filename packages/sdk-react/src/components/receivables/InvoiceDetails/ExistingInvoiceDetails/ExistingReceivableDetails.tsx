@@ -62,7 +62,7 @@ export const ExistingReceivableDetails = (
   const {
     receivable: invoice,
     error,
-    isInitialLoading,
+    isLoading,
     isButtonsLoading,
     permissions,
     actions: queryActions,
@@ -95,7 +95,7 @@ export const ExistingReceivableDetails = (
 
   if (!props.id) return null;
 
-  if (isInitialLoading) return <LoadingPage />;
+  if (isLoading) return <LoadingPage />;
 
   if (!invoice) {
     return (

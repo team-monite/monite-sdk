@@ -92,8 +92,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isInitialLoading: isSettingsLoading } =
-    useEntitySettings();
+  const { data: settings, isLoading: isSettingsLoading } = useEntitySettings();
 
   const [actualCurrency, setActualCurrency] = useState<
     CurrencyEnum | undefined
@@ -124,7 +123,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
               color="primary"
               type="submit"
               form="receivablesDetailsForm"
-              disabled={createReceivable.isLoading}
+              disabled={createReceivable.isPending}
             >{t(i18n)`Create`}</Button>
           </Box>
         </Toolbar>
@@ -220,14 +219,14 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
                 {t(i18n)`Create Invoice`}
               </Typography>
               <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={createReceivable.isLoading} />
-                <EntitySection disabled={createReceivable.isLoading} />
+                <CustomerSection disabled={createReceivable.isPending} />
+                <EntitySection disabled={createReceivable.isPending} />
                 <ItemsSection
                   defaultCurrency={settings?.currency?.default}
                   actualCurrency={actualCurrency}
                   onCurrencyChanged={setActualCurrency}
                 />
-                <PaymentSection disabled={createReceivable.isLoading} />
+                <PaymentSection disabled={createReceivable.isPending} />
               </Stack>
             </Stack>
           </form>

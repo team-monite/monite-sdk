@@ -36,7 +36,7 @@ export const ProductDeleteModal = ({
 }: IProductDeleteModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { data: product, isInitialLoading } = useProductById(id);
+  const { data: product, isLoading } = useProductById(id);
 
   const deleteProductMutation = useDeleteProduct();
 
@@ -65,7 +65,7 @@ export const ProductDeleteModal = ({
         <Button
           variant="outlined"
           color="error"
-          disabled={deleteProductMutation.isLoading || isInitialLoading}
+          disabled={deleteProductMutation.isPending || isLoading}
           onClick={() => {
             deleteProductMutation.mutate(id!, {
               onSuccess: () => {

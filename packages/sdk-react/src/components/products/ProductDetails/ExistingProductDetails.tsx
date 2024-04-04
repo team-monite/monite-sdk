@@ -60,12 +60,12 @@ export const ExistingProductDetails = ({
   const {
     data: product,
     error: productQueryError,
-    isInitialLoading,
+    isLoading,
   } = useProductById(id);
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'product',
       action: ActionEnum.READ,
@@ -84,7 +84,7 @@ export const ExistingProductDetails = ({
     entityUserId: user?.id,
   });
 
-  if (isInitialLoading || isReadAllowedLoading) {
+  if (isLoading || isReadAllowedLoading) {
     return <LoadingPage />;
   }
 

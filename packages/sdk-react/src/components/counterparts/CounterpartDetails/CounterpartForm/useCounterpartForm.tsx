@@ -36,7 +36,7 @@ export function useCounterpartForm({
 }: CounterpartsFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { data: counterpart, isInitialLoading } = useCounterpartById(id);
+  const { data: counterpart, isLoading } = useCounterpartById(id);
   const counterpartCreateMutation = useCreateCounterpart();
   const counterpartUpdateMutation = useUpdateCounterpart();
 
@@ -86,9 +86,9 @@ export function useCounterpartForm({
     formRef,
     submitForm,
     isLoading:
-      counterpartCreateMutation.isLoading ||
-      counterpartUpdateMutation.isLoading ||
-      isInitialLoading,
+      counterpartCreateMutation.isPending ||
+      counterpartUpdateMutation.isPending ||
+      isLoading,
     error: counterpartCreateMutation.error || counterpartUpdateMutation.error,
   };
 }

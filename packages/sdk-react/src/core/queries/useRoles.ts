@@ -3,6 +3,7 @@ import {
   RoleResponse,
   RolePaginationResponse,
   RoleService,
+  RoleServiceGetListRequestParams,
 } from '@monite/sdk-api';
 import { useQuery } from '@tanstack/react-query';
 
@@ -15,28 +16,29 @@ const rolesQueryKeys = {
   detail: (roleId?: string) => [ROLES_QUERY_ID, roleId],
 };
 
-export const useRoles = (params: Parameters<RoleService['getList']>[0]) => {
+export const useRoles = (params: RoleServiceGetListRequestParams) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<RolePaginationResponse, ApiError>(
-    [...rolesQueryKeys.all(), { variables: params }],
-    () => monite.api.role.getList(params)
-  );
+  return useQuery({
+    queryKey: [...rolesQueryKeys.all(), { variables: params }],
+
+    queryFn: () => monite.api.role.getList(params),
+  });
 };
 
 export const useRoleById = (roleId?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<RoleResponse | undefined, ApiError>(
-    [...rolesQueryKeys.detail(roleId)],
-    () => {
+  return useQuery<RoleResponse | undefined, ApiError>({
+    queryKey: [...rolesQueryKeys.detail(roleId)],
+
+    queryFn: () => {
       if (!roleId) {
         throw new Error('Role ID is required');
       }
       return monite.api.role.getDetail(roleId);
     },
-    {
-      enabled: !!roleId,
-    }
-  );
+
+    enabled: !!roleId,
+  });
 };

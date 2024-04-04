@@ -39,6 +39,6 @@ export function useCounterpartBankView({
   return {
     deleteBank,
     onEdit,
-    isLoading: bankDeleteMutation.isLoading,
+    isLoading: bankDeleteMutation.isPending,
   };
 }

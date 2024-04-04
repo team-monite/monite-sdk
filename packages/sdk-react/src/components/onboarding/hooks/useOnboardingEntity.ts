@@ -21,7 +21,7 @@ import type {
 
 export type OnboardingEntityReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
-  isLoading: boolean;
+  isPending: boolean;
 
   error: ErrorType;
 
@@ -44,7 +44,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
   const {
     mutateAsync: updateEntityMutation,
-    isLoading,
+    isPending,
     error,
   } = useUpdateMyEntity();
 
@@ -92,7 +92,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
   );
 
   return {
-    isLoading,
+    isPending,
     error,
     updateEntity,
     updateEntityRequirements,

@@ -17,8 +17,7 @@ interface Props {
 }
 
 export const CounterpartCell = ({ counterpartId }: Props) => {
-  const { data: counterpart, isInitialLoading } =
-    useCounterpartById(counterpartId);
+  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
 
   const getCounterpartText = useCallback((counterpart: CounterpartResponse) => {
     return counterpart.type === CounterpartType.ORGANIZATION
@@ -33,7 +32,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
         }`;
   }, []);
 
-  if (!counterpartId || (!isInitialLoading && !counterpart)) {
+  if (!counterpartId || (!isLoading && !counterpart)) {
     return null;
   }
 
@@ -41,7 +40,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
     <Box sx={{ width: '100%' }}>
       <Chip
         avatar={
-          isInitialLoading ? (
+          isLoading ? (
             <Skeleton
               animation="wave"
               variant="circular"
@@ -60,7 +59,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
           )
         }
         label={
-          isInitialLoading || !counterpart ? (
+          isLoading || !counterpart ? (
             <Skeleton
               animation="wave"
               height={10}

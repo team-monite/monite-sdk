@@ -91,14 +91,14 @@ export const PayablesTable = ({
 
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isReadSupported, isInitialLoading: isReadSupportedLoading } =
+  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'payable',
       action: PayableActionEnum.READ,
       entityUserId: user?.id,
     });
 
-  const { data: payables, isInitialLoading } = usePayablesList(
+  const { data: payables, isLoading } = usePayablesList(
     OrderEnum.DESC,
     pageLimit,
     currentPaginationToken || undefined,
@@ -175,7 +175,7 @@ export const PayablesTable = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           pageSizeOptions={[PAGE_LIMIT, PAGE_LIMIT * 2, PAGE_LIMIT * 3]}
           onRowClick={(params) => {
             onRowClick?.(params.row.id);

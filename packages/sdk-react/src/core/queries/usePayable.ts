@@ -49,27 +49,27 @@ export const usePayablesList = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery(
-    [...payableQueryKeys.list(), ...args] as const,
+  return useQuery({
+    queryKey: [...payableQueryKeys.list(), ...args] as const,
+
     // TODO use partnerApi because `payables.getList` does not have documentId filter yet
-    () => monite.api.partnerApi.getPayables(...args),
-    {
-      ...payablesDefaultQueryConfig,
-    }
-  );
+    queryFn: () => monite.api.partnerApi.getPayables(...args),
+
+    ...payablesDefaultQueryConfig,
+  });
 };
 
 export const usePayableById = (id?: string) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<PayableResponseSchema | undefined, Error>(
-    payableQueryKeys.detail(id),
-    () => (id ? monite.api.payable.getById(id) : undefined),
-    {
-      enabled: !!id,
-      ...payablesDefaultQueryConfig,
-    }
-  );
+  return useQuery<PayableResponseSchema | undefined, Error>({
+    queryKey: payableQueryKeys.detail(id),
+
+    queryFn: () => (id ? monite.api.payable.getById(id) : undefined),
+
+    enabled: !!id,
+    ...payablesDefaultQueryConfig,
+  });
 };
 
 export const useCreatePayableWithLineItems = () => {
@@ -88,8 +88,8 @@ export const useCreatePayableWithLineItems = () => {
       body: PayableUploadWithDataSchema;
       lineItemsToCreate?: LineItem[];
     }
-  >(
-    async ({ body, lineItemsToCreate }) => {
+  >({
+    mutationFn: async ({ body, lineItemsToCreate }) => {
       let payable = await monite.api!.payable.create(body);
 
       if (lineItemsToCreate) {
@@ -115,18 +115,17 @@ export const useCreatePayableWithLineItems = () => {
 
       return monite.api.payable.getById(payable.id);
     },
-    {
-      onSuccess: (payable) => {
-        setEntity(payable);
-        invalidate();
-        invalidateLineItems(payable.id);
-        // destroy cache for new payable form
-        removeEntity(payable.id);
 
-        toast.success(t(i18n)`Created`);
-      },
-    }
-  );
+    onSuccess: (payable) => {
+      setEntity(payable);
+      invalidate();
+      invalidateLineItems(payable.id);
+      // destroy cache for new payable form
+      removeEntity(payable.id);
+
+      toast.success(t(i18n)`Created`);
+    },
+  });
 };
 
 export const useUpdatePayableByIdWithLineItems = (payableId?: string) => {
@@ -148,8 +147,14 @@ export const useUpdatePayableByIdWithLineItems = (payableId?: string) => {
       dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>;
       lineItems?: LineItemResponse[];
     }
-  >(
-    async ({ id, body, updatedLineItems, dirtyFields, lineItems }) => {
+  >({
+    mutationFn: async ({
+      id,
+      body,
+      updatedLineItems,
+      dirtyFields,
+      lineItems,
+    }) => {
       let payable = await monite.api!.payable.update(id, body);
 
       if (updatedLineItems && dirtyFields) {
@@ -219,18 +224,17 @@ export const useUpdatePayableByIdWithLineItems = (payableId?: string) => {
 
       return monite.api.payable.getById(payable.id);
     },
-    {
-      onSuccess: (payable, args) => {
-        setEntity(payable);
-        invalidate();
-        invalidateLineItems(args.id);
-        // destroy cache for new payable form
-        removeEntity(payable.id);
 
-        toast.success(t(i18n)`Saved`);
-      },
-    }
-  );
+    onSuccess: (payable, args) => {
+      setEntity(payable);
+      invalidate();
+      invalidateLineItems(args.id);
+      // destroy cache for new payable form
+      removeEntity(payable.id);
+
+      toast.success(t(i18n)`Saved`);
+    },
+  });
 };
 
 export const useSubmitPayableById = (payableId?: string) => {
@@ -239,17 +243,16 @@ export const useSubmitPayableById = (payableId?: string) => {
   const { invalidate } = usePayableListCache();
   const { setEntity } = usePayableDetailCache(payableId);
 
-  return useMutation<PayableResponseSchema, Error, string>(
-    (id) => monite.api!.payable.submit(id),
-    {
-      onSuccess: (payable, id) => {
-        setEntity(payable);
-        invalidate();
+  return useMutation<PayableResponseSchema, Error, string>({
+    mutationFn: (id) => monite.api!.payable.submit(id),
 
-        toast.success(t(i18n)`Submitted`);
-      },
-    }
-  );
+    onSuccess: (payable, id) => {
+      setEntity(payable);
+      invalidate();
+
+      toast.success(t(i18n)`Submitted`);
+    },
+  });
 };
 
 export const useApprovePayableById = (payableId?: string) => {
@@ -258,17 +261,16 @@ export const useApprovePayableById = (payableId?: string) => {
   const { invalidate } = usePayableListCache();
   const { setEntity } = usePayableDetailCache(payableId);
 
-  return useMutation<PayableResponseSchema, Error, string>(
-    (id) => monite.api.payable.approve(id),
-    {
-      onSuccess: (payable, id) => {
-        setEntity(payable);
-        invalidate();
+  return useMutation<PayableResponseSchema, Error, string>({
+    mutationFn: (id) => monite.api.payable.approve(id),
 
-        toast.success(t(i18n)`Approved`);
-      },
-    }
-  );
+    onSuccess: (payable, id) => {
+      setEntity(payable);
+      invalidate();
+
+      toast.success(t(i18n)`Approved`);
+    },
+  });
 };
 
 export const useRejectPayableById = (payableId?: string) => {
@@ -277,17 +279,16 @@ export const useRejectPayableById = (payableId?: string) => {
   const { invalidate } = usePayableListCache();
   const { setEntity } = usePayableDetailCache(payableId);
 
-  return useMutation<PayableResponseSchema, Error, string>(
-    (id) => monite.api!.payable.reject(id),
-    {
-      onSuccess: (payable, id) => {
-        setEntity(payable);
-        invalidate();
+  return useMutation<PayableResponseSchema, Error, string>({
+    mutationFn: (id) => monite.api!.payable.reject(id),
 
-        toast.success(t(i18n)`Rejected`);
-      },
-    }
-  );
+    onSuccess: (payable, id) => {
+      setEntity(payable);
+      invalidate();
+
+      toast.success(t(i18n)`Rejected`);
+    },
+  });
 };
 
 export const useCancelPayableById = (payableId?: string) => {
@@ -296,17 +297,16 @@ export const useCancelPayableById = (payableId?: string) => {
   const { invalidate } = usePayableListCache();
   const { setEntity } = usePayableDetailCache(payableId);
 
-  return useMutation<PayableResponseSchema, Error, string>(
-    (id) => monite.api!.payable.cancel(id),
-    {
-      onSuccess: (payable, id) => {
-        setEntity(payable);
-        invalidate();
+  return useMutation<PayableResponseSchema, Error, string>({
+    mutationFn: (id) => monite.api!.payable.cancel(id),
 
-        toast.success(t(i18n)`Cancelled`);
-      },
-    }
-  );
+    onSuccess: (payable, id) => {
+      setEntity(payable);
+      invalidate();
+
+      toast.success(t(i18n)`Cancelled`);
+    },
+  });
 };
 
 export const usePayableUpload = () => {
@@ -314,18 +314,18 @@ export const usePayableUpload = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = usePayableListCache();
 
-  return useMutation(
-    async (file: File | null | undefined) => {
+  return useMutation({
+    mutationFn: async (file: File | null | undefined) => {
       if (!file) throw new Error(t(i18n)`File not found`);
       return monite.api.payable.uploadFromFile({ file });
     },
-    {
-      onSuccess: () => {
-        invalidate();
-      },
-      onError() {}, // Disables global Toast Error Reporter
-    }
-  );
+
+    onSuccess: () => {
+      invalidate();
+    },
+
+    onError() {}, // Disables global Toast Error Reporter
+  });
 };
 
 /**
@@ -339,16 +339,15 @@ export const useAttachFileToPayable = (payableId: string) => {
   const { monite } = useMoniteContext();
   const { setEntity } = usePayableDetailCache(payableId);
 
-  return useMutation(
-    async ({ file }: { file: File | null | undefined }) => {
+  return useMutation({
+    mutationFn: async ({ file }: { file: File | null | undefined }) => {
       if (!file) throw new Error(t(i18n)`File not found`);
 
       return monite.api.payable.attachFile(payableId, { file });
     },
-    {
-      onSuccess: (payable) => {
-        setEntity(payable);
-      },
-    }
-  );
+
+    onSuccess: (payable) => {
+      setEntity(payable);
+    },
+  });
 };

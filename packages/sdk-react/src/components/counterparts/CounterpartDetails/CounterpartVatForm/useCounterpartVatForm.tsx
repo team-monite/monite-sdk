@@ -27,9 +27,9 @@ export function useCounterpartVatForm({
   onCreate,
   onUpdate,
 }: CounterpartVatFormProps) {
-  const { data: counterpart, isInitialLoading: isCounterpartLoading } =
+  const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
-  const { data: vat, isInitialLoading: isVatLoading } = useCounterpartVatById(
+  const { data: vat, isLoading: isVatLoading } = useCounterpartVatById(
     counterpartId,
     vatId
   );
@@ -104,8 +104,8 @@ export function useCounterpartVatForm({
     counterpart,
     vat,
     isLoading:
-      createVatMutation.isLoading ||
-      updateVatMutation.isLoading ||
+      createVatMutation.isPending ||
+      updateVatMutation.isPending ||
       isCounterpartLoading ||
       isVatLoading,
     error: createVatMutation.error || updateVatMutation.error,

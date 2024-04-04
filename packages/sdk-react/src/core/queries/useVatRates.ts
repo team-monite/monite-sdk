@@ -15,8 +15,9 @@ export const useVatRates = (
 ) => {
   const { monite } = useMoniteContext();
 
-  return useQuery<VatRateListResponse, Error>(
-    [...vatRatesQueryKeys.all(), params],
-    () => monite.api.vatRates.getAll(params)
-  );
+  return useQuery<VatRateListResponse, Error>({
+    queryKey: [...vatRatesQueryKeys.all(), params],
+
+    queryFn: () => monite.api.vatRates.getAll(params),
+  });
 };

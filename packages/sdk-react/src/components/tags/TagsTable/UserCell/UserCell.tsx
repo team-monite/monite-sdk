@@ -10,13 +10,13 @@ interface Props {
 }
 
 export const UserCell = ({ id }: Props) => {
-  const { data: user, isInitialLoading } = useEntityUserById(id);
+  const { data: user, isLoading } = useEntityUserById(id);
 
   return (
     <Box>
       <Chip
         avatar={
-          isInitialLoading ? (
+          isLoading ? (
             <Skeleton
               animation="wave"
               variant="circular"
@@ -35,7 +35,7 @@ export const UserCell = ({ id }: Props) => {
           )
         }
         label={
-          isInitialLoading ? (
+          isLoading ? (
             <Skeleton
               animation="wave"
               height={10}

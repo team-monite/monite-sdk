@@ -219,7 +219,7 @@ export function usePayableDetails({
   const {
     data: payable,
     error: payableQueryError,
-    isInitialLoading,
+    isLoading,
   } = usePayableById(payableId);
 
   const { data: lineItemsData } = usePayableLineItemsList(payableId);
@@ -271,7 +271,7 @@ export function usePayableDetails({
 
   useEffect(() => {
     if (!status) {
-      if (!isInitialLoading) {
+      if (!isLoading) {
         setIsPermissionsLoading(false);
       }
 
@@ -360,9 +360,9 @@ export function usePayableDetails({
     setIsPermissionsLoading(false);
   }, [
     isEdit,
+    isLoading,
     isCancelAvailable,
     isApproveAvailable,
-    isInitialLoading,
     isPayAvailable,
     isSubmitAvailable,
     isUpdatesAvailable,
@@ -372,32 +372,32 @@ export function usePayableDetails({
 
   useEffect(() => {
     setIsFormLoading(
-      createMutation.isLoading ||
-        saveMutation.isLoading ||
-        submitMutation.isLoading
+      createMutation.isPending ||
+        saveMutation.isPending ||
+        submitMutation.isPending
     );
   }, [
-    createMutation.isLoading,
-    saveMutation.isLoading,
-    submitMutation.isLoading,
+    createMutation.isPending,
+    saveMutation.isPending,
+    submitMutation.isPending,
   ]);
 
   useEffect(() => {
     setIsActionButtonLoading(
-      createMutation.isLoading ||
-        saveMutation.isLoading ||
-        cancelMutation.isLoading ||
-        submitMutation.isLoading ||
-        rejectMutation.isLoading ||
-        approveMutation.isLoading
+      createMutation.isPending ||
+        saveMutation.isPending ||
+        cancelMutation.isPending ||
+        submitMutation.isPending ||
+        rejectMutation.isPending ||
+        approveMutation.isPending
     );
   }, [
-    createMutation.isLoading,
-    saveMutation.isLoading,
-    cancelMutation.isLoading,
-    submitMutation.isLoading,
-    rejectMutation.isLoading,
-    approveMutation.isLoading,
+    createMutation.isPending,
+    saveMutation.isPending,
+    cancelMutation.isPending,
+    submitMutation.isPending,
+    rejectMutation.isPending,
+    approveMutation.isPending,
   ]);
 
   const createInvoice = useCallback(
@@ -482,7 +482,7 @@ export function usePayableDetails({
   return {
     payable,
     isLoading:
-      isInitialLoading ||
+      isLoading ||
       isActionButtonLoading ||
       isPermissionsLoading ||
       isFormLoading,

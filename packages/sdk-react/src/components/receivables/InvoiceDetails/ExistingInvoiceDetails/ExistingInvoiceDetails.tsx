@@ -117,12 +117,11 @@ export const ExistingInvoiceDetails = (
     DeliveryMethod.Email
   );
   const dialogContext = useDialog();
-  const { data: receivable, isInitialLoading: isInvoiceLoading } =
-    useReceivableById(props.id);
-
-  const { data: pdf, isInitialLoading: isPdfLoading } = usePDFReceivableById(
+  const { data: receivable, isLoading: isInvoiceLoading } = useReceivableById(
     props.id
   );
+
+  const { data: pdf, isLoading: isPdfLoading } = usePDFReceivableById(props.id);
 
   const handleIssueAndSend = useCallback(() => {
     setView(InvoiceDetailsView.Email);

@@ -34,16 +34,16 @@ const onboardingQueryKeys = {
 export const useOnboardingRequirementsData = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<InternalOnboardingRequirementsResponse, ApiError>(
-    onboardingQueryKeys.requirements(),
-    () => monite.api.onboarding.getRequirements(),
-    {
-      retry: false,
-      staleTime: Infinity,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery<InternalOnboardingRequirementsResponse, ApiError>({
+    queryKey: onboardingQueryKeys.requirements(),
+
+    queryFn: () => monite.api.onboarding.getRequirements(),
+
+    retry: false,
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 };
 
 export const useOnboardingPersonMask = (
@@ -60,26 +60,33 @@ export const useOnboardingPersonMask = (
     (onlyDirector || (!onlyDirector && country))
   );
 
-  return useQuery<OnboardingPersonMask | undefined, ApiError>(
-    onboardingQueryKeys.personMasks(
+  return useQuery<OnboardingPersonMask | undefined, ApiError>({
+    queryKey: onboardingQueryKeys.personMasks(
       enabled ? { country, relationship } : undefined
     ),
-    () =>
+
+    queryFn: () =>
       enabled
         ? monite.api.onboarding.getPersonMask(relationship, country)
         : undefined,
-    { enabled, retry: false, staleTime: Infinity }
-  );
+
+    enabled,
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const useOnboardingBankAccountMask = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<OnboardingBankAccountMaskResponse | undefined, ApiError>(
-    onboardingQueryKeys.bankAccountMasks(),
-    () => monite.api.onboarding.getBankAccountMasks(),
-    { retry: false, staleTime: Infinity }
-  );
+  return useQuery<OnboardingBankAccountMaskResponse | undefined, ApiError>({
+    queryKey: onboardingQueryKeys.bankAccountMasks(),
+
+    queryFn: () => monite.api.onboarding.getBankAccountMasks(),
+
+    retry: false,
+    staleTime: Infinity,
+  });
 };
 
 export const usePatchOnboardingRequirementsData = () => {
@@ -115,9 +122,13 @@ export const usePatchOnboardingRequirementsData = () => {
 export const useOnboardingCurrencyToCountries = () => {
   const { monite } = useMoniteContext();
 
-  return useQuery<Record<string, AllowedCountries[]>, ApiError>(
-    onboardingQueryKeys.currenciesToCountries(),
-    () => monite.api.onboarding.getBankAccountCurrencyToSupportedCountries(),
-    { retry: false, staleTime: Infinity }
-  );
+  return useQuery<Record<string, AllowedCountries[]>, ApiError>({
+    queryKey: onboardingQueryKeys.currenciesToCountries(),
+
+    queryFn: () =>
+      monite.api.onboarding.getBankAccountCurrencyToSupportedCountries(),
+
+    retry: false,
+    staleTime: Infinity,
+  });
 };

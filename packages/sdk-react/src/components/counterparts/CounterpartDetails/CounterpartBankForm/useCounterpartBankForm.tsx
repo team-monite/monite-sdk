@@ -37,10 +37,12 @@ export function useCounterpartBankForm({
 }: CounterpartBankFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { data: counterpart, isInitialLoading: isCounterpartLoading } =
+  const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
-  const { data: bank, isInitialLoading: isBankLoading } =
-    useCounterpartBankById(counterpartId, bankId);
+  const { data: bank, isLoading: isBankLoading } = useCounterpartBankById(
+    counterpartId,
+    bankId
+  );
 
   const createBankMutation = useCreateCounterpartBank(counterpartId);
   const updateBankMutation = useUpdateCounterpartBank(counterpartId);
@@ -111,8 +113,8 @@ export function useCounterpartBankForm({
     formRef,
     submitForm,
     isLoading:
-      createBankMutation.isLoading ||
-      updateBankMutation.isLoading ||
+      createBankMutation.isPending ||
+      updateBankMutation.isPending ||
       isCounterpartLoading ||
       isBankLoading,
     error: createBankMutation.error || updateBankMutation.error,

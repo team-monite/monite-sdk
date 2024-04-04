@@ -68,7 +68,7 @@ export const QuotesTable = ({
   const [sortModel, setSortModel] = useState<Array<QuotesTableSortModel>>([]);
   const sortModelItem = sortModel[0];
 
-  const { data: quotes, isInitialLoading } = useReceivables(
+  const { data: quotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
     PAGE_LIMIT,
     currentPaginationToken || undefined,
@@ -117,7 +117,7 @@ export const QuotesTable = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          loading={isInitialLoading}
+          loading={isLoading}
           sortModel={sortModel}
           onSortModelChange={onChangeSort}
           sx={{

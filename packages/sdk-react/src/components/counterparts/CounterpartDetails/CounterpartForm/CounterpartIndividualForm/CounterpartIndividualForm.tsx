@@ -68,7 +68,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   /** Returns `true` if the form works for `update` but not `create` flow */
   const isUpdateMode = useMemo(() => Boolean(counterpart), [counterpart]);
 
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
       action: ActionEnum.CREATE,

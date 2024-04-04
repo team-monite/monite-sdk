@@ -28,7 +28,7 @@ export const PreviewCustomerSection = ({
   const { i18n } = useLingui();
   const {
     data: counterpart,
-    isInitialLoading: isCounterpartLoading,
+    isLoading: isCounterpartLoading,
     error: counterpartError,
   } = useCounterpartById(invoice.counterpart_id);
 

@@ -35,7 +35,7 @@ export const OnboardingFileUploader = ({
 }: OnboardingFileUploaderProps) => {
   const { i18n } = useLingui();
 
-  const { mutateAsync, isLoading } = useCreateFile();
+  const { mutateAsync, isPending } = useCreateFile();
 
   const handleSubmit = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,17 +71,17 @@ export const OnboardingFileUploader = ({
           size="large"
           variant="contained"
           color="primary"
-          disabled={isLoading}
+          disabled={isPending}
           startIcon={
-            isLoading ? (
+            isPending ? (
               <CircularProgress color="inherit" size={22} />
             ) : (
               <CloudUpload />
             )
           }
         >
-          {isLoading && t(i18n)`Processing...`}
-          {!isLoading && t(i18n)`Choose document`}
+          {isPending && t(i18n)`Processing...`}
+          {!isPending && t(i18n)`Choose document`}
 
           <VisuallyHiddenInput
             accept={'.jpg,.jpeg,.png,.pdf'}

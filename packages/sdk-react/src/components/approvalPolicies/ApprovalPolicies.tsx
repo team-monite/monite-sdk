@@ -39,13 +39,13 @@ export const ApprovalPolicies = () => {
   }, []);
 
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadAllowed, isInitialLoading: isReadAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'approval_policy',
       action: ActionEnum.READ,
       entityUserId: user?.id,
     });
-  const { data: isCreateAllowed, isInitialLoading: isCreateAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'approval_policy',
       action: ActionEnum.CREATE,

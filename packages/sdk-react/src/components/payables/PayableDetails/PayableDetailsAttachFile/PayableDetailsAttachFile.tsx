@@ -41,7 +41,7 @@ export const PayableDetailsAttachFile = ({
   const { i18n } = useLingui();
   const theme = useTheme();
   const [dragIsOver, setDragIsOver] = useState(false);
-  const { mutate: attachFileToPayable, isLoading } =
+  const { mutate: attachFileToPayable, isPending } =
     useAttachFileToPayable(payableId);
   const dragOverStyle = useMemo(
     () => ({
@@ -120,7 +120,7 @@ export const PayableDetailsAttachFile = ({
     reader.readAsDataURL(file);
   };
 
-  return isLoading ? (
+  return isPending ? (
     <CenteredContentBox>
       <CircularProgress />
     </CenteredContentBox>
