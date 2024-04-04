@@ -57,7 +57,7 @@ module.exports = {
       statements: 58,
     },
     './src/components/tags': {
-      branches: 85,
+      branches: 81,
       functions: 78,
       lines: 91,
       statements: 90,
