@@ -1,0 +1,32 @@
+name: Sync PR with GitLab
+
+on:
+  pull_request_target:
+    branches:
+      - "**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  sync-pr-with-gitlab:
+    name: Sync PR
+    environment: gitlab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build
+        run: yarn build --filter "@team-monite/gitlab-sync"
+
+      - name: Sync PR with GitLab
+        run: |
+          yarn workspace @team-monite/gitlab-sync run cli sync-branch \
+            --project "${{ secrets.GITLAB_PROJECT }}" \
+            --pipeline-branch "${{ secrets.GITLAB_TARGET_BRANCH }}" \
+            --branch "${{ github.event.pull_request.head.ref }}" \
+            --sha "${{ github.event.pull_request.head.sha }}"

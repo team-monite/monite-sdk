@@ -1,0 +1,58 @@
+name: Merge GitLab MR
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  pr-branch:
+    name: Sync PR
+    environment: gitlab
+    if: ${{ github.event.pull_request.base.ref }} == "main"
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.base-branch.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Monorepo
+        id: base-branch
+        run: |
+#          sha=$(git rev-list ${{ github.event.pull_request.head.sha }} ^${{ github.event.pull_request.base.sha }} | tail --lines 1 | xargs -I {} git rev-parse {}~1)
+#          echo "sha=$sha" >> $GITHUB_ENV
+          # ⬇︎ probably the same as ⬆︎
+          echo "sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+
+  merge-gitlab-mr:
+    name: Merge MR
+    environment: production
+    if: ${{ github.event.pull_request.base.ref }} == "main"
+    runs-on: ubuntu-latest
+    env:
+      GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+      GITLAB_HOST: ${{ secrets.GITLAB_HOST }}
+      GITLAB_PROJECT: ${{ secrets.GITLAB_PROJECT }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Build
+        run: yarn build --filter "@team-monite/gitlab-sync"
+
+      - name: Sync PR with GitLab
+        run: |
+          yarn workspace @team-monite/gitlab-sync run cli merge-mr \
+            --project "${{ secrets.GITLAB_PROJECT }}" \
+            --target-branch "${{ secrets.GITLAB_TARGET_BRANCH }}" \
+            --branch "${{ github.event.pull_request.head.ref }}" \
+            --sha "${{ github.event.pull_request.head.sha }}"
