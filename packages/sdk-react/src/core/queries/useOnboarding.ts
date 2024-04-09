@@ -12,18 +12,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
-type OnboardingRelationshipFilter = {
-  country?: AllowedCountries;
-  relationship?: Relationship[];
-};
-
 const onboardingQueryKeys = {
   all: () => ['onboarding'],
   requirements: () => [...onboardingQueryKeys.all(), 'requirements'],
-  personMasks: (filter?: OnboardingRelationshipFilter) =>
-    filter
-      ? [...onboardingQueryKeys.all(), 'personMasks', filter]
-      : [...onboardingQueryKeys.all(), 'personMasks'],
+  personMasks: () => [...onboardingQueryKeys.all(), 'personMasks'],
   bankAccountMasks: () => [...onboardingQueryKeys.all(), 'bankAccountMasks'],
   currenciesToCountries: () => [
     ...onboardingQueryKeys.all(),
@@ -47,28 +39,23 @@ export const useOnboardingRequirementsData = () => {
 };
 
 export const useOnboardingPersonMask = (
-  relationship?: Relationship[],
+  relationship: Relationship[],
   country?: AllowedCountries
 ) => {
   const { monite } = useMoniteContext();
 
   const onlyDirector =
-    relationship?.includes(Relationship.DIRECTOR) && relationship?.length === 1;
+    relationship.includes(Relationship.DIRECTOR) && relationship.length === 1;
 
   const enabled = !!(
-    !!relationship?.length &&
+    !!relationship.length &&
     (onlyDirector || (!onlyDirector && country))
   );
 
   return useQuery<OnboardingPersonMask | undefined, ApiError>({
-    queryKey: onboardingQueryKeys.personMasks(
-      enabled ? { country, relationship } : undefined
-    ),
+    queryKey: [...onboardingQueryKeys.personMasks(), { country, relationship }],
 
-    queryFn: () =>
-      enabled
-        ? monite.api.onboarding.getPersonMask(relationship, country)
-        : undefined,
+    queryFn: () => monite.api.onboarding.getPersonMask(relationship, country),
 
     enabled,
     retry: false,

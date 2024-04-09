@@ -73,6 +73,7 @@
     "@storybook/react": "~7.6.17",
     "@storybook/react-webpack5": "~7.6.17",
     "@swc/jest": "~0.2.26",
+    "@tanstack/eslint-plugin-query": "~5.28.11",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/rollup-config": "workspace:~",
     "@testing-library/dom": "~9.3.1",
