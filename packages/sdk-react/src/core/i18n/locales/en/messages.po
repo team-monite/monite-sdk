@@ -33,7 +33,7 @@ msgid "(Default)"
 msgstr "(Default)"
 
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:50
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:72
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:75
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:22
 msgid "{0}"
 msgstr "{0}"
@@ -77,7 +77,7 @@ msgstr "Access Restricted"
 msgid "Account holder name"
 msgstr "Account holder name"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:97
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:100
 msgid "Account Holder Name"
 msgstr "Account Holder Name"
 
@@ -96,7 +96,7 @@ msgstr "Account name"
 msgid "Account number"
 msgstr "Account number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:106
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:109
 msgid "Account Number"
 msgstr "Account Number"
 
@@ -1449,7 +1449,7 @@ msgstr "Counterparts"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:105
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:75
 #: src/components/onboarding/OnboardingAddress/OnboardingAddress.tsx:45
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:67
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:70
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:28
 #: src/components/onboarding/validators/validationSchemas.ts:127
 #: src/components/onboarding/validators/validationSchemas.ts:159
@@ -1640,7 +1640,7 @@ msgstr "Cuba"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:86
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:21
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:109
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:49
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:52
 #: src/components/onboarding/validators/validationSchemas.ts:128
 #: src/components/products/ProductDetails/validation.ts:48
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:12
@@ -2795,7 +2795,7 @@ msgstr "I own 25% or more of the company."
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:120
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:9
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:89
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:88
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:91
 #: src/components/onboarding/validators/validationSchemas.ts:132
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:38
 #: src/components/receivables/InvoiceDetails/InvoicePaymentDetails/InvoicePaymentDetails.tsx:47
@@ -4636,7 +4636,7 @@ msgstr "Roofing/Siding, Sheet Metal"
 msgid "Routing number"
 msgstr "Routing number"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:115
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:118
 msgid "Routing Number"
 msgstr "Routing Number"
 
@@ -4958,7 +4958,7 @@ msgstr "Something went wrong. Please try again"
 msgid "Sort code"
 msgstr "Sort code"
 
-#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:124
+#: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:127
 msgid "Sort Code"
 msgstr "Sort Code"
 

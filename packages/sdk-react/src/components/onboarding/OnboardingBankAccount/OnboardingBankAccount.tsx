@@ -19,6 +19,7 @@ export const OnboardingBankAccount = () => {
 
   const {
     isLoading,
+    isPending,
     countries,
     currencies,
     primaryAction,
@@ -37,15 +38,17 @@ export const OnboardingBankAccount = () => {
     }
   }, [countries, resetField, getValues]);
 
+  if (isLoading) return null;
+
   return (
     <OnboardingForm
       onSubmit={handleSubmit(primaryAction)}
-      actions={<OnboardingFormActions isLoading={isLoading} />}
+      actions={<OnboardingFormActions isLoading={isPending} />}
     >
       <OnboardingStepContent>
         {checkValue('currency') && !!currencies.length && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Currency`}
             name="currency"
             control={control}
@@ -61,7 +64,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('country') && !!countries.length && (
           <RHFAutocomplete
-            disabled={isLoading}
+            disabled={isPending}
             name="country"
             control={control}
             label={t(i18n)`Country`}
@@ -84,7 +87,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('iban') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`IBAN`}
             name="iban"
             control={control}
@@ -93,7 +96,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('account_holder_name') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Account Holder Name`}
             name="account_holder_name"
             control={control}
@@ -102,7 +105,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('account_number') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Account Number`}
             name="account_number"
             control={control}
@@ -111,7 +114,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('routing_number') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Routing Number`}
             name="routing_number"
             control={control}
@@ -120,7 +123,7 @@ export const OnboardingBankAccount = () => {
 
         {checkValue('sort_code') && (
           <RHFTextField
-            disabled={isLoading}
+            disabled={isPending}
             label={t(i18n)`Sort Code`}
             name="sort_code"
             control={control}
