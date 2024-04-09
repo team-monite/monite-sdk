@@ -26,6 +26,8 @@ import type { OnboardingFormType } from './useOnboardingForm';
 import { useOnboardingForm } from './useOnboardingForm';
 
 export type OnboardingBankAccountReturnType = {
+  isPending: boolean;
+
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
   isLoading: boolean;
 
@@ -56,12 +58,12 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const {
     mutateAsync: createBankAccountMutation,
-    isPending: isCreateBankAccountLoading,
+    isPending: isCreateBankAccountPending,
   } = useCreateBankAccount();
 
   const {
     mutateAsync: deleteBankAccountMutation,
-    isPending: isDeleteBankAccountLoading,
+    isPending: isDeleteBankAccountPending,
   } = useDeleteBankAccount();
 
   const {
@@ -160,11 +162,10 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   );
 
   return {
+    isPending: isCreateBankAccountPending || isDeleteBankAccountPending,
     isLoading:
-      isBankAccountMaskLoading ||
       isOnboardingDataLoading ||
-      isCreateBankAccountLoading ||
-      isDeleteBankAccountLoading ||
+      isBankAccountMaskLoading ||
       isCurrencyToCountriesLoading,
     currencies,
     countries,
