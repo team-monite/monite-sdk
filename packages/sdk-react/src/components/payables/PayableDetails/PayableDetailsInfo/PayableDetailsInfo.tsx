@@ -76,7 +76,7 @@ export const PayableDetailsInfo = ({
     counterpart && isOrganizationCounterpart(counterpart)
   );
   const { data: addedByUser } = useEntityUserById(
-    payable.was_created_by_user_id
+    payable.was_created_by_user_id ?? ''
   );
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
