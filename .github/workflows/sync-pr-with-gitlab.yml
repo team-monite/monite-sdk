@@ -1,0 +1,34 @@
+name: Sync PR with GitLab
+
+on:
+  # Avoid using `pull_request_target`, to prevent insecure actions
+  # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request:
+    branches:
+      - "**"
+      - "!changeset-release/**"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number }}"
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  sync-pr-with-gitlab:
+    name: Sync GitHub PR branch with GitLab MR branch
+    environment: gitlab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync PR with GitLab
+        uses: team-monite/sync-gitlab-repo-submodule-action@40538235a3c9a6819d24692d8087505fe1449162
+        with:
+          action: sync-branch
+          gitlab_token: ${{ secrets.GITLAB_TOKEN }}
+          gitlab_host: ${{ secrets.GITLAB_HOST }}
+          gitlab_project_id: ${{ secrets.GITLAB_PROJECT_ID }}
+          gitlab_target_branch: ${{ secrets.GITLAB_TARGET_BRANCH }}
+          submodule_name: ${{ secrets.GITLAB_SUBMODULE_NAME }}
+          branch: ${{ github.event.pull_request.head.ref }}
+          sha: ${{ github.event.pull_request.head.sha }}
+          github_pr_url: "${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
