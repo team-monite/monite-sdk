@@ -2,8 +2,7 @@
   "extends": [
     "plugin:@team-monite/react",
     "plugin:@team-monite/lingui",
-    "plugin:@team-monite/mui",
-    "plugin:@tanstack/eslint-plugin-query/recommended"
+    "plugin:@team-monite/mui"
   ],
   "ignorePatterns": [
     "src/core/i18n/locales/*/messages.ts",
