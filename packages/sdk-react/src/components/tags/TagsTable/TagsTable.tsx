@@ -173,7 +173,8 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
               headerName: t(i18n)`Created by`,
               flex: 0.6,
               sortable: false,
-              renderCell: (params) => <UserCell id={params.value} />,
+              renderCell: (params) =>
+                params.value ? <UserCell id={params.value} /> : null,
             },
             {
               field: 'actions',

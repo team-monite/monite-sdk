@@ -2,14 +2,9 @@ import React from 'react';
 
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
-import { TagReadSchema } from '@monite/sdk-api';
 import { Chip, Box, Skeleton, Typography } from '@mui/material';
 
-interface Props {
-  id: TagReadSchema['created_by_entity_user_id'];
-}
-
-export const UserCell = ({ id }: Props) => {
+export const UserCell = ({ id }: { id: string }) => {
   const { data: user, isLoading } = useEntityUserById(id);
 
   return (

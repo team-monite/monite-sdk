@@ -1757,7 +1757,7 @@ msgstr "Declined"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:393
 #: src/components/tags/TagsTable/TagsTable.test.tsx:424
 #: src/components/tags/TagsTable/TagsTable.test.tsx:455
-#: src/components/tags/TagsTable/TagsTable.tsx:198
+#: src/components/tags/TagsTable/TagsTable.tsx:199
 #: src/components/userRoles/consts.ts:73
 #: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:151
 msgid "Delete"
@@ -2070,7 +2070,7 @@ msgstr "Ecuador"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:389
 #: src/components/tags/TagsTable/TagsTable.test.tsx:420
 #: src/components/tags/TagsTable/TagsTable.test.tsx:451
-#: src/components/tags/TagsTable/TagsTable.tsx:189
+#: src/components/tags/TagsTable/TagsTable.tsx:190
 msgid "Edit"
 msgstr "Edit"
 
@@ -2893,8 +2893,8 @@ msgid "Invalid IBAN"
 msgstr "Invalid IBAN"
 
 #: src/core/queries/useEntityUsers.ts:39
-msgid "Invalid id ({id}) for useEntityUserById query"
-msgstr "Invalid id ({id}) for useEntityUserById query"
+#~ msgid "Invalid id ({id}) for useEntityUserById query"
+#~ msgstr "Invalid id ({id}) for useEntityUserById query"
 
 #: src/components/receivables/Receivables.tsx:97
 #~ msgid "Invoice"

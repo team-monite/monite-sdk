@@ -11,6 +11,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "@tanstack/eslint-plugin-query": "~5.28.11",
     "@types/eslint": "~8.37.0",
     "@typescript-eslint/eslint-plugin": "~6.11.0",
     "@typescript-eslint/parser": "~6.11.0",

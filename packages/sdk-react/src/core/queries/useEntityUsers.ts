@@ -1,5 +1,3 @@
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
 import {
   ApiError,
   EntityUserPaginationResponse,
@@ -25,19 +23,13 @@ export const useEntityUsersList = (
   });
 };
 
-export const useEntityUserById = (id?: string) => {
-  const { i18n } = useLingui();
+export const useEntityUserById = (id: string) => {
   const { monite } = useMoniteContext();
 
   return useQuery<EntityUserResponse | undefined, ApiError>({
     queryKey: [ENTITY_USERS_QUERY_ID, id],
 
-    queryFn: () =>
-      id
-        ? monite.api.entityUser.getById(id)
-        : Promise.reject(
-            new Error(t(i18n)`Invalid id (${id}) for useEntityUserById query`)
-          ),
+    queryFn: () => monite.api.entityUser.getById(id),
 
     enabled: Boolean(id),
   });
