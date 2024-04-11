@@ -39,7 +39,6 @@ import {
   DialogContent,
   Divider,
   Grid,
-  MenuItem,
   Stack,
   Typography,
   Table,
@@ -100,7 +99,7 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
   TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
-  TableFoot: ({ children, context }) => {
+  TableFoot: ({ children }) => {
     return <React.Fragment>{children}</React.Fragment>;
   },
 };
@@ -131,12 +130,11 @@ export const ProductsTable = ({
 }: IProductsTableProps) => {
   const { i18n } = useLingui();
   const tableHeadCells = useMemo(() => getTableHeadCells(i18n), [i18n]);
-  const { getSymbolFromCurrency } = useCurrencies();
   const [openChangeCurrencyInfo, setOpenChangeCurrencyInfo] =
     useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
 
-  const { control, handleSubmit, watch, formState } =
+  const { control, handleSubmit, watch } =
     useForm<ICreateReceivablesProductsForm>({
       resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
       defaultValues: useMemo(

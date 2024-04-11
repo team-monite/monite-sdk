@@ -7,7 +7,6 @@ import {
   ProductServicePaginationResponse,
   ProductServiceRequest,
   ProductServiceResponse,
-  ProductsService,
   ProductsServiceGetAllRequest,
 } from '@monite/sdk-api';
 import {
@@ -47,7 +46,7 @@ const useProductListCache = () => {
 };
 
 export const useProducts = (
-  params: Parameters<ProductsService['getAll']>[0],
+  params: ProductsServiceGetAllRequest,
   options?: {
     /** Should we enable the request or not? */
     enabled: boolean;
@@ -65,7 +64,7 @@ export const useProducts = (
 };
 
 export const useInfiniteProducts = (
-  params: Parameters<ProductsService['getAll']>[0],
+  params: ProductsServiceGetAllRequest,
   options?: {
     /** Should we enable the request or not? */
     enabled: boolean;
@@ -87,7 +86,7 @@ export const useInfiniteProducts = (
         paginationToken: pageParam,
       });
     },
-    initialPageParam: '0',
+    initialPageParam: '',
     getNextPageParam: (lastPage) => lastPage.next_pagination_token,
     enabled: options?.enabled ?? true,
   });
