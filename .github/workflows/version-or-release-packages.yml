@@ -31,6 +31,9 @@ jobs:
           fetch-depth: 0
       - name: Setup Monorepo
         uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        with:
+          # Do not use the cache if merged PR source branch starts with `changeset-release/`
+          cache: ${{ !startsWith(github.event.pull_request.head.ref, 'changeset-release/') }}
 
       - name: Build
         run: yarn build
