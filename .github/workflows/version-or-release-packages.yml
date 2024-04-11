@@ -18,6 +18,7 @@ jobs:
   npm-publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
+    if: github.repository == 'team-monite/monite-sdk'
     permissions:
       contents: write
       pull-requests: write
