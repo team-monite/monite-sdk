@@ -23,8 +23,6 @@ jobs:
       contents: write
       pull-requests: write
     environment: production
-    outputs:
-      e2e-npm-tests-dependencies: ${{ steps.npm-publish.outputs.published }}
     steps:
       - uses: actions/checkout@v4
         with:
