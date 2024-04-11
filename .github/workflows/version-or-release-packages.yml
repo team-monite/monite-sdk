@@ -10,7 +10,7 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: "${{ github.workflow }}-${{ github.ref }}"
   # Do not cancel ✖︎ in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: false
 

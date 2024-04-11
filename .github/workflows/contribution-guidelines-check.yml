@@ -4,6 +4,9 @@
 name: Contribution Guidelines Check
 
 on:
+  # The event `pull_request_target` is safe because the workflow does not use `action/checkout`,
+  # and does not run untrusted code.
+  # See: https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
   pull_request_target:
     branches:
       - "**"
@@ -16,7 +19,7 @@ on:
       - unlabeled
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number }}"
   # Cancel in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: true
 
