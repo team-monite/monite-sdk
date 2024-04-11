@@ -113,7 +113,7 @@ msgid "Activity"
 msgstr "Activity"
 
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:536
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:534
 msgid "Add"
 msgstr "Add"
 
@@ -188,7 +188,7 @@ msgid "Add contact person"
 msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:162
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:303
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:301
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:299
 msgid "Add item"
 msgstr "Add item"
@@ -364,11 +364,11 @@ msgstr "Amount, (excl.) tax"
 msgid "Amusement Parks/Carnivals"
 msgstr "Amusement Parks/Carnivals"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:333
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:331
 msgid "An invoice can only contain items in the selected currency."
 msgstr "An invoice can only contain items in the selected currency."
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:330
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:328
 msgid "And add items created with it."
 msgstr "And add items created with it."
 
@@ -566,7 +566,7 @@ msgstr "Automotive Parts and Accessories Stores"
 msgid "Automotive Tire Stores"
 msgstr "Automotive Tire Stores"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:356
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:354
 msgid "Available items"
 msgstr "Available items"
 
@@ -971,7 +971,7 @@ msgstr "Canadian Dollar"
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:121
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:184
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:533
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:531
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:160
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:237
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:26
@@ -1495,7 +1495,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 msgid "Create"
 msgstr "Create"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:431
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:429
 msgid "Create an item with this currency to add it"
 msgstr "Create an item with this currency to add it"
 
@@ -1532,7 +1532,7 @@ msgstr "Create from mail"
 msgid "Create Invoice"
 msgstr "Create Invoice"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:312
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:310
 msgid "Create new"
 msgstr "Create new"
 
@@ -1571,7 +1571,7 @@ msgstr "Create new tag"
 msgid "Create New Tag"
 msgstr "Create New Tag"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:438
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:436
 msgid "Create product or service"
 msgstr "Create product or service"
 
@@ -2288,7 +2288,7 @@ msgstr "Failed to create Counterpart."
 #~ msgid "Failed to create invoice"
 #~ msgstr "Failed to create invoice"
 
-#: src/core/queries/useProducts.ts:122
+#: src/core/queries/useProducts.ts:121
 msgid "Failed to create product."
 msgstr "Failed to create product."
 
@@ -2308,7 +2308,7 @@ msgstr "Failed to delete Contact Person."
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
-#: src/core/queries/useProducts.ts:160
+#: src/core/queries/useProducts.ts:159
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
@@ -2360,7 +2360,7 @@ msgstr "Failed to update Contact Person."
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
-#: src/core/queries/useProducts.ts:141
+#: src/core/queries/useProducts.ts:140
 msgid "Failed to update product."
 msgstr "Failed to update product."
 
@@ -2818,7 +2818,7 @@ msgstr "Icelandic Króna"
 #~ msgid "ID:"
 #~ msgstr "ID:"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:349
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:347
 msgid "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
@@ -3624,7 +3624,7 @@ msgstr "Myanmar"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:274
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:40
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:77
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:115
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:114
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:48
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:100
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:33
@@ -3793,7 +3793,7 @@ msgstr "No counterparts found."
 msgid "No file provided"
 msgstr "No file provided"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:428
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:426
 msgid "No items yet"
 msgstr "No items yet"
 
@@ -4333,7 +4333,7 @@ msgstr "Previous page"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:276
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:102
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:120
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:119
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:192
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:58
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:61
@@ -4372,11 +4372,11 @@ msgstr "Processing..."
 msgid "Product"
 msgstr "Product"
 
-#: src/core/queries/useProducts.ts:118
+#: src/core/queries/useProducts.ts:117
 msgid "Product {0} was created."
 msgstr "Product {0} was created."
 
-#: src/core/queries/useProducts.ts:137
+#: src/core/queries/useProducts.ts:136
 msgid "Product {0} was updated."
 msgstr "Product {0} was updated."
 
@@ -4400,7 +4400,7 @@ msgstr "Product not found"
 msgid "Product type is required"
 msgstr "Product type is required"
 
-#: src/core/queries/useProducts.ts:156
+#: src/core/queries/useProducts.ts:155
 msgid "Product was deleted."
 msgstr "Product was deleted."
 
@@ -4585,7 +4585,7 @@ msgstr "Removing an executive role from this person is not allowed"
 msgid "Reopen"
 msgstr "Reopen"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:536
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:534
 msgid "Replace items"
 msgstr "Replace items"
 
@@ -4803,7 +4803,7 @@ msgstr "See all"
 #~ msgid "Select Counterpart"
 #~ msgstr "Select Counterpart"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:327
+#: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:325
 msgid "Select invoice currency"
 msgstr "Select invoice currency"
 
