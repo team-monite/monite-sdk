@@ -1,6 +1,8 @@
 name: Main Suite
 
 on:
+  # Avoid using `pull_request_target`, to prevent insecure actions
+  # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
   pull_request:
     branches:
       - "**"
