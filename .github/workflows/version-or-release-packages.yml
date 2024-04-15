@@ -18,18 +18,20 @@ jobs:
   npm-publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
+    if: github.repository == 'team-monite/monite-sdk'
     permissions:
       contents: write
       pull-requests: write
     environment: production
-    outputs:
-      e2e-npm-tests-dependencies: ${{ steps.npm-publish.outputs.published }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        with:
+          # Do not use the cache if merged PR source branch starts with `changeset-release/`
+          cache: ${{ !startsWith(github.event.pull_request.head.ref, 'changeset-release/') }}
 
       - name: Build
         run: yarn build

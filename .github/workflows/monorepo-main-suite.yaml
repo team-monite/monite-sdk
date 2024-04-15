@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Build
         run: yarn build
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Lint
         run: yarn lint
@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Type Check
         run: yarn typecheck
@@ -55,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Build Storybook
         run: yarn storybook:build
@@ -66,7 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Test
         run: yarn test
@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Translations Validator
         run: ./lingui-translations-validator.sh
@@ -114,7 +114,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: ./.github/actions/setup-monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Build
         run: yarn build

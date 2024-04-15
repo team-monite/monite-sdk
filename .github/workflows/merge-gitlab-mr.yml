@@ -25,7 +25,6 @@ jobs:
       GITLAB_HOST: ${{ secrets.GITLAB_HOST }}
       GITLAB_PROJECT: ${{ secrets.GITLAB_PROJECT }}
     steps:
-      - uses: actions/checkout@v4
       - name: Merge GitLab MR
         uses: team-monite/sync-gitlab-repo-submodule-action@40538235a3c9a6819d24692d8087505fe1449162
         with:
