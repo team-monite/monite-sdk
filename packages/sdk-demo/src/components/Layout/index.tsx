@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { ThemeSelector } from '@/components/Layout/ThemeSelector';
 import { Menu } from '@/components/Menu';
 import {
   MoniteStyleProvider,
@@ -12,6 +13,7 @@ import {
   Drawer,
   Typography,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 
 type DefaultLayoutProps = {
@@ -73,12 +75,21 @@ export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
           <Menu />
           <Box
             sx={{
+              width: '100%',
               position: 'absolute',
               bottom: 0,
-              mb: 2,
+              p: 2,
             }}
           >
-            {siderProps?.footer}
+            <Stack direction="column" spacing={2} ml={2}>
+              {/*Themes are unfinished.*/}
+              {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
+              {(process.env.NODE_ENV === 'development' ||
+                location.pathname.indexOf('dev.monite.') > 0) && (
+                <ThemeSelector />
+              )}
+              {siderProps?.footer}
+            </Stack>
           </Box>
         </Drawer>
 

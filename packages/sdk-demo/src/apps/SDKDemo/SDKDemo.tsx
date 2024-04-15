@@ -9,10 +9,11 @@ import {
 } from '@/components/AuthCredentialsProvider';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
+import { ThemeContextProvider } from '@/context/themeContext';
 import { fetchToken } from '@/core/fetchToken';
 import { ConfigSchema, getConfig } from '@/core/getConfig';
 import { getResetStyles } from '@/core/getResetStyles';
-import { Global, css } from '@emotion/react';
+import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
@@ -62,30 +63,32 @@ const SDKDemoComponent = ({
   const apiUrl = `${api_url}/v1`;
 
   return (
-    <AppMoniteProvider
-      sdkConfig={{
-        entityId: authData?.entity_id ?? 'lazy',
-        apiUrl,
-        fetchToken: () =>
-          authData
-            ? fetchToken(apiUrl, authData).catch(logout)
-            : Promise.reject(),
-      }}
-    >
-      <Global styles={getFontFaceStyles} />
-      <Global styles={getResetStyles} />
-      {authData ? (
-        <BrowserRouter>
-          <DefaultLayout
-            siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
-          >
-            <Base />
-          </DefaultLayout>
-        </BrowserRouter>
-      ) : (
-        <LoginForm login={login} />
-      )}
-    </AppMoniteProvider>
+    <ThemeContextProvider>
+      <AppMoniteProvider
+        sdkConfig={{
+          entityId: authData?.entity_id ?? 'lazy',
+          apiUrl,
+          fetchToken: () =>
+            authData
+              ? fetchToken(apiUrl, authData).catch(logout)
+              : Promise.reject(),
+        }}
+      >
+        <Global styles={getFontFaceStyles} />
+        <Global styles={getResetStyles} />
+        {authData ? (
+          <BrowserRouter>
+            <DefaultLayout
+              siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
+            >
+              <Base />
+            </DefaultLayout>
+          </BrowserRouter>
+        ) : (
+          <LoginForm login={login} />
+        )}
+      </AppMoniteProvider>
+    </ThemeContextProvider>
   );
 };
 
@@ -93,15 +96,8 @@ const SiderFooter = ({ onLogout }: { onLogout: () => void }) => {
   const { i18n } = useLingui();
 
   return (
-    <div
-      css={css`
-        width: 100% !important;
-        padding: 0 12px;
-      `}
-    >
-      <Button onClick={onLogout} variant="outlined">
-        {t(i18n)`Logout`}
-      </Button>
-    </div>
+    <Button onClick={onLogout} variant="outlined">
+      {t(i18n)`Logout`}
+    </Button>
   );
 };
