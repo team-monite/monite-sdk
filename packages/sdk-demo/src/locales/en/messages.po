@@ -23,6 +23,10 @@ msgstr "Client Secret"
 msgid "Counterparts"
 msgstr "Counterparts"
 
+#: src/components/Layout/ThemeSelector.tsx:92
+msgid "Dark Mode"
+msgstr "Dark Mode"
+
 #: src/components/LoginForm/LoginForm.tsx:119
 msgid "Entity ID"
 msgstr "Entity ID"
@@ -35,9 +39,20 @@ msgstr "Entity User ID"
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:103
+#: src/apps/SDKDemo/SDKDemo.tsx:100
 msgid "Logout"
 msgstr "Logout"
+
+#: src/components/Layout/ThemeSelector.tsx:25
+#: src/components/Layout/ThemeSelector.tsx:29
+#: src/components/Layout/ThemeSelector.tsx:78
+msgid "Material UI"
+msgstr "Material UI"
+
+#: src/components/Layout/ThemeSelector.tsx:27
+#: src/components/Layout/ThemeSelector.tsx:84
+msgid "Monite"
+msgstr "Monite"
 
 #: src/components/Menu/consts.tsx:60
 msgid "Onboard Entity"
@@ -62,6 +77,10 @@ msgstr "Settings"
 #: src/components/Menu/consts.tsx:55
 msgid "Tags"
 msgstr "Tags"
+
+#: src/components/Layout/ThemeSelector.tsx:71
+msgid "Theme"
+msgstr "Theme"
 
 #: src/components/LoginForm/LoginForm.tsx:65
 msgid "Welcome back"

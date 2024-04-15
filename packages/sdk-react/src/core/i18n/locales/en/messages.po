@@ -1540,7 +1540,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:73
 #: src/components/counterparts/Counterparts.test.tsx:111
 #: src/components/counterparts/Counterparts.tsx:144
-#: src/components/payables/Payables.tsx:119
+#: src/components/payables/Payables.tsx:118
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
@@ -2230,7 +2230,7 @@ msgstr "Error creating approval policy"
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
 
-#: src/components/payables/Payables.tsx:175
+#: src/components/payables/Payables.tsx:174
 msgid "Error when uploading payable file"
 msgstr "Error when uploading payable file"
 
@@ -3698,7 +3698,7 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/Payables.tsx:140
+#: src/components/payables/Payables.tsx:139
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4035,11 +4035,11 @@ msgstr "Payable"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:172
+#: src/components/payables/Payables.tsx:171
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:89
+#: src/components/payables/Payables.tsx:88
 msgid "Payables"
 msgstr "Payables"
 
@@ -5746,16 +5746,16 @@ msgstr "Updated on"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/Payables.tsx:151
+#: src/components/payables/Payables.tsx:150
 msgid "Upload File"
 msgstr "Upload File"
 
 #: src/components/payables/Payables.test.tsx:36
-#: src/components/payables/Payables.tsx:167
+#: src/components/payables/Payables.tsx:166
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:171
+#: src/components/payables/Payables.tsx:170
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
