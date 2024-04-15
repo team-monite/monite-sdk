@@ -3377,6 +3377,7 @@ __metadata:
     "@tanstack/react-query-devtools": ~5.28.6
     "@team-monite/eslint-plugin": "workspace:~"
     "@team-monite/rollup-config": "workspace:~"
+    "@team-monite/sdk-themes": "workspace:~"
     "@testing-library/dom": ~9.3.1
     "@testing-library/jest-dom": ~5.16.5
     "@testing-library/react": ~14.0.0
@@ -6241,6 +6242,7 @@ __metadata:
     "@mui/material": ~5.14.8
     "@team-monite/eslint-plugin": "workspace:~"
     "@team-monite/rollup-config": "workspace:~"
+    "@team-monite/sdk-themes": "workspace:~"
     "@types/cookie-parser": ~1.4.3
     "@types/eslint": ~8.37.0
     "@types/node": ^16.11.36
@@ -6269,6 +6271,15 @@ __metadata:
     vite: ~5.1.4
     web-vitals: ^2.1.4
     yup: ~0.32.11
+  languageName: unknown
+  linkType: soft
+
+"@team-monite/sdk-themes@workspace:packages/sdk-themes, @team-monite/sdk-themes@workspace:~":
+  version: 0.0.0-use.local
+  resolution: "@team-monite/sdk-themes@workspace:packages/sdk-themes"
+  dependencies:
+    "@mui/material": ~5.14.2
+    typescript: ~5.4.5
   languageName: unknown
   linkType: soft
 
@@ -20540,6 +20551,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:~5.4.5":
+  version: 5.4.5
+  resolution: "typescript@npm:5.4.5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 53c879c6fa1e3bcb194b274d4501ba1985894b2c2692fa079db03c5a5a7140587a1e04e1ba03184605d35f439b40192d9e138eb3279ca8eee313c081c8bcd9b0
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@~5.0.4#~builtin<compat/typescript>":
   version: 5.0.4
   resolution: "typescript@patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"
@@ -20547,6 +20568,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: bb309d320c59a26565fb3793dba550576ab861018ff3fd1b7fccabbe46ae4a35546bc45f342c0a0b6f265c801ccdf64ffd68f548f117ceb7f0eac4b805cd52a9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@~5.4.5#~builtin<compat/typescript>":
+  version: 5.4.5
+  resolution: "typescript@patch:typescript@npm%3A5.4.5#~builtin<compat/typescript>::version=5.4.5&hash=85af82"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 2373c693f3b328f3b2387c3efafe6d257b057a142f9a79291854b14ff4d5367d3d730810aee981726b677ae0fd8329b23309da3b6aaab8263dbdccf1da07a3ba
   languageName: node
   linkType: hard
 
