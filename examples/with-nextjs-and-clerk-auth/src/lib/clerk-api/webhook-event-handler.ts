@@ -168,9 +168,13 @@ const handleOrganizationCreatedEvent = async (
     const existingEntityId = getOrganizationEntityData(organization).entity_id;
     if (existingEntityId) return existingEntityId;
     resolve(
-      createOrganizationEntity({ owner, organization }, token).then(
-        ({ id }) => id
-      )
+      createOrganizationEntity(
+        {
+          email: owner.emailAddresses.at(0)?.emailAddress ?? '',
+          legal_name: organization.name,
+        },
+        token
+      ).then(({ id }) => id)
     );
   });
 

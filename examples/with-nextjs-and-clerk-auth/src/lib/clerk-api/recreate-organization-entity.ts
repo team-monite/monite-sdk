@@ -52,10 +52,12 @@ export const recreateOrganizationEntity = async ({
       )
     );
 
+    const owner = await clerkClient.users.getUser(organization.createdBy);
+
     const newEntity = await createOrganizationEntity(
       {
-        organization,
-        owner: await clerkClient.users.getUser(organization.createdBy),
+        email: owner.emailAddresses.at(0)?.emailAddress ?? '',
+        legal_name: organization.name,
       },
       token
     );
