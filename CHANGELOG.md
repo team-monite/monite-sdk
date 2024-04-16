@@ -1,5 +1,13 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## @monite/sdk-react@3.9.0 & @monite/sdk-api@3.9.0
+This package is a minor release with no breaking changes.
+
+## New features and improvements
+- Added the `UserRole` component, allowing you to view all your user roles, permissions, and other related details.
+- Added the `UserRoleTable` component for viewing all user roles and permissions. 
+- Added the ability to view user role permissions on the 'UserRoleDetails' components.
+
 ## @monite/sdk-react@3.8.0 & @monite/sdk-api@3.8.0
 This package is a minor release with no breaking changes.
 
