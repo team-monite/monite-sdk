@@ -9,7 +9,10 @@ import type { clerkClient as clerkClientType } from '@clerk/nextjs';
 
 import { createOrganizationEntity } from '@/lib/clerk-api/create-organization-entity';
 import { createUserEntity } from '@/lib/clerk-api/create-user-entity';
-import { getUserEntitiesData } from '@/lib/clerk-api/get-entity-user-data';
+import {
+  getEntityUserData,
+  getUserEntitiesData,
+} from '@/lib/clerk-api/get-entity-user-data';
 import { getOrganizationEntityData } from '@/lib/clerk-api/get-organization-entity';
 import { updateOrganizationEntity } from '@/lib/clerk-api/update-organization-entity';
 import {
@@ -17,7 +20,8 @@ import {
   isExistingRole,
   roles_default_permissions,
 } from '@/lib/monite-api/create-entity-role';
-import { AccessToken } from '@/lib/monite-api/fetch-token';
+import { generateApprovalPolicies } from '@/lib/monite-api/demo-data-generator/generate-approval-policies';
+import { AccessToken, fetchTokenServer } from '@/lib/monite-api/fetch-token';
 
 /**
  * Generates a new Entity for the Organization and migrates the users to the new Entity
@@ -133,6 +137,30 @@ export const recreateOrganizationEntity = async ({
         clerkClient,
       }
     );
+
+    const updatedOwner = await clerkClient.users.getUser(
+      organization.createdBy
+    );
+
+    const { entity_user_id: ownerEntityUserId } = getEntityUserData(
+      newEntity.id,
+      updatedOwner
+    );
+
+    if (!ownerEntityUserId)
+      throw new Error(
+        `entity_user_id is not set for the owner "${updatedOwner.id}" of the organization "${organization.id}"`
+      );
+
+    await generateApprovalPolicies({
+      entity_id: newEntity.id,
+      entity_user_id: ownerEntityUserId,
+      token: await fetchTokenServer({
+        // Approval Policies creation requires `{grant_type: 'entity_user'}` token
+        grant_type: 'entity_user',
+        entity_user_id: ownerEntityUserId,
+      }),
+    });
 
     console.log(
       chalk.greenBright(
