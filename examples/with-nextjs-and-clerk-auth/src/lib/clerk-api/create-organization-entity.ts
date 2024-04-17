@@ -5,10 +5,10 @@ import { generateEntityAddress } from '@/lib/monite-api/demo-data-generator/gene
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
 
 type CreateOrganizationEntityParams = {
-  /** Clerk User who will be the owner of the new Entity */
-  owner: Pick<User, 'emailAddresses'>;
-  /** Clerk Organization that the new Entity will represent */
-  organization: Pick<Organization, 'name'>;
+  /** Organization email */
+  email: string;
+  /** Organization name */
+  legal_name: string;
 };
 
 /**
@@ -18,15 +18,15 @@ type CreateOrganizationEntityParams = {
  * @returns The created Entity
  */
 export const createOrganizationEntity = (
-  { owner, organization }: CreateOrganizationEntityParams,
+  { email, legal_name }: CreateOrganizationEntityParams,
   token: AccessToken
 ) => {
   return createEntity(
     {
-      email: owner.emailAddresses.at(0)?.emailAddress ?? '',
+      email,
       type: 'organization',
       organization: {
-        legal_name: organization.name,
+        legal_name,
       },
       address: {
         country: 'DE', // We have to use EU country code, because the VAT IDs are used for the data generation
