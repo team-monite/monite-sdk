@@ -5,38 +5,51 @@ import {
   ErrorSchemaResponse,
   BANK_ACCOUNTS_ENDPOINT,
   CreateEntityBankAccountRequest,
+  EntityBankAccountResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { bankAccountsFixture } from './bankAccountsFixture';
 
 export const bankAccountsHandlers = [
-  rest.get<
-    undefined,
+  http.get<
     {},
+    undefined,
     EntityBankAccountPaginationResponse | ErrorSchemaResponse
-  >(`*${BANK_ACCOUNTS_ENDPOINT}`, (req, res, ctx) => {
-    return res(delay(), ctx.status(200), ctx.json(bankAccountsFixture));
+  >(`*${BANK_ACCOUNTS_ENDPOINT}`, async () => {
+    await delay();
+
+    return HttpResponse.json(bankAccountsFixture, {
+      status: 200,
+    });
   }),
 
-  rest.delete(`*${BANK_ACCOUNTS_ENDPOINT}/*`, (req, res, ctx) => {
-    return res(delay(), ctx.status(400));
+  http.delete(`*${BANK_ACCOUNTS_ENDPOINT}/*`, async () => {
+    await delay();
+
+    return new HttpResponse(null, {
+      status: 400,
+    });
   }),
 
-  rest.post<
-    undefined,
+  http.post<
     {},
-    CreateEntityBankAccountRequest | ErrorSchemaResponse
-  >(`*${BANK_ACCOUNTS_ENDPOINT}`, async (req, res, ctx) => {
-    const payload = await req.json<CreateEntityBankAccountRequest>();
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+    CreateEntityBankAccountRequest,
+    EntityBankAccountResponse | ErrorSchemaResponse
+  >(`*${BANK_ACCOUNTS_ENDPOINT}`, async ({ request }) => {
+    const payload = await request.json();
+
+    await delay();
+
+    return HttpResponse.json(
+      {
         id: faker.string.uuid(),
         ...payload,
-      })
+      },
+      {
+        status: 200,
+      }
     );
   }),
 ];

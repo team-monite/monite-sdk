@@ -10,7 +10,7 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   approvalPoliciesSearchFixture,
@@ -28,10 +28,11 @@ export const approvalPoliciesHandlers = [
    *
    * @link {@see https://api.dev.monite.com/docs?version=2023-03-14#/Approval%20policies/get_approval_policies}
    */
-  rest.get<undefined, {}, ApprovalPolicyResourceList | ErrorSchemaResponse>(
+  http.get<{}, {}, ApprovalPolicyResourceList | ErrorSchemaResponse>(
     approvalPoliciesPath,
-    (req, res, ctx) => {
-      const searchParams = req.url.searchParams;
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const searchParams = url.searchParams;
       const created_by = searchParams.get('created_by');
       const created_at = searchParams.get('created_at__gte')
         ? new Date(searchParams.get('created_at__gte')!)
@@ -62,14 +63,12 @@ export const approvalPoliciesHandlers = [
           })
         : filteredByCreatedBy;
 
-      return res(
-        delay(),
-        ctx.json({
-          data: filteredByCreatedAt,
-          next_pagination_token: undefined,
-          prev_pagination_token: undefined,
-        })
-      );
+      await delay();
+      return HttpResponse.json({
+        data: filteredByCreatedAt,
+        next_pagination_token: undefined,
+        prev_pagination_token: undefined,
+      });
     }
   ),
 
@@ -77,43 +76,46 @@ export const approvalPoliciesHandlers = [
    * Get approval policy by id
    *
    */
-  rest.get<
-    undefined,
+  http.get<
     { approvalPolicyId: string },
+    undefined,
     ApprovalPolicyResource | ErrorSchemaResponse
-  >(approvalPolicyPathById, (req, res, ctx) => {
-    const { approvalPolicyId } = req.params;
+  >(approvalPolicyPathById, async ({ params }) => {
+    const { approvalPolicyId } = params;
 
     const fixture = approvalPolicyByIdFixtures.find(
       (policy) => policy.id === approvalPolicyId
     );
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: `There is no approval policy with the given id: ${approvalPolicyId}`,
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json(fixture));
+    await delay();
+    return HttpResponse.json(fixture);
   }),
 
   /**
    * Create a new approval policy
    *
    */
-  rest.post<
-    ApprovalPolicyCreate,
+  http.post<
     {},
+    ApprovalPolicyCreate,
     ApprovalPolicyResource | ErrorSchemaResponse
-  >(approvalPoliciesPath, async (req, res, ctx) => {
-    const { name, description, trigger, script } =
-      await req.json<ApprovalPolicyCreate>();
+  >(approvalPoliciesPath, async ({ request }) => {
+    const { name, description, trigger, script } = await request.json();
 
     const newApprovalPolicy: ApprovalPolicyResource = {
       id: 'new-id',
@@ -128,17 +130,17 @@ export const approvalPoliciesHandlers = [
       status: ApprovalPolicyStatus.ACTIVE,
     };
 
-    return res(delay(), ctx.json(newApprovalPolicy));
+    await delay();
+    return HttpResponse.json(newApprovalPolicy);
   }),
 
-  rest.patch<
-    ApprovalPolicyUpdate,
+  http.patch<
     { approvalPolicyId: string },
+    ApprovalPolicyUpdate,
     ApprovalPolicyResource | ErrorSchemaResponse
-  >(approvalPolicyPathById, async (req, res, ctx) => {
-    const { approvalPolicyId } = req.params;
-    const { name, description, trigger, script } =
-      await req.json<ApprovalPolicyUpdate>();
+  >(approvalPolicyPathById, async ({ request, params }) => {
+    const { approvalPolicyId } = params;
+    const { name, description, trigger, script } = await request.json();
 
     approvalPoliciesList = approvalPoliciesList.map((policy) => {
       if (policy.id === approvalPolicyId) {
@@ -158,17 +160,21 @@ export const approvalPoliciesHandlers = [
       approvalPoliciesList.find((policy) => policy.id === approvalPolicyId)!;
 
     if (!updatedApprovalPolicy) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: `There is no approval policy with the given id: ${approvalPolicyId}`,
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json(updatedApprovalPolicy));
+    await delay();
+    return HttpResponse.json(updatedApprovalPolicy);
   }),
 ];

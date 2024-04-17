@@ -21,7 +21,7 @@ import {
   PersonRequest,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { personFixture } from '../persons/personsFixtures';
 import { onboardingBusinessProfileFixture } from './onboardingBusinessProfile';
@@ -149,14 +149,15 @@ const entity = onboardingEntityFixture('organization', {
 });
 
 export const onboardingHandlers = [
-  rest.get<
+  http.get<
+    {},
     undefined,
     InternalOnboardingRequirementsResponse | ErrorSchemaResponse
-  >(onboardingPath, (_, res, ctx) => {
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+  >(onboardingPath, async () => {
+    await delay();
+
+    return HttpResponse.json(
+      {
         requirements: [
           // OnboardingRequirement.ENTITY,
           // OnboardingRequirement.BUSINESS_PROFILE,
@@ -204,21 +205,23 @@ export const onboardingHandlers = [
           bank_accounts: [onboardingBankAccountFixture()],
           business_profile: onboardingBusinessProfileFixture(),
         },
-      } as InternalOnboardingRequirementsResponse)
+      } as InternalOnboardingRequirementsResponse,
+      {
+        status: 200,
+      }
     );
   }),
 
-  rest.get<
-    { relationships: Array<Relationship>; country?: AllowedCountries },
+  http.get<
     {},
+    { relationships: Array<Relationship>; country?: AllowedCountries },
     OnboardingPersonMask | ErrorSchemaResponse
-  >(onboardingPersonMaskPath, async (req, res, ctx) => {
-    const relationships = (req.url.searchParams.get('relationships') ??
+  >(onboardingPersonMaskPath, async ({ request }) => {
+    const url = new URL(request.url);
+    const relationships = (url.searchParams.get('relationships') ??
       []) as Array<Relationship>;
 
-    const country = req.url.searchParams.get(
-      'country'
-    ) as AllowedCountries | null;
+    const country = url.searchParams.get('country') as AllowedCountries | null;
 
     const filter = {
       relationships,
@@ -237,10 +240,10 @@ export const onboardingHandlers = [
 
     const isOwner = filter.relationships.includes(Relationship.OWNER);
 
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+    await delay();
+
+    return HttpResponse.json(
+      {
         first_name: true,
         last_name: true,
         email: true,
@@ -277,19 +280,22 @@ export const onboardingHandlers = [
           director: true,
           executive: true,
         },
-      })
+      },
+      {
+        status: 200,
+      }
     );
   }),
 
-  rest.get<
-    undefined,
+  http.get<
     {},
+    undefined,
     OnboardingBankAccountMaskResponse | ErrorSchemaResponse
-  >(onboardingBankAccountMaskPath, async (_, res, ctx) => {
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+  >(onboardingBankAccountMaskPath, async () => {
+    await delay();
+
+    return HttpResponse.json(
+      {
         [CurrencyEnum.EUR]: {
           country: true,
           currency: true,
@@ -310,15 +316,18 @@ export const onboardingHandlers = [
           account_number: true,
           routing_number: true,
         },
-      })
+      },
+      {
+        status: 200,
+      }
     );
   }),
 
-  rest.get<undefined, {}>(onboardingCurrencyToCountriesPath, (_, res, ctx) => {
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+  http.get<{}, undefined, {}>(onboardingCurrencyToCountriesPath, async () => {
+    await delay();
+
+    return HttpResponse.json(
+      {
         EUR: [
           'AT',
           'BE',
@@ -355,7 +364,10 @@ export const onboardingHandlers = [
         ],
         GBP: ['GB', 'GI'],
         USD: ['US'],
-      })
+      },
+      {
+        status: 200,
+      }
     );
   }),
 ];

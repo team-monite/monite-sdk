@@ -14,7 +14,7 @@ import {
   ReceivableFileUrl,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import * as yup from 'yup';
 
 import { delay, getMockPagination } from '../utils';
@@ -49,9 +49,10 @@ interface IReceivableByIdParams {
 
 export const receivableHandlers = [
   // read list
-  rest.get<undefined, {}, ReceivablePaginationResponse>(
+  http.get<{}, undefined, ReceivablePaginationResponse | ErrorSchemaResponse>(
     receivablePath,
-    ({ url }, res, ctx) => {
+    async ({ request }) => {
+      const url = new URL(request.url);
       const type = url.searchParams.get('type') as
         | keyof ReceivablesListFixture
         | null;
@@ -60,39 +61,54 @@ export const receivableHandlers = [
         url.searchParams.get('pagination_token')
       );
 
-      if (!type || !receivableListFixture[type]) return res(ctx.status(404));
+      if (!type || !receivableListFixture[type]) {
+        await delay();
 
-      return res(
-        delay(),
-        ctx.json({
-          data: receivableListFixture[type] as ReceivableResponse[],
-          prev_pagination_token: prevPage,
-          next_pagination_token: nextPage,
-          test: url.searchParams.get('type'),
-        })
-      );
+        return HttpResponse.json(
+          {
+            error: {
+              message: 'Receivable type not found',
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
+
+      await delay();
+
+      return HttpResponse.json({
+        data: receivableListFixture[type] as ReceivableResponse[],
+        prev_pagination_token: prevPage,
+        next_pagination_token: nextPage,
+      });
     }
   ),
 
   // create
-  rest.post<
-    ReceivableFacadeCreatePayload,
+  http.post<
     {},
+    ReceivableFacadeCreatePayload,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivablePath, async (req, res, ctx) => {
-    const jsonBody = await req.json<ReceivableFacadeCreatePayload>();
+  >(receivablePath, async ({ request }) => {
+    const jsonBody = await request.json();
     try {
       await createInvoiceValidationSchema.validate(jsonBody);
 
-      return res(delay(), ctx.json(receivableListFixture[jsonBody.type][0]));
+      await delay();
+
+      return HttpResponse.json(receivableListFixture[jsonBody.type][0]);
     } catch (e) {
       console.error(e);
 
-      return res(
-        delay(),
-        ctx.status(400),
-        ctx.json({ error: { message: 'See errors in the console' } })
-      );
+      await delay();
+
+      return HttpResponse.json({
+        error: {
+          message: 'Validation error',
+        },
+      });
     }
   }),
 
@@ -101,10 +117,23 @@ export const receivableHandlers = [
    *
    * @see {@link https://docs.monite.com/reference/get_receivables_id} the same as in production
    */
-  rest.get<undefined, { id: string }, ReceivableResponse | ErrorSchemaResponse>(
+  http.get<{ id: string }, undefined, ReceivableResponse | ErrorSchemaResponse>(
     receivableDetailPath,
-    ({ params }, res, ctx) => {
-      if (!params.id) return res(delay(), ctx.status(404));
+    async ({ params }) => {
+      if (!params.id) {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: 'Receivable id is required',
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
 
       const quoteFixture = receivableListFixture.quote.find(
         (item) => item.id === params.id
@@ -118,28 +147,30 @@ export const receivableHandlers = [
       const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
       if (!fixture) {
-        return res(
-          delay(),
-          ctx.status(400),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: `There is no receivable by provided id: ${params.id}`,
             },
-          })
+          },
+          {
+            status: 404,
+          }
         );
       }
 
-      return res(ctx.json(fixture));
+      return HttpResponse.json(fixture);
     }
   ),
 
   /** Issue receivable */
-  rest.post<
-    undefined,
+  http.post<
     IReceivableByIdParams,
+    undefined,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivableIssuePath, (req, res, ctx) => {
-    const params = req.params;
+  >(receivableIssuePath, async ({ params }) => {
     const quoteFixture = receivableListFixture.quote.find(
       (item) => item.id === params.id
     );
@@ -152,14 +183,17 @@ export const receivableHandlers = [
     const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: `There is no receivable by provided id: ${params.id}`,
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
@@ -169,46 +203,15 @@ export const receivableHandlers = [
       status: ReceivablesStatusEnum.ISSUED,
     };
 
-    return res(delay(), ctx.json(receivable));
+    await delay();
+
+    return HttpResponse.json(receivable);
   }),
 
   /** Delete receivable */
-  rest.delete<
-    undefined,
-    IReceivableByIdParams,
-    undefined | ErrorSchemaResponse
-  >(receivableDetailPath, (req, res, ctx) => {
-    const params = req.params;
-    const quoteFixture = receivableListFixture.quote.find(
-      (item) => item.id === params.id
-    );
-    const invoiceFixture = receivableListFixture.invoice.find(
-      (item) => item.id === params.id
-    );
-    const creditNoteFixture = receivableListFixture.credit_note.find(
-      (item) => item.id === params.id
-    );
-    const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
-
-    if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
-          error: {
-            message: `There is no receivable by provided id: ${params.id}`,
-          },
-        })
-      );
-    }
-
-    return res(delay(2_000), ctx.status(204), ctx.json(undefined));
-  }),
-
-  /** Cancel receivable */
-  rest.post<undefined, IReceivableByIdParams, undefined>(
-    receivableCancelPath,
-    ({ params }, res, ctx) => {
+  http.delete<IReceivableByIdParams, undefined>(
+    receivableDetailPath,
+    async ({ params }) => {
       const quoteFixture = receivableListFixture.quote.find(
         (item) => item.id === params.id
       );
@@ -221,19 +224,68 @@ export const receivableHandlers = [
       const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
       if (!fixture) {
-        throw new Error(`There is no receivable by provided id: ${params.id}`);
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: `There is no receivable by provided id: ${params.id}`,
+            },
+          },
+          {
+            status: 404,
+          }
+        );
       }
 
-      return res(delay(), ctx.status(204), ctx.json(undefined));
+      await delay();
+
+      return new HttpResponse(undefined, { status: 204 });
+    }
+  ),
+
+  /** Cancel receivable */
+  http.post<IReceivableByIdParams, undefined, undefined>(
+    receivableCancelPath,
+    async ({ params }) => {
+      const quoteFixture = receivableListFixture.quote.find(
+        (item) => item.id === params.id
+      );
+      const invoiceFixture = receivableListFixture.invoice.find(
+        (item) => item.id === params.id
+      );
+      const creditNoteFixture = receivableListFixture.credit_note.find(
+        (item) => item.id === params.id
+      );
+      const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
+
+      if (!fixture) {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: `There is no receivable by provided id: ${params.id}`,
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
+
+      await delay();
+
+      return new HttpResponse(undefined, { status: 204 });
     }
   ),
 
   /** Mark receivable as uncollectible */
-  rest.post<
-    undefined,
+  http.post<
     IReceivableByIdParams,
+    undefined,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivableUncollectiblePath, ({ params }, res, ctx) => {
+  >(receivableUncollectiblePath, async ({ params }) => {
     const quoteFixture = receivableListFixture.quote.find(
       (item) => item.id === params.id
     );
@@ -246,14 +298,17 @@ export const receivableHandlers = [
     const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: `There is no receivable by provided id: ${params.id}`,
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
@@ -263,15 +318,17 @@ export const receivableHandlers = [
       id: ReceivablesStatusEnum.UNCOLLECTIBLE,
     };
 
-    return res(delay(), ctx.status(200), ctx.json(receivable));
+    await delay();
+
+    return HttpResponse.json(receivable, { status: 200 });
   }),
 
   /** Send invoice via Email */
-  rest.post<
-    undefined,
+  http.post<
     IReceivableByIdParams,
+    undefined,
     ReceivableResponse | ErrorSchemaResponse
-  >(receivableSendPath, ({ params }, res, ctx) => {
+  >(receivableSendPath, async ({ params }) => {
     const quoteFixture = receivableListFixture.quote.find(
       (item) => item.id === params.id
     );
@@ -284,34 +341,43 @@ export const receivableHandlers = [
     const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: `There is no receivable by provided id: ${params.id}`,
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
     fixture.status = ReceivablesStatusEnum.ISSUED;
-    return res(delay(1_000), ctx.status(200), ctx.json(fixture));
+
+    await delay();
+
+    return HttpResponse.json(fixture, { status: 200 });
   }),
 
   /** Get invoice PDF via Email */
-  rest.get<
-    undefined,
+  http.get<
     IReceivableByIdParams,
+    undefined,
     ReceivableFileUrl | ErrorSchemaResponse
-  >(`${receivableDetailPath}/pdf_link`, ({ params }, res, ctx) => {
-    return res(
-      delay(1_000),
-      ctx.status(200),
-      ctx.json({
+  >(`${receivableDetailPath}/pdf_link`, async ({ params }) => {
+    await delay();
+
+    return HttpResponse.json(
+      {
         file_url:
           'https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/receivables/6da994ff-c026-4502-a109-954ae5a696a7/89693d25-0902-4597-97a7-64183c13d463.pdf',
-      })
+      },
+      {
+        status: 200,
+      }
     );
   }),
 ];

@@ -8,7 +8,7 @@ import {
   OnboardingPaymentMethodsResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   entityPaymentMethods,
@@ -18,99 +18,127 @@ import {
 } from './entitiesFixture';
 
 export const entitiesHandlers = [
-  rest.get<
-    undefined,
+  http.get<
     { entityId: string },
+    undefined,
     MergedSettingsResponse | ErrorSchemaResponse
-  >('*/entities/:entityId/settings', (req, res, ctx) => {
-    const { entityId } = req.params;
+  >('*/entities/:entityId/settings', async ({ params }) => {
+    const { entityId } = params;
 
     const entitySettingsFixture = entitySettingsById[entityId];
 
     if (!entitySettingsFixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Entity not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.status(200), ctx.json(entitySettingsFixture));
+    await delay();
+
+    return HttpResponse.json(entitySettingsFixture, {
+      status: 200,
+    });
   }),
 
-  rest.get<
-    undefined,
+  http.get<
     { entityId: string },
+    undefined,
     OnboardingPaymentMethodsResponse | ErrorSchemaResponse
-  >('*/entities/:entityId/payment_methods', (req, res, ctx) => {
-    return res(delay(), ctx.status(200), ctx.json(entityPaymentMethods));
+  >('*/entities/:entityId/payment_methods', async () => {
+    await delay();
+
+    return HttpResponse.json(entityPaymentMethods, {
+      status: 200,
+    });
   }),
 
-  rest.get<
-    undefined,
+  http.get<
     { entityId: string },
+    undefined,
     EntityVatIDResourceList | ErrorSchemaResponse
-  >('*/entities/:entityId/vat_ids', (req, res, ctx) => {
-    const { entityId } = req.params;
+  >('*/entities/:entityId/vat_ids', async ({ params }) => {
+    const { entityId } = params;
 
     const entityVatIdListFixture = entityVatIdList[entityId];
 
     if (!entityVatIdListFixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Entity not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(2_000), ctx.status(200), ctx.json(entityVatIdListFixture));
+    await delay();
+
+    return HttpResponse.json(entityVatIdListFixture, {
+      status: 200,
+    });
   }),
 
-  rest.get<undefined, {}, EntityResponse | ErrorSchemaResponse>(
+  http.get<{}, undefined, EntityResponse | ErrorSchemaResponse>(
     '*/entity_users/my_entity',
-    (req, res, ctx) => {
+    async () => {
       const entityFixture = getCurrentEntity();
 
       if (!entityFixture) {
-        return res(
-          delay(),
-          ctx.status(404),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: 'Entity not found',
             },
-          })
+          },
+          {
+            status: 404,
+          }
         );
       }
 
-      return res(delay(2_000), ctx.status(200), ctx.json(entityFixture));
+      await delay();
+
+      return HttpResponse.json(entityFixture, {
+        status: 200,
+      });
     }
   ),
 
-  rest.patch<
-    UpdateEntityRequest,
+  http.patch<
     { entityId: string },
+    UpdateEntityRequest,
     EntityResponse | ErrorSchemaResponse
-  >('*/entities/:entityId', async (req, res, ctx) => {
-    const { entityId } = req.params;
+  >('*/entities/:entityId', async ({ params, request }) => {
+    const { entityId } = params;
 
-    const data = await req.json<UpdateEntityRequest>();
+    const data = await request.json();
 
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json({
+    await delay();
+
+    return HttpResponse.json(
+      {
         ...data,
         id: entityId,
-      } as EntityResponse)
+      } as EntityResponse,
+      {
+        status: 200,
+      }
     );
   }),
 ];

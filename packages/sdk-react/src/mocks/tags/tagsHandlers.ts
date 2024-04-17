@@ -12,7 +12,7 @@ import {
   TagReadSchema,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { tagListFixture } from './tagsFixture';
 
@@ -44,20 +44,20 @@ export const tagsHandlers = [
    *
    * Also supports sorting, limits and ordering
    */
-  rest.get<undefined, GetRequest, TagsPaginationResponse>(
+  http.get<GetRequest, undefined, TagsPaginationResponse>(
     tagsPath,
-    (req, res, ctx) => {
-      const sort =
-        (req.url.searchParams.get('sort') as GetRequest['sort']) || null;
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const sort = (url.searchParams.get('sort') as GetRequest['sort']) || null;
 
       const order =
-        (req.url.searchParams.get('order') as GetRequest['order']) || null;
+        (url.searchParams.get('order') as GetRequest['order']) || null;
 
       const limit =
-        (req.url.searchParams.get('limit') as GetRequest['limit']) || null;
+        (url.searchParams.get('limit') as GetRequest['limit']) || null;
 
       const pagination_token =
-        (req.url.searchParams.get(
+        (url.searchParams.get(
           'pagination_token'
         ) as GetRequest['pagination_token']) || null;
 
@@ -99,14 +99,13 @@ export const tagsHandlers = [
         return 0;
       });
 
-      return res(
-        delay(),
-        ctx.json({
-          data: sortedData,
-          next_pagination_token,
-          prev_pagination_token,
-        })
-      );
+      await delay();
+
+      return HttpResponse.json({
+        data: sortedData,
+        next_pagination_token,
+        prev_pagination_token,
+      });
     }
   ),
 
@@ -116,19 +115,23 @@ export const tagsHandlers = [
    *
    * @returns A default fixtures with provided `name`
    */
-  rest.post<TagCreateOrUpdateSchema, {}, TagReadSchema | ErrorResponse>(
+  http.post<{}, TagCreateOrUpdateSchema, TagReadSchema | ErrorResponse>(
     tagsPath,
-    async (req, res, ctx) => {
-      const json = await req.json<{ name: string }>();
+    async ({ request }) => {
+      const json = await request.json();
 
       if (json.name.includes('error')) {
-        return res(
-          ctx.status(403),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: json.name,
             },
-          })
+          },
+          {
+            status: 403,
+          }
         );
       }
 
@@ -142,7 +145,9 @@ export const tagsHandlers = [
 
       tagsList.push(newTag);
 
-      return res(ctx.json(newTag));
+      await delay();
+
+      return HttpResponse.json(newTag);
     }
   ),
 
@@ -152,22 +157,26 @@ export const tagsHandlers = [
    *
    * @returns A default fixtures with provided `name`
    */
-  rest.patch<
-    TagCreateOrUpdateSchema,
+  http.patch<
     { id: string },
+    TagCreateOrUpdateSchema,
     TagReadSchema | ErrorResponse
-  >(`${tagsPath}/:id`, async (req, res, ctx) => {
-    const json = await req.json<{ name: string }>();
-    const tagId = req.params.id;
+  >(`${tagsPath}/:id`, async ({ request, params }) => {
+    const json = await request.json();
+    const tagId = params.id;
 
     if (json.name.includes('error')) {
-      return res(
-        ctx.status(403),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: json.name,
           },
-        })
+        },
+        {
+          status: 403,
+        }
       );
     }
 
@@ -185,18 +194,23 @@ export const tagsHandlers = [
     const updatedTag = tagsList.find((tag) => tag.id === tagId);
 
     if (!updatedTag) {
-      return res(
-        delay(),
-        ctx.status(403),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: json.name,
           },
-        })
+        },
+        {
+          status: 403,
+        }
       );
     }
 
-    return res(ctx.json(updatedTag));
+    await delay();
+
+    return HttpResponse.json(updatedTag);
   }),
 
   /**
@@ -205,25 +219,28 @@ export const tagsHandlers = [
    *
    * @returns Nothing with 204 status code or error message
    */
-  rest.delete<
-    TagCreateOrUpdateSchema,
-    TagDeleteRequest,
-    TagReadSchema | ErrorResponse
-  >(`${tagsPath}/:id`, ({ params }, res, ctx) => {
-    /** If tag is `0` then we should trigger an error */
-    if (params.id === '0') {
-      return res(
-        ctx.status(400),
-        ctx.json({
-          error: {
-            message: 'Custom error message',
+  http.delete<TagDeleteRequest, TagCreateOrUpdateSchema>(
+    `${tagsPath}/:id`,
+    async ({ params }) => {
+      /** If tag is `0` then we should trigger an error */
+      if (params.id === '0') {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: 'Custom error message',
+            },
           },
-        })
-      );
+          {
+            status: 400,
+          }
+        );
+      }
+
+      tagsList = tagsList.filter((tag) => tag.id !== params.id);
+
+      return new HttpResponse(undefined, { status: 204 });
     }
-
-    tagsList = tagsList.filter((tag) => tag.id !== params.id);
-
-    return res(ctx.status(204));
-  }),
+  ),
 ];

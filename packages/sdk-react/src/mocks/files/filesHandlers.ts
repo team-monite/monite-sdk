@@ -4,7 +4,7 @@ import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 import { ApiError, type FileResponse, type UploadFile } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 type CreateFileParams = { fileId: string };
 
@@ -73,24 +73,23 @@ const fileFixture = (): FileResponse => {
 };
 
 export const filesHandlers = [
-  rest.post<UploadFile, {}, FileResponse | ApiError>(
-    filePath,
-    async (_, res, ctx) => {
-      return res(delay(1500), ctx.status(200), ctx.json(fileFixture()));
-    }
-  ),
+  http.post<{}, UploadFile, FileResponse | ApiError>(filePath, async () => {
+    await delay();
 
-  rest.get<undefined, CreateFileParams, FileResponse>(
-    fileIdPath,
-    (_, res, ctx) => {
-      return res(delay(), ctx.json(fileFixture()));
-    }
-  ),
+    return HttpResponse.json(fileFixture());
+  }),
 
-  rest.delete<undefined, CreateFileParams, undefined>(
-    fileIdPath,
-    (_, res, ctx) => {
-      return res(delay(), ctx.status(204));
-    }
-  ),
+  http.get<CreateFileParams, undefined, FileResponse>(fileIdPath, async () => {
+    await delay();
+
+    return HttpResponse.json(fileFixture());
+  }),
+
+  http.delete<CreateFileParams, undefined, undefined>(fileIdPath, async () => {
+    await delay();
+
+    return HttpResponse.json(fileFixture(), {
+      status: 204,
+    });
+  }),
 ];

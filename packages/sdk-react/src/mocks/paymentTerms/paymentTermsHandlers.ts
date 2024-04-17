@@ -4,13 +4,13 @@ import {
   PaymentTermsListResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 export const paymentTermsHandlers = [
-  rest.get<undefined, {}, PaymentTermsListResponse>(
+  http.get<{}, undefined, PaymentTermsListResponse>(
     `*/${PAYMENT_TERMS_ENDPOINT}`,
-    (_, res, ctx) => {
-      return res(ctx.json(paymentTermsFixtures));
+    () => {
+      return HttpResponse.json(paymentTermsFixtures);
     }
   ),
 ];

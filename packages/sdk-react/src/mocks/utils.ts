@@ -1,5 +1,4 @@
-import { compose, context } from 'msw';
-import type { ResponseTransformer } from 'msw';
+import { delay as mswDelay } from 'msw';
 
 export const getMockPagination = (
   page?: string | null,
@@ -13,14 +12,12 @@ export const getMockPagination = (
   return { prevPage, nextPage };
 };
 
-export const delay = (duration?: number): ResponseTransformer => {
+export const delay = (duration?: number): Promise<void> => {
   if (process.env.TESTS) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return compose();
+    return Promise.resolve();
   }
 
-  return compose(context.delay(duration));
+  return mswDelay(duration);
 };
 
 type PaginationResult<T> = readonly [

@@ -1,27 +1,42 @@
-import { RolePaginationResponse, RoleResponse } from '@monite/sdk-api';
+import {
+  ErrorSchemaResponse,
+  RolePaginationResponse,
+  RoleResponse,
+} from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { delay } from '../utils';
 import { getAllRolesFixture } from './rolesFixtures';
 
 export const rolesHandlers = [
-  rest.get<undefined, {}, RolePaginationResponse>(
-    `*/roles`,
-    (req, res, ctx) => {
-      return res(delay(), ctx.json(getAllRolesFixture));
-    }
-  ),
+  http.get<{}, undefined, RolePaginationResponse>(`*/roles`, async () => {
+    await delay();
 
-  rest.get<string, { roleId: string }, RoleResponse>(
+    return HttpResponse.json(getAllRolesFixture);
+  }),
+
+  http.get<{ roleId: string }, string, RoleResponse | ErrorSchemaResponse>(
     `*/roles/:roleId`,
-    (req, res, ctx) => {
-      const { roleId } = req.params;
+    async ({ params }) => {
+      const { roleId } = params;
       const role = getAllRolesFixture.data.find((item) => item.id === roleId);
+
+      await delay();
       if (!role) {
-        return res(delay(), ctx.status(404));
+        return HttpResponse.json(
+          {
+            error: {
+              message: 'Role not found',
+            },
+          },
+          {
+            status: 404,
+          }
+        );
       }
-      return res(delay(), ctx.json(role));
+
+      return HttpResponse.json(role);
     }
   ),
 ];
