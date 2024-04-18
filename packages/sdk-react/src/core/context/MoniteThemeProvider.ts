@@ -10,11 +10,5 @@ export const MoniteThemeContext = createContext<ThemeOptions | undefined>(
 export function useMoniteThemeContext(): Theme {
   const moniteThemeContext = useContext(MoniteThemeContext);
 
-  if (!moniteThemeContext) {
-    throw new Error(
-      'Could not find MoniteThemeContext. Make sure that you are using "MoniteThemeProvider" component before calling this hook.'
-    );
-  }
-
   return createTheme(moniteThemeContext);
 }
