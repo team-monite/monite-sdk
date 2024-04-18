@@ -7,6 +7,7 @@ import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 import { useQueryClient } from '@tanstack/react-query';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   moniteLight as themeMoniteLight,
   moniteDark as themeMoniteDark,
