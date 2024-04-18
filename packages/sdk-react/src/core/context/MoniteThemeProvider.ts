@@ -2,9 +2,10 @@ import { createContext, useContext } from 'react';
 
 import { createTheme } from '@mui/material/styles';
 import { Theme, ThemeOptions } from '@mui/material/styles/createTheme';
-import { moniteLight as themeMoniteLight } from '@team-monite/sdk-themes';
 
-export const MoniteThemeContext = createContext<ThemeOptions>(themeMoniteLight);
+export const MoniteThemeContext = createContext<ThemeOptions | undefined>(
+  undefined
+);
 
 export function useMoniteThemeContext(): Theme {
   const moniteThemeContext = useContext(MoniteThemeContext);

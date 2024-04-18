@@ -30,7 +30,6 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { moniteLight as themeMoniteLight } from '@team-monite/sdk-themes';
 
 import { GlobalToast } from '../GlobalToast';
 import { MoniteContext, useMoniteContext } from './MoniteContext';
@@ -232,7 +231,7 @@ export const MoniteProvider = ({
         key={moniteInstanceKey}
         sentryHub={sentryHub}
       >
-        <MoniteThemeContext.Provider value={theme ?? themeMoniteLight}>
+        <MoniteThemeContext.Provider value={theme}>
           <MoniteContext.Provider
             value={{
               monite,
