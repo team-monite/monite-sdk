@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { ThemeSelector } from '@/components/Layout/ThemeSelector';
 import { Menu } from '@/components/Menu';
-import { ConfigSchema, getConfig } from '@/core/getConfig';
+import { useConfig } from '@/context/configContext';
 import {
   MoniteStyleProvider,
   useEntityUserByAuthToken,
@@ -25,21 +25,8 @@ type DefaultLayoutProps = {
 export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
   const location = useLocation();
   const { data: user } = useEntityUserByAuthToken();
-  const [config, setConfig] = useState<ConfigSchema | null>(null);
   const [pagePadding, setPagePadding] = useState(4);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const fetchedConfig = await getConfig();
-        setConfig(fetchedConfig);
-      } catch (error) {
-        console.error('Failed to fetch config:', error);
-      }
-    };
-
-    fetchConfig();
-  }, []);
+  const config = useConfig();
 
   useEffect(() => {
     window.scrollTo(0, 0);

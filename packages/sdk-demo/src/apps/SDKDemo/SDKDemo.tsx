@@ -1,4 +1,4 @@
-import React, { lazy, ReactNode, StrictMode, Suspense, useMemo } from 'react';
+import React, { StrictMode, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Base } from '@/apps/Base';
@@ -9,9 +9,9 @@ import {
 } from '@/components/AuthCredentialsProvider';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
+import { ConfigProvider, useConfig } from '@/context/configContext';
 import { ThemeContextProvider } from '@/context/themeContext';
 import { fetchToken } from '@/core/fetchToken';
-import { ConfigSchema, getConfig } from '@/core/getConfig';
 import { getResetStyles } from '@/core/getResetStyles';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
@@ -21,31 +21,13 @@ import { Button } from '@mui/material';
 import { getFontFaceStyles } from './fontStyles.ts';
 
 export const SDKDemo = () => {
-  const ConfigProvider = useMemo(() => {
-    return lazy(async () => {
-      const config = await getConfig();
-
-      return {
-        default: function ConfigProvider({
-          children,
-        }: {
-          children: (props: ConfigSchema) => ReactNode;
-        }) {
-          return <>{children(config)}</>;
-        },
-      };
-    });
-  }, []);
-
   return (
     <StrictMode>
       <Suspense>
         <AuthCredentialsProvider>
           {(authProps) => (
             <ConfigProvider>
-              {(configProps) => (
-                <SDKDemoComponent {...authProps} {...configProps} />
-              )}
+              <SDKDemoComponent {...authProps} />
             </ConfigProvider>
           )}
         </AuthCredentialsProvider>
@@ -55,11 +37,11 @@ export const SDKDemo = () => {
 };
 
 const SDKDemoComponent = ({
-  api_url,
   logout,
   login,
   authData,
-}: ConfigSchema & AuthCredentialsProviderForwardProps) => {
+}: AuthCredentialsProviderForwardProps) => {
+  const { api_url } = useConfig();
   const apiUrl = `${api_url}/v1`;
 
   return (
