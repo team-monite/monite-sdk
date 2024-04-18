@@ -17,6 +17,8 @@ import {
 
 interface ThemeContextProviderProps {
   children: ReactNode;
+  value?: LocalStorageTheme;
+  onChange?: (theme: LocalStorageTheme) => void;
 }
 
 interface ThemeContextValue {
@@ -53,23 +55,32 @@ export const ThemeContext = createContext<ThemeContextValue>({
 
 export const ThemeContextProvider = ({
   children,
+  value,
+  onChange,
 }: ThemeContextProviderProps) => {
   const [localStorageTheme, setLocalStorageTheme] =
     useLocalStorage<LocalStorageTheme>('theme');
 
   const [currentThemeIndex, setCurrentThemeIndex] = useState<
     'material' | 'monite'
-  >(localStorageTheme?.themeIndex || 'material');
+  >(value?.themeIndex || localStorageTheme?.themeIndex || 'material');
   const [colorMode, setColorMode] = useState<'light' | 'dark'>(
-    localStorageTheme?.colorMode || 'light'
+    value?.colorMode || localStorageTheme?.colorMode || 'light'
   );
   const [currentTheme, setCurrentTheme] =
     useState<ThemeOptions>(themeMaterialLight);
 
   useEffect(() => {
     setCurrentTheme(getTheme(currentThemeIndex, colorMode));
-    setLocalStorageTheme({ themeIndex: currentThemeIndex, colorMode });
-  }, [setLocalStorageTheme, currentThemeIndex, colorMode]);
+
+    const newTheme = { themeIndex: currentThemeIndex, colorMode };
+
+    setLocalStorageTheme(newTheme);
+
+    if (onChange) {
+      onChange(newTheme);
+    }
+  }, [setLocalStorageTheme, currentThemeIndex, colorMode, onChange]);
 
   const setTheme = (theme: 'material' | 'monite') => {
     setCurrentThemeIndex(theme);
