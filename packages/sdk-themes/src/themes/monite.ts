@@ -1,8 +1,11 @@
 import { grey } from '@mui/material/colors';
-import { Components } from '@mui/material/styles/components';
-import { Palette, PaletteOptions } from '@mui/material/styles/createPalette';
-import { Theme, ThemeOptions } from '@mui/material/styles/createTheme';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
+import type { Components } from '@mui/material/styles/components.js';
+import type {
+  Palette,
+  PaletteOptions,
+} from '@mui/material/styles/createPalette.js';
+import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
+import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
 import type {} from '@mui/x-data-grid/themeAugmentation';
 
 const paletteLight: PaletteOptions = {

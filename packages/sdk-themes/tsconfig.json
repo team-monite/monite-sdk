@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "ESNext",
+    "module": "NodeNext",
     "outDir": "dist",
     "baseUrl": ".",
     "strict": true,
     "noEmitOnError": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "declaration": true,

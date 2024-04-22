@@ -1,4 +1,4 @@
-import { ThemeOptions } from '@mui/material/styles/createTheme';
+import type { ThemeOptions } from '@mui/material/styles/createTheme.js';
 
 export const materialLight: ThemeOptions = { palette: { mode: 'light' } };
 

@@ -1,2 +1,2 @@
-export { moniteLight, moniteDark } from './themes/monite';
-export { materialLight, materialDark } from './themes/material';
+export { moniteLight, moniteDark } from './themes/monite.js';
+export { materialLight, materialDark } from './themes/material.js';
