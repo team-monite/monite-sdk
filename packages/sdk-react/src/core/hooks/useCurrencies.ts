@@ -120,6 +120,7 @@ export const useCurrencies = () => {
     if (currencyData && amountFromMinorUnits !== null) {
       const formatter = new Intl.NumberFormat(code, {
         style: 'currency',
+        currencyDisplay: 'code',
         currency,
       });
 

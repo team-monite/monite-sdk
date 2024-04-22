@@ -37,6 +37,10 @@ export type MoniteLocale = {
    * By default it uses `enLocaleMessages` as a fallback in MoniteProvider.
    */
   messages?: MoniteSupportedMessages;
+
+  IntlNumberFormat?: {
+    currencyDisplay: 'symbol' | 'code' | 'name';
+  };
 };
 
 export const I18nLocaleProvider = ({
