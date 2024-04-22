@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { useThemeContext } from '@/context/themeContext';
+import { ThemeConfig } from '@/types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -30,15 +30,22 @@ const getButtonLabel = (themeIndex: string, i18n: I18n) => {
   }
 };
 
-export const ThemeSelector = () => {
+interface ThemeSelectorProps {
+  themeConfig: ThemeConfig;
+  onChange: (themeConfig: ThemeConfig) => void;
+}
+
+export const ThemeSelector = ({
+  themeConfig,
+  onChange,
+}: ThemeSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const { themeIndex, colorMode, setTheme, toggleColorMode } =
-    useThemeContext();
+  const { themeIndex, colorMode } = themeConfig;
 
   return (
     <>
@@ -73,13 +80,13 @@ export const ThemeSelector = () => {
           )`Theme`}</Typography>
           <MenuItem
             selected={themeIndex === 'material'}
-            onClick={() => setTheme('material')}
+            onClick={() => onChange({ ...themeConfig, themeIndex: 'material' })}
           >
             {t(i18n)`Material UI`}
           </MenuItem>
           <MenuItem
             selected={themeIndex === 'monite'}
-            onClick={() => setTheme('monite')}
+            onClick={() => onChange({ ...themeConfig, themeIndex: 'monite' })}
           >
             {t(i18n)`Monite`}
           </MenuItem>
@@ -92,7 +99,12 @@ export const ThemeSelector = () => {
               label={t(i18n)`Dark Mode`}
               sx={{ ml: 0 }}
               labelPlacement="start"
-              onChange={() => toggleColorMode()}
+              onChange={(_, checked) =>
+                onChange({
+                  ...themeConfig,
+                  colorMode: checked ? 'dark' : 'light',
+                })
+              }
             />
           </MenuItem>
         </Menu>

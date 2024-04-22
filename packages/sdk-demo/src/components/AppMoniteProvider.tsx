@@ -1,7 +1,6 @@
 import React, { ComponentProps, ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
-import { useThemeContext } from '@/context/themeContext';
 import { messages as defaultMessages } from '@/locales/en/messages.ts';
 import { MoniteSDK, MoniteSDKConfig } from '@monite/sdk-api';
 import { MoniteProvider } from '@monite/sdk-react';
@@ -18,7 +17,6 @@ const AppMoniteProvider = ({
   sdkConfig: { headers, entityId, apiUrl, fetchToken },
 }: AppMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
-  const { theme: currentTheme } = useThemeContext();
 
   const monite = useMemo(
     () =>
@@ -38,7 +36,7 @@ const AppMoniteProvider = ({
         ...locale,
         messages: { ...defaultMessages, ...locale?.messages },
       }}
-      theme={theme || currentTheme}
+      theme={theme}
     >
       {children}
     </MoniteProvider>

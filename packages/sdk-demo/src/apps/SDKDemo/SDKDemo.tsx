@@ -9,10 +9,10 @@ import {
 } from '@/components/AuthCredentialsProvider';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
-import { ConfigProvider, useConfig } from '@/context/configContext';
-import { ThemeContextProvider } from '@/context/themeContext';
+import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { fetchToken } from '@/core/fetchToken';
 import { getResetStyles } from '@/core/getResetStyles';
+import { useTheme } from '@/hooks/useTheme';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -42,35 +42,37 @@ const SDKDemoComponent = ({
   authData,
 }: AuthCredentialsProviderForwardProps) => {
   const { api_url } = useConfig();
+  const { theme, themeConfig, setThemeConfig } = useTheme();
   const apiUrl = `${api_url}/v1`;
 
   return (
-    <ThemeContextProvider>
-      <AppMoniteProvider
-        sdkConfig={{
-          entityId: authData?.entity_id ?? 'lazy',
-          apiUrl,
-          fetchToken: () =>
-            authData
-              ? fetchToken(apiUrl, authData).catch(logout)
-              : Promise.reject(),
-        }}
-      >
-        <Global styles={getFontFaceStyles} />
-        <Global styles={getResetStyles} />
-        {authData ? (
-          <BrowserRouter>
-            <DefaultLayout
-              siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
-            >
-              <Base />
-            </DefaultLayout>
-          </BrowserRouter>
-        ) : (
-          <LoginForm login={login} />
-        )}
-      </AppMoniteProvider>
-    </ThemeContextProvider>
+    <AppMoniteProvider
+      theme={theme}
+      sdkConfig={{
+        entityId: authData?.entity_id ?? 'lazy',
+        apiUrl,
+        fetchToken: () =>
+          authData
+            ? fetchToken(apiUrl, authData).catch(logout)
+            : Promise.reject(),
+      }}
+    >
+      <Global styles={getFontFaceStyles} />
+      <Global styles={getResetStyles} />
+      {authData ? (
+        <BrowserRouter>
+          <DefaultLayout
+            themeConfig={themeConfig}
+            setThemeConfig={setThemeConfig}
+            siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
+          >
+            <Base />
+          </DefaultLayout>
+        </BrowserRouter>
+      ) : (
+        <LoginForm login={login} />
+      )}
+    </AppMoniteProvider>
   );
 };
 

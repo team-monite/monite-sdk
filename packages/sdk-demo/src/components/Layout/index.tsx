@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { ThemeSelector } from '@/components/Layout/ThemeSelector';
 import { Menu } from '@/components/Menu';
-import { useConfig } from '@/context/configContext';
+import { useConfig } from '@/context/ConfigContext';
+import { ThemeConfig } from '@/types';
 import {
   MoniteStyleProvider,
   useEntityUserByAuthToken,
@@ -20,9 +21,16 @@ import {
 type DefaultLayoutProps = {
   children?: React.ReactNode;
   siderProps?: { footer?: React.ReactNode };
+  themeConfig: ThemeConfig;
+  setThemeConfig: (themeConfig: ThemeConfig) => void;
 };
 
-export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
+export const DefaultLayout = ({
+  children,
+  siderProps,
+  themeConfig,
+  setThemeConfig,
+}: DefaultLayoutProps) => {
   const location = useLocation();
   const { data: user } = useEntityUserByAuthToken();
   const [pagePadding, setPagePadding] = useState(4);
@@ -89,7 +97,12 @@ export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
             <Stack direction="column" spacing={2} ml={2}>
               {/*Themes are unfinished.*/}
               {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
-              {isDev && <ThemeSelector />}
+              {isDev && (
+                <ThemeSelector
+                  themeConfig={themeConfig}
+                  onChange={setThemeConfig}
+                />
+              )}
               {siderProps?.footer}
             </Stack>
           </Box>
