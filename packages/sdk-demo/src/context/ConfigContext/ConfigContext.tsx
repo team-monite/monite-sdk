@@ -1,4 +1,4 @@
-import React, { createContext, useContext, memo } from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { getConfig, ConfigSchema } from '@/core/getConfig';
 
@@ -11,13 +11,11 @@ interface ConfigProviderProps {
   children: React.ReactNode;
 }
 
-const ConfigProviderComponent = memo(
-  ({ config, children }: ConfigProviderProps) => {
-    return (
-      <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
-    );
-  }
-);
+const ConfigProviderComponent = ({ config, children }: ConfigProviderProps) => {
+  return (
+    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
+  );
+};
 
 export function useConfig() {
   const context = useContext(ConfigContext);
