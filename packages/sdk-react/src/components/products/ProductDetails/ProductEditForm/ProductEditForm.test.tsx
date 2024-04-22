@@ -20,13 +20,24 @@ describe('ProductEditForm', () => {
       await waitUntilTableIsLoaded();
 
       const saveButton = screen.getByRole('button', {
-        name: /update/i,
+        name: 'Update',
+      });
+
+      /**
+       * We have to wait until the button will be available
+       *  to click and only after that we can click on it
+       */
+      await waitFor(() => {
+        expect(saveButton).not.toBeDisabled();
       });
 
       fireEvent.click(saveButton);
 
       await waitFor(() => {
-        expect(onUpdateMock).toHaveBeenCalledWith(productsListFixture[0]);
+        expect(onUpdateMock).toHaveBeenCalledWith({
+          ...productsListFixture[0],
+          description: productsListFixture[0].description ?? '',
+        });
       });
     });
 

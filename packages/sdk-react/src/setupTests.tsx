@@ -2,8 +2,6 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import type { ReactNode } from 'react';
-
 import { DataGridProps } from '@mui/x-data-grid';
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';

@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   ADDRESSES_ENDPOINT,
   CounterpartAddress,
@@ -7,7 +6,7 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { counterpartsAddressesFixture } from './counterpartsAddressesFixture';
 

@@ -70,14 +70,9 @@ export const counterpartContactHandlers = [
 
     await delay();
 
-    return HttpResponse.json(
-      {
-        data: counterpartsContactsFixtures[counterpartId],
-      },
-      {
-        status: 404,
-      }
-    );
+    return HttpResponse.json({
+      data: counterpartsContactsFixtures[counterpartId],
+    });
   }),
 
   // create

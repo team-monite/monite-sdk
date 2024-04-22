@@ -280,12 +280,6 @@ export const payableHandlers = [
       const payableById = payableFixturePages.find(
         (item) => item.id === payableId
       );
-      console.log(
-        'maybe here?',
-        HttpResponse.json,
-        'payableByid: ',
-        payableById
-      );
 
       if (payableById) {
         await delay();

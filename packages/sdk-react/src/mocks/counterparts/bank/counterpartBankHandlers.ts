@@ -1,3 +1,4 @@
+import { delay } from '@/mocks/utils';
 import {
   CounterpartData,
   COUNTERPARTS_BANK_ENDPOINT,
@@ -35,7 +36,9 @@ export const counterpartBankHandlers = [
     {},
     CreateCounterpartBankAccountParams,
     CounterpartData<CounterpartBankAccountResponse[]>
-  >(bankAccountPath, () => {
+  >(bankAccountPath, async () => {
+    await delay(10_000);
+
     return HttpResponse.json(
       { data: counterpartBankListFixture },
       {
@@ -92,7 +95,8 @@ export const counterpartBankHandlers = [
     UpdateCounterpartBankAccountParams,
     UpdateCounterpartBankAccount,
     CounterpartBankAccountResponse
-  >(bankAccountIdPath, () => {
+  >(bankAccountIdPath, async () => {
+    await delay();
     return HttpResponse.json(counterpartBankFixture);
   }),
 
