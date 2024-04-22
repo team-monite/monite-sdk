@@ -1,7 +1,9 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import {
+  getLocaleWithDefaults,
   I18nLoader,
+  MoniteLocaleWithRequired,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
@@ -14,16 +16,17 @@ import type { QueryClient } from '@tanstack/react-query';
 
 import type { Locale as DateFnsLocale } from 'date-fns';
 
-interface MoniteContextInputValue {
+interface MoniteContextBaseValue {
   monite: MoniteSDK;
+  locale: MoniteLocaleWithRequired;
+  i18n: I18n;
+  dateFnsLocale: DateFnsLocale;
   theme: Theme;
 }
 
-interface MoniteContextValue extends MoniteContextInputValue {
-  i18n: I18n;
+export interface MoniteContextValue extends MoniteContextBaseValue {
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
-  dateFnsLocale: DateFnsLocale;
 }
 
 /**
@@ -46,8 +49,10 @@ export function useMoniteContext() {
   return moniteContext;
 }
 
-interface MoniteContextProviderProps extends MoniteContextInputValue {
+interface MoniteContextProviderProps {
+  monite: MoniteSDK;
   locale: Partial<MoniteLocale> | undefined;
+  theme: Theme;
   children: ReactNode;
 }
 
@@ -56,45 +61,37 @@ interface MoniteContextProviderProps extends MoniteContextInputValue {
  */
 export const MoniteContextProvider = ({
   locale,
+  children,
   ...restProps
 }: MoniteContextProviderProps) => {
+  const defaultedLocale = getLocaleWithDefaults(locale);
+
   return (
-    <I18nLoader locale={getLocaleWithDefaults(locale)}>
+    <I18nLoader locale={defaultedLocale}>
       {(i18n, datePickerAdapterLocale) => (
         <ContextProvider
           {...restProps}
           i18n={i18n}
+          locale={defaultedLocale}
           dateFnsLocale={datePickerAdapterLocale}
-        />
+        >
+          {children}
+        </ContextProvider>
       )}
     </I18nLoader>
   );
 };
 
-const getLocaleWithDefaults = (
-  locale: MoniteContextProviderProps['locale']
-) => {
-  const localeCode =
-    locale?.code ??
-    (typeof navigator === 'undefined' ? 'en' : navigator.language);
-
-  return {
-    ...locale,
-    code: localeCode,
-  };
-};
-
-interface ContextProviderProps extends MoniteContextInputValue {
-  i18n: I18n;
-  dateFnsLocale: DateFnsLocale;
+interface ContextProviderProps extends MoniteContextBaseValue {
   children: ReactNode;
 }
 
 const ContextProvider = ({
   monite,
+  locale,
   i18n,
-  theme,
   dateFnsLocale,
+  theme,
   children,
 }: ContextProviderProps) => {
   const sentryHub = useMemo(() => {
@@ -119,6 +116,7 @@ const ContextProvider = ({
         queryClient,
         sentryHub,
         i18n,
+        locale,
         dateFnsLocale,
       }}
     >
