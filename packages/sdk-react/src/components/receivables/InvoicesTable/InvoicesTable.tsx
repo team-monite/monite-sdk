@@ -157,6 +157,16 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
               ),
             },
             {
+              field: 'created_at',
+              headerName: t(i18n)`Created on`,
+              sortable: false,
+              valueFormatter: ({ value }) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                  : '—',
+              flex: 0.7,
+            },
+            {
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
               sortable: false,

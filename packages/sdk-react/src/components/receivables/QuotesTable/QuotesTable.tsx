@@ -147,6 +147,16 @@ export const QuotesTable = ({
               flex: 1.2,
             },
             {
+              field: 'created_at',
+              sortable: false,
+              headerName: t(i18n)`Created on`,
+              valueFormatter: ({ value }) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                  : '—',
+              flex: 1,
+            },
+            {
               field: 'issue_date',
               sortable: false,
               headerName: t(i18n)`Issue Date`,
