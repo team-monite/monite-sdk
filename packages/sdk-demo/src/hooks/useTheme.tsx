@@ -8,7 +8,7 @@ import {
   moniteLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
 
-const getTheme = (themeConfig: ThemeConfig) => {
+export const getTheme = (themeConfig: ThemeConfig) => {
   const { themeIndex, colorMode } = themeConfig;
 
   if (themeIndex === 'material') {
@@ -29,7 +29,6 @@ export const useTheme = () => {
   );
 
   return {
-    theme: getTheme(themeConfig || defaultThemeConfig),
     themeConfig: themeConfig || defaultThemeConfig,
     setThemeConfig,
   };

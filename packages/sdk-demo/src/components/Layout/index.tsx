@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { ThemeSelector } from '@/components/Layout/ThemeSelector';
+import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
 import { useConfig } from '@/context/ConfigContext';
 import { ThemeConfig } from '@/types';
@@ -98,10 +98,7 @@ export const DefaultLayout = ({
               {/*Themes are unfinished.*/}
               {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
               {isDev && (
-                <ThemeSelector
-                  themeConfig={themeConfig}
-                  onChange={setThemeConfig}
-                />
+                <ThemeSelect value={themeConfig} onChange={setThemeConfig} />
               )}
               {siderProps?.footer}
             </Stack>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useId } from 'react';
 
 import { ThemeConfig } from '@/types';
 import type { I18n } from '@lingui/core';
@@ -31,27 +31,25 @@ const getButtonLabel = (themeIndex: string, i18n: I18n) => {
 };
 
 interface ThemeSelectorProps {
-  themeConfig: ThemeConfig;
+  value: ThemeConfig;
   onChange: (themeConfig: ThemeConfig) => void;
 }
 
-export const ThemeSelector = ({
-  themeConfig,
-  onChange,
-}: ThemeSelectorProps) => {
+export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const menuId = useId();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const { themeIndex, colorMode } = themeConfig;
+  const { themeIndex, colorMode } = value;
 
   return (
     <>
       <Button
         ref={buttonRef}
-        id="theme-selector"
+        id={menuId}
         sx={{ justifyContent: 'space-between' }}
         aria-controls={isMenuOpen ? 'theme-menu' : undefined}
         startIcon={colorMode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
@@ -66,13 +64,13 @@ export const ThemeSelector = ({
       >
         {getButtonLabel(themeIndex, i18n)}
         <Menu
-          id="theme-selector"
+          id={menuId}
           open={isMenuOpen}
           container={root}
           onClose={() => setIsMenuOpen(false)}
           anchorEl={buttonRef.current}
           MenuListProps={{
-            'aria-labelledby': 'theme-selector',
+            'aria-labelledby': menuId,
           }}
         >
           <Typography variant="body2" color="grey" pl={2} pr={2} pb={1}>{t(
@@ -80,13 +78,13 @@ export const ThemeSelector = ({
           )`Theme`}</Typography>
           <MenuItem
             selected={themeIndex === 'material'}
-            onClick={() => onChange({ ...themeConfig, themeIndex: 'material' })}
+            onClick={() => onChange({ ...value, themeIndex: 'material' })}
           >
             {t(i18n)`Material UI`}
           </MenuItem>
           <MenuItem
             selected={themeIndex === 'monite'}
-            onClick={() => onChange({ ...themeConfig, themeIndex: 'monite' })}
+            onClick={() => onChange({ ...value, themeIndex: 'monite' })}
           >
             {t(i18n)`Monite`}
           </MenuItem>
@@ -101,7 +99,7 @@ export const ThemeSelector = ({
               labelPlacement="start"
               onChange={(_, checked) =>
                 onChange({
-                  ...themeConfig,
+                  ...value,
                   colorMode: checked ? 'dark' : 'light',
                 })
               }
