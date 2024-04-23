@@ -1,22 +1,17 @@
 import { MoniteProvider } from '@/core/context/MoniteProvider';
-import {
-  defaultMoniteComponents,
-  defaultMoniteLightTheme,
-  defaultMoniteTypography,
-} from '@/core/context/MoniteThemeProvider';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
 import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
-import {
-  CssBaseline,
-  ThemeOptions,
-  linearProgressClasses,
-} from '@mui/material';
-import { blueGrey, grey } from '@mui/material/colors';
+import { CssBaseline, ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 import { useQueryClient } from '@tanstack/react-query';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  moniteLight as themeMoniteLight,
+  moniteDark as themeMoniteDark,
+} from '@team-monite/sdk-themes';
 
 export const generateRandomId = () =>
   (Math.random() + 1).toString(36).substring(2);
@@ -56,32 +51,6 @@ const ComponentWrapper = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const defaultMoniteDarkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#2a9d8f',
-    },
-    secondary: {
-      main: '#e9c46a',
-    },
-    background: {
-      default: blueGrey[900],
-      paper: grey[800],
-    },
-  },
-  typography: {
-    ...defaultMoniteTypography,
-    fontFamily: 'unset',
-    allVariants: {
-      color: '#fff',
-    },
-  },
-  components: {
-    ...defaultMoniteComponents,
-  },
-});
-
 export const withGlobalStorybookDecorator = (
   cb?: () => {
     monite: MoniteSDK;
@@ -91,8 +60,8 @@ export const withGlobalStorybookDecorator = (
 
   return withThemeFromJSXProvider({
     themes: {
-      light: defaultMoniteLightTheme,
-      dark: defaultMoniteDarkTheme,
+      light: createTheme(themeMoniteLight),
+      dark: createTheme(themeMoniteDark),
     },
     defaultTheme: 'light',
     Provider: (...args: any[]) => {
