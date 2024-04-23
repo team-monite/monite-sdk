@@ -337,11 +337,11 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:77
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:198
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:169
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:179
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:193
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:39
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:193
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:198
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:203
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:208
 msgid "Amount"
 msgstr "Amount"
 
@@ -1540,7 +1540,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:73
 #: src/components/counterparts/Counterparts.test.tsx:111
 #: src/components/counterparts/Counterparts.tsx:126
-#: src/components/payables/Payables.tsx:119
+#: src/components/payables/Payables.tsx:118
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
@@ -1603,6 +1603,9 @@ msgstr "Created by"
 msgid "Created by user"
 msgstr "Created by user"
 
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:138
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:161
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:152
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:35
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:185
 msgid "Created on"
@@ -1660,14 +1663,14 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:37
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:328
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:146
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:156
 #: src/components/receivables/Filters/Filters.tsx:109
 #: src/components/receivables/Filters/Filters.tsx:112
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:246
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:106
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:57
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:152
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:164
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:174
 msgid "Customer"
 msgstr "Customer"
 
@@ -1992,8 +1995,8 @@ msgstr "Dry Cleaners"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:393
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:185
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:90
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:206
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:170
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:216
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:180
 msgid "Due date"
 msgstr "Due date"
 
@@ -2230,7 +2233,7 @@ msgstr "Error creating approval policy"
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
 
-#: src/components/payables/Payables.tsx:175
+#: src/components/payables/Payables.tsx:174
 msgid "Error when uploading payable file"
 msgstr "Error when uploading payable file"
 
@@ -2999,8 +3002,8 @@ msgstr "Issue and send"
 #~ msgstr "Issue and send via email"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:171
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:138
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:161
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:148
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:171
 msgid "Issue date"
 msgstr "Issue date"
 
@@ -3010,7 +3013,7 @@ msgstr "Issue date"
 msgid "Issue date Name"
 msgstr "Issue date"
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:152
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:162
 msgid "Issue Date"
 msgstr "Issue Date"
 
@@ -3698,7 +3701,7 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/Payables.tsx:140
+#: src/components/payables/Payables.tsx:139
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4035,11 +4038,11 @@ msgstr "Payable"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:172
+#: src/components/payables/Payables.tsx:171
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:89
+#: src/components/payables/Payables.tsx:88
 msgid "Payables"
 msgstr "Payables"
 
@@ -5048,11 +5051,11 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:40
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:43
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:152
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:162
 #: src/components/receivables/Filters/Filters.tsx:49
 #: src/components/receivables/Filters/Filters.tsx:52
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:174
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:182
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:184
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:192
 msgid "Status"
 msgstr "Status"
 
@@ -5694,8 +5697,8 @@ msgstr "Units"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/core/context/MoniteProvider.tsx:83
-#: src/core/context/MoniteProvider.tsx:139
+#: src/core/context/MoniteProvider.tsx:82
+#: src/core/context/MoniteProvider.tsx:138
 msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
 
@@ -5746,16 +5749,16 @@ msgstr "Updated on"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/Payables.tsx:151
+#: src/components/payables/Payables.tsx:150
 msgid "Upload File"
 msgstr "Upload File"
 
 #: src/components/payables/Payables.test.tsx:36
-#: src/components/payables/Payables.tsx:167
+#: src/components/payables/Payables.tsx:166
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:171
+#: src/components/payables/Payables.tsx:170
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
@@ -6089,7 +6092,7 @@ msgstr "You can continue to the next step"
 msgid "You can not create receivable with a type other than \"{0}\""
 msgstr "You can not create receivable with a type other than \"{0}\""
 
-#: src/core/context/MoniteProvider.tsx:130
+#: src/core/context/MoniteProvider.tsx:129
 msgid "You do not have permission to access this resource."
 msgstr "You do not have permission to access this resource."
 
