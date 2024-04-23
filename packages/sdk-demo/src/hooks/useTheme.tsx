@@ -9,19 +9,19 @@ import {
 } from '@team-monite/sdk-themes';
 
 export const getTheme = (themeConfig: ThemeConfig) => {
-  const { themeIndex, colorMode } = themeConfig;
+  const { variant, mode } = themeConfig;
 
-  if (themeIndex === 'material') {
-    return colorMode === 'light' ? themeMaterialLight : themeMaterialDark;
+  if (variant === 'material') {
+    return mode === 'light' ? themeMaterialLight : themeMaterialDark;
   }
 
-  return colorMode === 'light' ? themeMoniteLight : themeMoniteDark;
+  return mode === 'light' ? themeMoniteLight : themeMoniteDark;
 };
 
 export const useTheme = () => {
   const defaultThemeConfig: ThemeConfig = {
-    themeIndex: 'material',
-    colorMode: 'light',
+    variant: 'material',
+    mode: 'light',
   };
   const [themeConfig, setThemeConfig] = useLocalStorage<ThemeConfig>(
     'themeConfig',

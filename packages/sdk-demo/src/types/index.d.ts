@@ -1,4 +1,4 @@
 export interface ThemeConfig {
-  themeIndex: 'material' | 'monite';
-  colorMode: 'light' | 'dark';
+  variant: 'material' | 'monite';
+  mode: 'light' | 'dark';
 }
