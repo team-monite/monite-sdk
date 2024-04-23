@@ -8,7 +8,7 @@ import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/use
 import { PayablesTable } from '@/components/payables/PayablesTable';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useFileInput } from '@/core/hooks/useFileInput';
+import { useFileInput } from '@/core/hooks';
 import { useEntityUserByAuthToken, usePayableUpload } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getMessageInError } from '@/core/utils/getMessageInError';
