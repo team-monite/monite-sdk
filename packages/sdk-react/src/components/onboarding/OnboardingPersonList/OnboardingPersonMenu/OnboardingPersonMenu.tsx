@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactNode } from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenu } from '@/core/hooks';
 import { Button, Menu } from '@mui/material';
 
 export const OnboardingPersonMenu = ({
@@ -15,16 +16,7 @@ export const OnboardingPersonMenu = ({
   disabled?: boolean;
   variant?: 'outlined' | 'contained';
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const opened = Boolean(anchorEl);
-
-  const open = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const close = () => {
-    setAnchorEl(null);
-  };
+  const { open, anchorEl, handleOpen, handleClose } = useMenu();
 
   const { root } = useRootElements();
 
@@ -32,10 +24,10 @@ export const OnboardingPersonMenu = ({
     <>
       <Button
         id="onboarding-person-menu-button"
-        aria-controls={opened ? 'onboarding-person-menu' : undefined}
-        aria-expanded={opened ? 'true' : undefined}
+        aria-controls={open ? 'onboarding-person-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
-        onClick={open}
+        onClick={handleOpen}
         variant={variant}
         color="primary"
         disabled={disabled}
@@ -46,9 +38,9 @@ export const OnboardingPersonMenu = ({
         id="onboarding-person-menu"
         container={root}
         anchorEl={anchorEl}
-        open={opened}
-        onClose={close}
-        onClick={close}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
         MenuListProps={{
           'aria-labelledby': 'onboarding-person-menu-button',
         }}

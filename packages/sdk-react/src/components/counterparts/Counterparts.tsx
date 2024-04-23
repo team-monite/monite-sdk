@@ -6,6 +6,7 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenu } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -18,21 +19,8 @@ import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 
 export const Counterparts = () => {
   const { i18n } = useLingui();
-  const [createNewAnchorEl, setCreateNewAnchorEl] =
-    useState<HTMLButtonElement | null>(null);
-  const isCreateNewDropdownOpen = Boolean(createNewAnchorEl);
-  const handleCreateNewDropdownClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
 
-      setCreateNewAnchorEl(event.currentTarget);
-    },
-    []
-  );
-  const handleCreateNewDropdownClose = useCallback(
-    () => setCreateNewAnchorEl(null),
-    []
-  );
+  const { open, anchorEl, handleOpen, handleClose } = useMenu();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
   const [counterpartType, setType] = useState<CounterpartType | undefined>(
@@ -124,30 +112,24 @@ export const Counterparts = () => {
           <Box>
             <Button
               id="actions"
-              aria-controls={
-                isCreateNewDropdownOpen ? 'actions-menu' : undefined
-              }
+              aria-controls={open ? 'actions-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={isCreateNewDropdownOpen ? 'true' : undefined}
+              aria-expanded={open ? 'true' : undefined}
               aria-label="actions-menu-button"
               variant="contained"
               disabled={!isCreateAllowed}
-              onClick={handleCreateNewDropdownClick}
+              onClick={handleOpen}
               endIcon={
-                isCreateNewDropdownOpen ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )
+                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
               }
             >
               {t(i18n)`Create New`}
             </Button>
             <Menu
               id="actions"
-              open={isCreateNewDropdownOpen}
-              onClose={handleCreateNewDropdownClose}
-              anchorEl={createNewAnchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorEl={anchorEl}
               container={root}
               MenuListProps={{
                 'aria-labelledby': 'actions',
@@ -156,7 +138,7 @@ export const Counterparts = () => {
               <MenuItem
                 onClick={() => {
                   setType(CounterpartType.ORGANIZATION);
-                  handleCreateNewDropdownClose();
+                  handleClose();
                 }}
               >
                 {t(i18n)`Organization`}
@@ -164,7 +146,7 @@ export const Counterparts = () => {
               <MenuItem
                 onClick={() => {
                   setType(CounterpartType.INDIVIDUAL);
-                  handleCreateNewDropdownClose();
+                  handleClose();
                 }}
               >
                 {t(i18n)`Individual`}

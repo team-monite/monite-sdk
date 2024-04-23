@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenu } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -31,21 +32,13 @@ export const TableActions = ({
   onDelete,
   permissions,
 }: IActionsProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
+  const { open, handleOpen, handleClose, anchorEl } = useMenu();
 
-      setAnchorEl(event.currentTarget);
-    },
-    []
-  );
-  const handleClose = useCallback(() => setAnchorEl(null), []);
   const handleEdit = useCallback(() => {
     handleClose();
     onEdit();
   }, [handleClose, onEdit]);
+
   const handleDelete = useCallback(() => {
     handleClose();
     onDelete();
@@ -95,7 +88,10 @@ export const TableActions = ({
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         aria-label="actions-menu-button"
-        onClick={handleClick}
+        onClick={(event) => {
+          event.stopPropagation();
+          handleOpen(event);
+        }}
       >
         <MoreVertIcon fontSize="small" />
       </IconButton>
