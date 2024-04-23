@@ -1432,7 +1432,7 @@ msgstr "Counterpart was deleted."
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:34
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:43
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:104
-#: src/components/counterparts/Counterparts.tsx:117
+#: src/components/counterparts/Counterparts.tsx:105
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -1539,7 +1539,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:36
 #: src/components/counterparts/Counterparts.test.tsx:73
 #: src/components/counterparts/Counterparts.test.tsx:111
-#: src/components/counterparts/Counterparts.tsx:144
+#: src/components/counterparts/Counterparts.tsx:126
 #: src/components/payables/Payables.tsx:119
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:97
@@ -1749,7 +1749,7 @@ msgstr "Declined"
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:222
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:248
-#: src/components/TableActions/TableActions.tsx:70
+#: src/components/TableActions/TableActions.tsx:63
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:53
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:86
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:87
@@ -2066,7 +2066,7 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:156
 #: src/components/products/Products.test.tsx:250
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:286
-#: src/components/TableActions/TableActions.tsx:62
+#: src/components/TableActions/TableActions.tsx:55
 #: src/components/tags/TagsTable/TagsTable.test.tsx:389
 #: src/components/tags/TagsTable/TagsTable.test.tsx:420
 #: src/components/tags/TagsTable/TagsTable.test.tsx:451
@@ -2834,7 +2834,7 @@ msgstr "India"
 msgid "Indian Rupee"
 msgstr "Indian Rupee"
 
-#: src/components/counterparts/Counterparts.tsx:170
+#: src/components/counterparts/Counterparts.tsx:152
 msgid "Individual"
 msgstr "Individual"
 
@@ -3901,7 +3901,7 @@ msgstr "Optometrists, Ophthalmologist"
 #~ msgid "OR logic applied: if any one of this options is true then the policy will be applied."
 #~ msgstr "OR logic applied: if any one of this options is true then the policy will be applied."
 
-#: src/components/counterparts/Counterparts.tsx:162
+#: src/components/counterparts/Counterparts.tsx:144
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:148
 msgid "Organization"
 msgstr "Organization"
