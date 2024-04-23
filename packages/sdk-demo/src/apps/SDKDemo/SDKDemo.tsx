@@ -1,4 +1,4 @@
-import React, { lazy, ReactNode, StrictMode, Suspense, useMemo } from 'react';
+import React, { StrictMode, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Base } from '@/apps/Base';
@@ -9,10 +9,11 @@ import {
 } from '@/components/AuthCredentialsProvider';
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
+import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { fetchToken } from '@/core/fetchToken';
-import { ConfigSchema, getConfig } from '@/core/getConfig';
 import { getResetStyles } from '@/core/getResetStyles';
-import { Global, css } from '@emotion/react';
+import { useTheme, getTheme } from '@/hooks/useTheme';
+import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
@@ -20,31 +21,13 @@ import { Button } from '@mui/material';
 import { getFontFaceStyles } from './fontStyles.ts';
 
 export const SDKDemo = () => {
-  const ConfigProvider = useMemo(() => {
-    return lazy(async () => {
-      const config = await getConfig();
-
-      return {
-        default: function ConfigProvider({
-          children,
-        }: {
-          children: (props: ConfigSchema) => ReactNode;
-        }) {
-          return <>{children(config)}</>;
-        },
-      };
-    });
-  }, []);
-
   return (
     <StrictMode>
       <Suspense>
         <AuthCredentialsProvider>
           {(authProps) => (
             <ConfigProvider>
-              {(configProps) => (
-                <SDKDemoComponent {...authProps} {...configProps} />
-              )}
+              <SDKDemoComponent {...authProps} />
             </ConfigProvider>
           )}
         </AuthCredentialsProvider>
@@ -54,15 +37,17 @@ export const SDKDemo = () => {
 };
 
 const SDKDemoComponent = ({
-  api_url,
   logout,
   login,
   authData,
-}: ConfigSchema & AuthCredentialsProviderForwardProps) => {
+}: AuthCredentialsProviderForwardProps) => {
+  const { api_url } = useConfig();
+  const { themeConfig, setThemeConfig } = useTheme();
   const apiUrl = `${api_url}/v1`;
 
   return (
     <AppMoniteProvider
+      theme={getTheme(themeConfig)}
       sdkConfig={{
         entityId: authData?.entity_id ?? 'lazy',
         apiUrl,
@@ -77,6 +62,8 @@ const SDKDemoComponent = ({
       {authData ? (
         <BrowserRouter>
           <DefaultLayout
+            themeConfig={themeConfig}
+            setThemeConfig={setThemeConfig}
             siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
           >
             <Base />
@@ -93,15 +80,8 @@ const SiderFooter = ({ onLogout }: { onLogout: () => void }) => {
   const { i18n } = useLingui();
 
   return (
-    <div
-      css={css`
-        width: 100% !important;
-        padding: 0 12px;
-      `}
-    >
-      <Button onClick={onLogout} variant="outlined">
-        {t(i18n)`Logout`}
-      </Button>
-    </div>
+    <Button onClick={onLogout} variant="outlined">
+      {t(i18n)`Logout`}
+    </Button>
   );
 };

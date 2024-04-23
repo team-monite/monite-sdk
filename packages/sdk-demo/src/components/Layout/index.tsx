@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
+import { useConfig } from '@/context/ConfigContext';
+import { ThemeConfig } from '@/types';
 import {
   MoniteStyleProvider,
   useEntityUserByAuthToken,
@@ -12,24 +15,36 @@ import {
   Drawer,
   Typography,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 
 type DefaultLayoutProps = {
   children?: React.ReactNode;
   siderProps?: { footer?: React.ReactNode };
+  themeConfig: ThemeConfig;
+  setThemeConfig: (themeConfig: ThemeConfig) => void;
 };
 
-export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
+export const DefaultLayout = ({
+  children,
+  siderProps,
+  themeConfig,
+  setThemeConfig,
+}: DefaultLayoutProps) => {
   const location = useLocation();
   const { data: user } = useEntityUserByAuthToken();
   const [pagePadding, setPagePadding] = useState(4);
+  const config = useConfig();
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
 
     if (location.pathname.indexOf('onboarding') > 0) setPagePadding(0);
     else setPagePadding(4);
   }, [location]);
+
+  const isDev =
+    process.env.NODE_ENV === 'development' || config?.stand === 'dev';
 
   return (
     <MoniteStyleProvider>
@@ -73,12 +88,20 @@ export const DefaultLayout = ({ children, siderProps }: DefaultLayoutProps) => {
           <Menu />
           <Box
             sx={{
+              width: '100%',
               position: 'absolute',
               bottom: 0,
-              mb: 2,
+              p: 2,
             }}
           >
-            {siderProps?.footer}
+            <Stack direction="column" spacing={2} ml={2}>
+              {/*Themes are unfinished.*/}
+              {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
+              {isDev && (
+                <ThemeSelect value={themeConfig} onChange={setThemeConfig} />
+              )}
+              {siderProps?.footer}
+            </Stack>
           </Box>
         </Drawer>
 

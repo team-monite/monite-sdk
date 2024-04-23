@@ -6,7 +6,6 @@ import {
   MoniteLocale,
 } from '@/core/context/I18nLocaleProvider';
 import {
-  defaultMoniteLightThemeOptions,
   MoniteThemeContext,
   useMoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
@@ -232,9 +231,7 @@ export const MoniteProvider = ({
         key={moniteInstanceKey}
         sentryHub={sentryHub}
       >
-        <MoniteThemeContext.Provider
-          value={theme ?? defaultMoniteLightThemeOptions}
-        >
+        <MoniteThemeContext.Provider value={theme}>
           <MoniteContext.Provider
             value={{
               monite,

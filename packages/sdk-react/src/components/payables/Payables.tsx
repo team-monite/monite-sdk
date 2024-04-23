@@ -28,7 +28,6 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Skeleton,
 } from '@mui/material';
 
 export type PayablesProps = Pick<

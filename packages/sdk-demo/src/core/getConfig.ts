@@ -1,4 +1,12 @@
 export type ConfigSchema = {
+  stand:
+    | '_default'
+    | 'dev'
+    | 'staging'
+    | 'sandbox'
+    | 'aws-sandbox'
+    | 'production'
+    | 'us-production';
   api_url: string;
 };
 
