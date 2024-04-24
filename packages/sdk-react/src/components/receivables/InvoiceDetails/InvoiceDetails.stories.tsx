@@ -34,12 +34,7 @@ export const DialogDetailsView: Story = {
     ...actions,
   },
   render: (args) => (
-    <Dialog
-      open={true}
-      alignDialog="right"
-      {...args}
-      onClose={action('onClose')}
-    >
+    <Dialog open fullScreen {...args} onClose={action('onClose')}>
       <InvoiceDetails {...args} />
     </Dialog>
   ),

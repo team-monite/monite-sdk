@@ -1,19 +1,54 @@
-import { delay } from '@/mocks/utils';
-import { faker } from '@faker-js/faker';
+import {receivableListFixture} from '@/mocks'
+import {delay} from '@/mocks/utils'
+import {faker} from '@faker-js/faker'
 import {
   CreatePaymentLinkRequest,
   CurrencyEnum,
   ErrorSchemaResponse,
   MoniteAllPaymentMethodsTypes,
   PaymentAccountType,
-} from '@monite/sdk-api';
+  ReceivablesStatusEnum,
+} from '@monite/sdk-api'
 
-import { http, HttpResponse } from 'msw';
+import {http, HttpResponse} from 'msw'
 
 export const paymentHandlers = [
-  http.post<{}, undefined, CreatePaymentLinkRequest | ErrorSchemaResponse>(
+  http.post<{}, CreatePaymentLinkRequest, PublicPaymentLinkResponse | ErrorSchemaResponse>(
     '*/payment_links',
-    async () => {
+    async ({ request }) => {
+      const json = await request.json();
+      const bodyObject = json.object;
+
+      if (bodyObject && bodyObject.type === 'receivable') {
+        const invoice = receivableListFixture.invoice.find(
+          (invoice) => invoice.id === bodyObject.id
+        );
+
+        if (!invoice) {
+          await delay();
+
+          return HttpResponse.json({
+            error: {
+              message: 'Invoice not found',
+            },
+          }, {
+            status: 404
+          });
+        }
+
+        if (invoice.status === ReceivablesStatusEnum.DRAFT) {
+          await delay();
+
+          return HttpResponse.json({
+            error: {
+              message: 'Can not create payment link for invoices in draft status',
+            },
+          }, {
+            status: 404
+          });
+        }
+      }
+
       await delay();
 
       return HttpResponse.json(

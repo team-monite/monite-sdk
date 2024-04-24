@@ -175,11 +175,14 @@ function returnIfDraft(status: ReceivablesStatusEnum) {
   };
 }
 
-function createRandomInvoice(): InvoiceResponsePayload {
+function createRandomInvoice(index: number): InvoiceResponsePayload {
   const randomExistingCounterpart = getRandomItemFromArray(
     counterpartListFixture
   );
-  const status = getRandomProperty(ReceivablesStatusEnum);
+  const status =
+    index === 0
+      ? ReceivablesStatusEnum.DRAFT
+      : getRandomProperty(ReceivablesStatusEnum);
   const counterpartType = getRandomProperty(CounterpartType);
   const rid = returnIfDraft(status);
 
