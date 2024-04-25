@@ -6,7 +6,7 @@ import {
   RoleResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   lowPermissionRole,
@@ -40,119 +40,129 @@ export const entityUsersHandlers = [
   /**
    * Get entity user by auth token
    */
-  rest.get<undefined, {}, EntityUserResponse>(
+  http.get<{}, undefined, EntityUserResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/me`,
-    (req, res, ctx) => {
-      const entityId = req.headers.get('x-monite-entity-id');
-      const entityUserId = req.headers.get('x-monite-entity-user-id');
+    async ({ request }) => {
+      const entityId = request.headers.get('x-monite-entity-id');
+      const entityUserId = request.headers.get('x-monite-entity-user-id');
 
       if (entityId === ENTITY_ID_FOR_LOW_PERMISSIONS) {
-        return res(delay(), ctx.json(entityUserByIdWithLowPermissionsFixture));
+        await delay();
+
+        return HttpResponse.json(entityUserByIdWithLowPermissionsFixture);
       }
 
       if (entityId === ENTITY_ID_FOR_READONLY_PERMISSIONS) {
-        return res(
-          delay(),
-          ctx.json(entityUserByIdWithReadonlyPermissionsFixture)
-        );
+        await delay();
+
+        return HttpResponse.json(entityUserByIdWithReadonlyPermissionsFixture);
       }
 
       if (entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS) {
-        return res(
-          delay(),
-          ctx.json(entityUserByIdWithEmptyPermissionsFixture)
-        );
+        await delay();
+
+        return HttpResponse.json(entityUserByIdWithEmptyPermissionsFixture);
       }
 
       if (entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS) {
-        return res(
-          delay(),
-          ctx.json(entityUserByIdWithAbsentPermissionsFixture)
-        );
+        await delay();
+
+        return HttpResponse.json(entityUserByIdWithAbsentPermissionsFixture);
       }
 
       if (entityId === ENTITY_ID_FOR_OWNER_PERMISSIONS) {
         if (!entityUserId) {
-          return res(
-            delay(),
-            ctx.json(entityUserByIdWithOwnerPermissionsFixture)
-          );
+          await delay();
+
+          return HttpResponse.json(entityUserByIdWithOwnerPermissionsFixture);
         } else {
-          return res(
-            delay(),
-            ctx.json({
-              ...entityUserByIdWithOwnerPermissionsFixture,
-              id: entityUserId,
-            })
-          );
+          await delay();
+
+          return HttpResponse.json({
+            ...entityUserByIdWithOwnerPermissionsFixture,
+            id: entityUserId,
+          });
         }
       }
 
-      return res(delay(), ctx.json(entityUserByIdFixture));
+      await delay();
+
+      return HttpResponse.json(entityUserByIdFixture);
     }
   ),
 
-  rest.get<undefined, {}, RoleResponse>(
+  http.get<{}, undefined, RoleResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/my_role`,
-    (req, res, ctx) => {
-      const entityId = req.headers.get('x-monite-entity-id');
+    async ({ request }) => {
+      const entityId = request.headers.get('x-monite-entity-id');
 
       if (entityId === ENTITY_ID_FOR_LOW_PERMISSIONS) {
-        return res(delay(), ctx.json(lowPermissionRole));
+        await delay();
+
+        return HttpResponse.json(lowPermissionRole);
       }
 
       if (entityId === ENTITY_ID_FOR_READONLY_PERMISSIONS) {
-        return res(delay(), ctx.json(readOnlyRole));
+        await delay();
+
+        return HttpResponse.json(readOnlyRole);
       }
 
       if (entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS) {
-        return res(delay(), ctx.json(emptyPermissionRole));
+        await delay();
+
+        return HttpResponse.json(emptyPermissionRole);
       }
 
       if (entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS) {
-        return res(delay(), ctx.json(absentPermissionRole));
+        await delay();
+
+        return HttpResponse.json(absentPermissionRole);
       }
 
       if (entityId === ENTITY_ID_FOR_OWNER_PERMISSIONS) {
-        return res(delay(), ctx.json(allowedForOwnRole));
+        await delay();
+
+        return HttpResponse.json(allowedForOwnRole);
       }
 
-      return res(delay(), ctx.json(fullPermissionRole));
+      await delay();
+
+      return HttpResponse.json(fullPermissionRole);
     }
   ),
 
-  rest.get<string, { entityUserId: string }, EntityUserResponse>(
+  http.get<{ entityUserId: string }, string, EntityUserResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/:entityUserId`,
-    (req, res, ctx) => {
+    async ({ params }) => {
       const userFixture =
-        entityUsers[req.params.entityUserId] ?? entityUserByIdFixture;
+        entityUsers[params.entityUserId] ?? entityUserByIdFixture;
 
-      return res(
-        delay(Math.random() * (1500 - 500) + 500),
-        ctx.json(userFixture)
+      await delay();
+
+      return HttpResponse.json(userFixture);
+    }
+  ),
+
+  http.get<{}, undefined, EntityUserPaginationResponse>(
+    `*/${ENTITY_USERS_ENDPOINT}`,
+    async () => {
+      await delay();
+
+      return HttpResponse.json(
+        entityUsersFixture as unknown as EntityUserPaginationResponse
       );
     }
   ),
 
-  rest.get<undefined, {}, EntityUserPaginationResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}`,
-    (_, res, ctx) =>
-      res(
-        ctx.json(entityUsersFixture as unknown as EntityUserPaginationResponse)
-      )
-  ),
-
-  rest.patch<Partial<EntityUserResponse>, {}, EntityUserResponse>(
+  http.patch<{}, EntityUserResponse, EntityUserResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/my_entity`,
-    async (req, res, ctx) => {
-      const jsonBody = await req.json<EntityUserResponse>();
+    async ({ request }) => {
+      const jsonBody = await request.json();
 
-      return res(
-        delay(),
-        ctx.json({
-          ...jsonBody,
-        })
-      );
+      await delay();
+
+      return HttpResponse.json(jsonBody);
     }
   ),
 ];

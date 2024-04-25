@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { setupServer, SetupServerApi } from 'msw/node';
 
 import { handlers } from './handlers';

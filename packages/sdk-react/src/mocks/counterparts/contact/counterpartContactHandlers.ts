@@ -13,7 +13,7 @@ import type {
   UpdateCounterpartContactPayload,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { counterpartsContactsFixtures } from './counterpartContactFixture';
 
@@ -27,55 +27,62 @@ const contactAccountIdPath = `${contactAccountPath}/:contactAccountId`;
 
 export const counterpartContactHandlers = [
   // read list
-  rest.get<
-    undefined,
+  http.get<
     CreateCounterpartContactParams,
+    undefined,
     CounterpartContactsResourceList | ErrorSchemaResponse
-  >(contactAccountPath, (req, res, ctx) => {
-    const { counterpartId } = req.params;
+  >(contactAccountPath, async ({ params }) => {
+    const { counterpartId } = params;
 
     const counterpartFixture = counterpartListFixture.find(
       (c) => c.id === counterpartId
     );
 
     if (!counterpartFixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Counterpart not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
     if (isIndividualCounterpart(counterpartFixture)) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Individual counterparts do not have contacts',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(
-      delay(2_000),
-      ctx.json({ data: counterpartsContactsFixtures[counterpartId] })
-    );
+    await delay();
+
+    return HttpResponse.json({
+      data: counterpartsContactsFixtures[counterpartId],
+    });
   }),
 
   // create
-  rest.post<
-    CreateCounterpartContactPayload,
+  http.post<
     CreateCounterpartContactParams,
+    CreateCounterpartContactPayload,
     CounterpartContactResponse
-  >(contactAccountPath, async (req, res, ctx) => {
-    const json = await req.json<CreateCounterpartContactPayload>();
-    const { counterpartId } = req.params;
+  >(contactAccountPath, async ({ request, params }) => {
+    const json = await request.json();
+    const { counterpartId } = params;
 
     const response: CounterpartContactResponse = {
       id: (Math.random() + 1).toString(36).substring(7),
@@ -84,53 +91,62 @@ export const counterpartContactHandlers = [
       ...json,
     };
 
-    return res(delay(), ctx.json(response));
+    await delay();
+
+    return HttpResponse.json(response);
   }),
 
   // read
-  rest.get<
-    undefined,
+  http.get<
     UpdateCounterpartContactParams,
+    undefined,
     CounterpartContactResponse | ErrorSchemaResponse
-  >(contactAccountIdPath, (req, res, ctx) => {
-    const { contactAccountId, counterpartId } = req.params;
+  >(contactAccountIdPath, async ({ params }) => {
+    const { contactAccountId, counterpartId } = params;
 
     const fixtures = counterpartsContactsFixtures[counterpartId];
     const contact = fixtures.find((c) => c.id === contactAccountId);
 
     if (!contact) {
-      return res(
-        ctx.status(404),
-        delay(),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(ctx.json(contact));
+    return HttpResponse.json(contact);
   }),
 
   // update
-  rest.patch<
-    UpdateCounterpartContactPayload,
+  http.patch<
     UpdateCounterpartContactParams,
+    UpdateCounterpartContactPayload,
     CounterpartContactResponse
-  >(contactAccountIdPath, (req, res, ctx) => {
-    const { counterpartId } = req.params;
+  >(contactAccountIdPath, async ({ params }) => {
+    const { counterpartId } = params;
 
     const fixtures = counterpartsContactsFixtures[counterpartId];
 
-    return res(delay(), ctx.json(fixtures[0]));
+    await delay();
+
+    return HttpResponse.json(fixtures[0]);
   }),
 
   // delete
-  rest.delete<undefined, UpdateCounterpartContactParams, boolean>(
+  http.delete<UpdateCounterpartContactParams, undefined, undefined>(
     contactAccountIdPath,
-    (req, res, ctx) => {
-      return res(delay(), ctx.json(true));
+    async () => {
+      await delay();
+
+      return new HttpResponse();
     }
   ),
 ];

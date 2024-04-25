@@ -18,7 +18,7 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { delay, getMockPagination } from '../../utils';
 import {
@@ -36,27 +36,32 @@ const counterpartDetailPath = `${counterpartPath}/:counterpartId`;
 
 export const counterpartHandlers = [
   // read list
-  rest.get<
-    CounterpartResponse,
+  http.get<
     {},
+    CounterpartResponse,
     CounterpartPaginationResponse | ErrorSchemaResponse
-  >(counterpartPath, ({ url, headers }, res, ctx) => {
-    const entityId = headers.get('x-monite-entity-id');
+  >(counterpartPath, async ({ request }) => {
+    const entityId = request.headers.get('x-monite-entity-id');
 
     if (
       entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
       entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
     ) {
-      return res(
-        ctx.status(409),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Action read for payable not allowed',
           },
-        })
+        },
+        {
+          status: 409,
+        }
       );
     }
 
+    const url = new URL(request.url);
     const page = Number.parseInt(
       (url.searchParams.get(
         'pagination_token'
@@ -98,35 +103,34 @@ export const counterpartHandlers = [
       limit - 1
     );
 
-    return res(
-      delay(1_000),
-      ctx.json({
-        data: new CounterpartMockBuilder()
-          .withPage(page)
-          .withLimit(limit)
-          .withOrder(order)
-          .withSearch(search)
-          .withType(type)
-          .withSubType(subTypes.isVendor, subTypes.isCustomer)
-          .withFilter()
-          .withSort(sort)
-          .build(),
-        prev_pagination_token: prevPage,
-        next_pagination_token: nextPage,
-      })
-    );
+    await delay();
+
+    return HttpResponse.json({
+      data: new CounterpartMockBuilder()
+        .withPage(page)
+        .withLimit(limit)
+        .withOrder(order)
+        .withSearch(search)
+        .withType(type)
+        .withSubType(subTypes.isVendor, subTypes.isCustomer)
+        .withFilter()
+        .withSort(sort)
+        .build(),
+      prev_pagination_token: prevPage,
+      next_pagination_token: nextPage,
+    });
   }),
 
   /**
    * Create new counterpart
    * We could create new `organization` or `individual` counterpart
    */
-  rest.post<
-    CounterpartCreatePayload,
+  http.post<
     CounterpartDetailParams,
+    CounterpartCreatePayload,
     CounterpartResponse
-  >(counterpartPath, async (req, res, ctx) => {
-    const json = await req.json<CounterpartCreatePayload>();
+  >(counterpartPath, async ({ request }) => {
+    const json = await request.json();
 
     switch (json.type) {
       case CounterpartIndividualRootCreatePayload.type.INDIVIDUAL: {
@@ -135,7 +139,7 @@ export const counterpartHandlers = [
           individual: json.individual,
         };
 
-        return res(ctx.json(individualResponse));
+        return HttpResponse.json(individualResponse);
       }
       case CounterpartOrganizationRootCreatePayload.type.ORGANIZATION: {
         const organizationResponse: CounterpartOrganizationRootResponse = {
@@ -143,63 +147,74 @@ export const counterpartHandlers = [
           organization: json.organization,
         };
 
-        return res(delay(), ctx.json(organizationResponse));
+        await delay();
+
+        return HttpResponse.json(organizationResponse);
       }
     }
   }),
 
   // read
-  rest.get<undefined, CounterpartDetailParams, CounterpartResponse>(
+  http.get<CounterpartDetailParams>(
     counterpartDetailPath,
-    (req, res, ctx) => {
-      if (req.params.counterpartId) {
+    async ({ params }) => {
+      if (params.counterpartId) {
         const response = counterpartListFixture.find(
-          (counterpart) => counterpart.id === req.params.counterpartId
+          (counterpart) => counterpart.id === params.counterpartId
         );
 
         if (response) {
-          return res(
-            delay(
-              faker.number.int({
-                min: 500,
-                max: 2_000,
-              })
-            ),
-            ctx.json(response)
-          );
+          await delay();
+
+          return HttpResponse.json(response);
         } else {
-          return res(delay(), ctx.status(404));
+          await delay();
+
+          return new HttpResponse(null, {
+            status: 404,
+          });
         }
       }
 
-      return res(delay(), ctx.status(404));
+      await delay();
+
+      return new HttpResponse(null, {
+        status: 404,
+      });
     }
   ),
 
   // update
-  rest.patch<
-    CounterpartUpdatePayload,
-    CounterpartDetailParams,
-    CounterpartResponse
-  >(counterpartDetailPath, (req, res, ctx) => {
-    if (req.params.counterpartId) {
-      const response = counterpartDetailsFixtures[req.params.counterpartId];
+  http.patch<CounterpartDetailParams, CounterpartUpdatePayload>(
+    counterpartDetailPath,
+    async ({ params }) => {
+      if (params.counterpartId) {
+        const response = counterpartDetailsFixtures[params.counterpartId];
 
-      if (response) {
-        return res(ctx.json(response));
-      } else {
-        return res(ctx.status(404));
+        if (response) {
+          return HttpResponse.json(response);
+        } else {
+          return new HttpResponse(null, {
+            status: 404,
+          });
+        }
       }
-    }
 
-    return res(delay(), ctx.status(404));
-  }),
+      return new HttpResponse(null, {
+        status: 404,
+      });
+    }
+  ),
 
   // delete
-  rest.delete<undefined, CounterpartDetailParams, boolean>(
+  http.delete<CounterpartDetailParams, undefined>(
     counterpartDetailPath,
-    (req, res, ctx) => {
-      return res(delay(), ctx.json(true));
+    async () => {
+      await delay();
+
+      return new HttpResponse(null, {
+        status: 204,
+      });
     }
   ),
 ];

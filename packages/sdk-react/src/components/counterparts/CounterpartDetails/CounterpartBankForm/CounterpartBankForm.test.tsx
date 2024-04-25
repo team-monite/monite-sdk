@@ -225,6 +225,10 @@ describe('CounterpartBankForm', () => {
       /** Get all provided parameters into the last call */
       const lastCallArguments = getCreateSpy.mock.lastCall;
 
+      await waitFor(() => {
+        expect(getCreateSpy).toHaveBeenCalled();
+      });
+
       if (!lastCallArguments) {
         throw new Error(
           'monite.api.counterparts.createBankAccount never has been called'

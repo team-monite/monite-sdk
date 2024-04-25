@@ -37,6 +37,14 @@ const config = useSwcConfig
 
 module.exports = {
   testEnvironment: 'jsdom',
+  /**
+   * We have to specify this option based on MSW's documentation
+   *
+   * @see {@link https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom}
+   */
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

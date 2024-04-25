@@ -8,52 +8,64 @@ import {
   PAYABLES_ENDPOINT,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { lineItemFixture, generateLineItem } from './lineItemsFixture';
 
 export const lineItemsHandlers = [
   // list line items
-  rest.get<
-    undefined,
+  http.get<
     { payableId: string },
+    undefined,
     LineItemPaginationResponse | ErrorSchemaResponse
   >(
     `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}`,
-    async (req, res, ctx) => {
-      const payableId = req.params.payableId;
+    async ({ params }) => {
+      const payableId = params.payableId;
 
-      return res(
-        delay(),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           data: [generateLineItem(payableId), generateLineItem(payableId)],
           prev_pagination_token: undefined,
           next_pagination_token: undefined,
-        })
+        },
+        {
+          status: 200,
+        }
       );
     }
   ),
   // create line item
-  rest.post<LineItemRequest, {}, LineItemResponse>(
+  http.post<{}, LineItemRequest, LineItemResponse>(
     `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}`,
-    async (req, res, ctx) => {
-      return res(delay(), ctx.json(lineItemFixture));
+    async () => {
+      await delay();
+
+      return HttpResponse.json(lineItemFixture);
     }
   ),
 
   // update line item
-  rest.patch<LineItemRequest, {}, LineItemResponse>(
+  http.patch<{}, LineItemRequest, LineItemResponse>(
     `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}/:lineItemId`,
-    async (req, res, ctx) => {
-      return res(delay(), ctx.json(lineItemFixture));
+    async () => {
+      await delay();
+
+      return HttpResponse.json(lineItemFixture);
     }
   ),
 
   // delete line item
-  rest.delete(
+  http.delete(
     `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}/:lineItemId`,
-    async (req, res, ctx) => {
-      return res(delay(), ctx.status(204));
+    async () => {
+      await delay();
+
+      return new HttpResponse(undefined, {
+        status: 204,
+      });
     }
   ),
 ];

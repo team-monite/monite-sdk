@@ -1,3 +1,4 @@
+import { delay } from '@/mocks/utils';
 import {
   CounterpartData,
   COUNTERPARTS_BANK_ENDPOINT,
@@ -9,7 +10,7 @@ import type {
   UpdateCounterpartBankAccount,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   counterpartBankFixture,
@@ -31,23 +32,30 @@ export const counterpartBankHandlers = [
   /**
    * Get counterpart bank account list
    */
-  rest.get<
-    undefined,
+  http.get<
+    {},
     CreateCounterpartBankAccountParams,
     CounterpartData<CounterpartBankAccountResponse[]>
-  >(bankAccountPath, (req, res, ctx) => {
-    return res(ctx.json({ data: counterpartBankListFixture }));
+  >(bankAccountPath, async () => {
+    await delay(10_000);
+
+    return HttpResponse.json(
+      { data: counterpartBankListFixture },
+      {
+        status: 201,
+      }
+    );
   }),
 
   /**
    * Create counterpart bank account
    */
-  rest.post<
-    CreateCounterpartBankAccount,
+  http.post<
     CreateCounterpartBankAccountParams,
+    CreateCounterpartBankAccount,
     CounterpartBankAccountResponse
-  >(bankAccountPath, async (req, res, ctx) => {
-    const json = await req.json<CreateCounterpartBankAccount>();
+  >(bankAccountPath, async ({ request }) => {
+    const json = await request.json();
 
     const response: CounterpartBankAccountResponse = {
       id: String(++bankAccountId),
@@ -63,42 +71,42 @@ export const counterpartBankHandlers = [
       sort_code: json.sort_code,
     };
 
-    return res(ctx.json(response));
+    return HttpResponse.json(response);
   }),
 
   /**
    * Read counterpart bank account
    */
-  rest.get<
-    undefined,
-    UpdateCounterpartBankAccountParams,
-    CounterpartBankAccountResponse
-  >(bankAccountIdPath, (req, res, ctx) => {
-    const { bankAccountId } = req.params;
-    const fixture =
-      genCounterpartBankFixture(bankAccountId) || genCounterpartBankFixture();
+  http.get<UpdateCounterpartBankAccountParams, CounterpartBankAccountResponse>(
+    bankAccountIdPath,
+    ({ params }) => {
+      const { bankAccountId } = params;
+      const fixture =
+        genCounterpartBankFixture(bankAccountId) || genCounterpartBankFixture();
 
-    return res(ctx.json(fixture));
-  }),
+      return HttpResponse.json(fixture);
+    }
+  ),
 
   /**
    * Update counterpart bank account
    */
-  rest.patch<
-    UpdateCounterpartBankAccount,
+  http.patch<
     UpdateCounterpartBankAccountParams,
+    UpdateCounterpartBankAccount,
     CounterpartBankAccountResponse
-  >(bankAccountIdPath, (req, res, ctx) => {
-    return res(ctx.json(counterpartBankFixture));
+  >(bankAccountIdPath, async () => {
+    await delay();
+    return HttpResponse.json(counterpartBankFixture);
   }),
 
   /**
    * Delete counterpart bank account
    */
-  rest.delete<undefined, UpdateCounterpartBankAccountParams, string>(
+  http.delete<{}, UpdateCounterpartBankAccountParams, string>(
     bankAccountIdPath,
-    (req, res, ctx) => {
-      return res(ctx.json(counterpartBankFixture.id));
+    () => {
+      return HttpResponse.json(counterpartBankFixture.id);
     }
   ),
 ];

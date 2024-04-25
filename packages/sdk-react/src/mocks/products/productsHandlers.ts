@@ -13,7 +13,7 @@ import {
   ProductServiceRequest,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import * as yup from 'yup';
 
 import { createProduct, productsListFixture } from './productsFixtures';
@@ -36,26 +36,32 @@ const createProductValidationSchema = yup.object({
 });
 
 export const productsHandlers = [
-  rest.get<
-    undefined,
+  http.get<
     {},
+    undefined,
     ProductServicePaginationResponse | ErrorSchemaResponse
-  >(productsPath, ({ url, headers }, res, ctx) => {
-    const entityId = headers.get('x-monite-entity-id');
+  >(productsPath, async ({ request }) => {
+    const entityId = request.headers.get('x-monite-entity-id');
 
     if (
       entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
       entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
     ) {
-      return res(
-        ctx.status(409),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Action read for payable not allowed',
           },
-        })
+        },
+        {
+          status: 409,
+        }
       );
     }
+
+    const url = new URL(request.url);
 
     const filteredProductsFixture = (() => {
       let filtered: typeof productsList;
@@ -107,70 +113,82 @@ export const productsHandlers = [
         filteredProductsFixture
       );
 
-    return res(
-      delay(1_000),
-      ctx.json({
-        data: productsPaginatedFixtures,
-        prev_pagination_token: prevPage,
-        next_pagination_token: nextPage,
-      })
-    );
+    await delay();
+
+    return HttpResponse.json({
+      data: productsPaginatedFixtures,
+      prev_pagination_token: prevPage,
+      next_pagination_token: nextPage,
+    });
   }),
 
-  rest.get<
-    undefined,
+  http.get<
     ProductParams,
+    undefined,
     ProductServiceResponse | ErrorSchemaResponse
-  >(productByIdPath, ({ params, headers }, res, ctx) => {
+  >(productByIdPath, async ({ request, params }) => {
     const { productId } = params;
-    const entityId = headers.get('x-monite-entity-id');
+    const entityId = request.headers.get('x-monite-entity-id');
 
     if (
       entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
       entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
     ) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Access restricted',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     const productById = productsList.find((item) => item.id === productId);
 
     if (productById) {
-      return res(delay(), ctx.json(productById));
+      await delay();
+
+      return HttpResponse.json(productById);
     } else {
-      return res(
-        delay(),
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Product not found',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
   }),
 
-  rest.post<
-    ProductServiceRequest,
+  http.post<
     {},
+    ProductServiceRequest,
     ProductServiceResponse | ErrorSchemaResponse
-  >(productsPath, async (req, res, ctx) => {
-    const jsonBody = await req.json<ProductServiceRequest>();
+  >(productsPath, async ({ request }) => {
+    const jsonBody = await request.json();
 
     try {
       await createProductValidationSchema.validate(jsonBody);
     } catch (e) {
-      console.error(e);
-      return res(
-        delay(),
-        ctx.status(400),
-        ctx.json({ error: { message: 'See errors in the console' } })
+      await delay();
+
+      return HttpResponse.json(
+        {
+          error: { message: 'See errors in the console' },
+        },
+        {
+          status: 400,
+        }
       );
     }
 
@@ -178,25 +196,31 @@ export const productsHandlers = [
 
     productsList = [...productsList, newProduct];
 
-    return res(delay(), ctx.json(newProduct));
+    await delay();
+
+    return HttpResponse.json(newProduct);
   }),
 
-  rest.patch<
-    ProductServiceRequest,
+  http.patch<
     { productId: string },
+    ProductServiceRequest,
     ProductServiceResponse | ErrorSchemaResponse
-  >(productByIdPath, async (req, res, ctx) => {
-    const jsonBody = await req.json<ProductServiceRequest>();
-    const productId = req.params.productId;
+  >(productByIdPath, async ({ request, params }) => {
+    const jsonBody = await request.json();
+    const productId = params.productId;
 
     if (jsonBody.name.includes('error')) {
-      return res(
-        ctx.status(403),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: jsonBody.name,
           },
-        })
+        },
+        {
+          status: 403,
+        }
       );
     }
 
@@ -221,30 +245,35 @@ export const productsHandlers = [
     );
 
     if (!updatedProduct) {
-      return res(
-        delay(),
-        ctx.status(403),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: jsonBody.name,
           },
-        })
+        },
+        {
+          status: 403,
+        }
       );
     }
 
-    return res(ctx.json(updatedProduct));
+    await delay();
+
+    return HttpResponse.json(updatedProduct);
   }),
 
-  rest.delete<
-    undefined,
-    { productId: string },
-    ProductServiceResponse | ErrorSchemaResponse
-  >(productByIdPath, (req, res, ctx) => {
-    const productId = req.params.productId;
+  http.delete<{ productId: string }>(productByIdPath, async ({ params }) => {
+    const productId = params.productId;
 
     productsList = productsList.filter((product) => product.id !== productId);
 
-    return res(ctx.status(204));
+    await delay();
+
+    return new HttpResponse(null, {
+      status: 204,
+    });
   }),
 ];
 

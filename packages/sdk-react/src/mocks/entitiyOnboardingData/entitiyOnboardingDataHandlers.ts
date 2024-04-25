@@ -5,36 +5,32 @@ import {
   EntityOnboardingDataRequest,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { getEntityOnboardingDataFixture } from './entitiyOnboardingDataFixture';
 
 const path = '*/entities/:entityId/onboarding_data';
 
 export const entityOnboardingDataHandlers = [
-  rest.get<
-    undefined,
+  http.get<
     { entityId: string },
+    undefined,
     EntityOnboardingDataResponse | ErrorSchemaResponse
-  >(path, (_, res, ctx) => {
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json(getEntityOnboardingDataFixture())
-    );
+  >(path, async () => {
+    await delay();
+
+    return HttpResponse.json(getEntityOnboardingDataFixture());
   }),
 
-  rest.patch<
-    EntityOnboardingDataRequest,
+  http.patch<
     { entityId: string },
+    EntityOnboardingDataRequest,
     EntityOnboardingDataResponse | ErrorSchemaResponse
-  >(path, async (req, res, ctx) => {
-    const payload = await req.json();
+  >(path, async ({ request }) => {
+    const payload = await request.json();
 
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json(getEntityOnboardingDataFixture(payload))
-    );
+    await delay();
+
+    return HttpResponse.json(getEntityOnboardingDataFixture(payload));
   }),
 ];
