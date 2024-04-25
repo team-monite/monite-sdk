@@ -12,8 +12,8 @@ import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { fetchToken } from '@/core/fetchToken';
 import { getResetStyles } from '@/core/getResetStyles';
-import { useTheme, getTheme } from '@/hooks/useTheme';
 import { Global } from '@emotion/react';
+import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
@@ -42,12 +42,12 @@ const SDKDemoComponent = ({
   authData,
 }: AuthCredentialsProviderForwardProps) => {
   const { api_url } = useConfig();
-  const { themeConfig, setThemeConfig } = useTheme();
+  const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
 
   return (
     <AppMoniteProvider
-      theme={getTheme(themeConfig)}
+      theme={getThemeConfig(themeConfig)}
       sdkConfig={{
         entityId: authData?.entity_id ?? 'lazy',
         apiUrl,
