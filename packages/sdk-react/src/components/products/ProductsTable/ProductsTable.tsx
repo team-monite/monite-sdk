@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
@@ -19,7 +19,7 @@ import {
   OrderEnum,
   ProductServiceResponse,
 } from '@monite/sdk-api';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -97,6 +97,7 @@ export const ProductsTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
   const sortModelItem = sortModel[0];
@@ -130,7 +131,7 @@ export const ProductsTable = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: PAGE_LIMIT,
+    limit: rowsPerPage,
     type: currentFilter[FILTER_TYPE_TYPE] || undefined,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem
@@ -147,6 +148,11 @@ export const ProductsTable = ({
   const onNext = useCallback(() => {
     setCurrentPaginationToken(products?.next_pagination_token || null);
   }, [setCurrentPaginationToken, products]);
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -279,6 +285,9 @@ export const ProductsTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(products?.prev_pagination_token)}
                 isNextAvailable={Boolean(products?.next_pagination_token)}
                 onPrevious={onPrev}

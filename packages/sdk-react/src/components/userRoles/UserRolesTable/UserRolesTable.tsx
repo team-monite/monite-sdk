@@ -1,11 +1,9 @@
 import React, { useCallback, useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
-import {
-  FILTER_TYPE_SEARCH,
-  ROLES_PAGE_LIMIT,
-} from '@/components/userRoles/consts';
+import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -22,7 +20,7 @@ import {
   PayableResponseSchema,
   type RoleCursorFields,
 } from '@monite/sdk-api';
-import { Box } from '@mui/material';
+import { Box, SelectChangeEvent } from '@mui/material';
 import {
   DataGrid,
   GridValueFormatterParams,
@@ -81,6 +79,7 @@ export const UserRolesTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<UserRolesTableSortModel>>(
     []
@@ -99,7 +98,7 @@ export const UserRolesTable = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: ROLES_PAGE_LIMIT,
+    limit: rowsPerPage,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem ? (sortModelItem.field as RoleCursorFields) : undefined,
     name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -118,6 +117,11 @@ export const UserRolesTable = ({
   const onNext = useCallback(() => {
     setCurrentPaginationToken(roles?.next_pagination_token || null);
   }, [setCurrentPaginationToken, roles]);
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -206,6 +210,9 @@ export const UserRolesTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
                 isNextAvailable={Boolean(roles?.next_pagination_token)}
                 onPrevious={onPrev}

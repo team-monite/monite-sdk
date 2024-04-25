@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -41,6 +41,7 @@ import {
   Chip,
   Divider,
   Stack,
+  SelectChangeEvent,
 } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
@@ -119,6 +120,7 @@ export const CounterpartsTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
@@ -161,7 +163,7 @@ export const CounterpartsTable = ({
   } = useCounterpartList(
     undefined,
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    rowsPerPage,
     currentPaginationToken || undefined,
     sortModelItem
       ? (sortModelItem.field as CounterpartCursorFields)
@@ -183,6 +185,11 @@ export const CounterpartsTable = ({
 
   const onNext = () =>
     setCurrentPaginationToken(counterparts?.next_pagination_token || null);
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
 
   const closeDeleteCounterpartModal = useCallback(() => {
     setIsDeleteDialogOpen(false);
@@ -275,6 +282,9 @@ export const CounterpartsTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(
                   counterparts?.prev_pagination_token
                 )}

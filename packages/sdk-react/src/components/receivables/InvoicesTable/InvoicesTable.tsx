@@ -7,7 +7,7 @@ import {
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
@@ -23,7 +23,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Chip, SelectChangeEvent, Typography } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
@@ -54,6 +54,7 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [sortModel, setSortModel] = useState<Array<InvoicesTableSortModel>>([]);
   const sortModelItem = sortModel[0];
 
@@ -62,7 +63,7 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
 
   const { data: invoices, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    rowsPerPage,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.INVOICE,
@@ -100,6 +101,11 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
   const onNext = () =>
     setCurrentPaginationToken(invoices?.next_pagination_token || null);
 
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
+
   return (
     <MoniteStyleProvider>
       <Box sx={{ padding: 2, width: '100%' }}>
@@ -122,6 +128,9 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isNextAvailable={Boolean(invoices?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}

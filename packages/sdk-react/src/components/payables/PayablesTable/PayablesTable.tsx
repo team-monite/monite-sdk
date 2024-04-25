@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
@@ -21,7 +21,7 @@ import {
   PayableStateEnum,
 } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Chip } from '@mui/material';
+import { Box, CircularProgress, Chip, SelectChangeEvent } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -84,8 +84,8 @@ export const PayablesTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
-  const [pageLimit, setPageLimit] = useState<number>(PAGE_LIMIT);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -100,7 +100,7 @@ export const PayablesTable = ({
 
   const { data: payables, isLoading } = usePayablesList(
     OrderEnum.DESC,
-    pageLimit,
+    rowsPerPage,
     currentPaginationToken || undefined,
     PayableCursorFields.CREATED_AT,
     undefined,
@@ -136,6 +136,11 @@ export const PayablesTable = ({
 
   const onNext = () =>
     setCurrentPaginationToken(payables?.next_pagination_token || null);
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -176,7 +181,6 @@ export const PayablesTable = ({
         </Box>
         <DataGrid
           loading={isLoading}
-          pageSizeOptions={[PAGE_LIMIT, PAGE_LIMIT * 2, PAGE_LIMIT * 3]}
           onRowClick={(params) => {
             onRowClick?.(params.row.id);
           }}
@@ -191,6 +195,9 @@ export const PayablesTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
                 isNextAvailable={Boolean(payables?.next_pagination_token)}
                 onPrevious={onPrev}

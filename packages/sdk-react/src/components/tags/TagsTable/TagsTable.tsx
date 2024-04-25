@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -17,7 +18,7 @@ import {
 } from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box } from '@mui/material';
+import { Box, SelectChangeEvent } from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -43,6 +44,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [selectedTag, setSelectedTag] = useState<TagReadSchema | undefined>(
     undefined
   );
@@ -72,7 +74,7 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
     error,
   } = useTagList(
     sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
-    10,
+    rowsPerPage,
     currentPaginationToken || undefined,
     sortModel ? sortModel.field : undefined
   );
@@ -95,6 +97,11 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
 
   const onNext = () =>
     setCurrentPaginationToken(tags?.next_pagination_token || null);
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
 
   const onChangeSort = (m: GridSortModel) => {
     const model = m as Array<TagsTableSortModel>;
@@ -136,6 +143,9 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(tags?.prev_pagination_token)}
                 isNextAvailable={Boolean(tags?.next_pagination_token)}
                 onPrevious={onPrev}

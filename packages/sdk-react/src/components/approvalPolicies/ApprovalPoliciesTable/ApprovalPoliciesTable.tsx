@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useApprovalPoliciesList } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -13,7 +13,7 @@ import {
   ApprovalPolicyCursorFields,
   ApprovalPolicyResource,
 } from '@monite/sdk-api';
-import { Box } from '@mui/material';
+import { Box, SelectChangeEvent } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -87,10 +87,11 @@ export const ApprovalPoliciesTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
   const { data: approvalPolicies, isLoading } = useApprovalPoliciesList({
-    limit: PAGE_LIMIT,
+    limit: rowsPerPage,
     name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
     created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
     paginationToken: currentPaginationToken ?? undefined,
@@ -122,6 +123,11 @@ export const ApprovalPoliciesTable = ({
     }));
 
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
+  };
+
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
   };
 
   return (
@@ -198,6 +204,9 @@ export const ApprovalPoliciesTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isNextAvailable={Boolean(
                   approvalPolicies?.next_pagination_token
                 )}

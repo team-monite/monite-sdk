@@ -2,8 +2,6 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { ActionEnum, PayableActionEnum } from '@monite/sdk-api';
 
-export const ROLES_PAGE_LIMIT = 5;
-
 export const FILTER_TYPE_SEARCH = 'search';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
 

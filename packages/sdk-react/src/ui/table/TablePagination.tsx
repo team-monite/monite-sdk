@@ -1,10 +1,23 @@
+import React from 'react';
+
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
-import { Box, IconButton } from '@mui/material';
+import {
+  Grid,
+  IconButton,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from '@mui/material';
 
 interface ITablePaginationProps {
+  rowsPerPageOptions: number[];
+  rowsPerPage: number;
+  onRowsPerPageChange: (event: SelectChangeEvent) => void;
+
   isNextAvailable: boolean;
   onNext: () => void;
 
@@ -12,24 +25,53 @@ interface ITablePaginationProps {
   onPrevious: () => void;
 }
 
-export const TablePagination = (props: ITablePaginationProps) => {
+export const TablePagination = ({
+  rowsPerPageOptions,
+  rowsPerPage,
+  onRowsPerPageChange,
+  isNextAvailable,
+  onNext,
+  isPreviousAvailable,
+  onPrevious,
+}: ITablePaginationProps) => {
   const { i18n } = useLingui();
+  const { root } = useRootElements();
+
   return (
-    <Box sx={{ margin: 2 }}>
-      <IconButton
-        aria-label={t(i18n)`Previous page`}
-        onClick={props.onPrevious}
-        disabled={!props.isPreviousAvailable}
-      >
-        <ArrowLeft fontSize="small" />
-      </IconButton>
-      <IconButton
-        aria-label={t(i18n)`Next page`}
-        onClick={props.onNext}
-        disabled={!props.isNextAvailable}
-      >
-        <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
-      </IconButton>
-    </Box>
+    <Grid container m={2}>
+      <Grid item xs={11} textAlign="center">
+        <IconButton
+          sx={{ height: '100%' }}
+          aria-label={t(i18n)`Previous page`}
+          onClick={onPrevious}
+          disabled={!isPreviousAvailable}
+        >
+          <ArrowLeft fontSize="small" />
+        </IconButton>
+        <IconButton
+          sx={{ height: '100%' }}
+          aria-label={t(i18n)`Next page`}
+          onClick={onNext}
+          disabled={!isNextAvailable}
+        >
+          <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
+        </IconButton>
+      </Grid>
+      <Grid item xs={1}>
+        <Select
+          labelId="rows-per-page"
+          aria-label={t(i18n)`Rows per page`}
+          MenuProps={{ container: root }}
+          value={rowsPerPage.toString()}
+          onChange={onRowsPerPageChange}
+        >
+          {rowsPerPageOptions.map((menuItem) => (
+            <MenuItem key={menuItem} value={menuItem.toString()}>
+              {menuItem}
+            </MenuItem>
+          ))}
+        </Select>
+      </Grid>
+    </Grid>
   );
 };

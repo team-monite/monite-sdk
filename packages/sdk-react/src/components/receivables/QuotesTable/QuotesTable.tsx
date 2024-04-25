@@ -7,7 +7,7 @@ import {
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
-import { PAGE_LIMIT } from '@/constants';
+import { PAGE_LIMITS } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
@@ -22,7 +22,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, SelectChangeEvent } from '@mui/material';
 import {
   DataGrid,
   GridSortModel,
@@ -62,6 +62,7 @@ export const QuotesTable = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
 
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, currentFilters } = useReceivablesFilters();
@@ -70,7 +71,7 @@ export const QuotesTable = ({
 
   const { data: quotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    rowsPerPage,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.QUOTE,
@@ -110,6 +111,11 @@ export const QuotesTable = ({
   const onNext = () =>
     setCurrentPaginationToken(quotes?.next_pagination_token || null);
 
+  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setCurrentPaginationToken(null);
+  };
+
   return (
     <MoniteStyleProvider>
       <Box sx={{ padding: 2, width: '100%' }}>
@@ -132,6 +138,9 @@ export const QuotesTable = ({
           slots={{
             pagination: () => (
               <TablePagination
+                rowsPerPageOptions={PAGE_LIMITS}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
                 isNextAvailable={Boolean(quotes?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}
