@@ -1,4 +1,10 @@
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { toast } from 'react-hot-toast';
 
 import {
@@ -9,7 +15,10 @@ import {
   MoniteThemeContext,
   useMoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import {
+  RootElementsProvider,
+  useRootElements,
+} from '@/core/context/RootElementsProvider';
 import { SentryFactory } from '@/core/services';
 import { getMessageInError } from '@/core/utils/getMessageInError';
 import { Error as ErrorComponent } from '@/ui/error';
@@ -20,6 +29,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
 import type { Theme, ThemeOptions } from '@mui/material';
+import { Portal } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { Hub } from '@sentry/react';
@@ -218,17 +228,49 @@ const SingleInstanceScopedCssBaseline = ({
  */
 const SingleInstanceScopedCssBaselineContext = createContext<boolean>(false);
 
+/**
+ * Provides a wrapper with the `ScopedCssBaseline` component styles
+ * in which the `children` Dialog, Select and any component using `useRootElements().root`
+ * will be mounted inside.
+ */
+const ScopedCssBaselineRootContainerProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const rootElements = useRootElements();
+  const [styledRoot, setStyledRoot] = useState(rootElements.root ?? null);
+
+  return (
+    <>
+      <Portal container={rootElements.root || (() => document.body)}>
+        <ScopedCssBaseline ref={setStyledRoot}>
+          {/* Dialog, Select and any component using `useRootElements().root` will be mounted inside */}
+        </ScopedCssBaseline>
+      </Portal>
+      <RootElementsProvider
+        elements={{
+          ...rootElements,
+          root: rootElements.root ?? styledRoot ?? undefined,
+        }}
+      >
+        {children}
+      </RootElementsProvider>
+    </>
+  );
+};
+
 export const MoniteProvider = ({
   monite,
   theme,
   children,
   locale,
 }: MoniteProviderProps) => {
-  const { styles: stylesRoot } = useRootElements();
+  const rootElements = useRootElements();
   const [emotionCache] = useState(() =>
     createCache({
       key: 'css-monite',
-      container: stylesRoot,
+      container: rootElements.styles,
     })
   );
 
@@ -273,8 +315,10 @@ export const MoniteProvider = ({
           >
             <ReactQueryDevtools initialIsOpen={false} />
             <CacheProvider value={emotionCache}>
-              <GlobalToast />
-              {children}
+              <ScopedCssBaselineRootContainerProvider>
+                <GlobalToast />
+                {children}
+              </ScopedCssBaselineRootContainerProvider>
             </CacheProvider>
           </MoniteContext.Provider>
         </MoniteThemeContext.Provider>
