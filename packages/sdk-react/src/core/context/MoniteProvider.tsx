@@ -20,6 +20,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
 import type { Theme, ThemeOptions } from '@mui/material';
+import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { Hub } from '@sentry/react';
 import { ErrorBoundary, Profiler } from '@sentry/react';
@@ -181,7 +182,9 @@ export const MoniteStyleProvider = ({
 
   return (
     <SentryProvider>
-      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+      <MuiThemeProvider theme={theme}>
+        <ScopedCssBaseline enableColorScheme>{children}</ScopedCssBaseline>
+      </MuiThemeProvider>
     </SentryProvider>
   );
 };
