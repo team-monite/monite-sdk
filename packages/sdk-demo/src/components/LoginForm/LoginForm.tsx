@@ -6,7 +6,6 @@ import { AuthCredentials } from '@/core/fetchToken';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { MoniteStyleProvider } from '@monite/sdk-react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -40,7 +39,7 @@ export const LoginForm = ({
   const { i18n } = useLingui();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
         sx={{
           display: 'flex',
@@ -151,6 +150,6 @@ export const LoginForm = ({
           </Box>
         </form>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

@@ -5,10 +5,7 @@ import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
 import { useConfig } from '@/context/ConfigContext';
 import { ThemeConfig } from '@/types';
-import {
-  MoniteStyleProvider,
-  useEntityUserByAuthToken,
-} from '@monite/sdk-react';
+import { useEntityUserByAuthToken } from '@monite/sdk-react';
 import {
   Avatar,
   Box,
@@ -47,13 +44,12 @@ export const DefaultLayout = ({
     process.env.NODE_ENV === 'development' || config?.stand === 'dev';
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
         sx={{ display: 'flex', margin: 0, height: '100%', minHeight: '100vh' }}
       >
         <Drawer
-          PaperProps={{ sx: { backgroundColor: '#f3f3f3' } }}
-          sx={{
+          PaperProps={{ sx: { backgroundColor: '#f3f3f3' } }}sx={{
             width: '240px',
             flexShrink: 0,
             '& .MuiDrawer-paper': {
@@ -126,6 +122,6 @@ export const DefaultLayout = ({
           </Box>
         </Box>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };
