@@ -183,11 +183,40 @@ export const MoniteStyleProvider = ({
   return (
     <SentryProvider>
       <MuiThemeProvider theme={theme}>
-        <ScopedCssBaseline enableColorScheme>{children}</ScopedCssBaseline>
+        <SingleInstanceScopedCssBaseline>
+          {children}
+        </SingleInstanceScopedCssBaseline>
       </MuiThemeProvider>
     </SentryProvider>
   );
 };
+
+/**
+ * Provides a single instance of `ScopedCssBaseline` component
+ * `<ScopedCssBaseline>` component is used to apply scoped styles to the component
+ * using wrapper `div` to pass the styles to the children.
+ * This component prevents the creation of multiple `div` wrappers with the same styles.
+ */
+const SingleInstanceScopedCssBaseline = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const isContextSet = useContext(SingleInstanceScopedCssBaselineContext);
+
+  return isContextSet ? (
+    <>{children}</>
+  ) : (
+    <SingleInstanceScopedCssBaselineContext.Provider value={true}>
+      <ScopedCssBaseline enableColorScheme children={children} />
+    </SingleInstanceScopedCssBaselineContext.Provider>
+  );
+};
+
+/**
+ * Provides status if the `ScopedCssBaseline` component is already set
+ */
+const SingleInstanceScopedCssBaselineContext = createContext<boolean>(false);
 
 export const MoniteProvider = ({
   monite,
