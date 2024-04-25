@@ -85,8 +85,8 @@
   },
   "dependencies": {
     "@monite/sdk-api": "workspace:~",
-    "@mui/icons-material": "~5.14.8",
-    "@mui/material": "~5.14.8",
+    "@mui/icons-material": "~5.14.3",
+    "@mui/material": "~5.14.2",
     "@team-monite/sdk-themes": "workspace:~"
   }
 }

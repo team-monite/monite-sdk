@@ -3614,7 +3614,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/icons-material@npm:~5.14.3, @mui/icons-material@npm:~5.14.8":
+"@mui/icons-material@npm:~5.14.3":
   version: 5.14.9
   resolution: "@mui/icons-material@npm:5.14.9"
   dependencies:
@@ -3630,7 +3630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:~5.14.2, @mui/material@npm:~5.14.8":
+"@mui/material@npm:~5.14.2":
   version: 5.14.9
   resolution: "@mui/material@npm:5.14.9"
   dependencies:
@@ -6360,8 +6360,8 @@ __metadata:
     "@lingui/react": ~4.7.0
     "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
-    "@mui/icons-material": ~5.14.8
-    "@mui/material": ~5.14.8
+    "@mui/icons-material": ~5.14.3
+    "@mui/material": ~5.14.2
     "@team-monite/eslint-plugin": "workspace:~"
     "@team-monite/rollup-config": "workspace:~"
     "@team-monite/sdk-themes": "workspace:~"
