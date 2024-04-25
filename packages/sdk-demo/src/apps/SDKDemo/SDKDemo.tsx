@@ -12,11 +12,12 @@ import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { fetchToken } from '@/core/fetchToken';
 import { getResetStyles } from '@/core/getResetStyles';
-import { Global } from '@emotion/react';
 import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
+import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button } from '@mui/material';
+import { Button, createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 
 import { getFontFaceStyles } from './fontStyles.ts';
 
@@ -44,35 +45,39 @@ const SDKDemoComponent = ({
   const { api_url } = useConfig();
   const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
+  const muiTheme = createTheme(getThemeConfig(themeConfig));
 
   return (
-    <AppMoniteProvider
-      theme={getThemeConfig(themeConfig)}
-      sdkConfig={{
-        entityId: authData?.entity_id ?? 'lazy',
-        apiUrl,
-        fetchToken: () =>
-          authData
-            ? fetchToken(apiUrl, authData).catch(logout)
-            : Promise.reject(),
-      }}
-    >
-      <Global styles={getFontFaceStyles} />
-      <Global styles={getResetStyles} />
-      {authData ? (
-        <BrowserRouter>
-          <DefaultLayout
-            themeConfig={themeConfig}
-            setThemeConfig={setThemeConfig}
-            siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
-          >
-            <Base />
-          </DefaultLayout>
-        </BrowserRouter>
-      ) : (
-        <LoginForm login={login} />
-      )}
-    </AppMoniteProvider>
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline enableColorScheme />
+      <AppMoniteProvider
+        theme={muiTheme}
+        sdkConfig={{
+          entityId: authData?.entity_id ?? 'lazy',
+          apiUrl,
+          fetchToken: () =>
+            authData
+              ? fetchToken(apiUrl, authData).catch(logout)
+              : Promise.reject(),
+        }}
+      >
+        <Global styles={getFontFaceStyles} />
+        <Global styles={getResetStyles} />
+        {authData ? (
+          <BrowserRouter>
+            <DefaultLayout
+              themeConfig={themeConfig}
+              setThemeConfig={setThemeConfig}
+              siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
+            >
+              <Base />
+            </DefaultLayout>
+          </BrowserRouter>
+        ) : (
+          <LoginForm login={login} />
+        )}
+      </AppMoniteProvider>
+    </ThemeProvider>
   );
 };
 
