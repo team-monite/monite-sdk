@@ -2,7 +2,7 @@ import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
 import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
-import { CssBaseline, ThemeOptions } from '@mui/material';
+import { ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
@@ -69,7 +69,6 @@ export const withGlobalStorybookDecorator = (
 
       return GlobalStorybookDecorator(updatedArgs);
     },
-    GlobalStyles: CssBaseline,
   });
 };
 
