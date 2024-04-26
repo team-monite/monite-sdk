@@ -1,4 +1,9 @@
+import React from 'react';
+
+import { useMenuButton } from '@/core/hooks';
 import { css } from '@emotion/react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, IconButton, Menu, MenuItem } from '@mui/material';
 import { StoryObj } from '@storybook/react';
 
 import { Counterparts as CounterpartsComponent } from './Counterparts';
@@ -25,6 +30,24 @@ export const Counterparts: Story = {
       <CounterpartsComponent />
     </div>
   ),
+};
+
+export const Counterparts2: Story = {
+  args: {},
+  render: () => {
+    const { getButtonProps, getMenuProps } = useMenuButton();
+
+    return (
+      <Box>
+        <IconButton {...getButtonProps()}>
+          <MoreVertIcon fontSize="small" />
+        </IconButton>
+        <Menu {...getMenuProps()}>
+          <MenuItem>Individual</MenuItem>
+        </Menu>
+      </Box>
+    );
+  },
 };
 
 export default Story;

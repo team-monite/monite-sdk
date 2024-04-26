@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { useDialog } from '@/components';
 import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
@@ -9,7 +9,7 @@ import {
   getReceivableStatusNameMap,
 } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -47,12 +47,9 @@ enum DeliveryMethod {
 }
 
 const StyledMenu = styled((props: MenuProps) => {
-  const { root } = useRootElements();
-
   return (
     <Menu
       elevation={0}
-      container={root}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
@@ -102,16 +99,8 @@ export const ExistingInvoiceDetails = (
   const [view, setView] = useState<InvoiceDetailsView>(
     InvoiceDetailsView.Overview
   );
-  const [moreElement, setMoreElement] = React.useState<null | HTMLElement>(
-    null
-  );
-  const isMoreOpen = useMemo(() => Boolean(moreElement), [moreElement]);
-  const handleOpenMore = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setMoreElement(event.currentTarget);
-  }, []);
-  const handleCloseMore = useCallback(() => {
-    setMoreElement(null);
-  }, []);
+
+  const { getButtonProps, getMenuProps } = useMenuButton();
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(
     DeliveryMethod.Email
@@ -224,24 +213,16 @@ export const ExistingInvoiceDetails = (
                 {buttons.isMoreButtonVisible && (
                   <React.Fragment>
                     <Button
-                      aria-controls={isMoreOpen ? 'more-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={isMoreOpen ? 'true' : undefined}
+                      {...getButtonProps()}
                       variant="text"
                       color="primary"
                       disableElevation
-                      onClick={handleOpenMore}
                       disabled={loading}
                       endIcon={<MoreVertIcon />}
                     >{t(i18n)`More`}</Button>
-                    <StyledMenu
-                      anchorEl={moreElement}
-                      open={isMoreOpen}
-                      onClose={handleCloseMore}
-                    >
+                    <StyledMenu {...getMenuProps()}>
                       <MenuItem
                         onClick={() => {
-                          handleCloseMore();
                           setView(InvoiceDetailsView.Email);
                         }}
                       >

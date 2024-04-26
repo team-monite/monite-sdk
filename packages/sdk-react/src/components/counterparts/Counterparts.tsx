@@ -6,7 +6,7 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenu } from '@/core/hooks';
+import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -20,7 +20,7 @@ import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 export const Counterparts = () => {
   const { i18n } = useLingui();
 
-  const { open, anchorEl, handleOpen, handleClose } = useMenu();
+  const { open, getMenuProps, getButtonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
   const [counterpartType, setType] = useState<CounterpartType | undefined>(
@@ -111,14 +111,9 @@ export const Counterparts = () => {
         extra={
           <Box>
             <Button
-              id="actions"
-              aria-controls={open ? 'actions-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              aria-label="actions-menu-button"
+              {...getButtonProps()}
               variant="contained"
               disabled={!isCreateAllowed}
-              onClick={handleOpen}
               endIcon={
                 open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
               }
@@ -126,10 +121,7 @@ export const Counterparts = () => {
               {t(i18n)`Create New`}
             </Button>
             <Menu
-              id="actions"
-              open={open}
-              onClose={handleClose}
-              anchorEl={anchorEl}
+              {...getMenuProps()}
               container={root}
               MenuListProps={{
                 'aria-labelledby': 'actions',
@@ -138,7 +130,6 @@ export const Counterparts = () => {
               <MenuItem
                 onClick={() => {
                   setType(CounterpartType.ORGANIZATION);
-                  handleClose();
                 }}
               >
                 {t(i18n)`Organization`}
@@ -146,7 +137,6 @@ export const Counterparts = () => {
               <MenuItem
                 onClick={() => {
                   setType(CounterpartType.INDIVIDUAL);
-                  handleClose();
                 }}
               >
                 {t(i18n)`Individual`}

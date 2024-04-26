@@ -1,10 +1,10 @@
-import React, { useRef, useState, useId } from 'react';
+import React from 'react';
 
 import { ThemeConfig } from '@/types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useRootElements } from '@monite/sdk-react';
+import { useMenuButton } from '@monite/sdk-react';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -37,42 +37,22 @@ interface ThemeSelectorProps {
 
 export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
   const { i18n } = useLingui();
-  const { root } = useRootElements();
-  const menuId = useId();
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { getButtonProps, getMenuProps, open } = useMenuButton();
 
   const { variant: themeVariant, mode: themeMode } = value;
 
   return (
     <>
       <Button
-        ref={buttonRef}
-        id={menuId}
+        {...getButtonProps()}
         sx={{ justifyContent: 'space-between' }}
-        aria-controls={isMenuOpen ? 'theme-menu' : undefined}
         startIcon={themeMode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-        endIcon={
-          isMenuOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
-        }
-        aria-haspopup="true"
-        aria-expanded={isMenuOpen ? 'true' : undefined}
-        aria-label="theme-menu-button"
+        endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         variant="outlined"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
         {getButtonLabel(themeVariant, i18n)}
-        <Menu
-          id={menuId}
-          open={isMenuOpen}
-          container={root}
-          onClose={() => setIsMenuOpen(false)}
-          anchorEl={buttonRef.current}
-          MenuListProps={{
-            'aria-labelledby': menuId,
-          }}
-        >
+        <Menu {...getMenuProps()}>
           <Typography variant="body2" color="grey" pl={2} pr={2} pb={1}>{t(
             i18n
           )`Theme`}</Typography>

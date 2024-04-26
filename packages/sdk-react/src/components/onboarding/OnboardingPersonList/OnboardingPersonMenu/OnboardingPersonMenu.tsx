@@ -1,8 +1,7 @@
 import React from 'react';
 import { ReactNode } from 'react';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMenu } from '@/core/hooks';
+import { useMenuButton } from '@/core/hooks';
 import { Button, Menu } from '@mui/material';
 
 export const OnboardingPersonMenu = ({
@@ -16,34 +15,21 @@ export const OnboardingPersonMenu = ({
   disabled?: boolean;
   variant?: 'outlined' | 'contained';
 }) => {
-  const { open, anchorEl, handleOpen, handleClose } = useMenu();
-
-  const { root } = useRootElements();
+  const { getMenuProps, getButtonProps } = useMenuButton();
 
   return (
     <>
       <Button
-        id="onboarding-person-menu-button"
-        aria-controls={open ? 'onboarding-person-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleOpen}
+        {...getButtonProps()}
         variant={variant}
         color="primary"
         disabled={disabled}
       >
         {title}
       </Button>
+
       <Menu
-        id="onboarding-person-menu"
-        container={root}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'onboarding-person-menu-button',
-        }}
+        {...getMenuProps()}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
