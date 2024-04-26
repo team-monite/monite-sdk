@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   ADDRESSES_ENDPOINT,
   CounterpartAddress,
@@ -7,7 +6,7 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { counterpartsAddressesFixture } from './counterpartsAddressesFixture';
 
@@ -16,48 +15,56 @@ const counterpartAddressPath = `${counterpartsAddressesPath}/:addressId`;
 
 export const counterpartsAddressesHandlers = [
   /** Get all counterpart addresses */
-  rest.get<
-    undefined,
+  http.get<
     { counterpartId: string },
+    undefined,
     CounterpartAddressResourceList | ErrorSchemaResponse
-  >(counterpartsAddressesPath, ({ params }, res, ctx) => {
+  >(counterpartsAddressesPath, async ({ params }) => {
     const { counterpartId } = params;
     const address = counterpartsAddressesFixture.find((address) =>
       address.data.find((addr) => addr.counterpart_id === counterpartId)
     );
 
     if (!address) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'There is no address by provided ID',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json(address));
+    await delay();
+
+    return HttpResponse.json(address);
   }),
 
   /** Get counterpart address by id */
-  rest.get<
-    undefined,
+  http.get<
     { counterpartId: string; addressId: string },
+    undefined,
     CounterpartAddressResponseWithCounterpartID | ErrorSchemaResponse
-  >(counterpartAddressPath, (req, res, ctx) => {
-    const { counterpartId, addressId } = req.params;
+  >(counterpartAddressPath, async ({ params }) => {
+    const { counterpartId, addressId } = params;
 
     if (!counterpartId || !addressId) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Counterpart ID or Address ID is not provided',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
@@ -68,44 +75,56 @@ export const counterpartsAddressesHandlers = [
     });
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'There is no address by provided ID',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json(fixture.data[0]));
+    await delay();
+
+    return HttpResponse.json(fixture.data[0]);
   }),
 
-  rest.patch<
-    CounterpartAddress,
+  http.patch<
     { counterpartId: string; addressId: string },
+    CounterpartAddress,
     CounterpartAddressResponseWithCounterpartID | ErrorSchemaResponse
-  >(counterpartAddressPath, async (req, res, ctx) => {
-    const payload = await req.json<CounterpartAddress>();
-    const { counterpartId } = req.params;
+  >(counterpartAddressPath, async ({ request, params }) => {
+    const payload = await request.json();
+    const { counterpartId } = params;
 
     const address = counterpartsAddressesFixture.find((address) =>
       address.data.find((addr) => addr.counterpart_id === counterpartId)
     );
 
     if (!address) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'There is no address by provided ID',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json({ ...address.data[0], ...payload }));
+    await delay();
+    return HttpResponse.json({
+      ...address.data[0],
+      ...payload,
+    });
   }),
 ];

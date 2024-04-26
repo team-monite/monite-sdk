@@ -19,9 +19,10 @@ import {
   CreatePayableFromFileRequest,
   PayableUploadWithDataSchema,
   AttachFileToPayableRequest,
+  type TagReadSchema,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { tagListFixture } from '../tags';
 import { delay, filterByPageAndLimit } from '../utils';
@@ -142,25 +143,30 @@ export function addNewItemToPayablesList(): PayableResponseSchema {
 
 export const payableHandlers = [
   // read the list
-  rest.get<undefined, {}, PayablePaginationResponse | ErrorSchemaResponse>(
+  http.get<{}, {}, PayablePaginationResponse | ErrorSchemaResponse>(
     payablePath,
-    ({ url, headers }, res, ctx) => {
-      const entityId = headers.get('x-monite-entity-id');
+    async ({ request }) => {
+      const entityId = request.headers.get('x-monite-entity-id');
 
       if (
         entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
         entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
       ) {
-        return res(
-          ctx.status(409),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: 'Action read for payable not allowed',
             },
-          })
+          },
+          {
+            status: 409,
+          }
         );
       }
 
+      const url = new URL(request.url);
       const limit = Number(url.searchParams.get('limit') ?? '10');
 
       const filteredPayableFixtures = (() => {
@@ -192,312 +198,343 @@ export const payableHandlers = [
           filteredPayableFixtures
         );
 
-      return res(
-        delay(),
-        ctx.json({
-          data: payablesPaginatedFixtures,
-          prev_pagination_token: prevPage,
-          next_pagination_token: nextPage,
-        })
-      );
+      await delay();
+
+      return HttpResponse.json({
+        data: payablesPaginatedFixtures,
+        prev_pagination_token: prevPage,
+        next_pagination_token: nextPage,
+      });
     }
   ),
 
   // create payable
-  rest.post<
+  http.post<
+    {},
     PayableUploadWithDataSchema,
     PayableResponseSchema | ErrorSchemaResponse
-  >(payablePath, async (req, res, ctx) => {
-    const body = await req.json();
+  >(payablePath, async ({ request }) => {
+    const body = await request.json();
 
-    const newPayable = {
+    const newPayable: PayableResponseSchema = {
       ...payableFixturePages[0],
       ...body,
-      tags: body.tag_ids.map((tagId: string) => {
-        return tagListFixture.find((tag) => tag.id === tagId);
-      }),
+      tags: body.tag_ids
+        ? body.tag_ids
+            .map((tagId: string) => {
+              return tagListFixture.find((tag) => tag.id === tagId);
+            })
+            .filter<TagReadSchema>((tag): tag is TagReadSchema => !!tag)
+        : undefined,
       status: PayableStateEnum.NEW,
     };
 
     payableFixturePages.unshift(newPayable);
 
-    return res(ctx.json(newPayable));
+    return HttpResponse.json(newPayable);
   }),
 
   // get payable by id
-  rest.get<
-    undefined,
+  http.get<
     PayableParams,
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(payableIdPath, ({ params, headers }, res, ctx) => {
+  >(payableIdPath, async ({ params, request }) => {
     const { payableId } = params;
-    const entityId = headers.get('x-monite-entity-id');
+    const entityId = request.headers.get('x-monite-entity-id');
 
     if (payableId === PAYABLE_ID_WITHOUT_FILE) {
-      return res(delay(), ctx.json(payableFixtureWithoutFile));
+      await delay();
+
+      return HttpResponse.json(payableFixtureWithoutFile);
     }
 
     if (
       entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
       entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
     ) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Access restricted',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (
       Object.values(PayableStateEnum).find((status) => status === payableId)
     ) {
-      return res(
-        delay(),
-        ctx.json({
-          ...payableFixturePages[0],
-          status: payableId as PayableStateEnum,
-        })
-      );
+      await delay();
+
+      return HttpResponse.json({
+        ...payableFixturePages[0],
+        status: payableId as PayableStateEnum,
+      });
     } else {
       const payableById = payableFixturePages.find(
         (item) => item.id === payableId
       );
 
       if (payableById) {
-        return res(
-          delay(),
-          ctx.json(payable ? { ...payable, ...payableById } : payableById)
+        await delay();
+
+        return HttpResponse.json(
+          payable ? { ...payable, ...payableById } : payableById,
+          {
+            status: 202,
+          }
         );
       } else {
-        return res(
-          delay(),
-          ctx.status(400),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: 'Payable not found',
             },
-          })
+          },
+          {
+            status: 400,
+          }
         );
       }
     }
   }),
 
   // update (patch) payable by id
-  rest.patch<
-    PayableUpdateSchema,
+  http.patch<
     { payableId: string },
+    PayableUpdateSchema,
     PayableResponseSchema | ErrorSchemaResponse
-  >(payableIdPath, async (req, res, ctx) => {
-    const body = await req.json();
+  >(payableIdPath, async ({ request, params }) => {
+    const body = await request.json();
 
     payable = {
       ...payableFixturePages[0],
       ...body,
-      tags: (body.tag_ids ?? []).map((tagId: string) => {
-        return tagListFixture.find((tag) => tag.id === tagId);
-      }),
+      tags: (body.tag_ids ?? [])
+        .map((tagId: string) => tagListFixture.find((tag) => tag.id === tagId))
+        .filter((tag): tag is TagReadSchema => !!tag),
       status: PayableStateEnum.NEW,
     };
 
     /** Handle an error when the authentication token is expired */
-    if (req.params.payableId === 'expired-token') {
-      return res(
-        ctx.status(400),
-        delay(),
-        ctx.json({
+    if (params.payableId === 'expired-token') {
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'The token has been revoked, expired or not found.',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
-    return res(ctx.json(payable));
+    return HttpResponse.json(payable);
   }),
 
   // submit payable by id
-  rest.post<
-    undefined,
+  http.post<
     { payableId: string },
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/submit_for_approval`, async (req, res, ctx) => {
+  >(`${payableIdPath}/submit_for_approval`, async () => {
     payable = { ...payable, status: PayableStateEnum.APPROVE_IN_PROGRESS };
 
-    return res(
-      ctx.json(
-        payable || {
-          ...payableFixturePages[0],
-        }
-      )
+    await delay();
+
+    return HttpResponse.json(
+      payable || {
+        ...payableFixturePages[0],
+      }
     );
   }),
 
   // reject payable by id
-  rest.post<
-    undefined,
+  http.post<
     { payableId: string },
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/reject`, async (req, res, ctx) => {
+  >(`${payableIdPath}/reject`, async () => {
     payable.status = PayableStateEnum.REJECTED;
 
-    return res(
-      delay(),
-      ctx.json(
-        payable || {
-          ...payableFixturePages[0],
-        }
-      )
+    await delay();
+
+    return HttpResponse.json(
+      payable || {
+        ...payableFixturePages[0],
+      }
     );
   }),
 
   // cancel payable by id
-  rest.post<
-    undefined,
+  http.post<
     { payableId: string },
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/cancel`, async (req, res, ctx) => {
+  >(`${payableIdPath}/cancel`, async () => {
     payable.status = PayableStateEnum.CANCELED;
 
-    return res(
-      delay(),
-      ctx.json(
-        payable || {
-          ...payableFixturePages[0],
-        }
-      )
+    await delay();
+
+    return HttpResponse.json(
+      payable || {
+        ...payableFixturePages[0],
+      }
     );
   }),
 
   // approve payable by id
-  rest.post<
-    undefined,
+  http.post<
     { payableId: string },
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/approve_payment_operation`, async (req, res, ctx) => {
+  >(`${payableIdPath}/approve_payment_operation`, async () => {
     payable.status = PayableStateEnum.WAITING_TO_BE_PAID;
 
-    return res(
-      delay(),
-      ctx.json(
-        payable || {
-          ...payableFixturePages[0],
-        }
-      )
+    await delay();
+
+    return HttpResponse.json(
+      payable || {
+        ...payableFixturePages[0],
+      }
     );
   }),
 
   // pay payable by id
-  rest.post<
-    undefined,
+  http.post<
     { payableId: string },
+    undefined,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/pay`, async (req, res, ctx) => {
+  >(`${payableIdPath}/pay`, async () => {
     payable.status = PayableStateEnum.PAID;
 
-    return res(
-      delay(),
-      ctx.json(
-        payable || {
-          ...payableFixturePages[0],
-        }
-      )
+    await delay();
+
+    return HttpResponse.json(
+      payable || {
+        ...payableFixturePages[0],
+      }
     );
   }),
 
-  rest.post<
+  http.post<
+    {},
     CreatePayableFromFileRequest,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payablePath}/upload_from_file`, async (req, res, ctx) => {
-    const file = req.body.file; // todo::Upgrade MSW to use req.formData() method
+  >(`${payablePath}/upload_from_file`, async ({ request }) => {
+    const file = await request.formData();
 
     if (!file) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Bad Request: file field is missing',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!(file instanceof File)) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Bad Request: file field should contain a file',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     const successfulResponse = addNewItemToPayablesList();
 
-    return res(delay(), ctx.json(successfulResponse));
+    await delay();
+
+    return HttpResponse.json(successfulResponse);
   }),
 
-  rest.post<
-    AttachFileToPayableRequest,
+  http.post<
     { payableId: string },
+    AttachFileToPayableRequest,
     PayableResponseSchema | ErrorSchemaResponse
-  >(`${payableIdPath}/attach_file`, async (req, res, ctx) => {
-    const file = req.body.file; // todo::Upgrade MSW to use req.formData() method
+  >(`${payableIdPath}/attach_file`, async ({ request }) => {
+    const file = await request.formData(); // todo::Upgrade MSW to use req.formData() method
 
     if (!file) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Bad Request: file field is missing',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!(file instanceof File)) {
-      return res(
-        ctx.status(400),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Bad Request: file field should contain a file',
           },
-        })
+        },
+        {
+          status: 400,
+        }
       );
     }
 
-    const successfulResponse = addNewItemToPayablesList();
+    await delay();
 
-    return res(
-      delay(),
-      ctx.json({
-        ...payableFixturePages[0],
-        file: {
-          id: '124c26f2-0430-4bf3-87a1-5ff2b879c480',
-          created_at: '2023-01-06T12:03:44.210318+00:00',
-          file_type: 'payables',
-          name: 'test_invoice.pdf',
-          region: 'eu-central-1',
-          md5: '763317952a69be1122deb6699f794d53',
-          mimetype: 'application/pdf',
-          url: 'https://monite-file-saver-payables-eu-central-1-dev.s3.amazonaws.com/124c26f2-0430-4bf3-87a1-5ff2b879c480/feafa6df-b5fb-4b26-936f-f3e51ae50995.pdf',
-          size: 17024,
-          previews: [],
-          pages: [
-            {
-              id: 'db236cd4-c3cf-4d6b-a5bb-a235615feb99',
-              mimetype: 'image/png',
-              size: 112510,
-              number: 0,
-              url: 'https://monite-file-saver-payables-eu-central-1-dev.s3.amazonaws.com/61ca15e2-912d-4699-a11b-bc17976abe83/2082ee5e-7e34-4d77-9061-761db13c2d60.png',
-            },
-          ],
-        },
-      })
-    );
+    return HttpResponse.json({
+      ...payableFixturePages[0],
+      file: {
+        id: '124c26f2-0430-4bf3-87a1-5ff2b879c480',
+        created_at: '2023-01-06T12:03:44.210318+00:00',
+        file_type: 'payables',
+        name: 'test_invoice.pdf',
+        region: 'eu-central-1',
+        md5: '763317952a69be1122deb6699f794d53',
+        mimetype: 'application/pdf',
+        url: 'https://monite-file-saver-payables-eu-central-1-dev.s3.amazonaws.com/124c26f2-0430-4bf3-87a1-5ff2b879c480/feafa6df-b5fb-4b26-936f-f3e51ae50995.pdf',
+        size: 17024,
+        previews: [],
+        pages: [
+          {
+            id: 'db236cd4-c3cf-4d6b-a5bb-a235615feb99',
+            mimetype: 'image/png',
+            size: 112510,
+            number: 0,
+            url: 'https://monite-file-saver-payables-eu-central-1-dev.s3.amazonaws.com/61ca15e2-912d-4699-a11b-bc17976abe83/2082ee5e-7e34-4d77-9061-761db13c2d60.png',
+          },
+        ],
+      },
+    });
   }),
 ];
 

@@ -8,16 +8,16 @@ import {
   PaymentAccountType,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 export const paymentHandlers = [
-  rest.post<undefined, {}, CreatePaymentLinkRequest | ErrorSchemaResponse>(
+  http.post<{}, undefined, CreatePaymentLinkRequest | ErrorSchemaResponse>(
     '*/payment_links',
-    (req, res, ctx) => {
-      return res(
-        delay(),
-        ctx.status(200),
-        ctx.json({
+    async () => {
+      await delay();
+
+      return HttpResponse.json(
+        {
           amount: 1,
           currency: CurrencyEnum.EUR,
           expires_at: new Date().toISOString(),
@@ -29,7 +29,10 @@ export const paymentHandlers = [
             id: faker.string.uuid(),
             type: PaymentAccountType.ENTITY,
           },
-        })
+        },
+        {
+          status: 200,
+        }
       );
     }
   ),

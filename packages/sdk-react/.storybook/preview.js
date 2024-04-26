@@ -3,7 +3,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { initialize, mswLoader } from 'msw-storybook-addon';
 
 import { handlers } from '../src/mocks/handlers';
 import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
@@ -15,10 +15,6 @@ import { withGlobalStorybookDecorator } from '../src/utils/storybook-utils';
 const mockedRequests = true;
 
 const decorators = [withGlobalStorybookDecorator()];
-
-if (mockedRequests) {
-  decorators.push(mswDecorator);
-}
 
 /** @type { import('@storybook/react').Preview } */
 const preview = {
@@ -35,7 +31,7 @@ const preview = {
       handlers,
     },
   },
-
+  loaders: [mswLoader],
   decorators,
 };
 

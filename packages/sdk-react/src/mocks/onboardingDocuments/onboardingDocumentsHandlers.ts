@@ -1,44 +1,59 @@
 import { delay } from '@/mocks/utils';
 import {
   AllowedCountries,
-  ApiError,
   type EntityOnboardingDocumentsPayload,
-  type OnboardingDocumentsDescriptions,
   type PersonOnboardingDocumentsPayload,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { getOnboardingDocumentDescriptionByCountry } from './onboardingDocumentsFixtures';
 
 export const onboardingDocumentsHandlers = [
-  rest.post<EntityOnboardingDocumentsPayload, {}, undefined | ApiError>(
+  http.post<{}, EntityOnboardingDocumentsPayload>(
     '*/onboarding_documents',
-    (_, res, ctx) => res(delay(), ctx.status(204))
-  ),
+    async () => {
+      await delay();
 
-  rest.post<PersonOnboardingDocumentsPayload, {}, undefined | ApiError>(
-    '*/persons/:person_id/onboarding_documents',
-    (_, res, ctx) => res(delay(), ctx.status(204))
-  ),
-
-  rest.get<
-    { country: AllowedCountries },
-    {},
-    OnboardingDocumentsDescriptions | ApiError
-  >('*/frontend/document_type_descriptions', ({ url }, res, ctx) => {
-    const country = url.searchParams.get('country');
-
-    if (!country) {
-      return res(delay(), ctx.status(400));
+      return new HttpResponse(undefined, {
+        status: 204,
+      });
     }
+  ),
 
-    return res(
-      delay(),
-      ctx.status(200),
-      ctx.json(
-        getOnboardingDocumentDescriptionByCountry(country as AllowedCountries)
-      )
-    );
-  }),
+  http.post<{}, PersonOnboardingDocumentsPayload>(
+    '*/persons/:person_id/onboarding_documents',
+    async () => {
+      await delay();
+
+      return new HttpResponse(undefined, {
+        status: 204,
+      });
+    }
+  ),
+
+  http.get<{ country: AllowedCountries }, {}>(
+    '*/frontend/document_type_descriptions',
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const country = url.searchParams.get('country');
+
+      if (!country) {
+        await delay();
+
+        return new HttpResponse(undefined, {
+          status: 400,
+        });
+      }
+
+      await delay();
+
+      return HttpResponse.json(
+        getOnboardingDocumentDescriptionByCountry(country as AllowedCountries),
+        {
+          status: 200,
+        }
+      );
+    }
+  ),
 ];

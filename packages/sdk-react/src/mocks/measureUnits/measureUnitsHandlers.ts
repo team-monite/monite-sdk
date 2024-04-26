@@ -5,7 +5,7 @@ import {
   UnitResponse,
 } from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { delay } from '../utils';
 import { measureUnitsListFixture } from './measureUnitsFixture';
@@ -14,32 +14,39 @@ const measureUnitsPath = `*/${MEASURE_UNITS_ENDPOINT}`;
 const measureUnitsDetailPath = `*/${MEASURE_UNITS_ENDPOINT}/:unitId`;
 
 export const measureUnitsHandlers = [
-  rest.get<undefined, {}, UnitListResponse>(measureUnitsPath, (_, res, ctx) => {
-    return res(ctx.json(measureUnitsListFixture));
+  http.get<{}, undefined, UnitListResponse>(measureUnitsPath, async () => {
+    await delay();
+
+    return HttpResponse.json(measureUnitsListFixture);
   }),
 
-  rest.get<undefined, { unitId: string }, UnitResponse | ErrorSchemaResponse>(
+  http.get<{ unitId: string }, undefined, UnitResponse | ErrorSchemaResponse>(
     measureUnitsDetailPath,
-    (req, res, ctx) => {
-      const { unitId } = req.params;
+    async ({ params }) => {
+      const { unitId } = params;
 
       const unit = measureUnitsListFixture.data.find(
         (fixture) => fixture.id === unitId
       );
 
       if (!unit) {
-        return res(
-          delay(),
-          ctx.status(404),
-          ctx.json({
+        await delay();
+
+        return HttpResponse.json(
+          {
             error: {
               message: 'Not found',
             },
-          })
+          },
+          {
+            status: 404,
+          }
         );
       }
 
-      return res(delay(), ctx.json(unit));
+      await delay();
+
+      return HttpResponse.json(unit);
     }
   ),
 ];

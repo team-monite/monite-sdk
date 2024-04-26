@@ -1,4 +1,9 @@
 import { delay } from '@/mocks/utils';
+import type {
+  CounterpartVatID,
+  CounterpartVatIDResponse,
+  UpdateCounterpartContactPayload,
+} from '@monite/sdk-api';
 import {
   COUNTERPARTS_ENDPOINT,
   COUNTERPARTS_VAT_ENDPOINT,
@@ -6,13 +11,8 @@ import {
   ErrorSchemaResponse,
   TaxIDTypeEnum,
 } from '@monite/sdk-api';
-import type {
-  CounterpartVatIDResponse,
-  CounterpartVatID,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import {
   counterpartVatFixture,
@@ -29,37 +29,42 @@ const vatIdPath = `${vatPath}/:vatId`;
 
 export const counterpartVatHandlers = [
   // read list
-  rest.get<
-    undefined,
+  http.get<
     CreateCounterpartVatParams,
+    undefined,
     CounterpartVatIDResourceList | ErrorSchemaResponse
-  >(vatPath, (req, res, ctx) => {
-    const { counterpartId } = req.params;
+  >(vatPath, async ({ params }) => {
+    const { counterpartId } = params;
 
     const fixture = counterpartVatsByCounterpartIdFixture[counterpartId];
 
     if (!fixture) {
-      return res(
-        delay(),
-        ctx.status(404),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Counterpart not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(2_000), ctx.json({ data: fixture }));
+    await delay();
+
+    return HttpResponse.json({ data: fixture });
   }),
 
   // create
-  rest.post<
-    CounterpartVatID,
+  http.post<
     CreateCounterpartVatParams,
+    CounterpartVatID,
     CounterpartVatIDResponse
-  >(vatPath, async (req, res, ctx) => {
-    const json = await req.json<CounterpartVatID>();
+  >(vatPath, async ({ request }) => {
+    const json = await request.json();
 
     const response: CounterpartVatIDResponse = {
       id: (Math.random() + 1).toString(36).substring(7),
@@ -70,69 +75,78 @@ export const counterpartVatHandlers = [
       value: json.value ?? counterpartVatFixture.value,
     };
 
-    return res(delay(), ctx.json(response));
+    await delay();
+
+    return HttpResponse.json(response);
   }),
 
   // read
-  rest.get<
-    undefined,
+  http.get<
     UpdateCounterpartVatParams,
+    undefined,
     CounterpartVatIDResponse | ErrorSchemaResponse
-  >(vatIdPath, (req, res, ctx) => {
-    const { vatId } = req.params;
+  >(vatIdPath, async ({ params }) => {
+    const { vatId } = params;
     const flatVatList = Object.values(
       counterpartVatsByCounterpartIdFixture
     ).flatMap((vats) => vats);
     const vat = flatVatList.find((vat) => vat.id === vatId);
-    console.log('vat: ', vat);
 
     if (!vat) {
-      return res(
-        ctx.status(404),
-        delay(),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(ctx.json(vat));
+    return HttpResponse.json(vat);
   }),
 
   // update
-  rest.patch<
-    UpdateCounterpartContactPayload,
+  http.patch<
     UpdateCounterpartVatParams,
+    UpdateCounterpartContactPayload,
     CounterpartVatIDResponse | ErrorSchemaResponse
-  >(vatIdPath, async (req, res, ctx) => {
-    const { counterpartId, vatId } = req.params;
-    const json = await req.json<CounterpartVatIDResponse>();
+  >(vatIdPath, async ({ request, params }) => {
+    const { counterpartId, vatId } = params;
+    const json = await request.json();
 
     const vatsFixture = counterpartVatsByCounterpartIdFixture[counterpartId];
     const vatFixture = vatsFixture.find((vat) => vat.id === vatId);
 
     if (!vatFixture) {
-      return res(
-        ctx.status(404),
-        delay(),
-        ctx.json({
+      await delay();
+
+      return HttpResponse.json(
+        {
           error: {
             message: 'Not found',
           },
-        })
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    return res(delay(), ctx.json({ ...vatFixture, ...json }));
+    await delay();
+    return HttpResponse.json({ ...vatFixture, ...json });
   }),
 
   // delete
-  rest.delete<undefined, UpdateCounterpartVatParams, boolean>(
-    vatIdPath,
-    (req, res, ctx) => {
-      return res(delay(), ctx.json(true));
-    }
-  ),
+  http.delete<UpdateCounterpartVatParams>(vatIdPath, async () => {
+    await delay();
+
+    return new HttpResponse(null, {
+      status: 204,
+    });
+  }),
 ];
