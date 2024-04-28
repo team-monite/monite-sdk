@@ -11,7 +11,6 @@ import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { fetchToken } from '@/core/fetchToken';
-import { getResetStyles } from '@/core/getResetStyles';
 import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
@@ -62,7 +61,6 @@ const SDKDemoComponent = ({
         }}
       >
         <Global styles={getFontFaceStyles} />
-        <Global styles={getResetStyles} />
         {authData ? (
           <BrowserRouter>
             <DefaultLayout
