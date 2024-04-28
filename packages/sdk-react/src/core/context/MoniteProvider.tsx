@@ -28,7 +28,7 @@ import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
-import { Portal } from '@mui/material';
+import { createTheme, Theme, ThemeOptions } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { Hub } from '@sentry/react';
@@ -227,38 +227,6 @@ const SingleInstanceScopedCssBaseline = ({
  */
 const SingleInstanceScopedCssBaselineContext = createContext<boolean>(false);
 
-/**
- * Provides a wrapper with the `ScopedCssBaseline` component styles
- * in which the `children` Dialog, Select and any component using `useRootElements().root`
- * will be mounted inside.
- */
-const ScopedCssBaselineRootContainerProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const rootElements = useRootElements();
-  const [styledRoot, setStyledRoot] = useState(rootElements.root ?? null);
-
-  return (
-    <>
-      <Portal container={rootElements.root || (() => document.body)}>
-        <ScopedCssBaseline ref={setStyledRoot}>
-          {/* Dialog, Select and any component using `useRootElements().root` will be mounted inside */}
-        </ScopedCssBaseline>
-      </Portal>
-      <RootElementsProvider
-        elements={{
-          ...rootElements,
-          root: rootElements.root ?? styledRoot ?? undefined,
-        }}
-      >
-        {children}
-      </RootElementsProvider>
-    </>
-  );
-};
-
 export const MoniteProvider = ({
   monite,
   theme,
@@ -313,11 +281,11 @@ export const MoniteProvider = ({
             }}
           >
             <ReactQueryDevtools initialIsOpen={false} />
+            {/*todo::move CacheProvider to MoniteStylesProvider*/}
             <CacheProvider value={emotionCache}>
-              <ScopedCssBaselineRootContainerProvider>
-                <GlobalToast />
-                {children}
-              </ScopedCssBaselineRootContainerProvider>
+              {/*todo::wrap with own cache provider*/}
+              <GlobalToast />
+              {children}
             </CacheProvider>
           </MoniteContext.Provider>
         </MoniteThemeContext.Provider>
