@@ -28,7 +28,6 @@ import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
-import type { Theme, ThemeOptions } from '@mui/material';
 import { Portal } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
@@ -305,7 +304,7 @@ export const MoniteProvider = ({
         key={moniteInstanceKey}
         sentryHub={sentryHub}
       >
-        <MoniteThemeContext.Provider value={theme}>
+        <MoniteThemeContext.Provider value={createTheme(theme)}>
           <MoniteContext.Provider
             value={{
               monite,
