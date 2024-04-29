@@ -1,8 +1,4 @@
-import {
-  receivableListFixture,
-  receivableFixture,
-  ReceivablesListFixture,
-} from '@/mocks';
+import { receivableListFixture, ReceivablesListFixture } from '@/mocks';
 import {
   ReceivablePaginationResponse,
   RECEIVABLES_ENDPOINT,
@@ -12,6 +8,7 @@ import {
   ErrorSchemaResponse,
   InvoiceResponsePayload,
   ReceivableFileUrl,
+  ReceivableUpdatePayload,
 } from '@monite/sdk-api';
 
 import { http, HttpResponse } from 'msw';
@@ -110,6 +107,106 @@ export const receivableHandlers = [
         },
       });
     }
+  }),
+
+  // update
+  http.patch<
+    { id: string },
+    ReceivableUpdatePayload,
+    ReceivableResponse | ErrorSchemaResponse
+  >(receivableDetailPath, async ({ request, params }) => {
+    const jsonBody = await request.json();
+
+    if ('invoice' in jsonBody) {
+      const invoiceRequest = jsonBody.invoice;
+      const invoiceResponse = receivableListFixture.invoice.find(
+        (invoice) => invoice.id === params.id
+      );
+
+      if (!invoiceResponse) {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: `There is no receivable by provided id: ${params.id}`,
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
+
+      await delay();
+
+      return HttpResponse.json({
+        ...invoiceRequest,
+        ...invoiceResponse,
+      });
+    } else if ('quote' in jsonBody) {
+      const quoteRequest = jsonBody.quote;
+      const quoteResponse = receivableListFixture.quote.find(
+        (quote) => quote.id === params.id
+      );
+
+      if (!quoteResponse) {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: `There is no receivable by provided id: ${params.id}`,
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
+
+      await delay();
+
+      return HttpResponse.json({
+        ...quoteRequest,
+        ...quoteResponse,
+      });
+    } else if ('credit_note' in jsonBody) {
+      const creditNoteRequest = jsonBody.credit_note;
+      const creditNoteResponse = receivableListFixture.credit_note.find(
+        (creditNote) => creditNote.id === params.id
+      );
+
+      if (!creditNoteResponse) {
+        await delay();
+
+        return HttpResponse.json(
+          {
+            error: {
+              message: `There is no receivable by provided id: ${params.id}`,
+            },
+          },
+          {
+            status: 404,
+          }
+        );
+      }
+
+      await delay();
+
+      return HttpResponse.json({
+        ...creditNoteRequest,
+        ...creditNoteResponse,
+      });
+    }
+
+    await delay();
+
+    return HttpResponse.json({
+      error: {
+        message: 'Invalid request',
+      },
+    });
   }),
 
   /**

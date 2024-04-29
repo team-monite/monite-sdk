@@ -101,6 +101,38 @@ export const getCreateInvoiceValidationSchema = (i18n: I18n) =>
     line_items: getLineItemsSchema(i18n),
   });
 
+export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
+  yup.object({
+    counterpart_id: yup
+      .string()
+      .label(t(i18n)`Counterpart`)
+      .required(),
+    entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
+    entity_vat_id_id: yup
+      .string()
+      .label(t(i18n)`VAT ID`)
+      .required(),
+    counterpart_vat_id_id: yup.string().label(t(i18n)`Counterpart VAT ID`),
+    fulfillment_date: yup
+      .date()
+      .label(t(i18n)`Fulfillment date`)
+      .nullable(),
+    purchase_order: yup.string().label(t(i18n)`Purchase order`),
+    default_billing_address_id: yup
+      .string()
+      .label(t(i18n)`Billing address`)
+      .required(),
+    default_shipping_address_id: yup.string().label(t(i18n)`Shipping address`),
+    vat_exemption_rationale: yup
+      .string()
+      .label(t(i18n)`VAT exemption rationale`),
+    payment_terms_id: yup
+      .string()
+      .label(t(i18n)`Payment terms`)
+      .required(),
+    line_items: getLineItemsSchema(i18n),
+  });
+
 export interface ICreateReceivablesFormBeforeValidationLineItem {
   quantity: number;
   product_id: string;

@@ -55,7 +55,14 @@ type GetComponentProps<T> = T extends
 
 /**
  * General component for all Receivables (Invoices, Credit Notes, Quotes)
- * */
+ *
+ * !!! Note !!!
+ * This component is outdated. `InvoiceDetails` has the actual design, but the current
+ *  one is a legacy one.
+ * If you need to update design for `Invoice`, you should update `InvoiceDetails` component
+ *
+ * @deprecated
+ */
 export const ExistingReceivableDetails = (
   props: ExistingReceivableDetailsProps
 ) => (

@@ -1,7 +1,11 @@
-import { counterpartListFixture } from '@/mocks';
-import { generateCounterpartAddress } from '@/mocks/counterparts/address';
-import { entityIds } from '@/mocks/entities';
-import { generatePaymentTerm } from '@/mocks/paymentTerms';
+import { bankAccountsFixture } from '@/mocks/bankAccounts';
+import {
+  counterpartsAddressesFixture,
+  generateCounterpartAddress,
+} from '@/mocks/counterparts/address';
+import { entityVatIdList } from '@/mocks/entities';
+import { paymentTermsFixtures } from '@/mocks/paymentTerms';
+import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
   getRandomNumber,
@@ -17,14 +21,14 @@ import {
   ReceivablesEntityIndividual,
   ReceivablesEntityOrganization,
   InvoiceResponsePayload,
-  ProductServiceTypeEnum,
   QuoteResponsePayload,
   QuoteStateEnum,
-  ReceivableResponse,
   ReceivablesStatusEnum,
   ResponseItem,
-  VatIDTypeEnum,
 } from '@monite/sdk-api';
+
+import { counterpartListFixture } from '../counterparts/counterpart/counterpartFixture';
+import { counterpartVatsByCounterpartIdFixture } from '../counterparts/vat/counterpartVatFixture';
 
 export type ReceivablesListFixture = {
   quote: Array<QuoteResponsePayload>;
@@ -92,6 +96,8 @@ function createRandomInvoiceEntity():
 }
 
 function createRandomLineItem(): ResponseItem {
+  const productVatId = getRandomItemFromArray(vatRatesFixture.data);
+
   return {
     quantity: faker.number.int({ min: 1, max: 10 }),
     product: {
@@ -108,19 +114,11 @@ function createRandomLineItem(): ResponseItem {
       entity_id: faker.string.uuid(),
       updated_at: faker.date.past().toString(),
       vat_rate: {
-        id: faker.string.nanoid(),
-        created_at: faker.date.past().toString(),
-        updated_at: faker.date.past().toString(),
-        value: faker.number.int({
-          /**
-           * Maximum we may have 100% VAT rate
-           * We have to provide VAT Rate in minors,
-           *  because we're using Euros as a currency
-           *  and Euros has two minors (100)
-           */
-          max: 100 * 100,
-        }),
-        country: getRandomProperty(AllowedCountries),
+        id: productVatId.id,
+        created_at: productVatId.created_at,
+        updated_at: productVatId.updated_at,
+        value: productVatId.value,
+        country: productVatId.country,
       },
       measure_unit: {
         id: faker.string.nanoid(),
@@ -179,6 +177,11 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
   const randomExistingCounterpart = getRandomItemFromArray(
     counterpartListFixture
   );
+
+  if (!randomExistingCounterpart) {
+    throw new Error('No counterpart found');
+  }
+
   const status =
     index === 0
       ? ReceivablesStatusEnum.DRAFT
@@ -218,6 +221,17 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
 
   const total = subtotal - discount + totalVatAmount;
 
+  const entityVatIds = Object.values(entityVatIdList)[0];
+
+  /** Take only addresses which related to the current counterpart */
+  const flatCounterpartAddresses = counterpartsAddressesFixture.flatMap(
+    (item) => item.data
+  );
+  const counterpartAddresses = flatCounterpartAddresses.filter(
+    (address) => address.counterpart_id === randomExistingCounterpart.id
+  );
+  const counterpartAddress = getRandomItemFromArray(counterpartAddresses);
+
   return {
     type: InvoiceResponsePayload.type.INVOICE,
     id: faker.string.uuid(),
@@ -226,16 +240,13 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     updated_at: faker.date.past().toString(),
     document_id: rid(`INV-${faker.string.nanoid(20)}`),
     issue_date: rid(faker.date.past().toString()),
-    fulfillment_date: rid(faker.date.future().toString()),
-    payment_terms: generatePaymentTerm(),
+    fulfillment_date: faker.date.future().toString(),
+    payment_terms: getRandomItemFromArray(paymentTermsFixtures.data!),
     currency: CurrencyEnum.EUR,
     line_items: new Array(getRandomNumber(1, 15))
       .fill('_')
       .map(createRandomLineItem),
-    counterpart_id: faker.datatype.boolean(0.9)
-      ? randomExistingCounterpart.id
-      : /** For some cases, emulate a scenario when counterpart can't be fetched */
-        faker.string.uuid(),
+    counterpart_id: randomExistingCounterpart.id,
     counterpart_name:
       counterpartType === CounterpartType.ORGANIZATION
         ? faker.company.name()
@@ -247,9 +258,10 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     counterpart_billing_address: faker.datatype.boolean()
       ? generateCounterpartAddress()
       : undefined,
-    counterpart_shipping_address: faker.datatype.boolean()
-      ? generateCounterpartAddress()
-      : undefined,
+    counterpart_shipping_address: counterpartAddress,
+    // counterpart_shipping_address: faker.datatype.boolean()
+    //   ? generateCounterpartAddress()
+    //   : undefined,
     counterpart_contact: faker.datatype.boolean()
       ? {
           first_name: faker.person.firstName(),
@@ -274,28 +286,18 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
       line1: faker.location.street(),
       line2: faker.location.streetAddress(),
     },
+    counterpart_vat_id: faker.datatype.boolean()
+      ? getRandomItemFromArray(
+          counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
+        )
+      : undefined,
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
-    entity_vat_id: faker.datatype.boolean()
-      ? {
-          country: getRandomProperty(AllowedCountries),
-          type: faker.datatype.boolean()
-            ? getRandomProperty(VatIDTypeEnum)
-            : undefined,
-          value: faker.string.numeric(10),
-          id: faker.string.nanoid(),
-          entity_id: entityIds[0],
-        }
-      : undefined,
+    entity_vat_id: getRandomItemFromArray(entityVatIds.data),
     entity_address: generateCounterpartAddress(),
+    memo: faker.lorem.sentence(),
     entity_bank_account: faker.datatype.boolean()
-      ? {
-          iban: faker.finance.iban(),
-          bic: faker.finance.bic(),
-          bank_name: faker.finance.accountName(),
-          display_name: faker.finance.accountName(),
-          is_default: true,
-        }
+      ? getRandomItemFromArray(bankAccountsFixture.data)
       : undefined,
     related_documents: {
       credit_note_ids: undefined,
@@ -303,6 +305,9 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     },
     status,
 
+    purchase_order: faker.datatype.boolean()
+      ? faker.string.uuid().substring(0, 6)
+      : undefined,
     subtotal: subtotal,
     discounted_subtotal: discount,
     total_vat_amount: totalVatAmount,
@@ -351,133 +356,3 @@ export const receivableListFixture: ReceivablesListFixture = {
   invoice: Array.from(Array(30).keys()).map(createRandomInvoice),
   credit_note: Array.from(Array(30).keys()).map(createRandomCreditNote),
 };
-
-export const receivableFixture = {
-  type: 'quote',
-  expiry_date: '2022-11-28',
-  id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  created_at: '2022-11-28T15:11:14.841Z',
-  updated_at: '2022-11-28T15:11:14.841Z',
-  document_id: 'string',
-  currency: CurrencyEnum.USD,
-  total_amount: 0,
-  line_items: [
-    {
-      quantity: 0,
-      product: {
-        name: 'string',
-        type: ProductServiceTypeEnum.PRODUCT,
-        description: 'string',
-        price: {
-          currency: CurrencyEnum.USD,
-          value: 0,
-        },
-        measure_unit_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        smallest_amount: 0,
-        ledger_account_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        entity_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        entity_user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        created_at: '2022-11-28T15:11:14.841Z',
-        updated_at: '2022-11-28T15:11:14.841Z',
-        vat_rate: {
-          id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          created_at: '2022-11-28T15:11:14.841Z',
-          updated_at: '2022-11-28T15:11:14.841Z',
-          value: 10000,
-          country: AllowedCountries.DE,
-          valid_until: '2022-11-28',
-          valid_from: '2022-11-28',
-          status: 'active',
-          created_by: 'monite',
-        },
-        measure_unit: {
-          name: 'string',
-          description: 'string',
-          id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          created_at: '2022-11-28T15:11:14.841Z',
-          updated_at: '2022-11-28T15:11:14.841Z',
-        },
-      },
-      discount: {
-        type: 'amount',
-        amount: 0,
-      },
-    },
-  ],
-  entity_address: {
-    country: AllowedCountries.DE,
-    city: 'string',
-    postal_code: 'string',
-    state: 'string',
-    line1: 'string',
-    line2: 'string',
-  },
-  entity: createRandomEntity(),
-  entity_user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  counterpart_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  counterpart_type: 'individual',
-  counterpart_address: {
-    country: AllowedCountries.DE,
-    city: 'Berlin',
-    postal_code: '10115',
-    state: 'string',
-    line1: 'Flughafenstrasse 52',
-    line2: 'string',
-  },
-  counterpart_contact: {
-    first_name: 'Marge',
-    last_name: 'Smith',
-    email: 'marge@example.org',
-    phone: '55512378654',
-    title: 'Dr.',
-    address: {
-      country: AllowedCountries.DE,
-      city: 'Berlin',
-      postal_code: '10115',
-      state: 'string',
-      line1: 'Flughafenstrasse 52',
-      line2: 'string',
-    },
-  },
-  counterpart_name: 'Nathaniel',
-  file_url: 'string',
-  commercial_condition_description: 'string',
-  total_vat_amount: 0,
-  entity_bank_account: {
-    iban: 'string',
-    bic: 'string',
-    bank_name: 'string',
-    display_name: 'string',
-    is_default: false,
-  },
-  vat_exempt: true,
-  vat_exemption_rationale: 'string',
-  based_on: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-  based_on_document_id: 'string',
-  memo: 'string',
-  issue_date: '2022-11-28T15:11:14.841Z',
-  counterpart_shipping_address: {
-    country: AllowedCountries.DE,
-    city: 'Berlin',
-    postal_code: '10115',
-    state: 'string',
-    line1: 'Flughafenstrasse 52',
-    line2: 'string',
-  },
-  counterpart_billing_address: {
-    country: AllowedCountries.DE,
-    city: 'Berlin',
-    postal_code: '10115',
-    state: 'string',
-    line1: 'Flughafenstrasse 52',
-    line2: 'string',
-  },
-  counterpart_business_type: 'string',
-  discount: {
-    type: 'amount',
-    amount: 0,
-  },
-  comment: 'string',
-  status: QuoteStateEnum.DRAFT,
-} as ReceivableResponse;

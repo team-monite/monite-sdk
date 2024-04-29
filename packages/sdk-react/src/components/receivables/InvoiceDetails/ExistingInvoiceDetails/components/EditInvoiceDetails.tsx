@@ -1,0 +1,226 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+
+import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
+import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
+import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
+import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection';
+import {
+  getUpdateInvoiceValidationSchema,
+  ICreateReceivablesForm,
+} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useCounterpartAddresses, useUpdateReceivable } from '@/core/queries';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import {
+  InvoiceResponsePayload,
+  ReceivableUpdatePayload,
+} from '@monite/sdk-api';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
+import {
+  Box,
+  Button,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+
+import { format } from 'date-fns';
+
+interface IEditInvoiceDetails {
+  invoice: InvoiceResponsePayload;
+
+  /** Callback that is called when the invoice is updated */
+  onUpdated: () => void;
+
+  /** Callback that is called when the user cancels the editing */
+  onCancel: () => void;
+}
+
+export const EditInvoiceDetails = ({
+  invoice,
+  onCancel,
+  onUpdated,
+}: IEditInvoiceDetails) => {
+  const { i18n } = useLingui();
+  const { data: counterpartAddresses } = useCounterpartAddresses(
+    invoice.counterpart_id
+  );
+
+  const counterpartShippingAddress = counterpartAddresses?.find((address) => {
+    return (
+      address.city === invoice.counterpart_shipping_address?.city &&
+      address.country === invoice.counterpart_shipping_address.country &&
+      address.line1 === invoice.counterpart_shipping_address.line1
+    );
+  });
+
+  const methods = useForm<ICreateReceivablesForm>({
+    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
+    defaultValues: useMemo(
+      () => ({
+        /** Customer section */
+        counterpart_id: invoice.counterpart_id,
+        counterpart_contact: invoice.counterpart_contact,
+        counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
+        default_shipping_address_id: counterpartShippingAddress?.id ?? '',
+        default_billing_address_id: '',
+
+        /** Entity section */
+        entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
+        fulfillment_date: invoice.fulfillment_date
+          ? new Date(invoice.fulfillment_date)
+          : null,
+        purchase_order: invoice.purchase_order ?? '',
+
+        /** Items section */
+        line_items: invoice.line_items.map((lineItem) => ({
+          quantity: lineItem.quantity,
+          product_id: lineItem.product.id,
+          vat_rate_id: lineItem.product.vat_rate.id,
+          vat_rate_value: lineItem.product.vat_rate.value,
+          name: lineItem.product.name,
+          price: lineItem.product.price,
+          measure_unit_id: lineItem.product.measure_unit_id,
+        })),
+        vat_exemption_rationale: invoice.memo,
+
+        /** Items section */
+        entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
+        payment_terms_id: invoice.payment_terms?.id ?? '',
+      }),
+      [
+        counterpartShippingAddress?.id,
+        invoice.counterpart_contact,
+        invoice.counterpart_id,
+        invoice.counterpart_vat_id?.id,
+        invoice.entity_bank_account?.id,
+        invoice.entity_vat_id?.id,
+        invoice.fulfillment_date,
+        invoice.line_items,
+        invoice.memo,
+        invoice.payment_terms?.id,
+        invoice.purchase_order,
+      ]
+    ),
+  });
+
+  const [actualCurrency, setActualCurrency] = useState(invoice.currency);
+
+  const { handleSubmit, setValue } = methods;
+
+  useEffect(() => {
+    setValue('default_shipping_address_id', counterpartShippingAddress?.id);
+  }, [counterpartShippingAddress?.id, setValue]);
+
+  const updateReceivable = useUpdateReceivable(invoice.id);
+
+  return (
+    <MoniteStyleProvider>
+      <DialogTitle>
+        <Toolbar>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={onCancel}
+            startIcon={<ArrowBackIcon />}
+            disabled={updateReceivable.isPending}
+          >{t(i18n)`Back`}</Button>
+          <Box sx={{ marginLeft: 'auto' }}>
+            <Button
+              variant="contained"
+              key="next"
+              color="primary"
+              type="submit"
+              form="receivablesDetailsForm"
+              disabled={updateReceivable.isPending}
+            >{t(i18n)`Update`}</Button>
+          </Box>
+        </Toolbar>
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <FormProvider {...methods}>
+          <form
+            id="receivablesDetailsForm"
+            noValidate
+            onSubmit={handleSubmit((values) => {
+              const invoicePayload: ReceivableUpdatePayload = {
+                invoice: {
+                  /** Customer section */
+                  counterpart_id: values.counterpart_id,
+                  counterpart_vat_id_id: values.counterpart_vat_id_id,
+                  currency: actualCurrency,
+                  vat_exemption_rationale: values.vat_exemption_rationale,
+                  /**
+                   * Note: We shouldn't send `counterpart_billing_address`
+                   *  because it's auto-selected from UI.
+                   * There is no way to change it (at least right now)
+                   */
+                  counterpart_shipping_address: counterpartShippingAddress
+                    ? {
+                        country: counterpartShippingAddress.country,
+                        city: counterpartShippingAddress.city,
+                        postal_code: counterpartShippingAddress.postal_code,
+                        state: counterpartShippingAddress.state,
+                        line1: counterpartShippingAddress.line1,
+                        line2: counterpartShippingAddress.line2,
+                      }
+                    : undefined,
+                  /** We shouldn't send an empty string to the server if the value is not set */
+                  entity_bank_account_id:
+                    values.entity_bank_account_id || undefined,
+                  payment_terms_id: values.payment_terms_id,
+                  entity_vat_id_id: values.entity_vat_id_id || undefined,
+                  line_items: values.line_items.map((lineItem) => ({
+                    quantity: lineItem.quantity,
+                    product_id: lineItem.product_id,
+                    vat_rate_id: lineItem.vat_rate_id,
+                  })),
+                  fulfillment_date: values.fulfillment_date
+                    ? /**
+                       * We have to change the date as Backend accepts it.
+                       * There is no `time` in request, only year, month and date
+                       */
+                      format(values.fulfillment_date, 'yyyy-MM-dd')
+                    : undefined,
+                  // purchase_order: values.purchase_order || undefined,
+                },
+              };
+
+              updateReceivable.mutate(invoicePayload, {
+                onSuccess: (updatedReceivable) => {
+                  console.log('--- invoicePayload', invoicePayload);
+
+                  onUpdated();
+                },
+              });
+            })}
+          >
+            <Stack spacing={2} sx={{ mt: 2 }}>
+              <Typography variant="h2" sx={{ mb: 2 }}>
+                {t(i18n)`Edit invoice ${invoice.id}`}
+              </Typography>
+              <Stack direction="column" spacing={4}>
+                <CustomerSection disabled={updateReceivable.isPending} />
+                <EntitySection disabled={updateReceivable.isPending} />
+                <ItemsSection
+                  actualCurrency={actualCurrency}
+                  onCurrencyChanged={setActualCurrency}
+                />
+                <PaymentSection disabled={updateReceivable.isPending} />
+              </Stack>
+            </Stack>
+          </form>
+        </FormProvider>
+      </DialogContent>
+    </MoniteStyleProvider>
+  );
+};
