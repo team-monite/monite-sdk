@@ -5,7 +5,6 @@ import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvi
 import { useMoniteThemeContext } from '@/core/context/MoniteThemeProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 /**
  * Provides a single instance of `<ScopedCssBaseline/>` component,
@@ -24,10 +23,7 @@ export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
       <EmotionCacheProvider cacheKey="monite-css">
         <MuiThemeProvider theme={theme}>
           <ScopedCssBaseline enableColorScheme>
-            <MoniteQueryClientProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
-              {children}
-            </MoniteQueryClientProvider>
+            <MoniteQueryClientProvider>{children}</MoniteQueryClientProvider>
           </ScopedCssBaseline>
         </MuiThemeProvider>
       </EmotionCacheProvider>

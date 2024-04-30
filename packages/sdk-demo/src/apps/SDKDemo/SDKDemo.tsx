@@ -15,8 +15,10 @@ import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { useMoniteContext } from '@monite/sdk-react';
 import { Button, createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { getFontFaceStyles } from './fontStyles.ts';
 
@@ -60,6 +62,7 @@ const SDKDemoComponent = ({
               : Promise.reject(),
         }}
       >
+        <MoniteReactQueryDevtools />
         <Global styles={getFontFaceStyles} />
         {authData ? (
           <BrowserRouter>
@@ -87,4 +90,9 @@ const SiderFooter = ({ onLogout }: { onLogout: () => void }) => {
       {t(i18n)`Logout`}
     </Button>
   );
+};
+
+const MoniteReactQueryDevtools = () => {
+  const { queryClient } = useMoniteContext();
+  return <ReactQueryDevtools initialIsOpen={false} client={queryClient} />;
 };

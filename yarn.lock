@@ -3451,7 +3451,6 @@ __metadata:
     "@storybook/react-webpack5": ~7.6.17
     "@swc/jest": ~0.2.26
     "@tanstack/react-query": ~5.28.6
-    "@tanstack/react-query-devtools": ~5.28.6
     "@team-monite/eslint-plugin": "workspace:~"
     "@team-monite/rollup-config": "workspace:~"
     "@team-monite/sdk-themes": "workspace:~"
@@ -6362,6 +6361,8 @@ __metadata:
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
+    "@tanstack/react-query": ~5.28.6
+    "@tanstack/react-query-devtools": ~5.28.6
     "@team-monite/eslint-plugin": "workspace:~"
     "@team-monite/rollup-config": "workspace:~"
     "@team-monite/sdk-themes": "workspace:~"
