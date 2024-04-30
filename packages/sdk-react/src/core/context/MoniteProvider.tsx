@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { toast } from 'react-hot-toast';
 
+import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import {
   I18nLocaleProvider,
   MoniteLocale,
@@ -283,6 +284,7 @@ export const MoniteProvider = ({
             <ReactQueryDevtools initialIsOpen={false} />
             {/*todo::move CacheProvider to MoniteStylesProvider*/}
             <CacheProvider value={emotionCache}>
+              <ContainerCssBaseline enableColorScheme />
               {/*todo::wrap with own cache provider*/}
               <GlobalToast />
               {children}

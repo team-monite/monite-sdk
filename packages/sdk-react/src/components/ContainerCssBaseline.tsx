@@ -1,18 +1,22 @@
-import { GlobalStyles, useTheme } from '@mui/material';
+import { GlobalStyles } from '@mui/material';
 
-export function ShadowRootCssBaseline({ enableColorScheme = false }) {
-  const theme = useTheme();
+/**
+ * The class name of the container that uses the `ContainerCssBaseline` component.
+ * Should be used in the "root" `className` of the components that need to be styled
+ * with the styles to support light/dark mode and baseline styles.
+ */
+export const ScopedCssBaselineContainerClassName =
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  'Monite-ContainerCssBaseline';
 
+/**
+ * Global styles for the container with the class name of the variable `ScopedCssBaselineContainerClassName`.
+ */
+export function ContainerCssBaseline({ enableColorScheme = false }) {
   return (
     <GlobalStyles
-      styles={{
-        '*, *::before, *::after': {
-          boxSizing: 'inherit',
-        },
-        'strong, b': {
-          fontWeight: theme.typography.fontWeightBold,
-        },
-        ':host': {
+      styles={(theme) => ({
+        [`.${ScopedCssBaselineContainerClassName}`]: {
           // "html" styles https://github.com/mui/material-ui/blob/16cb18aac4e9311f1862ddc16f77e3c61f77e7c4/packages/mui-material/src/CssBaseline/CssBaseline.js#L7
           WebkitFontSmoothing: 'antialiased', // Antialiasing.
           MozOsxFontSmoothing: 'grayscale', // Antialiasing.
@@ -28,13 +32,8 @@ export function ShadowRootCssBaseline({ enableColorScheme = false }) {
           color: theme.palette.text.primary,
           // Text default styles
           ...theme.typography.body1,
-          backgroundColor: theme.palette.background.default,
-          '@media print': {
-            // Save printer ink.
-            backgroundColor: theme.palette.common.white,
-          },
         },
-      }}
+      })}
     />
   );
 }

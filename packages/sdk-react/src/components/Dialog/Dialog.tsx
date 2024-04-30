@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 
-import { ShadowDomPortal } from '@/components/ShadowDomPortal';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { css } from '@emotion/react';
@@ -47,62 +47,64 @@ export const useDialog = (): DialogContextType | undefined => {
 
 export const Dialog = (props: MoniteDialogProps) => {
   const { alignDialog, onClosed, ...otherProps } = props;
+  const { root } = useRootElements();
 
   return (
     <MoniteStyleProvider>
-      <ShadowDomPortal>
-        <DialogContext.Provider
-          value={{ isDialogContent: true, onClose: props.onClose }}
-        >
-          {/* eslint-disable-next-line @team-monite/mui-require-container-property */}
-          <MuiDialog
-            {...otherProps}
-            disablePortal
-            open={props.open}
-            TransitionComponent={Transition}
-            TransitionProps={{
-              alignDialog: alignDialog,
-              onExited: onClosed,
-            }}
-            onClose={props.onClose}
-            classes={{
-              container:
-                alignDialog && `MuiDialog-container__align-${alignDialog}`,
-              paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
-            }}
-            slotProps={
-              props.fullScreen
-                ? {
-                    backdrop: {
-                      style: {
-                        background: 'none',
-                      },
+      <DialogContext.Provider
+        value={{ isDialogContent: true, onClose: props.onClose }}
+      >
+        <MuiDialog
+          {...otherProps}
+          open={props.open}
+          container={root}
+          TransitionComponent={Transition}
+          TransitionProps={{
+            alignDialog: alignDialog,
+            onExited: onClosed,
+          }}
+          onClose={props.onClose}
+          classes={{
+            container: [
+              ScopedCssBaselineContainerClassName,
+              alignDialog && `MuiDialog-container__align-${alignDialog}`,
+            ]
+              .filter(Boolean)
+              .join(' '),
+            paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
+          }}
+          slotProps={
+            props.fullScreen
+              ? {
+                  backdrop: {
+                    style: {
+                      background: 'none',
                     },
-                  }
-                : {}
+                  },
+                }
+              : {}
+          }
+          css={css`
+            .MuiDialog-container__align-right {
+              justify-content: right;
             }
-            css={css`
-              .MuiDialog-container__align-right {
-                justify-content: right;
-              }
-              .MuiDialog-container__align-left {
-                justify-content: left;
-              }
+            .MuiDialog-container__align-left {
+              justify-content: left;
+            }
 
-              .MuiDialog-paper__align-left,
-              .MuiDialog-paper__align-right {
-                width: 50%;
-                height: 100%;
-                max-height: none;
-                margin: 0;
-                border-radius: 0;
-              }
-            `}
-          >
-            {props.children}
-          </MuiDialog>
-        </DialogContext.Provider>
-      </ShadowDomPortal>
+            .MuiDialog-paper__align-left,
+            .MuiDialog-paper__align-right {
+              width: 50%;
+              height: 100%;
+              max-height: none;
+              margin: 0;
+              border-radius: 0;
+            }
+          `}
+        >
+          {props.children}
+        </MuiDialog>
+      </DialogContext.Provider>
     </MoniteStyleProvider>
   );
 };
