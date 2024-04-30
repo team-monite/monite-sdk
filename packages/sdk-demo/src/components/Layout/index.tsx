@@ -49,7 +49,7 @@ export const DefaultLayout = ({
         sx={{ display: 'flex', margin: 0, height: '100%', minHeight: '100vh' }}
       >
         <Drawer
-          PaperProps={{ sx: { backgroundColor: '#f3f3f3' } }}sx={{
+          sx={{
             width: '240px',
             flexShrink: 0,
             '& .MuiDrawer-paper': {
