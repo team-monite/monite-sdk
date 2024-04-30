@@ -7,7 +7,10 @@ import React, {
 } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
+import {
+  ContainerCssBaseline,
+  ScopedCssBaselineContainerClassName,
+} from '@/components/ContainerCssBaseline';
 import {
   I18nLocaleProvider,
   MoniteLocale,
@@ -273,7 +276,19 @@ export const MoniteProvider = ({
         key={moniteInstanceKey}
         sentryHub={sentryHub}
       >
-        <MoniteThemeContext.Provider value={createTheme(theme)}>
+        <MoniteThemeContext.Provider
+          value={createTheme(theme, {
+            components: {
+              MuiMenu: {
+                defaultProps: {
+                  classes: {
+                    root: ScopedCssBaselineContainerClassName,
+                  },
+                },
+              },
+            },
+          })}
+        >
           <MoniteContext.Provider
             value={{
               monite,

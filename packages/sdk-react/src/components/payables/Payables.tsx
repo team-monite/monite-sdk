@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { Dialog } from '@/components/Dialog';
-import { Menu } from '@/components/Menu';
 import { PageHeader } from '@/components/PageHeader';
 import { PayableDetails } from '@/components/payables/PayableDetails';
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
@@ -27,6 +26,7 @@ import {
   CircularProgress,
   ListItemIcon,
   ListItemText,
+  Menu,
   MenuItem,
 } from '@mui/material';
 
