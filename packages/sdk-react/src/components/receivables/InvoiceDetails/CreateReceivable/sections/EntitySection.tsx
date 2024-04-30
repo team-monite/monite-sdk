@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
@@ -35,7 +35,24 @@ const detailsGridItemProps = {
   lg: 3,
 };
 
-export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
+/** All available fields for current component */
+const allFields = [
+  'entity_vat_id_id',
+  'tax_id',
+  'fulfillment_date',
+  'purchase_order',
+] as const;
+
+interface IEntitySectionProps extends ISectionGeneralProps {
+  /**
+   * Describes which fields should be hidden from the user
+   *  (example: `purchaise_order` is not available for editing
+   *   and we want to hide it. But for [CREATE] request it should be sent)
+   */
+  hidden?: ['purchase_order'];
+}
+
+export const EntitySection = ({ disabled, hidden }: IEntitySectionProps) => {
   const { i18n } = useLingui();
   const { control, watch, resetField, setValue } =
     useFormContext<ICreateReceivablesForm>();
@@ -50,13 +67,31 @@ export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
 
+  const visibleFields = useMemo(() => {
+    if (!hidden) {
+      return allFields;
+    }
+
+    return allFields.filter((field) => field !== 'purchase_order');
+  }, [hidden]);
+
+  const gridItemProps = useMemo(() => {
+    const proportion = Math.floor(12 / visibleFields.length);
+
+    return {
+      ...detailsGridItemProps,
+      md: proportion,
+      lg: proportion,
+    };
+  }, [visibleFields]);
+
   return (
     <Stack spacing={1}>
       <Typography variant="subtitle2">{t(i18n)`Details`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item {...detailsGridItemProps}>
+            <Grid item {...gridItemProps}>
               <Controller
                 name="entity_vat_id_id"
                 control={control}
@@ -95,7 +130,7 @@ export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
                 )}
               />
             </Grid>
-            <Grid item {...detailsGridItemProps}>
+            <Grid item {...gridItemProps}>
               <TextField
                 disabled
                 fullWidth
@@ -114,7 +149,7 @@ export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
                 <FormHelperText>{t(i18n)`No TAX ID available`}</FormHelperText>
               </Collapse>
             </Grid>
-            <Grid item {...detailsGridItemProps}>
+            <Grid item {...gridItemProps}>
               <Controller
                 name="fulfillment_date"
                 control={control}
@@ -183,23 +218,25 @@ export const EntitySection = ({ disabled }: ISectionGeneralProps) => {
                 )}
               />
             </Grid>
-            <Grid item {...detailsGridItemProps}>
-              <Controller
-                name="purchase_order"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    label={t(i18n)`Purchase order`}
-                    error={Boolean(error)}
-                    helperText={error?.message}
-                    disabled={disabled}
-                    {...field}
-                  />
-                )}
-              />
-            </Grid>
+            {visibleFields.includes('purchase_order') && (
+              <Grid item {...gridItemProps}>
+                <Controller
+                  name="purchase_order"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      fullWidth
+                      variant="outlined"
+                      label={t(i18n)`Purchase order`}
+                      error={Boolean(error)}
+                      helperText={error?.message}
+                      disabled={disabled}
+                      {...field}
+                    />
+                  )}
+                />
+              </Grid>
+            )}
           </Grid>
         </CardContent>
       </Card>

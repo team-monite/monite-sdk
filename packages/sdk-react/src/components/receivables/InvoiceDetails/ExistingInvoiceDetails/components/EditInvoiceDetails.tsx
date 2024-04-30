@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
@@ -10,6 +10,7 @@ import {
   ICreateReceivablesForm,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartAddresses, useUpdateReceivable } from '@/core/queries';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -19,14 +20,15 @@ import {
   ReceivableUpdatePayload,
 } from '@monite/sdk-api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
+  Dialog,
+  DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Divider,
-  IconButton,
   Stack,
   Toolbar,
   Typography,
@@ -50,6 +52,7 @@ export const EditInvoiceDetails = ({
   onUpdated,
 }: IEditInvoiceDetails) => {
   const { i18n } = useLingui();
+  const { root } = useRootElements();
   const { data: counterpartAddresses } = useCounterpartAddresses(
     invoice.counterpart_id
   );
@@ -114,11 +117,28 @@ export const EditInvoiceDetails = ({
 
   const [actualCurrency, setActualCurrency] = useState(invoice.currency);
 
-  const { handleSubmit, setValue } = methods;
+  const {
+    handleSubmit,
+    setValue,
+    formState: { isDirty },
+  } = methods;
 
   useEffect(() => {
     setValue('default_shipping_address_id', counterpartShippingAddress?.id);
   }, [counterpartShippingAddress?.id, setValue]);
+
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const handleCancelWithAlert = useCallback(() => {
+    /** If the form hasn't been changed, we could just cancel it */
+    if (!isDirty) {
+      onCancel();
+
+      return;
+    }
+
+    /** Otherwise open cancel alert modal */
+    setIsAlertOpen(true);
+  }, [isDirty, onCancel]);
 
   const updateReceivable = useUpdateReceivable(invoice.id);
 
@@ -128,11 +148,11 @@ export const EditInvoiceDetails = ({
         <Toolbar>
           <Button
             variant="text"
-            color="primary"
-            onClick={onCancel}
+            color={isDirty ? 'error' : 'primary'}
+            onClick={handleCancelWithAlert}
             startIcon={<ArrowBackIcon />}
             disabled={updateReceivable.isPending}
-          >{t(i18n)`Back`}</Button>
+          >{t(i18n)`Cancel`}</Button>
           <Box sx={{ marginLeft: 'auto' }}>
             <Button
               variant="contained"
@@ -210,7 +230,10 @@ export const EditInvoiceDetails = ({
               </Typography>
               <Stack direction="column" spacing={4}>
                 <CustomerSection disabled={updateReceivable.isPending} />
-                <EntitySection disabled={updateReceivable.isPending} />
+                <EntitySection
+                  disabled={updateReceivable.isPending}
+                  hidden={['purchase_order']}
+                />
                 <ItemsSection
                   actualCurrency={actualCurrency}
                   onCurrencyChanged={setActualCurrency}
@@ -218,6 +241,28 @@ export const EditInvoiceDetails = ({
                 <PaymentSection disabled={updateReceivable.isPending} />
               </Stack>
             </Stack>
+            <Dialog
+              open={isAlertOpen}
+              onClose={() => setIsAlertOpen(false)}
+              container={root}
+              maxWidth="sm"
+            >
+              <DialogTitle>{t(i18n)`Cancel without saving?`}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>{t(
+                  i18n
+                )`There are unsaved changes. If you leave, they will be lost.`}</DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="outlined"
+                  onClick={() => setIsAlertOpen(false)}
+                >{t(i18n)`No`}</Button>
+                <Button variant="contained" color="error" onClick={onCancel}>{t(
+                  i18n
+                )`Yes`}</Button>
+              </DialogActions>
+            </Dialog>
           </form>
         </FormProvider>
       </DialogContent>
