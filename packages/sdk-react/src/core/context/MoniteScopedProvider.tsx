@@ -11,7 +11,7 @@ import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
  * This component prevents the creation of multiple `div` wrappers with the same styles,
  * and multiple Emotion Caches
  */
-export const ScopedStyleProvider = ({ children }: { children: ReactNode }) => {
+export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
   const hasStylesContext = useContext(SingleInstanceScopedStyleProviderContext);
   const theme = useMoniteThemeContext();
 
@@ -28,6 +28,6 @@ export const ScopedStyleProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 /**
- * Provides status if the `<ScopedStyleProvider/>` component is already set
+ * Provides status if the `<MoniteScopedProvider/>` component is already set
  */
 const SingleInstanceScopedStyleProviderContext = createContext<boolean>(false);

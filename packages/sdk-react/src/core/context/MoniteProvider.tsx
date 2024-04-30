@@ -7,12 +7,12 @@ import {
   I18nLocaleProvider,
   MoniteLocale,
 } from '@/core/context/I18nLocaleProvider';
+import { MoniteScopedProvider } from '@/core/context/MoniteScopedProvider';
 import {
   createThemeWithDefaults,
   MoniteThemeContext,
   useMoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
-import { ScopedStyleProvider } from '@/core/context/ScopedStyleProvider';
 import { SentryFactory } from '@/core/services';
 import { getMessageInError } from '@/core/utils/getMessageInError';
 import { Error as ErrorComponent } from '@/ui/error';
@@ -180,7 +180,7 @@ export const MoniteStyleProvider = ({
 }: Pick<MoniteProviderProps, 'children'>) => {
   return (
     <SentryProvider>
-      <ScopedStyleProvider>{children}</ScopedStyleProvider>
+      <MoniteScopedProvider>{children}</MoniteScopedProvider>
     </SentryProvider>
   );
 };
