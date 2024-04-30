@@ -286,6 +286,13 @@ export const MoniteProvider = ({
                   },
                 },
               },
+              MuiPopper: {
+                defaultProps: {
+                  componentsProps: {
+                    root: { className: ScopedCssBaselineContainerClassName },
+                  },
+                },
+              },
             },
           })}
         >
