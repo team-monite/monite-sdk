@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { ShadowRootCssBaseline } from '@/components/CssBaseline';
+import { ShadowRootCssBaseline } from '@/components/ShadowRootCssBaseline';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import type { PortalProps } from '@mui/base/Portal/Portal.types';
