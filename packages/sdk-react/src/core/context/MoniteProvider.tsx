@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import React, { ReactNode, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
@@ -18,6 +12,7 @@ import {
   MoniteThemeContext,
   useMoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
+import { ScopedStyleProvider } from '@/core/context/ScopedStyleProvider';
 import { SentryFactory } from '@/core/services';
 import { getMessageInError } from '@/core/utils/getMessageInError';
 import { Error as ErrorComponent } from '@/ui/error';
@@ -26,7 +21,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
-import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { Hub } from '@sentry/react';
 import { ErrorBoundary, Profiler } from '@sentry/react';
@@ -190,34 +184,6 @@ export const MoniteStyleProvider = ({
     </SentryProvider>
   );
 };
-
-/**
- * Provides a single instance of `<ScopedCssBaseline/>` component,
- * `<EmotionCacheProvider/>` and `<MuiThemeProvider/>` components.
- * This component prevents the creation of multiple `div` wrappers with the same styles,
- * and multiple Emotion Caches
- */
-const ScopedStyleProvider = ({ children }: { children: ReactNode }) => {
-  const hasStylesContext = useContext(SingleInstanceScopedCssBaselineContext);
-  const theme = useMoniteThemeContext();
-
-  return hasStylesContext ? (
-    <>{children}</>
-  ) : (
-    <SingleInstanceScopedCssBaselineContext.Provider value={true}>
-      <EmotionCacheProvider cacheKey="monite-css">
-        <MuiThemeProvider theme={theme}>
-          <ScopedCssBaseline enableColorScheme>{children}</ScopedCssBaseline>
-        </MuiThemeProvider>
-      </EmotionCacheProvider>
-    </SingleInstanceScopedCssBaselineContext.Provider>
-  );
-};
-
-/**
- * Provides status if the `ScopedCssBaseline` component is already set
- */
-const SingleInstanceScopedCssBaselineContext = createContext<boolean>(false);
 
 export const MoniteProvider = ({
   monite,
