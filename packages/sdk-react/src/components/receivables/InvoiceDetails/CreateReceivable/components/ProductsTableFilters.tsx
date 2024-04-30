@@ -1,4 +1,3 @@
-import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -9,6 +8,7 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
+  Select,
   MenuItem,
 } from '@mui/material';
 

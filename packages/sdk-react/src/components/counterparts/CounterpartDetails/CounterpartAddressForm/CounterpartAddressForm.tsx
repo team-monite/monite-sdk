@@ -1,7 +1,6 @@
 import React from 'react';
 import { Controller, useFormContext, FieldPath } from 'react-hook-form';
 
-import { Select } from '@/components/Select/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { getCountries } from '@/core/utils/countries';
 import { countriesToSelect } from '@/core/utils/selectHelpers';
@@ -13,6 +12,7 @@ import {
   InputLabel,
   MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
 } from '@mui/material';

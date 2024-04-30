@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
-import { Select } from '@/components/Select/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
@@ -9,7 +8,14 @@ import { useLingui } from '@lingui/react';
 import { CounterpartType } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import { MenuItem, FormControl, InputLabel, Box, Grid } from '@mui/material';
+import {
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Box,
+  Grid,
+} from '@mui/material';
 
 import {
   FILTER_TYPE_SEARCH,
