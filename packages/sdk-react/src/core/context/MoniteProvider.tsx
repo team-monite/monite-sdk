@@ -286,6 +286,13 @@ export const MoniteProvider = ({
                   },
                 },
               },
+              MuiModal: {
+                defaultProps: {
+                  classes: {
+                    root: ScopedCssBaselineContainerClassName,
+                  },
+                },
+              },
               MuiPopper: {
                 defaultProps: {
                   componentsProps: {
