@@ -293,6 +293,11 @@ export const MoniteProvider = ({
                   },
                 },
               },
+              MuiAutocomplete: {
+                defaultProps: {
+                  classes: { popper: ScopedCssBaselineContainerClassName },
+                },
+              },
             },
           })}
         >
