@@ -1,9 +1,11 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
+import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
 import { useMoniteThemeContext } from '@/core/context/MoniteThemeProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 /**
  * Provides a single instance of `<ScopedCssBaseline/>` component,
@@ -21,12 +23,18 @@ export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
     <SingleInstanceScopedStyleProviderContext.Provider value={true}>
       <EmotionCacheProvider cacheKey="monite-css">
         <MuiThemeProvider theme={theme}>
-          <ScopedCssBaseline enableColorScheme>{children}</ScopedCssBaseline>
+          <ScopedCssBaseline enableColorScheme>
+            <MoniteQueryClientProvider>
+              <ReactQueryDevtools initialIsOpen={false} />
+              {children}
+            </MoniteQueryClientProvider>
+          </ScopedCssBaseline>
         </MuiThemeProvider>
       </EmotionCacheProvider>
     </SingleInstanceScopedStyleProviderContext.Provider>
   );
 };
+
 /**
  * Provides status if the `<MoniteScopedProvider/>` component is already set
  */

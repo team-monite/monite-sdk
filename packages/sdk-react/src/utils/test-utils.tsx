@@ -84,6 +84,7 @@ export const Provider = ({
           monite,
           code: userLocale,
           sentryHub,
+          queryClient: client,
         }}
       >
         <I18nLocaleProvider
