@@ -7,13 +7,13 @@ import {
   usePhoneInput,
 } from 'react-international-phone';
 
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useLingui } from '@lingui/react';
 import {
   type BaseTextFieldProps,
   InputAdornment,
   MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@mui/material';

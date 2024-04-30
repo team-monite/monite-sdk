@@ -3,6 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { ICreateReceivablesForm } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityVatIdList, useMyEntity } from '@/core/queries/useEntities';
 import { t } from '@lingui/macro';
@@ -15,7 +16,6 @@ import {
   Typography,
   FormControl,
   InputLabel,
-  Select,
   CircularProgress,
   MenuItem,
   FormHelperText,

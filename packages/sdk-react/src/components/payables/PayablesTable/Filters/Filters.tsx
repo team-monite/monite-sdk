@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { Select } from '@/components/Select/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { PayableStateEnum } from '@monite/sdk-api';
-import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
+import { MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { getRowToStatusTextMap } from '../../consts';

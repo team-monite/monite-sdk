@@ -9,6 +9,7 @@ import {
   ICreateReceivablesFormBeforeValidation,
   ICreateReceivablesFormBeforeValidationLineItem,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { useVatRates } from '@/core/queries';
@@ -22,7 +23,6 @@ import {
   Alert,
   Button,
   FormControl,
-  Select,
   MenuItem,
   Card,
   Grid,

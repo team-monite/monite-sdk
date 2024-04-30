@@ -5,6 +5,7 @@ import {
   FilterTypes,
   FilterValue,
 } from '@/components/receivables/ReceivablesTable/types';
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
@@ -15,7 +16,6 @@ import {
   Grid,
   FormControl as MuiFormControl,
   InputLabel as MuiInputLabel,
-  Select,
   MenuItem,
 } from '@mui/material';
 

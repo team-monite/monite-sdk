@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -31,7 +32,6 @@ import {
   IconButton,
   InputLabel,
   MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,

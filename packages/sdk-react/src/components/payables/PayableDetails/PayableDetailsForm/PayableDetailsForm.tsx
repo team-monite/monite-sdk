@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { Select } from '@/components/Select/Select';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -32,7 +33,6 @@ import {
   InputLabel,
   MenuItem,
   Paper,
-  Select,
   Stack,
   Table,
   TableBody,

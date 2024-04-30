@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMeasureUnits } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
@@ -8,7 +9,7 @@ import { useLingui } from '@lingui/react';
 import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
+import { MenuItem, FormControl, InputLabel, Grid } from '@mui/material';
 
 import {
   FILTER_TYPE_SEARCH,

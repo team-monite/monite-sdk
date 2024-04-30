@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { ICreateReceivablesForm } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { Select } from '@/components/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { usePaymentTerms } from '@/core/queries';
 import { useBankAccounts } from '@/core/queries/useBankAccounts';
@@ -18,7 +19,6 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Select,
   Stack,
   Typography,
 } from '@mui/material';

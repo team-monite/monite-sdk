@@ -1,6 +1,7 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
+import { Select } from '@/components/Select/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { getCountries } from '@/core/utils/countries';
 import { countriesToSelect } from '@/core/utils/selectHelpers';
@@ -14,7 +15,6 @@ import {
   Stack,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
   FormHelperText,
   DialogActions,

@@ -3,6 +3,7 @@ import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { Select } from '@/components/Select/Select';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMeasureUnits } from '@/core/queries';
 import { MoniteCurrency } from '@/ui/Currency';
@@ -16,7 +17,6 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Select,
 } from '@mui/material';
 
 import {
