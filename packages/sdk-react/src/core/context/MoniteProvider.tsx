@@ -7,32 +7,25 @@ import React, {
 } from 'react';
 import { toast } from 'react-hot-toast';
 
-import {
-  ContainerCssBaseline,
-  ScopedCssBaselineContainerClassName,
-} from '@/components/ContainerCssBaseline';
+import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
+import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import {
   I18nLocaleProvider,
   MoniteLocale,
 } from '@/core/context/I18nLocaleProvider';
 import {
+  createThemeWithDefaults,
   MoniteThemeContext,
   useMoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
-import {
-  RootElementsProvider,
-  useRootElements,
-} from '@/core/context/RootElementsProvider';
 import { SentryFactory } from '@/core/services';
 import { getMessageInError } from '@/core/utils/getMessageInError';
 import { Error as ErrorComponent } from '@/ui/error';
-import createCache from '@emotion/cache';
-import { CacheProvider } from '@emotion/react';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApiError, MoniteSDK } from '@monite/sdk-api';
-import { createTheme, Theme, ThemeOptions } from '@mui/material';
+import { Theme, ThemeOptions } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import type { Hub } from '@sentry/react';
@@ -191,37 +184,32 @@ const SentryProvider = ({ children }: IMoniteGeneralProviderProps) => {
 export const MoniteStyleProvider = ({
   children,
 }: Pick<MoniteProviderProps, 'children'>) => {
-  const theme = useMoniteThemeContext();
-
   return (
     <SentryProvider>
-      <MuiThemeProvider theme={theme}>
-        <SingleInstanceScopedCssBaseline>
-          {children}
-        </SingleInstanceScopedCssBaseline>
-      </MuiThemeProvider>
+      <ScopedStyleProvider>{children}</ScopedStyleProvider>
     </SentryProvider>
   );
 };
 
 /**
- * Provides a single instance of `ScopedCssBaseline` component
- * `<ScopedCssBaseline>` component is used to apply scoped styles to the component
- * using wrapper `div` to pass the styles to the children.
- * This component prevents the creation of multiple `div` wrappers with the same styles.
+ * Provides a single instance of `<ScopedCssBaseline/>` component,
+ * `<EmotionCacheProvider/>` and `<MuiThemeProvider/>` components.
+ * This component prevents the creation of multiple `div` wrappers with the same styles,
+ * and multiple Emotion Caches
  */
-const SingleInstanceScopedCssBaseline = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const isContextSet = useContext(SingleInstanceScopedCssBaselineContext);
+const ScopedStyleProvider = ({ children }: { children: ReactNode }) => {
+  const hasStylesContext = useContext(SingleInstanceScopedCssBaselineContext);
+  const theme = useMoniteThemeContext();
 
-  return isContextSet ? (
+  return hasStylesContext ? (
     <>{children}</>
   ) : (
     <SingleInstanceScopedCssBaselineContext.Provider value={true}>
-      <ScopedCssBaseline enableColorScheme children={children} />
+      <EmotionCacheProvider cacheKey="monite-css">
+        <MuiThemeProvider theme={theme}>
+          <ScopedCssBaseline enableColorScheme>{children}</ScopedCssBaseline>
+        </MuiThemeProvider>
+      </EmotionCacheProvider>
     </SingleInstanceScopedCssBaselineContext.Provider>
   );
 };
@@ -237,14 +225,6 @@ export const MoniteProvider = ({
   children,
   locale,
 }: MoniteProviderProps) => {
-  const rootElements = useRootElements();
-  const [emotionCache] = useState(() =>
-    createCache({
-      key: 'css-monite',
-      container: rootElements.styles,
-    })
-  );
-
   const sentryHub = useMemo(() => {
     return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
       ? new SentryFactory({
@@ -259,6 +239,7 @@ export const MoniteProvider = ({
     (typeof navigator === 'undefined' ? 'en' : navigator.language);
 
   const moniteInstanceKey = useInstanceKey(monite);
+  const muiTheme = useMemo(() => createThemeWithDefaults(theme), [theme]);
 
   return (
     <I18nLocaleProvider
@@ -276,38 +257,7 @@ export const MoniteProvider = ({
         key={moniteInstanceKey}
         sentryHub={sentryHub}
       >
-        <MoniteThemeContext.Provider
-          value={createTheme(theme, {
-            components: {
-              MuiMenu: {
-                defaultProps: {
-                  classes: {
-                    root: ScopedCssBaselineContainerClassName,
-                  },
-                },
-              },
-              MuiModal: {
-                defaultProps: {
-                  classes: {
-                    root: ScopedCssBaselineContainerClassName,
-                  },
-                },
-              },
-              MuiPopper: {
-                defaultProps: {
-                  componentsProps: {
-                    root: { className: ScopedCssBaselineContainerClassName },
-                  },
-                },
-              },
-              MuiAutocomplete: {
-                defaultProps: {
-                  classes: { popper: ScopedCssBaselineContainerClassName },
-                },
-              },
-            },
-          })}
-        >
+        <MoniteThemeContext.Provider value={muiTheme}>
           <MoniteContext.Provider
             value={{
               monite,
@@ -316,13 +266,13 @@ export const MoniteProvider = ({
             }}
           >
             <ReactQueryDevtools initialIsOpen={false} />
-            {/*todo::move CacheProvider to MoniteStylesProvider*/}
-            <CacheProvider value={emotionCache}>
-              <ContainerCssBaseline enableColorScheme />
-              {/*todo::wrap with own cache provider*/}
-              <GlobalToast />
-              {children}
-            </CacheProvider>
+            <EmotionCacheProvider cacheKey="monite-css-baseline">
+              <MuiThemeProvider theme={muiTheme}>
+                <ContainerCssBaseline enableColorScheme />
+                <GlobalToast />
+              </MuiThemeProvider>
+            </EmotionCacheProvider>
+            {children}
           </MoniteContext.Provider>
         </MoniteThemeContext.Provider>
       </MoniteQueryClientProvider>
