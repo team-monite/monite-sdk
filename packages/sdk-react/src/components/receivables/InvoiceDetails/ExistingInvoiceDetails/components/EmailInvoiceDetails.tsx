@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { getEmailInvoiceDetailsSchema } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
-import { useSendReceivableById } from '@/core/queries';
+import { useIssueReceivableById, useSendReceivableById } from '@/core/queries';
 import { useEntityPaymentMethods } from '@/core/queries/useEntities';
 import { useCreatePaymentLink } from '@/core/queries/usePayments';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -47,6 +47,7 @@ export const EmailInvoiceDetails = ({
     },
   });
   const sendMutation = useSendReceivableById();
+  const issueMutation = useIssueReceivableById();
   const createPaymentLinkMutation = useCreatePaymentLink();
 
   const { data: paymentMethods } = useEntityPaymentMethods();
@@ -55,6 +56,7 @@ export const EmailInvoiceDetails = ({
     (e: React.BaseSyntheticEvent) => {
       e.preventDefault();
       const createPaymentLink = createPaymentLinkMutation.mutateAsync;
+      const issue = issueMutation.mutateAsync;
       const sendEmail = sendMutation.mutate;
 
       handleSubmit(async (values) => {
@@ -75,6 +77,8 @@ export const EmailInvoiceDetails = ({
             )`No active payment methods available. The email will be sent without a payment link`
           );
         } else {
+          await issue(invoiceId);
+
           /**
            * We need to create a payment link for the invoice before sending the email.
            * Otherwise, the recipient won't be able to pay the invoice.
@@ -122,6 +126,7 @@ export const EmailInvoiceDetails = ({
     },
     [
       createPaymentLinkMutation.mutateAsync,
+      issueMutation.mutateAsync,
       handleSubmit,
       i18n,
       invoiceId,

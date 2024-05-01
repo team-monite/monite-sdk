@@ -578,7 +578,7 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:151
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:156
 msgid "Back"
 msgstr "Back"
 
@@ -769,7 +769,7 @@ msgid "Boat Rentals and Leases"
 msgstr "Boat Rentals and Leases"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:207
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:212
 msgid "Body"
 msgstr "Body"
 
@@ -1239,8 +1239,8 @@ msgstr "Company name"
 msgid "Company name is required"
 msgstr "Company name is required"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:152
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:250
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:157
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:269
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1432,7 +1432,7 @@ msgstr "Counterpart was deleted."
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:34
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:43
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:104
-#: src/components/counterparts/Counterparts.tsx:105
+#: src/components/counterparts/Counterparts.tsx:117
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -1539,8 +1539,8 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:36
 #: src/components/counterparts/Counterparts.test.tsx:73
 #: src/components/counterparts/Counterparts.test.tsx:111
-#: src/components/counterparts/Counterparts.tsx:121
-#: src/components/payables/Payables.tsx:104
+#: src/components/counterparts/Counterparts.tsx:144
+#: src/components/payables/Payables.tsx:118
 #: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
@@ -1750,9 +1750,9 @@ msgstr "Declined"
 #: src/components/products/Products.test.tsx:183
 #: src/components/products/Products.test.tsx:214
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:310
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:211
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:222
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:248
-#: src/components/TableActions/TableActions.tsx:52
+#: src/components/TableActions/TableActions.tsx:70
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:53
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:86
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:87
@@ -1949,7 +1949,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:241
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:260
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2069,7 +2069,7 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:156
 #: src/components/products/Products.test.tsx:250
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:286
-#: src/components/TableActions/TableActions.tsx:44
+#: src/components/TableActions/TableActions.tsx:62
 #: src/components/tags/TagsTable/TagsTable.test.tsx:389
 #: src/components/tags/TagsTable/TagsTable.test.tsx:420
 #: src/components/tags/TagsTable/TagsTable.test.tsx:451
@@ -2233,7 +2233,7 @@ msgstr "Error creating approval policy"
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
 
-#: src/components/payables/Payables.tsx:149
+#: src/components/payables/Payables.tsx:174
 msgid "Error when uploading payable file"
 msgstr "Error when uploading payable file"
 
@@ -2837,7 +2837,7 @@ msgstr "India"
 msgid "Indian Rupee"
 msgstr "Indian Rupee"
 
-#: src/components/counterparts/Counterparts.tsx:142
+#: src/components/counterparts/Counterparts.tsx:170
 msgid "Individual"
 msgstr "Individual"
 
@@ -2911,7 +2911,7 @@ msgstr "Invalid IBAN"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:185
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:196
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -2925,7 +2925,7 @@ msgstr "Invoice #"
 msgid "Invoice date"
 msgstr "Invoice date"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:132
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:103
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -2983,7 +2983,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:258
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:277
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:258
 msgid "Issue"
 msgstr "Issue"
@@ -2992,7 +2992,7 @@ msgstr "Issue"
 #~ msgid "Issue and download PDF"
 #~ msgstr "Issue and download PDF"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:168
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:173
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice.tsx:107
 msgid "Issue and send"
 msgstr "Issue and send"
@@ -3572,7 +3572,7 @@ msgstr "Mongolian Tugrik"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:222
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:236
 msgid "More"
 msgstr "More"
 
@@ -3701,7 +3701,7 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/Payables.tsx:115
+#: src/components/payables/Payables.tsx:139
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -3764,7 +3764,7 @@ msgstr "Niue"
 msgid "No"
 msgstr "No"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:73
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:75
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
@@ -3904,7 +3904,7 @@ msgstr "Optometrists, Ophthalmologist"
 #~ msgid "OR logic applied: if any one of this options is true then the policy will be applied."
 #~ msgstr "OR logic applied: if any one of this options is true then the policy will be applied."
 
-#: src/components/counterparts/Counterparts.tsx:135
+#: src/components/counterparts/Counterparts.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:148
 msgid "Organization"
 msgstr "Organization"
@@ -4038,11 +4038,11 @@ msgstr "Payable"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:146
+#: src/components/payables/Payables.tsx:171
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
-#: src/components/payables/Payables.tsx:89
+#: src/components/payables/Payables.tsx:88
 msgid "Payables"
 msgstr "Payables"
 
@@ -4512,11 +4512,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:142
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:153
 msgid "Receivable type {0} is not supported. Only {1} is supported."
 msgstr "Receivable type {0} is not supported. Only {1} is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:141
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:152
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -4822,7 +4822,7 @@ msgstr "Select someone"
 #~ msgid "Selected tags"
 #~ msgstr "Selected tags"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:230
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:249
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -5071,7 +5071,7 @@ msgstr "Status"
 #~ msgstr "Status"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:185
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:190
 msgid "Subject"
 msgstr "Subject"
 
@@ -5359,7 +5359,7 @@ msgstr "There are no items here"
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:133
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:144
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -5697,8 +5697,8 @@ msgstr "Units"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/core/context/MoniteProvider.tsx:82
-#: src/core/context/MoniteProvider.tsx:138
+#: src/core/context/MoniteProvider.tsx:83
+#: src/core/context/MoniteProvider.tsx:139
 msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
 
@@ -5749,16 +5749,16 @@ msgstr "Updated on"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/Payables.tsx:125
+#: src/components/payables/Payables.tsx:150
 msgid "Upload File"
 msgstr "Upload File"
 
 #: src/components/payables/Payables.test.tsx:36
-#: src/components/payables/Payables.tsx:141
+#: src/components/payables/Payables.tsx:166
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:145
+#: src/components/payables/Payables.tsx:170
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
@@ -6092,7 +6092,7 @@ msgstr "You can continue to the next step"
 msgid "You can not create receivable with a type other than \"{0}\""
 msgstr "You can not create receivable with a type other than \"{0}\""
 
-#: src/core/context/MoniteProvider.tsx:129
+#: src/core/context/MoniteProvider.tsx:130
 msgid "You do not have permission to access this resource."
 msgstr "You do not have permission to access this resource."
 

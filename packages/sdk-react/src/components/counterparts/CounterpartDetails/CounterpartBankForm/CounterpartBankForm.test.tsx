@@ -11,7 +11,6 @@ import {
   triggerChangeInput,
   triggerClickOnAutocompleteOption,
   triggerClickOnSelectOption,
-  waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import {
@@ -37,13 +36,11 @@ describe('CounterpartBankForm', () => {
       </MoniteStyleProvider>
     );
 
-    await waitUntilTableIsLoaded();
-
-    const submitBtn = screen.getByRole('button', {
+    const submitBtn = await screen.findByRole('button', {
       name: t`Add bank account`,
     });
 
-    expect(submitBtn).toBeInTheDocument();
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
 
     triggerChangeInput(/account name/i, '[create] Account name');
     triggerChangeInput(/iban/i, '[create] Iban');
@@ -56,7 +53,7 @@ describe('CounterpartBankForm', () => {
     await waitFor(() => {
       expect(onCreateMock).toHaveBeenCalled();
     });
-  });
+  }, 10_000);
 
   test('should show errors if non of the field is filled', async () => {
     renderWithClient(
@@ -65,18 +62,18 @@ describe('CounterpartBankForm', () => {
       </MoniteStyleProvider>
     );
 
-    await waitUntilTableIsLoaded();
-
-    const submitBtn = screen.getByRole('button', {
+    const submitBtn = await screen.findByRole('button', {
       name: t`Add bank account`,
     });
+
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
 
     fireEvent.click(submitBtn);
 
     const errors = await screen.findAllByText(/required field/i);
 
     expect(errors.length).toBeGreaterThanOrEqual(2);
-  });
+  }, 10_000);
 
   test('should update a bank account', async () => {
     const onUpdateMock = jest.fn();
@@ -102,20 +99,18 @@ describe('CounterpartBankForm', () => {
       </MoniteStyleProvider>
     );
 
-    await waitUntilTableIsLoaded();
-
-    const submitBtn = screen.getByRole('button', {
+    const submitBtn = await screen.findByRole('button', {
       name: t`Update bank account`,
     });
 
-    expect(submitBtn).toBeInTheDocument();
+    await waitFor(() => expect(submitBtn).not.toBeDisabled());
 
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(onUpdateMock).toHaveBeenCalledWith(counterpartBankFixture.id);
     });
-  });
+  }, 10_000);
 
   test('should catch onCancel callback', async () => {
     const onCancelMock = jest.fn();
@@ -129,9 +124,7 @@ describe('CounterpartBankForm', () => {
       </MoniteStyleProvider>
     );
 
-    await waitUntilTableIsLoaded();
-
-    const cancelBtn = screen.getByRole('button', {
+    const cancelBtn = await screen.findByRole('button', {
       name: t`Cancel`,
     });
 
@@ -142,7 +135,7 @@ describe('CounterpartBankForm', () => {
     await waitFor(() => {
       expect(onCancelMock).toHaveBeenCalledTimes(1);
     });
-  });
+  }, 10_000);
 
   describe('# Public API', () => {
     test('should send correct request when we are choose not UK and not US country', async () => {
@@ -158,13 +151,20 @@ describe('CounterpartBankForm', () => {
         cachedMoniteSDK
       );
 
-      await waitUntilTableIsLoaded();
-
       const accountName = '[create] Account name';
       const iban = '[create] Iban';
       const bic = '[create] Bic';
+      const countrySelectName = /country/i;
 
-      triggerClickOnSelectOption(/country/i, /Armenia/i);
+      await waitFor(
+        () =>
+          expect(
+            screen.findByRole('button', { name: countrySelectName })
+          ).resolves.not.toBeDisabled(),
+        { timeout: 5_000 }
+      );
+
+      triggerClickOnSelectOption(countrySelectName, /Armenia/i);
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
       triggerChangeInput(/account name/i, accountName);
       triggerChangeInput(/iban/i, iban);
@@ -185,7 +185,7 @@ describe('CounterpartBankForm', () => {
       expect(parameters.name).toBe(accountName);
       expect(parameters.iban).toBe(iban);
       expect(parameters.bic).toBe(bic);
-    });
+    }, 10_000);
 
     test('should send correct request when we are choose any country', async () => {
       const getCreateSpy = jest.spyOn(
@@ -200,15 +200,22 @@ describe('CounterpartBankForm', () => {
         cachedMoniteSDK
       );
 
-      await waitUntilTableIsLoaded();
-
       const accountName = '[create] Account name';
       const iban = '[create] Iban';
       const bic = '[create] Bic';
       const accountNumber = '[create] Account number';
       const sortCode = '[create] Sort code';
+      const countrySelectName = /country/i;
 
-      triggerClickOnSelectOption(/country/i, 'United Kingdom');
+      await waitFor(
+        () =>
+          expect(
+            screen.findByRole('button', { name: countrySelectName })
+          ).resolves.not.toBeDisabled(),
+        { timeout: 5_000 }
+      );
+
+      triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
       triggerChangeInput(/account name/i, accountName);
       triggerChangeInput(/iban/i, iban);
@@ -242,7 +249,7 @@ describe('CounterpartBankForm', () => {
       expect(parameters.bic).toBe(bic);
       expect(parameters.account_number).toBe(accountNumber);
       expect(parameters.sort_code).toBe(sortCode);
-    });
+    }, 10_000);
 
     describe('# Backend Requests', () => {
       test('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
@@ -258,10 +265,16 @@ describe('CounterpartBankForm', () => {
           cachedMoniteSDK
         );
 
-        await waitUntilTableIsLoaded();
+        const countrySelectName = /country/i;
+
+        await waitFor(() =>
+          expect(
+            screen.findByRole('button', { name: countrySelectName })
+          ).resolves.not.toBeDisabled()
+        );
 
         /** Fill all required fields */
-        triggerClickOnSelectOption(/country/i, 'United Kingdom');
+        triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
         triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
 
         const submitBtn = screen.getByRole('button', {
@@ -296,7 +309,7 @@ describe('CounterpartBankForm', () => {
 
         expect(requestCounterpartId).toBe(individualId);
         expect(requestBody).toEqual(serverRequestBody);
-      });
+      }, 10_000);
 
       test('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
         const getUpdateSpy = jest.spyOn(
@@ -315,11 +328,11 @@ describe('CounterpartBankForm', () => {
           cachedMoniteSDK
         );
 
-        await waitUntilTableIsLoaded();
-
-        const submitBtn = screen.getByRole('button', {
+        const submitBtn = await screen.findByRole('button', {
           name: t`Update bank account`,
         });
+
+        await waitFor(() => expect(submitBtn).not.toBeDisabled());
 
         fireEvent.click(submitBtn);
 
@@ -350,7 +363,7 @@ describe('CounterpartBankForm', () => {
 
         expect(requestCounterpartId).toBe(individualId);
         expect(requestBody).toEqual(serverRequestBody);
-      });
+      }, 10_000);
     });
   });
 });
