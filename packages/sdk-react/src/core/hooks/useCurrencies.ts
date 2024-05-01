@@ -13,7 +13,7 @@ import { useMoniteContext } from '../context/MoniteContext';
  */
 export const useCurrencies = () => {
   const { data: currencyList, isSuccess, isError, error } = useCurrencyList();
-  const { code } = useMoniteContext();
+  const { locale } = useMoniteContext();
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
@@ -118,7 +118,7 @@ export const useCurrencies = () => {
     );
 
     if (currencyData && amountFromMinorUnits !== null) {
-      const formatter = new Intl.NumberFormat(code, {
+      const formatter = new Intl.NumberFormat(locale.code, {
         style: 'currency',
         currency,
       });

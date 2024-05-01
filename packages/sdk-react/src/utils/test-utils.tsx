@@ -67,7 +67,7 @@ export const Provider = ({
   moniteProviderProps?: Omit<MoniteProviderProps, 'monite'>;
 }) => {
   const monite = sdk ?? cachedMoniteSDK;
-  const userLocale = moniteProviderProps?.locale?.code ?? 'de-DE';
+  const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
   const sentryClient = new BrowserClient({
     dsn: undefined,
     debug: true,
@@ -82,14 +82,14 @@ export const Provider = ({
       <MoniteContext.Provider
         value={{
           monite,
-          code: userLocale,
+          locale: { code: localeCode },
           sentryHub,
           queryClient: client,
         }}
       >
         <I18nLocaleProvider
           locale={{
-            code: userLocale,
+            code: localeCode,
           }}
         >
           {children}
