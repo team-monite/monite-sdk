@@ -9,8 +9,8 @@ import React, {
 } from 'react';
 
 import { compileLinguiDynamicMessages } from '@/utils/compile-lingui-dynamic-messages';
-import { Messages, setupI18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
+import { I18n, Messages, setupI18n } from '@lingui/core';
+import { I18nProvider as I18nProviderBase } from '@lingui/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -44,7 +44,7 @@ export const I18nLocaleProvider = ({
   children,
 }: {
   children: ReactNode;
-  locale: MoniteLocale;
+  locale: MoniteLocale; // todo: remove `locale` in favour of `i18n: I18n` prop
 }) => {
   return (
     <LinguiI18nProvider locale={locale}>
@@ -64,11 +64,9 @@ const LinguiI18nProvider = ({
 }) => {
   if (locale.messages && Object.keys(locale.messages).length) {
     return (
-      <LinguiI18nDynamicProvider
-        locale={{ ...locale, messages: locale.messages }}
-      >
-        {children}
-      </LinguiI18nDynamicProvider>
+      <LinguiDynamicI18n locale={{ ...locale, messages: locale.messages }}>
+        {(i18n) => <I18nProvider i18n={i18n}>{children}</I18nProvider>}
+      </LinguiDynamicI18n>
     );
   }
 
@@ -79,12 +77,24 @@ const LinguiI18nProvider = ({
   );
 };
 
-const LinguiI18nDynamicProvider = ({
+/**
+ * Provides a dynamic `i18n` for the children components.
+ * Under the hood, it compiles the provided `locale.messages` by the Customer
+ * to the format that `@lingui` can understand.
+ *
+ * @example
+ * ```tsx
+ * <LinguiDynamicI18n locale={locale}>
+ *   {(i18n) => <I18nProvider i18n={i18n}>{children}</I18nProvider>}
+ * </LinguiDynamicI18n>
+ * ```
+ */
+export const LinguiDynamicI18n = ({
   locale,
   children,
 }: {
-  locale: Required<MoniteLocale>;
-  children: ReactNode;
+  locale: MoniteLocale;
+  children: (i18n: I18n) => ReactNode;
 }) => {
   const previousLocaleMessages = useRef(locale.messages);
 
@@ -118,44 +128,38 @@ const createLinguiDynamicI18nProvider = async (locale: MoniteLocale) => {
   return function CompiledLinguiI18nProvider({
     children,
   }: {
-    children: ReactNode;
+    children: (i18n: I18n) => ReactNode;
   }) {
     return (
-      <LinguiI18nStaticProvider
-        locale={{ ...locale, messages: compiledMessages }}
-      >
-        {children}
-      </LinguiI18nStaticProvider>
+      <>{children(useSetupI18n({ ...locale, messages: compiledMessages }))}</>
     );
   };
 };
 
 const LinguiI18nStaticProvider = ({
-  locale,
   children,
+  locale,
 }: {
   children: ReactNode;
   locale: MoniteLocale;
 }) => {
-  const i18n = useMemo(() => {
-    return setupI18n({
-      locale: locale.code,
-      messages: {
-        [locale.code]: {
-          ...enLocaleMessages, // We must provide EN messages as a fallback dictionary
-          ...locale.messages,
-        },
-      },
-    });
-  }, [locale.code, locale.messages]);
+  return <I18nProvider i18n={useSetupI18n(locale)}>{children}</I18nProvider>;
+};
 
+const I18nProvider = ({
+  i18n,
+  children,
+}: {
+  i18n: I18n;
+  children: ReactNode;
+}) => {
   return (
-    <I18nProvider
+    <I18nProviderBase
       key={i18n.locale} // Due to the imperative nature of the I18nProvider, it is necessary to add a `key` for Realtime language change
       i18n={i18n}
     >
       {children}
-    </I18nProvider>
+    </I18nProviderBase>
   );
 };
 
@@ -201,6 +205,19 @@ const DatePickerI18nProvider = ({
     </LocalizationProvider>
   );
 };
+
+const useSetupI18n = (locale: MoniteLocale) =>
+  useMemo(() => {
+    return setupI18n({
+      locale: locale.code,
+      messages: {
+        [locale.code]: {
+          ...enLocaleMessages, // We must provide EN messages as a fallback dictionary
+          ...locale.messages,
+        },
+      },
+    });
+  }, [locale.code, locale.messages]);
 
 export const isEmptyMultipleKeysObject = (obj: object) => {
   for (const prop in obj) if (obj.hasOwnProperty(prop)) return false;

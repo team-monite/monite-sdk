@@ -2,10 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
-import {
-  I18nLocaleProvider,
-  MoniteLocale,
-} from '@/core/context/I18nLocaleProvider';
+import { MoniteLocale } from '@/core/context/I18nLocaleProvider';
 import { MoniteScopedProvider } from '@/core/context/MoniteScopedProvider';
 import {
   createThemeWithDefaults,
@@ -64,30 +61,19 @@ export const MoniteProvider = ({
   children,
   locale,
 }: MoniteProviderProps) => {
-  const userLocale =
-    locale?.code ??
-    (typeof navigator === 'undefined' ? 'en' : navigator.language);
-
   const muiTheme = useMemo(() => createThemeWithDefaults(theme), [theme]);
 
   return (
-    <I18nLocaleProvider
-      locale={{
-        code: userLocale,
-        messages: locale?.messages,
-      }}
-    >
-      <MoniteThemeContext.Provider value={muiTheme}>
-        <MoniteContextProvider monite={monite} code={userLocale}>
-          <EmotionCacheProvider cacheKey="monite-css-baseline">
-            <MuiThemeProvider theme={muiTheme}>
-              <ContainerCssBaseline enableColorScheme />
-              <GlobalToast />
-            </MuiThemeProvider>
-          </EmotionCacheProvider>
-          {children}
-        </MoniteContextProvider>
-      </MoniteThemeContext.Provider>
-    </I18nLocaleProvider>
+    <MoniteThemeContext.Provider value={muiTheme}>
+      <MoniteContextProvider monite={monite} locale={locale}>
+        <EmotionCacheProvider cacheKey="monite-css-baseline">
+          <MuiThemeProvider theme={muiTheme}>
+            <ContainerCssBaseline enableColorScheme />
+            <GlobalToast />
+          </MuiThemeProvider>
+        </EmotionCacheProvider>
+        {children}
+      </MoniteContextProvider>
+    </MoniteThemeContext.Provider>
   );
 };
