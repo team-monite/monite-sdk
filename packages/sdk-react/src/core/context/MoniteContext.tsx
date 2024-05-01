@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useMemo } from 'react';
 import {
   LinguiDynamicI18n,
   type MoniteLocale,
-} from '@/core/context/I18nLocaleProvider';
+} from '@/core/context/MoniteI18nProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';

@@ -1,8 +1,8 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
-import { I18nLocaleProvider } from '@/core/context/I18nLocaleProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
 import { useMoniteThemeContext } from '@/core/context/MoniteThemeProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
@@ -24,7 +24,7 @@ export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
   ) : (
     <SingleInstanceScopedStyleProviderContext.Provider value={true}>
       <EmotionCacheProvider cacheKey="monite-css">
-        <I18nLocaleProvider>
+        <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
             <ScopedCssBaseline enableColorScheme>
               <SentryProvider>
@@ -34,7 +34,7 @@ export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
               </SentryProvider>
             </ScopedCssBaseline>
           </MuiThemeProvider>
-        </I18nLocaleProvider>
+        </MoniteI18nProvider>
       </EmotionCacheProvider>
     </SingleInstanceScopedStyleProviderContext.Provider>
   );

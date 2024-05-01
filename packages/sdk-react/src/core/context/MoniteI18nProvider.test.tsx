@@ -4,9 +4,9 @@ import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { act, screen } from '@testing-library/react';
 
-import { I18nLocaleProvider, LinguiDynamicI18n } from './I18nLocaleProvider';
+import { MoniteI18nProvider, LinguiDynamicI18n } from './MoniteI18nProvider';
 
-describe('I18nLocaleProvider', () => {
+describe('MoniteI18nProvider', () => {
   const type = 'Gegenstück';
   const name = 'John';
 
@@ -51,9 +51,9 @@ describe('I18nLocaleProvider', () => {
                   i18n,
                 }}
               >
-                <I18nLocaleProvider>
+                <MoniteI18nProvider>
                   <HelloWold />
-                </I18nLocaleProvider>
+                </MoniteI18nProvider>
               </MoniteContext.Provider>
             )}
           </LinguiDynamicI18n>

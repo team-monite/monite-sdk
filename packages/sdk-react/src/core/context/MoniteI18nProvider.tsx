@@ -40,7 +40,7 @@ export type MoniteLocale = {
   messages?: MoniteSupportedMessages;
 };
 
-export const I18nLocaleProvider = ({ children }: { children: ReactNode }) => {
+export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
   const { i18n } = useMoniteContext();
 
   return (

@@ -2,7 +2,7 @@ import React, { ReactNode, useMemo } from 'react';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
-import { MoniteLocale } from '@/core/context/I18nLocaleProvider';
+import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { MoniteScopedProvider } from '@/core/context/MoniteScopedProvider';
 import {
   createThemeWithDefaults,
