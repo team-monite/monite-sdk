@@ -18,14 +18,13 @@ import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 export const MoniteScopedProvider = ({ children }: { children: ReactNode }) => {
   const hasStylesContext = useContext(SingleInstanceScopedStyleProviderContext);
   const theme = useMoniteThemeContext();
-  const { locale } = useMoniteContext();
 
   return hasStylesContext ? (
     <>{children}</>
   ) : (
     <SingleInstanceScopedStyleProviderContext.Provider value={true}>
       <EmotionCacheProvider cacheKey="monite-css">
-        <I18nLocaleProvider locale={locale}>
+        <I18nLocaleProvider>
           <MuiThemeProvider theme={theme}>
             <ScopedCssBaseline enableColorScheme>
               <SentryProvider>

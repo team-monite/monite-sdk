@@ -1,10 +1,11 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-import { I18nLocaleProvider } from '@/core/context/I18nLocaleProvider';
+import { I18nProvider } from '@lingui/react'
 import { MoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { entityIds } from '@/mocks/entities';
+import { setupI18n } from '@lingui/core';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
   BrowserClient,
@@ -12,11 +13,7 @@ import {
   Hub,
   makeFetchTransport,
 } from '@sentry/react';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
   fireEvent,
@@ -68,6 +65,12 @@ export const Provider = ({
 }) => {
   const monite = sdk ?? cachedMoniteSDK;
   const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
+  const i18n = setupI18n({
+    locale: localeCode,
+    messages: {
+      [localeCode]: {},
+    },
+  });
   const sentryClient = new BrowserClient({
     dsn: undefined,
     debug: true,
@@ -79,22 +82,18 @@ export const Provider = ({
 
   return (
     <QueryClientProvider client={client}>
-      <MoniteContext.Provider
-        value={{
-          monite,
-          locale: { code: localeCode },
-          sentryHub,
-          queryClient: client,
-        }}
-      >
-        <I18nLocaleProvider
-          locale={{
-            code: localeCode,
+      <I18nProvider i18n={i18n}>
+        <MoniteContext.Provider
+          value={{
+            monite,
+            i18n,
+            sentryHub,
+            queryClient: client,
           }}
         >
           {children}
-        </I18nLocaleProvider>
-      </MoniteContext.Provider>
+        </MoniteContext.Provider>
+      </I18nProvider>
     </QueryClientProvider>
   );
 };

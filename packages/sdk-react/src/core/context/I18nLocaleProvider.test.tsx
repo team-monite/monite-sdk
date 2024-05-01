@@ -1,9 +1,10 @@
+import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
 import { renderWithClient } from '@/utils/test-utils';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { act, screen } from '@testing-library/react';
 
-import { I18nLocaleProvider } from './I18nLocaleProvider';
+import { I18nLocaleProvider, LinguiDynamicI18n } from './I18nLocaleProvider';
 
 describe('I18nLocaleProvider', () => {
   const type = 'Gegenstück';
@@ -29,10 +30,12 @@ describe('I18nLocaleProvider', () => {
   };
 
   beforeEach(async () =>
-    act(
-      () =>
-        void renderWithClient(
-          <I18nLocaleProvider
+    act(() => {
+      function App() {
+        const moniteContext = useMoniteContext();
+
+        return (
+          <LinguiDynamicI18n
             locale={{
               code: 'en',
               messages: {
@@ -41,10 +44,24 @@ describe('I18nLocaleProvider', () => {
               },
             }}
           >
-            <HelloWold />
-          </I18nLocaleProvider>
-        )
-    )
+            {(i18n) => (
+              <MoniteContext.Provider
+                value={{
+                  ...moniteContext,
+                  i18n,
+                }}
+              >
+                <I18nLocaleProvider>
+                  <HelloWold />
+                </I18nLocaleProvider>
+              </MoniteContext.Provider>
+            )}
+          </LinguiDynamicI18n>
+        );
+      }
+
+      return void renderWithClient(<App />);
+    })
   );
 
   it('should render static translations with `t` macro', async () => {

@@ -2,6 +2,8 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
+import { ReactNode } from 'react';
+
 import { DataGridProps } from '@mui/x-data-grid';
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
@@ -29,6 +31,19 @@ jest.mock('@mui/x-data-grid', () => {
     DataGrid: (props: DataGridProps) => (
       <DataGrid {...props} disableVirtualization />
     ),
+  };
+});
+
+/**
+ * We have to disable the CacheProvider for all tests
+ * as its usage slows down the tests.
+ */
+jest.mock('@emotion/react', () => {
+  const originalModule = jest.requireActual('@emotion/react');
+
+  return {
+    ...originalModule,
+    CacheProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
   };
 });
 

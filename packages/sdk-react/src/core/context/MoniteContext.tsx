@@ -2,18 +2,18 @@ import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import {
   LinguiDynamicI18n,
-  MoniteLocale,
+  type MoniteLocale,
 } from '@/core/context/I18nLocaleProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
 import { SentryFactory } from '@/core/services';
-import { I18n } from '@lingui/core';
-import { MoniteSDK } from '@monite/sdk-api';
+import type { I18n } from '@lingui/core';
+import type { MoniteSDK } from '@monite/sdk-api';
 import type { Hub } from '@sentry/react';
-import { QueryClient } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
 
 interface MoniteContextValue {
   monite: MoniteSDK;
-  locale: MoniteLocale;
+  i18n: I18n;
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
 }
@@ -38,16 +38,17 @@ export function useMoniteContext() {
   return moniteContext;
 }
 
-interface MoniteContextProviderProps {
-  monite: MoniteSDK;
-  locale: MoniteLocale;
+type MoniteContextProviderProps = {
   children: ReactNode;
-}
+} & Pick<MoniteContextValue, 'monite'>;
 
+/**
+ * @internal
+ */
 export const MoniteContextProvider = (
-  props: Omit<MoniteContextProviderProps, 'locale'> & {
-    locale?: Partial<MoniteLocale>;
-  }
+  props: {
+    locale: Partial<MoniteLocale> | undefined;
+  } & MoniteContextProviderProps
 ) => {
   const locale = useMemo(() => {
     // todo: maybe move to separate function
@@ -63,17 +64,16 @@ export const MoniteContextProvider = (
 
   return (
     <LinguiDynamicI18n locale={locale}>
-      {(i18n) => <ContextProvider {...props} locale={locale} i18n={i18n} />}
+      {(i18n) => <ContextProvider {...props} i18n={i18n} />}
     </LinguiDynamicI18n>
   );
 };
 
 const ContextProvider = ({
   monite,
-  locale,
   i18n,
   children,
-}: { i18n: I18n } & MoniteContextProviderProps) => {
+}: Pick<MoniteContextValue, 'i18n'> & MoniteContextProviderProps) => {
   const sentryHub = useMemo(() => {
     return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
       ? new SentryFactory({
@@ -94,7 +94,7 @@ const ContextProvider = ({
         monite,
         queryClient,
         sentryHub,
-        locale,
+        i18n,
       }}
     >
       {children}
