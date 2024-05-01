@@ -11,14 +11,12 @@ import {
   createThemeWithDefaults,
   MoniteThemeContext,
 } from '@/core/context/MoniteThemeProvider';
-import { Error as ErrorComponent } from '@/ui/error';
 import { MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { ErrorBoundary, Profiler } from '@sentry/react';
 
 import { GlobalToast } from '../GlobalToast';
-import { MoniteContextProvider, useMoniteContext } from './MoniteContext';
+import { MoniteContextProvider } from './MoniteContext';
 
 export interface MoniteProviderProps {
   children?: ReactNode;
@@ -51,42 +49,13 @@ export interface IMoniteGeneralProviderProps {
 }
 
 /**
- * Attaches Sentry to the `ErrorBoundary`
- */
-const SentryProvider = ({ children }: IMoniteGeneralProviderProps) => {
-  const { sentryHub } = useMoniteContext();
-
-  return (
-    <ErrorBoundary
-      fallback={(props) => <ErrorComponent {...props} />}
-      onError={(error, componentStack, eventId) => {
-        sentryHub?.captureException(error, {
-          event_id: eventId,
-          captureContext: {
-            contexts: {
-              react: { componentStack },
-            },
-          },
-        });
-      }}
-    >
-      <Profiler>{children}</Profiler>
-    </ErrorBoundary>
-  );
-};
-
-/**
  * Provides Monite theme and global styles
  * Fetches theme from global `MoniteProvider` and apply it to the Material `ThemeProvider`
  */
 export const MoniteStyleProvider = ({
   children,
 }: Pick<MoniteProviderProps, 'children'>) => {
-  return (
-    <SentryProvider>
-      <MoniteScopedProvider>{children}</MoniteScopedProvider>
-    </SentryProvider>
-  );
+  return <MoniteScopedProvider>{children}</MoniteScopedProvider>;
 };
 
 export const MoniteProvider = ({
