@@ -39,6 +39,9 @@ export const useMenuButton = () => {
   const menuId = `Monite-Menu-${useId()}`;
 
   const openMenu = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     setAnchorEl({
       element: event.currentTarget,
       open: true,
