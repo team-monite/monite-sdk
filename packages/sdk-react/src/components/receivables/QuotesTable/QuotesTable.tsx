@@ -38,7 +38,7 @@ export interface QuotesTableSortModel {
   sort: GridSortDirection;
 }
 
-type Props = {
+type QuotesTableProps = {
   /**
    * The event handler for a row click.
    *
@@ -54,10 +54,16 @@ type Props = {
   onChangeSort?: (params: QuotesTableSortModel) => void;
 };
 
-export const QuotesTable = ({
+export const QuotesTable = (props: QuotesTableProps) => (
+  <MoniteStyleProvider>
+    <QuotesTableBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const QuotesTableBase = ({
   onRowClick,
   onChangeSort: onChangeSortCallback,
-}: Props) => {
+}: QuotesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -111,115 +117,107 @@ export const QuotesTable = ({
     setCurrentPaginationToken(quotes?.next_pagination_token || null);
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ padding: 2, width: '100%' }}>
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          loading={isLoading}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                isNextAvailable={Boolean(quotes?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}
-                onPrevious={onPrev}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'document_id',
-              sortable: false,
-              headerName: t(i18n)`Number`,
-              flex: 1.2,
-            },
-            {
-              field: 'created_at',
-              sortable: false,
-              headerName: t(i18n)`Created on`,
-              valueFormatter: ({ value }) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 1,
-            },
-            {
-              field: 'issue_date',
-              sortable: false,
-              headerName: t(i18n)`Issue Date`,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                QuoteResponsePayload['issue_date']
-              >) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
-            },
-            {
-              field: 'counterpart_name',
-              sortable: false,
-              headerName: t(i18n)`Customer`,
-              flex: 1,
-            },
-            {
-              field: 'expiry_date',
-              sortable: false,
-              headerName: t(i18n)`Due date`,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                QuoteResponsePayload['expiry_date']
-              >) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
-            },
-            {
-              field: 'status',
-              sortable: false,
-              headerName: t(i18n)`Status`,
-              renderCell: (params) => {
-                const status = params.value as ReceivablesStatusEnum;
-
-                return (
-                  <Chip
-                    label={getCommonStatusLabel(status, i18n)}
-                    color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-                    variant="filled"
-                  />
-                );
-              },
-              flex: 1,
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              valueGetter: (params) => {
-                const row = params.row as QuoteResponsePayload;
-                const value = row.total_amount;
-
-                return value
-                  ? formatCurrencyToDisplay(value, row.currency)
-                  : '';
-              },
-              flex: 0.8,
-            },
-          ]}
-          rows={quotes?.data || []}
-        />
+    <Box sx={{ padding: 2, width: '100%' }}>
+      <Box sx={{ marginBottom: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
       </Box>
-    </MoniteStyleProvider>
+      <DataGrid
+        loading={isLoading}
+        sortModel={sortModel}
+        onSortModelChange={onChangeSort}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              isNextAvailable={Boolean(quotes?.next_pagination_token)}
+              onNext={onNext}
+              isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}
+              onPrevious={onPrev}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'document_id',
+            sortable: false,
+            headerName: t(i18n)`Number`,
+            flex: 1.2,
+          },
+          {
+            field: 'created_at',
+            sortable: false,
+            headerName: t(i18n)`Created on`,
+            valueFormatter: ({ value }) =>
+              value
+                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                : '—',
+            flex: 1,
+          },
+          {
+            field: 'issue_date',
+            sortable: false,
+            headerName: t(i18n)`Issue Date`,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<QuoteResponsePayload['issue_date']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+            flex: 1,
+          },
+          {
+            field: 'counterpart_name',
+            sortable: false,
+            headerName: t(i18n)`Customer`,
+            flex: 1,
+          },
+          {
+            field: 'expiry_date',
+            sortable: false,
+            headerName: t(i18n)`Due date`,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<QuoteResponsePayload['expiry_date']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+            flex: 1,
+          },
+          {
+            field: 'status',
+            sortable: false,
+            headerName: t(i18n)`Status`,
+            renderCell: (params) => {
+              const status = params.value as ReceivablesStatusEnum;
+
+              return (
+                <Chip
+                  label={getCommonStatusLabel(status, i18n)}
+                  color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
+                  variant="filled"
+                />
+              );
+            },
+            flex: 1,
+          },
+          {
+            field: 'amount',
+            headerName: t(i18n)`Amount`,
+            valueGetter: (params) => {
+              const row = params.row as QuoteResponsePayload;
+              const value = row.total_amount;
+
+              return value ? formatCurrencyToDisplay(value, row.currency) : '';
+            },
+            flex: 0.8,
+          },
+        ]}
+        rows={quotes?.data || []}
+      />
+    </Box>
   );
 };

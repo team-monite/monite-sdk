@@ -22,7 +22,7 @@ export const InvoiceError = ({
   const dialogContext = useDialog();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
@@ -44,6 +44,6 @@ export const InvoiceError = ({
       <DialogContent>
         <Box display="flex">{errorMessage}</Box>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

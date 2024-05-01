@@ -38,7 +38,13 @@ import {
 import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
 import { ProductType } from './components/ProductType';
 
-export const ExistingProductDetails = ({
+export const ExistingProductDetails = (props: IExistingProductDetailsProps) => (
+  <MoniteStyleProvider>
+    <ExistingProductDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ExistingProductDetailsBase = ({
   id,
   onUpdated,
   onDeleted,
@@ -89,11 +95,7 @@ export const ExistingProductDetails = ({
   }
 
   if (!isReadAllowed) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   if (productQueryError || !product) {

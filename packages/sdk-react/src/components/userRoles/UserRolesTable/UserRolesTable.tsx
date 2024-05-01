@@ -72,7 +72,13 @@ interface UserRolesTableSortModel {
   sort: GridSortDirection;
 }
 
-export const UserRolesTable = ({
+export const UserRolesTable = (props: IUserTableProps) => (
+  <MoniteStyleProvider>
+    <UserRolesTableBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const UserRolesTableBase = ({
   onFilterChanged,
   onSortChanged,
   onRowClick,
@@ -142,79 +148,72 @@ export const UserRolesTable = ({
   }
 
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
-      <Box
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          loading={isLoading}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'permissions',
-              headerName: t(i18n)`Permissions`,
-              sortable: false,
-              flex: 2,
-              renderCell: (params) => (
-                <PermissionsCell
-                  permissions={params.value}
-                  onCLickSeeAll={() => onRowClick?.(params.row.id)}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: true,
-              type: 'date',
-              flex: 1,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-          ]}
-          rows={roles?.data || []}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          getRowHeight={() => 'auto'}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
-          sx={{
-            [`& .${gridClasses.cell}`]: {
-              py: 1,
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
-                isNextAvailable={Boolean(roles?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+    <Box
+      sx={{
+        padding: 2,
+      }}
+    >
+      <Box sx={{ marginBottom: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
+      </Box>
+      <DataGrid
+        loading={isLoading}
+        columns={[
+          {
+            field: 'name',
+            headerName: t(i18n)`Name`,
+            sortable: false,
+            flex: 1,
+          },
+          {
+            field: 'permissions',
+            headerName: t(i18n)`Permissions`,
+            sortable: false,
+            flex: 2,
+            renderCell: (params) => (
+              <PermissionsCell
+                permissions={params.value}
+                onCLickSeeAll={() => onRowClick?.(params.row.id)}
               />
             ),
-          }}
-        />
-      </Box>
-    </MoniteStyleProvider>
+          },
+          {
+            field: 'created_at',
+            headerName: t(i18n)`Created on`,
+            sortable: true,
+            type: 'date',
+            flex: 1,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['created_at']>) =>
+              i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+        ]}
+        rows={roles?.data || []}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        getRowHeight={() => 'auto'}
+        sortModel={sortModel}
+        onSortModelChange={onChangeSort}
+        sx={{
+          [`& .${gridClasses.cell}`]: {
+            py: 1,
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
+              isNextAvailable={Boolean(roles?.next_pagination_token)}
+              onPrevious={onPrev}
+              onNext={onNext}
+            />
+          ),
+        }}
+      />
+    </Box>
   );
 };

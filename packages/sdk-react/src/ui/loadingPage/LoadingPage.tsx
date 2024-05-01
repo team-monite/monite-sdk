@@ -3,9 +3,7 @@ import { CenteredContentBox } from '@/ui/box';
 import { CircularProgress } from '@mui/material';
 
 export const LoadingPage = () => (
-  <MoniteStyleProvider>
-    <CenteredContentBox>
-      <CircularProgress />
-    </CenteredContentBox>
-  </MoniteStyleProvider>
+  <CenteredContentBox>
+    <CircularProgress />
+  </CenteredContentBox>
 );

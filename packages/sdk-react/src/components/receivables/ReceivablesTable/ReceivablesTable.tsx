@@ -22,7 +22,7 @@ interface IReceiveablesTableControlledProps {
   onTabChange: (tab: ReceivablesTableTabEnum) => void;
 }
 
-type IReceivablesTableProps = {
+type ReceivablesTableProps = {
   /**
    * The event handler for a row click.
    *
@@ -37,11 +37,17 @@ export enum ReceivablesTableTabEnum {
   CreditNotes,
 }
 
-export const ReceivablesTable = ({
+export const ReceivablesTable = (props: ReceivablesTableProps) => (
+  <MoniteStyleProvider>
+    <ReceivablesTableBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ReceivablesTableBase = ({
   onRowClick,
   tab: externalActiveTab,
   onTabChange: setExternalActiveTab,
-}: IReceivablesTableProps) => {
+}: ReceivablesTableProps) => {
   const { i18n } = useLingui();
   const [internalActiveTab, setInternalActiveTab] =
     useState<ReceivablesTableTabEnum>(ReceivablesTableTabEnum.Invoices);
@@ -61,7 +67,7 @@ export const ReceivablesTable = ({
   }, [activeTab, onRowClick]);
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
         <Tabs
           value={activeTab}
@@ -90,6 +96,6 @@ export const ReceivablesTable = ({
         </Tabs>
       </Box>
       {activeUITab}
-    </MoniteStyleProvider>
+    </>
   );
 };

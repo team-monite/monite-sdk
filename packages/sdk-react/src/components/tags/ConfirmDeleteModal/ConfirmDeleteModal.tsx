@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
-interface Props {
+interface ConfirmDeleteModalProps {
   /** The tag what we want to delete */
   tag: { id: string; name: string };
 
@@ -34,12 +34,18 @@ interface Props {
   modalOpened: boolean;
 }
 
-export const ConfirmDeleteModal = ({
+export const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => (
+  <MoniteStyleProvider>
+    <ConfirmDeleteModalBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ConfirmDeleteModalBase = ({
   tag,
   onClose,
   onDelete,
   modalOpened,
-}: Props) => {
+}: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
   const deleteTagMutation = useDeleteTag();
 
@@ -56,38 +62,36 @@ export const ConfirmDeleteModal = ({
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
-      <Dialog
-        open={modalOpened}
-        container={root}
-        onClose={onClose}
-        aria-label={t(i18n)`Delete tag`}
-        fullWidth={true}
-        maxWidth="sm"
-      >
-        <DialogTitle variant="h3">
-          {t(i18n)`Delete "${tag.name}" tag?`}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {t(i18n)`This action can't be undone.`}
-          </DialogContentText>
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          <Button variant="outlined" color="inherit" onClick={onClose}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDelete}
-            autoFocus
-          >
-            {t(i18n)`Delete`}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </MoniteStyleProvider>
+    <Dialog
+      open={modalOpened}
+      container={root}
+      onClose={onClose}
+      aria-label={t(i18n)`Delete tag`}
+      fullWidth={true}
+      maxWidth="sm"
+    >
+      <DialogTitle variant="h3">
+        {t(i18n)`Delete "${tag.name}" tag?`}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          {t(i18n)`This action can't be undone.`}
+        </DialogContentText>
+      </DialogContent>
+      <Divider />
+      <DialogActions>
+        <Button variant="outlined" color="inherit" onClick={onClose}>
+          {t(i18n)`Cancel`}
+        </Button>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={handleDelete}
+          autoFocus
+        >
+          {t(i18n)`Delete`}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

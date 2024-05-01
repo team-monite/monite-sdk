@@ -35,7 +35,15 @@ export interface IExistingApprovalPolicyDetailsProps {
   onChangeEditMode: (isEdit: boolean) => void;
 }
 
-export const ExistingApprovalPolicyDetails = ({
+export const ExistingApprovalPolicyDetails = (
+  props: IExistingApprovalPolicyDetailsProps
+) => (
+  <MoniteStyleProvider>
+    <ExistingApprovalPolicyDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ExistingApprovalPolicyDetailsBase = ({
   approvalPolicy,
   onChangeEditMode,
 }: IExistingApprovalPolicyDetailsProps) => {
@@ -50,7 +58,7 @@ export const ExistingApprovalPolicyDetails = ({
   });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box
           display="flex"
@@ -176,6 +184,6 @@ export const ExistingApprovalPolicyDetails = ({
           {t(i18n)`Edit`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

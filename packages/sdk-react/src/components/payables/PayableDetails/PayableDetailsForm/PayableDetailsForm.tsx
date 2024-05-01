@@ -132,6 +132,15 @@ const getValidationSchema = (i18n: I18n) =>
 export const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayableDetailsFormProps
+>((props, ref) => (
+  <MoniteStyleProvider>
+    <PayableDetailsFormBase ref={ref} {...props} />
+  </MoniteStyleProvider>
+));
+
+const PayableDetailsFormBase = forwardRef<
+  HTMLFormElement,
+  PayableDetailsFormProps
 >(({ payable, savePayable, createPayable, optionalFields, lineItems }, ref) => {
   const { i18n } = useLingui();
   const { formatFromMinorUnits, formatToMinorUnits, formatCurrencyToDisplay } =
@@ -190,191 +199,162 @@ export const PayableDetailsForm = forwardRef<
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
-      <Box
-        sx={{
-          pb: 6,
-          display: 'flex',
-          flex: '1 1 auto',
-          overflow: 'auto',
-          width: '100%',
-          height: 0,
-        }}
-      >
-        <FormProvider {...methods}>
-          <form
-            style={{ width: '100%' }}
-            ref={ref}
-            id="payableDetailsForm"
-            noValidate
-            onBlur={() => {
-              isSubmittedByKeyboardRef.current = false;
-            }}
-            onKeyDown={(event) => {
-              isSubmittedByKeyboardRef.current = event.key === 'Enter';
-            }}
-            onSubmit={handleSubmit(async (values) => {
-              const counterpartAddress =
-                counterpartAddressQuery?.data?.data.find(
-                  (address) => address.is_default
+    <Box
+      sx={{
+        pb: 6,
+        display: 'flex',
+        flex: '1 1 auto',
+        overflow: 'auto',
+        width: '100%',
+        height: 0,
+      }}
+    >
+      <FormProvider {...methods}>
+        <form
+          style={{ width: '100%' }}
+          ref={ref}
+          id="payableDetailsForm"
+          noValidate
+          onBlur={() => {
+            isSubmittedByKeyboardRef.current = false;
+          }}
+          onKeyDown={(event) => {
+            isSubmittedByKeyboardRef.current = event.key === 'Enter';
+          }}
+          onSubmit={handleSubmit(async (values) => {
+            const counterpartAddress = counterpartAddressQuery?.data?.data.find(
+              (address) => address.is_default
+            );
+
+            const invoiceData = prepareSubmit({
+              ...values,
+              counterpartAddressId: counterpartAddress?.id,
+            });
+
+            if (payable) {
+              savePayable &&
+                savePayable(
+                  payable.id,
+                  invoiceData,
+                  values.lineItems,
+                  dirtyFields
                 );
-
-              const invoiceData = prepareSubmit({
-                ...values,
-                counterpartAddressId: counterpartAddress?.id,
-              });
-
-              if (payable) {
-                savePayable &&
-                  savePayable(
-                    payable.id,
-                    invoiceData,
-                    values.lineItems,
-                    dirtyFields
-                  );
-              } else {
-                createPayable && createPayable(invoiceData, values.lineItems);
-              }
-            })}
-          >
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2" mb={2}>
-                  {t(i18n)`Details`}
-                </Typography>
-                <Paper variant="outlined" sx={{ p: 2 }}>
-                  <Stack spacing={3}>
-                    <Controller
-                      name="invoiceNumber"
-                      control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <TextField
-                          {...field}
-                          id={field.name}
-                          label={t(i18n)`Invoice Number`}
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(error)}
-                          helperText={error?.message}
-                          required
-                        />
-                      )}
-                    />
-                    <Controller
-                      name="counterpart"
-                      control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(error)}
-                        >
-                          <InputLabel htmlFor={field.name}>
-                            {t(i18n)`Counterpart`}
-                          </InputLabel>
-                          <Select
-                            {...field}
-                            id={field.name}
-                            labelId={field.name}
-                            label={t(i18n)`Counterpart`}
-                            MenuProps={{ container: root }}
-                            onChange={(event) => {
-                              resetField('counterpartBankAccount');
-
-                              return field.onChange(event);
-                            }}
-                          >
-                            {counterpartsToSelect(
-                              counterpartQuery?.data?.data
-                            ).map((counterpart) => (
-                              <MenuItem
-                                key={counterpart.value}
-                                value={counterpart.value}
-                              >
-                                {counterpart.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          {error && (
-                            <FormHelperText>{error.message}</FormHelperText>
-                          )}
-                        </FormControl>
-                      )}
-                    />
-                    <Controller
-                      name="counterpartBankAccount"
-                      control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl
-                          variant="outlined"
-                          fullWidth
-                          error={Boolean(error)}
-                        >
-                          <InputLabel htmlFor={field.name}>
-                            {t(i18n)`Bank Account`}
-                          </InputLabel>
-                          <Select
-                            {...field}
-                            id={field.name}
-                            labelId={field.name}
-                            label={t(i18n)`Bank Account`}
-                            MenuProps={{ container: root }}
-                            disabled={
-                              !counterpartBankAccountQuery?.data ||
-                              counterpartBankAccountQuery?.data?.data.length ===
-                                0
-                            }
-                          >
-                            {counterpartBankAccountsToSelect(
-                              counterpartBankAccountQuery?.data?.data || []
-                            ).map((bankAccount) => (
-                              <MenuItem
-                                key={bankAccount.value}
-                                value={bankAccount.value}
-                              >
-                                {bankAccount.label}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                          {error && (
-                            <FormHelperText>{error.message}</FormHelperText>
-                          )}
-                        </FormControl>
-                      )}
-                    />
-                    {showInvoiceDate && (
-                      <Controller
-                        name="invoiceDate"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <MuiDatePicker
-                            maxDate={currentDueDate}
-                            slotProps={{
-                              popper: { container: root },
-                              actionBar: {
-                                actions: ['clear', 'today'],
-                              },
-                              textField: {
-                                id: field.name,
-                                variant: 'outlined',
-                                fullWidth: true,
-                                error: Boolean(error),
-                                helperText: error?.message,
-                              },
-                            }}
-                            {...field}
-                            label={t(i18n)`Invoice date`}
-                            views={['year', 'month', 'day']}
-                          />
-                        )}
+            } else {
+              createPayable && createPayable(invoiceData, values.lineItems);
+            }
+          })}
+        >
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" mb={2}>
+                {t(i18n)`Details`}
+              </Typography>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                <Stack spacing={3}>
+                  <Controller
+                    name="invoiceNumber"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <TextField
+                        {...field}
+                        id={field.name}
+                        label={t(i18n)`Invoice Number`}
+                        variant="outlined"
+                        fullWidth
+                        error={Boolean(error)}
+                        helperText={error?.message}
+                        required
                       />
                     )}
+                  />
+                  <Controller
+                    name="counterpart"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        error={Boolean(error)}
+                      >
+                        <InputLabel htmlFor={field.name}>
+                          {t(i18n)`Counterpart`}
+                        </InputLabel>
+                        <Select
+                          {...field}
+                          id={field.name}
+                          labelId={field.name}
+                          label={t(i18n)`Counterpart`}
+                          MenuProps={{ container: root }}
+                          onChange={(event) => {
+                            resetField('counterpartBankAccount');
+
+                            return field.onChange(event);
+                          }}
+                        >
+                          {counterpartsToSelect(
+                            counterpartQuery?.data?.data
+                          ).map((counterpart) => (
+                            <MenuItem
+                              key={counterpart.value}
+                              value={counterpart.value}
+                            >
+                              {counterpart.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {error && (
+                          <FormHelperText>{error.message}</FormHelperText>
+                        )}
+                      </FormControl>
+                    )}
+                  />
+                  <Controller
+                    name="counterpartBankAccount"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <FormControl
+                        variant="outlined"
+                        fullWidth
+                        error={Boolean(error)}
+                      >
+                        <InputLabel htmlFor={field.name}>
+                          {t(i18n)`Bank Account`}
+                        </InputLabel>
+                        <Select
+                          {...field}
+                          id={field.name}
+                          labelId={field.name}
+                          label={t(i18n)`Bank Account`}
+                          MenuProps={{ container: root }}
+                          disabled={
+                            !counterpartBankAccountQuery?.data ||
+                            counterpartBankAccountQuery?.data?.data.length === 0
+                          }
+                        >
+                          {counterpartBankAccountsToSelect(
+                            counterpartBankAccountQuery?.data?.data || []
+                          ).map((bankAccount) => (
+                            <MenuItem
+                              key={bankAccount.value}
+                              value={bankAccount.value}
+                            >
+                              {bankAccount.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {error && (
+                          <FormHelperText>{error.message}</FormHelperText>
+                        )}
+                      </FormControl>
+                    )}
+                  />
+                  {showInvoiceDate && (
                     <Controller
-                      name="dueDate"
+                      name="invoiceDate"
                       control={control}
                       render={({ field, fieldState: { error } }) => (
                         <MuiDatePicker
-                          minDate={currentInvoiceDate}
+                          maxDate={currentDueDate}
                           slotProps={{
                             popper: { container: root },
                             actionBar: {
@@ -386,130 +366,151 @@ export const PayableDetailsForm = forwardRef<
                               fullWidth: true,
                               error: Boolean(error),
                               helperText: error?.message,
-                              required: true,
                             },
                           }}
                           {...field}
-                          label={t(i18n)`Due date`}
+                          label={t(i18n)`Invoice date`}
                           views={['year', 'month', 'day']}
                         />
                       )}
                     />
-                    <MoniteCurrency
-                      name="currency"
-                      control={control}
-                      required
-                    />
-                    {showTags && (
-                      <Controller
-                        name="tags"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl
-                            variant="outlined"
-                            fullWidth
-                            required
-                            error={Boolean(error)}
-                          >
-                            <Autocomplete
-                              {...field}
-                              id={field.name}
-                              multiple
-                              filterSelectedOptions
-                              getOptionLabel={(option) => option.label}
-                              options={tagsToSelect(tagQuery.data?.data)}
-                              slotProps={{
-                                popper: { container: root },
-                              }}
-                              isOptionEqualToValue={(option, value) =>
-                                option.value === value.value
-                              }
-                              onChange={(_, data) => {
-                                field.onChange(data);
-                              }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  label={t(i18n)`Tags`}
-                                  variant="outlined"
-                                  fullWidth
-                                  error={Boolean(error)}
-                                  helperText={error?.message}
-                                />
-                              )}
-                            />
-                            {error && (
-                              <FormHelperText>{error.message}</FormHelperText>
-                            )}
-                          </FormControl>
-                        )}
+                  )}
+                  <Controller
+                    name="dueDate"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <MuiDatePicker
+                        minDate={currentInvoiceDate}
+                        slotProps={{
+                          popper: { container: root },
+                          actionBar: {
+                            actions: ['clear', 'today'],
+                          },
+                          textField: {
+                            id: field.name,
+                            variant: 'outlined',
+                            fullWidth: true,
+                            error: Boolean(error),
+                            helperText: error?.message,
+                            required: true,
+                          },
+                        }}
+                        {...field}
+                        label={t(i18n)`Due date`}
+                        views={['year', 'month', 'day']}
                       />
                     )}
-                  </Stack>
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subtitle2" mb={2}>
-                  {t(i18n)`Items`}
-                </Typography>
-                <Paper variant="outlined" sx={{ p: 2 }}>
-                  <PayableLineItemsForm />
-                </Paper>
-              </Grid>
-              <Grid item xs={12}>
-                <Paper variant="outlined">
-                  <Table>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>{t(i18n)`Subtotal`}</TableCell>
-                        <TableCell align="right">
-                          {totals.subtotal && currentCurrency
-                            ? formatCurrencyToDisplay(
-                                formatToMinorUnits(
-                                  totals.subtotal,
-                                  currentCurrency
-                                ) || 0,
-                                currentCurrency
-                              )
-                            : '—'}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>{t(i18n)`Taxes`}</TableCell>
-                        <TableCell align="right">
-                          {totals.taxes && currentCurrency
-                            ? formatCurrencyToDisplay(
-                                formatToMinorUnits(
-                                  totals.taxes,
-                                  currentCurrency
-                                ) || 0,
-                                currentCurrency
-                              )
-                            : '—'}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '& td': { fontWeight: 500 } }}>
-                        <TableCell>{t(i18n)`Total`}</TableCell>
-                        <TableCell align="right">
-                          {totals.total && currentCurrency
-                            ? formatCurrencyToDisplay(
-                                formatToMinorUnits(
-                                  totals.total,
-                                  currentCurrency
-                                ) || 0,
-                                currentCurrency
-                              )
-                            : '—'}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </Paper>
-              </Grid>
+                  />
+                  <MoniteCurrency name="currency" control={control} required />
+                  {showTags && (
+                    <Controller
+                      name="tags"
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl
+                          variant="outlined"
+                          fullWidth
+                          required
+                          error={Boolean(error)}
+                        >
+                          <Autocomplete
+                            {...field}
+                            id={field.name}
+                            multiple
+                            filterSelectedOptions
+                            getOptionLabel={(option) => option.label}
+                            options={tagsToSelect(tagQuery.data?.data)}
+                            slotProps={{
+                              popper: { container: root },
+                            }}
+                            isOptionEqualToValue={(option, value) =>
+                              option.value === value.value
+                            }
+                            onChange={(_, data) => {
+                              field.onChange(data);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                label={t(i18n)`Tags`}
+                                variant="outlined"
+                                fullWidth
+                                error={Boolean(error)}
+                                helperText={error?.message}
+                              />
+                            )}
+                          />
+                          {error && (
+                            <FormHelperText>{error.message}</FormHelperText>
+                          )}
+                        </FormControl>
+                      )}
+                    />
+                  )}
+                </Stack>
+              </Paper>
             </Grid>
-          </form>
-        </FormProvider>
-      </Box>
-    </MoniteStyleProvider>
+            <Grid item xs={12}>
+              <Typography variant="subtitle2" mb={2}>
+                {t(i18n)`Items`}
+              </Typography>
+              <Paper variant="outlined" sx={{ p: 2 }}>
+                <PayableLineItemsForm />
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <Paper variant="outlined">
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>{t(i18n)`Subtotal`}</TableCell>
+                      <TableCell align="right">
+                        {totals.subtotal && currentCurrency
+                          ? formatCurrencyToDisplay(
+                              formatToMinorUnits(
+                                totals.subtotal,
+                                currentCurrency
+                              ) || 0,
+                              currentCurrency
+                            )
+                          : '—'}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>{t(i18n)`Taxes`}</TableCell>
+                      <TableCell align="right">
+                        {totals.taxes && currentCurrency
+                          ? formatCurrencyToDisplay(
+                              formatToMinorUnits(
+                                totals.taxes,
+                                currentCurrency
+                              ) || 0,
+                              currentCurrency
+                            )
+                          : '—'}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow sx={{ '& td': { fontWeight: 500 } }}>
+                      <TableCell>{t(i18n)`Total`}</TableCell>
+                      <TableCell align="right">
+                        {totals.total && currentCurrency
+                          ? formatCurrencyToDisplay(
+                              formatToMinorUnits(
+                                totals.total,
+                                currentCurrency
+                              ) || 0,
+                              currentCurrency
+                            )
+                          : '—'}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Paper>
+            </Grid>
+          </Grid>
+        </form>
+      </FormProvider>
+    </Box>
   );
 });

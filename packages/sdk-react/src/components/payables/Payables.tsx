@@ -40,7 +40,15 @@ export type PayablesProps = Pick<
   | 'onPay'
 >;
 
-export const Payables = ({
+export const Payables = (props: PayablesProps) => {
+  return (
+    <MoniteStyleProvider>
+      <PayablesBase {...props} />
+    </MoniteStyleProvider>
+  );
+};
+
+const PayablesBase = ({
   onSaved,
   onCanceled,
   onSubmitted,
@@ -82,7 +90,7 @@ export const Payables = ({
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -188,6 +196,6 @@ export const Payables = ({
           onSaved={onSaved}
         />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

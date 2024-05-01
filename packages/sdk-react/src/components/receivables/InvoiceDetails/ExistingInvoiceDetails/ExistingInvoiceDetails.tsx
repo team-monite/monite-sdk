@@ -94,7 +94,12 @@ enum InvoiceDetailsView {
 
 export const ExistingInvoiceDetails = (
   props: ExistingReceivableDetailsProps
-) => {
+) => (
+  <MoniteStyleProvider>
+    <ExistingInvoiceDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<InvoiceDetailsView>(
     InvoiceDetailsView.Overview
@@ -165,7 +170,7 @@ export const ExistingInvoiceDetails = (
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           <Grid container>
@@ -299,6 +304,6 @@ export const ExistingInvoiceDetails = (
           </Grid>
         </Grid>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

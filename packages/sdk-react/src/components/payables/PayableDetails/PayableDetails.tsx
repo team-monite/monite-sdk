@@ -24,7 +24,13 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
 }
 
-export const PayableDetails = ({
+export const PayableDetails = (props: PayablesDetailsProps) => (
+  <MoniteStyleProvider>
+    <PayableDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const PayableDetailsBase = ({
   id,
   optionalFields,
   onClose,
@@ -92,11 +98,7 @@ export const PayableDetails = ({
   }
 
   if (!isReadAllowed) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   if (payableQueryError) {
@@ -109,93 +111,91 @@ export const PayableDetails = ({
   }
 
   return (
-    <MoniteStyleProvider>
-      <Box
-        sx={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'absolute',
-        }}
+    <Box
+      sx={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+      }}
+    >
+      <Backdrop
+        open={isLoading}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <Backdrop
-          open={isLoading}
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        <LoadingPage />
+      </Backdrop>
+      <PayableDetailsHeader
+        payable={payable}
+        permissions={permissions}
+        setEdit={setEdit}
+        submitInvoice={submitInvoice}
+        rejectInvoice={rejectInvoice}
+        approveInvoice={approveInvoice}
+        cancelInvoice={cancelInvoice}
+        payInvoice={payInvoice}
+        onClose={onClose}
+      />
+      <Divider />
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Grid
+          container
+          spacing={4}
+          alignItems="stretch"
+          flexGrow={1}
+          height="100%"
         >
-          <LoadingPage />
-        </Backdrop>
-        <PayableDetailsHeader
-          payable={payable}
-          permissions={permissions}
-          setEdit={setEdit}
-          submitInvoice={submitInvoice}
-          rejectInvoice={rejectInvoice}
-          approveInvoice={approveInvoice}
-          cancelInvoice={cancelInvoice}
-          payInvoice={payInvoice}
-          onClose={onClose}
-        />
-        <Divider />
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid
+            item
             container
-            spacing={4}
-            alignItems="stretch"
-            flexGrow={1}
+            xs={6}
+            flexDirection="column"
             height="100%"
+            overflow="auto"
           >
-            <Grid
-              item
-              container
-              xs={6}
-              flexDirection="column"
-              height="100%"
-              overflow="auto"
-            >
-              {payable?.file && (
-                <FileViewer
-                  name={payable.file.name}
-                  mimetype={payable.file.mimetype}
-                  url={payable.file.url}
-                />
-              )}
-              {isUpdateAllowed && payable?.id && !payable?.file && (
-                <PayableDetailsAttachFile payableId={payable.id} />
-              )}
-              {!isUpdateAllowed && payable?.id && !payable?.file && (
-                <PayableDetailsNoAttachedFile />
-              )}
-            </Grid>
-            <Grid
-              item
-              container
-              xs={6}
-              flexDirection="column"
-              height="100%"
-              overflow="auto"
-            >
-              {isEdit ? (
-                <PayableDetailsForm
-                  setEdit={setEdit}
-                  savePayable={saveInvoice}
-                  createPayable={createInvoice}
+            {payable?.file && (
+              <FileViewer
+                name={payable.file.name}
+                mimetype={payable.file.mimetype}
+                url={payable.file.url}
+              />
+            )}
+            {isUpdateAllowed && payable?.id && !payable?.file && (
+              <PayableDetailsAttachFile payableId={payable.id} />
+            )}
+            {!isUpdateAllowed && payable?.id && !payable?.file && (
+              <PayableDetailsNoAttachedFile />
+            )}
+          </Grid>
+          <Grid
+            item
+            container
+            xs={6}
+            flexDirection="column"
+            height="100%"
+            overflow="auto"
+          >
+            {isEdit ? (
+              <PayableDetailsForm
+                setEdit={setEdit}
+                savePayable={saveInvoice}
+                createPayable={createInvoice}
+                payable={payable}
+                optionalFields={optionalFields}
+                lineItems={lineItems}
+              />
+            ) : (
+              payable && (
+                <PayableDetailsInfo
                   payable={payable}
                   optionalFields={optionalFields}
-                  lineItems={lineItems}
                 />
-              ) : (
-                payable && (
-                  <PayableDetailsInfo
-                    payable={payable}
-                    optionalFields={optionalFields}
-                  />
-                )
-              )}
-            </Grid>
+              )
+            )}
           </Grid>
-        </DialogContent>
-      </Box>
-    </MoniteStyleProvider>
+        </Grid>
+      </DialogContent>
+    </Box>
   );
 };

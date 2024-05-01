@@ -17,7 +17,13 @@ import {
   useCounterpartDetails,
 } from './useCounterpartDetails';
 
-export const CounterpartDetails = (props: CounterpartsDetailsProps) => {
+export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
+  <MoniteStyleProvider>
+    <CounterpartDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const {
     counterpartId,
     counterpartView,
@@ -200,5 +206,5 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => {
     showView,
   ]);
 
-  return <MoniteStyleProvider>{renderComponent}</MoniteStyleProvider>;
+  return renderComponent;
 };

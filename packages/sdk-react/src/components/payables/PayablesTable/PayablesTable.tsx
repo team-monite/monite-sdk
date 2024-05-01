@@ -38,7 +38,7 @@ import {
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
 
-interface Props {
+interface PayablesTableProps {
   /**
    * The event handler for a row click.
    *
@@ -75,11 +75,17 @@ interface Props {
   }) => void;
 }
 
-export const PayablesTable = ({
+export const PayablesTable = (props: PayablesTableProps) => (
+  <MoniteStyleProvider>
+    <PayablesTableBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
-}: Props) => {
+}: PayablesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -153,194 +159,185 @@ export const PayablesTable = ({
 
   /** We have to wait until `usePayablesList` and `useIsActionAllowed` is finished */
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
+    <Box
+      sx={{
+        padding: 2,
+      }}
+    >
       <Box
         sx={{
-          padding: 2,
+          marginBottom: 2,
         }}
       >
-        <Box
-          sx={{
-            marginBottom: 2,
-          }}
-        >
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          loading={isLoading}
-          pageSizeOptions={[PAGE_LIMIT, PAGE_LIMIT * 2, PAGE_LIMIT * 3]}
-          onRowClick={(params) => {
-            onRowClick?.(params.row.id);
-          }}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
-                isNextAvailable={Boolean(payables?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'document_id',
-              sortable: false,
-              headerName: t(i18n)`Invoice #`,
-              flex: 1.1,
-              colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 2 : 1),
-              renderCell: (params) => {
-                const payable = params.row;
-
-                if (isPayableInOCRProcessing(payable)) {
-                  return (
-                    <Box display="flex">
-                      <FindInPageOutlinedIcon fontSize="small" />
-                      {payable.file?.name}
-                    </Box>
-                  );
-                }
-
-                return payable.document_id;
-              },
-            },
-            {
-              field: 'counterpart_id',
-              sortable: false,
-              headerName: t(i18n)`Counterpart`,
-              flex: 1.2,
-              renderCell: (params) => (
-                <CounterpartCell counterpartId={params.value} />
-              ),
-            },
-            {
-              field: 'created_at',
-              sortable: false,
-              type: 'date',
-              headerName: t(i18n)`Invoice date`,
-              flex: 0.7,
-              colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 3 : 1),
-              renderCell: ({ row, formattedValue }) => {
-                if (isPayableInOCRProcessing(row)) {
-                  return (
-                    <Box display="flex">
-                      <CircularProgress size={22} sx={{ mr: 1.5 }} />
-                      {t(i18n)`Processing file…`}
-                    </Box>
-                  );
-                }
-
-                return formattedValue;
-              },
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'issued_at',
-              sortable: false,
-              type: 'date',
-              headerName: t(i18n)({
-                id: 'Issue date Name',
-                message: 'Issue date',
-                comment: 'Payables Table "Issue date" heading title',
-              }),
-              flex: 0.7,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                PayableResponseSchema['issued_at']
-              >) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'due_date',
-              sortable: false,
-              type: 'date',
-              headerName: t(i18n)({
-                id: 'Due date Name',
-                message: 'Due date',
-                comment: 'Payables Table "Due date" heading title',
-              }),
-              flex: 0.7,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'status',
-              sortable: false,
-              headerName: t(i18n)({
-                id: 'Status Name',
-                message: 'Status',
-                comment: 'Payables Table "Status" heading title',
-              }),
-              flex: 0.9,
-              renderCell: (params) => {
-                const status = params.value as PayableStateEnum;
-
-                return (
-                  <Chip
-                    label={getRowToStatusTextMap(i18n)[status]}
-                    color={ROW_TO_STATUS_MUI_MAP[status]}
-                    variant="filled"
-                  />
-                );
-              },
-            },
-            {
-              field: 'amount',
-              sortable: false,
-              headerName: t(i18n)({
-                id: 'Amount Name',
-                message: 'Amount',
-                comment: 'Payables Table "Amount" heading title',
-              }),
-              width: 100,
-              valueGetter: (params) => {
-                const payable = params.row;
-
-                return payable.amount_to_pay && payable.currency
-                  ? formatCurrencyToDisplay(
-                      payable.amount_to_pay,
-                      payable.currency
-                    )
-                  : '';
-              },
-            },
-            {
-              field: 'pay',
-              headerName: '',
-              sortable: false,
-              renderCell: (params) => {
-                const payable = params.row;
-
-                return <PayablesTableAction payable={payable} onPay={onPay} />;
-              },
-            },
-          ]}
-          rows={payables?.data || []}
-        />
+        <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
-    </MoniteStyleProvider>
+      <DataGrid
+        loading={isLoading}
+        pageSizeOptions={[PAGE_LIMIT, PAGE_LIMIT * 2, PAGE_LIMIT * 3]}
+        onRowClick={(params) => {
+          onRowClick?.(params.row.id);
+        }}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
+              isNextAvailable={Boolean(payables?.next_pagination_token)}
+              onPrevious={onPrev}
+              onNext={onNext}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'document_id',
+            sortable: false,
+            headerName: t(i18n)`Invoice #`,
+            flex: 1.1,
+            colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 2 : 1),
+            renderCell: (params) => {
+              const payable = params.row;
+
+              if (isPayableInOCRProcessing(payable)) {
+                return (
+                  <Box display="flex">
+                    <FindInPageOutlinedIcon fontSize="small" />
+                    {payable.file?.name}
+                  </Box>
+                );
+              }
+
+              return payable.document_id;
+            },
+          },
+          {
+            field: 'counterpart_id',
+            sortable: false,
+            headerName: t(i18n)`Counterpart`,
+            flex: 1.2,
+            renderCell: (params) => (
+              <CounterpartCell counterpartId={params.value} />
+            ),
+          },
+          {
+            field: 'created_at',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)`Invoice date`,
+            flex: 0.7,
+            colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 3 : 1),
+            renderCell: ({ row, formattedValue }) => {
+              if (isPayableInOCRProcessing(row)) {
+                return (
+                  <Box display="flex">
+                    <CircularProgress size={22} sx={{ mr: 1.5 }} />
+                    {t(i18n)`Processing file…`}
+                  </Box>
+                );
+              }
+
+              return formattedValue;
+            },
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['created_at']>) =>
+              i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'issued_at',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Issue date Name',
+              message: 'Issue date',
+              comment: 'Payables Table "Issue date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['issued_at']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'due_date',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Due date Name',
+              message: 'Due date',
+              comment: 'Payables Table "Due date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'status',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Status Name',
+              message: 'Status',
+              comment: 'Payables Table "Status" heading title',
+            }),
+            flex: 0.9,
+            renderCell: (params) => {
+              const status = params.value as PayableStateEnum;
+
+              return (
+                <Chip
+                  label={getRowToStatusTextMap(i18n)[status]}
+                  color={ROW_TO_STATUS_MUI_MAP[status]}
+                  variant="filled"
+                />
+              );
+            },
+          },
+          {
+            field: 'amount',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Amount Name',
+              message: 'Amount',
+              comment: 'Payables Table "Amount" heading title',
+            }),
+            width: 100,
+            valueGetter: (params) => {
+              const payable = params.row;
+
+              return payable.amount_to_pay && payable.currency
+                ? formatCurrencyToDisplay(
+                    payable.amount_to_pay,
+                    payable.currency
+                  )
+                : '';
+            },
+          },
+          {
+            field: 'pay',
+            headerName: '',
+            sortable: false,
+            renderCell: (params) => {
+              const payable = params.row;
+
+              return <PayablesTableAction payable={payable} onPay={onPay} />;
+            },
+          },
+        ]}
+        rows={payables?.data || []}
+      />
+    </Box>
   );
 };

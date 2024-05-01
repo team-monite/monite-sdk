@@ -39,7 +39,7 @@ interface ITag {
   name: string;
 }
 
-interface Props {
+interface TagFormModalProps {
   tag?: ITag;
   onCreate?: (tag: TagReadSchema) => void;
   onUpdate?: (tag: TagReadSchema) => void;
@@ -59,13 +59,19 @@ interface FormFields {
  *  If no `tag` provided then the form is working on `creating` mode
  *  If `tag` provided then the form is working on `updating` mode
  */
-export const TagFormModal = ({
+export const TagFormModal = (props: TagFormModalProps) => (
+  <MoniteStyleProvider>
+    <TagFormModalBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const TagFormModalBase = ({
   tag,
   onCreate,
   onUpdate,
   onClose,
   open,
-}: Props) => {
+}: TagFormModalProps) => {
   const { i18n } = useLingui();
   const tagCreateMutation = useCreateTag();
   const tagUpdateMutation = useUpdateTag();
@@ -118,68 +124,66 @@ export const TagFormModal = ({
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
-      <Dialog
-        open={open}
-        container={root}
-        onClose={onClose}
-        aria-label={t(i18n)`Edit tag`}
-        TransitionProps={{
-          /**
-           * We have to reset the current form state
-           *  when the user closes the modal
-           */
-          onExited: () => reset(),
-        }}
-        fullWidth
-        maxWidth="sm"
+    <Dialog
+      open={open}
+      container={root}
+      onClose={onClose}
+      aria-label={t(i18n)`Edit tag`}
+      TransitionProps={{
+        /**
+         * We have to reset the current form state
+         *  when the user closes the modal
+         */
+        onExited: () => reset(),
+      }}
+      fullWidth
+      maxWidth="sm"
+    >
+      <form
+        id="createTagForm"
+        name="createTagForm"
+        onSubmit={handleSubmit((values) => {
+          tag ? updateTag(tag, values.name) : createTag(values.name);
+        })}
       >
-        <form
-          id="createTagForm"
-          name="createTagForm"
-          onSubmit={handleSubmit((values) => {
-            tag ? updateTag(tag, values.name) : createTag(values.name);
-          })}
-        >
-          <DialogTitle variant="h3">
-            {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create New Tag`}
-          </DialogTitle>
-          <DialogContent>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field, fieldState }) => (
-                <TextField
-                  id={field.name}
-                  autoFocus
-                  label={t(i18n)`Name`}
-                  variant="standard"
-                  fullWidth
-                  error={Boolean(fieldState.error)}
-                  helperText={fieldState.error?.message}
-                  {...field}
-                />
-              )}
-            />
-          </DialogContent>
-          <Divider />
-          <DialogActions>
-            <Button variant="outlined" color="inherit" onClick={onClose}>
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              disabled={
-                tagCreateMutation.isPending || tagUpdateMutation.isPending
-              }
-              type="submit"
-            >
-              {tag ? t(i18n)`Save` : t(i18n)`Create`}
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </MoniteStyleProvider>
+        <DialogTitle variant="h3">
+          {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create New Tag`}
+        </DialogTitle>
+        <DialogContent>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field, fieldState }) => (
+              <TextField
+                id={field.name}
+                autoFocus
+                label={t(i18n)`Name`}
+                variant="standard"
+                fullWidth
+                error={Boolean(fieldState.error)}
+                helperText={fieldState.error?.message}
+                {...field}
+              />
+            )}
+          />
+        </DialogContent>
+        <Divider />
+        <DialogActions>
+          <Button variant="outlined" color="inherit" onClick={onClose}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={
+              tagCreateMutation.isPending || tagUpdateMutation.isPending
+            }
+            type="submit"
+          >
+            {tag ? t(i18n)`Save` : t(i18n)`Create`}
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 };

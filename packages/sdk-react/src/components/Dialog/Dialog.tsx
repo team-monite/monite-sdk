@@ -45,66 +45,70 @@ export const useDialog = (): DialogContextType | undefined => {
   return useContext(DialogContext);
 };
 
-export const Dialog = (props: MoniteDialogProps) => {
+export const Dialog = (props: MoniteDialogProps) => (
+  <MoniteStyleProvider>
+    <DialogBase {...props} />
+  </MoniteStyleProvider>
+);
+
+export const DialogBase = (props: MoniteDialogProps) => {
   const { alignDialog, onClosed, ...otherProps } = props;
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
-      <DialogContext.Provider
-        value={{ isDialogContent: true, onClose: props.onClose }}
-      >
-        <MuiDialog
-          {...otherProps}
-          open={props.open}
-          container={root}
-          TransitionComponent={Transition}
-          TransitionProps={{
-            alignDialog: alignDialog,
-            onExited: onClosed,
-          }}
-          onClose={props.onClose}
-          classes={{
-            container: [
-              ScopedCssBaselineContainerClassName,
-              alignDialog && `MuiDialog-container__align-${alignDialog}`,
-            ]
-              .filter(Boolean)
-              .join(' '),
-            paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
-          }}
-          slotProps={
-            props.fullScreen
-              ? {
-                  backdrop: {
-                    style: {
-                      background: 'none',
-                    },
+    <DialogContext.Provider
+      value={{ isDialogContent: true, onClose: props.onClose }}
+    >
+      <MuiDialog
+        {...otherProps}
+        open={props.open}
+        container={root}
+        TransitionComponent={Transition}
+        TransitionProps={{
+          alignDialog: alignDialog,
+          onExited: onClosed,
+        }}
+        onClose={props.onClose}
+        classes={{
+          container: [
+            ScopedCssBaselineContainerClassName,
+            alignDialog && `MuiDialog-container__align-${alignDialog}`,
+          ]
+            .filter(Boolean)
+            .join(' '),
+          paper: alignDialog && `MuiDialog-paper__align-${alignDialog}`,
+        }}
+        slotProps={
+          props.fullScreen
+            ? {
+                backdrop: {
+                  style: {
+                    background: 'none',
                   },
-                }
-              : {}
+                },
+              }
+            : {}
+        }
+        css={css`
+          .MuiDialog-container__align-right {
+            justify-content: right;
           }
-          css={css`
-            .MuiDialog-container__align-right {
-              justify-content: right;
-            }
-            .MuiDialog-container__align-left {
-              justify-content: left;
-            }
+          .MuiDialog-container__align-left {
+            justify-content: left;
+          }
 
-            .MuiDialog-paper__align-left,
-            .MuiDialog-paper__align-right {
-              width: 50%;
-              height: 100%;
-              max-height: none;
-              margin: 0;
-              border-radius: 0;
-            }
-          `}
-        >
-          {props.children}
-        </MuiDialog>
-      </DialogContext.Provider>
-    </MoniteStyleProvider>
+          .MuiDialog-paper__align-left,
+          .MuiDialog-paper__align-right {
+            width: 50%;
+            height: 100%;
+            max-height: none;
+            margin: 0;
+            border-radius: 0;
+          }
+        `}
+      >
+        {props.children}
+      </MuiDialog>
+    </DialogContext.Provider>
   );
 };

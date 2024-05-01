@@ -42,7 +42,13 @@ type IProductEditFormProps = Pick<
   onCanceled: () => void;
 };
 
-export const ProductEditForm = (props: IProductEditFormProps) => {
+export const ProductEditForm = (props: IProductEditFormProps) => (
+  <MoniteStyleProvider>
+    <ProductEditFormBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ProductEditFormBase = (props: IProductEditFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits, formatFromMinorUnits } = useCurrencies();
@@ -82,7 +88,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
 
   if (productQueryError || !product) {
     return (
-      <MoniteStyleProvider>
+      <>
         <Grid container alignItems="center">
           <Grid item xs={11}>
             <Typography variant="h3" sx={{ padding: 3 }}>
@@ -114,7 +120,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
             </Stack>
           </Stack>
         </CenteredContentBox>
-      </MoniteStyleProvider>
+      </>
     );
   }
 
@@ -151,7 +157,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
   };
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
@@ -191,6 +197,6 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
           {t(i18n)`Update`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

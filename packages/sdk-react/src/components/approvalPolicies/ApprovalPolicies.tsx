@@ -20,7 +20,13 @@ import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
  * This component renders the approval policies page. It includes a table of approval policies, a dialog for creating new approval policies,
  * and a header with a button for opening the create dialog.
  */
-export const ApprovalPolicies = () => {
+export const ApprovalPolicies = () => (
+  <MoniteStyleProvider>
+    <ApprovalPoliciesBase />
+  </MoniteStyleProvider>
+);
+
+const ApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
   const [selectedApprovalPolicyId, setSelectedApprovalPolicyId] = useState<
     string | undefined
@@ -53,7 +59,7 @@ export const ApprovalPolicies = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -88,6 +94,6 @@ export const ApprovalPolicies = () => {
           onCreated={() => setIsCreateDialogOpened(false)}
         />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

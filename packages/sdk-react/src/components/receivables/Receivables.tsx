@@ -15,7 +15,13 @@ import { useLingui } from '@lingui/react';
 import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
-export const Receivables = () => {
+export const Receivables = () => (
+  <MoniteStyleProvider>
+    <ReceivablesBase />
+  </MoniteStyleProvider>
+);
+
+const ReceivablesBase = () => {
   const { i18n } = useLingui();
 
   const [invoiceId, setInvoiceId] = useState<string>('');
@@ -69,7 +75,7 @@ export const Receivables = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -125,6 +131,6 @@ export const Receivables = () => {
           }}
         />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

@@ -53,8 +53,18 @@ type GetComponentProps<T> = T extends
   ? P
   : never;
 
-/** General component for all Receivables (Invoices, Credit Notes, Quotes) */
+/**
+ * General component for all Receivables (Invoices, Credit Notes, Quotes)
+ * */
 export const ExistingReceivableDetails = (
+  props: ExistingReceivableDetailsProps
+) => (
+  <MoniteStyleProvider>
+    <ExistingReceivableDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const ExistingReceivableDetailsBase = (
   props: ExistingReceivableDetailsProps
 ) => {
   const { i18n } = useLingui();
@@ -122,7 +132,7 @@ export const ExistingReceivableDetails = (
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
@@ -271,6 +281,6 @@ export const ExistingReceivableDetails = (
           </Button>
         )}
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

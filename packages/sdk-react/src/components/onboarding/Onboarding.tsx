@@ -13,7 +13,11 @@ import { OnboardingContent } from './OnboardingContent';
  * @description Onboarding component has not yet been released.
  */
 export function Onboarding() {
-  return <OnboardingChildren />;
+  return (
+    <MoniteStyleProvider>
+      <OnboardingChildren />
+    </MoniteStyleProvider>
+  );
 }
 
 function OnboardingChildren() {
@@ -28,10 +32,8 @@ function OnboardingChildren() {
   }
 
   return (
-    <MoniteStyleProvider>
-      <OnboardingContextProvider>
-        <OnboardingContent />
-      </OnboardingContextProvider>
-    </MoniteStyleProvider>
+    <OnboardingContextProvider>
+      <OnboardingContent />
+    </OnboardingContextProvider>
   );
 }

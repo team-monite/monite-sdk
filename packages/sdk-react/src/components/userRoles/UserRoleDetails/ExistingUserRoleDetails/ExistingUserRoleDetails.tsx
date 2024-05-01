@@ -177,7 +177,7 @@ export const ExistingUserRoleDetails = ({
   ];
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box
           display="flex"
@@ -236,6 +236,6 @@ export const ExistingUserRoleDetails = ({
           </StyledTableContainer>
         )}
       </StyledDialogContainer>
-    </MoniteStyleProvider>
+    </>
   );
 };

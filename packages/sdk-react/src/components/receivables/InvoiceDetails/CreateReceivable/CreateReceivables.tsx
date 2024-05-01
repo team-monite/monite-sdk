@@ -58,7 +58,13 @@ type ReceivableViewState =
  * A component for creating new Receivable
  * Supported only `invoice` type
  */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
+export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
+  <MoniteStyleProvider>
+    <CreateReceivablesBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const methods = useForm<ICreateReceivablesForm>({
@@ -103,7 +109,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           {dialogContext?.isDialogContent && (
@@ -232,6 +238,6 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
           </form>
         </FormProvider>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

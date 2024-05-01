@@ -28,15 +28,21 @@ import {
   Typography,
 } from '@mui/material';
 
-interface IEmailInvoiceDetailsProps {
+interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
 }
 
-export const EmailInvoiceDetails = ({
+export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => (
+  <MoniteStyleProvider>
+    <EmailInvoiceDetailsBase {...props} />
+  </MoniteStyleProvider>
+);
+
+const EmailInvoiceDetailsBase = ({
   invoiceId,
   onClose,
-}: IEmailInvoiceDetailsProps) => {
+}: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
   const { control, handleSubmit, formState } = useForm({
@@ -138,7 +144,7 @@ export const EmailInvoiceDetails = ({
   );
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           <Grid container>
@@ -232,6 +238,6 @@ export const EmailInvoiceDetails = ({
           </Stack>
         </form>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

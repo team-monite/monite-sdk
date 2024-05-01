@@ -11,7 +11,13 @@ import { ActionEnum } from '@monite/sdk-api';
 
 import { UserRolesTable } from './UserRolesTable';
 
-export const UserRoles = () => {
+export const UserRoles = () => (
+  <MoniteStyleProvider>
+    <UserRolesBase />
+  </MoniteStyleProvider>
+);
+
+const UserRolesBase = () => {
   const { i18n } = useLingui();
   const [isDetailsDialogOpened, setIsDetailsDialogOpened] = useState(false);
   const [selectedUserRoleId, setSelectedUserRoleID] = useState<
@@ -31,7 +37,7 @@ export const UserRoles = () => {
   };
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader title={t(i18n)`User Roles`} />
 
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
@@ -44,6 +50,6 @@ export const UserRoles = () => {
       >
         <UserRoleDetails id={selectedUserRoleId} />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

@@ -12,7 +12,13 @@ import { useLingui } from '@lingui/react';
 import { ActionEnum } from '@monite/sdk-api';
 import { Button, CircularProgress } from '@mui/material';
 
-export const Tags = () => {
+export const Tags = () => (
+  <MoniteStyleProvider>
+    <TagsBase />
+  </MoniteStyleProvider>
+);
+
+const TagsBase = () => {
   const { i18n } = useLingui();
   const [creationModalOpened, setCreationModalOpened] =
     useState<boolean>(false);
@@ -40,7 +46,7 @@ export const Tags = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -64,6 +70,6 @@ export const Tags = () => {
       {isReadAllowed && <TagsTable />}
 
       <TagFormModal open={creationModalOpened} onClose={hideCreationModal} />
-    </MoniteStyleProvider>
+    </>
   );
 };

@@ -27,7 +27,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
   );
 
   return (
-    <MoniteStyleProvider>
+    <>
       {dialogContext && (
         <Grid container padding={2}>
           <Grid item xs={11} />
@@ -53,6 +53,6 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
           </Stack>
         </Stack>
       </CenteredContentBox>
-    </MoniteStyleProvider>
+    </>
   );
 };
