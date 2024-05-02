@@ -1541,6 +1541,7 @@ msgstr "Create new"
 #: src/components/counterparts/Counterparts.test.tsx:111
 #: src/components/counterparts/Counterparts.tsx:121
 #: src/components/payables/Payables.tsx:104
+#: src/components/products/Products.test.tsx:89
 #: src/components/products/Products.tsx:97
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
 msgid "Create New"
@@ -1745,9 +1746,9 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:463
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:79
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:231
-#: src/components/products/Products.test.tsx:154
-#: src/components/products/Products.test.tsx:180
-#: src/components/products/Products.test.tsx:206
+#: src/components/products/Products.test.tsx:157
+#: src/components/products/Products.test.tsx:183
+#: src/components/products/Products.test.tsx:214
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:310
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:211
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:248
@@ -2065,7 +2066,8 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:572
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:62
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:239
-#: src/components/products/Products.test.tsx:153
+#: src/components/products/Products.test.tsx:156
+#: src/components/products/Products.test.tsx:250
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:286
 #: src/components/TableActions/TableActions.tsx:52
 #: src/components/tags/TagsTable/TagsTable.test.tsx:389
