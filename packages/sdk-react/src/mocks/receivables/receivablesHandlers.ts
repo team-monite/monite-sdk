@@ -9,6 +9,8 @@ import {
   InvoiceResponsePayload,
   ReceivableFileUrl,
   ReceivableUpdatePayload,
+  UpdateLineItems,
+  LineItemsResponse,
 } from '@monite/sdk-api';
 
 import { http, HttpResponse } from 'msw';
@@ -107,6 +109,40 @@ export const receivableHandlers = [
         },
       });
     }
+  }),
+
+  // Update receivable line items
+  http.put<
+    { id: string },
+    UpdateLineItems,
+    LineItemsResponse | ErrorSchemaResponse
+  >(`${receivableDetailPath}/line_items`, async ({ request, params }) => {
+    const jsonBody = await request.json();
+
+    const invoiceLineItemsResponse = receivableListFixture.invoice.find(
+      (invoice) => invoice.id === params.id
+    );
+
+    if (!invoiceLineItemsResponse) {
+      await delay();
+
+      return HttpResponse.json(
+        {
+          error: {
+            message: `There is no receivable by provided id: ${params.id}`,
+          },
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    await delay();
+
+    return HttpResponse.json({
+      data: invoiceLineItemsResponse.line_items,
+    });
   }),
 
   // update

@@ -11,13 +11,19 @@ import {
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCounterpartAddresses, useUpdateReceivable } from '@/core/queries';
+import {
+  useCounterpartAddresses,
+  useUpdateReceivable,
+  useUpdateReceivableLineItems,
+} from '@/core/queries';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   InvoiceResponsePayload,
+  ReceivableResponse,
   ReceivableUpdatePayload,
+  UpdateLineItems,
 } from '@monite/sdk-api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
@@ -40,7 +46,7 @@ interface IEditInvoiceDetails {
   invoice: InvoiceResponsePayload;
 
   /** Callback that is called when the invoice is updated */
-  onUpdated: () => void;
+  onUpdated: (updatedReceivable: ReceivableResponse) => void;
 
   /** Callback that is called when the user cancels the editing */
   onCancel: () => void;
@@ -93,7 +99,7 @@ export const EditInvoiceDetails = ({
           price: lineItem.product.price,
           measure_unit_id: lineItem.product.measure_unit_id,
         })),
-        vat_exemption_rationale: invoice.memo,
+        vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
 
         /** Items section */
         entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
@@ -108,9 +114,9 @@ export const EditInvoiceDetails = ({
         invoice.entity_vat_id?.id,
         invoice.fulfillment_date,
         invoice.line_items,
-        invoice.memo,
         invoice.payment_terms?.id,
         invoice.purchase_order,
+        invoice.vat_exemption_rationale,
       ]
     ),
   });
@@ -140,7 +146,11 @@ export const EditInvoiceDetails = ({
     setIsAlertOpen(true);
   }, [isDirty, onCancel]);
 
+  const updateReceivableLineItems = useUpdateReceivableLineItems(invoice.id);
   const updateReceivable = useUpdateReceivable(invoice.id);
+
+  const isLoading =
+    updateReceivableLineItems.isPending || updateReceivable.isPending;
 
   return (
     <MoniteStyleProvider>
@@ -151,7 +161,7 @@ export const EditInvoiceDetails = ({
             color={isDirty ? 'error' : 'primary'}
             onClick={handleCancelWithAlert}
             startIcon={<ArrowBackIcon />}
-            disabled={updateReceivable.isPending}
+            disabled={isLoading}
           >{t(i18n)`Cancel`}</Button>
           <Box sx={{ marginLeft: 'auto' }}>
             <Button
@@ -160,7 +170,7 @@ export const EditInvoiceDetails = ({
               color="primary"
               type="submit"
               form="receivablesDetailsForm"
-              disabled={updateReceivable.isPending}
+              disabled={isLoading}
             >{t(i18n)`Update`}</Button>
           </Box>
         </Toolbar>
@@ -172,6 +182,14 @@ export const EditInvoiceDetails = ({
             id="receivablesDetailsForm"
             noValidate
             onSubmit={handleSubmit((values) => {
+              const lineItems: UpdateLineItems = {
+                data: values.line_items.map((lineItem) => ({
+                  quantity: lineItem.quantity,
+                  product_id: lineItem.product_id,
+                  vat_rate_id: lineItem.vat_rate_id,
+                })),
+              };
+
               const invoicePayload: ReceivableUpdatePayload = {
                 invoice: {
                   /** Customer section */
@@ -199,11 +217,6 @@ export const EditInvoiceDetails = ({
                     values.entity_bank_account_id || undefined,
                   payment_terms_id: values.payment_terms_id,
                   entity_vat_id_id: values.entity_vat_id_id || undefined,
-                  line_items: values.line_items.map((lineItem) => ({
-                    quantity: lineItem.quantity,
-                    product_id: lineItem.product_id,
-                    vat_rate_id: lineItem.vat_rate_id,
-                  })),
                   fulfillment_date: values.fulfillment_date
                     ? /**
                        * We have to change the date as Backend accepts it.
@@ -215,11 +228,13 @@ export const EditInvoiceDetails = ({
                 },
               };
 
-              updateReceivable.mutate(invoicePayload, {
-                onSuccess: (updatedReceivable) => {
-                  console.log('--- invoicePayload', invoicePayload);
-
-                  onUpdated();
+              updateReceivableLineItems.mutate(lineItems, {
+                onSuccess: () => {
+                  updateReceivable.mutate(invoicePayload, {
+                    onSuccess: (updatedReceivable) => {
+                      onUpdated(updatedReceivable);
+                    },
+                  });
                 },
               });
             })}
@@ -229,16 +244,16 @@ export const EditInvoiceDetails = ({
                 {t(i18n)`Edit invoice ${invoice.id}`}
               </Typography>
               <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={updateReceivable.isPending} />
+                <CustomerSection disabled={isLoading} />
                 <EntitySection
-                  disabled={updateReceivable.isPending}
+                  disabled={isLoading}
                   hidden={['purchase_order']}
                 />
                 <ItemsSection
                   actualCurrency={actualCurrency}
                   onCurrencyChanged={setActualCurrency}
                 />
-                <PaymentSection disabled={updateReceivable.isPending} />
+                <PaymentSection disabled={isLoading} />
               </Stack>
             </Stack>
             <Dialog

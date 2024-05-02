@@ -9,6 +9,7 @@ import {
   CreditNoteResponsePayload,
   CreditNoteStateEnum,
   InvoiceResponsePayload,
+  LineItemsResponse,
   QuoteResponsePayload,
   QuoteStateEnum,
   ReceivableFacadeCreatePayload,
@@ -20,6 +21,7 @@ import {
   ReceivableService,
   ReceivablesStatusEnum,
   ReceivableUpdatePayload,
+  UpdateLineItems,
 } from '@monite/sdk-api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -82,13 +84,36 @@ export const useCreateReceivable = () => {
   });
 };
 
+/**
+ * Update receivable line items
+ *
+ * @param id - Receivable id
+ */
+export const useUpdateReceivableLineItems = (id: string) => {
+  const { monite } = useMoniteContext();
+
+  return useMutation<LineItemsResponse, Error, UpdateLineItems>({
+    mutationFn: (payload) =>
+      monite.api.receivable.updateLineItemsById(id, payload),
+  });
+};
+
+/**
+ * Update receivable by provided `id`
+ *
+ * @param id - Receivable id
+ */
 export const useUpdateReceivable = (id: string) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
   const { setEntity } = useReceivableDetailCache(id);
 
-  return useMutation<ReceivableResponse, Error, ReceivableUpdatePayload>({
+  return useMutation<
+    ReceivableResponse,
+    Error,
+    Omit<ReceivableUpdatePayload, 'lineItems'>
+  >({
     mutationFn: (payload) => monite.api.receivable.updateById(id, payload),
 
     onSuccess: (receivable) => {
