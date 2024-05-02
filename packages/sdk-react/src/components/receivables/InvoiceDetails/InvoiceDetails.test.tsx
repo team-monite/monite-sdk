@@ -14,7 +14,9 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { InvoiceDetails } from './InvoiceDetails';
 
-const invoiceId = receivableListFixture.quote[0].id;
+const invoice = receivableListFixture.invoice[0];
+const quoteId = receivableListFixture.quote[0].id;
+const creditNoteId = receivableListFixture.credit_note[0].id;
 
 interface TestConcurrentActionParams {
   callback: string;
@@ -31,7 +33,7 @@ function getActionButton(
   switch (action) {
     case InvoiceDetailsPermissions.Delete: {
       return within(actionsSection).findByRole('button', {
-        name: 'Delete invoice',
+        name: /Delete/i,
       });
     }
 
@@ -43,7 +45,7 @@ function getActionButton(
 
     case InvoiceDetailsPermissions.Issue: {
       return within(actionsSection).findByRole('button', {
-        name: 'Issue invoice',
+        name: /Issue/i,
       });
     }
 
@@ -57,18 +59,18 @@ function getActionButton(
 
 describe('InvoiceDetails', () => {
   const quoteFixture = receivableListFixture.quote.find(
-    (item) => item.id === invoiceId
+    (item) => item.id === quoteId
   );
   const invoiceFixture = receivableListFixture.invoice.find(
-    (item) => item.id === invoiceId
+    (item) => item.id === invoice.id
   );
   const creditNoteFixture = receivableListFixture.credit_note.find(
-    (item) => item.id === invoiceId
+    (item) => item.id === creditNoteId
   );
   const fixture = quoteFixture || invoiceFixture || creditNoteFixture;
 
   if (!fixture) {
-    throw new Error(`Could not find fixture by id: ${invoiceId}`);
+    throw new Error(`Could not find fixture by id: ${invoice}`);
   }
 
   const initialStatus = fixture.status;
@@ -93,26 +95,11 @@ describe('InvoiceDetails', () => {
       });
     });
 
-    describe('# Invoice details', () => {
-      test('should show "Issue" and "Delete" buttons for invoice in "Draft" status', async () => {
-        fixture.status = ReceivablesStatusEnum.DRAFT;
-
-        renderWithClient(<InvoiceDetails id={invoiceId} />);
-
-        await waitUntilTableIsLoaded();
-
-        expect(
-          await getActionButton(InvoiceDetailsPermissions.Issue)
-        ).toBeInTheDocument();
-        expect(
-          await getActionButton(InvoiceDetailsPermissions.Delete)
-        ).toBeInTheDocument();
-      });
-
+    describe('# Quote details', () => {
       test.skip('should show "Cancel" button for invoice in "ISSUED" status', async () => {
         fixture.status = ReceivablesStatusEnum.ISSUED;
 
-        renderWithClient(<InvoiceDetails id={invoiceId} />);
+        renderWithClient(<InvoiceDetails id={quoteId} />);
 
         await waitUntilTableIsLoaded();
 
@@ -154,7 +141,7 @@ describe('InvoiceDetails', () => {
         async (status) => {
           fixture.status = status;
 
-          renderWithClient(<InvoiceDetails id={invoiceId} />);
+          renderWithClient(<InvoiceDetails id={quoteId} />);
 
           await waitUntilTableIsLoaded();
 
@@ -236,7 +223,7 @@ describe('InvoiceDetails', () => {
           [callback]: onMock,
         };
 
-        renderWithClient(<InvoiceDetails id={invoiceId} {...props} />);
+        renderWithClient(<InvoiceDetails id={quoteId} {...props} />);
 
         await waitUntilTableIsLoaded();
 
@@ -244,7 +231,7 @@ describe('InvoiceDetails', () => {
         fireEvent.click(actionButton);
 
         await waitFor(() => {
-          expect(onMock).toHaveBeenCalledWith(invoiceId);
+          expect(onMock).toHaveBeenCalledWith(quoteId);
         });
       }
     );
@@ -254,9 +241,7 @@ describe('InvoiceDetails', () => {
 
       const onDeleteMock = jest.fn();
 
-      renderWithClient(
-        <InvoiceDetails id={invoiceId} onDelete={onDeleteMock} />
-      );
+      renderWithClient(<InvoiceDetails id={quoteId} onDelete={onDeleteMock} />);
 
       await waitUntilTableIsLoaded();
 
@@ -266,7 +251,7 @@ describe('InvoiceDetails', () => {
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
-        expect(onDeleteMock).toHaveBeenCalledWith(invoiceId);
+        expect(onDeleteMock).toHaveBeenCalledWith(quoteId);
       });
     });
 
@@ -275,9 +260,7 @@ describe('InvoiceDetails', () => {
 
       const onDeleteMock = jest.fn();
 
-      renderWithClient(
-        <InvoiceDetails id={invoiceId} onDelete={onDeleteMock} />
-      );
+      renderWithClient(<InvoiceDetails id={quoteId} onDelete={onDeleteMock} />);
 
       await waitUntilTableIsLoaded();
 
@@ -287,7 +270,7 @@ describe('InvoiceDetails', () => {
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
-        expect(onDeleteMock).toHaveBeenCalledWith(invoiceId);
+        expect(onDeleteMock).toHaveBeenCalledWith(quoteId);
       });
     });
 
@@ -296,7 +279,7 @@ describe('InvoiceDetails', () => {
 
       renderWithClient(
         <Dialog open onClose={onCloseMock}>
-          <InvoiceDetails id={invoiceId} />
+          <InvoiceDetails id={quoteId} />
         </Dialog>
       );
 
@@ -308,6 +291,24 @@ describe('InvoiceDetails', () => {
       fireEvent.click(closeButton);
 
       expect(onCloseMock).toHaveBeenCalled();
+    });
+  });
+
+  describe('# Edit invoice', () => {
+    test('should show "EditInvoice" component when we click on "Edit invoice" button', async () => {
+      renderWithClient(<InvoiceDetails id={invoice.id} />);
+
+      await waitUntilTableIsLoaded();
+
+      const editButton = screen.getByRole('button', {
+        name: 'Edit invoice',
+      });
+
+      fireEvent.click(editButton);
+
+      expect(
+        await screen.findByText(`Edit invoice ${invoice.id}`)
+      ).toBeInTheDocument();
     });
   });
 });

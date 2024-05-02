@@ -103,12 +103,10 @@ function createRandomLineItem(): ResponseItem {
     product: {
       id: faker.string.uuid(),
       name: faker.commerce.productName(),
-      price: faker.datatype.boolean(0.9)
-        ? {
-            value: faker.number.int({ min: 10, max: 30_000 }),
-            currency: CurrencyEnum.EUR,
-          }
-        : undefined,
+      price: {
+        value: faker.number.int({ min: 10, max: 30_000 }),
+        currency: CurrencyEnum.EUR,
+      },
       measure_unit_id: faker.string.sample(),
       created_at: faker.date.past().toString(),
       entity_id: faker.string.uuid(),
@@ -255,13 +253,8 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
-    counterpart_billing_address: faker.datatype.boolean()
-      ? generateCounterpartAddress()
-      : undefined,
+    counterpart_billing_address: generateCounterpartAddress(),
     counterpart_shipping_address: counterpartAddress,
-    // counterpart_shipping_address: faker.datatype.boolean()
-    //   ? generateCounterpartAddress()
-    //   : undefined,
     counterpart_contact: faker.datatype.boolean()
       ? {
           first_name: faker.person.firstName(),

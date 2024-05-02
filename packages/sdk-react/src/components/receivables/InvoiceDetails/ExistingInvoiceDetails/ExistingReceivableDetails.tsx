@@ -265,7 +265,7 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes(InvoiceDetailsPermissions.Issue) && (
           <Button
-            aria-label={t(i18n)`Issue invoice`}
+            aria-label={t(i18n)`Issue`}
             onClick={queryActions.issueInvoice}
             variant="outlined"
             disabled={isButtonsLoading || !isUpdateAllowed}

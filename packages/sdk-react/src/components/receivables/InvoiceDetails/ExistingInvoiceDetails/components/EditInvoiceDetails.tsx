@@ -215,7 +215,7 @@ export const EditInvoiceDetails = ({
                   /** We shouldn't send an empty string to the server if the value is not set */
                   entity_bank_account_id:
                     values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id,
+                  payment_terms_id: values.payment_terms_id ?? '',
                   entity_vat_id_id: values.entity_vat_id_id || undefined,
                   fulfillment_date: values.fulfillment_date
                     ? /**
@@ -224,6 +224,7 @@ export const EditInvoiceDetails = ({
                        */
                       format(values.fulfillment_date, 'yyyy-MM-dd')
                     : undefined,
+                  /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
                   // purchase_order: values.purchase_order || undefined,
                 },
               };
