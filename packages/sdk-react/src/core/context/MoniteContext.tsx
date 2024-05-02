@@ -51,24 +51,28 @@ interface MoniteContextProviderProps extends MoniteContextInputValue {
 /**
  * @internal
  */
-export const MoniteContextProvider = (props: MoniteContextProviderProps) => {
-  const locale = useMemo(() => {
-    // todo: maybe move to separate function
-    const localeCode =
-      props.locale?.code ??
-      (typeof navigator === 'undefined' ? 'en' : navigator.language);
-
-    return {
-      ...props.locale,
-      code: localeCode,
-    };
-  }, [props.locale]);
-
+export const MoniteContextProvider = ({
+  locale,
+  ...restProps
+}: MoniteContextProviderProps) => {
   return (
-    <LinguiDynamicI18n locale={locale}>
-      {(i18n) => <ContextProvider {...props} i18n={i18n} />}
+    <LinguiDynamicI18n locale={getLocaleWithDefaults(locale)}>
+      {(i18n) => <ContextProvider {...restProps} i18n={i18n} />}
     </LinguiDynamicI18n>
   );
+};
+
+const getLocaleWithDefaults = (
+  locale: MoniteContextProviderProps['locale']
+) => {
+  const localeCode =
+    locale?.code ??
+    (typeof navigator === 'undefined' ? 'en' : navigator.language);
+
+  return {
+    ...locale,
+    code: localeCode,
+  };
 };
 
 interface ContextProviderProps extends MoniteContextInputValue {
