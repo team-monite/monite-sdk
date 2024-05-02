@@ -49,8 +49,6 @@ export const useMenuButton = () => {
   };
 
   const closeMenu = () => {
-    anchorEl.element?.focus();
-
     setAnchorEl((prev) => ({
       ...prev,
       open: false,
