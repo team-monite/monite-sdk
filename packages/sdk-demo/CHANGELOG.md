@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 1.5.0
+
+### Minor Changes
+
+- b47ae586: add theme package and theme switcher to demo
+
+### Patch Changes
+
+- @monite/sdk-api@3.11.0
+
 ## 1.4.1
 
 ### Patch Changes
