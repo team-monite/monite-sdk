@@ -99,6 +99,7 @@ export const ExistingInvoiceDetails = (
     <ExistingInvoiceDetailsBase {...props} />
   </MoniteStyleProvider>
 );
+
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<InvoiceDetailsView>(

@@ -181,119 +181,121 @@ const ProductsTableBase = ({
   }
 
   return (
-    <Box
-      sx={{
-        padding: 2,
-      }}
-    >
-      <Box sx={{ marginBottom: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
-      <DataGrid
-        rows={products?.data || []}
-        onRowClick={(params) => {
-          onRowClick?.(params.row);
+    <>
+      <Box
+        sx={{
+          padding: 2,
         }}
-        columns={[
-          {
-            field: 'name',
-            headerName: t(i18n)`Name, description`,
-            flex: 3,
-            renderCell: (params) => (
-              <Stack spacing={1} width="100%">
-                <Typography variant="caption">{params.row.name}</Typography>
-                <Typography
-                  color="secondary"
-                  sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                >
-                  {params.row.description}
-                </Typography>
-              </Stack>
-            ),
-          },
-          {
-            field: 'type',
-            headerName: t(i18n)`Type`,
-            flex: 1,
-            sortable: false,
-            renderCell: (params) => {
-              return params.row.type ? (
-                <ProductType type={params.row.type} />
-              ) : null;
+      >
+        <Box sx={{ marginBottom: 2 }}>
+          <FiltersComponent onChangeFilter={onChangeFilter} />
+        </Box>
+        <DataGrid
+          rows={products?.data || []}
+          onRowClick={(params) => {
+            onRowClick?.(params.row);
+          }}
+          columns={[
+            {
+              field: 'name',
+              headerName: t(i18n)`Name, description`,
+              flex: 3,
+              renderCell: (params) => (
+                <Stack spacing={1} width="100%">
+                  <Typography variant="caption">{params.row.name}</Typography>
+                  <Typography
+                    color="secondary"
+                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                  >
+                    {params.row.description}
+                  </Typography>
+                </Stack>
+              ),
             },
-          },
-          {
-            field: 'price',
-            headerName: t(i18n)`Price per unit`,
-            flex: 1,
-            sortable: false,
-            align: 'right',
-            headerAlign: 'right',
-            valueGetter: (params) => {
-              const price = params.value as ProductServiceResponse['price'];
+            {
+              field: 'type',
+              headerName: t(i18n)`Type`,
+              flex: 1,
+              sortable: false,
+              renderCell: (params) => {
+                return params.row.type ? (
+                  <ProductType type={params.row.type} />
+                ) : null;
+              },
+            },
+            {
+              field: 'price',
+              headerName: t(i18n)`Price per unit`,
+              flex: 1,
+              sortable: false,
+              align: 'right',
+              headerAlign: 'right',
+              valueGetter: (params) => {
+                const price = params.value as ProductServiceResponse['price'];
 
-              return price
-                ? formatCurrencyToDisplay(price.value, price.currency)
-                : '';
+                return price
+                  ? formatCurrencyToDisplay(price.value, price.currency)
+                  : '';
+              },
             },
-          },
-          {
-            field: 'measure_unit_id',
-            headerName: t(i18n)`Units`,
-            flex: 1,
-            sortable: false,
-            renderCell: (params) => {
-              return <MeasureUnit unitId={params.value} />;
+            {
+              field: 'measure_unit_id',
+              headerName: t(i18n)`Units`,
+              flex: 1,
+              sortable: false,
+              renderCell: (params) => {
+                return <MeasureUnit unitId={params.value} />;
+              },
             },
-          },
-          {
-            field: 'actions',
-            sortable: false,
-            headerName: '',
-            width: 70,
-            renderCell: (params) => (
-              <TableActions
-                permissions={{
-                  isUpdateAllowed: isUpdateSupported,
-                  isDeleteAllowed: isDeleteSupported,
-                }}
-                onEdit={() => onEdit?.(params.row)}
-                onDelete={() => {
-                  setSelectedProduct(params.row);
-                  setIsDeleteDialogOpen(true);
-                }}
+            {
+              field: 'actions',
+              sortable: false,
+              headerName: '',
+              width: 70,
+              renderCell: (params) => (
+                <TableActions
+                  permissions={{
+                    isUpdateAllowed: isUpdateSupported,
+                    isDeleteAllowed: isDeleteSupported,
+                  }}
+                  onEdit={() => onEdit?.(params.row)}
+                  onDelete={() => {
+                    setSelectedProduct(params.row);
+                    setIsDeleteDialogOpen(true);
+                  }}
+                />
+              ),
+            },
+          ]}
+          loading={isLoading}
+          sortModel={sortModel}
+          onSortModelChange={onChangeSort}
+          sx={{
+            '& .MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+            '&.MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+          }}
+          slots={{
+            pagination: () => (
+              <TablePagination
+                isPreviousAvailable={Boolean(products?.prev_pagination_token)}
+                isNextAvailable={Boolean(products?.next_pagination_token)}
+                onPrevious={onPrev}
+                onNext={onNext}
               />
             ),
-          },
-        ]}
-        loading={isLoading}
-        sortModel={sortModel}
-        onSortModelChange={onChangeSort}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
-        slots={{
-          pagination: () => (
-            <TablePagination
-              isPreviousAvailable={Boolean(products?.prev_pagination_token)}
-              isNextAvailable={Boolean(products?.next_pagination_token)}
-              onPrevious={onPrev}
-              onNext={onNext}
-            />
-          ),
-        }}
-      />
-      <ProductDeleteModal
-        id={selectedProduct?.id}
-        open={isDeleteDialogOpen}
-        onDeleted={onDeleted}
-        onClose={() => setIsDeleteDialogOpen(false)}
-      />
-    </Box>
+          }}
+        />
+        <ProductDeleteModal
+          id={selectedProduct?.id}
+          open={isDeleteDialogOpen}
+          onDeleted={onDeleted}
+          onClose={() => setIsDeleteDialogOpen(false)}
+        />
+      </Box>
+    </>
   );
 };

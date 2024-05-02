@@ -102,95 +102,99 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setCurrentPaginationToken(creditNotes?.next_pagination_token || null);
 
   return (
-    <Box sx={{ padding: 2, width: '100%' }}>
-      <Box sx={{ marginBottom: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
+    <>
+      <Box sx={{ padding: 2, width: '100%' }}>
+        <Box sx={{ marginBottom: 2 }}>
+          <Filters onChangeFilter={onChangeFilter} />
+        </Box>
+        <DataGrid
+          loading={isLoading}
+          sx={{
+            '& .MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+            '&.MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+          }}
+          sortModel={sortModel}
+          onSortModelChange={onChangeSort}
+          onRowClick={(params) => onRowClick?.(params.row.id)}
+          slots={{
+            pagination: () => (
+              <TablePagination
+                isNextAvailable={Boolean(creditNotes?.next_pagination_token)}
+                onNext={onNext}
+                isPreviousAvailable={Boolean(
+                  creditNotes?.prev_pagination_token
+                )}
+                onPrevious={onPrev}
+              />
+            ),
+          }}
+          columns={[
+            {
+              field: 'document_id',
+              headerName: t(i18n)`Number`,
+              sortable: false,
+              flex: 1.3,
+            },
+            {
+              field: 'created_at',
+              headerName: t(i18n)`Created on`,
+              sortable: false,
+              valueFormatter: ({ value }) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                  : '—',
+              flex: 0.7,
+            },
+            {
+              field: 'issue_date',
+              headerName: t(i18n)`Issue date`,
+              sortable: false,
+              valueFormatter: ({ value }) =>
+                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              flex: 0.7,
+            },
+            {
+              field: 'counterpart_name',
+              headerName: t(i18n)`Customer`,
+              sortable: false,
+              flex: 1,
+            },
+            {
+              field: 'status',
+              headerName: t(i18n)`Status`,
+              sortable: false,
+              flex: 1,
+              renderCell: (params) => {
+                const status = params.value as ReceivablesStatusEnum;
+
+                return (
+                  <Chip
+                    color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
+                    label={getCommonStatusLabel(status, i18n)}
+                    variant="filled"
+                  />
+                );
+              },
+            },
+            {
+              field: 'amount',
+              headerName: t(i18n)`Amount`,
+              valueGetter: (params) => {
+                const row = params.row;
+                const value = row.total_amount;
+
+                return value && formatCurrencyToDisplay(value, row.currency);
+              },
+              flex: 0.5,
+            },
+          ]}
+          rows={creditNotes?.data ?? []}
+        />
       </Box>
-      <DataGrid
-        loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
-        sortModel={sortModel}
-        onSortModelChange={onChangeSort}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
-        slots={{
-          pagination: () => (
-            <TablePagination
-              isNextAvailable={Boolean(creditNotes?.next_pagination_token)}
-              onNext={onNext}
-              isPreviousAvailable={Boolean(creditNotes?.prev_pagination_token)}
-              onPrevious={onPrev}
-            />
-          ),
-        }}
-        columns={[
-          {
-            field: 'document_id',
-            headerName: t(i18n)`Number`,
-            sortable: false,
-            flex: 1.3,
-          },
-          {
-            field: 'created_at',
-            headerName: t(i18n)`Created on`,
-            sortable: false,
-            valueFormatter: ({ value }) =>
-              value
-                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                : '—',
-            flex: 0.7,
-          },
-          {
-            field: 'issue_date',
-            headerName: t(i18n)`Issue date`,
-            sortable: false,
-            valueFormatter: ({ value }) =>
-              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            flex: 0.7,
-          },
-          {
-            field: 'counterpart_name',
-            headerName: t(i18n)`Customer`,
-            sortable: false,
-            flex: 1,
-          },
-          {
-            field: 'status',
-            headerName: t(i18n)`Status`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => {
-              const status = params.value as ReceivablesStatusEnum;
-
-              return (
-                <Chip
-                  color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-                  label={getCommonStatusLabel(status, i18n)}
-                  variant="filled"
-                />
-              );
-            },
-          },
-          {
-            field: 'amount',
-            headerName: t(i18n)`Amount`,
-            valueGetter: (params) => {
-              const row = params.row;
-              const value = row.total_amount;
-
-              return value && formatCurrencyToDisplay(value, row.currency);
-            },
-            flex: 0.5,
-          },
-        ]}
-        rows={creditNotes?.data ?? []}
-      />
-    </Box>
+    </>
   );
 };

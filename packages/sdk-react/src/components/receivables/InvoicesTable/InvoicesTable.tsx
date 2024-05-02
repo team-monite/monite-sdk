@@ -107,121 +107,133 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setCurrentPaginationToken(invoices?.next_pagination_token || null);
 
   return (
-    <Box sx={{ padding: 2, width: '100%' }}>
-      <Box sx={{ marginBottom: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
-      </Box>
-      <DataGrid
-        loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
-        sortModel={sortModel}
-        onSortModelChange={onChangeSort}
-        onRowClick={(params) => onRowClick?.(params.row.id)}
-        slots={{
-          pagination: () => (
-            <TablePagination
-              isNextAvailable={Boolean(invoices?.next_pagination_token)}
-              onNext={onNext}
-              isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}
-              onPrevious={onPrev}
-            />
-          ),
-        }}
-        columns={[
-          {
-            field: 'document_id',
-            headerName: t(i18n)`Number`,
-            sortable: false,
-            flex: 1,
-            renderCell: ({ value }) => {
-              if (!value) {
-                return (
-                  <Typography variant="body1" color="secondary">{t(
-                    i18n
-                  )`INV-auto`}</Typography>
-                );
-              }
-
-              return <Typography variant="body1">{value}</Typography>;
+    <>
+      <Box sx={{ padding: 2, width: '100%' }}>
+        <Box sx={{ marginBottom: 2 }}>
+          <Filters onChangeFilter={onChangeFilter} />
+        </Box>
+        <DataGrid
+          loading={isLoading}
+          sx={{
+            '& .MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
             },
-          },
-          {
-            field: 'counterpart_id',
-            headerName: t(i18n)`Customer`,
-            sortable: false,
-            flex: 1.3,
-            renderCell: (params) => (
-              <InvoiceCounterpartCell counterpartId={params.value} />
+            '&.MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+          }}
+          sortModel={sortModel}
+          onSortModelChange={onChangeSort}
+          onRowClick={(params) => onRowClick?.(params.row.id)}
+          slots={{
+            pagination: () => (
+              <TablePagination
+                isNextAvailable={Boolean(invoices?.next_pagination_token)}
+                onNext={onNext}
+                isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}
+                onPrevious={onPrev}
+              />
             ),
-          },
-          {
-            field: 'created_at',
-            headerName: t(i18n)`Created on`,
-            sortable: false,
-            valueFormatter: ({ value }) =>
-              value
-                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                : '—',
-            flex: 0.7,
-          },
-          {
-            field: 'issue_date',
-            headerName: t(i18n)`Issue date`,
-            sortable: false,
-            valueFormatter: (params) =>
-              params.value
-                ? i18n.date(params.value, DateTimeFormatOptions.EightDigitDate)
-                : '—',
-            flex: 0.7,
-          },
-          {
-            field: 'status',
-            headerName: t(i18n)`Status`,
-            sortable: false,
-            renderCell: (params: GridRenderCellParams<ReceivableResponse>) => {
-              const status = params.value as ReceivablesStatusEnum;
+          }}
+          columns={[
+            {
+              field: 'document_id',
+              headerName: t(i18n)`Number`,
+              sortable: false,
+              flex: 1,
+              renderCell: ({ value }) => {
+                if (!value) {
+                  return (
+                    <Typography variant="body1" color="secondary">{t(
+                      i18n
+                    )`INV-auto`}</Typography>
+                  );
+                }
 
-              return (
-                <Chip
-                  color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-                  label={getCommonStatusLabel(status, i18n)}
-                  variant="filled"
-                />
-              );
+                return <Typography variant="body1">{value}</Typography>;
+              },
             },
-            flex: 1,
-          },
-          {
-            field: 'amount',
-            headerName: t(i18n)`Amount`,
-            valueGetter: (params) => {
-              const row = params.row as InvoiceResponsePayload;
-              const value = row.total_amount;
+            {
+              field: 'counterpart_id',
+              headerName: t(i18n)`Customer`,
+              sortable: false,
+              flex: 1.3,
+              renderCell: (params) => (
+                <InvoiceCounterpartCell counterpartId={params.value} />
+              ),
+            },
+            {
+              field: 'created_at',
+              headerName: t(i18n)`Created on`,
+              sortable: false,
+              valueFormatter: ({ value }) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                  : '—',
+              flex: 0.7,
+            },
+            {
+              field: 'issue_date',
+              headerName: t(i18n)`Issue date`,
+              sortable: false,
+              valueFormatter: (params) =>
+                params.value
+                  ? i18n.date(
+                      params.value,
+                      DateTimeFormatOptions.EightDigitDate
+                    )
+                  : '—',
+              flex: 0.7,
+            },
+            {
+              field: 'status',
+              headerName: t(i18n)`Status`,
+              sortable: false,
+              renderCell: (
+                params: GridRenderCellParams<ReceivableResponse>
+              ) => {
+                const status = params.value as ReceivablesStatusEnum;
 
-              return value ? formatCurrencyToDisplay(value, row.currency) : '';
+                return (
+                  <Chip
+                    color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
+                    label={getCommonStatusLabel(status, i18n)}
+                    variant="filled"
+                  />
+                );
+              },
+              flex: 1,
             },
-            flex: 0.5,
-          },
-          {
-            field: 'fulfillment_date',
-            headerName: t(i18n)`Due date`,
-            sortable: false,
-            valueFormatter: (params) =>
-              params.value
-                ? i18n.date(params.value, DateTimeFormatOptions.EightDigitDate)
-                : '—',
-            flex: 0.7,
-          },
-        ]}
-        rows={invoices?.data ?? []}
-      />
-    </Box>
+            {
+              field: 'amount',
+              headerName: t(i18n)`Amount`,
+              valueGetter: (params) => {
+                const row = params.row as InvoiceResponsePayload;
+                const value = row.total_amount;
+
+                return value
+                  ? formatCurrencyToDisplay(value, row.currency)
+                  : '';
+              },
+              flex: 0.5,
+            },
+            {
+              field: 'fulfillment_date',
+              headerName: t(i18n)`Due date`,
+              sortable: false,
+              valueFormatter: (params) =>
+                params.value
+                  ? i18n.date(
+                      params.value,
+                      DateTimeFormatOptions.EightDigitDate
+                    )
+                  : '—',
+              flex: 0.7,
+            },
+          ]}
+          rows={invoices?.data ?? []}
+        />
+      </Box>
+    </>
   );
 };

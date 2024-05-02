@@ -131,88 +131,92 @@ const ApprovalPoliciesTableBase = ({
   };
 
   return (
-    <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
-      <Box sx={{ marginBottom: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
+    <>
+      <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
+        <Box sx={{ marginBottom: 2 }}>
+          <Filters onChangeFilter={onChangeFilter} />
+        </Box>
+        <DataGrid
+          sx={{
+            '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
+              py: '8px',
+            },
+            '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
+              py: '15px',
+            },
+            '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
+              py: '22px',
+            },
+            '& .MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+            '&.MuiDataGrid-withBorderColor': {
+              borderColor: 'divider',
+            },
+          }}
+          loading={isLoading}
+          getRowHeight={() => 'auto'}
+          columns={[
+            {
+              field: 'name',
+              headerName: t(i18n)`Policy name`,
+              sortable: false,
+              flex: 1,
+            },
+            {
+              field: 'triggers',
+              headerName: t(i18n)`Triggers`,
+              sortable: false,
+              flex: 1,
+              renderCell: (params) => (
+                <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+              ),
+            },
+            {
+              field: 'rule',
+              headerName: t(i18n)`Rule`,
+              sortable: false,
+              flex: 1,
+              renderCell: (params) => (
+                <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+              ),
+            },
+            {
+              field: 'created_at',
+              headerName: t(i18n)`Created at`,
+              sortable: false,
+              flex: 0.7,
+              valueFormatter: ({ value }) =>
+                i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+            },
+            {
+              field: 'created_by',
+              headerName: t(i18n)`Created by`,
+              sortable: false,
+              flex: 0.8,
+              renderCell: ({ value }) => (
+                <ApprovalPoliciesUser entityUserId={value} />
+              ),
+            },
+          ]}
+          rows={approvalPolicies?.data || []}
+          onRowClick={(params) => onRowClick?.(params.row)}
+          slots={{
+            pagination: () => (
+              <TablePagination
+                isNextAvailable={Boolean(
+                  approvalPolicies?.next_pagination_token
+                )}
+                onNext={onNext}
+                isPreviousAvailable={Boolean(
+                  approvalPolicies?.prev_pagination_token
+                )}
+                onPrevious={onPrev}
+              />
+            ),
+          }}
+        />
       </Box>
-      <DataGrid
-        sx={{
-          '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
-            py: '8px',
-          },
-          '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
-            py: '15px',
-          },
-          '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
-            py: '22px',
-          },
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
-        loading={isLoading}
-        getRowHeight={() => 'auto'}
-        columns={[
-          {
-            field: 'name',
-            headerName: t(i18n)`Policy name`,
-            sortable: false,
-            flex: 1,
-          },
-          {
-            field: 'triggers',
-            headerName: t(i18n)`Triggers`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
-            ),
-          },
-          {
-            field: 'rule',
-            headerName: t(i18n)`Rule`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
-            ),
-          },
-          {
-            field: 'created_at',
-            headerName: t(i18n)`Created at`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: ({ value }) =>
-              i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'created_by',
-            headerName: t(i18n)`Created by`,
-            sortable: false,
-            flex: 0.8,
-            renderCell: ({ value }) => (
-              <ApprovalPoliciesUser entityUserId={value} />
-            ),
-          },
-        ]}
-        rows={approvalPolicies?.data || []}
-        onRowClick={(params) => onRowClick?.(params.row)}
-        slots={{
-          pagination: () => (
-            <TablePagination
-              isNextAvailable={Boolean(approvalPolicies?.next_pagination_token)}
-              onNext={onNext}
-              isPreviousAvailable={Boolean(
-                approvalPolicies?.prev_pagination_token
-              )}
-              onPrevious={onPrev}
-            />
-          ),
-        }}
-      />
-    </Box>
+    </>
   );
 };

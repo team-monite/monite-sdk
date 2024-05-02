@@ -124,66 +124,68 @@ const TagFormModalBase = ({
   const { root } = useRootElements();
 
   return (
-    <Dialog
-      open={open}
-      container={root}
-      onClose={onClose}
-      aria-label={t(i18n)`Edit tag`}
-      TransitionProps={{
-        /**
-         * We have to reset the current form state
-         *  when the user closes the modal
-         */
-        onExited: () => reset(),
-      }}
-      fullWidth
-      maxWidth="sm"
-    >
-      <form
-        id="createTagForm"
-        name="createTagForm"
-        onSubmit={handleSubmit((values) => {
-          tag ? updateTag(tag, values.name) : createTag(values.name);
-        })}
+    <>
+      <Dialog
+        open={open}
+        container={root}
+        onClose={onClose}
+        aria-label={t(i18n)`Edit tag`}
+        TransitionProps={{
+          /**
+           * We have to reset the current form state
+           *  when the user closes the modal
+           */
+          onExited: () => reset(),
+        }}
+        fullWidth
+        maxWidth="sm"
       >
-        <DialogTitle variant="h3">
-          {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create New Tag`}
-        </DialogTitle>
-        <DialogContent>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                id={field.name}
-                autoFocus
-                label={t(i18n)`Name`}
-                variant="standard"
-                fullWidth
-                error={Boolean(fieldState.error)}
-                helperText={fieldState.error?.message}
-                {...field}
-              />
-            )}
-          />
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          <Button variant="outlined" color="inherit" onClick={onClose}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            disabled={
-              tagCreateMutation.isPending || tagUpdateMutation.isPending
-            }
-            type="submit"
-          >
-            {tag ? t(i18n)`Save` : t(i18n)`Create`}
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+        <form
+          id="createTagForm"
+          name="createTagForm"
+          onSubmit={handleSubmit((values) => {
+            tag ? updateTag(tag, values.name) : createTag(values.name);
+          })}
+        >
+          <DialogTitle variant="h3">
+            {tag ? t(i18n)`Edit tag ”${tag.name}”` : t(i18n)`Create New Tag`}
+          </DialogTitle>
+          <DialogContent>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  id={field.name}
+                  autoFocus
+                  label={t(i18n)`Name`}
+                  variant="standard"
+                  fullWidth
+                  error={Boolean(fieldState.error)}
+                  helperText={fieldState.error?.message}
+                  {...field}
+                />
+              )}
+            />
+          </DialogContent>
+          <Divider />
+          <DialogActions>
+            <Button variant="outlined" color="inherit" onClick={onClose}>
+              {t(i18n)`Cancel`}
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              disabled={
+                tagCreateMutation.isPending || tagUpdateMutation.isPending
+              }
+              type="submit"
+            >
+              {tag ? t(i18n)`Save` : t(i18n)`Create`}
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </>
   );
 };
