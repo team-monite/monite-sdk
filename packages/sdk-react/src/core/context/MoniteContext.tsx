@@ -8,11 +8,16 @@ import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
+import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
-interface MoniteContextValue {
+interface MoniteContextInputValue {
   monite: MoniteSDK;
+  theme: Theme;
+}
+
+interface MoniteContextValue extends MoniteContextInputValue {
   i18n: I18n;
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
@@ -38,18 +43,15 @@ export function useMoniteContext() {
   return moniteContext;
 }
 
-type MoniteContextProviderProps = {
+interface MoniteContextProviderProps extends MoniteContextInputValue {
+  locale: Partial<MoniteLocale> | undefined;
   children: ReactNode;
-} & Pick<MoniteContextValue, 'monite'>;
+}
 
 /**
  * @internal
  */
-export const MoniteContextProvider = (
-  props: {
-    locale: Partial<MoniteLocale> | undefined;
-  } & MoniteContextProviderProps
-) => {
+export const MoniteContextProvider = (props: MoniteContextProviderProps) => {
   const locale = useMemo(() => {
     // todo: maybe move to separate function
     const localeCode =
@@ -69,11 +71,17 @@ export const MoniteContextProvider = (
   );
 };
 
+interface ContextProviderProps extends MoniteContextInputValue {
+  i18n: I18n;
+  children: ReactNode;
+}
+
 const ContextProvider = ({
   monite,
   i18n,
+  theme,
   children,
-}: Pick<MoniteContextValue, 'i18n'> & MoniteContextProviderProps) => {
+}: ContextProviderProps) => {
   const sentryHub = useMemo(() => {
     return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
       ? new SentryFactory({
@@ -91,6 +99,7 @@ const ContextProvider = ({
   return (
     <MoniteContext.Provider
       value={{
+        theme,
         monite,
         queryClient,
         sentryHub,

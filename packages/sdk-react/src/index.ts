@@ -4,7 +4,6 @@ export {
   MoniteProvider,
   MoniteStyleProvider,
 } from './core/context/MoniteProvider';
-export * from './core/context/MoniteThemeProvider';
 export * from './core/context/RootElementsProvider';
 export { useMoniteContext } from './core/context/MoniteContext';
 export { toast } from './ui/toast';

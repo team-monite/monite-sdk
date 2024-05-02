@@ -4,10 +4,7 @@ import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { MoniteScopedProvider } from '@/core/context/MoniteScopedProvider';
-import {
-  createThemeWithDefaults,
-  MoniteThemeContext,
-} from '@/core/context/MoniteThemeProvider';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
@@ -64,16 +61,14 @@ export const MoniteProvider = ({
   const muiTheme = useMemo(() => createThemeWithDefaults(theme), [theme]);
 
   return (
-    <MoniteThemeContext.Provider value={muiTheme}>
-      <MoniteContextProvider monite={monite} locale={locale}>
-        <EmotionCacheProvider cacheKey="monite-css-baseline">
-          <MuiThemeProvider theme={muiTheme}>
-            <ContainerCssBaseline enableColorScheme />
-            <GlobalToast />
-          </MuiThemeProvider>
-        </EmotionCacheProvider>
-        {children}
-      </MoniteContextProvider>
-    </MoniteThemeContext.Provider>
+    <MoniteContextProvider monite={monite} locale={locale} theme={muiTheme}>
+      <EmotionCacheProvider cacheKey="monite-css-baseline">
+        <MuiThemeProvider theme={muiTheme}>
+          <ContainerCssBaseline enableColorScheme />
+          <GlobalToast />
+        </MuiThemeProvider>
+      </EmotionCacheProvider>
+      {children}
+    </MoniteContextProvider>
   );
 };

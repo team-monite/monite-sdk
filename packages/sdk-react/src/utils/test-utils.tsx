@@ -1,11 +1,12 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-import { I18nProvider } from '@lingui/react'
 import { MoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
   BrowserClient,
@@ -13,7 +14,11 @@ import {
   Hub,
   makeFetchTransport,
 } from '@sentry/react';
-import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
   fireEvent,
@@ -89,6 +94,7 @@ export const Provider = ({
             i18n,
             sentryHub,
             queryClient: client,
+            theme: createThemeWithDefaults(moniteProviderProps?.theme),
           }}
         >
           {children}
