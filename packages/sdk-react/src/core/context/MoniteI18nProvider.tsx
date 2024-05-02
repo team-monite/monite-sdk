@@ -181,11 +181,6 @@ const DatePickerI18nProvider = ({
   );
 };
 
-export const isEmptyMultipleKeysObject = (obj: object) => {
-  for (const prop in obj) if (obj.hasOwnProperty(prop)) return false;
-  return true;
-};
-
 const dateFnsLocales: Record<
   keyof typeof DateFNSLocales,
   () => Promise<{ default: Locale }>
