@@ -1,7 +1,6 @@
-import { defaultMoniteLightThemeOptions } from '@monite/sdk-react';
-import { ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { moniteLight } from '@team-monite/sdk-themes';
 
-export const themeOptions = defaultMoniteLightThemeOptions;
+export const themeOptions = moniteLight;
 
-export const theme = createTheme(themeOptions as ThemeOptions);
+export const theme = createTheme(themeOptions);

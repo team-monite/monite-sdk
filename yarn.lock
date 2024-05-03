@@ -21052,6 +21052,7 @@ __metadata:
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
+    "@team-monite/sdk-themes": "workspace:~"
     "@testing-library/jest-dom": ~6.1.4
     "@testing-library/react": ~14.1.0
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
