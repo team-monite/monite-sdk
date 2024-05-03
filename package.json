@@ -23,7 +23,8 @@
   "license": "MIT",
   "workspaces": [
     "packages/*",
-    "e2e"
+    "e2e",
+    "examples/*"
   ],
   "devDependencies": {
     "@changesets/cli": "~2.26.1",
