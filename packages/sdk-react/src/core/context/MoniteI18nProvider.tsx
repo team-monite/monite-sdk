@@ -3,7 +3,7 @@ import React, { lazy, ReactNode, Suspense, useMemo, useRef } from 'react';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { compileLinguiDynamicMessages } from '@/utils/compile-lingui-dynamic-messages';
 import { type I18n, type Messages, setupI18n } from '@lingui/core';
-import { I18nProvider as I18nProviderBase } from '@lingui/react';
+import { I18nProvider } from '@lingui/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -35,11 +35,19 @@ export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
   const { i18n, dateFnsLocale } = useMoniteContext();
 
   return (
-    <LinguiI18nProvider i18n={i18n}>
-      <DatePickerI18nProvider adapterLocale={dateFnsLocale}>
+    <I18nProvider
+      // Due to the imperative nature of the I18nProvider,
+      // a `key` must be added to change the locale in real time
+      key={i18n.locale}
+      i18n={i18n}
+    >
+      <LocalizationProvider
+        dateAdapter={AdapterDateFns}
+        adapterLocale={dateFnsLocale}
+      >
         {children}
-      </DatePickerI18nProvider>
-    </LinguiI18nProvider>
+      </LocalizationProvider>
+    </I18nProvider>
   );
 };
 
@@ -139,40 +147,6 @@ const loadDateFnsLocale = async (localeCode: string) => {
   }
 
   return dateFnsLocales.en().then((module) => module.default);
-};
-
-const LinguiI18nProvider = ({
-  i18n,
-  children,
-}: {
-  i18n: I18n;
-  children: ReactNode;
-}) => {
-  return (
-    <I18nProviderBase
-      key={i18n.locale} // Due to the imperative nature of the I18nProvider, it is necessary to add a `key` for Realtime language change
-      i18n={i18n}
-    >
-      {children}
-    </I18nProviderBase>
-  );
-};
-
-const DatePickerI18nProvider = ({
-  children,
-  adapterLocale,
-}: {
-  children: ReactNode;
-  adapterLocale: DateFnsLocale;
-}) => {
-  return (
-    <LocalizationProvider
-      dateAdapter={AdapterDateFns}
-      adapterLocale={adapterLocale}
-    >
-      {children}
-    </LocalizationProvider>
-  );
 };
 
 const dateFnsLocales: Record<
