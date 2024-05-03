@@ -1,5 +1,19 @@
 # @monite/sdk-react
 
+## 3.11.0
+
+### Minor Changes
+
+- 5f0e96d4: feat(DEV-10501): add column Created on to receivables tables
+- b47ae586: add theme package and theme switcher to demo
+
+### Patch Changes
+
+- c3445207: feat(DEV-9977): update msw from 0._._ to 2.2.\*
+- c7cb26b3: fix(DEV-9738): update default values for the ProductDetails component
+- fb2dd719: fix(DEV-10542): issue an invoice before creating a payment link
+  - @monite/sdk-api@3.11.0
+
 ## 3.10.0
 
 ### Minor Changes
