@@ -46,7 +46,6 @@
     "typescript": "~5.0.4"
   },
   "resolutions": {
-    "react-select/@emotion/react": "~11.11.0",
     "@vitejs/plugin-react-swc/@swc/core": "1.3.75",
     "@storybook/builder-webpack5/@swc/core": "1.3.75"
   },
