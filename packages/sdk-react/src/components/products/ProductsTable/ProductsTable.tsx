@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
+import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useCurrencies } from '@/core/hooks';
@@ -22,7 +23,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { TableActions } from '../../TableActions/TableActions';
 import { ProductType } from '../ProductDetails/components/ProductType';
 import { Filters as FiltersComponent } from './components/Filters/Filters';
 import {

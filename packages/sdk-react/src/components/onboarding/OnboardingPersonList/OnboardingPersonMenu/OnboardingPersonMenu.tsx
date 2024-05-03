@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactNode } from 'react';
 
-import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMenuButton } from '@/core/hooks';
 import { Button, Menu } from '@mui/material';
 
 export const OnboardingPersonMenu = ({
@@ -15,43 +15,21 @@ export const OnboardingPersonMenu = ({
   disabled?: boolean;
   variant?: 'outlined' | 'contained';
 }) => {
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const opened = Boolean(anchorEl);
-
-  const open = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const close = () => {
-    setAnchorEl(null);
-  };
-
-  const { root } = useRootElements();
+  const { menuProps, buttonProps } = useMenuButton();
 
   return (
     <>
       <Button
-        id="onboarding-person-menu-button"
-        aria-controls={opened ? 'onboarding-person-menu' : undefined}
-        aria-expanded={opened ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={open}
+        {...buttonProps}
         variant={variant}
         color="primary"
         disabled={disabled}
       >
         {title}
       </Button>
+
       <Menu
-        id="onboarding-person-menu"
-        container={root}
-        anchorEl={anchorEl}
-        open={opened}
-        onClose={close}
-        onClick={close}
-        MenuListProps={{
-          'aria-labelledby': 'onboarding-person-menu-button',
-        }}
+        {...menuProps}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
-import { TableActions } from '@/components/TableActions/TableActions';
+import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';

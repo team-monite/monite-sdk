@@ -10,7 +10,8 @@
     "*Fixture.ts"
   ],
   "rules": {
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "@team-monite/mui-require-container-property": "off"
   },
   "settings": {
     "import/resolver": {
@@ -65,8 +66,7 @@
     },
     {
       "files": [
-        "src/mocks/entityUsers/entityUserByIdFixture.ts",
-        "src/components/payment/YapilyWidget/InvoiceDetails/InvoiceDetails.tsx"
+        "src/mocks/entityUsers/entityUserByIdFixture.ts"
       ],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off"

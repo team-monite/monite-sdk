@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { Dialog } from '@/components/Dialog';
@@ -8,7 +8,7 @@ import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/use
 import { PayablesTable } from '@/components/payables/PayablesTable';
 import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useFileInput } from '@/core/hooks/useFileInput';
+import { useFileInput, useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken, usePayableUpload } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getMessageInError } from '@/core/utils/getMessageInError';
@@ -54,7 +54,9 @@ export const Payables = ({
     invoiceId: string | undefined;
     open: boolean;
   }>({ invoiceId: undefined, open: false });
-  const [isCreateInvoiceMenuOpen, setIsCreateInvoiceMenuOpen] = useState(false);
+
+  const { buttonProps, menuProps, open } = useMenuButton();
+
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
 
@@ -77,7 +79,6 @@ export const Payables = ({
       entityUserId: user?.id,
     });
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const { root } = useRootElements();
 
   return (
@@ -94,42 +95,17 @@ export const Payables = ({
         extra={
           <Box>
             <Button
-              ref={buttonRef}
-              id="actions"
-              aria-controls={
-                isCreateInvoiceMenuOpen ? 'actions-menu' : undefined
-              }
-              aria-haspopup="true"
-              aria-expanded={isCreateInvoiceMenuOpen ? 'true' : undefined}
-              aria-label="actions-menu-button"
-              variant="contained"
-              onClick={() =>
-                setIsCreateInvoiceMenuOpen(!isCreateInvoiceMenuOpen)
-              }
+              {...buttonProps}
               disabled={!isCreateAllowed}
               endIcon={
-                isCreateInvoiceMenuOpen ? (
-                  <KeyboardArrowUpIcon />
-                ) : (
-                  <KeyboardArrowDownIcon />
-                )
+                open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
               }
             >
               {t(i18n)`Create New`}
             </Button>
-            <Menu
-              id="actions"
-              open={isCreateInvoiceMenuOpen}
-              container={root}
-              onClose={() => setIsCreateInvoiceMenuOpen(false)}
-              anchorEl={buttonRef.current}
-              MenuListProps={{
-                'aria-labelledby': 'actions',
-              }}
-            >
+            <Menu {...menuProps}>
               <MenuItem
                 onClick={() => {
-                  setIsCreateInvoiceMenuOpen(false);
                   setIsCreateInvoiceDialogOpen(true);
                 }}
               >
@@ -140,7 +116,6 @@ export const Payables = ({
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setIsCreateInvoiceMenuOpen(false);
                   openFileInput();
                 }}
               >
