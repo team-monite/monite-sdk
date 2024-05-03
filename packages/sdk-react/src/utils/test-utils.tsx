@@ -1,6 +1,7 @@
 import React, { ReactElement, ReactNode } from 'react';
 
 import { MoniteContext } from '@/core/context/MoniteContext';
+import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
@@ -27,6 +28,9 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
+
+import type { Locale as DateFnsLocale } from 'date-fns';
+import DateFnsDeLocale from 'date-fns/locale/de';
 
 const queryCache = new QueryCache();
 const queryClient = new QueryClient({
@@ -66,10 +70,12 @@ export const Provider = ({
   children: ReactNode;
   client: QueryClient;
   sdk?: MoniteSDK;
-  moniteProviderProps?: Omit<MoniteProviderProps, 'monite'>;
+  moniteProviderProps?: ICreateRenderWithClientProps['providerOptions'];
 }) => {
   const monite = sdk ?? cachedMoniteSDK;
   const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
+  const dateFnsLocale = moniteProviderProps?.dateFnsLocale ?? DateFnsDeLocale;
+
   const i18n = setupI18n({
     locale: localeCode,
     messages: {
@@ -87,26 +93,27 @@ export const Provider = ({
 
   return (
     <QueryClientProvider client={client}>
-      <I18nProvider i18n={i18n}>
-        <MoniteContext.Provider
-          value={{
-            monite,
-            i18n,
-            sentryHub,
-            queryClient: client,
-            theme: createThemeWithDefaults(moniteProviderProps?.theme),
-          }}
-        >
-          {children}
-        </MoniteContext.Provider>
-      </I18nProvider>
+      <MoniteContext.Provider
+        value={{
+          monite,
+          i18n,
+          sentryHub,
+          queryClient: client,
+          theme: createThemeWithDefaults(moniteProviderProps?.theme),
+          dateFnsLocale,
+        }}
+      >
+        <MoniteI18nProvider>{children}</MoniteI18nProvider>
+      </MoniteContext.Provider>
     </QueryClientProvider>
   );
 };
 
 interface ICreateRenderWithClientProps {
   monite?: MoniteSDK;
-  providerOptions?: Omit<MoniteProviderProps, 'monite'>;
+  providerOptions?: Omit<MoniteProviderProps, 'monite'> & {
+    dateFnsLocale?: DateFnsLocale;
+  };
 }
 
 /**

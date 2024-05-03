@@ -1,12 +1,19 @@
+import React, { ReactNode } from 'react';
+
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
-import { renderWithClient } from '@/utils/test-utils';
+import {
+  Provider,
+  renderWithClient,
+  testQueryClient,
+} from '@/utils/test-utils';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { act, screen } from '@testing-library/react';
+import { DatePicker } from '@mui/x-date-pickers';
+import { act, render, screen } from '@testing-library/react';
 
-import { MoniteI18nProvider, LinguiDynamicI18n } from './MoniteI18nProvider';
+import { MoniteI18nProvider, I18nLoader } from './MoniteI18nProvider';
 
-describe('MoniteI18nProvider', () => {
+describe('MoniteI18nProvider Lingui', () => {
   const type = 'Gegenstück';
   const name = 'John';
 
@@ -35,7 +42,7 @@ describe('MoniteI18nProvider', () => {
         const moniteContext = useMoniteContext();
 
         return (
-          <LinguiDynamicI18n
+          <I18nLoader
             locale={{
               code: 'en',
               messages: {
@@ -56,7 +63,7 @@ describe('MoniteI18nProvider', () => {
                 </MoniteI18nProvider>
               </MoniteContext.Provider>
             )}
-          </LinguiDynamicI18n>
+          </I18nLoader>
         );
       }
 
@@ -90,5 +97,59 @@ describe('MoniteI18nProvider', () => {
         name: `Löschen ${type} "Alex"?`,
       })
     ).toBeInTheDocument();
+  });
+});
+
+describe('MoniteI18nProvider DatePicker', () => {
+  const SpecificI18nLoader = ({
+    code,
+    children,
+  }: {
+    code: string;
+    children: ReactNode;
+  }) => {
+    const moniteContext = useMoniteContext();
+
+    return (
+      <I18nLoader locale={{ code }}>
+        {(i18n, dateFnsLocale) => (
+          <MoniteContext.Provider
+            value={{
+              ...moniteContext,
+              i18n,
+              dateFnsLocale,
+            }}
+          >
+            <MoniteI18nProvider>{children} </MoniteI18nProvider>
+          </MoniteContext.Provider>
+        )}
+      </I18nLoader>
+    );
+  };
+
+  it('should render "DE" format in DatePicker', async () => {
+    renderWithClient(
+      <SpecificI18nLoader code="de-DE">
+        <DatePicker open />
+      </SpecificI18nLoader>
+    );
+
+    expect(await screen.findByLabelText('Choose date')).toHaveAttribute(
+      'placeholder',
+      'DD.MM.YYYY'
+    );
+  });
+
+  it('should render "US" format in DatePicker', async () => {
+    renderWithClient(
+      <SpecificI18nLoader code="en-US">
+        <DatePicker open />
+      </SpecificI18nLoader>
+    );
+
+    expect(await screen.findByLabelText('Choose date')).toHaveAttribute(
+      'placeholder',
+      'MM/DD/YYYY'
+    );
   });
 });

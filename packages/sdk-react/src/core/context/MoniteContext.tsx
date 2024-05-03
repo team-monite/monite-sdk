@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import {
-  LinguiDynamicI18n,
+  I18nLoader,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
@@ -12,6 +12,8 @@ import type { Theme } from '@mui/material';
 import type { Hub } from '@sentry/react';
 import type { QueryClient } from '@tanstack/react-query';
 
+import type { Locale as DateFnsLocale } from 'date-fns';
+
 interface MoniteContextInputValue {
   monite: MoniteSDK;
   theme: Theme;
@@ -21,6 +23,7 @@ interface MoniteContextValue extends MoniteContextInputValue {
   i18n: I18n;
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
+  dateFnsLocale: DateFnsLocale;
 }
 
 /**
@@ -56,9 +59,15 @@ export const MoniteContextProvider = ({
   ...restProps
 }: MoniteContextProviderProps) => {
   return (
-    <LinguiDynamicI18n locale={getLocaleWithDefaults(locale)}>
-      {(i18n) => <ContextProvider {...restProps} i18n={i18n} />}
-    </LinguiDynamicI18n>
+    <I18nLoader locale={getLocaleWithDefaults(locale)}>
+      {(i18n, datePickerAdapterLocale) => (
+        <ContextProvider
+          {...restProps}
+          i18n={i18n}
+          dateFnsLocale={datePickerAdapterLocale}
+        />
+      )}
+    </I18nLoader>
   );
 };
 
@@ -77,6 +86,7 @@ const getLocaleWithDefaults = (
 
 interface ContextProviderProps extends MoniteContextInputValue {
   i18n: I18n;
+  dateFnsLocale: DateFnsLocale;
   children: ReactNode;
 }
 
@@ -84,6 +94,7 @@ const ContextProvider = ({
   monite,
   i18n,
   theme,
+  dateFnsLocale,
   children,
 }: ContextProviderProps) => {
   const sentryHub = useMemo(() => {
@@ -108,6 +119,7 @@ const ContextProvider = ({
         queryClient,
         sentryHub,
         i18n,
+        dateFnsLocale,
       }}
     >
       {children}
