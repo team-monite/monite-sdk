@@ -38,21 +38,21 @@ interface ThemeSelectorProps {
 export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
   const { i18n } = useLingui();
 
-  const { getButtonProps, getMenuProps, open } = useMenuButton();
+  const { buttonProps, menuProps, open } = useMenuButton();
 
   const { variant: themeVariant, mode: themeMode } = value;
 
   return (
     <>
       <Button
-        {...getButtonProps()}
+        {...buttonProps}
         sx={{ justifyContent: 'space-between' }}
         startIcon={themeMode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
         endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
         variant="outlined"
       >
         {getButtonLabel(themeVariant, i18n)}
-        <Menu {...getMenuProps()}>
+        <Menu {...menuProps}>
           <Typography variant="body2" color="grey" pl={2} pr={2} pb={1}>{t(
             i18n
           )`Theme`}</Typography>

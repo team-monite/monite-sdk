@@ -15,12 +15,12 @@ export const OnboardingPersonMenu = ({
   disabled?: boolean;
   variant?: 'outlined' | 'contained';
 }) => {
-  const { getMenuProps, getButtonProps } = useMenuButton();
+  const { menuProps, buttonProps } = useMenuButton();
 
   return (
     <>
       <Button
-        {...getButtonProps()}
+        {...buttonProps}
         variant={variant}
         color="primary"
         disabled={disabled}
@@ -29,7 +29,7 @@ export const OnboardingPersonMenu = ({
       </Button>
 
       <Menu
-        {...getMenuProps()}
+        {...menuProps}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',

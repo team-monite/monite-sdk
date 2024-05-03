@@ -100,7 +100,7 @@ export const ExistingInvoiceDetails = (
     InvoiceDetailsView.Overview
   );
 
-  const { getButtonProps, getMenuProps } = useMenuButton();
+  const { buttonProps, menuProps } = useMenuButton();
 
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>(
     DeliveryMethod.Email
@@ -213,14 +213,14 @@ export const ExistingInvoiceDetails = (
                 {buttons.isMoreButtonVisible && (
                   <React.Fragment>
                     <Button
-                      {...getButtonProps()}
+                      {...buttonProps}
                       variant="text"
                       color="primary"
                       disableElevation
                       disabled={loading}
                       endIcon={<MoreVertIcon />}
                     >{t(i18n)`More`}</Button>
-                    <StyledMenu {...getMenuProps()}>
+                    <StyledMenu {...menuProps}>
                       <MenuItem
                         onClick={() => {
                           setView(InvoiceDetailsView.Email);

@@ -55,7 +55,7 @@ export const Payables = ({
     open: boolean;
   }>({ invoiceId: undefined, open: false });
 
-  const { getButtonProps, getMenuProps, open } = useMenuButton();
+  const { buttonProps, menuProps, open } = useMenuButton();
 
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState(false);
@@ -95,7 +95,7 @@ export const Payables = ({
         extra={
           <Box>
             <Button
-              {...getButtonProps()}
+              {...buttonProps}
               disabled={!isCreateAllowed}
               endIcon={
                 open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
@@ -103,7 +103,7 @@ export const Payables = ({
             >
               {t(i18n)`Create New`}
             </Button>
-            <Menu {...getMenuProps()}>
+            <Menu {...menuProps}>
               <MenuItem
                 onClick={() => {
                   setIsCreateInvoiceDialogOpen(true);

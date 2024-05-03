@@ -20,7 +20,7 @@ import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 export const Counterparts = () => {
   const { i18n } = useLingui();
 
-  const { open, getMenuProps, getButtonProps } = useMenuButton();
+  const { open, menuProps, buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
   const [counterpartType, setType] = useState<CounterpartType | undefined>(
@@ -111,7 +111,7 @@ export const Counterparts = () => {
         extra={
           <Box>
             <Button
-              {...getButtonProps()}
+              {...buttonProps}
               variant="contained"
               disabled={!isCreateAllowed}
               endIcon={
@@ -121,7 +121,7 @@ export const Counterparts = () => {
               {t(i18n)`Create New`}
             </Button>
             <Menu
-              {...getMenuProps()}
+              {...menuProps}
               container={root}
               MenuListProps={{
                 'aria-labelledby': 'actions',

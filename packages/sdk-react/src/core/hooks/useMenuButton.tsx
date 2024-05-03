@@ -67,7 +67,7 @@ export const useMenuButton = () => {
     }
   };
 
-  const getButtonProps = (): ButtonType => ({
+  const buttonProps: ButtonType = {
     id: buttonId,
     'aria-controls': anchorEl.open ? menuId : undefined,
     'aria-expanded': anchorEl.open ? 'true' : undefined,
@@ -75,20 +75,20 @@ export const useMenuButton = () => {
     tabIndex: 0, // Ensure span, div are focusable
     onClick: openMenu,
     onKeyDown: createHandleKeyDown,
-  });
+  };
 
-  const getMenuProps = (): MenuType => ({
+  const menuProps: MenuType = {
     id: menuId,
     anchorEl: anchorEl.element,
     open: anchorEl.open,
     container: root,
     onClose: closeMenu,
     onClick: closeMenu,
-  });
+  };
 
   return {
     open: anchorEl.open,
-    getMenuProps,
-    getButtonProps,
+    menuProps,
+    buttonProps,
   };
 };

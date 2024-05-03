@@ -30,7 +30,7 @@ export const TableActions = ({
   onDelete,
   permissions,
 }: TableActionsProps) => {
-  const { getButtonProps, getMenuProps } = useMenuButton();
+  const { buttonProps, menuProps } = useMenuButton();
 
   const { i18n } = useLingui();
 
@@ -40,10 +40,10 @@ export const TableActions = ({
 
   return (
     <>
-      <IconButton aria-label="actions-menu-button" {...getButtonProps()}>
+      <IconButton aria-label="actions-menu-button" {...buttonProps}>
         <MoreVertIcon fontSize="small" />
       </IconButton>
-      <Menu {...getMenuProps()}>
+      <Menu {...menuProps}>
         {permissions.isUpdateAllowed && (
           <MenuItem onClick={onEdit}>
             <ListItemIcon>
