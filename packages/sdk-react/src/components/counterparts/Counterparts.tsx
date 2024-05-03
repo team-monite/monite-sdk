@@ -4,7 +4,7 @@ import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -18,9 +18,9 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 
 export const Counterparts = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <CounterpartsBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const CounterpartsBase = () => {

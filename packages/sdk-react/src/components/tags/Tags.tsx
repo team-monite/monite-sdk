@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { TagFormModal } from '@/components/tags/TagFormModal';
 import { TagsTable } from '@/components/tags/TagsTable';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -13,9 +13,9 @@ import { ActionEnum } from '@monite/sdk-api';
 import { Button, CircularProgress } from '@mui/material';
 
 export const Tags = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <TagsBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const TagsBase = () => {

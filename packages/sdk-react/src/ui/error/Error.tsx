@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -22,9 +22,9 @@ import type { FallbackRender } from '@sentry/react';
 type ErrorProps = Parameters<FallbackRender>[0];
 
 export const Error = (props: ErrorProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ErrorBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ErrorBase = (props: ErrorProps) => {

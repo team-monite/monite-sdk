@@ -8,7 +8,7 @@ import {
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -55,9 +55,9 @@ type QuotesTableProps = {
 };
 
 export const QuotesTable = (props: QuotesTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <QuotesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const QuotesTableBase = ({

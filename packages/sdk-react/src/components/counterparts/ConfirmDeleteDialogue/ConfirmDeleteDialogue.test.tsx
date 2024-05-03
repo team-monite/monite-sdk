@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
@@ -12,7 +12,7 @@ describe('CounterpartConfirmDeleteModal', () => {
     const onDeleteMock = jest.fn();
 
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <ConfirmDeleteDialogue
           open
           type="individual"
@@ -21,7 +21,7 @@ describe('CounterpartConfirmDeleteModal', () => {
           onClose={jest.fn()}
           onDelete={onDeleteMock}
         />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const deleteText = t`Delete`;
@@ -40,7 +40,7 @@ describe('CounterpartConfirmDeleteModal', () => {
     const onCancelMock = jest.fn();
 
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <ConfirmDeleteDialogue
           open
           type="individual"
@@ -49,7 +49,7 @@ describe('CounterpartConfirmDeleteModal', () => {
           onClose={onCancelMock}
           onDelete={jest.fn()}
         />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const cancelText = t`Cancel`;

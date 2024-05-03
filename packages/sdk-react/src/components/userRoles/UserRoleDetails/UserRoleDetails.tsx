@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRoleById } from '@/core/queries/useRoles';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -15,9 +15,9 @@ interface UserRoleDetailsProps {
 }
 
 export const UserRoleDetails = (props: UserRoleDetailsProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <UserRoleDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDeleteTag } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -35,9 +35,9 @@ interface ConfirmDeleteModalProps {
 }
 
 export const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ConfirmDeleteModalBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ConfirmDeleteModalBase = ({

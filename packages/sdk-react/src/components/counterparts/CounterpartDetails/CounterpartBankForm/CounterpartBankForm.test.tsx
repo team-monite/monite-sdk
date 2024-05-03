@@ -1,4 +1,4 @@
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   counterpartBankFixture,
   counterpartBankListFixture,
@@ -28,12 +28,12 @@ describe('CounterpartBankForm', () => {
     const onCreateMock = jest.fn();
 
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <CounterpartBankForm
           counterpartId={individualId}
           onCreate={onCreateMock}
         />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const submitBtn = await screen.findByRole('button', {
@@ -57,9 +57,9 @@ describe('CounterpartBankForm', () => {
 
   test('should show errors if non of the field is filled', async () => {
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <CounterpartBankForm counterpartId={individualId} />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const submitBtn = await screen.findByRole('button', {
@@ -90,13 +90,13 @@ describe('CounterpartBankForm', () => {
     }
 
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <CounterpartBankForm
           counterpartId={individualId}
           bankId={firstBankListFixture.id}
           onUpdate={onUpdateMock}
         />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const submitBtn = await screen.findByRole('button', {
@@ -116,12 +116,12 @@ describe('CounterpartBankForm', () => {
     const onCancelMock = jest.fn();
 
     renderWithClient(
-      <MoniteStyleProvider>
+      <MoniteScopedProviders>
         <CounterpartBankForm
           counterpartId={individualId}
           onCancel={onCancelMock}
         />
-      </MoniteStyleProvider>
+      </MoniteScopedProviders>
     );
 
     const cancelBtn = await screen.findByRole('button', {
@@ -145,9 +145,9 @@ describe('CounterpartBankForm', () => {
       );
 
       renderWithClient(
-        <MoniteStyleProvider>
+        <MoniteScopedProviders>
           <CounterpartBankForm counterpartId={individualId} />
-        </MoniteStyleProvider>,
+        </MoniteScopedProviders>,
         cachedMoniteSDK
       );
 
@@ -194,9 +194,9 @@ describe('CounterpartBankForm', () => {
       );
 
       renderWithClient(
-        <MoniteStyleProvider>
+        <MoniteScopedProviders>
           <CounterpartBankForm counterpartId={individualId} />
-        </MoniteStyleProvider>,
+        </MoniteScopedProviders>,
         cachedMoniteSDK
       );
 
@@ -259,9 +259,9 @@ describe('CounterpartBankForm', () => {
         );
 
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartBankForm counterpartId={individualId} />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           cachedMoniteSDK
         );
 
@@ -319,12 +319,12 @@ describe('CounterpartBankForm', () => {
         const firstBankListFixture = counterpartBankListFixture[0];
 
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartBankForm
               counterpartId={individualId}
               bankId={firstBankListFixture.id}
             />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           cachedMoniteSDK
         );
 

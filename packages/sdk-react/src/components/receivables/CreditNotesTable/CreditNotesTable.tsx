@@ -8,7 +8,7 @@ import {
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -43,9 +43,9 @@ export interface CreditNotesTableSortModel {
 }
 
 export const CreditNotesTable = (props: CreditNotesTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <CreditNotesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {

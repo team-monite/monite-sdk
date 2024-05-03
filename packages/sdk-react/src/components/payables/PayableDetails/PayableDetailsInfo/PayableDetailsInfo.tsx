@@ -6,7 +6,7 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
@@ -48,9 +48,9 @@ const StyledLabelTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <PayableDetailsInfoBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const PayableDetailsInfoBase = ({

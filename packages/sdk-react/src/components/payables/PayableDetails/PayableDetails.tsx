@@ -4,7 +4,7 @@ import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/P
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetails/PayableDetailsNoAttachedFile';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
@@ -25,9 +25,9 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <PayableDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const PayableDetailsBase = ({

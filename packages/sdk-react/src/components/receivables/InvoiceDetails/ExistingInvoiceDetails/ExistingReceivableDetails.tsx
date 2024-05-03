@@ -1,6 +1,6 @@
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   useInvoiceDetails,
@@ -59,9 +59,9 @@ type GetComponentProps<T> = T extends
 export const ExistingReceivableDetails = (
   props: ExistingReceivableDetailsProps
 ) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ExistingReceivableDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ExistingReceivableDetailsBase = (

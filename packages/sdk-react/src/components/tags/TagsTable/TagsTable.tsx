@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -39,9 +39,9 @@ interface TagsTableSortModel {
 }
 
 export const TagsTable = (props: TagsTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <TagsTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const TagsTableBase = ({

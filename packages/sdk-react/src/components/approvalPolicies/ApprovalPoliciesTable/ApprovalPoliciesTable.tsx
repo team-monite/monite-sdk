@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useApprovalPoliciesList } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
@@ -80,9 +80,9 @@ interface ApprovalPoliciesTableProps {
  * This component renders a table of approval policies. It includes pagination and filtering functionality.
  */
 export const ApprovalPoliciesTable = (props: ApprovalPoliciesTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ApprovalPoliciesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ApprovalPoliciesTableBase = ({

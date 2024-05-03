@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -21,9 +21,9 @@ import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
  * and a header with a button for opening the create dialog.
  */
 export const ApprovalPolicies = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ApprovalPoliciesBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ApprovalPoliciesBase = () => {

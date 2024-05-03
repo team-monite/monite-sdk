@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useProductById, useUpdateProduct } from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
@@ -43,9 +43,9 @@ type IProductEditFormProps = Pick<
 };
 
 export const ProductEditForm = (props: IProductEditFormProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ProductEditFormBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ProductEditFormBase = (props: IProductEditFormProps) => {

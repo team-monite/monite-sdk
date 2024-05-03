@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { PayableDetails } from '@/components/payables/PayableDetails';
 import { UsePayableDetailsProps } from '@/components/payables/PayableDetails/usePayableDetails';
 import { PayablesTable } from '@/components/payables/PayablesTable';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFileInput, useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken, usePayableUpload } from '@/core/queries';
@@ -42,9 +42,9 @@ export type PayablesProps = Pick<
 
 export const Payables = (props: PayablesProps) => {
   return (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <PayablesBase {...props} />
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   );
 };
 

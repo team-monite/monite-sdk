@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import {
@@ -103,9 +103,9 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
 };
 
 export const CounterpartsTable = (props: CounterpartsTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <CounterpartsTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const CounterpartsTableBase = ({

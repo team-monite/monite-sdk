@@ -1,4 +1,4 @@
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { counterpartBankListFixture } from '@/mocks';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { action } from '@storybook/addon-actions';
@@ -23,11 +23,11 @@ export const CreateNewBankAccount: Story = {
     onCreate: action('onCreate'),
   },
   render: (args) => (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <CenteredWrapper>
         <CounterpartBankForm {...args} />
       </CenteredWrapper>
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   ),
 };
 
@@ -38,11 +38,11 @@ export const UpdateExistingBankAccount: Story = {
     onCreate: action('onCreate'),
   },
   render: (args) => (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <CenteredWrapper>
         <CounterpartBankForm {...args} />
       </CenteredWrapper>
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   ),
 };
 

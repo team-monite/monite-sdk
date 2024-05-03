@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

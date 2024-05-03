@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useCreateProduct } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -33,9 +33,9 @@ const initialValues: ProductFormValues = {
 };
 
 export const CreateProduct = (props: IProductDetailsCreateProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <CreateProductBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const CreateProductBase = (props: IProductDetailsCreateProps) => {

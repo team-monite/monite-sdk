@@ -1,3 +1,4 @@
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { useLingui } from '@lingui/react';
@@ -5,7 +6,7 @@ import { MoniteSDK } from '@monite/sdk-api';
 import { useTheme } from '@mui/material/styles';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { MoniteProvider, MoniteStyleProvider } from './MoniteProvider';
+import { MoniteProvider } from './MoniteProvider';
 
 describe('MoniteProvider', () => {
   const moniteMock = new MoniteSDK({
@@ -29,7 +30,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useTheme(), {
         wrapper: (props) => (
           <MoniteProvider monite={moniteMock} theme={partialTheme}>
-            <MoniteStyleProvider>{props.children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{props.children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -49,7 +50,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -67,7 +68,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -85,7 +86,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -101,7 +102,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'de' }}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -117,7 +118,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en' }}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -135,7 +136,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'de-DE' }}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -152,7 +153,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en-US' }}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -170,7 +171,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en-GB' }}>
-            <MoniteStyleProvider>{children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });

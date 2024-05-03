@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
 import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -16,9 +16,9 @@ import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
 export const Receivables = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ReceivablesBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ReceivablesBase = () => {

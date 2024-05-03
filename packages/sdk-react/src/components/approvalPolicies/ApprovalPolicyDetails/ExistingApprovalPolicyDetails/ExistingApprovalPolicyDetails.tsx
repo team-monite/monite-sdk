@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -38,9 +38,9 @@ export interface IExistingApprovalPolicyDetailsProps {
 export const ExistingApprovalPolicyDetails = (
   props: IExistingApprovalPolicyDetailsProps
 ) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ExistingApprovalPolicyDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ExistingApprovalPolicyDetailsBase = ({

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Tabs, Tab, Box } from '@mui/material';
@@ -38,9 +38,9 @@ export enum ReceivablesTableTabEnum {
 }
 
 export const ReceivablesTable = (props: ReceivablesTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ReceivablesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ReceivablesTableBase = ({

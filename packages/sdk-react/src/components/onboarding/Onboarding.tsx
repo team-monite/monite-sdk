@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { LinearProgress } from '@mui/material';
 
@@ -14,9 +14,9 @@ import { OnboardingContent } from './OnboardingContent';
  */
 export function Onboarding() {
   return (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <OnboardingChildren />
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   );
 }
 

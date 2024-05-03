@@ -3,7 +3,6 @@ import React, { ReactNode, useMemo } from 'react';
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
-import { MoniteScopedProvider } from '@/core/context/MoniteScopedProvider';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { MoniteSDK } from '@monite/sdk-api';
 import { Theme, ThemeOptions } from '@mui/material';
@@ -37,20 +36,6 @@ export interface MoniteProviderProps {
    */
   locale?: Partial<MoniteLocale>;
 }
-
-export interface IMoniteGeneralProviderProps {
-  children: MoniteProviderProps['children'];
-}
-
-/**
- * Provides Monite theme and global styles
- * Fetches theme from global `MoniteProvider` and apply it to the Material `ThemeProvider`
- */
-export const MoniteStyleProvider = ({
-  children,
-}: Pick<MoniteProviderProps, 'children'>) => {
-  return <MoniteScopedProvider>{children}</MoniteScopedProvider>;
-};
 
 export const MoniteProvider = ({
   monite,

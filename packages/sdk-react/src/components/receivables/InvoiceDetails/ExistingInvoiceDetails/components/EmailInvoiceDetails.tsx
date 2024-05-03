@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 import { getEmailInvoiceDetailsSchema } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIssueReceivableById, useSendReceivableById } from '@/core/queries';
 import { useEntityPaymentMethods } from '@/core/queries/useEntities';
 import { useCreatePaymentLink } from '@/core/queries/usePayments';
@@ -34,9 +34,9 @@ interface EmailInvoiceDetailsProps {
 }
 
 export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <EmailInvoiceDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const EmailInvoiceDetailsBase = ({

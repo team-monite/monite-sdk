@@ -5,7 +5,7 @@ import { useDialog } from '@/components';
 import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicyDetails/JSONFormatterInput';
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -83,9 +83,9 @@ interface ApprovalPolicyDetailsFormProps {
 export const ApprovalPolicyDetailsForm = (
   props: ApprovalPolicyDetailsFormProps
 ) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ApprovalPolicyDetailsFormBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 export const ApprovalPolicyDetailsFormBase = ({

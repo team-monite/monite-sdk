@@ -4,7 +4,7 @@ import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -87,9 +87,9 @@ interface ProductsTableSortModel {
 }
 
 export const ProductsTable = (props: IProductTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ProductsTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ProductsTableBase = ({

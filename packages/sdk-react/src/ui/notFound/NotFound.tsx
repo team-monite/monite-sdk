@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDialog } from '@/components';
+import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';

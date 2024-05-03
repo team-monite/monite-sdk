@@ -8,7 +8,7 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
@@ -133,9 +133,9 @@ export const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayableDetailsFormProps
 >((props, ref) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <PayableDetailsFormBase ref={ref} {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 ));
 
 const PayableDetailsFormBase = forwardRef<

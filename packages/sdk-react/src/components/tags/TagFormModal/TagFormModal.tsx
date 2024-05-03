@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCreateTag, useUpdateTag } from '@/core/queries';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -60,9 +60,9 @@ interface FormFields {
  *  If `tag` provided then the form is working on `updating` mode
  */
 export const TagFormModal = (props: TagFormModalProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <TagFormModalBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const TagFormModalBase = ({

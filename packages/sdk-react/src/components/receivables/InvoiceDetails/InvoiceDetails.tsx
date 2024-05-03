@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { InvoiceDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,9 +11,9 @@ import { CreateReceivables } from './CreateReceivable';
 import { ExistingReceivableDetails } from './ExistingInvoiceDetails/ExistingReceivableDetails';
 
 export const InvoiceDetails = (props: InvoiceDetailsProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <InvoiceDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const InvoiceDetailsBase = (props: InvoiceDetailsProps) => {

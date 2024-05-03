@@ -1,5 +1,5 @@
 import { useDialog } from '@/components/Dialog';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import CloseIcon from '@mui/icons-material/Close';

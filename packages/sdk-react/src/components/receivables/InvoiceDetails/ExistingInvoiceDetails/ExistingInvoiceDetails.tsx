@@ -8,7 +8,7 @@ import {
   ExistingReceivableDetailsProps,
   getReceivableStatusNameMap,
 } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { FileViewer } from '@/ui/FileViewer';
@@ -95,9 +95,9 @@ enum InvoiceDetailsView {
 export const ExistingInvoiceDetails = (
   props: ExistingReceivableDetailsProps
 ) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ExistingInvoiceDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {

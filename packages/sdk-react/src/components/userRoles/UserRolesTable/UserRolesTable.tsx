@@ -6,7 +6,7 @@ import {
   ROLES_PAGE_LIMIT,
 } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
@@ -73,9 +73,9 @@ interface UserRolesTableSortModel {
 }
 
 export const UserRolesTable = (props: IUserTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <UserRolesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const UserRolesTableBase = ({

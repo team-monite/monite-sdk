@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -76,9 +76,9 @@ interface PayablesTableProps {
 }
 
 export const PayablesTable = (props: PayablesTableProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <PayablesTableBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const PayablesTableBase = ({

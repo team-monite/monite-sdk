@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { useDialog } from '@/components';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses, useCreateReceivable } from '@/core/queries';
 import { useEntitySettings } from '@/core/queries/useEntities';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -59,9 +59,9 @@ type ReceivableViewState =
  * Supported only `invoice` type
  */
 export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <CreateReceivablesBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {

@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { css } from '@emotion/react';
 import { Fade, Dialog as MuiDialog, Slide } from '@mui/material';
@@ -46,9 +46,9 @@ export const useDialog = (): DialogContextType | undefined => {
 };
 
 export const Dialog = (props: MoniteDialogProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <DialogBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 export const DialogBase = (props: MoniteDialogProps) => {

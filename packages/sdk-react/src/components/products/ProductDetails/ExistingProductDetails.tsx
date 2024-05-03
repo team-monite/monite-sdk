@@ -8,7 +8,7 @@ import {
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -39,9 +39,9 @@ import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
 import { ProductType } from './components/ProductType';
 
 export const ExistingProductDetails = (props: IExistingProductDetailsProps) => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ExistingProductDetailsBase {...props} />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ExistingProductDetailsBase = ({
@@ -120,7 +120,7 @@ const ExistingProductDetailsBase = ({
   }
 
   return (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
@@ -243,6 +243,6 @@ const ExistingProductDetailsBase = ({
           )}
         </DialogActions>
       )}
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   );
 };

@@ -6,7 +6,7 @@ import {
   ProductDetails,
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -20,9 +20,9 @@ import { Button, CircularProgress } from '@mui/material';
 import { ProductsTable } from './ProductsTable';
 
 export const Products = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <ProductsBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const ProductsBase = () => {

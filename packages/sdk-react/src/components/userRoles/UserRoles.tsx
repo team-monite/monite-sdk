@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Dialog, PageHeader, UserRoleDetails } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -12,9 +12,9 @@ import { ActionEnum } from '@monite/sdk-api';
 import { UserRolesTable } from './UserRolesTable';
 
 export const UserRoles = () => (
-  <MoniteStyleProvider>
+  <MoniteScopedProviders>
     <UserRolesBase />
-  </MoniteStyleProvider>
+  </MoniteScopedProviders>
 );
 
 const UserRolesBase = () => {
