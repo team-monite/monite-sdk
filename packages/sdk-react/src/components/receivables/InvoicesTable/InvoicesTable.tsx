@@ -7,7 +7,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
-import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
+import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -197,14 +197,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
                 params: GridRenderCellParams<ReceivableResponse>
               ) => {
                 const status = params.value as ReceivablesStatusEnum;
-
-                return (
-                  <Chip
-                    color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-                    label={getCommonStatusLabel(status, i18n)}
-                    variant="filled"
-                  />
-                );
+                return <InvoiceStatusChip status={status} />;
               },
               flex: 1,
             },
