@@ -2,7 +2,7 @@ import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
 import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
-import { ThemeOptions } from '@mui/material';
+import { ThemeOptions, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
@@ -117,9 +117,11 @@ export const GlobalStorybookDecorator = (props: {
           }
         `}
       />
-      <MoniteProvider monite={props.monite ?? monite} theme={props.theme}>
-        <ComponentWrapper>{props.children}</ComponentWrapper>
-      </MoniteProvider>
+      <ThemeProvider theme={props.theme ?? {}}>
+        <MoniteProvider monite={props.monite ?? monite} theme={props.theme}>
+          <ComponentWrapper>{props.children}</ComponentWrapper>
+        </MoniteProvider>
+      </ThemeProvider>
     </>
   );
 };
