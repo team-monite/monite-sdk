@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
@@ -38,18 +40,6 @@ export function getRandomBoolean(): boolean {
 export function getRandomNumber(min = 0, max = 100) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-
-const ComponentWrapper = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = useQueryClient();
-
-  /**
-   * We have to clean QueryClient cache when we change
-   *  a story to avoid any caches between components
-   */
-  queryClient.removeQueries();
-
-  return <>{children}</>;
-};
 
 export const withGlobalStorybookDecorator = (
   cb?: () => {
@@ -119,7 +109,7 @@ export const GlobalStorybookDecorator = (props: {
       />
       <ThemeProvider theme={props.theme ?? {}}>
         <MoniteProvider monite={props.monite ?? monite} theme={props.theme}>
-          <ComponentWrapper>{props.children}</ComponentWrapper>
+          {props.children}
         </MoniteProvider>
       </ThemeProvider>
     </>
