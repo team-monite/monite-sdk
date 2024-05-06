@@ -4,7 +4,7 @@ import { useDialog } from '@/components';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';

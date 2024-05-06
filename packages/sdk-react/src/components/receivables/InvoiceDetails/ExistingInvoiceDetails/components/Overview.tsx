@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import React from 'react';
 
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useCurrencies } from '@/core/hooks';
 import { useCounterpartById } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';

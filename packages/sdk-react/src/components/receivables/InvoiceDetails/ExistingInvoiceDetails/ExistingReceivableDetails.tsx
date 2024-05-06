@@ -1,6 +1,6 @@
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
-import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {

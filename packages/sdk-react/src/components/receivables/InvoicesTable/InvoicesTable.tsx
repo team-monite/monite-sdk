@@ -6,7 +6,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
-import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';

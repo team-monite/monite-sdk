@@ -1,5 +1,5 @@
 import { PayableStatusChipProps } from '@/components/payables/PayablesTable/PayableStatusChip';
-import { InvoiceStatusChipProps } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
+import { InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
 import {
   ComponentsOverrides,
   ComponentsVariants,
