@@ -95,7 +95,7 @@ export class DropInElement extends HTMLElement {
 
     if (templateContent) this.appendChild(templateContent);
 
-    this.root = this.attachShadow({ mode: 'open' });
+    this.root = this.attachShadow({ mode: 'open', delegatesFocus: true });
 
     this.root.innerHTML = `
       <div id="monite-app-styles"></div>
