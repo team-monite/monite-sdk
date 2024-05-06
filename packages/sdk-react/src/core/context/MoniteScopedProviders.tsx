@@ -29,13 +29,9 @@ export const MoniteScopedProviders = ({
       <EmotionCacheProvider cacheKey="monite-css">
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
-            <ScopedCssBaseline enableColorScheme>
-              <SentryProvider>
-                <MoniteQueryClientProvider>
-                  {children}
-                </MoniteQueryClientProvider>
-              </SentryProvider>
-            </ScopedCssBaseline>
+            <SentryProvider>
+              <MoniteQueryClientProvider>{children}</MoniteQueryClientProvider>
+            </SentryProvider>
           </MuiThemeProvider>
         </MoniteI18nProvider>
       </EmotionCacheProvider>
