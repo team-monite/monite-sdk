@@ -1,5 +1,6 @@
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
+import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
@@ -11,7 +12,11 @@ import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
+import {
+  ActionEnum,
+  InvoiceResponsePayload,
+  ReceivablesStatusEnum,
+} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
@@ -19,7 +24,6 @@ import {
   Box,
   Button,
   Card,
-  Chip,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -34,11 +38,7 @@ import {
 
 import { addDays } from 'date-fns';
 
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '../../consts';
-import {
-  ExistingReceivableDetailsProps,
-  getReceivableStatusNameMap,
-} from '../InvoiceDetails.types';
+import { ExistingReceivableDetailsProps } from '../InvoiceDetails.types';
 import { InvoiceError } from '../InvoiceError';
 import { InvoiceItems } from '../InvoiceItems';
 import { InvoicePaymentDetails } from '../InvoicePaymentDetails';
@@ -140,10 +140,8 @@ const ExistingReceivableDetailsBase = (
             <Typography variant="h3">
               {t(i18n)`Invoice ${invoice.document_id || ''}`}
             </Typography>
-            <Chip
-              color={ROW_TO_TAG_STATUS_MUI_MAP[invoice.status]}
-              label={getReceivableStatusNameMap(i18n)[invoice.status]}
-              variant="outlined"
+            <InvoiceStatusChip
+              status={invoice.status as unknown as ReceivablesStatusEnum}
             />
           </Box>
           {dialogContext?.isDialogContent && (

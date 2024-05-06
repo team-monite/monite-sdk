@@ -1,13 +1,10 @@
 import React, { useCallback, useState } from 'react';
 
 import { useDialog } from '@/components';
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
-import {
-  ExistingReceivableDetailsProps,
-  getReceivableStatusNameMap,
-} from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceStatusChip } from '@/components/receivables/InvoicesTable/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
@@ -24,7 +21,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Box,
   Button,
-  Chip,
   DialogContent,
   DialogTitle,
   Grid,
@@ -191,14 +187,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 <Typography variant="h3">{t(
                   i18n
                 )`Invoice ${documentId}`}</Typography>
-                <Chip
-                  color={ROW_TO_TAG_STATUS_MUI_MAP[receivable.status]}
-                  label={getReceivableStatusNameMap(i18n)[receivable.status]}
-                  variant="filled"
-                  sx={{
-                    borderRadius: 1,
-                  }}
-                />
+                <InvoiceStatusChip status={receivable.status} />
               </Stack>
             </Grid>
             <Grid item xs={6}>

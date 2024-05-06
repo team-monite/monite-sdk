@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import {
   FILTER_TYPE_CUSTOMER,
   FILTER_TYPE_SEARCH,
@@ -24,7 +23,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
