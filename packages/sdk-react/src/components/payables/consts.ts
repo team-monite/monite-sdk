@@ -52,8 +52,3 @@ export const PAYABLE_STATUS_TO_MUI_ICON_MAP: Record<
   [PayableStateEnum.PAID]: PaidOutlinedIcon,
   [PayableStateEnum.CANCELED]: CancelIcon, // not match to https://fonts.google.com/icons?selected=Material+Symbols+Outlined:scan_delete:FILL@0;wght@400;GRAD@0;opsz@24&icon.size=24&icon.color=%235f6368
 };
-
-export const PAYABLE_TAB_LIST = [
-  'document',
-  'payment' /*, 'status', 'history' */,
-];
