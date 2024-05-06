@@ -25,7 +25,7 @@ export const FullPermissions: Story = {
     showCategories: true,
   },
   render: (args) => (
-    <div style={{ display: 'flex', height: 600 }}>
+    <div style={{ height: 600 }}>
       <CounterpartsTable {...args} />
     </div>
   ),
@@ -55,7 +55,7 @@ export const WithReadOnlyPermissions: Story = {
     }),
   ],
   render: (args) => (
-    <div style={{ display: 'flex', height: 600 }}>
+    <div style={{ height: 600 }}>
       <CounterpartsTable {...args} />
     </div>
   ),
@@ -85,7 +85,7 @@ export const WithEmptyPermissions: Story = {
     }),
   ],
   render: (args) => (
-    <div style={{ display: 'flex', height: 600 }}>
+    <div style={{ height: 600 }}>
       <CounterpartsTable {...args} />
     </div>
   ),
