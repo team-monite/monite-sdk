@@ -120,7 +120,8 @@ const ExistingApprovalPolicyDetailsBase = ({
           sx={{
             height: 400,
             padding: 2,
-            backgroundColor: palette.grey[50],
+            backgroundColor:
+              palette.mode === 'light' ? palette.grey[50] : palette.grey[900],
             overflow: 'auto',
           }}
         >
@@ -162,7 +163,8 @@ const ExistingApprovalPolicyDetailsBase = ({
           sx={{
             height: 400,
             padding: 2,
-            backgroundColor: palette.grey[50],
+            backgroundColor:
+              palette.mode === 'light' ? palette.grey[50] : palette.grey[900],
             overflow: 'auto',
           }}
         >
