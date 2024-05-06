@@ -1,5 +1,10 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { createTheme, Theme, ThemeOptions } from '@mui/material';
+import {
+  createTheme,
+  type Theme,
+  type ThemeOptions,
+  type Components,
+} from '@mui/material';
 
 /**
  * Create a theme with default component's `defaultProps`
@@ -9,25 +14,28 @@ export const createThemeWithDefaults = (
 ) =>
   createTheme(theme, {
     components: {
-      MuiMenu: {
-        defaultProps: {
+      ...createComponentsThemeDefaultProps(
+        [
+          'MuiMenu',
+          'MuiModal',
+          'MuiPopper',
+          'MuiDialogTitle',
+          'MuiDialogContent',
+          'MuiDialogActions',
+          'MuiDivider',
+        ],
+        {
           classes: {
             root: ScopedCssBaselineContainerClassName,
           },
-        },
-      },
-      MuiModal: {
+        }
+      ),
+      ...createComponentsThemeDefaultProps(['MuiGrid', 'MuiDialog'], {
+        classes: { container: ScopedCssBaselineContainerClassName },
+      }),
+      MuiStack: {
         defaultProps: {
-          classes: {
-            root: ScopedCssBaselineContainerClassName,
-          },
-        },
-      },
-      MuiPopper: {
-        defaultProps: {
-          componentsProps: {
-            root: { className: ScopedCssBaselineContainerClassName },
-          },
+          className: ScopedCssBaselineContainerClassName,
         },
       },
       MuiAutocomplete: {
@@ -37,3 +45,19 @@ export const createThemeWithDefaults = (
       },
     },
   });
+
+/**
+ * Create a `defaultProps` for the given MUI component list
+ */
+function createComponentsThemeDefaultProps<
+  T,
+  Component extends keyof Components<Omit<Theme, 'components'>>
+>(componentList: Component[], defaultProps: T) {
+  return componentList.reduce<Record<string, { defaultProps: T }>>(
+    (acc, key) => {
+      acc[key as keyof typeof acc] = { defaultProps };
+      return acc;
+    },
+    {}
+  );
+}
