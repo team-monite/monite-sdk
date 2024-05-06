@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useApprovalPoliciesList } from '@/core/queries';
@@ -132,7 +133,10 @@ const ApprovalPoliciesTableBase = ({
 
   return (
     <>
-      <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
+      <Box
+        sx={{ padding: 2, width: '100%', height: '100%' }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Box sx={{ marginBottom: 2 }}>
           <Filters onChangeFilter={onChangeFilter} />
         </Box>

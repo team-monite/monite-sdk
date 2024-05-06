@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
@@ -113,6 +114,7 @@ const PayableDetailsBase = ({
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           width: '100%',
           height: '100%',

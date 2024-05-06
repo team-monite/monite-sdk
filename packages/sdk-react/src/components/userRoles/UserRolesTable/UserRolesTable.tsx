@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   FILTER_TYPE_SEARCH,
   ROLES_PAGE_LIMIT,
@@ -154,6 +155,7 @@ const UserRolesTableBase = ({
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import {
   FILTER_TYPE_CUSTOMER,
@@ -108,7 +109,10 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
 
   return (
     <>
-      <Box sx={{ padding: 2, width: '100%' }}>
+      <Box
+        sx={{ padding: 2, width: '100%' }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Box sx={{ marginBottom: 2 }}>
           <Filters onChangeFilter={onChangeFilter} />
         </Box>

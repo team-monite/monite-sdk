@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
@@ -183,6 +184,7 @@ const ProductsTableBase = ({
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}

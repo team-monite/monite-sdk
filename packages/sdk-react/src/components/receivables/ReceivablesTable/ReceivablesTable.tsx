@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -68,7 +69,10 @@ const ReceivablesTableBase = ({
 
   return (
     <>
-      <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
+      <Box
+        sx={{ paddingLeft: 2, paddingRight: 2 }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Tabs
           value={activeTab}
           variant="standard"

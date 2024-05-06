@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -201,6 +202,7 @@ const PayableDetailsFormBase = forwardRef<
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           pb: 6,
           display: 'flex',

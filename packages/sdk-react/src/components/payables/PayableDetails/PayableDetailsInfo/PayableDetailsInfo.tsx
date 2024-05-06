@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getIndividualName,
   isIndividualCounterpart,
@@ -132,7 +133,7 @@ const PayableDetailsInfoBase = ({
 
   return (
     <>
-      <Box sx={{ pb: 6 }}>
+      <Box sx={{ pb: 6 }} className={ScopedCssBaselineContainerClassName}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="subtitle2" mb={2}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -165,6 +166,7 @@ const PayablesTableBase = ({
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}

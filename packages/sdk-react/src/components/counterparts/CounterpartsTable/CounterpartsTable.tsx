@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
@@ -247,6 +248,7 @@ const CounterpartsTableBase = ({
   return (
     <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
           width: '100%',
