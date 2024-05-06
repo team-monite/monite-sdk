@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { entityIds } from '@/mocks/entities';
@@ -8,7 +8,10 @@ import { ThemeOptions, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import { useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider as FallbackQueryClientProvider,
+} from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   moniteLight as themeMoniteLight,
@@ -69,29 +72,36 @@ export const GlobalStorybookDecorator = (props: {
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
 
-  const monite = new MoniteSDK({
-    entityId: entityIds[0],
-    apiUrl,
-    fetchToken: async () => {
-      const request = {
-        grant_type: GrantType.ENTITY_USER,
-        client_id: 'c59964ce-d1c5-4cf3-8e22-9ab0c5e2ffc4',
-        client_secret: '49b55da0-f917-4c90-a2be-e45693600bf7',
-        entity_user_id: '8ee9e41c-cb3c-4f85-84c8-58aa54b09f44',
-      };
+  // Used if the Storybook component does not wrap `<MoniteScopedProviders/>`.
+  const fallbackQueryClient = useMemo(() => new QueryClient(), []);
 
-      const response = await fetch(`${apiUrl}/auth/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-monite-version': apiVersion,
+  const monite = useMemo(
+    () =>
+      new MoniteSDK({
+        entityId: entityIds[0],
+        apiUrl,
+        fetchToken: async () => {
+          const request = {
+            grant_type: GrantType.ENTITY_USER,
+            client_id: 'c59964ce-d1c5-4cf3-8e22-9ab0c5e2ffc4',
+            client_secret: '49b55da0-f917-4c90-a2be-e45693600bf7',
+            entity_user_id: '8ee9e41c-cb3c-4f85-84c8-58aa54b09f44',
+          };
+
+          const response = await fetch(`${apiUrl}/auth/token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-monite-version': apiVersion,
+            },
+            body: JSON.stringify(request),
+          });
+
+          return await response.json();
         },
-        body: JSON.stringify(request),
-      });
-
-      return await response.json();
-    },
-  });
+      }),
+    []
+  );
 
   const backgroundColor =
     props.theme?.palette?.mode === 'light'
@@ -109,7 +119,9 @@ export const GlobalStorybookDecorator = (props: {
       />
       <ThemeProvider theme={props.theme ?? {}}>
         <MoniteProvider monite={props.monite ?? monite} theme={props.theme}>
-          {props.children}
+          <FallbackQueryClientProvider client={fallbackQueryClient}>
+            {props.children}
+          </FallbackQueryClientProvider>
         </MoniteProvider>
       </ThemeProvider>
     </>
