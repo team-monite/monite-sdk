@@ -1,7 +1,7 @@
 import React, { cloneElement, ReactElement, useMemo } from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { PayableStatusChip } from '@/components/payables/PayablesTable/PayableStatusChip';
+import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
