@@ -179,9 +179,7 @@ describe('CounterpartsTable', () => {
         <CounterpartsTable onChangeFilter={onChangeFilterMock} />
       );
 
-      await waitUntilTableIsLoaded();
-
-      const search = screen.getByLabelText(/Search by name/i);
+      const search = await screen.findByLabelText(/Search by name/i);
 
       const searchValue = 'Acme';
       fireEvent.change(search, {
