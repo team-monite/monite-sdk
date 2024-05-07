@@ -41,7 +41,6 @@ export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
   const { buttonProps, menuProps, open } = useMenuButton();
 
   const { variant: themeVariant, mode: themeMode } = value;
-
   return (
     <>
       <Button
@@ -71,6 +70,10 @@ export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
           <Divider />
           <MenuItem>
             <FormControlLabel
+              onClick={(event) => {
+                // prevent the menu from closing, since `onClick` is closing the menu
+                event.stopPropagation();
+              }}
               control={
                 <Switch color="primary" checked={themeMode === 'dark'} />
               }
