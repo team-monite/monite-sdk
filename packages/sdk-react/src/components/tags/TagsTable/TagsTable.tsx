@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -29,7 +30,7 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
 import { TagFormModal } from '../TagFormModal';
 
-interface Props {
+interface TagsTableProps {
   onChangeSort?: (params: TagsTableSortModel) => void;
 }
 
@@ -38,7 +39,15 @@ interface TagsTableSortModel {
   sort: GridSortDirection;
 }
 
-export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
+export const TagsTable = (props: TagsTableProps) => (
+  <MoniteScopedProviders>
+    <TagsTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const TagsTableBase = ({
+  onChangeSort: onChangeSortCallback,
+}: TagsTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -119,8 +128,11 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
   });
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
+    <>
+      <Box
+        sx={{ padding: 2, width: '100%', height: '100%' }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <DataGrid
           loading={isLoading}
           sortModel={sortModels}
@@ -216,6 +228,6 @@ export const TagsTable = ({ onChangeSort: onChangeSortCallback }: Props) => {
           />
         )}
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

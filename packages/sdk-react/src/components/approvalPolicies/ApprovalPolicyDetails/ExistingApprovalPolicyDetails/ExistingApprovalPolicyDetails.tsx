@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -35,7 +35,15 @@ export interface IExistingApprovalPolicyDetailsProps {
   onChangeEditMode: (isEdit: boolean) => void;
 }
 
-export const ExistingApprovalPolicyDetails = ({
+export const ExistingApprovalPolicyDetails = (
+  props: IExistingApprovalPolicyDetailsProps
+) => (
+  <MoniteScopedProviders>
+    <ExistingApprovalPolicyDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ExistingApprovalPolicyDetailsBase = ({
   approvalPolicy,
   onChangeEditMode,
 }: IExistingApprovalPolicyDetailsProps) => {
@@ -50,7 +58,7 @@ export const ExistingApprovalPolicyDetails = ({
   });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box
           display="flex"
@@ -112,7 +120,8 @@ export const ExistingApprovalPolicyDetails = ({
           sx={{
             height: 400,
             padding: 2,
-            backgroundColor: palette.grey[50],
+            backgroundColor:
+              palette.mode === 'light' ? palette.grey[50] : palette.grey[900],
             overflow: 'auto',
           }}
         >
@@ -154,7 +163,8 @@ export const ExistingApprovalPolicyDetails = ({
           sx={{
             height: 400,
             padding: 2,
-            backgroundColor: palette.grey[50],
+            backgroundColor:
+              palette.mode === 'light' ? palette.grey[50] : palette.grey[900],
             overflow: 'auto',
           }}
         >
@@ -176,6 +186,6 @@ export const ExistingApprovalPolicyDetails = ({
           {t(i18n)`Edit`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

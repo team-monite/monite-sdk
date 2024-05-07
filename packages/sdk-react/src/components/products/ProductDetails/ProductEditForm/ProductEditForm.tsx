@@ -2,7 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useProductById, useUpdateProduct } from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
@@ -42,7 +42,13 @@ type IProductEditFormProps = Pick<
   onCanceled: () => void;
 };
 
-export const ProductEditForm = (props: IProductEditFormProps) => {
+export const ProductEditForm = (props: IProductEditFormProps) => (
+  <MoniteScopedProviders>
+    <ProductEditFormBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ProductEditFormBase = (props: IProductEditFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits, formatFromMinorUnits } = useCurrencies();
@@ -82,7 +88,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
 
   if (productQueryError || !product) {
     return (
-      <MoniteStyleProvider>
+      <>
         <Grid container alignItems="center">
           <Grid item xs={11}>
             <Typography variant="h3" sx={{ padding: 3 }}>
@@ -114,7 +120,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
             </Stack>
           </Stack>
         </CenteredContentBox>
-      </MoniteStyleProvider>
+      </>
     );
   }
 
@@ -151,7 +157,7 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
   };
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
@@ -191,6 +197,6 @@ export const ProductEditForm = (props: IProductEditFormProps) => {
           {t(i18n)`Update`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

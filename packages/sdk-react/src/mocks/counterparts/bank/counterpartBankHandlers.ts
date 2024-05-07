@@ -37,7 +37,7 @@ export const counterpartBankHandlers = [
     CreateCounterpartBankAccountParams,
     CounterpartData<CounterpartBankAccountResponse[]>
   >(bankAccountPath, async () => {
-    await delay(10_000);
+    await delay();
 
     return HttpResponse.json(
       { data: counterpartBankListFixture },

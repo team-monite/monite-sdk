@@ -4,7 +4,7 @@ import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -17,7 +17,13 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 
-export const Counterparts = () => {
+export const Counterparts = () => (
+  <MoniteScopedProviders>
+    <CounterpartsBase />
+  </MoniteScopedProviders>
+);
+
+const CounterpartsBase = () => {
   const { i18n } = useLingui();
 
   const { open, menuProps, buttonProps } = useMenuButton();
@@ -98,7 +104,7 @@ export const Counterparts = () => {
   })();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -148,6 +154,6 @@ export const Counterparts = () => {
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && <CounterpartsTable onRowClick={setId} onEdit={setId} />}
       {counterpartDetails}
-    </MoniteStyleProvider>
+    </>
   );
 };

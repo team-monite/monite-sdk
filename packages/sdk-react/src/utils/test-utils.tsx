@@ -1,10 +1,13 @@
 import React, { ReactElement, ReactNode } from 'react';
 
-import { I18nLocaleProvider } from '@/core/context/I18nLocaleProvider';
 import { MoniteContext } from '@/core/context/MoniteContext';
+import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
+import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
   BrowserClient,
@@ -25,6 +28,9 @@ import {
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
+
+import type { Locale as DateFnsLocale } from 'date-fns';
+import DateFnsDeLocale from 'date-fns/locale/de';
 
 const queryCache = new QueryCache();
 const queryClient = new QueryClient({
@@ -64,10 +70,18 @@ export const Provider = ({
   children: ReactNode;
   client: QueryClient;
   sdk?: MoniteSDK;
-  moniteProviderProps?: Omit<MoniteProviderProps, 'monite'>;
+  moniteProviderProps?: ICreateRenderWithClientProps['providerOptions'];
 }) => {
   const monite = sdk ?? cachedMoniteSDK;
-  const userLocale = moniteProviderProps?.locale?.code ?? 'de-DE';
+  const localeCode = moniteProviderProps?.locale?.code ?? 'de-DE';
+  const dateFnsLocale = moniteProviderProps?.dateFnsLocale ?? DateFnsDeLocale;
+
+  const i18n = setupI18n({
+    locale: localeCode,
+    messages: {
+      [localeCode]: {},
+    },
+  });
   const sentryClient = new BrowserClient({
     dsn: undefined,
     debug: true,
@@ -82,17 +96,14 @@ export const Provider = ({
       <MoniteContext.Provider
         value={{
           monite,
-          code: userLocale,
+          i18n,
           sentryHub,
+          queryClient: client,
+          theme: createThemeWithDefaults(moniteProviderProps?.theme),
+          dateFnsLocale,
         }}
       >
-        <I18nLocaleProvider
-          locale={{
-            code: userLocale,
-          }}
-        >
-          {children}
-        </I18nLocaleProvider>
+        <MoniteI18nProvider>{children}</MoniteI18nProvider>
       </MoniteContext.Provider>
     </QueryClientProvider>
   );
@@ -100,7 +111,9 @@ export const Provider = ({
 
 interface ICreateRenderWithClientProps {
   monite?: MoniteSDK;
-  providerOptions?: Omit<MoniteProviderProps, 'monite'>;
+  providerOptions?: Omit<MoniteProviderProps, 'monite'> & {
+    dateFnsLocale?: DateFnsLocale;
+  };
 }
 
 /**

@@ -8,7 +8,8 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
@@ -132,6 +133,15 @@ const getValidationSchema = (i18n: I18n) =>
 export const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayableDetailsFormProps
+>((props, ref) => (
+  <MoniteScopedProviders>
+    <PayableDetailsFormBase ref={ref} {...props} />
+  </MoniteScopedProviders>
+));
+
+const PayableDetailsFormBase = forwardRef<
+  HTMLFormElement,
+  PayableDetailsFormProps
 >(({ payable, savePayable, createPayable, optionalFields, lineItems }, ref) => {
   const { i18n } = useLingui();
   const { formatFromMinorUnits, formatToMinorUnits, formatCurrencyToDisplay } =
@@ -190,8 +200,9 @@ export const PayableDetailsForm = forwardRef<
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           pb: 6,
           display: 'flex',
@@ -510,6 +521,6 @@ export const PayableDetailsForm = forwardRef<
           </form>
         </FormProvider>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 });

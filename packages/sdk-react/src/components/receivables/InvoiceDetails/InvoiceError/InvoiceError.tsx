@@ -1,5 +1,5 @@
 import { useDialog } from '@/components/Dialog';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,7 +22,7 @@ export const InvoiceError = ({
   const dialogContext = useDialog();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center">
@@ -44,6 +44,6 @@ export const InvoiceError = ({
       <DialogContent>
         <Box display="flex">{errorMessage}</Box>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

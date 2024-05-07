@@ -1,22 +1,14 @@
-import React, {
-  lazy,
-  ReactNode,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { lazy, ReactNode, Suspense, useMemo, useRef } from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { compileLinguiDynamicMessages } from '@/utils/compile-lingui-dynamic-messages';
-import { Messages, setupI18n } from '@lingui/core';
+import { type I18n, type Messages, setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import type { Locale } from 'date-fns';
+import type { Locale as DateFnsLocale } from 'date-fns';
 import type DateFNSLocales from 'date-fns/locale';
-import enGB from 'date-fns/locale/en-GB';
 import deepEqual from 'deep-eql';
 
 import { messages as enLocaleMessages } from '../i18n/locales/en/messages';
@@ -39,52 +31,44 @@ export type MoniteLocale = {
   messages?: MoniteSupportedMessages;
 };
 
-export const I18nLocaleProvider = ({
-  locale,
-  children,
-}: {
-  children: ReactNode;
-  locale: MoniteLocale;
-}) => {
-  return (
-    <LinguiI18nProvider locale={locale}>
-      <DatePickerI18nProvider localeCode={locale.code}>
-        {children}
-      </DatePickerI18nProvider>
-    </LinguiI18nProvider>
-  );
-};
+export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
+  const { i18n, dateFnsLocale } = useMoniteContext();
 
-const LinguiI18nProvider = ({
-  locale,
-  children,
-}: {
-  locale: MoniteLocale;
-  children: ReactNode;
-}) => {
-  if (locale.messages && Object.keys(locale.messages).length) {
-    return (
-      <LinguiI18nDynamicProvider
-        locale={{ ...locale, messages: locale.messages }}
+  return (
+    <I18nProvider
+      // Due to the imperative nature of the I18nProvider,
+      // a `key` must be added to change the locale in real time
+      key={i18n.locale}
+      i18n={i18n}
+    >
+      <LocalizationProvider
+        dateAdapter={AdapterDateFns}
+        adapterLocale={dateFnsLocale}
       >
         {children}
-      </LinguiI18nDynamicProvider>
-    );
-  }
-
-  return (
-    <LinguiI18nStaticProvider locale={locale}>
-      {children}
-    </LinguiI18nStaticProvider>
+      </LocalizationProvider>
+    </I18nProvider>
   );
 };
 
-const LinguiI18nDynamicProvider = ({
+/**
+ * Provides a dynamic `i18n` for the children components.
+ * Under the hood, it compiles the provided `locale.messages` by the Customer
+ * to the format that `@lingui` can understand.
+ *
+ * @example
+ * ```tsx
+ * <I18nLoader locale={locale}>
+ *   {(i18n) => <I18nProvider i18n={i18n}>{children}</I18nProvider>}
+ * </I18nLoader>
+ * ```
+ */
+export const I18nLoader = ({
   locale,
   children,
 }: {
-  locale: Required<MoniteLocale>;
-  children: ReactNode;
+  locale: MoniteLocale;
+  children: (i18n: I18n, dateFnsLocale: DateFnsLocale) => ReactNode;
 }) => {
   const previousLocaleMessages = useRef(locale.messages);
 
@@ -96,7 +80,7 @@ const LinguiI18nDynamicProvider = ({
 
   const Provider = useMemo(() => {
     return lazy(async () => ({
-      default: await createLinguiDynamicI18nProvider({
+      default: await createDynamicI18nProvider({
         code: locale.code,
         messages: stableLocaleMessages,
       }),
@@ -110,106 +94,64 @@ const LinguiI18nDynamicProvider = ({
   );
 };
 
-const createLinguiDynamicI18nProvider = async (locale: MoniteLocale) => {
-  const compiledMessages = locale.messages
-    ? await compileLinguiDynamicMessages(locale.messages)
-    : undefined;
+const createDynamicI18nProvider = async (locale: MoniteLocale) => {
+  const [linguiCompiledMessages, dateFnsLocale] = await Promise.all([
+    locale.messages
+      ? await compileLinguiDynamicMessages(locale.messages)
+      : Promise.resolve(),
+    loadDateFnsLocale(locale.code),
+  ]);
 
-  return function CompiledLinguiI18nProvider({
+  return function CompiledLinguiI18n({
     children,
   }: {
-    children: ReactNode;
+    children: (i18n: I18n, dateFnsLocale: DateFnsLocale) => ReactNode;
   }) {
-    return (
-      <LinguiI18nStaticProvider
-        locale={{ ...locale, messages: compiledMessages }}
-      >
-        {children}
-      </LinguiI18nStaticProvider>
-    );
+    const i18n = useMemo(() => {
+      return setupI18n({
+        locale: locale.code,
+        messages: {
+          [locale.code]: {
+            ...enLocaleMessages, // We must provide EN messages as a fallback dictionary
+            ...linguiCompiledMessages,
+          },
+        },
+      });
+    }, []);
+
+    return <>{children(i18n, dateFnsLocale)}</>;
   };
 };
 
-const LinguiI18nStaticProvider = ({
-  locale,
-  children,
-}: {
-  children: ReactNode;
-  locale: MoniteLocale;
-}) => {
-  const i18n = useMemo(() => {
-    return setupI18n({
-      locale: locale.code,
-      messages: {
-        [locale.code]: {
-          ...enLocaleMessages, // We must provide EN messages as a fallback dictionary
-          ...locale.messages,
-        },
-      },
-    });
-  }, [locale.code, locale.messages]);
+const loadDateFnsLocale = async (localeCode: string) => {
+  const localeCodeParts = localeCode.split('-');
+  const localeCodeCommon = localeCodeParts[0];
+  const localeCodeFull = localeCodeParts.join('');
 
-  return (
-    <I18nProvider
-      key={i18n.locale} // Due to the imperative nature of the I18nProvider, it is necessary to add a `key` for Realtime language change
-      i18n={i18n}
-    >
-      {children}
-    </I18nProvider>
-  );
-};
+  const isDateFnsLocaleSupported = (
+    code: string
+  ): code is keyof typeof dateFnsLocales => code in dateFnsLocales;
 
-const DatePickerI18nProvider = ({
-  children,
-  localeCode,
-}: {
-  children: ReactNode;
-  localeCode: MoniteLocale['code'];
-}) => {
-  const [adapterLocale, setAdapterLocale] = useState<Locale>(enGB);
+  try {
+    if (isDateFnsLocaleSupported(localeCodeFull)) {
+      return dateFnsLocales[localeCodeFull]().then((module) => module.default);
+    }
 
-  useEffect(() => {
-    const localCodeParts = localeCode.split('-');
-    const localCodeCommon = localCodeParts[0];
-    const localCodeFull = localCodeParts.join('');
-
-    const isDateFnsLocaleSupported = (
-      code: string
-    ): code is keyof typeof dateFnsLocales => code in dateFnsLocales;
-
-    (isDateFnsLocaleSupported(localCodeFull)
-      ? dateFnsLocales[localCodeFull]()
-      : isDateFnsLocaleSupported(localCodeCommon)
-      ? dateFnsLocales[localCodeCommon]()
-      : dateFnsLocales.enGB()
-    )
-      .catch((e) => {
-        console.error('Locale has not been loaded: ', e);
-        return dateFnsLocales.enGB();
-      })
-      .then((dateFnsLocaleModule) =>
-        setAdapterLocale(dateFnsLocaleModule.default)
+    if (isDateFnsLocaleSupported(localeCodeCommon)) {
+      return dateFnsLocales[localeCodeCommon]().then(
+        (module) => module.default
       );
-  }, [localeCode]);
+    }
+  } catch (error) {
+    console.error('DateFnsLocale has not been loaded: ', error);
+  }
 
-  return (
-    <LocalizationProvider
-      dateAdapter={AdapterDateFns}
-      adapterLocale={adapterLocale}
-    >
-      {children}
-    </LocalizationProvider>
-  );
-};
-
-export const isEmptyMultipleKeysObject = (obj: object) => {
-  for (const prop in obj) if (obj.hasOwnProperty(prop)) return false;
-  return true;
+  return dateFnsLocales.en().then((module) => module.default);
 };
 
 const dateFnsLocales: Record<
-  keyof typeof DateFNSLocales,
-  () => Promise<{ default: Locale }>
+  keyof typeof DateFNSLocales | 'en',
+  () => Promise<{ default: DateFnsLocale }>
 > = {
   af: () => import('date-fns/locale/af'),
   ar: () => import('date-fns/locale/ar'),
@@ -231,6 +173,7 @@ const dateFnsLocales: Record<
   de: () => import('date-fns/locale/de'),
   deAT: () => import('date-fns/locale/de-AT'),
   el: () => import('date-fns/locale/el'),
+  en: () => import('date-fns/locale/en-US'), // date-fns does not have a locale for `en`
   enAU: () => import('date-fns/locale/en-AU'),
   enCA: () => import('date-fns/locale/en-CA'),
   enGB: () => import('date-fns/locale/en-GB'),

@@ -5,7 +5,7 @@ import { useDialog } from '@/components';
 import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicyDetails/JSONFormatterInput';
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -57,7 +57,7 @@ export interface ApprovalPolicyFormFields {
   script: string;
 }
 
-interface Props {
+interface ApprovalPolicyDetailsFormProps {
   /** Approval policy to be edited */
   approvalPolicy?: ApprovalPolicyResource;
 
@@ -80,12 +80,20 @@ interface Props {
   onUpdated?: (id: string) => void;
 }
 
-export const ApprovalPolicyDetailsForm = ({
+export const ApprovalPolicyDetailsForm = (
+  props: ApprovalPolicyDetailsFormProps
+) => (
+  <MoniteScopedProviders>
+    <ApprovalPolicyDetailsFormBase {...props} />
+  </MoniteScopedProviders>
+);
+
+export const ApprovalPolicyDetailsFormBase = ({
   approvalPolicy,
   onChangeEditMode,
   onCreated,
   onUpdated,
-}: Props) => {
+}: ApprovalPolicyDetailsFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const methods = useForm<ApprovalPolicyFormFields>({
@@ -119,7 +127,7 @@ export const ApprovalPolicyDetailsForm = ({
   });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h3">
@@ -273,6 +281,6 @@ export const ApprovalPolicyDetailsForm = ({
           {isUpdate ? t(i18n)`Update` : t(i18n)`Create`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

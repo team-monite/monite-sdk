@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 
 import { CounterpartAddressFormUpdate } from './CounterpartAddressFormUpdate';
 import { CounterpartBankForm } from './CounterpartBankForm';
@@ -17,7 +17,13 @@ import {
   useCounterpartDetails,
 } from './useCounterpartDetails';
 
-export const CounterpartDetails = (props: CounterpartsDetailsProps) => {
+export const CounterpartDetails = (props: CounterpartsDetailsProps) => (
+  <MoniteScopedProviders>
+    <CounterpartDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
   const {
     counterpartId,
     counterpartView,
@@ -200,5 +206,5 @@ export const CounterpartDetails = (props: CounterpartsDetailsProps) => {
     showView,
   ]);
 
-  return <MoniteStyleProvider>{renderComponent}</MoniteStyleProvider>;
+  return renderComponent;
 };

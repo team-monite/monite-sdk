@@ -8,7 +8,7 @@ import {
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -38,7 +38,13 @@ import {
 import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
 import { ProductType } from './components/ProductType';
 
-export const ExistingProductDetails = ({
+export const ExistingProductDetails = (props: IExistingProductDetailsProps) => (
+  <MoniteScopedProviders>
+    <ExistingProductDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ExistingProductDetailsBase = ({
   id,
   onUpdated,
   onDeleted,
@@ -89,11 +95,7 @@ export const ExistingProductDetails = ({
   }
 
   if (!isReadAllowed) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   if (productQueryError || !product) {
@@ -118,7 +120,7 @@ export const ExistingProductDetails = ({
   }
 
   return (
-    <MoniteStyleProvider>
+    <MoniteScopedProviders>
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
@@ -241,6 +243,6 @@ export const ExistingProductDetails = ({
           )}
         </DialogActions>
       )}
-    </MoniteStyleProvider>
+    </MoniteScopedProviders>
   );
 };

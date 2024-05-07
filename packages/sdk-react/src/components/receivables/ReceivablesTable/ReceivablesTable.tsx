@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Tabs, Tab, Box } from '@mui/material';
@@ -22,7 +23,7 @@ interface IReceiveablesTableControlledProps {
   onTabChange: (tab: ReceivablesTableTabEnum) => void;
 }
 
-type IReceivablesTableProps = {
+type ReceivablesTableProps = {
   /**
    * The event handler for a row click.
    *
@@ -37,11 +38,17 @@ export enum ReceivablesTableTabEnum {
   CreditNotes,
 }
 
-export const ReceivablesTable = ({
+export const ReceivablesTable = (props: ReceivablesTableProps) => (
+  <MoniteScopedProviders>
+    <ReceivablesTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ReceivablesTableBase = ({
   onRowClick,
   tab: externalActiveTab,
   onTabChange: setExternalActiveTab,
-}: IReceivablesTableProps) => {
+}: ReceivablesTableProps) => {
   const { i18n } = useLingui();
   const [internalActiveTab, setInternalActiveTab] =
     useState<ReceivablesTableTabEnum>(ReceivablesTableTabEnum.Invoices);
@@ -61,8 +68,11 @@ export const ReceivablesTable = ({
   }, [activeTab, onRowClick]);
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ paddingLeft: 2, paddingRight: 2 }}>
+    <>
+      <Box
+        sx={{ paddingLeft: 2, paddingRight: 2 }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Tabs
           value={activeTab}
           variant="standard"
@@ -90,6 +100,6 @@ export const ReceivablesTable = ({
         </Tabs>
       </Box>
       {activeUITab}
-    </MoniteStyleProvider>
+    </>
   );
 };

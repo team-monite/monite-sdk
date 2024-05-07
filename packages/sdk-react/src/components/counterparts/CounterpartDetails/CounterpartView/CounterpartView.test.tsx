@@ -1,5 +1,5 @@
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
@@ -36,9 +36,9 @@ describe('CounterpartView', () => {
     describe('# Organization information actions', () => {
       test('should show "Edit" button if the user has permissions to update counterpart information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -56,9 +56,9 @@ describe('CounterpartView', () => {
 
       test('should show "Delete" button if the user has permissions to delete counterpart information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -86,9 +86,9 @@ describe('CounterpartView', () => {
         });
 
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           monite
         );
 
@@ -103,9 +103,9 @@ describe('CounterpartView', () => {
     describe('# Bank accounts actions', () => {
       test('should show "Edit" button if the user has permissions to update bank account information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} showBankAccounts />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -123,9 +123,9 @@ describe('CounterpartView', () => {
 
       test('should show "Delete" button if the user has permissions to delete bank account information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} showBankAccounts />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -143,9 +143,9 @@ describe('CounterpartView', () => {
 
       test('should NOT show "Edit" button if the user has NO permissions to update bank account information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} showBankAccounts />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           sdkWithReadPermissions
         );
 
@@ -164,9 +164,9 @@ describe('CounterpartView', () => {
 
       test('should NOT show "Delete" button if the user has NO permissions to delete bank account information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} showBankAccounts />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           sdkWithReadPermissions
         );
 
@@ -187,9 +187,9 @@ describe('CounterpartView', () => {
     describe('# Contact persons actions', () => {
       test('should show "Edit" button if the user has permissions to update contact persons information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -207,9 +207,9 @@ describe('CounterpartView', () => {
 
       test('should show "Delete" button if the user has permissions to delete contact persons information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -227,9 +227,9 @@ describe('CounterpartView', () => {
 
       test('should NOT show "Edit" button if the user has NO permissions to update contact persons information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           sdkWithReadPermissions
         );
 
@@ -248,9 +248,9 @@ describe('CounterpartView', () => {
 
       test('should NOT show "Delete" button if the user has NO permissions to delete contact persons information', async () => {
         renderWithClient(
-          <MoniteStyleProvider>
+          <MoniteScopedProviders>
             <CounterpartView id={organizationId} />
-          </MoniteStyleProvider>,
+          </MoniteScopedProviders>,
           sdkWithReadPermissions
         );
 

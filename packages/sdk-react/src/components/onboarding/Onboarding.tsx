@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { LinearProgress } from '@mui/material';
 
@@ -13,7 +13,11 @@ import { OnboardingContent } from './OnboardingContent';
  * @description Onboarding component has not yet been released.
  */
 export function Onboarding() {
-  return <OnboardingChildren />;
+  return (
+    <MoniteScopedProviders>
+      <OnboardingChildren />
+    </MoniteScopedProviders>
+  );
 }
 
 function OnboardingChildren() {
@@ -28,10 +32,8 @@ function OnboardingChildren() {
   }
 
   return (
-    <MoniteStyleProvider>
-      <OnboardingContextProvider>
-        <OnboardingContent />
-      </OnboardingContextProvider>
-    </MoniteStyleProvider>
+    <OnboardingContextProvider>
+      <OnboardingContent />
+    </OnboardingContextProvider>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -38,7 +39,7 @@ import {
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
 
-interface Props {
+interface PayablesTableProps {
   /**
    * The event handler for a row click.
    *
@@ -75,11 +76,17 @@ interface Props {
   }) => void;
 }
 
-export const PayablesTable = ({
+export const PayablesTable = (props: PayablesTableProps) => (
+  <MoniteScopedProviders>
+    <PayablesTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
-}: Props) => {
+}: PayablesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -153,16 +160,13 @@ export const PayablesTable = ({
 
   /** We have to wait until `usePayablesList` and `useIsActionAllowed` is finished */
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}
@@ -341,6 +345,6 @@ export const PayablesTable = ({
           rows={payables?.data || []}
         />
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

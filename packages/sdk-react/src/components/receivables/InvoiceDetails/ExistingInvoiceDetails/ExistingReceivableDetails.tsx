@@ -1,6 +1,6 @@
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   useInvoiceDetails,
@@ -53,8 +53,18 @@ type GetComponentProps<T> = T extends
   ? P
   : never;
 
-/** General component for all Receivables (Invoices, Credit Notes, Quotes) */
+/**
+ * General component for all Receivables (Invoices, Credit Notes, Quotes)
+ * */
 export const ExistingReceivableDetails = (
+  props: ExistingReceivableDetailsProps
+) => (
+  <MoniteScopedProviders>
+    <ExistingReceivableDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ExistingReceivableDetailsBase = (
   props: ExistingReceivableDetailsProps
 ) => {
   const { i18n } = useLingui();
@@ -122,7 +132,7 @@ export const ExistingReceivableDetails = (
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
@@ -271,6 +281,6 @@ export const ExistingReceivableDetails = (
           </Button>
         )}
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };

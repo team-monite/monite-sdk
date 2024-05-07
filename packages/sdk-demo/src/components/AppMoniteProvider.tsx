@@ -1,7 +1,6 @@
 import React, { ComponentProps, ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
-import { messages as defaultMessages } from '@/locales/en/messages.ts';
 import { MoniteSDK, MoniteSDKConfig } from '@monite/sdk-api';
 import { MoniteProvider } from '@monite/sdk-react';
 
@@ -30,14 +29,7 @@ const AppMoniteProvider = ({
   );
 
   return (
-    <MoniteProvider
-      monite={monite}
-      locale={{
-        ...locale,
-        messages: { ...defaultMessages, ...locale?.messages },
-      }}
-      theme={theme}
-    >
+    <MoniteProvider monite={monite} locale={locale} theme={theme}>
       {children}
     </MoniteProvider>
   );

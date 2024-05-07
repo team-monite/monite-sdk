@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMIT } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import {
@@ -102,7 +103,13 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
   }) => void;
 };
 
-export const CounterpartsTable = ({
+export const CounterpartsTable = (props: CounterpartsTableProps) => (
+  <MoniteScopedProviders>
+    <CounterpartsTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const CounterpartsTableBase = ({
   onRowClick,
   onEdit,
   onDelete,
@@ -235,16 +242,13 @@ export const CounterpartsTable = ({
   }
 
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
           width: '100%',
@@ -465,6 +469,6 @@ export const CounterpartsTable = ({
           </DialogActions>
         </Dialog>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

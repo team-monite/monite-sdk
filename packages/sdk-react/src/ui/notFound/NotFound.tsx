@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useDialog } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
@@ -16,7 +15,7 @@ export const NotFound = ({ title, description }: NotFoundProps) => {
   const dialogContext = useDialog();
 
   return (
-    <MoniteStyleProvider>
+    <>
       {dialogContext && (
         <Grid container padding={2}>
           <Grid item xs={11} />
@@ -42,6 +41,6 @@ export const NotFound = ({ title, description }: NotFoundProps) => {
           </Stack>
         </Stack>
       </CenteredContentBox>
-    </MoniteStyleProvider>
+    </>
   );
 };

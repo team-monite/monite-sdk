@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { Box, styled } from '@mui/material';
 
 import { OnboardingContainer, OnboardingFooter } from '../components';
@@ -13,7 +14,7 @@ export type OnboardingLayoutProps = {
 
 export function OnboardingLayout({ content, title }: OnboardingLayoutProps) {
   return (
-    <StyledLayout>
+    <StyledLayout className={ScopedCssBaselineContainerClassName}>
       <OnboardingHeader />
       <OnboardingContainer>
         {title}
