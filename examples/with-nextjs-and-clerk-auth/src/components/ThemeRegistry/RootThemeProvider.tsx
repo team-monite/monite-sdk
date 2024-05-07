@@ -8,7 +8,11 @@ import { ThemeProvider } from '@mui/material/styles';
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 import { theme } from './theme';
 
-export function ThemeRegistry({ children }: { children: React.ReactNode }) {
+/**
+ * Provides the theme to the Root Application
+ * Does not affect the Monite SDK.
+ */
+export function RootThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
       <ThemeProvider theme={theme}>
