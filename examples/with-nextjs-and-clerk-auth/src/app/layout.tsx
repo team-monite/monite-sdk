@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { ClerkProvider, MultisessionAppSupport } from '@clerk/nextjs';
 
+import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
 import { ThemeRegistry } from '@/components/ThemeRegistry/ThemeRegistry';
 
@@ -18,7 +19,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <MultisessionAppSupport>
         <html lang="en">
           <body className={themeFont.className}>
-            <ThemeRegistry>{children}</ThemeRegistry>
+            <ThemeRegistry>
+              <RootQueryClientProvider>{children}</RootQueryClientProvider>
+            </ThemeRegistry>
           </body>
         </html>
       </MultisessionAppSupport>
