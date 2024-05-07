@@ -59,7 +59,6 @@ export const TablePagination = ({
       </Grid>
       <Grid item xs={1}>
         <Select
-          labelId="rows-per-page"
           aria-label={t(i18n)`Rows per page`}
           MenuProps={{ container: root }}
           value={rowsPerPage.toString()}
