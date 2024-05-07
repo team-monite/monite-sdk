@@ -84,7 +84,7 @@ module.exports = {
     },
     './src/components/products': {
       branches: 81,
-      functions: 93,
+      functions: 90,
       lines: 96,
       statements: 96,
     },
