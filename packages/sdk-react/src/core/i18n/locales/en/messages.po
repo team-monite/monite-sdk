@@ -1739,10 +1739,10 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:69
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:65
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:132
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:288
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:337
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:367
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:399
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:286
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:335
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:365
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:397
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:473
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:79
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:231
@@ -2054,8 +2054,8 @@ msgstr "Ecuador"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:58
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:54
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:120
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:287
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:313
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:285
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:311
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonsReview.tsx:44
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:93
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:114

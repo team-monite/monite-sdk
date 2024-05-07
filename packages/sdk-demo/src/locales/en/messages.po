@@ -23,7 +23,7 @@ msgstr "Client Secret"
 msgid "Counterparts"
 msgstr "Counterparts"
 
-#: src/components/Layout/ThemeSelect.tsx:77
+#: src/components/Layout/ThemeSelect.tsx:80
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
@@ -45,12 +45,12 @@ msgstr "Logout"
 
 #: src/components/Layout/ThemeSelect.tsx:25
 #: src/components/Layout/ThemeSelect.tsx:29
-#: src/components/Layout/ThemeSelect.tsx:63
+#: src/components/Layout/ThemeSelect.tsx:62
 msgid "Material UI"
 msgstr "Material UI"
 
 #: src/components/Layout/ThemeSelect.tsx:27
-#: src/components/Layout/ThemeSelect.tsx:69
+#: src/components/Layout/ThemeSelect.tsx:68
 msgid "Monite"
 msgstr "Monite"
 
@@ -78,7 +78,7 @@ msgstr "Settings"
 msgid "Tags"
 msgstr "Tags"
 
-#: src/components/Layout/ThemeSelect.tsx:56
+#: src/components/Layout/ThemeSelect.tsx:55
 msgid "Theme"
 msgstr "Theme"
 
