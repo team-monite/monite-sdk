@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Sync PR with GitLab
-        uses: team-monite/sync-gitlab-repo-submodule-action@6979725900c0d764323259e91dec354339c6af7a
+        uses: team-monite/sync-gitlab-repo-submodule-action@f8fbd45d1a874953ff566bc33498db0be8cdd019
         with:
           action: sync-branch
           gitlab_token: ${{ secrets.GITLAB_TOKEN }}
