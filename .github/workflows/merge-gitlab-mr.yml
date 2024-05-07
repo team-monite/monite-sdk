@@ -26,7 +26,7 @@ jobs:
       GITLAB_PROJECT: ${{ secrets.GITLAB_PROJECT }}
     steps:
       - name: Merge GitLab MR
-        uses: team-monite/sync-gitlab-repo-submodule-action@f8fbd45d1a874953ff566bc33498db0be8cdd019
+        uses: team-monite/sync-gitlab-repo-submodule-action@feb9467e584ed7fbc7117a2218aa1d9b077551b1
         with:
           action: merge-mr
           gitlab_token: ${{ secrets.GITLAB_TOKEN }}
