@@ -186,11 +186,11 @@ describe('CounterpartsTable', () => {
         target: { value: searchValue },
       });
 
-      await waitUntilTableIsLoaded();
-
-      expect(onChangeFilterMock).toHaveBeenCalledWith({
-        field: 'search',
-        value: searchValue,
+      await waitFor(() => {
+        expect(onChangeFilterMock).toHaveBeenCalledWith({
+          field: 'search',
+          value: searchValue,
+        });
       });
     });
 
