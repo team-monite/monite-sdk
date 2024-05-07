@@ -39,7 +39,7 @@ export const TablePagination = ({
 
   return (
     <Grid container m={2}>
-      <Grid item xs={11} textAlign="center">
+      <Grid item xs={10} md={10} lg={11} display="flex" justifyContent="center">
         <IconButton
           sx={{ height: '100%' }}
           aria-label={t(i18n)`Previous page`}
@@ -57,7 +57,7 @@ export const TablePagination = ({
           <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
         </IconButton>
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={2} md={2} lg={1} display="flex" justifyContent="flex-end">
         <Select
           aria-label={t(i18n)`Rows per page`}
           MenuProps={{ container: root }}
