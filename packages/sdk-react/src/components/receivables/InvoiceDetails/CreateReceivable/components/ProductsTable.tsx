@@ -95,7 +95,9 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
       sx={{ borderCollapse: 'separate' }}
     />
   ),
-  TableHead,
+  TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+    <TableHead {...props} ref={ref} />
+  )),
   TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),

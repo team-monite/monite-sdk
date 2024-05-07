@@ -45,13 +45,13 @@ export const RegenerateOrganizationEntity = ({
     open: false,
   });
   const {
-    isLoading: isRegenerationEntityLoading,
+    isPending: isRegenerationEntityLoading,
     mutateAsync: regenerateEntityAsync,
   } = useRegenerateEntityMutation();
 
   const {
     mutateAsync: generateDemoDataAsync,
-    isLoading: isGenerateDemoDataLoading,
+    isPending: isGenerateDemoDataLoading,
     isSuccess: isGenerateDemoDataSuccess,
   } = useRunDemoDataGenerationMutation();
 
@@ -267,21 +267,23 @@ export const RegenerateOrganizationEntityProvider = ({
  * Runs the demo data generation process
  */
 const useRunDemoDataGenerationMutation = () => {
-  return useMutation(async () => {
-    const response = await fetch('/api/demo-data-generation/run', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      cache: 'no-cache',
-    });
+  return useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/demo-data-generation/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-cache',
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData && 'error' in errorData
-          ? errorData.error
-          : 'Failed to generate demo data'
-      );
-    }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData && 'error' in errorData
+            ? errorData.error
+            : 'Failed to generate demo data'
+        );
+      }
+    },
   });
 };
 
@@ -289,21 +291,23 @@ const useRunDemoDataGenerationMutation = () => {
  * Regenerates the Entity with the Entity Users for the Organization
  */
 const useRegenerateEntityMutation = () => {
-  return useMutation(async () => {
-    const response = await fetch('/api/regenerate-entity', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      cache: 'no-cache',
-    });
+  return useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/regenerate-entity', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-cache',
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData && 'error' in errorData
-          ? errorData.error
-          : 'Failed to regenerate entity'
-      );
-    }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData && 'error' in errorData
+            ? errorData.error
+            : 'Failed to regenerate entity'
+        );
+      }
+    },
   });
 };
 
