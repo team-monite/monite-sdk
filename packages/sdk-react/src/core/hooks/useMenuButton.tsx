@@ -1,4 +1,10 @@
-import { type MouseEvent, type KeyboardEvent, useId, useState } from 'react';
+import {
+  type MouseEvent,
+  type KeyboardEvent,
+  type SyntheticEvent,
+  useId,
+  useState,
+} from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { type ButtonProps, type MenuProps } from '@mui/material';
@@ -48,7 +54,12 @@ export const useMenuButton = () => {
     });
   };
 
-  const closeMenu = () => {
+  const closeMenu = (event?: SyntheticEvent | {}) => {
+    if (event && 'preventDefault' in event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     setAnchorEl((prev) => ({
       ...prev,
       open: false,
