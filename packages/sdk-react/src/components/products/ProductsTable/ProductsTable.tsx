@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
 import { PAGE_LIMITS } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -86,7 +87,13 @@ interface ProductsTableSortModel {
   sort: GridSortDirection;
 }
 
-export const ProductsTable = ({
+export const ProductsTable = (props: IProductTableProps) => (
+  <MoniteScopedProviders>
+    <ProductsTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ProductsTableBase = ({
   onFilterChanged: onChangeFilterCallback,
   onSortChanged: onChangeSortCallback,
   onRowClick,
@@ -177,16 +184,13 @@ export const ProductsTable = ({
   }
 
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}
@@ -303,6 +307,6 @@ export const ProductsTable = ({
           onClose={() => setIsDeleteDialogOpen(false)}
         />
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

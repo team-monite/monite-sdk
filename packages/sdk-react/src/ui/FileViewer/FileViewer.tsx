@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { useMeasure } from 'react-use';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t, Trans } from '@lingui/macro';
@@ -161,7 +160,7 @@ const FileViewerComponent = ({
   };
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Grid container ref={ref}>
         <Grid
           item
@@ -226,7 +225,7 @@ const FileViewerComponent = ({
       >
         {renderFile()}
       </Grid>
-    </MoniteStyleProvider>
+    </>
   );
 };
 

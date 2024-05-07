@@ -8,7 +8,7 @@ import {
   moniteLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
 
-export const getTheme = (themeConfig: ThemeConfig) => {
+export const getThemeConfig = (themeConfig: ThemeConfig) => {
   const { variant, mode } = themeConfig;
 
   if (variant === 'material') {
@@ -18,7 +18,7 @@ export const getTheme = (themeConfig: ThemeConfig) => {
   return mode === 'light' ? themeMoniteLight : themeMoniteDark;
 };
 
-export const useTheme = () => {
+export const useThemeConfig = () => {
   const defaultThemeConfig: ThemeConfig = {
     variant: 'material',
     mode: 'light',

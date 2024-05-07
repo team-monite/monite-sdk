@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDeleteTag } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material';
 
-interface Props {
+interface ConfirmDeleteModalProps {
   /** The tag what we want to delete */
   tag: { id: string; name: string };
 
@@ -34,12 +34,18 @@ interface Props {
   modalOpened: boolean;
 }
 
-export const ConfirmDeleteModal = ({
+export const ConfirmDeleteModal = (props: ConfirmDeleteModalProps) => (
+  <MoniteScopedProviders>
+    <ConfirmDeleteModalBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ConfirmDeleteModalBase = ({
   tag,
   onClose,
   onDelete,
   modalOpened,
-}: Props) => {
+}: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
   const deleteTagMutation = useDeleteTag();
 
@@ -56,7 +62,7 @@ export const ConfirmDeleteModal = ({
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Dialog
         open={modalOpened}
         container={root}
@@ -88,6 +94,6 @@ export const ConfirmDeleteModal = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

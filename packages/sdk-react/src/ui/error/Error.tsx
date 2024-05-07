@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -19,7 +19,15 @@ import {
 } from '@mui/material';
 import type { FallbackRender } from '@sentry/react';
 
-export const Error = (props: Parameters<FallbackRender>[0]) => {
+type ErrorProps = Parameters<FallbackRender>[0];
+
+export const Error = (props: ErrorProps) => (
+  <MoniteScopedProviders>
+    <ErrorBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ErrorBase = (props: ErrorProps) => {
   const dialogContext = useDialog();
   const { i18n } = useLingui();
 
@@ -27,7 +35,7 @@ export const Error = (props: Parameters<FallbackRender>[0]) => {
   const description = props.error.toString();
 
   return (
-    <MoniteStyleProvider>
+    <>
       {dialogContext && (
         <Grid container padding={2}>
           <Grid item xs={11} />
@@ -67,6 +75,6 @@ export const Error = (props: Parameters<FallbackRender>[0]) => {
           </Stack>
         </Stack>
       </CenteredContentBox>
-    </MoniteStyleProvider>
+    </>
   );
 };

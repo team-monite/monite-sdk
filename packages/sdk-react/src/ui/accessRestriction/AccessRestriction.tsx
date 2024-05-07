@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -27,7 +27,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
   );
 
   return (
-    <MoniteStyleProvider>
+    <>
       {dialogContext && (
         <Grid container padding={2}>
           <Grid item xs={11} />
@@ -53,6 +53,6 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
           </Stack>
         </Stack>
       </CenteredContentBox>
-    </MoniteStyleProvider>
+    </>
   );
 };

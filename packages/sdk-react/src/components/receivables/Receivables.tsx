@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
 import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -15,7 +15,13 @@ import { useLingui } from '@lingui/react';
 import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
-export const Receivables = () => {
+export const Receivables = () => (
+  <MoniteScopedProviders>
+    <ReceivablesBase />
+  </MoniteScopedProviders>
+);
+
+const ReceivablesBase = () => {
   const { i18n } = useLingui();
 
   const [invoiceId, setInvoiceId] = useState<string>('');
@@ -69,7 +75,7 @@ export const Receivables = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -125,6 +131,6 @@ export const Receivables = () => {
           }}
         />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

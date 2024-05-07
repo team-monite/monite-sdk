@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCreateTag, useUpdateTag } from '@/core/queries';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -39,7 +39,7 @@ interface ITag {
   name: string;
 }
 
-interface Props {
+interface TagFormModalProps {
   tag?: ITag;
   onCreate?: (tag: TagReadSchema) => void;
   onUpdate?: (tag: TagReadSchema) => void;
@@ -59,13 +59,19 @@ interface FormFields {
  *  If no `tag` provided then the form is working on `creating` mode
  *  If `tag` provided then the form is working on `updating` mode
  */
-export const TagFormModal = ({
+export const TagFormModal = (props: TagFormModalProps) => (
+  <MoniteScopedProviders>
+    <TagFormModalBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const TagFormModalBase = ({
   tag,
   onCreate,
   onUpdate,
   onClose,
   open,
-}: Props) => {
+}: TagFormModalProps) => {
   const { i18n } = useLingui();
   const tagCreateMutation = useCreateTag();
   const tagUpdateMutation = useUpdateTag();
@@ -118,7 +124,7 @@ export const TagFormModal = ({
   const { root } = useRootElements();
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Dialog
         open={open}
         container={root}
@@ -180,6 +186,6 @@ export const TagFormModal = ({
           </DialogActions>
         </form>
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

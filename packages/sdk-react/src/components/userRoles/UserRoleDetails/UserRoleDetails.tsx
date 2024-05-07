@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRoleById } from '@/core/queries/useRoles';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -13,13 +14,13 @@ interface UserRoleDetailsProps {
   id?: string;
 }
 
-/** UserRoleDetails component
- *
- * This component renders the user role details.
- * It includes fields for the user role name and permissions.
- *
- */
-export const UserRoleDetails = ({ id }: UserRoleDetailsProps) => {
+export const UserRoleDetails = (props: UserRoleDetailsProps) => (
+  <MoniteScopedProviders>
+    <UserRoleDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const {
     isLoading,

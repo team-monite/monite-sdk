@@ -6,7 +6,7 @@ import {
   ProductDetails,
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -19,7 +19,13 @@ import { Button, CircularProgress } from '@mui/material';
 
 import { ProductsTable } from './ProductsTable';
 
-export const Products = () => {
+export const Products = () => (
+  <MoniteScopedProviders>
+    <ProductsBase />
+  </MoniteScopedProviders>
+);
+
+const ProductsBase = () => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -77,7 +83,7 @@ export const Products = () => {
   }, []);
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -124,6 +130,6 @@ export const Products = () => {
       >
         <ProductDetails id={selectedProductId} initialView={detailsViewMode} />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

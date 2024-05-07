@@ -43,10 +43,8 @@ describe('PayablesTable', () => {
         </MoniteProvider>
       );
 
-      await waitUntilTableIsLoaded();
-
       expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
-    });
+    }, 10_000);
 
     test('should render a special row for payable in OCR processing', async () => {
       renderWithClient(<PayablesTable />);

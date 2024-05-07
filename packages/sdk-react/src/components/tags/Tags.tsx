@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { TagFormModal } from '@/components/tags/TagFormModal';
 import { TagsTable } from '@/components/tags/TagsTable';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -12,7 +12,13 @@ import { useLingui } from '@lingui/react';
 import { ActionEnum } from '@monite/sdk-api';
 import { Button, CircularProgress } from '@mui/material';
 
-export const Tags = () => {
+export const Tags = () => (
+  <MoniteScopedProviders>
+    <TagsBase />
+  </MoniteScopedProviders>
+);
+
+const TagsBase = () => {
   const { i18n } = useLingui();
   const [creationModalOpened, setCreationModalOpened] =
     useState<boolean>(false);
@@ -40,7 +46,7 @@ export const Tags = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -64,6 +70,6 @@ export const Tags = () => {
       {isReadAllowed && <TagsTable />}
 
       <TagFormModal open={creationModalOpened} onClose={hideCreationModal} />
-    </MoniteStyleProvider>
+    </>
   );
 };

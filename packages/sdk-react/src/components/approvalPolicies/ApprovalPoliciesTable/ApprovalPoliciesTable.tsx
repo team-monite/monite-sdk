@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PAGE_LIMITS } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useApprovalPoliciesList } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
@@ -51,7 +52,7 @@ interface onFilterChangeParams {
   value: FilterValue;
 }
 
-interface Props {
+interface ApprovalPoliciesTableProps {
   /**
    * Triggered when the sorting options are changed.
    *
@@ -79,10 +80,16 @@ interface Props {
  *
  * This component renders a table of approval policies. It includes pagination and filtering functionality.
  */
-export const ApprovalPoliciesTable = ({
+export const ApprovalPoliciesTable = (props: ApprovalPoliciesTableProps) => (
+  <MoniteScopedProviders>
+    <ApprovalPoliciesTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const ApprovalPoliciesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
   onRowClick,
-}: Props) => {
+}: ApprovalPoliciesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -131,8 +138,11 @@ export const ApprovalPoliciesTable = ({
   };
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ padding: 2, width: '100%', height: '100%' }}>
+    <>
+      <Box
+        sx={{ padding: 2, width: '100%', height: '100%' }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Box sx={{ marginBottom: 2 }}>
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
@@ -220,6 +230,6 @@ export const ApprovalPoliciesTable = ({
           }}
         />
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

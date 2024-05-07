@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -20,7 +20,13 @@ import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
  * This component renders the approval policies page. It includes a table of approval policies, a dialog for creating new approval policies,
  * and a header with a button for opening the create dialog.
  */
-export const ApprovalPolicies = () => {
+export const ApprovalPolicies = () => (
+  <MoniteScopedProviders>
+    <ApprovalPoliciesBase />
+  </MoniteScopedProviders>
+);
+
+const ApprovalPoliciesBase = () => {
   const { i18n } = useLingui();
   const [selectedApprovalPolicyId, setSelectedApprovalPolicyId] = useState<
     string | undefined
@@ -53,7 +59,7 @@ export const ApprovalPolicies = () => {
     });
 
   return (
-    <MoniteStyleProvider>
+    <>
       <PageHeader
         title={
           <>
@@ -88,6 +94,6 @@ export const ApprovalPolicies = () => {
           onCreated={() => setIsCreateDialogOpened(false)}
         />
       </Dialog>
-    </MoniteStyleProvider>
+    </>
   );
 };

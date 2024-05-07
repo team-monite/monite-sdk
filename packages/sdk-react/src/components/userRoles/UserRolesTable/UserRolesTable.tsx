@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
 import { PAGE_LIMITS } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
@@ -70,7 +71,13 @@ interface UserRolesTableSortModel {
   sort: GridSortDirection;
 }
 
-export const UserRolesTable = ({
+export const UserRolesTable = (props: IUserTableProps) => (
+  <MoniteScopedProviders>
+    <UserRolesTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const UserRolesTableBase = ({
   onFilterChanged,
   onSortChanged,
   onRowClick,
@@ -146,16 +153,13 @@ export const UserRolesTable = ({
   }
 
   if (!isReadSupported) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           padding: 2,
         }}
@@ -222,6 +226,6 @@ export const UserRolesTable = ({
           }}
         />
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

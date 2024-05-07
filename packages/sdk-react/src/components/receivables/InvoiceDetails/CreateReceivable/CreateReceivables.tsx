@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { useDialog } from '@/components';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses, useCreateReceivable } from '@/core/queries';
 import { useEntitySettings } from '@/core/queries/useEntities';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -58,7 +58,13 @@ type ReceivableViewState =
  * A component for creating new Receivable
  * Supported only `invoice` type
  */
-export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
+export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
+  <MoniteScopedProviders>
+    <CreateReceivablesBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const methods = useForm<ICreateReceivablesForm>({
@@ -103,7 +109,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           {dialogContext?.isDialogContent && (
@@ -232,6 +238,6 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => {
           </form>
         </FormProvider>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

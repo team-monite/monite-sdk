@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import {
   FILTER_TYPE_CUSTOMER,
@@ -8,7 +9,7 @@ import {
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { PAGE_LIMITS } from '@/constants';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
 import { TablePagination } from '@/ui/table/TablePagination';
@@ -35,7 +36,7 @@ import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartCell } from './InvoiceCounterpartCell';
 
-type Props = {
+type InvoicesTableProps = {
   /**
    * The event handler for a row click.
    *
@@ -49,7 +50,13 @@ export interface InvoicesTableSortModel {
   sort: GridSortDirection;
 }
 
-export const InvoicesTable = ({ onRowClick }: Props) => {
+export const InvoicesTable = (props: InvoicesTableProps) => (
+  <MoniteScopedProviders>
+    <InvoicesTableBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -107,8 +114,11 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
   };
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ padding: 2, width: '100%' }}>
+    <>
+      <Box
+        sx={{ padding: 2, width: '100%' }}
+        className={ScopedCssBaselineContainerClassName}
+      >
         <Box sx={{ marginBottom: 2 }}>
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
@@ -237,6 +247,6 @@ export const InvoicesTable = ({ onRowClick }: Props) => {
           rows={invoices?.data ?? []}
         />
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 import { getEmailInvoiceDetailsSchema } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIssueReceivableById, useSendReceivableById } from '@/core/queries';
 import { useEntityPaymentMethods } from '@/core/queries/useEntities';
 import { useCreatePaymentLink } from '@/core/queries/usePayments';
@@ -28,15 +28,21 @@ import {
   Typography,
 } from '@mui/material';
 
-interface IEmailInvoiceDetailsProps {
+interface EmailInvoiceDetailsProps {
   invoiceId: string;
   onClose: () => void;
 }
 
-export const EmailInvoiceDetails = ({
+export const EmailInvoiceDetails = (props: EmailInvoiceDetailsProps) => (
+  <MoniteScopedProviders>
+    <EmailInvoiceDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const EmailInvoiceDetailsBase = ({
   invoiceId,
   onClose,
-}: IEmailInvoiceDetailsProps) => {
+}: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
   const { control, handleSubmit, formState } = useForm({
@@ -138,7 +144,7 @@ export const EmailInvoiceDetails = ({
   );
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           <Grid container>
@@ -232,6 +238,6 @@ export const EmailInvoiceDetails = ({
           </Stack>
         </form>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };

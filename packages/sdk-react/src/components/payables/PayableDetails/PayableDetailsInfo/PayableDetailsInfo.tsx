@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
@@ -47,7 +48,13 @@ const StyledLabelTableCell = styled(TableCell)(({ theme }) => ({
   width: '35%',
 }));
 
-export const PayableDetailsInfo = ({
+export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
+  <MoniteScopedProviders>
+    <PayableDetailsInfoBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const PayableDetailsInfoBase = ({
   payable,
   optionalFields,
 }: PayablesDetailsInfoProps) => {
@@ -105,7 +112,7 @@ export const PayableDetailsInfo = ({
 
   if (isPayableInOCRProcessing(payable)) {
     return (
-      <MoniteStyleProvider>
+      <>
         <CenteredContentBox>
           <Box textAlign="center">
             <CachedOutlinedIcon color="primary" fontSize="large" />
@@ -120,13 +127,13 @@ export const PayableDetailsInfo = ({
             </Typography>
           </Box>
         </CenteredContentBox>
-      </MoniteStyleProvider>
+      </>
     );
   }
 
   return (
-    <MoniteStyleProvider>
-      <Box sx={{ pb: 6 }}>
+    <>
+      <Box sx={{ pb: 6 }} className={ScopedCssBaselineContainerClassName}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Typography variant="subtitle2" mb={2}>
@@ -430,6 +437,6 @@ export const PayableDetailsInfo = ({
           </Grid>
         </Grid>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

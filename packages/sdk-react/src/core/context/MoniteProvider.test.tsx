@@ -1,3 +1,4 @@
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { useLingui } from '@lingui/react';
@@ -5,7 +6,7 @@ import { MoniteSDK } from '@monite/sdk-api';
 import { useTheme } from '@mui/material/styles';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { MoniteProvider, MoniteStyleProvider } from './MoniteProvider';
+import { MoniteProvider } from './MoniteProvider';
 
 describe('MoniteProvider', () => {
   const moniteMock = new MoniteSDK({
@@ -29,13 +30,15 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useTheme(), {
         wrapper: (props) => (
           <MoniteProvider monite={moniteMock} theme={partialTheme}>
-            <MoniteStyleProvider>{props.children}</MoniteStyleProvider>
+            <MoniteScopedProviders>{props.children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
 
-      expect(result.current.palette.primary.main).toBe(
-        partialTheme.palette.primary.main
+      waitFor(() =>
+        expect(result.current.palette.primary.main).toBe(
+          partialTheme.palette.primary.main
+        )
       );
     });
   });
@@ -46,7 +49,9 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>{children}</MoniteProvider>
+          <MoniteProvider monite={moniteMock}>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
+          </MoniteProvider>
         ),
       });
 
@@ -62,7 +67,9 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>{children}</MoniteProvider>
+          <MoniteProvider monite={moniteMock}>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
+          </MoniteProvider>
         ),
       });
 
@@ -78,7 +85,9 @@ describe('MoniteProvider', () => {
 
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
-          <MoniteProvider monite={moniteMock}>{children}</MoniteProvider>
+          <MoniteProvider monite={moniteMock}>
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
+          </MoniteProvider>
         ),
       });
 
@@ -93,7 +102,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'de' }}>
-            {children}
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -109,7 +118,7 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useCurrencies(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en' }}>
-            {children}
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
@@ -123,18 +132,18 @@ describe('MoniteProvider', () => {
   });
 
   describe('# Date format', () => {
-    test('check that cucerrency locale is correct after setting it by user', async () => {
+    test('check that currency locale is correct after setting it by user', async () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'de-DE' }}>
-            {children}
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
 
       const value = new Date('2021-05-31T00:00:00.000Z');
 
-      expect(result.current.i18n.locale).toBe('de-DE');
+      await waitFor(() => expect(result.current.i18n.locale).toBe('de-DE'));
       expect(
         result.current.i18n.date(value, DateTimeFormatOptions.EightDigitDate)
       ).toBe('31.05.2021');
@@ -144,14 +153,15 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en-US' }}>
-            {children}
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
 
       const value = new Date('2021-05-31T00:00:00.000Z');
 
-      expect(result.current.i18n.locale).toBe('en-US');
+      await waitFor(() => expect(result.current.i18n.locale).toBe('en-US'));
+
       expect(
         result.current.i18n.date(value, DateTimeFormatOptions.EightDigitDate)
       ).toBe('05/31/2021');
@@ -161,14 +171,15 @@ describe('MoniteProvider', () => {
       const { result } = renderHook(() => useLingui(), {
         wrapper: ({ children }) => (
           <MoniteProvider monite={moniteMock} locale={{ code: 'en-GB' }}>
-            {children}
+            <MoniteScopedProviders>{children}</MoniteScopedProviders>
           </MoniteProvider>
         ),
       });
 
       const value = new Date('2021-05-31T00:00:00.000Z');
 
-      expect(result.current.i18n.locale).toBe('en-GB');
+      await waitFor(() => expect(result.current.i18n.locale).toBe('en-GB'));
+
       expect(
         result.current.i18n.date(value, DateTimeFormatOptions.EightDigitDate)
       ).toBe('31/05/2021');

@@ -4,7 +4,14 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import EmailIcon from '@mui/icons-material/MailOutline';
 import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
-import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  darken,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { lighten, useTheme } from '@mui/material/styles';
 
 enum DeliveryMethod {
@@ -38,9 +45,14 @@ const DeliveryMethodView = ({
         borderColor: checked
           ? 'primary.main'
           : lighten(theme.palette.secondary.main, 0.95),
-        backgroundColor: checked
-          ? lighten(theme.palette.primary.main, 0.95)
-          : lighten(theme.palette.secondary.main, 0.95),
+        backgroundColor:
+          theme.palette.mode === 'dark'
+            ? checked
+              ? darken(theme.palette.primary.main, 0.4)
+              : lighten(theme.palette.secondary.main, 0.1)
+            : checked
+            ? lighten(theme.palette.primary.main, 0.95)
+            : lighten(theme.palette.secondary.main, 0.95),
         cursor: 'pointer',
         maxWidth: 200,
         transition: 'all 0.2s ease',
@@ -63,7 +75,10 @@ const DeliveryMethodView = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: 1,
-                backgroundColor: lighten(theme.palette.primary.main, 0.9),
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? theme.palette.background.paper
+                    : lighten(theme.palette.primary.main, 0.9),
                 borderRadius: '50%',
               }}
             >

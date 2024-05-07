@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
 import { PayableDetailsHeader } from '@/components/payables/PayableDetails/PayableDetailsHeader';
 import { PayableDetailsInfo } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { PayableDetailsNoAttachedFile } from '@/components/payables/PayableDetails/PayableDetailsNoAttachedFile';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
@@ -24,7 +25,13 @@ export interface PayablesDetailsProps extends UsePayableDetailsProps {
   optionalFields?: OptionalFields;
 }
 
-export const PayableDetails = ({
+export const PayableDetails = (props: PayablesDetailsProps) => (
+  <MoniteScopedProviders>
+    <PayableDetailsBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const PayableDetailsBase = ({
   id,
   optionalFields,
   onClose,
@@ -92,11 +99,7 @@ export const PayableDetails = ({
   }
 
   if (!isReadAllowed) {
-    return (
-      <MoniteStyleProvider>
-        <AccessRestriction />
-      </MoniteStyleProvider>
-    );
+    return <AccessRestriction />;
   }
 
   if (payableQueryError) {
@@ -109,8 +112,9 @@ export const PayableDetails = ({
   }
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Box
+        className={ScopedCssBaselineContainerClassName}
         sx={{
           width: '100%',
           height: '100%',
@@ -196,6 +200,6 @@ export const PayableDetails = ({
           </Grid>
         </DialogContent>
       </Box>
-    </MoniteStyleProvider>
+    </>
   );
 };

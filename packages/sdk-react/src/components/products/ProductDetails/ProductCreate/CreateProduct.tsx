@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useCreateProduct } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -32,7 +32,13 @@ const initialValues: ProductFormValues = {
   description: undefined,
 };
 
-export const CreateProduct = (props: IProductDetailsCreateProps) => {
+export const CreateProduct = (props: IProductDetailsCreateProps) => (
+  <MoniteScopedProviders>
+    <CreateProductBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const CreateProductBase = (props: IProductDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
@@ -83,7 +89,7 @@ export const CreateProduct = (props: IProductDetailsCreateProps) => {
   };
 
   return (
-    <MoniteStyleProvider>
+    <>
       <Grid container alignItems="center">
         <Grid item xs={11}>
           <Typography variant="h3" sx={{ padding: 3 }}>
@@ -129,6 +135,6 @@ export const CreateProduct = (props: IProductDetailsCreateProps) => {
           {t(i18n)`Create`}
         </Button>
       </DialogActions>
-    </MoniteStyleProvider>
+    </>
   );
 };
