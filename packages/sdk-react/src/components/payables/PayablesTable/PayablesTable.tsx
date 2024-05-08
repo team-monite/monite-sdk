@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
+import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -19,15 +20,13 @@ import {
   PayableActionEnum,
   PayableCursorFields,
   PayableResponseSchema,
-  PayableStateEnum,
 } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Chip, SelectChangeEvent } from '@mui/material';
+import { Box, CircularProgress, SelectChangeEvent } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
-import { getRowToStatusTextMap, ROW_TO_STATUS_MUI_MAP } from '../consts';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
@@ -306,17 +305,9 @@ const PayablesTableBase = ({
                 comment: 'Payables Table "Status" heading title',
               }),
               flex: 0.9,
-              renderCell: (params) => {
-                const status = params.value as PayableStateEnum;
-
-                return (
-                  <Chip
-                    label={getRowToStatusTextMap(i18n)[status]}
-                    color={ROW_TO_STATUS_MUI_MAP[status]}
-                    variant="filled"
-                  />
-                );
-              },
+              renderCell: (params) => (
+                <PayableStatusChip status={params.value} />
+              ),
             },
             {
               field: 'amount',

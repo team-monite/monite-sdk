@@ -2,15 +2,14 @@ import { useMemo, useState } from 'react';
 import React from 'react';
 
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
-import { getReceivableStatusNameMap } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useCurrencies } from '@/core/hooks';
 import { useCounterpartById } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { InvoiceResponsePayload } from '@monite/sdk-api';
-import { Chip, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 import { PreviewCustomerSection } from './sections/PreviewCustomerSection';
 import { PreviewDetailsSection } from './sections/PreviewDetailsSection';
@@ -111,18 +110,9 @@ export const Overview = ({ invoice }: IOverviewProps) => {
             {
               label: t(i18n)`Current status`,
               value: (
-                <Chip
-                  color={ROW_TO_TAG_STATUS_MUI_MAP[invoice.status]}
-                  label={
-                    <Typography fontWeight={500} fontSize="0.9rem">
-                      {getReceivableStatusNameMap(i18n)[invoice.status]}
-                    </Typography>
-                  }
-                  variant="filled"
-                  sx={{
-                    borderRadius: 1,
-                  }}
-                />
+                <Box component="span" fontWeight={500} fontSize="0.9rem">
+                  <InvoiceStatusChip status={invoice.status} icon={false} />
+                </Box>
               ),
             },
             {

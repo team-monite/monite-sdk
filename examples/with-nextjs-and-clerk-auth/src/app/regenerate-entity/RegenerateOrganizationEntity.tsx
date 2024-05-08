@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -28,11 +28,7 @@ import {
   Snackbar,
   Typography,
 } from '@mui/material';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-} from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 export const RegenerateOrganizationEntity = ({
   entity_user_id,
@@ -249,17 +245,6 @@ export const RegenerateOrganizationEntity = ({
         </Alert>
       </Snackbar>
     </Box>
-  );
-};
-
-export const RegenerateOrganizationEntityProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const [queryClient] = useState(() => new QueryClient());
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 
