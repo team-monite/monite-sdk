@@ -1,5 +1,6 @@
 import { PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsVariants,
@@ -12,11 +13,13 @@ declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
+    MoniteTablePagination: 'root';
   }
 
   interface ComponentsPropsList {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
+    MoniteTablePagination: Partial<MoniteTablePaginationProps>;
   }
 
   interface Components {
@@ -30,6 +33,12 @@ declare module '@mui/material/styles' {
       defaultProps?: ComponentsPropsList['MonitePayableStatusChip'];
       styleOverrides?: ComponentsOverrides<Theme>['MonitePayableStatusChip'];
       variants?: ComponentsVariants['MonitePayableStatusChip'];
+    };
+
+    MoniteTablePagination?: {
+      defaultProps?: ComponentsPropsList['MoniteTablePagination'];
+      styleOverrides?: ComponentsOverrides<Theme>['MoniteTablePagination'];
+      variants?: ComponentsVariants['MoniteTablePagination'];
     };
   }
 }

@@ -1,52 +1,97 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
+import { PAGE_LIMITS } from '@/constants';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
-import {
-  Grid,
-  IconButton,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-} from '@mui/material';
-import { useThemeProps } from '@mui/material/styles';
+import { Grid, GridProps, IconButton, MenuItem, Select } from '@mui/material';
+import { styled, useThemeProps } from '@mui/material/styles';
 
 type PaginationModel<T> = {
   pageSize: number;
   page: T;
 };
 
-interface TablePaginationProps<T> {
-  pageSizeOptions: number[];
-  paginationModel: PaginationModel<T>;
+export interface MoniteTablePaginationProps {
+  pageSizeOptions?: number[];
+}
+
+interface TablePaginationProps<T> extends MoniteTablePaginationProps {
+  paginationModel: PaginationModel<T> | { page: T };
   onPaginationModelChange: (paginationModel: PaginationModel<T>) => void;
   nextPage: T | undefined;
   prevPage: T | undefined;
 }
 
+/**
+ * Provides a pagination component for tables.
+ * @param onPaginationModelChange Callback for when the prev/next page buttons are clicked, or when the page size is changed.
+ * @param paginationModel The current pagination model. It should contain the current page and the page size.
+ * @param nextPage The next page number. If undefined, the next page button will be disabled.
+ * @param prevPage The previous page number. If undefined, the previous page button will be disabled.
+ * @param pageSizeOptions The page size options. If not provided, will be used from MUI theme or hidden if only one option is available.
+ * @example MUI theming
+ * // You can configure the component through MUI theming like this:
+ * createTheme(myTheme, {
+ *   components: {
+ *     MoniteTablePagination: {
+ *       defaultProps: {
+ *         // The default page size options
+ *         pageSizeOptions: [5, 10, 15, 20],
+ *       },
+ *     }
+ *   }
+ * }
+ */
 export const TablePagination = <T,>({
   onPaginationModelChange,
   paginationModel,
   nextPage,
   prevPage,
-  ...inProps
+  pageSizeOptions: inSizeOptionsProp,
 }: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { pageSizeOptions } = useThemeProps({
-    props: inProps,
+  const { pageSizeOptions: pageSizeOptionsRaw } = useThemeProps({
+    props: { pageSizeOptions: inSizeOptionsProp },
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteTablePagination',
   });
 
+  const pageSizeOptions = pageSizeOptionsRaw?.length
+    ? pageSizeOptionsRaw
+    : [PAGE_LIMITS[0]];
+
+  const pageSize =
+    'pageSize' in paginationModel
+      ? paginationModel.pageSize
+      : pageSizeOptions[0];
+
+  const hasPageSizeOptionsSelect =
+    pageSizeOptionsRaw && pageSizeOptionsRaw.length > 1;
+
+  const firstGridItemProps = hasPageSizeOptionsSelect
+    ? {
+        xs: 10,
+        md: 10,
+        lg: 11,
+      }
+    : {
+        xs: 12,
+      };
+
   return (
-    <Grid container m={2}>
-      <Grid item xs={10} md={10} lg={11} display="flex" justifyContent="center">
+    <RootGrid container m={2} boxSizing="border-box">
+      <Grid
+        {...firstGridItemProps}
+        item
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
         <IconButton
-          sx={{ height: '100%' }}
           aria-label={t(i18n)`Previous page`}
           disabled={!prevPage}
           onClick={(event) => {
@@ -56,14 +101,13 @@ export const TablePagination = <T,>({
 
             onPaginationModelChange({
               page: prevPage,
-              pageSize: paginationModel.pageSize,
+              pageSize,
             });
           }}
         >
           <ArrowLeft fontSize="small" />
         </IconButton>
         <IconButton
-          sx={{ height: '100%' }}
           aria-label={t(i18n)`Next page`}
           disabled={!nextPage}
           onClick={(event) => {
@@ -73,32 +117,53 @@ export const TablePagination = <T,>({
 
             onPaginationModelChange({
               page: nextPage,
-              pageSize: paginationModel.pageSize,
+              pageSize,
             });
           }}
         >
           <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
         </IconButton>
       </Grid>
-      <Grid item xs={2} md={2} lg={1} display="flex" justifyContent="flex-end">
-        <Select
-          aria-label={t(i18n)`Rows per page`}
-          MenuProps={{ container: root }}
-          value={paginationModel.pageSize.toString()}
-          onChange={(event) =>
-            void onPaginationModelChange({
-              page: paginationModel.page,
-              pageSize: parseInt(event.target.value, 10),
-            })
-          }
+      {hasPageSizeOptionsSelect && (
+        <Grid
+          item
+          xs={2}
+          md={2}
+          lg={1}
+          display="flex"
+          justifyContent="flex-end"
         >
-          {pageSizeOptions.map((menuItem) => (
-            <MenuItem key={menuItem} value={menuItem.toString()}>
-              {menuItem}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-    </Grid>
+          <Select
+            aria-label={t(i18n)`Rows per page`}
+            MenuProps={{ container: root }}
+            value={pageSize.toString()}
+            onChange={(event) =>
+              void onPaginationModelChange({
+                page: paginationModel.page,
+                pageSize: parseInt(event.target.value, 10),
+              })
+            }
+          >
+            {pageSizeOptions.map((menuItem) => (
+              <MenuItem key={menuItem} value={menuItem.toString()}>
+                {menuItem}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+      )}
+    </RootGrid>
   );
 };
+
+const RootGrid = styled(
+  forwardRef<HTMLDivElement, GridProps>((props, ref) => (
+    <Grid ref={ref} {...props} />
+  )),
+  {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteTablePagination',
+    slot: 'root',
+    shouldForwardProp: () => true,
+  }
+)({});
