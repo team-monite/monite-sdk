@@ -53,7 +53,20 @@ const SDKDemoComponent = ({
   const { api_url } = useConfig();
   const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
-  const sdkDemoTheme = createTheme(getThemeConfig(themeConfig));
+  const sdkDemoTheme = createTheme(getThemeConfig(themeConfig), {
+    components: {
+      MoniteInvoiceStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+      MonitePayableStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+    },
+  });
   const [sdkDemoLocale, sdkDemoI18n] = useMemo(() => {
     const localeCode = 'en-US';
     return [
