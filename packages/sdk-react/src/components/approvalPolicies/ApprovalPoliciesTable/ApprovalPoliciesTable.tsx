@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useApprovalPoliciesList } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -94,11 +96,13 @@ const ApprovalPoliciesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
   const { data: approvalPolicies, isLoading } = useApprovalPoliciesList({
-    limit: rowsPerPage,
+    limit: pageSize,
     name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
     created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
     paginationToken: currentPaginationToken ?? undefined,
@@ -203,15 +207,14 @@ const ApprovalPoliciesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 nextPage={approvalPolicies?.next_pagination_token}
                 prevPage={approvalPolicies?.prev_pagination_token}
                 paginationModel={{
-                  pageSize: rowsPerPage,
+                  pageSize,
                   page: currentPaginationToken,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />

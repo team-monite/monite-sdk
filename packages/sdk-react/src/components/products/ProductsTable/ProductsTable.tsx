@@ -4,14 +4,16 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -104,7 +106,9 @@ const ProductsTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
   const sortModelItem = sortModel[0];
@@ -138,7 +142,7 @@ const ProductsTableBase = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: rowsPerPage,
+    limit: pageSize,
     type: currentFilter[FILTER_TYPE_TYPE] || undefined,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem
@@ -276,15 +280,14 @@ const ProductsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 prevPage={products?.prev_pagination_token}
                 nextPage={products?.next_pagination_token}
                 paginationModel={{
+                  pageSize,
                   page: currentPaginationToken,
-                  pageSize: rowsPerPage,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />

@@ -7,11 +7,13 @@ import {
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -53,7 +55,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [sortModel, setSortModel] = useState<Array<CreditNotesTableSortModel>>(
     []
   );
@@ -64,7 +68,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
 
   const { data: creditNotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    rowsPerPage,
+    pageSize,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.CREDIT_NOTE,
@@ -121,15 +125,14 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 nextPage={creditNotes?.next_pagination_token}
                 prevPage={creditNotes?.prev_pagination_token}
                 paginationModel={{
+                  pageSize,
                   page: currentPaginationToken,
-                  pageSize: rowsPerPage,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />

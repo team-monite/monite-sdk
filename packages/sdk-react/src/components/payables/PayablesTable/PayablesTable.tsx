@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -90,7 +92,9 @@ const PayablesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -106,7 +110,7 @@ const PayablesTableBase = ({
 
   const { data: payables, isLoading } = usePayablesList(
     OrderEnum.DESC,
-    rowsPerPage,
+    pageSize,
     currentPaginationToken || undefined,
     PayableCursorFields.CREATED_AT,
     undefined,
@@ -187,15 +191,14 @@ const PayablesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 nextPage={payables?.next_pagination_token}
                 prevPage={payables?.prev_pagination_token}
                 paginationModel={{
+                  pageSize,
                   page: currentPaginationToken,
-                  pageSize: rowsPerPage,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />

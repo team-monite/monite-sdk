@@ -3,11 +3,13 @@ import toast from 'react-hot-toast';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -53,7 +55,9 @@ const TagsTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [selectedTag, setSelectedTag] = useState<TagReadSchema | undefined>(
     undefined
   );
@@ -83,7 +87,7 @@ const TagsTableBase = ({
     error,
   } = useTagList(
     sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
-    rowsPerPage,
+    pageSize,
     currentPaginationToken || undefined,
     sortModel ? sortModel.field : undefined
   );
@@ -144,15 +148,14 @@ const TagsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 prevPage={tags?.prev_pagination_token}
                 nextPage={tags?.next_pagination_token}
                 paginationModel={{
+                  pageSize,
                   page: currentPaginationToken,
-                  pageSize: rowsPerPage,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />

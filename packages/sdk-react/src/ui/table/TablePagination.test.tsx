@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { PAGE_LIMITS } from '@/constants';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, fireEvent, act, within } from '@testing-library/react';
 
@@ -12,11 +11,10 @@ describe('TablePagination', () => {
 
     renderWithClient(
       <TablePagination
-        pageSizeOptions={PAGE_LIMITS}
         nextPage="next"
         prevPage="previous"
         paginationModel={{
-          pageSize: PAGE_LIMITS[0],
+          pageSize: 10,
           page: 'current',
         }}
         onPaginationModelChange={({ page }) => {
@@ -40,11 +38,10 @@ describe('TablePagination', () => {
 
     renderWithClient(
       <TablePagination
-        pageSizeOptions={PAGE_LIMITS}
         nextPage="next"
         prevPage="previous"
         paginationModel={{
-          pageSize: PAGE_LIMITS[0],
+          pageSize: 10,
           page: 'current',
         }}
         onPaginationModelChange={({ page }) => {

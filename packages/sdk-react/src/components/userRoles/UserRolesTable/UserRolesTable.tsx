@@ -4,14 +4,16 @@ import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -86,7 +88,9 @@ const UserRolesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<UserRolesTableSortModel>>(
     []
@@ -105,7 +109,7 @@ const UserRolesTableBase = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: rowsPerPage,
+    limit: pageSize,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem ? (sortModelItem.field as RoleCursorFields) : undefined,
     name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -201,16 +205,15 @@ const UserRolesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 prevPage={roles?.prev_pagination_token}
                 nextPage={roles?.next_pagination_token}
                 paginationModel={{
-                  pageSize: rowsPerPage,
+                  pageSize,
                   page: currentPaginationToken,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
                   setCurrentPaginationToken(page);
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                 }}
               />
             ),

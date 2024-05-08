@@ -1,6 +1,5 @@
 import React, { forwardRef } from 'react';
 
-import { PAGE_LIMITS } from '@/constants';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -16,6 +15,10 @@ import {
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
+// eslint-disable-next-line lingui/no-unlocalized-strings
+const componentName = 'MoniteTablePagination' as const;
+const DEFAULT_PAGE_SIZE = 10 as const;
+
 type PaginationModel<T> = {
   pageSize: number;
   page: T;
@@ -30,10 +33,13 @@ interface MoniteTablePaginationSlotProps {
   };
 }
 
-export interface MoniteTablePaginationProps
-  extends MoniteTablePaginationSlotProps {
+interface MoniteTablePaginationRootSlotProps {
   pageSizeOptions?: number[];
 }
+
+export interface MoniteTablePaginationProps
+  extends MoniteTablePaginationSlotProps,
+    MoniteTablePaginationRootSlotProps {}
 
 interface TablePaginationProps<T> extends MoniteTablePaginationProps {
   paginationModel: PaginationModel<T> | { page: T };
@@ -77,25 +83,21 @@ export const TablePagination = <T,>({
 }: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { pageSizeOptions: pageSizeOptionsRaw, slotProps } = useThemeProps({
+  const { pageSizeOptions, slotProps } = useThemeProps({
     props: { pageSizeOptions: inSizeOptionsProp, slotProps: inSlotProps },
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    name: 'MoniteTablePagination',
+    name: componentName,
   });
 
-  const pageSizeOptions = pageSizeOptionsRaw?.length
-    ? pageSizeOptionsRaw
-    : [PAGE_LIMITS[0]];
+  const defaultPageSize = useTablePaginationThemeDefaultPageSize();
 
   const pageSize =
     'pageSize' in paginationModel
       ? paginationModel.pageSize
-      : pageSizeOptions[0];
+      : pageSizeOptions?.[0] ?? defaultPageSize;
 
-  const hasPageSizeOptionsSelect =
-    pageSizeOptionsRaw && pageSizeOptionsRaw.length > 1;
+  const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
-  const firstGridItemProps = hasPageSizeOptionsSelect
+  const firstGridItemProps = hasPageSizeSelect
     ? {
         xs: 10,
         md: 10,
@@ -147,7 +149,7 @@ export const TablePagination = <T,>({
           <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
         </IconButton>
       </Grid>
-      {hasPageSizeOptionsSelect && (
+      {hasPageSizeSelect && (
         <Grid
           item
           xs={2}
@@ -171,7 +173,7 @@ export const TablePagination = <T,>({
               })
             }
           >
-            {pageSizeOptions.map((menuItem) => (
+            {pageSizeOptions?.map((menuItem) => (
               <MenuItem key={menuItem} value={menuItem.toString()}>
                 {menuItem}
               </MenuItem>
@@ -188,8 +190,7 @@ const RootGrid = styled(
     <Grid ref={ref} {...props} />
   )),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    name: 'MoniteTablePagination',
+    name: componentName,
     slot: 'root',
     shouldForwardProp: () => true,
   }
@@ -200,9 +201,21 @@ const StyledSelect = styled(
     return <Select ref={ref} {...restProps} />;
   }),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    name: 'MoniteTablePagination',
+    name: componentName,
     slot: 'pageSizeSelect',
     shouldForwardProp: () => true,
   }
 )({});
+
+/**
+ * Returns the default `pageSize` from the Theme.
+ * If not specified, it will return a fallback value.
+ */
+export const useTablePaginationThemeDefaultPageSize = () => {
+  const { pageSizeOptions } = useThemeProps({
+    props: {} as MoniteTablePaginationRootSlotProps,
+    name: componentName,
+  });
+
+  return pageSizeOptions?.length ? pageSizeOptions[0] : DEFAULT_PAGE_SIZE;
+};

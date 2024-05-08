@@ -7,11 +7,13 @@ import {
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { PAGE_LIMITS } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -68,7 +70,9 @@ const QuotesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(PAGE_LIMITS[0]);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
 
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, currentFilters } = useReceivablesFilters();
@@ -77,7 +81,7 @@ const QuotesTableBase = ({
 
   const { data: quotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    rowsPerPage,
+    pageSize,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.QUOTE,
@@ -136,15 +140,14 @@ const QuotesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                pageSizeOptions={PAGE_LIMITS}
                 nextPage={quotes?.next_pagination_token}
                 prevPage={quotes?.prev_pagination_token}
                 paginationModel={{
+                  pageSize,
                   page: currentPaginationToken,
-                  pageSize: rowsPerPage,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
-                  setRowsPerPage(pageSize);
+                  setPageSize(pageSize);
                   setCurrentPaginationToken(page);
                 }}
               />
