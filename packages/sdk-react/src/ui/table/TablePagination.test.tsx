@@ -13,12 +13,15 @@ describe('TablePagination', () => {
     renderWithClient(
       <TablePagination
         pageSizeOptions={PAGE_LIMITS}
-        pageSize={PAGE_LIMITS[0]}
-        onPageSizeChange={() => {}}
-        isNextAvailable={true}
-        onNext={() => {}}
-        isPreviousAvailable={true}
-        onPrevious={onPrevious}
+        nextPage="next"
+        prevPage="previous"
+        paginationModel={{
+          pageSize: PAGE_LIMITS[0],
+          page: 'current',
+        }}
+        onPaginationModelChange={({ page }) => {
+          onPrevious(page);
+        }}
       />
     );
 
@@ -29,7 +32,7 @@ describe('TablePagination', () => {
     act(() => {
       fireEvent.click(previousPageButton);
     });
-    expect(onPrevious).toHaveBeenCalled();
+    expect(onPrevious).toHaveBeenCalledWith('previous');
   });
 
   it('calls onNext when the next button is clicked', () => {
@@ -38,12 +41,15 @@ describe('TablePagination', () => {
     renderWithClient(
       <TablePagination
         pageSizeOptions={PAGE_LIMITS}
-        pageSize={PAGE_LIMITS[0]}
-        onPageSizeChange={() => {}}
-        isNextAvailable={true}
-        onNext={onNext}
-        isPreviousAvailable={true}
-        onPrevious={() => {}}
+        nextPage="next"
+        prevPage="previous"
+        paginationModel={{
+          pageSize: PAGE_LIMITS[0],
+          page: 'current',
+        }}
+        onPaginationModelChange={({ page }) => {
+          onNext(page);
+        }}
       />
     );
 
@@ -52,37 +58,42 @@ describe('TablePagination', () => {
     act(() => {
       fireEvent.click(nextPageButton);
     });
-    expect(onNext).toHaveBeenCalled();
+    expect(onNext).toHaveBeenCalledWith('next');
   });
 
-  it('calls onPageSizeChange when the rows per page is changed', async () => {
+  it('calls onPaginationModelChange when the rows per page is changed', async () => {
+    const customPageSizeOptions = [1, 2, 3, 4, 5];
+
     const onRowsPerPageChange = jest.fn();
     renderWithClient(
       <TablePagination
-        pageSizeOptions={PAGE_LIMITS}
-        pageSize={PAGE_LIMITS[0]}
-        onPageSizeChange={onRowsPerPageChange}
-        isNextAvailable={true}
-        onNext={() => {}}
-        isPreviousAvailable={true}
-        onPrevious={() => {}}
+        pageSizeOptions={customPageSizeOptions}
+        nextPage="next"
+        prevPage="previous"
+        paginationModel={{
+          pageSize: customPageSizeOptions[0],
+          page: 'current',
+        }}
+        onPaginationModelChange={({ pageSize }) => {
+          onRowsPerPageChange(pageSize);
+        }}
       />
     );
 
     fireEvent.mouseDown(
       screen.getByRole('button', {
-        name: PAGE_LIMITS[0].toString(),
+        name: customPageSizeOptions[0].toString(),
       })
     );
 
     const dropdown = screen.getByRole('listbox', { name: '' });
     const { getByRole } = within(dropdown);
     const option = getByRole('option', {
-      name: PAGE_LIMITS[1].toString(),
+      name: customPageSizeOptions[1].toString(),
     });
 
     fireEvent.click(option);
 
-    expect(onRowsPerPageChange).toHaveBeenCalled();
+    expect(onRowsPerPageChange).toHaveBeenCalledWith(customPageSizeOptions[1]);
   });
 });

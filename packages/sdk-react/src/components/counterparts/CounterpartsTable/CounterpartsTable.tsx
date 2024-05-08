@@ -186,12 +186,6 @@ const CounterpartsTableBase = ({
     refetch();
   }, [currentPaginationToken, currentSort, currentFilter, refetch]);
 
-  const onPrev = () =>
-    setCurrentPaginationToken(counterparts?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(counterparts?.next_pagination_token || null);
-
   const closeDeleteCounterpartModal = useCallback(() => {
     setIsDeleteDialogOpen(false);
   }, []);
@@ -281,17 +275,16 @@ const CounterpartsTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                prevPage={counterparts?.prev_pagination_token}
+                nextPage={counterparts?.next_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isPreviousAvailable={Boolean(
-                  counterparts?.prev_pagination_token
-                )}
-                isNextAvailable={Boolean(counterparts?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

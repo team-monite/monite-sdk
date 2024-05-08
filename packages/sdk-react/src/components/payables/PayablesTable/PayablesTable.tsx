@@ -137,12 +137,6 @@ const PayablesTableBase = ({
     currentFilter[FILTER_TYPE_SEARCH] || undefined
   );
 
-  const onPrev = () =>
-    setCurrentPaginationToken(payables?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(payables?.next_pagination_token || null);
-
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -194,15 +188,16 @@ const PayablesTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                nextPage={payables?.next_pagination_token}
+                prevPage={payables?.prev_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
-                isNextAvailable={Boolean(payables?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

@@ -111,12 +111,6 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model[0]);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(quotes?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(quotes?.next_pagination_token || null);
-
   return (
     <>
       <Box
@@ -143,15 +137,16 @@ const QuotesTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                nextPage={quotes?.next_pagination_token}
+                prevPage={quotes?.prev_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isNextAvailable={Boolean(quotes?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}
-                onPrevious={onPrev}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

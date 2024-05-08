@@ -96,12 +96,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(creditNotes?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(creditNotes?.next_pagination_token || null);
-
   return (
     <>
       <Box
@@ -128,17 +122,16 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                nextPage={creditNotes?.next_pagination_token}
+                prevPage={creditNotes?.prev_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isNextAvailable={Boolean(creditNotes?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(
-                  creditNotes?.prev_pagination_token
-                )}
-                onPrevious={onPrev}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

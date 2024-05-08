@@ -12,30 +12,35 @@ import {
   MenuItem,
   SelectChangeEvent,
 } from '@mui/material';
+import { useThemeProps } from '@mui/material/styles';
 
-interface TablePaginationProps {
-  pageSizeOptions: number[];
+type PaginationModel<T> = {
   pageSize: number;
-  onPageSizeChange: (event: SelectChangeEvent) => void;
+  page: T;
+};
 
-  isNextAvailable: boolean;
-  onNext: () => void;
-
-  isPreviousAvailable: boolean;
-  onPrevious: () => void;
+interface TablePaginationProps<T> {
+  pageSizeOptions: number[];
+  paginationModel: PaginationModel<T>;
+  onPaginationModelChange: (paginationModel: PaginationModel<T>) => void;
+  nextPage: T | undefined;
+  prevPage: T | undefined;
 }
 
-export const TablePagination = ({
-  pageSizeOptions,
-  pageSize,
-  onPageSizeChange,
-  isNextAvailable,
-  onNext,
-  isPreviousAvailable,
-  onPrevious,
-}: TablePaginationProps) => {
+export const TablePagination = <T,>({
+  onPaginationModelChange,
+  paginationModel,
+  nextPage,
+  prevPage,
+  ...inProps
+}: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { pageSizeOptions } = useThemeProps({
+    props: inProps,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteTablePagination',
+  });
 
   return (
     <Grid container m={2}>
@@ -43,16 +48,34 @@ export const TablePagination = ({
         <IconButton
           sx={{ height: '100%' }}
           aria-label={t(i18n)`Previous page`}
-          onClick={onPrevious}
-          disabled={!isPreviousAvailable}
+          disabled={!prevPage}
+          onClick={(event) => {
+            event.preventDefault();
+            if (typeof prevPage === 'undefined')
+              throw new Error('Previous page is not available');
+
+            onPaginationModelChange({
+              page: prevPage,
+              pageSize: paginationModel.pageSize,
+            });
+          }}
         >
           <ArrowLeft fontSize="small" />
         </IconButton>
         <IconButton
           sx={{ height: '100%' }}
           aria-label={t(i18n)`Next page`}
-          onClick={onNext}
-          disabled={!isNextAvailable}
+          disabled={!nextPage}
+          onClick={(event) => {
+            event.preventDefault();
+            if (typeof nextPage === 'undefined')
+              throw new Error('Next page is not available');
+
+            onPaginationModelChange({
+              page: nextPage,
+              pageSize: paginationModel.pageSize,
+            });
+          }}
         >
           <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
         </IconButton>
@@ -61,8 +84,13 @@ export const TablePagination = ({
         <Select
           aria-label={t(i18n)`Rows per page`}
           MenuProps={{ container: root }}
-          value={pageSize.toString()}
-          onChange={onPageSizeChange}
+          value={paginationModel.pageSize.toString()}
+          onChange={(event) =>
+            void onPaginationModelChange({
+              page: paginationModel.page,
+              pageSize: parseInt(event.target.value, 10),
+            })
+          }
         >
           {pageSizeOptions.map((menuItem) => (
             <MenuItem key={menuItem} value={menuItem.toString()}>

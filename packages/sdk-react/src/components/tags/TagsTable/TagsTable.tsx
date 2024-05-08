@@ -101,12 +101,6 @@ const TagsTableBase = ({
     }
   }, [currentPaginationToken, tags]);
 
-  const onPrev = () =>
-    setCurrentPaginationToken(tags?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(tags?.next_pagination_token || null);
-
   const onChangeSort = (m: GridSortModel) => {
     const model = m as Array<TagsTableSortModel>;
     setSortModels(model);
@@ -151,15 +145,16 @@ const TagsTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                prevPage={tags?.prev_pagination_token}
+                nextPage={tags?.next_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isPreviousAvailable={Boolean(tags?.prev_pagination_token)}
-                isNextAvailable={Boolean(tags?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

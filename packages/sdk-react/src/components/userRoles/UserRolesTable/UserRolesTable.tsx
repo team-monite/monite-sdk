@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -117,14 +117,6 @@ const UserRolesTableBase = ({
       : undefined,
   });
 
-  const onPrev = useCallback(() => {
-    setCurrentPaginationToken(roles?.prev_pagination_token || null);
-  }, [setCurrentPaginationToken, roles]);
-
-  const onNext = useCallback(() => {
-    setCurrentPaginationToken(roles?.next_pagination_token || null);
-  }, [setCurrentPaginationToken, roles]);
-
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -210,15 +202,16 @@ const UserRolesTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                prevPage={roles?.prev_pagination_token}
+                nextPage={roles?.next_pagination_token}
+                paginationModel={{
+                  pageSize: rowsPerPage,
+                  page: currentPaginationToken,
                 }}
-                isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
-                isNextAvailable={Boolean(roles?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setCurrentPaginationToken(page);
+                  setRowsPerPage(pageSize);
+                }}
               />
             ),
           }}

@@ -101,12 +101,6 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(invoices?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(invoices?.next_pagination_token || null);
-
   return (
     <>
       <Box
@@ -133,15 +127,16 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                nextPage={invoices?.next_pagination_token}
+                prevPage={invoices?.prev_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isNextAvailable={Boolean(invoices?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}
-                onPrevious={onPrev}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

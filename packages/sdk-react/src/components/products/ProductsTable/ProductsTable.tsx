@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
@@ -148,14 +148,6 @@ const ProductsTableBase = ({
     measureUnitId: currentFilter[FILTER_TYPE_UNITS] || undefined,
   });
 
-  const onPrev = useCallback(() => {
-    setCurrentPaginationToken(products?.prev_pagination_token || null);
-  }, [setCurrentPaginationToken, products]);
-
-  const onNext = useCallback(() => {
-    setCurrentPaginationToken(products?.next_pagination_token || null);
-  }, [setCurrentPaginationToken, products]);
-
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -285,15 +277,16 @@ const ProductsTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                prevPage={products?.prev_pagination_token}
+                nextPage={products?.next_pagination_token}
+                paginationModel={{
+                  page: currentPaginationToken,
+                  pageSize: rowsPerPage,
                 }}
-                isPreviousAvailable={Boolean(products?.prev_pagination_token)}
-                isNextAvailable={Boolean(products?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

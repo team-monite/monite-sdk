@@ -116,12 +116,6 @@ const ApprovalPoliciesTableBase = ({
     }
   }, [currentPaginationToken, approvalPolicies]);
 
-  const onPrev = () =>
-    setCurrentPaginationToken(approvalPolicies?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(approvalPolicies?.next_pagination_token || null);
-
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilters((prevFilters) => ({
@@ -210,19 +204,16 @@ const ApprovalPoliciesTableBase = ({
             pagination: () => (
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
-                pageSize={rowsPerPage}
-                onPageSizeChange={(event) => {
-                  setRowsPerPage(parseInt(event.target.value, 10));
-                  setCurrentPaginationToken(null);
+                nextPage={approvalPolicies?.next_pagination_token}
+                prevPage={approvalPolicies?.prev_pagination_token}
+                paginationModel={{
+                  pageSize: rowsPerPage,
+                  page: currentPaginationToken,
                 }}
-                isNextAvailable={Boolean(
-                  approvalPolicies?.next_pagination_token
-                )}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(
-                  approvalPolicies?.prev_pagination_token
-                )}
-                onPrevious={onPrev}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setRowsPerPage(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}
