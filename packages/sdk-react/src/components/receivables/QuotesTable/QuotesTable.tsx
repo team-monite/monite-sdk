@@ -22,7 +22,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridSortModel,
@@ -117,11 +117,6 @@ const QuotesTableBase = ({
   const onNext = () =>
     setCurrentPaginationToken(quotes?.next_pagination_token || null);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   return (
     <>
       <Box
@@ -149,7 +144,10 @@ const QuotesTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isNextAvailable={Boolean(quotes?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}

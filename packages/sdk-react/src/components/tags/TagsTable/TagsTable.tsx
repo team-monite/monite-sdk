@@ -19,7 +19,7 @@ import {
 } from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -107,11 +107,6 @@ const TagsTableBase = ({
   const onNext = () =>
     setCurrentPaginationToken(tags?.next_pagination_token || null);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   const onChangeSort = (m: GridSortModel) => {
     const model = m as Array<TagsTableSortModel>;
     setSortModels(model);
@@ -157,7 +152,10 @@ const TagsTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isPreviousAvailable={Boolean(tags?.prev_pagination_token)}
                 isNextAvailable={Boolean(tags?.next_pagination_token)}
                 onPrevious={onPrev}

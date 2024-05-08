@@ -21,7 +21,7 @@ import {
   PayableResponseSchema,
   type RoleCursorFields,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridValueFormatterParams,
@@ -125,11 +125,6 @@ const UserRolesTableBase = ({
     setCurrentPaginationToken(roles?.next_pagination_token || null);
   }, [setCurrentPaginationToken, roles]);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -216,7 +211,10 @@ const UserRolesTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
                 isNextAvailable={Boolean(roles?.next_pagination_token)}
                 onPrevious={onPrev}

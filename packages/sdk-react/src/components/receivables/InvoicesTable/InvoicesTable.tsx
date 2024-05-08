@@ -23,7 +23,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
@@ -107,11 +107,6 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
   const onNext = () =>
     setCurrentPaginationToken(invoices?.next_pagination_token || null);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   return (
     <>
       <Box
@@ -139,7 +134,10 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isNextAvailable={Boolean(invoices?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}

@@ -20,7 +20,7 @@ import {
   OrderEnum,
   ProductServiceResponse,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -156,11 +156,6 @@ const ProductsTableBase = ({
     setCurrentPaginationToken(products?.next_pagination_token || null);
   }, [setCurrentPaginationToken, products]);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -291,7 +286,10 @@ const ProductsTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isPreviousAvailable={Boolean(products?.prev_pagination_token)}
                 isNextAvailable={Boolean(products?.next_pagination_token)}
                 onPrevious={onPrev}

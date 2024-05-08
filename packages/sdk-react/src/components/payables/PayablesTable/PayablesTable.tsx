@@ -22,7 +22,7 @@ import {
   PayableResponseSchema,
 } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, SelectChangeEvent } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -143,11 +143,6 @@ const PayablesTableBase = ({
   const onNext = () =>
     setCurrentPaginationToken(payables?.next_pagination_token || null);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -200,7 +195,10 @@ const PayablesTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
                 isNextAvailable={Boolean(payables?.next_pagination_token)}
                 onPrevious={onPrev}

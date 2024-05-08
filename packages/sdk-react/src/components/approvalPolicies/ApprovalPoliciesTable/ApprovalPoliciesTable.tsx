@@ -14,7 +14,7 @@ import {
   ApprovalPolicyCursorFields,
   ApprovalPolicyResource,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -132,11 +132,6 @@ const ApprovalPoliciesTableBase = ({
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   return (
     <>
       <Box
@@ -216,7 +211,10 @@ const ApprovalPoliciesTableBase = ({
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isNextAvailable={Boolean(
                   approvalPolicies?.next_pagination_token
                 )}

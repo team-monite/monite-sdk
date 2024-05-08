@@ -21,7 +21,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, SelectChangeEvent } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -102,11 +102,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const onNext = () =>
     setCurrentPaginationToken(creditNotes?.next_pagination_token || null);
 
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setCurrentPaginationToken(null);
-  };
-
   return (
     <>
       <Box
@@ -134,7 +129,10 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               <TablePagination
                 pageSizeOptions={PAGE_LIMITS}
                 pageSize={rowsPerPage}
-                onPageSizeChange={handleChangeRowsPerPage}
+                onPageSizeChange={(event) => {
+                  setRowsPerPage(parseInt(event.target.value, 10));
+                  setCurrentPaginationToken(null);
+                }}
                 isNextAvailable={Boolean(creditNotes?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(
