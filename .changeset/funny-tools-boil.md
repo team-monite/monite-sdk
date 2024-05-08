@@ -2,4 +2,4 @@
 '@monite/sdk-react': minor
 ---
 
-add the rows per page select to all tables
+enhanced the `<TablePagination/>` component with extended customization options via MUI theming, ensuring it fits seamlessly across different application contexts
