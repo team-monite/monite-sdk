@@ -1,19 +1,15 @@
 import React, { cloneElement, ReactElement, useMemo } from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import {
-  getRowToStatusTextMap,
-  ROW_TO_STATUS_MUI_MAP,
-} from '@/components/payables/consts';
+import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableResponseSchema } from '@monite/sdk-api';
+import { PayableResponseSchema, PayableStateEnum } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
-  Chip,
   DialogTitle,
   IconButton,
   Stack,
@@ -168,13 +164,8 @@ export const PayableDetailsHeader = ({
           <Typography variant="h3" sx={{ ml: 2, flex: 1 }} component="div">
             {payable?.document_id ?? t(i18n)`New incoming invoice`}
           </Typography>
-          <Chip
-            label={
-              payable
-                ? getRowToStatusTextMap(i18n)[payable.status]
-                : t(i18n)`Draft`
-            }
-            color={payable ? ROW_TO_STATUS_MUI_MAP[payable.status] : 'default'}
+          <PayableStatusChip
+            status={payable?.status ?? PayableStateEnum.DRAFT}
           />
         </Box>
         {(!payable || !isPayableInOCRProcessing(payable)) && (

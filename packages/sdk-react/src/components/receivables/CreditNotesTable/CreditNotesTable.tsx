@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import {
   FILTER_TYPE_CUSTOMER,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
-import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
+import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -22,7 +21,7 @@ import {
   ReceivablesStatusEnum,
   ReceivableType,
 } from '@monite/sdk-api';
-import { Box, Chip } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
@@ -175,13 +174,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               renderCell: (params) => {
                 const status = params.value as ReceivablesStatusEnum;
 
-                return (
-                  <Chip
-                    color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
-                    label={getCommonStatusLabel(status, i18n)}
-                    variant="filled"
-                  />
-                );
+                return <InvoiceStatusChip status={status} />;
               },
             },
             {

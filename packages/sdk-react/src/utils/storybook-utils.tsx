@@ -1,22 +1,31 @@
-import { useEffect, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 
 import { MoniteProvider } from '@/core/context/MoniteProvider';
+import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
 import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
-import { ThemeOptions, ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import {
+  createTheme,
+  ThemeOptions,
+  ThemeProvider,
+  useTheme,
+} from '@mui/material';
+import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import {
-  QueryClient,
-  QueryClientProvider as FallbackQueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  moniteLight as themeMoniteLight,
   moniteDark as themeMoniteDark,
+  moniteLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
+
+import dateFnsEnUsLocale from 'date-fns/locale/en-US';
 
 export const generateRandomId = () =>
   (Math.random() + 1).toString(36).substring(2);
@@ -51,10 +60,14 @@ export const withGlobalStorybookDecorator = (
 ): any => {
   const { monite } = cb?.() ?? { monite: undefined };
 
+  const customStyles = {
+    components: {},
+  };
+
   return withThemeFromJSXProvider({
     themes: {
-      light: createTheme(themeMoniteLight),
-      dark: createTheme(themeMoniteDark),
+      light: themeMoniteLight,
+      dark: themeMoniteDark,
     },
     defaultTheme: 'light',
     Provider: (...args: any[]) => {
@@ -71,9 +84,6 @@ export const GlobalStorybookDecorator = (props: {
   monite?: MoniteSDK;
 }) => {
   const apiUrl = 'https://api.sandbox.monite.com/v1';
-
-  // Used if the Storybook component does not wrap `<MoniteScopedProviders/>`.
-  const fallbackQueryClient = useMemo(() => new QueryClient(), []);
 
   const monite = useMemo(
     () =>
@@ -103,10 +113,12 @@ export const GlobalStorybookDecorator = (props: {
     []
   );
 
+  const muiTheme = createTheme(props.theme);
+
   const backgroundColor =
-    props.theme?.palette?.mode === 'light'
+    muiTheme.palette?.mode === 'light'
       ? '#FFFFFF'
-      : props.theme?.palette?.background?.default;
+      : muiTheme.palette?.background?.default;
 
   return (
     <>
@@ -117,13 +129,75 @@ export const GlobalStorybookDecorator = (props: {
           }
         `}
       />
-      <ThemeProvider theme={props.theme ?? {}}>
-        <MoniteProvider monite={props.monite ?? monite} theme={props.theme}>
-          <FallbackQueryClientProvider client={fallbackQueryClient}>
-            {props.children}
-          </FallbackQueryClientProvider>
+      <FallbackProviders theme={muiTheme}>
+        <MoniteProvider monite={props.monite ?? monite} theme={muiTheme}>
+          {props.children}
         </MoniteProvider>
-      </ThemeProvider>
+      </FallbackProviders>
     </>
   );
 };
+
+/**
+ * Provides fallback providers for the storybook stories.
+ * If a component is not wrapped in a `<MoniteScopedProviders/>,
+ * it will use these providers.
+ */
+function FallbackProviders({
+  children,
+  theme,
+}: {
+  children: ReactNode;
+  theme: ThemeProviderProps['theme'];
+}) {
+  const i18n = useMemo(() => {
+    return setupI18n({
+      locale: 'en',
+      messages: {
+        en: enLocaleMessages,
+      },
+    });
+  }, []);
+
+  const fallbackQueryClient = useMemo(() => new QueryClient(), []);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <I18nProvider
+        // Due to the imperative nature of the I18nProvider,
+        // a `key` must be added to change the locale in real time
+        key={i18n.locale}
+        i18n={i18n}
+      >
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={dateFnsEnUsLocale}
+        >
+          <QueryClientProvider client={fallbackQueryClient}>
+            {children}
+          </QueryClientProvider>
+        </LocalizationProvider>
+      </I18nProvider>
+    </ThemeProvider>
+  );
+}
+
+/**
+ * Extends the current theme with the provided theme options.
+ * @param theme The theme options to extend the current theme with.
+ * @param children
+ */
+export function ExtendThemeProvider({
+  theme,
+  children,
+}: {
+  theme: ThemeOptions;
+  children: ReactNode;
+}) {
+  const mainTheme = useTheme();
+  return (
+    <ThemeProvider theme={createTheme(mainTheme, theme)}>
+      {children}
+    </ThemeProvider>
+  );
+}
