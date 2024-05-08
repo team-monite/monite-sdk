@@ -14,9 +14,9 @@ import {
 } from '@mui/material';
 
 interface ITablePaginationProps {
-  rowsPerPageOptions: number[];
-  rowsPerPage: number;
-  onRowsPerPageChange: (event: SelectChangeEvent) => void;
+  pageSizeOptions: number[];
+  pageSize: number;
+  onPageSizeChange: (event: SelectChangeEvent) => void;
 
   isNextAvailable: boolean;
   onNext: () => void;
@@ -26,9 +26,9 @@ interface ITablePaginationProps {
 }
 
 export const TablePagination = ({
-  rowsPerPageOptions,
-  rowsPerPage,
-  onRowsPerPageChange,
+  pageSizeOptions,
+  pageSize,
+  onPageSizeChange,
   isNextAvailable,
   onNext,
   isPreviousAvailable,
@@ -61,10 +61,10 @@ export const TablePagination = ({
         <Select
           aria-label={t(i18n)`Rows per page`}
           MenuProps={{ container: root }}
-          value={rowsPerPage.toString()}
-          onChange={onRowsPerPageChange}
+          value={pageSize.toString()}
+          onChange={onPageSizeChange}
         >
-          {rowsPerPageOptions.map((menuItem) => (
+          {pageSizeOptions.map((menuItem) => (
             <MenuItem key={menuItem} value={menuItem.toString()}>
               {menuItem}
             </MenuItem>

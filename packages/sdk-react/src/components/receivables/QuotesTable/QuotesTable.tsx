@@ -148,9 +148,9 @@ const QuotesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isNextAvailable={Boolean(quotes?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}

@@ -133,9 +133,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isNextAvailable={Boolean(creditNotes?.next_pagination_token)}
                 onNext={onNext}
                 isPreviousAvailable={Boolean(

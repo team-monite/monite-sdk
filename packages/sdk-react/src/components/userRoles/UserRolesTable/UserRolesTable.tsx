@@ -214,9 +214,9 @@ const UserRolesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
                 isNextAvailable={Boolean(roles?.next_pagination_token)}
                 onPrevious={onPrev}

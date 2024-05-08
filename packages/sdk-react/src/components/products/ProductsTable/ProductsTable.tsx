@@ -289,9 +289,9 @@ const ProductsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(products?.prev_pagination_token)}
                 isNextAvailable={Boolean(products?.next_pagination_token)}
                 onPrevious={onPrev}

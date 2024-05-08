@@ -12,9 +12,9 @@ describe('TablePagination', () => {
 
     renderWithClient(
       <TablePagination
-        rowsPerPageOptions={PAGE_LIMITS}
-        rowsPerPage={PAGE_LIMITS[0]}
-        onRowsPerPageChange={() => {}}
+        pageSizeOptions={PAGE_LIMITS}
+        pageSize={PAGE_LIMITS[0]}
+        onPageSizeChange={() => {}}
         isNextAvailable={true}
         onNext={() => {}}
         isPreviousAvailable={true}
@@ -37,9 +37,9 @@ describe('TablePagination', () => {
 
     renderWithClient(
       <TablePagination
-        rowsPerPageOptions={PAGE_LIMITS}
-        rowsPerPage={PAGE_LIMITS[0]}
-        onRowsPerPageChange={() => {}}
+        pageSizeOptions={PAGE_LIMITS}
+        pageSize={PAGE_LIMITS[0]}
+        onPageSizeChange={() => {}}
         isNextAvailable={true}
         onNext={onNext}
         isPreviousAvailable={true}
@@ -55,13 +55,13 @@ describe('TablePagination', () => {
     expect(onNext).toHaveBeenCalled();
   });
 
-  it('calls onRowsPerPageChange when the rows per page is changed', async () => {
+  it('calls onPageSizeChange when the rows per page is changed', async () => {
     const onRowsPerPageChange = jest.fn();
     renderWithClient(
       <TablePagination
-        rowsPerPageOptions={PAGE_LIMITS}
-        rowsPerPage={PAGE_LIMITS[0]}
-        onRowsPerPageChange={onRowsPerPageChange}
+        pageSizeOptions={PAGE_LIMITS}
+        pageSize={PAGE_LIMITS[0]}
+        onPageSizeChange={onRowsPerPageChange}
         isNextAvailable={true}
         onNext={() => {}}
         isPreviousAvailable={true}

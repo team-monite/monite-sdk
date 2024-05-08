@@ -286,9 +286,9 @@ const CounterpartsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(
                   counterparts?.prev_pagination_token
                 )}

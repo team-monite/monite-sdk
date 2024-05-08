@@ -155,9 +155,9 @@ const TagsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                rowsPerPageOptions={PAGE_LIMITS}
-                rowsPerPage={rowsPerPage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                pageSizeOptions={PAGE_LIMITS}
+                pageSize={rowsPerPage}
+                onPageSizeChange={handleChangeRowsPerPage}
                 isPreviousAvailable={Boolean(tags?.prev_pagination_token)}
                 isNextAvailable={Boolean(tags?.next_pagination_token)}
                 onPrevious={onPrev}
