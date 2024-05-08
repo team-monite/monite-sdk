@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, fireEvent, act, within } from '@testing-library/react';
 
@@ -92,5 +93,147 @@ describe('TablePagination', () => {
     fireEvent.click(option);
 
     expect(onRowsPerPageChange).toHaveBeenCalledWith(customPageSizeOptions[1]);
+  });
+
+  it('does not show page size Select if there are less than two options', async () => {
+    renderWithClient(
+      <ExtendThemeProvider
+        theme={{
+          components: {
+            MoniteTablePagination: {
+              defaultProps: {
+                pageSizeOptions: [111],
+              },
+            },
+          },
+        }}
+      >
+        <TablePagination
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 111,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      </ExtendThemeProvider>
+    );
+
+    expect(
+      screen.queryByRole('button', {
+        name: '111',
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it('does not show page size Select by default', async () => {
+    renderWithClient(
+      <TablePagination
+        nextPage="next"
+        prevPage="previous"
+        paginationModel={{
+          pageSize: 111,
+          page: 'current',
+        }}
+        onPaginationModelChange={() => {}}
+      />
+    );
+
+    expect(
+      screen.queryByRole('button', {
+        name: '111',
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it('supports custom `pageSizeOptions` via MUI theming', async () => {
+    renderWithClient(
+      <ExtendThemeProvider
+        theme={{
+          components: {
+            MoniteTablePagination: {
+              defaultProps: {
+                pageSizeOptions: [111, 222, 333],
+              },
+            },
+          },
+        }}
+      >
+        <TablePagination
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 111,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      </ExtendThemeProvider>
+    );
+
+    fireEvent.mouseDown(
+      screen.getByRole('button', {
+        name: '111',
+      })
+    );
+
+    const dropdown = screen.getByRole('listbox', { name: '' });
+    const { findByRole } = within(dropdown);
+
+    expect(
+      await findByRole('option', {
+        name: '111',
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      await findByRole('option', {
+        name: '222',
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      await findByRole('option', {
+        name: '333',
+      })
+    ).toBeInTheDocument();
+  });
+
+  it('supports custom `slotProps` via MUI theming', async () => {
+    renderWithClient(
+      <ExtendThemeProvider
+        theme={{
+          components: {
+            MoniteTablePagination: {
+              defaultProps: {
+                pageSizeOptions: [111, 222, 333],
+                slotProps: {
+                  pageSizeSelect: {
+                    className: 'test-class-name',
+                  },
+                },
+              },
+            },
+          },
+        }}
+      >
+        <TablePagination
+          nextPage="next"
+          prevPage="previous"
+          paginationModel={{
+            pageSize: 111,
+            page: 'current',
+          }}
+          onPaginationModelChange={() => {}}
+        />
+      </ExtendThemeProvider>
+    );
+
+    const element = screen.getByRole('button', {
+      name: '111',
+    });
+
+    expect(element.closest('.test-class-name')).toBeInTheDocument();
   });
 });
