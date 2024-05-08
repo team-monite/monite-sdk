@@ -13,7 +13,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
-interface ITablePaginationProps {
+interface TablePaginationProps {
   pageSizeOptions: number[];
   pageSize: number;
   onPageSizeChange: (event: SelectChangeEvent) => void;
@@ -33,7 +33,7 @@ export const TablePagination = ({
   onNext,
   isPreviousAvailable,
   onPrevious,
-}: ITablePaginationProps) => {
+}: TablePaginationProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
