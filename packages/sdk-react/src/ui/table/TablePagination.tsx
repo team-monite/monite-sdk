@@ -6,7 +6,14 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
-import { Grid, GridProps, IconButton, MenuItem, Select } from '@mui/material';
+import {
+  Grid,
+  GridProps,
+  IconButton,
+  MenuItem,
+  Select,
+  SelectProps,
+} from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 type PaginationModel<T> = {
@@ -14,7 +21,17 @@ type PaginationModel<T> = {
   page: T;
 };
 
-export interface MoniteTablePaginationProps {
+interface MoniteTablePaginationSlotProps {
+  slotProps?: {
+    pageSizeSelect?: Omit<
+      SelectProps,
+      'value' | 'defaultValue' | 'aria-label' | 'ref' | 'components'
+    >;
+  };
+}
+
+export interface MoniteTablePaginationProps
+  extends MoniteTablePaginationSlotProps {
   pageSizeOptions?: number[];
 }
 
@@ -40,6 +57,11 @@ interface TablePaginationProps<T> extends MoniteTablePaginationProps {
  *       defaultProps: {
  *         // The default page size options
  *         pageSizeOptions: [5, 10, 15, 20],
+ *         slotProps: {
+ *           pageSizeSelect: {
+ *             size: 'small',
+ *           },
+ *         },
  *       },
  *     }
  *   }
@@ -51,11 +73,12 @@ export const TablePagination = <T,>({
   nextPage,
   prevPage,
   pageSizeOptions: inSizeOptionsProp,
+  slotProps: inSlotProps,
 }: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { pageSizeOptions: pageSizeOptionsRaw } = useThemeProps({
-    props: { pageSizeOptions: inSizeOptionsProp },
+  const { pageSizeOptions: pageSizeOptionsRaw, slotProps } = useThemeProps({
+    props: { pageSizeOptions: inSizeOptionsProp, slotProps: inSlotProps },
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteTablePagination',
   });
@@ -133,9 +156,13 @@ export const TablePagination = <T,>({
           display="flex"
           justifyContent="flex-end"
         >
-          <Select
+          <StyledSelect
+            {...slotProps?.pageSizeSelect}
             aria-label={t(i18n)`Rows per page`}
-            MenuProps={{ container: root }}
+            MenuProps={{
+              ...slotProps?.pageSizeSelect?.MenuProps,
+              container: root,
+            }}
             value={pageSize.toString()}
             onChange={(event) =>
               void onPaginationModelChange({
@@ -149,7 +176,7 @@ export const TablePagination = <T,>({
                 {menuItem}
               </MenuItem>
             ))}
-          </Select>
+          </StyledSelect>
         </Grid>
       )}
     </RootGrid>
@@ -164,6 +191,18 @@ const RootGrid = styled(
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteTablePagination',
     slot: 'root',
+    shouldForwardProp: () => true,
+  }
+)({});
+
+const StyledSelect = styled(
+  forwardRef<HTMLDivElement, SelectProps<string>>(({ ...restProps }, ref) => {
+    return <Select ref={ref} {...restProps} />;
+  }),
+  {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteTablePagination',
+    slot: 'pageSizeSelect',
     shouldForwardProp: () => true,
   }
 )({});

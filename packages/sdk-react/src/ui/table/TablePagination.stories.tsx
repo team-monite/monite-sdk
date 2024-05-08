@@ -36,7 +36,7 @@ export const TablePaginationDefault: Story = {
 };
 
 export const TablePaginationThemed: Story = {
-  name: 'themed',
+  name: 'slots customization',
   args: {
     paginationModel: {
       pageSize: 10,
@@ -54,6 +54,11 @@ export const TablePaginationThemed: Story = {
             MoniteTablePagination: {
               defaultProps: {
                 pageSizeOptions: [55, 10, 155, 200],
+                slotProps: {
+                  pageSizeSelect: {
+                    size: 'small',
+                  },
+                },
               },
             },
           },
