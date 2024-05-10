@@ -196,9 +196,7 @@ const ExistingReceivableDetailsBase = (
         </Box>
 
         <InvoiceTo
-          counterpartName={invoice.counterpart_name}
-          counterpartType={invoice.counterpart_type}
-          counterpartContact={invoice.counterpart_contact}
+          counterpartId={invoice.counterpart_id}
           counterpartAddress={invoice.counterpart_address}
         />
 
