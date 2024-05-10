@@ -33,7 +33,7 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
-import { InvoiceCounterpartCell } from './InvoiceCounterpartCell';
+import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 
 type InvoicesTableProps = {
   /**
@@ -162,7 +162,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
               sortable: false,
               flex: 1.3,
               renderCell: (params) => (
-                <InvoiceCounterpartCell counterpartId={params.value} />
+                <InvoiceCounterpartName counterpartId={params.value} />
               ),
             },
             {
