@@ -116,6 +116,15 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model[0]);
   };
 
+  const onPrev = () =>
+    setCurrentPaginationToken(quotes?.prev_pagination_token || null);
+
+  const onNext = () =>
+    setCurrentPaginationToken(quotes?.next_pagination_token || null);
+
+  // Workaround to prevent illegal sorting fields
+  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
+
   return (
     <>
       <Box
@@ -186,7 +195,9 @@ const QuotesTableBase = ({
             },
             {
               field: 'counterpart_name',
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.COUNTERPART_NAME
+              ),
               headerName: t(i18n)`Customer`,
               flex: 1,
               renderCell: (params) => (
@@ -209,7 +220,9 @@ const QuotesTableBase = ({
             },
             {
               field: 'status',
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.STATUS
+              ),
               headerName: t(i18n)`Status`,
               renderCell: (params) => {
                 const status = params.value as ReceivablesStatusEnum;

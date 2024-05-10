@@ -101,6 +101,15 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
+  const onPrev = () =>
+    setCurrentPaginationToken(creditNotes?.prev_pagination_token || null);
+
+  const onNext = () =>
+    setCurrentPaginationToken(creditNotes?.next_pagination_token || null);
+
+  // Workaround to prevent illegal sorting fields
+  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
+
   return (
     <>
       <Box
@@ -168,7 +177,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.COUNTERPART_NAME
+              ),
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -179,7 +190,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'status',
               headerName: t(i18n)`Status`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.STATUS
+              ),
               flex: 1,
               renderCell: (params) => {
                 const status = params.value as ReceivablesStatusEnum;
