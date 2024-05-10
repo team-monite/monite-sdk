@@ -6,6 +6,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
+import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -182,6 +183,11 @@ const QuotesTableBase = ({
               sortable: false,
               headerName: t(i18n)`Customer`,
               flex: 1,
+              renderCell: (params) => (
+                <InvoiceCounterpartName
+                  counterpartId={params.row.counterpart_id}
+                />
+              ),
             },
             {
               field: 'expiry_date',
