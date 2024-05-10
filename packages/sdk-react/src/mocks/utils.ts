@@ -1,5 +1,3 @@
-import { delay as mswDelay } from 'msw';
-
 export const getMockPagination = (
   page?: string | null,
   pageLimit: number = 2
@@ -10,14 +8,6 @@ export const getMockPagination = (
   const nextPage = currentPage < pageLimit ? `${currentPage + 1}` : undefined;
 
   return { prevPage, nextPage };
-};
-
-export const delay = (duration?: number): Promise<void> => {
-  if (process.env.TESTS) {
-    return Promise.resolve();
-  }
-
-  return mswDelay(duration);
 };
 
 type PaginationResult<T> = readonly [

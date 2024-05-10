@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   ErrorSchemaResponse,
   LINE_ITEMS_ENDPOINT,
@@ -8,7 +7,7 @@ import {
   PAYABLES_ENDPOINT,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { lineItemFixture, generateLineItem } from './lineItemsFixture';
 

@@ -1,5 +1,4 @@
 import { receivableListFixture } from '@/mocks';
-import { delay } from '@/mocks/utils';
 import { faker } from '@faker-js/faker';
 import {
   CreatePaymentLinkRequest,
@@ -11,7 +10,7 @@ import {
   ReceivablesStatusEnum,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 export const paymentHandlers = [
   http.post<

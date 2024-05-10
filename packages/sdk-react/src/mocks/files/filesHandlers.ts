@@ -1,10 +1,9 @@
-import { delay } from '@/mocks/utils';
 import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 import { ApiError, type FileResponse, type UploadFile } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 type CreateFileParams = { fileId: string };
 

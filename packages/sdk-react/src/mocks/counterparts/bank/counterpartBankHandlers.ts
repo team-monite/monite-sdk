@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   CounterpartData,
   COUNTERPARTS_BANK_ENDPOINT,
@@ -10,7 +9,7 @@ import type {
   UpdateCounterpartBankAccount,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import {
   counterpartBankFixture,

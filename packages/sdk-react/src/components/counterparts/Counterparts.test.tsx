@@ -5,7 +5,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
+import { Provider, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
@@ -28,15 +28,12 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkCounterpartQueriesLoaded(queryClient), {
-        timeout: 5_000,
-      });
+      await waitUntilTableIsLoaded();
 
-      const createCounterpartButton = screen.findByText(t`Create New`);
+      const createCounterpartButton = await screen.findByText(t`Create New`);
 
-      await expect(createCounterpartButton).resolves.toBeInTheDocument();
-      await expect(createCounterpartButton).resolves.not.toBeDisabled();
+      expect(createCounterpartButton).toBeInTheDocument();
+      expect(createCounterpartButton).not.toBeDisabled();
 
       const invoiceCells = screen.findAllByText(
         counterpartOrganizationFixture.organization.legal_name
@@ -68,12 +65,12 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
+      await waitUntilTableIsLoaded();
 
-      const createCounterpartButton = screen.findByText(t`Create New`);
+      const createCounterpartButton = await screen.findByText(t`Create New`);
 
-      await expect(createCounterpartButton).resolves.toBeInTheDocument();
-      await expect(createCounterpartButton).resolves.toBeDisabled();
+      expect(createCounterpartButton).toBeInTheDocument();
+      expect(createCounterpartButton).toBeDisabled();
 
       await expect(
         screen.findByText(t`Access Restricted`, { selector: 'h3' })
@@ -103,31 +100,18 @@ describe('Counterparts', () => {
         ),
       });
 
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkCounterpartQueriesLoaded(queryClient), {
-        timeout: 5_000,
-      });
+      await waitUntilTableIsLoaded();
 
-      const createCounterpartButton = screen.findByText(t`Create New`);
+      const createCounterpartButton = await screen.findByText(t`Create New`);
 
-      await expect(createCounterpartButton).resolves.toBeInTheDocument();
-      await expect(createCounterpartButton).resolves.not.toBeDisabled();
+      expect(createCounterpartButton).toBeInTheDocument();
+      expect(createCounterpartButton).not.toBeDisabled();
 
-      const invoiceCells = screen.findAllByText(
+      const invoiceCells = await screen.findAllByText(
         counterpartOrganizationFixture.organization.legal_name
       );
 
-      await expect(invoiceCells).resolves.toBeDefined();
+      expect(invoiceCells).toBeDefined();
     });
   });
 });
-
-function checkCounterpartQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['counterparts', 'list'],
-    predicate: (query) => query.state.status === 'success',
-  });
-
-  if (!data.length) throw new Error('Counterparts query is not executed');
-}

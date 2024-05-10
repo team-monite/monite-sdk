@@ -9,6 +9,7 @@ import {
   checkPermissionQueriesLoaded,
   renderWithClient,
   testQueryClient,
+  waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
@@ -29,10 +30,11 @@ describe('Products', () => {
     test('support "read" and "create" permissions', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const createProductButton = screen.findByText(/Create New/i);
 
@@ -81,10 +83,11 @@ describe('Products', () => {
 
       renderWithClient(<Products />, monite);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const createProductButton = screen.findByText(t`Create New`);
 
@@ -100,10 +103,11 @@ describe('Products', () => {
     test('should open the details modal when a row is clicked', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const rows = screen.getAllByRole('row');
       const firstProductRow = rows[1];
@@ -119,10 +123,11 @@ describe('Products', () => {
     test('should open the create modal when the "create" button is clicked', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const createButton = screen.getByRole('button', {
         name: /create new/i,
@@ -141,10 +146,11 @@ describe('Products', () => {
     test('should appear "edit" and "delete" buttons when we click on right action button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const actionButtons = screen.getAllByRole('button', {
         name: 'actions-menu-button',
@@ -166,10 +172,11 @@ describe('Products', () => {
     test('should appear delete modal when we click on "delete" button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const itemIndex = 0;
 
@@ -197,10 +204,11 @@ describe('Products', () => {
     test('should close modal after deletion', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const itemIndex = 0;
 
@@ -233,10 +241,11 @@ describe('Products', () => {
     test('should appear edit modal when we click on "edit" button', async () => {
       renderWithClient(<Products />);
 
-      await waitFor(() => checkPermissionQueriesLoaded(testQueryClient));
-      await waitFor(() => checkProductQueriesLoaded(testQueryClient), {
-        timeout: 5_000,
-      });
+      /** Wait until title loader disappears */
+      await waitUntilTableIsLoaded();
+
+      /** Wait until table loader disappears */
+      await waitUntilTableIsLoaded();
 
       const itemIndex = 0;
 
@@ -262,13 +271,3 @@ describe('Products', () => {
     });
   });
 });
-
-function checkProductQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['product'],
-    predicate: (query) => query.state.status === 'success',
-  });
-
-  if (!data.length) throw new Error('Product query is not executed');
-}

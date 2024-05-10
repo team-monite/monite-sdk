@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import { faker } from '@faker-js/faker';
 import {
   EntityBankAccountPaginationResponse,
@@ -8,7 +7,7 @@ import {
   EntityBankAccountResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { bankAccountsFixture } from './bankAccountsFixture';
 

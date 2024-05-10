@@ -1,11 +1,10 @@
-import { delay } from '@/mocks/utils';
 import {
   ErrorSchemaResponse,
   EntityOnboardingDataResponse,
   EntityOnboardingDataRequest,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { getEntityOnboardingDataFixture } from './entitiyOnboardingDataFixture';
 

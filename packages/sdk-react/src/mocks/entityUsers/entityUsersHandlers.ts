@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   ENTITY_USERS_ENDPOINT,
   EntityUserPaginationResponse,
@@ -6,7 +5,7 @@ import {
   RoleResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import {
   lowPermissionRole,

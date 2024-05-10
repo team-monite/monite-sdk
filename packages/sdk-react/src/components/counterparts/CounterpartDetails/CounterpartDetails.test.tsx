@@ -29,8 +29,8 @@ import {
   getActionButtonInAddressSection,
   getActionButtonInContactSection,
   getActionButtonInDeleteModal,
-  getFirstActionButtonInBankAccountSection,
-  getEditButtonInIndividualSection,
+  findFirstActionButtonInBankAccountSection,
+  findEditButtonInIndividualSection,
   getEditButtonInOrganizationSection,
   getDeleteButtonInIndividualSection,
   getFirstBankAccountFixture,
@@ -44,7 +44,9 @@ describe('CounterpartDetails', () => {
       test('should display first & last names in a proper inputs when we click on "edit" button', async () => {
         renderWithClient(<CounterpartDetails id={individualId} />);
 
-        const editButton = await getEditButtonInIndividualSection(i18nCore);
+        await waitUntilTableIsLoaded();
+
+        const editButton = await findEditButtonInIndividualSection(i18nCore);
 
         fireEvent.click(editButton);
 
@@ -64,6 +66,8 @@ describe('CounterpartDetails', () => {
       test('should display category when `showCategories` in not provided', async () => {
         renderWithClient(<CounterpartDetails id={individualId} />);
 
+        await waitUntilTableIsLoaded();
+
         const categorySection = await screen.findByText(/Category/i);
 
         expect(categorySection).toBeInTheDocument();
@@ -74,6 +78,8 @@ describe('CounterpartDetails', () => {
           <CounterpartDetails id={individualId} showCategories={true} />
         );
 
+        await waitUntilTableIsLoaded();
+
         const categorySection = await screen.findByText(/Category/i);
 
         expect(categorySection).toBeInTheDocument();
@@ -83,6 +89,8 @@ describe('CounterpartDetails', () => {
         renderWithClient(
           <CounterpartDetails id={individualId} showCategories={false} />
         );
+
+        await waitUntilTableIsLoaded();
 
         const categorySection = screen.findByText(/Category/i);
 
@@ -96,6 +104,8 @@ describe('CounterpartDetails', () => {
           <CounterpartDetails id={individualId} showBankAccounts={false} />
         );
 
+        await waitUntilTableIsLoaded();
+
         const bankAccountSection = screen.findByTestId(
           CounterpartDataTestId.BankAccount
         );
@@ -107,6 +117,8 @@ describe('CounterpartDetails', () => {
 
       test('should display bank accounts information when we DID NOT provide `showBankAccounts` because it should be by default', async () => {
         renderWithClient(<CounterpartDetails id={individualId} />);
+
+        await waitUntilTableIsLoaded();
 
         const bankAccountSection = await screen.findByTestId(
           CounterpartDataTestId.BankAccount
@@ -120,6 +132,8 @@ describe('CounterpartDetails', () => {
           <CounterpartDetails id={individualId} showBankAccounts={true} />
         );
 
+        await waitUntilTableIsLoaded();
+
         const bankAccountSection = await screen.findByTestId(
           CounterpartDataTestId.BankAccount
         );
@@ -129,6 +143,8 @@ describe('CounterpartDetails', () => {
 
       test('should display address information when we click on "edit" in Address section', async () => {
         renderWithClient(<CounterpartDetails id={individualId} />);
+
+        await waitUntilTableIsLoaded();
 
         const editButton = await getActionButtonInAddressSection(
           'edit',
@@ -180,6 +196,8 @@ describe('CounterpartDetails', () => {
             <CounterpartDetails id={organizationId} onUpdate={onUpdateMock} />
           );
 
+          await waitUntilTableIsLoaded();
+
           const editButton = await getEditButtonInOrganizationSection(i18nCore);
           fireEvent.click(editButton);
 
@@ -202,7 +220,9 @@ describe('CounterpartDetails', () => {
             <CounterpartDetails id={individualId} onUpdate={onUpdateMock} />
           );
 
-          const editButton = await getEditButtonInIndividualSection(i18nCore);
+          await waitUntilTableIsLoaded();
+
+          const editButton = await findEditButtonInIndividualSection(i18nCore);
 
           fireEvent.click(editButton);
 
@@ -232,6 +252,8 @@ describe('CounterpartDetails', () => {
           renderWithClient(
             <CounterpartDetails id={individualId} onDelete={onDeleteMock} />
           );
+
+          await waitUntilTableIsLoaded();
 
           const deleteMenuButton = await getDeleteButtonInIndividualSection(
             i18nCore
@@ -263,7 +285,9 @@ describe('CounterpartDetails', () => {
             />
           );
 
-          const editButton = await getFirstActionButtonInBankAccountSection(
+          await waitUntilTableIsLoaded();
+
+          const editButton = await findFirstActionButtonInBankAccountSection(
             'edit',
             i18nCore
           );
@@ -295,7 +319,9 @@ describe('CounterpartDetails', () => {
             />
           );
 
-          const deleteButton = await getFirstActionButtonInBankAccountSection(
+          await waitUntilTableIsLoaded();
+
+          const deleteButton = await findFirstActionButtonInBankAccountSection(
             'delete',
             i18nCore
           );
@@ -331,7 +357,7 @@ describe('CounterpartDetails', () => {
 
           await waitUntilTableIsLoaded();
 
-          const createButton = await getFirstActionButtonInBankAccountSection(
+          const createButton = await findFirstActionButtonInBankAccountSection(
             'create',
             i18nCore
           );
@@ -364,7 +390,9 @@ describe('CounterpartDetails', () => {
             />
           );
 
-          const createButton = await getFirstActionButtonInBankAccountSection(
+          await waitUntilTableIsLoaded();
+
+          const createButton = await findFirstActionButtonInBankAccountSection(
             'create',
             i18nCore
           );
@@ -397,6 +425,8 @@ describe('CounterpartDetails', () => {
               onAddressUpdate={onAddressUpdateMock}
             />
           );
+
+          await waitUntilTableIsLoaded();
 
           const editButton = await getActionButtonInAddressSection(
             'edit',
@@ -441,6 +471,8 @@ describe('CounterpartDetails', () => {
             />
           );
 
+          await waitUntilTableIsLoaded();
+
           const editButton = await getActionButtonInContactSection(
             'edit',
             i18nCore
@@ -470,6 +502,8 @@ describe('CounterpartDetails', () => {
               onContactDelete={onContactDeleteMock}
             />
           );
+
+          await waitUntilTableIsLoaded();
 
           const deleteButton = await getActionButtonInContactSection(
             'delete',
@@ -503,6 +537,8 @@ describe('CounterpartDetails', () => {
               onContactDelete={onContactDeleteMock}
             />
           );
+
+          await waitUntilTableIsLoaded();
 
           const section = await screen.findByTestId(
             CounterpartDataTestId.ContactPerson

@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   AccessTokenResponse,
   AUTH_TOKEN_ENDPOINT,
@@ -6,7 +5,7 @@ import {
   ObtainTokenPayload,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { authenticationTokenFixture } from './authenticationFixtures';
 

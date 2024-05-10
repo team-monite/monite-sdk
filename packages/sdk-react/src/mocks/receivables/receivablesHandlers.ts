@@ -13,10 +13,10 @@ import {
   LineItemsResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 import * as yup from 'yup';
 
-import { delay, getMockPagination } from '../utils';
+import { getMockPagination } from '../utils';
 
 const receivablePath = `*/${RECEIVABLES_ENDPOINT}`;
 const receivableDetailPath = `*/${RECEIVABLES_ENDPOINT}/:id`;

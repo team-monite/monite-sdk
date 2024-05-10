@@ -38,7 +38,7 @@ describe('UserRolesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    const search = screen.getByLabelText('Search');
+    const search = await screen.findByLabelText('Search');
 
     const searchValue = 'Acme';
     fireEvent.change(search, {

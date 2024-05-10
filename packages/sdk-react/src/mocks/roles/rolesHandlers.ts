@@ -4,9 +4,8 @@ import {
   RoleResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
-import { delay } from '../utils';
 import { getAllRolesFixture } from './rolesFixtures';
 
 export const rolesHandlers = [

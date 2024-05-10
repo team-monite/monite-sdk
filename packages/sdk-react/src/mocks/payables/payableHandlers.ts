@@ -22,10 +22,10 @@ import {
   type TagReadSchema,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { tagListFixture } from '../tags';
-import { delay, filterByPageAndLimit } from '../utils';
+import { filterByPageAndLimit } from '../utils';
 import {
   payableFixturePages,
   payableFixtureWithoutFile,

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 
+import { environmentSensitiveTimeout } from '@/utils/timeout';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   FormControl,
@@ -13,7 +14,7 @@ import { debounce } from '@mui/material/utils';
  * The delay in milliseconds before a search request is sent after the user stops typing.
  * @type {number}
  */
-export const DEBOUNCE_SEARCH_TIMEOUT: number = 500;
+export const DEBOUNCE_SEARCH_TIMEOUT: number = environmentSensitiveTimeout(500);
 
 /**
  * `Props` is an interface that defines the properties for the `SearchField` component.
@@ -56,10 +57,12 @@ export const SearchField = ({ label, onChange }: Props) => {
   }, [debouncedOnChange]);
 
   return (
-    <FormControl variant="outlined" fullWidth>
+    <FormControl variant="outlined" fullWidth aria-label="search-by-name">
       <InputLabel htmlFor="search-by-name">{label}</InputLabel>
       <OutlinedInput
         id="search-by-name"
+        name="search-by-name"
+        aria-label="search-by-name"
         label={label}
         onChange={(search) => {
           debouncedOnChange(search.target.value || null);

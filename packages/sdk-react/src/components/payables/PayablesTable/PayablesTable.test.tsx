@@ -53,7 +53,7 @@ describe('PayablesTable', () => {
 
       const payableInOcr = payableFixturePages[1];
 
-      const fileNameCell = screen.getByRole('cell', {
+      const fileNameCell = await screen.findByRole('cell', {
         name: String(payableInOcr.file?.name),
       });
       const ocrStatusCell = screen.getByRole('cell', {
@@ -81,7 +81,7 @@ describe('PayablesTable', () => {
       if (!firstPayable)
         throw new Error('Could not find any organization in the fixtures list');
 
-      const company = screen.getByText(String(firstPayable.document_id));
+      const company = await screen.findByText(String(firstPayable.document_id));
 
       fireEvent.click(company);
 
@@ -232,9 +232,11 @@ describe('PayablesTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const items = screen.getAllByRole('row').slice(1);
+      await waitFor(() => {
+        const items = screen.getAllByRole('row').slice(1);
 
-      expect(items.length).toBe(10);
+        expect(items.length).toBe(10);
+      });
     });
 
     test('should next page be available when we render first page', async () => {
@@ -298,7 +300,9 @@ describe('PayablesTable', () => {
 
       const firstPayable = payableFixturePages[0];
 
-      const invoiceId = screen.getByText(String(firstPayable.document_id));
+      const invoiceId = await screen.findByText(
+        String(firstPayable.document_id)
+      );
 
       fireEvent.click(invoiceId);
 

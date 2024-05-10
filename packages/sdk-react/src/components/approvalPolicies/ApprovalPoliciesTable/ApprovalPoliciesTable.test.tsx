@@ -1,5 +1,5 @@
 import { ApprovalPoliciesTable } from '@/components';
-import { renderWithClient } from '@/utils/test-utils';
+import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { screen, waitFor } from '@testing-library/react';
 
@@ -47,6 +47,8 @@ describe('ApprovalPoliciesTable', () => {
 
     test('should have "Created by user" trigger on the page', async () => {
       renderWithClient(<ApprovalPoliciesTable />);
+
+      await waitUntilTableIsLoaded();
 
       const trigger = await screen.findByText(t`Created by user`);
 
