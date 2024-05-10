@@ -234,6 +234,9 @@ const QuotesTableBase = ({
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.AMOUNT
+              ),
               valueGetter: (params) => {
                 const row = params.row as QuoteResponsePayload;
                 const value = row.total_amount;
