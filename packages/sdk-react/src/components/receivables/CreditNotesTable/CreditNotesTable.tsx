@@ -110,6 +110,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {

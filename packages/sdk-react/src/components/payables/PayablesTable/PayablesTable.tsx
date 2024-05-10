@@ -176,6 +176,7 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => {
             onRowClick?.(params.row.id);

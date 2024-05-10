@@ -115,6 +115,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {

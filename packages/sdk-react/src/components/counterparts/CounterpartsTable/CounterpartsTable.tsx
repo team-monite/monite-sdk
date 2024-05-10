@@ -260,6 +260,7 @@ const CounterpartsTableBase = ({
           />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           sortModel={sortModel}

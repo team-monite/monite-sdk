@@ -159,6 +159,7 @@ const UserRolesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           columns={[
             {

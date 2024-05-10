@@ -140,6 +140,7 @@ const ApprovalPoliciesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           sx={{
             '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
               py: '8px',

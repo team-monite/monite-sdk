@@ -134,6 +134,7 @@ const TagsTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sortModel={sortModels}
           onSortModelChange={onChangeSort}

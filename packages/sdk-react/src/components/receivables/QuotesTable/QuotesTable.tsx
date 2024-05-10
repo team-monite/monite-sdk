@@ -125,6 +125,7 @@ const QuotesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sortModel={sortModel}
           onSortModelChange={onChangeSort}

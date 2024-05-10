@@ -190,6 +190,7 @@ const ProductsTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           rows={products?.data || []}
           onRowClick={(params) => {
             onRowClick?.(params.row);
