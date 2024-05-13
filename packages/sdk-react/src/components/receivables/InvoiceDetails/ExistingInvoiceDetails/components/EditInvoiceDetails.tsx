@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
@@ -15,10 +15,12 @@ import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries';
+import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  CounterpartAddressResponseWithCounterpartID,
   InvoiceResponsePayload,
   ReceivableResponse,
   ReceivableUpdatePayload,
@@ -41,7 +43,7 @@ import {
 
 import { format } from 'date-fns';
 
-interface IEditInvoiceDetails {
+interface EditInvoiceDetailsProps {
   invoice: InvoiceResponsePayload;
 
   /** Callback that is called when the invoice is updated */
@@ -51,16 +53,20 @@ interface IEditInvoiceDetails {
   onCancel: () => void;
 }
 
-export const EditInvoiceDetails = ({
+interface EditInvoiceDetailsContentProps extends EditInvoiceDetailsProps {
+  counterpartAddresses:
+    | Array<CounterpartAddressResponseWithCounterpartID>
+    | undefined;
+}
+
+const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
   onUpdated,
-}: IEditInvoiceDetails) => {
+  counterpartAddresses,
+}: EditInvoiceDetailsContentProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { data: counterpartAddresses } = useCounterpartAddresses(
-    invoice.counterpart_id
-  );
 
   const counterpartShippingAddress = counterpartAddresses?.find((address) => {
     return (
@@ -124,13 +130,8 @@ export const EditInvoiceDetails = ({
 
   const {
     handleSubmit,
-    setValue,
     formState: { isDirty },
   } = methods;
-
-  useEffect(() => {
-    setValue('default_shipping_address_id', counterpartShippingAddress?.id);
-  }, [counterpartShippingAddress?.id, setValue]);
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const handleCancelWithAlert = useCallback(() => {
@@ -285,5 +286,22 @@ export const EditInvoiceDetails = ({
         </FormProvider>
       </DialogContent>
     </>
+  );
+};
+
+export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
+  const { data: counterpartAddresses, isLoading } = useCounterpartAddresses(
+    props.invoice.counterpart_id
+  );
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  return (
+    <EditInvoiceDetailsContent
+      {...props}
+      counterpartAddresses={counterpartAddresses}
+    />
   );
 };
