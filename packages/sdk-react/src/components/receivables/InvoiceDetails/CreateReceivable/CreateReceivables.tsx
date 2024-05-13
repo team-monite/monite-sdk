@@ -108,6 +108,9 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     return <LoadingPage />;
   }
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = 'Monite-Form-receivablesDetailsForm';
+
   return (
     <>
       <DialogTitle>
@@ -128,7 +131,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               key="next"
               color="primary"
               type="submit"
-              form="Monite-Form-receivablesDetailsForm"
+              form={formName}
               disabled={createReceivable.isPending}
             >{t(i18n)`Create`}</Button>
           </Box>
@@ -138,7 +141,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="Monite-Form-receivablesDetailsForm"
+            id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
               if (values.type !== InvoiceResponsePayload.type.INVOICE) {

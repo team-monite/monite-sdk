@@ -151,6 +151,9 @@ export const EditInvoiceDetails = ({
   const isLoading =
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = 'Monite-Form-receivablesDetailsForm';
+
   return (
     <>
       <DialogTitle>
@@ -168,7 +171,7 @@ export const EditInvoiceDetails = ({
               key="next"
               color="primary"
               type="submit"
-              form="Monite-Form-receivablesDetailsForm"
+              form={formName}
               disabled={isLoading}
             >{t(i18n)`Update`}</Button>
           </Box>
@@ -178,7 +181,7 @@ export const EditInvoiceDetails = ({
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="Monite-Form-receivablesDetailsForm"
+            id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
               const lineItems: UpdateLineItems = {
