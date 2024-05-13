@@ -37,7 +37,7 @@ import { ItemsSection } from './sections/ItemsSection';
 import { PaymentSection } from './sections/PaymentSection';
 import {
   getCreateInvoiceValidationSchema,
-  ICreateReceivablesForm,
+  CreateReceivablesFormProps,
 } from './validation';
 
 enum ReceivableViewEnum {
@@ -67,7 +67,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
 const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const methods = useForm<ICreateReceivablesForm>({
+  const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({

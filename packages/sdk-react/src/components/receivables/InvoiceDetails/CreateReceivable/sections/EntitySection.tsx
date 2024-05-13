@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
-import { ICreateReceivablesForm } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityVatIdList, useMyEntity } from '@/core/queries/useEntities';
 import { t } from '@lingui/macro';
@@ -26,7 +26,7 @@ import {
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
-import type { ISectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from './Section.types';
 
 const detailsGridItemProps = {
   xs: 12,
@@ -43,7 +43,7 @@ const allFields = [
   'purchase_order',
 ] as const;
 
-interface IEntitySectionProps extends ISectionGeneralProps {
+interface EntitySectionProps extends SectionGeneralProps {
   /**
    * Describes which fields should be hidden from the user
    *  (example: `purchaise_order` is not available for editing
@@ -52,10 +52,10 @@ interface IEntitySectionProps extends ISectionGeneralProps {
   hidden?: ['purchase_order'];
 }
 
-export const EntitySection = ({ disabled, hidden }: IEntitySectionProps) => {
+export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   const { i18n } = useLingui();
   const { control, watch, resetField, setValue } =
-    useFormContext<ICreateReceivablesForm>();
+    useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 

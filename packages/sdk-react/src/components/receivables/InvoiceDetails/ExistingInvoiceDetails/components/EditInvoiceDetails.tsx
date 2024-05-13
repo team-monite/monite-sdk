@@ -7,7 +7,7 @@ import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateRece
 import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection';
 import {
   getUpdateInvoiceValidationSchema,
-  ICreateReceivablesForm,
+  CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
@@ -70,7 +70,7 @@ export const EditInvoiceDetails = ({
     );
   });
 
-  const methods = useForm<ICreateReceivablesForm>({
+  const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({

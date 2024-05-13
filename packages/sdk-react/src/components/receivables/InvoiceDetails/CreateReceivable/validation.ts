@@ -17,7 +17,7 @@ export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
       .required(),
   });
 
-export type ICreateReceivablesProductsForm = yup.InferType<
+export type CreateReceivablesProductsFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceProductsValidationSchema>
 >;
 
@@ -133,7 +133,7 @@ export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
     line_items: getLineItemsSchema(i18n),
   });
 
-export interface ICreateReceivablesFormBeforeValidationLineItem {
+export interface CreateReceivablesFormBeforeValidationLineItemProps {
   quantity: number;
   product_id: string;
   vat_rate_id?: string;
@@ -143,14 +143,14 @@ export interface ICreateReceivablesFormBeforeValidationLineItem {
   measure_unit_id: string;
 }
 
-export interface ICreateReceivablesFormBeforeValidation {
+export interface CreateReceivablesFormBeforeValidationProps {
   type: string;
   counterpart_id: string;
-  line_items: Array<ICreateReceivablesFormBeforeValidationLineItem>;
+  line_items: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
   vat_exemption_rationale?: string;
 }
 
 /** Describes a final version of the form (AFTER the user filled all required fields) */
-export type ICreateReceivablesForm = yup.InferType<
+export type CreateReceivablesFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceValidationSchema>
 >;
