@@ -101,7 +101,9 @@ const ExistingReceivableDetailsBase = (
     addDays(new Date(issueDate), numberOfDueDays);
 
   const avatarSymbol =
-    (invoice?.counterpart_name && invoice?.counterpart_name[0]) || '/';
+    invoice?.counterpart_name?.[0] ||
+    invoice?.counterpart_contact?.first_name?.[0] ||
+    '/';
 
   if (!props.id) return null;
 
@@ -196,9 +198,7 @@ const ExistingReceivableDetailsBase = (
         </Box>
 
         <InvoiceTo
-          counterpartName={invoice.counterpart_name}
-          counterpartType={invoice.counterpart_type}
-          counterpartContact={invoice.counterpart_contact}
+          counterpartId={invoice.counterpart_id}
           counterpartAddress={invoice.counterpart_address}
         />
 

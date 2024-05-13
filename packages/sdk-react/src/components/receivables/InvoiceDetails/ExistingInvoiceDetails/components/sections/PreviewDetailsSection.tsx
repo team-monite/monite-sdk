@@ -30,7 +30,7 @@ export const PreviewDetailsSection = ({
             withEmptyStateFiller: true,
           },
           {
-            label: t(i18n)`Fulfullment date`,
+            label: t(i18n)`Fulfillment date`,
             value:
               invoice.counterpart_contact &&
               `${invoice.counterpart_contact.first_name} ${invoice.counterpart_contact.last_name}`,
