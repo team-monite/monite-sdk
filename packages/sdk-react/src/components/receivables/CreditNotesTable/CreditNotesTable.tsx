@@ -6,6 +6,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
+import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -169,6 +170,11 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               headerName: t(i18n)`Customer`,
               sortable: false,
               flex: 1,
+              renderCell: (params) => (
+                <InvoiceCounterpartName
+                  counterpartId={params.row.counterpart_id}
+                />
+              ),
             },
             {
               field: 'status',
