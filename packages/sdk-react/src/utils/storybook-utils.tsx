@@ -7,12 +7,7 @@ import { css, Global } from '@emotion/react';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
-import {
-  createTheme,
-  ThemeOptions,
-  ThemeProvider,
-  useTheme,
-} from '@mui/material';
+import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -178,26 +173,6 @@ function FallbackProviders({
           </QueryClientProvider>
         </LocalizationProvider>
       </I18nProvider>
-    </ThemeProvider>
-  );
-}
-
-/**
- * Extends the current theme with the provided theme options.
- * @param theme The theme options to extend the current theme with.
- * @param children
- */
-export function ExtendThemeProvider({
-  theme,
-  children,
-}: {
-  theme: ThemeOptions;
-  children: ReactNode;
-}) {
-  const mainTheme = useTheme();
-  return (
-    <ThemeProvider theme={createTheme(mainTheme, theme)}>
-      {children}
     </ThemeProvider>
   );
 }

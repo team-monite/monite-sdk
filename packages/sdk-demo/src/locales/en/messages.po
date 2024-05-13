@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#: src/components/LoginForm/LoginForm.tsx:85
+#: src/components/LoginForm/LoginForm.tsx:84
 msgid "Client ID"
 msgstr "Client ID"
 
-#: src/components/LoginForm/LoginForm.tsx:103
+#: src/components/LoginForm/LoginForm.tsx:102
 msgid "Client Secret"
 msgstr "Client Secret"
 
@@ -23,34 +23,34 @@ msgstr "Client Secret"
 msgid "Counterparts"
 msgstr "Counterparts"
 
-#: src/components/Layout/ThemeSelect.tsx:77
+#: src/components/Layout/ThemeSelect.tsx:80
 msgid "Dark Mode"
 msgstr "Dark Mode"
 
-#: src/components/LoginForm/LoginForm.tsx:119
+#: src/components/LoginForm/LoginForm.tsx:118
 msgid "Entity ID"
 msgstr "Entity ID"
 
-#: src/components/LoginForm/LoginForm.tsx:136
+#: src/components/LoginForm/LoginForm.tsx:135
 msgid "Entity User ID"
 msgstr "Entity User ID"
 
-#: src/components/LoginForm/LoginForm.tsx:148
+#: src/components/LoginForm/LoginForm.tsx:147
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:84
+#: src/apps/SDKDemo/SDKDemo.tsx:135
 msgid "Logout"
 msgstr "Logout"
 
 #: src/components/Layout/ThemeSelect.tsx:25
 #: src/components/Layout/ThemeSelect.tsx:29
-#: src/components/Layout/ThemeSelect.tsx:63
+#: src/components/Layout/ThemeSelect.tsx:62
 msgid "Material UI"
 msgstr "Material UI"
 
 #: src/components/Layout/ThemeSelect.tsx:27
-#: src/components/Layout/ThemeSelect.tsx:69
+#: src/components/Layout/ThemeSelect.tsx:68
 msgid "Monite"
 msgstr "Monite"
 
@@ -78,10 +78,10 @@ msgstr "Settings"
 msgid "Tags"
 msgstr "Tags"
 
-#: src/components/Layout/ThemeSelect.tsx:56
+#: src/components/Layout/ThemeSelect.tsx:55
 msgid "Theme"
 msgstr "Theme"
 
-#: src/components/LoginForm/LoginForm.tsx:65
+#: src/components/LoginForm/LoginForm.tsx:64
 msgid "Welcome back"
 msgstr "Welcome back"

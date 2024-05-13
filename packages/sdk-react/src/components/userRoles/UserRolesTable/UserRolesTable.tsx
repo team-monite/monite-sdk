@@ -1,11 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  FILTER_TYPE_SEARCH,
-  ROLES_PAGE_LIMIT,
-} from '@/components/userRoles/consts';
+import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -13,7 +10,10 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useRoles } from '@/core/queries/useRoles';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -88,6 +88,9 @@ const UserRolesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<UserRolesTableSortModel>>(
     []
@@ -106,7 +109,7 @@ const UserRolesTableBase = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: ROLES_PAGE_LIMIT,
+    limit: pageSize,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem ? (sortModelItem.field as RoleCursorFields) : undefined,
     name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -117,14 +120,6 @@ const UserRolesTableBase = ({
       ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
       : undefined,
   });
-
-  const onPrev = useCallback(() => {
-    setCurrentPaginationToken(roles?.prev_pagination_token || null);
-  }, [setCurrentPaginationToken, roles]);
-
-  const onNext = useCallback(() => {
-    setCurrentPaginationToken(roles?.next_pagination_token || null);
-  }, [setCurrentPaginationToken, roles]);
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -164,6 +159,7 @@ const UserRolesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           columns={[
             {
@@ -210,10 +206,16 @@ const UserRolesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isPreviousAvailable={Boolean(roles?.prev_pagination_token)}
-                isNextAvailable={Boolean(roles?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                prevPage={roles?.prev_pagination_token}
+                nextPage={roles?.next_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setCurrentPaginationToken(page);
+                  setPageSize(pageSize);
+                }}
               />
             ),
           }}

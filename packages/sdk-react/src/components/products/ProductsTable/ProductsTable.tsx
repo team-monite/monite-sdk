@@ -1,17 +1,19 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -104,6 +106,9 @@ const ProductsTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
   const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
   const sortModelItem = sortModel[0];
@@ -137,7 +142,7 @@ const ProductsTableBase = ({
     order: sortModelItem
       ? (sortModelItem.sort as unknown as OrderEnum)
       : undefined,
-    limit: PAGE_LIMIT,
+    limit: pageSize,
     type: currentFilter[FILTER_TYPE_TYPE] || undefined,
     paginationToken: currentPaginationToken || undefined,
     sort: sortModelItem
@@ -146,14 +151,6 @@ const ProductsTableBase = ({
     nameIcontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
     measureUnitId: currentFilter[FILTER_TYPE_UNITS] || undefined,
   });
-
-  const onPrev = useCallback(() => {
-    setCurrentPaginationToken(products?.prev_pagination_token || null);
-  }, [setCurrentPaginationToken, products]);
-
-  const onNext = useCallback(() => {
-    setCurrentPaginationToken(products?.next_pagination_token || null);
-  }, [setCurrentPaginationToken, products]);
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -193,6 +190,7 @@ const ProductsTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           rows={products?.data || []}
           onRowClick={(params) => {
             onRowClick?.(params.row);
@@ -283,10 +281,16 @@ const ProductsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isPreviousAvailable={Boolean(products?.prev_pagination_token)}
-                isNextAvailable={Boolean(products?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                prevPage={products?.prev_pagination_token}
+                nextPage={products?.next_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

@@ -65,6 +65,11 @@ const SDKDemoComponent = ({
           icon: true,
         },
       },
+      MoniteTablePagination: {
+        defaultProps: {
+          pageSizeOptions: [10, 15, 20],
+        },
+      },
     },
   });
   const [sdkDemoLocale, sdkDemoI18n] = useMemo(() => {

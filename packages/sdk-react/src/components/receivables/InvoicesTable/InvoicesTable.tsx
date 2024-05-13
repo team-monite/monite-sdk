@@ -7,11 +7,13 @@ import {
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -60,6 +62,9 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [sortModel, setSortModel] = useState<Array<InvoicesTableSortModel>>([]);
   const sortModelItem = sortModel[0];
 
@@ -68,7 +73,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
 
   const { data: invoices, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    pageSize,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.INVOICE,
@@ -100,12 +105,6 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(invoices?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(invoices?.next_pagination_token || null);
-
   return (
     <>
       <Box
@@ -116,6 +115,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
@@ -131,10 +131,16 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
           slots={{
             pagination: () => (
               <TablePagination
-                isNextAvailable={Boolean(invoices?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(invoices?.prev_pagination_token)}
-                onPrevious={onPrev}
+                nextPage={invoices?.next_pagination_token}
+                prevPage={invoices?.prev_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

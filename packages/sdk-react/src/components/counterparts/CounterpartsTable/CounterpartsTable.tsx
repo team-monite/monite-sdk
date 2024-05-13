@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -15,7 +14,10 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -126,6 +128,9 @@ const CounterpartsTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentSort, setCurrentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
@@ -168,7 +173,7 @@ const CounterpartsTableBase = ({
   } = useCounterpartList(
     undefined,
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    pageSize,
     currentPaginationToken || undefined,
     sortModelItem
       ? (sortModelItem.field as CounterpartCursorFields)
@@ -184,12 +189,6 @@ const CounterpartsTableBase = ({
   useEffect(() => {
     refetch();
   }, [currentPaginationToken, currentSort, currentFilter, refetch]);
-
-  const onPrev = () =>
-    setCurrentPaginationToken(counterparts?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(counterparts?.next_pagination_token || null);
 
   const closeDeleteCounterpartModal = useCallback(() => {
     setIsDeleteDialogOpen(false);
@@ -261,6 +260,7 @@ const CounterpartsTableBase = ({
           />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           sortModel={sortModel}
@@ -279,12 +279,16 @@ const CounterpartsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isPreviousAvailable={Boolean(
-                  counterparts?.prev_pagination_token
-                )}
-                isNextAvailable={Boolean(counterparts?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                prevPage={counterparts?.prev_pagination_token}
+                nextPage={counterparts?.next_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

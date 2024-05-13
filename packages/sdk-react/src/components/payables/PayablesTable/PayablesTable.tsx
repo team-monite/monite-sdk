@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -22,7 +24,7 @@ import {
   PayableResponseSchema,
 } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Chip } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -90,8 +92,10 @@ const PayablesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
-  const [pageLimit, setPageLimit] = useState<number>(PAGE_LIMIT);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -106,7 +110,7 @@ const PayablesTableBase = ({
 
   const { data: payables, isLoading } = usePayablesList(
     OrderEnum.DESC,
-    pageLimit,
+    pageSize,
     currentPaginationToken || undefined,
     PayableCursorFields.CREATED_AT,
     undefined,
@@ -136,12 +140,6 @@ const PayablesTableBase = ({
     undefined,
     currentFilter[FILTER_TYPE_SEARCH] || undefined
   );
-
-  const onPrev = () =>
-    setCurrentPaginationToken(payables?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(payables?.next_pagination_token || null);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -178,8 +176,8 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
-          pageSizeOptions={[PAGE_LIMIT, PAGE_LIMIT * 2, PAGE_LIMIT * 3]}
           onRowClick={(params) => {
             onRowClick?.(params.row.id);
           }}
@@ -194,10 +192,16 @@ const PayablesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isPreviousAvailable={Boolean(payables?.prev_pagination_token)}
-                isNextAvailable={Boolean(payables?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                nextPage={payables?.next_pagination_token}
+                prevPage={payables?.prev_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

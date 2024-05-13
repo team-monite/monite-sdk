@@ -6,7 +6,10 @@ import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -52,6 +55,9 @@ const TagsTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [selectedTag, setSelectedTag] = useState<TagReadSchema | undefined>(
     undefined
   );
@@ -81,7 +87,7 @@ const TagsTableBase = ({
     error,
   } = useTagList(
     sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
-    10,
+    pageSize,
     currentPaginationToken || undefined,
     sortModel ? sortModel.field : undefined
   );
@@ -98,12 +104,6 @@ const TagsTableBase = ({
       setCurrentPaginationToken(null);
     }
   }, [currentPaginationToken, tags]);
-
-  const onPrev = () =>
-    setCurrentPaginationToken(tags?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(tags?.next_pagination_token || null);
 
   const onChangeSort = (m: GridSortModel) => {
     const model = m as Array<TagsTableSortModel>;
@@ -134,6 +134,7 @@ const TagsTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sortModel={sortModels}
           onSortModelChange={onChangeSort}
@@ -148,10 +149,16 @@ const TagsTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isPreviousAvailable={Boolean(tags?.prev_pagination_token)}
-                isNextAvailable={Boolean(tags?.next_pagination_token)}
-                onPrevious={onPrev}
-                onNext={onNext}
+                prevPage={tags?.prev_pagination_token}
+                nextPage={tags?.next_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

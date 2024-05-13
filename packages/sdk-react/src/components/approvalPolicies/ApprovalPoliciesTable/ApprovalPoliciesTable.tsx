@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useApprovalPoliciesList } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
@@ -94,10 +96,13 @@ const ApprovalPoliciesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
   const { data: approvalPolicies, isLoading } = useApprovalPoliciesList({
-    limit: PAGE_LIMIT,
+    limit: pageSize,
     name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
     created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
     paginationToken: currentPaginationToken ?? undefined,
@@ -114,12 +119,6 @@ const ApprovalPoliciesTableBase = ({
       setCurrentPaginationToken(null);
     }
   }, [currentPaginationToken, approvalPolicies]);
-
-  const onPrev = () =>
-    setCurrentPaginationToken(approvalPolicies?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(approvalPolicies?.next_pagination_token || null);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -141,6 +140,7 @@ const ApprovalPoliciesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           sx={{
             '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
               py: '8px',
@@ -208,14 +208,16 @@ const ApprovalPoliciesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isNextAvailable={Boolean(
-                  approvalPolicies?.next_pagination_token
-                )}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(
-                  approvalPolicies?.prev_pagination_token
-                )}
-                onPrevious={onPrev}
+                nextPage={approvalPolicies?.next_pagination_token}
+                prevPage={approvalPolicies?.prev_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

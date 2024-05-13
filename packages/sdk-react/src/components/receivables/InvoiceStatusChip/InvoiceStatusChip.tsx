@@ -81,7 +81,7 @@ export const InvoiceStatusChip = forwardRef<
 
 const StyledChip = styled(
   forwardRef<HTMLDivElement, ChipProps & InvoiceStatusChipRootProps>(
-    ({ ...rest }, ref) => <Chip ref={ref} {...rest} />
+    (props, ref) => <Chip ref={ref} {...props} />
   ),
   {
     // eslint-disable-next-line lingui/no-unlocalized-strings

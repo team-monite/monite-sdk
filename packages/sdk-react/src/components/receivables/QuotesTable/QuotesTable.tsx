@@ -8,11 +8,13 @@ import {
 } from '@/components/receivables/consts';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { PAGE_LIMIT } from '@/constants';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries';
-import { TablePagination } from '@/ui/table/TablePagination';
+import {
+  TablePagination,
+  useTablePaginationThemeDefaultPageSize,
+} from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -69,6 +71,9 @@ const QuotesTableBase = ({
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
+  const [pageSize, setPageSize] = useState<number>(
+    useTablePaginationThemeDefaultPageSize()
+  );
 
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, currentFilters } = useReceivablesFilters();
@@ -77,7 +82,7 @@ const QuotesTableBase = ({
 
   const { data: quotes, isLoading } = useReceivables(
     sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    PAGE_LIMIT,
+    pageSize,
     currentPaginationToken || undefined,
     sortModelItem ? sortModelItem.field : undefined,
     ReceivableType.QUOTE,
@@ -111,12 +116,6 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model[0]);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(quotes?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(quotes?.next_pagination_token || null);
-
   return (
     <>
       <Box
@@ -127,6 +126,7 @@ const QuotesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          rowSelection={false}
           loading={isLoading}
           sortModel={sortModel}
           onSortModelChange={onChangeSort}
@@ -142,10 +142,16 @@ const QuotesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                isNextAvailable={Boolean(quotes?.next_pagination_token)}
-                onNext={onNext}
-                isPreviousAvailable={Boolean(quotes?.prev_pagination_token)}
-                onPrevious={onPrev}
+                nextPage={quotes?.next_pagination_token}
+                prevPage={quotes?.prev_pagination_token}
+                paginationModel={{
+                  pageSize,
+                  page: currentPaginationToken,
+                }}
+                onPaginationModelChange={({ page, pageSize }) => {
+                  setPageSize(pageSize);
+                  setCurrentPaginationToken(page);
+                }}
               />
             ),
           }}

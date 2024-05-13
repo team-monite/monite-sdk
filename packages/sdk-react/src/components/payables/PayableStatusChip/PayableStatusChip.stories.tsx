@@ -1,4 +1,4 @@
-import { ExtendThemeProvider } from '@/utils/storybook-utils';
+import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { PayableStateEnum } from '@monite/sdk-api';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
