@@ -253,6 +253,11 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
+    counterpart_vat_id: faker.datatype.boolean()
+      ? getRandomItemFromArray(
+          counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
+        )
+      : undefined,
     counterpart_billing_address: generateCounterpartAddress(),
     counterpart_shipping_address: counterpartAddress,
     counterpart_contact: faker.datatype.boolean()
@@ -279,11 +284,6 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
       line1: faker.location.street(),
       line2: faker.location.streetAddress(),
     },
-    counterpart_vat_id: faker.datatype.boolean()
-      ? getRandomItemFromArray(
-          counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
-        )
-      : undefined,
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),

@@ -9,7 +9,6 @@ import {
   getUpdateInvoiceValidationSchema,
   ICreateReceivablesForm,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { MoniteStyleProvider } from '@/core/context/MoniteProvider';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -153,7 +152,7 @@ export const EditInvoiceDetails = ({
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
   return (
-    <MoniteStyleProvider>
+    <>
       <DialogTitle>
         <Toolbar>
           <Button
@@ -282,6 +281,6 @@ export const EditInvoiceDetails = ({
           </form>
         </FormProvider>
       </DialogContent>
-    </MoniteStyleProvider>
+    </>
   );
 };
