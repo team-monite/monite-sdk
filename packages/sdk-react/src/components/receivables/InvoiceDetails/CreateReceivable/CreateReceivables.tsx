@@ -128,7 +128,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               key="next"
               color="primary"
               type="submit"
-              form="receivablesDetailsForm"
+              form="Monite-Form-receivablesDetailsForm"
               disabled={createReceivable.isPending}
             >{t(i18n)`Create`}</Button>
           </Box>
@@ -138,7 +138,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="receivablesDetailsForm"
+            id="Monite-Form-receivablesDetailsForm"
             noValidate
             onSubmit={handleSubmit((values) => {
               if (values.type !== InvoiceResponsePayload.type.INVOICE) {

@@ -168,7 +168,7 @@ export const EditInvoiceDetails = ({
               key="next"
               color="primary"
               type="submit"
-              form="receivablesDetailsForm"
+              form="Monite-Form-receivablesDetailsForm"
               disabled={isLoading}
             >{t(i18n)`Update`}</Button>
           </Box>
@@ -178,7 +178,7 @@ export const EditInvoiceDetails = ({
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="receivablesDetailsForm"
+            id="Monite-Form-receivablesDetailsForm"
             noValidate
             onSubmit={handleSubmit((values) => {
               const lineItems: UpdateLineItems = {
