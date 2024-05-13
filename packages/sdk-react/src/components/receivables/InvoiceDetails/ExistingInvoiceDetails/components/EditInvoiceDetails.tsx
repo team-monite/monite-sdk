@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
@@ -152,7 +152,7 @@ export const EditInvoiceDetails = ({
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
-  const formName = 'Monite-Form-receivablesDetailsForm';
+  const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
   return (
     <>

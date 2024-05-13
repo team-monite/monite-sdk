@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { useDialog } from '@/components';
@@ -104,12 +104,12 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     CurrencyEnum | undefined
   >(settings?.currency?.default);
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
   if (isSettingsLoading) {
     return <LoadingPage />;
   }
-
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const formName = 'Monite-Form-receivablesDetailsForm';
 
   return (
     <>
