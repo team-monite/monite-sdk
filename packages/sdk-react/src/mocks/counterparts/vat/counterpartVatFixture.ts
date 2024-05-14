@@ -1,4 +1,3 @@
-import { counterpartListFixture } from '@/mocks';
 import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 import {
@@ -8,6 +7,7 @@ import {
 } from '@monite/sdk-api';
 
 import { organizationId } from '../counterpart.mocks.types';
+import { counterpartListFixture } from '../counterpart/counterpartFixture';
 
 const genCounterpartVatFixture = (id: number = 0): CounterpartVatIDResponse => {
   return {

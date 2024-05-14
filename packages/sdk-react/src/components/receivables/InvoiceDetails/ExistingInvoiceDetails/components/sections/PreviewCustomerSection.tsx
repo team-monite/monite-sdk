@@ -71,10 +71,17 @@ export const PreviewCustomerSection = ({
             withEmptyStateFiller: true,
           },
           {
+            label: t(i18n)`VAT information`,
+            value:
+              invoice.counterpart_vat_id &&
+              t(i18n)`VAT ID ${invoice.counterpart_vat_id}`,
+            withEmptyStateFiller: true,
+          },
+          {
             label: t(i18n)`Tax information`,
             value:
               invoice.counterpart_tax_id &&
-              t(i18n)`VAT ID ${invoice.counterpart_tax_id}`,
+              t(i18n)`Tax ID ${invoice.counterpart_tax_id}`,
             withEmptyStateFiller: true,
           },
           {

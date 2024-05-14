@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import { useDialog } from '@/components';
@@ -37,7 +37,7 @@ import { ItemsSection } from './sections/ItemsSection';
 import { PaymentSection } from './sections/PaymentSection';
 import {
   getCreateInvoiceValidationSchema,
-  ICreateReceivablesForm,
+  CreateReceivablesFormProps,
 } from './validation';
 
 enum ReceivableViewEnum {
@@ -67,7 +67,7 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
 const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const methods = useForm<ICreateReceivablesForm>({
+  const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
@@ -104,6 +104,9 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     CurrencyEnum | undefined
   >(settings?.currency?.default);
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
   if (isSettingsLoading) {
     return <LoadingPage />;
   }
@@ -128,7 +131,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               key="next"
               color="primary"
               type="submit"
-              form="receivablesDetailsForm"
+              form={formName}
               disabled={createReceivable.isPending}
             >{t(i18n)`Create`}</Button>
           </Box>
@@ -138,7 +141,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="receivablesDetailsForm"
+            id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
               if (values.type !== InvoiceResponsePayload.type.INVOICE) {

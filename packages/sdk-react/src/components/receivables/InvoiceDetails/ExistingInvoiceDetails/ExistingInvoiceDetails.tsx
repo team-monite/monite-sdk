@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 
 import { useDialog } from '@/components';
+import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
+import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
@@ -35,7 +37,10 @@ import {
 import { styled, alpha } from '@mui/material/styles';
 
 import { EmailInvoiceDetails } from './components/EmailInvoiceDetails';
-import { useExistingInvoiceDetails } from './useExistingInvoiceDetails';
+import {
+  ExistingInvoiceDetailsView,
+  useExistingInvoiceDetails,
+} from './useExistingInvoiceDetails';
 
 enum DeliveryMethod {
   Email = 'email',
@@ -83,7 +88,7 @@ const StyledMenu = styled((props: MenuProps) => {
   },
 }));
 
-enum InvoiceDetailsView {
+enum InvoiceDetailsPresentation {
   Overview = 'overview',
   Email = 'email',
 }
@@ -98,8 +103,8 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
-  const [view, setView] = useState<InvoiceDetailsView>(
-    InvoiceDetailsView.Overview
+  const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
+    InvoiceDetailsPresentation.Overview
   );
 
   const { buttonProps, menuProps } = useMenuButton();
@@ -115,10 +120,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { data: pdf, isLoading: isPdfLoading } = usePDFReceivableById(props.id);
 
   const handleIssueAndSend = useCallback(() => {
-    setView(InvoiceDetailsView.Email);
+    setPresentation(InvoiceDetailsPresentation.Email);
   }, []);
 
-  const { loading, buttons, callbacks } = useExistingInvoiceDetails({
+  const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
     receivable,
     deliveryMethod,
@@ -148,6 +153,16 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
+  if (view === ExistingInvoiceDetailsView.Edit) {
+    return (
+      <EditInvoiceDetails
+        invoice={receivable}
+        onUpdated={callbacks.handleChangeViewInvoice}
+        onCancel={callbacks.handleChangeViewInvoice}
+      />
+    );
+  }
+
   /**
    * We don't need to localize this string
    * because we will put `documentId` into i18n later
@@ -155,12 +170,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const documentId = receivable.document_id ?? 'INV-auto';
 
-  if (view === InvoiceDetailsView.Email) {
+  if (presentation === InvoiceDetailsPresentation.Email) {
     return (
       <EmailInvoiceDetails
         invoiceId={props.id}
         onClose={() => {
-          setView(InvoiceDetailsView.Overview);
+          setPresentation(InvoiceDetailsPresentation.Overview);
         }}
       />
     );
@@ -205,6 +220,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     disabled={loading}
                   >{t(i18n)`Delete`}</Button>
                 )}
+                {buttons.isEditButtonVisible && (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={callbacks.handleChangeViewInvoice}
+                    disabled={loading}
+                  >{t(i18n)`Edit invoice`}</Button>
+                )}
                 {buttons.isMoreButtonVisible && (
                   <React.Fragment>
                     <Button
@@ -218,7 +241,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     <StyledMenu {...menuProps}>
                       <MenuItem
                         onClick={() => {
-                          setView(InvoiceDetailsView.Email);
+                          setPresentation(InvoiceDetailsPresentation.Email);
                         }}
                       >
                         <EmailIcon fontSize="small" />

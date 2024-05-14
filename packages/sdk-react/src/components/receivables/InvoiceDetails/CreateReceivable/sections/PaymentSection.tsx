@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { ICreateReceivablesForm } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { usePaymentTerms } from '@/core/queries';
 import { useBankAccounts } from '@/core/queries/useBankAccounts';
@@ -23,7 +23,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import type { ISectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from './Section.types';
 
 const getBankAccountName = (
   i18n: I18n,
@@ -46,10 +46,10 @@ const getBankAccountName = (
   return bankAccount.id;
 };
 
-export const PaymentSection = ({ disabled }: ISectionGeneralProps) => {
+export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
   const { control, watch, resetField, setValue } =
-    useFormContext<ICreateReceivablesForm>();
+    useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 

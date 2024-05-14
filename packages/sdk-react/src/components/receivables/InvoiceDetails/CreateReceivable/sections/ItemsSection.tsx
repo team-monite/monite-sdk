@@ -6,8 +6,8 @@ import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
 import { useCreateInvoiceProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/useCreateInvoiceProductsTable';
 import {
-  ICreateReceivablesFormBeforeValidation,
-  ICreateReceivablesFormBeforeValidationLineItem,
+  CreateReceivablesFormBeforeValidationProps,
+  CreateReceivablesFormBeforeValidationLineItemProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
@@ -77,7 +77,7 @@ const TotalCell = ({
   item,
   formatCurrencyToDisplay,
 }: {
-  item: ICreateReceivablesFormBeforeValidationLineItem;
+  item: CreateReceivablesFormBeforeValidationLineItemProps;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
@@ -113,7 +113,7 @@ export const ItemsSection = ({
     formState: { errors },
     setValue,
     watch,
-  } = useFormContext<ICreateReceivablesFormBeforeValidation>();
+  } = useFormContext<CreateReceivablesFormBeforeValidationProps>();
   const error = errors?.line_items;
   const { fields, append, remove, replace } = useFieldArray({
     control,

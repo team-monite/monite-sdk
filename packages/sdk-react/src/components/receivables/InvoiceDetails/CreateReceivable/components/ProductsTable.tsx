@@ -17,7 +17,7 @@ import { ProductsTableDataTestId } from '@/components/receivables/InvoiceDetails
 import { ProductsTableFilters } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters';
 import {
   getCreateInvoiceProductsValidationSchema,
-  ICreateReceivablesProductsForm,
+  CreateReceivablesProductsFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { useInfiniteProducts } from '@/core/queries';
@@ -137,7 +137,7 @@ export const ProductsTable = ({
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
 
   const { control, handleSubmit, watch } =
-    useForm<ICreateReceivablesProductsForm>({
+    useForm<CreateReceivablesProductsFormProps>({
       resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
       defaultValues: useMemo(
         () => ({

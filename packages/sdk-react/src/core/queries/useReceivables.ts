@@ -9,6 +9,7 @@ import {
   CreditNoteResponsePayload,
   CreditNoteStateEnum,
   InvoiceResponsePayload,
+  LineItemsResponse,
   QuoteResponsePayload,
   QuoteStateEnum,
   ReceivableFacadeCreatePayload,
@@ -19,11 +20,13 @@ import {
   ReceivableSendResponse,
   ReceivableService,
   ReceivablesStatusEnum,
+  ReceivableUpdatePayload,
+  UpdateLineItems,
 } from '@monite/sdk-api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
-import { useEntityListCache } from './hooks';
+import { useEntityCache, useEntityListCache } from './hooks';
 
 const receivablesQueryKeys = {
   all: () => ['receivable'],
@@ -41,6 +44,9 @@ function exhaustiveMatchingGuard(_: never): never {
 
 const useReceivableListCache = () =>
   useEntityListCache<ReceivableResponse>(receivablesQueryKeys.all);
+
+const useReceivableDetailCache = (id: string) =>
+  useEntityCache<ReceivableResponse>(() => receivablesQueryKeys.detail(id));
 
 export const useReceivables = (
   ...args: Parameters<ReceivableService['getAllReceivables']>
@@ -74,6 +80,52 @@ export const useCreateReceivable = () => {
       }
 
       toast.success(t(i18n)`Invoice with id “${receivable.id}” was created`);
+    },
+  });
+};
+
+/**
+ * Update receivable line items
+ *
+ * @param id - Receivable id
+ */
+export const useUpdateReceivableLineItems = (id: string) => {
+  const { monite } = useMoniteContext();
+
+  return useMutation<LineItemsResponse, Error, UpdateLineItems>({
+    mutationFn: (payload) =>
+      monite.api.receivable.updateLineItemsById(id, payload),
+  });
+};
+
+/**
+ * Update receivable by provided `id`
+ *
+ * @param id - Receivable id
+ */
+export const useUpdateReceivable = (id: string) => {
+  const { i18n } = useLingui();
+  const { monite } = useMoniteContext();
+  const { invalidate } = useReceivableListCache();
+  const { setEntity } = useReceivableDetailCache(id);
+
+  return useMutation<
+    ReceivableResponse,
+    Error,
+    Omit<ReceivableUpdatePayload, 'lineItems'>
+  >({
+    mutationFn: (payload) => monite.api.receivable.updateById(id, payload),
+
+    onSuccess: (receivable) => {
+      /** Update receivable details */
+      setEntity(receivable);
+
+      /** Invalidate the whole receivable list */
+      invalidate();
+
+      toast.success(t(i18n)`Invoice “${receivable.id}” was updated`);
+
+      return;
     },
   });
 };

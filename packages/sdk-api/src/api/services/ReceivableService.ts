@@ -17,6 +17,8 @@ import {
   ReceivablePreviewRequest,
   ReceivablePreviewResponse,
   ReceivableFileUrl,
+  LineItemsResponse,
+  UpdateLineItems,
 } from '../../api';
 import type { CancelablePromise } from '../CancelablePromise';
 import { request as __request } from '../request';
@@ -272,7 +274,33 @@ export class ReceivableService extends CommonService {
   }
 
   /**
-   * Update Receivable By Id
+   * Update the line items of a receivable by receivable id
+   *
+   * @param {string} receivableId Receivable identifier
+   * @param {UpdateLineItems} lineItems Line items to update
+   *
+   * @see {@link https://docs.monite.com/reference/put_receivables_id_line_items} for API call
+   *
+   * @returns {LineItemsResponse} Successful Response
+   * @throws ApiError
+   */
+  public updateLineItemsById(
+    receivableId: string,
+    lineItems: UpdateLineItems
+  ): CancelablePromise<LineItemsResponse> {
+    return __request<LineItemsResponse>(
+      {
+        method: 'PUT',
+        url: `/${RECEIVABLES_ENDPOINT}/${receivableId}/line_items`,
+        body: lineItems,
+        mediaType: 'application/json',
+      },
+      this.openApi
+    );
+  }
+
+  /**
+   * Update Receivable by id
    * All newly created invoices start in the draft status.
    * You can edit draft invoices before issuing them to a counterpart.
    *
@@ -287,7 +315,7 @@ export class ReceivableService extends CommonService {
    */
   public updateById(
     receivableId: string,
-    requestBody: ReceivableUpdatePayload
+    requestBody: Omit<ReceivableUpdatePayload, 'lineItems'>
   ): CancelablePromise<ReceivableResponse> {
     return __request<ReceivableResponse>(
       {

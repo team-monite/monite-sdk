@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useDialog } from '@/components';
 import {
@@ -21,6 +21,14 @@ interface IUseExistingInvoiceDetailsProps {
 }
 
 interface IUseExistingInvoiceDetails {
+  /**
+   * Describes which view should be rendered
+   * - `view` - by default; we render the view mode
+   * - `edit` - we render the edit mode
+   *   (the view is almost the same as create an invoice details component)
+   */
+  view: ExistingInvoiceDetailsView;
+
   /** Callbacks for handling invoice actions */
   callbacks: {
     /** Fires when we need to delete an invoice */
@@ -31,6 +39,9 @@ interface IUseExistingInvoiceDetails {
 
     /** Fires when we need to download an invoice PDF */
     handleDownloadPDF: () => void;
+
+    /** Fires when we need to change invoice view (from view to edit) */
+    handleChangeViewInvoice: () => void;
   };
 
   /** Describes is any mutation or queries is in progress */
@@ -49,7 +60,15 @@ interface IUseExistingInvoiceDetails {
 
     /** Describes should we show "Issue" button or not */
     isIssueButtonVisible: boolean;
+
+    /** Describes should we show "Edit" button or not */
+    isEditButtonVisible: boolean;
   };
+}
+
+export enum ExistingInvoiceDetailsView {
+  Edit = 'edit',
+  View = 'view',
 }
 
 export function useExistingInvoiceDetails({
@@ -57,6 +76,7 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: IUseExistingInvoiceDetailsProps): IUseExistingInvoiceDetails {
+  const [view, setView] = useState(ExistingInvoiceDetailsView.View);
   const dialogContext = useDialog();
 
   const deleteMutation = useDeleteReceivableById();
@@ -85,6 +105,14 @@ export function useExistingInvoiceDetails({
       },
     });
   }, [deleteMutation, dialogContext, receivableId]);
+
+  const handleChangeInvoiceView = useCallback(() => {
+    if (view === ExistingInvoiceDetailsView.Edit) {
+      setView(ExistingInvoiceDetailsView.View);
+    } else {
+      setView(ExistingInvoiceDetailsView.Edit);
+    }
+  }, [view]);
 
   const handleDownloadPDF = useCallback(() => {
     pdfMutation.mutate(undefined, {
@@ -133,16 +161,26 @@ export function useExistingInvoiceDetails({
     );
   }, [deliveryMethod, receivable?.status]);
 
+  const isEditButtonVisible = useMemo(() => {
+    return (
+      receivable?.status === ReceivablesStatusEnum.DRAFT &&
+      view !== ExistingInvoiceDetailsView.Edit
+    );
+  }, [receivable?.status, view]);
+
   return {
+    view,
     callbacks: {
       handleDeleteInvoice,
       handleIssueOnly,
       handleDownloadPDF,
+      handleChangeViewInvoice: handleChangeInvoiceView,
     },
     loading: mutationInProgress,
     buttons: {
       isDownloadPDFButtonVisible,
       isMoreButtonVisible,
+      isEditButtonVisible,
       isComposeEmailButtonVisible,
       isIssueButtonVisible,
     },

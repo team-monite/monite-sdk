@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 
-import { ICreateReceivablesFormBeforeValidationLineItem } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
 import { VatRateListResponse } from '@monite/sdk-api';
 
 interface IUseCreateInvoiceProductsTable {
-  lineItems: Array<ICreateReceivablesFormBeforeValidationLineItem>;
+  lineItems: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];

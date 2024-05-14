@@ -38,8 +38,8 @@ import {
   createFilterOptions,
 } from '@mui/material';
 
-import { ICreateReceivablesForm } from '../validation';
-import type { ISectionGeneralProps } from './Section.types';
+import { CreateReceivablesFormProps } from '../validation';
+import type { SectionGeneralProps } from './Section.types';
 
 interface ICounterpartsAutocompleteOption {
   id: string;
@@ -79,10 +79,10 @@ function isCreateNewCounterpartOption(
   return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
 }
 
-export const CustomerSection = ({ disabled }: ISectionGeneralProps) => {
+export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
   const { control, watch, resetField, setValue } =
-    useFormContext<ICreateReceivablesForm>();
+    useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
