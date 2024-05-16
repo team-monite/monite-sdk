@@ -2,12 +2,12 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { PayableStateEnum } from '@monite/sdk-api';
 import CancelIcon from '@mui/icons-material/Cancel';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import Contrast from '@mui/icons-material/Contrast';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
-import StarHalfOutlinedIcon from '@mui/icons-material/StarHalfOutlined';
 import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
 import { ChipTypeMap, type SvgIcon } from '@mui/material';
 
@@ -45,10 +45,10 @@ export const PAYABLE_STATUS_TO_MUI_ICON_MAP: Record<
 > = {
   [PayableStateEnum.NEW]: TaskOutlinedIcon,
   [PayableStateEnum.APPROVE_IN_PROGRESS]: ScheduleOutlinedIcon,
-  [PayableStateEnum.WAITING_TO_BE_PAID]: CheckOutlinedIcon,
+  [PayableStateEnum.WAITING_TO_BE_PAID]: HourglassEmptyIcon,
   [PayableStateEnum.REJECTED]: DangerousOutlinedIcon,
   [PayableStateEnum.DRAFT]: InsertDriveFileOutlinedIcon,
-  [PayableStateEnum.PARTIALLY_PAID]: StarHalfOutlinedIcon, // not match to https://fonts.google.com/icons?selected=Material+Symbols+Outlined:radio_button_partial:FILL@0;wght@400;GRAD@0;opsz@24&icon.size=24&icon.color=%235f6368
+  [PayableStateEnum.PARTIALLY_PAID]: Contrast,
   [PayableStateEnum.PAID]: PaidOutlinedIcon,
-  [PayableStateEnum.CANCELED]: CancelIcon, // not match to https://fonts.google.com/icons?selected=Material+Symbols+Outlined:scan_delete:FILL@0;wght@400;GRAD@0;opsz@24&icon.size=24&icon.color=%235f6368
+  [PayableStateEnum.CANCELED]: CancelIcon,
 };
