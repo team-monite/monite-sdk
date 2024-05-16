@@ -1,5 +1,6 @@
 import React, { ReactNode, useMemo } from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
 import { entityIds } from '@/mocks/entities';
@@ -14,6 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   moniteDark as themeMoniteDark,
@@ -126,11 +128,18 @@ export const GlobalStorybookDecorator = (props: {
       />
       <FallbackProviders theme={muiTheme}>
         <MoniteProvider monite={props.monite ?? monite} theme={muiTheme}>
+          <MoniteReactQueryDevtools />
           {props.children}
         </MoniteProvider>
       </FallbackProviders>
     </>
   );
+};
+
+const MoniteReactQueryDevtools = () => {
+  const { queryClient } = useMoniteContext();
+
+  return <ReactQueryDevtools initialIsOpen={false} client={queryClient} />;
 };
 
 /**

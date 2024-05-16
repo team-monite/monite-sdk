@@ -140,9 +140,7 @@ export const useReceivableById = (receivableId: string) => {
 
   return useQuery<ReceivableResponse | undefined, ApiError>({
     queryKey: receivablesQueryKeys.detail(receivableId),
-
     queryFn: () => monite.api.receivable.getById(receivableId),
-
     ...receivablesDefaultQueryConfig,
   });
 };

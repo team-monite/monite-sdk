@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { useDialog } from '@/components';
 import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
@@ -10,12 +11,17 @@ import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
+import {
+  ActionEnum,
+  InvoiceResponsePayload,
+  ReceivablesStatusEnum,
+} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -117,6 +123,9 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     props.id
   );
 
+  /** Is the deleting modal opened? */
+  const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
+
   const { data: pdf, isLoading: isPdfLoading } = usePDFReceivableById(props.id);
 
   const handleIssueAndSend = useCallback(() => {
@@ -183,6 +192,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   return (
     <>
+      <InvoiceDeleteModal
+        id={props.id}
+        open={deleteModalOpened}
+        onClose={() => {
+          setDeleteModalOpened(false);
+        }}
+      />
+
       <DialogTitle>
         <Toolbar>
           <Grid container>
@@ -212,12 +229,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 justifyContent="end"
                 spacing={2}
               >
-                {receivable.status === ReceivablesStatusEnum.DRAFT && (
+                {buttons.isDeleteButtonVisible && (
                   <Button
                     variant="text"
-                    color="primary"
-                    onClick={callbacks.handleDeleteInvoice}
-                    disabled={loading}
+                    color="error"
+                    onClick={() => setDeleteModalOpened(true)}
+                    disabled={buttons.isDeleteButtonDisabled}
                   >{t(i18n)`Delete`}</Button>
                 )}
                 {buttons.isEditButtonVisible && (
