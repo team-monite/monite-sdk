@@ -1,13 +1,15 @@
 import React, { ReactElement, ReactNode } from 'react';
 
 import { MoniteContext } from '@/core/context/MoniteContext';
-import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
+import {
+  getLocaleWithDefaults,
+  MoniteI18nProvider,
+} from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
   BrowserClient,
@@ -95,6 +97,7 @@ export const Provider = ({
     <QueryClientProvider client={client}>
       <MoniteContext.Provider
         value={{
+          locale: getLocaleWithDefaults(moniteProviderProps?.locale),
           monite,
           i18n,
           sentryHub,
