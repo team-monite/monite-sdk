@@ -66,8 +66,7 @@ const TotalView = ({
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                width: '100%',
-                px: 3,
+                px: 2,
                 py: 1.5,
               }}
             >
