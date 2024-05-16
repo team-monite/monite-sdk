@@ -1,5 +1,16 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## @monite/sdk-react@3.11.0 & @monite/sdk-api@3.11.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
+- Added the "Created on" column to the `ReceivablesTable` component.
+- Addressed bottlenecks within the SDK to improve and optimize the overall performance.
+
+### Bug fixes
+- Fixed a bug that prevented invoices from being issued on the `InvoiceDetails` component.
+- Fixed a bug that prevented editing the `ProductDetails` component with an empty "Description" field.
+
 ## @monite/sdk-react@3.10.0 & @monite/sdk-api@3.10.0
 This package is a minor release with no breaking changes.
 
