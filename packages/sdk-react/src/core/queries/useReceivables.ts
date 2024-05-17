@@ -340,11 +340,8 @@ export const usePDFReceivableByIdMutation = (
 
   return useMutation<ReceivableFileUrl, ApiError>({
     mutationKey: receivablesQueryKeys.pdf(receivableId),
-
     mutationFn: () => monite.api.receivable.getPdfLink(receivableId),
-
     retry: false,
-
     onSuccess: (response) => {
       toast.success(t(i18n)`PDF was generated`);
 

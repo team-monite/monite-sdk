@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useDialog } from '@/components/Dialog';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
@@ -7,6 +9,7 @@ import {
   useInvoiceDetails,
   InvoiceDetailsPermissions,
 } from '@/core/queries/useReceivables';
+import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
@@ -91,6 +94,12 @@ const ExistingReceivableDetailsBase = (
     action: ActionEnum.DELETE,
     entityUserId: invoice?.entity_user_id,
   });
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.READ,
+      entityUserId: invoice?.entity_user_id,
+    });
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
     action: ActionEnum.UPDATE,
@@ -114,7 +123,13 @@ const ExistingReceivableDetailsBase = (
 
   if (!props.id) return null;
 
-  if (isLoading) return <LoadingPage />;
+  if (isLoading || isReadAllowedLoading) {
+    return <LoadingPage />;
+  }
+
+  if (!isReadAllowed) {
+    return <AccessRestriction />;
+  }
 
   if (!invoice) {
     return (

@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { useDialog } from '@/components';
 import {
   useDeleteReceivableById,
   useIssueReceivableById,
@@ -90,12 +89,18 @@ export function useExistingInvoiceDetails({
   deliveryMethod,
 }: IUseExistingInvoiceDetailsProps): IUseExistingInvoiceDetails {
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
-  const dialogContext = useDialog();
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
       action: ActionEnum.DELETE,
+      entityUserId: receivable?.entity_user_id,
+    });
+
+  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.UPDATE,
       entityUserId: receivable?.entity_user_id,
     });
 
@@ -162,23 +167,26 @@ export function useExistingInvoiceDetails({
   const isComposeEmailButtonVisible = useMemo(() => {
     return (
       deliveryMethod === DeliveryMethod.Email &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT
+      receivable?.status === ReceivablesStatusEnum.DRAFT &&
+      isUpdateAllowed
     );
   }, [deliveryMethod, receivable?.status]);
 
   const isIssueButtonVisible = useMemo(() => {
     return (
       deliveryMethod === DeliveryMethod.Download &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT
+      receivable?.status === ReceivablesStatusEnum.DRAFT &&
+      isUpdateAllowed
     );
-  }, [deliveryMethod, receivable?.status]);
+  }, [deliveryMethod, isUpdateAllowed, receivable?.status]);
 
   const isEditButtonVisible = useMemo(() => {
     return (
       receivable?.status === ReceivablesStatusEnum.DRAFT &&
-      view !== ExistingInvoiceDetailsView.Edit
+      view !== ExistingInvoiceDetailsView.Edit &&
+      isUpdateAllowed
     );
-  }, [receivable?.status, view]);
+  }, [isUpdateAllowed, receivable?.status, view]);
 
   const isDeleteButtonDisabled = useMemo(() => {
     return (
@@ -195,8 +203,10 @@ export function useExistingInvoiceDetails({
   ]);
 
   const isDeleteButtonVisible = useMemo(() => {
-    return receivable?.status === ReceivablesStatusEnum.DRAFT;
-  }, [receivable?.status]);
+    return (
+      receivable?.status === ReceivablesStatusEnum.DRAFT && isDeleteAllowed
+    );
+  }, [isDeleteAllowed, receivable?.status]);
 
   return {
     view,
