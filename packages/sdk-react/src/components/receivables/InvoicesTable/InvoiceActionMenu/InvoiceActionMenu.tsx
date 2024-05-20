@@ -112,7 +112,7 @@ const invoiceActionMap: InvoiceActionMap = {
   [ReceivablesStatusEnum.DELETED]: [],
 };
 
-const useInvoiceOptionsByStatus = ({
+const useInvoiceMenuOptions = ({
   status,
 }: {
   status: ReceivablesStatusEnum;
@@ -144,17 +144,20 @@ const useInvoiceOptionsByStatus = ({
   }));
 };
 
-export interface MoniteInvoiceActionsProps {}
+export interface MoniteInvoiceActionMenuProps {}
 
-interface InvoiceMenuCellProps extends MoniteInvoiceActionsProps {
+interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
   invoice: Pick<InvoiceResponsePayload, 'id' | 'status'>;
   onClick?: InvoiceActionHandler;
 }
 
-export const InvoiceActions = ({ invoice, onClick }: InvoiceMenuCellProps) => {
+export const InvoiceActionMenu = ({
+  invoice,
+  onClick,
+}: InvoiceActionMenuProps) => {
   const { buttonProps, menuProps } = useMenuButton();
 
-  const options = useInvoiceOptionsByStatus({ status: invoice.status });
+  const options = useInvoiceMenuOptions({ status: invoice.status });
 
   if (options.length === 0) return null;
 

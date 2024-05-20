@@ -36,7 +36,7 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
-import { InvoiceActions } from './InvoiceActions';
+import { InvoiceActionMenu } from './InvoiceActionMenu';
 
 type InvoicesTableProps = {
   /**
@@ -240,7 +240,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             sortable: false,
             flex: 0.4,
             renderCell: ({ row }) => (
-              <InvoiceActions
+              <InvoiceActionMenu
                 onClick={onRowClick}
                 invoice={row as InvoiceResponsePayload}
               />

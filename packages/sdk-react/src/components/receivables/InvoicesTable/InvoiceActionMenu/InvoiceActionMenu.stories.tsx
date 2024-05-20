@@ -4,10 +4,10 @@ import { ArrowRightAltOutlined } from '@mui/icons-material';
 import { Alert, Box } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { InvoiceActions as InvoiceActionsComponent } from './InvoiceActions';
+import { InvoiceActionMenu as InvoiceActionsComponent } from './InvoiceActionMenu';
 
 const meta: Meta<typeof InvoiceActionsComponent> = {
-  title: 'Components / InvoiceActions',
+  title: 'Components / InvoiceActionMenu',
   component: InvoiceActionsComponent,
   argTypes: {
     invoice: {
