@@ -1,6 +1,7 @@
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { type InvoiceActionsRootProps } from '@/components/receivables/InvoicesTable/InvoiceActions';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
-import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
+import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
@@ -29,6 +30,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
+    MoniteInvoiceGridActions: 'root';
   }
 
   /**
@@ -38,6 +40,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
+    MoniteInvoiceGridActions: Partial<InvoiceActionsRootProps>;
   }
 
   /**
@@ -47,5 +50,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
+    MoniteInvoiceGridActions?: ComponentType<'MoniteInvoiceGridActions'>;
   }
 }
