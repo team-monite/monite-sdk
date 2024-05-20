@@ -1,9 +1,18 @@
+import { forwardRef } from 'react';
+
 import { useMenuButton } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  IconButton,
+  type IconButtonProps,
+  Menu,
+  MenuItem,
+  type MenuProps,
+} from '@mui/material';
+import { styled, useThemeProps } from '@mui/material/styles';
 
 export type InvoiceActionHandler = (id: string, action?: InvoiceAction) => void;
 
@@ -20,7 +29,7 @@ type InvoiceAction =
   | 'cancel'
   | 'markUncollectible';
 
-interface InvoiceActionMap
+interface InvoiceDefaultActions
   extends Record<ReceivablesStatusEnum, InvoiceAction[]> {
   [ReceivablesStatusEnum.DRAFT]: Array<
     'view' | 'edit' | 'issue' | 'downloadPDF' | 'duplicate' | 'delete'
@@ -65,7 +74,7 @@ interface InvoiceActionMap
   [ReceivablesStatusEnum.DELETED]: Array<never>;
 }
 
-const invoiceActionMap: InvoiceActionMap = {
+const invoiceDefaultActions: InvoiceDefaultActions = {
   [ReceivablesStatusEnum.DRAFT]: [
     'view',
     'edit',
@@ -112,17 +121,16 @@ const invoiceActionMap: InvoiceActionMap = {
   [ReceivablesStatusEnum.DELETED]: [],
 };
 
-const useInvoiceMenuOptions = ({
-  status,
-}: {
-  status: ReceivablesStatusEnum;
-}): {
+const useInvoiceMenuOptions = (
+  status: ReceivablesStatusEnum,
+  actions: Partial<InvoiceDefaultActions>
+): {
   label: string;
   value: InvoiceAction;
 }[] => {
   const { i18n } = useLingui();
 
-  const operations = invoiceActionMap[status];
+  const operations = actions[status] ?? invoiceDefaultActions[status];
 
   const labels: Record<InvoiceAction, string> = {
     view: t(i18n)`View`,
@@ -144,41 +152,77 @@ const useInvoiceMenuOptions = ({
   }));
 };
 
-export interface MoniteInvoiceActionMenuProps {}
+export interface MoniteInvoiceActionMenuProps {
+  actions?: Partial<InvoiceDefaultActions>;
+  slotProps?: {
+    root?: Partial<IconButtonProps>;
+    menu?: Partial<MenuProps>;
+  };
+}
 
 interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
   invoice: Pick<InvoiceResponsePayload, 'id' | 'status'>;
   onClick?: InvoiceActionHandler;
 }
 
-export const InvoiceActionMenu = ({
-  invoice,
-  onClick,
-}: InvoiceActionMenuProps) => {
+export const InvoiceActionMenu = (inProps: InvoiceActionMenuProps) => {
   const { buttonProps, menuProps } = useMenuButton();
 
-  const options = useInvoiceMenuOptions({ status: invoice.status });
+  const {
+    invoice,
+    actions = invoiceDefaultActions,
+    slotProps,
+    onClick,
+  } = useThemeProps({
+    props: inProps,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteInvoiceActionMenu',
+  });
+
+  const options = useInvoiceMenuOptions(invoice.status, actions);
 
   if (options.length === 0) return null;
 
   return (
     <>
-      <IconButton {...buttonProps}>
+      <StyledIconButton {...slotProps?.root} {...buttonProps}>
         <MoreVertIcon />
-      </IconButton>
+      </StyledIconButton>
 
-      <Menu {...menuProps}>
+      <StyledMenu {...slotProps?.menu} {...menuProps}>
         {options.map(({ label, value }) => (
           <MenuItem
             key={value}
-            onClick={() => {
-              onClick?.(invoice.id, value);
-            }}
+            onClick={() => void onClick?.(invoice.id, value)}
           >
             {label}
           </MenuItem>
         ))}
-      </Menu>
+      </StyledMenu>
     </>
   );
 };
+
+const StyledIconButton = styled(
+  forwardRef<HTMLButtonElement, IconButtonProps>((props, ref) => (
+    <IconButton ref={ref} {...props} />
+  )),
+  {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteInvoiceActionMenu',
+    slot: 'root',
+    shouldForwardProp: () => true,
+  }
+)({});
+
+const StyledMenu = styled(
+  forwardRef<HTMLDivElement, MenuProps>((props, ref) => (
+    <Menu ref={ref} {...props} />
+  )),
+  {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MoniteInvoiceActionMenu',
+    slot: 'menu',
+    shouldForwardProp: () => true,
+  }
+)({});

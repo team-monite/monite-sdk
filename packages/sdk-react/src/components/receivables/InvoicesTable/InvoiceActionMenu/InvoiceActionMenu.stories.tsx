@@ -24,38 +24,69 @@ const meta: Meta<typeof InvoiceActionsComponent> = {
 
 type Story = StoryObj<typeof InvoiceActionsComponent>;
 
-export const InvoiceActions: Story = {
+export const Basic: Story = {
   args: {
-    invoice: { id: '1', status: ReceivablesStatusEnum.PAID },
+    invoice: { id: '1', status: ReceivablesStatusEnum.DRAFT },
   },
+  render: (args) => (
+    <div style={{ height: 500, padding: 20 }}>
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+        maxWidth="50%"
+      >
+        <ArrowRightAltOutlined fontSize="large" color="warning" />
+        <InvoiceActionsComponent {...args} />
+      </Box>
+      <Alert sx={{ mt: 2 }}>
+        <code>{'<InvoiceActions />'}</code> could be customized through MUI
+        theming
+      </Alert>
+    </div>
+  ),
+};
+
+export const Customized: Story = {
+  args: {
+    invoice: { id: '1', status: ReceivablesStatusEnum.DRAFT },
+  },
+  name: 'Custom Draft actions',
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
       <ExtendThemeProvider
         theme={{
           components: {
-            MoniteInvoiceStatusChip: {
+            MoniteInvoiceActionMenu: {
               defaultProps: {
-                icon: true,
+                actions: {
+                  [ReceivablesStatusEnum.DRAFT]: ['delete', 'edit', 'issue'],
+                },
+                slotProps: {
+                  root: { size: 'large' },
+                  menu: {
+                    anchorOrigin: {
+                      vertical: 'center',
+                      horizontal: 'center',
+                    },
+                  },
+                },
               },
-              variants: [
-                {
-                  props: { status: ReceivablesStatusEnum.PAID },
-                  style: {
-                    border: '2px dashed lightgreen',
-                  },
+              styleOverrides: {
+                root: {
+                  outline: 'solid red 1px',
                 },
-                {
-                  props: { status: ReceivablesStatusEnum.OVERDUE },
-                  style: {
-                    border: '2px dashed red',
-                  },
-                },
-              ],
+              },
             },
           },
         }}
       >
-        <Box display="flex" justifyContent="flex-end">
+        <Box
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="center"
+          maxWidth="50%"
+        >
           <ArrowRightAltOutlined fontSize="large" color="warning" />
           <InvoiceActionsComponent {...args} />
         </Box>
