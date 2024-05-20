@@ -170,7 +170,7 @@ export function useExistingInvoiceDetails({
       receivable?.status === ReceivablesStatusEnum.DRAFT &&
       isUpdateAllowed
     );
-  }, [deliveryMethod, receivable?.status]);
+  }, [deliveryMethod, isUpdateAllowed, receivable?.status]);
 
   const isIssueButtonVisible = useMemo(() => {
     return (

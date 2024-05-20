@@ -119,7 +119,11 @@ const ErrorComponent = ({
   const { i18n } = useLingui();
 
   return (
-    <Box>
+    <Box
+      sx={{
+        padding: 4,
+      }}
+    >
       <Stack alignItems="center" gap={2}>
         <ErrorOutlineIcon color="error" />
         <Stack gap={0.5} alignItems="center">

@@ -202,8 +202,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  console.log('--- pdfError: ', pdfError);
-
   return (
     <>
       <InvoiceDeleteModal
@@ -348,11 +346,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   i18n
                 )`You don't have permission to issue this document. Please, contact your system administrator for details.`}</Alert>
               ) : (
-                <SubmitInvoice
-                  deliveryMethod={deliveryMethod}
-                  onDeliveryMethodChanged={setDeliveryMethod}
-                  disabled={loading}
-                />
+                (buttons.isIssueButtonVisible ||
+                  buttons.isComposeEmailButtonVisible) && (
+                  <SubmitInvoice
+                    deliveryMethod={deliveryMethod}
+                    onDeliveryMethodChanged={setDeliveryMethod}
+                    disabled={loading}
+                  />
+                )
               )}
               <Overview invoice={receivable} />
             </Stack>
