@@ -6,6 +6,8 @@ import { useLingui } from '@lingui/react';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
 import {
+  Box,
+  FormControl,
   Grid,
   GridProps,
   IconButton,
@@ -97,24 +99,15 @@ export const TablePagination = <T,>({
 
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
-  const firstGridItemProps = hasPageSizeSelect
-    ? {
-        xs: 10,
-        md: 10,
-        lg: 11,
-      }
-    : {
-        xs: 12,
-      };
-
   return (
     <RootGrid container m={2} boxSizing="border-box">
       <Grid
-        {...firstGridItemProps}
+        xs={12}
         item
         display="flex"
         justifyContent="center"
         alignItems="center"
+        position="relative"
       >
         <IconButton
           aria-label={t(i18n)`Previous page`}
@@ -148,39 +141,41 @@ export const TablePagination = <T,>({
         >
           <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
         </IconButton>
-      </Grid>
-      {hasPageSizeSelect && (
-        <Grid
-          item
-          xs={2}
-          md={2}
-          lg={1}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <StyledSelect
-            {...slotProps?.pageSizeSelect}
-            aria-label={t(i18n)`Rows per page`}
-            MenuProps={{
-              ...slotProps?.pageSizeSelect?.MenuProps,
-              container: root,
+        {hasPageSizeSelect && (
+          <Box
+            sx={{
+              position: 'absolute',
+              right: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
             }}
-            value={pageSize.toString()}
-            onChange={(event) =>
-              void onPaginationModelChange({
-                page: paginationModel.page,
-                pageSize: parseInt(event.target.value, 10),
-              })
-            }
           >
-            {pageSizeOptions?.map((menuItem) => (
-              <MenuItem key={menuItem} value={menuItem.toString()}>
-                {menuItem}
-              </MenuItem>
-            ))}
-          </StyledSelect>
-        </Grid>
-      )}
+            <FormControl size="small">
+              <StyledSelect
+                {...slotProps?.pageSizeSelect}
+                aria-label={t(i18n)`Rows per page`}
+                MenuProps={{
+                  ...slotProps?.pageSizeSelect?.MenuProps,
+                  container: root,
+                }}
+                value={pageSize.toString()}
+                onChange={(event) =>
+                  void onPaginationModelChange({
+                    page: paginationModel.page,
+                    pageSize: parseInt(event.target.value, 10),
+                  })
+                }
+              >
+                {pageSizeOptions?.map((menuItem) => (
+                  <MenuItem key={menuItem} value={menuItem.toString()}>
+                    {menuItem}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+            </FormControl>
+          </Box>
+        )}
+      </Grid>
     </RootGrid>
   );
 };
