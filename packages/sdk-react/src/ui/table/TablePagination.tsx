@@ -97,11 +97,11 @@ export const TablePagination = <T,>({
 
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
-  const firstGridItemProps = hasPageSizeSelect
+  const middleGridItemProps = hasPageSizeSelect
     ? {
-        xs: 10,
-        md: 10,
-        lg: 11,
+        xs: 8,
+        md: 8,
+        lg: 10,
       }
     : {
         xs: 12,
@@ -109,8 +109,9 @@ export const TablePagination = <T,>({
 
   return (
     <RootGrid container m={2} boxSizing="border-box">
+      {hasPageSizeSelect && <Grid item xs={2} md={2} lg={1} />}
       <Grid
-        {...firstGridItemProps}
+        {...middleGridItemProps}
         item
         display="flex"
         justifyContent="center"
