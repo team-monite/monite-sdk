@@ -1,5 +1,4 @@
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { type InvoiceActionsRootProps } from '@/components/receivables/InvoicesTable/InvoiceActions';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
@@ -40,7 +39,7 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
-    MoniteInvoiceGridActions: Partial<InvoiceActionsRootProps>;
+    MoniteInvoiceGridActions: Partial<MoniteInvoiceActionsProps>;
   }
 
   /**

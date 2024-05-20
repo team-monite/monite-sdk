@@ -5,9 +5,9 @@ import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 
-export type InvoiceAction = (id: string, action?: Operations) => void;
+export type InvoiceActionHandler = (id: string, action?: InvoiceAction) => void;
 
-type Operations =
+type InvoiceAction =
   | 'view'
   | 'edit'
   | 'issue'
@@ -20,9 +20,9 @@ type Operations =
   | 'cancel'
   | 'markUncollectible';
 
-export interface InvoiceActionsRootProps
-  extends Record<ReceivablesStatusEnum, Operations[]> {
-  draft: Array<
+interface InvoiceActionMap
+  extends Record<ReceivablesStatusEnum, InvoiceAction[]> {
+  [ReceivablesStatusEnum.DRAFT]: Array<
     'view' | 'edit' | 'issue' | 'downloadPDF' | 'duplicate' | 'delete'
   >;
   [ReceivablesStatusEnum.ISSUED]: Array<
@@ -65,25 +65,66 @@ export interface InvoiceActionsRootProps
   [ReceivablesStatusEnum.DELETED]: Array<never>;
 }
 
-type Labels = Record<Operations, string>;
-
-type Option = {
-  label: string;
-  action: () => InvoiceAction | void;
-};
-
-type InvoiceMenuCellProps = {
-  invoice: InvoiceResponsePayload;
-  onClick?: InvoiceAction;
+const invoiceActionMap: InvoiceActionMap = {
+  [ReceivablesStatusEnum.DRAFT]: [
+    'view',
+    'edit',
+    'issue',
+    'downloadPDF',
+    'duplicate',
+    'delete',
+  ],
+  [ReceivablesStatusEnum.ISSUED]: [
+    'view',
+    'duplicate',
+    'downloadPDF',
+    'send',
+    'recordPayment',
+    'cancel',
+    'copyPaymentLink',
+  ],
+  [ReceivablesStatusEnum.CANCELED]: ['view', 'downloadPDF', 'send'],
+  [ReceivablesStatusEnum.PARTIALLY_PAID]: [
+    'view',
+    'duplicate',
+    'downloadPDF',
+    'send',
+    'recordPayment',
+    'copyPaymentLink',
+    'cancel',
+  ],
+  [ReceivablesStatusEnum.OVERDUE]: [
+    'view',
+    'duplicate',
+    'downloadPDF',
+    'send',
+    'recordPayment',
+    'copyPaymentLink',
+    'cancel',
+    'markUncollectible',
+  ],
+  [ReceivablesStatusEnum.PAID]: ['view', 'duplicate', 'downloadPDF'],
+  [ReceivablesStatusEnum.UNCOLLECTIBLE]: ['view', 'duplicate', 'downloadPDF'],
+  [ReceivablesStatusEnum.EXPIRED]: ['view'],
+  [ReceivablesStatusEnum.ACCEPTED]: ['view'],
+  [ReceivablesStatusEnum.DECLINED]: ['view'],
+  [ReceivablesStatusEnum.RECURRING]: ['view'],
+  [ReceivablesStatusEnum.DELETED]: [],
 };
 
 const useInvoiceOptionsByStatus = ({
-  invoice: { id, status },
-  onClick,
-}: InvoiceMenuCellProps): Option[] => {
+  status,
+}: {
+  status: ReceivablesStatusEnum;
+}): {
+  label: string;
+  value: InvoiceAction;
+}[] => {
   const { i18n } = useLingui();
 
-  const labels: Labels = {
+  const operations = invoiceActionMap[status];
+
+  const labels: Record<InvoiceAction, string> = {
     view: t(i18n)`View`,
     downloadPDF: t(i18n)`Download PDF`,
     send: t(i18n)`Send`,
@@ -97,19 +138,23 @@ const useInvoiceOptionsByStatus = ({
     issue: t(i18n)`Issue`,
   };
 
-  const getOptionByOperation = (operation: Operations): Option => ({
+  return operations.map((operation) => ({
     label: labels[operation],
-    action: () => onClick?.(id, operation),
-  });
-
-  // TODO add implementation
-  return [];
+    value: operation,
+  }));
 };
 
-export const InvoiceActions = (props: InvoiceMenuCellProps) => {
+export interface MoniteInvoiceActionsProps {}
+
+interface InvoiceMenuCellProps extends MoniteInvoiceActionsProps {
+  invoice: Pick<InvoiceResponsePayload, 'id' | 'status'>;
+  onClick?: InvoiceActionHandler;
+}
+
+export const InvoiceActions = ({ invoice, onClick }: InvoiceMenuCellProps) => {
   const { buttonProps, menuProps } = useMenuButton();
 
-  const options = useInvoiceOptionsByStatus(props);
+  const options = useInvoiceOptionsByStatus({ status: invoice.status });
 
   if (options.length === 0) return null;
 
@@ -120,8 +165,13 @@ export const InvoiceActions = (props: InvoiceMenuCellProps) => {
       </IconButton>
 
       <Menu {...menuProps}>
-        {options.map(({ label, action }) => (
-          <MenuItem key={label} onClick={action}>
+        {options.map(({ label, value }) => (
+          <MenuItem
+            key={value}
+            onClick={() => {
+              onClick?.(invoice.id, value);
+            }}
+          >
             {label}
           </MenuItem>
         ))}
