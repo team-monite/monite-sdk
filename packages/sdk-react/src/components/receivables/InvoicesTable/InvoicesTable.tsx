@@ -147,13 +147,6 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             />
           ),
         }}
-        initialState={{
-          columns: {
-            columnVisibilityModel: {
-              menu: !'experimentalMenu',
-            },
-          },
-        }}
         columns={[
           {
             field: 'document_id',
