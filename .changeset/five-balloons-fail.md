@@ -2,4 +2,4 @@
 '@monite/sdk-react': patch
 ---
 
-align pagination arrows center
+style(DEV-10393): align pagination arrows center
