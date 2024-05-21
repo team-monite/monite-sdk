@@ -36,7 +36,10 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
-import { InvoiceActionMenu } from './InvoiceActionMenu';
+import {
+  InvoiceActionMenu,
+  type InvoiceActionHandler,
+} from './InvoiceActionMenu';
 
 type InvoicesTableProps = {
   /**
@@ -45,6 +48,12 @@ type InvoicesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for a row action.
+   * See `MoniteInvoiceActionMenu` documentation for more details.
+   */
+  onRowAction?: InvoiceActionHandler;
 };
 
 export interface InvoicesTableSortModel {

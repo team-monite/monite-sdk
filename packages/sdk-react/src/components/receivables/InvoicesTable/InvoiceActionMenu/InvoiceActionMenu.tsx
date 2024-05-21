@@ -16,6 +16,12 @@ import {
 } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
+/**
+ * The event handler for a row action.
+ * See `MoniteInvoiceActionMenu` documentation for more details.
+ * @param id - The identifier of the clicked invoice row.
+ * @param action - The action to perform.
+ */
 export type InvoiceActionHandler = (id: string, action?: InvoiceAction) => void;
 
 export interface MoniteInvoiceActionMenuProps {
