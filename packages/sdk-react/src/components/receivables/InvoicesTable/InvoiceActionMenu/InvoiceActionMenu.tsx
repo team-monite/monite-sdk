@@ -152,19 +152,17 @@ const StyledMenu = styled(
   }
 )({});
 
-const ActionMenuItem = memo(
-  ({
-    invoiceAction,
-    ...restProps
-  }: { invoiceAction: InvoiceAction } & MenuItemProps) => {
-    const { i18n } = useLingui();
-    return (
-      <MenuItem {...restProps}>
-        {getInvoiceMenuItemLabel(i18n, invoiceAction)}
-      </MenuItem>
-    );
-  }
-);
+const ActionMenuItem = ({
+  invoiceAction,
+  ...restProps
+}: { invoiceAction: InvoiceAction } & MenuItemProps) => {
+  const { i18n } = useLingui();
+  return (
+    <MenuItem {...restProps}>
+      {getInvoiceMenuItemLabel(i18n, invoiceAction)}
+    </MenuItem>
+  );
+};
 
 // todo::add tests ⬇︎
 const useInvoiceActionList = ({
