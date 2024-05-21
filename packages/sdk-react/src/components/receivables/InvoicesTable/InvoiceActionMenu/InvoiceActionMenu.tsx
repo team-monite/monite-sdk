@@ -1,10 +1,12 @@
 import React, { forwardRef, memo } from 'react';
 
 import { useMenuButton } from '@/core/hooks';
+import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  ActionEnum,
   InvoiceResponsePayload,
   ReceivableResponse,
   ReceivablesStatusEnum,
@@ -37,8 +39,8 @@ export interface MoniteInvoiceActionMenuProps {
 }
 
 export type ActionMenuInvoice =
-  | Pick<InvoiceResponsePayload, 'id' | 'status'>
-  | Pick<ReceivableResponse, 'id' | 'status'>;
+  | Pick<InvoiceResponsePayload, 'id' | 'status' | 'entity_user_id'>
+  | Pick<ReceivableResponse, 'id' | 'status' | 'entity_user_id'>;
 
 interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
   invoice: ActionMenuInvoice;
@@ -92,22 +94,16 @@ interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
 export const InvoiceActionMenu = memo((inProps: InvoiceActionMenuProps) => {
   const { buttonProps, menuProps } = useMenuButton();
 
-  const {
-    invoice,
-    actions = invoiceDefaultActions,
-    slotProps,
-    onClick,
-  } = useThemeProps({
+  const { invoice, actions, slotProps, onClick } = useThemeProps({
     props: inProps,
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceActionMenu',
   });
   const { i18n } = useLingui();
 
-  const operations =
-    actions[invoice.status] ?? invoiceDefaultActions[invoice.status];
+  const actionList = useInvoiceActionList({ invoice, actions });
 
-  if (operations.length === 0) return null;
+  if (actionList.length === 0) return null;
 
   return (
     <>
@@ -120,7 +116,7 @@ export const InvoiceActionMenu = memo((inProps: InvoiceActionMenuProps) => {
       </StyledIconButton>
 
       <StyledMenu {...slotProps?.menu} {...menuProps}>
-        {operations.map((value) => (
+        {actionList.map((value) => (
           <ActionMenuItem
             key={value}
             invoiceAction={value}
@@ -169,6 +165,50 @@ const ActionMenuItem = memo(
     );
   }
 );
+
+const useInvoiceActionList = ({
+  invoice,
+  actions,
+}: Pick<InvoiceActionMenuProps, 'actions' | 'invoice'>): InvoiceAction[] => {
+  const { data: allowedReceivableActions, userIdFromAuthToken } =
+    usePermissions('receivable');
+
+  const isAllowedInvoiceAction = (
+    action: Parameters<typeof isActionAllowed>[0]['action']
+  ) =>
+    isActionAllowed({
+      action,
+      actions: allowedReceivableActions,
+      entityUserId: invoice.entity_user_id,
+      entityUserIdFromAuthToken: userIdFromAuthToken,
+    });
+
+  const actionList =
+    actions?.[invoice.status] ?? invoiceDefaultActions[invoice.status];
+
+  // @ts-expect-error - `filter` can't handle complex union types
+  return actionList.filter((operation: InvoiceAction) => {
+    if (operation === 'view') return isAllowedInvoiceAction(ActionEnum.READ);
+    if (operation === 'edit') return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'issue') return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'duplicate')
+      return isAllowedInvoiceAction(ActionEnum.CREATE);
+    if (operation === 'delete')
+      return isAllowedInvoiceAction(ActionEnum.DELETE);
+    if (operation === 'downloadPDF') return true;
+    if (operation === 'copyPaymentLink')
+      return isAllowedInvoiceAction(ActionEnum.READ);
+    if (operation === 'send') return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'cancel')
+      return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'markUncollectible')
+      return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'recordPayment')
+      return isAllowedInvoiceAction(ActionEnum.UPDATE);
+
+    throw new Error(`Unknown operation: ${operation}`);
+  });
+};
 
 const invoiceDefaultActions: InvoiceDefaultActions = {
   [ReceivablesStatusEnum.DRAFT]: [
