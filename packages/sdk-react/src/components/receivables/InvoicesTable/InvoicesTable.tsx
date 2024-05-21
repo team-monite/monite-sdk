@@ -31,14 +31,15 @@ import {
   GridRenderCellParams,
   GridSortModel,
 } from '@mui/x-data-grid';
+import type { GridColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 import {
-  InvoiceActionMenu,
   type InvoiceActionHandler,
+  InvoiceActionMenu,
 } from './InvoiceActionMenu';
 
 type InvoicesTableProps = {
@@ -67,7 +68,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
+const InvoicesTableBase = ({ onRowClick, onRowAction }: InvoicesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -114,6 +115,29 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setSortModel(model);
     setCurrentPaginationToken(null);
   };
+
+  const invoiceActionCellTuple: [GridColDef<ReceivableResponse>] | [] =
+    onRowAction
+      ? [
+          {
+            field: 'action_menu',
+            headerName: t(i18n)`Action menu`,
+            renderHeader: () => null,
+            sortable: false,
+            resizable: false,
+            filterable: false,
+            disableColumnMenu: true,
+            flex: 0,
+            align: 'center',
+            renderCell: ({ row }) => (
+              <InvoiceActionMenu
+                onClick={onRowAction}
+                invoice={row as InvoiceResponsePayload}
+              />
+            ),
+          },
+        ]
+      : [];
 
   // Workaround to prevent illegal sorting fields
   const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
@@ -243,18 +267,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
                 : '—',
             flex: 0.7,
           },
-          {
-            field: 'action-menu',
-            headerName: '',
-            sortable: false,
-            flex: 0.4,
-            renderCell: ({ row }) => (
-              <InvoiceActionMenu
-                onClick={onRowClick}
-                invoice={row as InvoiceResponsePayload}
-              />
-            ),
-          },
+          ...invoiceActionCellTuple,
         ]}
         rows={invoices?.data ?? []}
       />

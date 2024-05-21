@@ -1,10 +1,14 @@
-import { forwardRef, memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 
 import { useMenuButton } from '@/core/hooks';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload, ReceivablesStatusEnum } from '@monite/sdk-api';
+import {
+  InvoiceResponsePayload,
+  ReceivableResponse,
+  ReceivablesStatusEnum,
+} from '@monite/sdk-api';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   IconButton,
@@ -32,8 +36,12 @@ export interface MoniteInvoiceActionMenuProps {
   };
 }
 
+export type ActionMenuInvoice =
+  | Pick<InvoiceResponsePayload, 'id' | 'status'>
+  | Pick<ReceivableResponse, 'id' | 'status'>;
+
 interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
-  invoice: Pick<InvoiceResponsePayload, 'id' | 'status'>;
+  invoice: ActionMenuInvoice;
   onClick?: InvoiceActionHandler;
 }
 
