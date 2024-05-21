@@ -23,7 +23,7 @@ interface ReceivablesTableControlledProps {
   onTabChange: (tab: ReceivablesTableTabEnum) => void;
 }
 
-type ReceivablesTableProps = {
+export type ReceivablesTableProps = {
   /**
    * The event handler for a row click.
    *
