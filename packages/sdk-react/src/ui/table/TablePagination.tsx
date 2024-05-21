@@ -21,7 +21,7 @@ const DEFAULT_PAGE_SIZE = 10 as const;
 
 type PaginationModel<T> = {
   pageSize: number;
-  page: T;
+  page: T | null;
 };
 
 interface MoniteTablePaginationSlotProps {
@@ -169,8 +169,8 @@ export const TablePagination = <T,>({
             value={pageSize.toString()}
             onChange={(event) =>
               void onPaginationModelChange({
-                page: paginationModel.page,
-                pageSize: parseInt(event.target.value, 10),
+                page: null,
+                pageSize: parseInt(event.target.value, DEFAULT_PAGE_SIZE),
               })
             }
           >
