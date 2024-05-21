@@ -59,13 +59,13 @@ interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
  *       defaultProps: {
  *         // override default actions for each invoice status
  *         actions: {
- *           "draft": ['view', 'edit', 'issue', 'downloadPDF', 'duplicate', 'delete'], // Optional
- *           "issued": ['view', 'duplicate', 'downloadPDF', 'send', 'recordPayment', 'cancel', 'copyPaymentLink'], // Optional
- *           "canceled": ['view', 'downloadPDF', 'send'], // Optional
- *           "partially_paid": ['view', 'duplicate', 'downloadPDF', 'send', 'recordPayment', 'copyPaymentLink', 'cancel'], // Optional
- *           "overdue": ['view', 'duplicate', 'downloadPDF', 'send', 'recordPayment', 'copyPaymentLink', 'cancel', 'markUncollectible'], // Optional
- *           "paid": ['view', 'duplicate', 'downloadPDF'], // Optional
- *           "uncollectible": ['view', 'duplicate', 'downloadPDF'], // Optional
+ *           "draft": ['view', 'edit', 'issue', 'delete'], // Optional
+ *           "issued": ['view', 'send', 'cancel', 'copyPaymentLink'], // Optional
+ *           "canceled": ['view', 'send'], // Optional
+ *           "partially_paid": ['view', 'send', 'copyPaymentLink', 'cancel'], // Optional
+ *           "overdue": ['view', 'send', 'copyPaymentLink', 'cancel', 'markUncollectible'], // Optional
+ *           "paid": ['view'], // Optional
+ *           "uncollectible": ['view'], // Optional
  *           "expired": ['view'], // Optional
  *           "accepted": ['view'], // Optional
  *           "declined": ['view'], // Optional
@@ -166,6 +166,7 @@ const ActionMenuItem = memo(
   }
 );
 
+// todo::add tests ⬇︎
 const useInvoiceActionList = ({
   invoice,
   actions,
@@ -191,19 +192,20 @@ const useInvoiceActionList = ({
     if (operation === 'view') return isAllowedInvoiceAction(ActionEnum.READ);
     if (operation === 'edit') return isAllowedInvoiceAction(ActionEnum.UPDATE);
     if (operation === 'issue') return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'duplicate')
-      return isAllowedInvoiceAction(ActionEnum.CREATE);
     if (operation === 'delete')
       return isAllowedInvoiceAction(ActionEnum.DELETE);
-    if (operation === 'downloadPDF') return true;
     if (operation === 'copyPaymentLink')
       return isAllowedInvoiceAction(ActionEnum.READ);
-    if (operation === 'send') return isAllowedInvoiceAction(ActionEnum.UPDATE);
     if (operation === 'cancel')
       return isAllowedInvoiceAction(ActionEnum.UPDATE);
     if (operation === 'markUncollectible')
       return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'recordPayment')
+    if (operation === 'recurrent')
+      return isAllowedInvoiceAction(ActionEnum.CREATE);
+    if (operation === 'partiallyPay')
+      return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'pay') return isAllowedInvoiceAction(ActionEnum.UPDATE);
+    if (operation === 'overduePayment')
       return isAllowedInvoiceAction(ActionEnum.UPDATE);
 
     throw new Error(`Unknown operation: ${operation}`);
@@ -211,45 +213,18 @@ const useInvoiceActionList = ({
 };
 
 const invoiceDefaultActions: InvoiceDefaultActions = {
-  [ReceivablesStatusEnum.DRAFT]: [
-    'view',
-    'edit',
-    'issue',
-    'downloadPDF',
-    'duplicate',
-    'delete',
-  ],
-  [ReceivablesStatusEnum.ISSUED]: [
-    'view',
-    'duplicate',
-    'downloadPDF',
-    'send',
-    'recordPayment',
-    'cancel',
-    'copyPaymentLink',
-  ],
-  [ReceivablesStatusEnum.CANCELED]: ['view', 'downloadPDF', 'send'],
+  [ReceivablesStatusEnum.DRAFT]: ['view', 'edit', 'issue', 'delete'],
+  [ReceivablesStatusEnum.ISSUED]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment' are not default
+  [ReceivablesStatusEnum.CANCELED]: ['view'],
   [ReceivablesStatusEnum.PARTIALLY_PAID]: [
+    // 'copyPaymentLink', 'pay', 'overduePayment' are not default
     'view',
-    'duplicate',
-    'downloadPDF',
     'send',
-    'recordPayment',
-    'copyPaymentLink',
     'cancel',
   ],
-  [ReceivablesStatusEnum.OVERDUE]: [
-    'view',
-    'duplicate',
-    'downloadPDF',
-    'send',
-    'recordPayment',
-    'copyPaymentLink',
-    'cancel',
-    'markUncollectible',
-  ],
-  [ReceivablesStatusEnum.PAID]: ['view', 'duplicate', 'downloadPDF'],
-  [ReceivablesStatusEnum.UNCOLLECTIBLE]: ['view', 'duplicate', 'downloadPDF'],
+  [ReceivablesStatusEnum.OVERDUE]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'pay', 'markUncollectible' are not default
+  [ReceivablesStatusEnum.PAID]: ['view'],
+  [ReceivablesStatusEnum.UNCOLLECTIBLE]: ['view'],
   [ReceivablesStatusEnum.EXPIRED]: ['view'],
   [ReceivablesStatusEnum.ACCEPTED]: ['view'],
   [ReceivablesStatusEnum.DECLINED]: ['view'],
@@ -261,10 +236,6 @@ function getInvoiceMenuItemLabel(i18n: I18n, action: InvoiceAction) {
   const labels: Record<InvoiceAction, string> = {
     view: t(i18n)({
       message: 'View',
-      context: 'InvoiceActionMenu',
-    }),
-    downloadPDF: t(i18n)({
-      message: 'Download PDF',
       context: 'InvoiceActionMenu',
     }),
     send: t(i18n)({
@@ -291,16 +262,24 @@ function getInvoiceMenuItemLabel(i18n: I18n, action: InvoiceAction) {
       message: 'Mark uncollectible',
       context: 'InvoiceActionMenu',
     }),
-    recordPayment: t(i18n)({
-      message: 'Record payment',
-      context: 'InvoiceActionMenu',
-    }),
-    duplicate: t(i18n)({
-      message: 'Duplicate',
-      context: 'InvoiceActionMenu',
-    }),
     issue: t(i18n)({
       message: 'Issue',
+      context: 'InvoiceActionMenu',
+    }),
+    recurrent: t(i18n)({
+      message: 'Recurring',
+      context: 'InvoiceActionMenu',
+    }),
+    partiallyPay: t(i18n)({
+      message: 'Partially pay',
+      context: 'InvoiceActionMenu',
+    }),
+    pay: t(i18n)({
+      message: 'Pay',
+      context: 'InvoiceActionMenu',
+    }),
+    overduePayment: t(i18n)({
+      message: 'Overdue payment',
       context: 'InvoiceActionMenu',
     }),
   };
@@ -308,57 +287,42 @@ function getInvoiceMenuItemLabel(i18n: I18n, action: InvoiceAction) {
   return labels[action];
 }
 
-type InvoiceAction =
-  | 'view'
-  | 'edit'
-  | 'issue'
-  | 'duplicate'
-  | 'delete'
-  | 'downloadPDF'
-  | 'copyPaymentLink'
-  | 'send'
-  | 'recordPayment'
-  | 'cancel'
-  | 'markUncollectible';
+type InvoiceCustomAction = 'view' | 'edit' | 'copyPaymentLink' | 'send';
 
-interface InvoiceDefaultActions
+export type InvoiceAction =
+  | 'recurrent'
+  | 'issue'
+  | 'delete'
+  | 'cancel'
+  | 'partiallyPay'
+  | 'pay'
+  | 'overduePayment'
+  | 'markUncollectible'
+  | InvoiceCustomAction;
+
+export interface InvoiceDefaultActions
   extends Record<ReceivablesStatusEnum, InvoiceAction[]> {
   [ReceivablesStatusEnum.DRAFT]: Array<
-    'view' | 'edit' | 'issue' | 'downloadPDF' | 'duplicate' | 'delete'
+    'view' | 'edit' | 'issue' | 'recurrent' | 'delete'
   >;
   [ReceivablesStatusEnum.ISSUED]: Array<
     | 'view'
-    | 'duplicate'
-    | 'downloadPDF'
     | 'send'
-    | 'recordPayment'
-    | 'cancel'
     | 'copyPaymentLink'
+    | 'pay'
+    | 'partiallyPay'
+    | 'overduePayment'
+    | 'cancel'
   >;
-  [ReceivablesStatusEnum.CANCELED]: Array<'view' | 'downloadPDF' | 'send'>;
+  [ReceivablesStatusEnum.CANCELED]: Array<'view'>;
   [ReceivablesStatusEnum.PARTIALLY_PAID]: Array<
-    | 'view'
-    | 'duplicate'
-    | 'downloadPDF'
-    | 'send'
-    | 'recordPayment'
-    | 'copyPaymentLink'
-    | 'cancel'
+    'view' | 'send' | 'copyPaymentLink' | 'pay' | 'overduePayment' | 'cancel'
   >;
   [ReceivablesStatusEnum.OVERDUE]: Array<
-    | 'view'
-    | 'duplicate'
-    | 'downloadPDF'
-    | 'send'
-    | 'recordPayment'
-    | 'copyPaymentLink'
-    | 'cancel'
-    | 'markUncollectible'
+    'view' | 'send' | 'copyPaymentLink' | 'pay' | 'cancel' | 'markUncollectible'
   >;
-  [ReceivablesStatusEnum.PAID]: Array<'view' | 'duplicate' | 'downloadPDF'>;
-  [ReceivablesStatusEnum.UNCOLLECTIBLE]: Array<
-    'view' | 'duplicate' | 'downloadPDF'
-  >;
+  [ReceivablesStatusEnum.PAID]: Array<'view'>;
+  [ReceivablesStatusEnum.UNCOLLECTIBLE]: Array<'view'>;
   [ReceivablesStatusEnum.EXPIRED]: Array<'view'>;
   [ReceivablesStatusEnum.ACCEPTED]: Array<'view'>;
   [ReceivablesStatusEnum.DECLINED]: Array<'view'>;
