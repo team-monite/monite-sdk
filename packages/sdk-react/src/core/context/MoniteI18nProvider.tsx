@@ -26,8 +26,33 @@ export type MoniteLocale = {
   code?: string;
 
   /**
-   * `messages` responsible for internationalised Widgets translation.
-   * By default it uses `enLocaleMessages` as a fallback in MoniteProvider.
+   * Message` responsible for internationalised Widgets translation.
+   * By default, it uses `enLocaleMessages` as a fallback in MoniteProvider.
+   *
+   * The message object is a key-value pair where the key is the Message ID,
+   * and the value is the message string or a `LinguiContextMessage` object.
+   *
+   * If you need to use context (`msgctxt`) for differentiating messages with the same ID,
+   * you can use the LinguiContextMessage object.
+   *
+   * @example Without context:
+   * ```ts
+   * {
+   *   "Hello": "Hallo"
+   * }
+   * ```
+   *
+   * @example With the context:
+   * ```ts
+   * {
+   *   "View": [
+   *     { msgstr: "Rechnung ansehen", msgctxt: "InvoicesTableRowActionMenu" },
+   *     { msgstr: "Siehe" },
+   *   ]
+   * }
+   * ```
+   * In the example with context, `InvoicesTableRowActionMenu` is the context for the message "View".
+   * This can be useful when the same message ID needs to be translated differently in different contexts.
    */
   messages?: MoniteSupportedMessages;
 
@@ -128,7 +153,7 @@ const createDynamicI18nProvider = async (
 ) => {
   const [linguiCompiledMessages, dateFnsLocale] = await Promise.all([
     locale.messages
-      ? await compileLinguiDynamicMessages(locale.messages)
+      ? compileLinguiDynamicMessages(locale.messages)
       : Promise.resolve(),
     loadDateFnsLocale(locale.code),
   ]);
