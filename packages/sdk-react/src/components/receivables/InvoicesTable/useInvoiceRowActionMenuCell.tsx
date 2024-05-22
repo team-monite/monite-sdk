@@ -13,7 +13,7 @@ import {
   ReceivablesStatusEnum,
 } from '@monite/sdk-api';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import type { GridColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
+import type { GridActionsColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 
 export interface UseInvoiceRowActionMenuCellProps {
   /**
@@ -55,7 +55,7 @@ export interface UseInvoiceRowActionMenuCellProps {
 
 export const useInvoiceRowActionMenuCell = (
   props: UseInvoiceRowActionMenuCellProps | {}
-): GridColDef<ReceivableResponse> | undefined => {
+): GridActionsColDef<ReceivableResponse> | undefined => {
   const { data: receivableActionSchema, userIdFromAuthToken } =
     usePermissions('receivable');
   const { i18n } = useLingui();
