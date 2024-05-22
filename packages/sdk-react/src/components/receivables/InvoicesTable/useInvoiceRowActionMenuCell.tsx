@@ -164,7 +164,7 @@ export const filterInvoiceActionMenuAllowedItems = (
 };
 
 const DEFAULT_ACTION_LIST: InvoicesTableRowActionSchema = {
-  [ReceivablesStatusEnum.DRAFT]: ['view', 'edit', 'issue', 'delete'],
+  [ReceivablesStatusEnum.DRAFT]: ['view', 'edit', 'delete'], // 'issue', 'recurrent' are not default
   [ReceivablesStatusEnum.ISSUED]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment' are not default
   [ReceivablesStatusEnum.CANCELED]: ['view'],
   [ReceivablesStatusEnum.PARTIALLY_PAID]: [
