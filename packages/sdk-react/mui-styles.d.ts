@@ -1,44 +1,51 @@
-import { PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
+import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
+  ComponentsPropsList,
   ComponentsVariants,
   Theme as MuiTheme,
 } from '@mui/material/styles';
 
 type Theme = Omit<MuiTheme, 'components'>;
 
+/**
+ * Extends theme `components` with Monite components,
+ * allowing to configure default props, style overrides, and variants.
+ */
+interface ComponentType<T> {
+  defaultProps?: ComponentsPropsList[T];
+  styleOverrides?: ComponentsOverrides<Theme>[T];
+  variants?: ComponentsVariants[T];
+}
+
 declare module '@mui/material/styles' {
+  /**
+   * Extends `styleOverrides` of the component theme configuration
+   * with slots from the component.
+   */
   interface ComponentNameToClassKey {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
   }
 
+  /**
+   * Extends MUI component list
+   */
   interface ComponentsPropsList {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
   }
 
+  /**
+   * Extends theme `components`
+   */
   interface Components {
-    MoniteInvoiceStatusChip?: {
-      defaultProps?: ComponentsPropsList['MoniteInvoiceStatusChip'];
-      styleOverrides?: ComponentsOverrides<Theme>['MoniteInvoiceStatusChip'];
-      variants?: ComponentsVariants['MoniteInvoiceStatusChip'];
-    };
-
-    MonitePayableStatusChip?: {
-      defaultProps?: ComponentsPropsList['MonitePayableStatusChip'];
-      styleOverrides?: ComponentsOverrides<Theme>['MonitePayableStatusChip'];
-      variants?: ComponentsVariants['MonitePayableStatusChip'];
-    };
-
-    MoniteTablePagination?: {
-      defaultProps?: ComponentsPropsList['MoniteTablePagination'];
-      styleOverrides?: ComponentsOverrides<Theme>['MoniteTablePagination'];
-      variants?: ComponentsVariants['MoniteTablePagination'];
-    };
+    MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
+    MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
+    MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
   }
 }
