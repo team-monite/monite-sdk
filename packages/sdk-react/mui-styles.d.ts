@@ -1,5 +1,4 @@
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { type MoniteInvoiceActionMenuProps } from '@/components/receivables/InvoicesTable/InvoiceActionMenu';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
@@ -40,7 +39,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
-    MoniteInvoiceActionMenu: Partial<MoniteInvoiceActionMenuProps>;
   }
 
   /**
@@ -50,6 +48,5 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
-    MoniteInvoiceActionMenu?: ComponentType<'MoniteInvoiceActionMenu'>;
   }
 }

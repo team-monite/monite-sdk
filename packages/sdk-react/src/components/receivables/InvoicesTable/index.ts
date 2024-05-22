@@ -1,1 +1,1 @@
-export { InvoicesTable } from './InvoicesTable';
+export { InvoicesTable, type InvoicesTableProps } from './InvoicesTable';

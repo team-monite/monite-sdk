@@ -31,31 +31,28 @@ import {
   GridRenderCellParams,
   GridSortModel,
 } from '@mui/x-data-grid';
-import type { GridColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 import {
-  type InvoiceActionHandler,
-  InvoiceActionMenu,
-} from './InvoiceActionMenu';
+  useInvoiceRowActionMenuCell,
+  type UseInvoiceRowActionMenuCellProps,
+} from './useInvoiceRowActionMenuCell';
 
-type InvoicesTableProps = {
+interface InvoicesTableBaseProps {
   /**
    * The event handler for a row click.
    *
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+}
 
-  /**
-   * The event handler for a row action.
-   * See `MoniteInvoiceActionMenu` documentation for more details.
-   */
-  onRowAction?: InvoiceActionHandler;
-};
+export type InvoicesTableProps =
+  | InvoicesTableBaseProps
+  | (UseInvoiceRowActionMenuCellProps & InvoicesTableBaseProps);
 
 export interface InvoicesTableSortModel {
   field: ReceivableCursorFields;
@@ -68,7 +65,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const InvoicesTableBase = ({ onRowClick, onRowAction }: InvoicesTableProps) => {
+const InvoicesTableBase = ({
+  onRowClick,
+  ...restProps
+}: InvoicesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -116,28 +116,11 @@ const InvoicesTableBase = ({ onRowClick, onRowAction }: InvoicesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
-  const invoiceActionCellTuple: [GridColDef<ReceivableResponse>] | [] =
-    onRowAction
-      ? [
-          {
-            field: 'action_menu',
-            headerName: t(i18n)`Action menu`,
-            renderHeader: () => null,
-            sortable: false,
-            resizable: false,
-            filterable: false,
-            disableColumnMenu: true,
-            flex: 0,
-            align: 'center',
-            renderCell: ({ row }) => (
-              <InvoiceActionMenu
-                onClick={onRowAction}
-                invoice={row as InvoiceResponsePayload}
-              />
-            ),
-          },
-        ]
-      : [];
+  const invoiceActionCell = useInvoiceRowActionMenuCell({
+    rowActions: 'rowActions' in restProps && restProps.rowActions,
+    onRowActionClick:
+      'onRowActionClick' in restProps && restProps.onRowActionClick,
+  });
 
   // Workaround to prevent illegal sorting fields
   const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
@@ -267,7 +250,7 @@ const InvoicesTableBase = ({ onRowClick, onRowAction }: InvoicesTableProps) => {
                 : '—',
             flex: 0.7,
           },
-          ...invoiceActionCellTuple,
+          ...(invoiceActionCell ? [invoiceActionCell] : []),
         ]}
         rows={invoices?.data ?? []}
       />

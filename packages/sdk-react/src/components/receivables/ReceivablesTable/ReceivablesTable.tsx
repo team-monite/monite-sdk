@@ -1,7 +1,6 @@
 import React, { useId, useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceActionHandler } from '@/components/receivables/InvoicesTable/InvoiceActionMenu';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -31,12 +30,6 @@ export type ReceivablesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
-
-  /**
-   * The event handler for a row action.
-   * See `MoniteInvoiceActionMenu` documentation for more details.
-   */
-  onRowAction?: InvoiceActionHandler;
 } & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
 
 export enum ReceivablesTableTabEnum {
@@ -55,7 +48,6 @@ const ReceivablesTableBase = ({
   tab,
   onTabChange,
   onRowClick,
-  onRowAction,
 }: ReceivablesTableProps) => {
   const { i18n } = useLingui();
   const [activeTab, setActiveTab] = useSetActiveTab({ tab, onTabChange });
@@ -115,7 +107,7 @@ const ReceivablesTableBase = ({
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
         >
-          <InvoicesTable onRowClick={onRowClick} onRowAction={onRowAction} />
+          <InvoicesTable onRowClick={onRowClick} />
         </Box>
       )}
 
