@@ -7,8 +7,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   ActionEnum,
+  ActionSchema,
   InvoiceResponsePayload,
-  ReceivableResponse,
   ReceivablesStatusEnum,
 } from '@monite/sdk-api';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -28,7 +28,10 @@ import { styled, useThemeProps } from '@mui/material/styles';
  * @param id - The identifier of the clicked invoice row.
  * @param action - The action to perform.
  */
-export type InvoiceActionHandler = (id: string, action?: InvoiceAction) => void;
+export type InvoiceActionHandler = (
+  id: string,
+  action?: InvoiceActionMenuItemValue
+) => void;
 
 export interface MoniteInvoiceActionMenuProps {
   actions?: Partial<InvoiceDefaultActions>;
@@ -38,9 +41,10 @@ export interface MoniteInvoiceActionMenuProps {
   };
 }
 
-export type ActionMenuInvoice =
-  | Pick<InvoiceResponsePayload, 'id' | 'status' | 'entity_user_id'>
-  | Pick<ReceivableResponse, 'id' | 'status' | 'entity_user_id'>;
+export type ActionMenuInvoice = Pick<
+  InvoiceResponsePayload,
+  'id' | 'status' | 'entity_user_id'
+>;
 
 interface InvoiceActionMenuProps extends MoniteInvoiceActionMenuProps {
   invoice: ActionMenuInvoice;
@@ -101,9 +105,9 @@ export const InvoiceActionMenu = memo((inProps: InvoiceActionMenuProps) => {
   });
   const { i18n } = useLingui();
 
-  const actionList = useInvoiceActionList({ invoice, actions });
+  const menuItems = useInvoiceActionMenuItems({ invoice, actions });
 
-  if (actionList.length === 0) return null;
+  if (menuItems.length === 0) return null;
 
   return (
     <>
@@ -116,7 +120,7 @@ export const InvoiceActionMenu = memo((inProps: InvoiceActionMenuProps) => {
       </StyledIconButton>
 
       <StyledMenu {...slotProps?.menu} {...menuProps}>
-        {actionList.map((value) => (
+        {menuItems.map((value) => (
           <ActionMenuItem
             key={value}
             invoiceAction={value}
@@ -155,7 +159,7 @@ const StyledMenu = styled(
 const ActionMenuItem = ({
   invoiceAction,
   ...restProps
-}: { invoiceAction: InvoiceAction } & MenuItemProps) => {
+}: { invoiceAction: InvoiceActionMenuItemValue } & MenuItemProps) => {
   const { i18n } = useLingui();
   return (
     <MenuItem {...restProps}>
@@ -164,53 +168,64 @@ const ActionMenuItem = ({
   );
 };
 
-// todo::add tests ⬇︎
-const useInvoiceActionList = ({
+const useInvoiceActionMenuItems = ({
   invoice,
   actions,
-}: Pick<InvoiceActionMenuProps, 'actions' | 'invoice'>): InvoiceAction[] => {
-  const { data: allowedReceivableActions, userIdFromAuthToken } =
+}: Pick<
+  InvoiceActionMenuProps,
+  'actions' | 'invoice'
+>): InvoiceActionMenuItemValue[] => {
+  const { data: receivableActionSchema, userIdFromAuthToken } =
     usePermissions('receivable');
 
+  const invoiceMenuItems =
+    actions?.[invoice.status] ?? DEFAULT_ACTION_LIST[invoice.status];
+
+  return filterInvoiceActionMenuAllowedItems(
+    receivableActionSchema,
+    invoiceMenuItems,
+    invoice,
+    userIdFromAuthToken
+  );
+};
+
+export const filterInvoiceActionMenuAllowedItems = (
+  actionSchema: ActionSchema[] | undefined,
+  menuItemsToFilter: InvoiceActionMenuItemValue[],
+  invoice: ActionMenuInvoice,
+  userIdFromAuthToken: string | undefined
+) => {
   const isAllowedInvoiceAction = (
     action: Parameters<typeof isActionAllowed>[0]['action']
   ) =>
     isActionAllowed({
       action,
-      actions: allowedReceivableActions,
+      actions: actionSchema,
       entityUserId: invoice.entity_user_id,
       entityUserIdFromAuthToken: userIdFromAuthToken,
     });
 
-  const actionList =
-    actions?.[invoice.status] ?? invoiceDefaultActions[invoice.status];
+  const menuItemsPermissionMap: Record<InvoiceActionMenuItemValue, boolean> = {
+    view: isAllowedInvoiceAction(ActionEnum.READ),
+    edit: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    issue: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    delete: isAllowedInvoiceAction(ActionEnum.DELETE),
+    copyPaymentLink: isAllowedInvoiceAction(ActionEnum.READ),
+    cancel: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    markUncollectible: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    recurrent: isAllowedInvoiceAction(ActionEnum.CREATE),
+    partiallyPay: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    pay: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    overduePayment: isAllowedInvoiceAction(ActionEnum.UPDATE),
+    send: isAllowedInvoiceAction(ActionEnum.CREATE),
+  };
 
-  // @ts-expect-error - `filter` can't handle complex union types
-  return actionList.filter((operation: InvoiceAction) => {
-    if (operation === 'view') return isAllowedInvoiceAction(ActionEnum.READ);
-    if (operation === 'edit') return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'issue') return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'delete')
-      return isAllowedInvoiceAction(ActionEnum.DELETE);
-    if (operation === 'copyPaymentLink')
-      return isAllowedInvoiceAction(ActionEnum.READ);
-    if (operation === 'cancel')
-      return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'markUncollectible')
-      return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'recurrent')
-      return isAllowedInvoiceAction(ActionEnum.CREATE);
-    if (operation === 'partiallyPay')
-      return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'pay') return isAllowedInvoiceAction(ActionEnum.UPDATE);
-    if (operation === 'overduePayment')
-      return isAllowedInvoiceAction(ActionEnum.UPDATE);
-
-    throw new Error(`Unknown operation: ${operation}`);
-  });
+  return menuItemsToFilter.filter(
+    (itemValue) => menuItemsPermissionMap[itemValue]
+  );
 };
 
-const invoiceDefaultActions: InvoiceDefaultActions = {
+const DEFAULT_ACTION_LIST: InvoiceDefaultActions = {
   [ReceivablesStatusEnum.DRAFT]: ['view', 'edit', 'issue', 'delete'],
   [ReceivablesStatusEnum.ISSUED]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment' are not default
   [ReceivablesStatusEnum.CANCELED]: ['view'],
@@ -230,8 +245,11 @@ const invoiceDefaultActions: InvoiceDefaultActions = {
   [ReceivablesStatusEnum.DELETED]: [],
 };
 
-function getInvoiceMenuItemLabel(i18n: I18n, action: InvoiceAction) {
-  const labels: Record<InvoiceAction, string> = {
+function getInvoiceMenuItemLabel(
+  i18n: I18n,
+  action: InvoiceActionMenuItemValue
+) {
+  const labels: Record<InvoiceActionMenuItemValue, string> = {
     view: t(i18n)({
       message: 'View',
       context: 'InvoiceActionMenu',
@@ -285,9 +303,7 @@ function getInvoiceMenuItemLabel(i18n: I18n, action: InvoiceAction) {
   return labels[action];
 }
 
-type InvoiceCustomAction = 'view' | 'edit' | 'copyPaymentLink' | 'send';
-
-export type InvoiceAction =
+export type InvoiceActionMenuItemValue =
   | 'recurrent'
   | 'issue'
   | 'delete'
@@ -296,10 +312,14 @@ export type InvoiceAction =
   | 'pay'
   | 'overduePayment'
   | 'markUncollectible'
-  | InvoiceCustomAction;
+  // custom actions
+  | 'view'
+  | 'edit'
+  | 'copyPaymentLink'
+  | 'send';
 
 export interface InvoiceDefaultActions
-  extends Record<ReceivablesStatusEnum, InvoiceAction[]> {
+  extends Record<ReceivablesStatusEnum, InvoiceActionMenuItemValue[]> {
   [ReceivablesStatusEnum.DRAFT]: Array<
     'view' | 'edit' | 'issue' | 'recurrent' | 'delete'
   >;
