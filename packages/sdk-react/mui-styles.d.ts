@@ -13,7 +13,7 @@ declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
-    MoniteTablePagination: 'root';
+    MoniteTablePagination: 'root' | 'menu';
   }
 
   interface ComponentsPropsList {
