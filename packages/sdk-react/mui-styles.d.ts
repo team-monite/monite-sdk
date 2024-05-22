@@ -1,6 +1,6 @@
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
-import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
+import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
@@ -29,7 +29,6 @@ declare module '@mui/material/styles' {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
-    MoniteInvoiceActionMenu: 'root';
   }
 
   /**
