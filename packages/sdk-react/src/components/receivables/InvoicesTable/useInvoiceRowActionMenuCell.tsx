@@ -65,7 +65,10 @@ export const useInvoiceRowActionMenuCell = (
   return {
     field: 'action_menu',
     type: 'actions',
-    headerName: t(i18n)`Action menu`,
+    headerName: t(i18n)({
+      message: 'Action menu',
+      context: 'InvoicesTableRowActionMenu',
+    }),
     renderHeader: () => null,
     getActions: (params) => {
       const menuItems = getInvoiceActionMenuItems({
@@ -185,51 +188,51 @@ const getInvoiceActionMenuItemLabels = (
 ): Record<InvoicesTableRowAction, string> => ({
   view: t(i18n)({
     message: 'View',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   send: t(i18n)({
     message: 'Send',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   copyPaymentLink: t(i18n)({
     message: 'Copy payment link',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   cancel: t(i18n)({
     message: 'Cancel with credit note',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   edit: t(i18n)({
     message: 'Edit',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   delete: t(i18n)({
     message: 'Delete',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   markUncollectible: t(i18n)({
     message: 'Mark uncollectible',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   issue: t(i18n)({
     message: 'Issue',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   recurrent: t(i18n)({
     message: 'Recurring',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   partiallyPay: t(i18n)({
     message: 'Partially pay',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   pay: t(i18n)({
     message: 'Pay',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
   overduePayment: t(i18n)({
     message: 'Overdue payment',
-    context: 'InvoiceActionMenu',
+    context: 'InvoicesTableRowActionMenu',
   }),
 });
 
