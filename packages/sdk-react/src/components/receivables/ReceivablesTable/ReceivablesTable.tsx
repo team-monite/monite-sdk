@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useId, useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -10,12 +10,12 @@ import { CreditNotesTable } from '../CreditNotesTable';
 import { InvoicesTable } from '../InvoicesTable';
 import { QuotesTable } from '../QuotesTable';
 
-interface IReceiveablesTableUncontrolledProps {
+interface ReceivablesTableUncontrolledProps {
   tab?: undefined;
   onTabChange?: undefined;
 }
 
-interface IReceiveablesTableControlledProps {
+interface ReceivablesTableControlledProps {
   /** Active selected tab */
   tab: ReceivablesTableTabEnum;
 
@@ -30,7 +30,7 @@ type ReceivablesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
-} & (IReceiveablesTableUncontrolledProps | IReceiveablesTableControlledProps);
+} & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
 
 export enum ReceivablesTableTabEnum {
   Quotes,
@@ -45,27 +45,16 @@ export const ReceivablesTable = (props: ReceivablesTableProps) => (
 );
 
 const ReceivablesTableBase = ({
+  tab,
+  onTabChange,
   onRowClick,
-  tab: externalActiveTab,
-  onTabChange: setExternalActiveTab,
 }: ReceivablesTableProps) => {
   const { i18n } = useLingui();
-  const [internalActiveTab, setInternalActiveTab] =
-    useState<ReceivablesTableTabEnum>(ReceivablesTableTabEnum.Invoices);
-
-  const activeTab = externalActiveTab ?? internalActiveTab;
-  const setActiveTab = setExternalActiveTab ?? setInternalActiveTab;
-
-  const activeUITab = useMemo(() => {
-    switch (activeTab) {
-      case ReceivablesTableTabEnum.Quotes:
-        return <QuotesTable onRowClick={onRowClick} />;
-      case ReceivablesTableTabEnum.Invoices:
-        return <InvoicesTable onRowClick={onRowClick} />;
-      case ReceivablesTableTabEnum.CreditNotes:
-        return <CreditNotesTable onRowClick={onRowClick} />;
-    }
-  }, [activeTab, onRowClick]);
+  const [activeTab, setActiveTab] = useSetActiveTab({ tab, onTabChange });
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const tabIdPrefix = `ReceivablesTable-Tab-${useId()}-`;
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const tabPanelIdPrefix = `ReceivablesTable-TabPanel-${useId()}-`;
 
   return (
     <>
@@ -80,26 +69,71 @@ const ReceivablesTableBase = ({
           onChange={(_, value) => setActiveTab(value)}
         >
           <Tab
-            id={`receivable-tab-${ReceivablesTableTabEnum.Invoices}`}
-            aria-controls={`receivable-tabpanel-${ReceivablesTableTabEnum.Invoices}`}
+            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
             label={t(i18n)`Invoices`}
             value={ReceivablesTableTabEnum.Invoices}
           />
+
           <Tab
-            id={`receivable-tab-${ReceivablesTableTabEnum.Quotes}`}
-            aria-controls={`receivable-tabpanel-${ReceivablesTableTabEnum.Quotes}`}
+            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
             label={t(i18n)`Quotes`}
             value={ReceivablesTableTabEnum.Quotes}
           />
+
           <Tab
-            id={`receivable-tab-${ReceivablesTableTabEnum.CreditNotes}`}
-            aria-controls={`receivable-tabpanel-${ReceivablesTableTabEnum.CreditNotes}`}
+            id={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+            aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
             label={t(i18n)`Credit notes`}
             value={ReceivablesTableTabEnum.CreditNotes}
           />
         </Tabs>
       </Box>
-      {activeUITab}
+
+      {activeTab === ReceivablesTableTabEnum.Quotes && (
+        <Box
+          role="tabpanel"
+          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+        >
+          <QuotesTable onRowClick={onRowClick} />
+        </Box>
+      )}
+
+      {activeTab === ReceivablesTableTabEnum.Invoices && (
+        <Box
+          role="tabpanel"
+          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+        >
+          <InvoicesTable onRowClick={onRowClick} />
+        </Box>
+      )}
+
+      {activeTab === ReceivablesTableTabEnum.CreditNotes && (
+        <Box
+          role="tabpanel"
+          id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+          aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+        >
+          <CreditNotesTable onRowClick={onRowClick} />
+        </Box>
+      )}
     </>
   );
+};
+
+/**
+ * Manages the active tab state.
+ * If the `tab` prop is provided, the component is controlled.
+ */
+const useSetActiveTab = ({
+  tab,
+  onTabChange,
+}: Pick<ReceivablesTableProps, 'tab' | 'onTabChange'>) => {
+  const [tabControlled, onTabChangeControlled] =
+    useState<ReceivablesTableTabEnum>(ReceivablesTableTabEnum.Invoices);
+
+  return [tab ?? tabControlled, onTabChange ?? onTabChangeControlled] as const;
 };
