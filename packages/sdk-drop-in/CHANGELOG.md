@@ -1,5 +1,12 @@
 # @monite/sdk-drop-in
 
+## 1.4.5
+
+### Patch Changes
+
+- aa1eb622: Add `delegatesFocus` for simple and effective focus management.
+  - @monite/sdk-api@3.12.0
+
 ## 1.4.4
 
 ### Patch Changes

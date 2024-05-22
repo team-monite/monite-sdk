@@ -1,5 +1,38 @@
 # @monite/sdk-react
 
+## 3.12.0
+
+### Minor Changes
+
+- b05f3448: enhanced the `<TablePagination/>` component with extended customization options via MUI theming, ensuring it fits seamlessly across different application contexts
+- d180bf4d: 1. Providers that may affect the customer's context have been moved to `<MoniteScopedProviders/>`. 2. All exported components and all components opening in `<Portal/>` receive `Monite-ContainerCssBaseline` class name. It provides styles for the color scheme of native controls _(dark/light)_ and default colors for components. > Backgrounds will not be added (neither for dark nor light themes), to minimize conflicts with embedding in customer applications. 3. The `<MoniteContext/>` interface has been updated to include:
+
+  - `theme`: Moved from `<MoniteThemeContext/>`.
+  - `i18n`: Added instead of `code`, pre-created via Suspense to contain all necessary data for components and hooks.
+  - `dateFnsLocale`: Added for DatePicker functionality, pre-created via Suspense.
+  - `queryClient`: Added for usage within `<MoniteScopedProviders/>`.
+
+  These changes improve the modularity and maintainability of the `MoniteProvider` while providing enhanced context management and usability for Monite SDK customers.
+
+- 709ca851: feat(DEV-4699): add an ability to edit Invoice
+- f4666f32: feat(DEV-10786): add consistent output of the Counterpart name
+- 5fad36b8: update `react-virtuoso` up to v4.7.10
+
+### Patch Changes
+
+- aa32e901: feat(DEV-10397): add `currencyNumberFormat` option to `MoniteLocale` to allow customization of currency formatting in different locales.
+- 565199dc: feat(DEV-10576): implement and reuse useMenuButton Hook
+- 57b9806e: Added two new components: `<InvoiceStatusChip/>` and `<PayableStatusChip/>`. Both components are configurable through
+  Material-UI theming to adapt their appearance and functionality according to application needs. For instance,
+  the `InvoiceStatusChip` can be customized under the component name `MoniteInvoiceStatusChip` in the MUI theme settings.
+  This allows for defining default properties and specific styles for various statuses, such as 'paid' and 'overdue'. This
+  configurability ensures that both components can be seamlessly integrated and styled within the existing application
+  framework, providing a consistent user experience.
+- a8edbbd0: style(DEV-10393): align pagination arrows center
+- f8cb7575: allow `<Menu/>` incorrect nesting
+- e25094ab: fix(DEV-10393): fix table page reset and styles for page size selector
+  - @monite/sdk-api@3.12.0
+
 ## 3.11.0
 
 ### Minor Changes
