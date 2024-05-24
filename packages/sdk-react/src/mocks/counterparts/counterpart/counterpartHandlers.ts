@@ -2,7 +2,6 @@ import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks/entityUsers';
-import { faker } from '@faker-js/faker';
 import type {
   CounterpartCreatePayload,
   CounterpartIndividualRootResponse,
@@ -18,9 +17,9 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
-import { delay, getMockPagination } from '../../utils';
+import { getMockPagination } from '../../utils';
 import {
   counterpartIndividualFixture,
   counterpartListFixture,
@@ -166,7 +165,9 @@ export const counterpartHandlers = [
         if (response) {
           await delay();
 
-          return HttpResponse.json(response);
+          return HttpResponse.json(response, {
+            status: 200,
+          });
         } else {
           await delay();
 

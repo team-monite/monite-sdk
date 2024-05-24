@@ -172,7 +172,7 @@ describe('PayableDetails', () => {
         await waitUntilTableIsLoaded();
 
         const pendingStatus = screen.getByText(t`Pending`);
-        const cancelButton = screen.getByRole('button', {
+        const cancelButton = await screen.findByRole('button', {
           name: t`Cancel`,
         });
         const rejectButton = await screen.findByRole('button', {
@@ -259,7 +259,7 @@ describe('PayableDetails', () => {
 
         await waitUntilTableIsLoaded();
 
-        const editButton = screen.getByRole('button', {
+        const editButton = await screen.findByRole('button', {
           name: t`Edit`,
         });
 

@@ -11,7 +11,9 @@ describe('ReceivablesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getAllByText(/INV-/)[0]).toBeInTheDocument();
+    const documents = await screen.findAllByText(/INV-/);
+
+    expect(documents[0]).toBeInTheDocument();
   });
 
   test('should render the list of quotes by default when the customer provides it', async () => {
@@ -24,7 +26,9 @@ describe('ReceivablesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getAllByText(/quote-/)[0]).toBeInTheDocument();
+    const documents = await screen.findAllByText(/quote-/);
+
+    expect(documents[0]).toBeInTheDocument();
   });
 
   test('should render the list of invoices when click on tab "Invoices"', async () => {
@@ -35,7 +39,9 @@ describe('ReceivablesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getAllByText(/INV-/)[0]).toBeInTheDocument();
+    const documents = await screen.findAllByText(/INV-/);
+
+    expect(documents[0]).toBeInTheDocument();
   });
 
   test('should render the list of quotes when click on tab "Quotes"', async () => {
@@ -46,7 +52,9 @@ describe('ReceivablesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getAllByText(/quote--/)[0]).toBeInTheDocument();
+    const documents = await screen.findAllByText(/quote--/);
+
+    expect(documents[0]).toBeInTheDocument();
   });
 
   test('should render the list of credit notes when click on tab "Credit notes"', async () => {
@@ -57,6 +65,8 @@ describe('ReceivablesTable', () => {
 
     await waitUntilTableIsLoaded();
 
-    expect(screen.getAllByText(/credit_note--/)[0]).toBeInTheDocument();
+    const documents = await screen.findAllByText(/credit_note--/);
+
+    expect(documents[0]).toBeInTheDocument();
   });
 });

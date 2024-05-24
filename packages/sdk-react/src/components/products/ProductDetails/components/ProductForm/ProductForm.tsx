@@ -45,7 +45,7 @@ interface ProductFormProps {
 export const ProductForm = (props: ProductFormProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const measureUnitsQuery = useMeasureUnits();
+  const { data: measureUnits, isLoading } = useMeasureUnits();
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
@@ -111,6 +111,7 @@ export const ProductForm = (props: ProductFormProps) => {
                       fullWidth
                       error={Boolean(error)}
                       required
+                      disabled={isLoading}
                     >
                       <InputLabel id={field.name}>{t(i18n)`Units`}</InputLabel>
                       <Select
@@ -119,13 +120,11 @@ export const ProductForm = (props: ProductFormProps) => {
                         MenuProps={{ container: root }}
                         {...field}
                       >
-                        {[...(measureUnitsQuery?.data?.data ?? [])].map(
-                          ({ id, name }) => (
-                            <MenuItem key={id} value={id}>
-                              {name}
-                            </MenuItem>
-                          )
-                        )}
+                        {[...(measureUnits?.data ?? [])].map(({ id, name }) => (
+                          <MenuItem key={id} value={id}>
+                            {name}
+                          </MenuItem>
+                        ))}
                       </Select>
                       {error && (
                         <FormHelperText>{error.message}</FormHelperText>

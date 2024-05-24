@@ -1,11 +1,10 @@
-import { delay } from '@/mocks/utils';
 import {
   AllowedCountries,
   type EntityOnboardingDocumentsPayload,
   type PersonOnboardingDocumentsPayload,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { getOnboardingDocumentDescriptionByCountry } from './onboardingDocumentsFixtures';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Dialog } from '@/components';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { CounterpartIndividualForm } from './CounterpartIndividualForm';
 
@@ -16,7 +16,9 @@ describe('CounterpartIndividualForm', () => {
 
       await waitUntilTableIsLoaded();
 
-      const cancelButton = screen.getByRole('button', { name: /Cancel/i });
+      const cancelButton = await screen.findByRole('button', {
+        name: /Cancel/i,
+      });
 
       expect(cancelButton).toBeInTheDocument();
     });
@@ -35,9 +37,11 @@ describe('CounterpartIndividualForm', () => {
 
         await waitUntilTableIsLoaded();
 
-        const cancelButton = screen.getByRole('button', { name: /Cancel/i });
+        const cancelButton = await screen.findByRole('button', {
+          name: /Cancel/i,
+        });
 
-        fireEvent.click(cancelButton);
+        await act(() => fireEvent.click(cancelButton));
 
         await waitFor(() => {
           expect(onCancelMock).toHaveBeenCalledTimes(1);

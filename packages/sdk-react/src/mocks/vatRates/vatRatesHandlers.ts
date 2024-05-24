@@ -1,11 +1,10 @@
-import { delay } from '@/mocks/utils';
 import {
   ErrorSchemaResponse,
   VAT_RATES_ENDPOINT,
   VatRateListResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { vatRatesFixture } from './vatRatesFixture';
 

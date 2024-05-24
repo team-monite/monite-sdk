@@ -1,5 +1,4 @@
 import { entityUser2 } from '@/mocks/entityUsers/entityUserByIdFixture';
-import { delay } from '@/mocks/utils';
 import {
   APPROVAL_POLICIES_ENDPOINT,
   ApprovalPolicyCreate,
@@ -10,7 +9,7 @@ import {
   ErrorSchemaResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import {
   approvalPoliciesSearchFixture,

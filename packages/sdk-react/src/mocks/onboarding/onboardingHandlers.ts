@@ -5,7 +5,6 @@ import {
 } from '@/components/onboarding/transformers';
 import { personMask } from '@/components/onboarding/transformers/tests/person';
 import { onboardingBankAccountFixture } from '@/mocks/onboarding/onboardingBankAccountFixtures';
-import { delay } from '@/mocks/utils';
 import { faker } from '@faker-js/faker';
 import {
   ErrorSchemaResponse,
@@ -21,7 +20,7 @@ import {
   PersonRequest,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { personFixture } from '../persons/personsFixtures';
 import { onboardingBusinessProfileFixture } from './onboardingBusinessProfile';

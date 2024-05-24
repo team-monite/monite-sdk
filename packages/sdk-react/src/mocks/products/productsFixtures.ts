@@ -1,4 +1,3 @@
-import { measureUnitsListFixture } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
@@ -12,6 +11,8 @@ import {
   ProductServiceResponse,
   ProductServiceTypeEnum,
 } from '@monite/sdk-api';
+
+import { measureUnitsListFixture } from '../measureUnits/measureUnitsFixture';
 
 export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
   .fill('_')

@@ -1,7 +1,6 @@
-import { delay } from '@/mocks/utils';
 import { CURRENCIES_ENDPOINT, CurrencyDetails } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { currenciesFixture } from './currenciesFixture';
 

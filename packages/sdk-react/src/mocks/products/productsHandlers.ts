@@ -2,7 +2,7 @@ import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
-import { delay, filterByPageAndLimit } from '@/mocks/utils';
+import { filterByPageAndLimit } from '@/mocks/utils';
 import {
   OrderEnum,
   CurrencyEnum,
@@ -13,7 +13,7 @@ import {
   ProductServiceRequest,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 import * as yup from 'yup';
 
 import { createProduct, productsListFixture } from './productsFixtures';
@@ -153,7 +153,9 @@ export const productsHandlers = [
     if (productById) {
       await delay();
 
-      return HttpResponse.json(productById);
+      return HttpResponse.json(productById, {
+        status: 200,
+      });
     } else {
       await delay();
 

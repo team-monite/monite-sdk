@@ -5,9 +5,8 @@ import {
   UnitResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
-import { delay } from '../utils';
 import { measureUnitsListFixture } from './measureUnitsFixture';
 
 const measureUnitsPath = `*/${MEASURE_UNITS_ENDPOINT}`;
@@ -17,7 +16,9 @@ export const measureUnitsHandlers = [
   http.get<{}, undefined, UnitListResponse>(measureUnitsPath, async () => {
     await delay();
 
-    return HttpResponse.json(measureUnitsListFixture);
+    return HttpResponse.json(measureUnitsListFixture, {
+      status: 200,
+    });
   }),
 
   http.get<{ unitId: string }, undefined, UnitResponse | ErrorSchemaResponse>(
@@ -46,7 +47,9 @@ export const measureUnitsHandlers = [
 
       await delay();
 
-      return HttpResponse.json(unit);
+      return HttpResponse.json(unit, {
+        status: 200,
+      });
     }
   ),
 ];

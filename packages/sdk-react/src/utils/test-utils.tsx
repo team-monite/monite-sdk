@@ -27,6 +27,7 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
   within,
 } from '@testing-library/react';
@@ -255,6 +256,8 @@ export function triggerChangeInput(
   });
 }
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /**
  * Selects an option in the async dropdown field.
  * @param dropdownName The name of the dropdown field.
@@ -264,12 +267,16 @@ export async function selectAsyncDropdownOption(
   dropdownName: string | RegExp,
   optionText: string | RegExp
 ) {
+  const dropdownButton = await screen.findByRole('button', {
+    name: dropdownName,
+  });
+
+  await waitFor(() => {
+    expect(dropdownButton).not.toBeDisabled();
+  });
+
   // Open the dropdown
-  fireEvent.mouseDown(
-    screen.getByRole('button', {
-      name: dropdownName,
-    })
-  );
+  fireEvent.mouseDown(dropdownButton);
 
   // Wait for the dropdown to open and the options to load
   const dropdown = await screen.findByRole('listbox', {

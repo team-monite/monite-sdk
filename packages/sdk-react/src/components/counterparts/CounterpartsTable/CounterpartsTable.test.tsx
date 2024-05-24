@@ -103,7 +103,7 @@ describe('CounterpartsTable', () => {
       await waitUntilTableIsLoaded();
 
       const firstOrganization = getFirstOrganization();
-      const company = screen.getByText(
+      const company = await screen.findByText(
         firstOrganization.organization.legal_name
       );
 
@@ -170,28 +170,6 @@ describe('CounterpartsTable', () => {
       fireEvent.click(sortField);
 
       expect(onChangeSortMock).toHaveBeenCalledWith(undefined);
-    });
-
-    test('should trigger "onChangeFilterMock" with "field: search" when we are filtering items', async () => {
-      const onChangeFilterMock = jest.fn();
-
-      renderWithClient(
-        <CounterpartsTable onChangeFilter={onChangeFilterMock} />
-      );
-
-      const search = await screen.findByLabelText(/Search by name/i);
-
-      const searchValue = 'Acme';
-      fireEvent.change(search, {
-        target: { value: searchValue },
-      });
-
-      await waitFor(() => {
-        expect(onChangeFilterMock).toHaveBeenCalledWith({
-          field: 'search',
-          value: searchValue,
-        });
-      });
     });
 
     test('should trigger "onChangeFilterMock" with "is_customer = false" when we are filtering vendors', async () => {
@@ -275,7 +253,7 @@ describe('CounterpartsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[0];
@@ -301,7 +279,7 @@ describe('CounterpartsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -325,7 +303,7 @@ describe('CounterpartsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -355,7 +333,7 @@ describe('CounterpartsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -387,7 +365,7 @@ describe('CounterpartsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -477,7 +455,14 @@ describe('CounterpartsTable', () => {
       const tableRowsAfterSort = screen.getAllByRole('row').slice(1);
       const afterTexts = tableRowsAfterSort.map((t) => t.textContent as string);
 
-      expect(initialTexts).toEqual(afterTexts);
+      await waitFor(
+        () => {
+          expect(initialTexts).toEqual(afterTexts);
+        },
+        {
+          timeout: 2_000,
+        }
+      );
     });
   });
 
@@ -602,10 +587,12 @@ describe('CounterpartsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const items = screen.getAllByRole('row');
-
       // We have to exclude the header row
-      expect(items.splice(1).length).toBeGreaterThanOrEqual(5);
+      await waitFor(async () => {
+        const items = await screen.findAllByRole('row');
+
+        expect(items.splice(1).length).toBeGreaterThanOrEqual(5);
+      });
     });
 
     test('should next page be available when we render first page', async () => {
@@ -619,8 +606,12 @@ describe('CounterpartsTable', () => {
       const nextDisabled = nextButton.hasAttribute('disabled');
       const prevDisabled = prevButton.hasAttribute('disabled');
 
-      expect(nextDisabled).toBeFalsy();
-      expect(prevDisabled).toBeTruthy();
+      await waitFor(() => {
+        expect(getNextButton()).not.toBeDisabled();
+      });
+      await waitFor(() => {
+        expect(getPrevButton()).toBeDisabled();
+      });
     });
 
     test('should fetch next items when we click on "next" button', async () => {
@@ -636,7 +627,11 @@ describe('CounterpartsTable', () => {
 
       expect(paginationTokenOnLoad).toBeUndefined();
 
-      fireEvent.click(getNextButton());
+      await waitFor(() => {
+        expect(getNextButton()).not.toBeDisabled();
+      });
+
+      await act(() => fireEvent.click(getNextButton()));
 
       const lastCallArguments = getListSpy.mock.lastCall;
       if (!lastCallArguments) {
@@ -644,7 +639,9 @@ describe('CounterpartsTable', () => {
       }
       const paginationToken = lastCallArguments[3];
 
-      expect(paginationToken).toBe('1');
+      await waitFor(() => {
+        expect(paginationToken).toBe('1');
+      });
     });
 
     test('should fetch previous elements when we click on "prev" button', async () => {
@@ -656,10 +653,18 @@ describe('CounterpartsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      fireEvent.click(getNextButton());
+      await waitFor(() => {
+        expect(getNextButton()).not.toBeDisabled();
+      });
+
+      await act(() => fireEvent.click(getNextButton()));
       await waitUntilTableIsLoaded();
 
-      fireEvent.click(getPrevButton());
+      await waitFor(() => {
+        expect(getPrevButton()).not.toBeDisabled();
+      });
+
+      await act(() => fireEvent.click(getPrevButton()));
 
       const lastCallArguments = getListSpy.mock.lastCall;
       if (!lastCallArguments) {

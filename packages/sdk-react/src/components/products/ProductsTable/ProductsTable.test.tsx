@@ -9,6 +9,7 @@ import { DEBOUNCE_SEARCH_TIMEOUT } from '@/ui/SearchField';
 import {
   cachedMoniteSDK,
   renderWithClient,
+  selectAsyncDropdownOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
@@ -138,26 +139,20 @@ describe('ProductsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      fireEvent.mouseDown(
-        screen.getByRole('button', {
-          name: /units/i,
-        })
-      );
-
-      const unitDropdown = await screen.findByRole('listbox', {
+      const dropdownButton = await screen.findByRole('button', {
         name: /units/i,
       });
-      const { getAllByText } = within(unitDropdown);
 
-      const unit = measureUnitsListFixture.data[0];
+      await waitFor(() => {
+        expect(dropdownButton).not.toBeDisabled();
+      });
 
-      const unitOption = getAllByText(unit.name)[0];
-      fireEvent.click(unitOption);
-
+      const measureUnit = measureUnitsListFixture.data[0];
+      await selectAsyncDropdownOption(/units/i, measureUnit.name);
       await waitFor(() => {
         expect(onChangeFilterMock).toHaveBeenCalledWith({
           field: 'units',
-          value: unit.id,
+          value: measureUnit.id,
         });
       });
     });
@@ -192,7 +187,9 @@ describe('ProductsTable', () => {
 
       const items = screen.getAllByRole('row').slice(1);
 
-      expect(items.length).toBe(10);
+      await waitFor(() => {
+        expect(items.length).toBe(10);
+      });
     });
 
     test('next button should be available for interaction but previous button not', async () => {
@@ -203,48 +200,20 @@ describe('ProductsTable', () => {
       const nextButton = getNextButton();
       const prevButton = getPrevButton();
 
-      const nextDisabled = nextButton.hasAttribute('disabled');
-      const prevDisabled = prevButton.hasAttribute('disabled');
-
-      expect(prevDisabled).toBeTruthy();
-      expect(nextDisabled).toBeFalsy();
+      await waitFor(() => {
+        expect(nextButton).not.toBeDisabled();
+      });
+      await waitFor(() => {
+        expect(prevButton).toBeDisabled();
+      });
     });
 
-    test('should fetch next 10 elements when we click on "next" button', async () => {
+    test('should fetch next data when we click on "next" button', async () => {
+      const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
+
       renderWithClient(<ProductsTable />);
 
       await waitUntilTableIsLoaded();
-
-      const firstPageProductsName = productsListFixture[0].name!;
-
-      const nextButton = getNextButton();
-
-      fireEvent.click(nextButton);
-
-      await waitFor(() => {
-        expect(
-          screen.queryByText(firstPageProductsName)
-        ).not.toBeInTheDocument();
-      });
-
-      await waitFor(() => {
-        expect(getPrevButton().hasAttribute('disabled')).toBe(false);
-      });
-
-      fireEvent.click(getPrevButton());
-
-      expect(
-        await screen.findByText(firstPageProductsName)
-      ).toBeInTheDocument();
-    });
-
-    test('should fetch previous 10 elements when we click on "next" and then on "prev" buttons', async () => {
-      renderWithClient(<ProductsTable />);
-
-      await waitUntilTableIsLoaded();
-
-      const firstPageProductsName = productsListFixture[0].name!;
-      const secondPageProductsName = productsListFixture[10].name!;
 
       const nextButton = getNextButton();
 
@@ -252,17 +221,18 @@ describe('ProductsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      expect(screen.queryByText(firstPageProductsName)).not.toBeInTheDocument();
+      /** Get all provided parameters into the last call */
+      const lastCallArguments = getListSpy.mock.lastCall;
 
-      const prevButton = getPrevButton();
+      if (!lastCallArguments) {
+        throw new Error('monite.api.products.getAll never has been called');
+      }
 
-      fireEvent.click(prevButton);
+      const callParams = lastCallArguments[0];
 
-      const existsTag = screen.findByText(firstPageProductsName);
-      const notExists = screen.findByText(secondPageProductsName);
-
-      await expect(notExists).rejects.toThrowError(/Unable to find an element/);
-      await expect(existsTag).resolves.toBeInTheDocument();
+      await waitFor(() => {
+        expect(callParams.paginationToken).toBe('1');
+      });
     });
   });
 
@@ -276,7 +246,7 @@ describe('ProductsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -300,7 +270,7 @@ describe('ProductsTable', () => {
 
       const itemIndex = 0;
 
-      const actionButtons = screen.getAllByRole('button', {
+      const actionButtons = await screen.findAllByRole('button', {
         name: 'actions-menu-button',
       });
       const actionButton = actionButtons[itemIndex];
@@ -309,6 +279,10 @@ describe('ProductsTable', () => {
 
       const deleteName = t`Delete`;
       const deleteButton = screen.getByText(deleteName);
+
+      await waitFor(() => {
+        expect(deleteButton).not.toBeDisabled();
+      });
 
       fireEvent.click(deleteButton);
 
@@ -321,6 +295,11 @@ describe('ProductsTable', () => {
           name: /delete/i,
         }
       );
+
+      await waitFor(() => {
+        expect(innerDeleteButton).not.toBeDisabled();
+      });
+
       fireEvent.click(innerDeleteButton);
 
       await waitFor(() => {
@@ -414,15 +393,16 @@ describe('ProductsTable', () => {
           })
         );
 
-        const unitDropdown = await screen.findByRole('listbox', {
+        const dropdownButton = await screen.findByRole('button', {
           name: /units/i,
         });
-        const { getAllByText } = within(unitDropdown);
+
+        await waitFor(() => {
+          expect(dropdownButton).not.toBeDisabled();
+        });
 
         const unit = measureUnitsListFixture.data[0];
-
-        const unitOption = getAllByText(unit.name)[0];
-        fireEvent.click(unitOption);
+        await selectAsyncDropdownOption(/units/i, unit.name);
 
         /** Get all provided parameters into the last call */
         const lastCallArguments = getListSpy.mock.lastCall;

@@ -81,7 +81,7 @@ export async function getActionButtonInContactSection(
   return allButtons[0];
 }
 
-export async function getEditButtonInIndividualSection(
+export async function findEditButtonInIndividualSection(
   i18n: I18n
 ): Promise<HTMLElement> {
   const section = await screen.findByTestId(
@@ -117,7 +117,7 @@ export async function getDeleteButtonInIndividualSection(
   });
 }
 
-export async function getFirstActionButtonInBankAccountSection(
+export async function findFirstActionButtonInBankAccountSection(
   action: 'edit' | 'delete' | 'create',
   i18n: I18n
 ): Promise<HTMLElement> {

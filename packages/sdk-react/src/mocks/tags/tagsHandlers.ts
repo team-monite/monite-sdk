@@ -1,5 +1,4 @@
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
-import { delay } from '@/mocks/utils';
 import {
   generateRandomDate,
   generateRandomId,
@@ -12,7 +11,7 @@ import {
   TagReadSchema,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import { tagListFixture } from './tagsFixture';
 

@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import type {
   CounterpartVatID,
   CounterpartVatIDResponse,
@@ -12,7 +11,7 @@ import {
   TaxIDTypeEnum,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import {
   counterpartVatFixture,

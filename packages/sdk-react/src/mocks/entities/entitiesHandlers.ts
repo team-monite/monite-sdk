@@ -1,4 +1,3 @@
-import { delay } from '@/mocks/utils';
 import {
   EntityResponse,
   ErrorSchemaResponse,
@@ -8,7 +7,7 @@ import {
   OnboardingPaymentMethodsResponse,
 } from '@monite/sdk-api';
 
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 
 import {
   entityPaymentMethods,

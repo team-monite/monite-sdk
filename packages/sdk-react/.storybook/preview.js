@@ -16,6 +16,9 @@ const mockedRequests = true;
 
 const decorators = [withGlobalStorybookDecorator()];
 
+// Initialize MSW
+initialize();
+
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   parameters: {
@@ -34,10 +37,5 @@ const preview = {
   loaders: [mswLoader],
   decorators,
 };
-
-if (mockedRequests) {
-  // Initialize MSW
-  initialize();
-}
 
 export default preview;

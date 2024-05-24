@@ -84,12 +84,20 @@ describe('ApprovalPolicyDetails', () => {
         name: /Edit/i,
       });
 
+      await waitFor(() => {
+        expect(editButton).not.toBeDisabled();
+      });
+
       await user.click(editButton);
 
       await fillForm(name, description, trigger, script);
 
       const updateButton = screen.getByRole('button', {
         name: /Update/i,
+      });
+
+      await waitFor(() => {
+        expect(updateButton).not.toBeDisabled();
       });
 
       await user.click(updateButton);

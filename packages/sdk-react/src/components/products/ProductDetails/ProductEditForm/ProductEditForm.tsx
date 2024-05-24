@@ -4,7 +4,11 @@ import { useDialog } from '@/components/Dialog';
 import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { useProductById, useUpdateProduct } from '@/core/queries';
+import {
+  useMeasureUnits,
+  useProductById,
+  useUpdateProduct,
+} from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
@@ -58,6 +62,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
     error: productQueryError,
     isLoading,
   } = useProductById(props.id);
+  const { isLoading: isMeasureUnitsLoading } = useMeasureUnits();
 
   const formRef = useRef<HTMLFormElement>(null);
   const productUpdateMutation = useUpdateProduct('id' in props ? props.id : '');
@@ -192,7 +197,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         <Button
           variant="outlined"
           onClick={submitForm}
-          disabled={productUpdateMutation.isPending}
+          disabled={productUpdateMutation.isPending || isMeasureUnitsLoading}
         >
           {t(i18n)`Update`}
         </Button>

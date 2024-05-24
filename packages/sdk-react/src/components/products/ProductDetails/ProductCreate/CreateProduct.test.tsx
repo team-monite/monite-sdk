@@ -51,6 +51,14 @@ describe('CreateProduct', () => {
     triggerChangeInput(/price per unit/i, '100');
     triggerChangeInput(/description/i, 'test description');
 
+    const dropdownButton = await screen.findByRole('button', {
+      name: /units/i,
+    });
+
+    await waitFor(() => {
+      expect(dropdownButton).not.toBeDisabled();
+    });
+
     const measureUnit = measureUnitsListFixture.data[0].name;
     await selectAsyncDropdownOption(/units/i, measureUnit);
 

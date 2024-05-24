@@ -62,8 +62,8 @@ msgid "Accepted"
 msgstr "Accepted"
 
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:79
-#: src/components/counterparts/Counterparts.test.tsx:79
-#: src/components/receivables/Receivables.test.tsx:78
+#: src/components/counterparts/Counterparts.test.tsx:76
+#: src/components/receivables/Receivables.test.tsx:81
 #: src/ui/accessRestriction/AccessRestriction.tsx:20
 msgid "Access Restricted"
 msgstr "Access Restricted"
@@ -264,8 +264,8 @@ msgid "Algerian Dinar"
 msgstr "Algerian Dinar"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:58
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:52
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:86
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:53
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:91
 msgid "All"
 msgstr "All"
 
@@ -370,7 +370,7 @@ msgstr "Antique Shops"
 msgid "Applied policy"
 msgstr "Applied policy"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:85
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:87
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRulesItem.tsx:70
 msgid "Approval chain"
 msgstr "Approval chain"
@@ -914,7 +914,7 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:123
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:127
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:190
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:195
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:533
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:160
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:168
@@ -1411,7 +1411,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:110
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:79
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:281
-#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:560
+#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:596
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:386
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:380
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:135
@@ -1451,9 +1451,9 @@ msgid "Create from mail"
 msgstr "Create from mail"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:228
-#: src/components/receivables/Receivables.test.tsx:34
-#: src/components/receivables/Receivables.test.tsx:71
-#: src/components/receivables/Receivables.test.tsx:109
+#: src/components/receivables/Receivables.test.tsx:37
+#: src/components/receivables/Receivables.test.tsx:74
+#: src/components/receivables/Receivables.test.tsx:112
 #: src/components/receivables/Receivables.tsx:97
 msgid "Create Invoice"
 msgstr "Create Invoice"
@@ -1462,12 +1462,12 @@ msgstr "Create Invoice"
 msgid "Create new"
 msgstr "Create new"
 
-#: src/components/counterparts/Counterparts.test.tsx:36
-#: src/components/counterparts/Counterparts.test.tsx:73
-#: src/components/counterparts/Counterparts.test.tsx:111
+#: src/components/counterparts/Counterparts.test.tsx:33
+#: src/components/counterparts/Counterparts.test.tsx:70
+#: src/components/counterparts/Counterparts.test.tsx:105
 #: src/components/counterparts/Counterparts.tsx:127
 #: src/components/payables/Payables.tsx:112
-#: src/components/products/Products.test.tsx:89
+#: src/components/products/Products.test.tsx:92
 #: src/components/products/Products.tsx:103
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:209
 msgid "Create New"
@@ -1524,7 +1524,7 @@ msgstr "Created at:"
 msgid "Created by"
 msgstr "Created by"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:51
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:53
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:95
 msgid "Created by user"
 msgstr "Created by user"
@@ -1648,7 +1648,7 @@ msgstr "Declined"
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.test.tsx:27
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:65
-#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:512
+#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:548
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:20
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:72
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:116
@@ -1657,17 +1657,17 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:69
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:65
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:132
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:286
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:335
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:365
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:397
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:264
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:313
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:343
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:375
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:471
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:79
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:233
-#: src/components/products/Products.test.tsx:157
-#: src/components/products/Products.test.tsx:183
-#: src/components/products/Products.test.tsx:214
-#: src/components/products/ProductsTable/ProductsTable.test.tsx:310
+#: src/components/products/Products.test.tsx:163
+#: src/components/products/Products.test.tsx:190
+#: src/components/products/Products.test.tsx:222
+#: src/components/products/ProductsTable/ProductsTable.test.tsx:280
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:221
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:263
 #: src/components/TableActions/TableActions.tsx:61
@@ -1746,7 +1746,7 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:184
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:187
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:87
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:170
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:169
 #: src/components/products/ProductDetails/validation.ts:50
 msgid "Description"
 msgstr "Description"
@@ -1958,8 +1958,8 @@ msgstr "Ecuador"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:58
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:54
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:120
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:285
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:311
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:263
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:289
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonsReview.tsx:44
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:93
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:114
@@ -1970,9 +1970,9 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:572
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:58
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:241
-#: src/components/products/Products.test.tsx:156
-#: src/components/products/Products.test.tsx:250
-#: src/components/products/ProductsTable/ProductsTable.test.tsx:286
+#: src/components/products/Products.test.tsx:162
+#: src/components/products/Products.test.tsx:259
+#: src/components/products/ProductsTable/ProductsTable.test.tsx:256
 #: src/components/TableActions/TableActions.tsx:52
 #: src/components/tags/TagsTable/TagsTable.test.tsx:389
 #: src/components/tags/TagsTable/TagsTable.test.tsx:420
@@ -1997,13 +1997,13 @@ msgstr "Edit invoice"
 msgid "Edit invoice {0}"
 msgstr "Edit invoice {0}"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:95
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:164
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:100
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:169
 msgid "Edit Product"
 msgstr "Edit Product"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:101
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:170
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:106
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:175
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
@@ -4101,7 +4101,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:154
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:153
 #: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:228
 msgid "Price per unit"
@@ -4160,7 +4160,7 @@ msgid "Product was deleted."
 msgstr "Product was deleted."
 
 #: src/components/products/Products.tsx:90
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:54
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:55
 msgid "Products"
 msgstr "Products"
 
@@ -4348,7 +4348,7 @@ msgstr "Reunion"
 msgid "Role"
 msgstr "Role"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:77
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:79
 msgid "Role approval"
 msgstr "Role approval"
 
@@ -4498,7 +4498,7 @@ msgstr "Script in Monite Script"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:26
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:32
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:33
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:34
 #: src/components/receivables/Filters/Filters.tsx:41
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:41
@@ -4568,7 +4568,7 @@ msgstr "Service"
 msgid "Service Stations"
 msgstr "Service Stations"
 
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:59
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:60
 msgid "Services"
 msgstr "Services"
 
@@ -4633,7 +4633,7 @@ msgstr "Slovenia"
 msgid "Small Appliance Repair"
 msgstr "Small Appliance Repair"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:140
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:139
 #: src/components/products/ProductDetails/validation.ts:38
 msgid "Smallest amount"
 msgstr "Smallest amount"
@@ -4667,7 +4667,7 @@ msgstr "Somalia"
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:117
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:122
 msgid "Something went wrong. Please try again"
 msgstr "Something went wrong. Please try again"
 
@@ -5282,8 +5282,8 @@ msgstr "Tuvalu"
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:47
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:50
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:87
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:41
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:44
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:42
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:45
 #: src/components/products/ProductsTable/ProductsTable.tsx:217
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:55
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:58
@@ -5368,11 +5368,11 @@ msgstr "United States Dollar"
 msgid "United States Outlying Islands"
 msgstr "United States Outlying Islands"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:115
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:118
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:116
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:119
 #: src/components/products/ProductDetails/validation.ts:33
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:75
-#: src/components/products/ProductsTable/components/Filters/Filters.tsx:78
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:80
+#: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
 #: src/components/products/ProductsTable/ProductsTable.tsx:243
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:191
 msgid "Units"
@@ -5398,7 +5398,7 @@ msgstr "Unsupported file type"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:386
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:380
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:52
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:197
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:202
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:177
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:147
@@ -5412,12 +5412,12 @@ msgstr "Update Approval Policy"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:103
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:332
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:232
-#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:273
+#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:297
 msgid "Update bank account"
 msgstr "Update bank account"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:173
-#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:450
+#: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:482
 msgid "Update contact"
 msgstr "Update contact"
 
@@ -5468,8 +5468,8 @@ msgstr "User Roles"
 
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:41
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:116
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:61
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:69
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:63
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:71
 msgid "Users from the list"
 msgstr "Users from the list"
 

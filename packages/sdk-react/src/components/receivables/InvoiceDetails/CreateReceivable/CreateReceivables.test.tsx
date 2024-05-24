@@ -142,6 +142,11 @@ describe('CreateReceivables', () => {
       triggerClickOnAutocompleteOption(/Bill to/i, /Create new counterpart/i);
 
       const organizationButton = await screen.findByText(/Organization/i);
+
+      await waitFor(() => {
+        expect(organizationButton).not.toBeDisabled();
+      });
+
       fireEvent.click(organizationButton);
 
       expect(await screen.findByTestId(CounterpartDataTestId.OrganizationForm));

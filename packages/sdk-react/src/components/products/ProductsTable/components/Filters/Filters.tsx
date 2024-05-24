@@ -24,7 +24,8 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const measureUnitsQuery = useMeasureUnits();
+  const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
+    useMeasureUnits();
 
   return (
     <Grid container spacing={2}>
@@ -71,7 +72,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
 
       <Grid item xs={4} sm={3} md={2}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          disabled={isMeasureUnitsLoading}
+        >
           <InputLabel id="units">{t(i18n)`Units`}</InputLabel>
           <Select
             labelId="units"
@@ -84,7 +89,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
           >
             {[
               { id: 'all', name: t(i18n)`All` },
-              ...(measureUnitsQuery?.data?.data ?? []),
+              ...(measureUnits?.data ?? []),
             ].map(({ id, name }) => (
               <MenuItem key={id} value={id}>
                 {name}
