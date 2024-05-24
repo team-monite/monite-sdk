@@ -164,49 +164,29 @@ export function useExistingInvoiceDetails({
     }
   }, [receivable?.status]);
 
-  const isComposeEmailButtonVisible = useMemo(() => {
-    return (
-      deliveryMethod === DeliveryMethod.Email &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT &&
-      isUpdateAllowed
-    );
-  }, [deliveryMethod, isUpdateAllowed, receivable?.status]);
+  const isComposeEmailButtonVisible =
+    deliveryMethod === DeliveryMethod.Email &&
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    isUpdateAllowed;
 
-  const isIssueButtonVisible = useMemo(() => {
-    return (
-      deliveryMethod === DeliveryMethod.Download &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT &&
-      isUpdateAllowed
-    );
-  }, [deliveryMethod, isUpdateAllowed, receivable?.status]);
+  const isIssueButtonVisible =
+    deliveryMethod === DeliveryMethod.Download &&
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    isUpdateAllowed;
 
-  const isEditButtonVisible = useMemo(() => {
-    return (
-      receivable?.status === ReceivablesStatusEnum.DRAFT &&
-      view !== ExistingInvoiceDetailsView.Edit &&
-      isUpdateAllowed
-    );
-  }, [isUpdateAllowed, receivable?.status, view]);
+  const isEditButtonVisible =
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    view !== ExistingInvoiceDetailsView.Edit &&
+    isUpdateAllowed;
 
-  const isDeleteButtonDisabled = useMemo(() => {
-    return (
-      receivable?.status !== ReceivablesStatusEnum.DRAFT ||
-      isDeleteAllowedLoading ||
-      !isDeleteAllowed ||
-      mutationInProgress
-    );
-  }, [
-    isDeleteAllowed,
-    isDeleteAllowedLoading,
-    mutationInProgress,
-    receivable?.status,
-  ]);
+  const isDeleteButtonDisabled =
+    receivable?.status !== ReceivablesStatusEnum.DRAFT ||
+    isDeleteAllowedLoading ||
+    !isDeleteAllowed ||
+    mutationInProgress;
 
-  const isDeleteButtonVisible = useMemo(() => {
-    return (
-      receivable?.status === ReceivablesStatusEnum.DRAFT && isDeleteAllowed
-    );
-  }, [isDeleteAllowed, receivable?.status]);
+  const isDeleteButtonVisible =
+    receivable?.status === ReceivablesStatusEnum.DRAFT && isDeleteAllowed;
 
   return {
     view,

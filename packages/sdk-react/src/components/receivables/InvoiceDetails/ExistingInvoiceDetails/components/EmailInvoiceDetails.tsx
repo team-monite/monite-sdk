@@ -143,17 +143,10 @@ const EmailInvoiceDetailsBase = ({
     ]
   );
 
-  const isDisabled = useMemo(() => {
-    return (
-      issueMutation.isPending ||
-      sendMutation.isPending ||
-      createPaymentLinkMutation.isPending
-    );
-  }, [
-    createPaymentLinkMutation.isPending,
-    issueMutation.isPending,
-    sendMutation.isPending,
-  ]);
+  const isDisabled =
+    issueMutation.isPending ||
+    sendMutation.isPending ||
+    createPaymentLinkMutation.isPending;
 
   return (
     <>
