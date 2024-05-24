@@ -72,7 +72,7 @@ export class ReceivableService extends CommonService {
    * @param createdAtGte
    * @param createdAtLte
    * @param counterpartName
-   * @param counterpartNameContains
+   * @param counterpartId
    * @param counterpartNameIcontains
    * @param amount
    * @param amountGt
@@ -109,7 +109,7 @@ export class ReceivableService extends CommonService {
     createdAtGte?: string,
     createdAtLte?: string,
     counterpartName?: string,
-    counterpartNameContains?: string,
+    counterpartId?: string,
     counterpartNameIcontains?: string,
     amount?: number,
     amountGt?: number,
@@ -144,7 +144,7 @@ export class ReceivableService extends CommonService {
           created_at__gte: createdAtGte,
           created_at__lte: createdAtLte,
           counterpart_name: counterpartName,
-          counterpart_name__contains: counterpartNameContains,
+          counterpart_id: counterpartId,
           counterpart_name__icontains: counterpartNameIcontains,
           amount: amount,
           amount__gt: amountGt,
