@@ -6,6 +6,7 @@ import { useLingui } from '@lingui/react';
 import ArrowLeft from '@mui/icons-material/ArrowBackIosNew';
 import ArrowRight from '@mui/icons-material/ArrowForwardIos';
 import {
+  Box,
   Grid,
   GridProps,
   IconButton,
@@ -21,7 +22,7 @@ const DEFAULT_PAGE_SIZE = 10 as const;
 
 type PaginationModel<T> = {
   pageSize: number;
-  page: T;
+  page: T | null;
 };
 
 interface MoniteTablePaginationSlotProps {
@@ -97,90 +98,75 @@ export const TablePagination = <T,>({
 
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
-  const firstGridItemProps = hasPageSizeSelect
-    ? {
-        xs: 10,
-        md: 10,
-        lg: 11,
-      }
-    : {
-        xs: 12,
-      };
-
   return (
     <RootGrid container m={2} boxSizing="border-box">
       <Grid
-        {...firstGridItemProps}
+        xs={12}
         item
         display="flex"
-        justifyContent="center"
+        justifyContent={hasPageSizeSelect ? 'space-between' : 'center'}
         alignItems="center"
       >
-        <IconButton
-          aria-label={t(i18n)`Previous page`}
-          disabled={!prevPage}
-          onClick={(event) => {
-            event.preventDefault();
-            if (typeof prevPage === 'undefined')
-              throw new Error('Previous page is not available');
+        <Box>
+          <IconButton
+            aria-label={t(i18n)`Previous page`}
+            disabled={!prevPage}
+            onClick={(event) => {
+              event.preventDefault();
+              if (typeof prevPage === 'undefined')
+                throw new Error('Previous page is not available');
 
-            onPaginationModelChange({
-              page: prevPage,
-              pageSize,
-            });
-          }}
-        >
-          <ArrowLeft fontSize="small" />
-        </IconButton>
-        <IconButton
-          aria-label={t(i18n)`Next page`}
-          disabled={!nextPage}
-          onClick={(event) => {
-            event.preventDefault();
-            if (typeof nextPage === 'undefined')
-              throw new Error('Next page is not available');
-
-            onPaginationModelChange({
-              page: nextPage,
-              pageSize,
-            });
-          }}
-        >
-          <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
-        </IconButton>
-      </Grid>
-      {hasPageSizeSelect && (
-        <Grid
-          item
-          xs={2}
-          md={2}
-          lg={1}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <StyledSelect
-            {...slotProps?.pageSizeSelect}
-            aria-label={t(i18n)`Rows per page`}
-            MenuProps={{
-              ...slotProps?.pageSizeSelect?.MenuProps,
-              container: root,
+              onPaginationModelChange({
+                page: prevPage,
+                pageSize,
+              });
             }}
-            value={pageSize.toString()}
-            onChange={(event) =>
-              void onPaginationModelChange({
-                page: paginationModel.page,
-                pageSize: parseInt(event.target.value, 10),
-              })
-            }
           >
-            {pageSizeOptions?.map((menuItem) => (
-              <MenuItem key={menuItem} value={menuItem.toString()}>
-                {menuItem}
-              </MenuItem>
-            ))}
-          </StyledSelect>
-        </Grid>
-      )}
+            <ArrowLeft fontSize="small" />
+          </IconButton>
+          <IconButton
+            aria-label={t(i18n)`Next page`}
+            disabled={!nextPage}
+            onClick={(event) => {
+              event.preventDefault();
+              if (typeof nextPage === 'undefined')
+                throw new Error('Next page is not available');
+
+              onPaginationModelChange({
+                page: nextPage,
+                pageSize,
+              });
+            }}
+          >
+            <ArrowRight fontSize="small" aria-label={t(i18n)`Next page`} />
+          </IconButton>
+        </Box>
+        {hasPageSizeSelect && (
+          <Box>
+            <StyledSelect
+              {...slotProps?.pageSizeSelect}
+              aria-label={t(i18n)`Rows per page`}
+              MenuProps={{
+                ...slotProps?.pageSizeSelect?.MenuProps,
+                container: root,
+              }}
+              value={pageSize.toString()}
+              onChange={(event) =>
+                void onPaginationModelChange({
+                  page: null,
+                  pageSize: parseInt(event.target.value, DEFAULT_PAGE_SIZE),
+                })
+              }
+            >
+              {pageSizeOptions?.map((menuItem) => (
+                <MenuItem key={menuItem} value={menuItem.toString()}>
+                  {menuItem}
+                </MenuItem>
+              ))}
+            </StyledSelect>
+          </Box>
+        )}
+      </Grid>
     </RootGrid>
   );
 };

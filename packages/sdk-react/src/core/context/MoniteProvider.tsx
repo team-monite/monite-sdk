@@ -30,11 +30,8 @@ export interface MoniteProviderProps {
   /**
    * `locale` responsible for internationalisation
    *  of all Widgets provided.
-   *
-   * `locale.code` is used for global Widgets translation. (e.g. `en`)
-   * `locale.messages` is used for translation for some of the Widgets.
    */
-  locale?: Partial<MoniteLocale>;
+  locale?: MoniteLocale;
 }
 
 export const MoniteProvider = ({

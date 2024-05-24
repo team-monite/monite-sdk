@@ -23,13 +23,42 @@ export type MoniteLocale = {
    *
    * E.g. 'en-GB', 'de-DE', etc.
    */
-  code: string;
+  code?: string;
+
   /**
    * `messages` responsible for internationalised Widgets translation.
    * By default it uses `enLocaleMessages` as a fallback in MoniteProvider.
    */
   messages?: MoniteSupportedMessages;
+
+  /**
+   * `currencyDisplay` responsible for currency formatting.
+   */
+  currencyNumberFormat?: {
+    /**
+     * Determines the format in which currency values are displayed.
+     *
+     * Possible values are:
+     * - 'symbol': The currency is represented using its symbol (e.g., $ for USD)
+     * - 'code': The currency is represented using its ISO code (e.g., USD for US Dollar)
+     * - 'name': The currency is represented using its full name (e.g., US Dollar)
+     */
+    display?: 'symbol' | 'code' | 'name';
+
+    /**
+     * The locale code to use for formatting the currency number.
+     * If not provided, the `code` will be used.
+     *
+     * @example 'en-US', 'de-DE', 'en-150', etc.
+     */
+    localeCode?: string;
+  };
 };
+
+export type MoniteLocaleWithRequired = DeepRequired<
+  Omit<MoniteLocale, 'messages'>
+> &
+  Partial<Pick<MoniteLocale, 'messages'>>;
 
 export const MoniteI18nProvider = ({ children }: { children: ReactNode }) => {
   const { i18n, dateFnsLocale } = useMoniteContext();
@@ -67,7 +96,7 @@ export const I18nLoader = ({
   locale,
   children,
 }: {
-  locale: MoniteLocale;
+  locale: MoniteLocaleWithRequired;
   children: (i18n: I18n, dateFnsLocale: DateFnsLocale) => ReactNode;
 }) => {
   const previousLocaleMessages = useRef(locale.messages);
@@ -94,7 +123,9 @@ export const I18nLoader = ({
   );
 };
 
-const createDynamicI18nProvider = async (locale: MoniteLocale) => {
+const createDynamicI18nProvider = async (
+  locale: Pick<MoniteLocaleWithRequired, 'code' | 'messages'>
+) => {
   const [linguiCompiledMessages, dateFnsLocale] = await Promise.all([
     locale.messages
       ? await compileLinguiDynamicMessages(locale.messages)
@@ -248,3 +279,24 @@ const dateFnsLocales: Record<
   zhHK: () => import('date-fns/locale/zh-HK'),
   zhTW: () => import('date-fns/locale/zh-TW'),
 };
+
+export function getLocaleWithDefaults(
+  locale: MoniteLocale | undefined
+): MoniteLocaleWithRequired {
+  const code =
+    locale?.code ??
+    (typeof navigator === 'undefined' ? 'en' : navigator.language);
+
+  return {
+    ...locale,
+    code,
+    currencyNumberFormat: {
+      localeCode: locale?.currencyNumberFormat?.localeCode ?? code,
+      display: locale?.currencyNumberFormat?.display ?? 'symbol',
+    },
+  };
+}
+
+type DeepRequired<T> = Required<{
+  [K in keyof T]: T[K] extends Required<T[K]> ? T[K] : DeepRequired<T[K]>;
+}>;

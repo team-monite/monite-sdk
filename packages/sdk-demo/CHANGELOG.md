@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 1.6.0
+
+### Minor Changes
+
+- 05c75f10: added support for `<ScopedMoniteProviders/>` instead of shared contexts from `<MoniteProviders/>`.
+
+### Patch Changes
+
+- @monite/sdk-api@3.12.0
+
 ## 1.5.0
 
 ### Minor Changes
