@@ -195,7 +195,11 @@ const FileViewerComponent = ({
   const renderFile = () => {
     if (isPdf)
       return (
-        <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
+        <Document
+          file={url}
+          onLoadSuccess={onDocumentLoadSuccess}
+          noData={<ErrorComponent onError={onReloadCallback} />}
+        >
           <Page
             pageNumber={pageNumber}
             width={width}
