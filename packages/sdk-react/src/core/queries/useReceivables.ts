@@ -163,6 +163,11 @@ export const useIssueReceivableById = () => {
       queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
       invalidate();
 
+      /** We have to invalidate a PDF query to get the latest PDF */
+      queryClient.invalidateQueries({
+        queryKey: receivablesQueryKeys.pdf(id),
+      });
+
       toast.success(t(i18n)`Issued`);
     },
     onError: (error) => {
@@ -357,11 +362,25 @@ export const usePDFReceivableById = (
   }
 ) => {
   const { monite } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   return useQuery<ReceivableFileUrl, ApiError>({
     queryKey: receivablesQueryKeys.pdf(receivableId),
+    queryFn: async () => {
+      const response = await monite.api.receivable.getPdfLink(receivableId);
 
-    queryFn: () => monite.api.receivable.getPdfLink(receivableId),
+      if (!response.file_url) {
+        /**
+         * We have to flush current query data to show the error
+         *  but not previous data
+         */
+        queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
+
+        throw new Error('File URL is not provided');
+      }
+
+      return response;
+    },
 
     enabled: options?.enabled,
     refetchOnWindowFocus: false,
@@ -369,7 +388,16 @@ export const usePDFReceivableById = (
     gcTime: 0,
     refetchIntervalInBackground: false,
     staleTime: 0,
-    retry: false,
+    /** Implement `retry` logic only if we have "File URL is not provided" error */
+    retry: (failureCount, error) => {
+      /** Implement `retry` logic only if we have "File URL is not provided" error */
+      if (error.message === 'File URL is not provided') {
+        return failureCount <= 4;
+      }
+
+      return false;
+    },
+    retryDelay: 1_000,
   });
 };
 
