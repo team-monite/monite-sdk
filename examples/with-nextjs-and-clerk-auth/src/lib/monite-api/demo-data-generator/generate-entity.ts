@@ -17,6 +17,10 @@ import { components } from '@/lib/monite-api/schema';
 import { generateBankAccount } from './generate-bank-account';
 import { generateCounterpartsWithPayables } from './generate-payables';
 
+/**
+ * Generates demo Payables, Receivables, Counterparts, etc.
+ * Does not generate Entity Users and Roles
+ */
 export const generateEntity = async (
   { entity_id }: Record<'entity_id', string>,
   { logger, token }: { token: AccessToken; logger: ILogger }
