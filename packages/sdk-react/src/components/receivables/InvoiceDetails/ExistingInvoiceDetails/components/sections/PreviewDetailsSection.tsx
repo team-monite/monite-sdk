@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { MoniteCard } from '@/ui/Card/Card';
+import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { InvoiceResponsePayload } from '@monite/sdk-api';
@@ -31,9 +32,12 @@ export const PreviewDetailsSection = ({
           },
           {
             label: t(i18n)`Fulfillment date`,
-            value:
-              invoice.counterpart_contact &&
-              `${invoice.counterpart_contact.first_name} ${invoice.counterpart_contact.last_name}`,
+            value: invoice.fulfillment_date
+              ? i18n.date(
+                  invoice.fulfillment_date,
+                  DateTimeFormatOptions.EightDigitDate
+                )
+              : '—',
             withEmptyStateFiller: true,
           },
           {
