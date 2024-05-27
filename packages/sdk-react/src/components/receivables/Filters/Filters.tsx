@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { counterpartsToSelect } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import {
-  FilterTypes,
-  FilterValue,
-} from '@/components/receivables/ReceivablesTable/types';
+import { type ReceivablesFilterHandler } from '@/components/receivables/Filters/useReceivablesFilters';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartList } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
@@ -26,7 +23,7 @@ import {
 } from '../consts';
 
 type Props = {
-  onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
+  onChangeFilter: ReceivablesFilterHandler;
 };
 
 export const Filters = ({ onChangeFilter }: Props) => {
@@ -55,7 +52,9 @@ export const Filters = ({ onChangeFilter }: Props) => {
             onChange={(selected) => {
               onChangeFilter(
                 FILTER_TYPE_STATUS,
-                selected && selected.target.value
+                selected.target.value === 'all'
+                  ? null
+                  : (selected.target.value as ReceivablesStatusEnum)
               );
             }}
           >
@@ -115,7 +114,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
             onChange={(selected) => {
               onChangeFilter(
                 FILTER_TYPE_CUSTOMER,
-                selected && selected.target.value
+                selected.target.value === 'all' ? null : selected.target.value
               );
             }}
           >

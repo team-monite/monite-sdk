@@ -53,6 +53,6 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   [ReceivablesStatusEnum.OVERDUE]: ErrorOutlineOutlinedIcon,
 };
 
-export const FILTER_TYPE_SEARCH = 'search';
-export const FILTER_TYPE_STATUS = 'status';
-export const FILTER_TYPE_CUSTOMER = 'customer';
+export const FILTER_TYPE_SEARCH = 'search' as const;
+export const FILTER_TYPE_STATUS = 'status' as const;
+export const FILTER_TYPE_CUSTOMER = 'customer' as const;
