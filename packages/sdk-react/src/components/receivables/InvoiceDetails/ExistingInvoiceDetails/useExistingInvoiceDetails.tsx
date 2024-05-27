@@ -1,13 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { useDialog } from '@/components';
 import {
   useDeleteReceivableById,
   useIssueReceivableById,
   usePDFReceivableByIdMutation,
   useSendReceivableById,
 } from '@/core/queries';
-import { ReceivableResponse, ReceivablesStatusEnum } from '@monite/sdk-api';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import {
+  ActionEnum,
+  ReceivableResponse,
+  ReceivablesStatusEnum,
+} from '@monite/sdk-api';
 
 export enum DeliveryMethod {
   Email = 'email',
@@ -31,9 +35,6 @@ interface IUseExistingInvoiceDetails {
 
   /** Callbacks for handling invoice actions */
   callbacks: {
-    /** Fires when we need to delete an invoice */
-    handleDeleteInvoice: () => void;
-
     /** Fires when we need to issue an invoice */
     handleIssueOnly: () => void;
 
@@ -61,6 +62,17 @@ interface IUseExistingInvoiceDetails {
     /** Describes should we show "Issue" button or not */
     isIssueButtonVisible: boolean;
 
+    /** Describes should "Delete" button be disabled or not */
+    isDeleteButtonDisabled: boolean;
+
+    /**
+     * Describes should we show "Delete" button or not
+     *
+     * Note: computed based on receivable status,
+     *  user permissions, and other checks
+     */
+    isDeleteButtonVisible: boolean;
+
     /** Describes should we show "Edit" button or not */
     isEditButtonVisible: boolean;
   };
@@ -77,7 +89,20 @@ export function useExistingInvoiceDetails({
   deliveryMethod,
 }: IUseExistingInvoiceDetailsProps): IUseExistingInvoiceDetails {
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
-  const dialogContext = useDialog();
+
+  const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.DELETE,
+      entityUserId: receivable?.entity_user_id,
+    });
+
+  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: ActionEnum.UPDATE,
+      entityUserId: receivable?.entity_user_id,
+    });
 
   const deleteMutation = useDeleteReceivableById();
   const sendMutation = useSendReceivableById();
@@ -97,14 +122,6 @@ export function useExistingInvoiceDetails({
 
     issueMutation.mutate(receivableId);
   }, [deliveryMethod, issueMutation, receivableId]);
-
-  const handleDeleteInvoice = useCallback(() => {
-    deleteMutation.mutate(receivableId, {
-      onSuccess: () => {
-        dialogContext?.onClose?.();
-      },
-    });
-  }, [deleteMutation, dialogContext, receivableId]);
 
   const handleChangeInvoiceView = useCallback(() => {
     if (view === ExistingInvoiceDetailsView.Edit) {
@@ -147,31 +164,33 @@ export function useExistingInvoiceDetails({
     }
   }, [receivable?.status]);
 
-  const isComposeEmailButtonVisible = useMemo(() => {
-    return (
-      deliveryMethod === DeliveryMethod.Email &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT
-    );
-  }, [deliveryMethod, receivable?.status]);
+  const isComposeEmailButtonVisible =
+    deliveryMethod === DeliveryMethod.Email &&
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    isUpdateAllowed;
 
-  const isIssueButtonVisible = useMemo(() => {
-    return (
-      deliveryMethod === DeliveryMethod.Download &&
-      receivable?.status === ReceivablesStatusEnum.DRAFT
-    );
-  }, [deliveryMethod, receivable?.status]);
+  const isIssueButtonVisible =
+    deliveryMethod === DeliveryMethod.Download &&
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    isUpdateAllowed;
 
-  const isEditButtonVisible = useMemo(() => {
-    return (
-      receivable?.status === ReceivablesStatusEnum.DRAFT &&
-      view !== ExistingInvoiceDetailsView.Edit
-    );
-  }, [receivable?.status, view]);
+  const isEditButtonVisible =
+    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    view !== ExistingInvoiceDetailsView.Edit &&
+    isUpdateAllowed;
+
+  const isDeleteButtonDisabled =
+    receivable?.status !== ReceivablesStatusEnum.DRAFT ||
+    isDeleteAllowedLoading ||
+    !isDeleteAllowed ||
+    mutationInProgress;
+
+  const isDeleteButtonVisible =
+    receivable?.status === ReceivablesStatusEnum.DRAFT && isDeleteAllowed;
 
   return {
     view,
     callbacks: {
-      handleDeleteInvoice,
       handleIssueOnly,
       handleDownloadPDF,
       handleChangeViewInvoice: handleChangeInvoiceView,
@@ -180,6 +199,8 @@ export function useExistingInvoiceDetails({
     buttons: {
       isDownloadPDFButtonVisible,
       isMoreButtonVisible,
+      isDeleteButtonDisabled,
+      isDeleteButtonVisible,
       isEditButtonVisible,
       isComposeEmailButtonVisible,
       isIssueButtonVisible,

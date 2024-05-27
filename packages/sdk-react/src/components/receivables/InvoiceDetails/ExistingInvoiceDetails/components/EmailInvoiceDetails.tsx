@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -143,6 +143,11 @@ const EmailInvoiceDetailsBase = ({
     ]
   );
 
+  const isDisabled =
+    issueMutation.isPending ||
+    sendMutation.isPending ||
+    createPaymentLinkMutation.isPending;
+
   return (
     <>
       <DialogTitle>
@@ -155,10 +160,7 @@ const EmailInvoiceDetailsBase = ({
                   color="primary"
                   onClick={onClose}
                   startIcon={<ArrowBackIcon />}
-                  disabled={
-                    sendMutation.isPending ||
-                    createPaymentLinkMutation.isPending
-                  }
+                  disabled={isDisabled}
                 >{t(i18n)`Back`}</Button>
                 <Typography variant="h3">{t(i18n)`Compose email`}</Typography>
               </Stack>
@@ -175,7 +177,7 @@ const EmailInvoiceDetailsBase = ({
                   color="primary"
                   type="submit"
                   form="emailInvoiceDetailsForm"
-                  disabled={sendMutation.isPending}
+                  disabled={isDisabled}
                 >{t(i18n)`Issue and send`}</Button>
               </Stack>
             </Grid>
@@ -205,8 +207,8 @@ const EmailInvoiceDetailsBase = ({
                     error={Boolean(error)}
                     helperText={error?.message}
                     required
-                    disabled={sendMutation.isPending}
                     {...field}
+                    disabled={isDisabled}
                   />
                 )}
               />
@@ -229,8 +231,8 @@ const EmailInvoiceDetailsBase = ({
                     required
                     multiline
                     rows={8}
-                    disabled={sendMutation.isPending}
                     {...field}
+                    disabled={isDisabled}
                   />
                 )}
               />

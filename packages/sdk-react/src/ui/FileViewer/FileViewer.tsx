@@ -7,10 +7,12 @@ import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { Box, IconButton } from '@mui/material';
+import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 
 const SCALE_STEP = 0.1;
@@ -37,10 +39,17 @@ export interface FileViewerProps {
    *   withCredentials - a boolean to indicate whether to include cookies in the request (defaults to false)
    *  )
    */
-  url: any;
+  url?: string;
   mimetype: string;
   name?: string;
   rightIcon?: ReactNode;
+
+  /**
+   * What should be done when the PDF is not loaded and the user clicks the `Reload` button.
+   *
+   * Note: The button `Reload` will be displayed only if the `onErrorCallback` is provided
+   */
+  onReloadCallback?: () => void;
 }
 
 export const FileViewer = (props: FileViewerProps) => {
@@ -102,6 +111,46 @@ export const FileViewer = (props: FileViewerProps) => {
   return null;
 };
 
+const ErrorComponent = ({
+  onError,
+}: {
+  onError: FileViewerProps['onReloadCallback'];
+}) => {
+  const { i18n } = useLingui();
+
+  return (
+    <Box
+      sx={{
+        padding: 4,
+      }}
+    >
+      <Stack alignItems="center" gap={2}>
+        <ErrorOutlineIcon color="error" />
+        <Stack gap={0.5} alignItems="center">
+          <Typography variant="body1" fontWeight="bold">{t(
+            i18n
+          )`Failed to load PDF Viewer`}</Typography>
+          <Stack alignItems="center">
+            <Typography variant="body2">{t(
+              i18n
+            )`Please try to reload.`}</Typography>
+            <Typography variant="body2">{t(
+              i18n
+            )`If the error recurs, contact support.`}</Typography>
+          </Stack>
+          {onError && (
+            <Button
+              variant="text"
+              onClick={onError}
+              startIcon={<RefreshIcon />}
+            >{t(i18n)`Reload`}</Button>
+          )}
+        </Stack>
+      </Stack>
+    </Box>
+  );
+};
+
 const FileViewerComponent = ({
   url,
   mimetype,
@@ -109,6 +158,7 @@ const FileViewerComponent = ({
   rightIcon,
   Document,
   Page,
+  onReloadCallback,
 }: FileViewerProps & AsyncReturnType<typeof loadReactPDF>) => {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [numPages, setNumPages] = useState<number>(0);
@@ -138,13 +188,17 @@ const FileViewerComponent = ({
 
   const isPdf = mimetype === 'application/pdf';
 
+  if (!url) {
+    return <ErrorComponent onError={onReloadCallback} />;
+  }
+
   const renderFile = () => {
     if (isPdf)
       return (
         <Document
           file={url}
           onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={console.error} //TODO add error view when design will be ready
+          noData={<ErrorComponent onError={onReloadCallback} />}
         >
           <Page
             pageNumber={pageNumber}
