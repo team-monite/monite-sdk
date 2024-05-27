@@ -238,7 +238,8 @@ program
         const measureUnitsService = new MeasureUnitsService(
           serviceConstructorProps
         );
-        const measureUnits = await measureUnitsService.create();
+        await measureUnitsService.create();
+        const measureUnits = await measureUnitsService.getAll();
 
         const paymentTermsService = new PaymentTermsService(
           serviceConstructorProps
