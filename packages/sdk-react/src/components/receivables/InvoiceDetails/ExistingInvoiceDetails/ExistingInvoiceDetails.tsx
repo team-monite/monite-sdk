@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
 import { useDialog } from '@/components';
-import { ROW_TO_TAG_STATUS_MUI_MAP } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
@@ -12,16 +11,13 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { CenteredContentBox } from '@/ui/box';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ActionEnum,
-  InvoiceResponsePayload,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
+import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -30,6 +26,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   DialogContent,
   DialogTitle,
   Grid,
@@ -329,6 +326,20 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
             >
               {isPdfLoading ? (
                 <LoadingPage />
+              ) : !pdf?.file_url && !pdfError ? (
+                <CenteredContentBox>
+                  <Stack alignItems="center" gap={2}>
+                    <CircularProgress />
+                    <Box textAlign="center">
+                      <Typography variant="body2" fontWeight="500">{t(
+                        i18n
+                      )`Updating the invoice`}</Typography>
+                      <Typography variant="body2" fontWeight="500">{t(
+                        i18n
+                      )`information...`}</Typography>
+                    </Box>
+                  </Stack>
+                </CenteredContentBox>
               ) : (
                 <FileViewer
                   mimetype="application/pdf"

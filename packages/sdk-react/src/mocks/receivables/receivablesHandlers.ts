@@ -1,4 +1,5 @@
 import { receivableListFixture, ReceivablesListFixture } from '@/mocks';
+import { faker } from '@faker-js/faker';
 import {
   ReceivablePaginationResponse,
   RECEIVABLES_ENDPOINT,
@@ -500,14 +501,35 @@ export const receivableHandlers = [
     IReceivableByIdParams,
     undefined,
     ReceivableFileUrl | ErrorSchemaResponse
-  >(`${receivableDetailPath}/pdf_link`, async ({ params }) => {
+  >(`${receivableDetailPath}/pdf_link`, async () => {
     await delay();
 
+    /**
+     * Return File Url conditionally
+     *  to simulate the real-world scenario
+     *
+     * ! Note !: It will break tests if we want to check if PDF is rendered,
+     *  which is not the case in the current implementation
+     */
+    const shouldReturnFileUrl = faker.datatype.boolean({
+      probability: 0.7,
+    });
+
+    if (shouldReturnFileUrl) {
+      return HttpResponse.json(
+        {
+          file_url:
+            'https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/receivables/6da994ff-c026-4502-a109-954ae5a696a7/89693d25-0902-4597-97a7-64183c13d463.pdf',
+        },
+        {
+          status: 200,
+        }
+      );
+    }
+
     return HttpResponse.json(
-      {
-        file_url:
-          'https://monite-file-saver-sandbox-eu-central-1.s3.eu-central-1.amazonaws.com/sandbox/receivables/6da994ff-c026-4502-a109-954ae5a696a7/89693d25-0902-4597-97a7-64183c13d463.pdf',
-      },
+      /** Don't return a `file_url` to simulate real-word scenario */
+      {},
       {
         status: 200,
       }
