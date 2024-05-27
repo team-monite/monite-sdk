@@ -79,7 +79,7 @@ export const generateEntity = async (
       serviceConstructorProps
     );
     const paymentTerms = await paymentTermsService
-      .withOptions({ count: 3 })
+      .withOptions({ count: 10 })
       .create();
 
     const productsService = new ProductsService(serviceConstructorProps);
@@ -103,7 +103,6 @@ export const generateEntity = async (
 
     const receivablesService = new ReceivablesService(serviceConstructorProps);
 
-    /** Create 15'ing Receivables with a type `invoice` */
     const invoices = await receivablesService
       .withOptions({
         products: lineItems,
@@ -113,7 +112,7 @@ export const generateEntity = async (
         entityVats,
         paymentTerms,
         type: 'invoice',
-        count: 15,
+        count: 20,
       })
       .create();
 
