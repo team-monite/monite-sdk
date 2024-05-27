@@ -15,11 +15,13 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CUSTOMER,
+  FILTER_TYPE_DUE_DATE_LTE,
 } from '../consts';
 
 type Props = {
@@ -128,6 +130,27 @@ export const Filters = ({ onChangeFilter }: Props) => {
             ))}
           </Select>
         </MuiFormControl>
+      </Grid>
+      <Grid item xs={6} sm={3} md={2} lg={2}>
+        <DatePicker<Date>
+          label={t(i18n)`Due date`}
+          onChange={(value, error) => {
+            if (error.validationError) {
+              return;
+            }
+
+            onChangeFilter(FILTER_TYPE_DUE_DATE_LTE, value);
+          }}
+          slotProps={{
+            popper: {
+              container: root,
+            },
+            actionBar: {
+              actions: ['clear', 'today'],
+            },
+          }}
+          views={['year', 'month', 'day']}
+        />
       </Grid>
     </Grid>
   );

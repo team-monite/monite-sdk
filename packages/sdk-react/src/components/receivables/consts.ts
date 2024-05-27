@@ -56,3 +56,4 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
 export const FILTER_TYPE_SEARCH = 'search' as const;
 export const FILTER_TYPE_STATUS = 'status' as const;
 export const FILTER_TYPE_CUSTOMER = 'customer' as const;
+export const FILTER_TYPE_DUE_DATE_LTE = 'due_date__lte' as const;

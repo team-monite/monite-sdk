@@ -84,6 +84,7 @@ export class ReceivableService extends CommonService {
    * @param entityUserId
    * @param entityUserIdIn
    * @param basedOn
+   * @param dueDateLte
    *
    * @see {@link https://docs.monite.com/reference/get_receivables} for API calls
    * @see {@link https://docs.monite.com/docs/manage-products#list-all-products} for additional documentation
@@ -120,7 +121,8 @@ export class ReceivableService extends CommonService {
     statusIn?: Array<ReceivablesStatusEnum>,
     entityUserId?: string,
     entityUserIdIn?: Array<string>,
-    basedOn?: string
+    basedOn?: string,
+    dueDateLte?: string
   ): CancelablePromise<ReceivablePaginationResponse> {
     return __request(
       {
@@ -156,6 +158,7 @@ export class ReceivableService extends CommonService {
           entity_user_id: entityUserId,
           entity_user_id__in: entityUserIdIn,
           based_on: basedOn,
+          due_date__lte: dueDateLte,
         },
         errors: {
           400: `Bad Request`,
