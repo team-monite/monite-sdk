@@ -267,7 +267,7 @@ const InvoicesTableBase = ({
               flex: 0.5,
             },
             {
-              field: 'fulfillment_date',
+              field: 'due_date',
               headerName: t(i18n)`Due date`,
               sortable: false,
               valueFormatter: (params) =>
