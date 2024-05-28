@@ -36,15 +36,23 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
+import {
+  useInvoiceRowActionMenuCell,
+  type UseInvoiceRowActionMenuCellProps,
+} from './useInvoiceRowActionMenuCell';
 
-type InvoicesTableProps = {
+interface InvoicesTableBaseProps {
   /**
    * The event handler for a row click.
    *
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
-};
+}
+
+export type InvoicesTableProps =
+  | InvoicesTableBaseProps
+  | (UseInvoiceRowActionMenuCellProps & InvoicesTableBaseProps);
 
 export interface InvoicesTableSortModel {
   field: ReceivableCursorFields;
@@ -57,7 +65,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
+const InvoicesTableBase = ({
+  onRowClick,
+  ...restProps
+}: InvoicesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -105,11 +116,11 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
-  const onPrev = () =>
-    setCurrentPaginationToken(invoices?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(invoices?.next_pagination_token || null);
+  const invoiceActionCell = useInvoiceRowActionMenuCell({
+    rowActions: 'rowActions' in restProps && restProps.rowActions,
+    onRowActionClick:
+      'onRowActionClick' in restProps && restProps.onRowActionClick,
+  });
 
   // Workaround to prevent illegal sorting fields
   const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
@@ -250,6 +261,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
                   : '—',
               flex: 0.7,
             },
+            ...(invoiceActionCell ? [invoiceActionCell] : []),
           ]}
           rows={invoices?.data ?? []}
         />
