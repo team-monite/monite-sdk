@@ -105,6 +105,15 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setCurrentPaginationToken(null);
   };
 
+  const onPrev = () =>
+    setCurrentPaginationToken(invoices?.prev_pagination_token || null);
+
+  const onNext = () =>
+    setCurrentPaginationToken(invoices?.next_pagination_token || null);
+
+  // Workaround to prevent illegal sorting fields
+  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
+
   return (
     <>
       <Box
@@ -163,12 +172,16 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
               },
             },
             {
-              field: 'counterpart_id',
+              field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.COUNTERPART_NAME
+              ),
               flex: 1.3,
               renderCell: (params) => (
-                <InvoiceCounterpartName counterpartId={params.value} />
+                <InvoiceCounterpartName
+                  counterpartId={params.row.counterpart_id}
+                />
               ),
             },
             {
@@ -197,7 +210,9 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             {
               field: 'status',
               headerName: t(i18n)`Status`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.STATUS
+              ),
               renderCell: (
                 params: GridRenderCellParams<ReceivableResponse>
               ) => {
@@ -209,6 +224,9 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.AMOUNT
+              ),
               valueGetter: (params) => {
                 const row = params.row as InvoiceResponsePayload;
                 const value = row.total_amount;
