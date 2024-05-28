@@ -8,7 +8,7 @@
  * @returns The real timeout value based on the platform.
  */
 export const environmentSensitiveTimeout = (timeout: number): number => {
-  if (process.env.TESTS) {
+  if (process?.env?.TESTS) {
     return 0;
   }
 
