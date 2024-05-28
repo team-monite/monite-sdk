@@ -1553,7 +1553,7 @@ msgstr "Created by user"
 msgid "Created on"
 msgstr "Created on"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:97
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:88
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -1789,7 +1789,7 @@ msgstr "Description:"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:140
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:90
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:95
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:20
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:21
 msgid "Details"
 msgstr "Details"
 
@@ -2430,7 +2430,7 @@ msgstr "Fuel Dealers (Non Automotive)"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:173
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:86
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:118
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:33
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:34
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:189
 msgid "Fulfillment date"
 msgstr "Fulfillment date"
@@ -2852,7 +2852,7 @@ msgstr "Invoice total"
 msgid "Invoice with id “{0}” was created"
 msgstr "Invoice with id “{0}” was created"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:85
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:74
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -3347,7 +3347,7 @@ msgstr "Mens and Boys Clothing and Accessories Stores"
 msgid "Mens, Womens Clothing Stores"
 msgstr "Mens, Womens Clothing Stores"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:45
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:49
 msgid "Message"
 msgstr "Message"
 
@@ -4272,7 +4272,7 @@ msgstr "Puerto Rico"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:230
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:88
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:120
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:40
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:44
 msgid "Purchase order"
 msgstr "Purchase order"
 
@@ -4300,7 +4300,7 @@ msgstr "Quebec Sales Tax (Canada)"
 msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:91
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:81
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -4337,7 +4337,7 @@ msgstr "Receivable type not supported"
 msgid "Receivable was deleted"
 msgstr "Receivable was deleted"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:79
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:68
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
@@ -5681,7 +5681,7 @@ msgid "VAT ID"
 msgstr "VAT ID"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:77
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:29
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
 msgid "VAT ID {0}"
 msgstr "VAT ID {0}"
 
@@ -5876,7 +5876,7 @@ msgstr "You don’t have permissions to view this page.<0/>Contact your system a
 msgid "Your TAX ID"
 msgstr "Your TAX ID"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:26
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:27
 msgid "Your tax information"
 msgstr "Your tax information"
 
