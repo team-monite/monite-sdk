@@ -149,6 +149,7 @@ const InvoicesTableBase = ({
               setCurrentPaginationToken(null);
               onChangeFilter(field, value);
             }}
+            filters={['search', 'status', 'customer', 'due_date__lte']}
           />
         </Box>
         <DataGrid

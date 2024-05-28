@@ -117,7 +117,10 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
+          <Filters
+            onChangeFilter={onChangeFilter}
+            filters={['search', 'status', 'customer']}
+          />
         </Box>
         <DataGrid
           autoHeight
