@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
@@ -17,7 +17,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
+import { ActionEnum, ApiError, InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -129,13 +129,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   /** Is the deleting modal opened? */
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
-
-  const {
-    data: pdf,
-    isLoading: isPdfLoading,
-    error: pdfError,
-    refetch: refetchPdf,
-  } = usePDFReceivableById(props.id);
 
   const handleIssueAndSend = useCallback(() => {
     setPresentation(InvoiceDetailsPresentation.Email);
@@ -324,29 +317,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 overflow: 'auto',
               }}
             >
-              {isPdfLoading ? (
-                <LoadingPage />
-              ) : !pdf?.file_url && !pdfError ? (
-                <CenteredContentBox>
-                  <Stack alignItems="center" gap={2}>
-                    <CircularProgress />
-                    <Box textAlign="center">
-                      <Typography variant="body2" fontWeight="500">{t(
-                        i18n
-                      )`Updating the invoice`}</Typography>
-                      <Typography variant="body2" fontWeight="500">{t(
-                        i18n
-                      )`information...`}</Typography>
-                    </Box>
-                  </Stack>
-                </CenteredContentBox>
-              ) : (
-                <FileViewer
-                  mimetype="application/pdf"
-                  url={pdf?.file_url}
-                  onReloadCallback={refetchPdf}
-                />
-              )}
+              <InvoiceFileViewer invoiceId={props.id} />
             </Box>
           </Grid>
           <Grid item sm={5} xs={12}>
@@ -373,3 +344,47 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     </>
   );
 };
+
+const InvoiceFileViewer = memo(({ invoiceId }: { invoiceId: string }) => {
+  const { data, isLoading, error, refetch } = usePDFReceivableById(invoiceId);
+  const { i18n } = useLingui();
+
+  if (error)
+    return (
+      <Alert severity="error" sx={{ maxWidth: 300, mx: 'auto' }}>
+        {(() => {
+          if (error instanceof ApiError && error.body.message)
+            return error.body.message;
+          if ('message' in error && error.message) return error.message;
+          return t(i18n)`Unhandled error when loading a link to a PDF file`;
+        })()}
+      </Alert>
+    );
+
+  if (isLoading) return <LoadingPage />;
+
+  if (!data?.file_url)
+    return (
+      <CenteredContentBox>
+        <Stack alignItems="center" gap={2}>
+          <CircularProgress />
+          <Box textAlign="center">
+            <Typography variant="body2" fontWeight="500">{t(
+              i18n
+            )`Updating the invoice`}</Typography>
+            <Typography variant="body2" fontWeight="500">{t(
+              i18n
+            )`information...`}</Typography>
+          </Box>
+        </Stack>
+      </CenteredContentBox>
+    );
+
+  return (
+    <FileViewer
+      mimetype="application/pdf"
+      url={data?.file_url}
+      onReloadCallback={refetch}
+    />
+  );
+});
