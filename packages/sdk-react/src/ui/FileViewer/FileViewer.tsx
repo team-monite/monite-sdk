@@ -273,10 +273,7 @@ const FileViewerComponent = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container
-        sx={{ flex: '1 1 auto', overflow: 'auto', height: 'auto' }}
-      >
+      <Grid container sx={{ flex: '1 1 auto', overflow: 'auto', height: 0 }}>
         {renderFile()}
       </Grid>
     </>
