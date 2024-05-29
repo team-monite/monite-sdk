@@ -951,7 +951,7 @@ msgstr "Cancel without saving?"
 #: src/components/receivables/Filters/Filters.tsx:88
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:18
-#: src/core/queries/useReceivables.ts:269
+#: src/core/queries/useReceivables.ts:270
 msgid "Canceled"
 msgstr "Canceled"
 
@@ -1196,7 +1196,7 @@ msgid "Company name is required"
 msgstr "Company name is required"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:165
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:294
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:287
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1685,7 +1685,7 @@ msgstr "Declined"
 #: src/components/products/Products.test.tsx:222
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:280
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:74
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:247
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:240
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:278
 #: src/components/TableActions/TableActions.tsx:61
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:53
@@ -1889,7 +1889,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:285
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:278
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2024,7 +2024,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:255
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:248
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2771,7 +2771,7 @@ msgstr "Industry"
 msgid "Information Retrieval Services"
 msgstr "Information Retrieval Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:337
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:375
 msgid "information..."
 msgstr "information..."
 
@@ -2808,7 +2808,7 @@ msgstr "Invoice “{0}” was updated"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:228
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:221
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -2826,7 +2826,7 @@ msgstr "Invoice date"
 msgid "Invoice delete confirmation"
 msgstr "Invoice delete confirmation"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:157
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:150
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:137
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -2884,7 +2884,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:302
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:295
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:283
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:288
 msgid "Issue"
@@ -2927,7 +2927,7 @@ msgstr "Issue only"
 #: src/components/receivables/Filters/Filters.tsx:70
 #: src/components/receivables/getCommonStatusLabel.ts:13
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:9
-#: src/core/queries/useReceivables.ts:171
+#: src/core/queries/useReceivables.ts:172
 msgid "Issued"
 msgstr "Issued"
 
@@ -3287,7 +3287,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
 
-#: src/core/queries/useReceivables.ts:296
+#: src/core/queries/useReceivables.ts:297
 msgid "Marked as uncollectible"
 msgstr "Marked as uncollectible"
 
@@ -3443,7 +3443,7 @@ msgstr "Mongolian Tugrik"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:266
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:259
 msgid "More"
 msgstr "More"
 
@@ -3941,7 +3941,7 @@ msgstr "Payment term"
 msgid "Payment terms"
 msgstr "Payment terms"
 
-#: src/core/queries/useReceivables.ts:351
+#: src/core/queries/useReceivables.ts:352
 msgid "PDF was generated"
 msgstr "PDF was generated"
 
@@ -4329,15 +4329,15 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:167
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:160
 msgid "Receivable type {0} is not supported. Only {1} is supported."
 msgstr "Receivable type {0} is not supported. Only {1} is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:166
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:159
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
-#: src/core/queries/useReceivables.ts:228
+#: src/core/queries/useReceivables.ts:229
 msgid "Receivable was deleted"
 msgstr "Receivable was deleted"
 
@@ -4625,7 +4625,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:274
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:267
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -4633,7 +4633,7 @@ msgstr "Send invoice"
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/core/queries/useReceivables.ts:328
+#: src/core/queries/useReceivables.ts:329
 msgid "Sent"
 msgstr "Sent"
 
@@ -5153,7 +5153,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:158
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:151
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -5416,6 +5416,10 @@ msgstr "Ukrainian Hryvnia"
 msgid "Uncollectible"
 msgstr "Uncollectible"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:359
+msgid "Unhandled error when loading a link to a PDF file"
+msgstr "Unhandled error when loading a link to a PDF file"
+
 #: src/core/utils/useVatTypes.ts:37
 msgid "Unified Identification Code (Bulgaria)"
 msgstr "Unified Identification Code (Bulgaria)"
@@ -5521,7 +5525,7 @@ msgstr "Updated at"
 msgid "Updated on"
 msgstr "Updated on"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:334
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:372
 msgid "Updating the invoice"
 msgstr "Updating the invoice"
 
@@ -5872,7 +5876,7 @@ msgstr "You can not create receivable with a type other than \"{0}\""
 msgid "You do not have permission to access this resource."
 msgstr "You do not have permission to access this resource."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:355
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:326
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
