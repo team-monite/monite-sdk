@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { useMeasure } from 'react-use';
+import { useMeasure, useScrollbarWidth } from 'react-use';
 
 import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -161,6 +161,7 @@ const FileViewerComponent = ({
   onReloadCallback,
 }: FileViewerProps & AsyncReturnType<typeof loadReactPDF>) => {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const scrollbarWidth = useScrollbarWidth();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
@@ -202,7 +203,7 @@ const FileViewerComponent = ({
         >
           <Page
             pageNumber={pageNumber}
-            width={width}
+            width={scrollbarWidth ? width - scrollbarWidth : width}
             scale={scale}
             renderTextLayer={false}
             renderAnnotationLayer={false}
@@ -215,7 +216,7 @@ const FileViewerComponent = ({
 
   return (
     <>
-      <Grid container ref={ref}>
+      <Grid container ref={ref} flexWrap="nowrap">
         <Grid
           item
           container
