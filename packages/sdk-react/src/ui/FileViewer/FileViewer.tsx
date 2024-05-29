@@ -283,7 +283,7 @@ const FileViewerComponent = ({
 
 const loadReactPDF = async () => {
   const { pdfjs, Document, Page } = await import('react-pdf');
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.mjs`;
   return { Document, Page } as const;
 };
 
