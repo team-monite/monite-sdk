@@ -159,13 +159,14 @@ export const useIssueReceivableById = () => {
   return useMutation<ReceivableResponse, ApiError, string>({
     mutationFn: (receivableId) => monite.api.receivable.issueById(receivableId),
 
-    onSuccess: (receivable, id) => {
+    onSuccess: async (receivable, id) => {
       queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
       invalidate();
 
-      /** We have to invalidate a PDF query to get the latest PDF */
-      queryClient.invalidateQueries({
+      /** We have to reset a PDF query to immediately to clear PDF Viewer */
+      await queryClient.resetQueries({
         queryKey: receivablesQueryKeys.pdf(id),
+        exact: true,
       });
 
       toast.success(t(i18n)`Issued`);
