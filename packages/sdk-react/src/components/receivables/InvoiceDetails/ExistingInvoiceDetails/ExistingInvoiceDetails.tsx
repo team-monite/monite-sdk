@@ -324,6 +324,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 minHeight: 500,
+                height: '100%',
                 overflow: 'auto',
               }}
             >
