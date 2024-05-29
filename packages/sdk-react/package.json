@@ -51,7 +51,7 @@
     "react-imask": "6.4.3",
     "react-infinite-scroll-component": "~6.1.0",
     "react-international-phone": "~4.2.4",
-    "react-pdf": "~8.0.2",
+    "react-pdf": "~9.0.0",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.3.2",
     "react-virtuoso": "~4.7.10",
