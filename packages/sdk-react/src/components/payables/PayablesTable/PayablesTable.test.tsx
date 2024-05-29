@@ -103,6 +103,12 @@ describe('PayablesTable', () => {
         target: { value: searchValue },
       });
 
+      /**
+       * We have to push the timer forward because `search` is debounced,
+       *  and we have to wait until the search will be executed
+       */
+      jest.advanceTimersByTime(1000);
+
       await waitFor(() => {
         expect(onChangeFilterMock).toHaveBeenCalledWith({
           field: 'search',
@@ -197,6 +203,12 @@ describe('PayablesTable', () => {
       fireEvent.change(search, {
         target: { value: searchValue },
       });
+
+      /**
+       * We have to push the timer forward because `search` is debounced,
+       *  and we have to wait until the search will be executed
+       */
+      jest.advanceTimersByTime(1000);
 
       await waitFor(() => {
         const items = screen.getAllByRole('row');
