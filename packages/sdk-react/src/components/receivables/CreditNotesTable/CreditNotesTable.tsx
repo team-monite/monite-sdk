@@ -120,6 +120,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          autoHeight
           rowSelection={false}
           loading={isLoading}
           sx={{
