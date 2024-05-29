@@ -59,35 +59,54 @@ export function useIsActionAllowed({
   action,
   entityUserId,
 }: IsActionAllowedType) {
-  const { data, userIdFromAuthToken, ...rest } = usePermissions(method);
-  /**
-   * Unfortunately, we have to cast `data` to `Array<ActionSchema | PayableActionSchema> | undefined`
-   *  because TypeScript can't infer a type of `data` from `usePermissions` hook
-   * @link {@see https://github.com/microsoft/TypeScript/pull/47109}
-   */
-  const actions = data as Array<ActionSchema | PayableActionSchema> | undefined;
+  const {
+    data: actions,
+    userIdFromAuthToken,
+    ...rest
+  } = usePermissions(method);
 
-  if (!actions) {
-    return { ...rest, data: false };
-  }
+  return {
+    ...rest,
+    data: isActionAllowed({
+      action,
+      actions,
+      entityUserId,
+      entityUserIdFromAuthToken: userIdFromAuthToken,
+    }),
+  };
+}
 
-  const schemaAction = actions.find((act) => act.action_name === action);
+/**
+ * Checks if the action is allowed for the given entity user.
+ *
+ * @param action Action to check, e.g. `create`, `update`, `delete`, etc.
+ * @param entityUserId Entity user identifier to check permissions for, e.g. `invoice.entityUserId`
+ * @param entityUserIdFromAuthToken Actual current user identifier from the auth token
+ * @param actions List of actions for the specific method, e.g. `workflow`, `payable`, etc.
+ */
+export function isActionAllowed({
+  action,
+  actions,
+  entityUserId,
+  entityUserIdFromAuthToken,
+}: {
+  action: PayableOperator['action'] | CommonOperator['action'];
+  actions: Array<ActionSchema | PayableActionSchema> | undefined;
+  entityUserId?: string;
+  entityUserIdFromAuthToken: string | undefined;
+}) {
+  const actionSchema = actions?.find(
+    ({ action_name }) => action_name === action
+  );
 
-  if (!schemaAction) {
-    return {
-      ...rest,
-      data: false,
-    };
-  }
+  if (!actionSchema) return false;
 
   /** We have to handle `ALLOWED_FOR_OWN` with the user identifier */
-  if (schemaAction.permission === PermissionEnum.ALLOWED_FOR_OWN) {
-    if (userIdFromAuthToken === entityUserId) {
-      return { ...rest, data: true };
-    }
+  if (actionSchema.permission === PermissionEnum.ALLOWED_FOR_OWN) {
+    return entityUserIdFromAuthToken === entityUserId;
   }
 
-  return { ...rest, data: schemaAction.permission === PermissionEnum.ALLOWED };
+  return actionSchema.permission === PermissionEnum.ALLOWED;
 }
 
 /**

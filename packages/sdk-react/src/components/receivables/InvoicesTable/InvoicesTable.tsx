@@ -36,15 +36,23 @@ import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
+import {
+  useInvoiceRowActionMenuCell,
+  type UseInvoiceRowActionMenuCellProps,
+} from './useInvoiceRowActionMenuCell';
 
-type InvoicesTableProps = {
+interface InvoicesTableBaseProps {
   /**
    * The event handler for a row click.
    *
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
-};
+}
+
+export type InvoicesTableProps =
+  | InvoicesTableBaseProps
+  | (UseInvoiceRowActionMenuCellProps & InvoicesTableBaseProps);
 
 export interface InvoicesTableSortModel {
   field: ReceivableCursorFields;
@@ -57,7 +65,10 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
+const InvoicesTableBase = ({
+  onRowClick,
+  ...restProps
+}: InvoicesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -104,6 +115,15 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
     setSortModel(model);
     setCurrentPaginationToken(null);
   };
+
+  const invoiceActionCell = useInvoiceRowActionMenuCell({
+    rowActions: 'rowActions' in restProps && restProps.rowActions,
+    onRowActionClick:
+      'onRowActionClick' in restProps && restProps.onRowActionClick,
+  });
+
+  // Workaround to prevent illegal sorting fields
+  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
 
   return (
     <>
@@ -163,12 +183,16 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
               },
             },
             {
-              field: 'counterpart_id',
+              field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.COUNTERPART_NAME
+              ),
               flex: 1.3,
               renderCell: (params) => (
-                <InvoiceCounterpartName counterpartId={params.value} />
+                <InvoiceCounterpartName
+                  counterpartId={params.row.counterpart_id}
+                />
               ),
             },
             {
@@ -197,7 +221,9 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             {
               field: 'status',
               headerName: t(i18n)`Status`,
-              sortable: false,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.STATUS
+              ),
               renderCell: (
                 params: GridRenderCellParams<ReceivableResponse>
               ) => {
@@ -209,6 +235,9 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
+              sortable: receivableCursorFieldsList.includes(
+                ReceivableCursorFields.AMOUNT
+              ),
               valueGetter: (params) => {
                 const row = params.row as InvoiceResponsePayload;
                 const value = row.total_amount;
@@ -232,6 +261,7 @@ const InvoicesTableBase = ({ onRowClick }: InvoicesTableProps) => {
                   : '—',
               flex: 0.7,
             },
+            ...(invoiceActionCell ? [invoiceActionCell] : []),
           ]}
           rows={invoices?.data ?? []}
         />
