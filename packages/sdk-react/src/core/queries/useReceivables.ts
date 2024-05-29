@@ -367,38 +367,16 @@ export const usePDFReceivableById = (
 
   return useQuery<ReceivableFileUrl, ApiError>({
     queryKey: receivablesQueryKeys.pdf(receivableId),
-    queryFn: async () => {
-      const response = await monite.api.receivable.getPdfLink(receivableId);
-
-      if (!response.file_url) {
-        /**
-         * We have to flush current query data to show the error
-         *  but not previous data
-         */
-        queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
-
-        throw new Error('File URL is not provided');
-      }
-
-      return response;
-    },
+    queryFn: () => monite.api.receivable.getPdfLink(receivableId),
 
     enabled: options?.enabled,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    gcTime: 0,
-    refetchIntervalInBackground: false,
-    staleTime: 0,
-    /** Implement `retry` logic only if we have "File URL is not provided" error */
-    retry: (failureCount, error) => {
-      /** Implement `retry` logic only if we have "File URL is not provided" error */
-      if (error.message === 'File URL is not provided') {
-        return failureCount <= 4;
-      }
-
-      return false;
-    },
-    retryDelay: 1_000,
+    staleTime: 10_000,
+    refetchIntervalInBackground: true,
+    refetchInterval: queryClient.getQueryData<ReceivableFileUrl>(
+      receivablesQueryKeys.pdf(receivableId)
+    )?.file_url
+      ? false
+      : 1_000,
   });
 };
 
