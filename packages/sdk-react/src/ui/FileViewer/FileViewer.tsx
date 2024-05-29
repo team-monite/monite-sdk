@@ -71,14 +71,14 @@ export const FileViewer = (props: FileViewerProps) => {
      */
     loadReactPDF()
       .then((components) => {
-        setReactPdfDynamic((prev) => ({
+        setReactPdfDynamic(() => ({
           components,
           error: null,
           loading: false,
         }));
       })
       .catch((error) => {
-        setReactPdfDynamic((prev) => {
+        setReactPdfDynamic(() => {
           const errorMessage = error.message;
           return {
             components: null,
