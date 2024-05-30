@@ -31,8 +31,25 @@ export class PaymentTermsService extends GeneralService {
   private async createPaymentTerm(): Promise<
     components['schemas']['PaymentTermsResponse']
   > {
-    const days = faker.number.int({ min: 2, max: 100 });
-    const discount = faker.number.int({ min: 1, max: 100 });
+    const term_1 = {
+      discount: faker.number.int({ min: 1, max: 50 }),
+      number_of_days: faker.number.int({ min: 1, max: 20 }),
+    };
+
+    const term_2 = {
+      discount: faker.number.int({ min: 1, max: 50 }),
+      number_of_days: faker.number.int({
+        min: term_1.number_of_days + 1,
+        max: term_1.number_of_days + 20,
+      }),
+    };
+
+    const term_final = {
+      number_of_days: faker.number.int({
+        min: term_2.number_of_days + 1,
+        max: term_2.number_of_days + 80,
+      }),
+    };
 
     const { data, error, response } = await this.request.POST(
       '/payment_terms',
@@ -44,16 +61,13 @@ export class PaymentTermsService extends GeneralService {
           },
         },
         body: {
-          name: `${days} days`,
+          term_1,
+          term_2,
+          term_final,
+          name: `${term_final.number_of_days} days`,
           description: faker.datatype.boolean()
-            ? `${discount}% discount before day ${faker.number.int({
-                min: 1,
-                max: 20,
-              })}`
+            ? `${term_1.discount}% discount before day ${term_1.number_of_days}`
             : undefined,
-          term_final: {
-            number_of_days: days,
-          },
         },
       }
     );
