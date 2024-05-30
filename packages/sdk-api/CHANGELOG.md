@@ -1,5 +1,12 @@
 # @monite/sdk-api
 
+## 3.13.0
+
+### Patch Changes
+
+- 9711e3e2: feat(DEV-10943): add "due_date\_\_lte" query parameter usage to Receivables service
+- 1fb0d928: fix(DEV-10942): filter invoices by counterpart name in `<InvoicesTable/>`
+
 ## 3.12.0
 
 ## 3.11.0
