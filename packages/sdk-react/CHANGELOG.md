@@ -1,5 +1,39 @@
 # @monite/sdk-react
 
+## 3.13.0
+
+### Minor Changes
+
+- 5dcd266d: feat(DEV-10563): provide ReceivablesTable into a public export
+- 647efc9d: feat(DEV-10391): add support for multiple message contexts
+
+  Adds support for multiple translations of the same message string (`msgstr`) based on different message
+  contexts (`msgctxt`).
+
+- 062b80b8: feat(DEV-10943): replace `fulfillment_date` column with `due_date` in `<InvoicesTable/>`
+- a5e64ad2: refactor(DEV-8894): update react-pdf lib version
+- 6dee4d58: feat(DEV-10786): add sorting by counterpart_name and status to the Receivables tables
+- 0d9e7b4c: feat(DEV-10391): add actions menu to InvoicesTable
+
+  Adds a new Actions Menu to the `InvoicesTable` component. This allows users to perform actions on individual invoices
+  directly from the table, such as viewing, editing, and deleting them.
+
+  The Actions Menu can be customized using the new `rowActions` prop, which allows you to specify which actions are
+  available for each invoice status. If no `rowActions` prop is provided, a set of default actions will be displayed.
+
+### Patch Changes
+
+- 1852a085: style(DEV-10643): fix pdf layout to have fixed pdf toolbar when scroll
+- cde308c6: fix(DEV-10943): Invoice Details "Fulfillment date" output
+- 1644a535: feat(DEV-8990): support backend permissions for different buttons. Don't show some blocks if there is no data for it
+- 9cdd98a1: feat(DEV-10563): Improve test stability
+- cb9c44c1: feat(DEV-8990): improve InvoiceDetails screen.
+- 600a51d7: feat(DEV-10896): fixed table height jumping and scrollbar issues during pagination by refactoring the theme props and adding `autoHeight` to `<DataGrid />`.
+- 62a0c4e9: feat(proposal): improve `<ReceivablesTable/>` ARIA usage
+- Updated dependencies [9711e3e2]
+- Updated dependencies [1fb0d928]
+  - @monite/sdk-api@3.13.0
+
 ## 3.12.0
 
 ### Minor Changes
