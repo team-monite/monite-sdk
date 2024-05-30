@@ -34,6 +34,16 @@ const receivablesQueryKeys = {
   detail: (id: string) => [...receivablesQueryKeys.all(), 'detail', id],
 };
 
+const useReceivablePdfListCache = () => {
+  const queryClient = useQueryClient();
+
+  return {
+    invalidate: (receivableId: string) => {
+      queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
+    },
+  };
+};
+
 export const receivablesDefaultQueryConfig = {
   refetchInterval: 15_000,
 };
@@ -362,6 +372,7 @@ export const usePDFReceivableById = (
   }
 ) => {
   const { monite } = useMoniteContext();
+  const { invalidate: invalidatePDF } = useReceivablePdfListCache();
   const queryClient = useQueryClient();
 
   return useQuery<ReceivableFileUrl, ApiError>({
@@ -374,7 +385,7 @@ export const usePDFReceivableById = (
          * We have to flush current query data to show the error
          *  but not previous data
          */
-        queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
+        invalidatePDF(receivableId);
 
         throw new Error('File URL is not provided');
       }
