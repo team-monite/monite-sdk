@@ -6,9 +6,11 @@ import dotenv from 'dotenv';
 import { clerkClient } from '@clerk/clerk-sdk-node';
 import { faker } from '@faker-js/faker';
 
+import { createOrganizationEntity } from '@/lib/clerk-api/create-organization-entity';
 import { recreateOrganizationEntity } from '@/lib/clerk-api/recreate-organization-entity';
 import {
   createEntityRole,
+  createEntityRoles,
   isExistingRole,
   permissionsAdapter,
   roles_default_permissions,
@@ -26,7 +28,7 @@ import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymen
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
-import { fetchToken } from '@/lib/monite-api/fetch-token';
+import { type AccessToken, fetchToken } from '@/lib/monite-api/fetch-token';
 import { components } from '@/lib/monite-api/schema';
 import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
@@ -46,6 +48,116 @@ const commandWithEntityOptions = () =>
     .option('--entity-user-id <ID>', 'The entity_user_id to use', String);
 
 program
+  .addCommand(
+    commandWithEntityOptions()
+      .name('run')
+      .description('Generate demo data for the existing Entity')
+      .action(async (args) => {
+        const token = await fetchTokenCLI(args);
+
+        const { id: newEntityId } = await createOrganizationEntity(
+          {
+            email: faker.internet.email(),
+            legal_name: faker.company.name(),
+          },
+          token
+        );
+
+        await generateEntityDemoData(newEntityId, token);
+      })
+  )
+  .addCommand(
+    new Command()
+      .name('entity')
+      .description('Create a new Entity')
+      .option(
+        '--generate-demo-data',
+        'Generate demo data for the new entity',
+        true
+      )
+      .option('--client-id <ID>', 'The client_id to use', String)
+      .option('--client-secret <ID>', 'The client_secret to use', String)
+      .action(async (args) => {
+        const token = await fetchTokenCLI(args);
+
+        console.log(chalk.gray('Creating a new Entity with a few users...'));
+
+        const { id: newEntityId } = await createOrganizationEntity(
+          {
+            email: faker.internet.email(),
+            legal_name: faker.company.name(),
+          },
+          token
+        );
+
+        console.log(
+          chalk.greenBright(`🏢 Created new entity_id: "${newEntityId}"`)
+        );
+
+        console.log(
+          chalk.gray(
+            'Generating entity user role with permissions for the new entity...'
+          )
+        );
+
+        const entityRoles = await createEntityRoles(
+          newEntityId,
+          Object.keys(roles_default_permissions).filter(isExistingRole),
+          token
+        );
+
+        console.log(
+          chalk.greenBright(
+            `👥 Created new entity roles for the new entity_id:`
+          ),
+          chalk.bgGreen(`${newEntityId}`)
+        );
+
+        console.log(
+          chalk.gray('Generating entity users for the new entity...')
+        );
+        for (const [role, role_id] of Object.entries(entityRoles)) {
+          const { id } = await createEntityUser(
+            {
+              entity_id: newEntityId,
+              user: {
+                role_id,
+                login: faker.internet.userName(),
+                first_name: faker.person.firstName(),
+                last_name: faker.person.lastName(),
+                phone: faker.phone.number().slice(0, 15),
+              },
+            },
+            token
+          ).catch((error) => {
+            console.log(
+              chalk.red(
+                `Failed to create new entity_user with role: "${role}"`,
+                `${JSON.stringify(error)}`
+              )
+            );
+
+            return { id: null };
+          });
+
+          if (id)
+            console.log(
+              chalk.greenBright(
+                `👤 Created new entity_user_id: "${id}" with role: "${role}"`
+              )
+            );
+        }
+
+        if (args.generateDemoData)
+          await generateEntityDemoData(newEntityId, token);
+        else
+          console.log(
+            chalk.gray(
+              `Skipping demo data generation for the new entity_id: "${newEntityId}"`
+            )
+          );
+      })
+  )
   .addCommand(
     commandWithEntityOptions()
       .name('payables')
@@ -126,7 +238,8 @@ program
         const measureUnitsService = new MeasureUnitsService(
           serviceConstructorProps
         );
-        const measureUnits = await measureUnitsService.create();
+        await measureUnitsService.create();
+        const measureUnits = await measureUnitsService.getAll();
 
         const paymentTermsService = new PaymentTermsService(
           serviceConstructorProps
@@ -209,7 +322,10 @@ program
   )
   .addCommand(
     new Command()
-      .name('recreate-organization-entity')
+      .name('recreate-clerk-organization-entity')
+      .description(
+        'Recreate the Clerk Organization Entity with the same data and migrate users to the new Entity'
+      )
       .requiredOption(
         '--organization-id <ID>',
         'The Clerk Organization ID to migrate users to new Entity (required)'
@@ -227,33 +343,14 @@ program
           clerkClient,
         });
 
-        if (!newEntityId)
-          throw new Error('"entity_id" is not set after migration');
-
-        if (!args.generateDemoData)
-          return void console.log(
+        if (args.generateDemoData)
+          await generateEntityDemoData(newEntityId, token);
+        else
+          console.log(
             chalk.gray(
               `Skipping demo data generation for the new entity_id: "${newEntityId}"`
             )
           );
-
-        console.log(
-          chalk.greenBright(
-            `Generating demo data for the new entity_id: "${newEntityId}"...`
-          )
-        );
-
-        const { publishMessage, closeMqttConnection } = createMqttMessenger(
-          `demo-data-generation-log/${newEntityId}`
-        );
-
-        await generateEntity(
-          { entity_id: newEntityId },
-          {
-            logger: publishMessage,
-            token,
-          }
-        ).finally(() => void closeMqttConnection());
       })
   )
   .addCommand(
@@ -396,6 +493,38 @@ program
         });
       })
   );
+
+/**
+ * Starts generating demo data for the Entity and sends messages to the MQTT
+ * The messages are used to display the progress of the generation in frontend
+ *
+ * Generates demo Payables, Receivables, Counterparts, etc.
+ * Does not generate Entity Users and Roles
+ */
+const generateEntityDemoData = async (
+  entity_id: string,
+  token: AccessToken
+) => {
+  if (!entity_id) throw new Error('"entity_id" is for demo data generation');
+
+  console.log(
+    chalk.greenBright(
+      `Generating demo data for the new entity_id: "${entity_id}"...`
+    )
+  );
+
+  const { publishMessage, closeMqttConnection } = createMqttMessenger(
+    `demo-data-generation-log/${entity_id}`
+  );
+
+  await generateEntity(
+    { entity_id: entity_id },
+    {
+      logger: publishMessage,
+      token,
+    }
+  ).finally(() => void closeMqttConnection());
+};
 
 const getEntityArgs = (options: Record<string, string | undefined>) => {
   const entity_id = options.entityId;

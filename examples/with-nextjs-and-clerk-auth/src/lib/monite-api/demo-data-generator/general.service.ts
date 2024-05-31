@@ -1,9 +1,11 @@
+import { faker } from '@faker-js/faker';
+
 import { DemoDataGenerationMessage } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { createMoniteClient } from '@/lib/monite-api/monite-client';
 
 export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
-  const randomIndex = Math.floor(Math.random() * array.length);
+  const randomIndex = faker.number.int({ min: 0, max: array.length - 1 });
 
   return array[randomIndex];
 }

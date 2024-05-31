@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   FILTER_TYPE_CUSTOMER,
+  FILTER_TYPE_DUE_DATE_LTE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
 } from '@/components/receivables/consts';
@@ -32,6 +33,8 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
+
+import { formatISO } from 'date-fns';
 
 import { Filters } from '../Filters';
 import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
@@ -107,7 +110,16 @@ const InvoicesTableBase = ({
     undefined,
     undefined,
     undefined,
-    currentFilters[FILTER_TYPE_STATUS] || undefined
+    currentFilters[FILTER_TYPE_STATUS] || undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    currentFilters[FILTER_TYPE_DUE_DATE_LTE]
+      ? formatISO(currentFilters[FILTER_TYPE_DUE_DATE_LTE], {
+          representation: 'date',
+        })
+      : undefined
   );
 
   const onChangeSort = (m: GridSortModel) => {
@@ -132,9 +144,16 @@ const InvoicesTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
+          <Filters
+            onChangeFilter={(field, value) => {
+              setCurrentPaginationToken(null);
+              onChangeFilter(field, value);
+            }}
+            filters={['search', 'status', 'customer', 'due_date__lte']}
+          />
         </Box>
         <DataGrid
+          autoHeight
           rowSelection={false}
           loading={isLoading}
           sx={{
@@ -249,7 +268,7 @@ const InvoicesTableBase = ({
               flex: 0.5,
             },
             {
-              field: 'fulfillment_date',
+              field: 'due_date',
               headerName: t(i18n)`Due date`,
               sortable: false,
               valueFormatter: (params) =>
