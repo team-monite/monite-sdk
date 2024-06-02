@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 API_VERSION=$(node -p 'require("@monite/sdk-api/package.json").apiVersion')
 
