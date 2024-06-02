@@ -1,0 +1,18 @@
+services:
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    command: "caddy reverse-proxy --from '${PULLPREVIEW_URL}' --to web:3000"
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/data"
+
+  web:
+    restart: unless-stopped
+    image: "${PREVIEW_SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH_IMAGE}"
+    environment:
+      MONITE_API_URL: "https://api.dev.monite.com/v1"
