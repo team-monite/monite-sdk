@@ -464,7 +464,7 @@ export const UserRoleDetailsDialog = ({
                 <Table stickyHeader>
                   <StyledTableHead>
                     <TableRow>
-                      {columns.map((column, index) => (
+                      {columns.map((column) => (
                         <StyledTableCell key={column.id}>
                           {column.headerName}
                         </StyledTableCell>

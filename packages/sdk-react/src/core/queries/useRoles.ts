@@ -101,7 +101,7 @@ export const useUpdateRole = (id?: string) => {
       invalidate();
       setRole(role);
 
-      toast.success(i18n._(t`Role updated`));
+      toast.success(t(i18n)`Role updated`);
     },
   });
 };
