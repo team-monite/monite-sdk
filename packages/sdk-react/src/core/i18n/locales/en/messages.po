@@ -956,7 +956,7 @@ msgstr "Cancel without saving?"
 #: src/components/receivables/Filters/Filters.tsx:94
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:18
-#: src/core/queries/useReceivables.ts:269
+#: src/core/queries/useReceivables.ts:300
 msgid "Canceled"
 msgstr "Canceled"
 
@@ -2806,7 +2806,7 @@ msgstr "Invalid date"
 msgid "Invalid IBAN"
 msgstr "Invalid IBAN"
 
-#: src/core/queries/useReceivables.ts:126
+#: src/core/queries/useReceivables.ts:155
 msgid "Invoice “{0}” was updated"
 msgstr "Invoice “{0}” was updated"
 
@@ -2850,7 +2850,7 @@ msgstr "Invoice Number"
 msgid "Invoice Number *"
 msgstr "Invoice Number *"
 
-#: src/core/queries/useReceivables.ts:76
+#: src/core/queries/useReceivables.ts:98
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
@@ -2858,7 +2858,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/core/queries/useReceivables.ts:82
+#: src/core/queries/useReceivables.ts:104
 msgid "Invoice with id “{0}” was created"
 msgstr "Invoice with id “{0}” was created"
 
@@ -2933,7 +2933,7 @@ msgstr "Issue only"
 #: src/components/receivables/Filters/Filters.tsx:76
 #: src/components/receivables/getCommonStatusLabel.ts:13
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:9
-#: src/core/queries/useReceivables.ts:171
+#: src/core/queries/useReceivables.ts:202
 msgid "Issued"
 msgstr "Issued"
 
@@ -3293,7 +3293,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
 
-#: src/core/queries/useReceivables.ts:296
+#: src/core/queries/useReceivables.ts:327
 msgid "Marked as uncollectible"
 msgstr "Marked as uncollectible"
 
@@ -3947,7 +3947,7 @@ msgstr "Payment term"
 msgid "Payment terms"
 msgstr "Payment terms"
 
-#: src/core/queries/useReceivables.ts:351
+#: src/core/queries/useReceivables.ts:382
 msgid "PDF was generated"
 msgstr "PDF was generated"
 
@@ -4347,7 +4347,7 @@ msgstr "Receivable type {0} is not supported. Only {1} is supported."
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
-#: src/core/queries/useReceivables.ts:228
+#: src/core/queries/useReceivables.ts:259
 msgid "Receivable was deleted"
 msgstr "Receivable was deleted"
 
@@ -4643,7 +4643,7 @@ msgstr "Send invoice"
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/core/queries/useReceivables.ts:328
+#: src/core/queries/useReceivables.ts:359
 msgid "Sent"
 msgstr "Sent"
 
