@@ -7,7 +7,7 @@ import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-import { ExistingUserRoleDetails } from './ExistingUserRoleDetails';
+import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 
 interface UserRoleDetailsProps {
   /** User role ID */
@@ -42,9 +42,5 @@ const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {
     );
   }
 
-  if (role) {
-    return <ExistingUserRoleDetails role={role} />;
-  }
-
-  return null;
+  return <UserRoleDetailsDialog role={role} />;
 };
