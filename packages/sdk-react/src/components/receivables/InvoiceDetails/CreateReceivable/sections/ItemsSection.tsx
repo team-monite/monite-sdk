@@ -356,12 +356,17 @@ export const ItemsSection = ({
               replace(
                 items.map((product) => ({
                   product_id: product.id,
-                  quantity: 1,
+                  /**
+                   * The quantity can't be less than `smallest_amount`
+                   *  so we have to set `quantity` accordingly
+                   */
+                  quantity: product.smallest_amount ?? 1,
                   price: product.price,
                   name: product.name,
                   measure_unit_id: product.measure_unit_id,
                   vat_rate_id: vatRates?.data[0].id,
                   vat_rate_value: vatRates?.data[0].value,
+                  smallest_amount: product.smallest_amount,
                 }))
               );
               handleSetActualCurrency(currency);
