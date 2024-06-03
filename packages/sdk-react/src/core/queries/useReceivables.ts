@@ -61,6 +61,28 @@ export const useReceivables = (
   });
 };
 
+const useInvalidateReceivablePDF = () => {
+  const queryClient = useQueryClient();
+
+  return {
+    /**
+     * Invalidate receivable PDF cache and remove current PDF from the cache
+     *
+     * @param id Receivable ID
+     */
+    invalidate(id: string) {
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      queryClient.invalidateQueries({
+        queryKey: receivablesQueryKeys.pdf(id),
+      });
+      queryClient.setQueryData(receivablesQueryKeys.pdf(id), null);
+    },
+  };
+};
+
 export const useCreateReceivable = () => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
@@ -108,6 +130,7 @@ export const useUpdateReceivable = (id: string) => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
   const { setEntity } = useReceivableDetailCache(id);
+  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
 
   return useMutation<
     ReceivableResponse,
@@ -122,6 +145,12 @@ export const useUpdateReceivable = (id: string) => {
 
       /** Invalidate the whole receivable list */
       invalidate();
+
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      invalidatePDF(receivable.id);
 
       toast.success(t(i18n)`Invoice “${receivable.id}” was updated`);
 
@@ -155,6 +184,7 @@ export const useIssueReceivableById = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
   const { i18n } = useLingui();
+  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
 
   return useMutation<ReceivableResponse, ApiError, string>({
     mutationFn: (receivableId) => monite.api.receivable.issueById(receivableId),
@@ -163,10 +193,11 @@ export const useIssueReceivableById = () => {
       queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
       invalidate();
 
-      /** We have to invalidate a PDF query to get the latest PDF */
-      queryClient.invalidateQueries({
-        queryKey: receivablesQueryKeys.pdf(id),
-      });
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      invalidatePDF(receivable.id);
 
       toast.success(t(i18n)`Issued`);
     },
