@@ -1,5 +1,26 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## @monite/sdk-react@3.13.0 & @monite/sdk-api@3.13.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
+- Added by counterpart name and status to the `ReceivablesTable` component.
+- Improved overall layout, security, and performance of the React SDK.
+
+### Bug fixes
+- Fix layouts of PDF toolbars that caused scroll issues on PDFs.
+
+## @monite/sdk-react@3.12.0 & @monite/sdk-api@3.12.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
+- Added the `InvoiceStatusChip` and `PayableStatusChip` components to show the status of invoices and payables.
+- Introduced the `TablePagination` to handle customization and pagination on all table components.
+- Added the ability to edit an invoice on the `InvoiceDetails` component.
+- Introduced the `currencyNumberFormat` field on the locale prop that handles currency display on the SDK.
+ - Improved context management and usability of the `MoniteProvider` wrapper.
+- Several internal changes to improve the overall theming, internationalization, and localization experience with the SDK.
+
 ## @monite/sdk-react@3.11.0 & @monite/sdk-api@3.11.0
 This package is a minor release with no breaking changes.
 
