@@ -1,3 +1,6 @@
+# Ignoring `package-lock.json` to simulate initial installation during e2e tests
+package-lock.json
+
 # Logs
 logs
 *.log

@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@monite/sdk-api": "^3.4.0",
-    "@monite/sdk-react": "^3.4.0",
+    "@monite/sdk-api": "^3",
+    "@monite/sdk-react": "^3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
