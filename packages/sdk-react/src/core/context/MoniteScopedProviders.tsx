@@ -4,6 +4,7 @@ import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
+import { MoniteQraftProvider } from '@/core/context/QraftProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
@@ -30,7 +31,9 @@ export const MoniteScopedProviders = ({
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
             <SentryProvider>
-              <MoniteQueryClientProvider>{children}</MoniteQueryClientProvider>
+              <MoniteQueryClientProvider>
+                <MoniteQraftProvider>{children}</MoniteQraftProvider>
+              </MoniteQueryClientProvider>
             </SentryProvider>
           </MuiThemeProvider>
         </MoniteI18nProvider>
