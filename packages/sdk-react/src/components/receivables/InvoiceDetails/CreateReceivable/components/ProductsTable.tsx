@@ -58,7 +58,7 @@ interface OnAddOptions {
   currency: CurrencyEnum;
 }
 
-export interface IProductsTableProps {
+export interface ProductsTableProps {
   /**
    * Default currency of the invoice based on the entity settings
    * The user can choose any currency, but this value can only help to choose it
@@ -129,7 +129,7 @@ export const ProductsTable = ({
   onAdd,
   defaultCurrency,
   actualCurrency,
-}: IProductsTableProps) => {
+}: ProductsTableProps) => {
   const { i18n } = useLingui();
   const tableHeadCells = useMemo(() => getTableHeadCells(i18n), [i18n]);
   const [openChangeCurrencyInfo, setOpenChangeCurrencyInfo] =

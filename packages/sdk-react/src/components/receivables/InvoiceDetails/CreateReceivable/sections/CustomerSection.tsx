@@ -41,12 +41,12 @@ import {
 import { CreateReceivablesFormProps } from '../validation';
 import type { SectionGeneralProps } from './Section.types';
 
-interface ICounterpartsAutocompleteOption {
+interface CounterpartsAutocompleteOptionProps {
   id: string;
   label: string;
 }
 
-const filter = createFilterOptions<ICounterpartsAutocompleteOption>();
+const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 
 const CounterpartAddressView = ({
   address,
@@ -74,7 +74,7 @@ const customerGridItemProps = {
 const COUNTERPART_CREATE_NEW_ID = '__create-new__';
 
 function isCreateNewCounterpartOption(
-  counterpartOption: ICounterpartsAutocompleteOption | undefined | null
+  counterpartOption: CounterpartsAutocompleteOptionProps | undefined | null
 ): boolean {
   return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
 }
@@ -111,7 +111,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   }, []);
 
   const counterpartsAutocompleteData = useMemo<
-    Array<ICounterpartsAutocompleteOption>
+    Array<CounterpartsAutocompleteOptionProps>
   >(
     () =>
       counterparts

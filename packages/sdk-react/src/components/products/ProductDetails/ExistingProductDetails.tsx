@@ -4,7 +4,7 @@ import { useDialog } from '@/components/Dialog';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import {
-  IExistingProductDetailsProps,
+  ExistingProductDetailsProps,
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
@@ -38,7 +38,7 @@ import {
 import { ProductDetailsTableCell } from './components/ProductDetailsTableCell';
 import { ProductType } from './components/ProductType';
 
-export const ExistingProductDetails = (props: IExistingProductDetailsProps) => (
+export const ExistingProductDetails = (props: ExistingProductDetailsProps) => (
   <MoniteScopedProviders>
     <ExistingProductDetailsBase {...props} />
   </MoniteScopedProviders>
@@ -49,7 +49,7 @@ const ExistingProductDetailsBase = ({
   onUpdated,
   onDeleted,
   initialView = ProductDetailsView.Read,
-}: IExistingProductDetailsProps) => {
+}: ExistingProductDetailsProps) => {
   const { i18n } = useLingui();
   /**
    * In which mode the product details are displayed

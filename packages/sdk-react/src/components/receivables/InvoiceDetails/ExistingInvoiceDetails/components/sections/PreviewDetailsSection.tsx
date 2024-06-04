@@ -7,13 +7,13 @@ import { useLingui } from '@lingui/react';
 import { InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Typography } from '@mui/material';
 
-interface IPreviewDetailsSectionProps {
+interface PreviewDetailsSectionProps {
   invoice: InvoiceResponsePayload;
 }
 
 export const PreviewDetailsSection = ({
   invoice,
-}: IPreviewDetailsSectionProps) => {
+}: PreviewDetailsSectionProps) => {
   const { i18n } = useLingui();
 
   return (

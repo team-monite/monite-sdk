@@ -4,16 +4,16 @@ import * as Styled from '../styles';
 import {
   ApprovalChain,
   ApprovalPoliciesRulesItem,
-  IScriptItem,
+  ScriptItemProps,
 } from './ApprovalPoliciesRulesItem';
 
-interface IApprovalPoliciesRulesProps {
+interface ApprovalPoliciesRulesProps {
   approvalPolicyId: string;
 }
 
 export const ApprovalPoliciesRules = ({
   approvalPolicyId,
-}: IApprovalPoliciesRulesProps) => {
+}: ApprovalPoliciesRulesProps) => {
   const { data: approvalPolicy } = useApprovalPolicyById(approvalPolicyId);
 
   if (!approvalPolicy) {
@@ -34,8 +34,8 @@ export const ApprovalPoliciesRules = ({
 };
 
 const isScriptItem = (
-  scriptItem: IScriptItem | unknown
-): scriptItem is IScriptItem => {
+  scriptItem: ScriptItemProps | unknown
+): scriptItem is ScriptItemProps => {
   if (!scriptItem) return false;
   if (typeof scriptItem !== 'object') return false;
   return 'call' in scriptItem || 'all' in scriptItem || 'any' in scriptItem;

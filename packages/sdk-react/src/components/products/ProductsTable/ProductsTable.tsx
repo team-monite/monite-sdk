@@ -35,7 +35,7 @@ import {
 } from './consts';
 import { Filters as FilterType, FilterValue } from './types';
 
-export interface IProductTableProps {
+export interface ProductTableProps {
   /**
    * Triggered when the filtering options are changed.
    * Sync with the server *is* performed.
@@ -89,7 +89,7 @@ interface ProductsTableSortModel {
   sort: GridSortDirection;
 }
 
-export const ProductsTable = (props: IProductTableProps) => (
+export const ProductsTable = (props: ProductTableProps) => (
   <MoniteScopedProviders>
     <ProductsTableBase {...props} />
   </MoniteScopedProviders>
@@ -101,7 +101,7 @@ const ProductsTableBase = ({
   onRowClick,
   onEdit,
   onDeleted,
-}: IProductTableProps) => {
+}: ProductTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null

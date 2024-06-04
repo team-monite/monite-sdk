@@ -14,22 +14,22 @@ enum ScriptCallType {
   ByRoles = 'ApprovalRequests.request_approval_by_roles',
 }
 
-interface IRuleValue {
+interface RuleValueProps {
   call: ScriptCallType;
   params?: {
     required_approval_count?: number;
   };
 }
 
-interface IRuleAll {
-  all: Array<IRuleValue>;
+interface RuleAllProps {
+  all: Array<RuleValueProps>;
 }
 
-interface IRuleAny {
-  any: Array<IRuleValue>;
+interface RuleAnyProps {
+  any: Array<RuleValueProps>;
 }
 
-export type IScriptItem = IRuleValue | IRuleAll | IRuleAny;
+export type ScriptItemProps = RuleValueProps | RuleAllProps | RuleAnyProps;
 
 const ByUser = ({ approvalCount }: { approvalCount?: number }) => {
   return (
@@ -72,7 +72,11 @@ export const ApprovalChain = () => {
   );
 };
 
-export const ApprovalPoliciesRulesItem = ({ rule }: { rule: IScriptItem }) => {
+export const ApprovalPoliciesRulesItem = ({
+  rule,
+}: {
+  rule: ScriptItemProps;
+}) => {
   /**
    * We have to handle only `&` operator. In Monite Script 2.0 terminology, it's `all`
    * We also have `any` or `|` operator, but we don't support it yet.

@@ -18,13 +18,13 @@ export enum DeliveryMethod {
   Download = 'download',
 }
 
-interface IUseExistingInvoiceDetailsProps {
+interface UseExistingInvoiceDetailsProps {
   receivableId: ReceivableResponse['id'];
   receivable?: ReceivableResponse;
   deliveryMethod: DeliveryMethod;
 }
 
-interface IUseExistingInvoiceDetails {
+interface UseExistingInvoiceDetailsReturns {
   /**
    * Describes which view should be rendered
    * - `view` - by default; we render the view mode
@@ -87,7 +87,7 @@ export function useExistingInvoiceDetails({
   receivableId,
   receivable,
   deliveryMethod,
-}: IUseExistingInvoiceDetailsProps): IUseExistingInvoiceDetails {
+}: UseExistingInvoiceDetailsProps): UseExistingInvoiceDetailsReturns {
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =

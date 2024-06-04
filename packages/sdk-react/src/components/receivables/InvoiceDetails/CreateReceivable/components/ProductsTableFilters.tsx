@@ -21,13 +21,13 @@ import {
   FilterValue,
 } from '../../../../products/ProductsTable/types';
 
-export interface IProductsTableFiltersProps {
+export interface ProductsTableFiltersProps {
   onChangeFilter: (field: keyof FilterType, value: FilterValue) => void;
 }
 
 export const ProductsTableFilters = ({
   onChangeFilter,
-}: IProductsTableFiltersProps) => {
+}: ProductsTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
