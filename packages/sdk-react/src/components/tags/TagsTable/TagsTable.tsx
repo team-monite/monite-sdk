@@ -4,8 +4,9 @@ import toast from 'react-hot-toast';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useEntityUserByAuthToken, useTagListQuery } from '@/core/queries';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { useTagListQuery } from '@/core/queries/useTag';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,

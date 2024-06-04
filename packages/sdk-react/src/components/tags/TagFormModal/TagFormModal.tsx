@@ -4,7 +4,10 @@ import { toast } from 'react-hot-toast';
 
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCreateTag, useUpdateTag } from '@/core/queries';
+import {
+  useCreateTagMutation,
+  useUpdateTagMutation,
+} from '@/core/queries/useTag';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -18,7 +21,6 @@ import {
   Divider,
   TextField,
   Button,
-  Typography,
 } from '@mui/material';
 
 import * as yup from 'yup';
@@ -73,8 +75,8 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const tagCreateMutation = useCreateTag();
-  const tagUpdateMutation = useUpdateTag();
+  const tagCreateMutation = useCreateTagMutation();
+  const tagUpdateMutation = useUpdateTagMutation(tag?.id);
   const { control, handleSubmit, reset } = useForm<FormFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: { name: tag?.name || '' },
@@ -87,11 +89,8 @@ const TagFormModalBase = ({
   }, [reset, tag?.name]);
 
   const createTag = (name: string) => {
-    const tagCreateMutate = tagCreateMutation.mutate;
-    tagCreateMutate(
-      {
-        name,
-      },
+    tagCreateMutation.mutate(
+      { name },
       {
         onSuccess: (tag) => {
           toast.success(t(i18n)`New tag “${tag.name}” created`);
@@ -103,11 +102,9 @@ const TagFormModalBase = ({
   };
 
   const updateTag = (tag: ITag, name: string) => {
-    const tagUpdateMutate = tagUpdateMutation.mutate;
-    tagUpdateMutate(
+    tagUpdateMutation.mutate(
       {
-        id: tag.id,
-        payload: { name },
+        name,
       },
       {
         onSuccess: (updatedTag) => {

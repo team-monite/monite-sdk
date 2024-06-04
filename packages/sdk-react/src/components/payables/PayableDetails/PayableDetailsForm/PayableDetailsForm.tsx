@@ -14,6 +14,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { MoniteCurrency } from '@/ui/Currency';
+import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -187,13 +188,9 @@ const PayableDetailsFormBase = forwardRef<
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (tagQuery.isError) {
-      toast.error(tagQuery.error.body.error.message || tagQuery.error.message);
+      toast.error(getAPIErrorMessage(i18n, tagQuery.error));
     }
-  }, [
-    tagQuery.isError,
-    tagQuery.error?.body.error.message,
-    tagQuery.error?.message,
-  ]);
+  }, [tagQuery.isError, tagQuery.error, i18n]);
 
   const isSubmittedByKeyboardRef = useRef(false);
 

@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDeleteTag } from '@/core/queries';
+import { useDeleteTagMutation } from '@/core/queries/useTag';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -47,10 +47,10 @@ const ConfirmDeleteModalBase = ({
   modalOpened,
 }: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
-  const deleteTagMutation = useDeleteTag();
+  const deleteTagMutation = useDeleteTagMutation(tag?.id);
 
   const handleDelete = () => {
-    deleteTagMutation.mutate(tag.id, {
+    deleteTagMutation.mutate(undefined, {
       onSuccess: () => {
         toast.success(t(i18n)`Tag “${tag.name}” was deleted`);
 
