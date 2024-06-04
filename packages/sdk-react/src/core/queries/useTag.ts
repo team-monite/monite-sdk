@@ -1,13 +1,12 @@
 import { toast } from 'react-hot-toast';
 
+import { api, useMoniteApiClient } from '@/api/client';
 import {
+  ApiError,
   TagCreateOrUpdateSchema,
   TagReadSchema,
-  TagsPaginationResponse,
-  TagService,
-  ApiError,
 } from '@monite/sdk-api';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityListCache } from './hooks';
@@ -17,13 +16,16 @@ export const TAG_QUERY_ID = 'tags';
 const useTagListCache = () =>
   useEntityListCache<TagReadSchema>(() => [TAG_QUERY_ID]);
 
-export const useTagList = (...args: Parameters<TagService['getList']>) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<TagsPaginationResponse, ApiError>({
-    queryKey: [TAG_QUERY_ID, { variables: args }],
-
-    queryFn: () => monite.api.tag.getList(...args),
+export const useTagListQuery = (
+  query?: (typeof api.tags.getTags.types.parameters)['query']
+) => {
+  const { api, apiVersion, entityId } = useMoniteApiClient();
+  return api.tags.getTags.useQuery({
+    header: {
+      'x-monite-version': apiVersion,
+      'x-monite-entity-id': entityId,
+    },
+    query,
   });
 };
 

@@ -4,21 +4,17 @@ import toast from 'react-hot-toast';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useEntityUserByAuthToken, useTagList } from '@/core/queries';
+import { useEntityUserByAuthToken, useTagListQuery } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  TagCursorFields,
-  OrderEnum,
-  TagReadSchema,
-  ActionEnum,
-} from '@monite/sdk-api';
+import { TagCursorFields, TagReadSchema, ActionEnum } from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
@@ -85,19 +81,19 @@ const TagsTableBase = ({
     isLoading,
     isError,
     error,
-  } = useTagList(
-    sortModel ? (sortModel.sort as unknown as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModel ? sortModel.field : undefined
-  );
+  } = useTagListQuery({
+    order: sortModel ? sortModel.sort ?? undefined : undefined,
+    limit: pageSize,
+    pagination_token: currentPaginationToken ?? undefined,
+    sort: sortModel ? sortModel.field : undefined,
+  });
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getAPIErrorMessage(i18n, error));
     }
-  }, [isError, error]);
+  }, [isError, error, i18n]);
 
   useEffect(() => {
     if (currentPaginationToken && tags?.data.length === 0) {
