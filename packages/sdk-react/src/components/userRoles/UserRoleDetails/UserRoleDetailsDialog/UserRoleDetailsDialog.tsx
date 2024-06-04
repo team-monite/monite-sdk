@@ -17,11 +17,13 @@ import {
   UserRoleRequest,
   UserRolePayablePermissions,
   UserRoleCommonPermissions,
+  useCreateRole,
 } from '@/core/queries/useRoles';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   ActionEnum,
+  CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
   RoleResponse,
@@ -179,6 +181,33 @@ const normalizePermissions = (objects: RootSchema[]): PermissionRow[] => {
     );
 };
 
+const generateEmptyPermissions = (): PermissionRow[] => {
+  return [
+    ...PAYABLE_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
+      let permission: PayablePermissionRow = {};
+
+      permission.name = objectType;
+
+      Object.values(PayableActionEnum).forEach((action) => {
+        permission[action] = false;
+      });
+
+      return permission;
+    }),
+    ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
+      let permission: CommonPermissionRow = {};
+
+      permission.name = objectType;
+
+      Object.values(ActionEnum).forEach((action) => {
+        permission[action] = false;
+      });
+
+      return permission;
+    }),
+  ];
+};
+
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;
   flex-direction: column;
@@ -235,20 +264,21 @@ export const UserRoleDetailsDialog = ({
   const { data: user } = useEntityUserByAuthToken();
   const methods = useForm<UserRoleFormValues>({
     defaultValues: {
-      name: role?.name,
+      name: role?.name || '',
       permissions: role?.permissions.objects
         ? normalizePermissions(role?.permissions.objects)
-        : [],
+        : generateEmptyPermissions(),
     },
   });
   const { control, handleSubmit, reset } = methods;
   const formId = useId();
 
   const [view, setView] = useState<UserRoleDetailsView>(
-    UserRoleDetailsView.Read
+    role ? UserRoleDetailsView.Read : UserRoleDetailsView.Edit
   );
 
   const { mutate: updateRoleMutate } = useUpdateRole(role?.id);
+  const { mutate: createRoleMutate } = useCreateRole();
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
@@ -258,7 +288,7 @@ export const UserRoleDetailsDialog = ({
 
   const rows = role?.permissions.objects
     ? normalizePermissions(role?.permissions.objects)
-    : [];
+    : generateEmptyPermissions();
 
   const columns: {
     id: 'name' | ActionEnum | PayableActionEnum;
@@ -381,19 +411,17 @@ export const UserRoleDetailsDialog = ({
 
     const roleId = role?.id;
 
-    if (!roleId) {
-      toast.error(t(i18n)`Role ID is required`);
-
-      return null;
-    }
-
     /*
-     * Generated type UpdateRoleRequest doesn't describe the real payload
+     * Generated types UpdateRoleRequest & CreateRoleRequest don't describe the real payload
      * due to limitations of the current type generation library.
      * We have to cast formattedData to UpdateRoleRequest to avoid type errors.
      * The problem should be fixed when the sdk will use the Qraft library.
      * */
-    return updateRole(roleId, formattedData as unknown as UpdateRoleRequest);
+    if (roleId) {
+      return updateRole(roleId, formattedData as unknown as UpdateRoleRequest);
+    }
+
+    return createRoleMutate(formattedData as unknown as CreateRoleRequest);
   };
 
   const handleCancel = () => {
@@ -459,32 +487,30 @@ export const UserRoleDetailsDialog = ({
                 <OpenInNewIcon />
               </StyledDocLink>
             </StyledTableTitle>
-            {role?.permissions.objects && (
-              <StyledTableContainer>
-                <Table stickyHeader>
-                  <StyledTableHead>
-                    <TableRow>
-                      {columns.map((column) => (
-                        <StyledTableCell key={column.id}>
-                          {column.headerName}
-                        </StyledTableCell>
-                      ))}
-                    </TableRow>
-                  </StyledTableHead>
-                  <TableBody>
-                    {rows.map((row, index) => (
-                      <UserRoleRow
-                        key={row.name}
-                        index={index}
-                        view={view}
-                        row={row}
-                        columns={columns}
-                      />
+            <StyledTableContainer>
+              <Table stickyHeader>
+                <StyledTableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <StyledTableCell key={column.id}>
+                        {column.headerName}
+                      </StyledTableCell>
                     ))}
-                  </TableBody>
-                </Table>
-              </StyledTableContainer>
-            )}
+                  </TableRow>
+                </StyledTableHead>
+                <TableBody>
+                  {rows.map((row, index) => (
+                    <UserRoleRow
+                      key={row.name}
+                      index={index}
+                      view={view}
+                      row={row}
+                      columns={columns}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </StyledTableContainer>
           </form>
         </FormProvider>
       </StyledDialogContainer>

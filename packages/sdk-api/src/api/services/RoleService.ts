@@ -1,4 +1,5 @@
 import type { CancelablePromise } from '../CancelablePromise';
+import type { CreateRoleRequest } from '../models/CreateRoleRequest';
 import type { OrderEnum } from '../models/OrderEnum';
 import type { RoleCursorFields } from '../models/RoleCursorFields';
 import { RolePaginationResponse } from '../models/RolePaginationResponse';
@@ -104,6 +105,32 @@ export class RoleService extends CommonService {
       {
         method: 'PATCH',
         url: `/${ROLES_ENDPOINT}/${roleId}`,
+        body,
+        errors: {
+          400: `Bad Request`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openApi
+    );
+  }
+
+  /**
+   * Create role
+   *
+   * @param body CreateRoleRequest
+   *
+   * @returns RoleResponse Successful Response
+   *
+   * @throws ApiError
+   */
+  public create(body: CreateRoleRequest): CancelablePromise<RoleResponse> {
+    return __request<RoleResponse>(
+      {
+        method: 'POST',
+        url: `/${ROLES_ENDPOINT}`,
         body,
         errors: {
           400: `Bad Request`,

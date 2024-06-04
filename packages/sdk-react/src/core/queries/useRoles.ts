@@ -10,6 +10,7 @@ import { useLingui } from '@lingui/react';
 import {
   ActionEnum,
   ApiError,
+  CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
   RoleResponse,
@@ -84,6 +85,22 @@ export const useRoleById = (roleId?: string) => {
     },
 
     enabled: !!roleId,
+  });
+};
+
+export const useCreateRole = () => {
+  const { i18n } = useLingui();
+  const { monite } = useMoniteContext();
+  const { invalidate } = useRoleListCache();
+
+  return useMutation<RoleResponse, Error, CreateRoleRequest>({
+    mutationFn: (payload) => monite.api.role.create(payload),
+
+    onSuccess: (role) => {
+      invalidate();
+
+      toast.success(t(i18n)`Role ${role.name} was created`);
+    },
   });
 };
 
