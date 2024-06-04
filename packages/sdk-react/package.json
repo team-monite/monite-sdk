@@ -1,6 +1,7 @@
 {
   "name": "@monite/sdk-react",
   "version": "3.13.0",
+  "apiVersion": "2024-05-25",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +24,10 @@
     "compile-translations": "lingui compile",
     "write-package-version-file": "yarn exec ../../write-package-version-file.sh",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook_static"
+    "build-storybook": "storybook build -o storybook_static",
+    "download-openapi-document": "curl -o 'src/api/schema.json' \"https://api.${API_STAND:-dev}.monite.com/openapi.json?version=$(node -p 'require(\"@monite/sdk-react/package.json\").apiVersion')\" && prettier --write src/api/schema.json",
+    "codegen": "yarn codegen:api-version && yarn exec ./generate-api-client.sh",
+    "codegen:api-version": "echo \"// This file was generated automatically \n export const apiVersion = '$(node -p 'require(\"@monite/sdk-react/package.json\").apiVersion')';\" > src/api/api-version.ts"
   },
   "author": "",
   "license": "MIT",
@@ -38,6 +42,7 @@
     "@mui/material": "~5.14.2",
     "@mui/x-data-grid": "~6.10.2",
     "@mui/x-date-pickers": "~6.18.3",
+    "@openapi-qraft/react": "~1.11.0-beta.1",
     "@sentry/react": "~7.75.1",
     "@tanstack/react-query": "~5.28.6",
     "date-fns": "^2.28.0",
@@ -65,6 +70,7 @@
     "@fontsource/roboto": "~5.0.8",
     "@hookform/devtools": "~4.3.1",
     "@lingui/cli": "~4.7.0",
+    "@openapi-qraft/cli": "~1.11.0-beta.1",
     "@storybook/addon-actions": "~7.6.17",
     "@storybook/addon-essentials": "~7.6.17",
     "@storybook/addon-storysource": "~7.6.17",

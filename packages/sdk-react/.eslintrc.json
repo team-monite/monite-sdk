@@ -7,7 +7,12 @@
   "ignorePatterns": [
     "src/core/i18n/locales/*/messages.ts",
     "src/core/i18n/locales/*/messages.d.ts",
-    "*Fixture.ts"
+    "*Fixture.ts",
+    "src/api/services/**/*",
+    "src/api/api-version.ts",
+    "src/api/create-api-client.ts",
+    "src/api/index.ts",
+    "src/api/schema.ts"
   ],
   "rules": {
     "import/no-unresolved": "error",

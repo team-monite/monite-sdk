@@ -55,6 +55,11 @@ module.exports = {
     '!src/core/i18n/**/*.{js,jsx,ts,tsx}',
     '!src/mocks/**/*.{js,jsx,ts,tsx}',
     '!src/utils/**/*.{js,jsx,ts,tsx}',
+    '!src/api/services/**/*.{ts}',
+    '!src/api/api-version.ts',
+    '!src/api/create-api-client.ts',
+    '!src/api/index.ts',
+    '!src/api/schema.ts',
     '!<rootDir>/node_modules/',
   ],
   coverageThreshold: {
