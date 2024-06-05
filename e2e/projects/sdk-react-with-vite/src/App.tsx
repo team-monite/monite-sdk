@@ -12,8 +12,8 @@ import {
   CreditNotesTable,
   InvoicesTable,
   type InvoicesTableProps,
-  type IProductDetailsProps,
-  type IProductTableProps,
+  type ProductDetailsProps,
+  type ProductTableProps,
   MoniteProvider,
   PayableDetails,
   Payables,
@@ -28,7 +28,7 @@ import {
   Tags,
   TagsTable,
   InvoiceDetails,
-  Onboarding
+  Onboarding,
 } from '@monite/sdk-react';
 
 function App() {
@@ -59,8 +59,8 @@ function App() {
         <QuotesTable />
         <CreditNotesTable />
         <Products />
-        <ProductDetails {...({} satisfies IProductDetailsProps)} />
-        <ProductsTable {...({} satisfies IProductTableProps)} />
+        <ProductDetails {...({} satisfies ProductDetailsProps)} />
+        <ProductsTable {...({} satisfies ProductTableProps)} />
         <ApprovalPolicies />
         <ApprovalPolicyDetails {...({} satisfies ApprovalPolicyDetailsProps)} />
         <ApprovalPoliciesTable />

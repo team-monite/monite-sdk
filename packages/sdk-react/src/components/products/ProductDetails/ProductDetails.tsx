@@ -65,11 +65,11 @@ export interface ProductDetailsCreateProps {
   defaultValues?: Partial<ProductFormValues>;
 }
 
-export type IProductDetailsProps =
+export type ProductDetailsProps =
   | ExistingProductDetailsProps
   | ProductDetailsCreateProps;
 
-export const ProductDetails = (props: IProductDetailsProps) => {
+export const ProductDetails = (props: ProductDetailsProps) => {
   if (typeof props.id === 'string') {
     return <ExistingProductDetails {...props} />;
   }
