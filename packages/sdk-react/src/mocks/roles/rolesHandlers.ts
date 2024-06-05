@@ -1,4 +1,5 @@
 import {
+  CreateRoleRequest,
   ErrorSchemaResponse,
   RolePaginationResponse,
   RoleResponse,
@@ -8,7 +9,7 @@ import {
 
 import { http, HttpResponse, delay } from 'msw';
 
-import { getAllRolesFixture } from './rolesFixtures';
+import { createRole, getAllRolesFixture } from './rolesFixtures';
 
 export const rolesHandlers = [
   http.get<{}, undefined, RolePaginationResponse>(`*/roles`, async () => {
@@ -38,6 +39,21 @@ export const rolesHandlers = [
       }
 
       return HttpResponse.json(role);
+    }
+  ),
+
+  http.post<{}, CreateRoleRequest, RoleResponse | ErrorSchemaResponse>(
+    `*/${ROLES_ENDPOINT}`,
+    async ({ request }) => {
+      const jsonBody = await request.json();
+
+      await delay();
+
+      const newRole = createRole(jsonBody);
+
+      getAllRolesFixture.data.push(newRole);
+
+      return HttpResponse.json(newRole);
     }
   ),
 
