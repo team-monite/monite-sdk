@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useId, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
@@ -64,28 +64,10 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
   } = useProductById(props.id);
   const { isLoading: isMeasureUnitsLoading } = useMeasureUnits();
 
-  const formRef = useRef<HTMLFormElement>(null);
   const productUpdateMutation = useUpdateProduct('id' in props ? props.id : '');
-  const submitForm = useCallback(() => {
-    formRef.current?.dispatchEvent(
-      new Event('submit', {
-        bubbles: true,
-      })
-    );
-  }, [formRef]);
 
-  const updateProduct = useCallback(
-    (req: ProductServiceRequest) => {
-      const productUpdateMutate = productUpdateMutation.mutate;
-      productUpdateMutate(req, {
-        onSuccess: (product) => {
-          props.onUpdated?.(product);
-          props.onCanceled();
-        },
-      });
-    },
-    [productUpdateMutation.mutate, props]
-  );
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const productFormId = `Monite-ProductForm-${useId()}`;
 
   if (isLoading) {
     return <LoadingPage />;
@@ -158,7 +140,15 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       description: values.description,
     };
 
-    return updateProduct(payload);
+    return productUpdateMutation.mutate(payload, {
+      onSuccess: (product) => {
+        props.onUpdated?.(product);
+        // TODO: Restore `props.onCanceled()` in onSuccess to switch details dialog from edit to read mode,
+        // or introduce a new variable (e.g., `viewMode`, `isEdit`) to handle this transition.
+        // see: https://github.com/team-monite/monite-sdk/pull/101#discussion_r1630759805
+        props.onCanceled();
+      },
+    });
   };
 
   return (
@@ -184,7 +174,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
       <Divider />
       <DialogContent>
         <ProductForm
-          formRef={formRef}
+          formId={productFormId}
           onSubmit={handleSubmit}
           defaultValues={defaultValues}
         />
@@ -196,7 +186,8 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
         </Button>
         <Button
           variant="outlined"
-          onClick={submitForm}
+          type="submit"
+          form={productFormId}
           disabled={productUpdateMutation.isPending || isMeasureUnitsLoading}
         >
           {t(i18n)`Update`}
