@@ -13,6 +13,7 @@ import {
   useIsActionAllowed,
 } from '@/core/queries/usePermissions';
 import {
+  useRoleById,
   useUpdateRole,
   UserRoleRequest,
   UserRolePayablePermissions,
@@ -75,8 +76,15 @@ interface PayablePermissionRow extends PayableActions {
 export type PermissionRow = CommonPermissionRow | PayablePermissionRow;
 
 interface ExistingUserRoleDetailsProps {
-  /** Role to be displayed */
-  role?: RoleResponse;
+  /** The id of the role to be displayed */
+  id?: string;
+
+  /**
+   * Callback is fired when a role is created and sync with server is successful
+   *
+   * @param role
+   */
+  onCreated?: (role: RoleResponse) => void;
 
   /**
    * Callback is fired when a role is updated and sync with server is successful
@@ -256,12 +264,17 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export const UserRoleDetailsDialog = ({
-  role,
+  id,
+  onCreated,
   onUpdated,
 }: ExistingUserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
+  const [roleId, setRoleId] = useState<string | undefined>(id);
+
+  const { data: role } = useRoleById(roleId);
+
   const methods = useForm<UserRoleFormValues>({
     defaultValues: {
       name: role?.name || '',
@@ -270,15 +283,15 @@ export const UserRoleDetailsDialog = ({
         : generateEmptyPermissions(),
     },
   });
-  const { control, handleSubmit, reset } = methods;
+  const { control, handleSubmit, reset, formState } = methods;
   const formId = useId();
 
   const [view, setView] = useState<UserRoleDetailsView>(
     role ? UserRoleDetailsView.Read : UserRoleDetailsView.Edit
   );
 
-  const { mutate: updateRoleMutate } = useUpdateRole(role?.id);
-  const { mutate: createRoleMutate } = useCreateRole();
+  const updateRoleMutation = useUpdateRole(role?.id);
+  const createRoleMutation = useCreateRole();
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
@@ -342,9 +355,25 @@ export const UserRoleDetailsDialog = ({
     },
   ];
 
+  const createRole = useCallback(
+    (role: CreateRoleRequest) => {
+      createRoleMutation.mutate(role, {
+        onSuccess: (role) => {
+          setRoleId(role.id);
+          onCreated?.(role);
+          setView(UserRoleDetailsView.Read);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      });
+    },
+    [createRoleMutation, onUpdated]
+  );
+
   const updateRole = useCallback(
     (roleId: string, req: UpdateRoleRequest) => {
-      updateRoleMutate(
+      updateRoleMutation.mutate(
         { roleId, payload: req },
         {
           onSuccess: (role) => {
@@ -354,7 +383,7 @@ export const UserRoleDetailsDialog = ({
         }
       );
     },
-    [updateRoleMutate, onUpdated]
+    [updateRoleMutation, onUpdated]
   );
 
   const onSubmit: SubmitHandler<UserRoleFormValues> = (data) => {
@@ -421,13 +450,21 @@ export const UserRoleDetailsDialog = ({
       return updateRole(roleId, formattedData as unknown as UpdateRoleRequest);
     }
 
-    return createRoleMutate(formattedData as unknown as CreateRoleRequest);
+    return createRole(formattedData as unknown as CreateRoleRequest);
   };
 
   const handleCancel = () => {
-    setView(UserRoleDetailsView.Read);
+    if (roleId) {
+      setView(UserRoleDetailsView.Read);
 
-    reset();
+      reset();
+
+      return;
+    }
+
+    if (dialogContext?.isDialogContent) {
+      dialogContext.onClose?.();
+    }
   };
 
   return (
@@ -533,7 +570,14 @@ export const UserRoleDetailsDialog = ({
               variant="outlined"
               type="submit"
               form={`Monite-Form-UserRoles-${formId}`}
-            >{t(i18n)`Update`}</Button>
+              disabled={
+                updateRoleMutation.isPending ||
+                createRoleMutation.isPending ||
+                (!!roleId && (!formState.isDirty || !isUpdateAllowed))
+              }
+            >
+              {roleId ? t(i18n)`Update` : t(i18n)`Create`}
+            </Button>
           </>
         )}
       </DialogActions>
