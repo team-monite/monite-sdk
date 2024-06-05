@@ -53,7 +53,10 @@ export interface UserRoleRequest {
 
 const rolesQueryKeys = {
   all: () => [ROLES_QUERY_ID],
-  detail: (roleId?: string) => [...rolesQueryKeys.all(), roleId],
+  detail: (roleId?: string) =>
+    roleId
+      ? [...rolesQueryKeys.all(), 'detail', roleId]
+      : [...rolesQueryKeys.all(), 'detail'],
 };
 
 export const useRoleListCache = () =>
@@ -75,7 +78,7 @@ export const useRoleById = (roleId?: string) => {
   const { monite } = useMoniteContext();
 
   return useQuery<RoleResponse | undefined, ApiError>({
-    queryKey: [...rolesQueryKeys.detail(roleId)],
+    queryKey: rolesQueryKeys.detail(roleId),
 
     queryFn: () => {
       if (!roleId) {
@@ -92,12 +95,15 @@ export const useCreateRole = () => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
   const { invalidate } = useRoleListCache();
+  const { setEntity: setRole, removeEntity: removeRole } = useRoleCache();
 
   return useMutation<RoleResponse, Error, CreateRoleRequest>({
     mutationFn: (payload) => monite.api.role.create(payload),
 
     onSuccess: (role) => {
+      setRole(role);
       invalidate();
+      removeRole(role.id);
 
       toast.success(t(i18n)`Role ${role.name} was created`);
     },
@@ -108,15 +114,16 @@ export const useUpdateRole = (id?: string) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
   const { invalidate } = useRoleListCache();
-  const { setEntity: setRole } = useRoleCache(id);
+  const { setEntity: setRole, removeEntity: removeRole } = useRoleCache(id);
 
   return useMutation<RoleResponse, Error, RoleUpdateParams>({
     mutationFn: ({ roleId, payload }) =>
       monite.api.role.update(roleId, payload),
 
     onSuccess: (role) => {
-      invalidate();
       setRole(role);
+      invalidate();
+      removeRole(role.id);
 
       toast.success(t(i18n)`Role updated`);
     },
