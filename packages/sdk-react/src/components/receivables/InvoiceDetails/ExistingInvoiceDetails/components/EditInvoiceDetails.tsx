@@ -197,7 +197,8 @@ const EditInvoiceDetailsContent = ({
                 invoice: {
                   /** Customer section */
                   counterpart_id: values.counterpart_id,
-                  counterpart_vat_id_id: values.counterpart_vat_id_id,
+                  counterpart_vat_id_id:
+                    values.counterpart_vat_id_id || undefined,
                   currency: actualCurrency,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   /**
@@ -218,7 +219,7 @@ const EditInvoiceDetailsContent = ({
                   /** We shouldn't send an empty string to the server if the value is not set */
                   entity_bank_account_id:
                     values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id ?? '',
+                  payment_terms_id: values.payment_terms_id,
                   entity_vat_id_id: values.entity_vat_id_id || undefined,
                   fulfillment_date: values.fulfillment_date
                     ? /**
