@@ -20,6 +20,7 @@ import {
   UserRoleCommonPermissions,
   useCreateRole,
 } from '@/core/queries/useRoles';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -55,6 +56,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { getValidationSchema } from '../validation';
 import { UserRoleRow } from './UserRoleRow';
 
 export type CommonActions = {
@@ -276,6 +278,7 @@ export const UserRoleDetailsDialog = ({
   const { data: role } = useRoleById(roleId);
 
   const methods = useForm<UserRoleFormValues>({
+    resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: {
       name: role?.name || '',
       permissions: role?.permissions.objects
@@ -500,6 +503,7 @@ export const UserRoleDetailsDialog = ({
         <FormProvider {...methods}>
           <form
             id={`Monite-Form-UserRoles-${formId}`}
+            noValidate
             onSubmit={handleSubmit(onSubmit)}
           >
             {view == UserRoleDetailsView.Edit && (
