@@ -20,7 +20,7 @@ _Client ID_ and _Secret_ can be obtained from the [Monite Partner Portal](https:
 Configure the following required environment variables:
 
 ```bash
-MONITE_API_URL=https://api.sandbox.monite.com/v1
+MONITE_API_URL=https://api.dev.monite.com/v1
 MONITE_PROJECT_CLIENT_ID="c59964ce-..."
 MONITE_PROJECT_CLIENT_SECRET="49b55da0-..."
 ```
@@ -51,6 +51,9 @@ Commands:
 ## Examples
 
 ### Create an Entity with the Demo Data
+
+This command creates a new Entity with the demo data.
+Make sure you have the correct environment variables set in the `.env.local` file.
 
 ```bash
 yarn demo-data-generator entity --generate-demo-data
