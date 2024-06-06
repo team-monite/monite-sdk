@@ -11,13 +11,8 @@ import {
 } from '@mui/icons-material';
 import { TableRow } from '@mui/material';
 
-import {
-  UserRoleDetailsView,
-  StyledTableCell,
-  CommonActions,
-  PayableActions,
-  PermissionRow,
-} from '../UserRoleDetailsDialog';
+import { CommonActions, PayableActions, PermissionRow } from '../../types';
+import { UserRoleDetailsView, StyledTableCell } from '../UserRoleDetailsDialog';
 
 interface UserRoleRowProps {
   /** The row data to be displayed */

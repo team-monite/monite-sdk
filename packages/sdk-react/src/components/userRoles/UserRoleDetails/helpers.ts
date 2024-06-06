@@ -40,7 +40,7 @@ const checkIfPermissionIsAllowed = (permission?: PermissionEnum) => {
   );
 };
 
-export const transformPermissionsToAppFormat = (
+export const transformPermissionsToComponentFormat = (
   objects: RootSchema[]
 ): PermissionRow[] => {
   return objects

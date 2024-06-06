@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
-  transformPermissionsToAppFormat,
+  transformPermissionsToComponentFormat,
   isCommonPermissionObjectType,
   isPayablePermissionObjectType,
   createInitialPermissionsState,
@@ -127,9 +127,8 @@ export const UserRoleDetailsDialog = ({
 }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { data: user } = useEntityUserByAuthToken();
   const [roleId, setRoleId] = useState<string | undefined>(id);
-
+  const { data: user } = useEntityUserByAuthToken();
   const { data: role } = useRoleById(roleId);
 
   const methods = useForm<UserRoleFormValues>({
@@ -137,7 +136,7 @@ export const UserRoleDetailsDialog = ({
     defaultValues: {
       name: role?.name || '',
       permissions: role?.permissions.objects
-        ? transformPermissionsToAppFormat(role?.permissions.objects)
+        ? transformPermissionsToComponentFormat(role?.permissions.objects)
         : createInitialPermissionsState(),
     },
   });
@@ -160,7 +159,7 @@ export const UserRoleDetailsDialog = ({
   });
 
   const rows = role?.permissions.objects
-    ? transformPermissionsToAppFormat(role?.permissions.objects)
+    ? transformPermissionsToComponentFormat(role?.permissions.objects)
     : createInitialPermissionsState();
 
   const columns: {
