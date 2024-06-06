@@ -17,7 +17,7 @@ type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
 type CounterpartVatIDResponse =
   components['schemas']['CounterpartVatIDResponse'];
-type TaxIDTypeEnum = components['schemas']['TaxIDTypeEnum'];
+type VatIDTypeEnum = components['schemas']['VatIDTypeEnum'];
 type AllowedCountries = components['schemas']['AllowedCountries'];
 
 interface ICounterpartsBuilderOptions {
@@ -129,7 +129,7 @@ export class CounterpartsService extends GeneralService {
 
         const counterpart = counterparts[counterpartIndex];
         await createCounterpartBankAccount({
-          is_default: true,
+          is_default_for_currency: true,
           counterpart_id: counterpart.id,
           token: this.token,
           entity_id: this.entityId,
@@ -225,6 +225,8 @@ export const createCounterpart = async ({
       },
     },
     body: {
+      language: 'en',
+      reminders_enabled: faker.datatype.boolean(),
       type: 'organization',
       tax_id: faker.number.hex({ min: 100000000, max: 999999999 }),
       organization: {
@@ -233,7 +235,7 @@ export const createCounterpart = async ({
         // `is_vendor` or `is_customer` must be true
         is_customer: faker.datatype.boolean() || !is_vendor,
         email: faker.internet.email(),
-        registered_address: {
+        address: {
           country: getRandomItemFromArray(addressCountries),
           city: faker.location.city(),
           postal_code: faker.location.zipCode(),
@@ -276,7 +278,7 @@ export const createCounterpartVatId = async ({
     'eu_vat',
     'no_vat',
     'unknown',
-  ] satisfies Array<TaxIDTypeEnum>);
+  ] satisfies Array<VatIDTypeEnum>);
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
 
@@ -313,12 +315,12 @@ export const createCounterpartVatId = async ({
 };
 
 export const createCounterpartBankAccount = async ({
-  is_default,
+  is_default_for_currency,
   counterpart_id,
   entity_id,
   token,
 }: {
-  is_default: true;
+  is_default_for_currency: true;
   counterpart_id: string;
   entity_id: string;
   token: AccessToken;
@@ -351,7 +353,7 @@ export const createCounterpartBankAccount = async ({
         },
       },
       body: {
-        is_default,
+        is_default_for_currency,
         name: faker.finance.accountName(),
         account_number: faker.finance.accountNumber(),
         account_holder_name: faker.finance.accountName(),
