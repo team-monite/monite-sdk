@@ -15,7 +15,11 @@ import { useVatRates } from '@/core/queries';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum } from '@monite/sdk-api';
+import {
+  CurrencyEnum,
+  ProductServiceResponse,
+  VatRateListResponse,
+} from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
@@ -47,6 +51,32 @@ interface CardTableItemProps {
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
+}
+
+/**
+ * Prepares line item for the form
+ *
+ * @param product Product which we want to add to the form
+ * @param vatRates List of available VAT rates
+ */
+function prepareLineItem(
+  product: ProductServiceResponse,
+  vatRates?: VatRateListResponse
+): CreateReceivablesFormBeforeValidationLineItemProps {
+  return {
+    product_id: product.id,
+    /**
+     * The quantity can't be less than `smallest_amount`
+     *  so we have to set `quantity` accordingly
+     */
+    quantity: product.smallest_amount ?? 1,
+    price: product.price,
+    name: product.name,
+    measure_unit_id: product.measure_unit_id,
+    vat_rate_id: vatRates?.data[0].id,
+    vat_rate_value: vatRates?.data[0].value,
+    smallest_amount: product.smallest_amount,
+  };
 }
 
 const CardTableItem = ({
@@ -351,38 +381,18 @@ export const ItemsSection = ({
           hasProducts={fields.length > 0}
           onAdd={({ items, currency }) => {
             handleCloseProductsTable();
-
             if (actualCurrency !== currency) {
               replace(
-                items.map((product) => ({
-                  product_id: product.id,
-                  /**
-                   * The quantity can't be less than `smallest_amount`
-                   *  so we have to set `quantity` accordingly
-                   */
-                  quantity: product.smallest_amount ?? 1,
-                  price: product.price,
-                  name: product.name,
-                  measure_unit_id: product.measure_unit_id,
-                  vat_rate_id: vatRates?.data[0].id,
-                  vat_rate_value: vatRates?.data[0].value,
-                  smallest_amount: product.smallest_amount,
-                }))
+                items.map((product) => prepareLineItem(product, vatRates))
               );
               handleSetActualCurrency(currency);
 
               return;
             }
 
-            const productItemsMapped = items.map((product) => ({
-              product_id: product.id,
-              quantity: 1,
-              price: product.price,
-              name: product.name,
-              measure_unit_id: product.measure_unit_id,
-              vat_rate_id: vatRates?.data[0].id,
-              vat_rate_value: vatRates?.data[0].value,
-            }));
+            const productItemsMapped = items.map((product) =>
+              prepareLineItem(product, vatRates)
+            );
             append(productItemsMapped);
             handleSetActualCurrency(currency);
           }}
