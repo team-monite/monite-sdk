@@ -42,5 +42,5 @@ const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {
     );
   }
 
-  return <UserRoleDetailsDialog id={role?.id} />;
+  return <UserRoleDetailsDialog id={id} />;
 };

@@ -52,7 +52,10 @@ const UserRolesBase = () => {
             variant="contained"
             color="primary"
             disabled={!isCreateAllowed}
-            onClick={() => setIsDetailsDialogOpened(true)}
+            onClick={() => {
+              setSelectedUserRoleID(undefined);
+              setIsDetailsDialogOpened(true);
+            }}
           >
             {t(i18n)`Create New`}
           </Button>
