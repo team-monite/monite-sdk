@@ -9,6 +9,7 @@
     "start": "next start --port 3000",
     "lint": "next lint",
     "test": "jest",
+    "typecheck": "tsc --noEmit",
     "webhook-relay": "smee --url $CLERK_WEBHOOK_DEV_RELAY_URL --port 3000 --path /api/in/clerk",
     "build:demo-data-generator": "tsup-node ./src/lib/monite-api/demo-data-generator/bin.ts --format esm --target esnext --sourcemap",
     "demo-data-generator": "node dist/bin.js"
