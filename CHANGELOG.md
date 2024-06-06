@@ -5,10 +5,14 @@ This package is a minor release with no breaking changes.
 
 ### New features and improvements
 - Added by counterpart name and status to the `ReceivablesTable` component.
+- Improved error handling when previewing invoices on the `InvoiceDetails` component.
 - Improved overall layout, security, and performance of the React SDK.
+- Improved sorting on the `ReceivablesTable` component.
+- Added a "**Due date**" column to the `InvoiceTable` component.
 
 ### Bug fixes
 - Fix layouts of PDF toolbars that caused scroll issues on PDFs.
+- Fixed export issues on the `ReceivablesTable` component of the SDK.
 
 ## @monite/sdk-react@3.12.0 & @monite/sdk-api@3.12.0
 This package is a minor release with no breaking changes.
@@ -18,7 +22,7 @@ This package is a minor release with no breaking changes.
 - Introduced the `TablePagination` to handle customization and pagination on all table components.
 - Added the ability to edit an invoice on the `InvoiceDetails` component.
 - Introduced the `currencyNumberFormat` field on the locale prop that handles currency display on the SDK.
- - Improved context management and usability of the `MoniteProvider` wrapper.
+- Improved context management and usability of the `MoniteProvider` wrapper.
 - Several internal changes to improve the overall theming, internationalization, and localization experience with the SDK.
 
 ## @monite/sdk-react@3.11.0 & @monite/sdk-api@3.11.0
