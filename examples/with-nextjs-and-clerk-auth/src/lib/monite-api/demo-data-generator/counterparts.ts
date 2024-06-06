@@ -2,6 +2,7 @@ import chalk from 'chalk';
 
 import { faker } from '@faker-js/faker';
 
+import { demoBankAccountBICList } from '@/lib/monite-api/demo-data-generator/bank-account';
 import {
   GeneralService,
   getRandomItemFromArray,
@@ -333,7 +334,7 @@ export const createCounterpartBankAccount = async ({
 
   const countryCode = getRandomItemFromArray([
     'GE',
-    'US',
+    'DE',
     'GB',
   ] satisfies Array<AllowedCountries>);
   const currency = getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
@@ -358,8 +359,8 @@ export const createCounterpartBankAccount = async ({
         account_number: faker.finance.accountNumber(),
         account_holder_name: faker.finance.accountName(),
         routing_number: faker.finance.routingNumber(),
-        iban: faker.finance.iban(),
-        bic: faker.finance.bic(),
+        iban: faker.finance.iban(false, countryCode),
+        bic: getRandomItemFromArray(demoBankAccountBICList[countryCode]),
         country: countryCode,
         currency,
       },
