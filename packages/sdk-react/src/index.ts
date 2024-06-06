@@ -9,3 +9,4 @@ export * from './core/utils';
 export * from './core/hooks';
 export * from './core/queries';
 export { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+export type * as APISchema from './api/schema';
