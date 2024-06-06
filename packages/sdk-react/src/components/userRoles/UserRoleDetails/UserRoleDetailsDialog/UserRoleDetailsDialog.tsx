@@ -269,6 +269,8 @@ export const UserRoleDetailsDialog = ({
   });
   const { control, handleSubmit, reset, formState } = methods;
   const formId = useId();
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-UserRoles-${formId}`;
 
   const [view, setView] = useState<UserRoleDetailsView>(
     role ? UserRoleDetailsView.Read : UserRoleDetailsView.Edit
@@ -482,11 +484,7 @@ export const UserRoleDetailsDialog = ({
       <Divider />
       <StyledDialogContainer>
         <FormProvider {...methods}>
-          <form
-            id={`Monite-Form-UserRoles-${formId}`}
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form id={formName} noValidate onSubmit={handleSubmit(onSubmit)}>
             {view == UserRoleDetailsView.Edit && (
               <RHFTextField
                 label={t(i18n)`Name`}
@@ -554,7 +552,7 @@ export const UserRoleDetailsDialog = ({
             <Button
               variant="outlined"
               type="submit"
-              form={`Monite-Form-UserRoles-${formId}`}
+              form={formName}
               disabled={
                 updateRoleMutation.isPending ||
                 createRoleMutation.isPending ||
