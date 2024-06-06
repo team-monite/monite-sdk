@@ -28,7 +28,6 @@ import {
   CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
-  RoleResponse,
   RootSchema,
   UpdateRoleRequest,
 } from '@monite/sdk-api';
@@ -56,6 +55,7 @@ import {
   Typography,
 } from '@mui/material';
 
+import { UserRoleDetailsProps } from '../UserRoleDetails';
 import { getValidationSchema } from '../validation';
 import { UserRoleRow } from './UserRoleRow';
 
@@ -76,25 +76,6 @@ interface PayablePermissionRow extends PayableActions {
 }
 
 export type PermissionRow = CommonPermissionRow | PayablePermissionRow;
-
-interface ExistingUserRoleDetailsProps {
-  /** The id of the role to be displayed */
-  id?: string;
-
-  /**
-   * Callback is fired when a role is created and sync with server is successful
-   *
-   * @param role
-   */
-  onCreated?: (role: RoleResponse) => void;
-
-  /**
-   * Callback is fired when a role is updated and sync with server is successful
-   *
-   * @param role
-   */
-  onUpdated?: (role: RoleResponse) => void;
-}
 
 /** View of the user role details */
 export enum UserRoleDetailsView {
@@ -269,7 +250,7 @@ export const UserRoleDetailsDialog = ({
   id,
   onCreated,
   onUpdated,
-}: ExistingUserRoleDetailsProps) => {
+}: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
@@ -371,7 +352,7 @@ export const UserRoleDetailsDialog = ({
         },
       });
     },
-    [createRoleMutation, onUpdated]
+    [createRoleMutation, onCreated]
   );
 
   const updateRole = useCallback(

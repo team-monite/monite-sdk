@@ -6,12 +6,27 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { RoleResponse } from '@monite/sdk-api';
 
 import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 
-interface UserRoleDetailsProps {
-  /** User role ID */
+export interface UserRoleDetailsProps {
+  /** The id of the role to be displayed */
   id?: string;
+
+  /**
+   * Callback is fired when a role is created and sync with server is successful
+   *
+   * @param role
+   */
+  onCreated?: (role: RoleResponse) => void;
+
+  /**
+   * Callback is fired when a role is updated and sync with server is successful
+   *
+   * @param role
+   */
+  onUpdated?: (role: RoleResponse) => void;
 }
 
 export const UserRoleDetails = (props: UserRoleDetailsProps) => (
@@ -20,7 +35,11 @@ export const UserRoleDetails = (props: UserRoleDetailsProps) => (
   </MoniteScopedProviders>
 );
 
-const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {
+const UserRoleDetailsBase = ({
+  id,
+  onUpdated,
+  onCreated,
+}: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
   const {
     isLoading,
@@ -42,5 +61,11 @@ const UserRoleDetailsBase = ({ id }: UserRoleDetailsProps) => {
     );
   }
 
-  return <UserRoleDetailsDialog id={id} />;
+  return (
+    <UserRoleDetailsDialog
+      id={id}
+      onUpdated={onUpdated}
+      onCreated={onCreated}
+    />
+  );
 };
