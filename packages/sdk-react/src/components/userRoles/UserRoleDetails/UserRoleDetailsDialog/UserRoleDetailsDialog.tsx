@@ -4,14 +4,14 @@ import toast from 'react-hot-toast';
 
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
-import { useEntityUserByAuthToken } from '@/core/queries';
 import {
-  COMMON_PERMISSIONS_OBJECTS_TYPES,
-  PAYABLE_PERMISSIONS_OBJECTS_TYPES,
-  commonPermissionsObjectType,
-  payablePermissionsObjectType,
-  useIsActionAllowed,
-} from '@/core/queries/usePermissions';
+  transformPermissionsToAppFormat,
+  isCommonPermissionObjectType,
+  isPayablePermissionObjectType,
+  createInitialPermissionsState,
+} from '@/components/userRoles/UserRoleDetails/helpers';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   useRoleById,
   useUpdateRole,
@@ -28,7 +28,6 @@ import {
   CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
-  RootSchema,
   UpdateRoleRequest,
 } from '@monite/sdk-api';
 import {
@@ -55,27 +54,10 @@ import {
   Typography,
 } from '@mui/material';
 
+import { PermissionRow } from '../types';
 import { UserRoleDetailsProps } from '../UserRoleDetails';
 import { getValidationSchema } from '../validation';
 import { UserRoleRow } from './UserRoleRow';
-
-export type CommonActions = {
-  [key in ActionEnum]?: boolean;
-};
-
-export type PayableActions = {
-  [key in PayableActionEnum]?: boolean;
-};
-
-interface CommonPermissionRow extends CommonActions {
-  name?: commonPermissionsObjectType;
-}
-
-interface PayablePermissionRow extends PayableActions {
-  name?: payablePermissionsObjectType;
-}
-
-export type PermissionRow = CommonPermissionRow | PayablePermissionRow;
 
 /** View of the user role details */
 export enum UserRoleDetailsView {
@@ -90,114 +72,6 @@ interface UserRoleFormValues {
   name: string;
   permissions: PermissionRow[];
 }
-
-const validatePermission = (permission?: PermissionEnum) => {
-  return (
-    permission === PermissionEnum.ALLOWED ||
-    permission === PermissionEnum.ALLOWED_FOR_OWN
-  );
-};
-
-function isCommonPermissionObjectType(
-  objectType: string
-): objectType is commonPermissionsObjectType {
-  return COMMON_PERMISSIONS_OBJECTS_TYPES.includes(
-    objectType as commonPermissionsObjectType
-  );
-}
-
-function isPayablePermissionObjectType(
-  objectType: string
-): objectType is payablePermissionsObjectType {
-  return PAYABLE_PERMISSIONS_OBJECTS_TYPES.includes(
-    objectType as payablePermissionsObjectType
-  );
-}
-
-const normalizePermissions = (objects: RootSchema[]): PermissionRow[] => {
-  return objects
-    .map((object) => {
-      if (object.object_type) {
-        if (isCommonPermissionObjectType(object.object_type)) {
-          let permission: CommonPermissionRow = {};
-
-          permission.name = object.object_type;
-
-          object.actions?.forEach((action) => {
-            const actionName = action.action_name;
-
-            if (actionName) {
-              if (
-                Object.values(ActionEnum).includes(actionName as ActionEnum)
-              ) {
-                permission[actionName as ActionEnum] = validatePermission(
-                  action.permission
-                );
-              }
-            }
-          });
-
-          return permission;
-        }
-
-        if (isPayablePermissionObjectType(object.object_type)) {
-          let permission: PayablePermissionRow = {};
-
-          permission.name = object.object_type;
-
-          object.actions?.forEach((action) => {
-            const actionName = action.action_name;
-
-            if (actionName) {
-              if (
-                Object.values(PayableActionEnum).includes(
-                  actionName as PayableActionEnum
-                )
-              ) {
-                permission[actionName as PayableActionEnum] =
-                  validatePermission(action.permission);
-              }
-            }
-          });
-
-          return permission;
-        }
-      }
-
-      return null;
-    })
-    .filter(
-      (permission): permission is CommonPermissionRow | PayablePermissionRow =>
-        permission !== null
-    );
-};
-
-const generateEmptyPermissions = (): PermissionRow[] => {
-  return [
-    ...PAYABLE_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
-      let permission: PayablePermissionRow = {};
-
-      permission.name = objectType;
-
-      Object.values(PayableActionEnum).forEach((action) => {
-        permission[action] = false;
-      });
-
-      return permission;
-    }),
-    ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
-      let permission: CommonPermissionRow = {};
-
-      permission.name = objectType;
-
-      Object.values(ActionEnum).forEach((action) => {
-        permission[action] = false;
-      });
-
-      return permission;
-    }),
-  ];
-};
 
 const StyledDialogContainer = styled(DialogContent)`
   display: flex;
@@ -263,8 +137,8 @@ export const UserRoleDetailsDialog = ({
     defaultValues: {
       name: role?.name || '',
       permissions: role?.permissions.objects
-        ? normalizePermissions(role?.permissions.objects)
-        : generateEmptyPermissions(),
+        ? transformPermissionsToAppFormat(role?.permissions.objects)
+        : createInitialPermissionsState(),
     },
   });
   const { control, handleSubmit, reset, formState } = methods;
@@ -286,8 +160,8 @@ export const UserRoleDetailsDialog = ({
   });
 
   const rows = role?.permissions.objects
-    ? normalizePermissions(role?.permissions.objects)
-    : generateEmptyPermissions();
+    ? transformPermissionsToAppFormat(role?.permissions.objects)
+    : createInitialPermissionsState();
 
   const columns: {
     id: 'name' | ActionEnum | PayableActionEnum;
@@ -372,7 +246,9 @@ export const UserRoleDetailsDialog = ({
     [updateRoleMutation, onUpdated]
   );
 
-  const onSubmit: SubmitHandler<UserRoleFormValues> = (data) => {
+  const handleRoleFormSubmission: SubmitHandler<UserRoleFormValues> = (
+    data
+  ) => {
     const formattedData: UserRoleRequest = {
       name: data.name,
       permissions: {
@@ -484,7 +360,11 @@ export const UserRoleDetailsDialog = ({
       <Divider />
       <StyledDialogContainer>
         <FormProvider {...methods}>
-          <form id={formName} noValidate onSubmit={handleSubmit(onSubmit)}>
+          <form
+            id={formName}
+            noValidate
+            onSubmit={handleSubmit(handleRoleFormSubmission)}
+          >
             {view == UserRoleDetailsView.Edit && (
               <RHFTextField
                 label={t(i18n)`Name`}
