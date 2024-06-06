@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
 import { LoadingPage } from '@/ui/loadingPage';
@@ -37,6 +37,9 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
 
   const { control, handleSubmit, watch } = methods;
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-counterpartContact-${useId()}`;
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -63,7 +66,7 @@ export const CounterpartContactForm = (props: CounterpartContactFormProps) => {
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="counterpartContactForm"
+            id={formName}
             ref={formRef}
             onSubmit={handleSubmit(saveContact)}
           >

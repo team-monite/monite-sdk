@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -40,6 +40,9 @@ export const CounterpartAddressFormUpdate = (
   } = useCounterpartAddressFormUpdate(props);
   const { root } = useRootElements();
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-counterpartAddress-${useId()}`;
+
   return (
     <>
       <Typography variant="h3" sx={{ padding: 3 }}>
@@ -48,7 +51,7 @@ export const CounterpartAddressFormUpdate = (
       <Divider />
       <DialogContent>
         <form
-          id="counterpartBankForm"
+          id={formName}
           ref={formRef}
           onSubmit={handleSubmit((values) => {
             updateAddress(prepareCounterpartAddressSubmit(values));

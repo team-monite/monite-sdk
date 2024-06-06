@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import {
   CountryOption,
@@ -35,6 +35,9 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
     isLoading,
   } = useCounterpartVatForm(props);
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-counterpartVat-${useId()}`;
+
   const vatTypes = useVatTypes();
 
   if (!counterpart) return null;
@@ -57,7 +60,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
       </Stack>
       <Divider />
       <DialogContent>
-        <form id="counterpartVatForm" onSubmit={handleSubmit(saveVat)}>
+        <form id={formName} onSubmit={handleSubmit(saveVat)}>
           <Stack spacing={3}>
             <RHFAutocomplete
               name="country"
@@ -104,7 +107,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
         <Button
           variant="outlined"
           color="primary"
-          form="counterpartVatForm"
+          form={formName}
           type="submit"
           disabled={isLoading}
         >

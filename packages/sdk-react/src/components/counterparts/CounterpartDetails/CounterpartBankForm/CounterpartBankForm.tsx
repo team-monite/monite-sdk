@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -43,6 +43,9 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
   } = useCounterpartBankForm(props);
   const { root } = useRootElements();
   const country = watch('country');
+
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-counterpartBank-${useId()}`;
 
   useEffect(() => {
     if (country) {
@@ -90,11 +93,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       </Stack>
       <Divider />
       <DialogContent>
-        <form
-          id="counterpartBankForm"
-          ref={formRef}
-          onSubmit={handleSubmit(saveBank)}
-        >
+        <form id={formName} ref={formRef} onSubmit={handleSubmit(saveBank)}>
           <Stack spacing={3}>
             <Controller
               name="name"
