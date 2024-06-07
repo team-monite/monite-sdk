@@ -173,7 +173,7 @@ msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:303
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:299
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:329
 msgid "Add item"
 msgstr "Add item"
 
@@ -310,7 +310,7 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:77
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:205
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:209
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:193
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:223
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:39
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:256
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:240
@@ -2961,7 +2961,7 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:189
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:219
 msgid "Item"
 msgstr "Item"
 
@@ -2995,7 +2995,7 @@ msgstr "Item tax must be a number between 0 and 100"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:464
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:275
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:177
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:207
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:91
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:27
 msgid "Items"
@@ -4172,7 +4172,7 @@ msgstr "Previous page"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:283
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:102
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:121
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:192
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:222
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:70
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:73
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:101
@@ -4296,7 +4296,7 @@ msgstr "Qatari Rial"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:282
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:57
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:190
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:220
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:32
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:100
 msgid "Quantity"
@@ -4900,7 +4900,7 @@ msgstr "Submitted"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:475
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:337
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:327
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:357
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:159
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:34
 msgid "Subtotal"
@@ -5071,7 +5071,7 @@ msgstr "Tax Registration Number (UAE)"
 msgid "Taxes"
 msgstr "Taxes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:329
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:359
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -5271,7 +5271,7 @@ msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:503
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:359
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:333
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:363
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:181
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:42
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:28
@@ -5473,7 +5473,7 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:80
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
 #: src/components/products/ProductsTable/ProductsTable.tsx:244
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:191
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:221
 msgid "Units"
 msgstr "Units"
 
@@ -5660,7 +5660,7 @@ msgstr "Vanuatu Vatu"
 msgid "Variety Stores"
 msgstr "Variety Stores"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:194
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:224
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:52
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:56
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:48
@@ -5679,7 +5679,7 @@ msgstr "Vat “{0}” was updated."
 msgid "VAT {0}%"
 msgstr "VAT {0}%"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:314
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:344
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
