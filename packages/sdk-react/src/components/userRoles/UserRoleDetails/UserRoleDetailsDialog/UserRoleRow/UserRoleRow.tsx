@@ -64,18 +64,16 @@ export const UserRoleRow = ({
   columns,
 }: UserRoleRowProps) => {
   const { i18n } = useLingui();
-  const fixedLabelColumn = columns.slice(0, 1);
+  // Skip the first column which is the name of the permission
   const actionPermissionsColumns = columns.slice(1) as {
     id: ActionEnum | PayableActionEnum;
   }[];
 
   return (
     <TableRow>
-      {fixedLabelColumn.map((column) => (
-        <StyledTableCell key={column.id}>
-          {row.name && getPermissionToLabelMap(i18n)[row.name]}
-        </StyledTableCell>
-      ))}
+      <StyledTableCell>
+        {row.name && getPermissionToLabelMap(i18n)[row.name]}
+      </StyledTableCell>
       {actionPermissionsColumns.map((column) => {
         const action = column.id;
         const actionPermissionValue = (
