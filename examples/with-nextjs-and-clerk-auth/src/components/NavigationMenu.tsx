@@ -21,13 +21,17 @@ import {
   Tab,
 } from '@mui/icons-material';
 import {
+  Box,
   Collapse,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   SvgIconOwnProps,
 } from '@mui/material';
+
+import { ThemeSelect } from '@/components/ThemeSelect';
 
 export const NavigationMenu = () => {
   const [activeMenuItemKey, setActiveMenuItemKey] = useState<
@@ -41,74 +45,85 @@ export const NavigationMenu = () => {
   const pathname = usePathname();
 
   return (
-    <List>
-      {Object.entries(navigationMenuItems).map(([menuItemKey, menuItem]) => {
-        const selected =
-          'url' in menuItem &&
-          (menuItem.url === '/'
-            ? pathname === menuItem.url
-            : pathname.startsWith(menuItem.url));
+    <>
+      <Box sx={{ flex: 1 }} display="flex">
+        <List>
+          {Object.entries(navigationMenuItems).map(
+            ([menuItemKey, menuItem]) => {
+              const selected =
+                'url' in menuItem &&
+                (menuItem.url === '/'
+                  ? pathname === menuItem.url
+                  : pathname.startsWith(menuItem.url));
 
-        const listItemChildren = (
-          <>
-            <ListItemIcon>
-              <menuItem.Icon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={menuItem.label} />
-          </>
-        );
+              const listItemChildren = (
+                <>
+                  <ListItemIcon>
+                    <menuItem.Icon color="primary" />
+                  </ListItemIcon>
+                  <ListItemText primary={menuItem.label} />
+                </>
+              );
 
-        return !('subItems' in menuItem) ? (
-          <ListItemButton
-            key={menuItemKey}
-            component={Link}
-            selected={selected}
-            href={menuItem.url}
-          >
-            {listItemChildren}
-          </ListItemButton>
-        ) : (
-          <Fragment key={menuItemKey}>
-            <ListItemButton
-              selected={selected}
-              onClick={(event) => {
-                handleCollapse(menuItemKey);
-              }}
-            >
-              {listItemChildren}
-              {menuItem.subItems && activeMenuItemKey === menuItemKey ? (
-                <ExpandLess />
+              return !('subItems' in menuItem) ? (
+                <ListItemButton
+                  key={menuItemKey}
+                  component={Link}
+                  selected={selected}
+                  href={menuItem.url}
+                >
+                  {listItemChildren}
+                </ListItemButton>
               ) : (
-                <ExpandMore />
-              )}
-            </ListItemButton>
-
-            <Collapse
-              in={activeMenuItemKey === menuItemKey}
-              timeout="auto"
-              unmountOnExit
-            >
-              <List component="div" disablePadding>
-                {menuItem.subItems.map((menuSubItem, index) => (
+                <Fragment key={menuItemKey}>
                   <ListItemButton
-                    key={index}
-                    component={Link}
                     selected={selected}
-                    href={menuSubItem.url}
-                    sx={{ pl: 4 }}
+                    onClick={(event) => {
+                      handleCollapse(menuItemKey);
+                    }}
                   >
-                    <ListItemIcon>
-                      {menuSubItem.Icon({ color: 'primary' })}
-                    </ListItemIcon>
-                    <ListItemText primary={menuSubItem.label} />
+                    {listItemChildren}
+                    {menuItem.subItems && activeMenuItemKey === menuItemKey ? (
+                      <ExpandLess />
+                    ) : (
+                      <ExpandMore />
+                    )}
                   </ListItemButton>
-                ))}
-              </List>
-            </Collapse>
-          </Fragment>
-        );
-      })}
-    </List>
+
+                  <Collapse
+                    in={activeMenuItemKey === menuItemKey}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List component="div" disablePadding>
+                      {menuItem.subItems.map((menuSubItem, index) => (
+                        <ListItemButton
+                          key={index}
+                          component={Link}
+                          selected={selected}
+                          href={menuSubItem.url}
+                          sx={{ pl: 4 }}
+                        >
+                          <ListItemIcon>
+                            {menuSubItem.Icon({ color: 'primary' })}
+                          </ListItemIcon>
+                          <ListItemText primary={menuSubItem.label} />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                </Fragment>
+              );
+            }
+          )}
+        </List>
+      </Box>
+      <Box>
+        <Stack direction="column" mx={2} mb={2}>
+          <ThemeSelect />
+        </Stack>
+      </Box>
+    </>
   );
 };
 
