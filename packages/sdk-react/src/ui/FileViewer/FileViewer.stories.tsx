@@ -1,7 +1,21 @@
+import { renderToString } from 'react-dom/server';
+
+import i18n from '@/mocks/i18n';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
 import { CSSProperties } from '@mui/material/styles/createMixins';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { FileViewer } from './FileViewer';
+
+const customI18n = setupI18n({
+  locale: i18n.locale,
+  messages: {
+    [i18n.locale]: {
+      ...i18n.messages,
+    },
+  },
+});
 
 const meta: Meta<typeof FileViewer> = {
   title: 'Components / FileViewer',
@@ -41,6 +55,33 @@ export const FileViewerImage: Story = {
       <FileViewer {...args} />
     </div>
   ),
+};
+
+export const SSRFile: Story = {
+  name: 'SSR File',
+  args: {
+    url: 'https://pdfobject.com/pdf/sample.pdf',
+    mimetype: 'application/pdf',
+    name: 'Sample PDF',
+  },
+  render: (args) => {
+    const html = renderToString(
+      <I18nProvider i18n={customI18n}>
+        <FileViewer {...args} />
+      </I18nProvider>
+    );
+    console.log(html);
+    return (
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 600,
+          height: '100vh',
+        }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    );
+  },
 };
 
 export default meta;

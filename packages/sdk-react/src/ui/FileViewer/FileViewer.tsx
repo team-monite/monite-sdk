@@ -60,36 +60,41 @@ export const FileViewer = (props: FileViewerProps) => {
   }>({
     error: null,
     components: null,
-    loading: true,
+    loading: false,
   });
 
   const { i18n } = useLingui();
+  const isSSR = typeof window === 'undefined';
 
   useEffect(() => {
-    /**
-     * We have to load react-pdf dynamically because it is not compatible with SSR.
-     */
-    loadReactPDF()
-      .then((components) => {
-        setReactPdfDynamic((prev) => ({
-          components,
-          error: null,
-          loading: false,
-        }));
-      })
-      .catch((error) => {
-        setReactPdfDynamic((prev) => {
+    if (
+      (!isSSR && props.mimetype === 'application/pdf') ||
+      props.mimetype === 'text/html' ||
+      props.mimetype === 'text/plain' ||
+      props.mimetype === 'image/png' ||
+      props.mimetype === 'image/jpeg'
+    ) {
+      setReactPdfDynamic((prev) => ({ ...prev, loading: true }));
+      loadReactPDF()
+        .then((components) => {
+          setReactPdfDynamic({
+            components,
+            error: null,
+            loading: false,
+          });
+        })
+        .catch((error) => {
           const errorMessage = error.message;
-          return {
+          setReactPdfDynamic({
             components: null,
             error: errorMessage
               ? t(i18n)`Failed to load PDF Viewer: ${errorMessage}`
               : t(i18n)`Failed to load PDF Viewer`,
             loading: false,
-          };
+          });
         });
-      });
-  }, [i18n]);
+    }
+  }, [i18n, isSSR, props.mimetype]);
 
   if (reactPdfDynamic.loading) {
     return <LoadingPage />;
@@ -108,7 +113,13 @@ export const FileViewer = (props: FileViewerProps) => {
     );
   }
 
-  return null;
+  return (
+    <iframe
+      src={props.url}
+      title={props.name}
+      style={{ width: '100%', height: '100vh', border: 'none' }}
+    />
+  );
 };
 
 const ErrorComponent = ({

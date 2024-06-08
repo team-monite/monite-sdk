@@ -1,9 +1,22 @@
 import React from 'react';
+import { renderToString } from 'react-dom/server';
 
+import i18n from '@/mocks/i18n';
 import { renderWithClient } from '@/utils/test-utils';
+import { setupI18n } from '@lingui/core';
+import { I18nProvider } from '@lingui/react';
 import { screen } from '@testing-library/react';
 
 import { FileViewer } from './FileViewer';
+
+const customI18n = setupI18n({
+  locale: i18n.locale,
+  messages: {
+    [i18n.locale]: {
+      ...i18n.messages,
+    },
+  },
+});
 
 describe('FileViewer', () => {
   describe('# Interface', () => {
@@ -48,6 +61,21 @@ describe('FileViewer', () => {
 
         const pdfDocument = await screen.findByText(/Failed to load PDF file/i);
         expect(pdfDocument).toBeInTheDocument();
+      });
+
+      test('should render correctly on the server (SSR)', () => {
+        const html = renderToString(
+          <I18nProvider i18n={customI18n}>
+            <FileViewer
+              url="https://pdfobject.com/pdf/sample.pdf"
+              mimetype="application/pdf"
+              name="Sample PDF"
+            />
+          </I18nProvider>
+        );
+
+        expect(html).toContain('Sample PDF');
+        expect(html).toContain('<iframe');
       });
     });
 
