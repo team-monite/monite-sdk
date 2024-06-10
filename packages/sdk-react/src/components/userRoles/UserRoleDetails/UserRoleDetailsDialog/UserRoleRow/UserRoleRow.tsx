@@ -28,6 +28,7 @@ interface UserRoleRowProps {
 interface ActionPermissionCellProps {
   view: UserRoleDetailsView;
   rowIndex: number;
+  rowName?: string;
   action: keyof CommonActions | keyof PayableActions;
   actionPermissionValue: boolean | undefined;
 }
@@ -35,6 +36,7 @@ interface ActionPermissionCellProps {
 const ActionPermissionCell = ({
   view,
   rowIndex,
+  rowName,
   action,
   actionPermissionValue,
 }: ActionPermissionCellProps) => {
@@ -47,6 +49,7 @@ const ActionPermissionCell = ({
       <RHFCheckbox
         control={control}
         name={`permissions[${rowIndex}][${action}]`}
+        aria-label={`${rowName} ${action}`}
       />
     );
   }
@@ -84,6 +87,7 @@ export const UserRoleRow = ({
             <ActionPermissionCell
               view={view}
               rowIndex={rowIndex}
+              rowName={row.name}
               action={action}
               actionPermissionValue={actionPermissionValue}
             />
