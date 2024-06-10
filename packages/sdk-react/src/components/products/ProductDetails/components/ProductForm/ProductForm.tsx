@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
@@ -28,12 +28,14 @@ import {
 interface ProductFormProps {
   /** Triggered when the form is submitted */
   onSubmit: (values: IProductFormSubmitValues) => void;
-  formRef: React.RefObject<HTMLFormElement>;
 
   /**
    * Default values for the form fields
    */
   defaultValues: ProductFormValues;
+
+  /** The `<form />` id attribute to submit the form using external button */
+  formId: string;
 }
 
 /**
@@ -54,22 +56,15 @@ export const ProductForm = (props: ProductFormProps) => {
 
   const { control, handleSubmit } = methods;
 
-  const handleSubmitWithoutPropagation = useCallback(
-    (e: React.BaseSyntheticEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      handleSubmit(props.onSubmit)(e);
-    },
-    [handleSubmit, props.onSubmit]
-  );
-
   return (
     <FormProvider {...methods}>
       <form
-        id="productCreationForm"
-        ref={props.formRef}
-        onSubmit={handleSubmitWithoutPropagation}
+        noValidate
+        id={props.formId}
+        onSubmit={(event) => {
+          event.preventDefault();
+          handleSubmit(props.onSubmit)(event);
+        }}
       >
         <Grid container direction="column" rowSpacing={3}>
           <Grid item>

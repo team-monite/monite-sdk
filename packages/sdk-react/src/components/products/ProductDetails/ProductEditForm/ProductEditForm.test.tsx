@@ -17,21 +17,13 @@ describe('ProductEditForm', () => {
         />
       );
 
-      await waitUntilTableIsLoaded();
-
-      const saveButton = screen.getByRole('button', {
+      const saveButton = screen.findByRole('button', {
         name: 'Update',
       });
 
-      /**
-       * We have to wait until the button will be available
-       *  to click and only after that we can click on it
-       */
-      await waitFor(() => {
-        expect(saveButton).not.toBeDisabled();
-      });
-
-      fireEvent.click(saveButton);
+      await expect(saveButton).resolves.toBeInTheDocument();
+      await waitFor(() => expect(saveButton).resolves.not.toBeDisabled());
+      fireEvent.click(await saveButton);
 
       await waitFor(() => {
         expect(onUpdateMock).toHaveBeenCalledWith({
@@ -51,13 +43,13 @@ describe('ProductEditForm', () => {
         />
       );
 
-      await waitUntilTableIsLoaded();
-
-      const saveButton = screen.getByRole('button', {
+      const saveButton = screen.findByRole('button', {
         name: /cancel/i,
       });
 
-      fireEvent.click(saveButton);
+      await expect(saveButton).resolves.not.toBeDisabled();
+
+      fireEvent.click(await saveButton);
 
       await waitFor(() => {
         expect(onCancelMock).toHaveBeenCalled();
