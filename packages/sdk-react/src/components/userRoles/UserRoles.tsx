@@ -51,7 +51,7 @@ const UserRolesBase = () => {
           <Button
             variant="contained"
             color="primary"
-            disabled={!isCreateAllowed}
+            disabled={isCreateAllowedLoading || !isCreateAllowed}
             onClick={() => {
               setSelectedUserRoleID(undefined);
               setIsDetailsDialogOpened(true);
