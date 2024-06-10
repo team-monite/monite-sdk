@@ -233,6 +233,9 @@ export const UserRoleDetailsDialog = ({
           onUpdated?.(role);
           setView(UserRoleDetailsView.Read);
         },
+        onError: (error) => {
+          toast.error(error.message);
+        },
       }
     );
   };
