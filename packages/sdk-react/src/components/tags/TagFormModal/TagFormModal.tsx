@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCreateTag, useUpdateTag } from '@/core/queries';
+import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -18,8 +19,8 @@ import {
   Divider,
   TextField,
   Button,
-  Typography,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 import * as yup from 'yup';
 
@@ -73,8 +74,41 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const tagCreateMutation = useCreateTag();
-  const tagUpdateMutation = useUpdateTag();
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
+  const tagCreateMutation = api.tags.postTags.useMutation(
+    {},
+    {
+      onSuccess: () => api.tags.getTags.invalidateQueries(queryClient),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
+  const tag_id = tag?.id;
+
+  const tagUpdateMutation = api.tags.patchTagsId.useMutation(
+    {
+      path: {
+        tag_id: tag_id ?? '',
+      },
+    },
+    {
+      onSuccess: () =>
+        Promise.all([
+          api.tags.getTags.invalidateQueries(queryClient),
+          api.tags.getTagsId.invalidateQueries(
+            { parameters: { path: { tag_id } } },
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
   const { control, handleSubmit, reset } = useForm<FormFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: { name: tag?.name || '' },
@@ -87,11 +121,8 @@ const TagFormModalBase = ({
   }, [reset, tag?.name]);
 
   const createTag = (name: string) => {
-    const tagCreateMutate = tagCreateMutation.mutate;
-    tagCreateMutate(
-      {
-        name,
-      },
+    tagCreateMutation.mutate(
+      { name },
       {
         onSuccess: (tag) => {
           toast.success(t(i18n)`New tag “${tag.name}” created`);
@@ -103,11 +134,9 @@ const TagFormModalBase = ({
   };
 
   const updateTag = (tag: ITag, name: string) => {
-    const tagUpdateMutate = tagUpdateMutation.mutate;
-    tagUpdateMutate(
+    tagUpdateMutation.mutate(
       {
-        id: tag.id,
-        payload: { name },
+        name,
       },
       {
         onSuccess: (updatedTag) => {

@@ -24,6 +24,7 @@ export class EntityService extends GeneralService {
     components['schemas']['CreateEntityBankAccountRequest']
   > = () => [
     {
+      is_default_for_currency: false,
       country: 'DE',
       currency: 'EUR',
       iban: 'DE89370400440532013000',
@@ -31,6 +32,7 @@ export class EntityService extends GeneralService {
       display_name: 'Germany account 1',
     },
     {
+      is_default_for_currency: false,
       country: 'US',
       currency: 'USD',
       account_holder_name: faker.finance.accountName(),
@@ -39,6 +41,7 @@ export class EntityService extends GeneralService {
       routing_number: faker.finance.routingNumber(),
     },
     {
+      is_default_for_currency: false,
       country: 'FR',
       currency: 'EUR',
       iban: 'FR1420041010050500013M02606',
@@ -46,6 +49,7 @@ export class EntityService extends GeneralService {
       display_name: 'France account 1',
     },
     {
+      is_default_for_currency: false,
       country: 'NL',
       currency: 'EUR',
       iban: 'NL91ABNA0417164300',

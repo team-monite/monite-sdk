@@ -1,5 +1,4 @@
 export * from './usePayable';
-export * from './useTag';
 export * from './useWorkflows';
 export * from './useCounterpart';
 export * from './useEntityUsers';

@@ -47,6 +47,18 @@ jest.mock('@emotion/react', () => {
   };
 });
 
+/**
+ * Mock the `requestFn` to allow usage of `requestFn.mock.*` methods
+ */
+jest.mock('@openapi-qraft/react', () => {
+  const module = jest.requireActual('@openapi-qraft/react');
+  return {
+    ...module,
+    requestFn: jest.fn(module.requestFn),
+    __esModule: true,
+  };
+});
+
 beforeAll(() => {
   // Enable the mocking in tests.
   server.listen();
