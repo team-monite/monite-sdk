@@ -57,6 +57,11 @@ export class MeasureUnitsService extends GeneralService {
           measureUnits.push(measureUnit);
         })
         .catch((error) => {
+          if (
+            error instanceof Error &&
+            error.message.includes('already exists')
+          )
+            return;
           console.error(error);
         });
     }
@@ -65,9 +70,27 @@ export class MeasureUnitsService extends GeneralService {
       console.log(chalk.black.bgGreenBright(`✅ Measure units created`));
       this.logger?.({ message: '✅ Measure units created' });
     } else {
-      console.error(chalk.black.bgYellow(`❌ Measure units list is empty`));
+      console.error(
+        chalk.black.bgYellow(`⚠️ Did not create any measure units`)
+      );
     }
 
     return measureUnits;
+  }
+
+  public async getAll(): Promise<components['schemas']['UnitResponse'][]> {
+    const { data, error, response } = await this.request.GET('/measure_units', {
+      params: {
+        header: {
+          'x-monite-entity-id': this.entityId,
+          'x-monite-version': getMoniteApiVersion(),
+        },
+      },
+    });
+
+    if (error)
+      throw new Error(`Measure units fetch failed: ${JSON.stringify(error)}`);
+
+    return data?.data ?? [];
   }
 }

@@ -260,6 +260,7 @@ const CounterpartsTableBase = ({
           />
         </Box>
         <DataGrid
+          autoHeight
           rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}

@@ -199,7 +199,7 @@ const getInvoiceActionMenuItemLabels = (
     context: 'InvoicesTableRowActionMenu',
   }),
   cancel: t(i18n)({
-    message: 'Cancel with credit note',
+    message: 'Cancel',
     context: 'InvoicesTableRowActionMenu',
   }),
   edit: t(i18n)({

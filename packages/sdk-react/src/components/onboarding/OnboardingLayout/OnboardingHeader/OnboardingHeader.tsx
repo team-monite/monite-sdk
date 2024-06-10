@@ -1,10 +1,34 @@
 import React from 'react';
 
-import { Paper, styled } from '@mui/material';
+import { Paper, styled, useMediaQuery, useScrollTrigger } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-import { ElevationScroll } from '../../components';
 import { useOnboardingRequirementsContext } from '../../context';
 import { OnboardingProgress } from '../OnboardingProgress';
+
+export function OnboardingHeader() {
+  const theme = useTheme();
+  const moreThanSM = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const { progress, isEditMode } = useOnboardingRequirementsContext();
+
+  const scrollTrigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
+  const shouldRenderProgress = !isEditMode;
+  const startElevation = 0;
+  const endElevation = 4;
+
+  const elevation = scrollTrigger && moreThanSM ? endElevation : startElevation;
+
+  return (
+    <StyledHeader elevation={elevation} square>
+      {shouldRenderProgress && <OnboardingProgress value={progress} />}
+    </StyledHeader>
+  );
+}
 
 const StyledHeader = styled(Paper)`
   display: flex;
@@ -30,17 +54,3 @@ const StyledHeader = styled(Paper)`
   ${({ elevation }) =>
     elevation && 'box-shadow: rgb(0 0 0 / 20%) 0px 2px 4px -1px;'}
 `;
-
-export function OnboardingHeader() {
-  const { progress, isEditMode } = useOnboardingRequirementsContext();
-
-  const shouldRenderProgress = !isEditMode;
-
-  return (
-    <ElevationScroll endElevation={1}>
-      <StyledHeader square>
-        {shouldRenderProgress && <OnboardingProgress value={progress} />}
-      </StyledHeader>
-    </ElevationScroll>
-  );
-}

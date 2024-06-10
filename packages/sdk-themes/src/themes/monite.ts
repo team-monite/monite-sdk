@@ -115,8 +115,6 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
     defaultProps: {
-      autoHeight: true,
-      hideFooterSelectedRowCount: true,
       disableColumnMenu: true,
       density: 'comfortable',
     },

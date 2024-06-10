@@ -61,6 +61,28 @@ export const useReceivables = (
   });
 };
 
+const useInvalidateReceivablePDF = () => {
+  const queryClient = useQueryClient();
+
+  return {
+    /**
+     * Invalidate receivable PDF cache and remove current PDF from the cache
+     *
+     * @param id Receivable ID
+     */
+    invalidate(id: string) {
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      queryClient.invalidateQueries({
+        queryKey: receivablesQueryKeys.pdf(id),
+      });
+      queryClient.setQueryData(receivablesQueryKeys.pdf(id), null);
+    },
+  };
+};
+
 export const useCreateReceivable = () => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
@@ -108,6 +130,7 @@ export const useUpdateReceivable = (id: string) => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
   const { setEntity } = useReceivableDetailCache(id);
+  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
 
   return useMutation<
     ReceivableResponse,
@@ -122,6 +145,12 @@ export const useUpdateReceivable = (id: string) => {
 
       /** Invalidate the whole receivable list */
       invalidate();
+
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      invalidatePDF(receivable.id);
 
       toast.success(t(i18n)`Invoice “${receivable.id}” was updated`);
 
@@ -155,6 +184,7 @@ export const useIssueReceivableById = () => {
   const { monite } = useMoniteContext();
   const { invalidate } = useReceivableListCache();
   const { i18n } = useLingui();
+  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
 
   return useMutation<ReceivableResponse, ApiError, string>({
     mutationFn: (receivableId) => monite.api.receivable.issueById(receivableId),
@@ -162,6 +192,12 @@ export const useIssueReceivableById = () => {
     onSuccess: (receivable, id) => {
       queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
       invalidate();
+
+      /**
+       * We have to invalidate a PDF query to get the
+       *  latest PDF & remove current PDF from the cache
+       */
+      invalidatePDF(receivable.id);
 
       toast.success(t(i18n)`Issued`);
     },
@@ -357,11 +393,25 @@ export const usePDFReceivableById = (
   }
 ) => {
   const { monite } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   return useQuery<ReceivableFileUrl, ApiError>({
     queryKey: receivablesQueryKeys.pdf(receivableId),
+    queryFn: async () => {
+      const response = await monite.api.receivable.getPdfLink(receivableId);
 
-    queryFn: () => monite.api.receivable.getPdfLink(receivableId),
+      if (!response.file_url) {
+        /**
+         * We have to flush current query data to show the error
+         *  but not previous data
+         */
+        queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
+
+        throw new Error('File URL is not provided');
+      }
+
+      return response;
+    },
 
     enabled: options?.enabled,
     refetchOnWindowFocus: false,
@@ -369,7 +419,16 @@ export const usePDFReceivableById = (
     gcTime: 0,
     refetchIntervalInBackground: false,
     staleTime: 0,
-    retry: false,
+    /** Implement `retry` logic only if we have "File URL is not provided" error */
+    retry: (failureCount, error) => {
+      /** Implement `retry` logic only if we have "File URL is not provided" error */
+      if (error.message === 'File URL is not provided') {
+        return failureCount <= 4;
+      }
+
+      return false;
+    },
+    retryDelay: 1_000,
   });
 };
 

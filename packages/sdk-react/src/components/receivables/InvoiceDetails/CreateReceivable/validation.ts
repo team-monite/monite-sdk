@@ -30,6 +30,18 @@ const getLineItemsSchema = (i18n: I18n) =>
           .number()
           .min(1)
           .label(t(i18n)`Quantity`)
+          .when('smallest_amount', (smallestAmount, schema) => {
+            if (!smallestAmount) {
+              return schema;
+            }
+
+            return schema.min(
+              smallestAmount,
+              t(
+                i18n
+              )`Quantity must be greater than or equal to the smallest amount`
+            );
+          })
           .required(),
         product_id: yup
           .string()
@@ -63,6 +75,7 @@ const getLineItemsSchema = (i18n: I18n) =>
           .string()
           .label(t(i18n)`Measure unit`)
           .required(),
+        smallest_amount: yup.number().label(t(i18n)`Smallest amount`),
       })
     )
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
@@ -138,6 +151,7 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   product_id: string;
   vat_rate_id?: string;
   vat_rate_value?: number;
+  smallest_amount?: number;
   name: string;
   price?: Price;
   measure_unit_id: string;
