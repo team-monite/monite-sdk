@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
+import { useAPI } from '@/api/client';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useTagListQuery } from '@/core/queries/useTag';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -76,17 +76,20 @@ const TagsTableBase = ({
   const closeDeleteModal = useCallback(() => {
     setDeleteModalOpened(false);
   }, []);
+  const { api } = useAPI();
 
   const {
     data: tags,
     isLoading,
     isError,
     error,
-  } = useTagListQuery({
-    order: sortModel ? sortModel.sort ?? undefined : undefined,
-    limit: pageSize,
-    pagination_token: currentPaginationToken ?? undefined,
-    sort: sortModel ? sortModel.field : undefined,
+  } = api.tags.getTags.useQuery({
+    query: {
+      order: sortModel ? sortModel.sort ?? undefined : undefined,
+      limit: pageSize,
+      pagination_token: currentPaginationToken ?? undefined,
+      sort: sortModel ? sortModel.field : undefined,
+    },
   });
 
   //TODO: Remove this error handling and replace with proper error handling

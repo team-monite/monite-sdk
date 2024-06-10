@@ -2,12 +2,10 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+import { useAPI } from '@/api/client';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import {
-  useCreateTagMutation,
-  useUpdateTagMutation,
-} from '@/core/queries/useTag';
+import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -22,6 +20,7 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 import * as yup from 'yup';
 
@@ -75,8 +74,41 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const tagCreateMutation = useCreateTagMutation();
-  const tagUpdateMutation = useUpdateTagMutation(tag?.id);
+  const { api } = useAPI();
+  const queryClient = useQueryClient();
+  const tagCreateMutation = api.tags.postTags.useMutation(
+    {},
+    {
+      onSuccess: () => api.tags.getTags.invalidateQueries(queryClient),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
+  const tag_id = tag?.id;
+
+  const tagUpdateMutation = api.tags.patchTagsId.useMutation(
+    {
+      path: {
+        tag_id: tag_id ?? '',
+      },
+    },
+    {
+      onSuccess: () =>
+        Promise.all([
+          api.tags.getTags.invalidateQueries(queryClient),
+          api.tags.getTagsId.invalidateQueries(
+            { parameters: { path: { tag_id } } },
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
   const { control, handleSubmit, reset } = useForm<FormFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: { name: tag?.name || '' },

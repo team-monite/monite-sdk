@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { api } from '@/api/client';
+import { createAPIClient } from '@/api/client';
 import {
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
@@ -19,6 +19,8 @@ import {
 import { TagsTable } from './TagsTable';
 
 const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
+const { api } = createAPIClient();
 
 describe('TagsTable', () => {
   test('should cut tag name if it is so long', async () => {
