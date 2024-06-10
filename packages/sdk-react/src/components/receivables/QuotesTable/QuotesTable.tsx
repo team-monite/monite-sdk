@@ -132,9 +132,13 @@ const QuotesTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
+          <Filters
+            onChangeFilter={onChangeFilter}
+            filters={['search', 'status', 'customer']}
+          />
         </Box>
         <DataGrid
+          autoHeight
           rowSelection={false}
           loading={isLoading}
           sortModel={sortModel}

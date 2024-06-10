@@ -8,12 +8,17 @@ import {
 export const useReceivablesFilters = () => {
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
 
-  const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
+  const onChangeFilter: ReceivablesFilterHandler = (field, value) => {
     setCurrentFilters((prevFilters) => ({
       ...prevFilters,
-      [field]: value === 'all' ? null : value,
+      [field]: value,
     }));
   };
 
   return { currentFilters, onChangeFilter };
 };
+
+export type ReceivablesFilterHandler = <Filter extends keyof FilterTypes>(
+  filter: Filter,
+  value: FilterTypes[Filter]
+) => void;
