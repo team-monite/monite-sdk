@@ -172,7 +172,7 @@ const FileViewerComponent = ({
   rightIcon,
   pdfjsLib,
   onReloadCallback,
-}: FileViewerProps & { pdfjsLib: any }) => {
+}: FileViewerProps & { pdfjsLib: AsyncReturnType<typeof loadPdfJs> }) => {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
