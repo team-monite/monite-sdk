@@ -46,3 +46,11 @@ export type OrganizationDomainWebhookEvent =
         deleted: boolean;
       }
     >;
+
+export type ThemeVariant = 'monite' | 'material';
+export type ThemeMode = 'light' | 'dark';
+export type SelectedTheme = [theme: ThemeVariant, mode: ThemeMode];
+
+export type PrivateMetadata = UserPrivateMetadata & {
+  selectedTheme: SelectedTheme;
+};
