@@ -19,7 +19,7 @@ import {
 
 import { CreateCounterpartDialogTestEnum } from './CreateCounterpartDialog.types';
 
-interface ICreateCounterpartDialogProps {
+interface CreateCounterpartDialogProps {
   open: boolean;
   onClose: () => void;
 }
@@ -79,7 +79,7 @@ const CardItem = ({
 export const CreateCounterpartDialog = ({
   open,
   onClose,
-}: ICreateCounterpartDialogProps) => {
+}: CreateCounterpartDialogProps) => {
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
   const [counterpartType, setCounterpartType] = useState<

@@ -95,7 +95,7 @@ const DeliveryMethodView = ({
   );
 };
 
-export interface ISubmitInvoiceProps {
+export interface SubmitInvoiceProps {
   disabled: boolean;
   deliveryMethod: DeliveryMethod;
   onDeliveryMethodChanged: (method: DeliveryMethod) => void;
@@ -105,7 +105,7 @@ export const SubmitInvoice = ({
   disabled,
   deliveryMethod,
   onDeliveryMethodChanged,
-}: ISubmitInvoiceProps) => {
+}: SubmitInvoiceProps) => {
   const { i18n } = useLingui();
 
   return (

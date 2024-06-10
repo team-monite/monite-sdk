@@ -1,7 +1,7 @@
 import { useCallback, useId, useMemo, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { IProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
+import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useCreateProduct } from '@/core/queries';
@@ -32,13 +32,13 @@ const initialValues: ProductFormValues = {
   description: undefined,
 };
 
-export const CreateProduct = (props: IProductDetailsCreateProps) => (
+export const CreateProduct = (props: ProductDetailsCreateProps) => (
   <MoniteScopedProviders>
     <CreateProductBase {...props} />
   </MoniteScopedProviders>
 );
 
-const CreateProductBase = (props: IProductDetailsCreateProps) => {
+const CreateProductBase = (props: ProductDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
