@@ -27,7 +27,9 @@ export interface FileViewerProps {
 
 export const FileViewer = (props: FileViewerProps) => {
   const { i18n } = useLingui();
-  const isSSR = typeof window === 'undefined';
+  const isSSR =
+    typeof window === 'undefined' && typeof document === 'undefined';
+
   const [error, setError] = useState<string | null>(null);
 
   const rawPdfViewerId = useId();
