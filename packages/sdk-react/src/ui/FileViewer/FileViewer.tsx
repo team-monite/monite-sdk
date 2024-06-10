@@ -114,11 +114,15 @@ export const FileViewer = (props: FileViewerProps) => {
   }
 
   return (
-    <iframe
-      src={props.url}
-      title={props.name}
+    <object
+      data={props.url}
+      type={props.mimetype}
       style={{ width: '100%', height: '100vh', border: 'none' }}
-    />
+    >
+      <iframe src={props.url} title={props.name} width="100%" height="100vh">
+        <a href={props.url}>{props.name}</a>
+      </iframe>
+    </object>
   );
 };
 
