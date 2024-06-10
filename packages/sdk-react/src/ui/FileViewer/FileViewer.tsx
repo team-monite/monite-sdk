@@ -9,6 +9,8 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 
+import PDFObject from 'pdfobject';
+
 export const SUPPORTED_MIME_TYPES = [
   'image/png',
   'image/jpeg',
@@ -16,28 +18,10 @@ export const SUPPORTED_MIME_TYPES = [
 ];
 
 export interface FileViewerProps {
-  /**
-   * Defines what PDF should be displayed.
-   * Its value can be a URL,
-   * a file (imported using import ... from ... or from file input form element),
-   * or an object with parameters
-   *  (
-   *   url - URL;
-   *   data - data, preferably Uint8Array;
-   *   range - PDFDataRangeTransport;
-   *   httpHeaders - custom request headers, e.g. for authorization
-   *   withCredentials - a boolean to indicate whether to include cookies in the request (defaults to false)
-   *  )
-   */
   url?: string;
   mimetype: string;
   name?: string;
   rightIcon?: ReactNode;
-  /**
-   * What should be done when the PDF is not loaded and the user clicks the `Reload` button.
-   *
-   * Note: The button `Reload` will be displayed only if the `onErrorCallback` is provided
-   */
   onReloadCallback?: () => void;
 }
 
@@ -51,22 +35,15 @@ export const FileViewer = (props: FileViewerProps) => {
 
   useEffect(() => {
     if (!isSSR && props.mimetype === 'application/pdf' && props.url) {
-      const iframe = document.getElementById(pdfViewerId) as HTMLIFrameElement;
-      if (iframe) {
-        iframe.src = props.url;
+      try {
+        PDFObject.embed(props.url, `#${pdfViewerId}`, {});
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(t(i18n)`Failed to load PDF Viewer: ${err?.message}`);
+        }
       }
-    } else {
-      setError(t(i18n)`Failed to load PDF Viewer`);
     }
   }, [i18n, isSSR, props.mimetype, props.url, pdfViewerId]);
-
-  if (isSSR) {
-    return (
-      <iframe src={props.url} title={props.name} width="100%" height="100vh">
-        <a href={props.url}>{props.name}</a>
-      </iframe>
-    );
-  }
 
   if (error) {
     return (
@@ -76,21 +53,7 @@ export const FileViewer = (props: FileViewerProps) => {
     );
   }
 
-  if (props.mimetype === 'application/pdf') {
-    return <FileViewerComponent {...props} pdfViewerId={pdfViewerId} />;
-  }
-
-  return (
-    <object
-      data={props.url}
-      type={props.mimetype}
-      style={{ width: '100%', height: '100vh', border: 'none' }}
-    >
-      <iframe src={props.url} title={props.name} width="100%" height="100vh">
-        <a href={props.url}>{props.name}</a>
-      </iframe>
-    </object>
-  );
+  return <FileViewerComponent {...props} pdfViewerId={pdfViewerId} />;
 };
 
 const ErrorComponent = ({
@@ -143,6 +106,12 @@ const FileViewerComponent = ({
 }: FileViewerProps & { pdfViewerId: string }) => {
   const [ref] = useMeasure<HTMLDivElement>();
 
+  useEffect(() => {
+    PDFObject.embed(url, `#${pdfViewerId}`, {
+      fallback: true,
+    });
+  }, [url, pdfViewerId]);
+
   if (!url) {
     return <ErrorComponent onError={onReloadCallback} />;
   }
@@ -157,13 +126,7 @@ const FileViewerComponent = ({
           type={mimetype}
           style={{ width: '100%', height: '100vh', border: 'none' }}
         >
-          <iframe
-            id={pdfViewerId}
-            src={url}
-            title={name}
-            width="100%"
-            height="100vh"
-          >
+          <iframe src={url} title={name} width="100%" height="100vh">
             <a href={url}>{name}</a>
           </iframe>
         </object>
