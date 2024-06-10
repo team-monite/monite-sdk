@@ -108,7 +108,7 @@ const FileViewerComponent = ({
 
   useEffect(() => {
     PDFObject.embed(url, `#${pdfViewerId}`, {
-      fallback: true,
+      fallbackLink: true,
     });
   }, [url, pdfViewerId]);
 
