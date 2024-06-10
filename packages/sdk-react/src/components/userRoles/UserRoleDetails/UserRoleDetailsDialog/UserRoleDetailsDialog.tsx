@@ -170,7 +170,6 @@ export const UserRoleDetailsDialog = ({
     {
       id: 'name',
       headerName: t(i18n)`Resource name`,
-      cellClassName: 'role-data-grid--cell',
     },
     {
       id: ActionEnum.READ,
