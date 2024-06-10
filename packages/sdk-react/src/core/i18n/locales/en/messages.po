@@ -918,8 +918,8 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:69
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:91
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:127
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:195
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:121
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:185
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:533
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:160
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:168
@@ -1435,7 +1435,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:596
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:386
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:380
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:135
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:130
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:136
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:23
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:87
@@ -1499,11 +1499,11 @@ msgstr "Create New"
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:96
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:90
 msgid "Create New Product"
 msgstr "Create New Product"
 
-#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:102
+#: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:96
 msgid "Create New Product Close"
 msgstr "Create New Product Close"
 
@@ -1781,7 +1781,7 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:184
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:187
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:87
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:169
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:164
 #: src/components/products/ProductDetails/validation.ts:50
 msgid "Description"
 msgstr "Description"
@@ -2038,13 +2038,13 @@ msgstr "Edit invoice"
 msgid "Edit invoice {0}"
 msgstr "Edit invoice {0}"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:100
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:169
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:82
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:159
 msgid "Edit Product"
 msgstr "Edit Product"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:106
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:175
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:88
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:165
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
@@ -2255,8 +2255,8 @@ msgstr "Failed to delete product."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/ui/FileViewer/FileViewer.tsx:41
-#: src/ui/FileViewer/FileViewer.tsx:94
+#: src/ui/FileViewer/FileViewer.tsx:59
+#: src/ui/FileViewer/FileViewer.tsx:112
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
@@ -2724,7 +2724,7 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
-#: src/ui/FileViewer/FileViewer.tsx:101
+#: src/ui/FileViewer/FileViewer.tsx:119
 msgid "If the error recurs, contact support."
 msgstr "If the error recurs, contact support."
 
@@ -3503,7 +3503,7 @@ msgstr "Myanmar"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:281
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:40
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:77
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:72
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:116
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:60
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:99
@@ -4102,7 +4102,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/FileViewer/FileViewer.tsx:98
+#: src/ui/FileViewer/FileViewer.tsx:116
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
@@ -4180,7 +4180,7 @@ msgstr "Previous page"
 msgid "Price"
 msgstr "Price"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:153
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:148
 #: src/components/products/ProductDetails/validation.ts:43
 #: src/components/products/ProductsTable/ProductsTable.tsx:229
 msgid "Price per unit"
@@ -4202,7 +4202,7 @@ msgstr "Processing file…"
 msgid "Processing..."
 msgstr "Processing..."
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:93
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:88
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:19
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:67
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:48
@@ -4407,7 +4407,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/ui/FileViewer/FileViewer.tsx:110
+#: src/ui/FileViewer/FileViewer.tsx:128
 msgid "Reload"
 msgstr "Reload"
 
@@ -4655,7 +4655,7 @@ msgstr "Serbia and Montenegro"
 msgid "Serbian Dinar"
 msgstr "Serbian Dinar"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:97
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:92
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:26
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:68
 msgid "Service"
@@ -4730,7 +4730,7 @@ msgstr "Slovenia"
 msgid "Small Appliance Repair"
 msgstr "Small Appliance Repair"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:139
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:134
 #: src/components/products/ProductDetails/validation.ts:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:78
 msgid "Smallest amount"
@@ -4765,7 +4765,7 @@ msgstr "Somalia"
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:122
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:104
 msgid "Something went wrong. Please try again"
 msgstr "Something went wrong. Please try again"
 
@@ -5380,7 +5380,7 @@ msgstr "Tuvalu"
 
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:47
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:50
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:87
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:82
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:42
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:45
 #: src/components/products/ProductsTable/ProductsTable.tsx:218
@@ -5467,8 +5467,8 @@ msgstr "United States Dollar"
 msgid "United States Outlying Islands"
 msgstr "United States Outlying Islands"
 
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:116
-#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:119
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:111
+#: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:114
 #: src/components/products/ProductDetails/validation.ts:33
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:80
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
@@ -5497,7 +5497,7 @@ msgstr "Unsupported file type"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:386
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:380
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:52
-#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:202
+#: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:193
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:177
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/ExistingUserRoleDetails/ExistingUserRoleDetails.tsx:147
