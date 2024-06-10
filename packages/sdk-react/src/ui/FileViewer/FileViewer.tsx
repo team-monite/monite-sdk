@@ -15,6 +15,13 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 
+import {
+  PDFDocumentLoadingTask,
+  PDFDocumentProxy,
+  PDFPageProxy,
+  RenderParameters,
+} from 'pdfjs-dist/types/display/api';
+
 const SCALE_STEP = 0.1;
 const SCALE_MAX = 1.5;
 const SCALE_MIN = 1;
@@ -194,28 +201,33 @@ const FileViewerComponent = ({
   };
 
   const renderPage = useCallback(() => {
-    pdfjsLib.getDocument(url).promise.then((pdf: any) => {
-      pdf.getPage(pageNumber).then((page: any) => {
+    pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
+      pdf.getPage(pageNumber).then((page: PDFPageProxy) => {
         const viewport = page.getViewport({ scale });
         const canvas = document.getElementById(
           'pdf-canvas'
         ) as HTMLCanvasElement;
         const context = canvas.getContext('2d');
-        const outputScale = window.devicePixelRatio || 1;
 
-        canvas.width = viewport.width * outputScale;
-        canvas.height = viewport.height * outputScale;
-        canvas.style.width = `${viewport.width}px`;
-        canvas.style.height = `${viewport.height}px`;
+        if (context) {
+          const outputScale = window.devicePixelRatio || 1;
 
-        const renderContext = {
-          canvasContext: context,
-          transform:
-            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null,
-          viewport: viewport,
-        };
+          canvas.width = viewport.width * outputScale;
+          canvas.height = viewport.height * outputScale;
+          canvas.style.width = `${viewport.width}px`;
+          canvas.style.height = `${viewport.height}px`;
 
-        page.render(renderContext);
+          const renderContext: RenderParameters = {
+            canvasContext: context as NonNullable<unknown>,
+            transform:
+              outputScale !== 1
+                ? [outputScale, 0, 0, outputScale, 0, 0]
+                : undefined,
+            viewport: viewport,
+          };
+
+          page.render(renderContext);
+        }
       });
     });
   }, [pdfjsLib, pageNumber, scale, url]);
