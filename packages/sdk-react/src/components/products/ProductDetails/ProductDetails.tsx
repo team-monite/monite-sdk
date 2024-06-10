@@ -47,6 +47,9 @@ export interface ExistingProductDetailsProps {
   initialView?: ProductDetailsView;
 }
 
+/** @deprecated Use `ExistingProductDetailsProps` instead */
+export type IProductDetailsProps = ExistingProductDetailsProps;
+
 /**
  * Props for the product details component when the product does not exist yet
  *  (we are creating a new product)
