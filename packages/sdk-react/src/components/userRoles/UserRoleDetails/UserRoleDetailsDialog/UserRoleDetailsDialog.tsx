@@ -64,8 +64,8 @@ export enum UserRoleDetailsView {
   /** Read mode - the user is only viewing the role details */
   Read = 'read',
 
-  /** Edit mode - the user is editing the role details */
-  Edit = 'edit',
+  /** Mutate mode - the user is adding or editing the role */
+  Mutate = 'mutate',
 }
 
 interface UserRoleFormValues {
@@ -146,7 +146,7 @@ export const UserRoleDetailsDialog = ({
   const formName = `Monite-Form-UserRoles-${formId}`;
 
   const [view, setView] = useState<UserRoleDetailsView>(
-    role ? UserRoleDetailsView.Read : UserRoleDetailsView.Edit
+    role ? UserRoleDetailsView.Read : UserRoleDetailsView.Mutate
   );
 
   const updateRoleMutation = useUpdateRole(role?.id);
@@ -357,7 +357,7 @@ export const UserRoleDetailsDialog = ({
             noValidate
             onSubmit={handleSubmit(handleRoleFormSubmission)}
           >
-            {view == UserRoleDetailsView.Edit && (
+            {view == UserRoleDetailsView.Mutate && (
               <RHFTextField
                 label={t(i18n)`Name`}
                 name="name"
@@ -411,12 +411,12 @@ export const UserRoleDetailsDialog = ({
         {isUpdateAllowed && view === UserRoleDetailsView.Read && (
           <Button
             variant="outlined"
-            onClick={() => setView(UserRoleDetailsView.Edit)}
+            onClick={() => setView(UserRoleDetailsView.Mutate)}
           >
             {t(i18n)`Edit`}
           </Button>
         )}
-        {view === UserRoleDetailsView.Edit && (
+        {view === UserRoleDetailsView.Mutate && (
           <>
             <Button variant="outlined" color="inherit" onClick={handleCancel}>
               {t(i18n)`Cancel`}

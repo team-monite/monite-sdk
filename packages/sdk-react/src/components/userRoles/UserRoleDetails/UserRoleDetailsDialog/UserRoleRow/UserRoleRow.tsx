@@ -42,7 +42,7 @@ const ActionPermissionCell = ({
 
   if (typeof actionPermissionValue !== 'boolean') return null;
 
-  if (view === UserRoleDetailsView.Edit) {
+  if (view === UserRoleDetailsView.Mutate) {
     return (
       <RHFCheckbox
         control={control}
