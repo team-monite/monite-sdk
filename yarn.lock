@@ -3616,6 +3616,7 @@ __metadata:
     "@testing-library/user-event": ~14.4.3
     "@types/deep-eql": ~4.0.2
     "@types/jest": ~29.5.11
+    "@types/pdfobject": ~2.2.5
     babel-plugin-macros: ~3.1.0
     cross-env: ^7.0.3
     date-fns: ^2.28.0
@@ -3633,6 +3634,7 @@ __metadata:
     msw: ~2.2.13
     msw-storybook-addon: ~2.0.0
     pdfjs-dist: 2.7.570
+    pdfobject: ~2.3.0
     prop-types: ^15.8.1
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -7380,6 +7382,13 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: fd6bce2b674b6efc3db4c7c3d336bd70c90838e8439de639b909ce22f3720d21344f52427f1d9e57b265fcb7f6c018699b99e5e0c208a1a4823014269a6bf35b
+  languageName: node
+  linkType: hard
+
+"@types/pdfobject@npm:~2.2.5":
+  version: 2.2.5
+  resolution: "@types/pdfobject@npm:2.2.5"
+  checksum: 1c97afc15c70074fa7122bd570fb595110370b55d2111f3282119a4a9ff688d4cadaf304eb245978a5e3ecd013e9f9644ada22d63dccdd4755d0834acc36fd04
   languageName: node
   linkType: hard
 
@@ -18598,6 +18607,13 @@ __metadata:
   peerDependencies:
     worker-loader: ^3.0.7
   checksum: 08600c24e745e77fce120adc9bd9ddb0dac6a241d7b361dee81e5d12f9f1dd28e392f0d5a70c8f0391cdf669a7053d7c50ee2f08bdf90ab06ee4e6f9450f61e3
+  languageName: node
+  linkType: hard
+
+"pdfobject@npm:~2.3.0":
+  version: 2.3.0
+  resolution: "pdfobject@npm:2.3.0"
+  checksum: a824369ad7d08ea039cc03b09edc31c5fdfe01cadad3ab3476a7fc41b582df8464f11379716ba80d227e4c79d7a75c47515e5410beaa9f2316cac3e38c24b883
   languageName: node
   linkType: hard
 

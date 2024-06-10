@@ -1,41 +1,16 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { useId } from 'react';
 import { useMeasure } from 'react-use';
 
 import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import ZoomInIcon from '@mui/icons-material/ZoomIn';
-import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 
-import {
-  PDFDocumentProxy,
-  PDFPageProxy,
-  RenderParameters,
-} from 'pdfjs-dist/types/display/api';
-
-const SCALE_STEP = 0.1;
-const SCALE_MAX = 1.5;
-const SCALE_MIN = 1;
+import PDFObject from 'pdfobject';
 
 export const SUPPORTED_MIME_TYPES = [
   'image/png',
@@ -44,83 +19,52 @@ export const SUPPORTED_MIME_TYPES = [
 ];
 
 export interface FileViewerProps {
-  /**
-   * Defines what PDF should be displayed.
-   * Its value can be a URL,
-   * a file (imported using import ... from ... or from file input form element),
-   * or an object with parameters
-   *  (
-   *   url - URL;
-   *   data - data, preferably Uint8Array;
-   *   range - PDFDataRangeTransport;
-   *   httpHeaders - custom request headers, e.g. for authorization
-   *   withCredentials - a boolean to indicate whether to include cookies in the request (defaults to false)
-   *  )
-   */
   url?: string;
   mimetype: string;
   name?: string;
   rightIcon?: ReactNode;
-  /**
-   * What should be done when the PDF is not loaded and the user clicks the `Reload` button.
-   *
-   * Note: The button `Reload` will be displayed only if the `onErrorCallback` is provided
-   */
   onReloadCallback?: () => void;
 }
 
 export const FileViewer = (props: FileViewerProps) => {
-  const [pdfJsDynamic, setPdfJsDynamic] = useState<{
-    pdfjsLib: AsyncReturnType<typeof loadPdfJs> | null;
-    error: string | null;
-    loading: boolean;
-  }>({
-    error: null,
-    pdfjsLib: null,
-    loading: false,
-  });
-
   const { i18n } = useLingui();
   const isSSR = typeof window === 'undefined';
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const rawPdfViewerId = useId();
+  const pdfViewerId = `pdf-viewer-${rawPdfViewerId.replace(/:/g, '-')}`;
 
   useEffect(() => {
-    if (!isSSR && props.mimetype === 'application/pdf') {
-      setPdfJsDynamic((prev) => ({ ...prev, loading: true }));
-      loadPdfJs()
-        .then((pdfjsLib) => {
-          setPdfJsDynamic({
-            pdfjsLib,
-            error: null,
-            loading: false,
-          });
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          setPdfJsDynamic({
-            pdfjsLib: null,
-            error: errorMessage
-              ? t(i18n)`Failed to load PDF Viewer: ${errorMessage}`
-              : t(i18n)`Failed to load PDF Viewer`,
-            loading: false,
-          });
-        });
+    if (!isSSR && props.mimetype === 'application/pdf' && props.url) {
+      try {
+        PDFObject.embed(props.url, `#${pdfViewerId}`, {});
+        setLoading(false);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(t(i18n)`Failed to load PDF Viewer: ${err?.message}`);
+        }
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
     }
-  }, [i18n, isSSR, props.mimetype]);
+  }, [i18n, isSSR, props.mimetype, props.url, pdfViewerId]);
 
-  if (pdfJsDynamic.loading) {
+  if (loading) {
     return <LoadingPage />;
   }
 
-  if (pdfJsDynamic.pdfjsLib) {
-    return <FileViewerComponent {...props} pdfjsLib={pdfJsDynamic.pdfjsLib} />;
-  }
-
-  if (pdfJsDynamic.error) {
+  if (error) {
     return (
       <CenteredContentBox>
-        <Box color="danger">{pdfJsDynamic.error}</Box>
+        <Box color="danger">{error}</Box>
       </CenteredContentBox>
     );
+  }
+
+  if (props.mimetype === 'application/pdf') {
+    return <FileViewerComponent {...props} pdfViewerId={pdfViewerId} />;
   }
 
   return (
@@ -181,82 +125,14 @@ const FileViewerComponent = ({
   mimetype,
   name,
   rightIcon,
-  pdfjsLib,
+  pdfViewerId,
   onReloadCallback,
-}: FileViewerProps & { pdfjsLib: AsyncReturnType<typeof loadPdfJs> }) => {
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const [numPages, setNumPages] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [scale, setScale] = useState<number>(1);
-  const renderTaskRef = useRef<any>(null);
+}: FileViewerProps & { pdfViewerId: string }) => {
+  const [ref] = useMeasure<HTMLDivElement>();
 
   useEffect(() => {
-    pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
-      setNumPages(pdf.numPages);
-    });
-  }, [pdfjsLib, url]);
-
-  const changePage = (offset: number) => {
-    setPageNumber((prevPageNumber) => prevPageNumber + offset);
-  };
-
-  const onPreviousPage = () => changePage(-1);
-  const onNextPage = () => changePage(1);
-  const onZoomIn = () => {
-    const newScale = scale <= SCALE_MAX ? scale + SCALE_STEP : scale;
-    setScale(Math.round(newScale * 10) / 10);
-  };
-  const onZoomOut = () => {
-    const newScale = scale >= SCALE_MIN ? scale - SCALE_STEP : scale;
-    setScale(Math.round(newScale * 10) / 10);
-  };
-
-  const renderPage = useCallback(() => {
-    return pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
-      pdf.getPage(pageNumber).then((page: PDFPageProxy) => {
-        const viewport = page.getViewport({ scale });
-        const canvas = document.getElementById(
-          'pdf-canvas'
-        ) as HTMLCanvasElement;
-        const context = canvas.getContext('2d');
-
-        if (renderTaskRef.current) {
-          renderTaskRef.current.cancel();
-        }
-
-        if (context) {
-          const outputScale = window.devicePixelRatio || 1;
-
-          canvas.width = viewport.width * outputScale;
-          canvas.height = viewport.height * outputScale;
-          canvas.style.width = `${viewport.width}px`;
-          canvas.style.height = `${viewport.height}px`;
-
-          const renderContext: RenderParameters = {
-            canvasContext: context as NonNullable<unknown>,
-            transform:
-              outputScale !== 1
-                ? [outputScale, 0, 0, outputScale, 0, 0]
-                : undefined,
-            viewport: viewport,
-          };
-
-          renderTaskRef.current = page.render(renderContext);
-          renderTaskRef.current.promise.catch((error: Error) => {
-            if (error.name !== 'RenderingCancelledException') {
-              console.error('Render failed:', error);
-            }
-          });
-        }
-      });
-    });
-  }, [pdfjsLib, pageNumber, scale, url]);
-
-  useEffect(() => {
-    if (pdfjsLib) {
-      renderPage();
-    }
-  }, [pdfjsLib, pageNumber, scale, url, width, renderPage]);
+    PDFObject.embed(url, `#${pdfViewerId}`);
+  }, [url, pdfViewerId]);
 
   if (!url) {
     return <ErrorComponent onError={onReloadCallback} />;
@@ -266,7 +142,9 @@ const FileViewerComponent = ({
 
   const renderFile = () => {
     if (isPdf) {
-      return <canvas id="pdf-canvas" style={{ width: '100%' }} />;
+      return (
+        <div id={pdfViewerId} style={{ width: '100%', height: '100vh' }} />
+      );
     }
     return <img src={url} alt={name} style={{ width: '100%' }} />;
   };
@@ -280,53 +158,7 @@ const FileViewerComponent = ({
           flexWrap="nowrap"
           sx={{ justifyContent: isPdf ? 'space-between' : 'flex-end' }}
         >
-          {isPdf && (
-            <Grid item container alignItems="center">
-              <IconButton
-                color="inherit"
-                onClick={onPreviousPage}
-                disabled={pageNumber <= 1}
-              >
-                <ArrowBackIcon />
-              </IconButton>
-              <Box>
-                <Trans>
-                  {pageNumber || (numPages ? 1 : '-')} of {numPages || '-'}
-                </Trans>
-              </Box>
-              <IconButton
-                color="inherit"
-                onClick={onNextPage}
-                disabled={pageNumber >= numPages}
-              >
-                <ArrowForwardIcon />
-              </IconButton>
-            </Grid>
-          )}
           <Grid item container justifyContent="flex-end">
-            {isPdf && (
-              <>
-                <IconButton
-                  color="inherit"
-                  onClick={onZoomOut}
-                  disabled={scale === SCALE_MIN}
-                >
-                  <ZoomOutIcon />
-                </IconButton>
-                <IconButton
-                  color="inherit"
-                  onClick={onZoomIn}
-                  disabled={scale === SCALE_MAX}
-                >
-                  <ZoomInIcon />
-                </IconButton>
-              </>
-            )}
-
-            <IconButton color="inherit" target={'_blank'} href={url} download>
-              <FileDownloadIcon />
-            </IconButton>
-
             {rightIcon}
           </Grid>
         </Grid>
@@ -340,18 +172,3 @@ const FileViewerComponent = ({
     </>
   );
 };
-
-const loadPdfJs = async () => {
-  const pdfjsLib = await import('pdfjs-dist');
-  const worker = await import('pdfjs-dist/build/pdf.worker.entry');
-
-  pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
-
-  return pdfjsLib;
-};
-
-type AsyncReturnType<T extends (...args: any) => any> = T extends (
-  ...args: any
-) => Promise<infer U>
-  ? U
-  : never;
