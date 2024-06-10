@@ -7,7 +7,6 @@ import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
-import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 
 /**
  * Provides a single instance of `<ScopedCssBaseline/>` component,
