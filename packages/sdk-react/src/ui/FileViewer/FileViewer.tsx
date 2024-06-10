@@ -16,10 +16,28 @@ export const SUPPORTED_MIME_TYPES = [
 ];
 
 export interface FileViewerProps {
+  /**
+   * Defines what PDF should be displayed.
+   * Its value can be a URL,
+   * a file (imported using import ... from ... or from file input form element),
+   * or an object with parameters
+   *  (
+   *   url - URL;
+   *   data - data, preferably Uint8Array;
+   *   range - PDFDataRangeTransport;
+   *   httpHeaders - custom request headers, e.g. for authorization
+   *   withCredentials - a boolean to indicate whether to include cookies in the request (defaults to false)
+   *  )
+   */
   url?: string;
   mimetype: string;
   name?: string;
   rightIcon?: ReactNode;
+  /**
+   * What should be done when the PDF is not loaded and the user clicks the `Reload` button.
+   *
+   * Note: The button `Reload` will be displayed only if the `onErrorCallback` is provided
+   */
   onReloadCallback?: () => void;
 }
 
