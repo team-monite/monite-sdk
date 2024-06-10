@@ -16,7 +16,6 @@ import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { Grid } from '@mui/material';
 
 import {
-  PDFDocumentLoadingTask,
   PDFDocumentProxy,
   PDFPageProxy,
   RenderParameters,
