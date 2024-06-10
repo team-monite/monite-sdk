@@ -63,7 +63,7 @@ const UserRoleDetailsBase = ({
 
   return (
     <UserRoleDetailsDialog
-      id={id}
+      role={role}
       onUpdated={onUpdated}
       onCreated={onCreated}
     />

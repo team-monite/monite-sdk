@@ -70,7 +70,10 @@ const UserRolesBase = () => {
         alignDialog="right"
         onClose={() => setIsDetailsDialogOpened(false)}
       >
-        <UserRoleDetails id={selectedUserRoleId} />
+        <UserRoleDetails
+          id={selectedUserRoleId}
+          onCreated={(role) => setSelectedUserRoleID(role.id)}
+        />
       </Dialog>
     </>
   );

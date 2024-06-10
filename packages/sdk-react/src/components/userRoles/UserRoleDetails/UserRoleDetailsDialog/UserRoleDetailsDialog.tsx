@@ -13,7 +13,6 @@ import {
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
-  useRoleById,
   useUpdateRole,
   UserRoleRequest,
   UserRolePayablePermissions,
@@ -28,6 +27,7 @@ import {
   CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
+  RoleResponse,
   UpdateRoleRequest,
 } from '@monite/sdk-api';
 import {
@@ -55,7 +55,6 @@ import {
 } from '@mui/material';
 
 import { PermissionRow } from '../types';
-import { UserRoleDetailsProps } from '../UserRoleDetails';
 import { getValidationSchema } from '../validation';
 import { UserRoleRow } from './UserRoleRow';
 
@@ -120,16 +119,20 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+interface UserRoleDetailsDialogProps {
+  role?: RoleResponse;
+  onCreated?: (role: RoleResponse) => void;
+  onUpdated?: (role: RoleResponse) => void;
+}
+
 export const UserRoleDetailsDialog = ({
-  id,
+  role,
   onCreated,
   onUpdated,
-}: UserRoleDetailsProps) => {
+}: UserRoleDetailsDialogProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const [roleId, setRoleId] = useState<string | undefined>(id);
   const { data: user } = useEntityUserByAuthToken();
-  const { data: role } = useRoleById(roleId);
 
   const methods = useForm<UserRoleFormValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
@@ -215,7 +218,6 @@ export const UserRoleDetailsDialog = ({
   const createRole = (role: CreateRoleRequest) => {
     createRoleMutation.mutate(role, {
       onSuccess: (role) => {
-        setRoleId(role.id);
         onCreated?.(role);
         setView(UserRoleDetailsView.Read);
       },
@@ -310,7 +312,7 @@ export const UserRoleDetailsDialog = ({
   };
 
   const handleCancel = () => {
-    if (roleId) {
+    if (role) {
       setView(UserRoleDetailsView.Read);
 
       reset();
@@ -430,10 +432,10 @@ export const UserRoleDetailsDialog = ({
               disabled={
                 updateRoleMutation.isPending ||
                 createRoleMutation.isPending ||
-                (!!roleId && (!formState.isDirty || !isUpdateAllowed))
+                (role && (!formState.isDirty || !isUpdateAllowed))
               }
             >
-              {roleId ? t(i18n)`Update` : t(i18n)`Create`}
+              {role ? t(i18n)`Update` : t(i18n)`Create`}
             </Button>
           </>
         )}
