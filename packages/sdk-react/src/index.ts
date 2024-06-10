@@ -10,3 +10,8 @@ export * from './core/hooks';
 export * from './core/queries';
 export { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 export type * as APISchema from './api/schema';
+export {
+  createAPIClient,
+  type CreateMoniteAPIClientResult,
+  type CreateMoniteAPIClientOptions,
+} from '@/api/client';
