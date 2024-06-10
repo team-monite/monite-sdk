@@ -81,7 +81,6 @@
     "@testing-library/user-event": "~14.4.3",
     "@types/deep-eql": "~4.0.2",
     "@types/jest": "~29.5.11",
-    "@types/pdfjs-dist": "~2.10.378",
     "babel-plugin-macros": "~3.1.0",
     "cross-env": "^7.0.3",
     "eslint": "~8.38.0",
