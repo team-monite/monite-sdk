@@ -337,7 +337,8 @@ const FileViewerComponent = ({
 
 const loadPdfJs = async () => {
   const pdfjsLib = await import('pdfjs-dist/build/pdf.min');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+
   return pdfjsLib;
 };
 
