@@ -66,8 +66,9 @@ export const UserRoleRow = ({
   columns,
 }: UserRoleRowProps) => {
   const { i18n } = useLingui();
-  // Skip the first column which is the name of the permission
-  const actionPermissionsColumns = columns.slice(1) as {
+  const actionPermissionsColumns = columns.filter(
+    (column) => column.id !== 'name'
+  ) as {
     id: ActionEnum | PayableActionEnum;
   }[];
 
