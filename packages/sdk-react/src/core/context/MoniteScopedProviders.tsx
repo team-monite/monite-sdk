@@ -1,10 +1,10 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
+import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
-import { MoniteAPIProvider } from '@/core/context/QraftProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';

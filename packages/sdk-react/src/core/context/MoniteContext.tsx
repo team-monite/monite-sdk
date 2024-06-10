@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
+import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
   getLocaleWithDefaults,
   I18nLoader,
@@ -8,7 +9,6 @@ import {
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
-import { MoniteQraftContext } from '@/core/context/QraftProvider';
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
