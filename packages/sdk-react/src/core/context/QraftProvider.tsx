@@ -6,15 +6,15 @@ import { Unstable_QraftSecureRequestFn as QraftSecureRequestFn } from '@openapi-
 
 export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
 
-export const MoniteQraftProvider = ({ children }: { children?: ReactNode }) => {
-  const { monite, queryClient } = useMoniteContext();
+export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
+  const { queryClient, apiSupply } = useMoniteContext();
 
   return (
     <QraftSecureRequestFn
-      requestFn={requestFn}
+      requestFn={apiSupply.requestFn}
       securitySchemes={{
         async HTTPBearer() {
-          const { access_token } = await monite.fetchToken();
+          const { access_token } = await apiSupply.fetchToken();
           return {
             token: access_token,
             // replace with the plain JWT token when the [task](https://monite.atlassian.net/browse/DEV-11142) is done
@@ -27,7 +27,7 @@ export const MoniteQraftProvider = ({ children }: { children?: ReactNode }) => {
         <MoniteQraftContext.Provider
           value={{
             queryClient,
-            baseUrl: monite.baseUrl,
+            baseUrl: apiSupply.baseUrl,
             requestFn: securedRequestFn,
           }}
         >
