@@ -1,8 +1,6 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import { useId } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import { useMeasure } from 'react-use';
 
-import { CenteredContentBox } from '@/ui/box';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
@@ -25,26 +23,9 @@ export interface FileViewerProps {
   onReloadCallback?: () => void;
 }
 
-export const FileViewer = (props: FileViewerProps) => {
-  const { i18n } = useLingui();
-  const isSSR =
-    typeof window === 'undefined' && typeof document === 'undefined';
-
-  const [error, setError] = useState<string | null>(null);
-
-  const rawPdfViewerId = useId();
-  const pdfViewerId = `pdf-viewer-${rawPdfViewerId.replace(/:/g, '-')}`;
-
-  if (error) {
-    return (
-      <CenteredContentBox>
-        <Box color="danger">{error}</Box>
-      </CenteredContentBox>
-    );
-  }
-
-  return <FileViewerComponent {...props} pdfViewerId={pdfViewerId} />;
-};
+export const FileViewer = (props: FileViewerProps) => (
+  <FileViewerComponent {...props} />
+);
 
 const ErrorComponent = ({
   onError,
@@ -91,9 +72,8 @@ const FileViewerComponent = ({
   mimetype,
   name,
   rightIcon,
-  pdfViewerId,
   onReloadCallback,
-}: FileViewerProps & { pdfViewerId: string }) => {
+}: FileViewerProps) => {
   const [ref] = useMeasure<HTMLDivElement>();
 
   const pdfRef = useRef<HTMLDivElement>(null);
