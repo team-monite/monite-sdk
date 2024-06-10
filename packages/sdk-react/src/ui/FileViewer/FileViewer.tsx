@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useMeasure } from 'react-use';
 
 import { CenteredContentBox } from '@/ui/box';
@@ -53,13 +53,13 @@ export interface FileViewerProps {
 }
 
 export const FileViewer = (props: FileViewerProps) => {
-  const [reactPdfDynamic, setReactPdfDynamic] = useState<{
-    components: AsyncReturnType<typeof loadReactPDF> | null;
+  const [pdfJsDynamic, setPdfJsDynamic] = useState<{
+    pdfjsLib: AsyncReturnType<typeof loadPdfJs> | null;
     error: string | null;
     loading: boolean;
   }>({
     error: null,
-    components: null,
+    pdfjsLib: null,
     loading: false,
   });
 
@@ -67,26 +67,20 @@ export const FileViewer = (props: FileViewerProps) => {
   const isSSR = typeof window === 'undefined';
 
   useEffect(() => {
-    if (
-      (!isSSR && props.mimetype === 'application/pdf') ||
-      props.mimetype === 'text/html' ||
-      props.mimetype === 'text/plain' ||
-      props.mimetype === 'image/png' ||
-      props.mimetype === 'image/jpeg'
-    ) {
-      setReactPdfDynamic((prev) => ({ ...prev, loading: true }));
-      loadReactPDF()
-        .then((components) => {
-          setReactPdfDynamic({
-            components,
+    if (!isSSR && props.mimetype === 'application/pdf') {
+      setPdfJsDynamic((prev) => ({ ...prev, loading: true }));
+      loadPdfJs()
+        .then((pdfjsLib) => {
+          setPdfJsDynamic({
+            pdfjsLib,
             error: null,
             loading: false,
           });
         })
         .catch((error) => {
           const errorMessage = error.message;
-          setReactPdfDynamic({
-            components: null,
+          setPdfJsDynamic({
+            pdfjsLib: null,
             error: errorMessage
               ? t(i18n)`Failed to load PDF Viewer: ${errorMessage}`
               : t(i18n)`Failed to load PDF Viewer`,
@@ -96,19 +90,18 @@ export const FileViewer = (props: FileViewerProps) => {
     }
   }, [i18n, isSSR, props.mimetype]);
 
-  if (reactPdfDynamic.loading) {
+  if (pdfJsDynamic.loading) {
     return <LoadingPage />;
   }
 
-  if (reactPdfDynamic.components) {
-    const { Document, Page } = reactPdfDynamic.components;
-    return <FileViewerComponent {...props} Document={Document} Page={Page} />;
+  if (pdfJsDynamic.pdfjsLib) {
+    return <FileViewerComponent {...props} pdfjsLib={pdfJsDynamic.pdfjsLib} />;
   }
 
-  if (reactPdfDynamic.error) {
+  if (pdfJsDynamic.error) {
     return (
       <CenteredContentBox>
-        <Box color="danger">{reactPdfDynamic.error}</Box>
+        <Box color="danger">{pdfJsDynamic.error}</Box>
       </CenteredContentBox>
     );
   }
@@ -171,18 +164,19 @@ const FileViewerComponent = ({
   mimetype,
   name,
   rightIcon,
-  Document,
-  Page,
+  pdfjsLib,
   onReloadCallback,
-}: FileViewerProps & AsyncReturnType<typeof loadReactPDF>) => {
+}: FileViewerProps & { pdfjsLib: any }) => {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setNumPages(numPages);
-  }
+  useEffect(() => {
+    pdfjsLib.getDocument(url).promise.then((pdf: any) => {
+      setNumPages(pdf.numPages);
+    });
+  }, [pdfjsLib, url]);
 
   const changePage = (offset: number) => {
     setPageNumber((prevPageNumber) => prevPageNumber + offset);
@@ -192,40 +186,57 @@ const FileViewerComponent = ({
   const onNextPage = () => changePage(1);
   const onZoomIn = () => {
     const newScale = scale <= SCALE_MAX ? scale + SCALE_STEP : scale;
-
     setScale(Math.round(newScale * 10) / 10);
   };
   const onZoomOut = () => {
     const newScale = scale >= SCALE_MIN ? scale - SCALE_STEP : scale;
-
     setScale(Math.round(newScale * 10) / 10);
   };
 
-  const isPdf = mimetype === 'application/pdf';
+  const renderPage = useCallback(() => {
+    pdfjsLib.getDocument(url).promise.then((pdf: any) => {
+      pdf.getPage(pageNumber).then((page: any) => {
+        const viewport = page.getViewport({ scale });
+        const canvas = document.getElementById(
+          'pdf-canvas'
+        ) as HTMLCanvasElement;
+        const context = canvas.getContext('2d');
+        const outputScale = window.devicePixelRatio || 1;
+
+        canvas.width = viewport.width * outputScale;
+        canvas.height = viewport.height * outputScale;
+        canvas.style.width = `${viewport.width}px`;
+        canvas.style.height = `${viewport.height}px`;
+
+        const renderContext = {
+          canvasContext: context,
+          transform:
+            outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] : null,
+          viewport: viewport,
+        };
+
+        page.render(renderContext);
+      });
+    });
+  }, [pdfjsLib, pageNumber, scale, url]);
+
+  useEffect(() => {
+    if (pdfjsLib) {
+      renderPage();
+    }
+  }, [pdfjsLib, pageNumber, scale, url, width, renderPage]);
 
   if (!url) {
     return <ErrorComponent onError={onReloadCallback} />;
   }
 
-  const renderFile = () => {
-    if (isPdf)
-      return (
-        <Document
-          file={url}
-          onLoadSuccess={onDocumentLoadSuccess}
-          noData={<ErrorComponent onError={onReloadCallback} />}
-        >
-          <Page
-            pageNumber={pageNumber}
-            width={width}
-            scale={scale}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-          />
-        </Document>
-      );
+  const isPdf = mimetype === 'application/pdf';
 
-    return <img src={url} alt={name} />;
+  const renderFile = () => {
+    if (isPdf) {
+      return <canvas id="pdf-canvas" style={{ width: '100%' }} />;
+    }
+    return <img src={url} alt={name} style={{ width: '100%' }} />;
   };
 
   return (
@@ -298,10 +309,10 @@ const FileViewerComponent = ({
   );
 };
 
-const loadReactPDF = async () => {
-  const { pdfjs, Document, Page } = await import('react-pdf');
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-  return { Document, Page } as const;
+const loadPdfJs = async () => {
+  const pdfjsLib = await import('pdfjs-dist/build/pdf.min');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+  return pdfjsLib;
 };
 
 type AsyncReturnType<T extends (...args: any) => any> = T extends (

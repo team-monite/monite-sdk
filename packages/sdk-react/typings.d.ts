@@ -12,3 +12,10 @@ declare module '*.pdf' {
   const content: any;
   export default content;
 }
+
+declare module 'pdfjs-dist/build/pdf.min' {
+  export const GlobalWorkerOptions: {
+    workerSrc: string;
+  };
+  export const version: string;
+}
