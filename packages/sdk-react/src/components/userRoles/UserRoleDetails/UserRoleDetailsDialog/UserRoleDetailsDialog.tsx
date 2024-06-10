@@ -213,36 +213,30 @@ export const UserRoleDetailsDialog = ({
     },
   ];
 
-  const createRole = useCallback(
-    (role: CreateRoleRequest) => {
-      createRoleMutation.mutate(role, {
+  const createRole = (role: CreateRoleRequest) => {
+    createRoleMutation.mutate(role, {
+      onSuccess: (role) => {
+        setRoleId(role.id);
+        onCreated?.(role);
+        setView(UserRoleDetailsView.Read);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  };
+
+  const updateRole = (roleId: string, req: UpdateRoleRequest) => {
+    updateRoleMutation.mutate(
+      { roleId, payload: req },
+      {
         onSuccess: (role) => {
-          setRoleId(role.id);
-          onCreated?.(role);
+          onUpdated?.(role);
           setView(UserRoleDetailsView.Read);
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      });
-    },
-    [createRoleMutation, onCreated]
-  );
-
-  const updateRole = useCallback(
-    (roleId: string, req: UpdateRoleRequest) => {
-      updateRoleMutation.mutate(
-        { roleId, payload: req },
-        {
-          onSuccess: (role) => {
-            onUpdated?.(role);
-            setView(UserRoleDetailsView.Read);
-          },
-        }
-      );
-    },
-    [updateRoleMutation, onUpdated]
-  );
+      }
+    );
+  };
 
   const handleRoleFormSubmission: SubmitHandler<UserRoleFormValues> = (
     data
