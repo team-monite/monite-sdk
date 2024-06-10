@@ -177,7 +177,7 @@ const ErrorComponent = ({
 };
 
 const FileViewerComponent = ({
-  url,
+  url = '',
   mimetype,
   name,
   rightIcon,
@@ -212,7 +212,7 @@ const FileViewerComponent = ({
   };
 
   const renderPage = useCallback(() => {
-    pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
+    return pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
       pdf.getPage(pageNumber).then((page: PDFPageProxy) => {
         const viewport = page.getViewport({ scale });
         const canvas = document.getElementById(
@@ -342,7 +342,7 @@ const FileViewerComponent = ({
 };
 
 const loadPdfJs = async () => {
-  const pdfjsLib = await import('pdfjs-dist/build/pdf.min');
+  const pdfjsLib = await import('pdfjs-dist');
   const worker = await import('pdfjs-dist/build/pdf.worker.entry');
 
   pdfjsLib.GlobalWorkerOptions.workerSrc = worker;

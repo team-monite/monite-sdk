@@ -13,7 +13,7 @@ declare module '*.pdf' {
   export default content;
 }
 
-declare module 'pdfjs-dist/build/pdf.min' {
+declare module 'pdfjs-dist/build/pdf.min.js' {
   export const GlobalWorkerOptions: {
     workerSrc: string;
   };
