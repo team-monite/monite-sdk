@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { useAPI } from '@/api/client';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
@@ -74,7 +74,7 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const { api } = useAPI();
+  const { api } = useMoniteContext();
   const queryClient = useQueryClient();
   const tagCreateMutation = api.tags.postTags.useMutation(
     {},

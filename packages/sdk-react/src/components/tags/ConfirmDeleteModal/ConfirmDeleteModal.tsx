@@ -1,7 +1,7 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
 
-import { useAPI } from '@/api/client';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -48,7 +48,7 @@ const ConfirmDeleteModalBase = ({
 }: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
   const tag_id = tag?.id;
-  const { api } = useAPI();
+  const { api } = useMoniteContext();
   const queryClient = useQueryClient();
 
   const deleteTagMutation = api.tags.deleteTagsId.useMutation(

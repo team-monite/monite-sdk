@@ -53,15 +53,6 @@ export const createAPIClient = ({
   };
 };
 
-export const useAPI = () => {
-  const { apiSupply } = useMoniteContext();
-
-  return {
-    api: apiSupply.api,
-    version: apiSupply.version,
-  } as const;
-};
-
 export const isMoniteEntityIdPath = (path: string) =>
   /^\/(?!auth|entities|entity_users|events|mail_templates|webhook_subscriptions|receivables\/variables|settings|files|mailbox_domains|payable_purchase_orders|frontend|internal)\b/.test(
     path

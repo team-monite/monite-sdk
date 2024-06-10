@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
-import { useAPI } from '@/api/client';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -76,7 +76,7 @@ const TagsTableBase = ({
   const closeDeleteModal = useCallback(() => {
     setDeleteModalOpened(false);
   }, []);
-  const { api } = useAPI();
+  const { api } = useMoniteContext();
 
   const {
     data: tags,
