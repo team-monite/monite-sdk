@@ -180,7 +180,7 @@ const FileViewerComponent = ({
   const [scale, setScale] = useState<number>(1);
 
   useEffect(() => {
-    pdfjsLib.getDocument(url).promise.then((pdf: any) => {
+    pdfjsLib.getDocument(url).promise.then((pdf: PDFDocumentProxy) => {
       setNumPages(pdf.numPages);
     });
   }, [pdfjsLib, url]);
