@@ -34,8 +34,8 @@ msgid "{0}"
 msgstr "{0}"
 
 #: src/ui/FileViewer/FileViewer.tsx:236
-msgid "{0} of {1}"
-msgstr "{0} of {1}"
+#~ msgid "{0} of {1}"
+#~ msgstr "{0} of {1}"
 
 #. Counterpart Organization create form Business address Section description.
 #. js-lingui-explicit-id
@@ -2255,14 +2255,14 @@ msgstr "Failed to delete product."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/ui/FileViewer/FileViewer.tsx:87
-#: src/ui/FileViewer/FileViewer.tsx:130
+#: src/ui/FileViewer/FileViewer.tsx:41
+#: src/ui/FileViewer/FileViewer.tsx:94
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
 #: src/ui/FileViewer/FileViewer.tsx:86
-msgid "Failed to load PDF Viewer: {errorMessage}"
-msgstr "Failed to load PDF Viewer: {errorMessage}"
+#~ msgid "Failed to load PDF Viewer: {errorMessage}"
+#~ msgstr "Failed to load PDF Viewer: {errorMessage}"
 
 #: src/core/queries/useCounterpart.ts:321
 msgid "Failed to update Bank Account."
@@ -2724,7 +2724,7 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
-#: src/ui/FileViewer/FileViewer.tsx:137
+#: src/ui/FileViewer/FileViewer.tsx:101
 msgid "If the error recurs, contact support."
 msgstr "If the error recurs, contact support."
 
@@ -4102,7 +4102,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/FileViewer/FileViewer.tsx:134
+#: src/ui/FileViewer/FileViewer.tsx:98
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
@@ -4407,7 +4407,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/ui/FileViewer/FileViewer.tsx:146
+#: src/ui/FileViewer/FileViewer.tsx:110
 msgid "Reload"
 msgstr "Reload"
 
