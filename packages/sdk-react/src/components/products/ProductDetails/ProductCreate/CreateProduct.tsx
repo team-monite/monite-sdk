@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useId, useMemo, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { IProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
@@ -42,15 +42,6 @@ const CreateProductBase = (props: IProductDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { formatToMinorUnits } = useCurrencies();
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const submitForm = useCallback(() => {
-    formRef.current?.dispatchEvent(
-      new Event('submit', {
-        bubbles: true,
-      })
-    );
-  }, [formRef]);
 
   const defaultValues = useMemo(
     () => ({ ...initialValues, ...props.defaultValues }),
@@ -88,6 +79,9 @@ const CreateProductBase = (props: IProductDetailsCreateProps) => {
     return createProduct(payload);
   };
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const productFormId = `Monite-ProductForm-${useId()}`;
+
   return (
     <>
       <Grid container alignItems="center">
@@ -111,7 +105,7 @@ const CreateProductBase = (props: IProductDetailsCreateProps) => {
       <Divider />
       <DialogContent>
         <ProductForm
-          formRef={formRef}
+          formId={productFormId}
           onSubmit={handleSubmit}
           defaultValues={defaultValues}
         />
@@ -129,7 +123,8 @@ const CreateProductBase = (props: IProductDetailsCreateProps) => {
         )}
         <Button
           variant="outlined"
-          onClick={submitForm}
+          type="submit"
+          form={productFormId}
           disabled={productCreateMutation.isPending}
         >
           {t(i18n)`Create`}
