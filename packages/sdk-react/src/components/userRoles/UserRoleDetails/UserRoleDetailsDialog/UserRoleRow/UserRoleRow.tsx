@@ -46,7 +46,6 @@ const ActionPermissionCell = ({
     return (
       <RHFCheckbox
         control={control}
-        label=""
         name={`permissions[${rowIndex}][${action}]`}
       />
     );

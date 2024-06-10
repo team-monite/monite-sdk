@@ -1,4 +1,4 @@
-import React, { useState, useId, useCallback } from 'react';
+import React, { useState, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -141,9 +141,8 @@ export const UserRoleDetailsDialog = ({
     },
   });
   const { control, handleSubmit, reset, formState } = methods;
-  const formId = useId();
   // eslint-disable-next-line lingui/no-unlocalized-strings
-  const formName = `Monite-Form-UserRoles-${formId}`;
+  const formName = `Monite-Form-UserRoles-${useId()}`;
 
   const [view, setView] = useState<UserRoleDetailsView>(
     role ? UserRoleDetailsView.Read : UserRoleDetailsView.Mutate
