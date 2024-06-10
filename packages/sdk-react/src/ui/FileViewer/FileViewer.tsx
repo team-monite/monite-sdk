@@ -18,8 +18,14 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
-import { Grid } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
 
 import {
   PDFDocumentProxy,
@@ -337,7 +343,9 @@ const FileViewerComponent = ({
 
 const loadPdfJs = async () => {
   const pdfjsLib = await import('pdfjs-dist/build/pdf.min');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+  const worker = await import('pdfjs-dist/build/pdf.worker.entry');
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = worker;
 
   return pdfjsLib;
 };

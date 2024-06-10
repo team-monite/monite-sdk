@@ -20,3 +20,5 @@ declare module 'pdfjs-dist/build/pdf.min' {
   export const version: string;
   export const getDocument: (url?: string) => Promise;
 }
+
+declare module 'pdfjs-dist/build/pdf.worker.entry';
