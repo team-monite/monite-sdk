@@ -1,11 +1,13 @@
 import React, { ReactElement, ReactNode } from 'react';
 
+import { createAPIClient } from '@/api/client';
 import { MoniteContext } from '@/core/context/MoniteContext';
 import {
   getLocaleWithDefaults,
   MoniteI18nProvider,
 } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
+import { MoniteQraftContext } from '@/core/context/QraftProvider';
 import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
@@ -105,6 +107,14 @@ export const Provider = ({
           queryClient: client,
           theme: createThemeWithDefaults(moniteProviderProps?.theme),
           dateFnsLocale,
+          apiSupply: {
+            ...createAPIClient({
+              entityId: monite.entityId,
+              context: MoniteQraftContext,
+            }),
+            baseUrl: monite.baseUrl,
+            fetchToken: monite.fetchToken,
+          },
         }}
       >
         <MoniteI18nProvider>{children}</MoniteI18nProvider>

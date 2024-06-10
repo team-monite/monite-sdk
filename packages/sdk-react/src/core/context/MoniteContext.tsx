@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
+import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import {
   getLocaleWithDefaults,
   I18nLoader,
@@ -7,6 +8,7 @@ import {
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
 import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
+import { MoniteQraftContext } from '@/core/context/QraftProvider';
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
@@ -27,6 +29,14 @@ interface MoniteContextBaseValue {
 export interface MoniteContextValue extends MoniteContextBaseValue {
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
+  apiSupply: CreateMoniteAPIClientResult & {
+    baseUrl: string;
+    fetchToken: () => Promise<{
+      access_token: string;
+      expires_in: number;
+      token_type: string;
+    }>;
+  };
 }
 
 /**
@@ -118,6 +128,14 @@ const ContextProvider = ({
         i18n,
         locale,
         dateFnsLocale,
+        apiSupply: {
+          baseUrl: monite.baseUrl,
+          fetchToken: monite.fetchToken,
+          ...createAPIClient({
+            entityId: monite.entityId,
+            context: MoniteQraftContext,
+          }),
+        },
       }}
     >
       {children}
