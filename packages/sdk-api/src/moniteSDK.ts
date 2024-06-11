@@ -80,6 +80,10 @@ export class MoniteSDK {
    */
   public readonly environment: 'dev' | 'sandbox' | 'production';
 
+  public fetchToken: MoniteFetchToken;
+
+  public baseUrl: MoniteApiUrl;
+
   constructor({ apiUrl, entityId, fetchToken, headers }: MoniteSDKConfig) {
     /** Validate required parameters if the user doesn't have a TypeScript */
     if (!fetchToken || !entityId) {
@@ -89,6 +93,7 @@ export class MoniteSDK {
     const defaultApiUrl = 'https://api.sandbox.monite.com/v1';
 
     this.entityId = entityId;
+    this.fetchToken = fetchToken;
 
     if (apiUrl) {
       if (apiUrl.match(/dev/)) {
@@ -102,14 +107,16 @@ export class MoniteSDK {
       this.environment = 'sandbox';
     }
 
+    this.baseUrl = apiUrl ?? defaultApiUrl;
+
     this.api = new ApiService({
-      BASE: apiUrl ?? defaultApiUrl,
+      BASE: this.baseUrl,
       CREDENTIALS: 'include',
       USERNAME: undefined,
       PASSWORD: undefined,
       ENCODE_PATH: undefined,
       WITH_CREDENTIALS: false,
-      fetchToken,
+      fetchToken: this.fetchToken,
       token: undefined,
       HEADERS: {
         'x-monite-entity-id': entityId,

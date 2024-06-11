@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
+import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
+import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
   getLocaleWithDefaults,
   I18nLoader,
@@ -24,9 +26,17 @@ interface MoniteContextBaseValue {
   theme: Theme;
 }
 
-export interface MoniteContextValue extends MoniteContextBaseValue {
+export interface MoniteContextValue
+  extends MoniteContextBaseValue,
+    CreateMoniteAPIClientResult {
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
+  baseUrl: string;
+  fetchToken: () => Promise<{
+    access_token: string;
+    expires_in: number;
+    token_type: string;
+  }>;
 }
 
 /**
@@ -118,6 +128,12 @@ const ContextProvider = ({
         i18n,
         locale,
         dateFnsLocale,
+        baseUrl: monite.baseUrl,
+        fetchToken: monite.fetchToken,
+        ...createAPIClient({
+          entityId: monite.entityId,
+          context: MoniteQraftContext,
+        }),
       }}
     >
       {children}

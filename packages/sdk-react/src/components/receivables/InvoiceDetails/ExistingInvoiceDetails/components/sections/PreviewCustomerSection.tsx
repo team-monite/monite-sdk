@@ -16,7 +16,7 @@ const getAddress = (address?: CounterpartAddress) => {
   return `${address.postal_code}, ${address.city}, ${address.line1}`;
 };
 
-interface IPreviewCustomerSectionProps {
+interface PreviewCustomerSectionProps {
   invoice: InvoiceResponsePayload;
   rightSection?: React.ReactNode;
 }
@@ -24,7 +24,7 @@ interface IPreviewCustomerSectionProps {
 export const PreviewCustomerSection = ({
   invoice,
   rightSection,
-}: IPreviewCustomerSectionProps) => {
+}: PreviewCustomerSectionProps) => {
   const { i18n } = useLingui();
   const {
     data: counterpart,

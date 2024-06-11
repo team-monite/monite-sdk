@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { TypographyTypeMap } from '@mui/material/Typography/Typography';
 
-interface IPreviewItemsSectionProps {
+interface PreviewItemsSectionProps {
   invoice: InvoiceResponsePayload;
 }
 
@@ -82,7 +82,7 @@ const TotalView = ({
   );
 };
 
-export const PreviewItemsSection = ({ invoice }: IPreviewItemsSectionProps) => {
+export const PreviewItemsSection = ({ invoice }: PreviewItemsSectionProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
 

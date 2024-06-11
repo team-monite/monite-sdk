@@ -1,4 +1,4 @@
-import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
+import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDeleteProduct, useProductById } from '@/core/queries';
 import { t } from '@lingui/macro';
@@ -14,12 +14,9 @@ import {
   Skeleton,
 } from '@mui/material';
 
-type OptionalValues = Partial<Pick<IExistingProductDetailsProps, 'id'>>;
+type OptionalValues = Partial<Pick<ExistingProductDetailsProps, 'id'>>;
 
-type IProductDeleteModalProps = Pick<
-  IExistingProductDetailsProps,
-  'onDeleted'
-> &
+type IProductDeleteModalProps = Pick<ExistingProductDetailsProps, 'onDeleted'> &
   OptionalValues & {
     /** Is the modal open */
     open: boolean;

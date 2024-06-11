@@ -37,7 +37,7 @@ import { addDays, formatISO } from 'date-fns';
 import { Filters } from './Filters';
 import { PermissionsCell } from './PermissionsCell';
 
-interface IUserTableProps {
+interface UserRolesTableProps {
   /**
    * Triggered when the filtering options are changed.
    * Sync with the server *is* performed.
@@ -73,7 +73,7 @@ interface UserRolesTableSortModel {
   sort: GridSortDirection;
 }
 
-export const UserRolesTable = (props: IUserTableProps) => (
+export const UserRolesTable = (props: UserRolesTableProps) => (
   <MoniteScopedProviders>
     <UserRolesTableBase {...props} />
   </MoniteScopedProviders>
@@ -83,7 +83,7 @@ const UserRolesTableBase = ({
   onFilterChanged,
   onSortChanged,
   onRowClick,
-}: IUserTableProps) => {
+}: UserRolesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null

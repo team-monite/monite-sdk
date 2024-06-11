@@ -104,7 +104,7 @@ export function permissionsAdapter(actions: {
             action_name,
             permission,
           })
-        ) as components['schemas']['BizObjectsSchema']['objects'],
+        ) as unknown as components['schemas']['BizObjectsSchema']['objects'],
       };
     }),
   } as Required<components['schemas']['BizObjectsSchema']>;

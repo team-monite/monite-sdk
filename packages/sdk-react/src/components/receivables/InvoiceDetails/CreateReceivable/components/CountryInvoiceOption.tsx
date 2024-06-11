@@ -6,11 +6,11 @@ import { useLingui } from '@lingui/react';
 import { AllowedCountries } from '@monite/sdk-api';
 import { useTheme } from '@mui/material/styles';
 
-interface ICountryOptionProps {
+interface CountryOptionProps {
   code?: AllowedCountries;
 }
 
-export function CountryInvoiceOption({ code }: ICountryOptionProps) {
+export function CountryInvoiceOption({ code }: CountryOptionProps) {
   const theme = useTheme();
   const { i18n } = useLingui();
 

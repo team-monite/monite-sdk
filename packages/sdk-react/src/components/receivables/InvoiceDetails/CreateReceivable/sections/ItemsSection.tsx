@@ -175,7 +175,6 @@ export const ItemsSection = ({
     totalTaxes,
     shouldShowVatExemptRationale,
   } = useCreateInvoiceProductsTable({
-    vatRates,
     lineItems: watchedLineItems,
     formatCurrencyToDisplay,
   });

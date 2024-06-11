@@ -24,7 +24,7 @@ import {
   useTheme,
 } from '@mui/material';
 
-export interface IExistingApprovalPolicyDetailsProps {
+export interface ExistingApprovalPolicyDetailsProps {
   /** Approval policy to be displayed */
   approvalPolicy: ApprovalPolicyResource;
 
@@ -36,7 +36,7 @@ export interface IExistingApprovalPolicyDetailsProps {
 }
 
 export const ExistingApprovalPolicyDetails = (
-  props: IExistingApprovalPolicyDetailsProps
+  props: ExistingApprovalPolicyDetailsProps
 ) => (
   <MoniteScopedProviders>
     <ExistingApprovalPolicyDetailsBase {...props} />
@@ -46,7 +46,7 @@ export const ExistingApprovalPolicyDetails = (
 const ExistingApprovalPolicyDetailsBase = ({
   approvalPolicy,
   onChangeEditMode,
-}: IExistingApprovalPolicyDetailsProps) => {
+}: ExistingApprovalPolicyDetailsProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { palette } = useTheme();

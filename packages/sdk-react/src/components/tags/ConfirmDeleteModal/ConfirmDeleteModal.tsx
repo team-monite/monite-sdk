@@ -1,9 +1,9 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDeleteTag } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -14,8 +14,8 @@ import {
   DialogTitle,
   Divider,
   Button,
-  Typography,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ConfirmDeleteModalProps {
   /** The tag what we want to delete */
@@ -47,10 +47,30 @@ const ConfirmDeleteModalBase = ({
   modalOpened,
 }: ConfirmDeleteModalProps) => {
   const { i18n } = useLingui();
-  const deleteTagMutation = useDeleteTag();
+  const tag_id = tag?.id;
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
+
+  const deleteTagMutation = api.tags.deleteTagsId.useMutation(
+    {
+      path: {
+        tag_id: tag_id ?? '',
+      },
+    },
+    {
+      onSuccess: () => {
+        api.tags.getTagsId.removeQueries(
+          { parameters: { path: { tag_id } } },
+          queryClient
+        );
+
+        return api.tags.getTags.invalidateQueries(queryClient);
+      },
+    }
+  );
 
   const handleDelete = () => {
-    deleteTagMutation.mutate(tag.id, {
+    deleteTagMutation.mutate(undefined, {
       onSuccess: () => {
         toast.success(t(i18n)`Tag “${tag.name}” was deleted`);
 

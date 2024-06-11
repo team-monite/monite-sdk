@@ -1,12 +1,12 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
+import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
-import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 
 /**
  * Provides a single instance of `<ScopedCssBaseline/>` component,
@@ -30,7 +30,9 @@ export const MoniteScopedProviders = ({
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
             <SentryProvider>
-              <MoniteQueryClientProvider>{children}</MoniteQueryClientProvider>
+              <MoniteQueryClientProvider>
+                <MoniteAPIProvider>{children}</MoniteAPIProvider>
+              </MoniteQueryClientProvider>
             </SentryProvider>
           </MuiThemeProvider>
         </MoniteI18nProvider>

@@ -24,6 +24,9 @@ export const createBankAccount = async ({
   });
 
   const display_name = faker.company.name();
+  const country = getRandomItemFromArray(['GE', 'DE', 'GB'] satisfies Array<
+    components['schemas']['AllowedCountries']
+  >);
 
   const { data, error, response } = await POST('/bank_accounts', {
     params: {
@@ -34,8 +37,8 @@ export const createBankAccount = async ({
     },
     body: {
       is_default_for_currency,
-      iban: faker.finance.iban(),
-      bic: faker.finance.bic(),
+      iban: faker.finance.iban(false, country),
+      bic: getRandomItemFromArray(demoBankAccountBICList[country]),
       bank_name: `${display_name} Bank`,
       display_name,
       account_number: faker.finance.accountNumber(),
@@ -44,9 +47,7 @@ export const createBankAccount = async ({
       currency: getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
         components['schemas']['CurrencyEnum']
       >),
-      country: getRandomItemFromArray(['GE', 'US', 'GB'] satisfies Array<
-        components['schemas']['AllowedCountries']
-      >),
+      country,
     },
   });
 
@@ -94,4 +95,43 @@ export const getBankAccounts = async ({
   }
 
   return data.data;
+};
+
+export const demoBankAccountBICList = {
+  GE: [
+    'BAGAGE22',
+    'TBCBGE22',
+    'LBRTGE22',
+    'BASISGE22',
+    'MIBTGE22',
+    'REPLGE22',
+    'FINVGE22',
+    'CTRBGE22',
+    'PASOGE22',
+    'PRBAGE22',
+  ],
+  DE: [
+    'DEUTDEFF',
+    'COBADEFF',
+    'DRESDEFF',
+    'HYVEDEMM',
+    'BYLADEM1',
+    'BAYBDE61',
+    'GENODEF1',
+    'SOGEDEFF',
+    'DEUTDEBB',
+    'DEUTDE3BXXX',
+  ],
+  GB: [
+    'BARCGB22',
+    'HBUKGB4B',
+    'LOYDGB2L',
+    'NWBKGB2L',
+    'RBOSGB2L',
+    'MIDLGB22',
+    'BOFIGB2B',
+    'BSCHGB2L',
+    'CHASGB2L',
+    'CITIGB2L',
+  ],
 };
