@@ -331,13 +331,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   </Box>
                 </Stack>
               </CenteredContentBox>
-            ) : (
+            ) : pdf?.file_url ? (
               <FileViewer
                 mimetype="application/pdf"
-                url={pdf?.file_url ?? ''}
+                url={pdf.file_url}
                 onReloadCallback={refetchPdf}
               />
-            )}
+            ) : null}
           </Grid>
           <Grid item sm={5} xs={12}>
             <Stack spacing={4}>
