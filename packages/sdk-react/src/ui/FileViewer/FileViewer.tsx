@@ -99,7 +99,7 @@ const FileViewerComponent = ({
       return (
         <div
           ref={pdfRef}
-          style={{ width: '100%', height: '100%', border: 'none' }}
+          style={{ width: '100%', minHeight: '100%', border: 'none' }}
         />
       );
     }
