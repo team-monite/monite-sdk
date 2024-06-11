@@ -344,7 +344,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               ) : (
                 <FileViewer
                   mimetype="application/pdf"
-                  url={pdf?.file_url}
+                  url={pdf?.file_url ?? ''}
                   onReloadCallback={refetchPdf}
                 />
               )}
