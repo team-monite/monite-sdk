@@ -77,7 +77,6 @@ const FileViewerComponent = ({
     PDFObject.embed(url, pdfRef.current, {
       fallbackLink: true,
       pdfOpenParams: {
-        // eslint-disable-next-line lingui/no-unlocalized-strings
         scrollBar: 0,
         statusBar: 0,
         toolbar: 1,
