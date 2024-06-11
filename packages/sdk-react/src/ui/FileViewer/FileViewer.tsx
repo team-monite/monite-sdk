@@ -82,7 +82,7 @@ const FileViewerComponent = ({
         view: 'FitH',
         scrollBar: 0,
         statusBar: 0,
-        toolbar: 0,
+        toolbar: 1,
         navpanes: 0,
         pagemode: 'none',
         messages: 0,
