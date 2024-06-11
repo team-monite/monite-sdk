@@ -381,18 +381,83 @@ const ruleModule: RuleModule<string, Options> = {
             });
           }
         }
+
+        const { menuProps } = findUseMenuButton(node, context);
+
+        if (
+          menuProps &&
+          isSpreadAttributeWithMenuProps(jsxOpeningElementNode, menuProps)
+        ) {
+          return;
+        }
       },
     };
   },
 };
 
-function getIdentifierName(
+const getIdentifierName = (
   jsxTagNameExpression: TSESTree.JSXTagNameExpression
-) {
-  return (
-    jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name
+) => jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name;
+
+const findUseMenuButton = (node: TSESTree.JSXElement, context: any) => {
+  let menuProps: string | undefined;
+  let buttonProps: string | undefined;
+  let open: string | undefined;
+
+  node.openingElement.attributes.forEach((attr) => {
+    if (
+      attr.type === 'JSXSpreadAttribute' &&
+      attr.argument.type === 'Identifier'
+    ) {
+      const variableDeclarator = findVariableDeclarator(
+        context,
+        attr.argument.name
+      );
+      if (variableDeclarator && isUseMenuButton(variableDeclarator.init)) {
+        ({
+          menuProps = undefined,
+          buttonProps = undefined,
+          open = undefined,
+        } = getMenuButtonProps(variableDeclarator.id));
+      }
+    }
+  });
+
+  return { menuProps, buttonProps, open };
+};
+
+const getMenuButtonProps = (idNode: any) => {
+  let menuProps: string | undefined;
+  let buttonProps: string | undefined;
+  let open: string | undefined;
+
+  if (idNode.type === 'ObjectPattern') {
+    idNode.properties.forEach((prop: any) => {
+      if (prop.key.name === 'menuProps') menuProps = prop.value.name;
+      if (prop.key.name === 'buttonProps') buttonProps = prop.value.name;
+      if (prop.key.name === 'open') open = prop.value.name;
+    });
+  }
+
+  return { menuProps, buttonProps, open };
+};
+
+const findVariableDeclarator = (context: any, name: string) =>
+  context
+    .getScope()
+    .variables.flatMap((variable: { defs: any }) => variable.defs)
+    .find(
+      (def: { node: { id: { name: string } } }) => def.node.id.name === name
+    );
+
+const isUseMenuButton = (node: any) =>
+  node && node.callee && node.callee.name === 'useMenuButton';
+
+const isSpreadAttributeWithMenuProps = (node: any, menuPropsName: string) =>
+  node.attributes.some(
+    (attr: any) =>
+      attr.type === 'JSXSpreadAttribute' && attr.argument.name === menuPropsName
   );
-}
 
 type Option = {
   component: string;

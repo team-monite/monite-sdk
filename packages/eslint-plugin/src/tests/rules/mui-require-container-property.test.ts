@@ -68,6 +68,18 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { NotMatchingComponent } from 'not-matching-package';
                <NotMatchingComponent MenuProps={{}} />`,
       },
+      {
+        code: `import { useMenuButton } from '@mui/material';
+               const { buttonProps, menuProps, open } = useMenuButton();
+               <Menu {...menuProps}>
+                 {/* ...menu items */}
+               </Menu>`,
+      },
+      {
+        code: `import { useMenuButton } from '@mui/material';
+               const { buttonProps, menuProps: myCustomMenuProps, open } = useMenuButton();
+               <Menu {...myCustomMenuProps} />`,
+      },
     ],
 
     invalid: [
