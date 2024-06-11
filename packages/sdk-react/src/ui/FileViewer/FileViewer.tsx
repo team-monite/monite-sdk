@@ -80,7 +80,6 @@ const FileViewerComponent = ({
       fallbackLink: true,
       pdfOpenParams: {
         // eslint-disable-next-line lingui/no-unlocalized-strings
-        view: 'FitH',
         scrollBar: 0,
         statusBar: 0,
         toolbar: 1,
@@ -123,10 +122,7 @@ const FileViewerComponent = ({
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container
-        sx={{ flex: '1 1 auto', overflow: 'auto', height: 'auto' }}
-      >
+      <Grid container sx={{ flex: '1 1 auto', overflow: 'auto', height: 0 }}>
         {renderFile()}
       </Grid>
     </>
