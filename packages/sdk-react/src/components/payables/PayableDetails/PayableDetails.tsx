@@ -142,21 +142,8 @@ const PayableDetailsBase = ({
         />
         <Divider />
         <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Grid
-            container
-            spacing={4}
-            alignItems="stretch"
-            flexGrow={1}
-            height="100%"
-          >
-            <Grid
-              item
-              container
-              xs={6}
-              flexDirection="column"
-              height="100%"
-              overflow="auto"
-            >
+          <Grid container spacing={4} height="100%">
+            <Grid item container xs={6} height="100%">
               {payable?.file && (
                 <FileViewer
                   name={payable.file.name}
