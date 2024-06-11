@@ -309,46 +309,35 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
       <DialogContent>
         <Grid
           container
-          spacing={9}
+          columnSpacing={9}
           alignItems="stretch"
           flexGrow={1}
           height="100%"
         >
-          <Grid item sm={7} xs={12}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                minHeight: 500,
-                height: '100%',
-                overflow: 'auto',
-              }}
-            >
-              {isPdfLoading ? (
-                <LoadingPage />
-              ) : !pdf?.file_url && !pdfError ? (
-                <CenteredContentBox>
-                  <Stack alignItems="center" gap={2}>
-                    <CircularProgress />
-                    <Box textAlign="center">
-                      <Typography variant="body2" fontWeight="500">{t(
-                        i18n
-                      )`Updating the invoice`}</Typography>
-                      <Typography variant="body2" fontWeight="500">{t(
-                        i18n
-                      )`information...`}</Typography>
-                    </Box>
-                  </Stack>
-                </CenteredContentBox>
-              ) : (
-                <FileViewer
-                  mimetype="application/pdf"
-                  url={pdf?.file_url ?? ''}
-                  onReloadCallback={refetchPdf}
-                />
-              )}
-            </Box>
+          <Grid item container sm={7} xs={12} height="100%" minHeight={500}>
+            {isPdfLoading ? (
+              <LoadingPage />
+            ) : !pdf?.file_url && !pdfError ? (
+              <CenteredContentBox>
+                <Stack alignItems="center" gap={2}>
+                  <CircularProgress />
+                  <Box textAlign="center">
+                    <Typography variant="body2" fontWeight="500">{t(
+                      i18n
+                    )`Updating the invoice`}</Typography>
+                    <Typography variant="body2" fontWeight="500">{t(
+                      i18n
+                    )`information...`}</Typography>
+                  </Box>
+                </Stack>
+              </CenteredContentBox>
+            ) : (
+              <FileViewer
+                mimetype="application/pdf"
+                url={pdf?.file_url ?? ''}
+                onReloadCallback={refetchPdf}
+              />
+            )}
           </Grid>
           <Grid item sm={5} xs={12}>
             <Stack spacing={4}>

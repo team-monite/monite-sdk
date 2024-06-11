@@ -1,10 +1,10 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 import PDFObject from 'pdfobject';
 
@@ -18,7 +18,6 @@ export interface FileViewerProps {
   url: string;
   mimetype: string;
   name?: string;
-  rightIcon?: ReactNode;
   onReloadCallback?: () => void;
 }
 
@@ -70,7 +69,6 @@ const FileViewerComponent = ({
   url,
   mimetype,
   name,
-  rightIcon,
   onReloadCallback,
 }: FileViewerProps) => {
   const pdfRef = useRef<HTMLDivElement>(null);
@@ -101,30 +99,12 @@ const FileViewerComponent = ({
       return (
         <div
           ref={pdfRef}
-          style={{ width: '100%', height: '100vh', border: 'none' }}
-        ></div>
+          style={{ width: '100%', minHeight: '100%', border: 'none' }}
+        />
       );
     }
     return <img src={url} alt={name} style={{ width: '100%' }} />;
   };
 
-  return (
-    <>
-      <Grid container>
-        <Grid
-          item
-          container
-          flexWrap="nowrap"
-          sx={{ justifyContent: isPdf ? 'space-between' : 'flex-end' }}
-        >
-          <Grid item container justifyContent="flex-end">
-            {rightIcon}
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid container sx={{ flex: '1 1 auto', overflow: 'auto', height: 0 }}>
-        {renderFile()}
-      </Grid>
-    </>
-  );
+  return renderFile();
 };
