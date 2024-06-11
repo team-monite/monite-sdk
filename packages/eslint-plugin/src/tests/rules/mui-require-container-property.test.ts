@@ -69,16 +69,19 @@ ruleTester.run<string, readonly unknown[]>(
                <NotMatchingComponent MenuProps={{}} />`,
       },
       {
-        code: `import { useMenuButton } from '@mui/material';
-               const { buttonProps, menuProps, open } = useMenuButton();
-               <Menu {...menuProps}>
-                 {/* ...menu items */}
-               </Menu>`,
+        code: `import { Select } from '@mui/material';
+               const props = { MenuProps: { container: root } };
+               <Select {...props} />`,
       },
       {
-        code: `import { useMenuButton } from '@mui/material';
-               const { buttonProps, menuProps: myCustomMenuProps, open } = useMenuButton();
-               <Menu {...myCustomMenuProps} />`,
+        code: `import { Menu } from '@mui/material';
+               const restProps = { container: root };
+               <Menu {...restProps} />`,
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+               const props = { other: 'value' };
+               <Menu {...props} container={root} />`,
       },
     ],
 
@@ -164,6 +167,12 @@ ruleTester.run<string, readonly unknown[]>(
             ],
           },
         ],
+      },
+      {
+        code: `import { Select } from '@mui/material';
+               const props = {};
+               <Select {...props} />`,
+        errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
       },
     ],
   }

@@ -1,8 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type {
-  RuleRecommendation,
-  RuleModule,
-} from '@typescript-eslint/utils/dist/ts-eslint/Rule';
+import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
+import type { RuleModule } from '@typescript-eslint/utils/dist/ts-eslint/Rule';
 
 const ruleModule: RuleModule<string, Options> = {
   defaultOptions: [],
@@ -11,7 +9,7 @@ const ruleModule: RuleModule<string, Options> = {
     docs: {
       description:
         'Ensures that Components have `container` property specified. This is required for proper functioning of the component when used with Shadow DOM.',
-      recommended: 'error' as RuleRecommendation,
+      recommended: 'error',
     },
     schema: [
       {
@@ -109,7 +107,7 @@ const ruleModule: RuleModule<string, Options> = {
       slotPropsPopperContainerPropertyMissing:
         'Component {{component}} must have `slotProps={{ popper: { container } }}` property specified.',
       containerPropertyMissing:
-        'Component {{component}} must have `container` property with the specified.',
+        'Component {{component}} must have `container` property specified.',
       menuPropsContainerPropertyMissing:
         'Component {{component}} must have `MenuProps={{ container }}` property specified.',
       selectPropsMenuPropsContainerPropertyMissing:
@@ -118,18 +116,13 @@ const ruleModule: RuleModule<string, Options> = {
   },
   create(context) {
     const componentsByRule: Record<string, Option[]> = {
-      // <Comp slotProps={{ popper: { container } }} />
       slotPropsPopperContainerPropertyMissing: [
         { component: 'DatePicker', import: '@mui/x-date-pickers' },
         { component: 'Autocomplete', import: '@mui/material' },
       ],
-
-      // <Comp MenuProps={{ container }} />
       menuPropsContainerPropertyMissing: [
         { component: 'Select', import: '@mui/material' },
       ],
-
-      // <Comp SelectProps={{ MenuProps: { container } }} />
       selectPropsMenuPropsContainerPropertyMissing: [
         {
           component: 'TextField',
@@ -138,8 +131,6 @@ const ruleModule: RuleModule<string, Options> = {
         },
         { component: 'TablePagination', import: '@mui/material' },
       ],
-
-      // <Comp container={} />
       containerPropertyMissing: [
         { component: 'Menu', import: '@mui/material' },
         { component: 'Dialog', import: '@mui/material' },
@@ -201,6 +192,54 @@ const ruleModule: RuleModule<string, Options> = {
 
         if (!muiImportedComponents[componentName]) return;
 
+        const spreadAttribute = jsxOpeningElementNode.attributes.find(
+          (attribute): attribute is TSESTree.JSXSpreadAttribute =>
+            attribute.type === 'JSXSpreadAttribute'
+        );
+
+        console.log('Checking component:', componentName);
+
+        if (spreadAttribute) {
+          console.log('Found spread attribute:', spreadAttribute);
+
+          let spreadVariableName: string | null = null;
+
+          if (spreadAttribute.argument.type === 'Identifier') {
+            spreadVariableName = spreadAttribute.argument.name;
+          } else if (
+            spreadAttribute.argument.type === 'MemberExpression' &&
+            spreadAttribute.argument.property.type === 'Identifier'
+          ) {
+            spreadVariableName = spreadAttribute.argument.property.name;
+          }
+
+          console.log('Spread variable name:', spreadVariableName);
+
+          // Check the spread properties
+          const variable = findVariable(context.getScope(), spreadVariableName);
+          if (variable && variable.defs.length > 0) {
+            const def = variable.defs[0];
+            if (
+              def.type === 'Variable' &&
+              def.node.init?.type === 'ObjectExpression'
+            ) {
+              const objectExpression = def.node
+                .init as TSESTree.ObjectExpression;
+              const hasContainerProp = objectExpression.properties.some(
+                (prop) =>
+                  prop.type === 'Property' &&
+                  prop.key.type === 'Identifier' &&
+                  prop.key.name === 'container'
+              );
+
+              console.log('Spread properties:', objectExpression.properties);
+              console.log('Has container property:', hasContainerProp);
+
+              if (hasContainerProp) return;
+            }
+          }
+        }
+
         const slotPropsPopperContainerPropertyMissingComponentItem =
           componentsByRule.slotPropsPopperContainerPropertyMissing.find(
             ({ component }) =>
@@ -211,7 +250,7 @@ const ruleModule: RuleModule<string, Options> = {
           const slotPropsAttribute = jsxOpeningElementNode.attributes.find(
             (attribute) =>
               attribute.type === 'JSXAttribute' &&
-              attribute.name.name === 'slotProps' // finds jsx props `<Comp slotProps={} />`
+              attribute.name.name === 'slotProps'
           );
 
           if (
@@ -233,13 +272,13 @@ const ruleModule: RuleModule<string, Options> = {
               (prop) =>
                 prop.type === 'Property' &&
                 prop.key.type === 'Identifier' &&
-                prop.key.name === 'popper' && // finds `<Comp slotProps={{ popper }} />`
+                prop.key.name === 'popper' &&
                 prop.value.type === 'ObjectExpression' &&
                 prop.value.properties.some(
                   (innerProp) =>
                     innerProp.type === 'Property' &&
                     innerProp.key.type === 'Identifier' &&
-                    innerProp.key.name === 'container' // finds `<Comp slotProps={{ popper: { container } }} />`
+                    innerProp.key.name === 'container'
                 )
             )
           ) {
@@ -277,7 +316,7 @@ const ruleModule: RuleModule<string, Options> = {
           const selectPropsAttribute = jsxOpeningElementNode.attributes.find(
             (attribute) =>
               attribute.type === 'JSXAttribute' &&
-              attribute.name.name === 'SelectProps' // finds jsx props `<Comp SelectProps={} />`
+              attribute.name.name === 'SelectProps'
           );
 
           if (
@@ -299,13 +338,13 @@ const ruleModule: RuleModule<string, Options> = {
               (prop) =>
                 prop.type === 'Property' &&
                 prop.key.type === 'Identifier' &&
-                prop.key.name === 'MenuProps' && // finds `<Comp SelectProps={{ MenuProps }} />`
+                prop.key.name === 'MenuProps' &&
                 prop.value.type === 'ObjectExpression' &&
                 prop.value.properties.some(
                   (innerProp) =>
                     innerProp.type === 'Property' &&
                     innerProp.key.type === 'Identifier' &&
-                    innerProp.key.name === 'container' // finds `<Comp SelectProps={{ MenuProps: { container } }} />`
+                    innerProp.key.name === 'container'
                 )
             )
           ) {
@@ -327,7 +366,7 @@ const ruleModule: RuleModule<string, Options> = {
           const menuPropsAttribute = jsxOpeningElementNode.attributes.find(
             (attribute) =>
               attribute.type === 'JSXAttribute' &&
-              attribute.name.name === 'MenuProps' // finds jsx props `<Comp MenuProps={}/>`
+              attribute.name.name === 'MenuProps'
           );
 
           if (
@@ -349,7 +388,7 @@ const ruleModule: RuleModule<string, Options> = {
               (prop) =>
                 prop.type === 'Property' &&
                 prop.key.type === 'Identifier' &&
-                prop.key.name === 'container' // finds `<Comp MenuProps={{ container }} />`
+                prop.key.name === 'container'
             )
           ) {
             return context.report({
@@ -370,7 +409,7 @@ const ruleModule: RuleModule<string, Options> = {
           const containerPropsAttribute = jsxOpeningElementNode.attributes.find(
             (attribute) =>
               attribute.type === 'JSXAttribute' &&
-              attribute.name.name === 'container' // finds jsx props `<Comp container={} />`
+              attribute.name.name === 'container'
           );
 
           if (!containerPropsAttribute) {
@@ -381,83 +420,18 @@ const ruleModule: RuleModule<string, Options> = {
             });
           }
         }
-
-        const { menuProps } = findUseMenuButton(node, context);
-
-        if (
-          menuProps &&
-          isSpreadAttributeWithMenuProps(jsxOpeningElementNode, menuProps)
-        ) {
-          return;
-        }
       },
     };
   },
 };
 
-const getIdentifierName = (
+function getIdentifierName(
   jsxTagNameExpression: TSESTree.JSXTagNameExpression
-) => jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name;
-
-const findUseMenuButton = (node: TSESTree.JSXElement, context: any) => {
-  let menuProps: string | undefined;
-  let buttonProps: string | undefined;
-  let open: string | undefined;
-
-  node.openingElement.attributes.forEach((attr) => {
-    if (
-      attr.type === 'JSXSpreadAttribute' &&
-      attr.argument.type === 'Identifier'
-    ) {
-      const variableDeclarator = findVariableDeclarator(
-        context,
-        attr.argument.name
-      );
-      if (variableDeclarator && isUseMenuButton(variableDeclarator.init)) {
-        ({
-          menuProps = undefined,
-          buttonProps = undefined,
-          open = undefined,
-        } = getMenuButtonProps(variableDeclarator.id));
-      }
-    }
-  });
-
-  return { menuProps, buttonProps, open };
-};
-
-const getMenuButtonProps = (idNode: any) => {
-  let menuProps: string | undefined;
-  let buttonProps: string | undefined;
-  let open: string | undefined;
-
-  if (idNode.type === 'ObjectPattern') {
-    idNode.properties.forEach((prop: any) => {
-      if (prop.key.name === 'menuProps') menuProps = prop.value.name;
-      if (prop.key.name === 'buttonProps') buttonProps = prop.value.name;
-      if (prop.key.name === 'open') open = prop.value.name;
-    });
-  }
-
-  return { menuProps, buttonProps, open };
-};
-
-const findVariableDeclarator = (context: any, name: string) =>
-  context
-    .getScope()
-    .variables.flatMap((variable: { defs: any }) => variable.defs)
-    .find(
-      (def: { node: { id: { name: string } } }) => def.node.id.name === name
-    );
-
-const isUseMenuButton = (node: any) =>
-  node && node.callee && node.callee.name === 'useMenuButton';
-
-const isSpreadAttributeWithMenuProps = (node: any, menuPropsName: string) =>
-  node.attributes.some(
-    (attr: any) =>
-      attr.type === 'JSXSpreadAttribute' && attr.argument.name === menuPropsName
+) {
+  return (
+    jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name
   );
+}
 
 type Option = {
   component: string;
