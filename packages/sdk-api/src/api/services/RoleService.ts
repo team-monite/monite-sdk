@@ -1,12 +1,14 @@
 import type { CancelablePromise } from '../CancelablePromise';
-import type { CurrencyEnum } from '../models/CurrencyEnum';
+import type { CreateRoleRequest } from '../models/CreateRoleRequest';
 import type { OrderEnum } from '../models/OrderEnum';
-import type { PayableStateEnum } from '../models/PayableStateEnum';
 import type { RoleCursorFields } from '../models/RoleCursorFields';
 import { RolePaginationResponse } from '../models/RolePaginationResponse';
 import type { RoleResponse } from '../models/RoleResponse';
+import type { UpdateRoleRequest } from '../models/UpdateRoleRequest';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';
+
+export const ROLES_ENDPOINT = 'roles';
 
 export interface RoleServiceGetListRequestParams {
   order?: OrderEnum;
@@ -39,7 +41,7 @@ export class RoleService extends CommonService {
     return __request(
       {
         method: 'GET',
-        url: '/roles',
+        url: `/${ROLES_ENDPOINT}`,
         query: {
           order: params.order,
           limit: params.limit,
@@ -79,7 +81,63 @@ export class RoleService extends CommonService {
     return __request<RoleResponse>(
       {
         method: 'GET',
-        url: `/roles/${roleId}`,
+        url: `/${ROLES_ENDPOINT}/${roleId}`,
+      },
+      this.openApi
+    );
+  }
+
+  /**
+   * Update role
+   *
+   * @param roleId string Role identifier
+   * @param body UpdateRoleRequest
+   *
+   * @returns RoleResponse Successful Response
+   *
+   * @throws ApiError
+   */
+  public update(
+    roleId: string,
+    body: UpdateRoleRequest
+  ): CancelablePromise<RoleResponse> {
+    return __request<RoleResponse>(
+      {
+        method: 'PATCH',
+        url: `/${ROLES_ENDPOINT}/${roleId}`,
+        body,
+        errors: {
+          400: `Bad Request`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
+      },
+      this.openApi
+    );
+  }
+
+  /**
+   * Create role
+   *
+   * @param body CreateRoleRequest
+   *
+   * @returns RoleResponse Successful Response
+   *
+   * @throws ApiError
+   */
+  public create(body: CreateRoleRequest): CancelablePromise<RoleResponse> {
+    return __request<RoleResponse>(
+      {
+        method: 'POST',
+        url: `/${ROLES_ENDPOINT}`,
+        body,
+        errors: {
+          400: `Bad Request`,
+          405: `Method Not Allowed`,
+          422: `Validation Error`,
+          500: `Internal Server Error`,
+        },
       },
       this.openApi
     );

@@ -8,6 +8,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ActionEnum } from '@monite/sdk-api';
+import { Button } from '@mui/material';
 
 import { UserRolesTable } from './UserRolesTable';
 
@@ -30,6 +31,12 @@ const UserRolesBase = () => {
       action: ActionEnum.READ,
       entityUserId: user?.id,
     });
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
+    useIsActionAllowed({
+      method: 'role',
+      action: ActionEnum.CREATE,
+      entityUserId: user?.id,
+    });
 
   const onRowClick = (id: string) => {
     setIsDetailsDialogOpened(true);
@@ -38,7 +45,22 @@ const UserRolesBase = () => {
 
   return (
     <>
-      <PageHeader title={t(i18n)`User Roles`} />
+      <PageHeader
+        title={t(i18n)`User Roles`}
+        extra={
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isCreateAllowedLoading || !isCreateAllowed}
+            onClick={() => {
+              setSelectedUserRoleID(undefined);
+              setIsDetailsDialogOpened(true);
+            }}
+          >
+            {t(i18n)`Create New`}
+          </Button>
+        }
+      />
 
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && <UserRolesTable onRowClick={onRowClick} />}
@@ -48,7 +70,10 @@ const UserRolesBase = () => {
         alignDialog="right"
         onClose={() => setIsDetailsDialogOpened(false)}
       >
-        <UserRoleDetails id={selectedUserRoleId} />
+        <UserRoleDetails
+          id={selectedUserRoleId}
+          onCreated={(role) => setSelectedUserRoleID(role.id)}
+        />
       </Dialog>
     </>
   );
