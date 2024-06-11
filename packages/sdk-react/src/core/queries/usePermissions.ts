@@ -11,21 +11,73 @@ import {
   useEntityUserRoleByAuthToken,
 } from './useEntityUsers';
 
-type PayableOperator = {
-  method: 'payable';
-  action: PayableActionEnum;
-};
+export const COMMON_PERMISSIONS_OBJECTS_TYPES = [
+  'person',
+  'onboarding',
+  'comment',
+  'counterpart',
+  'entity_user',
+  'entity',
+  'entity_vat_ids',
+  'counterpart_vat_id',
+  'entity_bank_account',
+  'export',
+  'payables_purchase_order',
+  'payment_reminder',
+  'overdue_reminder',
+  'product',
+  'receivable',
+  'reconciliation',
+  'role',
+  'tag',
+  'todo_task',
+  'todo_task_mute',
+  'transaction',
+  'workflow',
+  'approval_request',
+  'approval_policy',
+  'payment_record',
+] as const;
+
+export const PAYABLE_PERMISSIONS_OBJECTS_TYPES = ['payable'] as const;
+
+export type commonPermissionsObjectType =
+  | 'person'
+  | 'onboarding'
+  | 'comment'
+  | 'counterpart'
+  | 'entity_user'
+  | 'entity'
+  | 'entity_vat_ids'
+  | 'counterpart_vat_id'
+  | 'entity_bank_account'
+  | 'export'
+  | 'payables_purchase_order'
+  | 'payment_reminder'
+  | 'overdue_reminder'
+  | 'product'
+  | 'receivable'
+  | 'reconciliation'
+  | 'role'
+  | 'tag'
+  | 'todo_task'
+  | 'todo_task_mute'
+  | 'transaction'
+  | 'workflow'
+  | 'approval_request'
+  | 'approval_policy'
+  | 'payment_record';
+
+export type payablePermissionsObjectType = 'payable';
 
 type CommonOperator = {
-  method:
-    | 'workflow'
-    | 'counterpart'
-    | 'product'
-    | 'receivable'
-    | 'approval_policy'
-    | 'role'
-    | 'tag';
+  method: commonPermissionsObjectType;
   action: ActionEnum;
+};
+
+type PayableOperator = {
+  method: payablePermissionsObjectType;
+  action: PayableActionEnum;
 };
 
 type IsActionAllowedType = { entityUserId?: string } & (

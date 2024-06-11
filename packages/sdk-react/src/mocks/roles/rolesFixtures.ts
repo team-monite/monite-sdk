@@ -1,6 +1,8 @@
 import { ActionEnum } from '@/utils/types';
+import { faker } from '@faker-js/faker';
 import {
   CommonSchema,
+  CreateRoleRequest,
   PayableActionEnum,
   PermissionEnum,
   RolePaginationResponse,
@@ -367,4 +369,15 @@ export const getAllRolesFixture: RolePaginationResponse = {
   ],
   prev_pagination_token: undefined,
   next_pagination_token: undefined,
+};
+
+export const createRole = (role: CreateRoleRequest) => {
+  return {
+    id: faker.string.nanoid(),
+    name: role.name,
+    permissions: role.permissions,
+    status: StatusEnum.ACTIVE,
+    created_at: faker.date.past().toString(),
+    updated_at: faker.date.past().toString(),
+  };
 };

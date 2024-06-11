@@ -6,7 +6,7 @@ import { Alert, Checkbox, FormControlLabel } from '@mui/material';
 
 interface RHFCheckboxProps<T extends FieldValues>
   extends UseControllerProps<T> {
-  label: string;
+  label?: string;
 }
 
 export const RHFCheckbox = <F extends FieldValues>({
