@@ -24,6 +24,7 @@
     "@monite/sdk-react": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.14.2",
+    "@team-monite/sdk-demo": "workspace:~",
     "@team-monite/sdk-themes": "workspace:~",
     "@types/node": "20.3.1",
     "@types/react": "18.3.1",
