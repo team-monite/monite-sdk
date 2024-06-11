@@ -11,7 +11,7 @@ import { UMoneyBill } from './icons/UMoneyBill';
 import { UMoneyStack } from './icons/UMoneyStack';
 import { UUserCircle } from './icons/UUserCircle';
 
-interface IApprovalPoliciesTriggersProps {
+interface ApprovalPoliciesTriggersProps {
   approvalPolicyId: string;
 }
 
@@ -23,19 +23,9 @@ type IApprovalPoliciesTriggerName =
   | 'invoice.tags'
   | string;
 
-interface IApprovalPoliciesTrigger {
-  left_operand:
-    | {
-        name: IApprovalPoliciesTriggerName;
-      }
-    | IApprovalPoliciesTriggerName;
-  operator: '>' | '<' | '<=' | '>=' | '==' | '!=' | 'in';
-  right_operand: string;
-}
-
 export const ApprovalPoliciesTriggers = ({
   approvalPolicyId,
-}: IApprovalPoliciesTriggersProps) => {
+}: ApprovalPoliciesTriggersProps) => {
   const { i18n } = useLingui();
   const { data: approvalPolicy } = useApprovalPolicyById(approvalPolicyId);
 

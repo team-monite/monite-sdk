@@ -1,7 +1,7 @@
 import { useCallback, useId, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { IExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
+import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import {
@@ -36,7 +36,7 @@ import { ProductForm } from '../components/ProductForm';
 import { IProductFormSubmitValues } from '../validation';
 
 type IProductEditFormProps = Pick<
-  IExistingProductDetailsProps,
+  ExistingProductDetailsProps,
   'id' | 'onUpdated'
 > & {
   /**

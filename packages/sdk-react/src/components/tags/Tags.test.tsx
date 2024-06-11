@@ -4,38 +4,24 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import { QueryClient } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 
 import { Tags } from './Tags';
 
 describe('Tags', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<Tags />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkTagQueriesLoaded(queryClient));
+      renderWithClient(<Tags />);
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create new tag`,
       });
 
       await expect(createTagButton).resolves.toBeInTheDocument();
-      await expect(createTagButton).resolves.not.toBeDisabled();
+      await waitFor(() => expect(createTagButton).resolves.not.toBeDisabled());
 
       const tableRowTag = screen.findByText('tag 1');
       await expect(tableRowTag).resolves.toBeInTheDocument();
@@ -52,29 +38,17 @@ describe('Tags', () => {
           }),
       });
 
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<Tags />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
+      renderWithClient(<Tags />, monite);
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create new tag`,
       });
 
-      await expect(createTagButton).resolves.toBeInTheDocument();
-      await expect(createTagButton).resolves.toBeDisabled();
       await expect(
         screen.findByText(/Access Restricted/i, { selector: 'h3' })
       ).resolves.toBeInTheDocument();
+      await expect(createTagButton).resolves.toBeInTheDocument();
+      await expect(createTagButton).resolves.toBeDisabled();
     });
 
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
@@ -88,40 +62,17 @@ describe('Tags', () => {
           }),
       });
 
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<Tags />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkTagQueriesLoaded(queryClient));
+      renderWithClient(<Tags />, monite);
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create new tag`,
       });
 
       await expect(createTagButton).resolves.toBeInTheDocument();
-      await expect(createTagButton).resolves.not.toBeDisabled();
+      await waitFor(() => expect(createTagButton).resolves.not.toBeDisabled());
 
       const tableRowTag = screen.findByText('tag 1');
       await expect(tableRowTag).resolves.toBeInTheDocument();
     });
   });
 });
-
-function checkTagQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['tags'],
-    predicate: (query) => query.state.status === 'success',
-  });
-
-  if (!data.length) throw new Error('Product query is not executed');
-}

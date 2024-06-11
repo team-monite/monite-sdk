@@ -16,7 +16,7 @@ export enum ProductDetailsView {
 }
 
 /** Props for the product details component when the product already exists */
-export interface IExistingProductDetailsProps {
+export interface ExistingProductDetailsProps {
   /** Product ID */
   id: string;
 
@@ -47,11 +47,14 @@ export interface IExistingProductDetailsProps {
   initialView?: ProductDetailsView;
 }
 
+/** @deprecated Use `ExistingProductDetailsProps` instead */
+export type IProductDetailsProps = ExistingProductDetailsProps;
+
 /**
  * Props for the product details component when the product does not exist yet
  *  (we are creating a new product)
  */
-export interface IProductDetailsCreateProps {
+export interface ProductDetailsCreateProps {
   id?: never;
 
   /**
@@ -65,11 +68,11 @@ export interface IProductDetailsCreateProps {
   defaultValues?: Partial<ProductFormValues>;
 }
 
-export type IProductDetailsProps =
-  | IExistingProductDetailsProps
-  | IProductDetailsCreateProps;
+export type ProductDetailsProps =
+  | ExistingProductDetailsProps
+  | ProductDetailsCreateProps;
 
-export const ProductDetails = (props: IProductDetailsProps) => {
+export const ProductDetails = (props: ProductDetailsProps) => {
   if (typeof props.id === 'string') {
     return <ExistingProductDetails {...props} />;
   }

@@ -28,13 +28,13 @@ const a11yProps = (index: ViewState) => {
   };
 };
 
-interface ITabPanel {
+interface TabPanelProps {
   children: React.ReactNode;
   index: ViewState;
   value: ViewState;
 }
 
-const TabPanel = ({ value, index, children }: ITabPanel) => {
+const TabPanel = ({ value, index, children }: TabPanelProps) => {
   return (
     <div
       role="tabpanel"
@@ -47,11 +47,11 @@ const TabPanel = ({ value, index, children }: ITabPanel) => {
   );
 };
 
-interface IOverviewProps {
+interface OverviewProps {
   invoice: InvoiceResponsePayload;
 }
 
-export const Overview = ({ invoice }: IOverviewProps) => {
+export const Overview = ({ invoice }: OverviewProps) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<ViewState>(ViewState.Overview);
 

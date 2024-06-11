@@ -1,19 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
-import { VatRateListResponse } from '@monite/sdk-api';
 
-interface IUseCreateInvoiceProductsTable {
+interface UseCreateInvoiceProductsTable {
   lineItems: Array<CreateReceivablesFormBeforeValidationLineItemProps>;
   formatCurrencyToDisplay: ReturnType<
     typeof useCurrencies
   >['formatCurrencyToDisplay'];
-  vatRates: VatRateListResponse | undefined;
 }
 
-interface IUseCreateInvoiceProductsTableReturn {
+interface UseCreateInvoiceProductsTableProps {
   subtotalPrice: Price | undefined;
   totalTaxes: Price | undefined;
   totalPrice: Price | undefined;
@@ -27,8 +25,7 @@ interface IUseCreateInvoiceProductsTableReturn {
 export const useCreateInvoiceProductsTable = ({
   lineItems,
   formatCurrencyToDisplay,
-  vatRates,
-}: IUseCreateInvoiceProductsTable): IUseCreateInvoiceProductsTableReturn => {
+}: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
       const price = field.price?.value ?? 0;

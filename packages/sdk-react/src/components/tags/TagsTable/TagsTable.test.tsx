@@ -1,19 +1,26 @@
 import React from 'react';
 
+import { createAPIClient } from '@/api/client';
 import {
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
   ENTITY_ID_FOR_READONLY_PERMISSIONS,
 } from '@/mocks';
-import {
-  cachedMoniteSDK,
-  renderWithClient,
-  waitUntilTableIsLoaded,
-} from '@/utils/test-utils';
+import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import { fireEvent, getByLabelText, screen } from '@testing-library/react';
+import { requestFn } from '@openapi-qraft/react';
+import {
+  fireEvent,
+  getByLabelText,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 
 import { TagsTable } from './TagsTable';
+
+const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
+const { api } = createAPIClient();
 
 describe('TagsTable', () => {
   test('should cut tag name if it is so long', async () => {
@@ -123,152 +130,134 @@ describe('TagsTable', () => {
    */
   describe('# Sorting', () => {
     test('should sort a table by `created_at` field in ascending order when we click on that field once', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
-      await waitUntilTableIsLoaded();
-
-      const createdAtButton = screen.getByText('Created at');
+      const createdAtButton = await screen.findByText('Created at');
       fireEvent.click(createdAtButton);
 
-      await waitUntilTableIsLoaded();
-
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBe('asc');
-      expect(sort).toBe('created_at');
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: 'asc',
+          sort: 'created_at',
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
 
     test('should sort a table by `created_at` field in descending order when we click on that field twice', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
       const createdAtButton = await screen.findByText('Created at');
 
+      // Sort by `created_at` in ascending order
       fireEvent.click(createdAtButton);
+
+      // Sort by `created_at` in descending order
       fireEvent.click(createdAtButton);
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBe('desc');
-      expect(sort).toBe('created_at');
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: 'desc',
+          sort: 'created_at',
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
 
     test('should flush sorting by `created_at` field when we click on that field 3 times', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
       const createdAtButton = await screen.findByText('Created at');
 
+      // Sort by `created_at` in ascending order
       fireEvent.click(createdAtButton);
-      await waitUntilTableIsLoaded();
-
+      // Sort by `created_at` in descending order
       fireEvent.click(createdAtButton);
-      await waitUntilTableIsLoaded();
-
+      // Flush sorting
       fireEvent.click(createdAtButton);
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBeUndefined();
-      expect(sort).toBeUndefined();
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: undefined,
+          sort: undefined,
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
 
     test('should sort a table by `updated_at` field in ascending order when we click on that field once', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
       const updatedAtButton = await screen.findByText('Updated at');
 
+      // Sort by `updated_at` in ascending order
       fireEvent.click(updatedAtButton);
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBe('asc');
-      expect(sort).toBe('updated_at');
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: 'asc',
+          sort: 'updated_at',
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
 
     test('should sort a table by `updated_at` field in descending order when we click on that field twice', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
       const updatedAtButton = await screen.findByText('Updated at');
 
+      // Sort by `updated_at` in ascending order
       fireEvent.click(updatedAtButton);
+      // Sort by `updated_at` in descending order
       fireEvent.click(updatedAtButton);
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBe('desc');
-      expect(sort).toBe('updated_at');
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: 'desc',
+          sort: 'updated_at',
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
 
     test('should flush sorting by `updated_at` field when we click on that field 3 times', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.tag, 'getList');
-      renderWithClient(<TagsTable />, cachedMoniteSDK);
+      renderWithClient(<TagsTable />);
 
       const updatedAtButton = await screen.findByText('Updated at');
 
+      // Sort by `updated_at` in ascending order
       fireEvent.click(updatedAtButton);
-      await waitUntilTableIsLoaded();
-
+      // Sort by `updated_at` in descending order
       fireEvent.click(updatedAtButton);
-      await waitUntilTableIsLoaded();
-
+      // Flush sorting
       fireEvent.click(updatedAtButton);
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.tag.getList never been called');
-      }
-
-      const order = lastCallArguments[0];
-      const sort = lastCallArguments[3];
-
-      expect(order).toBeUndefined();
-      expect(sort).toBeUndefined();
+      await waitFor(() =>
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: undefined,
+          sort: undefined,
+        })
+      );
+      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+        api.tags.getTags.schema.url
+      );
     });
   });
 
@@ -291,7 +280,7 @@ describe('TagsTable', () => {
 
       fireEvent.click(actionButton);
 
-      const editTitle = screen.getByText(/Edit tag/);
+      const editTitle = await screen.findByText(/Edit tag/);
       const editSave = screen.getByRole('button', {
         name: t`Save`,
       });

@@ -55,7 +55,7 @@ export const generateCounterpartsWithPayables = async (
       console.log(chalk.green('- Creating Counterpart Bank Account'));
 
       const counterpart_bank_account = await createCounterpartBankAccount({
-        is_default: true,
+        is_default_for_currency: true,
         counterpart_id: counterpart.id,
         token,
         entity_id,

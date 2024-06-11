@@ -155,6 +155,12 @@ export class ReceivablesService extends GeneralService {
   private async createReceivable(): Promise<
     components['schemas']['ReceivableResponse']
   > {
+    const counterpart = getRandomItemFromArray(this.options.counterparts);
+    if (!counterpart.default_billing_address_id)
+      throw new Error(
+        `Counterpart ${counterpart.id} does not have default billing address`
+      );
+
     switch (this.options.type) {
       case 'invoice': {
         const { data, error, response } = await this.request.POST(
@@ -169,8 +175,9 @@ export class ReceivablesService extends GeneralService {
             body: {
               type: this.options.type,
               currency: this.options.currency,
-              counterpart_id: getRandomItemFromArray(this.options.counterparts)
-                .id,
+              counterpart_id: counterpart.id,
+              counterpart_billing_address_id:
+                counterpart.default_billing_address_id,
               line_items: this.options.products
                 /**
                  * Randomly take an item from `products`
@@ -219,8 +226,9 @@ export class ReceivablesService extends GeneralService {
             body: {
               type: this.options.type,
               currency: this.options.currency,
-              counterpart_id: getRandomItemFromArray(this.options.counterparts)
-                .id,
+              counterpart_id: counterpart.id,
+              counterpart_billing_address_id:
+                counterpart.default_billing_address_id,
               line_items: this.options.products
                 /**
                  * Randomly take an item from `products`

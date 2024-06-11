@@ -4,13 +4,13 @@ import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
 import { Chip, Skeleton, Box } from '@mui/material';
 
-interface IApprovalPoliciesUserProps {
+interface ApprovalPoliciesUserProps {
   entityUserId: string;
 }
 
 export const ApprovalPoliciesUser = ({
   entityUserId,
-}: IApprovalPoliciesUserProps) => {
+}: ApprovalPoliciesUserProps) => {
   const { data: entityUser, isLoading } = useEntityUserById(entityUserId);
 
   if (isLoading) {

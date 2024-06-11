@@ -113,6 +113,36 @@ The `setupFiles` array includes our SDK polyfill (`@monite/sdk-react/setup-tests
 
 This polyfill checks if the `TextEncoder` and `crypto.subtle` are available globally. If not, it provides them using Node.js modules.
 
+## API Client Code Generation for React SDK
+
+This React SDK leverages OpenAPI and Qraft to generate the API client and React Hooks.
+
+### Updating the OpenAPI Document
+
+To update the API client schema and services, begin by downloading the latest OpenAPI document from Monite API:
+
+```bash
+yarn download-openapi-document
+```
+
+This command fetches the latest OpenAPI document from the Monite API and stores it as `./api/schema.json`. By default, the document is downloaded from `https://api.dev.monite.com/openapi.json`, using the API version specified in the `apiVersion` field of `package.json`.
+
+> **Note:** To download the OpenAPI document from a different API environment, use the following command:
+> ```bash
+> API_STAND=sandbox yarn download-openapi-document
+> ```
+> This downloads the document from `https://api.sandbox.monite.com/openapi.json`.
+
+### Updating the API Client
+
+After updating the OpenAPI document, regenerate the API client code:
+
+```bash
+yarn codegen
+```
+
+This command generates the API client code based on the OpenAPI document and places it in the `./src/api` directory.
+
 ## Documentation
 
 - [Monite API docs](https://docs.monite.com/docs/ui-widgets)
