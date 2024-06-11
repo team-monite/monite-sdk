@@ -12,6 +12,7 @@ import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { AppThemeProvider } from '@/components/ThemeRegistry/AppThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
+import { getSelectedTheme } from '@/lib/clerk-api/get-selected-theme';
 
 import './globals.css';
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const user = await currentUser();
+  const selectedTheme = getSelectedTheme(user);
 
   return (
     <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
@@ -36,9 +38,7 @@ export default async function RootLayout({
           <body className={themeFont.className}>
             <RootI18nProvider>
               <RootQueryClientProvider>
-                <AppThemeProvider
-                  initialTheme={user.privateMetadata?.selectedTheme}
-                >
+                <AppThemeProvider initialTheme={selectedTheme}>
                   {children}
                 </AppThemeProvider>
               </RootQueryClientProvider>

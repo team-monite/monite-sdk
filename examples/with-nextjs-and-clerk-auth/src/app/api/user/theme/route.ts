@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { clerkClient, currentUser } from '@clerk/nextjs';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 
+import { getSelectedTheme } from '@/lib/clerk-api/get-selected-theme';
+
 export async function GET(): Promise<NextResponse<ThemeConfig>> {
   const user = await currentUser();
 
@@ -10,8 +12,7 @@ export async function GET(): Promise<NextResponse<ThemeConfig>> {
     throw new Error('No current user available');
   }
 
-  const { variant, mode } = user.privateMetadata
-    ?.selectedTheme as Partial<ThemeConfig>;
+  const { variant, mode } = getSelectedTheme(user) ?? {};
 
   return NextResponse.json({
     variant: variant ?? 'monite',
