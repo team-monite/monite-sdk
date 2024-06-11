@@ -2255,8 +2255,7 @@ msgstr "Failed to delete product."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/ui/FileViewer/FileViewer.tsx:59
-#: src/ui/FileViewer/FileViewer.tsx:112
+#: src/ui/FileViewer/FileViewer.tsx:45
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
@@ -2724,7 +2723,7 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
-#: src/ui/FileViewer/FileViewer.tsx:119
+#: src/ui/FileViewer/FileViewer.tsx:52
 msgid "If the error recurs, contact support."
 msgstr "If the error recurs, contact support."
 
@@ -4102,7 +4101,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/FileViewer/FileViewer.tsx:116
+#: src/ui/FileViewer/FileViewer.tsx:49
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
@@ -4407,7 +4406,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/ui/FileViewer/FileViewer.tsx:128
+#: src/ui/FileViewer/FileViewer.tsx:61
 msgid "Reload"
 msgstr "Reload"
 
