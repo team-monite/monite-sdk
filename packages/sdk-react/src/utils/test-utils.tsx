@@ -107,7 +107,7 @@ export const Provider = ({
           queryClient: client,
           theme: createThemeWithDefaults(moniteProviderProps?.theme),
           dateFnsLocale,
-          baseUrl: monite.baseUrl,
+          apiUrl: monite.baseUrl,
           fetchToken: monite.fetchToken,
           ...createAPIClient({
             entityId: monite.entityId,

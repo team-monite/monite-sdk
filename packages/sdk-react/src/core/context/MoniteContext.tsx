@@ -31,7 +31,7 @@ export interface MoniteContextValue
     CreateMoniteAPIClientResult {
   sentryHub: Hub | undefined;
   queryClient: QueryClient;
-  baseUrl: string;
+  apiUrl: string;
   fetchToken: () => Promise<{
     access_token: string;
     expires_in: number;
@@ -128,7 +128,7 @@ const ContextProvider = ({
         i18n,
         locale,
         dateFnsLocale,
-        baseUrl: monite.baseUrl,
+        apiUrl: monite.baseUrl,
         fetchToken: monite.fetchToken,
         ...createAPIClient({
           entityId: monite.entityId,

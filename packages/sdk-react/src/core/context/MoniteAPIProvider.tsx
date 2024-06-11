@@ -7,7 +7,7 @@ import { Unstable_QraftSecureRequestFn as QraftSecureRequestFn } from '@openapi-
 export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
 
 export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
-  const { queryClient, fetchToken, requestFn, baseUrl } = useMoniteContext();
+  const { queryClient, fetchToken, requestFn, apiUrl } = useMoniteContext();
 
   return (
     <QraftSecureRequestFn
@@ -27,7 +27,7 @@ export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
         <MoniteQraftContext.Provider
           value={{
             queryClient,
-            baseUrl,
+            baseUrl: apiUrl,
             requestFn: securedRequestFn,
           }}
         >
