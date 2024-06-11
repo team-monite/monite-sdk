@@ -5,6 +5,8 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useMenuButton } from '@monite/sdk-react';
+// Use named imports rather than defaults as this allows this component to be packaged and used elsewhere.
+// Please refer to DEV-11216 for more information
 import {
   DarkMode,
   KeyboardArrowDown,
