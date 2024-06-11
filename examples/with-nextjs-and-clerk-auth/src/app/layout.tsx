@@ -2,13 +2,16 @@
 
 import { ReactNode } from 'react';
 
-import { ClerkProvider, MultisessionAppSupport } from '@clerk/nextjs';
+import {
+  ClerkProvider,
+  currentUser,
+  MultisessionAppSupport,
+} from '@clerk/nextjs';
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { RootThemeProvider } from '@/components/ThemeRegistry/RootThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
-import { getCurrentUserPrivateMetadata } from '@/lib/clerk-api/get-current-user-private-metadata';
 
 import './globals.css';
 
@@ -24,7 +27,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const metadata = await getCurrentUserPrivateMetadata();
+  const user = await currentUser();
 
   return (
     <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
@@ -33,7 +36,9 @@ export default async function RootLayout({
           <body className={themeFont.className}>
             <RootI18nProvider>
               <RootQueryClientProvider>
-                <RootThemeProvider initialTheme={metadata?.selectedTheme}>
+                <RootThemeProvider
+                  initialTheme={user.privateMetadata?.selectedTheme}
+                >
                   {children}
                 </RootThemeProvider>
               </RootQueryClientProvider>

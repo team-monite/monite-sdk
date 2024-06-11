@@ -1,7 +1,7 @@
 'use client';
 
-import * as React from 'react';
-import { PropsWithChildren, useCallback, useMemo } from 'react';
+import React, { PropsWithChildren, useCallback, useMemo } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { useAuth } from '@clerk/nextjs';
 import { Theme } from '@emotion/react';
@@ -12,8 +12,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 import * as themes from '@team-monite/sdk-themes';
 
-import { PrivateMetadata, SelectedTheme } from '@/lib/clerk-api/types';
-
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 
 type Context = {
@@ -23,66 +21,99 @@ type Context = {
 };
 
 type RootThemeProviderProps = PropsWithChildren<{
-  initialTheme?: SelectedTheme;
+  initialTheme?: ThemeConfig;
 }>;
-
-const QUERY_KEY = ['theme'];
-const METADATA_ROUTE = '/api/user/theme';
 
 export const RootThemeProviderContext = React.createContext<
   Context | undefined
 >(undefined);
 
 export function RootThemeProvider(props: RootThemeProviderProps) {
-  const { children, initialTheme = ['monite', 'light'] } = props;
+  const SELECTED_THEME_QUERY_KEY = ['theme'];
+  const USER_THEME_API_ENDPOINT = '/api/user/theme';
+
+  const { children, initialTheme = { variant: 'monite', mode: 'light' } } =
+    props;
+
   const { userId } = useAuth();
 
   const queryClient = useQueryClient();
 
-  const selectedTheme = useQuery<SelectedTheme>({
+  const selectedTheme = useQuery<ThemeConfig>({
     enabled: userId !== null,
-    queryKey: QUERY_KEY,
+    queryKey: SELECTED_THEME_QUERY_KEY,
     initialData: () => initialTheme,
     queryFn: async () => {
-      const response = await fetch(METADATA_ROUTE);
-      const { selectedTheme } = (await response.json()) as PrivateMetadata;
-
-      return selectedTheme;
+      const response = await fetch(USER_THEME_API_ENDPOINT);
+      return response.json();
     },
   });
 
-  const mutateSelectedTheme = useMutation<SelectedTheme, Error, SelectedTheme>({
-    mutationFn: async (nextSelectedTheme) => {
-      const response = await fetch(METADATA_ROUTE, {
+  const mutateSelectedTheme = useMutation<
+    void,
+    Error,
+    ThemeConfig,
+    ThemeConfig
+  >({
+    mutationFn: async (selectedTheme) => {
+      const response = await fetch(USER_THEME_API_ENDPOINT, {
         method: 'PUT',
-        body: JSON.stringify({ selectedTheme: nextSelectedTheme }),
+        body: JSON.stringify(selectedTheme),
         headers: { contentType: 'application/json' },
       });
 
-      const { selectedTheme } = (await response.json()) as PrivateMetadata;
+      if (!response.ok) {
+        throw new Error();
+      }
+    },
+    onMutate: async (selectedTheme) => {
+      const prevSelectedTheme = queryClient.getQueryData<ThemeConfig>(
+        SELECTED_THEME_QUERY_KEY
+      );
 
-      return selectedTheme;
+      queryClient.setQueryData<ThemeConfig>(
+        SELECTED_THEME_QUERY_KEY,
+        selectedTheme
+      );
+
+      return prevSelectedTheme;
+    },
+    onError: (_, __, prevSelectedTheme) => {
+      if (prevSelectedTheme) {
+        queryClient.setQueryData<ThemeConfig>(
+          SELECTED_THEME_QUERY_KEY,
+          prevSelectedTheme
+        );
+      }
+
+      toast.error(
+        'We were unable to save your theme selection, please try again.',
+        { position: 'bottom-right' }
+      );
     },
     onSuccess: (selectedTheme) => {
-      queryClient.setQueryData(QUERY_KEY, selectedTheme);
+      queryClient.setQueryData(SELECTED_THEME_QUERY_KEY, selectedTheme);
     },
   });
 
-  const onThemeChange = useCallback((themeConfig: ThemeConfig) => {
-    //
-  }, []);
+  const onThemeChange = useCallback(
+    (themeConfig: ThemeConfig) => {
+      mutateSelectedTheme.mutate(themeConfig);
+    },
+    [mutateSelectedTheme]
+  );
 
   const theme = useMemo(() => {
-    const [currentTheme, currentMode] = selectedTheme.data;
+    const { variant, mode } = selectedTheme.data ?? {};
 
     switch (true) {
-      case currentTheme === 'monite' && currentMode === 'dark':
+      case variant === 'monite' && mode === 'dark':
         return createTheme(themes.moniteDark);
 
-      case currentTheme === 'material' && currentMode === 'light':
+      case variant === 'material' && mode === 'light':
         return createTheme(themes.materialLight);
 
-      case currentTheme === 'material' && currentMode === 'dark':
+      case variant === 'material' && mode === 'dark':
         return createTheme(themes.materialDark);
 
       default:
@@ -92,11 +123,7 @@ export function RootThemeProvider(props: RootThemeProviderProps) {
 
   return (
     <RootThemeProviderContext.Provider
-      value={{
-        onThemeChange,
-        selectedTheme: { variant: 'monite', mode: 'dark' },
-        theme,
-      }}
+      value={{ onThemeChange, selectedTheme: selectedTheme.data, theme }}
     >
       <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
         <ThemeProvider theme={theme}>

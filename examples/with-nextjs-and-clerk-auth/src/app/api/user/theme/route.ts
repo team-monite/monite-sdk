@@ -1,25 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getCurrentUserPrivateMetadata } from '@/lib/clerk-api/get-current-user-private-metadata';
-import { setCurrentUserPrivateMetadata } from '@/lib/clerk-api/set-current-user-private-metadata';
-import { PrivateMetadata, SelectedTheme } from '@/lib/clerk-api/types';
+import { clerkClient, currentUser } from '@clerk/nextjs';
+import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 
-export async function GET(): Promise<NextResponse<PrivateMetadata>> {
-  const metadata = await getCurrentUserPrivateMetadata();
+export async function GET(): Promise<NextResponse<ThemeConfig>> {
+  const user = await currentUser();
+
+  if (user === null) {
+    throw new Error('No current user available');
+  }
+
+  const { variant, mode } = user.privateMetadata
+    ?.selectedTheme as Partial<ThemeConfig>;
 
   return NextResponse.json({
-    selectedTheme: metadata?.selectedTheme ?? ['monite', 'light'],
+    variant: variant ?? 'monite',
+    mode: mode ?? 'light',
   });
 }
 
 export async function PUT(
   request: NextRequest
-): Promise<NextResponse<PrivateMetadata>> {
-  const nextMetadata = (await request.json()) as Partial<PrivateMetadata>;
+): Promise<NextResponse<ThemeConfig>> {
+  const user = await currentUser();
+  const { variant, mode } = (await request.json()) as Partial<ThemeConfig>;
 
-  await setCurrentUserPrivateMetadata(nextMetadata);
+  if (user === null) {
+    throw new Error('No current user available');
+  }
 
-  return NextResponse.json({
-    selectedTheme: nextMetadata.selectedTheme as SelectedTheme,
+  if (variant === undefined || !['monite', 'material'].includes(variant)) {
+    throw new Error('The selected theme variant is invalid');
+  }
+
+  if (mode === undefined || !['light', 'dark'].includes(mode)) {
+    throw new Error('The selected theme mode is invalid');
+  }
+
+  await clerkClient.users.updateUserMetadata(user.id, {
+    privateMetadata: { selectedTheme: { variant, mode } },
   });
+
+  return NextResponse.json({ variant, mode });
 }
