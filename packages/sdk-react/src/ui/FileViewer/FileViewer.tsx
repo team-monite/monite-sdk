@@ -21,10 +21,6 @@ export interface FileViewerProps {
   onReloadCallback?: () => void;
 }
 
-export const FileViewer = (props: FileViewerProps) => (
-  <FileViewerComponent {...props} />
-);
-
 const ErrorComponent = ({
   onError,
 }: {
@@ -65,7 +61,7 @@ const ErrorComponent = ({
   );
 };
 
-const FileViewerComponent = ({
+export const FileViewer = ({
   url,
   mimetype,
   name,
