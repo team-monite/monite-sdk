@@ -6,7 +6,9 @@ import {
 } from '@/core/queries/usePermissions';
 import {
   ActionEnum,
+  ActionSchema,
   PayableActionEnum,
+  PayableActionSchema,
   PermissionEnum,
   RootSchema,
 } from '@monite/sdk-api';
@@ -40,55 +42,52 @@ const checkIfPermissionIsAllowed = (permission?: PermissionEnum) => {
   );
 };
 
+const transformActionsToComponentFormat = <T extends string, P>(
+  actions: ActionSchema[] | PayableActionSchema[],
+  enumType: Record<string, T>,
+  permission: P
+) => {
+  actions?.forEach((action) => {
+    if (
+      action.action_name &&
+      Object.values(enumType).includes(action.action_name as T)
+    ) {
+      const result = {
+        key: action.action_name as T,
+        value: checkIfPermissionIsAllowed(action.permission),
+      };
+      if (result) {
+        (permission as Record<string, boolean>)[result.key] = result.value;
+      }
+    }
+  });
+};
+
 export const transformPermissionsToComponentFormat = (
   objects: RootSchema[]
 ): PermissionRow[] => {
   return objects
     .map((object) => {
-      if (object.object_type) {
-        if (isCommonPermissionObjectType(object.object_type)) {
-          let permission: CommonPermissionRow = {};
+      if (!object.object_type) return null;
 
-          permission.name = object.object_type;
+      if (isCommonPermissionObjectType(object.object_type)) {
+        let permission: CommonPermissionRow = { name: object.object_type };
+        transformActionsToComponentFormat(
+          object.actions as ActionSchema[],
+          ActionEnum,
+          permission
+        );
+        return permission;
+      }
 
-          object.actions?.forEach((action) => {
-            const actionName = action.action_name;
-
-            if (actionName) {
-              if (
-                Object.values(ActionEnum).includes(actionName as ActionEnum)
-              ) {
-                permission[actionName as ActionEnum] =
-                  checkIfPermissionIsAllowed(action.permission);
-              }
-            }
-          });
-
-          return permission;
-        }
-
-        if (isPayablePermissionObjectType(object.object_type)) {
-          let permission: PayablePermissionRow = {};
-
-          permission.name = object.object_type;
-
-          object.actions?.forEach((action) => {
-            const actionName = action.action_name;
-
-            if (actionName) {
-              if (
-                Object.values(PayableActionEnum).includes(
-                  actionName as PayableActionEnum
-                )
-              ) {
-                permission[actionName as PayableActionEnum] =
-                  checkIfPermissionIsAllowed(action.permission);
-              }
-            }
-          });
-
-          return permission;
-        }
+      if (isPayablePermissionObjectType(object.object_type)) {
+        let permission: PayablePermissionRow = { name: object.object_type };
+        transformActionsToComponentFormat(
+          object.actions as PayableActionSchema[],
+          PayableActionEnum,
+          permission
+        );
+        return permission;
       }
 
       return null;
