@@ -98,29 +98,28 @@ export const transformPermissionsToComponentFormat = (
     );
 };
 
+const createInitialPermissionState = <T extends string>(
+  objectType: payablePermissionsObjectType | commonPermissionsObjectType,
+  actionEnum: Record<string, T>
+): PayablePermissionRow | CommonPermissionRow => {
+  let permission: Record<string, boolean | typeof objectType> = {};
+
+  permission.name = objectType;
+
+  Object.values(actionEnum).forEach((action) => {
+    permission[action] = false;
+  });
+
+  return permission as PayablePermissionRow | CommonPermissionRow;
+};
+
 export const createInitialPermissionsState = (): PermissionRow[] => {
   return [
-    ...PAYABLE_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
-      let permission: PayablePermissionRow = {};
-
-      permission.name = objectType;
-
-      Object.values(PayableActionEnum).forEach((action) => {
-        permission[action] = false;
-      });
-
-      return permission;
-    }),
-    ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) => {
-      let permission: CommonPermissionRow = {};
-
-      permission.name = objectType;
-
-      Object.values(ActionEnum).forEach((action) => {
-        permission[action] = false;
-      });
-
-      return permission;
-    }),
+    ...PAYABLE_PERMISSIONS_OBJECTS_TYPES.map((objectType) =>
+      createInitialPermissionState(objectType, PayableActionEnum)
+    ),
+    ...COMMON_PERMISSIONS_OBJECTS_TYPES.map((objectType) =>
+      createInitialPermissionState(objectType, ActionEnum)
+    ),
   ];
 };
