@@ -46,8 +46,8 @@ const transformActionsToComponentFormat = <T extends string, P>(
   actions: ActionSchema[] | PayableActionSchema[],
   enumType: Record<string, T>,
   permission: P
-) => {
-  actions?.forEach((action) => {
+): P => {
+  const permissionsObject = actions?.map((action) => {
     if (
       action.action_name &&
       Object.values(enumType).includes(action.action_name as T)
@@ -56,11 +56,13 @@ const transformActionsToComponentFormat = <T extends string, P>(
         key: action.action_name as T,
         value: checkIfPermissionIsAllowed(action.permission),
       };
-      if (result) {
-        (permission as Record<string, boolean>)[result.key] = result.value;
-      }
+
+      return { [result.key]: result.value };
     }
+    return {};
   });
+
+  return Object.assign({}, permission, ...permissionsObject);
 };
 
 export const transformPermissionsToComponentFormat = (
@@ -72,22 +74,22 @@ export const transformPermissionsToComponentFormat = (
 
       if (isCommonPermissionObjectType(object.object_type)) {
         let permission: CommonPermissionRow = { name: object.object_type };
-        transformActionsToComponentFormat(
+
+        return transformActionsToComponentFormat(
           object.actions as ActionSchema[],
           ActionEnum,
           permission
         );
-        return permission;
       }
 
       if (isPayablePermissionObjectType(object.object_type)) {
         let permission: PayablePermissionRow = { name: object.object_type };
-        transformActionsToComponentFormat(
+
+        return transformActionsToComponentFormat(
           object.actions as PayableActionSchema[],
           PayableActionEnum,
           permission
         );
-        return permission;
       }
 
       return null;
