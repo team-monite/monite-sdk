@@ -14,7 +14,7 @@ import * as themes from '@team-monite/sdk-themes';
 
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 
-type Context = {
+type AppThemeProviderContextValue = {
   onThemeChange: (themeConfig: ThemeConfig) => void;
   selectedTheme: ThemeConfig;
   theme: Theme;
@@ -25,10 +25,10 @@ type RootThemeProviderProps = PropsWithChildren<{
 }>;
 
 export const RootThemeProviderContext = React.createContext<
-  Context | undefined
+  AppThemeProviderContextValue | undefined
 >(undefined);
 
-export function RootThemeProvider(props: RootThemeProviderProps) {
+export function AppThemeProvider(props: RootThemeProviderProps) {
   const SELECTED_THEME_QUERY_KEY = ['theme'];
   const USER_THEME_API_ENDPOINT = '/api/user/theme';
 
@@ -135,6 +135,8 @@ export function RootThemeProvider(props: RootThemeProviderProps) {
   );
 }
 
-export const useRootTheme = () => {
-  return React.useContext(RootThemeProviderContext) as Context;
+export const useAppTheme = () => {
+  return React.useContext(
+    RootThemeProviderContext
+  ) as AppThemeProviderContextValue;
 };

@@ -10,7 +10,7 @@ import {
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
-import { RootThemeProvider } from '@/components/ThemeRegistry/RootThemeProvider';
+import { AppThemeProvider } from '@/components/ThemeRegistry/AppThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
 
 import './globals.css';
@@ -36,11 +36,11 @@ export default async function RootLayout({
           <body className={themeFont.className}>
             <RootI18nProvider>
               <RootQueryClientProvider>
-                <RootThemeProvider
+                <AppThemeProvider
                   initialTheme={user.privateMetadata?.selectedTheme}
                 >
                   {children}
-                </RootThemeProvider>
+                </AppThemeProvider>
               </RootQueryClientProvider>
             </RootI18nProvider>
           </body>

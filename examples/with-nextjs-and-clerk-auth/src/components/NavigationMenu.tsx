@@ -32,7 +32,7 @@ import {
 } from '@mui/material';
 import { ThemeSelect } from '@team-monite/sdk-demo';
 
-import { useRootTheme } from '@/components/ThemeRegistry/RootThemeProvider';
+import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
 export const NavigationMenu = () => {
   const [activeMenuItemKey, setActiveMenuItemKey] = useState<
@@ -45,7 +45,7 @@ export const NavigationMenu = () => {
 
   const pathname = usePathname();
 
-  const { selectedTheme, onThemeChange } = useRootTheme();
+  const { selectedTheme, onThemeChange } = useAppTheme();
 
   return (
     <>

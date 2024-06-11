@@ -14,7 +14,7 @@ import {
   UserRoles as UserRolesBase,
 } from '@monite/sdk-react';
 
-import { useRootTheme } from '@/components/ThemeRegistry/RootThemeProvider';
+import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
 export const MoniteProvider = ({
   apiUrl,
@@ -27,7 +27,7 @@ export const MoniteProvider = ({
   entityUserId: string;
   children: ReactNode;
 }) => {
-  const { theme } = useRootTheme();
+  const { theme } = useAppTheme();
 
   const fetchToken = useCallback(async () => {
     /**
