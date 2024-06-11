@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect, useRef } from 'react';
-import { useMeasure } from 'react-use';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -16,7 +15,7 @@ export const SUPPORTED_MIME_TYPES = [
 ];
 
 export interface FileViewerProps {
-  url?: string;
+  url: string;
   mimetype: string;
   name?: string;
   rightIcon?: ReactNode;
@@ -68,19 +67,26 @@ const ErrorComponent = ({
 };
 
 const FileViewerComponent = ({
-  url = '',
+  url,
   mimetype,
   name,
   rightIcon,
   onReloadCallback,
 }: FileViewerProps) => {
-  const [ref] = useMeasure<HTMLDivElement>();
-
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     PDFObject.embed(url, pdfRef.current, {
       fallbackLink: true,
+      pdfOpenParams: {
+        view: 'FitH',
+        scrollBar: 0,
+        statusBar: 0,
+        toolbar: 0,
+        navpanes: 0,
+        pagemode: 'none',
+        messages: 0,
+      },
     });
   }, [url]);
 
@@ -104,7 +110,7 @@ const FileViewerComponent = ({
 
   return (
     <>
-      <Grid container ref={ref}>
+      <Grid container>
         <Grid
           item
           container

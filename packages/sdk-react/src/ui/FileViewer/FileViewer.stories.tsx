@@ -1,21 +1,7 @@
-import { renderToString } from 'react-dom/server';
-
-import i18n from '@/mocks/i18n';
-import { setupI18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
 import { CSSProperties } from '@mui/material/styles/createMixins';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { FileViewer } from './FileViewer';
-
-const customI18n = setupI18n({
-  locale: i18n.locale,
-  messages: {
-    [i18n.locale]: {
-      ...i18n.messages,
-    },
-  },
-});
 
 const meta: Meta<typeof FileViewer> = {
   title: 'Components / FileViewer',
