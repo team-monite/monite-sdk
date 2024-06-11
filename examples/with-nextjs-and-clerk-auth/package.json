@@ -22,7 +22,6 @@
     "@emotion/cache": "~11.11.0",
     "@emotion/react": "~11.11.1",
     "@emotion/styled": "~11.11.0",
-    "@lingui/cli": "~4.7.0",
     "@lingui/core": "~4.7.0",
     "@lingui/macro": "~4.7.0",
     "@lingui/react": "~4.7.0",
@@ -48,6 +47,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "~8.3.1",
+    "@lingui/cli": "~4.7.0",
     "@testing-library/jest-dom": "~6.1.4",
     "@testing-library/react": "~14.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
