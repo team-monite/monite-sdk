@@ -2,6 +2,7 @@
 
 import React, { ReactNode, useCallback, useMemo } from 'react';
 
+import { useLingui } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
@@ -28,6 +29,7 @@ export const MoniteProvider = ({
   children: ReactNode;
 }) => {
   const { theme } = useAppTheme();
+  const { i18n } = useLingui();
 
   const fetchToken = useCallback(async () => {
     /**
@@ -61,9 +63,7 @@ export const MoniteProvider = ({
     <MoniteProviderBase
       monite={monite}
       theme={theme}
-      locale={{
-        code: 'en-US',
-      }}
+      locale={{ code: i18n.locale }}
     >
       {children}
     </MoniteProviderBase>
