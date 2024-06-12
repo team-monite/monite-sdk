@@ -30,8 +30,9 @@ import {
   Stack,
   SvgIconOwnProps,
 } from '@mui/material';
+import { ThemeSelect } from '@team-monite/sdk-demo';
 
-import { ThemeSelect } from '@/components/ThemeSelect';
+import { useRootTheme } from '@/components/ThemeRegistry/RootThemeProvider';
 
 export const NavigationMenu = () => {
   const [activeMenuItemKey, setActiveMenuItemKey] = useState<
@@ -43,6 +44,8 @@ export const NavigationMenu = () => {
   };
 
   const pathname = usePathname();
+
+  const { selectedTheme, onThemeChange } = useRootTheme();
 
   return (
     <>
@@ -120,7 +123,7 @@ export const NavigationMenu = () => {
       </Box>
       <Box>
         <Stack direction="column" mx={2} mb={2}>
-          <ThemeSelect />
+          <ThemeSelect value={selectedTheme} onChange={onThemeChange} />
         </Stack>
       </Box>
     </>

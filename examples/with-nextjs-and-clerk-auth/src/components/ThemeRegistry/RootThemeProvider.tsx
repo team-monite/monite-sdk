@@ -9,21 +9,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 import * as themes from '@team-monite/sdk-themes';
 
-import {
-  PrivateMetadata,
-  SelectedTheme,
-  ThemeMode,
-  ThemeVariant,
-} from '@/lib/clerk-api/types';
+import { PrivateMetadata, SelectedTheme } from '@/lib/clerk-api/types';
 
 import NextAppDirEmotionCacheProvider from './EmotionCache';
 
 type Context = {
-  setThemeMode: (mode: ThemeMode) => void;
-  setThemeVariant: (theme: ThemeVariant) => void;
-  selectedTheme: SelectedTheme;
+  onThemeChange: (themeConfig: ThemeConfig) => void;
+  selectedTheme: ThemeConfig;
   theme: Theme;
 };
 
@@ -73,21 +68,9 @@ export function RootThemeProvider(props: RootThemeProviderProps) {
     },
   });
 
-  const setThemeMode = useCallback(
-    (nextMode: ThemeMode) => {
-      const [theme] = selectedTheme.data;
-      mutateSelectedTheme.mutate([theme, nextMode]);
-    },
-    [mutateSelectedTheme, selectedTheme.data]
-  );
-
-  const setThemeVariant = useCallback(
-    (nextTheme: ThemeVariant) => {
-      const [, mode] = selectedTheme.data;
-      mutateSelectedTheme.mutate([nextTheme, mode]);
-    },
-    [mutateSelectedTheme, selectedTheme.data]
-  );
+  const onThemeChange = useCallback((themeConfig: ThemeConfig) => {
+    //
+  }, []);
 
   const theme = useMemo(() => {
     const [currentTheme, currentMode] = selectedTheme.data;
@@ -110,9 +93,8 @@ export function RootThemeProvider(props: RootThemeProviderProps) {
   return (
     <RootThemeProviderContext.Provider
       value={{
-        setThemeMode,
-        setThemeVariant,
-        selectedTheme: selectedTheme.data,
+        onThemeChange,
+        selectedTheme: { variant: 'monite', mode: 'dark' },
         theme,
       }}
     >

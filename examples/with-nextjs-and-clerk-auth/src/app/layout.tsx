@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import { ClerkProvider, MultisessionAppSupport } from '@clerk/nextjs';
 
+import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
 import { RootThemeProvider } from '@/components/ThemeRegistry/RootThemeProvider';
 import { themeFont } from '@/components/ThemeRegistry/themeFont';
@@ -30,11 +31,13 @@ export default async function RootLayout({
       <MultisessionAppSupport>
         <html lang="en">
           <body className={themeFont.className}>
-            <RootQueryClientProvider>
-              <RootThemeProvider initialTheme={metadata?.selectedTheme}>
-                {children}
-              </RootThemeProvider>
-            </RootQueryClientProvider>
+            <RootI18nProvider>
+              <RootQueryClientProvider>
+                <RootThemeProvider initialTheme={metadata?.selectedTheme}>
+                  {children}
+                </RootThemeProvider>
+              </RootQueryClientProvider>
+            </RootI18nProvider>
           </body>
         </html>
       </MultisessionAppSupport>

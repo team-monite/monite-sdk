@@ -1,0 +1,18 @@
+#: src/components/Layout/ThemeSelect.tsx:80
+msgid "Dark Mode"
+msgstr "Dark Mode"
+
+#: src/components/Layout/ThemeSelect.tsx:25
+#: src/components/Layout/ThemeSelect.tsx:29
+#: src/components/Layout/ThemeSelect.tsx:62
+msgid "Material UI"
+msgstr "Material UI"
+
+#: src/components/Layout/ThemeSelect.tsx:27
+#: src/components/Layout/ThemeSelect.tsx:68
+msgid "Monite"
+msgstr "Monite"
+
+#: src/components/Layout/ThemeSelect.tsx:55
+msgid "Theme"
+msgstr "Theme"

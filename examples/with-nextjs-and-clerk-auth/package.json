@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "webhook-relay": "smee --url $CLERK_WEBHOOK_DEV_RELAY_URL --port 3000 --path /api/in/clerk",
     "build:demo-data-generator": "tsup-node ./src/lib/monite-api/demo-data-generator/bin.ts --format esm --target esnext --sourcemap",
-    "demo-data-generator": "node dist/bin.js"
+    "demo-data-generator": "node dist/bin.js",
+    "extract-translations": "lingui extract --config lingui.config.cjs",
+    "compile-translations": "lingui compile --config lingui.config.cjs"
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "4.13.7",
@@ -20,6 +22,10 @@
     "@emotion/cache": "~11.11.0",
     "@emotion/react": "~11.11.1",
     "@emotion/styled": "~11.11.0",
+    "@lingui/cli": "~4.7.0",
+    "@lingui/core": "~4.7.0",
+    "@lingui/macro": "~4.7.0",
+    "@lingui/react": "~4.7.0",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
     "@mui/icons-material": "~5.14.3",

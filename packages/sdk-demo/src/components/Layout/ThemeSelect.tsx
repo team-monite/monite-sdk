@@ -5,10 +5,12 @@ import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useMenuButton } from '@monite/sdk-react';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import {
+  DarkMode,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  LightMode,
+} from '@mui/icons-material';
 import {
   Button,
   Typography,
@@ -46,8 +48,8 @@ export const ThemeSelect = ({ value, onChange }: ThemeSelectorProps) => {
       <Button
         {...buttonProps}
         sx={{ justifyContent: 'space-between' }}
-        startIcon={themeMode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-        endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        startIcon={themeMode === 'dark' ? <DarkMode /> : <LightMode />}
+        endIcon={open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         variant="outlined"
       >
         {getButtonLabel(themeVariant, i18n)}
