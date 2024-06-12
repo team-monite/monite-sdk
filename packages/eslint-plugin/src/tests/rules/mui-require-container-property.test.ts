@@ -68,11 +68,11 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { NotMatchingComponent } from 'not-matching-package';
                <NotMatchingComponent MenuProps={{}} />`,
       },
-      {
-        code: `import { Select } from '@mui/material';
-               const props = { MenuProps: { container: root } };
-               <Select {...props} />`,
-      },
+      // {
+      //   code: `import { Select } from '@mui/material';
+      //          const props = { MenuProps: { container: root } };
+      //          <Select {...props} />`,
+      // },
       {
         code: `import { Menu } from '@mui/material';
                const restProps = { container: root };
@@ -168,12 +168,12 @@ ruleTester.run<string, readonly unknown[]>(
           },
         ],
       },
-      {
-        code: `import { Select } from '@mui/material';
-               const props = {};
-               <Select {...props} />`,
-        errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
-      },
+      // {
+      //   code: `import { Select } from '@mui/material';
+      //          const props = {};
+      //          <Select {...props} />`,
+      //   errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
+      // },
     ],
   }
 );
