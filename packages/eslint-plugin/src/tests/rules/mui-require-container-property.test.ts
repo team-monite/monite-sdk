@@ -68,11 +68,6 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { NotMatchingComponent } from 'not-matching-package';
                <NotMatchingComponent MenuProps={{}} />`,
       },
-      // {
-      //   code: `import { Select } from '@mui/material';
-      //          const props = { MenuProps: { container: root } };
-      //          <Select {...props} />`,
-      // },
       {
         code: `import { Menu } from '@mui/material';
                const restProps = { container: root };
@@ -82,6 +77,10 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { Menu } from '@mui/material';
                const props = { other: 'value' };
                <Menu {...props} container={root} />`,
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+               <Menu SelectProps={{ MenuProps: { container: root } }} />`,
       },
     ],
 
@@ -168,12 +167,41 @@ ruleTester.run<string, readonly unknown[]>(
           },
         ],
       },
-      // {
-      //   code: `import { Select } from '@mui/material';
-      //          const props = {};
-      //          <Select {...props} />`,
-      //   errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
-      // },
+      {
+        code: `import { Menu } from '@mui/material';
+               <Menu SelectProps={{ }} />`,
+        errors: [{ messageId: 'selectPropsMenuPropsContainerPropertyMissing' }],
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+           const props = { container: root };
+           <Menu {...props} />`,
+        errors: [{ messageId: 'containerPropertyMissing' }],
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+           const nestedProps = { props: { container: root } };
+           <Menu {...nestedProps.props} />`,
+        errors: [{ messageId: 'containerPropertyMissing' }],
+      },
+      {
+        code: `import { TextField } from '@mui/material';
+           const selectProps = { MenuProps: { container: root } };
+           <TextField select SelectProps={{ ...selectProps }} />`,
+        errors: [{ messageId: 'selectPropsMenuPropsContainerPropertyMissing' }],
+      },
+      {
+        code: `import { Select } from '@mui/material';
+           const menuProps = { container: root };
+           <Select MenuProps={{ ...menuProps }} />`,
+        errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
+      },
+      {
+        code: `import { DatePicker } from '@mui/x-date-pickers';
+           const slotProps = { popper: { container: root } };
+           <DatePicker slotProps={{ ...slotProps }} />`,
+        errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
+      },
     ],
   }
 );
