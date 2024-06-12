@@ -5,6 +5,8 @@ import { toast } from 'react-hot-toast';
 
 import { useAuth } from '@clerk/nextjs';
 import { Theme } from '@emotion/react';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
@@ -36,6 +38,7 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
     props;
 
   const { userId } = useAuth();
+  const { i18n } = useLingui();
 
   const queryClient = useQueryClient();
 
@@ -87,7 +90,7 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
       }
 
       toast.error(
-        'We were unable to save your theme selection, please try again.',
+        t(i18n)`We were unable to save your theme selection, please try again.`,
         { position: 'bottom-right' }
       );
     },
