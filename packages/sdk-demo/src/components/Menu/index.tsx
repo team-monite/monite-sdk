@@ -27,7 +27,7 @@ export const Menu = () => {
   };
 
   return (
-    <List>
+    <List sx={{ width: '100%' }}>
       {Object.keys(navigationData).map((key) => {
         const item = navigationData[key];
 
