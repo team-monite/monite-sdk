@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
 import type {
   RuleRecommendation,
   RuleModule,
@@ -201,11 +202,30 @@ const ruleModule: RuleModule<string, Options> = {
 
         if (!muiImportedComponents[componentName]) return;
 
-        jsxOpeningElementNode.attributes.forEach((attribute) => {
-          if (attribute.type === 'JSXSpreadAttribute') {
-            handleSpreadAttribute(attribute);
+        const spreadAttribute = jsxOpeningElementNode.attributes.find(
+          (attribute): attribute is TSESTree.JSXSpreadAttribute =>
+            attribute.type === 'JSXSpreadAttribute'
+        );
+
+        if (spreadAttribute) {
+          let spreadVariableName: string | null = null;
+
+          if (spreadAttribute.argument.type === 'Identifier') {
+            spreadVariableName = spreadAttribute.argument.name;
+          } else if (
+            spreadAttribute.argument.type === 'MemberExpression' &&
+            spreadAttribute.argument.property.type === 'Identifier'
+          ) {
+            spreadVariableName = spreadAttribute.argument.property.name;
           }
-        });
+
+          if (
+            spreadVariableName === 'menuProps' ||
+            spreadVariableName === 'restProps'
+          ) {
+            return;
+          }
+        }
 
         const slotPropsPopperContainerPropertyMissingComponentItem =
           componentsByRule.slotPropsPopperContainerPropertyMissing.find(
@@ -398,16 +418,6 @@ function getIdentifierName(
   return (
     jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name
   );
-}
-
-function handleSpreadAttribute(attribute: TSESTree.JSXSpreadAttribute) {
-  if (attribute.argument.type === 'Identifier') {
-    const sourceName = (attribute.argument as TSESTree.Identifier).name;
-
-    if (sourceName === 'menuProps') {
-      return;
-    }
-  }
 }
 
 type Option = {
