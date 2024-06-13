@@ -173,7 +173,7 @@ msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:303
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:329
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:328
 msgid "Add item"
 msgstr "Add item"
 
@@ -307,10 +307,10 @@ msgid "American Samoa"
 msgstr "American Samoa"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
-#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:77
+#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:67
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:205
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:209
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:223
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:222
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:39
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:256
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:240
@@ -405,7 +405,7 @@ msgstr "Approval request"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:527
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:85
 #: src/components/userRoles/consts.ts:73
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:324
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:198
 msgid "Approve"
 msgstr "Approve"
 
@@ -533,7 +533,7 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:164
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:168
 msgid "Back"
 msgstr "Back"
 
@@ -609,8 +609,8 @@ msgid "Bank account"
 msgstr "Bank account"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:124
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:325
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:331
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:322
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:328
 msgid "Bank Account"
 msgstr "Bank Account"
 
@@ -718,7 +718,7 @@ msgid "Boat Rentals and Leases"
 msgstr "Boat Rentals and Leases"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:220
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:224
 msgid "Body"
 msgstr "Body"
 
@@ -917,7 +917,7 @@ msgstr "Canadian Dollar"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:401
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:69
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:91
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:63
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:60
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:121
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:185
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:533
@@ -926,11 +926,11 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:267
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:26
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:85
-#: src/components/tags/TagFormModal/TagFormModal.tsx:174
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:105
+#: src/components/tags/TagFormModal/TagFormModal.tsx:203
 #: src/components/userRoles/consts.ts:76
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:332
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:550
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:206
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:426
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1132,7 +1132,7 @@ msgstr "Close invoice details"
 msgid "Close payable details"
 msgstr "Close payable details"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:477
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:349
 msgid "Close role details"
 msgstr "Close role details"
 
@@ -1201,7 +1201,7 @@ msgstr "Company name"
 msgid "Company name is required"
 msgstr "Company name is required"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:165
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:169
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:294
 msgid "Compose email"
 msgstr "Compose email"
@@ -1339,9 +1339,9 @@ msgid "Counseling Services"
 msgstr "Counseling Services"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:195
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:284
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:290
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:88
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:281
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:287
 #: src/components/payables/PayablesTable/PayablesTable.tsx:234
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:121
@@ -1357,7 +1357,7 @@ msgstr "Counterpart “{0}” was created."
 msgid "Counterpart “{0}” was updated."
 msgstr "Counterpart “{0}” was updated."
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:90
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:91
 msgid "Counterpart bank account"
 msgstr "Counterpart bank account"
 
@@ -1383,7 +1383,7 @@ msgstr "Counterpart was deleted."
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:34
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:43
-#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:104
+#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:94
 #: src/components/counterparts/Counterparts.tsx:111
 msgid "Counterparts"
 msgstr "Counterparts"
@@ -1441,11 +1441,11 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:23
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:87
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:119
-#: src/components/tags/TagFormModal/TagFormModal.tsx:184
+#: src/components/tags/TagFormModal/TagFormModal.tsx:213
 #: src/components/userRoles/consts.ts:69
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:73
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:308
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:562
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:182
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:438
 msgid "Create"
 msgstr "Create"
 
@@ -1470,7 +1470,7 @@ msgid "Create Counterpart – Company"
 msgstr "Create Counterpart – Company"
 
 #: src/components/userRoles/consts.ts:75
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:340
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:214
 msgid "Create from mail"
 msgstr "Create from mail"
 
@@ -1511,14 +1511,14 @@ msgstr "Create New Product"
 msgid "Create New Product Close"
 msgstr "Create New Product Close"
 
-#: src/components/tags/Tags.test.tsx:34
-#: src/components/tags/Tags.test.tsx:70
-#: src/components/tags/Tags.test.tsx:107
+#: src/components/tags/Tags.test.tsx:20
+#: src/components/tags/Tags.test.tsx:44
+#: src/components/tags/Tags.test.tsx:68
 #: src/components/tags/Tags.tsx:65
 msgid "Create new tag"
 msgstr "Create new tag"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:151
+#: src/components/tags/TagFormModal/TagFormModal.tsx:180
 msgid "Create New Tag"
 msgstr "Create New Tag"
 
@@ -1526,7 +1526,7 @@ msgstr "Create New Tag"
 msgid "Create product or service"
 msgstr "Create product or service"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:470
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:342
 msgid "Create User Role"
 msgstr "Create User Role"
 
@@ -1554,7 +1554,7 @@ msgid "Created by"
 msgstr "Created by"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:53
-#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:95
+#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:85
 msgid "Created by user"
 msgstr "Created by user"
 
@@ -1591,7 +1591,7 @@ msgid "Cuba"
 msgstr "Cuba"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:24
-#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:86
+#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:76
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:21
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:109
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:52
@@ -1691,7 +1691,7 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:343
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:375
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:472
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:79
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:76
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:233
 #: src/components/products/Products.test.tsx:163
 #: src/components/products/Products.test.tsx:190
@@ -1703,14 +1703,14 @@ msgstr "Declined"
 #: src/components/TableActions/TableActions.tsx:61
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:53
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:86
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:93
-#: src/components/tags/TagsTable/TagsTable.test.tsx:317
-#: src/components/tags/TagsTable/TagsTable.test.tsx:393
-#: src/components/tags/TagsTable/TagsTable.test.tsx:424
-#: src/components/tags/TagsTable/TagsTable.test.tsx:455
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:113
+#: src/components/tags/TagsTable/TagsTable.test.tsx:306
+#: src/components/tags/TagsTable/TagsTable.test.tsx:382
+#: src/components/tags/TagsTable/TagsTable.test.tsx:413
+#: src/components/tags/TagsTable/TagsTable.test.tsx:444
 #: src/components/tags/TagsTable/TagsTable.tsx:219
 #: src/components/userRoles/consts.ts:71
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:316
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:190
 msgid "Delete"
 msgstr "Delete"
 
@@ -1719,7 +1719,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Delete"
 msgstr "Delete"
 
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:75
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:95
 msgid "Delete \"{0}\" tag?"
 msgstr "Delete \"{0}\" tag?"
 
@@ -1747,7 +1747,7 @@ msgstr "Delete Counterpart \"{0}\"?"
 msgid "Delete invoice"
 msgstr "Delete invoice"
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:53
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:50
 msgid "Delete Product \"{0}\"?"
 msgstr "Delete Product \"{0}\"?"
 
@@ -1759,7 +1759,7 @@ msgstr "Delete receivable \"{0}\"?"
 msgid "Delete receivable?"
 msgstr "Delete receivable?"
 
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:70
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:90
 msgid "Delete tag"
 msgstr "Delete tag"
 
@@ -1798,7 +1798,7 @@ msgstr "Description"
 msgid "Description:"
 msgstr "Description:"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:254
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:251
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:140
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:90
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:95
@@ -1943,8 +1943,8 @@ msgstr "Drugs, Drug Proprietaries, and Druggist Sundries"
 msgid "Dry Cleaners"
 msgstr "Dry Cleaners"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:94
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:404
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:95
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:401
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:192
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:90
 #: src/components/receivables/Filters/Filters.tsx:145
@@ -2018,12 +2018,12 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:259
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:256
 #: src/components/TableActions/TableActions.tsx:52
-#: src/components/tags/TagsTable/TagsTable.test.tsx:389
-#: src/components/tags/TagsTable/TagsTable.test.tsx:420
-#: src/components/tags/TagsTable/TagsTable.test.tsx:451
+#: src/components/tags/TagsTable/TagsTable.test.tsx:378
+#: src/components/tags/TagsTable/TagsTable.test.tsx:409
+#: src/components/tags/TagsTable/TagsTable.test.tsx:440
 #: src/components/tags/TagsTable/TagsTable.tsx:210
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:38
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:544
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:420
 msgid "Edit"
 msgstr "Edit"
 
@@ -2058,15 +2058,15 @@ msgstr "Edit Product"
 msgid "Edit Product Close"
 msgstr "Edit Product Close"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:132
+#: src/components/tags/TagFormModal/TagFormModal.tsx:161
 msgid "Edit tag"
 msgstr "Edit tag"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:151
+#: src/components/tags/TagFormModal/TagFormModal.tsx:180
 msgid "Edit tag ”{0}”"
 msgstr "Edit tag ”{0}”"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:469
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:341
 msgid "Edit User Role"
 msgstr "Edit User Role"
 
@@ -2269,7 +2269,7 @@ msgstr "Failed to delete product."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/ui/FileViewer/FileViewer.tsx:45
+#: src/ui/FileViewer/FileViewer.tsx:40
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
@@ -2531,7 +2531,7 @@ msgstr "Glassware, Crystal Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:246
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:113
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetails/ExistingApprovalPolicyDetails.tsx:156
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:505
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:381
 msgid "Go to Docs"
 msgstr "Go to Docs"
 
@@ -2737,7 +2737,7 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
-#: src/ui/FileViewer/FileViewer.tsx:52
+#: src/ui/FileViewer/FileViewer.tsx:47
 msgid "If the error recurs, contact support."
 msgstr "If the error recurs, contact support."
 
@@ -2790,7 +2790,7 @@ msgstr "Industry"
 msgid "Information Retrieval Services"
 msgstr "Information Retrieval Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:338
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:328
 msgid "information..."
 msgstr "information..."
 
@@ -2810,7 +2810,7 @@ msgstr "Intra-Company Purchases"
 msgid "INV-auto"
 msgstr "INV-auto"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:93
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:94
 msgid "Invalid date"
 msgstr "Invalid date"
 
@@ -2835,7 +2835,7 @@ msgstr "Invoice {documentId}"
 msgid "Invoice #"
 msgstr "Invoice #"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:377
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:374
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:69
 #: src/components/payables/PayablesTable/PayablesTable.tsx:244
 msgid "Invoice date"
@@ -2854,8 +2854,8 @@ msgstr "Invoice not found"
 msgid "Invoice number"
 msgstr "Invoice number"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:85
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:265
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:86
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:262
 msgid "Invoice Number"
 msgstr "Invoice Number"
 
@@ -2914,7 +2914,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:181
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:185
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice.tsx:122
 msgid "Issue and send"
 msgstr "Issue and send"
@@ -2974,41 +2974,41 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:219
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:218
 msgid "Item"
 msgstr "Item"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:101
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:102
 msgid "Item name"
 msgstr "Item name"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:111
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:112
 msgid "Item price"
 msgstr "Item price"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:114
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:115
 msgid "Item price must be a number"
 msgstr "Item price must be a number"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:105
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:106
 msgid "Item quantity"
 msgstr "Item quantity"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:108
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:109
 msgid "Item quantity must be a number"
 msgstr "Item quantity must be a number"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:117
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:118
 msgid "Item tax"
 msgstr "Item tax"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:121
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:122
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:464
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:461
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:275
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:207
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:206
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:91
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:27
 msgid "Items"
@@ -3521,9 +3521,9 @@ msgstr "Myanmar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:60
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:99
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:33
-#: src/components/tags/TagFormModal/TagFormModal.tsx:161
+#: src/components/tags/TagFormModal/TagFormModal.tsx:190
 #: src/components/tags/TagsTable/TagsTable.tsx:169
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:490
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:366
 #: src/components/userRoles/UserRoleDetails/validation.ts:10
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:168
 msgid "Name"
@@ -3538,7 +3538,7 @@ msgstr "Name *"
 msgid "Name, country, city"
 msgstr "Name, country, city"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:202
+#: src/components/products/ProductsTable/ProductsTable.tsx:205
 msgid "Name, description"
 msgstr "Name, description"
 
@@ -3602,7 +3602,7 @@ msgstr "New incoming invoice"
 msgid "New Invoice"
 msgstr "New Invoice"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:97
+#: src/components/tags/TagFormModal/TagFormModal.tsx:128
 msgid "New tag “{0}” created"
 msgstr "New tag “{0}” created"
 
@@ -3656,7 +3656,7 @@ msgstr "Niue"
 msgid "No"
 msgstr "No"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:81
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:85
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
@@ -3903,7 +3903,7 @@ msgstr "Pawn Shops"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:96
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:49
 #: src/components/userRoles/consts.ts:74
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:328
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:202
 msgid "Pay"
 msgstr "Pay"
 
@@ -3925,6 +3925,7 @@ msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
 #: src/components/payables/Payables.tsx:97
+#: src/Payables.tsx:47
 msgid "Payables"
 msgstr "Payables"
 
@@ -3982,7 +3983,7 @@ msgstr "Pending"
 msgid "Percent ownership"
 msgstr "Percent ownership"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:498
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:374
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:174
 msgid "Permissions"
 msgstr "Permissions"
@@ -4122,7 +4123,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/ui/FileViewer/FileViewer.tsx:49
+#: src/ui/FileViewer/FileViewer.tsx:44
 msgid "Please try to reload."
 msgstr "Please try to reload."
 
@@ -4192,7 +4193,7 @@ msgstr "Previous page"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:283
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:102
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:121
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:222
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:221
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:70
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:73
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:101
@@ -4202,7 +4203,7 @@ msgstr "Price"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:148
 #: src/components/products/ProductDetails/validation.ts:43
-#: src/components/products/ProductsTable/ProductsTable.tsx:229
+#: src/components/products/ProductsTable/ProductsTable.tsx:232
 msgid "Price per unit"
 msgstr "Price per unit"
 
@@ -4263,7 +4264,7 @@ msgstr "Product was deleted."
 msgid "Products"
 msgstr "Products"
 
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:48
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:45
 msgid "Products delete confirmation"
 msgstr "Products delete confirmation"
 
@@ -4316,7 +4317,7 @@ msgstr "Qatari Rial"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:282
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:57
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:220
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:219
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:32
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:100
 msgid "Quantity"
@@ -4343,7 +4344,7 @@ msgid "Railroads"
 msgstr "Railroads"
 
 #: src/components/userRoles/consts.ts:68
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:304
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:178
 msgid "Read"
 msgstr "Read"
 
@@ -4427,7 +4428,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/ui/FileViewer/FileViewer.tsx:61
+#: src/ui/FileViewer/FileViewer.tsx:56
 msgid "Reload"
 msgstr "Reload"
 
@@ -4440,7 +4441,7 @@ msgid "Removing an executive role from this person is not allowed"
 msgstr "Removing an executive role from this person is not allowed"
 
 #: src/components/userRoles/consts.ts:77
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:336
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:210
 msgid "Reopen"
 msgstr "Reopen"
 
@@ -4448,7 +4449,7 @@ msgstr "Reopen"
 msgid "Replace items"
 msgstr "Replace items"
 
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:299
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:174
 msgid "Resource name"
 msgstr "Resource name"
 
@@ -4595,8 +4596,8 @@ msgstr "Saudi Riyal"
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:61
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:157
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:224
-#: src/components/tags/TagFormModal/TagFormModal.tsx:184
-#: src/components/tags/TagsTable/TagsTable.test.tsx:296
+#: src/components/tags/TagFormModal/TagFormModal.tsx:213
+#: src/components/tags/TagsTable/TagsTable.test.tsx:285
 msgid "Save"
 msgstr "Save"
 
@@ -4909,7 +4910,7 @@ msgid "Status Name"
 msgstr "Status"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:198
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:202
 msgid "Subject"
 msgstr "Subject"
 
@@ -4918,7 +4919,7 @@ msgstr "Subject"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:443
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:74
 #: src/components/userRoles/consts.ts:72
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:320
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:194
 msgid "Submit"
 msgstr "Submit"
 
@@ -4930,9 +4931,9 @@ msgstr "Submit invoice"
 msgid "Submitted"
 msgstr "Submitted"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:475
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:472
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:337
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:357
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:356
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:159
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:34
 msgid "Subtotal"
@@ -5002,16 +5003,16 @@ msgstr "Syrian Arab Republic"
 msgid "Tag"
 msgstr "Tag"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:115
+#: src/components/tags/TagFormModal/TagFormModal.tsx:144
 msgid "Tag “{0}” renamed to “{1}”"
 msgstr "Tag “{0}” renamed to “{1}”"
 
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:55
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:75
 msgid "Tag “{0}” was deleted"
 msgstr "Tag “{0}” was deleted"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:113
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:444
+#: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:103
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:441
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:239
 #: src/components/tags/Tags.tsx:53
 msgid "Tags"
@@ -5098,12 +5099,12 @@ msgstr "Tax Preparation Services"
 msgid "Tax Registration Number (UAE)"
 msgstr "Tax Registration Number (UAE)"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:489
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:486
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:348
 msgid "Taxes"
 msgstr "Taxes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:359
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:358
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -5226,9 +5227,9 @@ msgstr "There was an issue reading the file."
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:51
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:454
-#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:57
+#: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:56
-#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:79
+#: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:99
 msgid "This action can't be undone."
 msgstr "This action can't be undone."
 
@@ -5301,9 +5302,9 @@ msgstr "Tonga"
 msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
-#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:503
+#: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:500
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:359
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:363
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:362
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:181
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:42
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:28
@@ -5415,7 +5416,7 @@ msgstr "Tuvalu"
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:82
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:42
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:45
-#: src/components/products/ProductsTable/ProductsTable.tsx:218
+#: src/components/products/ProductsTable/ProductsTable.tsx:221
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:55
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:58
 msgid "Type"
@@ -5504,14 +5505,15 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductDetails/validation.ts:33
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:80
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
-#: src/components/products/ProductsTable/ProductsTable.tsx:244
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:221
+#: src/components/products/ProductsTable/ProductsTable.tsx:247
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:220
 msgid "Units"
 msgstr "Units"
 
 #: src/core/utils/useVatTypes.ts:14
 #: src/core/utils/useVatTypes.ts:16
 #: src/core/utils/useVatTypes.ts:209
+#: src/utils/getAPIErrorMessage.ts:16
 msgid "Unknown"
 msgstr "Unknown"
 
@@ -5533,8 +5535,8 @@ msgstr "Unsupported file type"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:177
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:49
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:312
-#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:562
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:186
+#: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:438
 msgid "Update"
 msgstr "Update"
 
@@ -5566,7 +5568,7 @@ msgstr "Updated at"
 msgid "Updated on"
 msgstr "Updated on"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:335
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:325
 msgid "Updating the invoice"
 msgstr "Updating the invoice"
 
@@ -5678,7 +5680,7 @@ msgstr "Value Added Tax (Ukraine)"
 msgid "Value Added Tax (United Kingdom)"
 msgstr "Value Added Tax (United Kingdom)"
 
-#: src/components/tags/TagFormModal/TagFormModal.tsx:33
+#: src/components/tags/TagFormModal/TagFormModal.tsx:34
 msgid "Value must be at most {255} characters"
 msgstr "Value must be at most {255} characters"
 
@@ -5694,7 +5696,7 @@ msgstr "Vanuatu Vatu"
 msgid "Variety Stores"
 msgstr "Variety Stores"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:224
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:223
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:52
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:56
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:48
@@ -5713,7 +5715,7 @@ msgstr "Vat “{0}” was updated."
 msgid "VAT {0}%"
 msgstr "VAT {0}%"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:344
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:343
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
@@ -5917,7 +5919,7 @@ msgstr "You can not create receivable with a type other than \"{0}\""
 msgid "You do not have permission to access this resource."
 msgstr "You do not have permission to access this resource."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:356
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:345
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
