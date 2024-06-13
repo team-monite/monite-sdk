@@ -3,9 +3,6 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
-  compiler: {
-    emotion: true,
-  },
 };
 
 export default nextConfig;

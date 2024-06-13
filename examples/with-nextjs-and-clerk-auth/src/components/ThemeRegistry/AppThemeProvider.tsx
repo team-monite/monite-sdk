@@ -14,8 +14,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 import * as themes from '@team-monite/sdk-themes';
 
-import NextAppDirEmotionCacheProvider from './EmotionCache';
-
 type AppThemeProviderContextValue = {
   onThemeChange: (themeConfig: ThemeConfig) => void;
   selectedTheme: ThemeConfig;
@@ -128,12 +126,10 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
     <RootThemeProviderContext.Provider
       value={{ onThemeChange, selectedTheme: selectedTheme.data, theme }}
     >
-      <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
-      </NextAppDirEmotionCacheProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </RootThemeProviderContext.Provider>
   );
 }
