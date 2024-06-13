@@ -2,7 +2,6 @@
 
 import React, { ReactNode } from 'react';
 
-import { css, useTheme } from '@emotion/react';
 import { Box, Drawer } from '@mui/material';
 
 import { NavigationMenu } from '@/components/NavigationMenu';
@@ -10,8 +9,6 @@ import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const theme = useTheme();
-
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
@@ -27,19 +24,19 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         variant="permanent"
         anchor="left"
       >
-        <div
-          css={css`
-            display: flex;
-            padding: ${theme.spacing(2)};
-            gap: ${theme.spacing(2)};
-            align-items: flex-start;
-            box-sizing: border-box;
-            z-index: 10;
-          `}
+        <Box
+          sx={{
+            display: 'flex',
+            padding: 2,
+            gap: 2,
+            alignItems: 'flex-start',
+            boxSizing: 'border-box',
+            zIndex: 10,
+          }}
         >
           <UserButton />
           <OrganizationSwitcher />
-        </div>
+        </Box>
 
         <NavigationMenu />
       </Drawer>
