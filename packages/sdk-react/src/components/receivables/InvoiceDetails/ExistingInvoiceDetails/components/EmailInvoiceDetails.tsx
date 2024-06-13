@@ -1,8 +1,7 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
-import { getEmailInvoiceDetailsSchema } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIssueReceivableById, useSendReceivableById } from '@/core/queries';
@@ -13,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   PaymentAccountType,
+  PaymentMethodDirection,
   PaymentMethodStatus,
   PaymentObjectType,
 } from '@monite/sdk-api';
@@ -27,6 +27,8 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+
+import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
 
 interface EmailInvoiceDetailsProps {
   invoiceId: string;
@@ -68,7 +70,9 @@ const EmailInvoiceDetailsBase = ({
       handleSubmit(async (values) => {
         const availablePaymentMethods = paymentMethods
           ? paymentMethods.data.filter(
-              (method) => method.status === PaymentMethodStatus.ACTIVE
+              ({ status, direction }) =>
+                status === PaymentMethodStatus.ACTIVE &&
+                direction === PaymentMethodDirection.RECEIVE
             )
           : [];
 
