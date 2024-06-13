@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     instrumentationHook: true,
+    swcPlugins: [['@lingui/swc-plugin', {}]],
   },
 };
 
