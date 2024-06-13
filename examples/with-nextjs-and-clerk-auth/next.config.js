@@ -2,6 +2,7 @@
 const nextConfig = {
   experimental: {
     instrumentationHook: true,
+    swcPlugins: [['@lingui/swc-plugin', {}]],
   },
   compiler: {
     emotion: true,
@@ -9,7 +10,12 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;
-    config.resolve.fallback = { fs: false, module: false };
+
+    config.module.rules.push({
+      test: /\.po$/,
+      use: { loader: '@lingui/loader' },
+    });
+
     return config;
   },
 };
