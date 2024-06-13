@@ -16,7 +16,7 @@
   ],
   "rules": {
     "import/no-unresolved": "error",
-    "@team-monite/mui-require-container-property": "off"
+    "@team-monite/mui-require-container-property": "error"
   },
   "settings": {
     "import/resolver": {
@@ -70,9 +70,7 @@
       }
     },
     {
-      "files": [
-        "src/mocks/entityUsers/entityUserByIdFixture.ts"
-      ],
+      "files": ["src/mocks/entityUsers/entityUserByIdFixture.ts"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": "off"
       }

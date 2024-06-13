@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
 import type {
   RuleRecommendation,
   RuleModule,
@@ -200,6 +201,31 @@ const ruleModule: RuleModule<string, Options> = {
         const componentName = getIdentifierName(jsxOpeningElementNode.name);
 
         if (!muiImportedComponents[componentName]) return;
+
+        const spreadAttribute = jsxOpeningElementNode.attributes.find(
+          (attribute): attribute is TSESTree.JSXSpreadAttribute =>
+            attribute.type === 'JSXSpreadAttribute'
+        );
+
+        if (spreadAttribute) {
+          let spreadVariableName: string | null = null;
+
+          if (spreadAttribute.argument.type === 'Identifier') {
+            spreadVariableName = spreadAttribute.argument.name;
+          } else if (
+            spreadAttribute.argument.type === 'MemberExpression' &&
+            spreadAttribute.argument.property.type === 'Identifier'
+          ) {
+            spreadVariableName = spreadAttribute.argument.property.name;
+          }
+
+          if (
+            spreadVariableName === 'menuProps' ||
+            spreadVariableName === 'restProps'
+          ) {
+            return;
+          }
+        }
 
         const slotPropsPopperContainerPropertyMissingComponentItem =
           componentsByRule.slotPropsPopperContainerPropertyMissing.find(

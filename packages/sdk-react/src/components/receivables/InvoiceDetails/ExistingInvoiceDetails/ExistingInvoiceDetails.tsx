@@ -63,6 +63,7 @@ const StyledMenu = styled((props: MenuProps) => {
         vertical: 'top',
         horizontal: 'right',
       }}
+      container={props.container}
       {...props}
     />
   );

@@ -184,7 +184,15 @@ const RootGrid = styled(
 
 const StyledSelect = styled(
   forwardRef<HTMLDivElement, SelectProps<string>>(({ ...restProps }, ref) => {
-    return <Select ref={ref} {...restProps} />;
+    return (
+      <Select
+        ref={ref}
+        {...restProps}
+        MenuProps={{
+          container: document.body,
+        }}
+      />
+    );
   }),
   {
     name: componentName,

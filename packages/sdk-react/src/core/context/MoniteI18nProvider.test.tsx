@@ -142,7 +142,7 @@ describe('MoniteI18nProvider DatePicker', () => {
   test('should render "DE" format in DatePicker', async () => {
     renderWithClient(
       <SpecificI18nLoader code="de-DE">
-        <DatePicker open />
+        <DatePicker open slotProps={{ popper: { container: null } }} />
       </SpecificI18nLoader>
     );
 
@@ -155,7 +155,7 @@ describe('MoniteI18nProvider DatePicker', () => {
   test('should render "US" format in DatePicker', async () => {
     renderWithClient(
       <SpecificI18nLoader code="en-US">
-        <DatePicker open />
+        <DatePicker open slotProps={{ popper: { container: null } }} />
       </SpecificI18nLoader>
     );
 

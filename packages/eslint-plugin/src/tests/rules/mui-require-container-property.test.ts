@@ -29,12 +29,23 @@ ruleTester.run<string, readonly unknown[]>(
         ],
       },
       {
+        code: `import { useMenuButton } from '@/core/hooks';
+        import { Menu } from '@mui/material';
+        const { menuProps } = useMenuButton();
+        <Menu {...menuProps} />`,
+      },
+      {
         code: `import { DatePicker } from '@mui/x-date-pickers';
                <DatePicker slotProps={{ popper: { container: root } }} />`,
       },
       {
         code: `import { DatePicker } from 'my-custom-mui-datepicker';
                <DatePicker />`,
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+           const config = { menuProps: { container: 'root' } };
+           <Menu {...config.menuProps} />`,
       },
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
@@ -152,6 +163,19 @@ ruleTester.run<string, readonly unknown[]>(
             ],
           },
         ],
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+           const props = { someOtherProps: {} };
+           <Menu {...props} />`,
+        errors: [{ messageId: 'containerPropertyMissing' }],
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+           const myProps = { menuProps: { someKey: 'value' } };
+           const container = { menuProps: myProps.menuProps };
+           <Menu {...container} />`,
+        errors: [{ messageId: 'containerPropertyMissing' }],
       },
     ],
   }
