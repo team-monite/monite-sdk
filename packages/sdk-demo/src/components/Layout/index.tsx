@@ -81,16 +81,11 @@ export const DefaultLayout = ({
               </Box>
             )}
           </Box>
-          <Menu />
-          <Box
-            sx={{
-              width: '100%',
-              position: 'absolute',
-              bottom: 0,
-              p: 2,
-            }}
-          >
-            <Stack direction="column" spacing={2} ml={2}>
+          <Box display="flex" sx={{ flex: 1 }}>
+            <Menu />
+          </Box>
+          <Box>
+            <Stack direction="column" spacing={2} mx={2} mb={2}>
               {/*Themes are unfinished.*/}
               {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
               {isDev && (
