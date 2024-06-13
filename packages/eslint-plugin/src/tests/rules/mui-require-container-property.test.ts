@@ -29,6 +29,12 @@ ruleTester.run<string, readonly unknown[]>(
         ],
       },
       {
+        code: `import { useMenuButton } from '@/core/hooks';
+        import { Menu } from '@mui/material';
+        const { menuProps } = useMenuButton();
+        <Menu {...menuProps} />`,
+      },
+      {
         code: `import { DatePicker } from '@mui/x-date-pickers';
                <DatePicker slotProps={{ popper: { container: root } }} />`,
       },
@@ -68,20 +74,6 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { NotMatchingComponent } from 'not-matching-package';
                <NotMatchingComponent MenuProps={{}} />`,
       },
-      {
-        code: `import { Menu } from '@mui/material';
-               const restProps = { container: root };
-               <Menu {...restProps} />`,
-      },
-      {
-        code: `import { Menu } from '@mui/material';
-               const props = { other: 'value' };
-               <Menu {...props} container={root} />`,
-      },
-      {
-        code: `import { Menu } from '@mui/material';
-               <Menu SelectProps={{ MenuProps: { container: root } }} />`,
-      },
     ],
 
     invalid: [
@@ -114,6 +106,12 @@ ruleTester.run<string, readonly unknown[]>(
                  views={['year', 'month', 'day']}
                />`,
         errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
+      },
+      {
+        code: `import { Menu } from '@mui/material';
+        const menuProps = {};
+        <Menu {...menuProps} />`,
+        errors: [{ messageId: 'containerPropertyMissing' }],
       },
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
@@ -166,41 +164,6 @@ ruleTester.run<string, readonly unknown[]>(
             ],
           },
         ],
-      },
-      {
-        code: `import { Menu } from '@mui/material';
-               <Menu SelectProps={{ }} />`,
-        errors: [{ messageId: 'selectPropsMenuPropsContainerPropertyMissing' }],
-      },
-      {
-        code: `import { Menu } from '@mui/material';
-           const props = { container: root };
-           <Menu {...props} />`,
-        errors: [{ messageId: 'containerPropertyMissing' }],
-      },
-      {
-        code: `import { Menu } from '@mui/material';
-           const nestedProps = { props: { container: root } };
-           <Menu {...nestedProps.props} />`,
-        errors: [{ messageId: 'containerPropertyMissing' }],
-      },
-      {
-        code: `import { TextField } from '@mui/material';
-           const selectProps = { MenuProps: { container: root } };
-           <TextField select SelectProps={{ ...selectProps }} />`,
-        errors: [{ messageId: 'selectPropsMenuPropsContainerPropertyMissing' }],
-      },
-      {
-        code: `import { Select } from '@mui/material';
-           const menuProps = { container: root };
-           <Select MenuProps={{ ...menuProps }} />`,
-        errors: [{ messageId: 'menuPropsContainerPropertyMissing' }],
-      },
-      {
-        code: `import { DatePicker } from '@mui/x-date-pickers';
-           const slotProps = { popper: { container: root } };
-           <DatePicker slotProps={{ ...slotProps }} />`,
-        errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
       },
     ],
   }

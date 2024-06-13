@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
 import type {
   RuleRecommendation,
   RuleModule,
@@ -202,79 +201,11 @@ const ruleModule: RuleModule<string, Options> = {
 
         if (!muiImportedComponents[componentName]) return;
 
-        const spreadAttribute = jsxOpeningElementNode.attributes.find(
-          (attribute): attribute is TSESTree.JSXSpreadAttribute =>
-            attribute.type === 'JSXSpreadAttribute'
-        );
-
-        if (spreadAttribute) {
-          let spreadVariableName: string | null = null;
-
-          if (spreadAttribute.argument.type === 'Identifier') {
-            spreadVariableName = spreadAttribute.argument.name;
-          } else if (
-            spreadAttribute.argument.type === 'MemberExpression' &&
-            spreadAttribute.argument.property.type === 'Identifier'
-          ) {
-            spreadVariableName = spreadAttribute.argument.property.name;
+        jsxOpeningElementNode.attributes.forEach((attribute) => {
+          if (attribute.type === 'JSXSpreadAttribute') {
+            handleSpreadAttribute(attribute);
           }
-
-          if (
-            spreadVariableName === 'menuProps' ||
-            spreadVariableName === 'restProps' ||
-            spreadVariableName === 'props'
-          ) {
-            return;
-          }
-        }
-
-        // const spreadAttribute = jsxOpeningElementNode.attributes.find(
-        //   (attribute): attribute is TSESTree.JSXSpreadAttribute =>
-        //     attribute.type === 'JSXSpreadAttribute'
-        // );
-        //
-        // console.log('Checking component:', componentName);
-        //
-        // if (spreadAttribute) {
-        //   console.log('Found spread attribute:', spreadAttribute);
-        //
-        //   let spreadVariableName: string | null = null;
-        //
-        //   if (spreadAttribute.argument.type === 'Identifier') {
-        //     spreadVariableName = spreadAttribute.argument.name;
-        //   } else if (
-        //     spreadAttribute.argument.type === 'MemberExpression' &&
-        //     spreadAttribute.argument.property.type === 'Identifier'
-        //   ) {
-        //     spreadVariableName = spreadAttribute.argument.property.name;
-        //   }
-        //
-        //   console.log('Spread variable name:', spreadVariableName);
-        //
-        //   // Check the spread properties
-        //   const variable = findVariable(context.getScope(), spreadVariableName);
-        //   if (variable && variable.defs.length > 0) {
-        //     const def = variable.defs[0];
-        //     if (
-        //       def.type === 'Variable' &&
-        //       def.node.init?.type === 'ObjectExpression'
-        //     ) {
-        //       const objectExpression = def.node
-        //         .init as TSESTree.ObjectExpression;
-        //       const hasContainerProp = objectExpression.properties.some(
-        //         (prop) =>
-        //           prop.type === 'Property' &&
-        //           prop.key.type === 'Identifier' &&
-        //           prop.key.name === 'container'
-        //       );
-        //
-        //       console.log('Spread properties:', objectExpression.properties);
-        //       console.log('Has container property:', hasContainerProp);
-        //
-        //       if (hasContainerProp) return;
-        //     }
-        //   }
-        // }
+        });
 
         const slotPropsPopperContainerPropertyMissingComponentItem =
           componentsByRule.slotPropsPopperContainerPropertyMissing.find(
@@ -467,6 +398,16 @@ function getIdentifierName(
   return (
     jsxTagNameExpression.type === 'JSXIdentifier' && jsxTagNameExpression.name
   );
+}
+
+function handleSpreadAttribute(attribute: TSESTree.JSXSpreadAttribute) {
+  if (attribute.argument.type === 'Identifier') {
+    const sourceName = (attribute.argument as TSESTree.Identifier).name;
+
+    if (sourceName === 'menuProps') {
+      return;
+    }
+  }
 }
 
 type Option = {
