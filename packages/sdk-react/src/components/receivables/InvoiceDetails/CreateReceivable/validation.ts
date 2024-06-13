@@ -75,7 +75,10 @@ const getLineItemsSchema = (i18n: I18n) =>
           .string()
           .label(t(i18n)`Measure unit`)
           .required(),
-        smallest_amount: yup.number().label(t(i18n)`Smallest amount`),
+        smallest_amount: yup
+          .number()
+          .nullable()
+          .label(t(i18n)`Smallest amount`),
       })
     )
     .min(1, t(i18n)`Please, add at least 1 item to proceed with this invoice`)
