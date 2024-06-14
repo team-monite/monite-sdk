@@ -7,12 +7,12 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { getAPIErrorMessage } from '@/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TagCursorFields, TagReadSchema, ActionEnum } from '@monite/sdk-api';
