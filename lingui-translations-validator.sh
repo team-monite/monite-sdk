@@ -5,6 +5,7 @@ set -o errexit
 ##################################
 locale_files=$(find "packages/sdk-react/src/core/i18n/locales" -maxdepth 2 -name 'messages.po')
 locale_files+=" $(find "packages/sdk-demo/src/locales" -maxdepth 2 -name 'messages.po')"
+locale_files+=" $(find "examples/with-nextjs-and-clerk-auth/src/locales" -maxdepth 2 -name 'messages.po')"
 ##################################
 
 # Create a temporary file to store the mapping between the original and temp files
