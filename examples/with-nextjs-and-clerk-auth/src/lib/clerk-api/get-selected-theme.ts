@@ -12,8 +12,9 @@ export const getSelectedTheme = (user: User | null) => {
     return undefined;
   }
 
-  const { variant, mode } = user.privateMetadata
-    ?.selectedTheme as Partial<ThemeConfig>;
+  const { variant, mode } =
+    (user.privateMetadata?.selectedTheme as Partial<ThemeConfig> | undefined) ??
+    {};
 
   return {
     variant: variant ?? 'monite',
