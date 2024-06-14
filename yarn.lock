@@ -1561,6 +1561,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.9":
+  version: 7.24.7
+  resolution: "@babel/runtime@npm:7.24.7"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: d17f29eed6f848ac15cdf4202a910b741facfb0419a9d79e5c7fa37df6362fc3227f1cc2e248cc6db5e53ddffb4caa6686c488e6e80ce3d29c36a4e74c8734ea
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.20.7, @babel/template@npm:^7.22.15, @babel/template@npm:^7.3.3":
   version: 7.22.15
   resolution: "@babel/template@npm:7.22.15"
@@ -3447,7 +3456,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/swc-plugin@npm:~4.0.4":
+"@lingui/swc-plugin@npm:4.0.4":
   version: 4.0.4
   resolution: "@lingui/swc-plugin@npm:4.0.4"
   peerDependencies:
@@ -3458,6 +3467,20 @@ __metadata:
     next:
       optional: true
   checksum: 49febfd67674ced4484b98aea14427d36d76c3f05ae9ff6b4b810b39ec6fa557fe376c5d78402934e08f8915c424f0197397e85397913b0e9229c94d2a286135
+  languageName: node
+  linkType: hard
+
+"@lingui/swc-plugin@npm:~4.0.4":
+  version: 4.0.8
+  resolution: "@lingui/swc-plugin@npm:4.0.8"
+  peerDependencies:
+    "@lingui/macro": 4
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    next:
+      optional: true
+  checksum: fc04ba10f7441a509e5eb62a7370666635be35e37deaf9dc5e810a6cef119c19b00f8ad130f767b70a673cb05b01e55d9c7eaf4064781e190ff66a976d40f623
   languageName: node
   linkType: hard
 
@@ -3785,6 +3808,29 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 89cf661d6417c4769df483ff5c4aa23365a8763ba13f2b6ceb4337351ece02379af96eced84afcfd0709ad7b1e3e51cd0c956af195b3dfeaafb76bebd18a833d
+  languageName: node
+  linkType: hard
+
+"@mui/material-nextjs@npm:^5.15.11":
+  version: 5.15.11
+  resolution: "@mui/material-nextjs@npm:5.15.11"
+  dependencies:
+    "@babel/runtime": ^7.23.9
+  peerDependencies:
+    "@emotion/cache": ^11.11.0
+    "@emotion/server": ^11.11.0
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    next: ^13.0.0 || ^14.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/cache":
+      optional: true
+    "@emotion/server":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 53f6e9686a285188450f838fe5cd5569de38914958647fc09104857691538b46a7f0fe58803864a6f7f3fdf4d2634dae44bede1ac7bf89f172c93fefb6e4f8ee
   languageName: node
   linkType: hard
 
@@ -21170,17 +21216,17 @@ __metadata:
     "@clerk/clerk-sdk-node": 4.13.7
     "@clerk/nextjs": 4.29.4
     "@emotion/cache": ~11.11.0
-    "@emotion/react": ~11.11.1
-    "@emotion/styled": ~11.11.0
     "@faker-js/faker": ~8.3.1
     "@lingui/cli": ~4.7.0
     "@lingui/core": ~4.7.0
     "@lingui/macro": ~4.7.0
     "@lingui/react": ~4.7.0
+    "@lingui/swc-plugin": 4.0.4
     "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
+    "@mui/material-nextjs": ^5.15.11
     "@team-monite/sdk-demo": "workspace:~"
     "@team-monite/sdk-themes": "workspace:~"
     "@testing-library/jest-dom": ~6.1.4

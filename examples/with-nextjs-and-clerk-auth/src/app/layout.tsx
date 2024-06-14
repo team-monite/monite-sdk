@@ -7,6 +7,7 @@ import {
   currentUser,
   MultisessionAppSupport,
 } from '@clerk/nextjs';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 import { RootI18nProvider } from '@/components/RootI18nProvider';
 import { RootQueryClientProvider } from '@/components/RootQueryClientProvider';
@@ -38,9 +39,11 @@ export default async function RootLayout({
           <body className={themeFont.className}>
             <RootI18nProvider>
               <RootQueryClientProvider>
-                <AppThemeProvider initialTheme={selectedTheme}>
-                  {children}
-                </AppThemeProvider>
+                <AppRouterCacheProvider options={{ key: 'mui' }}>
+                  <AppThemeProvider initialTheme={selectedTheme}>
+                    {children}
+                  </AppThemeProvider>
+                </AppRouterCacheProvider>
               </RootQueryClientProvider>
             </RootI18nProvider>
           </body>

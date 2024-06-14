@@ -6,7 +6,6 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { useOrganization } from '@clerk/nextjs';
-import { css } from '@emotion/react';
 import { Check, Group, Link, Star, Warning } from '@mui/icons-material';
 import {
   Alert,
@@ -60,11 +59,11 @@ export const RegenerateOrganizationEntity = ({
           </Typography>
 
           <List
-            css={css`
-              & > li {
-                padding-left: 0;
-              }
-            `}
+            sx={{
+              '& > li': {
+                paddingLeft: 0,
+              },
+            }}
           >
             <ListItem>
               <ListItemText

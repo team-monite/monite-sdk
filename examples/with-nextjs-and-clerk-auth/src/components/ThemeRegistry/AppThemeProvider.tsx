@@ -4,17 +4,14 @@ import React, { PropsWithChildren, useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useAuth } from '@clerk/nextjs';
-import { Theme } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Theme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme } from '@mui/material/styles';
-import { ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
 import * as themes from '@team-monite/sdk-themes';
-
-import NextAppDirEmotionCacheProvider from './EmotionCache';
 
 type AppThemeProviderContextValue = {
   onThemeChange: (themeConfig: ThemeConfig) => void;
@@ -128,12 +125,10 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
     <RootThemeProviderContext.Provider
       value={{ onThemeChange, selectedTheme: selectedTheme.data, theme }}
     >
-      <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
-      </NextAppDirEmotionCacheProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </RootThemeProviderContext.Provider>
   );
 }

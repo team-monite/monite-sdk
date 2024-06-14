@@ -6,8 +6,7 @@ import { useTimeout } from 'react-use';
 import { useRouter } from 'next/navigation';
 
 import { useOrganization, useOrganizationList } from '@clerk/nextjs';
-import { css, useTheme } from '@emotion/react';
-import { Alert, CircularProgress, Fade } from '@mui/material';
+import { Alert, Box, CircularProgress, Fade } from '@mui/material';
 
 import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
@@ -43,8 +42,6 @@ export const NoAccountEntity = ({
     enabled: isLoaded ? !(entity_id && entity_user_id) : false,
   });
 
-  const theme = useTheme();
-
   const [
     getShowAdditionalAlert,
     cancelAlertTimeout,
@@ -59,62 +56,62 @@ export const NoAccountEntity = ({
   useEffect(() => cancelAlertTimeout, [cancelAlertTimeout]);
 
   return (
-    <main
-      css={css`
-        display: flex;
-        flex-flow: column;
-        width: 100%;
-        min-height: 100vh;
-        box-sizing: border-box;
-      `}
+    <Box
+      component="main"
+      sx={{
+        display: 'flex',
+        flexFlow: 'column',
+        width: '100%',
+        minHeight: '100vh',
+        boxSizing: 'border-box',
+      }}
     >
-      <div
-        css={css`
-          display: flex;
-          padding: ${theme.spacing(2)};
-          gap: ${theme.spacing(2)};
-          align-items: flex-start;
-          box-sizing: border-box;
-          z-index: 10;
-        `}
+      <Box
+        sx={{
+          display: 'flex',
+          padding: 2,
+          gap: 2,
+          alignItems: 'flex-start',
+          boxSizing: 'border-box',
+          zIndex: 10,
+        }}
       >
         <UserButton />
         <OrganizationSwitcher />
-      </div>
+      </Box>
 
-      <div
-        css={css`
-          display: flex;
-          box-sizing: border-box;
-          flex-flow: column;
-          flex: 1;
-          justify-content: center;
-          align-items: center;
-          padding: ${theme.spacing(2)};
-        `}
+      <Box
+        sx={{
+          display: 'flex',
+          boxSizing: 'border-box',
+          flexFlow: 'column',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 2,
+        }}
       >
-        <div
-          css={css`
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            margin-bottom: ${theme.spacing(4)};
-
-            & > * {
-              pointer-events: auto;
-            }
-          `}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+            marginBottom: 4,
+            '& > *': {
+              pointerEvents: 'auto',
+            },
+          }}
         >
           <CircularProgress size={32} />
-        </div>
-        <div
-          css={css`
-            visibility: ${isLoading ? 'hidden' : 'visible'};
-            opacity: ${isLoading ? 0 : 1};
-            transition: 0.3s;
-            transition-property: opacity, visibility;
-          `}
+        </Box>
+        <Box
+          sx={{
+            visibility: isLoading ? 'hidden' : 'visible',
+            opacity: isLoading ? 0 : 1,
+            transition: '0.3s',
+            transitionProperty: 'opacity, visibility',
+          }}
         >
           {!entity_id ? (
             <>
@@ -175,9 +172,9 @@ export const NoAccountEntity = ({
               </Alert>
             </Fade>
           )}
-        </div>
-      </div>
-    </main>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

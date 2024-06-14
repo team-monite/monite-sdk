@@ -50,7 +50,7 @@ export const NavigationMenu = () => {
   return (
     <>
       <Box sx={{ flex: 1 }} display="flex">
-        <List>
+        <List sx={{ width: '100%' }}>
           {Object.entries(navigationMenuItems).map(
             ([menuItemKey, menuItem]) => {
               const selected =
