@@ -1,4 +1,4 @@
-export function getMessageInError(err: unknown): string | undefined {
+export function getLegacyAPIErrorMessage(err: unknown): string | undefined {
   if (typeof err === 'object' && err !== null && 'body' in err) {
     if (
       typeof err.body === 'object' &&

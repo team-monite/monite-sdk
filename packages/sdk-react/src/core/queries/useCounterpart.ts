@@ -4,7 +4,7 @@ import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
-import { getMessageInError } from '@/core/utils/getMessageInError';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -573,7 +573,8 @@ export const useDeleteCounterpartContact = (counterpartId: string) => {
 
     onError: (error) => {
       toast.error(
-        getMessageInError(error) || t(i18n)`Failed to delete Contact Person.`
+        getLegacyAPIErrorMessage(error) ||
+          t(i18n)`Failed to delete Contact Person.`
       );
     },
   });

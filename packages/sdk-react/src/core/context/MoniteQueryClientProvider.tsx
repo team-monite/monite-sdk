@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { getMessageInError } from '@/core/utils/getMessageInError';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { ApiError } from '@monite/sdk-api';
@@ -80,7 +80,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
           return;
         }
 
-        const message = getMessageInError(err);
+        const message = getLegacyAPIErrorMessage(err);
 
         if (message) {
           toast.error(message, {
@@ -129,7 +129,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
     },
     queryCache: new QueryCache({
       onError: (err: unknown) => {
-        const message = getMessageInError(err);
+        const message = getLegacyAPIErrorMessage(err);
 
         if (message) {
           if (message.includes('Object type at permissions not found')) {
