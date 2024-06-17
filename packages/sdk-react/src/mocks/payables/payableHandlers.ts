@@ -168,6 +168,22 @@ export const payableHandlers = [
 
       const url = new URL(request.url);
       const limit = Number(url.searchParams.get('limit') ?? '10');
+      const id__in = url.searchParams.getAll('id__in');
+
+      if (id__in.length > 0) {
+        const payables = payableFixturePages
+          .slice(0, id__in.length)
+          .map((payable, index) => ({
+            ...payable,
+            id: id__in[index],
+          }));
+
+        return HttpResponse.json({
+          data: payables,
+          prev_pagination_token: undefined,
+          next_pagination_token: undefined,
+        });
+      }
 
       const filteredPayableFixtures = (() => {
         let filtered: typeof payableFixturePages;

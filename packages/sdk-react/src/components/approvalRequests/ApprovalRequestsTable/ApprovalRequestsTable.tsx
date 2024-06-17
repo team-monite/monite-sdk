@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+// TODO move component CounterpartCell to common ui folder
+import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useCurrencies } from '@/core/hooks';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { PayableResponseSchema } from '@monite/sdk-api';
 import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
+
+import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
 
 export const ApprovalRequestsTable = () => (
   <MoniteScopedProviders>
@@ -21,6 +28,7 @@ export const ApprovalRequestsTable = () => (
 const ApprovalRequestsTableBase = () => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -29,17 +37,13 @@ const ApprovalRequestsTableBase = () => {
     useTablePaginationThemeDefaultPageSize()
   );
 
-  const {
-    data: approvalRequests,
-    isLoading: isApprovalRequestsLoading,
-    isError,
-    error,
-  } = api.approvalRequests.getApprovalRequests.useQuery({
-    query: {
-      pagination_token: currentPaginationToken ?? undefined,
-      limit: pageSize,
-    },
-  });
+  const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
+    api.approvalRequests.getApprovalRequests.useQuery({
+      query: {
+        pagination_token: currentPaginationToken ?? undefined,
+        limit: pageSize,
+      },
+    });
 
   const { data: payables, isLoading: isPayablesLoading } =
     api.payables.getPayables.useQuery({
@@ -58,6 +62,12 @@ const ApprovalRequestsTableBase = () => {
     return {
       id: approvalRequest.id,
       number: approvingPayable?.document_id,
+      counterpart_id: approvingPayable?.counterpart_id,
+      issued_at: approvingPayable?.issued_at,
+      due_date: approvingPayable?.due_date,
+      status: approvalRequest.status,
+      amount_to_pay: approvingPayable?.amount_to_pay,
+      currency: approvingPayable?.currency,
     };
   });
 
@@ -97,16 +107,82 @@ const ApprovalRequestsTableBase = () => {
         }}
         columns={[
           {
-            field: 'id',
-            headerName: t(i18n)`ID`,
-            sortable: false,
-            flex: 1,
-          },
-          {
             field: 'number',
             headerName: t(i18n)`Number`,
             sortable: false,
             flex: 1,
+          },
+          {
+            field: 'counterpart_id',
+            sortable: false,
+            headerName: t(i18n)`Counterpart`,
+            flex: 1,
+            renderCell: (params) => (
+              <CounterpartCell counterpartId={params.value} />
+            ),
+          },
+          {
+            field: 'issued_at',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Issue date Name',
+              message: 'Issue date',
+              comment: 'Payables Table "Issue date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['issued_at']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'due_date',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Due date Name',
+              message: 'Due date',
+              comment: 'Payables Table "Due date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: ({
+              value,
+            }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'status',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Status Name',
+              message: 'Status',
+              comment: 'Payables Table "Status" heading title',
+            }),
+            flex: 1,
+            renderCell: (params) => (
+              <ApprovalRequestStatusChip status={params.value} />
+            ),
+          },
+          {
+            field: 'amount',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Amount Name',
+              message: 'Amount',
+              comment: 'Payables Table "Amount" heading title',
+            }),
+            flex: 1,
+            valueGetter: (params) => {
+              const payable = params.row;
+
+              return payable.amount_to_pay && payable.currency
+                ? formatCurrencyToDisplay(
+                    payable.amount_to_pay,
+                    payable.currency
+                  )
+                : '';
+            },
           },
         ]}
         rows={rows ?? []}
