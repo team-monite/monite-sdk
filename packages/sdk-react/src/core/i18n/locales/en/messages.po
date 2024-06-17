@@ -957,7 +957,7 @@ msgstr "Cancel without saving?"
 #: src/components/receivables/Filters/Filters.tsx:94
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:18
-#: src/core/queries/useReceivables.ts:300
+#: src/core/queries/useReceivables.ts:301
 msgid "Canceled"
 msgstr "Canceled"
 
@@ -1349,11 +1349,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:607
+#: src/core/queries/useCounterpart.ts:608
 msgid "Counterpart “{0}” was created."
 msgstr "Counterpart “{0}” was created."
 
-#: src/core/queries/useCounterpart.ts:644
+#: src/core/queries/useCounterpart.ts:645
 msgid "Counterpart “{0}” was updated."
 msgstr "Counterpart “{0}” was updated."
 
@@ -1377,7 +1377,7 @@ msgstr "Counterpart not found"
 msgid "Counterpart VAT ID"
 msgstr "Counterpart VAT ID"
 
-#: src/core/queries/useCounterpart.ts:664
+#: src/core/queries/useCounterpart.ts:665
 msgid "Counterpart was deleted."
 msgstr "Counterpart was deleted."
 
@@ -2183,6 +2183,10 @@ msgstr "Eritrea"
 msgid "Error creating approval policy"
 msgstr "Error creating approval policy"
 
+#: src/core/hooks/useCurrencies.ts:27
+msgid "Error occurred in currencies fetching"
+msgstr "Error occurred in currencies fetching"
+
 #: src/core/queries/useApprovalPolicies.ts:92
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
@@ -2237,7 +2241,7 @@ msgstr "Failed to create Bank Account."
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:612
+#: src/core/queries/useCounterpart.ts:613
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2253,11 +2257,11 @@ msgstr "Failed to create VAT."
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:576
+#: src/core/queries/useCounterpart.ts:577
 msgid "Failed to delete Contact Person."
 msgstr "Failed to delete Contact Person."
 
-#: src/core/queries/useCounterpart.ts:671
+#: src/core/queries/useCounterpart.ts:672
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2285,7 +2289,7 @@ msgstr "Failed to update Bank Account."
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:649
+#: src/core/queries/useCounterpart.ts:650
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -2819,7 +2823,7 @@ msgstr "Invalid date"
 msgid "Invalid IBAN"
 msgstr "Invalid IBAN"
 
-#: src/core/queries/useReceivables.ts:155
+#: src/core/queries/useReceivables.ts:156
 msgid "Invoice “{0}” was updated"
 msgstr "Invoice “{0}” was updated"
 
@@ -2863,7 +2867,7 @@ msgstr "Invoice Number"
 msgid "Invoice Number *"
 msgstr "Invoice Number *"
 
-#: src/core/queries/useReceivables.ts:98
+#: src/core/queries/useReceivables.ts:99
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
@@ -2871,7 +2875,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/core/queries/useReceivables.ts:104
+#: src/core/queries/useReceivables.ts:105
 msgid "Invoice with id “{0}” was created"
 msgstr "Invoice with id “{0}” was created"
 
@@ -2946,7 +2950,7 @@ msgstr "Issue only"
 #: src/components/receivables/Filters/Filters.tsx:76
 #: src/components/receivables/getCommonStatusLabel.ts:13
 #: src/components/receivables/InvoiceDetails/InvoiceDetails.types.ts:9
-#: src/core/queries/useReceivables.ts:202
+#: src/core/queries/useReceivables.ts:203
 msgid "Issued"
 msgstr "Issued"
 
@@ -3306,7 +3310,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
 
-#: src/core/queries/useReceivables.ts:327
+#: src/core/queries/useReceivables.ts:328
 msgid "Marked as uncollectible"
 msgstr "Marked as uncollectible"
 
@@ -3967,7 +3971,7 @@ msgstr "Payment term"
 msgid "Payment terms"
 msgstr "Payment terms"
 
-#: src/core/queries/useReceivables.ts:382
+#: src/core/queries/useReceivables.ts:383
 msgid "PDF was generated"
 msgstr "PDF was generated"
 
@@ -4367,7 +4371,7 @@ msgstr "Receivable type {0} is not supported. Only {1} is supported."
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
-#: src/core/queries/useReceivables.ts:259
+#: src/core/queries/useReceivables.ts:260
 msgid "Receivable was deleted"
 msgstr "Receivable was deleted"
 
@@ -4675,7 +4679,7 @@ msgstr "Send invoice"
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/core/queries/useReceivables.ts:359
+#: src/core/queries/useReceivables.ts:360
 msgid "Sent"
 msgstr "Sent"
 
@@ -5509,12 +5513,20 @@ msgstr "United States Outlying Islands"
 msgid "Units"
 msgstr "Units"
 
+#: src/core/utils/getAPIErrorMessage.ts:16
 #: src/core/utils/useVatTypes.ts:14
 #: src/core/utils/useVatTypes.ts:16
 #: src/core/utils/useVatTypes.ts:209
-#: src/utils/getAPIErrorMessage.ts:16
 msgid "Unknown"
 msgstr "Unknown"
+
+#: src/core/queries/useReceivables.ts:206
+#: src/core/queries/useReceivables.ts:264
+#: src/core/queries/useReceivables.ts:305
+#: src/core/queries/useReceivables.ts:332
+#: src/core/queries/useReceivables.ts:364
+msgid "Unknown error"
+msgstr "Unknown error"
 
 #: src/core/context/MoniteQueryClientProvider.tsx:90
 #: src/core/context/MoniteQueryClientProvider.tsx:146
