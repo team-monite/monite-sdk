@@ -1,5 +1,44 @@
 # @monite/sdk-react
 
+## 3.14.0
+
+### Minor Changes
+
+- b48b887a: fix(DEV-11166): rewrite <FileViewer /> component to use native PDF rendering
+
+  - Fixed a bug with PDF rendering caused by SSR rendering by changing to a more native approach.
+  - Switched from `react-pdf` to native iframe.
+
+- ee976e67: feat(DEV-8691): add validation for `smallest_amount` field for the Products in AR
+- 6c20fcd3: feat(DEV-9680): add new features to UserRoleDetails component
+
+  - add a feature to create a new role with permissions
+  - add a feature to modify permissions for an existing role
+
+### Patch Changes
+
+- 6342a10c: fix(proposal): allow nullable `smallest_amount` to allow invoices creation for products without a defined minimum amount.
+- 3a6c97f7: fix(DEV-11218): improve error handling with unstable response
+- b45cfbc8: feat(DEV-11112): change all form ID's in a unique names
+- 862b381d: feat(DEV-10046): migrate the `<TagsTable />` component from the legacy SDK API to Qraft
+- 4c754e6f: chore(proposal): replaced Product Form synthetic event submissions
+- 24689762: feat(DEV-11111): rename all `I` prefix for props to convention without `I` and with a `Props` postfix
+- ded78db5: feat(DEV-10025): show loader when PDF url is absent
+- 7347a1fc: fix(DEV-11222): add filter by direction to avoid duplicated payment methods for AR
+- 7e39ce8e: feat(DEV-10959): fix counterpart_vat_id_id default value to edit an invoice
+- b2c3d366: fix(ESLINT-2024): Update ESLint Rule 'mui-require-container-property' for `useMenuButton(...)` Hook
+
+  - Added logic in `mui-require-container-property.ts` to specifically handle cases where `useMenuButton(...)` is used to spread props into MUI components, ensuring the `container` property is included if missing.
+  - Expanded test coverage in `mui-require-container-property.test.ts` to include scenarios with `useMenuButton(...)` hook, particularly checking for the presence of the `container` property in spread operations.
+  - Modified ESLint configurations in `.eslintrc.json` within `sdk-react` package to switch the rule from "off" to "error", enforcing strict compliance across the codebase.
+  - Adjusted various components to directly include or correct the `container` property in their spread attributes to adhere to the updated rule, reducing potential rendering issues in popper-based components.
+
+- 59265b6d: fix(DEV-11012): remove `cloneElement` usage
+- 3b65d363: feat(DEV-8691): fix frontend validation when customer adds another line item to an existing ones
+- Updated dependencies [7c9cbf3e]
+- Updated dependencies [6c20fcd3]
+  - @monite/sdk-api@3.14.0
+
 ## 3.13.0
 
 ### Minor Changes

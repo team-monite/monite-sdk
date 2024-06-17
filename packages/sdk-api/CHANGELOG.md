@@ -1,5 +1,18 @@
 # @monite/sdk-api
 
+## 3.14.0
+
+### Minor Changes
+
+- 6c20fcd3: feat(DEV-9680): add new features to UserRoleDetails component
+
+  - add a feature to create a new role with permissions
+  - add a feature to modify permissions for an existing role
+
+### Patch Changes
+
+- 7c9cbf3e: feat(DEV-10046): make `fetchToken` method public
+
 ## 3.13.0
 
 ### Patch Changes
