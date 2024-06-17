@@ -1,9 +1,15 @@
 import React, { ComponentProps } from 'react';
 import ReactDOM, { Root } from 'react-dom/client';
 
-import { DropIn } from '@/DropIn';
+import { DropIn } from './DropIn';
+import { IframeApp } from './iframe-app';
 
-export class DropInElement extends HTMLElement {
+export enum NameProps {
+  dropIn = 'drop-in',
+  iframeApp = 'iframe-app',
+}
+
+export class CommonAppElement extends HTMLElement {
   /**
    * A record defining the types and allowed attributes that can be set on the element.
    *
@@ -77,8 +83,9 @@ export class DropInElement extends HTMLElement {
       type: 'json',
     },
   };
+  private name: NameProps | undefined;
 
-  static get observedAttributes(): (keyof (typeof DropInElement)['attributes'])[] {
+  static get observedAttributes(): (keyof (typeof CommonAppElement)['attributes'])[] {
     return ['router', 'basename', 'component', 'entity-id', 'api-url'];
   }
 
@@ -89,6 +96,8 @@ export class DropInElement extends HTMLElement {
 
   constructor() {
     super();
+    const nameProp = this.getAttribute('name-prop') as NameProps;
+    this.setupElement(nameProp);
 
     const templateContent =
       this.querySelector('template')?.content.cloneNode(true);
@@ -101,6 +110,19 @@ export class DropInElement extends HTMLElement {
       <div id="monite-app-styles"></div>
       <div id="monite-app-root"></div>
     `;
+  }
+
+  setupElement(nameProp: NameProps) {
+    switch (nameProp) {
+      case NameProps.dropIn:
+        this.name = nameProp;
+        break;
+      case NameProps.iframeApp:
+        this.name = nameProp;
+        break;
+      default:
+        throw new Error(`Unsupported name-prop value: ${nameProp}`);
+    }
   }
 
   getSlotsData(slots: Element[]) {
@@ -118,7 +140,9 @@ export class DropInElement extends HTMLElement {
         }
 
         const slotConfig =
-          DropInElement.slots[slotName as keyof typeof DropInElement.slots];
+          CommonAppElement.slots[
+            slotName as keyof typeof CommonAppElement.slots
+          ];
 
         if (!slotConfig) {
           console.error(
@@ -196,7 +220,7 @@ export class DropInElement extends HTMLElement {
     this.reactAppRoot = this.reactAppRoot || ReactDOM.createRoot(appRootNode);
 
     const attributesProperties = Object.entries(
-      DropInElement.attributes
+      CommonAppElement.attributes
     ).reduce((acc, [attribute, attributeConfig]) => {
       const attributeCamelCase = kebabToCamelCase(attribute);
       const attributeValue = this.getAttribute(attribute);
@@ -221,22 +245,43 @@ export class DropInElement extends HTMLElement {
       {}
     );
 
-    const props = {
-      ...attributesProperties,
-      ...slotProperties,
-    } as Omit<ComponentProps<typeof DropIn>, 'rootElements'>;
+    if (this.name === NameProps.iframeApp) {
+      const props = {
+        ...attributesProperties,
+        ...slotProperties,
+      } as Omit<ComponentProps<typeof IframeApp>, 'rootElements'>;
 
-    this.reactAppRoot.render(
-      <React.StrictMode>
-        <DropIn
-          {...props}
-          rootElements={{
-            root: appRootNode,
-            styles: stylesRootNode ?? undefined,
-          }}
-        />
-      </React.StrictMode>
-    );
+      this.reactAppRoot.render(
+        <React.StrictMode>
+          <IframeApp
+            {...props}
+            rootElements={{
+              root: appRootNode,
+              styles: stylesRootNode ?? undefined,
+            }}
+          />
+        </React.StrictMode>
+      );
+    }
+
+    if (this.name === NameProps.dropIn) {
+      const props = {
+        ...attributesProperties,
+        ...slotProperties,
+      } as Omit<ComponentProps<typeof DropIn>, 'rootElements'>;
+
+      this.reactAppRoot.render(
+        <React.StrictMode>
+          <DropIn
+            {...props}
+            rootElements={{
+              root: appRootNode,
+              styles: stylesRootNode ?? undefined,
+            }}
+          />
+        </React.StrictMode>
+      );
+    }
   }
 }
 
@@ -297,7 +342,7 @@ const getAssignedElementsData = <
 export const kebabToCamelCase = (s: string): string =>
   s.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
-type JSONSourceSlot = keyof (typeof DropInElement)['slots'];
+type JSONSourceSlot = keyof (typeof CommonAppElement)['slots'];
 
 type AttributeConfig = {
   type: 'boolean' | 'string';

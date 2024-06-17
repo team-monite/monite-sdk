@@ -1,4 +1,7 @@
 {
   "stand": "dev",
-  "api_url": "https://api.dev.monite.com"
+  "api_url": "https://api.dev.monite.com",
+  "entityId": "mocked_entity_id",
+  "client_id": "mocked_client_id",
+  "client_secret": "mocked_client_secret"
 }

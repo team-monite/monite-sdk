@@ -4,7 +4,7 @@ import { useLatest } from 'react-use';
 import { MoniteSDK, MoniteSDKConfig } from '@monite/sdk-api';
 import { MoniteProvider } from '@monite/sdk-react';
 
-type DropInMoniteProvider = {
+type CommonMoniteProvider = {
   sdkConfig: MoniteSDKConfig;
   children: ReactNode;
 } & Pick<ComponentProps<typeof MoniteProvider>, 'locale' | 'theme'>;
@@ -14,7 +14,7 @@ export const DropInMoniteProvider = ({
   theme,
   locale,
   sdkConfig: { headers, entityId, apiUrl, fetchToken },
-}: DropInMoniteProvider) => {
+}: CommonMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
 
   const monite = useMemo(
