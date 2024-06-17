@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -59,6 +59,9 @@ const EmailInvoiceDetailsBase = ({
   const createPaymentLinkMutation = useCreatePaymentLink();
 
   const { data: paymentMethods } = useEntityPaymentMethods();
+
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-emailInvoiceDetails-${useId()}`;
 
   const handleIssueAndSend = useCallback(
     (e: React.BaseSyntheticEvent) => {
@@ -180,7 +183,7 @@ const EmailInvoiceDetailsBase = ({
                   variant="contained"
                   color="primary"
                   type="submit"
-                  form="emailInvoiceDetailsForm"
+                  form={formName}
                   disabled={isDisabled}
                 >{t(i18n)`Issue and send`}</Button>
               </Stack>
@@ -189,11 +192,7 @@ const EmailInvoiceDetailsBase = ({
         </Toolbar>
       </DialogTitle>
       <DialogContent>
-        <form
-          id="emailInvoiceDetailsForm"
-          noValidate
-          onSubmit={handleIssueAndSend}
-        >
+        <form id={formName} noValidate onSubmit={handleIssueAndSend}>
           <Stack spacing={3}>
             <Stack spacing={2}>
               <Typography

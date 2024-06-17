@@ -30,6 +30,6 @@ msgstr ""
 #~ msgid "Theme"
 #~ msgstr "Theme"
 
-#: src/components/ThemeRegistry/AppThemeProvider.tsx:93
+#: src/components/ThemeRegistry/AppThemeProvider.tsx:90
 msgid "We were unable to save your theme selection, please try again."
 msgstr "We were unable to save your theme selection, please try again."

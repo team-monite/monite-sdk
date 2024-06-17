@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
@@ -204,6 +204,9 @@ export const ProductsTable = ({
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-productsTable-${useId()}`;
+
   /**
    * `ProductsTable` is used in `CreateReceivables` component.
    *
@@ -315,7 +318,7 @@ export const ProductsTable = ({
       <Divider />
       <DialogContent>
         <form
-          id="receivablesAddProducts"
+          id={formName}
           noValidate
           onSubmit={handleSubmitWithoutPropagation}
           style={{
@@ -532,7 +535,7 @@ export const ProductsTable = ({
         <Button variant="outlined" onClick={dialogContent?.onClose}>
           {t(i18n)`Cancel`}
         </Button>
-        <Button variant="contained" type="submit" form="receivablesAddProducts">
+        <Button variant="contained" type="submit" form={formName}>
           {openChangeCurrencyInfo ? t(i18n)`Replace items` : t(i18n)`Add`}
         </Button>
       </DialogActions>

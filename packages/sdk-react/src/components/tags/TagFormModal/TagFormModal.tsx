@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useId } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -152,6 +152,9 @@ const TagFormModalBase = ({
 
   const { root } = useRootElements();
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-tag-${useId()}`;
+
   return (
     <>
       <Dialog
@@ -170,8 +173,8 @@ const TagFormModalBase = ({
         maxWidth="sm"
       >
         <form
-          id="createTagForm"
-          name="createTagForm"
+          id={formName}
+          name={formName}
           onSubmit={handleSubmit((values) => {
             tag ? updateTag(tag, values.name) : createTag(values.name);
           })}

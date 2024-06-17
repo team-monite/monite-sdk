@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { useDialog } from '@/components';
@@ -126,6 +126,9 @@ export const ApprovalPolicyDetailsFormBase = ({
     entityUserId: approvalPolicy?.created_by,
   });
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const formName = `Monite-Form-approvalPolicyDetails-${useId()}`;
+
   return (
     <>
       <DialogTitle>
@@ -151,7 +154,7 @@ export const ApprovalPolicyDetailsFormBase = ({
       <DialogContent>
         <FormProvider {...methods}>
           <form
-            id="approvalPolicyForm"
+            id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
               const body = {
@@ -271,7 +274,7 @@ export const ApprovalPolicyDetailsFormBase = ({
         <Button
           variant="outlined"
           type="submit"
-          form="approvalPolicyForm"
+          form={formName}
           disabled={
             isCreating ||
             isUpdating ||
