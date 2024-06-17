@@ -8,6 +8,7 @@ import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingI
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -52,6 +53,8 @@ enum DeliveryMethod {
 }
 
 const StyledMenu = styled((props: MenuProps) => {
+  const { root } = useRootElements();
+
   return (
     <Menu
       elevation={0}
@@ -63,7 +66,7 @@ const StyledMenu = styled((props: MenuProps) => {
         vertical: 'top',
         horizontal: 'right',
       }}
-      container={props.container}
+      container={root}
       {...props}
     />
   );
