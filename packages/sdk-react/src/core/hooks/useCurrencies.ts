@@ -2,6 +2,9 @@ import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 import { useCurrencyList } from '@/core/queries/useCurrency';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { CurrencyEnum } from '@monite/sdk-api';
 
 import { useMoniteContext } from '../context/MoniteContext';
@@ -14,13 +17,17 @@ import { useMoniteContext } from '../context/MoniteContext';
 export const useCurrencies = () => {
   const { data: currencyList, isSuccess, isError, error } = useCurrencyList();
   const { locale } = useMoniteContext();
+  const { i18n } = useLingui();
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
-      toast.error(error.body.error.message || error.message);
+      toast.error(
+        getLegacyAPIErrorMessage(error) ||
+          t(i18n)`Error occurred in currencies fetching`
+      );
     }
-  }, [isError, error]);
+  }, [isError, error, i18n]);
 
   /**
    * Returns currency symbol when we provide currency code

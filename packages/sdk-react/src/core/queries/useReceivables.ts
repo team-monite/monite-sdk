@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -202,7 +203,7 @@ export const useIssueReceivableById = () => {
       toast.success(t(i18n)`Issued`);
     },
     onError: (error) => {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
     },
   });
 };
@@ -260,7 +261,7 @@ export const useDeleteReceivableById = () => {
     },
 
     onError: (error) => {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
     },
   });
 };
@@ -301,7 +302,7 @@ export const useCancelReceivableById = () => {
     },
 
     onError: (error) => {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
     },
   });
 };
@@ -328,7 +329,7 @@ export const useMarkAsUncollectibleReceivableById = () => {
     },
 
     onError: (error) => {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
     },
   });
 };
@@ -360,7 +361,7 @@ export const useSendReceivableById = () => {
     },
 
     onError: (error) => {
-      toast.error(error.body.error.message || error.message);
+      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
     },
   });
 };
