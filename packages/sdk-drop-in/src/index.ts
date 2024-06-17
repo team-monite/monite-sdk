@@ -1,3 +1,4 @@
-import { DropInElement } from './drop-in-element';
+import { CommonAppElement } from './common-app-element';
 
-customElements.define('monite-app', DropInElement);
+customElements.define('monite-app', CommonAppElement);
+customElements.define('monite-iframe-app', CommonAppElement);
