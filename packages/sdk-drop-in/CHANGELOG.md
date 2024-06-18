@@ -1,5 +1,13 @@
 # @monite/sdk-drop-in
 
+## 1.4.7
+
+### Patch Changes
+
+- Updated dependencies [7c9cbf3e]
+- Updated dependencies [6c20fcd3]
+  - @monite/sdk-api@3.14.0
+
 ## 1.4.6
 
 ### Patch Changes

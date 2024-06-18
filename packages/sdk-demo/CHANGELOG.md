@@ -1,5 +1,14 @@
 # @monite/sdk-drop-in
 
+## 1.6.2
+
+### Patch Changes
+
+- be06e99b: fix(DEV-10644): prevent theme selector overlap when menu exceeds viewport height
+- Updated dependencies [7c9cbf3e]
+- Updated dependencies [6c20fcd3]
+  - @monite/sdk-api@3.14.0
+
 ## 1.6.1
 
 ### Patch Changes
