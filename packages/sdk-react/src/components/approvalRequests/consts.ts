@@ -38,3 +38,4 @@ export const getRowToStatusTextMap = (
 });
 
 export const FILTER_TYPE_STATUS = 'status';
+export const FILTER_TYPE_CREATED_AT = 'created_at';

@@ -5,8 +5,13 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ApprovalRequestStatus } from '@monite/sdk-api';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
 
-import { FILTER_TYPE_STATUS, getRowToStatusTextMap } from '../consts';
+import {
+  FILTER_TYPE_STATUS,
+  FILTER_TYPE_CREATED_AT,
+  getRowToStatusTextMap,
+} from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 
 interface Props {
@@ -48,6 +53,27 @@ export const Filters = ({ onChangeFilter }: Props) => {
             ))}
           </Select>
         </FormControl>
+      </Grid>
+      <Grid item xs={4} sm={3} md={2}>
+        <DatePicker
+          label={t(i18n)`Requested on`}
+          onChange={(value, error) => {
+            if (error.validationError) {
+              return;
+            }
+
+            onChangeFilter(FILTER_TYPE_CREATED_AT, value as string);
+          }}
+          slotProps={{
+            popper: {
+              container: root,
+            },
+            actionBar: {
+              actions: ['clear', 'today'],
+            },
+          }}
+          views={['year', 'month', 'day']}
+        />
       </Grid>
     </Grid>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { FILTER_TYPE_CREATED_AT } from '@/components/payables/PayablesTable/consts';
 // TODO move component CounterpartCell to common ui folder
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -16,6 +17,8 @@ import { useLingui } from '@lingui/react';
 import { ObjectType, PayableResponseSchema } from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
+
+import { addDays, formatISO } from 'date-fns';
 
 import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
 import { FILTER_TYPE_STATUS } from '../consts';
@@ -64,6 +67,12 @@ const ApprovalRequestsTableBase = ({
         pagination_token: currentPaginationToken ?? undefined,
         limit: pageSize,
         status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+          : undefined,
+        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
       },
     });
 
