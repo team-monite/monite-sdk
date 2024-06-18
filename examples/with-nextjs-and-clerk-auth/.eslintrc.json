@@ -3,5 +3,9 @@
   "rules": {
     "prettier/prettier": "warn"
   },
-  "ignorePatterns": ["src/lib/monite-api/schema.d.ts"]
+  "ignorePatterns": [
+    "src/lib/monite-api/schema.d.ts",
+    "src/locales/en/messages.d.ts",
+    "src/locales/en/messages.ts"
+  ]
 }
