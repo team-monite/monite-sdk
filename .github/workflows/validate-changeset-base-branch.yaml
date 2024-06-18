@@ -1,0 +1,24 @@
+# Description: Validate that the changeset base branch matches the PR base branch
+name: Validate Changeset Base Branch
+
+on:
+  # Avoid using `pull_request_target`, to prevent insecure actions
+  # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request:
+    branches:
+      - main
+      - dev
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  validate-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Changeset Config
+        run: .changeset/validate-changesets-base-branch.sh ${{ github.event.pull_request.base.ref }}
