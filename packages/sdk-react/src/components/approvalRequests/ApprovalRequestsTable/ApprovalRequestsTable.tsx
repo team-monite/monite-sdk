@@ -13,11 +13,12 @@ import {
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableResponseSchema } from '@monite/sdk-api';
+import { ObjectType, PayableResponseSchema } from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
+import { UserCell } from '../UserCell';
 
 export const ApprovalRequestsTable = () => (
   <MoniteScopedProviders>
@@ -40,6 +41,7 @@ const ApprovalRequestsTableBase = () => {
   const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
     api.approvalRequests.getApprovalRequests.useQuery({
       query: {
+        object_type: ObjectType.PAYABLE,
         pagination_token: currentPaginationToken ?? undefined,
         limit: pageSize,
       },
@@ -68,6 +70,7 @@ const ApprovalRequestsTableBase = () => {
       status: approvalRequest.status,
       amount_to_pay: approvingPayable?.amount_to_pay,
       currency: approvingPayable?.currency,
+      created_by: approvalRequest.created_by,
     };
   });
 
@@ -114,8 +117,8 @@ const ApprovalRequestsTableBase = () => {
           },
           {
             field: 'counterpart_id',
-            sortable: false,
             headerName: t(i18n)`Counterpart`,
+            sortable: false,
             flex: 1,
             renderCell: (params) => (
               <CounterpartCell counterpartId={params.value} />
@@ -123,13 +126,13 @@ const ApprovalRequestsTableBase = () => {
           },
           {
             field: 'issued_at',
-            sortable: false,
             type: 'date',
             headerName: t(i18n)({
               id: 'Issue date Name',
               message: 'Issue date',
               comment: 'Payables Table "Issue date" heading title',
             }),
+            sortable: false,
             flex: 0.7,
             valueFormatter: ({
               value,
@@ -138,13 +141,13 @@ const ApprovalRequestsTableBase = () => {
           },
           {
             field: 'due_date',
-            sortable: false,
             type: 'date',
             headerName: t(i18n)({
               id: 'Due date Name',
               message: 'Due date',
               comment: 'Payables Table "Due date" heading title',
             }),
+            sortable: false,
             flex: 0.7,
             valueFormatter: ({
               value,
@@ -153,26 +156,26 @@ const ApprovalRequestsTableBase = () => {
           },
           {
             field: 'status',
-            sortable: false,
             headerName: t(i18n)({
               id: 'Status Name',
               message: 'Status',
               comment: 'Payables Table "Status" heading title',
             }),
-            flex: 1,
+            sortable: false,
+            flex: 0.7,
             renderCell: (params) => (
               <ApprovalRequestStatusChip status={params.value} />
             ),
           },
           {
             field: 'amount',
-            sortable: false,
             headerName: t(i18n)({
               id: 'Amount Name',
               message: 'Amount',
               comment: 'Payables Table "Amount" heading title',
             }),
-            flex: 1,
+            sortable: false,
+            flex: 0.7,
             valueGetter: (params) => {
               const payable = params.row;
 
@@ -183,6 +186,13 @@ const ApprovalRequestsTableBase = () => {
                   )
                 : '';
             },
+          },
+          {
+            field: 'created_by',
+            headerName: t(i18n)`Added by`,
+            sortable: false,
+            flex: 1,
+            renderCell: ({ value }) => <UserCell entityUserId={value} />,
           },
         ]}
         rows={rows ?? []}

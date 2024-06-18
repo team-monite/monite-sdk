@@ -1,5 +1,9 @@
 import type { components, Services } from '@/api';
-import { entityUserByIdFixture } from '@/mocks/entityUsers/entityUserByIdFixture';
+import {
+  entityUserByIdFixture,
+  entityUsers,
+} from '@/mocks/entityUsers/entityUserByIdFixture';
+import { getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 
 export const approvalRequestsListFixture: Services['approvalRequests']['getApprovalRequests']['types']['data']['data'] =
@@ -8,7 +12,7 @@ export const approvalRequestsListFixture: Services['approvalRequests']['getAppro
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     approved_by: [entityUserByIdFixture.id],
-    created_by: entityUserByIdFixture.id,
+    created_by: getRandomProperty(entityUsers).id,
     object_id: faker.string.nanoid(),
     object_type: 'payable' as components['schemas']['ObjectType'],
     required_approval_count: 1,

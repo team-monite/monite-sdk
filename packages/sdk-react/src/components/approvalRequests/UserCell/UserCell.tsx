@@ -2,15 +2,13 @@ import React from 'react';
 
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
-import { Chip, Skeleton, Box } from '@mui/material';
+import { Chip, Skeleton } from '@mui/material';
 
-interface ApprovalPoliciesUserProps {
+interface UserCellProps {
   entityUserId: string;
 }
 
-export const ApprovalPoliciesUser = ({
-  entityUserId,
-}: ApprovalPoliciesUserProps) => {
+export const UserCell = ({ entityUserId }: UserCellProps) => {
   const { data: entityUser, isLoading } = useEntityUserById(entityUserId);
 
   if (!entityUser) {
