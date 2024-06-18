@@ -1,0 +1,36 @@
+# Description: Validate that the changeset base branch matches the PR base branch
+name: Validate Changeset Base Branch
+
+on:
+  # Avoid using `pull_request_target`, to prevent insecure actions
+  # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
+  pull_request:
+    branches:
+      - feature/DEV-9911-dev-branch-deployment
+      # todo::replace with main
+      # - main
+      - dev
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  # Cancel in-progress runs when a new workflow with the same group name is triggered
+  cancel-in-progress: true
+
+jobs:
+  validate-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+
+      - name: Validate Changeset
+        run: |
+          CHANGESET_BASE_BRANCH="$(node -p 'require("./.changeset/config.json").baseBranch')"
+          if [ "origin/${{ github.event.pull_request.base.ref }}" == "$CHANGESET_BASE_BRANCH" ]; then
+              echo "✅ Changeset "baseBranch" is '$CHANGESET_BASE_BRANCH'"
+          else
+              echo "❌ Changeset "baseBranch" is '$CHANGESET_BASE_BRANCH' but PR branch is 'origin/${{ github.event.pull_request.base.ref }}'" >&2
+              echo "✍️ Update '.changeset/config.json' to set 'baseBranch' to 'origin/${{ github.event.pull_request.base.ref }}'"
+              exit 1
+          fi
