@@ -7,7 +7,7 @@ on:
     types:
       - closed
     branches:
-      - main
+      - dev
 
 concurrency:
   group: ${{ github.workflow }}
@@ -32,7 +32,7 @@ jobs:
           gitlab_token: ${{ secrets.GITLAB_TOKEN }}
           gitlab_host: ${{ secrets.GITLAB_HOST }}
           gitlab_project_id: ${{ secrets.GITLAB_PROJECT_ID }}
-          gitlab_target_branch: ${{ secrets.GITLAB_TARGET_BRANCH }}
+          gitlab_target_branch: ${{ secrets.GITLAB_TARGET_DEV_BRANCH }}
           submodule_name: ${{ secrets.GITLAB_SUBMODULE_NAME }}
           branch: ${{ github.event.pull_request.head.ref }}
           sha: ${{ github.event.pull_request.head.sha }}
