@@ -17,6 +17,7 @@ export const approvalRequestsHandlers = [
     const limit = url.searchParams.get('limit') || null;
     const pagination_token = url.searchParams.get('pagination_token') || null;
     const status = url.searchParams.get('status');
+    const created_by = url.searchParams.get('created_by');
 
     let next_pagination_token = undefined;
     let prev_pagination_token = undefined;
@@ -27,6 +28,12 @@ export const approvalRequestsHandlers = [
 
       if (status) {
         filtered = filterByStatus(status, approvalRequestsListFixture);
+      }
+
+      if (created_by) {
+        filtered = filtered.filter(
+          (approvalRequest) => approvalRequest.created_by === created_by
+        );
       }
 
       if (pagination_token === '1') {

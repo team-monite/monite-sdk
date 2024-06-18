@@ -1,6 +1,6 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ApprovalRequestStatus, PayableStateEnum } from '@monite/sdk-api';
+import { ApprovalRequestStatus } from '@monite/sdk-api';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
@@ -39,3 +39,4 @@ export const getRowToStatusTextMap = (
 
 export const FILTER_TYPE_STATUS = 'status';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
+export const FILTER_TYPE_CURRENT_USER = 'created_by';

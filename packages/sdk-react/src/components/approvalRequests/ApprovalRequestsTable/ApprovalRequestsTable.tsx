@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { FILTER_TYPE_CREATED_AT } from '@/components/payables/PayablesTable/consts';
 // TODO move component CounterpartCell to common ui folder
 import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -21,7 +21,11 @@ import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 import { addDays, formatISO } from 'date-fns';
 
 import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
-import { FILTER_TYPE_STATUS } from '../consts';
+import {
+  FILTER_TYPE_STATUS,
+  FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_CURRENT_USER,
+} from '../consts';
 import { Filters as FiltersComponent } from '../Filters';
 import { FilterTypes, FilterValue } from '../types';
 import { UserCell } from '../UserCell';
@@ -51,6 +55,7 @@ const ApprovalRequestsTableBase = ({
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
+  const { data: user } = useEntityUserByAuthToken();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -72,6 +77,9 @@ const ApprovalRequestsTableBase = ({
           : undefined,
         created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
           ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
+        created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
+          ? user?.id
           : undefined,
       },
     });
