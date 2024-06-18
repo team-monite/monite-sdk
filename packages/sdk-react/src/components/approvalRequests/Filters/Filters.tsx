@@ -90,7 +90,6 @@ export const Filters = ({ onChangeFilter }: Props) => {
         <FormControlLabel
           control={<Switch />}
           label={t(i18n)`Only my approvals`}
-          labelPlacement="start"
           onChange={(_, checked) =>
             onChangeFilter(FILTER_TYPE_CURRENT_USER, checked)
           }

@@ -7,11 +7,15 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { AccessRestriction } from '@/ui/accessRestriction';
+import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { ObjectType, PayableResponseSchema } from '@monite/sdk-api';
@@ -56,6 +60,13 @@ const ApprovalRequestsTableBase = ({
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
   const { data: user } = useEntityUserByAuthToken();
+
+  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
+    useIsActionAllowed({
+      method: 'approval_request',
+      action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -120,6 +131,14 @@ const ApprovalRequestsTableBase = ({
 
     onChangeFilterCallback?.({ field, value });
   };
+
+  if (isReadSupportedLoading) {
+    return <LoadingPage />;
+  }
+
+  if (!isReadSupported) {
+    return <AccessRestriction />;
+  }
 
   return (
     <Box
