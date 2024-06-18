@@ -1,5 +1,6 @@
 import { Services } from '@/api';
-import { approvalRequestsListFixture } from '@/mocks/approvalRequests/approvalRequestsFixture';
+import { approvalRequestsListFixture } from '@/mocks/approvalRequests';
+import { ApprovalRequestStatus } from '@monite/sdk-api';
 
 import { delay, http, HttpResponse } from 'msw';
 
@@ -15,24 +16,30 @@ export const approvalRequestsHandlers = [
 
     const limit = url.searchParams.get('limit') || null;
     const pagination_token = url.searchParams.get('pagination_token') || null;
+    const status = url.searchParams.get('status');
 
     let next_pagination_token = undefined;
     let prev_pagination_token = undefined;
 
     const filteredData = (() => {
+      let filtered = approvalRequestsListFixture;
       const parsedLimit = Number(limit);
+
+      if (status) {
+        filtered = filterByStatus(status, approvalRequestsListFixture);
+      }
 
       if (pagination_token === '1') {
         next_pagination_token = undefined;
         prev_pagination_token = '-1';
 
-        return approvalRequestsListFixture.slice(parsedLimit, parsedLimit * 2);
+        return filtered.slice(parsedLimit, parsedLimit * 2);
       }
 
       next_pagination_token = '1';
       prev_pagination_token = undefined;
 
-      return approvalRequestsListFixture.slice(0, parsedLimit);
+      return filtered.slice(0, parsedLimit);
     })();
 
     await delay();
@@ -44,3 +51,21 @@ export const approvalRequestsHandlers = [
     });
   }),
 ];
+
+const filterByStatus = (
+  status: ApprovalRequestStatus | string,
+  fixtures: typeof approvalRequestsListFixture
+) => {
+  if (!status) return fixtures;
+
+  if (
+    !Object.values(ApprovalRequestStatus).includes(
+      status as ApprovalRequestStatus
+    )
+  )
+    throw new Error('Invalid status');
+
+  return fixtures.filter(
+    (approvalRequest) => approvalRequest.status === status
+  );
+};

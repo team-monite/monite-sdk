@@ -1,6 +1,6 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
+import { ApprovalRequestStatus, PayableStateEnum } from '@monite/sdk-api';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
@@ -36,3 +36,5 @@ export const getRowToStatusTextMap = (
   [ApprovalRequestStatus.REJECTED]: t(i18n)`Rejected`,
   [ApprovalRequestStatus.WAITING]: t(i18n)`In Approval`,
 });
+
+export const FILTER_TYPE_STATUS = 'status';

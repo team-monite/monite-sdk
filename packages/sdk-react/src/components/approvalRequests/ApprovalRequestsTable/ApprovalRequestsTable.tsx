@@ -18,15 +18,33 @@ import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
+import { FILTER_TYPE_STATUS } from '../consts';
+import { Filters as FiltersComponent } from '../Filters';
+import { FilterTypes, FilterValue } from '../types';
 import { UserCell } from '../UserCell';
 
-export const ApprovalRequestsTable = () => (
+interface ApprovalRequestsTableProps {
+  /**
+   * Triggered when the filtering options are changed
+   *
+   * @param filter - An object containing the filter parameters.
+   * @param filter.field - The field to filter by, specified as a keyof FilterTypes.
+   * @param filter.value - The value to be applied to the filter, of type FilterValue.
+   */
+  onChangeFilter?: (filter: {
+    field: keyof FilterTypes;
+    value: FilterValue;
+  }) => void;
+}
+export const ApprovalRequestsTable = (props: ApprovalRequestsTableProps) => (
   <MoniteScopedProviders>
-    <ApprovalRequestsTableBase />
+    <ApprovalRequestsTableBase {...props} />
   </MoniteScopedProviders>
 );
 
-const ApprovalRequestsTableBase = () => {
+const ApprovalRequestsTableBase = ({
+  onChangeFilter: onChangeFilterCallback,
+}: ApprovalRequestsTableProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -37,6 +55,7 @@ const ApprovalRequestsTableBase = () => {
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
+  const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
   const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
     api.approvalRequests.getApprovalRequests.useQuery({
@@ -44,6 +63,7 @@ const ApprovalRequestsTableBase = () => {
         object_type: ObjectType.PAYABLE,
         pagination_token: currentPaginationToken ?? undefined,
         limit: pageSize,
+        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
       },
     });
 
@@ -74,12 +94,24 @@ const ApprovalRequestsTableBase = () => {
     };
   });
 
+  const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
+    setCurrentPaginationToken(null);
+    setCurrentFilter((prevFilter) => ({
+      ...prevFilter,
+      [field]: value === 'all' ? null : value,
+    }));
+
+    onChangeFilterCallback?.({ field, value });
+  };
+
   return (
     <Box
       sx={{ padding: 2, width: '100%', height: '100%' }}
       className={ScopedCssBaselineContainerClassName}
     >
-      <Box sx={{ marginBottom: 2 }}>{`Filters`}</Box>
+      <Box sx={{ marginBottom: 2 }}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
+      </Box>
       <DataGrid
         autoHeight
         rowSelection={false}
