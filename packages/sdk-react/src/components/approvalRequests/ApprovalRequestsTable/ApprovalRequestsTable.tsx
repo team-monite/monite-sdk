@@ -132,6 +132,7 @@ const ApprovalRequestsTableBase = ({
       currency: approvingPayable?.currency,
       created_by: approvalRequest.created_by,
       user_ids: approvalRequest.user_ids,
+      approved_by: approvalRequest.approved_by,
     };
   });
 
@@ -269,7 +270,8 @@ const ApprovalRequestsTableBase = ({
               if (
                 params.row.status === ApprovalRequestStatus.WAITING &&
                 user?.id &&
-                params.row.user_ids.includes(user.id)
+                params.row.user_ids.includes(user.id) &&
+                !params.row.approved_by?.includes(user.id)
               ) {
                 return (
                   <Stack direction="row" spacing={1}>

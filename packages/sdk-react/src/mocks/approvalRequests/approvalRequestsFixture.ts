@@ -11,7 +11,7 @@ export const approvalRequestsListFixture: Services['approvalRequests']['getAppro
     id: faker.string.nanoid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    approved_by: [entityUserByIdFixture.id],
+    approved_by: [],
     created_by: getRandomProperty(entityUsers).id,
     object_id: faker.string.nanoid(),
     object_type: 'payable' as components['schemas']['ObjectType'],
