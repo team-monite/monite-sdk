@@ -18,21 +18,27 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ObjectType, PayableResponseSchema } from '@monite/sdk-api';
-import { Box } from '@mui/material';
+import {
+  ObjectType,
+  PayableResponseSchema,
+  ApprovalRequestStatus,
+} from '@monite/sdk-api';
+import { Box, IconButton } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
-import { ApprovalRequestStatusChip } from '../ApprovalRequestStatusChip';
 import {
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
-import { Filters as FiltersComponent } from '../Filters';
 import { FilterTypes, FilterValue } from '../types';
-import { UserCell } from '../UserCell';
+import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
+import { ApproveButton } from './ApproveButton';
+import { Filters as FiltersComponent } from './Filters';
+import { RejectButton } from './RejectButton';
+import { UserCell } from './UserCell';
 
 interface ApprovalRequestsTableProps {
   /**
@@ -261,6 +267,28 @@ const ApprovalRequestsTableBase = ({
             sortable: false,
             flex: 1,
             renderCell: ({ value }) => <UserCell entityUserId={value} />,
+          },
+          {
+            field: 'approve',
+            renderHeader: () => null,
+            sortable: false,
+            flex: 0.2,
+            renderCell: (params) => {
+              if (params.row.status === ApprovalRequestStatus.WAITING) {
+                return <ApproveButton id={params.row.id} />;
+              }
+            },
+          },
+          {
+            field: 'reject',
+            renderHeader: () => null,
+            sortable: false,
+            flex: 0.2,
+            renderCell: (params) => {
+              if (params.row.status === ApprovalRequestStatus.WAITING) {
+                return <RejectButton id={params.row.id} />;
+              }
+            },
           },
         ]}
         rows={rows ?? []}

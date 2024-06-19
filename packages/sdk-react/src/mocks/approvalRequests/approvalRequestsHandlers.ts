@@ -1,4 +1,4 @@
-import { Services } from '@/api';
+import { type components, Services } from '@/api';
 import { approvalRequestsListFixture } from '@/mocks/approvalRequests';
 import { ApprovalRequestStatus } from '@monite/sdk-api';
 
@@ -56,6 +56,34 @@ export const approvalRequestsHandlers = [
       next_pagination_token,
       prev_pagination_token,
     });
+  }),
+
+  http.post<
+    { id: string },
+    undefined,
+    components['schemas']['ApprovalRequestResourceWithMetadata']
+  >(`${approvalRequestsPath}/:id/approve`, async ({ params }) => {
+    const approvalRequest = approvalRequestsListFixture.find(
+      (approvalRequest) => approvalRequest.id === params.id
+    );
+
+    await delay();
+
+    return HttpResponse.json(approvalRequest);
+  }),
+
+  http.post<
+    { id: string },
+    undefined,
+    components['schemas']['ApprovalRequestResourceWithMetadata']
+  >(`${approvalRequestsPath}/:id/reject`, async ({ params }) => {
+    const approvalRequest = approvalRequestsListFixture.find(
+      (approvalRequest) => approvalRequest.id === params.id
+    );
+
+    await delay();
+
+    return HttpResponse.json(approvalRequest);
   }),
 ];
 

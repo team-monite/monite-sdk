@@ -20,8 +20,8 @@ import {
   FILTER_TYPE_CURRENT_USER,
   FILTER_TYPE_STATUS,
   getRowToStatusTextMap,
-} from '../consts';
-import { FilterTypes, FilterValue } from '../types';
+} from '../../consts';
+import { FilterTypes, FilterValue } from '../../types';
 
 interface Props {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
