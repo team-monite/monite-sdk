@@ -6,10 +6,10 @@ import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 import {
-  getRowToStatusTextMap,
   APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_STATUS_MUI_MAP,
 } from '../../consts';
+import { getRowToStatusTextMap } from '../../helpers';
 
 interface ApprovalRequestStatusChipRootProps {
   /** The status of the approval request. */

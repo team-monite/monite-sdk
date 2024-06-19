@@ -31,6 +31,7 @@ import { addDays, formatISO } from 'date-fns';
 import {
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
@@ -103,7 +104,7 @@ const ApprovalRequestsTableBase = ({
           : undefined,
         created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
           ? user?.id
-          : undefined,
+          : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
       },
     });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -16,18 +17,26 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 
 import {
+  FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
   FILTER_TYPE_STATUS,
-  getRowToStatusTextMap,
 } from '../../consts';
+import { getRowToStatusTextMap } from '../../helpers';
 import { FilterTypes, FilterValue } from '../../types';
+import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy';
 
-interface Props {
+interface FilterProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
-export const Filters = ({ onChangeFilter }: Props) => {
+export const Filters = (props: FilterProps) => (
+  <MoniteScopedProviders>
+    <FiltersBase {...props} />
+  </MoniteScopedProviders>
+);
+
+const FiltersBase = ({ onChangeFilter }: FilterProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
@@ -63,6 +72,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
               ))}
             </Select>
           </FormControl>
+        </Grid>
+        <Grid item xs={6} sm={3} md={4} lg={3}>
+          <AutocompleteCreatedBy
+            onChange={(id) => onChangeFilter(FILTER_TYPE_ADDED_BY, id || null)}
+          />
         </Grid>
         <Grid item xs={6} sm={3} md={2}>
           <DatePicker
