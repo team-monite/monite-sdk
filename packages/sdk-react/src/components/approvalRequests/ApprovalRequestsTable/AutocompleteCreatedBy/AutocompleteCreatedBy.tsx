@@ -42,11 +42,6 @@ export const AutocompleteCreatedByBase = ({
     { enabled: open }
   );
 
-  useEffect(() => {
-    onChangeFilter(value?.id);
-    refetch();
-  }, [value]);
-
   return (
     <Autocomplete
       autoComplete
@@ -78,6 +73,8 @@ export const AutocompleteCreatedByBase = ({
       }}
       onChange={(_, newValue: EntityUserType | null) => {
         setValue(newValue);
+        onChangeFilter(newValue?.id);
+        refetch();
       }}
       renderInput={(params) => (
         <TextField
