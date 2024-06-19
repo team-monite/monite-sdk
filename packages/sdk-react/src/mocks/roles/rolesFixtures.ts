@@ -216,6 +216,7 @@ export const readOnlyRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'approval_request',
         'role',
         'counterpart',
         'product',

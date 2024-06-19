@@ -23,7 +23,7 @@ import {
   PayableResponseSchema,
   ApprovalRequestStatus,
 } from '@monite/sdk-api';
-import { Box, IconButton } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -71,6 +71,12 @@ const ApprovalRequestsTableBase = ({
     useIsActionAllowed({
       method: 'approval_request',
       action: ActionEnum.READ,
+      entityUserId: user?.id,
+    });
+  const { data: isUpdateSupported, isLoading: isUpdateSupportedLoading } =
+    useIsActionAllowed({
+      method: 'approval_request',
+      action: ActionEnum.UPDATE,
       entityUserId: user?.id,
     });
 
@@ -125,6 +131,7 @@ const ApprovalRequestsTableBase = ({
       amount_to_pay: approvingPayable?.amount_to_pay,
       currency: approvingPayable?.currency,
       created_by: approvalRequest.created_by,
+      user_ids: approvalRequest.user_ids,
     };
   });
 
@@ -138,7 +145,7 @@ const ApprovalRequestsTableBase = ({
     onChangeFilterCallback?.({ field, value });
   };
 
-  if (isReadSupportedLoading) {
+  if (isReadSupportedLoading || isUpdateSupportedLoading) {
     return <LoadingPage />;
   }
 
@@ -185,7 +192,7 @@ const ApprovalRequestsTableBase = ({
         columns={[
           {
             field: 'number',
-            headerName: t(i18n)`Number`,
+            headerName: t(i18n)`Invoice #`,
             sortable: false,
             flex: 1,
           },
@@ -201,11 +208,7 @@ const ApprovalRequestsTableBase = ({
           {
             field: 'issued_at',
             type: 'date',
-            headerName: t(i18n)({
-              id: 'Issue date Name',
-              message: 'Issue date',
-              comment: 'Payables Table "Issue date" heading title',
-            }),
+            headerName: t(i18n)`Issue date`,
             sortable: false,
             flex: 0.7,
             valueFormatter: ({
@@ -216,11 +219,7 @@ const ApprovalRequestsTableBase = ({
           {
             field: 'due_date',
             type: 'date',
-            headerName: t(i18n)({
-              id: 'Due date Name',
-              message: 'Due date',
-              comment: 'Payables Table "Due date" heading title',
-            }),
+            headerName: t(i18n)`Due date`,
             sortable: false,
             flex: 0.7,
             valueFormatter: ({
@@ -230,11 +229,7 @@ const ApprovalRequestsTableBase = ({
           },
           {
             field: 'status',
-            headerName: t(i18n)({
-              id: 'Status Name',
-              message: 'Status',
-              comment: 'Payables Table "Status" heading title',
-            }),
+            headerName: t(i18n)`Status`,
             sortable: false,
             flex: 0.7,
             renderCell: (params) => (
@@ -243,11 +238,7 @@ const ApprovalRequestsTableBase = ({
           },
           {
             field: 'amount',
-            headerName: t(i18n)({
-              id: 'Amount Name',
-              message: 'Amount',
-              comment: 'Payables Table "Amount" heading title',
-            }),
+            headerName: t(i18n)`Amount`,
             sortable: false,
             flex: 0.7,
             valueGetter: (params) => {
@@ -269,28 +260,30 @@ const ApprovalRequestsTableBase = ({
             renderCell: ({ value }) => <UserCell entityUserId={value} />,
           },
           {
-            field: 'approve',
+            field: 'actions',
             renderHeader: () => null,
             sortable: false,
-            flex: 0.2,
+            flex: 0.4,
+            align: 'right',
             renderCell: (params) => {
-              if (params.row.status === ApprovalRequestStatus.WAITING) {
-                return <ApproveButton id={params.row.id} />;
-              }
-            },
-          },
-          {
-            field: 'reject',
-            renderHeader: () => null,
-            sortable: false,
-            flex: 0.2,
-            renderCell: (params) => {
-              if (params.row.status === ApprovalRequestStatus.WAITING) {
-                return <RejectButton id={params.row.id} />;
+              if (
+                params.row.status === ApprovalRequestStatus.WAITING &&
+                user?.id &&
+                params.row.user_ids.includes(user.id)
+              ) {
+                return (
+                  <Stack direction="row" spacing={1}>
+                    <ApproveButton id={params.row.id} />
+                    <RejectButton id={params.row.id} />
+                  </Stack>
+                );
               }
             },
           },
         ]}
+        columnVisibilityModel={{
+          actions: isUpdateSupported,
+        }}
         rows={rows ?? []}
       />
     </Box>

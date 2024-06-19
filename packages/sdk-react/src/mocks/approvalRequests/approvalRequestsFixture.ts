@@ -23,5 +23,5 @@ export const approvalRequestsListFixture: Services['approvalRequests']['getAppro
       'rejected',
       'canceled',
     ]) as components['schemas']['ApprovalRequestStatus'],
-    user_ids: [entityUserByIdFixture.id],
+    user_ids: [entityUserByIdFixture.id, faker.string.nanoid()],
   }));
