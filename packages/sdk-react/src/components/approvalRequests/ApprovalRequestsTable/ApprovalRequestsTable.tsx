@@ -92,6 +92,8 @@ const ApprovalRequestsTableBase = ({
   const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
     api.approvalRequests.getApprovalRequests.useQuery({
       query: {
+        sort: 'updated_at',
+        order: 'desc',
         object_type: ObjectType.PAYABLE,
         pagination_token: currentPaginationToken ?? undefined,
         limit: pageSize,
