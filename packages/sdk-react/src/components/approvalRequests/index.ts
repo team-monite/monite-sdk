@@ -1,2 +1,2 @@
 export * from './ApprovalRequests';
-export * from './ApprovalRequestsTable/';
+export * from './ApprovalRequestsTable';
