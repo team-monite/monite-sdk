@@ -115,10 +115,10 @@ export class CommonAppElement extends HTMLElement {
   setupElement(nameProp: NameProps) {
     switch (nameProp) {
       case NameProps.dropIn:
-        this.name = nameProp;
+        this.name = NameProps.dropIn;
         break;
       case NameProps.iframeApp:
-        this.name = nameProp;
+        this.name = NameProps.iframeApp;
         break;
       default:
         throw new Error(`Unsupported name-prop value: ${nameProp}`);
