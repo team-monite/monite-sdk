@@ -9,6 +9,7 @@ import {
   Settings as SettingsIcon,
   Tab as TabIcon,
   Label as LabelIcon,
+  DoneOutline as DoneOutlineIcon,
 } from '@mui/icons-material';
 
 import { MenuItemType } from './types';
@@ -45,6 +46,11 @@ export const getNavigationData = (
         label: 'Approval Policies',
         url: ROUTES.approvalPolicies,
         renderIcon: (props) => <TabIcon {...props} />,
+      },
+      approvalRequests: {
+        label: 'Approval Requests',
+        url: ROUTES.approvalRequests,
+        renderIcon: (props) => <DoneOutlineIcon {...props} />,
       },
       roles: {
         label: 'Roles',
