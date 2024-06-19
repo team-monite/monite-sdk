@@ -62,7 +62,6 @@
   },
   "dependencies": {
     "@monite/sdk-api": "workspace:~",
-    "@mui/material": "~5.14.2",
     "@openapi-qraft/react": "~1.11.0-beta.1",
     "@tanstack/react-query": "~5.28.6"
   },
