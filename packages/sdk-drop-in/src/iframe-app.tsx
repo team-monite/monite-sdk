@@ -14,7 +14,6 @@ import {
 
 import { css, Global } from '@emotion/react';
 import { createAPIClient, RootElementsProvider } from '@monite/sdk-react';
-import { Theme, ThemeOptions } from '@mui/material';
 import { createSecureRequestFn } from '@openapi-qraft/react';
 import { QueryClient } from '@tanstack/react-query';
 import { getConfig } from '@team-monite/sdk-demo';
@@ -61,7 +60,6 @@ type IframeAppProps = Pick<
   ProviderProps;
 
 interface MoniteIframeAppProps extends IframeAppProps {
-  theme?: ThemeOptions | Theme;
   locale?: Record<string, string>;
   fetchToken: () => Promise<{
     access_token: string;
