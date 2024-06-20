@@ -1,18 +1,32 @@
-class IframeManager {
-  iframe: HTMLIFrameElement | null;
+interface IframeAppState {
+  [key: string]: string | null;
+}
+
+export class IframeAppManager {
+  iframe?: HTMLIFrameElement | null;
   channel: MessageChannel;
+  state: IframeAppState;
+  port?: MessagePort;
+  listeners: { [key: string]: (payload: string) => void };
 
-  constructor(iframeId: string) {
-    this.iframe = document.getElementById(iframeId) as HTMLIFrameElement;
+  constructor(iframeId?: string) {
+    if (typeof iframeId === 'string') {
+      this.iframe = document.getElementById(iframeId) as HTMLIFrameElement;
+    }
     this.channel = new MessageChannel();
-    this.init();
+    this.state = {};
+    this.listeners = {};
+
+    this.preInit();
+    this.initIframe();
+    this.initAppManager();
   }
 
-  registerChannel(type: string, payload: string | undefined) {
-    this.sendMessageToIframe(type, JSON.stringify(payload));
+  preInit() {
+    window.parent.postMessage({ type: 'readyToConnect' }, '*');
   }
 
-  init() {
+  initIframe() {
     if (this.iframe) {
       this.iframe.addEventListener('load', () => {
         this.iframe?.contentWindow?.postMessage({ type: 'connect' }, '*', [
@@ -21,45 +35,13 @@ class IframeManager {
 
         this.channel.port1.onmessage = (event) => {
           const { type, payload } = event.data;
-          payload && this.sendMessageToIframe(type, payload);
+          if (payload) this.sendMessageToIframe(type, payload);
         };
       });
     }
   }
 
-  sendMessageToIframe(type: string, payload: string | undefined) {
-    try {
-      this.channel.port1.postMessage({
-        type,
-        payload: JSON.stringify(payload),
-      });
-    } catch (error) {
-      console.error('Error sending message to iframe:', error);
-    }
-  }
-}
-
-interface IframeAppState {
-  [key: string]: string | null;
-}
-
-class IframeAppManager {
-  state: IframeAppState;
-  port?: MessagePort;
-  listeners: { [key: string]: (payload: string) => void };
-
-  constructor() {
-    this.state = {};
-    this.listeners = {};
-    this.preInit();
-    this.init();
-  }
-
-  preInit() {
-    window.parent.postMessage({ type: 'readyToConnect' }, '*');
-  }
-
-  init() {
+  initAppManager() {
     window.addEventListener('message', (event) => this.handleMessage(event));
   }
 
@@ -74,7 +56,22 @@ class IframeAppManager {
     }
   }
 
-  on(event: string, callback: (payload: object) => void) {
+  sendMessageToIframe(type: string, payload: string | undefined) {
+    try {
+      this.channel.port1.postMessage({
+        type,
+        payload: JSON.stringify(payload),
+      });
+    } catch (error) {
+      console.error('Error sending message to iframe:', error);
+    }
+  }
+
+  registerChannel(type: string, payload: string | undefined) {
+    this.sendMessageToIframe(type, JSON.stringify(payload));
+  }
+
+  on(event: string, callback: (payload: string) => void) {
     this.listeners[event] = (payload: string) => {
       const deserializedPayload = JSON.parse(payload);
       callback(deserializedPayload);
@@ -110,5 +107,3 @@ class IframeAppManager {
     };
   }
 }
-
-export { IframeManager, IframeAppManager };
