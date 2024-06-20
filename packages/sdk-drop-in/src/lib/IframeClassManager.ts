@@ -33,22 +33,16 @@ class IframeManager {
 }
 
 interface IframeAppState {
-  theme: string | null;
-  locale: string | null;
+  [key: string]: string | null;
 }
 
 class IframeAppManager {
   state: IframeAppState;
-  fetchTokenCallback: (() => Promise<string>) | null;
   port?: MessagePort;
   listeners: { [key: string]: (payload: string) => void };
 
   constructor() {
-    this.state = {
-      theme: null,
-      locale: null,
-    };
-    this.fetchTokenCallback = null;
+    this.state = {};
     this.listeners = {};
     this.preInit();
     this.init();
@@ -78,15 +72,6 @@ class IframeAppManager {
       const serializedPayload = JSON.stringify(payload);
       callback(serializedPayload);
     };
-  }
-
-  fetchToken(): Promise<string> {
-    return new Promise((resolve) => {
-      if (this.fetchTokenCallback) {
-        this.fetchTokenCallback().then(resolve);
-      }
-      this.port?.postMessage({ type: 'fetch-token' });
-    });
   }
 
   connectWithRetry(retryCount = 0) {

@@ -1,6 +1,6 @@
 import { useCallback, useRef, useSyncExternalStore } from 'react';
 
-import { IframeAppManager } from '@/lib/IframeClassManager.ts';
+import { IframeAppManager } from '@/lib/IframeClassManager';
 
 export const useMoniteIframeAppSlots = () => {
   const iframeAppManager = useRef(new IframeAppManager()).current;
@@ -31,11 +31,10 @@ export const useMoniteIframeAppSlots = () => {
   };
 
   const getSnapshot = () => ({
-    theme: iframeAppManager.state.theme,
-    locale: iframeAppManager.state.locale,
+    ...iframeAppManager.state,
   });
 
-  const { theme, locale } = useSyncExternalStore(subscribe, getSnapshot);
+  const state = useSyncExternalStore(subscribe, getSnapshot);
 
   const fetchTokenResolver = useRef<{
     promise?: Promise<string>;
@@ -50,7 +49,7 @@ export const useMoniteIframeAppSlots = () => {
     fetchTokenResolver.current = {
       promise: new Promise<string>((resolve) => {
         fetchTokenResolver.current!.resolve = resolve;
-        iframeAppManager.fetchToken().then(resolve);
+        iframeAppManager.port?.postMessage({ type: 'fetch-token' });
       }).finally(() => {
         fetchTokenResolver.current = {};
       }),
@@ -60,5 +59,5 @@ export const useMoniteIframeAppSlots = () => {
     return fetchTokenResolver.current.promise!;
   }, [iframeAppManager]);
 
-  return { theme, locale, fetchToken };
+  return { ...state, fetchToken };
 };
