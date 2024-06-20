@@ -198,7 +198,7 @@ const ApprovalRequestsTableBase = ({
             field: 'number',
             headerName: t(i18n)`Invoice #`,
             sortable: false,
-            flex: 1,
+            flex: 0.7,
           },
           {
             field: 'counterpart_id',
@@ -244,7 +244,7 @@ const ApprovalRequestsTableBase = ({
             field: 'amount',
             headerName: t(i18n)`Amount`,
             sortable: false,
-            flex: 0.7,
+            flex: 0.5,
             valueGetter: (params) => {
               const payable = params.row;
 
@@ -267,7 +267,7 @@ const ApprovalRequestsTableBase = ({
             field: 'actions',
             renderHeader: () => null,
             sortable: false,
-            flex: 0.4,
+            flex: 0.5,
             align: 'right',
             renderCell: (params) => {
               if (

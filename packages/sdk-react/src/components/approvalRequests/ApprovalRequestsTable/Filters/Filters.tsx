@@ -42,8 +42,8 @@ const FiltersBase = ({ onChangeFilter }: FilterProps) => {
 
   return (
     <Grid container justifyContent="space-between">
-      <Grid item container spacing={2} xs={10}>
-        <Grid item xs={6} sm={3} md={4} lg={3}>
+      <Grid item container spacing={2} xs={9}>
+        <Grid item xs={6} sm={3}>
           <FormControl variant="outlined" fullWidth>
             <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
             <Select
@@ -73,12 +73,12 @@ const FiltersBase = ({ onChangeFilter }: FilterProps) => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={6} sm={3} md={4} lg={3}>
+        <Grid item xs={6} sm={3}>
           <AutocompleteCreatedBy
             onChange={(id) => onChangeFilter(FILTER_TYPE_ADDED_BY, id || null)}
           />
         </Grid>
-        <Grid item xs={6} sm={3} md={2}>
+        <Grid item xs={6} sm={3}>
           <DatePicker
             label={t(i18n)`Requested on`}
             onChange={(value, error) => {
@@ -100,7 +100,7 @@ const FiltersBase = ({ onChangeFilter }: FilterProps) => {
           />
         </Grid>
       </Grid>
-      <Grid item xs={2} textAlign="right" alignContent="center">
+      <Grid item xs={6} sm={3} textAlign="right" alignContent="center">
         <FormControlLabel
           control={<Switch />}
           label={t(i18n)`Only my approvals`}
