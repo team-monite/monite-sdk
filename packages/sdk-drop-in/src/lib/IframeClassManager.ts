@@ -28,7 +28,14 @@ class IframeManager {
   }
 
   sendMessageToIframe(type: string, payload: string | undefined) {
-    this.channel.port1.postMessage({ type, payload: JSON.stringify(payload) });
+    try {
+      this.channel.port1.postMessage({
+        type,
+        payload: JSON.stringify(payload),
+      });
+    } catch (error) {
+      console.error('Error sending message to iframe:', error);
+    }
   }
 }
 
@@ -76,17 +83,31 @@ class IframeAppManager {
 
   connectWithRetry(retryCount = 0) {
     if (this.port) {
-      this.port.postMessage({ type: 'connect' });
+      try {
+        this.port.postMessage({ type: 'connect' });
 
-      this.port.onmessage = (event) => {
-        const { type, payload } = event.data;
-        if (type in this.listeners) {
-          this.listeners[type](payload);
-        }
-      };
+        this.port.onmessage = (event) => {
+          const { type, payload } = event.data;
+          if (type in this.listeners) {
+            this.listeners[type](payload);
+          }
+        };
+      } catch (error) {
+        console.error('Error during port message handling:', error);
+      }
     } else if (retryCount < 5) {
       setTimeout(() => this.connectWithRetry(retryCount + 1), 1000);
     }
+  }
+
+  handleConnectMessage(event: MessageEvent) {
+    if (event.data.type !== 'connect') return;
+
+    this.port!.onmessage = ({ data }) => {
+      if (data.type in this.listeners) {
+        this.listeners[data.type](data.payload);
+      }
+    };
   }
 }
 
