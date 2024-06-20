@@ -14,13 +14,7 @@ export const useMoniteIframeAppSlots = () => {
     iframeAppManager.connectWithRetry();
 
     const handleConnectMessage = (event: MessageEvent) => {
-      if (event.data.type !== 'connect') return;
-
-      iframeAppManager.port!.onmessage = ({ data }) => {
-        if (data.type in iframeAppManager.listeners) {
-          iframeAppManager.listeners[data.type](data.payload);
-        }
-      };
+      iframeAppManager.handleConnectMessage(event);
     };
 
     window.addEventListener('message', handleConnectMessage);
