@@ -4,6 +4,7 @@ import { IframeAppManager } from '@/lib/IframeClassManager';
 
 export const useMoniteIframeAppSlots = () => {
   const iframeAppManager = useRef(new IframeAppManager()).current;
+  const snapshotRef = useRef(iframeAppManager.state);
 
   const subscribe = (onStoreChange: () => void) => {
     iframeAppManager.on('fetch-token', (payload) => {
@@ -24,9 +25,13 @@ export const useMoniteIframeAppSlots = () => {
     };
   };
 
-  const getSnapshot = () => ({
-    ...iframeAppManager.state,
-  });
+  const getSnapshot = useCallback(() => {
+    const currentState = iframeAppManager.state;
+    if (JSON.stringify(snapshotRef.current) !== JSON.stringify(currentState)) {
+      snapshotRef.current = currentState;
+    }
+    return snapshotRef.current;
+  }, [iframeAppManager.state]);
 
   const state = useSyncExternalStore(subscribe, getSnapshot);
 
