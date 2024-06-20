@@ -1,8 +1,8 @@
 import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { ApprovalRequestStatus } from '../../types';
 import { ApprovalRequestStatusChip as ApprovalRequestStatusChipComponent } from './ApprovalRequestStatusChip';
 
 const meta: Meta<typeof ApprovalRequestStatusChipComponent> = {

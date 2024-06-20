@@ -1,6 +1,7 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
+
+import { ApprovalRequestStatus } from './types';
 
 export const getRowToStatusTextMap = (
   i18n: I18n

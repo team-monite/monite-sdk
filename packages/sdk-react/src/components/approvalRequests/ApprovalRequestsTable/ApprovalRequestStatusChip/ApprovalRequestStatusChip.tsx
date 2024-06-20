@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 
 import { useLingui } from '@lingui/react';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
@@ -10,6 +9,7 @@ import {
   ROW_TO_STATUS_MUI_MAP,
 } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
+import { ApprovalRequestStatus } from '../../types';
 
 interface ApprovalRequestStatusChipRootProps {
   /** The status of the approval request. */
@@ -50,7 +50,6 @@ export interface ApprovalRequestStatusChipProps
  * });
  */
 
-// TODO create general component for status chips
 export const ApprovalRequestStatusChip = forwardRef<
   HTMLDivElement,
   ApprovalRequestStatusChipProps

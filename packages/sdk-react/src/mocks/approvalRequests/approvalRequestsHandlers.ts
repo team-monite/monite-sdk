@@ -1,6 +1,6 @@
 import { type components, Services } from '@/api';
+import { ApprovalRequestStatus } from '@/components/approvalRequests/types';
 import { approvalRequestsListFixture } from '@/mocks/approvalRequests';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
 
 import { delay, http, HttpResponse } from 'msw';
 

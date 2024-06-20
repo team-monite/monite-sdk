@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ApprovalRequestStatus } from '@monite/sdk-api';
 import {
   FormControl,
   FormControlLabel,
@@ -23,7 +23,7 @@ import {
   FILTER_TYPE_STATUS,
 } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
-import { FilterTypes, FilterValue } from '../../types';
+import { ApprovalRequestStatus, FilterTypes, FilterValue } from '../../types';
 import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy';
 
 interface FilterProps {
@@ -55,7 +55,9 @@ const FiltersBase = ({ onChangeFilter }: FilterProps) => {
                 onChangeFilter(
                   FILTER_TYPE_STATUS,
                   selected &&
-                    (selected.target.value as ApprovalRequestStatus | 'all')
+                    (selected.target.value as
+                      | components['schemas']['ApprovalRequestStatus']
+                      | 'all')
                 );
               }}
             >

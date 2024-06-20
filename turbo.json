@@ -95,7 +95,7 @@
       "cache": false
     },
     "codegen": {
-      "cache": true,
+      "cache": false,
       "outputs": ["src/api/**/*.ts", "!src/api/client.ts", "!src/api/client.test.ts"],
       "inputs": ["src/api/schema.json"]
     }

@@ -1,9 +1,10 @@
-import { ApprovalRequestStatus } from '@monite/sdk-api';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DangerousOutlinedIcon from '@mui/icons-material/DangerousOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import { ChipTypeMap, type SvgIcon } from '@mui/material';
+
+import { ApprovalRequestStatus } from './types';
 
 export const ROW_TO_STATUS_MUI_MAP: {
   [key in ApprovalRequestStatus]: ChipTypeMap['props']['color'];

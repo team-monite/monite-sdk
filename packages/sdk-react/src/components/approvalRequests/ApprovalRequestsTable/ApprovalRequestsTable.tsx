@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -7,7 +8,6 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-// TODO move component CounterpartCell to common ui folder
 import { CounterpartCell } from '@/ui/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -18,11 +18,6 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ObjectType,
-  PayableResponseSchema,
-  ApprovalRequestStatus,
-} from '@monite/sdk-api';
 import { Box, Stack } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
@@ -34,7 +29,7 @@ import {
   FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
-import { FilterTypes, FilterValue } from '../types';
+import { ApprovalRequestStatus, FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import { ApproveButton } from './ApproveButton';
 import { Filters as FiltersComponent } from './Filters';
@@ -94,7 +89,7 @@ const ApprovalRequestsTableBase = ({
       query: {
         sort: 'updated_at',
         order: 'desc',
-        object_type: ObjectType.PAYABLE,
+        object_type: 'payable',
         pagination_token: currentPaginationToken ?? undefined,
         limit: pageSize,
         status: currentFilter[FILTER_TYPE_STATUS] || undefined,
@@ -217,7 +212,9 @@ const ApprovalRequestsTableBase = ({
             flex: 0.7,
             valueFormatter: ({
               value,
-            }: GridValueFormatterParams<PayableResponseSchema['issued_at']>) =>
+            }: GridValueFormatterParams<
+              components['schemas']['PayableResponseSchema']['issued_at']
+            >) =>
               value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
           },
           {
@@ -228,7 +225,9 @@ const ApprovalRequestsTableBase = ({
             flex: 0.7,
             valueFormatter: ({
               value,
-            }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
+            }: GridValueFormatterParams<
+              components['schemas']['PayableResponseSchema']['due_date']
+            >) =>
               value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
           },
           {
