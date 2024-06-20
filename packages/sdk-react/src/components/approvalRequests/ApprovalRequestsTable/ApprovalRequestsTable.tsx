@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-// TODO move component CounterpartCell to common ui folder
-import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+// TODO move component CounterpartCell to common ui folder
+import { CounterpartCell } from '@/ui/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
