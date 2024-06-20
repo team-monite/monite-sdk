@@ -13,7 +13,7 @@ import {
   Tags,
 } from '@monite/sdk-react';
 
-import { DropInMoniteProvider } from './CommonMoniteProvider.tsx';
+import { DropInMoniteProvider } from './DropInMoniteProvider';
 
 type ProviderProps = Pick<
   ComponentProps<typeof DropInMoniteProvider>,

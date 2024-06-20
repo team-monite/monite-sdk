@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link href="/favicon.ico" rel="icon" type="image/svg+xml" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <title>Monite App Widget Label</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script src="/src/monite-iframe-app-html.tsx" type="module"></script>
+
+    <script type="module">
+      // not used
+      window.fetchToken = async () => {
+        try {
+          const { fetchToken, getConfig } = await import(
+            '@team-monite/sdk-demo'
+          );
+          const { api_url, entity_user_id, client_id, client_secret } =
+            await getConfig();
+
+          return await fetchToken(`${api_url}/v1`, {
+            entity_user_id,
+            client_id,
+            client_secret,
+          });
+        } catch (error) {
+          console.error(error);
+          throw new Error('Error while fetching token');
+        }
+      };
+    </script>
+
+    <script>
+      // not used
+      window.addEventListener('message', async (event) => {
+        const allowedOrigin = 'https://trusted-iframe-source.com'; //ToDo check
+
+        if (event.origin !== allowedOrigin) {
+          console.error(
+            'Received message from untrusted origin:',
+            event.origin
+          );
+          return;
+        }
+
+        if (event.data.action === 'requestToken') {
+          const token = await window.fetchToken();
+          event.source.postMessage(
+            { action: 'deliverToken', token: token },
+            allowedOrigin
+          );
+        }
+      });
+    </script>
+  </body>
+</html>
