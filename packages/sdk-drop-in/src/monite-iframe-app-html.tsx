@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { MoniteIframeApp } from '@/iframe-app';
 import { getConfig } from '@/lib/ConfigLoader';
+import { MoniteIframeApp } from '@/MoniteIframeApp.tsx';
 import { createAPIClient } from '@monite/sdk-react';
 
 (async function () {
