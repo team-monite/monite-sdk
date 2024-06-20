@@ -1,6 +1,7 @@
-import React, { ComponentProps, Suspense, useMemo } from 'react';
+import React, { ComponentProps, Suspense, useEffect, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { useMoniteIframeAppSlots } from '@/hooks/useIframeAppSlots.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader.tsx';
 import { EntityIdLoader } from '@/lib/EntityIdLoader.tsx';
 import { moniteSuperComponents } from '@/lib/moniteSuperComponents.tsx';
@@ -23,6 +24,21 @@ interface MoniteIframeAppProps
 
 export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
   const queryClient = useMemo(() => new QueryClient(), []);
+  const { fetchToken } = useMoniteIframeAppSlots();
+
+  useEffect(() => {
+    const fetchTokenAsync = async () => {
+      try {
+        const token = await fetchToken();
+        console.log('Fetched token:', token);
+        // Do something with the token, e.g., set it in state or pass it to an iframe
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    };
+
+    fetchTokenAsync();
+  }, [fetchToken]);
 
   return (
     <QueryClientProvider client={queryClient}>
