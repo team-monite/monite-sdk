@@ -1,7 +1,7 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 
-import { ApprovalRequestStatus } from './types';
+import { ApprovalRequestStatus } from './consts';
 
 export const getRowToStatusTextMap = (
   i18n: I18n

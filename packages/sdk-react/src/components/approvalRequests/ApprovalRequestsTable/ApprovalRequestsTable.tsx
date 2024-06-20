@@ -24,12 +24,13 @@ import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 import { addDays, formatISO } from 'date-fns';
 
 import {
+  ApprovalRequestStatus,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
-import { ApprovalRequestStatus, FilterTypes, FilterValue } from '../types';
+import { FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import { ApproveButton } from './ApproveButton';
 import { Filters as FiltersComponent } from './Filters';

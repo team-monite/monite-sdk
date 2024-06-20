@@ -2,7 +2,7 @@ import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ApprovalRequestStatus } from '../../types';
+import { ApprovalRequestStatus } from '../../consts';
 import { ApprovalRequestStatusChip as ApprovalRequestStatusChipComponent } from './ApprovalRequestStatusChip';
 
 const meta: Meta<typeof ApprovalRequestStatusChipComponent> = {

@@ -7,13 +7,6 @@ import {
   FILTER_TYPE_ADDED_BY,
 } from './consts';
 
-export enum ApprovalRequestStatus {
-  APPROVED = 'approved',
-  CANCELED = 'canceled',
-  REJECTED = 'rejected',
-  WAITING = 'waiting',
-}
-
 export type FilterTypes = {
   [FILTER_TYPE_STATUS]?: components['schemas']['ApprovalRequestStatus'] | null;
   [FILTER_TYPE_CREATED_AT]?: Date | null;

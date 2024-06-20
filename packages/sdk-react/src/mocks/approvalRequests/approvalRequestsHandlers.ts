@@ -1,5 +1,5 @@
 import { type components, Services } from '@/api';
-import { ApprovalRequestStatus } from '@/components/approvalRequests/types';
+import { ApprovalRequestStatus } from '@/components/approvalRequests/consts';
 import { approvalRequestsListFixture } from '@/mocks/approvalRequests';
 
 import { delay, http, HttpResponse } from 'msw';

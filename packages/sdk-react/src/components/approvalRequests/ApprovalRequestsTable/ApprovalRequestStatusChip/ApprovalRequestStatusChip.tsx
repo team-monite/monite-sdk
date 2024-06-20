@@ -8,8 +8,8 @@ import {
   APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_STATUS_MUI_MAP,
 } from '../../consts';
+import { ApprovalRequestStatus } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
-import { ApprovalRequestStatus } from '../../types';
 
 interface ApprovalRequestStatusChipRootProps {
   /** The status of the approval request. */

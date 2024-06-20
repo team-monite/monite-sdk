@@ -17,13 +17,14 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 
 import {
+  ApprovalRequestStatus,
   FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
   FILTER_TYPE_STATUS,
 } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
-import { ApprovalRequestStatus, FilterTypes, FilterValue } from '../../types';
+import { FilterTypes, FilterValue } from '../../types';
 import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy';
 
 interface FilterProps {
