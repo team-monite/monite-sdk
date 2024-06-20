@@ -67,10 +67,10 @@ class IframeAppManager {
     }
   }
 
-  on(event: string, callback: (payload: string) => void) {
-    this.listeners[event] = (payload: string | undefined) => {
-      const serializedPayload = JSON.stringify(payload);
-      callback(serializedPayload);
+  on(event: string, callback: (payload: object) => void) {
+    this.listeners[event] = (payload: string) => {
+      const deserializedPayload = JSON.parse(payload);
+      callback(deserializedPayload);
     };
   }
 
