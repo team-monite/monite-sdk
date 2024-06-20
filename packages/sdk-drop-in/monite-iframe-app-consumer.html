@@ -41,8 +41,27 @@
     <div class="monite-iframe-app-wrapper">
       <script>
         document.write(
-          `<iframe class="monite-iframe-app" src="http://127.0.0.1:${location.port}/monite-iframe-app/receivables"></iframe>`
+          `<iframe id="monite-iframe" class="monite-iframe-app" src="http://127.0.0.1:${location.port}/monite-iframe-app/receivables"></iframe>`
         );
+      </script>
+      <script>
+        window.onload = function () {
+          const iframe = document.getElementById('monite-iframe');
+
+          iframe.onload = () => {
+            const requestToken = () => {
+              iframe.contentWindow.postMessage({ type: 'fetch-token' }, '*');
+            };
+
+            requestToken();
+
+            window.addEventListener('message', (event) => {
+              if (event.data.type === 'token-response') {
+                console.log('Received token:', event.data.token);
+              }
+            });
+          };
+        };
       </script>
     </div>
   </body>
