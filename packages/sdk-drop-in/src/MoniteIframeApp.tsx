@@ -27,17 +27,22 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
   const { fetchToken } = useMoniteIframeAppSlots();
 
   useEffect(() => {
-    const fetchTokenAsync = async () => {
-      try {
-        const token = await fetchToken();
-        console.log('Fetched token:', token);
-        // Do something with the token, e.g., set it in state or pass it to an iframe
-      } catch (error) {
-        console.error('Error fetching token:', error);
+    const handleFetchTokenRequest = async (event: MessageEvent) => {
+      if (event.data.type === 'fetch-token') {
+        try {
+          const token = await fetchToken();
+          window.parent.postMessage({ type: 'token-response', token }, '*');
+        } catch (error) {
+          console.error('Error fetching token:', error);
+        }
       }
     };
 
-    fetchTokenAsync();
+    window.addEventListener('message', handleFetchTokenRequest);
+
+    return () => {
+      window.removeEventListener('message', handleFetchTokenRequest);
+    };
   }, [fetchToken]);
 
   return (
