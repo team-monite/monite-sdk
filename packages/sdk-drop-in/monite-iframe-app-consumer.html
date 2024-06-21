@@ -31,12 +31,59 @@
 <body>
 <div class="monite-iframe-app-wrapper">
   <script>
+    const firstPathSegment = location.pathname.split('/')[1] || 'receivables';
+
+    const iframeUrl = `http://127.0.0.1:${location.port}/monite-iframe-app/${firstPathSegment}`;
+
     document.write(
-      `<iframe id="monite-iframe" class="monite-iframe-app" src="http://127.0.0.1:${location.port}/monite-iframe-app/receivables"></iframe>`
+      `<iframe id="monite-iframe" class="monite-iframe-app" src="${iframeUrl}"></iframe>`
     );
+  </script>
+
+  <script>
+    async function getConfig() {
+      const response = await fetch("/config.json");
+      return await response.json();
+    }
+
+    async function fetchToken() {
+      const { entity_user_id, client_id, client_secret } = await getConfig();
+
+      const response = await fetch("https://api.dev.monite.com/v1/auth/token", {
+        headers: {
+          accept: "application/json",
+          "content-type": "application/json",
+          "x-monite-version": "2024-05-25"
+        },
+        referrer: "http://localhost:5173/",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        body: JSON.stringify({
+          grant_type: "entity_user",
+          entity_user_id,
+          client_id,
+          client_secret,
+        }),
+        method: "POST",
+        mode: "cors",
+        credentials: "omit"
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      return await response.json();
+    }
 
     window.addEventListener('message', async (event) => {
-      console.log('Event Triggered:', event);
+      if (event.data.type === 'request-token') {
+        try {
+          const token = await fetchToken();
+          event.source.postMessage({ type: 'token-response', token }, event.origin);
+        } catch (error) {
+          console.error('Error fetching token:', error);
+        }
+      }
     });
   </script>
 </div>

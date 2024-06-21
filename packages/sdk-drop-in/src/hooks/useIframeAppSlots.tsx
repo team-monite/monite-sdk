@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
-import { useSyncExternalStore } from 'react';
+import { useCallback, useState, useSyncExternalStore } from 'react';
 
 import { IframeAppManager } from '@/lib/IframeClassManager';
 
 export const useMoniteIframeAppSlots = () => {
+  window.parent.postMessage({ type: 'request-token' }, '*'); // Request a token when iframe loads
+
   const [iframeAppManager] = useState(() => new IframeAppManager());
   const [token, setToken] = useState<{
     access_token: string;
@@ -19,12 +20,8 @@ export const useMoniteIframeAppSlots = () => {
     iframeAppManager.connectWithRetry();
 
     const handleConnectMessage = (event: MessageEvent) => {
-      console.log('handleConnectMessage', event);
-      console.log(event.data.token);
-
       iframeAppManager.handleConnectMessage(event);
 
-      // Handle token response from parent
       if (event.data.type === 'token-response') {
         setToken(event.data.token);
       }

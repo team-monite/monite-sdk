@@ -62,8 +62,6 @@ export class IframeAppManager {
         type,
         payload: JSON.stringify(payload),
       });
-
-      console.log('sendMessageToIframe', type, payload);
     } catch (error) {
       console.error('Error sending message to iframe:', error);
     }

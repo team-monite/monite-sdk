@@ -1,4 +1,4 @@
-import React, { ComponentProps, Suspense, useEffect, useMemo } from 'react';
+import React, { ComponentProps, Suspense, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { useMoniteIframeAppSlots } from '@/hooks/useIframeAppSlots.tsx';
@@ -20,12 +20,11 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
   const queryClient = useMemo(() => new QueryClient(), []);
 
   const { fetchToken } = useMoniteIframeAppSlots();
-  window.parent.postMessage({ type: 'request-token' }, '*'); // Request a token when iframe loads
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* ToDo: add a spinner or loader fallback */}
-      <Suspense fallback={'Loading...'}>
+      <Suspense fallback={null}>
         <ConfigLoader>
           {({ apiUrl, appBasename }) => (
             <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
