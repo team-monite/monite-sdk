@@ -13,14 +13,12 @@ export const useMoniteIframeAppSlots = () => {
 
   const subscribe = (onStoreChange: () => void) => {
     iframeAppManager.on('fetch-token', (payload) => {
-      console.log('fetch-token', payload);
       onStoreChange();
     });
 
     iframeAppManager.connectWithRetry();
 
     const handleConnectMessage = (event: MessageEvent) => {
-      console.log('handleConnectMessage', event);
       iframeAppManager.handleConnectMessage(event);
 
       // Handle token response from parent
@@ -52,7 +50,6 @@ export const useMoniteIframeAppSlots = () => {
 
       const handleTokenResponse = (event: MessageEvent) => {
         if (event.data.type === 'token-response') {
-          console.log('token-response', event.data.token);
           resolve(event.data.token);
           window.removeEventListener('message', handleTokenResponse);
         }
