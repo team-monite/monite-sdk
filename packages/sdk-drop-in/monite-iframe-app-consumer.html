@@ -66,9 +66,7 @@
       if (event.data.type === 'request-token') {
         try {
           const token = await fetchToken();
-          console.log('token here -------', token); // ToDo: refactor to single event
           event.source.postMessage({ type: 'token-response', token }, event.origin);
-          event.source.postMessage({ type: 'fetch-token' }, event.origin);
         } catch (error) {
           console.error('Error fetching token:', error);
         }

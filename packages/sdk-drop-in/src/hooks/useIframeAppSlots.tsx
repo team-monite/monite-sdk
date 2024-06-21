@@ -23,8 +23,6 @@ export const useMoniteIframeAppSlots = () => {
       console.log('handleConnectMessage', event);
       iframeAppManager.handleConnectMessage(event);
 
-      console.log('handleConnectMessage', event.data.type);
-
       // Handle token response from parent
       if (event.data.type === 'token-response') {
         setToken(event.data.token);
@@ -50,7 +48,7 @@ export const useMoniteIframeAppSlots = () => {
       token_type: string;
       expires_in: number;
     }>((resolve) => {
-      window.parent.postMessage({ type: 'fetch-token' }, '*');
+      iframeAppManager.requestToken();
 
       const handleTokenResponse = (event: MessageEvent) => {
         if (event.data.type === 'token-response') {
@@ -62,7 +60,7 @@ export const useMoniteIframeAppSlots = () => {
 
       window.addEventListener('message', handleTokenResponse);
     });
-  }, []);
+  }, [iframeAppManager]);
 
   return { ...state, fetchToken, token };
 };

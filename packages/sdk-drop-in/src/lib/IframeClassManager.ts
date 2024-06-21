@@ -104,4 +104,8 @@ export class IframeAppManager {
       }
     };
   }
+
+  requestToken() {
+    window.parent.postMessage({ type: 'fetch-token' }, '*');
+  }
 }
