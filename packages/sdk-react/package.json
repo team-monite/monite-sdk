@@ -6,17 +6,19 @@
     "access": "public"
   },
   "description": "",
+  "sideEffects": false,
+  "type": "commonjs",
   "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist",
     "setup-tests.cjs"
   ],
-  "types": "dist/index.d.ts",
   "scripts": {
     "test": "TESTS=true jest --coverage --silent --runInBand",
     "typecheck": "tsc",
-    "build": "cross-env NODE_ENV=production rollup --config config/rollup.config.mjs",
+    "build": "rimraf dist && cross-env NODE_ENV=production rollup --config config/rollup.config.mjs",
     "dev": "cross-env NODE_ENV=development rollup --watch --config config/rollup.config.mjs",
     "clean": "rimraf dist/; rimraf --glob 'src/core/i18n/locales/*/messages.ts'; rimraf --glob 'src/core/i18n/locales/*/messages.d.ts'",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --max-warnings 0",
@@ -104,7 +106,7 @@
     "react-dom": "^18.2.0",
     "react-select-event": "~5.5.1",
     "rimraf": "~5.0.0",
-    "rollup": "~3.29.4",
+    "rollup": "~4.18.0",
     "storybook": "~7.6.7",
     "typescript": "~5.0.4"
   },
