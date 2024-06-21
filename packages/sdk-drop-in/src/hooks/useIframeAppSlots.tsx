@@ -19,6 +19,9 @@ export const useMoniteIframeAppSlots = () => {
     iframeAppManager.connectWithRetry();
 
     const handleConnectMessage = (event: MessageEvent) => {
+      console.log('handleConnectMessage', event);
+      console.log(event.data.token);
+
       iframeAppManager.handleConnectMessage(event);
 
       // Handle token response from parent
