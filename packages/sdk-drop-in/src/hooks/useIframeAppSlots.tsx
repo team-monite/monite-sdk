@@ -13,7 +13,7 @@ export const useMoniteIframeAppSlots = () => {
   } | null>(null);
 
   const subscribe = (onStoreChange: () => void) => {
-    iframeAppManager.on('fetch-token', (payload) => {
+    iframeAppManager.on('fetch-token', () => {
       onStoreChange();
     });
 
