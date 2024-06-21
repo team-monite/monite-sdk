@@ -86,6 +86,7 @@ export class DropInElement extends HTMLElement {
   private slotsData: { [key in JSONSourceSlot]?: object } | undefined;
   private isMounted = false;
   private reactAppRoot: Root | undefined;
+  private tokenFetcher?: () => Promise<any>;
 
   constructor() {
     super();
@@ -128,12 +129,15 @@ export class DropInElement extends HTMLElement {
           return acc;
         }
 
-        return {
-          ...acc,
-          ...getAssignedElementsData(slotConfig.type, {
-            [slotName]: slotElement,
-          }),
-        };
+        const data = getAssignedElementsData(slotConfig.type, {
+          [slotName]: slotElement,
+        });
+
+        if (slotName === 'fetch-token') {
+          this.tokenFetcher = data['fetch-token'] as () => Promise<any>;
+        }
+
+        return { ...acc, ...data };
       },
       {}
     );
@@ -151,6 +155,7 @@ export class DropInElement extends HTMLElement {
 
     this.isMounted = true;
     this.render();
+    window.addEventListener('message', this.handleMessage);
   }
 
   disconnectedCallback() {
@@ -161,6 +166,8 @@ export class DropInElement extends HTMLElement {
       .forEach((slot) =>
         slot.removeEventListener('slotchange', this.handleSlotChange)
       );
+
+    window.removeEventListener('message', this.handleMessage);
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -179,6 +186,17 @@ export class DropInElement extends HTMLElement {
 
     this.render();
   }
+
+  handleMessage = async (event: MessageEvent) => {
+    if (event.data.type === 'request-token' && this.tokenFetcher) {
+      try {
+        const token = await this.tokenFetcher();
+        window.top!.postMessage({ type: 'token-response', token }, '*');
+      } catch (error) {
+        console.error('Error fetching token:', error);
+      }
+    }
+  };
 
   render() {
     if (!this.isMounted) return;
