@@ -62,13 +62,11 @@ export class IframeAppManager {
         type,
         payload: JSON.stringify(payload),
       });
+
+      console.log('sendMessageToIframe', type, payload);
     } catch (error) {
       console.error('Error sending message to iframe:', error);
     }
-  }
-
-  registerChannel(type: string, payload: string | undefined) {
-    this.sendMessageToIframe(type, JSON.stringify(payload));
   }
 
   on(event: string, callback: (payload: string) => void) {
