@@ -20,31 +20,7 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
   const queryClient = useMemo(() => new QueryClient(), []);
 
   const { fetchToken } = useMoniteIframeAppSlots();
-
-  useEffect(() => {
-    const handleFetchTokenRequest = async (event: MessageEvent) => {
-      console.log('handleFetchTokenRequest', event.data.type);
-
-      if (event.data.type === 'fetch-token') {
-        try {
-          const token = await fetchToken();
-
-          console.log('TOKEN IFRAME', token);
-
-          window.parent.postMessage({ type: 'token-response', token }, '*');
-        } catch (error) {
-          console.error('Error fetching token:', error);
-        }
-      }
-    };
-
-    window.addEventListener('message', handleFetchTokenRequest);
-    window.parent.postMessage({ type: 'request-token' }, '*'); // Request a token when iframe loads
-
-    return () => {
-      window.removeEventListener('message', handleFetchTokenRequest);
-    };
-  }, [fetchToken]);
+  window.parent.postMessage({ type: 'request-token' }, '*'); // Request a token when iframe loads
 
   return (
     <QueryClientProvider client={queryClient}>
