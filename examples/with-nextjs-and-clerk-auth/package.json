@@ -48,7 +48,6 @@
   "devDependencies": {
     "@faker-js/faker": "~8.3.1",
     "@lingui/cli": "~4.7.0",
-    "@lingui/swc-plugin": "4.0.4",
     "@testing-library/jest-dom": "~6.1.4",
     "@testing-library/react": "~14.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",

@@ -10,22 +10,20 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
-    "@lingui/swc-plugin": "~4.0.4",
-    "@rollup/plugin-commonjs": "~24.1.0",
-    "@rollup/plugin-json": "~6.0.0",
-    "@rollup/plugin-url": "~8.0.1",
-    "@svgr/rollup": "~8.1.0",
-    "@swc/core": "1.3.75",
-    "@swc/plugin-emotion": "2.5.70",
-    "@types/rollup-plugin-peer-deps-external": "~2.2.4",
-    "rollup-plugin-dts": "~5.3.0",
-    "rollup-plugin-peer-deps-external": "~2.2.4",
+    "@lingui/swc-plugin": "4.0.8",
+    "@rollup/plugin-json": "~6.1.0",
+    "@swc/core": "1.4.17",
+    "@swc/plugin-emotion": "2.5.124",
+    "rollup-plugin-dts": "~6.1.1",
     "rollup-plugin-postcss": "~4.0.2",
-    "rollup-plugin-swc3": "~0.8.1",
-    "rollup-plugin-terser": "~7.0.2"
+    "rollup-plugin-swc3": "~0.11.2",
+    "rollup-preserve-directives": "~1.1.1"
+  },
+  "devDependencies": {
+    "typescript": "~5.0.4"
   },
   "peerDependencies": {
-    "rollup": "~3.29.4"
+    "rollup": "~4.18.0"
   },
   "peerDependenciesMeta": {
     "rollup": {
@@ -33,7 +31,11 @@
     }
   },
   "type": "module",
-  "main": "./dist/rollup.config.js",
-  "module": "./dist/rollup.config.js",
-  "types": "./dist/rollup.config.d.ts"
+  "exports": {
+    ".": {
+      "import": "./dist/rollup.config.js",
+      "types": "./dist/rollup.config.d.ts"
+    },
+    "./package.json": "./package.json"
+  }
 }

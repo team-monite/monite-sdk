@@ -2,26 +2,26 @@
   "name": "@team-monite/sdk-demo",
   "version": "1.6.3",
   "private": true,
+  "sideEffects": false,
   "type": "module",
-  "exports": {
-    ".": "./build/esm/index.js",
-    "./package.json": "./package.json",
-    "./*": "./build/*.js"
-  },
-  "types": "build/index.d.ts",
+  "types": "dist/types/index.d.ts",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "yarn dev:lib & vite --port 5173",
     "dev:lib": "cross-env NODE_ENV=development rollup --watch --config rollup.config.mjs",
     "build": "vite build --outDir build && yarn build:lib",
     "build:lib": "cross-env NODE_ENV=production rollup --config rollup.config.mjs",
-    "clean": "rimraf build/; rimraf --glob 'src/locales/*/messages.ts'; rimraf --glob 'src/locales/*/messages.d.ts'",
+    "clean": "rimraf dist/; rimraf --glob 'src/locales/*/messages.ts'; rimraf --glob 'src/locales/*/messages.d.ts'",
     "preview": "vite preview --outDir build",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "extract-translations": "lingui extract --config lingui.config.cjs",
     "compile-translations": "lingui compile --config lingui.config.cjs"
   },
-  "sideEffects": false,
   "jest": {
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"

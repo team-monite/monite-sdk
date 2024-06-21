@@ -1,18 +1,14 @@
-import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import url from '@rollup/plugin-url';
-import svgr from '@svgr/rollup';
 
-import fs from 'fs';
-import { RollupOptions } from 'rollup';
+import fs from 'node:fs';
+import { dirname, extname } from 'node:path';
+import { OutputOptions, RollupOptions } from 'rollup';
 import dts from 'rollup-plugin-dts';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 import { swc } from 'rollup-plugin-swc3';
+import preserveDirectives from 'rollup-preserve-directives';
 
 type Options = {
-  url?: false | Parameters<typeof url>[0];
-  svgr?: false | Parameters<typeof svgr>[0];
   postcss?: false | Parameters<typeof postcss>[0];
   swc?: Parameters<typeof swc>[0];
 };
@@ -21,55 +17,66 @@ export const rollupConfig = (
   packageJson: { main?: string; module?: string; types: string },
   options?: Options
 ): RollupOptions[] => {
+  const tsconfig = fs.existsSync('tsconfig.build.json')
+    ? 'tsconfig.build.json'
+    : 'tsconfig.json';
+
+  // Inspired by https://github.com/mryechkin/rollup-library-starter/blob/main/rollup.config.mjs
   return [
     {
       input: 'src/index.ts',
       output: [
         packageJson.main
           ? ({
-              file: packageJson.main,
+              dir: dirname(packageJson.main),
               format: 'commonjs',
               sourcemap: true,
-              interop: 'compat',
-            } as const)
+              interop: 'auto',
+              preserveModules: true,
+              entryFileNames: `[name]${extname(packageJson.main)}`,
+            } satisfies OutputOptions)
           : null,
         packageJson.module
           ? ({
-              file: packageJson.module,
+              dir: dirname(packageJson.module),
               format: 'esm',
               sourcemap: true,
-            } as const)
+              interop: 'auto',
+              preserveModules: true,
+              entryFileNames: `[name]${extname(packageJson.module)}`,
+            } satisfies OutputOptions)
           : null,
       ].filter((output): output is NonNullable<typeof output> =>
         Boolean(output)
       ),
       plugins: [
+        swc(
+          options?.swc
+            ? options.swc
+            : {
+                tsconfig,
+                swcrc: true,
+                sourceMaps: true,
+              }
+        ),
+        preserveDirectives(),
         json(),
-        peerDepsExternal() as any,
-        commonjs(),
-        swc(options?.swc ? options.swc : { swcrc: true, sourceMaps: true }),
-        options?.svgr !== false &&
-          svgr(
-            typeof options?.svgr === 'object'
-              ? options.svgr
-              : { babel: false, svgo: false }
-          ),
         options?.postcss !== false &&
           postcss(
             typeof options?.postcss === 'object'
               ? options.postcss
               : { autoModules: true }
           ),
-        options?.url !== false &&
-          url(
-            typeof options?.url === 'object'
-              ? options.url
-              : {
-                  include: ['**/*.woff', '**/*.woff2'],
-                  limit: Infinity,
-                }
-          ),
       ],
+      onwarn(warning, warn) {
+        if (!warning.message.includes('"/*#__PURE__*/"')) {
+          warn(warning);
+        }
+      },
+      treeshake: {
+        preset: 'recommended',
+        moduleSideEffects: false,
+      },
       watch: {
         chokidar: {
           usePolling: true,
@@ -81,25 +88,27 @@ export const rollupConfig = (
     },
     {
       input: 'src/index.ts',
-      output: [{ file: packageJson.types, format: 'esm' }],
+      output: {
+        dir: dirname(packageJson.types),
+        format: 'esm',
+        exports: 'named',
+        preserveModules: true,
+      },
       plugins: [
         dts({
-          tsconfig: fs.existsSync('tsconfig.build.json')
-            ? 'tsconfig.build.json'
-            : 'tsconfig.json',
+          tsconfig,
           compilerOptions: {
             noEmitOnError: false,
           },
         }),
       ],
-      external: [/\.css$/, /\.less$/, /\.scss$/],
       watch: {
         chokidar: {
           usePolling: true,
           useFsEvents: true,
           interval: 500,
         },
-        include: 'src/**/*.{ts,tsx,js,jsx,cjs,mjs,json,css,less,scss}',
+        include: 'src/**/*.{ts,tsx,js,jsx,cjs,mjs,json}',
         exclude: 'node_modules/**',
       },
     },
