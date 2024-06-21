@@ -14,30 +14,30 @@ interface MoniteIframeAppProps
   extends Pick<
     ComponentProps<typeof DropInMoniteProvider>,
     'locale' | 'theme'
-  > {
-  fetchToken: () => Promise<{
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-  }>;
-}
+  > {}
 
 export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
   const queryClient = useMemo(() => new QueryClient(), []);
+
   const { fetchToken } = useMoniteIframeAppSlots();
 
-  const handleFetchTokenRequest = async (event: MessageEvent) => {
-    if (event.data.type === 'fetch-token') {
-      try {
-        const token = await fetchToken();
-        window.parent.postMessage({ type: 'token-response', token }, '*');
-      } catch (error) {
-        console.error('Error fetching token:', error);
-      }
-    }
-  };
-
   useEffect(() => {
+    const handleFetchTokenRequest = async (event: MessageEvent) => {
+      console.log('handleFetchTokenRequest', event.data.type);
+
+      if (event.data.type === 'fetch-token') {
+        try {
+          const token = await fetchToken();
+
+          console.log('TOKEN IFRAME', token);
+
+          window.parent.postMessage({ type: 'token-response', token }, '*');
+        } catch (error) {
+          console.error('Error fetching token:', error);
+        }
+      }
+    };
+
     window.addEventListener('message', handleFetchTokenRequest);
     window.parent.postMessage({ type: 'request-token' }, '*'); // Request a token when iframe loads
 
@@ -48,17 +48,17 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={null /** add a fallback **/}>
+      {/* ToDo: add a spinner or loader fallback */}
+      <Suspense fallback={'Loading...'}>
         <ConfigLoader>
           {({ apiUrl, appBasename }) => (
-            // Should be replaced with shared `fetchToken` with built-in invalidation
-            // Current implementation fetches two tokens (first for entityId, second for the app)
-            <EntityIdLoader fetchToken={props.fetchToken} apiUrl={apiUrl}>
+            <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
               {(entityId) => (
                 <MoniteIframeAppComponent
                   {...props}
                   entityId={entityId}
                   apiUrl={apiUrl}
+                  fetchToken={fetchToken}
                   basename={appBasename}
                 />
               )}
@@ -73,14 +73,19 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
 export const MoniteIframeAppComponent = ({
   theme,
   locale,
-  fetchToken,
   basename,
   apiUrl,
   entityId,
+  fetchToken,
 }: MoniteIframeAppProps & {
   apiUrl: string;
   entityId: string;
   basename: string;
+  fetchToken: () => Promise<{
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+  }>;
 }) => {
   return (
     <DropInMoniteProvider
@@ -88,8 +93,8 @@ export const MoniteIframeAppComponent = ({
       theme={theme}
       sdkConfig={{
         entityId,
-        fetchToken,
         apiUrl,
+        fetchToken,
       }}
     >
       <Global
@@ -100,7 +105,6 @@ export const MoniteIframeAppComponent = ({
             -webkit-font-smoothing: antialiased;
             isolation: isolate;
           }
-
           *,
           *::before,
           *::after {
