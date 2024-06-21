@@ -19,10 +19,49 @@
     <script src="/src/monite-iframe-app-html.tsx" type="module"></script>
 
     <script>
-      window.parent.postMessage({ type: 'request-token' }, '*');
+      async function getConfig() {
+        const response = await fetch("/config.json");
+        return await response.json();
+      }
 
-      window.addEventListener('message', (event) => {
-      console.log('Token received:', event.data.token);
+      async function fetchToken() {
+        const { entity_user_id, client_id, client_secret } = await getConfig();
+
+        const response = await fetch("https://api.dev.monite.com/v1/auth/token", {
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "x-monite-version": "2024-05-25"
+          },
+          referrer: "http://localhost:5173/",
+          referrerPolicy: "strict-origin-when-cross-origin",
+          body: JSON.stringify({
+            grant_type: "entity_user",
+            entity_user_id,
+            client_id,
+            client_secret,
+          }),
+          method: "POST",
+          mode: "cors",
+          credentials: "omit"
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        return await response.json();
+      }
+
+      window.addEventListener('message', async (event) => {
+        if (event.data.type === 'request-token') {
+          try {
+            const token = await fetchToken();
+            event.source.postMessage({ type: 'token-response', token }, event.origin);
+          } catch (error) {
+            console.error('Error fetching token:', error);
+          }
+        }
       });
     </script>
   </body>
