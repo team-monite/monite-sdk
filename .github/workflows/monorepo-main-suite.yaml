@@ -27,6 +27,7 @@ jobs:
 
       - name: Build
         run: yarn build
+
   lint:
     needs: build
     name: Linting
@@ -38,6 +39,7 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
   type-checking:
     needs: build
     name: Type Checking
@@ -49,6 +51,7 @@ jobs:
 
       - name: Type Check
         run: yarn typecheck
+
   build-storybook:
     needs: type-checking
     name: Build Storybook
@@ -60,6 +63,7 @@ jobs:
 
       - name: Build Storybook
         run: yarn storybook:build
+
   unit-testing:
     needs: build
     name: Unit Testing
@@ -69,8 +73,26 @@ jobs:
       - name: Setup Monorepo
         uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
-      - name: Test
+      - name: Unit Test
         run: yarn test
+
+  e2e-testing:
+    needs: build
+    name: E2E Playwright Testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+
+      - name: Install Playwright Browsers
+        run: yarn dlx playwright install --with-deps
+
+      - name: Check dir content inside
+        run: ls -la packages/sdk-drop-in
+
+      - name: E2E Test
+        run: yarn e2e
 
   translations-validation:
     needs: build

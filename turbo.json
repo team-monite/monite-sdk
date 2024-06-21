@@ -96,8 +96,21 @@
     },
     "codegen": {
       "cache": true,
-      "outputs": ["src/api/**/*.ts", "!src/api/client.ts", "!src/api/client.test.ts"],
+      "outputs": [
+        "src/api/**/*.ts",
+        "!src/api/client.ts",
+        "!src/api/client.test.ts"
+      ],
       "inputs": ["src/api/schema.json"]
+    },
+    "e2e": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
     }
   }
 }

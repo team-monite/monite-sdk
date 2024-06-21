@@ -19,7 +19,8 @@
     "preview": "vite preview",
     "clean": "rimraf dist/",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --report-unused-disable-directives --max-warnings 0",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "e2e": "playwright test"
   },
   "sideEffects": true,
   "jest": {
@@ -46,12 +47,14 @@
     "@emotion/react": "~11.11.1",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
+    "@playwright/test": "~1.45.0",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "@vitejs/plugin-react-swc": "3.5.0",
     "eslint": "~8.38.0",
+    "playwright": "~1.45.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
