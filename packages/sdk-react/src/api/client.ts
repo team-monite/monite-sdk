@@ -1,7 +1,6 @@
 import { apiVersion } from '@/api/api-version';
 import { createAPIClient as createAPIClientBase } from '@/api/create-api-client';
 import { Services } from '@/api/services';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   requestFn,
   mergeHeaders,
