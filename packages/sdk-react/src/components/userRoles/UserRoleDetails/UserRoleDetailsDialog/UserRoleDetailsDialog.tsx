@@ -1,25 +1,27 @@
 'use client';
 
-import React, { useState, useId } from 'react';
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
+import React, { useId, useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
-  transformPermissionsToComponentFormat,
+  createInitialPermissionsState,
   isCommonPermissionObjectType,
   isPayablePermissionObjectType,
-  createInitialPermissionsState,
+  transformPermissionsToComponentFormat,
 } from '@/components/userRoles/UserRoleDetails/helpers';
+import { UserRoleDetailsView } from '@/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/const';
+import { StyledUserRoleTableCell } from '@/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/StyledUserRoleTableCell';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
-  useUpdateRole,
-  UserRoleRequest,
-  UserRolePayablePermissions,
-  UserRoleCommonPermissions,
   useCreateRole,
+  UserRoleCommonPermissions,
+  UserRolePayablePermissions,
+  UserRoleRequest,
+  useUpdateRole,
 } from '@/core/queries/useRoles';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -48,8 +50,6 @@ import {
   styled,
   Table,
   TableBody,
-  TableCell,
-  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -59,15 +59,6 @@ import {
 import { PermissionRow } from '../types';
 import { getValidationSchema } from '../validation';
 import { UserRoleRow } from './UserRoleRow';
-
-/** View of the user role details */
-export enum UserRoleDetailsView {
-  /** Read mode - the user is only viewing the role details */
-  Read = 'read',
-
-  /** Mutate mode - the user is adding or editing the role */
-  Mutate = 'mutate',
-}
 
 interface UserRoleFormValues {
   name: string;
@@ -96,29 +87,6 @@ const StyledTableContainer = styled(TableContainer)`
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
   background: theme.palette.grey[300],
-}));
-
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
-    whiteSpace: 'nowrap',
-  },
-  [`&.${tableCellClasses.head}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9999',
-    minWidth: '180px',
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
-  [`&.${tableCellClasses.body}:first-of-type`]: {
-    position: 'sticky',
-    left: 0,
-    zIndex: '9999',
-    fontWeight: '600',
-    minWidth: '180px',
-    backgroundColor: theme.palette.background.default,
-    borderRight: `1px solid ${theme.palette.grey[300]}`,
-  },
 }));
 
 interface UserRoleDetailsDialogProps {
@@ -390,9 +358,9 @@ export const UserRoleDetailsDialog = ({
                 <StyledTableHead>
                   <TableRow>
                     {columns.map((column) => (
-                      <StyledTableCell key={column.id}>
+                      <StyledUserRoleTableCell key={column.id}>
                         {column.headerName}
-                      </StyledTableCell>
+                      </StyledUserRoleTableCell>
                     ))}
                   </TableRow>
                 </StyledTableHead>

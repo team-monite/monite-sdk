@@ -5,6 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
+import { UserRoleDetailsView } from '@/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/const';
+import { StyledUserRoleTableCell } from '@/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/StyledUserRoleTableCell';
 import { useLingui } from '@lingui/react';
 import { ActionEnum, PayableActionEnum } from '@monite/sdk-api';
 import {
@@ -13,8 +15,7 @@ import {
 } from '@mui/icons-material';
 import { TableRow } from '@mui/material';
 
-import { CommonActions, PayableActions, PermissionRow } from '../../types';
-import { UserRoleDetailsView, StyledTableCell } from '../UserRoleDetailsDialog';
+import type { CommonActions, PayableActions, PermissionRow } from '../types';
 
 interface UserRoleRowProps {
   /** The row data to be displayed */
@@ -76,9 +77,9 @@ export const UserRoleRow = ({
 
   return (
     <TableRow>
-      <StyledTableCell>
+      <StyledUserRoleTableCell>
         {row.name && getPermissionToLabelMap(i18n)[row.name]}
-      </StyledTableCell>
+      </StyledUserRoleTableCell>
       {actionPermissionsColumns.map((column) => {
         const action = column.id;
         const actionPermissionValue = (
@@ -86,7 +87,7 @@ export const UserRoleRow = ({
         )[action];
 
         return (
-          <StyledTableCell key={column.id} align="center">
+          <StyledUserRoleTableCell key={column.id} align="center">
             <ActionPermissionCell
               view={view}
               rowIndex={rowIndex}
@@ -94,7 +95,7 @@ export const UserRoleRow = ({
               action={action}
               actionPermissionValue={actionPermissionValue}
             />
-          </StyledTableCell>
+          </StyledUserRoleTableCell>
         );
       })}
     </TableRow>

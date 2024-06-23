@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
-import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
+import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable/CounterpartsTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
