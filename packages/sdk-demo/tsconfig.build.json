@@ -1,12 +1,12 @@
 {
-  "extends": ".",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./build",
+    "outDir": "./dist",
     "noEmit": false,
     "noEmitOnError": true,
     "declaration": true,
     "emitDeclarationOnly": true,
-    "declarationDir": "./build/types"
+    "declarationDir": "./dist/types"
   },
   "exclude": [
     "node_modules",
