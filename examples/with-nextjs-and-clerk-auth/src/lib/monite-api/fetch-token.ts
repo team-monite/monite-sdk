@@ -1,7 +1,6 @@
-import {
-  getMoniteApiUrl,
-  getMoniteApiVersion,
-} from '@/lib/monite-api/monite-client';
+import { createAPIClient } from '@monite/sdk-react';
+
+import { getMoniteApiUrl } from '@/lib/monite-api/monite-client';
 
 export const fetchToken = async ({
   client_id,
@@ -16,41 +15,31 @@ export const fetchToken = async ({
       grant_type: 'client_credentials';
     }
 )): Promise<AccessToken> => {
-  const response = await fetch(`${getMoniteApiUrl()}/auth/token`, {
-    method: 'POST',
-    headers: {
-      'X-Monite-Version': getMoniteApiVersion(),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      client_id,
-      client_secret,
-      grant_type: params.grant_type,
-      ...(params.grant_type === 'entity_user'
-        ? {
-            entity_user_id: params.entity_user_id,
-          }
-        : {}),
-    }),
-    cache: 'no-store',
-  });
+  const { api, requestFn } = createAPIClient();
 
-  if (!response.ok) {
-    console.error(
-      `Failed fetch token for the 'client_id' "${client_id}"`,
-      `x-request-id: ${response.headers.get('x-request-id')}`
+  try {
+    return await api.auth.postAuthToken(
+      {
+        parameters: {},
+        baseUrl: getMoniteApiUrl(),
+        body: {
+          client_id,
+          client_secret,
+          grant_type: params.grant_type,
+          entity_user_id:
+            params.grant_type === 'entity_user'
+              ? params.entity_user_id
+              : undefined,
+        },
+      },
+      requestFn
     );
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Failed to fetch token: ${error.message}`);
 
-    throw new Error(
-      await response
-        .json()
-        .catch(() => ({ message: response.text() }))
-        .then(({ error: { message } }) => `Failed to fetch token: ${message}`)
-        .catch(() => 'Failed to fetch token')
-    );
+    throw new Error(`Failed to fetch token ${JSON.stringify(error)}`);
   }
-
-  return response.json();
 };
 
 export const fetchTokenServer = async (
