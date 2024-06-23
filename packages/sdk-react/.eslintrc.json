@@ -2,7 +2,8 @@
   "extends": [
     "plugin:@team-monite/react",
     "plugin:@team-monite/lingui",
-    "plugin:@team-monite/mui"
+    "plugin:@team-monite/mui",
+    "plugin:react-server-components/recommended"
   ],
   "ignorePatterns": [
     "src/core/i18n/locales/*/messages.ts",
@@ -66,7 +67,8 @@
         "import/no-extraneous-dependencies": [
           "error",
           { "devDependencies": true }
-        ]
+        ],
+        "react-server-components/use-client": "off"
       }
     },
     {
@@ -94,9 +96,9 @@
       }
     },
     {
-      "files": ["src/utils/test-utils.tsx"],
+      "files": ["src/**/*.test.{ts,tsx,jsx,jsx,cjx,mjs}"],
       "rules": {
-        "lingui/no-unlocalized-strings": "off"
+        "react-server-components/use-client": "off"
       }
     }
   ]
