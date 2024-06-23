@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useId, useMemo, useRef } from 'react';
 
 import { useDialog } from '@/components/Dialog';

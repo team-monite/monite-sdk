@@ -1,3 +1,5 @@
+'use client';
+
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';

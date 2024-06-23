@@ -1,3 +1,5 @@
+'use client';
+
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

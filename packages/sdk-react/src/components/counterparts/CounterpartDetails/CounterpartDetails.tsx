@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';

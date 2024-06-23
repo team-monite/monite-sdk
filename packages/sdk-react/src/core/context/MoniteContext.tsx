@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, ReactNode, useContext, useMemo } from 'react';
 
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';

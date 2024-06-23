@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';

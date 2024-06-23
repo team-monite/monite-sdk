@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useMemo, DragEvent } from 'react';
 import { toast } from 'react-hot-toast';
 

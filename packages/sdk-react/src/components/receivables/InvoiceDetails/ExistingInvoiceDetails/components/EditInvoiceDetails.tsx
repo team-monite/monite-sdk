@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 

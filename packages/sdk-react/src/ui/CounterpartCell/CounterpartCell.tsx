@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback } from 'react';
 
 import { useCounterpartById } from '@/core/queries';

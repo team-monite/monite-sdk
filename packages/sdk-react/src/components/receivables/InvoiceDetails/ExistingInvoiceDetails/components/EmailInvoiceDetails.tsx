@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';

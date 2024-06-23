@@ -1,4 +1,4 @@
-import { toast } from 'react-hot-toast';
+'use client';
 
 import { CurrencyDetails, ApiError } from '@monite/sdk-api';
 import { useQuery } from '@tanstack/react-query';

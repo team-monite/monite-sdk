@@ -1,3 +1,5 @@
+'use client';
+
 import type { ErrorType } from '@/core/queries/types';
 import {
   AllowedCountries,

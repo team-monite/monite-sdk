@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback } from 'react';
 import type { FieldErrors, FieldValues } from 'react-hook-form';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 

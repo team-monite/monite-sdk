@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';

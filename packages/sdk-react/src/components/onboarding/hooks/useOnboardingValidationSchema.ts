@@ -1,3 +1,5 @@
+'use client';
+
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { useLingui } from '@lingui/react';
 

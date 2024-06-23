@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { useCurrencies } from '@/core/hooks';

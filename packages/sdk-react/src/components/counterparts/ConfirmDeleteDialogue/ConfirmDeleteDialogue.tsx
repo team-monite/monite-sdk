@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';

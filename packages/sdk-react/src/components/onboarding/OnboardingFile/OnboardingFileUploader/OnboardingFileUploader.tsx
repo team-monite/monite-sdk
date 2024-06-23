@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ChangeEvent, ReactNode, useCallback } from 'react';
 
 import { useCreateFile } from '@/core/queries';

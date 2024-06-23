@@ -1,3 +1,5 @@
+'use client';
+
 import { FieldNamesMarkedBoolean } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 

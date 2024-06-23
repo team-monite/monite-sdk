@@ -1,3 +1,5 @@
+'use client';
+
 import { createRenderWithClient } from '@/utils/test-utils';
 import { renderHook } from '@testing-library/react';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { useOnboardingRequirements } from '../hooks';

@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, ReactNode, useContext, ContextType } from 'react';
 
 const RootElementsContext = createContext<{

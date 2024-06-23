@@ -1,3 +1,5 @@
+'use client';
+
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { t } from '@lingui/macro';
 import { Trans } from '@lingui/macro';

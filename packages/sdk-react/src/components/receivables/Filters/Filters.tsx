@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { counterpartsToSelect } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
