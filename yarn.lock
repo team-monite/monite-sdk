@@ -3589,7 +3589,7 @@ __metadata:
     "@monite/sdk-api": "workspace:~"
     "@monite/sdk-react": "workspace:~"
     "@mui/material": ~5.14.2
-    "@openapi-qraft/react": ~1.11.0-beta.2
+    "@openapi-qraft/react": 1.12.0
     "@playwright/test": ~1.45.0
     "@tanstack/react-query": ~5.28.6
     "@team-monite/eslint-plugin": "workspace:~"
@@ -3630,8 +3630,8 @@ __metadata:
     "@mui/material": ~5.14.2
     "@mui/x-data-grid": ~6.10.2
     "@mui/x-date-pickers": ~6.18.3
-    "@openapi-qraft/cli": ~1.11.0-beta.2
-    "@openapi-qraft/react": ~1.11.0-beta.2
+    "@openapi-qraft/cli": 1.12.0
+    "@openapi-qraft/react": 1.12.0
     "@sentry/react": ~7.75.1
     "@storybook/addon-actions": ~7.6.17
     "@storybook/addon-essentials": ~7.6.17
@@ -4208,34 +4208,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openapi-qraft/cli@npm:~1.11.0-beta.2":
-  version: 1.11.0-beta.2
-  resolution: "@openapi-qraft/cli@npm:1.11.0-beta.2"
+"@openapi-qraft/cli@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@openapi-qraft/cli@npm:1.12.0"
   dependencies:
-    "@openapi-qraft/openapi-typescript-plugin": ~1.0.4-beta.2
-    "@openapi-qraft/plugin": ~1.11.0-beta.2
-    "@openapi-qraft/tanstack-query-react-plugin": ~1.11.0-beta.2
+    "@openapi-qraft/openapi-typescript-plugin": 1.0.5
+    "@openapi-qraft/plugin": 1.12.0
+    "@openapi-qraft/tanstack-query-react-plugin": 1.12.0
     commander: ^11.1.0
   bin:
     openapi-qraft: ./bin.mjs
-  checksum: 87f9ae089f12af0666c3ff6d4b7a68964b0c88c78609b7317a94d0450860e4cbf804d7c4be29ad2e54b8199706ee20769655e8abcb2912d4e8a10384e4b3252f
+  checksum: 490fb1554ccf8d947111efd8ca253489f1e1e0b43bc30dbe033f3a4be3d83f606c7d7543a0e3ff814651cc4a3335bdfecde4e0cc305ba28fb2acb7ec6bdcbd44
   languageName: node
   linkType: hard
 
-"@openapi-qraft/openapi-typescript-plugin@npm:~1.0.4-beta.2":
-  version: 1.0.4-beta.2
-  resolution: "@openapi-qraft/openapi-typescript-plugin@npm:1.0.4-beta.2"
+"@openapi-qraft/openapi-typescript-plugin@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@openapi-qraft/openapi-typescript-plugin@npm:1.0.5"
   dependencies:
-    "@openapi-qraft/plugin": ^1.11.0-beta.2
+    "@openapi-qraft/plugin": ^1.12.0
     openapi-typescript: 7.0.0-next.11
     typescript: ^5.3.3
-  checksum: f4dd6b2b5bd4722021344e672dced1298f5fe8de5f051a560452e1a53f102500c410306bf3740fad21324e1d3d683f2582f473bd4378c5be1f5535fd5cdc3cfd
+  checksum: eb8203b850f21f3c3d9d4992a9852f4b96c2125d8127ac7c3700015696bab5b1e455e5eec97066267a1ff79afa2a4b158538a2677410043a7a6d583d0dacf877
   languageName: node
   linkType: hard
 
-"@openapi-qraft/plugin@npm:^1.11.0-beta.2, @openapi-qraft/plugin@npm:~1.11.0-beta.2":
-  version: 1.11.0-beta.2
-  resolution: "@openapi-qraft/plugin@npm:1.11.0-beta.2"
+"@openapi-qraft/plugin@npm:1.12.0, @openapi-qraft/plugin@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "@openapi-qraft/plugin@npm:1.12.0"
   dependencies:
     ansi-colors: ^4.1.3
     camelcase: ^8.0.0
@@ -4244,28 +4244,28 @@ __metadata:
     openapi-typescript: 7.0.0-next.11
     ora: ^8.0.1
     yaml: ^2.3.4
-  checksum: 94b73529852cdc501e830c5a4659a38a730c54ef840a571fb68e6ec5e17eb538786cd2572987869648ec5782914835a3eb37822cbbffa6f92c06fa6dd810517c
+  checksum: 30d1dc1c981a07196a0c0be47776e37fc0d927115c67ff8c65317461afa289c6a4bbaad8fa6e243411aec6be5b0dfdbd6c52848c684c35af86358c4b25ea4184
   languageName: node
   linkType: hard
 
-"@openapi-qraft/react@npm:~1.11.0-beta.2":
-  version: 1.11.0-beta.2
-  resolution: "@openapi-qraft/react@npm:1.11.0-beta.2"
+"@openapi-qraft/react@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@openapi-qraft/react@npm:1.12.0"
   peerDependencies:
     "@tanstack/query-core": ^5.0.0
     "@tanstack/react-query": ^5.0.0
     react: ^18.0.0
-  checksum: b317f4c5dd27f16dd116e6155b78de0ac7965ca9b937ef2c92e32044e2202dd36f2fdacc3ecc310fa399b7f0fe1d602dd2c6486f642e854ad52b1d2b0283c5b1
+  checksum: 6129ca3dc5762d73a7eae64434a69cbc3bbeb80887a5cb9038ad863b5efb05556d7d9d07261475b30ed46139a3bc5c44c5ce0ef77093261e7f946e5568b6f7cd
   languageName: node
   linkType: hard
 
-"@openapi-qraft/tanstack-query-react-plugin@npm:~1.11.0-beta.2":
-  version: 1.11.0-beta.2
-  resolution: "@openapi-qraft/tanstack-query-react-plugin@npm:1.11.0-beta.2"
+"@openapi-qraft/tanstack-query-react-plugin@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@openapi-qraft/tanstack-query-react-plugin@npm:1.12.0"
   dependencies:
-    "@openapi-qraft/plugin": ^1.11.0-beta.2
+    "@openapi-qraft/plugin": ^1.12.0
     typescript: ^5.3.3
-  checksum: c06b0e4b7f764ee1403fa411ed344ecc27777846eadc48caad41309eaed51314aa4f3078ba9c2a9c1c93bfa7731a41ccf514796463ffa9ac8c142cf172ea1760
+  checksum: 7962fabda949a80d1c4f7a9b7c4ad0576b13fe47d092789e7d1f131563d9ea2ea3312d3f67f981a62a51d210e2f5f5193bc23358a97281ba619af09c1d5d9815
   languageName: node
   linkType: hard
 
@@ -6747,7 +6747,7 @@ __metadata:
     "@monite/sdk-react": "workspace:~"
     "@mui/icons-material": ~5.14.3
     "@mui/material": ~5.14.2
-    "@openapi-qraft/react": ~1.11.0-beta.2
+    "@openapi-qraft/react": 1.12.0
     "@tanstack/react-query": ~5.28.6
     "@tanstack/react-query-devtools": ~5.28.6
     "@team-monite/eslint-plugin": "workspace:~"
