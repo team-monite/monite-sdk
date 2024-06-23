@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useMemo } from 'react';
 
 import { ErrorType } from '@/core/queries/types';

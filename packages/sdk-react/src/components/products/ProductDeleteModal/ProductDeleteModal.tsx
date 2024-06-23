@@ -1,3 +1,5 @@
+'use client';
+
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDeleteProduct, useProductById } from '@/core/queries';

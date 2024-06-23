@@ -1,3 +1,5 @@
+'use client';
+
 import { useApprovalPolicyById } from '@/core/queries';
 
 import * as Styled from '../styles';

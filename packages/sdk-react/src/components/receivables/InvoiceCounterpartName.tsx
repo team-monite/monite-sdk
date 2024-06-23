@@ -1,3 +1,5 @@
+'use client';
+
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
 import { Skeleton, Typography } from '@mui/material';

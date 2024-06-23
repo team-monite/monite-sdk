@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   EntityResponse,

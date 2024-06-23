@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useMemo } from 'react';
 
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';

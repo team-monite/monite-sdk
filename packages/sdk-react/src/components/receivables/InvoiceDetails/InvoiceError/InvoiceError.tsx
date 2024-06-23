@@ -1,3 +1,5 @@
+'use client';
+
 import { useDialog } from '@/components/Dialog';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { i18n } from '@lingui/core';
