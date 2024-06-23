@@ -1,0 +1,20 @@
+{
+  "name": "typescript-esm-node-next",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && npm run dry-start",
+    "dry-start": "node dist/index.js"
+  },
+  "dependencies": {
+    "typescript": "latest",
+    "@monite/sdk-react": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenAPI-Qraft/openapi-qraft.git"
+  }
+}
