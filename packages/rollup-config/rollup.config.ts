@@ -70,6 +70,11 @@ export const rollupConfig = (
               : { autoModules: true }
           ),
       ],
+      onwarn(warning, warn) {
+        if (!warning.message.includes('"/*#__PURE__*/"')) {
+          warn(warning);
+        }
+      },
       treeshake: {
         preset: 'recommended',
         moduleSideEffects: false,
