@@ -1,19 +1,10 @@
 'use client';
 
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 
 import { useLingui } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
-import {
-  ApprovalPolicies as ApprovalPoliciesBase,
-  Counterparts as CounterpartsBase,
-  MoniteProvider as MoniteProviderBase,
-  Payables as PayablesBase,
-  Products as ProductsBase,
-  Receivables as ReceivablesBase,
-  Tags as TagsBase,
-  UserRoles as UserRolesBase,
-} from '@monite/sdk-react';
+import { MoniteProvider as MoniteProviderBase } from '@monite/sdk-react';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
@@ -68,32 +59,4 @@ export const MoniteProvider = ({
       {children}
     </MoniteProviderBase>
   );
-};
-
-export const Payables = () => {
-  return <PayablesBase />;
-};
-
-export const Receivables = () => {
-  return <ReceivablesBase />;
-};
-
-export const Counterparts = () => {
-  return <CounterpartsBase />;
-};
-
-export const Products = () => {
-  return <ProductsBase />;
-};
-
-export const ApprovalPolicies = () => {
-  return <ApprovalPoliciesBase />;
-};
-
-export const Tags = () => {
-  return <TagsBase />;
-};
-
-export const UserRoles = () => {
-  return <UserRolesBase />;
 };
