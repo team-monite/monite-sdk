@@ -8,7 +8,11 @@
   "exports": {
     ".": {
       "import": "./dist/monite-app.js",
-      "require": "./dist/monite-app.umd.cjs"
+      "require": "./dist/monite-app.cjs"
+    },
+    "./monite-iframe-app-message-channel": {
+      "import": "./dist/monite-iframe-app-message-channel.js",
+      "require": "./dist/monite-iframe-app-message-channel.cjs"
     },
     "./package.json": "./package.json",
     "./*": "./dist/*.js"
