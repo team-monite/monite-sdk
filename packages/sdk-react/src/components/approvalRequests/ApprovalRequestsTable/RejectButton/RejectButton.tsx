@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface RejectButtonProps {
-  id: string;
+  approvalRequestId: string;
 }
 
 export const RejectButton = (props: RejectButtonProps) => (
@@ -19,7 +19,7 @@ export const RejectButton = (props: RejectButtonProps) => (
   </MoniteScopedProviders>
 );
 
-const RejectButtonBase = ({ id }: RejectButtonProps) => {
+const RejectButtonBase = ({ approvalRequestId }: RejectButtonProps) => {
   const { api } = useMoniteContext();
   const queryClient = useQueryClient();
   const { i18n } = useLingui();
@@ -28,7 +28,7 @@ const RejectButtonBase = ({ id }: RejectButtonProps) => {
     api.approvalRequests.postApprovalRequestsIdReject.useMutation(
       {
         path: {
-          approval_request_id: id,
+          approval_request_id: approvalRequestId,
         },
       },
       {

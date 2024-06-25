@@ -278,8 +278,8 @@ const ApprovalRequestsTableBase = ({
               ) {
                 return (
                   <Stack direction="row" spacing={1}>
-                    <ApproveButton id={params.row.id} />
-                    <RejectButton id={params.row.id} />
+                    <ApproveButton approvalRequestId={params.row.id} />
+                    <RejectButton approvalRequestId={params.row.id} />
                   </Stack>
                 );
               }

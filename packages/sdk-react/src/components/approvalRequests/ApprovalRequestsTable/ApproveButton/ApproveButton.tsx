@@ -10,7 +10,7 @@ import { IconButton } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface ApproveButtonProps {
-  id: string;
+  approvalRequestId: string;
 }
 
 export const ApproveButton = (props: ApproveButtonProps) => (
@@ -19,7 +19,7 @@ export const ApproveButton = (props: ApproveButtonProps) => (
   </MoniteScopedProviders>
 );
 
-const ApproveButtonBase = ({ id }: ApproveButtonProps) => {
+const ApproveButtonBase = ({ approvalRequestId }: ApproveButtonProps) => {
   const { api } = useMoniteContext();
   const queryClient = useQueryClient();
   const { i18n } = useLingui();
@@ -28,7 +28,7 @@ const ApproveButtonBase = ({ id }: ApproveButtonProps) => {
     api.approvalRequests.postApprovalRequestsIdApprove.useMutation(
       {
         path: {
-          approval_request_id: id,
+          approval_request_id: approvalRequestId,
         },
       },
       {
