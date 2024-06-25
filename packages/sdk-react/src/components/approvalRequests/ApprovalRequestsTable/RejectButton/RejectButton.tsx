@@ -50,7 +50,7 @@ const RejectButtonBase = ({ id }: RejectButtonProps) => {
 
   return (
     <IconButton
-      aria-label="reject"
+      aria-label={t(i18n)`Reject request`}
       color="error"
       disabled={rejectRequestMutation.isPending}
       onClick={handleRejectRequest}

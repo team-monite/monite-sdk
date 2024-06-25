@@ -50,7 +50,7 @@ const ApproveButtonBase = ({ id }: ApproveButtonProps) => {
 
   return (
     <IconButton
-      aria-label="approve"
+      aria-label={t(i18n)`Approve request`}
       color="success"
       disabled={approveRequestMutation.isPending}
       onClick={handleApproveRequest}

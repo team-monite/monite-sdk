@@ -95,6 +95,4 @@ describe('ApprovalRequestTable', () => {
       });
     });
   });
-
-  describe('# Filters', () => {});
 });
