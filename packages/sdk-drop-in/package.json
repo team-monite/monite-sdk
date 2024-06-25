@@ -50,6 +50,8 @@
     "@emotion/react": "~11.11.1",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
+    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",
@@ -65,9 +67,7 @@
     "vite": "~5.1.4"
   },
   "dependencies": {
-    "@monite/sdk-api": "workspace:~",
-    "@openapi-qraft/react": "~1.11.0-beta.1",
-    "@tanstack/react-query": "~5.28.6"
+    "@monite/sdk-api": "workspace:~"
   },
   "files": [
     "dist"
