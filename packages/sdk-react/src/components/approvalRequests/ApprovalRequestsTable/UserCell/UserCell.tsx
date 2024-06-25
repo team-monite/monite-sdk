@@ -30,9 +30,11 @@ export const UserCell = ({ entityUserId }: UserCellProps) => {
     );
   }
 
-  const name = `${entityUser.first_name ?? ''} ${
-    entityUser.last_name ?? ''
-  }`.trim();
+  const name = (
+    (entityUser.first_name ?? '') +
+    ' ' +
+    (entityUser.last_name ?? '')
+  ).trim();
 
   return (
     <Chip
