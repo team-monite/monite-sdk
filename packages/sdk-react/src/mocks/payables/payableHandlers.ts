@@ -171,12 +171,10 @@ export const payableHandlers = [
       const id__in = url.searchParams.getAll('id__in');
 
       if (id__in.length > 0) {
-        const payables = payableFixturePages
-          .slice(0, id__in.length)
-          .map((payable, index) => ({
-            ...payable,
-            id: id__in[index],
-          }));
+        const payables = id__in.map((id, index) => ({
+          ...payableFixturePages[index],
+          id: id,
+        }));
 
         return HttpResponse.json({
           data: payables,
