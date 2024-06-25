@@ -10,6 +10,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DropInMoniteProvider } from './DropInMoniteProvider';
 
+// todo::implement google fonts support
+// // import { getFontFaceStyles } from './fontStyles.ts';
+
 interface MoniteIframeAppProps
   extends Pick<
     ComponentProps<typeof DropInMoniteProvider>,
@@ -87,7 +90,7 @@ export const MoniteIframeAppComponent = ({
           }
         `}
       />
-      <BrowserRouter basename={basename}>
+      <BrowserRouter basename={basename || undefined}>
         <Routes>
           {Object.entries(moniteSuperComponents).map(([path, Component]) => (
             <Route
