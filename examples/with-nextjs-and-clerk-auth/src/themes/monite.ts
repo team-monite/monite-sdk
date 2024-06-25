@@ -1,14 +1,13 @@
 import { grey } from '@mui/material/colors';
-import type { Components } from '@mui/material/styles/components.js';
+import type { Components } from '@mui/material/styles/components';
 import type {
   Palette,
   PaletteOptions,
-} from '@mui/material/styles/createPalette.js';
-import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
-import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
-import type {} from '@mui/x-data-grid/themeAugmentation';
+} from '@mui/material/styles/createPalette';
+import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme';
+import type { TypographyOptions } from '@mui/material/styles/createTypography';
 
-import { primary } from './colors/monite';
+import { neutralsTransparent, primary } from './colors/monite';
 
 const paletteLight: PaletteOptions = {
   primary: {
@@ -56,8 +55,26 @@ const defaultMoniteTypography:
     fontWeight: 400,
   },
   body2: {
+    color: neutralsTransparent['10'],
     fontSize: '0.875rem',
-    fontWeight: 400,
+    fontWeight: 500,
+  },
+  button: {
+    textTransform: 'none',
+    fontWeight: 500,
+  },
+  label1: {},
+  label2: {
+    color: neutralsTransparent['30'],
+    fontSize: '0.875rem',
+    fontStyle: 'normal',
+    fontWeight: 500,
+  },
+  label3: {
+    color: neutralsTransparent['50'],
+    fontSize: '0.75rem',
+    fontStyle: 'normal',
+    fontWeight: 600,
   },
   caption: {
     fontSize: '1rem',
@@ -66,10 +83,6 @@ const defaultMoniteTypography:
   overline: {
     fontSize: '1.5rem',
     lineHeight: 1,
-  },
-  button: {
-    textTransform: 'none',
-    fontWeight: 500,
   },
 };
 
@@ -222,8 +235,10 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           padding: 8,
         },
         '&.Mui-selected': {
-          color: primary['50'],
           backgroundColor: primary['90'],
+        },
+        '&.Mui-selected .MuiTypography-root': {
+          color: primary['50'],
         },
       },
     },
@@ -240,15 +255,22 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiListItemText: {
+  MuiButton: {
     styleOverrides: {
       root: {
-        '&.navigation-list-item__text > *': {
-          padding: 0,
-          fontSize: '0.875rem',
-          fontStyle: 'normal',
-          fontWeight: 500,
+        '&.theme-selector': {
+          borderColor: neutralsTransparent['80'],
+          borderRadius: 10,
+          display: 'flex',
+          flex: 1,
+          justifyContent: 'space-between',
         },
+      },
+      startIcon: {
+        color: neutralsTransparent['10'],
+      },
+      endIcon: {
+        color: neutralsTransparent['10'],
       },
     },
   },

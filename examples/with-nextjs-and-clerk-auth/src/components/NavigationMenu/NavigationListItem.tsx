@@ -11,6 +11,7 @@ import {
   ListItemButtonProps,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 
 type NavigationLinkProps = {
@@ -47,7 +48,9 @@ export const NavigationListItem = ({
           {icon}
         </ListItemIcon>
         <ListItemText className="navigation-list-item__text">
-          {children}
+          <Typography component="span" variant="label2">
+            {children}
+          </Typography>
         </ListItemText>
         {endIcon}
       </ListItemButton>

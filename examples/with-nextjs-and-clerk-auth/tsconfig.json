@@ -29,7 +29,8 @@
     "emotion.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "./src/monite-theme.d.ts"
   ],
   "exclude": ["node_modules"]
 }

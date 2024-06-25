@@ -19,10 +19,6 @@ msgstr "Company"
 msgid "Counterparts"
 msgstr "Counterparts"
 
-#: src/components/Layout/ThemeSelect.tsx:80
-msgid "Dark Mode"
-msgstr "Dark Mode"
-
 #: src/components/NavigationMenu/NavigationList.tsx:38
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -43,9 +39,7 @@ msgstr "Integrations"
 msgid "Invoice Design"
 msgstr "Invoice Design"
 
-#: src/components/Layout/ThemeSelect.tsx:25
-#: src/components/Layout/ThemeSelect.tsx:29
-#: src/components/Layout/ThemeSelect.tsx:62
+#: src/components/ThemeSelect.tsx:36
 msgid "Material UI"
 msgstr "Material UI"
 
@@ -53,8 +47,7 @@ msgstr "Material UI"
 msgid "Message Templates"
 msgstr "Message Templates"
 
-#: src/components/Layout/ThemeSelect.tsx:27
-#: src/components/Layout/ThemeSelect.tsx:68
+#: src/components/ThemeSelect.tsx:33
 msgid "Monite"
 msgstr "Monite"
 
@@ -85,10 +78,6 @@ msgstr "Sales"
 #: src/components/NavigationMenu/NavigationList.tsx:60
 msgid "Team"
 msgstr "Team"
-
-#: src/components/Layout/ThemeSelect.tsx:55
-msgid "Theme"
-msgstr "Theme"
 
 #: src/components/ThemeRegistry/AppThemeProvider.tsx:90
 msgid "We were unable to save your theme selection, please try again."
