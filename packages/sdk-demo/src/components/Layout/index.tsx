@@ -4,8 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
 import { useConfig } from '@/context/ConfigContext';
+import { useSDKDemoAPI } from '@/context/SDKDemoAPIProvider.tsx';
 import { ThemeConfig } from '@/types';
-import { useEntityUserByAuthToken } from '@monite/sdk-react';
 import {
   Avatar,
   Box,
@@ -29,7 +29,9 @@ export const DefaultLayout = ({
   setThemeConfig,
 }: DefaultLayoutProps) => {
   const location = useLocation();
-  const { data: user } = useEntityUserByAuthToken();
+  const { api } = useSDKDemoAPI();
+  const { data: user, isLoading: isUserLoading } =
+    api.entityUsers.getEntityUsersMe.useQuery({});
   const [pagePadding, setPagePadding] = useState(4);
   const config = useConfig();
 
@@ -61,13 +63,12 @@ export const DefaultLayout = ({
           anchor="left"
         >
           <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-            {user ? (
+            {!isUserLoading && user && (
               <>
                 <Avatar
                   sx={{ width: 44, height: 44 }}
                   alt={user.first_name}
-                  // HACK: src as `undefined` doesn't trigger the fallback to alt text. It requires a string with broken url.
-                  src={user.userpic_file_id ?? '/'}
+                  src={user.userpic_file_id || undefined}
                 />
                 <Box ml={1}>
                   <Typography variant="button">
@@ -75,11 +76,8 @@ export const DefaultLayout = ({
                   </Typography>
                 </Box>
               </>
-            ) : (
-              <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
             )}
+            {isUserLoading && <CircularProgress size={44} />}
           </Box>
           <Box display="flex" sx={{ flex: 1 }}>
             <Menu />
