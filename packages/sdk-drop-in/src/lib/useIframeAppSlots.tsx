@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useThrottleFn, useWindowSize, useDebounce } from 'react-use';
 
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { MoniteProvider } from '@monite/sdk-react';
@@ -29,7 +30,7 @@ export const useMoniteIframeAppSlots = () => {
       | { promise: Promise<AccessToken> };
   }>({});
 
-  const [channelPortManager] = useState(
+  const [iframeCommunicator] = useState(
     () => new MoniteIframeAppCommunicator(window.parent)
   );
 
@@ -45,27 +46,27 @@ export const useMoniteIframeAppSlots = () => {
         slotState.fetchToken.reject();
 
       slotState.fetchToken = { resolve, reject };
-      channelPortManager.pingSlot('fetch-token');
+      iframeCommunicator.pingSlot('fetch-token');
     }).finally(() => {
       slotState.fetchToken = undefined;
     });
-  }, [channelPortManager]);
+  }, [iframeCommunicator]);
 
   useEffect(
     function subscribe() {
       const slotState = slotStateRef.current;
 
-      channelPortManager.on('locale', (locale) => {
+      iframeCommunicator.on('locale', (locale) => {
         // @ts-expect-error - payload is not a valid theme object
         setSlots((prevSlots) => ({ ...prevSlots, locale }));
       });
 
-      channelPortManager.on('theme', (theme) => {
+      iframeCommunicator.on('theme', (theme) => {
         // @ts-expect-error - payload is not a valid theme object
         setSlots((prevSlots) => ({ ...prevSlots, theme }));
       });
 
-      channelPortManager.on('fetch-token', (data) => {
+      iframeCommunicator.on('fetch-token', (data) => {
         if (!validateToken(data))
           return void console.error('Invalid token data');
 
@@ -76,16 +77,31 @@ export const useMoniteIframeAppSlots = () => {
         }
       });
 
-      channelPortManager.connect();
+      iframeCommunicator.connect();
 
       return () => {
-        channelPortManager.disconnect();
+        iframeCommunicator.disconnect();
       };
     },
-    [channelPortManager, fetchToken]
+    [iframeCommunicator, fetchToken]
   );
 
-  return { fetchToken: fetchToken, ...slots };
+  const emitSize = useCallback(() => {
+    console.log('emitSize', {
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight,
+    });
+    iframeCommunicator.mountSlot('monite-iframe-app:size', {
+      width: document.documentElement.scrollWidth,
+      height: document.documentElement.scrollHeight,
+    });
+  }, [iframeCommunicator]);
+
+  const { width: _width, height: _height } = useWindowSize();
+  useDebounce(emitSize, 50, [emitSize, _width, _height]);
+  useEffect(() => void emitSize(), [emitSize]);
+
+  return { ...slots, fetchToken };
 };
 
 function validateToken(token: unknown): token is {
