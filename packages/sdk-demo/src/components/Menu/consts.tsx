@@ -22,6 +22,11 @@ export const getNavigationData = (
     url: ROUTES.payables,
     renderIcon: (props) => <MonetizationOnIcon {...props} />,
   },
+  approvalRequests: {
+    label: 'Approval Requests',
+    url: ROUTES.approvalRequests,
+    renderIcon: (props) => <DoneOutlineIcon {...props} />,
+  },
   receivables: {
     label: t(i18n)`Sales`,
     url: ROUTES.receivables,
@@ -46,11 +51,6 @@ export const getNavigationData = (
         label: 'Approval Policies',
         url: ROUTES.approvalPolicies,
         renderIcon: (props) => <TabIcon {...props} />,
-      },
-      approvalRequests: {
-        label: 'Approval Requests',
-        url: ROUTES.approvalRequests,
-        renderIcon: (props) => <DoneOutlineIcon {...props} />,
       },
       roles: {
         label: 'Roles',
