@@ -39,16 +39,11 @@ import { UserCell } from './UserCell';
 
 interface ApprovalRequestsTableProps {
   /**
-   * Triggered when the filtering options are changed
+   * The event handler for a row click.
    *
-   * @param filter - An object containing the filter parameters.
-   * @param filter.field - The field to filter by, specified as a keyof FilterTypes.
-   * @param filter.value - The value to be applied to the filter, of type FilterValue.
+   * @param id - The identifier of the clicked row, a string.
    */
-  onChangeFilter?: (filter: {
-    field: keyof FilterTypes;
-    value: FilterValue;
-  }) => void;
+  onRowClick?: (id: string) => void;
 }
 export const ApprovalRequestsTable = (props: ApprovalRequestsTableProps) => (
   <MoniteScopedProviders>
@@ -57,7 +52,7 @@ export const ApprovalRequestsTable = (props: ApprovalRequestsTableProps) => (
 );
 
 const ApprovalRequestsTableBase = ({
-  onChangeFilter: onChangeFilterCallback,
+  onRowClick,
 }: ApprovalRequestsTableProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -141,8 +136,6 @@ const ApprovalRequestsTableBase = ({
       ...prevFilter,
       [field]: value === 'all' ? null : value,
     }));
-
-    onChangeFilterCallback?.({ field, value });
   };
 
   if (isReadSupportedLoading || isUpdateSupportedLoading) {
@@ -165,6 +158,7 @@ const ApprovalRequestsTableBase = ({
         autoHeight
         rowSelection={false}
         loading={isApprovalRequestsLoading || isPayablesLoading}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
         sx={{
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
