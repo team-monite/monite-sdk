@@ -5,3 +5,4 @@ export { getConfig } from '@/core/getConfig';
 export { fetchToken } from '@/core/fetchToken';
 export { ThemeSelect } from '@/components/Layout/ThemeSelect';
 export { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider';
+export { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider';

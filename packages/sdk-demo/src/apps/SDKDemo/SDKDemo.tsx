@@ -11,13 +11,12 @@ import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
+import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
 import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
-import { messages as defaultMessages } from '@/locales/en/messages.ts';
 import { Global } from '@emotion/react';
-import { setupI18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { I18nProvider, useLingui } from '@lingui/react';
+import { useLingui } from '@lingui/react';
 import { useMoniteContext } from '@monite/sdk-react';
 import { Button, createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -73,23 +72,6 @@ const SDKDemoComponent = ({
       },
     },
   });
-  const [sdkDemoLocale, sdkDemoI18n] = useMemo(() => {
-    const localeCode = 'en-US';
-    return [
-      {
-        code: localeCode,
-        messages: {
-          defaultMessages,
-        },
-      },
-      setupI18n({
-        locale: localeCode,
-        messages: {
-          [localeCode]: defaultMessages,
-        },
-      }),
-    ];
-  }, []);
 
   const fetchToken = () =>
     authData
@@ -98,10 +80,9 @@ const SDKDemoComponent = ({
 
   return (
     <ThemeProvider theme={sdkDemoTheme}>
-      <I18nProvider i18n={sdkDemoI18n}>
+      <SDKDemoI18nProvider localeCode="en-US">
         <CssBaseline enableColorScheme />
         <AppMoniteProvider
-          locale={sdkDemoLocale}
           theme={sdkDemoTheme}
           sdkConfig={{
             entityId: authData?.entity_id ?? 'lazy',
@@ -131,7 +112,7 @@ const SDKDemoComponent = ({
             )}
           </SDKDemoAPIProvider>
         </AppMoniteProvider>
-      </I18nProvider>
+      </SDKDemoI18nProvider>
     </ThemeProvider>
   );
 };
