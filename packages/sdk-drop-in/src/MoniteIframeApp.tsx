@@ -7,6 +7,7 @@ import { moniteSuperComponents } from '@/lib/moniteSuperComponents';
 import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots';
 import { css, Global } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SDKDemoAPIProvider } from '@team-monite/sdk-demo';
 
 import { DropInMoniteProvider } from './DropInMoniteProvider';
 
@@ -32,13 +33,19 @@ export const MoniteIframeApp = (props: MoniteIframeAppProps) => {
           {({ apiUrl, appBasename }) => (
             <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
               {(entityId) => (
-                <MoniteIframeAppComponent
-                  {...props}
-                  entityId={entityId}
+                <SDKDemoAPIProvider
                   apiUrl={apiUrl}
+                  entityId={entityId}
                   fetchToken={fetchToken}
-                  basename={appBasename}
-                />
+                >
+                  <MoniteIframeAppComponent
+                    {...props}
+                    entityId={entityId}
+                    apiUrl={apiUrl}
+                    fetchToken={fetchToken}
+                    basename={appBasename}
+                  />
+                </SDKDemoAPIProvider>
               )}
             </EntityIdLoader>
           )}

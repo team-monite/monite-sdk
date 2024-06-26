@@ -44,9 +44,10 @@ export const useMoniteIframeAppSlots = () => {
     function subscribe() {
       const slotState = slotStateRef.current;
 
-      channelPortManager.on('locale', (payload) => {
+      // todo::add locale slot handling
+      /*channelPortManager.on('locale', (payload) => {
         console.log('locale', payload);
-      });
+      });*/
 
       channelPortManager.on('fetch-token', (data) => {
         if (!validateToken(data))
