@@ -5,7 +5,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useThrottleFn, useWindowSize, useDebounce } from 'react-use';
 
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { MoniteProvider } from '@monite/sdk-react';
@@ -85,21 +84,6 @@ export const useMoniteIframeAppSlots = () => {
     },
     [iframeCommunicator, fetchToken]
   );
-
-  const emitSize = useCallback(() => {
-    console.log('emitSize', {
-      width: document.documentElement.scrollWidth,
-      height: document.documentElement.scrollHeight,
-    });
-    iframeCommunicator.mountSlot('monite-iframe-app:size', {
-      width: document.documentElement.scrollWidth,
-      height: document.documentElement.scrollHeight,
-    });
-  }, [iframeCommunicator]);
-
-  const { width: _width, height: _height } = useWindowSize();
-  useDebounce(emitSize, 50, [emitSize, _width, _height]);
-  useEffect(() => void emitSize(), [emitSize]);
 
   return { ...slots, fetchToken };
 };

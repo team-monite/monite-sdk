@@ -121,26 +121,13 @@ const MoniteIframe = ({
     channelPortManager.mountSlot('fetch-token', fetchToken);
     channelPortManager.mountSlot('locale', { code: localeCode });
     channelPortManager.mountSlot('theme', getThemeOptions(themeConfig));
-    channelPortManager.on('monite-iframe-app:size', (payload) => {
-      if (!iframeElement) return;
-      if (
-        !payload ||
-        typeof payload !== 'object' ||
-        !('height' in payload) ||
-        !('width' in payload)
-      )
-        return;
-      console.log('monite-iframe-app:size', payload);
-      iframeElement.style.width = `${payload.width}px`;
-      iframeElement.style.height = `${payload.height}px`;
-    });
 
     return () => {
       channelPortManager.unmountSlot('fetch-token');
       channelPortManager.unmountSlot('locale');
       channelPortManager.unmountSlot('theme');
     };
-  }, [channelPortManager, fetchToken, localeCode, themeConfig]);
+  }, [channelPortManager, fetchToken, iframeElement, localeCode, themeConfig]);
 
   useEffect(() => {
     if (!channelPortManager) return;
