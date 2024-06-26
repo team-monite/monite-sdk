@@ -40,20 +40,20 @@ const ApproveButtonBase = ({ approvalRequestId }: ApproveButtonProps) => {
       }
     );
 
-  const handleApproveRequest = () => {
-    approveRequestMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success(t(i18n)`Request was approved`);
-      },
-    });
-  };
-
   return (
     <IconButton
       aria-label={t(i18n)`Approve request`}
       color="success"
       disabled={approveRequestMutation.isPending}
-      onClick={handleApproveRequest}
+      onClick={(event) => {
+        event.preventDefault();
+
+        approveRequestMutation.mutate(undefined, {
+          onSuccess: () => {
+            toast.success(t(i18n)`Request was approved`);
+          },
+        });
+      }}
     >
       <CheckCircleOutlineRoundedIcon />
     </IconButton>

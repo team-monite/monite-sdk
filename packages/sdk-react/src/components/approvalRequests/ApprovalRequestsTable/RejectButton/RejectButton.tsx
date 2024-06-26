@@ -40,20 +40,20 @@ const RejectButtonBase = ({ approvalRequestId }: RejectButtonProps) => {
       }
     );
 
-  const handleRejectRequest = () => {
-    rejectRequestMutation.mutate(undefined, {
-      onSuccess: () => {
-        toast.success(t(i18n)`Request was rejected`);
-      },
-    });
-  };
-
   return (
     <IconButton
       aria-label={t(i18n)`Reject request`}
       color="error"
       disabled={rejectRequestMutation.isPending}
-      onClick={handleRejectRequest}
+      onClick={(event) => {
+        event.preventDefault();
+
+        rejectRequestMutation.mutate(undefined, {
+          onSuccess: () => {
+            toast.success(t(i18n)`Request was rejected`);
+          },
+        });
+      }}
     >
       <HighlightOffRoundedIcon />
     </IconButton>
