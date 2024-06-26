@@ -1,9 +1,12 @@
 import React from 'react';
 
-import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks';
+import {
+  ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+  approvalRequestsListFixture,
+} from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { MoniteSDK } from '@monite/sdk-api';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
@@ -30,7 +33,7 @@ describe('ApprovalRequestTable', () => {
 
   describe('# Pagination', () => {
     test('should fetch only first 10 elements when the page limit is 10 (by default)', async () => {
-      const { container } = renderWithClient(<ApprovalRequestsTable />);
+      renderWithClient(<ApprovalRequestsTable />);
 
       await waitUntilTableIsLoaded();
 
@@ -63,36 +66,23 @@ describe('ApprovalRequestTable', () => {
   });
 
   describe('# Public API', () => {
-    test('should trigger "onChangeFilterMock" when we are filtering approvals', async () => {
-      const onChangeFilterMock = jest.fn();
+    test('should trigger a `onRowClick` callback when click on a row', async () => {
+      const onRowClickMock = jest.fn();
 
-      renderWithClient(
-        <ApprovalRequestsTable onChangeFilter={onChangeFilterMock} />
-      );
+      renderWithClient(<ApprovalRequestsTable onRowClick={onRowClickMock} />);
 
-      await waitUntilTableIsLoaded();
+      const firstApproval = approvalRequestsListFixture[0];
 
-      fireEvent.mouseDown(
-        screen.getByRole('button', {
-          name: /status/i,
-        })
-      );
+      if (!firstApproval)
+        throw new Error('Could not find any approval in the fixtures list');
 
-      const statusDropdown = await screen.findByRole('listbox', {
-        name: /status/i,
-      });
-      const { getByRole } = within(statusDropdown);
-      const paidOption = getByRole('option', {
-        name: 'Approved',
-      });
-      fireEvent.click(paidOption);
+      const rows = await screen.findAllByRole('row');
+      const firstRow = rows[1]; // skip the header row
 
-      await waitFor(() => {
-        expect(onChangeFilterMock).toHaveBeenCalledWith({
-          field: 'status',
-          value: 'approved',
-        });
-      });
+      fireEvent.click(firstRow);
+
+      expect(firstApproval.id).toBeDefined();
+      expect(onRowClickMock).toHaveBeenCalledWith(firstApproval.id);
     });
   });
 });
