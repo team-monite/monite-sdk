@@ -19,16 +19,6 @@ export class MoniteIframeAppCommunicator {
     if (iframeElement instanceof HTMLIFrameElement) {
       this.isHost = true;
       this.targetWindow = iframeElement.contentWindow ?? undefined;
-
-      if (iframeElement.contentDocument?.readyState !== 'complete') {
-        const onIframeLoad = () => {
-          iframeElement.removeEventListener('load', onIframeLoad);
-          this.connect();
-        };
-
-        iframeElement.addEventListener('load', onIframeLoad);
-        return;
-      }
     } else {
       this.isHost = false;
       this.targetWindow = iframeElement;
@@ -150,16 +140,18 @@ export class MoniteIframeAppCommunicator {
     if (typeof payloadSlot === 'function') {
       const abortController = new AbortController();
       this.slots[slotName].abortController = abortController;
-      payloadSlot({ signal: abortController.signal }).then((resultPayload) => {
-        assertSlotPayload(resultPayload);
-        this.targetWindow?.postMessage(
-          {
-            type: slotName,
-            payload: resultPayload,
-          },
-          '*'
-        );
-      });
+      payloadSlot({ signal: abortController.signal }).then(
+        (resultPayload: unknown) => {
+          assertSlotPayload(resultPayload);
+          this.targetWindow?.postMessage(
+            {
+              type: slotName,
+              payload: resultPayload,
+            },
+            '*'
+          );
+        }
+      );
     } else {
       assertSlotPayload(payloadSlot);
       this.targetWindow?.postMessage(
@@ -188,8 +180,10 @@ export type PayloadSlot =
   | boolean
   | null
   | undefined
-  | Record<string, unknown>
-  | Array<unknown>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | Record<string, any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  | Array<any>
   | {
       (props: { signal: AbortSignal }): Promise<unknown>;
     };
