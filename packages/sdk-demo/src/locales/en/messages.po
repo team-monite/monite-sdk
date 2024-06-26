@@ -19,7 +19,7 @@ msgstr "Client ID"
 msgid "Client Secret"
 msgstr "Client Secret"
 
-#: src/components/Menu/consts.tsx:31
+#: src/components/Menu/consts.tsx:36
 msgid "Counterparts"
 msgstr "Counterparts"
 
@@ -62,15 +62,15 @@ msgstr "Onboard Entity"
 msgid "Payables"
 msgstr "Payables"
 
-#: src/components/Menu/consts.tsx:36
+#: src/components/Menu/consts.tsx:41
 msgid "Products"
 msgstr "Products"
 
-#: src/components/Menu/consts.tsx:26
+#: src/components/Menu/consts.tsx:31
 msgid "Sales"
 msgstr "Sales"
 
-#: src/components/Menu/consts.tsx:41
+#: src/components/Menu/consts.tsx:46
 msgid "Settings"
 msgstr "Settings"
 
