@@ -13,7 +13,7 @@ import { ConfigProvider, useConfig } from '@/context/ConfigContext';
 import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
 import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
-import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
+import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -53,7 +53,7 @@ const SDKDemoComponent = ({
   const { api_url } = useConfig();
   const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
-  const sdkDemoTheme = createTheme(getThemeConfig(themeConfig), {
+  const sdkDemoTheme = createTheme(getThemeOptions(themeConfig), {
     components: {
       MoniteInvoiceStatusChip: {
         defaultProps: {
