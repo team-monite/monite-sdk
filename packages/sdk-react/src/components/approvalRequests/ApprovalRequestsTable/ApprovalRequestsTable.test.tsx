@@ -4,7 +4,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   approvalRequestsListFixture,
 } from '@/mocks';
-import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
@@ -25,8 +25,6 @@ describe('ApprovalRequestTable', () => {
 
       renderWithClient(<ApprovalRequestsTable />, monite);
 
-      await waitUntilTableIsLoaded();
-
       expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
     });
   });
@@ -34,8 +32,6 @@ describe('ApprovalRequestTable', () => {
   describe('# Pagination', () => {
     test('should fetch only first 10 elements when the page limit is 10 (by default)', async () => {
       renderWithClient(<ApprovalRequestsTable />);
-
-      await waitUntilTableIsLoaded();
 
       await waitFor(() => {
         // remove the header row
@@ -48,12 +44,10 @@ describe('ApprovalRequestTable', () => {
     test('next button should be available for interaction but previous button not', async () => {
       renderWithClient(<ApprovalRequestsTable />);
 
-      await waitUntilTableIsLoaded();
-
-      const nextButton = screen.getByRole('button', {
+      const nextButton = await screen.findByRole('button', {
         name: /next/i,
       });
-      const prevButton = screen.getByRole('button', {
+      const prevButton = await screen.findByRole('button', {
         name: /previous/i,
       });
 
