@@ -18,9 +18,12 @@ export class DropInElement extends HTMLElement {
    * @readonly
    */
   static readonly attributes: Record<
-    'router' | 'basename' | 'component' | 'entity-id' | 'api-url',
+    'disabled' | 'router' | 'basename' | 'component' | 'entity-id' | 'api-url',
     AttributeConfig
   > = {
+    disabled: {
+      type: 'boolean',
+    },
     router: {
       type: 'string',
     },
@@ -78,8 +81,10 @@ export class DropInElement extends HTMLElement {
     },
   };
 
-  static get observedAttributes(): (keyof (typeof DropInElement)['attributes'])[] {
-    return ['router', 'basename', 'component', 'entity-id', 'api-url'];
+  static get observedAttributes() {
+    return Object.keys(
+      DropInElement.attributes
+    ) as (keyof (typeof DropInElement)['attributes'])[];
   }
 
   private root: ShadowRoot | HTMLElement;

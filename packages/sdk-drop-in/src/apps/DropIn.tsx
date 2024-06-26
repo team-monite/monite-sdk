@@ -21,6 +21,7 @@ type ProviderProps = Pick<
 >;
 
 export const DropIn = ({
+  disabled,
   router,
   basename,
   locale,
@@ -31,6 +32,7 @@ export const DropIn = ({
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
 }: {
+  disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
   entityId?: string;
   apiUrl?: string;
@@ -42,6 +44,8 @@ export const DropIn = ({
   }>;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
+  if (disabled) return null;
+
   if (router && !(router in supportedRouters))
     throw new Error('Provided router type is not supported');
 
