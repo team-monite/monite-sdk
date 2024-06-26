@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import ReactDOM, { Root } from 'react-dom/client';
 
-import { DropIn } from '@/DropIn';
+import { DropIn } from '@/apps/DropIn.tsx';
 
 export class DropInElement extends HTMLElement {
   /**

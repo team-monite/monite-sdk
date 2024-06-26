@@ -1,15 +1,15 @@
 import React, { ComponentProps, Suspense, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { ConfigLoader } from '@/lib/ConfigLoader';
-import { EntityIdLoader } from '@/lib/EntityIdLoader';
-import { moniteSuperComponents } from '@/lib/moniteSuperComponents';
-import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots';
+import { ConfigLoader } from '@/lib/ConfigLoader.tsx';
+import { EntityIdLoader } from '@/lib/EntityIdLoader.tsx';
+import { moniteSuperComponents } from '@/lib/moniteSuperComponents.tsx';
+import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots.tsx';
 import { css, Global } from '@emotion/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SDKDemoAPIProvider } from '@team-monite/sdk-demo';
 
-import { DropInMoniteProvider } from './DropInMoniteProvider';
+import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
 
 // todo::implement google fonts support
 // // import { getFontFaceStyles } from './fontStyles.ts';
