@@ -31,13 +31,9 @@ export const DefaultLayout = ({
   const { api } = useSDKDemoAPI();
   const { data: user, isLoading: isUserLoading } =
     api.entityUsers.getEntityUsersMe.useQuery({});
-  const [pagePadding, setPagePadding] = useState(4);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (location.pathname.indexOf('onboarding') > 0) setPagePadding(0);
-    else setPagePadding(4);
   }, [location]);
 
   return (
@@ -102,7 +98,6 @@ export const DefaultLayout = ({
               flexDirection: 'column',
               minWidth: 0,
               minHeight: '100vh',
-              p: pagePadding,
             }}
           >
             {children}
