@@ -82,6 +82,10 @@ const MoniteIframeAppComponent = ({
         <CssBaseline enableColorScheme />
         <Global
           styles={css`
+            body {
+              padding: 20px;
+            }
+
             :root,
             :host {
               line-height: 1.5;

@@ -153,7 +153,7 @@ const MoniteIframe = ({
       key={pathname.split('/')[1]}
       ref={setIframeElement}
       src={iframeUrl}
-      className="monite-iframe-app"
+      style={{ border: 'none', width: '100%', height: '100%' }}
     ></iframe>
   );
 };
