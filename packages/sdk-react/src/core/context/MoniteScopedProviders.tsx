@@ -1,7 +1,10 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
-import { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
+import {
+  MoniteAPIProvider,
+  MoniteQraftContext,
+} from '@/core/context/MoniteAPIProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
 import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
@@ -20,7 +23,8 @@ export const MoniteScopedProviders = ({
   children: ReactNode;
 }) => {
   const hasStylesContext = useContext(SingleInstanceScopedStyleProviderContext);
-  const { theme } = useMoniteContext();
+  const { theme, apiUrl, fetchToken, queryClient, requestFn } =
+    useMoniteContext();
 
   return hasStylesContext ? (
     <>{children}</>
@@ -31,7 +35,15 @@ export const MoniteScopedProviders = ({
           <MuiThemeProvider theme={theme}>
             <SentryProvider>
               <MoniteQueryClientProvider>
-                <MoniteAPIProvider>{children}</MoniteAPIProvider>
+                <MoniteAPIProvider
+                  apiUrl={apiUrl}
+                  fetchToken={fetchToken}
+                  requestFn={requestFn}
+                  queryClient={queryClient}
+                  APIContext={MoniteQraftContext}
+                >
+                  {children}
+                </MoniteAPIProvider>
               </MoniteQueryClientProvider>
             </SentryProvider>
           </MuiThemeProvider>
