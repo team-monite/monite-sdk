@@ -10,7 +10,8 @@ import {
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
-import { fetchToken } from '@/core/fetchToken';
+import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
+import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
 import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { messages as defaultMessages } from '@/locales/en/messages.ts';
 import { Global } from '@emotion/react';
@@ -90,6 +91,11 @@ const SDKDemoComponent = ({
     ];
   }, []);
 
+  const fetchToken = () =>
+    authData
+      ? fetchTokenBase(apiUrl, authData).catch(logout)
+      : Promise.reject();
+
   return (
     <ThemeProvider theme={sdkDemoTheme}>
       <I18nProvider i18n={sdkDemoI18n}>
@@ -100,27 +106,30 @@ const SDKDemoComponent = ({
           sdkConfig={{
             entityId: authData?.entity_id ?? 'lazy',
             apiUrl,
-            fetchToken: () =>
-              authData
-                ? fetchToken(apiUrl, authData).catch(logout)
-                : Promise.reject(),
+            fetchToken,
           }}
         >
-          <MoniteReactQueryDevtools />
-          <Global styles={getFontFaceStyles} />
-          {authData ? (
-            <BrowserRouter>
-              <DefaultLayout
-                themeConfig={themeConfig}
-                setThemeConfig={setThemeConfig}
-                siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
-              >
-                <Base />
-              </DefaultLayout>
-            </BrowserRouter>
-          ) : (
-            <LoginForm login={login} />
-          )}
+          <SDKDemoAPIProvider
+            apiUrl={apiUrl}
+            fetchToken={fetchToken}
+            entityId={authData?.entity_id}
+          >
+            <MoniteReactQueryDevtools />
+            <Global styles={getFontFaceStyles} />
+            {authData ? (
+              <BrowserRouter>
+                <DefaultLayout
+                  themeConfig={themeConfig}
+                  setThemeConfig={setThemeConfig}
+                  siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
+                >
+                  <Base />
+                </DefaultLayout>
+              </BrowserRouter>
+            ) : (
+              <LoginForm login={login} />
+            )}
+          </SDKDemoAPIProvider>
         </AppMoniteProvider>
       </I18nProvider>
     </ThemeProvider>
