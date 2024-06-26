@@ -1,6 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ComponentProps,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator.ts';
+import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
+import { MoniteProvider } from '@monite/sdk-react';
 
 type AccessToken = {
   access_token: string;
@@ -9,6 +16,10 @@ type AccessToken = {
 };
 
 export const useMoniteIframeAppSlots = () => {
+  const [slots, setSlots] = useState<
+    Partial<Pick<ComponentProps<typeof MoniteProvider>, 'locale' | 'theme'>>
+  >({});
+
   const slotStateRef = useRef<{
     fetchToken?:
       | {
@@ -44,10 +55,15 @@ export const useMoniteIframeAppSlots = () => {
     function subscribe() {
       const slotState = slotStateRef.current;
 
-      // todo::add locale slot handling
-      /*channelPortManager.on('locale', (payload) => {
-        console.log('locale', payload);
-      });*/
+      channelPortManager.on('locale', (locale) => {
+        // @ts-expect-error - payload is not a valid theme object
+        setSlots((prevSlots) => ({ ...prevSlots, locale }));
+      });
+
+      channelPortManager.on('theme', (theme) => {
+        // @ts-expect-error - payload is not a valid theme object
+        setSlots((prevSlots) => ({ ...prevSlots, theme }));
+      });
 
       channelPortManager.on('fetch-token', (data) => {
         if (!validateToken(data))
@@ -69,7 +85,7 @@ export const useMoniteIframeAppSlots = () => {
     [channelPortManager, fetchToken]
   );
 
-  return { fetchToken };
+  return { fetchToken: fetchToken, ...slots };
 };
 
 function validateToken(token: unknown): token is {

@@ -10,7 +10,7 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   DefaultLayout,
-  getThemeConfig,
+  getThemeOptions,
   SDKDemoAPIProvider,
   SDKDemoI18nProvider,
   useThemeConfig,
@@ -59,29 +59,10 @@ const MoniteIframeAppConsumerComponent = ({
   fetchToken: FetchTokenHandler;
 }) => {
   const { themeConfig, setThemeConfig } = useThemeConfig();
-  const sdkDemoTheme = createTheme(getThemeConfig(themeConfig), {
-    components: {
-      MoniteInvoiceStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MonitePayableStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteTablePagination: {
-        defaultProps: {
-          pageSizeOptions: [10, 15, 20],
-        },
-      },
-    },
-  });
 
   const localeCode = 'en-US';
   return (
-    <ThemeProvider theme={sdkDemoTheme}>
+    <ThemeProvider theme={createTheme(getThemeOptions(themeConfig))}>
       <CssBaseline enableColorScheme />
       <SDKDemoI18nProvider localeCode={localeCode}>
         <BrowserRouter basename={location.pathname.split('/')[1]}>
@@ -98,6 +79,7 @@ const MoniteIframeAppConsumerComponent = ({
                     appHostname={appHostname}
                     fetchToken={fetchToken}
                     localeCode={localeCode}
+                    themeConfig={themeConfig}
                   />
                 }
               />
@@ -114,11 +96,13 @@ const MoniteIframe = ({
   appBasename,
   localeCode,
   fetchToken,
+  themeConfig,
 }: {
   appHostname: string;
   appBasename: string;
   localeCode: string;
   fetchToken: FetchTokenHandler;
+  themeConfig: ReturnType<typeof useThemeConfig>['themeConfig'];
 }) => {
   const portSegment = location.port ? `:${location.port}` : '';
   const { pathname } = useLocation();
@@ -128,23 +112,35 @@ const MoniteIframe = ({
     null
   );
 
+  const channelPortManager = useMemo(() => {
+    return iframeElement && new MoniteIframeAppCommunicator(iframeElement);
+  }, [iframeElement]);
+
   useEffect(() => {
-    if (!iframeElement) return;
-    const channelPortManager = new MoniteIframeAppCommunicator(iframeElement);
+    if (!channelPortManager) return;
     channelPortManager.mountSlot('fetch-token', fetchToken);
     channelPortManager.mountSlot('locale', { code: localeCode });
-    channelPortManager.connect();
+    channelPortManager.mountSlot('theme', getThemeOptions(themeConfig));
 
     return () => {
-      channelPortManager.disconnect();
+      channelPortManager.unmountSlot('fetch-token');
+      channelPortManager.unmountSlot('locale');
+      channelPortManager.unmountSlot('theme');
     };
-  }, [fetchToken, iframeElement, localeCode]);
+  }, [channelPortManager, fetchToken, localeCode, themeConfig]);
+
+  useEffect(() => {
+    if (!channelPortManager) return;
+    channelPortManager.connect();
+    return () => void channelPortManager.disconnect();
+  }, [channelPortManager]);
+
   return (
     <iframe
       key={pathname.split('/')[1]}
       ref={setIframeElement}
-      className="monite-iframe-app"
       src={iframeUrl}
+      className="monite-iframe-app"
     ></iframe>
   );
 };
