@@ -2,7 +2,6 @@ import React from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
@@ -13,13 +12,7 @@ interface RejectButtonProps {
   approvalRequestId: string;
 }
 
-export const RejectButton = (props: RejectButtonProps) => (
-  <MoniteScopedProviders>
-    <RejectButtonBase {...props} />
-  </MoniteScopedProviders>
-);
-
-const RejectButtonBase = ({ approvalRequestId }: RejectButtonProps) => {
+export const RejectButton = ({ approvalRequestId }: RejectButtonProps) => {
   const { api } = useMoniteContext();
   const queryClient = useQueryClient();
   const { i18n } = useLingui();

@@ -2,7 +2,6 @@ import React from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
@@ -13,13 +12,7 @@ interface ApproveButtonProps {
   approvalRequestId: string;
 }
 
-export const ApproveButton = (props: ApproveButtonProps) => (
-  <MoniteScopedProviders>
-    <ApproveButtonBase {...props} />
-  </MoniteScopedProviders>
-);
-
-const ApproveButtonBase = ({ approvalRequestId }: ApproveButtonProps) => {
+export const ApproveButton = ({ approvalRequestId }: ApproveButtonProps) => {
   const { api } = useMoniteContext();
   const queryClient = useQueryClient();
   const { i18n } = useLingui();

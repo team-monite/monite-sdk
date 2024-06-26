@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PageHeader, ProductsTable } from '@/components';
+import { PageHeader } from '@/components';
 import { ApprovalRequestsTable } from '@/components/approvalRequests/ApprovalRequestsTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { components } from '@/api';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -31,13 +30,7 @@ interface FilterProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
-export const Filters = (props: FilterProps) => (
-  <MoniteScopedProviders>
-    <FiltersBase {...props} />
-  </MoniteScopedProviders>
-);
-
-const FiltersBase = ({ onChangeFilter }: FilterProps) => {
+export const Filters = ({ onChangeFilter }: FilterProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 

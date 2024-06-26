@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -14,13 +13,7 @@ interface AutocompleteCreatedByProps {
 
 type EntityUserType = components['schemas']['EntityUserResponse'];
 
-export const AutocompleteCreatedBy = (props: AutocompleteCreatedByProps) => (
-  <MoniteScopedProviders>
-    <AutocompleteCreatedByBase {...props} />
-  </MoniteScopedProviders>
-);
-
-export const AutocompleteCreatedByBase = ({
+export const AutocompleteCreatedBy = ({
   onChange: onChangeFilter,
 }: AutocompleteCreatedByProps) => {
   const { i18n } = useLingui();
