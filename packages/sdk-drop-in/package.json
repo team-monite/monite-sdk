@@ -8,7 +8,11 @@
   "exports": {
     ".": {
       "import": "./dist/monite-app.js",
-      "require": "./dist/monite-app.umd.cjs"
+      "require": "./dist/monite-app.cjs"
+    },
+    "./monite-iframe-app-message-channel": {
+      "import": "./dist/monite-iframe-app-message-channel.js",
+      "require": "./dist/monite-iframe-app-message-channel.cjs"
     },
     "./package.json": "./package.json",
     "./*": "./dist/*.js"
@@ -47,6 +51,9 @@
     "@emotion/react": "~11.11.1",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
+    "@mui/material": "~5.14.2",
+    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@tanstack/react-query": "~5.28.6",
     "@playwright/test": "~1.45.0",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
@@ -64,9 +71,7 @@
     "vite": "~5.1.4"
   },
   "dependencies": {
-    "@monite/sdk-api": "workspace:~",
-    "@openapi-qraft/react": "~1.11.0-beta.1",
-    "@tanstack/react-query": "~5.28.6"
+    "@monite/sdk-api": "workspace:~"
   },
   "files": [
     "dist"

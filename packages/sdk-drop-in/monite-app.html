@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <title>Monite App Widget Label</title>
+  </head>
+  <body>
+    <monite-app
+      disabled
+      entity-id="defer"
+      api-url="defer"
+      basename="/"
+      component="defer"
+    >
+      <script slot="fetch-token">
+        async function fetchDropInToken() {
+          return await window.fetchToken();
+        }
+      </script>
+
+      <script slot="theme" type="application/json">
+        {
+          "typography": {
+            "fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"
+          }
+        }
+      </script>
+
+      <script slot="locale" type="application/json">
+        {
+          "code": "de-DE",
+          "messages": {
+            "Name, country, city": "City Test",
+            "Payables": "My Payables"
+          }
+        }
+      </script>
+    </monite-app>
+
+    <script type="module">
+      import { createAPIClient } from '@monite/sdk-react';
+
+      import { getConfig } from './src/lib/ConfigLoader.tsx';
+      import { createEntityUsersMyEntityRequestFn } from './src/lib/EntityIdLoader.tsx';
+      import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
+
+      window.fetchToken = fetchTokenDev;
+
+      getConfig()
+        .then(({ api_url }) => {
+          const apiUrl = `${api_url}/v1`;
+          const { api } = createAPIClient();
+
+          return api.entityUsers
+            .getEntityUsersMyEntity(
+              {
+                parameters: {},
+                baseUrl: apiUrl,
+              },
+              createEntityUsersMyEntityRequestFn(fetchTokenDev)
+            )
+            .then(({ id }) => {
+              const moniteAppNode = document.querySelector('monite-app');
+              moniteAppNode.setAttribute(
+                'component',
+                location.pathname.split('/')[2] ?? 'payables'
+              );
+              moniteAppNode.setAttribute('api-url', apiUrl);
+              moniteAppNode.setAttribute('entity-id', id);
+              moniteAppNode.removeAttribute('disabled');
+            });
+        })
+        .catch((error) => {
+          console.error(error);
+          throw new Error('Error while fetching credentials');
+        });
+    </script>
+
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>

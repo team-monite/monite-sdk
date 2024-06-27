@@ -3,9 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
-import { useConfig } from '@/context/ConfigContext';
+import { useSDKDemoAPI } from '@/context/SDKDemoAPIProvider.tsx';
 import { ThemeConfig } from '@/types';
-import { useEntityUserByAuthToken } from '@monite/sdk-react';
 import {
   Avatar,
   Box,
@@ -29,19 +28,13 @@ export const DefaultLayout = ({
   setThemeConfig,
 }: DefaultLayoutProps) => {
   const location = useLocation();
-  const { data: user } = useEntityUserByAuthToken();
-  const [pagePadding, setPagePadding] = useState(4);
-  const config = useConfig();
+  const { api } = useSDKDemoAPI();
+  const { data: user, isLoading: isUserLoading } =
+    api.entityUsers.getEntityUsersMe.useQuery({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    if (location.pathname.indexOf('onboarding') > 0) setPagePadding(0);
-    else setPagePadding(4);
   }, [location]);
-
-  const isDev =
-    process.env.NODE_ENV === 'development' || config?.stand === 'dev';
 
   return (
     <>
@@ -61,36 +54,31 @@ export const DefaultLayout = ({
           anchor="left"
         >
           <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-            {user ? (
+            {!isUserLoading && user && (
               <>
                 <Avatar
                   sx={{ width: 44, height: 44 }}
                   alt={user.first_name}
-                  // HACK: src as `undefined` doesn't trigger the fallback to alt text. It requires a string with broken url.
-                  src={user.userpic_file_id ?? '/'}
+                  src={user.userpic_file_id || undefined}
                 />
-                <Box ml={1}>
-                  <Typography variant="button">
-                    {user.first_name} {user.last_name}
-                  </Typography>
-                </Box>
+                <Typography
+                  ml={1}
+                  variant="button"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                >
+                  {user.first_name} {user.last_name}
+                </Typography>
               </>
-            ) : (
-              <Box sx={{ display: 'flex' }}>
-                <CircularProgress />
-              </Box>
             )}
+            {isUserLoading && <CircularProgress size={44} />}
           </Box>
           <Box display="flex" sx={{ flex: 1 }}>
             <Menu />
           </Box>
           <Box>
             <Stack direction="column" spacing={2} mx={2} mb={2}>
-              {/*Themes are unfinished.*/}
-              {/*We want to show the theme switcher only in development mode and on the dev deployment only.*/}
-              {isDev && (
-                <ThemeSelect value={themeConfig} onChange={setThemeConfig} />
-              )}
+              <ThemeSelect value={themeConfig} onChange={setThemeConfig} />
               {siderProps?.footer}
             </Stack>
           </Box>
@@ -110,7 +98,6 @@ export const DefaultLayout = ({
               flexDirection: 'column',
               minWidth: 0,
               minHeight: '100vh',
-              p: pagePadding,
             }}
           >
             {children}

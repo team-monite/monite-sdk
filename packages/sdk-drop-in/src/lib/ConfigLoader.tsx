@@ -5,7 +5,11 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 export const ConfigLoader = ({
   children,
 }: {
-  children: (config: { apiUrl: string; appBasename: string }) => ReactNode;
+  children: (config: {
+    apiUrl: string;
+    appBasename: string;
+    appHostname: string;
+  }) => ReactNode;
 }) => {
   const configQuery = useSuspenseQuery({
     queryKey: ['application-config'],
@@ -24,6 +28,7 @@ export const ConfigLoader = ({
       {children({
         apiUrl: `${configQuery.data.api_url}/v1`,
         appBasename: configQuery.data.app_basename,
+        appHostname: configQuery.data.app_hostname,
       })}
     </>
   );
@@ -33,6 +38,8 @@ export async function getConfig(): Promise<{
   stand: string;
   api_url: string;
   app_basename: string;
+  /** @deprecated Dev usage only */
+  app_hostname: string;
   /** @deprecated Temporary field */
   client_id: string;
   /** @deprecated Temporary field */
