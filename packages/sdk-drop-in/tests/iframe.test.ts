@@ -13,10 +13,14 @@ interface Config {
 }
 
 const getFileConfig = (): Config => {
-  const config: Config = JSON.parse(
-    fs.readFileSync('./public/config.json', 'utf8')
-  );
-  return { ...config };
+  try {
+    const config: Config = JSON.parse(
+      fs.readFileSync('./public/config.json', 'utf8')
+    );
+    return { ...config };
+  } catch (error) {
+    console.error('Error reading config.json file', error);
+  }
 };
 
 const geEnvConfig = (): Config => {
