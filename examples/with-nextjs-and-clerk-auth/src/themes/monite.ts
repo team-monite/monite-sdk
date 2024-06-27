@@ -274,6 +274,24 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiPopover: {
+    styleOverrides: {
+      paper: {
+        border: 'none',
+        borderRadius: 16,
+        width: 240,
+      },
+    },
+  },
+  MuiMenuItem: {
+    styleOverrides: {
+      root: {
+        '.theme-selection-menu-item__check': {
+          color: primary['50'],
+        },
+      },
+    },
+  },
 };
 
 export const moniteLight: ThemeOptions = {
