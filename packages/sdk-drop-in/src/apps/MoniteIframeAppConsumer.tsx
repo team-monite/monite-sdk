@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
+import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
@@ -21,7 +22,7 @@ export const MoniteIframeAppConsumer = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<AppCircularProgress color="primary" />}>
         <ConfigLoader>
           {({ apiUrl, appBasename, appHostname }) => (
             <EntityIdLoader apiUrl={apiUrl} fetchToken={fetchTokenDev}>

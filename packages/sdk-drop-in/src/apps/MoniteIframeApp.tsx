@@ -1,6 +1,7 @@
 import React, { ComponentProps, Suspense, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { moniteIframeAppComponents } from '@/lib/moniteIframeAppComponents';
@@ -13,7 +14,7 @@ import { SDKDemoAPIProvider } from '@team-monite/sdk-demo';
 import { DropInMoniteProvider } from '../lib/DropInMoniteProvider';
 
 // todo::implement google fonts support
-// // import { getFontFaceStyles } from './fontStyles.ts';
+// import { getFontFaceStyles } from './fontStyles.ts';
 
 export const MoniteIframeApp = () => {
   const queryClient = useMemo(() => new QueryClient(), []);
@@ -22,8 +23,7 @@ export const MoniteIframeApp = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* ToDo: add a spinner or loader fallback */}
-      <Suspense fallback={null}>
+      <Suspense fallback={<AppCircularProgress />}>
         <ConfigLoader>
           {({ apiUrl, appBasename }) => (
             <EntityIdLoader fetchToken={fetchToken} apiUrl={apiUrl}>
@@ -101,13 +101,21 @@ const MoniteIframeAppComponent = ({
         />
         <BrowserRouter basename={basename || undefined}>
           <Routes>
+            <Route
+              path={'/'}
+              element={
+                <Suspense fallback={null /** add a fallback **/}>
+                  <moniteIframeAppComponents.payables />
+                </Suspense>
+              }
+            />
             {Object.entries(moniteIframeAppComponents).map(
               ([path, Component]) => (
                 <Route
                   key={path}
                   path={`/${path}`}
                   element={
-                    <Suspense fallback={null /** add a fallback **/}>
+                    <Suspense fallback={<AppCircularProgress />}>
                       <Component />
                     </Suspense>
                   }
