@@ -35,23 +35,10 @@ const EntityIdLoaderProvider = ({
   apiUrl,
   fetchToken,
 }: EntityIdLoaderBaseProps & { children: ReactNode }) => {
-  const requestFn = useMemo(() => {
-    const { requestFn: moniteRequestFn } = createAPIClient();
-
-    return createSecureRequestFn(
-      {
-        async HTTPBearer() {
-          const { access_token } = await fetchToken();
-          return {
-            token: access_token,
-            refreshInterval: Infinity,
-          };
-        },
-      },
-      moniteRequestFn,
-      new QueryClient()
-    );
-  }, [fetchToken]);
+  const requestFn = useMemo(
+    () => createEntityUsersMyEntityRequestFn(fetchToken),
+    [fetchToken]
+  );
 
   return (
     <EntityIdContext.Provider
@@ -83,6 +70,26 @@ const EntityIdLoaderRenderCallback = ({
     );
 
   return <>{children(getEntityUsersMeQuery.data.id)}</>;
+};
+
+export const createEntityUsersMyEntityRequestFn = (
+  fetchToken: EntityIdLoaderBaseProps['fetchToken']
+) => {
+  const { requestFn: moniteRequestFn } = createAPIClient();
+
+  return createSecureRequestFn(
+    {
+      async HTTPBearer() {
+        const { access_token } = await fetchToken();
+        return {
+          token: access_token,
+          refreshInterval: Infinity,
+        };
+      },
+    },
+    moniteRequestFn,
+    new QueryClient()
+  );
 };
 
 const EntityIdContext = createContext<QraftContextValue>(undefined);
