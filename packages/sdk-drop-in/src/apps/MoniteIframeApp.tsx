@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
-import { moniteSuperComponents } from '@/lib/moniteSuperComponents';
+import { moniteIframeAppComponents } from '@/lib/moniteIframeAppComponents';
 import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots';
 import { css, Global } from '@emotion/react';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
@@ -101,17 +101,19 @@ const MoniteIframeAppComponent = ({
         />
         <BrowserRouter basename={basename || undefined}>
           <Routes>
-            {Object.entries(moniteSuperComponents).map(([path, Component]) => (
-              <Route
-                key={path}
-                path={`/${path}`}
-                element={
-                  <Suspense fallback={null /** add a fallback **/}>
-                    <Component />
-                  </Suspense>
-                }
-              />
-            ))}
+            {Object.entries(moniteIframeAppComponents).map(
+              ([path, Component]) => (
+                <Route
+                  key={path}
+                  path={`/${path}`}
+                  element={
+                    <Suspense fallback={null /** add a fallback **/}>
+                      <Component />
+                    </Suspense>
+                  }
+                />
+              )
+            )}
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
