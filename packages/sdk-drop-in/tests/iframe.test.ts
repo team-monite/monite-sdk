@@ -40,8 +40,13 @@ const geEnvConfig = (): Config => {
   };
 };
 
-console.log('ToDo: check where we store the token', getFileConfig());
-console.log('ToDo: check where we store the token', geEnvConfig());
+// console.log('ToDo: check where we store the token', getFileConfig());
+// console.log('ToDo: check where we store the token', geEnvConfig());
+
+console.log(process.env);
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+console.log(import.meta.env || "can't find env");
 
 const consumerPage = '/monite-iframe-app-consumer';
 
