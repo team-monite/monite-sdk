@@ -1,19 +1,20 @@
 export class MoniteIframeAppCommunicator {
   private readonly targetWindow?: Window;
   private readonly isHost: boolean;
-  private readonly listeners: {
-    [event_name: string]: (payload: PayloadSlot) => void;
-  } = {};
-  private readonly slots: {
-    [slotName: string]: {
-      payload: PayloadSlot;
-      abortController: AbortController | null;
-    };
-  } = {};
+  private readonly listeners = new Map<
+    string,
+    (payload: ListenerPayload) => void
+  >();
+  private readonly slots = new Map<
+    string,
+    { payload: PayloadSlot; abortController?: AbortController }
+  >();
 
   private connectionToHostRetryInterval?: number;
   private slotQueue = new Set<string>();
   private connected = false;
+
+  static allowedSlots = ['locale', 'theme', 'fetch-token'];
 
   constructor(iframeElement: HTMLIFrameElement | Window) {
     if (iframeElement instanceof HTMLIFrameElement) {
@@ -48,6 +49,8 @@ export class MoniteIframeAppCommunicator {
 
     const data = event.data;
 
+    assertData(data);
+
     if (data.type === 'monite:init_host') {
       this.targetWindow?.postMessage({ type: 'monite:init_iframe' }, '*');
       this.connected = true;
@@ -57,20 +60,29 @@ export class MoniteIframeAppCommunicator {
       this.runSlotQueue();
     }
 
-    // todo::add assert for data
-    if (data.type in this.slots) {
+    if (this.slots.has(data.type)) {
       this.queueSlot(data.type);
     }
 
-    if (this.listeners[data.type]) {
-      this.listeners[data.type](data.payload);
+    if (MoniteIframeAppCommunicator.allowedSlots.includes(data.type))
+      this.listeners.get(data.type)?.(data.payload);
+
+    function assertData(
+      data: unknown
+    ): asserts data is { type: string; payload?: ListenerPayload } {
+      if (typeof data !== 'object' || data === null) {
+        throw new Error(`Invalid message data: ${data}`);
+      }
+      if (typeof (data as { type: unknown }).type !== 'string') {
+        throw new Error(`Invalid message data type: ${data}`);
+      }
     }
   };
 
   public disconnect() {
     window.removeEventListener('message', this.onWindowMessage);
     clearInterval(this.connectionToHostRetryInterval);
-    Object.values(this.slots).forEach(
+    Array.from(this.slots.values()).forEach(
       ({ abortController }) => void abortController?.abort()
     );
     this.connected = false;
@@ -79,10 +91,10 @@ export class MoniteIframeAppCommunicator {
   public mountSlot(slotName: string, data: PayloadSlot) {
     this.unmountSlot(slotName);
 
-    this.slots[slotName] = {
-      ...this.slots[slotName],
+    this.slots.set(slotName, {
+      ...this.slots.get(slotName),
       payload: data,
-    };
+    });
 
     this.queueSlot(slotName);
   }
@@ -92,16 +104,16 @@ export class MoniteIframeAppCommunicator {
   }
 
   public unmountSlot(slotName: string) {
-    this.slots[slotName]?.abortController?.abort();
-    delete this.slots[slotName];
+    this.slots.get(slotName)?.abortController?.abort();
+    this.slots.delete(slotName);
   }
 
-  public on(event: string, listener: (payload: unknown) => void) {
-    this.listeners[event] = listener;
+  public on(eventName: string, listener: (payload: unknown) => void) {
+    this.listeners.set(eventName, listener);
   }
 
-  public off(event: string) {
-    delete this.listeners[event];
+  public off(eventName: string) {
+    this.listeners.delete(eventName);
   }
 
   private queueSlot(slotName: string) {
@@ -116,6 +128,7 @@ export class MoniteIframeAppCommunicator {
           window.parent === window ? '"iframe"' : '"host"'
         } [Monite Iframe App]`
       );
+
     this.slotQueue.forEach((slotName) => void this.emitSlot(slotName));
     this.slotQueue.clear();
   }
@@ -123,9 +136,14 @@ export class MoniteIframeAppCommunicator {
   private emitSlot(slotName: string) {
     if (!this.connected) throw new Error('Send port is not set');
 
-    this.slots[slotName]?.abortController?.abort();
+    const slot = this.slots.get(slotName);
 
-    if (!this.slots[slotName]) {
+    if (slot) {
+      slot.abortController?.abort();
+    } else {
+      // send request for slot payload
+      // if slot is not mounted (pingSlot)
+      // todo:: refactor to specific message type
       return void this.targetWindow?.postMessage(
         {
           type: slotName,
@@ -135,11 +153,14 @@ export class MoniteIframeAppCommunicator {
       );
     }
 
-    const payloadSlot = this.slots[slotName].payload;
+    const payloadSlot = slot.payload;
 
     if (typeof payloadSlot === 'function') {
       const abortController = new AbortController();
-      this.slots[slotName].abortController = abortController;
+      this.slots.set(slotName, {
+        payload: payloadSlot,
+        abortController,
+      });
       payloadSlot({ signal: abortController.signal }).then(
         (resultPayload: unknown) => {
           assertSlotPayload(resultPayload);
@@ -174,7 +195,7 @@ export class MoniteIframeAppCommunicator {
   }
 }
 
-export type PayloadSlot =
+type ListenerPayload =
   | string
   | number
   | boolean
@@ -183,7 +204,10 @@ export type PayloadSlot =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   | Record<string, any>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | Array<any>
+  | Array<any>;
+
+type PayloadSlot =
+  | ListenerPayload
   | {
       (props: { signal: AbortSignal }): Promise<unknown>;
     };
