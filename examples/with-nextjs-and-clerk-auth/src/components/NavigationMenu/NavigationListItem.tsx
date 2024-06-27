@@ -33,14 +33,11 @@ export const NavigationListItem = ({
   const pathname = usePathname();
   const selected = pathname === href;
 
-  const buttonProps =
-    href === undefined
-      ? { component: 'span', onClick }
-      : { component: Link, href };
+  const buttonProps = href !== undefined ? { component: Link, href } : {};
 
   return (
     <ListItem sx={{ padding: 0 }}>
-      <ListItemButton selected={selected} {...buttonProps}>
+      <ListItemButton {...buttonProps} onClick={onClick} selected={selected}>
         <ListItemIcon sx={{ color: 'primary.main' }}>{icon}</ListItemIcon>
         <ListItemText>
           <Typography
