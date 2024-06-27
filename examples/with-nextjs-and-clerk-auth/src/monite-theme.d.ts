@@ -20,7 +20,7 @@ declare module '@mui/material/styles' {
   }
 
   interface PaletteOptions {
-    neutral: {
+    neutral?: {
       '10': string;
       '50': string;
       '80': string;

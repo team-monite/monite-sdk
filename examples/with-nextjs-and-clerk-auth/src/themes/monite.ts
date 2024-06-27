@@ -74,19 +74,19 @@ const typography:
 
 const typographyLight = deepmerge(typography, {
   body2: {
-    color: paletteLight.neutral['10'],
+    color: paletteLight.neutral && paletteLight.neutral['10'],
   },
   label3: {
-    color: paletteLight.neutral['50'],
+    color: paletteLight.neutral && paletteLight.neutral['50'],
   },
 });
 
 const typographyDark = deepmerge(typography, {
   body2: {
-    color: paletteDark.neutral['10'],
+    color: paletteDark.neutral && paletteDark.neutral['10'],
   },
   label3: {
-    color: paletteDark.neutral['80'],
+    color: paletteDark.neutral && paletteDark.neutral['80'],
   },
 });
 
