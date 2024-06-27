@@ -1,10 +1,10 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
-import { ConfigLoader, getConfig } from '@/lib/ConfigLoader';
+import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
-import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator.ts';
-import { createAPIClient } from '@monite/sdk-react';
+import { fetchTokenDev } from '@/lib/fetchTokenDev';
+import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -24,20 +24,17 @@ export const MoniteIframeAppConsumer = () => {
       <Suspense fallback={null}>
         <ConfigLoader>
           {({ apiUrl, appBasename, appHostname }) => (
-            <EntityIdLoader
-              apiUrl={apiUrl}
-              fetchToken={() => fetchIframeConsumerToken({ apiUrl })}
-            >
+            <EntityIdLoader apiUrl={apiUrl} fetchToken={fetchTokenDev}>
               {(entityId) => (
                 <SDKDemoAPIProvider
                   apiUrl={apiUrl}
                   entityId={entityId}
-                  fetchToken={() => fetchIframeConsumerToken({ apiUrl })}
+                  fetchToken={fetchTokenDev}
                 >
                   <MoniteIframeAppConsumerComponent
                     appBasename={appBasename}
                     appHostname={appHostname}
-                    fetchToken={() => fetchIframeConsumerToken({ apiUrl })}
+                    fetchToken={fetchTokenDev}
                   />
                 </SDKDemoAPIProvider>
               )}
@@ -144,24 +141,6 @@ const MoniteIframe = ({
     ></iframe>
   );
 };
-
-async function fetchIframeConsumerToken({ apiUrl }: { apiUrl: string }) {
-  const { entity_user_id, client_id, client_secret } = await getConfig();
-  const { api, requestFn } = createAPIClient();
-  return await api.auth.postAuthToken(
-    {
-      baseUrl: apiUrl,
-      parameters: {},
-      body: {
-        grant_type: 'entity_user',
-        entity_user_id,
-        client_id,
-        client_secret,
-      },
-    },
-    requestFn
-  );
-}
 
 type FetchTokenHandler = () => Promise<{
   access_token: string;
