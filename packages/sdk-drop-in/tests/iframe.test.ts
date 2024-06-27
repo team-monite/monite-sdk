@@ -12,12 +12,32 @@ interface Config {
   grant_type: string;
 }
 
-const getMockConfig = (): Config => {
+const getFileConfig = (): Config => {
   const config: Config = JSON.parse(
     fs.readFileSync('./public/config.json', 'utf8')
   );
   return { ...config };
 };
+
+const geEnvConfig = (): Config => {
+  const entityUserId = process.env.MONITE_E2E_APP_CONFIG_ENTITY_USER_ID;
+  const clientId = process.env.MONITE_E2E_APP_CONFIG_CLIENT_ID;
+  const clientSecret = process.env.MONITE_E2E_APP_CONFIG_CLIENT_SECRET;
+
+  if (!entityUserId || !clientId || !clientSecret) {
+    throw new Error('Missing required environment variables');
+  }
+
+  return {
+    entity_user_id: entityUserId,
+    client_id: clientId,
+    client_secret: clientSecret,
+    grant_type: 'entity_user',
+  };
+};
+
+console.log('ToDo: check where we store the token', getFileConfig());
+console.log('ToDo: check where we store the token', geEnvConfig());
 
 const consumerPage = '/monite-iframe-app-consumer';
 
@@ -30,13 +50,6 @@ const routingPaths: Record<WidgetType, string> = {
   'approval-policies': '/approval-policies',
   onboarding: '/onboarding',
 };
-
-const getAuthTokenConfig = (): Config =>
-  process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON
-    ? JSON.parse(process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON)
-    : getMockConfig();
-
-console.log('ToDo: check where we store the token', getAuthTokenConfig());
 
 test.describe('Monite Iframe Integration', () => {
   test.beforeEach(async ({ page }) => {
@@ -73,7 +86,12 @@ test.describe('Monite Iframe Integration', () => {
     await iframe.getByRole('button', { name: 'Cancel' }).click();
   });
 
-  const widgetTests = [
+  type WidgetTest = {
+    path: string;
+    name: string;
+  };
+
+  const widgetTests: WidgetTest[] = [
     { path: routingPaths.payables, name: 'Payables' },
     { path: routingPaths.counterparts, name: 'Counterparts' },
     { path: routingPaths.products, name: 'Products' },
