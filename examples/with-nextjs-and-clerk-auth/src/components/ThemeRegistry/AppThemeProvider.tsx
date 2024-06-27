@@ -11,7 +11,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
-import * as themes from '@team-monite/sdk-themes';
+
+import * as themes from '@/themes';
 
 type AppThemeProviderContextValue = {
   onThemeChange: (themeConfig: ThemeConfig) => void;

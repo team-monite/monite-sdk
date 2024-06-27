@@ -25,6 +25,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "react-unicons.d.ts",
     "emotion.d.ts",
     "**/*.ts",
     "**/*.tsx",
