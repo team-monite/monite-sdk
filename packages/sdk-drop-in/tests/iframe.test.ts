@@ -14,7 +14,10 @@ const getMockConfig = () => {
   };
 };
 
-const consumerPage = '/monite-iframe-app-consumer/receivables';
+const consumerPage = '/monite-iframe-app-consumer';
+
+const payablesPath = '/payables';
+const receivablesPath = '/receivables';
 const authTokenPath = '/v1/auth/token';
 
 const mockRouteHandler = (route: Route, response: object) => {
@@ -32,7 +35,7 @@ const getAuthTokenConfig = () => {
 
 test.describe('Monite Iframe Integration', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(consumerPage);
+    await page.goto(consumerPage + receivablesPath);
   });
 
   test('should fetch token and render iframe', async ({ page }) => {
@@ -58,5 +61,11 @@ test.describe('Monite Iframe Integration', () => {
     await iframe.getByRole('tab', { name: 'Quotes' }).click();
     await iframe.getByRole('tab', { name: 'Credit notes' }).click();
     await iframe.getByRole('button', { name: 'Create Invoice' }).click();
+  });
+
+  test('should see the payables tab', async ({ page }) => {
+    await page.goto(consumerPage + payablesPath);
+    const iframe = page.frameLocator('#monite-iframe');
+    await iframe.getByRole('heading', { name: 'Payables' }).click();
   });
 });
