@@ -1,6 +1,8 @@
 import { test } from '@playwright/test';
 
 import * as fs from 'node:fs';
+import * as process from 'node:process';
+import { Route } from 'playwright';
 
 const getMockConfig = () => {
   const config = JSON.parse(fs.readFileSync('./public/config.json', 'utf8'));
@@ -15,24 +17,34 @@ const getMockConfig = () => {
 const consumerPage = '/monite-iframe-app-consumer/receivables';
 const authTokenPath = '/v1/auth/token';
 
+const mockRouteHandler = (route: Route, response: object) => {
+  route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify(response),
+  });
+};
+
+const getAuthTokenConfig = () => {
+  return process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON
+    ? JSON.parse(process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON)
+    : getMockConfig();
+};
+
 test.describe('Monite Iframe Integration', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(consumerPage);
   });
 
   test('should fetch token and render iframe', async ({ page }) => {
-    const [] = await Promise.all([
+    await Promise.all([
       page.waitForRequest((request) => request.url().includes(authTokenPath)),
       page.waitForSelector('iframe.monite-iframe-app'),
     ]);
 
-    const tokenResponse = getMockConfig();
+    const tokenResponse = getAuthTokenConfig();
 
     await page.route(`https://api.dev.monite.com/${authTokenPath}`, (route) => {
-      route.fulfill({
-        contentType: 'application/json',
-        body: JSON.stringify(tokenResponse),
-      });
+      mockRouteHandler(route, tokenResponse);
     });
   });
 
