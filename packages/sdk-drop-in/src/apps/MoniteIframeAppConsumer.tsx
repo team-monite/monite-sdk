@@ -103,7 +103,9 @@ const MoniteIframe = ({
 }) => {
   const portSegment = location.port ? `:${location.port}` : '';
   const { pathname } = useLocation();
-  const iframeUrl = `//${appHostname}${portSegment}/${appBasename}${pathname}`;
+  const iframeUrl = `//${
+    appHostname || location.hostname
+  }${portSegment}/${appBasename}${pathname}`;
 
   const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(
     null
