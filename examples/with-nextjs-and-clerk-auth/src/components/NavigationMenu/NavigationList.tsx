@@ -33,7 +33,7 @@ export const NavigationList = () => {
 
   return (
     <>
-      <List className="navigation-list">
+      <List className="navigation-list" disablePadding>
         <NavigationListItem href="/" icon={<IconApps />}>
           {t(i18n)`Dashboard`}
         </NavigationListItem>
@@ -85,7 +85,7 @@ export const NavigationList = () => {
         flexDirection="column"
         justifyContent="flex-end"
       >
-        <List className="navigation-list">
+        <List className="navigation-list" disablePadding>
           <NavigationListItem href="#" icon={<IconQuestionCircle />}>
             {t(i18n)`Get Help`}
           </NavigationListItem>

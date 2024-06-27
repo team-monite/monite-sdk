@@ -15,15 +15,21 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <Box bgcolor="background.default" display="flex">
-      <Drawer sx={{ width: 240 }} variant="permanent" anchor="left">
-        <Box display="flex" flexDirection="row" gap={2} mx={1.5} mt={3}>
+      <Drawer
+        anchor="left"
+        PaperProps={{ sx: { backgroundColor: 'background.menu' } }}
+        className="navigation-drawer"
+        sx={{ width: 240 }}
+        variant="permanent"
+      >
+        <Box display="flex" flexDirection="row" gap={2} m={2}>
           <UserButton />
           <OrganizationSwitcher />
         </Box>
-        <Box display="flex" flex="1" flexDirection="column" mx={1} my={3}>
+        <Box display="flex" flex="1" flexDirection="column" mt={1}>
           <NavigationList />
         </Box>
-        <Box display="flex" flexShrink="1" mx={1} mb={3}>
+        <Box display="flex" flexShrink="1" mx={1.5} mb={3} mt={2}>
           <ThemeSelect
             selectedTheme={selectedTheme}
             onThemeChange={onThemeChange}

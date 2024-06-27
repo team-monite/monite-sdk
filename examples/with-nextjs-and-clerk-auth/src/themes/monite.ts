@@ -1,51 +1,53 @@
-import { grey } from '@mui/material/colors';
+import { createTheme } from '@mui/material';
 import type { Components } from '@mui/material/styles/components';
 import type {
   Palette,
   PaletteOptions,
 } from '@mui/material/styles/createPalette';
-import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme';
+import type { Theme } from '@mui/material/styles/createTheme';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
-
-import { neutralsTransparent, primary } from './colors/monite';
+import { deepmerge } from '@mui/utils';
+import {
+  moniteLight as baseMoniteLight,
+  moniteDark as baseMoniteDark,
+} from '@team-monite/sdk-themes';
 
 const paletteLight: PaletteOptions = {
   primary: {
-    dark: primary['30'],
-    main: primary['50'],
-    light: primary['95'],
+    dark: '#1D59CC',
+    main: '#3737FF',
+    light: '#F4F8FF',
   },
-  secondary: {
-    main: '#707070',
+  background: {
+    menu: '#F1F2F5',
+    highlight: '#EBEBFF',
+  },
+  neutral: {
+    '10': '#111111',
+    '50': '#707070',
+    '80': '#DDDDDD',
   },
 };
 
 const paletteDark: PaletteOptions = {
   primary: {
-    main: '#f5d14d',
-    light: '#e1e1ef',
+    dark: '#1D59CC',
+    main: '#3737FF',
+    light: '#F4F8FF',
   },
-  secondary: {
-    main: '#707070',
+  background: {
+    menu: '#F1F2F505',
+  },
+  neutral: {
+    '80': '#B8B8B8',
+    '50': '#F3F3F3',
+    '10': '#FFFFFF',
   },
 };
 
-const defaultMoniteTypography:
+const typography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
-  fontFamily:
-    '"Faktum", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif',
-  fontSize: 16,
-  fontWeightMedium: 400,
-  fontWeightBold: 500,
-  h2: {
-    fontSize: '2rem',
-    fontWeight: 600,
-  },
-  h3: {
-    fontSize: '1.5rem',
-    fontWeight: 600,
-  },
   subtitle2: {
     fontSize: '1.125rem',
     fontWeight: 600,
@@ -55,147 +57,46 @@ const defaultMoniteTypography:
     fontWeight: 400,
   },
   body2: {
-    color: neutralsTransparent['10'],
     fontSize: '0.875rem',
     fontWeight: 500,
   },
-  button: {
-    textTransform: 'none',
-    fontWeight: 500,
-  },
-  label1: {},
   label2: {
-    color: neutralsTransparent['30'],
     fontSize: '0.875rem',
     fontStyle: 'normal',
     fontWeight: 500,
   },
   label3: {
-    color: neutralsTransparent['50'],
     fontSize: '0.75rem',
     fontStyle: 'normal',
     fontWeight: 600,
   },
-  caption: {
-    fontSize: '1rem',
-    fontWeight: 500,
-  },
-  overline: {
-    fontSize: '1.5rem',
-    lineHeight: 1,
-  },
 };
 
-const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
-  MuiTypography: {
-    styleOverrides: {
-      subtitle2: {
-        fontWeight: 500,
-      },
-    },
+const typographyLight = deepmerge(typography, {
+  body2: {
+    color: paletteLight.neutral['10'],
   },
-  MuiPaper: {
+  label3: {
+    color: paletteLight.neutral['50'],
+  },
+});
+
+const typographyDark = deepmerge(typography, {
+  body2: {
+    color: paletteDark.neutral['10'],
+  },
+  label3: {
+    color: paletteDark.neutral['80'],
+  },
+});
+
+const components: Components<Omit<Theme, 'components'>> = {
+  MuiDrawer: {
     styleOverrides: {
       root: {
-        backgroundImage: 'none',
-      },
-    },
-  },
-  MuiInputBase: {
-    styleOverrides: {
-      root: {
-        '& .MuiInputBase-inputAdornedStart': {
-          display: 'flex',
-          alignItems: 'center',
+        '&.navigation-drawer .MuiPaper-root': {
+          borderRight: 0,
         },
-      },
-    },
-  },
-  MuiDataGrid: {
-    styleOverrides: {
-      root: {
-        fontSize: '1rem',
-        '& .MuiDataGrid-footerContainer': {
-          justifyContent: 'center',
-        },
-        '& .MuiDataGrid-cell:focus': {
-          outline: 'none',
-        },
-        '& .MuiDataGrid-row:hover': {
-          cursor: 'pointer',
-        },
-      },
-      columnHeaderTitle: {
-        fontWeight: 500,
-        color: grey[500],
-      },
-    },
-    defaultProps: {
-      disableColumnMenu: true,
-      density: 'comfortable',
-    },
-  },
-  MuiOutlinedInput: {
-    styleOverrides: {
-      root: {
-        borderRadius: 10,
-      },
-    },
-  },
-  MuiFormHelperText: {
-    styleOverrides: {
-      root: {
-        fontSize: '0.75rem',
-      },
-    },
-  },
-  MuiButtonBase: {
-    defaultProps: {
-      disableRipple: true,
-    },
-  },
-  MuiCard: {
-    defaultProps: {
-      variant: 'outlined',
-    },
-  },
-  MuiTableHead: {
-    styleOverrides: {
-      root: {
-        '& .MuiTableCell-head': {
-          color: grey[500],
-          fontWeight: 500,
-        },
-      },
-    },
-  },
-  MuiTableRow: {
-    styleOverrides: {
-      root: {
-        '&:last-child .MuiTableCell-body': {
-          borderBottom: 'none',
-        },
-      },
-    },
-  },
-  MuiTableCell: {
-    styleOverrides: {
-      root: {
-        fontSize: '1rem',
-      },
-    },
-  },
-  MuiDialog: {
-    styleOverrides: {
-      root: {
-        backgroundImage: 'none',
-      },
-    },
-  },
-  MuiDialogActions: {
-    styleOverrides: {
-      root: {
-        padding: '1em 1.5em',
       },
     },
   },
@@ -203,54 +104,29 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         '&.navigation-list': {
-          width: '100%',
-          padding: 0,
-        },
+          margin: '0px 12px',
 
-        '>.MuiCollapse-root': {
-          paddingLeft: 28,
-        },
-      },
-    },
-  },
-  MuiListItem: {
-    styleOverrides: {
-      root: {
-        '&.navigation-list-item': {
-          marginBottom: '0.5rem',
-          padding: 0,
-
-          '&:last-child': {
-            marginBottom: '0',
+          '.MuiListItem-root': {
+            marginTop: 8,
           },
-        },
-      },
-    },
-  },
-  MuiListItemButton: {
-    styleOverrides: {
-      root: {
-        '&.navigation-list-item__button': {
-          borderRadius: 6,
-          padding: 8,
-        },
-        '&.Mui-selected': {
-          backgroundColor: primary['90'],
-        },
-        '&.Mui-selected .MuiTypography-root': {
-          color: primary['50'],
-        },
-      },
-    },
-  },
-  MuiListItemIcon: {
-    styleOverrides: {
-      root: {
-        '&.navigation-list-item__icon': {
-          color: primary['50'],
-          marginRight: '0.5rem',
-          minWidth: 'auto',
-          padding: 0,
+
+          '.MuiListItemButton-root': {
+            borderRadius: 6,
+            padding: '8px 12px',
+          },
+
+          '.MuiListItemIcon-root': {
+            minWidth: 35,
+          },
+
+          '.MuiCollapse-root': {
+            marginTop: -8,
+            marginLeft: 12,
+          },
+
+          '.Mui-selected': {
+            color: 'primary.main',
+          },
         },
       },
     },
@@ -258,19 +134,12 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiButton: {
     styleOverrides: {
       root: {
-        '&.theme-selector': {
-          borderColor: neutralsTransparent['80'],
-          borderRadius: 10,
-          display: 'flex',
-          flex: 1,
-          justifyContent: 'space-between',
+        '&.theme-select': {
+          borderRadius: 8,
         },
-      },
-      startIcon: {
-        color: neutralsTransparent['10'],
-      },
-      endIcon: {
-        color: neutralsTransparent['10'],
+        '&.theme-select .theme-select__mode': {
+          display: 'flex',
+        },
       },
     },
   },
@@ -283,31 +152,20 @@ const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiMenuItem: {
-    styleOverrides: {
-      root: {
-        '.theme-selection-menu-item__check': {
-          color: primary['50'],
-        },
-      },
-    },
-  },
 };
 
-export const moniteLight: ThemeOptions = {
-  palette: {
-    mode: 'light',
-    ...paletteLight,
-  },
-  typography: defaultMoniteTypography,
-  components: defaultMoniteComponents,
-};
+export const moniteLight = createTheme(
+  deepmerge(baseMoniteLight, {
+    palette: paletteLight,
+    typography: typographyLight,
+    components,
+  })
+);
 
-export const moniteDark: ThemeOptions = {
-  palette: {
-    mode: 'dark',
-    ...paletteDark,
-  },
-  typography: defaultMoniteTypography,
-  components: defaultMoniteComponents,
-};
+export const moniteDark = createTheme(
+  deepmerge(baseMoniteDark, {
+    palette: paletteDark,
+    typography: typographyDark,
+    components,
+  })
+);

@@ -8,7 +8,7 @@ import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
 import type {} from '@mui/x-data-grid/themeAugmentation';
 
-const paletteLight: PaletteOptions = {
+export const paletteLight: PaletteOptions = {
   primary: {
     main: '#246FFF',
     light: '#F4F4FE',
@@ -18,7 +18,7 @@ const paletteLight: PaletteOptions = {
   },
 };
 
-const paletteDark: PaletteOptions = {
+export const paletteDark: PaletteOptions = {
   primary: {
     main: '#f5d14d',
     light: '#e1e1ef',
@@ -28,7 +28,7 @@ const paletteDark: PaletteOptions = {
   },
 };
 
-const defaultMoniteTypography:
+export const defaultMoniteTypography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
   fontFamily:
@@ -70,7 +70,7 @@ const defaultMoniteTypography:
   },
 };
 
-const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
+export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiTypography: {
     styleOverrides: {
       subtitle2: {

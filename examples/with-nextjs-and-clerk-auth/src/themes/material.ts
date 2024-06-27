@@ -1,5 +1,27 @@
-import type { ThemeOptions } from '@mui/material/styles';
+import { createTheme } from '@mui/material';
+import type { Components } from '@mui/material/styles/components';
+import type { Theme } from '@mui/material/styles/createTheme';
 
-export const materialLight: ThemeOptions = { palette: { mode: 'light' } };
+const components: Components<Omit<Theme, 'components'>> = {
+  MuiList: {
+    styleOverrides: {
+      root: {
+        '&.navigation-list': {
+          '.MuiCollapse-root .MuiListItemButton-root': {
+            paddingLeft: 28,
+          },
+        },
+      },
+    },
+  },
+};
 
-export const materialDark: ThemeOptions = { palette: { mode: 'dark' } };
+export const materialLight = createTheme({
+  components,
+  palette: { mode: 'light' },
+});
+
+export const materialDark = createTheme({
+  components,
+  palette: { mode: 'dark' },
+});

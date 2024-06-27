@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
+  Box,
   ListItem,
   ListItemButton,
   ListItemButtonProps,
@@ -34,21 +35,19 @@ export const NavigationListItem = ({
 
   const buttonProps =
     href === undefined
-      ? { component: 'button', onClick }
+      ? { component: 'span', onClick }
       : { component: Link, href };
 
   return (
-    <ListItem className="navigation-list-item">
-      <ListItemButton
-        className="navigation-list-item__button"
-        selected={selected}
-        {...buttonProps}
-      >
-        <ListItemIcon className="navigation-list-item__icon">
-          {icon}
-        </ListItemIcon>
-        <ListItemText className="navigation-list-item__text">
-          <Typography component="span" variant="label2">
+    <ListItem sx={{ padding: 0 }}>
+      <ListItemButton selected={selected} {...buttonProps}>
+        <ListItemIcon sx={{ color: 'primary.main' }}>{icon}</ListItemIcon>
+        <ListItemText>
+          <Typography
+            component="span"
+            variant="label2"
+            color={selected ? 'primary.main' : undefined}
+          >
             {children}
           </Typography>
         </ListItemText>

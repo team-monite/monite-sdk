@@ -12,8 +12,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:87
-msgid "{variantName}"
-msgstr "{variantName}"
+#~ msgid "{variantName}"
+#~ msgstr "{variantName}"
 
 #: src/components/NavigationMenu/NavigationList.tsx:63
 msgid "Company"
@@ -23,7 +23,7 @@ msgstr "Company"
 msgid "Counterparts"
 msgstr "Counterparts"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:108
+#: src/components/ThemeSelect/ThemeSelect.tsx:134
 #: src/components/ThemeSelect/useThemeSelect.ts:33
 msgid "Dark Mode"
 msgstr "Dark Mode"
@@ -36,7 +36,7 @@ msgstr "Dashboard"
 msgid "Email Templates"
 msgstr "Email Templates"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:95
+#: src/components/ThemeSelect/ThemeSelect.tsx:121
 msgid "English"
 msgstr "English"
 
@@ -52,7 +52,7 @@ msgstr "Integrations"
 msgid "Invoice Design"
 msgstr "Invoice Design"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:92
+#: src/components/ThemeSelect/ThemeSelect.tsx:118
 msgid "Language"
 msgstr "Language"
 
@@ -65,6 +65,7 @@ msgstr "Light Mode"
 #~ msgid "material"
 #~ msgstr "Material UI"
 
+#: src/components/ThemeSelect/ThemeSelect.tsx:43
 #: src/components/ThemeSelect/useThemeSelect.ts:22
 msgid "Material UI"
 msgstr "Material UI"
@@ -78,6 +79,7 @@ msgstr "Message Templates"
 #~ msgid "monite"
 #~ msgstr "Monite"
 
+#: src/components/ThemeSelect/ThemeSelect.tsx:44
 #: src/components/ThemeSelect/useThemeSelect.ts:19
 msgid "Monite"
 msgstr "Monite"
@@ -110,7 +112,7 @@ msgstr "Sales"
 msgid "Team"
 msgstr "Team"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:76
+#: src/components/ThemeSelect/ThemeSelect.tsx:99
 msgid "Theme"
 msgstr "Theme"
 

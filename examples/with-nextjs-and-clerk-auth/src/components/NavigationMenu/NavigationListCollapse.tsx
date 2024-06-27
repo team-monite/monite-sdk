@@ -30,8 +30,8 @@ export const NavigationListCollapse = ({
       >
         {label}
       </NavigationListItem>
-      <Collapse in={collapsed}>
-        <List className="navigation-list">{children}</List>
+      <Collapse in={collapsed} timeout="auto" unmountOnExit>
+        <List>{children}</List>
       </Collapse>
     </>
   );

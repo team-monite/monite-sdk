@@ -42,27 +42,52 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
     onThemeChange(selectedTheme);
   };
 
+  const variants: Record<ThemeConfig['variant'], string> = {
+    material: t(i18n)`Material UI`,
+    monite: t(i18n)`Monite`,
+  };
+
   return (
     <>
       <Button
-        className="theme-selector"
         component="button"
-        startIcon={mode === 'dark' ? <IconMoon /> : <IconSun />}
-        endIcon={open ? <IconAngleUp /> : <IconAngleDown />}
+        className="theme-select"
         ref={menuButton}
         variant="outlined"
         onClick={(event) => {
           event.preventDefault();
           setOpen(!open);
         }}
+        sx={{ width: '100%', borderColor: 'neutral.80' }}
       >
-        <Box component="span" display="flex" flexDirection="column" flex="1">
-          <Typography variant="body2" component="span" textAlign="left">
-            {themeName}
-          </Typography>
-          <Typography variant="label3" component="span" textAlign="left">
-            {modeName}
-          </Typography>
+        <Box
+          component="span"
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          flex="1"
+          gap={1.5}
+        >
+          <Box component="span" display="flex" color="neutral.10">
+            {mode === 'dark' ? <IconMoon /> : <IconSun />}
+          </Box>
+          <Box component="span" display="flex" flexDirection="column" flex="1">
+            <Typography variant="body2" component="span" textAlign="left">
+              {themeName}
+            </Typography>
+            <Typography
+              className="theme-select__mode"
+              hidden
+              variant="label3"
+              component="span"
+              textAlign="left"
+            >
+              {modeName}
+            </Typography>
+          </Box>
+          <Box component="span" display="flex" color="neutral.10">
+            {open ? <IconAngleUp /> : <IconAngleDown />}
+          </Box>
         </Box>
       </Button>
       <Menu
@@ -76,16 +101,19 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
           <ListSubheader>
             <Typography variant="label2">{t(i18n)`Theme`}</Typography>
           </ListSubheader>
-          {variants.map((variantName) => (
+          {Object.entries(variants).map(([variantName, label]) => (
             <ThemeSelectMenuItem
               key={variantName}
               checked={variant === variantName}
               onClick={(event) => {
                 event.preventDefault();
-                handleVariantChange({ variant: variantName, mode });
+                handleVariantChange({
+                  variant: variantName as ThemeConfig['variant'],
+                  mode,
+                });
               }}
             >
-              <Typography variant="body1">{t(i18n)`${variantName}`}</Typography>
+              <Typography variant="body1">{label}</Typography>
             </ThemeSelectMenuItem>
           ))}
           <Divider />
