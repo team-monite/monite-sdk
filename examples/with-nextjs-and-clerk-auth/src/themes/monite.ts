@@ -103,7 +103,7 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiList: {
     styleOverrides: {
       root: {
-        '&.navigation-list': {
+        '&.NavigationList': {
           margin: '0px 12px',
 
           '.MuiListItem-root': {
@@ -134,10 +134,10 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiButton: {
     styleOverrides: {
       root: {
-        '&.theme-select': {
+        '&.ThemeSelect': {
           borderRadius: 8,
         },
-        '&.theme-select .theme-select__mode': {
+        '&.ThemeSelect .ThemeSelect-modeLabel': {
           display: 'flex',
         },
       },

@@ -6,7 +6,7 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiList: {
     styleOverrides: {
       root: {
-        '&.navigation-list': {
+        '&.NavigationList': {
           '.MuiCollapse-root .MuiListItemButton-root': {
             paddingLeft: 28,
           },

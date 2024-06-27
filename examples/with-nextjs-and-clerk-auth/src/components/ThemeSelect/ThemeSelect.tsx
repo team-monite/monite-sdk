@@ -51,7 +51,7 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
     <>
       <Button
         component="button"
-        className="theme-select"
+        className="ThemeSelect"
         ref={menuButton}
         variant="outlined"
         onClick={(event) => {
@@ -76,7 +76,7 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
               {themeName}
             </Typography>
             <Typography
-              className="theme-select__mode"
+              className="ThemeSelect-modeLabel"
               hidden
               variant="label3"
               component="span"
