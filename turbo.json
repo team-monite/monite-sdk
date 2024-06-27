@@ -106,11 +106,7 @@
     },
     "codegen": {
       "cache": true,
-      "outputs": [
-        "src/api/**/*.ts",
-        "!src/api/client.ts",
-        "!src/api/client.test.ts"
-      ],
+      "outputs": ["src/api/**/*.ts", "!src/api/client.ts", "!src/api/client.test.ts"],
       "inputs": ["src/api/schema.json", "package.json", "yarn.lock"]
     }
   }

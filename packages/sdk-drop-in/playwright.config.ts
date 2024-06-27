@@ -15,7 +15,7 @@ const config = defineConfig({
     actionTimeout: 0,
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
-    headless: false,
+    headless: true,
   },
   webServer: {
     command: 'yarn dev',
