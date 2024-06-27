@@ -11,7 +11,7 @@ type ProviderProps = Pick<
   'locale' | 'theme'
 >;
 
-export const DropIn = ({
+export const MoniteApp = ({
   disabled,
   router,
   basename,

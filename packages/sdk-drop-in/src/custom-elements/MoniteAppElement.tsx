@@ -1,9 +1,9 @@
 import React, { ComponentProps } from 'react';
 import ReactDOM, { Root } from 'react-dom/client';
 
-import { DropIn } from '@/apps/DropIn.tsx';
+import { MoniteApp } from '@/apps/MoniteApp';
 
-export class DropInElement extends HTMLElement {
+export class MoniteAppElement extends HTMLElement {
   /**
    * A record defining the types and allowed attributes that can be set on the element.
    *
@@ -83,8 +83,8 @@ export class DropInElement extends HTMLElement {
 
   static get observedAttributes() {
     return Object.keys(
-      DropInElement.attributes
-    ) as (keyof (typeof DropInElement)['attributes'])[];
+      MoniteAppElement.attributes
+    ) as (keyof (typeof MoniteAppElement)['attributes'])[];
   }
 
   private root: ShadowRoot | HTMLElement;
@@ -123,7 +123,9 @@ export class DropInElement extends HTMLElement {
         }
 
         const slotConfig =
-          DropInElement.slots[slotName as keyof typeof DropInElement.slots];
+          MoniteAppElement.slots[
+            slotName as keyof typeof MoniteAppElement.slots
+          ];
 
         if (!slotConfig) {
           console.error(
@@ -201,7 +203,7 @@ export class DropInElement extends HTMLElement {
     this.reactAppRoot = this.reactAppRoot || ReactDOM.createRoot(appRootNode);
 
     const attributesProperties = Object.entries(
-      DropInElement.attributes
+      MoniteAppElement.attributes
     ).reduce((acc, [attribute, attributeConfig]) => {
       const attributeCamelCase = kebabToCamelCase(attribute);
       const attributeValue = this.getAttribute(attribute);
@@ -229,11 +231,11 @@ export class DropInElement extends HTMLElement {
     const props = {
       ...attributesProperties,
       ...slotProperties,
-    } as Omit<ComponentProps<typeof DropIn>, 'rootElements'>;
+    } as Omit<ComponentProps<typeof MoniteApp>, 'rootElements'>;
 
     this.reactAppRoot.render(
       <React.StrictMode>
-        <DropIn
+        <MoniteApp
           {...props}
           rootElements={{
             root: appRootNode,
@@ -302,7 +304,7 @@ const getAssignedElementsData = <
 export const kebabToCamelCase = (s: string): string =>
   s.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
-type JSONSourceSlot = keyof (typeof DropInElement)['slots'];
+type JSONSourceSlot = keyof (typeof MoniteAppElement)['slots'];
 
 type AttributeConfig = {
   type: 'boolean' | 'string';

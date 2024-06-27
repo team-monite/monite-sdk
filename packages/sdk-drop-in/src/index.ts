@@ -1,3 +1,3 @@
-import { DropInElement } from './drop-in-element';
+import { MoniteAppElement } from './custom-elements/MoniteAppElement';
 
-customElements.define('monite-app', DropInElement);
+customElements.define('monite-app', MoniteAppElement);
