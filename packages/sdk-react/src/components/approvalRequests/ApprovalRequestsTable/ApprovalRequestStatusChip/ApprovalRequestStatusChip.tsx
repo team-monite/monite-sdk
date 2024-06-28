@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 
+import { components } from '@/api';
 import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
@@ -8,8 +9,9 @@ import {
   APPROVAL_REQUEST_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_STATUS_MUI_MAP,
 } from '../../consts';
-import { ApprovalRequestStatus } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
+
+type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
 
 interface ApprovalRequestStatusChipRootProps {
   /** The status of the approval request. */

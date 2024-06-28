@@ -2,7 +2,6 @@ import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ApprovalRequestStatus } from '../../consts';
 import { ApprovalRequestStatusChip as ApprovalRequestStatusChipComponent } from './ApprovalRequestStatusChip';
 
 const meta: Meta<typeof ApprovalRequestStatusChipComponent> = {
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof ApprovalRequestStatusChipComponent>;
 
 export const ApprovalRequestStatusChip: Story = {
   args: {
-    status: ApprovalRequestStatus.APPROVED,
+    status: 'approved',
   },
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
@@ -27,13 +26,13 @@ export const ApprovalRequestStatusChip: Story = {
               },
               variants: [
                 {
-                  props: { status: ApprovalRequestStatus.APPROVED },
+                  props: { status: 'approved' },
                   style: {
                     border: '2px dashed blue',
                   },
                 },
                 {
-                  props: { status: ApprovalRequestStatus.REJECTED },
+                  props: { status: 'rejected' },
                   style: {
                     border: '2px dashed orange',
                   },

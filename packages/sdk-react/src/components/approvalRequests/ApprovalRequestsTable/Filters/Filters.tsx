@@ -16,7 +16,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 
 import {
-  ApprovalRequestStatus,
+  APPROVAL_REQUEST_STATUSES,
   FILTER_TYPE_ADDED_BY,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
@@ -57,7 +57,7 @@ export const Filters = ({ onChangeFilter }: FilterProps) => {
             >
               {[
                 { label: t(i18n)`All invoices`, value: 'all' },
-                ...Object.values(ApprovalRequestStatus).map((status) => ({
+                ...Object.values(APPROVAL_REQUEST_STATUSES).map((status) => ({
                   label: getRowToStatusTextMap(i18n)[status],
                   value: status,
                 })),

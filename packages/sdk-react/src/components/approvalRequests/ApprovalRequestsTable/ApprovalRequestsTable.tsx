@@ -24,7 +24,6 @@ import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 import { addDays, formatISO } from 'date-fns';
 
 import {
-  ApprovalRequestStatus,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_ADDED_BY,
@@ -265,7 +264,7 @@ const ApprovalRequestsTableBase = ({
             align: 'right',
             renderCell: (params) => {
               if (
-                params.row.status === ApprovalRequestStatus.WAITING &&
+                params.row.status === 'waiting' &&
                 user?.id &&
                 params.row.user_ids.includes(user.id) &&
                 !params.row.approved_by?.includes(user.id)

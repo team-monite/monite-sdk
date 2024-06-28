@@ -1,10 +1,12 @@
 import { type components, Services } from '@/api';
-import { ApprovalRequestStatus } from '@/components/approvalRequests/consts';
+import { APPROVAL_REQUEST_STATUSES } from '@/components/approvalRequests/consts';
 import { approvalRequestsListFixture } from '@/mocks/approvalRequests';
 
 import { delay, http, HttpResponse } from 'msw';
 
 const approvalRequestsPath = `*/approval_requests`;
+
+type ApprovalRequestStatus = components['schemas']['ApprovalRequestStatus'];
 
 export const approvalRequestsHandlers = [
   http.get<
@@ -94,7 +96,7 @@ const filterByStatus = (
   if (!status) return fixtures;
 
   if (
-    !Object.values(ApprovalRequestStatus).includes(
+    !Object.values(APPROVAL_REQUEST_STATUSES).includes(
       status as ApprovalRequestStatus
     )
   )
