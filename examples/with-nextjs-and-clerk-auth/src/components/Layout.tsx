@@ -18,7 +18,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       <Drawer
         anchor="left"
         PaperProps={{ sx: { backgroundColor: 'background.menu' } }}
-        className="navigation-drawer"
+        className="LayoutNavigationDrawer"
         sx={{ width: 240 }}
         variant="permanent"
       >

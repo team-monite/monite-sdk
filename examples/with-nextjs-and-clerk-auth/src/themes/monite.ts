@@ -94,7 +94,7 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiDrawer: {
     styleOverrides: {
       root: {
-        '&.navigation-drawer .MuiPaper-root': {
+        '&.LayoutNavigationDrawer .MuiPaper-root': {
           borderRight: 0,
         },
       },
