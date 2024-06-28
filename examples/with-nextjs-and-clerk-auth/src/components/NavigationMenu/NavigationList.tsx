@@ -43,7 +43,7 @@ export const NavigationList = () => {
         <NavigationListItem href="/receivables" icon={<IconReceipt />}>
           {t(i18n)`Sales`}
         </NavigationListItem>
-        <NavigationListItem href="#" icon={<IconBag />}>
+        <NavigationListItem icon={<IconBag />}>
           {t(i18n)`Projects`}
         </NavigationListItem>
         <NavigationListItem href="/counterparts" icon={<IconUniversity />}>
@@ -53,28 +53,28 @@ export const NavigationList = () => {
           {t(i18n)`Products & Services`}
         </NavigationListItem>
         <NavigationListCollapse icon={<IconCog />} label="Settings">
-          <NavigationListItem href="#" icon={<IconUserCircle />}>
+          <NavigationListItem icon={<IconUserCircle />}>
             {t(i18n)`My Profile`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconUsersAlt />}>
+          <NavigationListItem icon={<IconUsersAlt />}>
             {t(i18n)`Team`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconBuilding />}>
+          <NavigationListItem icon={<IconBuilding />}>
             {t(i18n)`Company`}
           </NavigationListItem>
           <NavigationListItem href="/user-roles" icon={<IconPostcard />}>
             {t(i18n)`Roles & Approvals`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconSync />}>
+          <NavigationListItem icon={<IconSync />}>
             {t(i18n)`Integrations`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconFileHeart />}>
+          <NavigationListItem icon={<IconFileHeart />}>
             {t(i18n)`Invoice Design`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconFilesLandscapes />}>
+          <NavigationListItem icon={<IconFilesLandscapes />}>
             {t(i18n)`Message Templates`}
           </NavigationListItem>
-          <NavigationListItem href="#" icon={<IconEnvelopeHeart />}>
+          <NavigationListItem icon={<IconEnvelopeHeart />}>
             {t(i18n)`Email Templates`}
           </NavigationListItem>
         </NavigationListCollapse>
@@ -86,7 +86,7 @@ export const NavigationList = () => {
         justifyContent="flex-end"
       >
         <List className="NavigationList" disablePadding>
-          <NavigationListItem href="#" icon={<IconQuestionCircle />}>
+          <NavigationListItem icon={<IconQuestionCircle />}>
             {t(i18n)`Get Help`}
           </NavigationListItem>
         </List>
