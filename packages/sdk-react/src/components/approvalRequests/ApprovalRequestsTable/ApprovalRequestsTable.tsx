@@ -30,9 +30,9 @@ import {
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
+import { ApprovalRequestsFilter } from './ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import { ApproveButton } from './ApproveButton';
-import { Filters as FiltersComponent } from './Filters';
 import { RejectButton } from './RejectButton';
 import { UserCell } from './UserCell';
 
@@ -151,7 +151,7 @@ const ApprovalRequestsTableBase = ({
       className={ScopedCssBaselineContainerClassName}
     >
       <Box sx={{ marginBottom: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
+        <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
       </Box>
       <DataGrid
         autoHeight

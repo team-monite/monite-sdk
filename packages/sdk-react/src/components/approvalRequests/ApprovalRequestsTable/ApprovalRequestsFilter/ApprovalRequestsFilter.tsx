@@ -30,7 +30,7 @@ interface FilterProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
-export const Filters = ({ onChangeFilter }: FilterProps) => {
+export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
