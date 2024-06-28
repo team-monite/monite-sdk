@@ -30,16 +30,13 @@ export const UserCell = ({ entityUserId }: UserCellProps) => {
     );
   }
 
-  const name = (
-    (entityUser.first_name ?? '') +
-    ' ' +
-    (entityUser.last_name ?? '')
-  ).trim();
-
   return (
     <Chip
       avatar={<UserAvatar fileId={entityUser.userpic_file_id} />}
-      label={name}
+      label={
+        `${entityUser.first_name ?? ''} ${entityUser.last_name ?? ''}`.trim() ||
+        '—'
+      }
       variant="outlined"
       color="secondary"
     />
