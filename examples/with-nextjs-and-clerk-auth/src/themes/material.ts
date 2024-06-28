@@ -16,12 +16,14 @@ const components: Components<Omit<Theme, 'components'>> = {
   },
 };
 
-export const materialLight = createTheme({
-  components,
-  palette: { mode: 'light' },
-});
+export const materialLight = () =>
+  createTheme({
+    components,
+    palette: { mode: 'light' },
+  });
 
-export const materialDark = createTheme({
-  components,
-  palette: { mode: 'dark' },
-});
+export const materialDark = () =>
+  createTheme({
+    components,
+    palette: { mode: 'dark' },
+  });

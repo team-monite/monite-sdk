@@ -109,16 +109,16 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
 
     switch (true) {
       case variant === 'monite' && mode === 'dark':
-        return themes.moniteDark;
+        return themes.moniteDark();
 
       case variant === 'material' && mode === 'light':
-        return themes.materialLight;
+        return themes.materialLight();
 
       case variant === 'material' && mode === 'dark':
-        return themes.materialDark;
+        return themes.materialDark();
 
       default:
-        return themes.moniteLight;
+        return themes.moniteLight();
     }
   }, [selectedTheme.data]);
 

@@ -154,18 +154,20 @@ const components: Components<Omit<Theme, 'components'>> = {
   },
 };
 
-export const moniteLight = createTheme(
-  deepmerge(baseMoniteLight, {
-    palette: paletteLight,
-    typography: typographyLight,
-    components,
-  })
-);
+export const moniteLight = () =>
+  createTheme(
+    deepmerge(baseMoniteLight, {
+      palette: paletteLight,
+      typography: typographyLight,
+      components,
+    })
+  );
 
-export const moniteDark = createTheme(
-  deepmerge(baseMoniteDark, {
-    palette: paletteDark,
-    typography: typographyDark,
-    components,
-  })
-);
+export const moniteDark = () =>
+  createTheme(
+    deepmerge(baseMoniteDark, {
+      palette: paletteDark,
+      typography: typographyDark,
+      components,
+    })
+  );
