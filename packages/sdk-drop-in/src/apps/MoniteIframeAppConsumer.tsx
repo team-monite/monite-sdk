@@ -112,28 +112,28 @@ const MoniteIframe = ({
     null
   );
 
-  const channelPortManager = useMemo(() => {
+  const iframeCommunicator = useMemo(() => {
     return iframeElement && new MoniteIframeAppCommunicator(iframeElement);
   }, [iframeElement]);
 
   useEffect(() => {
-    if (!channelPortManager) return;
-    channelPortManager.mountSlot('fetch-token', fetchToken);
-    channelPortManager.mountSlot('locale', { code: localeCode });
-    channelPortManager.mountSlot('theme', getThemeOptions(themeConfig));
+    if (!iframeCommunicator) return;
+    iframeCommunicator.mountSlot('fetch-token', fetchToken);
+    iframeCommunicator.mountSlot('locale', { code: localeCode });
+    iframeCommunicator.mountSlot('theme', getThemeOptions(themeConfig));
 
     return () => {
-      channelPortManager.unmountSlot('fetch-token');
-      channelPortManager.unmountSlot('locale');
-      channelPortManager.unmountSlot('theme');
+      iframeCommunicator.unmountSlot('fetch-token');
+      iframeCommunicator.unmountSlot('locale');
+      iframeCommunicator.unmountSlot('theme');
     };
-  }, [channelPortManager, fetchToken, iframeElement, localeCode, themeConfig]);
+  }, [iframeCommunicator, fetchToken, iframeElement, localeCode, themeConfig]);
 
   useEffect(() => {
-    if (!channelPortManager) return;
-    channelPortManager.connect();
-    return () => void channelPortManager.disconnect();
-  }, [channelPortManager]);
+    if (!iframeCommunicator) return;
+    iframeCommunicator.connect();
+    return () => void iframeCommunicator.disconnect();
+  }, [iframeCommunicator]);
 
   return (
     <iframe
