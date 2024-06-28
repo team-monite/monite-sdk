@@ -27,6 +27,9 @@ export class MoniteIframeAppCommunicator {
   }
 
   public connect() {
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return void console.warn('Cannot connect in non-browser environment');
+
     this.disconnect();
 
     if (!this.targetWindow) throw new Error('Target window is not set');
@@ -80,8 +83,11 @@ export class MoniteIframeAppCommunicator {
   };
 
   public disconnect() {
-    window.removeEventListener('message', this.onWindowMessage);
+    if (typeof window === 'undefined' || typeof document === 'undefined')
+      return void console.warn('Cannot disconnect in non-browser environment');
+
     clearInterval(this.connectionToHostRetryInterval);
+    window.removeEventListener('message', this.onWindowMessage);
     Array.from(this.slots.values()).forEach(
       ({ abortController }) => void abortController?.abort()
     );
@@ -125,7 +131,7 @@ export class MoniteIframeAppCommunicator {
     if (!this.connected)
       return console.warn(
         `Not connected to ${
-          window.parent === window ? '"iframe"' : '"host"'
+          this.isHost ? '"iframe"' : '"host"'
         } [Monite Iframe App]`
       );
 
