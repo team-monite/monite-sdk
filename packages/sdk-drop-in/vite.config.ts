@@ -28,7 +28,7 @@ export default async function viteConfig({ mode }: ConfigEnv) {
             'monite-iframe-app-consumer.html'
           ),
           'monite-app.html': resolve(__dirname, 'monite-app.html'),
-          'monite-app': resolve(__dirname, 'src/index.ts'),
+          'monite-app': resolve(__dirname, 'src/monite-app.ts'),
           'monite-iframe-app-communicator': resolve(
             __dirname,
             'src/lib/MoniteIframeAppCommunicator.ts'
