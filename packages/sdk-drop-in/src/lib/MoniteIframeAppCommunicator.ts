@@ -97,12 +97,14 @@ export class MoniteIframeAppCommunicator {
   public mountSlot(slotName: string, data: PayloadSlot) {
     this.unmountSlot(slotName);
 
-    this.slots.set(slotName, {
-      ...this.slots.get(slotName),
-      payload: data,
-    });
+    if (data !== undefined) {
+      this.slots.set(slotName, {
+        ...this.slots.get(slotName),
+        payload: data,
+      });
 
-    this.queueSlot(slotName);
+      this.queueSlot(slotName);
+    }
   }
 
   public pingSlot(slotName: string) {
