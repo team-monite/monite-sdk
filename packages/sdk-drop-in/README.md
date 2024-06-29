@@ -1,12 +1,123 @@
-# Monite SDK Demo App
+# Monite SDK Drop-In Package
+
+## Applications
+
+### Monite Drop-in
+
+Monite Drop-in is a custom html element that can be embedded in any website to provide Monite's AP/AR functionalities.
+
+#### Development Preview environments
+
+- [`localhost:5174/monite-app`](http://localhost:5174/monite-app)
+- [`cdn.dev.monite.com/monite-app`](https://cdn.dev.monite.com/monite-app)
+- [`cdn.staging.monite.com/monite-app`](https://cdn.staging.monite.com/monite-app)
+- [`cdn.sandbox.monite.com/monite-app`](https://cdn.sandbox.monite.com/monite-app)
+- `cdn-*.review.monite.com/monite-app`
+
+Use `/receivables`, `/counterparts` in URL to access the respective components: [`localhost:5174/monite-app/counterparts`](http://localhost:5174/monite-app/counterparts).
+
+#### Production usage
+
+```html
+<script type="module" src="https://cdn.monite.com/monite-app.js" async></script>
+
+<monite-app
+  entity-id="ENTITY_ID"
+  api-url="https://api.monite.com/v1"
+  basename="/"
+  component="receivables"
+>
+  <script slot="fetch-token" type="module">
+    async function fetchToken() {
+      // Provide your own implementation to fetch the token
+      // and pass it to the iframe app using the communicator
+      const res = await fetch('/my-api/monite/auth/token', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch token');
+      return await res.json();
+    }
+</monite-app>
+
+<!-- "basename" is the pathname of the page where the Monite Drop-in is embedded -->
+```
+
+### Monite Iframe App
+
+Monite Iframe App provides a set of components that can be seamlessly embedded into your web application using an iframe.
+
+- [`localhost:5174/monite-iframe-app-consumer`](http://localhost:5174/monite-iframe-app-consumer)
+- [`cdn.dev.monite.com/monite-iframe-app-consumer`](https://cdn.dev.monite.com/monite-iframe-app-consumer)
+- [`cdn.staging.monite.com/monite-iframe-app-consumer`](https://cdn.staging.monite.com/monite-iframe-app-consumer)
+- [`cdn.sandbox.monite.com/monite-iframe-app-consumer`](https://cdn.sandbox.monite.com/monite-iframe-app-consumer)
+- `cdn-*.review.monite.com/monite-iframe-app-consumer`
+
+#### Production usage
+
+For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_APP_INTEGRATION.md).
+
+```html
+
+#### Bare `<iframe />` & Communicator script
+
+```html
+<iframe
+  id="monite-iframe-app"
+  src="https://cdn.monite.com/monite-iframe-app/receivables"
+  style="border: none; width: 100%; height: 100%"
+></iframe>
+
+<!-- To access the "Counterparts" component, replace "/receivables" with "/counterparts" -->
+
+<script type="module">
+  import { MoniteIframeAppCommunicator } from 'https://cdn.monite.com/monite-iframe-app-communicator.js';
+
+  const iframeCommunicator = new MoniteIframeAppCommunicator(
+    document.querySelector('#monite-iframe-app')
+  );
+
+  iframeCommunicator.mountSlot('fetch-token', async () => {
+    // Provide your own implementation to fetch the token
+    // and pass it to the iframe app using the communicator
+    const res = await fetch('/my-api/monite/auth/token', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) throw new Error('Failed to fetch token');
+    return await res.json();
+  });
+
+  iframeCommunicator.mountSlot('locale', {
+    code: 'en-US',
+    currencyNumberFormat: {
+      display: 'code',
+      localeCode: 'en-150',
+    },
+    messages: {
+      /** Your messages to override those built into the interface **/
+    },
+  });
+
+  iframeCommunicator.connect();
+</script>
+```
+
+## Development
 
 ### Installation
 
 ```bash
-yarn
+yarn install
 ```
 
-#### Development
+### Environment Setup
 
 Copy `config.example.json` to `public/config.json`:
 
@@ -14,32 +125,39 @@ Copy `config.example.json` to `public/config.json`:
 cp config.example.json public/config.json
 ```
 
-Run the app:
+and set the correct values in `public/config.json`:
+
+```json5
+{
+  stand: 'dev',
+  api_url: 'https://api.dev.monite.com',
+  app_basename: 'monite-iframe-app',
+  app_hostname: '127.0.0.1', // your dev application hostname should be different from localhost
+  entity_user_id: '0771f748-mocked_entity_id-...',
+  client_id: 'a2faad88-mocked_client_id-...',
+  client_secret: 'acx65eve-mocked_client_secret-...',
+}
+```
+
+> Create new Client ID, and Client Secret in the [Monite Partner Portal](https://portal.dev.monite.com/).
+> Then generate a new Entity using the `demo-data-generator` CLI tool. See [DEMO_DATA_GENERATOR.md](../../examples/with-nextjs-and-clerk-auth/DEMO_DATA_GENERATOR.md) for more details.
+
+### Commands
+
+To develop the Drop-In component and the Iframe App together:
 
 ```bash
 yarn dev
 ```
 
-Navigate to `http://localhost:xxxx/monite-app.html` where `xxxx` is the port number which is displayed in the terminal.
+To build the Drop-In component and the Iframe App together:
 
-### How to set Auth Credentials?
+```bash
+yarn build
+```
 
-It is possible to do it in two ways:
+To preview the Drop-In component and the Iframe App distributive together:
 
-- Create a record in LocalStorage with the key `MONITE_AUTH_CREDENTIALS` and JSON-content with the following structure:
-
-  ```json
-  {
-    "client_id": "c59964ce-...",
-    "client_secret": "49b55da0-...",
-    "entity_id": "be035ef1-...",
-    "entity_user_id": "8ee9e41c-..."
-  }
-  ```
-
-- Use "Monite SDK Demo" Sign In form to set credentials in LocalStorage using the UI.
-  First, run in the monorepo root:
-  ```bash
-  yarn turbo run dev --filter @team-monite/sdk-demo`
-  ```
-  Navigate to `http://localhost:xxxx` where `xxxx` is the port number which is displayed in the terminal.
+```bash
+yarn preview
+```
