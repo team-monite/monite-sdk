@@ -21,15 +21,15 @@ export const moniteIframeAppComponents = {
       default: module.Products,
     }))
   ),
-  'settings/tags': lazy(() =>
+  tags: lazy(() =>
     import('@monite/sdk-react').then((module) => ({ default: module.Tags }))
   ),
-  'settings/approval-policies': lazy(() =>
+  'approval-policies': lazy(() =>
     import('@monite/sdk-react').then((module) => ({
       default: module.ApprovalPolicies,
     }))
   ),
-  'settings/roles': lazy(() =>
+  roles: lazy(() =>
     import('@monite/sdk-react').then((module) => ({
       default: module.UserRoles,
     }))

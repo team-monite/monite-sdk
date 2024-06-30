@@ -104,7 +104,7 @@ const MoniteIframeAppComponent = ({
             <Route
               path={'/'}
               element={
-                <Suspense fallback={null /** add a fallback **/}>
+                <Suspense fallback={<AppCircularProgress />}>
                   <moniteIframeAppComponents.payables />
                 </Suspense>
               }

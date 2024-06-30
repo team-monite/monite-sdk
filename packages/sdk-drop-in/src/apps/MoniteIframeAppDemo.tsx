@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
@@ -70,7 +70,31 @@ const MoniteIframeAppConsumerComponent = ({
           >
             <Routes>
               <Route
-                path="*"
+                path="/"
+                element={
+                  <MoniteIframe
+                    appBasename={appBasename}
+                    appHostname={appHostname}
+                    fetchToken={fetchToken}
+                    localeCode={localeCode}
+                    themeConfig={themeConfig}
+                  />
+                }
+              />
+              <Route
+                path="/settings/:component"
+                element={
+                  <MoniteIframe
+                    appBasename={appBasename}
+                    appHostname={appHostname}
+                    fetchToken={fetchToken}
+                    localeCode={localeCode}
+                    themeConfig={themeConfig}
+                  />
+                }
+              />
+              <Route
+                path="/:component"
                 element={
                   <MoniteIframe
                     appBasename={appBasename}
@@ -103,10 +127,11 @@ const MoniteIframe = ({
   themeConfig: ReturnType<typeof useThemeConfig>['themeConfig'];
 }) => {
   const portSegment = location.port ? `:${location.port}` : '';
-  const { pathname } = useLocation();
+  const { component = 'payables' } = useParams<'component'>();
+
   const iframeUrl = `//${
     appHostname || location.hostname
-  }${portSegment}/${appBasename}${pathname}`;
+  }${portSegment}/${appBasename}/${component}`;
 
   const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(
     null
@@ -137,7 +162,7 @@ const MoniteIframe = ({
 
   return (
     <iframe
-      key={pathname.split('/')[1]}
+      key={component}
       ref={setIframeElement}
       src={iframeUrl}
       style={{ border: 'none', width: '100%', height: '100%' }}
