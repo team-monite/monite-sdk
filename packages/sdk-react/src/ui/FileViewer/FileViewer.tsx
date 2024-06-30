@@ -67,9 +67,26 @@ export const FileViewer = ({
   name,
   onReloadCallback,
 }: FileViewerProps) => {
+  if (!url) return <ErrorComponent onError={onReloadCallback} />;
+
+  if (mimetype === 'application/pdf') return <PdfFileViewer url={url} />;
+
+  return (
+    <img
+      src={url}
+      alt={name}
+      loading="lazy"
+      style={{ width: '100%', objectFit: 'contain' }}
+    />
+  );
+};
+
+const PdfFileViewer = ({ url }: { url: string }) => {
   const pdfRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!pdfRef.current) return;
+
     PDFObject.embed(url, pdfRef.current, {
       fallbackLink: true,
       pdfOpenParams: {
@@ -83,23 +100,10 @@ export const FileViewer = ({
     });
   }, [url]);
 
-  if (!url) {
-    return <ErrorComponent onError={onReloadCallback} />;
-  }
-
-  const isPdf = mimetype === 'application/pdf';
-
-  const renderFile = () => {
-    if (isPdf) {
-      return (
-        <div
-          ref={pdfRef}
-          style={{ width: '100%', minHeight: '100%', border: 'none' }}
-        />
-      );
-    }
-    return <img src={url} alt={name} style={{ width: '100%' }} />;
-  };
-
-  return renderFile();
+  return (
+    <div
+      ref={pdfRef}
+      style={{ width: '100%', minHeight: '100%', border: 'none' }}
+    />
+  );
 };
