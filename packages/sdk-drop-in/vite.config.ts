@@ -23,15 +23,15 @@ export default async function viteConfig({ mode }: ConfigEnv) {
             __dirname,
             'monite-iframe-app.html'
           ),
-          'monite-iframe-app-consumer.html': resolve(
+          'monite-iframe-app-demo.html': resolve(
             __dirname,
-            'monite-iframe-app-consumer.html'
+            'monite-iframe-app-demo.html'
           ),
           'monite-iframe-app-drop-in-demo.html': resolve(
             __dirname,
             'monite-iframe-app-drop-in-demo.html'
           ),
-          'monite-app.html': resolve(__dirname, 'monite-app.html'),
+          'monite-app-demo.html': resolve(__dirname, 'monite-app-demo.html'),
           'monite-app': resolve(__dirname, 'src/monite-app.ts'),
           'monite-iframe-app': resolve(__dirname, 'src/monite-iframe-app.ts'),
           'monite-iframe-app-communicator': resolve(
