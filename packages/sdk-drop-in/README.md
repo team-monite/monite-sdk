@@ -1,12 +1,13 @@
 # Monite SDK Drop-In Package
 
-## Applications
+This package provides two main applications for integrating Monite's AP/AR functionalities into your web applications:
+Monite Drop-in and Monite Iframe App.
 
-### Monite Drop-in
+## Monite Drop-in
 
-Monite Drop-in is a custom html element that can be embedded in any website to provide Monite's AP/AR functionalities.
+Monite Drop-in is a custom HTML element that can be embedded in any website to provide Monite's AP/AR functionalities.
 
-#### Development Preview environments
+### Development Preview Environments
 
 - [`localhost:5174/monite-app-demo`](http://localhost:5174/monite-app-demo)
 - [`cdn.dev.monite.com/monite-app-demo`](https://cdn.dev.monite.com/monite-app-demo)
@@ -14,9 +15,10 @@ Monite Drop-in is a custom html element that can be embedded in any website to p
 - [`cdn.sandbox.monite.com/monite-app-demo`](https://cdn.sandbox.monite.com/monite-app-demo)
 - `cdn-*.review.monite.com/monite-app-demo`
 
-Use `/receivables`, `/counterparts` in URL to access the respective components: [`localhost:5174/monite-app-demo/counterparts`](http://localhost:5174/monite-app-demo/counterparts).
+Access specific components by appending their names to the URL,
+e.g., [`localhost:5174/monite-app-demo/counterparts`](http://localhost:5174/monite-app-demo/counterparts).
 
-#### Production usage
+### Production Usage
 
 ```html
 <script type="module" src="https://cdn.monite.com/monite-app.js" async></script>
@@ -29,8 +31,8 @@ Use `/receivables`, `/counterparts` in URL to access the respective components: 
 >
   <script slot="fetch-token" type="module">
     async function fetchToken() {
-      // Provide your own implementation to fetch the token
-      // and pass it to the iframe app using the communicator
+      // Provide your own implementation to receive the token
+      // and pass it to the iframe application using the communicator
       const res = await fetch('/my-api/monite/auth/token', {
         method: 'POST',
         headers: {
@@ -41,20 +43,24 @@ Use `/receivables`, `/counterparts` in URL to access the respective components: 
       if (!res.ok) throw new Error('Failed to fetch token');
       return await res.json();
     }
+  </script>
 </monite-app>
-
-<!-- "basename" is the pathname of the page where the Monite Drop-in is embedded -->
 ```
 
-### Monite Iframe App
+Note: `basename` is the pathname of the page where the Monite Drop-in is embedded.
 
-Monite Iframe App provides a set of components that can be seamlessly embedded into your web application using an iframe.
+## Monite Iframe App
 
-#### Production usage
+Monite Iframe App provides components that can be embedded into your web application using an iframe.
 
-For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_APP_INTEGRATION.md).
+### Production Usage
 
-#### Bare `<iframe />` & Communicator script
+For detailed integration instructions, refer to
+the [Monite Iframe App integration guide](./MONITE_IFRAME_APP_INTEGRATION.md).
+
+### Bare `<iframe />` & Communicator Script
+
+Development preview environments:
 
 - [`localhost:5174/monite-iframe-app-demo`](http://localhost:5174/monite-iframe-app-demo)
 - [`cdn.dev.monite.com/monite-iframe-app-demo`](https://cdn.dev.monite.com/monite-iframe-app-demo)
@@ -62,14 +68,14 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
 - [`cdn.sandbox.monite.com/monite-iframe-app-demo`](https://cdn.sandbox.monite.com/monite-iframe-app-demo)
 - `cdn-*.review.monite.com/monite-iframe-app-demo`
 
+Integration example:
+
 ```html
 <iframe
   id="monite-iframe-app"
   src="https://cdn.monite.com/monite-iframe-app/receivables"
   style="border: none; width: 100%; height: 100%"
 ></iframe>
-
-<!-- To access the "Counterparts" component, replace "/receivables" with "/counterparts" -->
 
 <script type="module">
   import { MoniteIframeAppCommunicator } from 'https://cdn.monite.com/monite-iframe-app-communicator.js';
@@ -79,8 +85,8 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
   );
 
   iframeCommunicator.mountSlot('fetch-token', async () => {
-    // Provide your own implementation to fetch the token
-    // and pass it to the iframe app using the communicator
+    // Provide your own implementation to receive the token
+    // and pass it to the iframe application using the communicator
     const res = await fetch('/my-api/monite/auth/token', {
       method: 'POST',
       headers: {
@@ -99,7 +105,7 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
       localeCode: 'en-150',
     },
     messages: {
-      /** Your messages to override those built into the interface **/
+      // Your messages to override those built into the interface
     },
   });
 
@@ -107,7 +113,12 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
 </script>
 ```
 
-#### Monite Iframe App Drop-In
+To access different components, replace `/receivables` in the iframe `src` with the desired component name (
+e.g., `/counterparts`).
+
+### Monite Iframe App Drop-In
+
+Development preview environments:
 
 - [`localhost:5174/monite-iframe-app-drop-in-demo`](http://localhost:5174/monite-iframe-app-drop-in-demo)
 - [`cdn.dev.monite.com/monite-iframe-app-drop-in-demo`](https://cdn.dev.monite.com/monite-iframe-app-drop-in-demo)
@@ -115,8 +126,14 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
 - [`cdn.sandbox.monite.com/monite-iframe-app-drop-in-demo`](https://cdn.sandbox.monite.com/monite-iframe-app-drop-in-demo)
 - `cdn-*.review.monite.com/monite-iframe-app-drop-in-demo`
 
+Integration example:
+
 ```html
-<script type="module" src="https://cdn.monite.com/monite-iframe-app.js" async></script>
+<script
+  type="module"
+  src="https://cdn.monite.com/monite-iframe-app.js"
+  async
+></script>
 
 <monite-iframe-app
   app-url="https://cdn.monite.com/monite-iframe-app"
@@ -124,8 +141,8 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
 >
   <script slot="fetch-token" type="module">
     async function fetchToken() {
-      // Provide your own implementation to fetch the token
-      // and pass it to the iframe app using the communicator
+      // Provide your own implementation to receive the token
+      // and pass it to the iframe application using the communicator
       const res = await fetch('/my-api/monite/auth/token', {
         method: 'POST',
         headers: {
@@ -137,7 +154,7 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
       return await res.json();
     }
   </script>
-</monite-app>
+</monite-iframe-app>
 ```
 
 ## Development
@@ -150,13 +167,13 @@ yarn install
 
 ### Environment Setup
 
-Copy `config.example.json` to `public/config.json`:
+1. Copy `config.example.json` to `public/config.json`:
 
 ```bash
 cp config.example.json public/config.json
 ```
 
-and set the correct values in `public/config.json`:
+2. Set the correct values in `public/config.json`:
 
 ```json5
 {
@@ -170,25 +187,25 @@ and set the correct values in `public/config.json`:
 }
 ```
 
-> Create new Client ID, and Client Secret in the [Monite Partner Portal](https://portal.dev.monite.com/).
-> Then generate a new Entity using the `demo-data-generator` CLI tool. See [DEMO_DATA_GENERATOR.md](../../examples/with-nextjs-and-clerk-auth/DEMO_DATA_GENERATOR.md) for more details.
+Note: Create new Client ID and Client Secret in the [Monite Partner Portal](https://portal.dev.monite.com/). Then
+generate a new Entity using the `demo-data-generator` CLI tool.
+See [DEMO_DATA_GENERATOR.md](../../examples/with-nextjs-and-clerk-auth/DEMO_DATA_GENERATOR.md) for more details.
 
 ### Commands
 
-To develop the Drop-In component and the Iframe App together:
+- Develop the Drop-In component and the Iframe App together:
 
-```bash
-yarn dev
-```
+  ```bash
+  yarn dev
+  ```
 
-To build the Drop-In component and the Iframe App together:
+- Build the Drop-In component and the Iframe App together:
 
-```bash
-yarn build
-```
+  ```bash
+  yarn build
+  ```
 
-To preview the Drop-In component and the Iframe App distributive together:
-
-```bash
-yarn preview
-```
+- Preview the Drop-In component and the Iframe App distributive together:
+  ```bash
+  yarn preview
+  ```
