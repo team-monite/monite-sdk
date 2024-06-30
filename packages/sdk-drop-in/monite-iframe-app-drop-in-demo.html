@@ -42,13 +42,10 @@
     </monite-iframe-app>
 
     <script type="module">
-      import { MoniteIframeAppElement } from './src/custom-elements/MoniteIframeAppElement.tsx';
       import { getConfig } from './src/lib/ConfigLoader.tsx';
       import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
 
       window.fetchToken = fetchTokenDev;
-
-      customElements.define('monite-iframe-app', MoniteIframeAppElement);
 
       getConfig()
         .then(({ app_basename, app_hostname }) => {
@@ -73,6 +70,6 @@
         });
     </script>
 
-    <script type="module" src="/src/monite-iframe-app.ts"></script>
+    <script type="module" src="/src/custom-elements/monite-iframe-app.ts"></script>
   </body>
 </html>
