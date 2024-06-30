@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
 import type {
   RuleRecommendation,
   RuleModule,
