@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { MoniteIframeAppConsumer } from '@/apps/MoniteIframeAppConsumer.tsx';
+import { MoniteIframeAppDemo } from '@/apps/MoniteIframeAppDemo';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -9,6 +9,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <MoniteIframeAppConsumer />
+    <MoniteIframeAppDemo />
   </React.StrictMode>
 );

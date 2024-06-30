@@ -17,7 +17,7 @@ import {
   useThemeConfig,
 } from '@team-monite/sdk-demo';
 
-export const MoniteIframeAppConsumer = () => {
+export const MoniteIframeAppDemo = () => {
   const queryClient = useMemo(() => new QueryClient(), []);
 
   return (
