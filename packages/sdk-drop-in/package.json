@@ -10,9 +10,13 @@
       "import": "./dist/monite-app.js",
       "require": "./dist/monite-app.cjs"
     },
-    "./monite-iframe-app-message-channel": {
-      "import": "./dist/monite-iframe-app-message-channel.js",
-      "require": "./dist/monite-iframe-app-message-channel.cjs"
+    "./monite-iframe-app": {
+      "import": "./dist/monite-iframe-app.js",
+      "require": "./dist/monite-iframe-app.cjs"
+    },
+    "./monite-iframe-app-communicator": {
+      "import": "./dist/monite-iframe-app-communicator.js",
+      "require": "./dist/monite-iframe-app-communicator.cjs"
     },
     "./package.json": "./package.json"
   },

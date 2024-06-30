@@ -109,6 +109,39 @@ For more details, see the [Monite Iframe App integration guide](./MONITE_IFRAME_
 </script>
 ```
 
+#### Monite Iframe App Drop-In
+
+- [`localhost:5174/monite-iframe-app-drop-in-demo`](http://localhost:5174/monite-iframe-app-drop-in-demo)
+- [`cdn.dev.monite.com/monite-iframe-app-drop-in-demo`](https://cdn.dev.monite.com/monite-iframe-app-drop-in-demo)
+- [`cdn.staging.monite.com/monite-iframe-app-drop-in-demo`](https://cdn.staging.monite.com/monite-iframe-app-drop-in-demo)
+- [`cdn.sandbox.monite.com/monite-iframe-app-drop-in-demo`](https://cdn.sandbox.monite.com/monite-iframe-app-drop-in-demo)
+- `cdn-*.review.monite.com/monite-iframe-app-drop-in-demo`
+
+```html
+<script type="module" src="https://cdn.monite.com/monite-iframe-app.js" async></script>
+
+<monite-iframe-app
+  app-url="https://cdn.monite.com/monite-iframe-app"
+  component="receivables"
+>
+  <script slot="fetch-token" type="module">
+    async function fetchToken() {
+      // Provide your own implementation to fetch the token
+      // and pass it to the iframe app using the communicator
+      const res = await fetch('/my-api/monite/auth/token', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch token');
+      return await res.json();
+    }
+  </script>
+</monite-app>
+```
+
 ## Development
 
 ### Installation
