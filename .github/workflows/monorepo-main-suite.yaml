@@ -79,6 +79,7 @@ jobs:
   e2e-testing:
     needs: build
     name: E2E Playwright Testing
+    environment: common
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -86,10 +87,12 @@ jobs:
         uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Install Playwright Browsers
-        run: yarn dlx playwright install --with-deps
+        run: yarn workspace @monite/sdk-drop-in exec playwright install
 
       - name: E2E Test
         run: yarn e2e
+        env:
+          MONITE_E2E_APP_ADMIN_CONFIG_JSON: ${{ secrets.MONITE_E2E_APP_ADMIN_CONFIG_JSON }}
 
   translations-validation:
     needs: build
