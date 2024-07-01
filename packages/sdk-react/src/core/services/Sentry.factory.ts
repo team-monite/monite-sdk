@@ -39,6 +39,7 @@ export class SentryFactory implements ISentryService {
       typeof document !== 'undefined' &&
       document.location.hostname === 'localhost';
 
+    // todo::remove this since in is not supported by esm
     const isDevelopmentRuntime =
       typeof process !== 'undefined' && typeof process.env === 'object'
         ? process.env.NODE_ENV === 'development' ||
