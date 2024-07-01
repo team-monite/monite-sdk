@@ -11,25 +11,111 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#: src/components/Layout/ThemeSelect.tsx:80
-#~ msgid "Dark Mode"
-#~ msgstr "Dark Mode"
+#: src/components/ThemeSelect/ThemeSelect.tsx:87
+#~ msgid "{variantName}"
+#~ msgstr "{variantName}"
 
-#: src/components/Layout/ThemeSelect.tsx:25
-#: src/components/Layout/ThemeSelect.tsx:29
-#: src/components/Layout/ThemeSelect.tsx:62
-#~ msgid "Material UI"
+#: src/components/NavigationMenu/NavigationList.tsx:63
+msgid "Company"
+msgstr "Company"
+
+#: src/components/NavigationMenu/NavigationList.tsx:50
+msgid "Counterparts"
+msgstr "Counterparts"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:134
+#: src/components/ThemeSelect/useThemeSelect.ts:33
+msgid "Dark Mode"
+msgstr "Dark Mode"
+
+#: src/components/NavigationMenu/NavigationList.tsx:38
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: src/components/NavigationMenu/NavigationList.tsx:78
+msgid "Email Templates"
+msgstr "Email Templates"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:121
+msgid "English"
+msgstr "English"
+
+#: src/components/NavigationMenu/NavigationList.tsx:90
+msgid "Get Help"
+msgstr "Get Help"
+
+#: src/components/NavigationMenu/NavigationList.tsx:69
+msgid "Integrations"
+msgstr "Integrations"
+
+#: src/components/NavigationMenu/NavigationList.tsx:72
+msgid "Invoice Design"
+msgstr "Invoice Design"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:118
+msgid "Language"
+msgstr "Language"
+
+#: src/components/ThemeSelect/useThemeSelect.ts:30
+msgid "Light Mode"
+msgstr "Light Mode"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:91
+#: src/components/ThemeSelect/useThemeSelect.ts:22
+#~ msgid "material"
 #~ msgstr "Material UI"
 
-#: src/components/Layout/ThemeSelect.tsx:27
-#: src/components/Layout/ThemeSelect.tsx:68
-#~ msgid "Monite"
+#: src/components/ThemeSelect/ThemeSelect.tsx:43
+#: src/components/ThemeSelect/useThemeSelect.ts:22
+msgid "Material UI"
+msgstr "Material UI"
+
+#: src/components/NavigationMenu/NavigationList.tsx:75
+msgid "Message Templates"
+msgstr "Message Templates"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:97
+#: src/components/ThemeSelect/useThemeSelect.ts:19
+#~ msgid "monite"
 #~ msgstr "Monite"
 
-#: src/components/Layout/ThemeSelect.tsx:55
-#~ msgid "Theme"
-#~ msgstr "Theme"
+#: src/components/ThemeSelect/ThemeSelect.tsx:44
+#: src/components/ThemeSelect/useThemeSelect.ts:19
+msgid "Monite"
+msgstr "Monite"
 
-#: src/components/ThemeRegistry/AppThemeProvider.tsx:90
+#: src/components/NavigationMenu/NavigationList.tsx:57
+msgid "My Profile"
+msgstr "My Profile"
+
+#: src/components/NavigationMenu/NavigationList.tsx:53
+msgid "Products & Services"
+msgstr "Products & Services"
+
+#: src/components/NavigationMenu/NavigationList.tsx:47
+msgid "Projects"
+msgstr "Projects"
+
+#: src/components/NavigationMenu/NavigationList.tsx:41
+msgid "Purchases"
+msgstr "Purchases"
+
+#: src/components/NavigationMenu/NavigationList.tsx:66
+msgid "Roles & Approvals"
+msgstr "Roles & Approvals"
+
+#: src/components/NavigationMenu/NavigationList.tsx:44
+msgid "Sales"
+msgstr "Sales"
+
+#: src/components/NavigationMenu/NavigationList.tsx:60
+msgid "Team"
+msgstr "Team"
+
+#: src/components/ThemeSelect/ThemeSelect.tsx:99
+msgid "Theme"
+msgstr "Theme"
+
+#: src/components/ThemeRegistry/AppThemeProvider.tsx:91
 msgid "We were unable to save your theme selection, please try again."
 msgstr "We were unable to save your theme selection, please try again."
