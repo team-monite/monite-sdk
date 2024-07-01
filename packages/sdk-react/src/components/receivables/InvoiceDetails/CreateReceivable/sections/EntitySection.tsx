@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
@@ -29,13 +29,6 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 
 import type { SectionGeneralProps } from './Section.types';
-
-const detailsGridItemProps = {
-  xs: 12,
-  sm: 6,
-  md: 3,
-  lg: 3,
-};
 
 /** All available fields for current component */
 const allFields = [
@@ -69,23 +62,15 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
 
-  const visibleFields = useMemo(() => {
-    if (!hidden) {
-      return allFields;
-    }
+  const visibleFields = allFields.filter((field) =>
+    hidden ? field !== 'purchase_order' : true
+  );
 
-    return allFields.filter((field) => field !== 'purchase_order');
-  }, [hidden]);
-
-  const gridItemProps = useMemo(() => {
-    const proportion = Math.floor(12 / visibleFields.length);
-
-    return {
-      ...detailsGridItemProps,
-      md: proportion,
-      lg: proportion,
-    };
-  }, [visibleFields]);
+  const gridItemProps = {
+    xs: 12,
+    sm: 6,
+    md: Math.floor(12 / visibleFields.length),
+  };
 
   return (
     <Stack spacing={1}>
