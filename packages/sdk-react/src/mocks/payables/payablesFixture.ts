@@ -148,7 +148,10 @@ export const payableFixturePages: PayableResponseSchema[] = [
     id: '9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0',
     status: PayableStateEnum.DRAFT,
   }),
-  generatePayable(),
+  generatePayable({
+    status: PayableStateEnum.NEW,
+    ocr_status: OcrStatusEnum.ERROR,
+  }),
   generatePayable(),
   generatePayable(),
   generatePayable(),
