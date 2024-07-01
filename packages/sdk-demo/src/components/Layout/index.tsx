@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ThemeSelect } from '@/components/Layout/ThemeSelect';
 import { Menu } from '@/components/Menu';
-import { useSDKDemoAPI } from '@/context/SDKDemoAPIProvider.tsx';
+import { useSDKDemoAPI } from '@/context/SDKDemoAPIProvider';
 import { ThemeConfig } from '@/types';
 import {
   Avatar,

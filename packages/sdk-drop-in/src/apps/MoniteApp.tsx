@@ -1,6 +1,13 @@
-import { ComponentProps, ElementType, lazy, ReactNode, Suspense } from 'react';
+import React, {
+  ComponentProps,
+  ElementType,
+  lazy,
+  ReactNode,
+  Suspense,
+} from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
+import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { css, Global } from '@emotion/react';
 import { RootElementsProvider } from '@monite/sdk-react';
 
@@ -81,7 +88,7 @@ export const MoniteApp = ({
           `}
         />
         <Router router={router} basename={basename}>
-          <Suspense>
+          <Suspense fallback={<AppCircularProgress />}>
             <Widget />
           </Suspense>
         </Router>

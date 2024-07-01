@@ -10,15 +10,18 @@
       "import": "./dist/monite-app.js",
       "require": "./dist/monite-app.cjs"
     },
-    "./monite-iframe-app-message-channel": {
-      "import": "./dist/monite-iframe-app-message-channel.js",
-      "require": "./dist/monite-iframe-app-message-channel.cjs"
+    "./monite-iframe-app": {
+      "import": "./dist/monite-iframe-app.js",
+      "require": "./dist/monite-iframe-app.cjs"
     },
-    "./package.json": "./package.json",
-    "./*": "./dist/*.js"
+    "./monite-iframe-app-communicator": {
+      "import": "./dist/monite-iframe-app-communicator.js",
+      "require": "./dist/monite-iframe-app-communicator.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "vite --config vite.config.dev.ts",
+    "dev": "vite --config vite.config.dev.ts --port 5174",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rimraf dist/",

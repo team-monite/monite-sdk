@@ -2,8 +2,18 @@ import React, { ComponentProps } from 'react';
 import ReactDOM, { Root } from 'react-dom/client';
 
 import { MoniteApp } from '@/apps/MoniteApp';
+import {
+  AttributeConfig,
+  MoniteAppElementBase,
+  parseElementAttribute,
+  SlotConfig,
+} from '@/custom-elements/MoniteAppElementBase.tsx';
 
-export class MoniteAppElement extends HTMLElement {
+export class MoniteAppElement extends MoniteAppElementBase<
+  'fetch-token' | 'theme' | 'locale'
+> {
+  private reactAppRoot: Root | undefined;
+
   /**
    * A record defining the types and allowed attributes that can be set on the element.
    *
@@ -17,7 +27,7 @@ export class MoniteAppElement extends HTMLElement {
    * @static
    * @readonly
    */
-  static readonly attributes: Record<
+  static readonly attributesSchema: Record<
     'disabled' | 'router' | 'basename' | 'component' | 'entity-id' | 'api-url',
     AttributeConfig
   > = {
@@ -66,7 +76,7 @@ export class MoniteAppElement extends HTMLElement {
    *   </script>
    *   ```
    */
-  static readonly slots: Record<
+  protected readonly slotsSchema: Record<
     'fetch-token' | 'theme' | 'locale',
     SlotConfig
   > = {
@@ -83,108 +93,8 @@ export class MoniteAppElement extends HTMLElement {
 
   static get observedAttributes() {
     return Object.keys(
-      MoniteAppElement.attributes
-    ) as (keyof (typeof MoniteAppElement)['attributes'])[];
-  }
-
-  private root: ShadowRoot | HTMLElement;
-  private slotsData: { [key in JSONSourceSlot]?: object } | undefined;
-  private isMounted = false;
-  private reactAppRoot: Root | undefined;
-
-  constructor() {
-    super();
-
-    const templateContent =
-      this.querySelector('template')?.content.cloneNode(true);
-
-    if (templateContent) this.appendChild(templateContent);
-
-    this.root = this.attachShadow({ mode: 'open', delegatesFocus: true });
-
-    this.root.innerHTML = `
-      <div id="monite-app-styles"></div>
-      <div id="monite-app-root"></div>
-    `;
-  }
-
-  getSlotsData(slots: Element[]) {
-    const slotsData = slots.reduce<{ [key in JSONSourceSlot]?: object }>(
-      (acc, slotElement) => {
-        const slotName =
-          slotElement.getAttribute('slot') || slotElement.getAttribute('name');
-
-        if (!slotName) {
-          console.error(
-            `Slot ${slotElement} does not have a 'slot' or 'name' attribute, skipping...`
-          );
-
-          return acc;
-        }
-
-        const slotConfig =
-          MoniteAppElement.slots[
-            slotName as keyof typeof MoniteAppElement.slots
-          ];
-
-        if (!slotConfig) {
-          console.error(
-            `Slot '${slotElement}' is not a valid slot, skipping...`
-          );
-
-          return acc;
-        }
-
-        return {
-          ...acc,
-          ...getAssignedElementsData(slotConfig.type, {
-            [slotName]: slotElement,
-          }),
-        };
-      },
-      {}
-    );
-
-    return slotsData;
-  }
-
-  connectedCallback() {
-    const slots = this.querySelectorAll('slot, [slot]');
-    this.slotsData = this.getSlotsData(Array.from(slots));
-
-    slots.forEach((slot) =>
-      slot.addEventListener('slotchange', this.handleSlotChange)
-    );
-
-    this.isMounted = true;
-    this.render();
-  }
-
-  disconnectedCallback() {
-    this.isMounted = false;
-
-    this.root
-      .querySelectorAll('slot, [slot]')
-      .forEach((slot) =>
-        slot.removeEventListener('slotchange', this.handleSlotChange)
-      );
-  }
-
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    if (oldValue !== newValue) {
-      this.render();
-    }
-  }
-
-  handleSlotChange(event: Event) {
-    const slot = event.target;
-    if (!(slot instanceof HTMLSlotElement)) return;
-    this.slotsData = {
-      ...this.slotsData,
-      ...this.getSlotsData([slot]),
-    };
-
-    this.render();
+      MoniteAppElement.attributesSchema
+    ) as (keyof (typeof MoniteAppElement)['attributesSchema'])[];
   }
 
   render() {
@@ -203,7 +113,7 @@ export class MoniteAppElement extends HTMLElement {
     this.reactAppRoot = this.reactAppRoot || ReactDOM.createRoot(appRootNode);
 
     const attributesProperties = Object.entries(
-      MoniteAppElement.attributes
+      MoniteAppElement.attributesSchema
     ).reduce((acc, [attribute, attributeConfig]) => {
       const attributeCamelCase = kebabToCamelCase(attribute);
       const attributeValue = this.getAttribute(attribute);
@@ -247,69 +157,5 @@ export class MoniteAppElement extends HTMLElement {
   }
 }
 
-const parseElementAttribute = ({
-  value,
-  config,
-  attribute,
-}: {
-  attribute: string;
-  value: string | null;
-  config: AttributeConfig;
-}): boolean | string | null => {
-  if (value === null) return null;
-
-  if (config.type === 'string') {
-    return value;
-  }
-
-  if (config.type === 'boolean') {
-    return ['true', 'yes', '1', ''].includes(value.toLowerCase());
-  }
-
-  throw new Error(
-    `Invalid attribute type "${config.type}" for the "${attribute}"`
-  );
-};
-
-const getAssignedElementsData = <
-  T extends {
-    [key: string]: Element;
-  }
->(
-  dataType: 'json' | 'jsEval',
-  jsonSourceElements: T
-) => {
-  return Object.entries(jsonSourceElements).reduce<{
-    [key in JSONSourceSlot]?: object;
-  }>((acc, [slotName, slot]) => {
-    try {
-      return {
-        ...acc,
-        [slotName]:
-          dataType === 'json'
-            ? JSON.parse(slot.textContent ?? '')
-            : eval(slot.textContent ? `(() => ${slot.textContent})()` : ''),
-      };
-    } catch (error) {
-      console.error(
-        `Error when parsing JSON content of assigned element "${slotName}", skipping...`,
-        error
-      );
-    }
-
-    return acc;
-  }, {});
-};
-
 export const kebabToCamelCase = (s: string): string =>
   s.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-
-type JSONSourceSlot = keyof (typeof MoniteAppElement)['slots'];
-
-type AttributeConfig = {
-  type: 'boolean' | 'string';
-};
-
-type SlotConfig = {
-  type: 'json' | 'jsEval';
-};

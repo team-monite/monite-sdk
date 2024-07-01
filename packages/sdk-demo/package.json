@@ -10,7 +10,7 @@
   },
   "types": "build/index.d.ts",
   "scripts": {
-    "dev": "yarn dev:lib & vite",
+    "dev": "yarn dev:lib & vite --port 5173",
     "dev:lib": "cross-env NODE_ENV=development rollup --watch --config rollup.config.mjs",
     "build": "vite build --outDir build && yarn build:lib",
     "build:lib": "cross-env NODE_ENV=production rollup --config rollup.config.mjs",

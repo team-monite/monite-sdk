@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
+import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
@@ -16,12 +17,12 @@ import {
   useThemeConfig,
 } from '@team-monite/sdk-demo';
 
-export const MoniteIframeAppConsumer = () => {
+export const MoniteIframeAppDemo = () => {
   const queryClient = useMemo(() => new QueryClient(), []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<AppCircularProgress color="primary" />}>
         <ConfigLoader>
           {({ apiUrl, appBasename, appHostname }) => (
             <EntityIdLoader apiUrl={apiUrl} fetchToken={fetchTokenDev}>
@@ -69,7 +70,31 @@ const MoniteIframeAppConsumerComponent = ({
           >
             <Routes>
               <Route
-                path="*"
+                path="/"
+                element={
+                  <MoniteIframe
+                    appBasename={appBasename}
+                    appHostname={appHostname}
+                    fetchToken={fetchToken}
+                    localeCode={localeCode}
+                    themeConfig={themeConfig}
+                  />
+                }
+              />
+              <Route
+                path="/settings/:component"
+                element={
+                  <MoniteIframe
+                    appBasename={appBasename}
+                    appHostname={appHostname}
+                    fetchToken={fetchToken}
+                    localeCode={localeCode}
+                    themeConfig={themeConfig}
+                  />
+                }
+              />
+              <Route
+                path="/:component"
                 element={
                   <MoniteIframe
                     appBasename={appBasename}
@@ -102,41 +127,42 @@ const MoniteIframe = ({
   themeConfig: ReturnType<typeof useThemeConfig>['themeConfig'];
 }) => {
   const portSegment = location.port ? `:${location.port}` : '';
-  const { pathname } = useLocation();
+  const { component = 'payables' } = useParams<'component'>();
+
   const iframeUrl = `//${
     appHostname || location.hostname
-  }${portSegment}/${appBasename}${pathname}`;
+  }${portSegment}/${appBasename}/${component}`;
 
   const [iframeElement, setIframeElement] = useState<HTMLIFrameElement | null>(
     null
   );
 
-  const channelPortManager = useMemo(() => {
+  const iframeCommunicator = useMemo(() => {
     return iframeElement && new MoniteIframeAppCommunicator(iframeElement);
   }, [iframeElement]);
 
   useEffect(() => {
-    if (!channelPortManager) return;
-    channelPortManager.mountSlot('fetch-token', fetchToken);
-    channelPortManager.mountSlot('locale', { code: localeCode });
-    channelPortManager.mountSlot('theme', getThemeOptions(themeConfig));
+    if (!iframeCommunicator) return;
+    iframeCommunicator.mountSlot('fetch-token', fetchToken);
+    iframeCommunicator.mountSlot('locale', { code: localeCode });
+    iframeCommunicator.mountSlot('theme', getThemeOptions(themeConfig));
 
     return () => {
-      channelPortManager.unmountSlot('fetch-token');
-      channelPortManager.unmountSlot('locale');
-      channelPortManager.unmountSlot('theme');
+      iframeCommunicator.unmountSlot('fetch-token');
+      iframeCommunicator.unmountSlot('locale');
+      iframeCommunicator.unmountSlot('theme');
     };
-  }, [channelPortManager, fetchToken, iframeElement, localeCode, themeConfig]);
+  }, [iframeCommunicator, fetchToken, iframeElement, localeCode, themeConfig]);
 
   useEffect(() => {
-    if (!channelPortManager) return;
-    channelPortManager.connect();
-    return () => void channelPortManager.disconnect();
-  }, [channelPortManager]);
+    if (!iframeCommunicator) return;
+    iframeCommunicator.connect();
+    return () => void iframeCommunicator.disconnect();
+  }, [iframeCommunicator]);
 
   return (
     <iframe
-      key={pathname.split('/')[1]}
+      key={component}
       ref={setIframeElement}
       src={iframeUrl}
       style={{ border: 'none', width: '100%', height: '100%' }}
