@@ -18,7 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Stack } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -32,11 +32,13 @@ import {
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestsFilter } from './ApprovalRequestsFilter/ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
-import { ApproveButton } from './ApproveButton/ApproveButton';
-import { RejectButton } from './RejectButton/RejectButton';
+import {
+  UseApprovalRequestActionsCellProps,
+  useApprovalRequestActionsCell,
+} from './useApprovalRequestActionsCell';
 import { UserCell } from './UserCell/UserCell';
 
-interface ApprovalRequestsTableProps {
+interface ApprovalRequestsTableBaseProps {
   /**
    * The event handler for a row click.
    *
@@ -44,6 +46,11 @@ interface ApprovalRequestsTableProps {
    */
   onRowClick?: (id: string) => void;
 }
+
+type ApprovalRequestsTableProps =
+  | ApprovalRequestsTableBaseProps
+  | (ApprovalRequestsTableBaseProps & UseApprovalRequestActionsCellProps);
+
 export const ApprovalRequestsTable = (props: ApprovalRequestsTableProps) => (
   <MoniteScopedProviders>
     <ApprovalRequestsTableBase {...props} />
@@ -52,6 +59,7 @@ export const ApprovalRequestsTable = (props: ApprovalRequestsTableProps) => (
 
 const ApprovalRequestsTableBase = ({
   onRowClick,
+  ...restProps
 }: ApprovalRequestsTableProps) => {
   const { api } = useMoniteContext();
   const { i18n } = useLingui();
@@ -70,6 +78,15 @@ const ApprovalRequestsTableBase = ({
       action: ActionEnum.UPDATE,
       entityUserId: user?.id,
     });
+
+  const actionsCell = useApprovalRequestActionsCell({
+    onRowActionClick:
+      'onRowActionClick' in restProps && restProps.onRowActionClick,
+    isApprovePending:
+      'isApprovePending' in restProps && restProps.isApprovePending,
+    isRejectPending:
+      'isRejectPending' in restProps && restProps.isRejectPending,
+  });
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -256,31 +273,10 @@ const ApprovalRequestsTableBase = ({
             flex: 1,
             renderCell: ({ value }) => <UserCell entityUserId={value} />,
           },
-          {
-            field: 'actions',
-            renderHeader: () => null,
-            sortable: false,
-            flex: 0.5,
-            align: 'right',
-            renderCell: (params) => {
-              if (
-                params.row.status === 'waiting' &&
-                user?.id &&
-                params.row.user_ids.includes(user.id) &&
-                !params.row.approved_by?.includes(user.id)
-              ) {
-                return (
-                  <Stack direction="row" spacing={1}>
-                    <ApproveButton approvalRequestId={params.row.id} />
-                    <RejectButton approvalRequestId={params.row.id} />
-                  </Stack>
-                );
-              }
-            },
-          },
+          ...(actionsCell ? [actionsCell] : []),
         ]}
         columnVisibilityModel={{
-          actions: isUpdateSupported,
+          actions: isUpdateSupported && 'onRowActionClick' in restProps,
         }}
         rows={rows ?? []}
       />

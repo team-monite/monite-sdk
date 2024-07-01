@@ -4,6 +4,7 @@ import {
 } from '@/mocks';
 import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
 import { MoniteSDK } from '@monite/sdk-api';
+import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
@@ -16,6 +17,10 @@ const meta: Meta<typeof ApprovalRequestsTable> = {
 type Story = StoryObj<typeof ApprovalRequestsTable>;
 
 export const FullPermissions: Story = {
+  args: {
+    onRowClick: action('onRowClick'),
+    onRowActionClick: action('onRowActionClick'),
+  },
   render: (args) => (
     <div style={{ height: 600 }}>
       <ApprovalRequestsTable {...args} />
@@ -24,6 +29,10 @@ export const FullPermissions: Story = {
 };
 
 export const ReadOnlyPermissions: Story = {
+  args: {
+    onRowClick: action('onRowClick'),
+    onRowActionClick: action('onRowActionClick'),
+  },
   decorators: [
     withGlobalStorybookDecorator(() => {
       const monite = new MoniteSDK({
@@ -47,6 +56,10 @@ export const ReadOnlyPermissions: Story = {
 };
 
 export const LowPermissions: Story = {
+  args: {
+    onRowClick: action('onRowClick'),
+    onRowActionClick: action('onRowActionClick'),
+  },
   decorators: [
     withGlobalStorybookDecorator(() => {
       const monite = new MoniteSDK({

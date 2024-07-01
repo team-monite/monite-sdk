@@ -1,7 +1,8 @@
 import React from 'react';
+import { toast } from 'react-hot-toast';
 
 import { PageHeader } from '@/components';
-import { ApprovalRequestsTable } from '@/components/approvalRequests/ApprovalRequestsTable';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -10,6 +11,9 @@ import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
 export const ApprovalRequests = () => (
   <MoniteScopedProviders>
@@ -19,6 +23,8 @@ export const ApprovalRequests = () => (
 
 const ApprovalRequestsBase = () => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -28,6 +34,51 @@ const ApprovalRequestsBase = () => {
       action: ActionEnum.READ,
       entityUserId: user?.id,
     });
+
+  const approveRequestMutation =
+    api.approvalRequests.postApprovalRequestsIdApprove.useMutation();
+  const rejectRequestMutation =
+    api.approvalRequests.postApprovalRequestsIdReject.useMutation();
+
+  const onApprove = (approvalRequestId: string) => {
+    approveRequestMutation.mutate(
+      {
+        body: undefined,
+        path: {
+          approval_request_id: approvalRequestId,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(t(i18n)`Request was approved`);
+
+          return api.approvalRequests.getApprovalRequests.invalidateQueries(
+            queryClient
+          );
+        },
+      }
+    );
+  };
+
+  const onReject = (approvalRequestId: string) => {
+    rejectRequestMutation.mutate(
+      {
+        body: undefined,
+        path: {
+          approval_request_id: approvalRequestId,
+        },
+      },
+      {
+        onSuccess: () => {
+          toast.success(t(i18n)`Request was rejected`);
+
+          return api.approvalRequests.getApprovalRequests.invalidateQueries(
+            queryClient
+          );
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -42,7 +93,24 @@ const ApprovalRequestsBase = () => {
         }
       />
       {!isReadAllowedLoading && !isReadAllowed && <AccessRestriction />}
-      {isReadAllowed && <ApprovalRequestsTable />}
+      {isReadAllowed && (
+        <ApprovalRequestsTable
+          onRowActionClick={({ id, action }) => {
+            switch (action) {
+              case 'approve':
+                onApprove(id);
+                break;
+              case 'reject':
+                onReject(id);
+                break;
+              default:
+                break;
+            }
+          }}
+          isApprovePending={approveRequestMutation.isPending}
+          isRejectPending={rejectRequestMutation.isPending}
+        />
+      )}
     </>
   );
 };
