@@ -1,13 +1,10 @@
-# If no changeset files are detected, the packages are published to NPM and a Sentry release is created.
-# If changeset files are detected, a "Version Packages" PR is created.
+# Publishes packages to NPM and makes a Sentry release.
 # Refer to the "changesets/action" documentation for more information: https://github.com/changesets/action
 
-name: Version or Release Packages
+name: Release Packages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
@@ -18,10 +15,9 @@ jobs:
   npm-publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    if: github.repository == 'team-monite/monite-sdk'
+    if: github.repository == 'team-monite/monite-sdk' && github.ref_name == 'orgin/main'
     permissions:
       contents: write
-      pull-requests: write
     environment: production
     steps:
       - uses: actions/checkout@v4
@@ -56,13 +52,11 @@ jobs:
           # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
           NPM_TOKEN: ""
 
-      - name: Create Release Pull Request or Publish to NPM
+      - name: Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.7
         with:
           publish: yarn exec .changeset/publish.sh --create-git-tags
-          version: yarn exec .changeset/version.sh
-          title: "chore: Version Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
