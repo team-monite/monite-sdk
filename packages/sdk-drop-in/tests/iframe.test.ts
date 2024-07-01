@@ -2,9 +2,11 @@ import { test, expect } from '@playwright/test';
 
 import * as process from 'node:process';
 
+import { WidgetType } from '../src/apps/MoniteApp';
+
 const consumerPage = '/monite-iframe-app-consumer';
 
-const routingPaths: Record<string, string> = {
+const routingPaths: Record<WidgetType, string> = {
   payables: '/payables',
   receivables: '/receivables',
   counterparts: '/counterparts',
@@ -38,9 +40,24 @@ test.describe('Monite Iframe Integration', () => {
     await page.getByRole('button', { name: 'Monite' }).click();
     await page.getByLabel('Dark Mode').check();
     await page.locator('.MuiBackdrop-root').click();
+  });
+
+  test('test the Roles button under Settings', async ({ page }) => {
     await page.getByRole('button', { name: 'Settings' }).click();
+    await expect(page.getByRole('button', { name: 'Roles' })).toBeVisible();
     await page.getByRole('button', { name: 'Roles' }).click();
+  });
+
+  test('test the Tags button under Settings', async ({ page }) => {
+    await page.getByRole('button', { name: 'Settings' }).click();
+    await expect(page.getByRole('button', { name: 'Tags' })).toBeVisible();
     await page.getByRole('button', { name: 'Tags' }).click();
+  });
+
+  test('test the Settings button under Settings', async ({ page }) => {
+    await page.getByRole('button', { name: 'Settings' }).click();
+    await expect(page.getByRole('button', { name: 'Settings' })).toBeVisible();
+    await page.getByRole('button', { name: 'Settings' }).click();
   });
 
   const widgetTests = [
