@@ -86,7 +86,7 @@ jobs:
         uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
 
       - name: Install Playwright Browsers
-        run: yarn workspace @monite/sdk-drop-in exec playwright install
+        run: yarn dlx playwright install --with-deps
 
       - name: E2E Test
         run: yarn e2e
