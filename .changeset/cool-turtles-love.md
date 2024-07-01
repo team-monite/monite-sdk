@@ -2,4 +2,4 @@
 '@monite/sdk-react': minor
 ---
 
-OSR error message in PayableDetails
+feature(DEV-8980): display OCR error message in PayableDetails
