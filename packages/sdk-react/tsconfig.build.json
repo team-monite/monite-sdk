@@ -13,6 +13,11 @@
     "src/**/*.stories.tsx",
     "src/**/*.test.tsx",
     "src/**/*.test.ts",
-    "src/utils/test-utils.tsx"
+    "src/utils/test-utils.tsx",
+    "src/utils/storybook-utils.tsx",
+    "src/setupTests.tsx",
+    "src/mocks",
+    "src/components/onboarding/onboardingTestUtils.ts",
+    "src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts"
   ]
 }
