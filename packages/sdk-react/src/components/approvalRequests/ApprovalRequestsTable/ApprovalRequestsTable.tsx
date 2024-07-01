@@ -30,11 +30,11 @@ import {
   FILTER_TYPE_CURRENT_USER,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
-import { ApprovalRequestsFilter } from './ApprovalRequestsFilter';
+import { ApprovalRequestsFilter } from './ApprovalRequestsFilter/ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
-import { ApproveButton } from './ApproveButton';
-import { RejectButton } from './RejectButton';
-import { UserCell } from './UserCell';
+import { ApproveButton } from './ApproveButton/ApproveButton';
+import { RejectButton } from './RejectButton/RejectButton';
+import { UserCell } from './UserCell/UserCell';
 
 interface ApprovalRequestsTableProps {
   /**

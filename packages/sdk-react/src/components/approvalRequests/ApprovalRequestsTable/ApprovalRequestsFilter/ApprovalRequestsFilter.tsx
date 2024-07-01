@@ -24,7 +24,7 @@ import {
 } from '../../consts';
 import { getRowToStatusTextMap } from '../../helpers';
 import { FilterTypes, FilterValue } from '../../types';
-import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy';
+import { AutocompleteCreatedBy } from '../AutocompleteCreatedBy/AutocompleteCreatedBy';
 
 interface FilterProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
