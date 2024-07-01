@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 import * as process from 'node:process';
 
@@ -52,8 +52,10 @@ test.describe('Monite Iframe Integration', () => {
   widgetTests.forEach(({ path, name }) => {
     test(`should see the ${name.toLowerCase()} tab`, async ({ page }) => {
       await page.goto(`${consumerPage}${path}`);
+      await page.getByRole('button', { name }).click();
       const iframe = page.frameLocator('iframe');
-      await iframe.getByRole('heading', { name }).click();
+      await iframe.locator('body').waitFor({ state: 'visible' });
+      await expect(iframe.getByRole('heading', { name })).toBeVisible();
     });
   });
 });
