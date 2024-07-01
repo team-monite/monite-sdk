@@ -32,7 +32,7 @@ test.describe('Monite Iframe Integration', () => {
     await page.goto(`${consumerPage}${routingPaths.receivables}`);
   });
 
-  test('test the theme switcher and tabs', async ({ page }) => {
+  test('test the theme switcher', async ({ page }) => {
     await page.getByRole('button', { name: 'Material UI' }).click();
     await page.getByText('Theme').click();
     await page.getByRole('button', { name: 'Material UI' }).click();
@@ -40,6 +40,16 @@ test.describe('Monite Iframe Integration', () => {
     await page.getByRole('button', { name: 'Monite' }).click();
     await page.getByLabel('Dark Mode').check();
     await page.locator('.MuiBackdrop-root').click();
+
+    const iframe = page.frameLocator('iframe');
+    await iframe.locator('body').waitFor({ state: 'visible' });
+
+    const themeElement = iframe.locator('body');
+    const bgColor = await themeElement.evaluate(
+      (el) => getComputedStyle(el).backgroundColor
+    );
+
+    expect(bgColor).toBe('rgb(18, 18, 18)');
   });
 
   test('test the Roles button under Settings', async ({ page }) => {
