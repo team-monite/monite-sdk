@@ -36,7 +36,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           />
         </Box>
       </Drawer>
-      <Box component="main" flexGrow={1} mx={3} my={1} minWidth={0}>
+      <Box component="main" flexGrow={1} minWidth={0} m={4}>
         {children}
       </Box>
     </Box>
