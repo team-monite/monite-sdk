@@ -1,29 +1,35 @@
-# If no changeset files are detected, the packages are published to NPM and a Sentry release is created.
-# If changeset files are detected, a "Version Packages" PR is created.
+# Publishes packages to NPM and makes a Sentry release.
 # Refer to the "changesets/action" documentation for more information: https://github.com/changesets/action
 
-name: Version or Release Packages
+name: Release Packages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
   # Do not cancel ✖︎ in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: false
 
+env:
+  RELEASE_BRANCH: "origin/main"
+
 jobs:
   npm-publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    if: github.repository == 'team-monite/monite-sdk'
     permissions:
       contents: write
-      pull-requests: write
     environment: production
     steps:
+      - name: Validate Release Branch
+        run: |
+          if [ "${{ github.ref_name }}" == "$RELEASE_BRANCH" ]; then
+            echo "✔︎ Branch '${{ github.ref_name }}' is a release branch '$RELEASE_BRANCH'. Continuing..."
+          else
+            echo "✖︎ Branch '${{ github.ref_name }}' is not a release branch '$RELEASE_BRANCH'. Exiting..." >&2
+            exit 1
+          fi
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -56,13 +62,11 @@ jobs:
           # The 'NPM_TOKEN' must be set to at least empty, as it is used in the ".yarnrc.yml" file
           NPM_TOKEN: ""
 
-      - name: Create Release Pull Request or Publish to NPM
+      - name: Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.7
         with:
           publish: yarn exec .changeset/publish.sh --create-git-tags
-          version: yarn exec .changeset/version.sh
-          title: "chore: Version Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
