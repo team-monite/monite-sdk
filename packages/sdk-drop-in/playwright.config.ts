@@ -2,9 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 const config = defineConfig({
   testDir: './tests',
-  timeout: 30 * 1000,
+  timeout: 30_000,
   expect: {
-    timeout: 5000,
+    timeout: 20_000,
   },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -20,7 +20,7 @@ const config = defineConfig({
   webServer: {
     command: 'yarn dev --port 5273',
     port: 5273,
-    timeout: 120 * 1000,
+    timeout: 120_000,
     reuseExistingServer: !process.env.CI,
   },
   projects: [

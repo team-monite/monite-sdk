@@ -35,8 +35,7 @@ test('test the theme switcher', async ({ page }) => {
   const iframe = page.frameLocator('iframe');
   await iframe.locator('body').waitFor({ state: 'visible' });
 
-  const body = await page.locator('body').innerHTML();
-  console.log(body); //ToDo: see the html string body what is on page for testing
+  // check that the content of the iframe is visible wait for it to load
 
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
@@ -45,6 +44,9 @@ test('test the theme switcher', async ({ page }) => {
   await page.getByRole('button', { name: 'Monite' }).click();
   await page.getByLabel('Dark Mode').check();
   await page.locator('.MuiBackdrop-root').click();
+
+  const body = await iframe.locator('body').innerHTML();
+  console.log(body); //ToDo: see the html string body what is on page for testing
 
   const themeElement = iframe.locator('body');
   const bgColor = await themeElement.evaluate(
