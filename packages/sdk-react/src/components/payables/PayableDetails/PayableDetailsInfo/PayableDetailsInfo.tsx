@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getIndividualName,
@@ -38,7 +39,7 @@ import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 
 export type PayablesDetailsInfoProps = {
-  payable: PayableResponseSchema;
+  payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
 };
 

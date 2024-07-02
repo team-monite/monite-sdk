@@ -1,27 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FieldNamesMarkedBoolean } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
+import { components } from '@/api';
 import {
   LineItem,
   PayableDetailsFormFields,
+  prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
-import {
-  useApprovePayableById,
-  useCancelPayableById,
-  useCreatePayableWithLineItems,
-  usePayableById,
-  useRejectPayableById,
-  useSubmitPayableById,
-  useUpdatePayableByIdWithLineItems,
-} from '@/core/queries/usePayable';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useCurrencies } from '@/core/hooks';
 import { usePayableLineItemsList } from '@/core/queries/usePayableLineItems';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import {
-  PayableActionEnum,
-  PayableStateEnum,
-  PayableUpdateSchema,
-  PayableUploadWithDataSchema,
-} from '@monite/sdk-api';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
+import { PayableActionEnum } from '@monite/sdk-api';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { payablesDefaultQueryConfig } from '../consts';
 
 export type PayableDetailsPermissions =
   | 'edit'
@@ -163,6 +160,11 @@ export function usePayableDetails({
   onApproved,
   onPay,
 }: UsePayableDetailsProps) {
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
+  const { i18n } = useLingui();
+  const { formatToMinorUnits } = useCurrencies();
+
   const [payableId, setPayableId] = useState<string | undefined>(id);
   const [isPermissionsLoading, setIsPermissionsLoading] =
     useState<boolean>(true);
@@ -220,7 +222,10 @@ export function usePayableDetails({
     data: payable,
     error: payableQueryError,
     isLoading,
-  } = usePayableById(payableId);
+  } = api.payables.getPayablesId.useQuery(
+    { path: { payable_id: payableId! } },
+    { enabled: !!payableId, ...payablesDefaultQueryConfig }
+  );
 
   const { data: lineItemsData } = usePayableLineItemsList(payableId);
 
@@ -252,12 +257,103 @@ export function usePayableDetails({
     entityUserId: payable?.was_created_by_user_id,
   });
 
-  const createMutation = useCreatePayableWithLineItems();
-  const saveMutation = useUpdatePayableByIdWithLineItems(payableId);
-  const cancelMutation = useCancelPayableById(payableId);
-  const submitMutation = useSubmitPayableById(payableId);
-  const rejectMutation = useRejectPayableById(payableId);
-  const approveMutation = useApprovePayableById(payableId);
+  const createMutation = api.payables.postPayables.useMutation(
+    {},
+    {
+      onSuccess: (payable) => {
+        return Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.payables.getPayablesIdLineItems.invalidateQueries(
+            {
+              parameters: { path: { payable_id: payable.id } },
+            },
+            queryClient
+          ),
+        ]);
+      },
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+  const updateMutation = api.payables.patchPayablesId.useMutation(undefined, {
+    onSuccess: (payable) => {
+      return Promise.all([
+        api.payables.getPayablesId.invalidateQueries(
+          { parameters: { path: { payable_id: payable.id } } },
+          queryClient
+        ),
+        api.payables.getPayables.invalidateQueries(queryClient),
+        api.payables.getPayablesIdLineItems.invalidateQueries(
+          {
+            parameters: { path: { payable_id: payable.id } },
+          },
+          queryClient
+        ),
+      ]);
+    },
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
+  const createLineItemMutation =
+    api.payables.postPayablesIdLineItems.useMutation();
+  const updateLineItemMutation =
+    api.payables.patchPayablesIdLineItemsId.useMutation();
+  const deleteLineItemMutation =
+    api.payables.deletePayablesIdLineItemsId.useMutation();
+  const cancelMutation = api.payables.postPayablesIdCancel.useMutation(
+    undefined,
+    {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+    }
+  );
+  const submitMutation =
+    api.payables.postPayablesIdSubmitForApproval.useMutation(undefined, {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+    });
+  const rejectMutation = api.payables.postPayablesIdReject.useMutation(
+    undefined,
+    {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+    }
+  );
+  const approveMutation =
+    api.payables.postPayablesIdApprovePaymentOperation.useMutation(undefined, {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+    });
 
   const status = payable?.status;
 
@@ -286,7 +382,7 @@ export function usePayableDetails({
     setIsPermissionsLoading(true);
 
     switch (status) {
-      case PayableStateEnum.DRAFT: {
+      case 'draft': {
         let permissions: PayableDetailsPermissions[] = [];
 
         if (isEdit) {
@@ -305,7 +401,7 @@ export function usePayableDetails({
         break;
       }
 
-      case PayableStateEnum.NEW: {
+      case 'new': {
         let permissions: PayableDetailsPermissions[] = [];
 
         if (isEdit) {
@@ -332,7 +428,7 @@ export function usePayableDetails({
         break;
       }
 
-      case PayableStateEnum.APPROVE_IN_PROGRESS: {
+      case 'approve_in_progress': {
         let permissions: PayableDetailsPermissions[] = [];
 
         if (isApproveAvailable) {
@@ -348,7 +444,7 @@ export function usePayableDetails({
         break;
       }
 
-      case PayableStateEnum.WAITING_TO_BE_PAID: {
+      case 'waiting_to_be_paid': {
         if (isPayAvailable) {
           setPermissions(['pay']);
         }
@@ -373,19 +469,19 @@ export function usePayableDetails({
   useEffect(() => {
     setIsFormLoading(
       createMutation.isPending ||
-        saveMutation.isPending ||
+        updateMutation.isPending ||
         submitMutation.isPending
     );
   }, [
     createMutation.isPending,
-    saveMutation.isPending,
+    updateMutation.isPending,
     submitMutation.isPending,
   ]);
 
   useEffect(() => {
     setIsActionButtonLoading(
       createMutation.isPending ||
-        saveMutation.isPending ||
+        updateMutation.isPending ||
         cancelMutation.isPending ||
         submitMutation.isPending ||
         rejectMutation.isPending ||
@@ -393,85 +489,243 @@ export function usePayableDetails({
     );
   }, [
     createMutation.isPending,
-    saveMutation.isPending,
+    updateMutation.isPending,
     cancelMutation.isPending,
     submitMutation.isPending,
     rejectMutation.isPending,
     approveMutation.isPending,
   ]);
 
-  const createInvoice = useCallback(
-    async (
-      data: PayableUploadWithDataSchema,
-      lineItemsToCreate?: LineItem[]
-    ) => {
-      const payable = await createMutation.mutateAsync({
-        body: data,
-        lineItemsToCreate: lineItemsToCreate,
+  const createInvoice = async (
+    data: components['schemas']['PayableUploadWithDataSchema'],
+    lineItemsToCreate?: LineItem[]
+  ) => {
+    const payable = await createMutation.mutateAsync(
+      {
+        ...data,
+      },
+      {
+        onSuccess: (createdPayable) => {
+          toast.success(
+            t(i18n)`Payable "${createdPayable.document_id}" was created`
+          );
+        },
+      }
+    );
+
+    if (lineItemsToCreate) {
+      const lineItemsMutation: Promise<
+        components['schemas']['LineItemResponse']
+      >[] = [];
+
+      lineItemsToCreate?.forEach((lineItem) => {
+        if (payable.currency && !lineItem.id) {
+          lineItemsMutation.push(
+            createLineItemMutation.mutateAsync({
+              path: { payable_id: payable.id },
+              body: prepareLineItemSubmit(
+                payable.currency,
+                lineItem,
+                formatToMinorUnits
+              ),
+            })
+          );
+        }
       });
 
-      setPayableId(payable.id);
+      await Promise.all(lineItemsMutation);
+    }
 
-      isEdit && setEdit(false);
-      onSave?.(payable.id);
-      onSaved?.(payable.id);
-    },
-    [createMutation, isEdit, onSave, onSaved]
-  );
+    await api.payables.getPayablesId.invalidateQueries(
+      { parameters: { path: { payable_id: payable.id } } },
+      queryClient
+    );
 
-  const saveInvoice = useCallback(
-    async (
-      id: string,
-      data: PayableUpdateSchema,
-      updatedLineItems?: LineItem[],
-      dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
-    ) => {
-      await saveMutation.mutateAsync({
-        id,
+    setPayableId(payable.id);
+
+    isEdit && setEdit(false);
+    onSave?.(payable.id);
+    onSaved?.(payable.id);
+  };
+
+  const saveInvoice = async (
+    id: string,
+    data: components['schemas']['PayableUpdateSchema'],
+    updatedLineItems?: LineItem[],
+    dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
+  ) => {
+    const payable = await updateMutation.mutateAsync(
+      {
+        path: { payable_id: id },
         body: data,
-        updatedLineItems,
-        dirtyFields,
-        lineItems,
+      },
+      {
+        onSuccess: (updatedPayable) => {
+          toast.success(
+            t(i18n)`Payable "${updatedPayable.document_id}" was updated`
+          );
+        },
+      }
+    );
+
+    if (updatedLineItems && dirtyFields) {
+      const lineItemsMutation: Promise<
+        unknown | components['schemas']['LineItemResponse']
+      >[] = [];
+
+      // create line items
+      updatedLineItems?.forEach((lineItem) => {
+        if (payable.currency && !lineItem.id) {
+          lineItemsMutation.push(
+            createLineItemMutation.mutateAsync({
+              path: { payable_id: payable.id },
+              body: prepareLineItemSubmit(
+                payable.currency,
+                lineItem,
+                formatToMinorUnits
+              ),
+            })
+          );
+        }
       });
 
-      isEdit && setEdit(false);
-      onSave?.(id);
-      onSaved?.(id);
-    },
-    [saveMutation, isEdit, onSave, onSaved, lineItems]
-  );
+      // update line items
+      dirtyFields?.lineItems?.forEach(
+        ({ id: isIdDirty, ...lineItemsDirtyFields }, index) => {
+          const isLineItemDirty = Object.values(lineItemsDirtyFields).some(
+            (isFieldDirty) => isFieldDirty
+          );
+          const lineItemId = updatedLineItems[index]?.id;
+          const updatedLineItem = updatedLineItems[index];
+          const isLineItemPersistAndUpdated =
+            !isIdDirty &&
+            Boolean(isLineItemDirty) &&
+            Boolean(lineItemId) &&
+            Boolean(updatedLineItem);
 
-  const cancelInvoice = useCallback(async () => {
+          if (payable.currency && isLineItemPersistAndUpdated) {
+            lineItemsMutation.push(
+              updateLineItemMutation.mutateAsync({
+                path: { payable_id: payable.id, line_item_id: lineItemId },
+                body: prepareLineItemSubmit(
+                  payable.currency,
+                  updatedLineItem,
+                  formatToMinorUnits
+                ),
+              })
+            );
+          }
+        }
+      );
+
+      // delete line items
+      lineItems?.forEach((defaultValue) => {
+        const formValue = updatedLineItems?.find(
+          (lineItem) => lineItem.id === defaultValue.id
+        );
+
+        if (!formValue) {
+          lineItemsMutation.push(
+            deleteLineItemMutation.mutateAsync({
+              path: { payable_id: payable.id, line_item_id: defaultValue.id },
+              body: undefined,
+            })
+          );
+        }
+      });
+
+      await Promise.all(lineItemsMutation);
+    }
+
+    await api.payables.getPayablesId.invalidateQueries(
+      { parameters: { path: { payable_id: payable.id } } },
+      queryClient
+    );
+
+    isEdit && setEdit(false);
+    onSave?.(id);
+    onSaved?.(id);
+  };
+
+  const cancelInvoice = async () => {
     if (payableId) {
-      await cancelMutation.mutateAsync(payableId);
+      await cancelMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+          body: undefined,
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" was canceled`
+            );
+          },
+        }
+      );
       onCancel?.(payableId);
       onCanceled?.(payableId);
     }
-  }, [cancelMutation, payableId, onCancel, onCanceled]);
+  };
 
-  const submitInvoice = useCallback(async () => {
+  const submitInvoice = async () => {
     if (payableId) {
-      await submitMutation.mutateAsync(payableId);
+      await submitMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+          body: undefined,
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" was submitted`
+            );
+          },
+        }
+      );
       onSubmit?.(payableId);
       onSubmitted?.(payableId);
     }
-  }, [submitMutation, payableId, onSubmit, onSubmitted]);
+  };
 
-  const rejectInvoice = useCallback(async () => {
+  const rejectInvoice = async () => {
     if (payableId) {
-      await rejectMutation.mutateAsync(payableId);
+      await rejectMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+          body: undefined,
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" was rejected`
+            );
+          },
+        }
+      );
       onReject?.(payableId);
       onRejected?.(payableId);
     }
-  }, [rejectMutation, payableId, onReject, onRejected]);
+  };
 
-  const approveInvoice = useCallback(async () => {
+  const approveInvoice = async () => {
     if (payableId) {
-      await approveMutation.mutateAsync(payableId);
+      await approveMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+          body: undefined,
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" was approved`
+            );
+          },
+        }
+      );
       onApprove?.(payableId);
       onApproved?.(payableId);
     }
-  }, [approveMutation, payableId, onApprove, onApproved]);
+  };
 
   const payInvoice = useCallback(() => {
     if (payableId) {

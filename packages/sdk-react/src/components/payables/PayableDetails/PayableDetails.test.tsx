@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Dialog } from '@/components';
-import { payablesDefaultQueryConfig } from '@/core/queries';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import {
   changeDocumentIdByPayableId,
@@ -19,6 +18,7 @@ import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { PayableDataTestId } from '../types';
 import { PayableDetails } from './PayableDetails';
 
@@ -388,7 +388,6 @@ describe('PayableDetails', () => {
 
       test('should trigger "onCanceled" callback when we click on "Cancel" button', async () => {
         fixture.status = PayableStateEnum.NEW;
-        const onCancelMock = jest.fn();
         const onCanceledMock = jest.fn();
 
         renderWithClient(
