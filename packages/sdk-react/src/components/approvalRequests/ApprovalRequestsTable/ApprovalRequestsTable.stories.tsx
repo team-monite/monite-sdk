@@ -19,7 +19,6 @@ type Story = StoryObj<typeof ApprovalRequestsTable>;
 export const FullPermissions: Story = {
   args: {
     onRowClick: action('onRowClick'),
-    onRowActionClick: action('onRowActionClick'),
   },
   render: (args) => (
     <div style={{ height: 600 }}>
@@ -31,7 +30,6 @@ export const FullPermissions: Story = {
 export const ReadOnlyPermissions: Story = {
   args: {
     onRowClick: action('onRowClick'),
-    onRowActionClick: action('onRowActionClick'),
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
@@ -58,7 +56,6 @@ export const ReadOnlyPermissions: Story = {
 export const LowPermissions: Story = {
   args: {
     onRowClick: action('onRowClick'),
-    onRowActionClick: action('onRowActionClick'),
   },
   decorators: [
     withGlobalStorybookDecorator(() => {
