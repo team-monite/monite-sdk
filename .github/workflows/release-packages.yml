@@ -11,15 +11,25 @@ concurrency:
   # Do not cancel ✖︎ in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: false
 
+env:
+  RELEASE_BRANCH: "origin/main"
+
 jobs:
   npm-publish:
     name: Publish to NPM
     runs-on: ubuntu-latest
-    if: github.repository == 'team-monite/monite-sdk' && github.ref_name == 'orgin/main'
     permissions:
       contents: write
     environment: production
     steps:
+      - name: Validate Release Branch
+        run: |
+          if [ "${{ github.ref_name }}" == "$RELEASE_BRANCH" ]; then
+            echo "✔︎ Branch '${{ github.ref_name }}' is a release branch '$RELEASE_BRANCH'. Continuing..."
+          else
+            echo "✖︎ Branch '${{ github.ref_name }}' is not a release branch '$RELEASE_BRANCH'. Exiting..." >&2
+            exit 1
+          fi
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
