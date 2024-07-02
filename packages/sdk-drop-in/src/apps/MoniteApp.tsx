@@ -1,26 +1,25 @@
-import { ComponentProps, ElementType, ReactNode } from 'react';
+import React, {
+  ComponentProps,
+  ElementType,
+  lazy,
+  ReactNode,
+  Suspense,
+} from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
+import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { css, Global } from '@emotion/react';
-import {
-  ApprovalPolicies,
-  Counterparts,
-  Onboarding,
-  Payables,
-  Products,
-  Receivables,
-  RootElementsProvider,
-  Tags,
-} from '@monite/sdk-react';
+import { RootElementsProvider } from '@monite/sdk-react';
 
-import { DropInMoniteProvider } from './DropInMoniteProvider';
+import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
 
 type ProviderProps = Pick<
   ComponentProps<typeof DropInMoniteProvider>,
   'locale' | 'theme'
 >;
 
-export const DropIn = ({
+export const MoniteApp = ({
+  disabled,
   router,
   basename,
   locale,
@@ -31,6 +30,7 @@ export const DropIn = ({
   component,
   apiUrl = 'https://api.dev.monite.com/v1',
 }: {
+  disabled?: boolean;
   rootElements: ComponentProps<typeof RootElementsProvider>['elements'];
   entityId?: string;
   apiUrl?: string;
@@ -42,6 +42,8 @@ export const DropIn = ({
   }>;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
+  if (disabled) return null;
+
   if (router && !(router in supportedRouters))
     throw new Error('Provided router type is not supported');
 
@@ -86,7 +88,9 @@ export const DropIn = ({
           `}
         />
         <Router router={router} basename={basename}>
-          {Widget && <Widget />}
+          <Suspense fallback={<AppCircularProgress />}>
+            <Widget />
+          </Suspense>
         </Router>
       </DropInMoniteProvider>
     </RootElementsProvider>
@@ -127,13 +131,39 @@ type WidgetType =
   | 'onboarding';
 
 const mapComponentTypeToWidget: Record<WidgetType, ElementType> = {
-  payables: Payables,
-  receivables: Receivables,
-  counterparts: Counterparts,
-  products: Products,
-  tags: Tags,
-  onboarding: Onboarding,
-  'approval-policies': ApprovalPolicies,
+  payables: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.Payables,
+    }))
+  ),
+  receivables: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.Receivables,
+    }))
+  ),
+  counterparts: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.Counterparts,
+    }))
+  ),
+  products: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.Products,
+    }))
+  ),
+  tags: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({ default: module.Tags }))
+  ),
+  onboarding: lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.Onboarding,
+    }))
+  ),
+  'approval-policies': lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.ApprovalPolicies,
+    }))
+  ),
 };
 
 export const supportedRouters = {

@@ -8,13 +8,20 @@
   "exports": {
     ".": {
       "import": "./dist/monite-app.js",
-      "require": "./dist/monite-app.umd.cjs"
+      "require": "./dist/monite-app.cjs"
     },
-    "./package.json": "./package.json",
-    "./*": "./dist/*.js"
+    "./monite-iframe-app": {
+      "import": "./dist/monite-iframe-app.js",
+      "require": "./dist/monite-iframe-app.cjs"
+    },
+    "./monite-iframe-app-communicator": {
+      "import": "./dist/monite-iframe-app-communicator.js",
+      "require": "./dist/monite-iframe-app-communicator.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "vite --config vite.config.dev.ts",
+    "dev": "vite --config vite.config.dev.ts --port 5174",
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rimraf dist/",
@@ -46,6 +53,9 @@
     "@emotion/react": "~11.11.1",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
+    "@mui/material": "~5.14.2",
+    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
     "@team-monite/sdk-demo": "workspace:~",
     "@types/react": "^18.0.9",

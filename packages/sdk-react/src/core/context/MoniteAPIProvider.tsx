@@ -1,14 +1,24 @@
-import { createContext, ReactNode } from 'react';
+import { Context, createContext, ReactNode } from 'react';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
-import { QraftContextValue } from '@openapi-qraft/react';
-import { Unstable_QraftSecureRequestFn as QraftSecureRequestFn } from '@openapi-qraft/react';
+import { MoniteContextValue } from '@/core/context/MoniteContext';
+import {
+  QraftContextValue,
+  Unstable_QraftSecureRequestFn as QraftSecureRequestFn,
+} from '@openapi-qraft/react';
 
 export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
 
-export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
-  const { queryClient, fetchToken, requestFn, apiUrl } = useMoniteContext();
-
+export const MoniteAPIProvider = ({
+  children,
+  fetchToken,
+  apiUrl,
+  requestFn,
+  queryClient,
+  APIContext,
+}: { children?: ReactNode; APIContext: Context<QraftContextValue> } & Pick<
+  MoniteContextValue,
+  'apiUrl' | 'fetchToken' | 'requestFn' | 'queryClient'
+>) => {
   return (
     <QraftSecureRequestFn
       requestFn={requestFn}
@@ -24,7 +34,7 @@ export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
       }}
     >
       {(securedRequestFn) => (
-        <MoniteQraftContext.Provider
+        <APIContext.Provider
           value={{
             queryClient,
             baseUrl: apiUrl,
@@ -32,7 +42,7 @@ export const MoniteAPIProvider = ({ children }: { children?: ReactNode }) => {
           }}
         >
           {children}
-        </MoniteQraftContext.Provider>
+        </APIContext.Provider>
       )}
     </QraftSecureRequestFn>
   );

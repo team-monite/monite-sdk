@@ -10,7 +10,7 @@
   },
   "types": "build/index.d.ts",
   "scripts": {
-    "dev": "yarn dev:lib & vite",
+    "dev": "yarn dev:lib & vite --port 5173",
     "dev:lib": "cross-env NODE_ENV=development rollup --watch --config rollup.config.mjs",
     "build": "vite build --outDir build && yarn build:lib",
     "build:lib": "cross-env NODE_ENV=production rollup --config rollup.config.mjs",
@@ -87,6 +87,7 @@
     "@monite/sdk-api": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.14.2",
+    "@openapi-qraft/react": "~1.11.0-beta.2",
     "@tanstack/react-query": "~5.28.6",
     "@tanstack/react-query-devtools": "~5.28.6",
     "@team-monite/sdk-themes": "workspace:~"

@@ -8,7 +8,7 @@ import {
   moniteLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
 
-export const getThemeConfig = (themeConfig: ThemeConfig) => {
+export const getThemeOptions = (themeConfig: ThemeConfig) => {
   const { variant, mode } = themeConfig;
 
   if (variant === 'material') {

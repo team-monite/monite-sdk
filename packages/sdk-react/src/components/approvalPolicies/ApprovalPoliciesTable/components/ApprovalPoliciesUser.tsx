@@ -37,13 +37,11 @@ export const ApprovalPoliciesUser = ({
   }`.trim();
 
   return (
-    <Box>
-      <Chip
-        avatar={<UserAvatar fileId={entityUser.userpic_file_id} />}
-        label={name}
-        variant="outlined"
-        color="secondary"
-      />
-    </Box>
+    <Chip
+      avatar={<UserAvatar fileId={entityUser.userpic_file_id} />}
+      label={name}
+      variant="outlined"
+      color="secondary"
+    />
   );
 };

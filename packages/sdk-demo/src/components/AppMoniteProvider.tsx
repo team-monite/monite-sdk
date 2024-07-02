@@ -1,6 +1,7 @@
 import React, { ComponentProps, ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
+import { useLingui } from '@lingui/react';
 import { MoniteSDK, MoniteSDKConfig } from '@monite/sdk-api';
 import { MoniteProvider } from '@monite/sdk-react';
 
@@ -12,7 +13,6 @@ type AppMoniteProvider = {
 const AppMoniteProvider = ({
   children,
   theme,
-  locale,
   sdkConfig: { headers, entityId, apiUrl, fetchToken },
 }: AppMoniteProvider) => {
   const fetchTokenLatest = useLatest(fetchToken);
@@ -28,8 +28,17 @@ const AppMoniteProvider = ({
     [apiUrl, entityId, fetchTokenLatest, headers]
   );
 
+  const { i18n } = useLingui();
+
   return (
-    <MoniteProvider monite={monite} locale={locale} theme={theme}>
+    <MoniteProvider
+      monite={monite}
+      locale={{
+        code: i18n.locale,
+        messages: i18n.messages[i18n.locale],
+      }}
+      theme={theme}
+    >
       {children}
     </MoniteProvider>
   );

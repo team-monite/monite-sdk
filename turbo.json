@@ -7,6 +7,7 @@
         "write-package-version-file",
         "compile-translations",
         "codegen",
+        "^codegen",
         "^build"
       ],
       "outputs": ["dist/**", "build/**", ".next/**"]
@@ -97,7 +98,7 @@
     "codegen": {
       "cache": true,
       "outputs": ["src/api/**/*.ts", "!src/api/client.ts", "!src/api/client.test.ts"],
-      "inputs": ["src/api/schema.json"]
+      "inputs": ["src/api/schema.json", "package.json", "yarn.lock"]
     }
   }
 }
