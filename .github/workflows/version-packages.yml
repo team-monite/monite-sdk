@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  npm-publish:
-    name: Publish to NPM
+  versioning:
+    name: Calculate Changesets
     runs-on: ubuntu-latest
     if: github.repository == 'team-monite/monite-sdk'
     permissions:
