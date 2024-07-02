@@ -1,0 +1,26 @@
+services:
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    command: "caddy reverse-proxy --from '${PULLPREVIEW_URL}' --to web:4567"
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/data"
+
+  web:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM node:20.12.2
+        WORKDIR /app
+        COPY . /app
+        ENV NEXT_PUBLIC_CLERK_IS_SATELLITE=true
+        RUN yarn install # never mind about `--immutable` for the preview
+        RUN yarn build --filter='sdk-demo-with-nextjs-and-clerk-auth'
+        CMD yarn workspace sdk-demo-with-nextjs-and-clerk-auth run start
+        EXPOSE 3000
