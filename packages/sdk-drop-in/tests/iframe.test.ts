@@ -16,20 +16,12 @@ const routingPaths: Record<WidgetType, string> = {
   onboarding: '/onboarding',
 };
 
-// console.log(process.env);
-// console.log('We are in CI 100%', process.env.CI === 'true');
-console.log(
-  '-------- MONITE -------',
-  process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON
-);
-
 test.beforeEach(async ({ page }) => {
   await page.route('/config.json', async (route) => {
     if (process.env.CI) {
-      const adminConfig = process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON;
       await route.fulfill({
         contentType: 'application/json',
-        body: JSON.stringify(adminConfig),
+        body: process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON,
       });
     } else {
       await route.continue();
