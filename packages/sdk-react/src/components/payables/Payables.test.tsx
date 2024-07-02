@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { Payables, Tags } from '@/components';
+import { Payables } from '@/components';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,

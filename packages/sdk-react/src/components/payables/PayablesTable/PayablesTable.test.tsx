@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { MoniteProvider } from '@/core/context/MoniteProvider';
-import { payablesDefaultQueryConfig } from '@/core/queries';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_LOW_PERMISSIONS,
@@ -19,6 +18,7 @@ import type { PayableResponseSchema } from '@monite/sdk-api';
 import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { PayablesTable } from './PayablesTable';
 
 jest.useFakeTimers();
@@ -240,7 +240,7 @@ describe('PayablesTable', () => {
 
   describe('# Pagination', () => {
     test('should fetch only first 10 elements when the page limit is 10', async () => {
-      const { container } = renderWithClient(<PayablesTable />);
+      renderWithClient(<PayablesTable />);
 
       await waitUntilTableIsLoaded();
 

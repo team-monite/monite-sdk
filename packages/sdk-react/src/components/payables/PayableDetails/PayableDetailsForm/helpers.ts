@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import {
   getIndividualName,
   isIndividualCounterpart,
@@ -8,7 +9,6 @@ import {
   CounterpartResponse as Counterpart,
   CurrencyEnum,
   LineItemRequest,
-  PayableResponseSchema,
   PayableUpdateSchema,
   TagReadSchema,
   LineItemResponse,
@@ -32,7 +32,7 @@ export interface PayableDetailsFormFields {
   counterpartBankAccount?: string;
   invoiceDate?: Date;
   dueDate?: Date;
-  currency: CurrencyEnum;
+  currency: components['schemas']['CurrencyEnum'];
   tags: Option[];
   lineItems: LineItem[];
 }
@@ -92,7 +92,7 @@ export const prepareDefaultValues = (
     amount: number,
     currency: CurrencyEnum | string
   ) => number | null,
-  payable?: PayableResponseSchema,
+  payable?: components['schemas']['PayableResponseSchema'],
   lineItems?: LineItemResponse[]
 ): PayableDetailsFormFields => {
   if (!payable) {
@@ -102,7 +102,7 @@ export const prepareDefaultValues = (
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: CurrencyEnum.EUR,
+      currency: 'EUR',
       tags: [],
       lineItems: [
         {
@@ -132,7 +132,7 @@ export const prepareDefaultValues = (
     counterpartBankAccount: counterpart_bank_account_id ?? '',
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
-    currency: currency ?? CurrencyEnum.EUR,
+    currency: currency ?? 'EUR',
     tags: tagsToSelect(tags),
     lineItems: (lineItems || []).map((lineItem) => {
       return {
@@ -158,7 +158,7 @@ export const prepareSubmit = ({
   currency,
   tags,
   counterpartAddressId,
-}: SubmitPayload): PayableUpdateSchema => ({
+}: SubmitPayload): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,
@@ -219,7 +219,7 @@ export const calculateTotalsForPayable = (
 };
 
 export const prepareLineItemSubmit = (
-  currency: CurrencyEnum,
+  currency: components['schemas']['CurrencyEnum'],
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
 ): LineItemRequest => {

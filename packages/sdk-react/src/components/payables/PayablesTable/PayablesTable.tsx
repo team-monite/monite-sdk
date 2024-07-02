@@ -28,6 +28,7 @@ import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
@@ -114,26 +115,29 @@ const PayablesTableBase = ({
     isLoading,
     isError,
     error,
-  } = api.payables.getPayables.useQuery({
-    query: {
-      order: 'desc',
-      limit: pageSize,
-      pagination_token: currentPaginationToken || undefined,
-      sort: 'created_at',
-      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-        : undefined,
-      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-        : undefined,
-      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
-      due_date: currentFilter[FILTER_TYPE_DUE_DATE]
-        ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
-        : undefined,
-      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+  } = api.payables.getPayables.useQuery(
+    {
+      query: {
+        order: 'desc',
+        limit: pageSize,
+        pagination_token: currentPaginationToken || undefined,
+        sort: 'created_at',
+        // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+          : undefined,
+        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
+        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+        due_date: currentFilter[FILTER_TYPE_DUE_DATE]
+          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+          : undefined,
+        document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      },
     },
-  });
+    { ...payablesDefaultQueryConfig }
+  );
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
