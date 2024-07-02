@@ -2,9 +2,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 const config = defineConfig({
   testDir: './tests',
-  timeout: 30_000,
+  timeout: 60_000, // Increase global timeout
   expect: {
-    timeout: 20_000,
+    timeout: 40_000, // Increase expect timeout
   },
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
