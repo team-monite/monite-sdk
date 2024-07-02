@@ -33,11 +33,11 @@ test.beforeEach(async ({ page }) => {
 
 test('test the theme switcher', async ({ page }) => {
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
 
-  const body1 = await iframe.locator('body').innerHTML();
-  console.log('FIRST', body1);
+  // await iframe.locator('body').waitFor({ state: 'visible' });
+  await iframe.locator('body').waitFor({ state: 'visible', timeout: 30000 });
 
+  // await page.waitForSelector('button[name="Material UI"]', { timeout: 10_000 });
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
   await page.getByRole('button', { name: 'Material UI' }).click();
@@ -45,9 +45,6 @@ test('test the theme switcher', async ({ page }) => {
   await page.getByRole('button', { name: 'Monite' }).click();
   await page.getByLabel('Dark Mode').check();
   await page.locator('.MuiBackdrop-root').click();
-
-  const body2 = await iframe.locator('body').innerHTML();
-  console.log('SECOND', body2);
 
   const themeElement = iframe.locator('body');
   const bgColor = await themeElement.evaluate(
