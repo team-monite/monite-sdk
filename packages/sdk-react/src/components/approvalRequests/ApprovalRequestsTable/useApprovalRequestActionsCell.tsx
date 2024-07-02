@@ -1,5 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 
+import { components } from '@/api';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -20,16 +21,68 @@ export interface UseApprovalRequestActionsCellProps {
    */
   onRowActionClick: (props: {
     id: string;
-    action?: ApprovalRequestsTableRowAction;
-  }) => void;
-  isApprovePending?: boolean;
-  isRejectPending?: boolean;
+    action: ApprovalRequestsTableRowAction;
+  }) =>
+    | Promise<components['schemas']['ApprovalRequestResourceWithMetadata']>
+    | undefined;
 }
+
+interface ActionButtonProps {
+  id: string;
+  onClick: UseApprovalRequestActionsCellProps['onRowActionClick'];
+}
+
+const ApproveButton = ({ id, onClick }: ActionButtonProps) => {
+  const { i18n } = useLingui();
+  const [isApprovePending, setIsApprovePending] = useState(false);
+
+  return (
+    <IconButton
+      aria-label={t(i18n)`Approve request`}
+      color="success"
+      disabled={isApprovePending}
+      onClick={(event) => {
+        event.preventDefault();
+        setIsApprovePending(true);
+
+        onClick({
+          id,
+          action: 'approve',
+        })?.finally(() => setIsApprovePending(false));
+      }}
+    >
+      <CheckCircleOutlineRoundedIcon />
+    </IconButton>
+  );
+};
+
+const RejectButton = ({ id, onClick }: ActionButtonProps) => {
+  const { i18n } = useLingui();
+  const [isRejectPending, setIsRejectPending] = useState(false);
+
+  return (
+    <IconButton
+      aria-label={t(i18n)`Reject request`}
+      color="error"
+      disabled={isRejectPending}
+      onClick={(event) => {
+        event.preventDefault();
+        setIsRejectPending(true);
+
+        onClick({
+          id,
+          action: 'reject',
+        })?.finally(() => setIsRejectPending(false));
+      }}
+    >
+      <HighlightOffRoundedIcon />
+    </IconButton>
+  );
+};
 
 export const useApprovalRequestActionsCell = (
   props: UseApprovalRequestActionsCellProps | {}
 ): GridBaseColDef | undefined => {
-  const { i18n } = useLingui();
   const { data: user } = useEntityUserByAuthToken();
 
   if (!('onRowActionClick' in props && props.onRowActionClick)) return;
@@ -49,36 +102,11 @@ export const useApprovalRequestActionsCell = (
       ) {
         return (
           <Stack direction="row" spacing={1}>
-            <IconButton
-              aria-label={t(i18n)`Approve request`}
-              color="success"
-              disabled={props.isApprovePending}
-              onClick={(event) => {
-                event.preventDefault();
-
-                props.onRowActionClick({
-                  id: params.row.id,
-                  action: 'approve',
-                });
-              }}
-            >
-              <CheckCircleOutlineRoundedIcon />
-            </IconButton>
-            <IconButton
-              aria-label={t(i18n)`Reject request`}
-              color="error"
-              disabled={props.isRejectPending}
-              onClick={(event) => {
-                event.preventDefault();
-
-                props.onRowActionClick({
-                  id: params.row.id,
-                  action: 'reject',
-                });
-              }}
-            >
-              <HighlightOffRoundedIcon />
-            </IconButton>
+            <ApproveButton
+              id={params.row.id}
+              onClick={props.onRowActionClick}
+            />
+            <RejectButton id={params.row.id} onClick={props.onRowActionClick} />
           </Stack>
         );
       }

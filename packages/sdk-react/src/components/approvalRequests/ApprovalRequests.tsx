@@ -40,8 +40,8 @@ const ApprovalRequestsBase = () => {
   const rejectRequestMutation =
     api.approvalRequests.postApprovalRequestsIdReject.useMutation();
 
-  const onApprove = (approvalRequestId: string) => {
-    approveRequestMutation.mutate(
+  const onApprove = (approvalRequestId: string) =>
+    approveRequestMutation.mutateAsync(
       {
         body: undefined,
         path: {
@@ -58,10 +58,9 @@ const ApprovalRequestsBase = () => {
         },
       }
     );
-  };
 
-  const onReject = (approvalRequestId: string) => {
-    rejectRequestMutation.mutate(
+  const onReject = (approvalRequestId: string) =>
+    rejectRequestMutation.mutateAsync(
       {
         body: undefined,
         path: {
@@ -78,7 +77,6 @@ const ApprovalRequestsBase = () => {
         },
       }
     );
-  };
 
   return (
     <>
@@ -98,17 +96,13 @@ const ApprovalRequestsBase = () => {
           onRowActionClick={({ id, action }) => {
             switch (action) {
               case 'approve':
-                onApprove(id);
-                break;
+                return onApprove(id);
               case 'reject':
-                onReject(id);
-                break;
+                return onReject(id);
               default:
                 break;
             }
           }}
-          isApprovePending={approveRequestMutation.isPending}
-          isRejectPending={rejectRequestMutation.isPending}
         />
       )}
     </>
