@@ -5,7 +5,7 @@ module.exports = {
     'lingui/no-unlocalized-strings': [
       'warn',
       {
-        ignore: ['Mui'],
+        ignore: ['Mui', 'use client'],
         ignoreFunction: [
           'Error',
           'console.log',

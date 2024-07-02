@@ -1,6 +1,6 @@
+'use client';
+
 import {
-  ApiError,
-  HTTPValidationError,
   OptionalPersonRequest,
   PersonRequest,
   PersonResponse,

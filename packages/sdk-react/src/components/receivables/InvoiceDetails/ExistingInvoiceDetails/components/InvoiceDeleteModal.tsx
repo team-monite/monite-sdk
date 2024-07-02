@@ -1,3 +1,5 @@
+'use client';
+
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useDeleteReceivableById, useReceivableById } from '@/core/queries';
 import { t } from '@lingui/macro';

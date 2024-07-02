@@ -1,3 +1,5 @@
+'use client';
+
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useCounterpartsAddresses } from '@/core/queries/useCounterpartsAddresses';

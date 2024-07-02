@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useState } from 'react';
 
-import { Dialog, PageHeader, UserRoleDetails } from '@/components';
+import { Dialog } from '@/components/Dialog';
+import { PageHeader } from '@/components/PageHeader';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -10,7 +13,8 @@ import { useLingui } from '@lingui/react';
 import { ActionEnum } from '@monite/sdk-api';
 import { Button } from '@mui/material';
 
-import { UserRolesTable } from './UserRolesTable';
+import { UserRoleDetails } from './UserRoleDetails/UserRoleDetails';
+import { UserRolesTable } from './UserRolesTable/UserRolesTable';
 
 export const UserRoles = () => (
   <MoniteScopedProviders>

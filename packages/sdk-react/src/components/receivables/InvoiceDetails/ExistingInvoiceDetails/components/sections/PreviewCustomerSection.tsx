@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useMemo } from 'react';
 
 import { getCounterpartName } from '@/components/counterparts/helpers';

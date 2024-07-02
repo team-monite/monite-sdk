@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useMemo } from 'react';
 
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';

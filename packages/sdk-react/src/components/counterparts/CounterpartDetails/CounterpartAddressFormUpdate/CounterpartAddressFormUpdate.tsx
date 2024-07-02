@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useId } from 'react';
 import { Controller } from 'react-hook-form';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentProps, forwardRef, useRef, useState } from 'react';
 
 import { css } from '@emotion/react';

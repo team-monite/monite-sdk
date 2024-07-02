@@ -1,3 +1,5 @@
+'use client';
+
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TaxIDTypeEnum } from '@monite/sdk-api';

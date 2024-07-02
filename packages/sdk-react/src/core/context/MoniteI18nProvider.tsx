@@ -1,3 +1,5 @@
+'use client';
+
 import React, { lazy, ReactNode, Suspense, useMemo, useRef } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';

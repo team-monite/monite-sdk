@@ -1,3 +1,5 @@
+'use client';
+
 import { VatRatesService, VatRateListResponse } from '@monite/sdk-api';
 import { useQuery } from '@tanstack/react-query';
 

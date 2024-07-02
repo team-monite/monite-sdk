@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useState } from 'react';
 
 import { PageHeader } from '@/components/PageHeader';

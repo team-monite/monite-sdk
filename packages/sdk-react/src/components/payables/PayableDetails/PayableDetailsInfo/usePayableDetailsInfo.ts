@@ -1,3 +1,5 @@
+'use client';
+
 import { useCounterpartById } from '@/core/queries/useCounterpart';
 import { useCounterpartsBankAccountsList } from '@/core/queries/useCouterpartsBankAccounts';
 import { usePayableLineItemsList } from '@/core/queries/usePayableLineItems';

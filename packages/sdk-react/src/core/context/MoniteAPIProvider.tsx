@@ -1,8 +1,10 @@
+'use client';
+
 import { createContext, ReactNode } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { QraftContextValue } from '@openapi-qraft/react';
-import { Unstable_QraftSecureRequestFn as QraftSecureRequestFn } from '@openapi-qraft/react';
+import { QraftSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
 
 export const MoniteQraftContext = createContext<QraftContextValue>(undefined);
 

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode, useMemo } from 'react';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
