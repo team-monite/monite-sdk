@@ -17,7 +17,7 @@ import { CenteredContentBox } from '@/ui/box';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, PayableResponseSchema } from '@monite/sdk-api';
+import { CurrencyEnum } from '@monite/sdk-api';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import {
   Box,

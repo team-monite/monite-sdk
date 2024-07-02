@@ -10,7 +10,6 @@ import {
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { usePayableLineItemsList } from '@/core/queries/usePayableLineItems';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -227,7 +226,12 @@ export function usePayableDetails({
     { enabled: !!payableId, ...payablesDefaultQueryConfig }
   );
 
-  const { data: lineItemsData } = usePayableLineItemsList(payableId);
+  const { data: lineItemsData } = api.payables.getPayablesIdLineItems.useQuery(
+    {
+      path: { payable_id: payableId! },
+    },
+    { enabled: !!payableId }
+  );
 
   const lineItems = lineItemsData?.data;
 

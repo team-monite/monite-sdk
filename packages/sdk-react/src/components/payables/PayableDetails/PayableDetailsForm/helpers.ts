@@ -9,7 +9,6 @@ import {
   CounterpartResponse as Counterpart,
   CurrencyEnum,
   LineItemRequest,
-  PayableUpdateSchema,
   TagReadSchema,
   LineItemResponse,
 } from '@monite/sdk-api';
