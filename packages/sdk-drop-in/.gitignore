@@ -23,4 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
-public/config.json
+#public/config.json
+
+# playwright
+test-results
+playwright-report

@@ -6,7 +6,6 @@ import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {

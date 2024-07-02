@@ -121,7 +121,7 @@ const Router = ({
   );
 };
 
-type WidgetType =
+export type WidgetType =
   | 'payables'
   | 'receivables'
   | 'counterparts'

@@ -9,6 +9,7 @@
     "lint": "turbo run lint --continue --output-logs=new-only",
     "extract-translations": "turbo run extract-translations --continue --output-logs=new-only",
     "compile-translations": "turbo run compile-translations --continue --output-logs=new-only",
+    "e2e": "turbo run e2e --filter=@monite/sdk-drop-in --output-logs=new-only",
     "storybook:widgets": "turbo run storybook --filter=@monite/sdk-react --output-logs=new-only",
     "storybook:build": "turbo run build-storybook",
     "storybook": "turbo run storybook --output-logs=new-only",
