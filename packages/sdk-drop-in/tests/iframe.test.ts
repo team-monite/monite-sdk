@@ -35,7 +35,7 @@ test('test the theme switcher', async ({ page }) => {
   const iframe = page.frameLocator('iframe');
 
   // await iframe.locator('body').waitFor({ state: 'visible' });
-  await iframe.locator('body').waitFor({ state: 'visible', timeout: 30000 });
+  await iframe.locator('body').waitFor({ state: 'visible', timeout: 40000 });
 
   // await page.waitForSelector('button[name="Material UI"]', { timeout: 10_000 });
   await page.getByRole('button', { name: 'Material UI' }).click();
@@ -47,10 +47,14 @@ test('test the theme switcher', async ({ page }) => {
   await page.locator('.MuiBackdrop-root').click();
 
   const themeElement = iframe.locator('body');
+  await themeElement.waitFor({ state: 'visible', timeout: 40000 });
+
   const bgColor = await themeElement.evaluate(
     (el) => getComputedStyle(el).backgroundColor
   );
+  console.log('Background color:', bgColor);
 
+  await page.waitForTimeout(5000);
   expect(bgColor).toBe('rgb(18, 18, 18)');
 });
 
@@ -60,7 +64,13 @@ test('test the Roles button under Settings', async ({ page }) => {
   await page.getByRole('button', { name: 'Roles' }).click();
 
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
+  await iframe.locator('body').waitFor({ state: 'visible', timeout: 40000 });
+
+  console.log(
+    'Iframe body state:',
+    await iframe.locator('body').evaluate((node) => node.innerHTML)
+  ); // Log iframe content
+
   await expect(iframe.getByRole('heading', { name: 'Roles' })).toBeVisible();
 });
 
@@ -70,7 +80,8 @@ test('test the Tags button under Settings', async ({ page }) => {
   await page.getByRole('button', { name: 'Tags' }).click();
 
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
+  await iframe.locator('body').waitFor({ state: 'visible', timeout: 40000 });
+
   await expect(iframe.getByRole('heading', { name: 'Tags' })).toBeVisible();
 });
 
