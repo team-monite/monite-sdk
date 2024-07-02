@@ -1,7 +1,8 @@
 import React, { useState, useMemo, DragEvent } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { useAttachFileToPayable } from '@/core/queries/usePayable';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { CenteredContentBox } from '@/ui/box';
 import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { t } from '@lingui/macro';
@@ -17,6 +18,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useQueryClient } from '@tanstack/react-query';
 
 const maxFileSizeInMB = 10;
 const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
@@ -39,10 +41,31 @@ export const PayableDetailsAttachFile = ({
   payableId,
 }: PayableDetailsAttachFileProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
   const theme = useTheme();
+
   const [dragIsOver, setDragIsOver] = useState(false);
-  const { mutate: attachFileToPayable, isPending } =
-    useAttachFileToPayable(payableId);
+
+  const attachFileMutation = api.payables.postPayablesIdAttachFile.useMutation(
+    {
+      path: { payable_id: payableId },
+    },
+    {
+      onSuccess: () =>
+        Promise.all([
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payableId } } },
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
   const dragOverStyle = useMemo(
     () => ({
       border: 2,
@@ -101,7 +124,7 @@ export const PayableDetailsAttachFile = ({
       }
 
       payableId &&
-        attachFileToPayable(
+        attachFileMutation.mutate(
           {
             file,
           },
@@ -120,7 +143,7 @@ export const PayableDetailsAttachFile = ({
     reader.readAsDataURL(file);
   };
 
-  return isPending ? (
+  return attachFileMutation.isPending ? (
     <CenteredContentBox>
       <CircularProgress />
     </CenteredContentBox>

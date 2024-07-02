@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -20,11 +21,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  PayableActionEnum,
-  PayableCursorFields,
-  PayableResponseSchema,
-} from '@monite/sdk-api';
+import { PayableActionEnum, PayableCursorFields } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
@@ -263,7 +260,7 @@ const PayablesTableBase = ({
               valueFormatter: ({
                 value,
               }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
+                components['schemas']['PayableResponseSchema']['created_at']
               >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
@@ -279,7 +276,7 @@ const PayablesTableBase = ({
               valueFormatter: ({
                 value,
               }: GridValueFormatterParams<
-                PayableResponseSchema['issued_at']
+                components['schemas']['PayableResponseSchema']['issued_at']
               >) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
@@ -295,7 +292,9 @@ const PayablesTableBase = ({
               flex: 0.7,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
+              }: GridValueFormatterParams<
+                components['schemas']['PayableResponseSchema']['due_date']
+              >) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
