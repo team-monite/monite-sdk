@@ -67,6 +67,7 @@ jobs:
         uses: changesets/action@v1.4.7
         with:
           publish: yarn exec .changeset/publish.sh --create-git-tags
+          version: sh -c 'echo "Versioning is prohibited in the release workflow" >&2 && exit 1'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
