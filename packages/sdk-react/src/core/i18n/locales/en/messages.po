@@ -404,7 +404,7 @@ msgstr "Approval policy updated"
 msgid "Approval request"
 msgstr "Approval request"
 
-#: src/components/approvalRequests/ApprovalRequests.tsx:88
+#: src/components/approvalRequests/ApprovalRequests.tsx:86
 msgid "Approval Requests"
 msgstr "Approval Requests"
 
@@ -417,7 +417,7 @@ msgstr "Approval Requests"
 msgid "Approve"
 msgstr "Approve"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:53
+#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:41
 msgid "Approve request"
 msgstr "Approve request"
 
@@ -4451,7 +4451,7 @@ msgstr "Registered Number (Japan)"
 msgid "Reject"
 msgstr "Reject"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:68
+#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:65
 msgid "Reject request"
 msgstr "Reject request"
 
@@ -4495,7 +4495,7 @@ msgstr "Replace items"
 msgid "Request was approved"
 msgstr "Request was approved"
 
-#: src/components/approvalRequests/ApprovalRequests.tsx:73
+#: src/components/approvalRequests/ApprovalRequests.tsx:72
 msgid "Request was rejected"
 msgstr "Request was rejected"
 
