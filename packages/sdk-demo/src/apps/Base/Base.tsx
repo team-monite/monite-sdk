@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
   ApprovalPolicies,
+  ApprovalRequests,
   UserRoles,
   Counterparts,
   Payables,
@@ -24,6 +25,7 @@ export const Base = () => {
 
       <Route path={ROUTES.settings} element={<Navigate to={ROUTES.tags} />} />
       <Route path={ROUTES.approvalPolicies} element={<ApprovalPolicies />} />
+      <Route path={ROUTES.approvalRequests} element={<ApprovalRequests />} />
       <Route path={ROUTES.roles} element={<UserRoles />} />
       <Route path={ROUTES.tags} element={<Tags />} />
       <Route path={ROUTES.receivables} element={<Receivables />} />

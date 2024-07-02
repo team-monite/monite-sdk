@@ -99,7 +99,7 @@ msgstr "Account representative"
 msgid "Accounting/Bookkeeping Services"
 msgstr "Accounting/Bookkeeping Services"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:68
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:67
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Action menu"
 msgstr "Action menu"
@@ -186,6 +186,8 @@ msgstr "Add someone new"
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:271
+#: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:75
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:392
 msgid "Added by"
 msgstr "Added by"
@@ -282,6 +284,7 @@ msgstr "All customers"
 msgid "All documents are provided"
 msgstr "All documents are provided"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:59
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:54
 msgid "All invoices"
 msgstr "All invoices"
@@ -308,6 +311,7 @@ msgstr "American Samoa"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:67
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:255
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:213
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:209
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:222
@@ -400,6 +404,10 @@ msgstr "Approval policy updated"
 msgid "Approval request"
 msgstr "Approval request"
 
+#: src/components/approvalRequests/ApprovalRequests.tsx:86
+msgid "Approval Requests"
+msgstr "Approval Requests"
+
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:182
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:506
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:527
@@ -409,6 +417,11 @@ msgstr "Approval request"
 msgid "Approve"
 msgstr "Approve"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:41
+msgid "Approve request"
+msgstr "Approve request"
+
+#: src/components/approvalRequests/helpers.ts:12
 #: src/core/queries/usePayable.ts:271
 msgid "Approved"
 msgstr "Approved"
@@ -934,7 +947,7 @@ msgstr "Canadian Dollar"
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:201
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:200
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Cancel"
 msgstr "Cancel"
@@ -952,6 +965,7 @@ msgstr "Cancel invoice"
 msgid "Cancel without saving?"
 msgstr "Cancel without saving?"
 
+#: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:38
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:158
 #: src/components/receivables/Filters/Filters.tsx:94
@@ -1305,7 +1319,7 @@ msgstr "Continue with no owners"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:197
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:196
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Copy payment link"
 msgstr "Copy payment link"
@@ -1338,6 +1352,7 @@ msgstr "Cote D\"Ivoire"
 msgid "Counseling Services"
 msgstr "Counseling Services"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:211
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:195
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:88
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:281
@@ -1714,7 +1729,7 @@ msgstr "Declined"
 msgid "Delete"
 msgstr "Delete"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:209
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:208
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Delete"
 msgstr "Delete"
@@ -1943,6 +1958,7 @@ msgstr "Drugs, Drug Proprietaries, and Druggist Sundries"
 msgid "Dry Cleaners"
 msgstr "Dry Cleaners"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:234
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:95
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:401
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:200
@@ -2031,7 +2047,7 @@ msgstr "Ecuador"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:205
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:204
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
@@ -2753,6 +2769,10 @@ msgstr "If the error recurs, contact support."
 msgid "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
+#: src/components/approvalRequests/helpers.ts:15
+msgid "In Approval"
+msgstr "In Approval"
+
 #: src/core/utils/useVatTypes.ts:149
 msgid "Income Tax Number (Malaysia)"
 msgstr "Income Tax Number (Malaysia)"
@@ -2839,6 +2859,7 @@ msgstr "Invoice {0}"
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:205
 #: src/components/payables/PayablesTable/PayablesTable.tsx:213
 msgid "Invoice #"
 msgstr "Invoice #"
@@ -2917,7 +2938,7 @@ msgstr "Israeli New Shekel"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:217
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:216
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
@@ -2927,6 +2948,7 @@ msgstr "Issue"
 msgid "Issue and send"
 msgstr "Issue and send"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:221
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:186
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:175
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:229
@@ -3309,7 +3331,7 @@ msgstr "Mark as uncollectible"
 msgid "Mark as uncollectible invoice"
 msgstr "Mark as uncollectible invoice"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:213
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:212
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
@@ -3697,6 +3719,10 @@ msgstr "no policy"
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:44
+msgid "No users found"
+msgstr "No users found"
+
 #: src/components/onboarding/dicts/mccCodes.ts:988
 msgid "Non-FI, Money Orders"
 msgstr "Non-FI, Money Orders"
@@ -3771,6 +3797,10 @@ msgstr "Onboarding Completed"
 msgid "One Stop Shop Value Added Tax (EU)"
 msgstr "One Stop Shop Value Added Tax (EU)"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:102
+msgid "Only my approvals"
+msgstr "Only my approvals"
+
 #: src/components/onboarding/dicts/mccCodes.ts:1018
 msgid "Opticians, Eyeglasses"
 msgstr "Opticians, Eyeglasses"
@@ -3798,7 +3828,7 @@ msgstr "Osteopaths"
 msgid "Overdue"
 msgstr "Overdue"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:233
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:232
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Overdue payment"
 msgstr "Overdue payment"
@@ -3893,7 +3923,7 @@ msgstr "Partially paid"
 msgid "Partially Paid"
 msgstr "Partially Paid"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:225
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:224
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Partially pay"
 msgstr "Partially pay"
@@ -3915,7 +3945,7 @@ msgstr "Pawn Shops"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:229
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:228
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
@@ -4401,7 +4431,7 @@ msgstr "Recreational Vehicle Rentals"
 msgid "Recurring"
 msgstr "Recurring"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:221
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:220
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
@@ -4421,6 +4451,11 @@ msgstr "Registered Number (Japan)"
 msgid "Reject"
 msgstr "Reject"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:65
+msgid "Reject request"
+msgstr "Reject request"
+
+#: src/components/approvalRequests/helpers.ts:14
 #: src/components/payables/consts.ts:39
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:202
 #: src/core/queries/usePayable.ts:289
@@ -4455,6 +4490,18 @@ msgstr "Reopen"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:539
 msgid "Replace items"
 msgstr "Replace items"
+
+#: src/components/approvalRequests/ApprovalRequests.tsx:53
+msgid "Request was approved"
+msgstr "Request was approved"
+
+#: src/components/approvalRequests/ApprovalRequests.tsx:72
+msgid "Request was rejected"
+msgstr "Request was rejected"
+
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:79
+msgid "Requested on"
+msgstr "Requested on"
 
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:174
 msgid "Resource name"
@@ -4670,7 +4717,7 @@ msgstr "Select invoice currency"
 msgid "Select someone"
 msgstr "Select someone"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:193
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:192
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
@@ -4900,6 +4947,9 @@ msgstr "Stationary, Office Supplies, Printing and Writing Paper"
 msgid "Stationery Stores, Office, and School Supply Stores"
 msgstr "Stationery Stores, Office, and School Supply Stores"
 
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:42
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:45
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:246
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:40
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:43
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:196
@@ -5835,7 +5885,7 @@ msgstr "Vietnam"
 msgid "Vietnamese Đồng"
 msgstr "Vietnamese Đồng"
 
-#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:189
+#: src/components/receivables/InvoicesTable/useInvoiceRowActionMenuCell.tsx:188
 msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
