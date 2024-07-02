@@ -60,6 +60,11 @@ const typography:
     fontSize: '0.875rem',
     fontWeight: 500,
   },
+  h2: {
+    fontSize: 32,
+    fontStyle: 'normal',
+    fontWeight: 600,
+  },
   label2: {
     fontSize: '0.875rem',
     fontStyle: 'normal',
@@ -91,6 +96,27 @@ const typographyDark = deepmerge(typography, {
 });
 
 const components: Components<Omit<Theme, 'components'>> = {
+  MuiButton: {
+    styleOverrides: {
+      containedPrimary: {
+        padding: '6px 16px',
+        height: 40,
+        boxShadow: 'none',
+        borderRadius: 8,
+        fontSize: 16,
+        fontWeight: 500,
+      },
+
+      root: {
+        '&.ThemeSelect': {
+          borderRadius: 8,
+        },
+        '&.ThemeSelect .ThemeSelect-modeLabel': {
+          display: 'flex',
+        },
+      },
+    },
+  },
   MuiDrawer: {
     styleOverrides: {
       root: {
@@ -131,18 +157,6 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiButton: {
-    styleOverrides: {
-      root: {
-        '&.ThemeSelect': {
-          borderRadius: 8,
-        },
-        '&.ThemeSelect .ThemeSelect-modeLabel': {
-          display: 'flex',
-        },
-      },
-    },
-  },
   MuiPopover: {
     styleOverrides: {
       paper: {
@@ -152,7 +166,49 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        fontSize: 14,
+        marginRight: 24,
+        color: paletteLight.neutral && paletteLight.neutral['50'],
+
+        '&.Mui-selected': {
+          color: paletteLight.neutral && paletteLight.neutral['10'],
+        },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        marginBottom: 32,
+      },
+      indicator: {
+        height: 4,
+        backgroundColor: paletteLight.neutral && paletteLight.neutral['50'],
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
+      },
+    },
+  },
 };
+
+const componentsDark = deepmerge(components, {
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        color: paletteDark.neutral && paletteDark.neutral['80'],
+        '&.Mui-selected': { color: 'primary.main' },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      indicator: { backgroundColor: 'primary.main' },
+    },
+  },
+});
 
 export const moniteLight = () =>
   createTheme(
@@ -168,6 +224,6 @@ export const moniteDark = () =>
     deepmerge(baseMoniteDark, {
       palette: paletteDark,
       typography: typographyDark,
-      components,
+      components: componentsDark,
     })
   );
