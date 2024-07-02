@@ -13,6 +13,7 @@ module.exports = {
           'console.debug',
           'createElement',
           'defineMessage',
+          'styled',
         ],
         ignoreAttribute: [
           'classes',

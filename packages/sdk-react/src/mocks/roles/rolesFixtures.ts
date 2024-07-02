@@ -61,6 +61,7 @@ export const fullPermissionRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'approval_request',
         'role',
         'counterpart',
         'product',
@@ -215,6 +216,7 @@ export const readOnlyRole: RoleResponse = {
       },
       ...[
         'approval_policy',
+        'approval_request',
         'role',
         'counterpart',
         'product',

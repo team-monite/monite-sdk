@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
   ApprovalPolicies,
+  ApprovalRequests,
   UserRoles,
   Counterparts,
   Payables,
@@ -62,7 +63,14 @@ export const Base = () => {
         }
       />
       <Route
-        path={ROUTES.roles}
+       path={ROUTES.approvalRequests}
+       element={
+         <Gutter>
+          <ApprovalRequests />
+         </Gutter>
+      }
+      />
+      <Route path={ROUTES.roles}
         element={
           <Gutter>
             <UserRoles />

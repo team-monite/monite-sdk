@@ -25,7 +25,13 @@ const preview = {
     layout: 'fullscreen',
     options: {
       storySort: {
-        order: ['Payables', 'Counterparts', 'Approval Policies', 'Payments'],
+        order: [
+          'Payables',
+          'Approval Requests',
+          'Counterparts',
+          'Approval Policies',
+          'Payments',
+        ],
       },
     },
     backgrounds: { disable: true },

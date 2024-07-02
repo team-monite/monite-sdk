@@ -13,8 +13,15 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
-import { Backdrop, Box, DialogContent, Divider, Grid } from '@mui/material';
+import { OcrStatusEnum, PayableActionEnum } from '@monite/sdk-api';
+import {
+  Alert,
+  Backdrop,
+  Box,
+  DialogContent,
+  Divider,
+  Grid,
+} from '@mui/material';
 
 import { OptionalFields } from '../types';
 import { PayableDetailsForm } from './PayableDetailsForm';
@@ -166,6 +173,17 @@ const PayableDetailsBase = ({
               height="100%"
               overflow="auto"
             >
+              {payable &&
+                (payable.status === 'new' || payable.status === 'draft') &&
+                payable.ocr_status === OcrStatusEnum.ERROR && (
+                  <Box mb={2}>
+                    <Alert severity="error">
+                      {t(
+                        i18n
+                      )`Due to an error, the OCR failed to read the data from the document. Please input the data manually.`}
+                    </Alert>
+                  </Box>
+                )}
               {isEdit ? (
                 <PayableDetailsForm
                   setEdit={setEdit}
