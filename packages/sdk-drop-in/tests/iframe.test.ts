@@ -37,11 +37,13 @@ test('test the theme switcher', async ({ page }) => {
   });
 
   const iframe = page.frameLocator('iframe');
-
-  // await iframe.locator('body').waitFor({ state: 'visible' });
   await iframe.locator('body').waitFor({ state: 'visible', timeout: 40000 });
 
-  // await page.waitForSelector('button[name="Material UI"]', { timeout: 10_000 });
+  console.log(
+    'Iframe body state:',
+    await iframe.locator('body').evaluate((node) => node.innerHTML)
+  ); // Log iframe content
+
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
   await page.getByRole('button', { name: 'Material UI' }).click();
