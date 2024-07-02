@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -9,7 +10,7 @@ import {
 import { Button } from '@mui/material';
 
 interface PayablesTableActionProps {
-  payable: PayableResponseSchema;
+  payable: components['schemas']['PayableResponseSchema'];
 
   /**
    * The event handler for the pay action

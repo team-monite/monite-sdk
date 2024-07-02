@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCell } from '@/ui/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -18,7 +21,6 @@ import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  OrderEnum,
   PayableActionEnum,
   PayableCursorFields,
   PayableResponseSchema,
@@ -89,6 +91,8 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -108,38 +112,38 @@ const PayablesTableBase = ({
       entityUserId: user?.id,
     });
 
-  const { data: payables, isLoading } = usePayablesList(
-    OrderEnum.DESC,
-    pageSize,
-    currentPaginationToken || undefined,
-    PayableCursorFields.CREATED_AT,
-    undefined,
-    undefined,
-    // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-    currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-      : undefined,
-    currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-      : undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_STATUS] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_DUE_DATE]
-      ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
-      : undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_SEARCH] || undefined
-  );
+  const {
+    data: payables,
+    isLoading,
+    isError,
+    error,
+  } = api.payables.getPayables.useQuery({
+    query: {
+      order: 'desc',
+      limit: pageSize,
+      pagination_token: currentPaginationToken || undefined,
+      sort: 'created_at',
+      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+      due_date: currentFilter[FILTER_TYPE_DUE_DATE]
+        ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+        : undefined,
+      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+    },
+  });
+
+  //TODO: Remove this error handling and replace with proper error handling
+  useEffect(() => {
+    if (isError) {
+      toast.error(getAPIErrorMessage(i18n, error));
+    }
+  }, [isError, error, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
