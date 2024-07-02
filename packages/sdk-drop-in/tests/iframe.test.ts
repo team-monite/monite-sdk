@@ -32,6 +32,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('test the theme switcher', async ({ page }) => {
+  page.on('response', (response) => {
+    console.log('Response:', response.url(), response.status());
+  });
+
   const iframe = page.frameLocator('iframe');
 
   // await iframe.locator('body').waitFor({ state: 'visible' });
@@ -59,6 +63,9 @@ test('test the theme switcher', async ({ page }) => {
 });
 
 test('test the Roles button under Settings', async ({ page }) => {
+  page.on('response', (response) => {
+    console.log('Response:', response.url(), response.status());
+  });
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Roles' })).toBeVisible();
   await page.getByRole('button', { name: 'Roles' }).click();
