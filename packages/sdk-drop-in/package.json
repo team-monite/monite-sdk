@@ -70,7 +70,7 @@
     "react-router-dom": "^6.3.0",
     "react-use": "^17.3.2",
     "rimraf": "~5.0.0",
-    "typescript": "~5.0.4",
+    "typescript": "~5.5.4",
     "vite": "~5.1.4"
   },
   "dependencies": {

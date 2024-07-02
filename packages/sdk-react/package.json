@@ -106,7 +106,7 @@
     "rimraf": "~5.0.0",
     "rollup": "~3.29.4",
     "storybook": "~7.6.7",
-    "typescript": "~5.0.4"
+    "typescript": "~5.5.4"
   },
   "peerDependencies": {
     "@emotion/cache": "~11.11.0",
