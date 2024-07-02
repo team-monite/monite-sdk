@@ -32,12 +32,11 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('test the theme switcher', async ({ page }) => {
-  await page.waitForTimeout(5000);
-  const body = await page.locator('body').innerHTML();
-  console.log(body); //ToDo: see the html string body what is on page for testing
-
   const iframe = page.frameLocator('iframe');
   await iframe.locator('body').waitFor({ state: 'visible' });
+
+  const body = await page.locator('body').innerHTML();
+  console.log(body); //ToDo: see the html string body what is on page for testing
 
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
