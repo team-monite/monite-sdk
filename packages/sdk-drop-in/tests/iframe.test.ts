@@ -36,7 +36,7 @@ test('test the theme switcher', async ({ page }) => {
   await iframe.locator('body').waitFor({ state: 'visible' });
 
   const body1 = await iframe.locator('body').innerHTML();
-  console.log('SECOND', body1);
+  console.log('FIRST', body1);
 
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
