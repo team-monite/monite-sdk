@@ -8,7 +8,6 @@ import {
   MoniteI18nProvider,
 } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
-import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
@@ -55,6 +54,8 @@ afterEach(() => {
   queryCache.clear();
   queryClient.removeQueries();
 });
+
+const { api } = createAPIClient();
 
 export const cachedMoniteSDK = new MoniteSDK({
   entityId: entityIds[0],
@@ -345,12 +346,15 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
-  const roleQuery = queryClient.getQueryState([
-    ENTITY_USERS_QUERY_ID,
-    'my_role',
-  ]);
+  const roleQuery = api.entityUsers.getEntityUsersMyRole.getQueryState(
+    {},
+    queryClient
+  );
 
-  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me']);
+  const meQuery = api.entityUsers.getEntityUsersMe.getQueryState(
+    {},
+    queryClient
+  );
 
   if (!roleQuery || !meQuery) throw new Error('Permissions query not exists');
 
