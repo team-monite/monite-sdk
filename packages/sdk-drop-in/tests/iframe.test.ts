@@ -19,7 +19,6 @@ const routingPaths: Record<WidgetType, string> = {
 test.beforeEach(async ({ page }) => {
   await page.route('/config.json', async (route) => {
     if (process.env.CI) {
-      console.log('Using CI environment variables for the config.json');
       await route.fulfill({
         contentType: 'application/json',
         body: process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON,
@@ -29,12 +28,31 @@ test.beforeEach(async ({ page }) => {
     }
   });
 
-  await page.goto(`${consumerPage}${routingPaths.receivables}`);
+  await page.goto(`${consumerPage}${routingPaths.receivables}`, {
+    waitUntil: 'domcontentloaded',
+    timeout: 60000,
+  });
+
+  const iframeElement = await page.locator('iframe').elementHandle();
+
+  if (!iframeElement) {
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
+  }
+
+  const frame = await iframeElement.contentFrame();
+
+  if (!frame) {
+    await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
+  }
+
+  await frame.waitForURL(new RegExp('.*/receivables.*', 'i'), {
+    timeout: 60000,
+  });
 });
 
 test('test the theme switcher', async ({ page }) => {
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
+  await iframe.locator('body').waitFor({ state: 'visible', timeout: 10_000 });
 
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();

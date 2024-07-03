@@ -81,19 +81,11 @@ jobs:
     name: E2E Playwright Testing
     environment: common
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
         uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
-
-      - name: Check content inside root of the drop-in package
-        run: yarn workspace @monite/sdk-drop-in exec ls -la
-
-      - name: Check content inside public of the drop-in package
-        run: yarn workspace @monite/sdk-drop-in exec ls -la public
-
-      - name: Check content inside src of the drop-in package
-        run: yarn workspace @monite/sdk-drop-in exec cat public/config.json
 
       - name: Install Playwright Browsers
         run: yarn workspace @monite/sdk-drop-in exec playwright install
