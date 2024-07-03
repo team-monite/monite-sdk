@@ -49,21 +49,6 @@ export const useMoniteIframeAppSlots = () => {
     [iframeCommunicator, fetchToken]
   );
 
-  useEffect(
-    function subscribe() {
-      const clicker = () => {
-        fetchToken();
-      };
-
-      document.addEventListener('click', clicker);
-
-      return () => {
-        document.removeEventListener('click', clicker);
-      };
-    },
-    [fetchToken]
-  );
-
   return { ...slots, fetchToken };
 };
 
