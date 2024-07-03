@@ -18,6 +18,8 @@ const config = defineConfig({
     headless: true,
   },
   webServer: {
+    // Note: 'yarn build && yarn preview' is not used here as routing support is needed,
+    // which is implemented for dev mode.
     command: 'yarn dev --port 5273',
     port: 5273,
     timeout: 120_000,
