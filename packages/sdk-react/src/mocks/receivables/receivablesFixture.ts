@@ -1,7 +1,7 @@
 import { bankAccountsFixture } from '@/mocks/bankAccounts';
 import {
   counterpartsAddressesFixture,
-  generateCounterpartAddress,
+  legacyGenerateCounterpartAddress,
 } from '@/mocks/counterparts/address';
 import { entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
@@ -258,7 +258,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
           counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
         )
       : undefined,
-    counterpart_billing_address: generateCounterpartAddress(),
+    counterpart_billing_address: legacyGenerateCounterpartAddress(),
     counterpart_shipping_address: counterpartAddress,
     counterpart_contact: faker.datatype.boolean()
       ? {
@@ -287,7 +287,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
-    entity_address: generateCounterpartAddress(),
+    entity_address: legacyGenerateCounterpartAddress(),
     memo: faker.lorem.sentence(),
     entity_bank_account: faker.datatype.boolean()
       ? getRandomItemFromArray(bankAccountsFixture.data)

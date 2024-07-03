@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks';
 import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
@@ -27,7 +28,12 @@ function generateRandomAddress(
   };
 }
 
-export function generateCounterpartAddress(): CounterpartAddress {
+export function generateCounterpartAddress() {
+  // TODO replace this with after migration
+  return legacyGenerateCounterpartAddress() as components['schemas']['CounterpartAddress'];
+}
+
+export function legacyGenerateCounterpartAddress(): CounterpartAddress {
   return {
     country: getRandomProperty(AllowedCountries),
     city: faker.location.city(),
