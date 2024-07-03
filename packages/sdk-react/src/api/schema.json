@@ -310,6 +310,77 @@
         "security": [{ "HTTPBearer": [] }]
       }
     },
+    "/accounting_connections/{connection_id}/sync": {
+      "post": {
+        "tags": ["Accounting connections"],
+        "summary": "Force Sync",
+        "operationId": "post_accounting_connections_id_sync",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-05-25",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string" },
+            "name": "connection_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountingMessageResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
     "/accounting_sync_rules": {
       "get": {
         "tags": ["Accounting synchronization rules"],
@@ -4269,12 +4340,10 @@
             "in": "query"
           },
           {
-            "description": "A list of counterpart IDs to search through.",
             "required": false,
             "schema": {
-              "items": { "type": "string" },
-              "type": "array",
-              "description": "A list of counterpart IDs to search through."
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
             },
             "name": "id__in",
             "in": "query"
@@ -8840,7 +8909,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_post_entities_id_documents"
+                "$ref": "#/components/schemas/EntityOnboardingDocuments"
               }
             }
           }
@@ -8873,7 +8942,6 @@
           }
         },
         "deprecated": true,
-        "schema_name": "EntityOnboardingDocuments",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -17200,7 +17268,6 @@
             }
           }
         },
-        "schema_name": "CreatePayableFromFileRequest",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -17993,7 +18060,6 @@
             }
           }
         },
-        "schema_name": "AttachFileToPayableRequest",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -21826,7 +21892,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/Body_post_persons_id_documents"
+                "$ref": "#/components/schemas/PersonOnboardingDocuments"
               }
             }
           }
@@ -21859,7 +21925,6 @@
           }
         },
         "deprecated": true,
-        "schema_name": "PersonOnboardingDocuments",
         "security": [{ "HTTPBearer": [] }]
       }
     },
@@ -25677,6 +25742,15 @@
           },
           {
             "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "id__in",
+            "in": "query"
+          },
+          {
+            "required": false,
             "schema": { "type": "string" },
             "name": "name",
             "in": "query"
@@ -26294,6 +26368,15 @@
               "description": "A token, obtained from previous page. Prior over other filters"
             },
             "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "id__in",
             "in": "query"
           },
           {
@@ -31773,6 +31856,12 @@
         "type": "object",
         "required": ["id", "created_at", "updated_at", "connection_url"]
       },
+      "AccountingMessageResponse": {
+        "properties": { "message": { "type": "string" } },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["message"]
+      },
       "AccountingSettingsPayload": {
         "properties": {
           "provider": { "type": "string", "minLength": 1 },
@@ -31807,14 +31896,24 @@
         "additionalProperties": false,
         "type": "object"
       },
+      "ActionEnum": {
+        "type": "string",
+        "enum": ["create", "read", "update", "delete"]
+      },
       "ActionSchema": {
         "properties": {
-          "action_name": { "type": "string" },
-          "permission": { "type": "string" }
+          "action_name": {
+            "allOf": [{ "$ref": "#/components/schemas/ActionEnum" }],
+            "description": "Action name",
+            "default": "read"
+          },
+          "permission": {
+            "allOf": [{ "$ref": "#/components/schemas/PermissionEnum" }],
+            "description": "Permission type",
+            "default": "allowed"
+          }
         },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["action_name", "permission"]
+        "type": "object"
       },
       "AddCustomTemplateSchema": {
         "properties": {
@@ -32224,7 +32323,12 @@
           "EH",
           "YE",
           "ZM",
-          "ZW"
+          "ZW",
+          "BL",
+          "BQ",
+          "CW",
+          "MF",
+          "SX"
         ]
       },
       "AllowedCountriesNames": {
@@ -32673,33 +32777,33 @@
       },
       "ApprovalProcessStepResource": {
         "properties": {
-          "approved_by": {
-            "items": { "type": "string", "format": "uuid" },
-            "type": "array"
-          },
           "object_id": { "type": "string", "format": "uuid" },
-          "rejected_by": { "type": "string", "format": "uuid" },
           "required_approval_count": { "type": "integer", "minimum": 1.0 },
-          "role_ids": {
-            "items": { "type": "string", "format": "uuid" },
-            "type": "array"
-          },
           "status": {
             "$ref": "#/components/schemas/ApprovalProcessStepStatus"
           },
           "user_ids": {
             "items": { "type": "string", "format": "uuid" },
             "type": "array"
-          }
+          },
+          "role_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array"
+          },
+          "approved_by": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array"
+          },
+          "rejected_by": { "type": "string", "format": "uuid" }
         },
         "type": "object",
         "required": [
-          "approved_by",
           "object_id",
           "required_approval_count",
-          "role_ids",
           "status",
-          "user_ids"
+          "user_ids",
+          "role_ids",
+          "approved_by"
         ]
       },
       "ApprovalProcessStepResourceList": {
@@ -32985,62 +33089,6 @@
         "type": "object",
         "required": ["file"]
       },
-      "Body_post_entities_id_documents": {
-        "properties": {
-          "verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "bank_account_ownership_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_license": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_memorandum_of_association": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_ministerial_decree": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_registration_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "company_tax_id_verification": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          },
-          "proof_of_registration": {
-            "items": { "type": "string", "format": "binary" },
-            "type": "array",
-            "minItems": 1
-          }
-        },
-        "type": "object"
-      },
       "Body_post_files": {
         "properties": {
           "file": { "type": "string", "format": "binary" },
@@ -33058,27 +33106,6 @@
         "properties": { "file": { "type": "string", "format": "binary" } },
         "type": "object",
         "required": ["file"]
-      },
-      "Body_post_persons_id_documents": {
-        "properties": {
-          "verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_front": {
-            "type": "string",
-            "format": "binary"
-          },
-          "additional_verification_document_back": {
-            "type": "string",
-            "format": "binary"
-          }
-        },
-        "type": "object"
       },
       "BusinessProfile": {
         "properties": {
@@ -34799,22 +34826,27 @@
       },
       "CreateRecurrencePayload": {
         "properties": {
+          "body_text": { "type": "string" },
           "day_of_month": { "$ref": "#/components/schemas/DayOfMonth" },
           "end_month": { "type": "integer", "maximum": 12.0, "minimum": 1.0 },
           "end_year": { "type": "integer", "maximum": 2077.0 },
           "invoice_id": { "type": "string", "format": "uuid" },
+          "recipients": { "$ref": "#/components/schemas/Recipients" },
           "start_month": { "type": "integer", "maximum": 12.0, "minimum": 1.0 },
-          "start_year": { "type": "integer", "maximum": 2077.0 }
+          "start_year": { "type": "integer", "maximum": 2077.0 },
+          "subject_text": { "type": "string" }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
+          "body_text",
           "day_of_month",
           "end_month",
           "end_year",
           "invoice_id",
           "start_month",
-          "start_year"
+          "start_year",
+          "subject_text"
         ]
       },
       "CreateRoleRequest": {
@@ -35043,6 +35075,11 @@
           "total_withholding_tax": {
             "type": "integer",
             "description": "Total price of the receivable with tax withheld in minor units"
+          },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
           },
           "type": {
             "type": "string",
@@ -35755,43 +35792,38 @@
         "properties": {
           "city": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
+            "maxLength": 255,
             "description": "A city (a full name) where the entity is registered"
           },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
             "description": "A country name (as ISO code) where the entity is registered ",
+            "default": "DE",
             "example": "DE"
           },
           "line1": {
             "type": "string",
-            "maxLength": 200,
-            "minLength": 1,
+            "maxLength": 255,
             "description": "A street where the entity is registered"
           },
           "line2": {
             "type": "string",
             "maxLength": 100,
-            "minLength": 1,
             "description": "An alternative street used by the entity"
           },
           "postal_code": {
             "type": "string",
             "maxLength": 10,
-            "minLength": 1,
             "description": "A postal code of the address where the entity is registered"
           },
           "state": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
             "description": "A state in a country where the entity is registered"
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["city", "country", "line1", "postal_code"],
+        "required": ["city", "line1", "postal_code"],
         "description": "A schema represents address info of the entity"
       },
       "EntityBankAccountPaginationResponse": {
@@ -35887,6 +35919,36 @@
         "type": "object",
         "required": ["id"],
         "description": "Represents a bank account owned by an entity."
+      },
+      "EntityBase": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "A base schemas for an entity"
       },
       "EntityBusinessStructure": {
         "type": "string",
@@ -36075,6 +36137,62 @@
               { "$ref": "#/components/schemas/TermsOfServiceAcceptance" }
             ],
             "description": "Details on the entity's acceptance of the service agreement."
+          }
+        },
+        "type": "object"
+      },
+      "EntityOnboardingDocuments": {
+        "properties": {
+          "verification_document_front": {
+            "type": "string",
+            "format": "binary"
+          },
+          "verification_document_back": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additional_verification_document_front": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additional_verification_document_back": {
+            "type": "string",
+            "format": "binary"
+          },
+          "bank_account_ownership_verification": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "company_license": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "company_memorandum_of_association": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "company_ministerial_decree": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "company_registration_verification": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "company_tax_id_verification": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
+          },
+          "proof_of_registration": {
+            "items": { "type": "string", "format": "binary" },
+            "type": "array",
+            "minItems": 1
           }
         },
         "type": "object"
@@ -36676,79 +36794,36 @@
       },
       "FileSchema": {
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of this file."
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
-          },
-          "file_type": {
-            "type": "string",
-            "description": "The type of the business object associated with this file.",
-            "example": "payables"
-          },
-          "md5": {
-            "type": "string",
-            "description": "The MD5 hash of the file.",
-            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).",
-            "example": "application/pdf"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 512,
-            "description": "The original file name (if available).",
-            "example": "invoice.pdf"
-          },
-          "pages": {
-            "items": { "$ref": "#/components/schemas/PageSchema" },
-            "type": "array",
-            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
-            "default": []
-          },
-          "previews": {
-            "items": { "$ref": "#/components/schemas/PreviewSchema" },
-            "type": "array",
-            "description": "Preview images generated for this file. There can be multiple images with different sizes.",
-            "default": []
-          },
-          "region": {
-            "type": "string",
-            "description": "Geographical region of the data center where the file is stored.",
-            "example": "eu-central-1"
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The file size in bytes.",
-            "example": 24381
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the file.",
-            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "entity_id": { "type": "string", "format": "uuid" },
+          "file_type": { "type": "string" },
+          "md5": { "type": "string" },
+          "mimetype": { "type": "string" },
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "s3_bucket": { "type": "string" },
+          "s3_file_path": { "type": "string" },
+          "size": { "type": "integer" },
+          "url": { "type": "string" }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "id",
           "created_at",
+          "updated_at",
           "file_type",
           "md5",
           "mimetype",
           "name",
           "region",
+          "s3_bucket",
+          "s3_file_path",
           "size",
           "url"
-        ],
-        "description": "Represents a file (such as a PDF invoice) that was uploaded to Monite."
+        ]
       },
       "FilesResponse": {
         "properties": {
@@ -37210,6 +37285,11 @@
             "type": "integer",
             "description": "Total price of the receivable with tax withheld in minor units"
           },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
           "type": {
             "type": "string",
             "enum": ["invoice"],
@@ -37288,7 +37368,13 @@
       },
       "IterationStatus": {
         "type": "string",
-        "enum": ["pending", "completed", "canceled", "issue_failed"]
+        "enum": [
+          "pending",
+          "completed",
+          "canceled",
+          "issue_failed",
+          "send_failed"
+        ]
       },
       "LabelNValue": {
         "properties": {
@@ -37579,12 +37665,12 @@
             "type": "integer",
             "maximum": 10000.0,
             "minimum": 0.0,
-            "description": "Percent minor units. Example: 12.5% is 1250"
+            "description": "Percent minor units. Example: 12.5% is 1250. This field is only required on invoices issued by entities in the US, Pakistan, and other unsupported countries."
           },
           "vat_rate_id": {
             "type": "string",
             "format": "uuid",
-            "description": "Unique identifier of the vat rate object."
+            "description": "Unique identifier of the vat rate object. This field is required for all entities in supported countries except the US and Pakistan."
           }
         },
         "additionalProperties": false,
@@ -37620,28 +37706,13 @@
             "format": "uuid",
             "description": "Unique ID of the product."
           },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time at which the product was created. Timestamps follow the ISO 8601 standard."
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time at which the product was last updated. Timestamps follow the ISO 8601 standard."
-          },
           "description": {
             "type": "string",
             "description": "Description of the product."
           },
-          "entity_id": { "type": "string", "format": "uuid" },
-          "entity_user_id": { "type": "string", "format": "uuid" },
           "ledger_account_id": { "type": "string", "format": "uuid" },
-          "measure_unit": { "$ref": "#/components/schemas/UnitResponse" },
-          "measure_unit_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "The unique ID reference of the unit used to measure the quantity of this product (e.g. items, meters, kilograms)."
+          "measure_unit": {
+            "$ref": "#/components/schemas/LineItemProductMeasureUnit"
           },
           "name": { "type": "string", "description": "Name of the product." },
           "price": { "$ref": "#/components/schemas/Price" },
@@ -37661,16 +37732,16 @@
           "vat_rate": { "$ref": "#/components/schemas/LineItemProductVatRate" }
         },
         "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "entity_id",
-          "measure_unit",
-          "measure_unit_id",
-          "name",
-          "vat_rate"
-        ]
+        "required": ["id", "name", "vat_rate"]
+      },
+      "LineItemProductMeasureUnit": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "description": { "type": "string", "maxLength": 200 },
+          "name": { "type": "string", "maxLength": 100, "minLength": 1 }
+        },
+        "type": "object",
+        "required": ["id", "name"]
       },
       "LineItemProductVatRate": {
         "properties": {
@@ -37828,12 +37899,12 @@
             "type": "integer",
             "maximum": 10000.0,
             "minimum": 0.0,
-            "description": "Percent minor units. Example: 12.5% is 1250"
+            "description": "Percent minor units. Example: 12.5% is 1250. This field is only required on invoices issued by entities in the US, Pakistan, and other unsupported countries."
           },
           "vat_rate_id": {
             "type": "string",
             "format": "uuid",
-            "description": "Vat rate object id"
+            "description": "Unique identifier of the vat rate object. This field is required for all entities in supported countries except the US and Pakistan."
           }
         },
         "additionalProperties": false,
@@ -38377,6 +38448,7 @@
           "entity_user_token",
           "entity_vat_ids",
           "export",
+          "onboarding",
           "partner",
           "partner_internal_config",
           "partner_settings",
@@ -38389,6 +38461,7 @@
           "payment_link",
           "payment_record",
           "payment_reminder",
+          "person",
           "product",
           "receivable",
           "reconciliation",
@@ -38435,6 +38508,29 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["client_id", "client_secret", "grant_type"]
+      },
+      "OcrAutoTaggingSettingsRequest": {
+        "properties": {
+          "tag_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Tag identifier that will be assigned to the payable document if one of the words listed in keywords is found during OCR"
+          },
+          "keywords": {
+            "items": { "type": "string" },
+            "type": "array",
+            "maxItems": 50,
+            "minItems": 1,
+            "description": "A list of words that will be searched for assigning a tag in the recognized fields of the document after OCR processing. If at least one match is found, the tag will be assigned. Each keyword must be between 2 and 25 characters long"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "A switch to temporarily disable a keyword without removing it from the list"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["tag_id", "keywords", "enabled"]
       },
       "OcrRecognitionResponse": {
         "properties": {
@@ -39439,6 +39535,11 @@
             ],
             "description": "The person's address"
           },
+          "citizenship": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.",
+            "example": "DE"
+          },
           "date_of_birth": {
             "type": "string",
             "format": "date",
@@ -39558,7 +39659,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["name", "terms"]
+        "required": ["name"]
       },
       "OverdueReminderResponse": {
         "properties": {
@@ -39583,7 +39684,7 @@
           }
         },
         "type": "object",
-        "required": ["id", "created_at", "updated_at", "name", "terms"]
+        "required": ["id", "created_at", "updated_at", "name"]
       },
       "OverdueReminderTerm": {
         "properties": {
@@ -39629,40 +39730,6 @@
         },
         "additionalProperties": false,
         "type": "object"
-      },
-      "PageSchema": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of the image."
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.",
-            "example": "image/png"
-          },
-          "number": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The page number in the PDF document, from 0.",
-            "example": 0
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Image file size, in bytes.",
-            "example": 21972
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the image.",
-            "example": "https://bucket.s3.amazonaws.com/123/456.png"
-          }
-        },
-        "type": "object",
-        "required": ["id", "mimetype", "number", "size", "url"],
-        "description": "When a PDF document is uploaded to Monite, it extracts individual pages from the document\nand saves them as PNG images. This object contains the image and metadata of a single page."
       },
       "PartiallyPaidPayload": {
         "properties": {
@@ -39841,6 +39908,13 @@
           },
           "document_ids": {
             "$ref": "#/components/schemas/DocumentIDsSettingsRequest"
+          },
+          "payables_ocr_auto_tagging": {
+            "items": {
+              "$ref": "#/components/schemas/OcrAutoTaggingSettingsRequest"
+            },
+            "type": "array",
+            "description": "Auto tagging settings for all incoming OCR payable documents."
           }
         },
         "additionalProperties": false,
@@ -39950,7 +40024,7 @@
           "logo": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/entities__unversioned__schemas__file_saver__FileSchema"
+                "$ref": "#/components/schemas/core__connectors__entities__unversioned__schemas__file_saver__FileSchema"
               }
             ],
             "description": "A logo image of the entity"
@@ -40015,7 +40089,7 @@
           "logo": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/entities__unversioned__schemas__file_saver__FileSchema"
+                "$ref": "#/components/schemas/core__connectors__entities__unversioned__schemas__file_saver__FileSchema"
               }
             ],
             "description": "A logo image of the entity"
@@ -40315,6 +40389,11 @@
               { "$ref": "#/components/schemas/OcrRecognitionResponse" }
             ],
             "description": "Data extracted from the uploaded payable by OCR."
+          },
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date by which the payable was paid"
           },
           "partner_metadata": {
             "type": "object",
@@ -41662,6 +41741,27 @@
         "type": "object",
         "required": ["city", "country", "line1", "postal_code"]
       },
+      "PersonOnboardingDocuments": {
+        "properties": {
+          "verification_document_front": {
+            "type": "string",
+            "format": "binary"
+          },
+          "verification_document_back": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additional_verification_document_front": {
+            "type": "string",
+            "format": "binary"
+          },
+          "additional_verification_document_back": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "type": "object"
+      },
       "PersonOnboardingDocumentsPayload": {
         "properties": {
           "additional_verification_document_back": {
@@ -41758,6 +41858,11 @@
             "allOf": [{ "$ref": "#/components/schemas/PersonAddressRequest" }],
             "description": "The person's address"
           },
+          "citizenship": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.",
+            "example": "DE"
+          },
           "date_of_birth": {
             "type": "string",
             "format": "date",
@@ -41827,6 +41932,11 @@
           "address": {
             "allOf": [{ "$ref": "#/components/schemas/PersonAddressResponse" }],
             "description": "The person's address"
+          },
+          "citizenship": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "Required for persons of US entities. The country of the person's citizenship, as a two-letter country code (ISO 3166-1 alpha-2). In case of dual or multiple citizenship, specify any.",
+            "example": "DE"
           },
           "created_by_entity_user_id": {
             "type": "string",
@@ -41956,28 +42066,6 @@
       "PortalUserStatus": {
         "type": "string",
         "enum": ["sent_confirmation", "active", "deleted", "archived"]
-      },
-      "PreviewSchema": {
-        "properties": {
-          "height": {
-            "type": "integer",
-            "description": "The image height in pixels.",
-            "example": 400
-          },
-          "url": {
-            "type": "string",
-            "description": "The image URL.",
-            "example": "https://bucketname.s3.amazonaws.com/1/2/3.png"
-          },
-          "width": {
-            "type": "integer",
-            "description": "The image width in pixels.",
-            "example": 200
-          }
-        },
-        "type": "object",
-        "required": ["height", "url", "width"],
-        "description": "A preview image generated for a file."
       },
       "PreviewTemplateRequest": {
         "properties": {
@@ -42135,7 +42223,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["measure_unit_id", "name"]
+        "required": ["name"]
       },
       "ProductServiceResponse": {
         "properties": {
@@ -42183,14 +42271,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "entity_id",
-          "measure_unit_id",
-          "name"
-        ]
+        "required": ["id", "created_at", "updated_at", "entity_id", "name"]
       },
       "ProductServiceTypeEnum": {
         "type": "string",
@@ -43061,6 +43142,11 @@
             "type": "integer",
             "description": "Total price of the receivable with tax withheld in minor units"
           },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
           "type": {
             "type": "string",
             "enum": ["quote"],
@@ -43275,6 +43361,11 @@
             "maxLength": 100,
             "description": "Contain purchase order number."
           },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
           "type": {
             "type": "string",
             "enum": ["invoice"],
@@ -43387,6 +43478,11 @@
             "minLength": 1,
             "format": "uri",
             "description": "Link for custom quote accept page"
+          },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
           },
           "type": {
             "type": "string",
@@ -43532,12 +43628,6 @@
             "type": "string",
             "minLength": 1,
             "description": "Body text of the content"
-          },
-          "language": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Lowercase ISO code of language",
-            "default": "en"
           },
           "recipients": { "$ref": "#/components/schemas/Recipients" },
           "subject_text": {
@@ -43942,6 +44032,7 @@
             "format": "date-time",
             "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
           },
+          "body_text": { "type": "string" },
           "current_iteration": { "type": "integer" },
           "day_of_month": { "$ref": "#/components/schemas/DayOfMonth" },
           "end_month": { "type": "integer", "maximum": 12.0, "minimum": 1.0 },
@@ -43951,15 +44042,18 @@
             "items": { "$ref": "#/components/schemas/RecurrenceIteration" },
             "type": "array"
           },
+          "recipients": { "$ref": "#/components/schemas/Recipients" },
           "start_month": { "type": "integer", "maximum": 12.0, "minimum": 1.0 },
           "start_year": { "type": "integer", "maximum": 2077.0 },
-          "status": { "$ref": "#/components/schemas/RecurrenceStatus" }
+          "status": { "$ref": "#/components/schemas/RecurrenceStatus" },
+          "subject_text": { "type": "string" }
         },
         "type": "object",
         "required": [
           "id",
           "created_at",
           "updated_at",
+          "body_text",
           "current_iteration",
           "day_of_month",
           "end_month",
@@ -43968,7 +44062,8 @@
           "iterations",
           "start_month",
           "start_year",
-          "status"
+          "status",
+          "subject_text"
         ]
       },
       "RecurrenceIteration": {
@@ -44320,7 +44415,16 @@
             "allOf": [{ "$ref": "#/components/schemas/ReceivableEditFlow" }],
             "default": "compliant"
           },
-          "document_ids": { "$ref": "#/components/schemas/DocumentIDsSettings" }
+          "document_ids": {
+            "$ref": "#/components/schemas/DocumentIDsSettings"
+          },
+          "payables_ocr_auto_tagging": {
+            "items": {
+              "$ref": "#/components/schemas/OcrAutoTaggingSettingsRequest"
+            },
+            "type": "array",
+            "description": "Auto tagging settings for all incoming OCR payable documents."
+          }
         },
         "type": "object"
       },
@@ -45192,6 +45296,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
+          "entity": { "$ref": "#/components/schemas/EntityBase" },
           "entity_bank_account_id": {
             "type": "string",
             "format": "uuid",
@@ -45229,6 +45334,11 @@
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
           "payment_terms_id": { "type": "string", "format": "uuid" },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
           "vat_exempt": {
             "type": "boolean",
             "description": "Indicates whether the goods, materials, or services listed in the receivable are exempt from VAT or not."
@@ -45535,6 +45645,11 @@
             "format": "uri",
             "description": "Link for custom quote accept page"
           },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
           "vat_exempt": {
             "type": "boolean",
             "description": "Indicates whether the goods, materials, or services listed in the receivable are exempt from VAT or not."
@@ -45565,9 +45680,12 @@
       },
       "UpdateRecurrencePayload": {
         "properties": {
+          "body_text": { "type": "string" },
           "day_of_month": { "$ref": "#/components/schemas/DayOfMonth" },
           "end_month": { "type": "integer", "maximum": 12.0, "minimum": 1.0 },
-          "end_year": { "type": "integer", "maximum": 2077.0 }
+          "end_year": { "type": "integer", "maximum": 2077.0 },
+          "recipients": { "$ref": "#/components/schemas/Recipients" },
+          "subject_text": { "type": "string" }
         },
         "additionalProperties": false,
         "type": "object"
@@ -46118,7 +46236,7 @@
         "type": "string",
         "enum": ["BE", "GB", "IT", "IE", "NL"]
       },
-      "entities__unversioned__schemas__file_saver__FileSchema": {
+      "core__connectors__entities__unversioned__schemas__file_saver__FileSchema": {
         "properties": {
           "id": {
             "type": "string",
@@ -46153,7 +46271,7 @@
           },
           "pages": {
             "items": {
-              "$ref": "#/components/schemas/entities__unversioned__schemas__file_saver__PageSchema"
+              "$ref": "#/components/schemas/core__connectors__entities__unversioned__schemas__file_saver__PageSchema"
             },
             "type": "array",
             "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
@@ -46161,7 +46279,7 @@
           },
           "previews": {
             "items": {
-              "$ref": "#/components/schemas/entities__unversioned__schemas__file_saver__PreviewSchema"
+              "$ref": "#/components/schemas/core__connectors__entities__unversioned__schemas__file_saver__PreviewSchema"
             },
             "type": "array",
             "description": "Preview images generated for this file. There can be multiple images with different sizes.",
@@ -46198,7 +46316,7 @@
         ],
         "description": "Represents a file (such as a PDF invoice) that was uploaded to Monite."
       },
-      "entities__unversioned__schemas__file_saver__PageSchema": {
+      "core__connectors__entities__unversioned__schemas__file_saver__PageSchema": {
         "properties": {
           "id": {
             "type": "string",
@@ -46232,7 +46350,7 @@
         "required": ["id", "mimetype", "number", "size", "url"],
         "description": "When a PDF document is uploaded to Monite, it extracts individual pages from the document\nand saves them as PNG images. This object contains the image and metadata of a single page."
       },
-      "entities__unversioned__schemas__file_saver__PreviewSchema": {
+      "core__connectors__entities__unversioned__schemas__file_saver__PreviewSchema": {
         "properties": {
           "height": {
             "type": "integer",
