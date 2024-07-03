@@ -19,6 +19,7 @@ const routingPaths: Record<WidgetType, string> = {
 test.beforeEach(async ({ page }) => {
   await page.route('/config.json', async (route) => {
     if (process.env.CI) {
+      console.log('Using CI environment variables for the config.json');
       await route.fulfill({
         contentType: 'application/json',
         body: process.env.MONITE_E2E_APP_ADMIN_CONFIG_JSON,
