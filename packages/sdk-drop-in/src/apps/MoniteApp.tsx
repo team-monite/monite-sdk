@@ -9,7 +9,7 @@ import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { css, Global } from '@emotion/react';
-import { RootElementsProvider } from '@monite/sdk-react';
+import { type APISchema, RootElementsProvider } from '@monite/sdk-react';
 
 import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
 
@@ -35,11 +35,9 @@ export const MoniteApp = ({
   entityId?: string;
   apiUrl?: string;
   component: WidgetType;
-  fetchToken?: () => Promise<{
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-  }>;
+  fetchToken?: () => Promise<
+    APISchema.components['schemas']['AccessTokenResponse']
+  >;
 } & Pick<ComponentProps<typeof Router>, 'router' | 'basename'> &
   ProviderProps) => {
   if (disabled) return null;

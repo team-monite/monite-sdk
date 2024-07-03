@@ -6,6 +6,7 @@ import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
+import { type APISchema } from '@monite/sdk-react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -170,8 +171,6 @@ const MoniteIframe = ({
   );
 };
 
-type FetchTokenHandler = () => Promise<{
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-}>;
+type FetchTokenHandler = () => Promise<
+  APISchema.components['schemas']['AccessTokenResponse']
+>;

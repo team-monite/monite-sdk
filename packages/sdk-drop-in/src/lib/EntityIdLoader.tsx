@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useMemo } from 'react';
 
-import { createAPIClient } from '@monite/sdk-react';
+import { type APISchema, createAPIClient } from '@monite/sdk-react';
 import {
   createSecureRequestFn,
   type QraftContextValue,
@@ -9,11 +9,9 @@ import { QueryClient } from '@tanstack/react-query';
 
 type EntityIdLoaderBaseProps = {
   apiUrl: string;
-  fetchToken: () => Promise<{
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-  }>;
+  fetchToken: () => Promise<
+    APISchema.components['schemas']['AccessTokenResponse']
+  >;
 };
 
 export const EntityIdLoader = ({

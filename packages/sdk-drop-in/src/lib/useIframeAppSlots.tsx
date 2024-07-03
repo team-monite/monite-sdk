@@ -1,13 +1,7 @@
 import { ComponentProps, useCallback, useEffect, useState } from 'react';
 
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
-import { MoniteProvider } from '@monite/sdk-react';
-
-type AccessToken = {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-};
+import { MoniteProvider, type APISchema } from '@monite/sdk-react';
 
 export const useMoniteIframeAppSlots = () => {
   const [slots, setSlots] = useState<
@@ -19,15 +13,17 @@ export const useMoniteIframeAppSlots = () => {
   );
 
   const fetchToken = useCallback(() => {
-    return new Promise<AccessToken>((resolve) => {
-      iframeCommunicator.on('fetch-token', (data) => {
-        if (!validateToken(data))
-          throw new Error('Invalid token received from the iframe');
+    return new Promise<APISchema.components['schemas']['AccessTokenResponse']>(
+      (resolve) => {
+        iframeCommunicator.on('fetch-token', (data) => {
+          if (!validateToken(data))
+            throw new Error('Invalid token received from the iframe');
 
-        resolve(data);
-      });
-      iframeCommunicator.pingSlot('fetch-token');
-    }).finally(() => {
+          resolve(data);
+        });
+        iframeCommunicator.pingSlot('fetch-token');
+      }
+    ).finally(() => {
       iframeCommunicator.off('fetch-token');
     });
   }, [iframeCommunicator]);
@@ -71,11 +67,9 @@ export const useMoniteIframeAppSlots = () => {
   return { ...slots, fetchToken };
 };
 
-function validateToken(token: unknown): token is {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-} {
+function validateToken(
+  token: unknown
+): token is APISchema.components['schemas']['AccessTokenResponse'] {
   return (
     !!token &&
     typeof token === 'object' &&
