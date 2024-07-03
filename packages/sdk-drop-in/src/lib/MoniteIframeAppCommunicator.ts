@@ -32,13 +32,15 @@ export class MoniteIframeAppCommunicator {
 
     this.disconnect();
 
-    if (!this.targetWindow) throw new Error('Target window is not set');
+    if (!this.targetWindow)
+      throw new Error('[monite-iframe-app]: Target window is not set');
 
     window.addEventListener('message', this.onWindowMessage);
 
     if (!this.isHost) {
       this.connectionToHostRetryInterval = setInterval(() => {
-        if (!this.targetWindow) throw new Error('Target window is not set');
+        if (!this.targetWindow)
+          throw new Error('[monite-iframe-app]: Target window is not set');
         this.connect();
       }, 200) as unknown as number;
 
@@ -48,7 +50,7 @@ export class MoniteIframeAppCommunicator {
 
   private onWindowMessage = (event: MessageEvent) => {
     if (!event.source || !('postMessage' in event.source))
-      throw new Error('Invalid source');
+      throw new Error('[monite-iframe-app]: Invalid source');
 
     const data = event.data;
 
@@ -74,10 +76,14 @@ export class MoniteIframeAppCommunicator {
       data: unknown
     ): asserts data is { type: string; payload?: ListenerPayload } {
       if (typeof data !== 'object' || data === null) {
-        throw new Error(`Invalid message data: ${data}`);
+        throw new Error(
+          `[monite-iframe-app]: Invalid message data type: '${typeof data}'`
+        );
       }
       if (typeof (data as { type: unknown }).type !== 'string') {
-        throw new Error(`Invalid message data type: ${data}`);
+        if ((data as { type: unknown }).type === undefined)
+          throw new Error('[monite-iframe-app]: Message `type` is not defined');
+        throw new Error('[monite-iframe-app]: Unsupported message `type`');
       }
     }
   };
@@ -142,7 +148,8 @@ export class MoniteIframeAppCommunicator {
   }
 
   private emitSlot(slotName: string) {
-    if (!this.connected) throw new Error('Send port is not set');
+    if (!this.connected)
+      throw new Error('[monite-iframe-app]: Send port is not set');
 
     const slot = this.slots.get(slotName);
 
@@ -197,7 +204,7 @@ export class MoniteIframeAppCommunicator {
     ): asserts rawPayload is PayloadSlot {
       if (typeof rawPayload !== 'undefined') return;
       throw new Error(
-        `Slot '${slotName}' payload must be a function or a primitive value. Got: ${rawPayload}`
+        `[monite-iframe-app]: Slot '${slotName}' payload must be a function or a primitive value. Got: ${typeof rawPayload}`
       );
     }
   }

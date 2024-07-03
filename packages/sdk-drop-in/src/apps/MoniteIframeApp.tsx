@@ -7,6 +7,7 @@ import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { moniteIframeAppComponents } from '@/lib/moniteIframeAppComponents';
 import { useMoniteIframeAppSlots } from '@/lib/useIframeAppSlots';
 import { css, Global } from '@emotion/react';
+import { type APISchema } from '@monite/sdk-react';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SDKDemoAPIProvider } from '@team-monite/sdk-demo';
@@ -62,11 +63,9 @@ const MoniteIframeAppComponent = ({
   apiUrl: string;
   entityId: string;
   basename: string;
-  fetchToken: () => Promise<{
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-  }>;
+  fetchToken: () => Promise<
+    APISchema.components['schemas']['AccessTokenResponse']
+  >;
 } & Pick<ComponentProps<typeof DropInMoniteProvider>, 'locale' | 'theme'>) => {
   return (
     <DropInMoniteProvider
