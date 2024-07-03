@@ -76,7 +76,6 @@ test('test the Roles button under Settings', async ({ page }) => {
   await page.getByRole('button', { name: 'Roles' }).click();
 
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
   await expect(iframe.getByRole('heading', { name: 'Roles' })).toBeVisible();
 });
 
@@ -86,7 +85,6 @@ test('test the Tags button under Settings', async ({ page }) => {
   await page.getByRole('button', { name: 'Tags' }).click();
 
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible' });
   await expect(iframe.getByRole('heading', { name: 'Tags' })).toBeVisible();
 });
 
@@ -101,7 +99,6 @@ widgetTests.forEach(({ path, name }) => {
     await page.goto(`${consumerPage}${path}`);
     await page.getByRole('button', { name }).click();
     const iframe = page.frameLocator('iframe');
-    await iframe.locator('body').waitFor({ state: 'visible' });
     await expect(iframe.getByRole('heading', { name })).toBeVisible();
   });
 });
