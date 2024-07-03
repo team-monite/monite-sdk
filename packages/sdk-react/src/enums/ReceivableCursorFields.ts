@@ -1,9 +1,8 @@
 import { components } from '@/api';
 
-const filters: Record<
-  components['schemas']['ReceivableCursorFields'],
-  components['schemas']['ReceivableCursorFields']
-> = {
+const schema: {
+  [key in components['schemas']['ReceivableCursorFields']]: key;
+} = {
   counterpart_name: 'counterpart_name',
   counterpart_id: 'counterpart_id',
   amount: 'amount',
@@ -14,4 +13,4 @@ const filters: Record<
   created_at: 'created_at',
 };
 
-export const ReceivableCursorFields = Object.values(filters);
+export const ReceivableCursorFields = Object.values(schema);

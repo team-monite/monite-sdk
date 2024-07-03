@@ -1,9 +1,8 @@
 import { components } from '@/api';
 
-const countries: Record<
-  components['schemas']['AllowedCountries'],
-  components['schemas']['AllowedCountries']
-> = {
+const schema: {
+  [key in components['schemas']['AllowedCountries']]: key;
+} = {
   AF: 'AF',
   AX: 'AX',
   AL: 'AL',
@@ -74,6 +73,7 @@ const countries: Record<
   GQ: 'GQ',
   ER: 'ER',
   EE: 'EE',
+  SZ: 'SZ',
   ET: 'ET',
   FK: 'FK',
   FO: 'FO',
@@ -135,7 +135,6 @@ const countries: Record<
   LT: 'LT',
   LU: 'LU',
   MO: 'MO',
-  MK: 'MK',
   MG: 'MG',
   MW: 'MW',
   MY: 'MY',
@@ -151,8 +150,8 @@ const countries: Record<
   FM: 'FM',
   MD: 'MD',
   MC: 'MC',
-  ME: 'ME',
   MN: 'MN',
+  ME: 'ME',
   MS: 'MS',
   MA: 'MA',
   MZ: 'MZ',
@@ -170,6 +169,7 @@ const countries: Record<
   NU: 'NU',
   NF: 'NF',
   MP: 'MP',
+  MK: 'MK',
   NO: 'NO',
   OM: 'OM',
   PK: 'PK',
@@ -187,7 +187,6 @@ const countries: Record<
   QA: 'QA',
   RE: 'RE',
   RO: 'RO',
-  RS: 'RS',
   RU: 'RU',
   RW: 'RW',
   SH: 'SH',
@@ -200,7 +199,7 @@ const countries: Record<
   ST: 'ST',
   SA: 'SA',
   SN: 'SN',
-  SS: 'SS',
+  RS: 'RS',
   SC: 'SC',
   SL: 'SL',
   SG: 'SG',
@@ -209,13 +208,13 @@ const countries: Record<
   SB: 'SB',
   SO: 'SO',
   ZA: 'ZA',
+  SS: 'SS',
   GS: 'GS',
   ES: 'ES',
   LK: 'LK',
   SD: 'SD',
   SR: 'SR',
   SJ: 'SJ',
-  SZ: 'SZ',
   SE: 'SE',
   CH: 'CH',
   SY: 'SY',
@@ -251,6 +250,11 @@ const countries: Record<
   YE: 'YE',
   ZM: 'ZM',
   ZW: 'ZW',
+  BL: 'BL',
+  BQ: 'BQ',
+  CW: 'CW',
+  MF: 'MF',
+  SX: 'SX',
 };
 
-export const AllowedCountries = Object.values(countries);
+export const AllowedCountries = Object.values(schema);
