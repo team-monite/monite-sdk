@@ -1,5 +1,16 @@
 # @monite/sdk-react
 
+## 3.14.1
+
+### Patch Changes
+
+- 84ebfffc: fix(DEV-11506): prevent PDFObject.embed() call for image URLs
+
+  We've updated the file preview logic to skip calling `PDFObject.embed()` when the URL points to an image. This fix
+  addresses an issue where attempting to embed image files as PDFs was causing errors or unexpected behavior.
+
+  - @monite/sdk-api@3.14.1
+
 ## 3.14.0
 
 ### Minor Changes

@@ -1,0 +1,44 @@
+# Creates a "Version Packages" PR.
+# Refer to the "changesets/action" documentation for more information: https://github.com/changesets/action
+
+name: Version Packages
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  versioning:
+    name: Calculate Changesets
+    runs-on: ubuntu-latest
+    if: github.repository == 'team-monite/monite-sdk'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate Changeset Config
+        run: .changeset/validate-changesets-base-branch.sh ${{ github.ref_name }}
+
+      - name: Setup Monorepo
+        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        with:
+          # Do not use the cache if merged PR source branch starts with `changeset-release/`
+          cache: ${{ !startsWith(github.event.pull_request.head.ref, 'changeset-release/') }}
+
+      - name: Create Release Pull Request or Publish to NPM
+        id: changesets
+        uses: changesets/action@v1.4.7
+        with:
+          version: yarn exec .changeset/version.sh
+          title: "chore: Version Packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

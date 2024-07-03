@@ -4,52 +4,39 @@ import React, { ReactNode } from 'react';
 
 import { Box, Drawer } from '@mui/material';
 
-import { NavigationMenu } from '@/components/NavigationMenu';
+import { NavigationList } from '@/components/NavigationMenu';
 import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
+import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
+import { ThemeSelect } from '@/components/ThemeSelect/ThemeSelect';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
+  const { selectedTheme, onThemeChange } = useAppTheme();
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box bgcolor="background.default" display="flex">
       <Drawer
-        PaperProps={{ sx: { backgroundColor: 'paper' } }}
-        sx={{
-          width: '240px',
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: '240px',
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="permanent"
         anchor="left"
+        PaperProps={{ sx: { backgroundColor: 'background.menu' } }}
+        className="LayoutNavigationDrawer"
+        sx={{ width: 240 }}
+        variant="permanent"
       >
-        <Box
-          sx={{
-            display: 'flex',
-            padding: 2,
-            gap: 2,
-            alignItems: 'flex-start',
-            boxSizing: 'border-box',
-            zIndex: 10,
-          }}
-        >
+        <Box display="flex" flexDirection="row" gap={2} m={2}>
           <UserButton />
           <OrganizationSwitcher />
         </Box>
-
-        <NavigationMenu />
+        <Box display="flex" flex="1" flexDirection="column" mt={1}>
+          <NavigationList />
+        </Box>
+        <Box display="flex" flexShrink="1" mx={1.5} mb={3} mt={2}>
+          <ThemeSelect
+            selectedTheme={selectedTheme}
+            onThemeChange={onThemeChange}
+          />
+        </Box>
       </Drawer>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          bgcolor: 'background.default',
-          px: 3,
-          py: 1,
-          minWidth: 0,
-        }}
-      >
+      <Box component="main" flexGrow={1} mx={3} my={1} minWidth={0}>
         {children}
       </Box>
     </Box>

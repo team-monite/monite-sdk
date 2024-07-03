@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { CounterpartCell } from '@/components/payables/PayablesTable/CounterpartCell/CounterpartCell';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { CounterpartCell } from '@/ui/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,

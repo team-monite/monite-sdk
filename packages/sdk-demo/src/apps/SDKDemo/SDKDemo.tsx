@@ -65,6 +65,11 @@ const SDKDemoComponent = ({
           icon: true,
         },
       },
+      MoniteApprovalRequestStatusChip: {
+        defaultProps: {
+          icon: false,
+        },
+      },
       MoniteTablePagination: {
         defaultProps: {
           pageSizeOptions: [10, 15, 20],

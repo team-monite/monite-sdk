@@ -1,3 +1,4 @@
+import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestStatusChip';
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
@@ -28,6 +29,7 @@ declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
     MoniteInvoiceStatusChip: 'root';
     MonitePayableStatusChip: 'root';
+    MoniteApprovalRequestStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
   }
 
@@ -37,6 +39,7 @@ declare module '@mui/material/styles' {
   interface ComponentsPropsList {
     MoniteInvoiceStatusChip: Partial<InvoiceStatusChipProps>;
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
+    MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
   }
 
@@ -46,6 +49,7 @@ declare module '@mui/material/styles' {
   interface Components {
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
+    MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
   }
 }

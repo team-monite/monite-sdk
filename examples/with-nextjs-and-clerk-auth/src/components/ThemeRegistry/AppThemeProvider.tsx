@@ -8,10 +8,11 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Theme } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ThemeConfig } from '@team-monite/sdk-demo/src/types';
-import * as themes from '@team-monite/sdk-themes';
+
+import * as themes from '@/themes';
 
 type AppThemeProviderContextValue = {
   onThemeChange: (themeConfig: ThemeConfig) => void;
@@ -108,16 +109,16 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
 
     switch (true) {
       case variant === 'monite' && mode === 'dark':
-        return createTheme(themes.moniteDark);
+        return themes.moniteDark();
 
       case variant === 'material' && mode === 'light':
-        return createTheme(themes.materialLight);
+        return themes.materialLight();
 
       case variant === 'material' && mode === 'dark':
-        return createTheme(themes.materialDark);
+        return themes.materialDark();
 
       default:
-        return createTheme(themes.moniteLight);
+        return themes.moniteLight();
     }
   }, [selectedTheme.data]);
 

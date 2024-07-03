@@ -1,5 +1,7 @@
 # @monite/sdk-api
 
+## 3.14.1
+
 ## 3.14.0
 
 ### Minor Changes
