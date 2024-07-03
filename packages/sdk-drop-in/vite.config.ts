@@ -17,9 +17,32 @@ export default async function viteConfig({ mode }: ConfigEnv) {
     build: {
       sourcemap: true,
       lib: {
-        entry: resolve(__dirname, 'src/index.ts'),
-        name: 'MoniteApp',
-        fileName: 'monite-app',
+        formats: ['cjs', 'es'], // order is important, cjs first, es second
+        entry: {
+          'monite-iframe-app.html': resolve(
+            __dirname,
+            'monite-iframe-app.html'
+          ),
+          'monite-iframe-app-demo.html': resolve(
+            __dirname,
+            'monite-iframe-app-demo.html'
+          ),
+          'monite-iframe-app-drop-in-demo.html': resolve(
+            __dirname,
+            'monite-iframe-app-drop-in-demo.html'
+          ),
+          'monite-app-demo.html': resolve(__dirname, 'monite-app-demo.html'),
+          'monite-app': resolve(__dirname, 'src/custom-elements/monite-app.ts'),
+          'monite-iframe-app': resolve(
+            __dirname,
+            'src/custom-elements/monite-iframe-app.ts'
+          ),
+          'monite-iframe-app-communicator': resolve(
+            __dirname,
+            'src/lib/MoniteIframeAppCommunicator.ts'
+          ),
+        },
+        name: 'Monite Drop-in',
       },
     },
     resolve: { alias: { '@': resolve(__dirname, './src') } },
