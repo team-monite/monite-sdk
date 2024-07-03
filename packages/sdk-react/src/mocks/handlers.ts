@@ -1,4 +1,5 @@
 import { approvalPoliciesHandlers } from './approvalPolicies';
+import { approvalRequestsHandlers } from './approvalRequests';
 import { authenticationHandlers } from './authentication';
 import { bankAccountsHandlers } from './bankAccounts';
 import {
@@ -52,6 +53,7 @@ export const handlers = [
   ...authenticationHandlers,
   ...bankAccountsHandlers,
   ...approvalPoliciesHandlers,
+  ...approvalRequestsHandlers,
   ...measureUnitsHandlers,
   ...rolesHandlers,
   ...filesHandlers,

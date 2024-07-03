@@ -3,6 +3,7 @@ export * from './counterparts/address';
 export * from './currencies';
 export * from './payables';
 export * from './approvalPolicies';
+export * from './approvalRequests';
 export * from './tags';
 export * from './entityUsers';
 export * from './lineItems';

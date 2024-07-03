@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-api",
-  "version": "3.14.0",
+  "version": "3.14.1",
   "apiVersion": "2023-09-01",
   "publishConfig": {
     "access": "public"

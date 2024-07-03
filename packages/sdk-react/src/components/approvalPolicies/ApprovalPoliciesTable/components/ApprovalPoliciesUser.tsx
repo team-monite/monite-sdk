@@ -13,6 +13,10 @@ export const ApprovalPoliciesUser = ({
 }: ApprovalPoliciesUserProps) => {
   const { data: entityUser, isLoading } = useEntityUserById(entityUserId);
 
+  if (!entityUser) {
+    return null;
+  }
+
   if (isLoading) {
     return (
       <Chip
@@ -26,10 +30,6 @@ export const ApprovalPoliciesUser = ({
         }
       />
     );
-  }
-
-  if (!entityUser) {
-    return null;
   }
 
   const name = `${entityUser.first_name ?? ''} ${

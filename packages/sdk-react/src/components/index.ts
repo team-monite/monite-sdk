@@ -1,5 +1,6 @@
 export * from './counterparts';
 export * from './approvalPolicies';
+export * from './approvalRequests';
 export * from './payables';
 export * from './receivables';
 export * from './onboarding';
