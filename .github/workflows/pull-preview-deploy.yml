@@ -48,12 +48,13 @@ jobs:
           file: SdkDemoWithNextjsAndClerkAuth.PullPreviewDeploy.Dockerfile
           platform: linux/amd64
           secrets: |
-            "CLERK_PUBLISHABLE_KEY=${{ secrets.PULL_PREVIEW_CLERK_PUBLISHABLE_KEY_DEV }}"
-            "CLERK_SECRET_KEY=${{ secrets.PULL_PREVIEW_CLERK_SECRET_KEY_DEV }}"
-            "CLERK_WEBHOOK_SIGNING_SECRET=${{ secrets.PULL_PREVIEW_CLERK_WEBHOOK_SIGNING_SECRET_DEV }}"
-            "MONITE_PROJECT_CLIENT_SECRET=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_SECRET_DEV }}"
-            "MONITE_PROJECT_CLIENT_ID=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_ID_DEV }}"
+            "clerk_publishable_key=${{ vars.PULL_PREVIEW_CLERK_PUBLISHABLE_KEY_DEV }}"
+            "clerk_secret_key=${{ secrets.PULL_PREVIEW_CLERK_SECRET_KEY_DEV }}"
+            "clerk_webhook_signing_secret=${{ secrets.PULL_PREVIEW_CLERK_WEBHOOK_SIGNING_SECRET_DEV }}"
+            "monite_project_client_secret=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_SECRET_DEV }}"
+            "monite_project_client_id=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_ID_DEV }}"
           build-args: |
+            NEXT_PUBLIC_CLERK_DOMAIN=${{ vars.PULL_PREVIEW_CLERK_DOMAIN_DEV }}
             TURBO_API=http://${{ env.turbo_api_ip }}:41230
             TURBO_TEAM=turbogha
             TURBO_TOKEN=turbogha
