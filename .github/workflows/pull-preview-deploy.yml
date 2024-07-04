@@ -58,6 +58,10 @@ jobs:
             TURBO_API=http://${{ env.turbo_api_ip }}:41230
             TURBO_TEAM=turbogha
             TURBO_TOKEN=turbogha
+          # todo::remove caching
+          cache-to: type=registry,ref=${{ secrets.PULL_PREVIEW_DOCKER_REGISTRY_HOST }}/${{ secrets.PULL_PREVIEW_DOCKER_REGISTRY_REPOSITORY }}/preview-sdk-demo-with-nextjs-and-clerk-auth:buildcache,mode=min
+          cache-from: type=registry,ref=${{ secrets.PULL_PREVIEW_DOCKER_REGISTRY_HOST }}/${{ secrets.PULL_PREVIEW_DOCKER_REGISTRY_REPOSITORY }}/preview-sdk-demo-with-nextjs-and-clerk-auth:buildcache
+
         env:
           SOURCE_DATE_EPOCH: 0
 
