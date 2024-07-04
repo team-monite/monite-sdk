@@ -155,49 +155,33 @@ const useCounterpartVatListCache = (counterpartId: string) =>
   ]);
 
 export const useCounterpartAddresses = (counterpartId?: string) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartAddressResponseWithCounterpartID[], Error>({
-    queryKey: counterpartQueryKeys.addressList(counterpartId),
-
-    queryFn: () =>
-      !!counterpartId
-        ? monite.api.counterpartsAddresses
-            .getCounterpartAddresses(counterpartId)
-            .then((response) => response.data)
-        : [],
-
-    enabled: !!counterpartId,
+  return api.counterparts.getCounterpartsIdAddresses.useQuery({
+    path: { counterpart_id: counterpartId ?? '' },
   });
 };
 
-export const useCounterpartAddressById = (
-  counterpartId?: string,
-  addressId?: string
-) => {
-  const { monite } = useMoniteContext();
+export const useCounterpartAddressById = ({
+  counterpartId,
+  addressId,
+}: {
+  counterpartId: string | undefined;
+  addressId: string | undefined;
+}) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<
-    CounterpartAddressResponseWithCounterpartID | undefined,
-    Error
-  >({
-    queryKey: counterpartQueryKeys.addressDetail(counterpartId!, addressId!),
-
-    queryFn: () => {
-      if (!counterpartId || !addressId) {
-        throw new Error(
-          'MoniteReactSDK: counterpartId and addressId required.'
-        );
-      }
-
-      return monite.api.counterpartsAddresses.getCounterpartAddressesById(
-        addressId,
-        counterpartId
-      );
+  return api.counterparts.getCounterpartsIdAddressesId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId ?? '',
+        address_id: addressId ?? '',
+      },
     },
-
-    enabled: Boolean(counterpartId) && Boolean(addressId),
-  });
+    {
+      enabled: Boolean(counterpartId) && Boolean(addressId),
+    }
+  );
 };
 
 export const useUpdateCounterpartAddress = (
@@ -232,21 +216,17 @@ export const useUpdateCounterpartAddress = (
   });
 };
 
-export const useCounterpartBankList = (counterpartId?: string) => {
-  const { monite } = useMoniteContext();
+export const useCounterpartBankList = (counterpartId: string | undefined) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartBankAccountResponse[], Error>({
-    queryKey: counterpartQueryKeys.bankList(counterpartId),
-
-    queryFn: () =>
-      !!counterpartId
-        ? monite.api.counterparts
-            .getBankAccounts(counterpartId)
-            .then((response) => response.data)
-        : [],
-
-    enabled: !!counterpartId,
-  });
+  return api.counterparts.getCounterpartsIdBankAccounts.useQuery(
+    {
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 };
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
@@ -274,28 +254,26 @@ export const useCreateCounterpartBank = (counterpartId: string) => {
   });
 };
 
-export const useCounterpartBankById = (
-  counterpartId: string,
-  bankId?: string
-) => {
-  const { monite } = useMoniteContext();
-  const { findById } = useCounterpartBankListCache(counterpartId);
+export const useCounterpartBankById = ({
+  counterpartId,
+  bankId,
+}: {
+  counterpartId: string | undefined;
+  bankId: string | undefined;
+}) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartBankAccountResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.bankDetail(counterpartId, bankId),
-
-    queryFn: () => {
-      if (!bankId) return undefined;
-
-      const existedBank = findById(bankId);
-
-      if (existedBank) return existedBank;
-
-      return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
+  return api.counterparts.getCounterpartsIdBankAccountsId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId ?? '',
+        bank_account_id: bankId ?? '',
+      },
     },
-
-    enabled: !!bankId,
-  });
+    {
+      enabled: !!bankId && !!counterpartId,
+    }
+  );
 };
 
 export const useUpdateCounterpartBank = (counterpartId: string) => {
@@ -344,65 +322,61 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   });
 };
 
-export const useCounterpartVatList = (counterpartId?: string) => {
-  const { monite } = useMoniteContext();
+export const useCounterpartVatList = (counterpartId: string | undefined) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartVatIDResponse[], Error>({
-    queryKey: counterpartQueryKeys.vatList(counterpartId),
-
-    queryFn: () =>
-      !!counterpartId
-        ? monite.api.counterparts
-            .getVats(counterpartId)
-            .then((response) => response.data)
-        : [],
-
-    enabled: !!counterpartId,
-  });
+  return api.counterparts.getCounterpartsIdVatIds.useQuery(
+    {
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 };
 
 export const useCreateCounterpartVat = (counterpartId: string) => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
   const { add } = useCounterpartVatListCache(counterpartId);
 
-  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatID>({
-    mutationFn: (vat) => monite.api.counterparts.createVat(counterpartId, vat),
-
-    onSuccess: (vat) => {
-      add(vat);
-
-      toast.success(t(i18n)`Vat “${vat.value}” was created.`);
+  return api.counterparts.postCounterpartsIdVatIds?.useMutation(
+    {
+      path: { counterpart_id: counterpartId },
     },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to create VAT.`);
-    },
-  });
+    {
+      onSuccess: (vat) => {
+        add(vat as CounterpartVatIDResponse);
+        toast.success(t(i18n)`Vat “${vat.value}” was created.`);
+      },
+      onError: () => {
+        toast.error(t(i18n)`Failed to create VAT.`);
+      },
+    }
+  );
 };
 
 export const useCounterpartVatById = (
   counterpartId: string,
   vatId?: string
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
   const { findById } = useCounterpartVatListCache(counterpartId);
 
-  return useQuery<CounterpartVatIDResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.vatDetail(counterpartId, vatId),
+  if (!vatId) return undefined;
 
-    queryFn: () => {
-      if (!vatId) return undefined;
+  const existedVat = findById(vatId);
 
-      const existedVat = findById(vatId);
+  if (existedVat) return existedVat;
 
-      if (existedVat) return existedVat;
-
-      return monite.api.counterparts.getVatById(counterpartId, vatId);
+  return api.counterparts.getCounterpartsIdVatIds.useQuery(
+    {
+      path: { counterpart_id: counterpartId },
     },
-
-    enabled: !!vatId,
-  });
+    {
+      enabled: !!vatId,
+    }
+  );
 };
 
 export const useUpdateCounterpartVat = (counterpartId: string) => {
@@ -451,20 +425,16 @@ export const useCounterpartContactList = (
   counterpartId?: string,
   isOrganization?: boolean
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<Array<CounterpartContactResponse> | undefined, ApiError>({
-    queryKey: counterpartQueryKeys.contactList(counterpartId),
-
-    queryFn: () =>
-      counterpartId
-        ? monite.api.counterparts
-            .getContacts(counterpartId)
-            .then((res) => res.data)
-        : undefined,
-
-    enabled: !!counterpartId && isOrganization,
-  });
+  return api.counterparts.getCounterpartsIdContacts.useQuery(
+    {
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: !!counterpartId && isOrganization,
+    }
+  );
 };
 
 export const useCreateCounterpartContact = (counterpartId: string) => {
@@ -502,24 +472,23 @@ export const useCounterpartContactById = (
   counterpartId: string,
   contactId?: string
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
   const { findById } = useCounterpartContactListCache(counterpartId);
 
-  return useQuery<CounterpartContactResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.contactDetail(counterpartId, contactId!),
+  if (!contactId) return undefined;
 
-    queryFn: () => {
-      if (!contactId) return undefined;
+  const existedContact = findById(contactId);
 
-      const existedContact = findById(contactId);
+  if (existedContact) return existedContact;
 
-      if (existedContact) return existedContact;
-
-      return monite.api.counterparts.getContactById(counterpartId, contactId);
+  return api.counterparts.getCounterpartsIdContactsId.useQuery(
+    {
+      path: { counterpart_id: counterpartId, contact_id: contactId ?? '' },
     },
-
-    enabled: Boolean(contactId) && Boolean(counterpartId),
-  });
+    {
+      enabled: Boolean(contactId) && Boolean(counterpartId),
+    }
+  );
 };
 
 export const useUpdateCounterpartContact = (counterpartId: string) => {
@@ -615,16 +584,19 @@ export const useCreateCounterpart = () => {
   });
 };
 
-export const useCounterpartById = (id?: string) => {
-  const { monite } = useMoniteContext();
+export const useCounterpartById = (id: string | undefined) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.detail(id),
-
-    queryFn: () => (id ? monite.api.counterparts.getById(id) : undefined),
-
-    enabled: !!id,
-  });
+  return api.counterparts.getCounterpartsId.useQuery(
+    {
+      path: {
+        counterpart_id: id ?? '',
+      },
+    },
+    {
+      enabled: !!id,
+    }
+  );
 };
 
 export const useUpdateCounterpart = () => {
