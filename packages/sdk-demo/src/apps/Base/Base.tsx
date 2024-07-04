@@ -63,14 +63,15 @@ export const Base = () => {
         }
       />
       <Route
-       path={ROUTES.approvalRequests}
-       element={
-         <Gutter>
-          <ApprovalRequests />
-         </Gutter>
-      }
+        path={ROUTES.approvalRequests}
+        element={
+          <Gutter>
+            <ApprovalRequests />
+          </Gutter>
+        }
       />
-      <Route path={ROUTES.roles}
+      <Route
+        path={ROUTES.roles}
         element={
           <Gutter>
             <UserRoles />
