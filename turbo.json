@@ -95,7 +95,8 @@
       "cache": false
     },
     "e2e": {
-      "cache": false,
+      "cache": true,
+      "outputs": ["test-results/**"],
       "dependsOn": [
         "write-package-version-file",
         "compile-translations",

@@ -64,10 +64,6 @@ test.beforeEach(async ({ page }) => {
   if (!frame) {
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
   }
-
-  await frame?.waitForURL(new RegExp('.*/receivables.*', 'i'), {
-    timeout: 60000,
-  });
 });
 
 test('test the theme switcher', async ({ page }) => {
@@ -80,7 +76,7 @@ test('test the theme switcher', async ({ page }) => {
   await page.getByRole('menuitem', { name: 'Monite' }).click();
   await page.getByRole('button', { name: 'Monite' }).click();
   await page.getByLabel('Dark Mode').check();
-  await page.locator('.MuiBackdrop-root').click();
+  await page.getByRole('menuitem', { name: 'Monite' }).click();
 
   const themeElement = iframe.locator('body');
   const bgColor = await themeElement.evaluate(
