@@ -2,7 +2,6 @@ import { components } from '@/api';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum, PayableStateEnum } from '@monite/sdk-api';
 import { Button } from '@mui/material';
 
 interface PayablesTableActionProps {
@@ -23,11 +22,11 @@ export const PayablesTableAction = ({
   const { i18n } = useLingui();
   const { data: isPayAllowed } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.PAY,
+    action: 'pay',
     entityUserId: payable.was_created_by_user_id,
   });
 
-  if (isPayAllowed && payable.status === PayableStateEnum.WAITING_TO_BE_PAID) {
+  if (isPayAllowed && payable.status === 'waiting_to_be_paid') {
     return (
       <Button
         variant="outlined"

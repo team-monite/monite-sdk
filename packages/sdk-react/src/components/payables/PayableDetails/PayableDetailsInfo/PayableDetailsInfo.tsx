@@ -17,7 +17,6 @@ import { CenteredContentBox } from '@/ui/box';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum } from '@monite/sdk-api';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import {
   Box,
@@ -303,7 +302,7 @@ const PayableDetailsInfoBase = ({
                         item.quantity &&
                         formatFromMinorUnits(
                           item.subtotal / item.quantity ?? 0,
-                          payable.currency ?? CurrencyEnum.EUR
+                          payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">
