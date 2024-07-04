@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import {
@@ -7,13 +8,20 @@ import {
   payableFixturePages,
 } from '@/mocks/payables';
 import {
-  cachedMoniteSDK,
+  Provider,
   renderWithClient,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK, PayableStateEnum } from '@monite/sdk-api';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
@@ -31,6 +39,8 @@ if (!fixture) {
 }
 
 const initialStatus = PayableStateEnum.DRAFT;
+
+const { api } = createAPIClient();
 
 describe('PayableDetails', () => {
   afterEach(() => {
@@ -250,12 +260,13 @@ describe('PayableDetails', () => {
       const user = userEvent.setup();
 
       test('should send correct request (required fields) when user update payable', async () => {
-        const createPayableSpy = jest.spyOn(
-          cachedMoniteSDK.api.payable,
-          'update'
-        );
+        const queryClient = new QueryClient();
 
-        renderWithClient(<PayableDetails id={payableId} />, cachedMoniteSDK);
+        render(<PayableDetails id={payableId} />, {
+          wrapper: ({ children }) => (
+            <Provider client={queryClient} children={children} />
+          ),
+        });
 
         await waitUntilTableIsLoaded();
 
@@ -277,13 +288,21 @@ describe('PayableDetails', () => {
 
         await user.click(saveButton);
 
-        const callsArguments = createPayableSpy.mock.calls;
+        const requestBody = await waitFor(() => {
+          const mutationsCache = queryClient.getMutationCache();
 
-        if (!callsArguments) {
-          throw new Error('monite.api.payables.create never has been called');
+          const updatePayableMutation = mutationsCache.find({
+            mutationKey: api.payables.patchPayablesId.getMutationKey(),
+          });
+
+          return updatePayableMutation?.state.variables?.body;
+        });
+
+        if (!requestBody) {
+          throw new Error(
+            'The mutation to update the payable has never been called'
+          );
         }
-
-        const requestBody = callsArguments[0][1];
 
         expect(requestBody).toMatchObject({
           document_id: InvoiceNumberValue,
