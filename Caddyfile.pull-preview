@@ -1,0 +1,25 @@
+{
+    auto_https disable_redirects
+}
+
+{$CLERK_APP_DOMAIN} {
+    reverse_proxy web:3000
+
+    handle_path /__clerk/* {
+        uri strip_prefix /__clerk
+        reverse_proxy https://frontend-api.clerk.dev {
+            header_up Clerk-Proxy-Url https://{$CLERK_APP_DOMAIN}/__clerk
+            header_up Clerk-Secret-Key {$CLERK_SECRET_KEY}
+            header_up X-Forwarded-For {remote_host}
+        }
+    }
+
+    log {
+        output file /var/log/caddy/access.log
+        format console
+    }
+
+    tls {
+        on_demand
+    }
+}

@@ -36,7 +36,7 @@ export default async function RootLayout({
     <ClerkProvider
       publishableKey={process.env.CLERK_PUBLISHABLE_KEY}
       signInUrl={process.env.APP_SIGN_IN_URL}
-      domain={process.env.CLERK_SATELLITE_APP_DOMAIN}
+      proxyUrl={process.env.CLERK_PROXY_URL}
     >
       <MultisessionAppSupport>
         <html lang="en">

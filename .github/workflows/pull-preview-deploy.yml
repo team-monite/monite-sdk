@@ -68,6 +68,7 @@ jobs:
       - name: Update docker-compose.pull-preview.yml
         run: |
           sed -i "s|\${PREVIEW_SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH_IMAGE}|${{ env.preview_sdk_demo_with_nextjs_and_clerk_auth_image }}|g" docker-compose.pull-preview.yml
+          sed -i "s|\${CLERK_SECRET_KEY}|${{ secrets.PULL_PREVIEW_CLERK_SECRET_KEY_DEV }}|g" docker-compose.pull-preview.yml
 
       - uses: pullpreview/action@v5
         # see https://github.com/pullpreview/action/wiki/Inputs

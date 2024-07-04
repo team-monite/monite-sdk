@@ -2,18 +2,21 @@ services:
   proxy:
     image: caddy:2
     restart: unless-stopped
-    command: "caddy reverse-proxy --from '${PULLPREVIEW_URL}' --to web:3000"
+    command: caddy run --config /etc/caddy/Caddyfile.pull-preview --adapter caddyfile
     depends_on:
       - web
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      CLERK_SECRET_KEY: "${CLERK_SECRET_KEY}"
+      CLERK_APP_DOMAIN: "${PULLPREVIEW_PUBLIC_DNS}"
     volumes:
-      - "/data"
+      - "./Caddyfile.pull-preview:/etc/caddy/Caddyfile.pull-preview:ro"
 
   web:
     restart: unless-stopped
     image: "${PREVIEW_SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH_IMAGE}"
     environment:
       MONITE_API_URL: "https://api.dev.monite.com/v1"
-      CLERK_SATELLITE_APP_DOMAIN: "${PULLPREVIEW_PUBLIC_DNS}"
+      CLERK_PROXY_URL: "https://${PULLPREVIEW_PUBLIC_DNS}/__clerk"
