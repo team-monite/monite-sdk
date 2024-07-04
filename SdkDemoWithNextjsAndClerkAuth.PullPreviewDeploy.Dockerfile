@@ -1,10 +1,4 @@
-FROM node:20.12.2
-
-ARG TURBO_API
-ARG TURBO_TEAM
-ARG TURBO_TOKEN
-ARG NEXT_PUBLIC_CLERK_IS_SATELLITE=true
-ARG NEXT_PUBLIC_CLERK_DOMAIN
+FROM node:20.12.2 as base
 
 WORKDIR /app
 
@@ -12,6 +6,14 @@ COPY . /app
 # never mind about '--immutable' for the preview
 RUN --mount=type=cache,target=/app/.yarn/cache,id=yarn-cache \
     yarn install
+
+FROM base as build
+
+ARG TURBO_API
+ARG TURBO_TEAM
+ARG TURBO_TOKEN
+ARG NEXT_PUBLIC_CLERK_IS_SATELLITE=true
+ARG NEXT_PUBLIC_CLERK_DOMAIN
 
 RUN yarn build --filter='sdk-demo-with-nextjs-and-clerk-auth'
 
