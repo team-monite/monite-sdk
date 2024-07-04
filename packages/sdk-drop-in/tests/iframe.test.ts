@@ -1,8 +1,28 @@
+import { WidgetType } from '@/apps/MoniteApp';
 import { test, expect } from '@playwright/test';
 
+import { writeFileSync } from 'fs';
 import * as process from 'node:process';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 
-import { WidgetType } from '../src/apps/MoniteApp';
+const mockedConfigData = {
+  stand: 'dev',
+  api_url: 'https://api.dev.monite.com',
+  app_basename: 'monite-iframe-app',
+  app_hostname: '127.0.0.1',
+  entity_user_id: 'mocked_entity_id',
+  client_id: 'mocked_client_id',
+  client_secret: 'mocked_client_secret',
+};
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+if (process.env.CI) {
+  const configFilePath = path.join(__dirname, '../public', 'config.json');
+  writeFileSync(configFilePath, JSON.stringify(mockedConfigData, null, 2));
+}
 
 const consumerPage = '/monite-iframe-app-demo';
 
@@ -39,13 +59,13 @@ test.beforeEach(async ({ page }) => {
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
   }
 
-  const frame = await iframeElement.contentFrame();
+  const frame = await iframeElement?.contentFrame();
 
   if (!frame) {
     await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
   }
 
-  await frame.waitForURL(new RegExp('.*/receivables.*', 'i'), {
+  await frame?.waitForURL(new RegExp('.*/receivables.*', 'i'), {
     timeout: 60000,
   });
 });
