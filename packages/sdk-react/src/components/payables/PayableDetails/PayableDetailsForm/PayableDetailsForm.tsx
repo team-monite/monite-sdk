@@ -20,7 +20,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { LineItemResponse } from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -71,7 +70,7 @@ interface PayableDetailsFormProps {
     createdLineItems?: Array<LineItem>
   ) => void;
   optionalFields?: OptionalFields;
-  lineItems: LineItemResponse[] | undefined;
+  lineItems: components['schemas']['LineItemResponse'][] | undefined;
 }
 
 const getValidationSchema = (i18n: I18n) =>

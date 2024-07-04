@@ -21,7 +21,6 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableCursorFields } from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
@@ -68,11 +67,11 @@ interface PayablesTableProps {
    * Triggered when the sorting options are changed
    *
    * @param params - An object containing the sorting parameters.
-   * @param params.sort - The field to sort by, in this case PayableCursorFields.CREATED_AT.
+   * @param params.sort - The field to sort by, in this case 'created_at'.
    * @param params.order - The sort order can be either SortOrderEnum values or null.
    */
   onChangeSort?: (params: {
-    sort: PayableCursorFields.CREATED_AT;
+    sort: 'created_at';
     order: SortOrderEnum | null;
   }) => void;
 }

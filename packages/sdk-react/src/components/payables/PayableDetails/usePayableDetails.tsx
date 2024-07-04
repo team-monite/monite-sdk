@@ -14,7 +14,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { payablesDefaultQueryConfig } from '../consts';
@@ -237,35 +236,35 @@ export function usePayableDetails({
 
   const { data: isCancelAvailable } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.CANCEL,
+    action: 'cancel',
     entityUserId: payable?.was_created_by_user_id,
   });
   const { data: isUpdatesAvailable } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.UPDATE,
+    action: 'update',
     entityUserId: payable?.was_created_by_user_id,
   });
   const { data: isSubmitAvailable } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.SUBMIT,
+    action: 'submit',
     entityUserId: payable?.was_created_by_user_id,
   });
   const { data: isApproveAvailable } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.APPROVE,
+    action: 'approve',
     entityUserId: payable?.was_created_by_user_id,
   });
   const { data: isPayAvailable } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.PAY,
+    action: 'pay',
     entityUserId: payable?.was_created_by_user_id,
   });
 
   const createMutation = api.payables.postPayables.useMutation(
     {},
     {
-      onSuccess: (payable) => {
-        return Promise.all([
+      onSuccess: (payable) =>
+        Promise.all([
           api.payables.getPayablesId.invalidateQueries(
             { parameters: { path: { payable_id: payable.id } } },
             queryClient
@@ -277,16 +276,15 @@ export function usePayableDetails({
             },
             queryClient
           ),
-        ]);
-      },
+        ]),
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
     }
   );
   const updateMutation = api.payables.patchPayablesId.useMutation(undefined, {
-    onSuccess: (payable) => {
-      return Promise.all([
+    onSuccess: (payable) =>
+      Promise.all([
         api.payables.getPayablesId.invalidateQueries(
           { parameters: { path: { payable_id: payable.id } } },
           queryClient
@@ -298,8 +296,7 @@ export function usePayableDetails({
           },
           queryClient
         ),
-      ]);
-    },
+      ]),
     onError: (error) => {
       toast.error(getAPIErrorMessage(i18n, error));
     },

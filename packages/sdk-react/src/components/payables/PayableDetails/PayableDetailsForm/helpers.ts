@@ -4,14 +4,7 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import {
-  CounterpartBankAccountResponse,
-  CounterpartResponse as Counterpart,
-  CurrencyEnum,
-  LineItemRequest,
-  TagReadSchema,
-  LineItemResponse,
-} from '@monite/sdk-api';
+import { CounterpartResponse as Counterpart } from '@monite/sdk-api';
 
 import { format } from 'date-fns';
 
@@ -59,7 +52,7 @@ export const counterpartsToSelect = (
 };
 
 export const counterpartBankAccountsToSelect = (
-  bankAccounts: CounterpartBankAccountResponse[]
+  bankAccounts: components['schemas']['CounterpartBankAccountResponse'][]
 ): Option[] => {
   return bankAccounts.map((bankAccount) => ({
     value: bankAccount.id,
@@ -67,7 +60,9 @@ export const counterpartBankAccountsToSelect = (
   }));
 };
 
-export const tagsToSelect = (tags: TagReadSchema[] | undefined): Option[] => {
+export const tagsToSelect = (
+  tags: components['schemas']['TagReadSchema'][] | undefined
+): Option[] => {
   if (!tags) return [];
 
   return tags.map(({ id: value, name: label }) => ({
@@ -89,10 +84,10 @@ export const dateToString = (date: Date): string => {
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
-    currency: CurrencyEnum | string
+    currency: components['schemas']['CurrencyEnum'] | string
   ) => number | null,
   payable?: components['schemas']['PayableResponseSchema'],
-  lineItems?: LineItemResponse[]
+  lineItems?: components['schemas']['LineItemResponse'][]
 ): PayableDetailsFormFields => {
   if (!payable) {
     return {
@@ -221,7 +216,7 @@ export const prepareLineItemSubmit = (
   currency: components['schemas']['CurrencyEnum'],
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): LineItemRequest => {
+): components['schemas']['LineItemRequest'] => {
   const { name, quantity, price, tax } = lineItem;
 
   return {

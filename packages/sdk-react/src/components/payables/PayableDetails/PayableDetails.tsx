@@ -13,7 +13,6 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OcrStatusEnum, PayableActionEnum } from '@monite/sdk-api';
 import {
   Alert,
   Backdrop,
@@ -90,14 +89,14 @@ const PayableDetailsBase = ({
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.UPDATE,
+      action: 'update',
       entityUserId: payable?.was_created_by_user_id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.READ,
+      action: 'read',
       entityUserId: payable?.was_created_by_user_id,
     });
 
@@ -175,7 +174,7 @@ const PayableDetailsBase = ({
             >
               {payable &&
                 (payable.status === 'new' || payable.status === 'draft') &&
-                payable.ocr_status === OcrStatusEnum.ERROR && (
+                payable.ocr_status === 'error' && (
                   <Box mb={2}>
                     <Alert severity="error">
                       {t(

@@ -17,7 +17,6 @@ import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage'
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -91,14 +90,14 @@ const PayablesBase = ({
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
