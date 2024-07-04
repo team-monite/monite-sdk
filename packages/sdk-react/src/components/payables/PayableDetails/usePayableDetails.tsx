@@ -303,7 +303,7 @@ export function usePayableDetails({
   });
   const createLineItemMutation =
     api.payables.postPayablesIdLineItems.useMutation(undefined, {
-      onSuccess: (lineItem) =>
+      onSuccess: () =>
         api.payables.getPayablesIdLineItems.invalidateQueries(
           {
             parameters: { path: { payable_id: payableId } },
@@ -313,7 +313,7 @@ export function usePayableDetails({
     });
   const updateLineItemMutation =
     api.payables.patchPayablesIdLineItemsId.useMutation(undefined, {
-      onSuccess: (lineItem) =>
+      onSuccess: () =>
         api.payables.getPayablesIdLineItems.invalidateQueries(
           {
             parameters: { path: { payable_id: payableId } },
@@ -323,7 +323,7 @@ export function usePayableDetails({
     });
   const deleteLineItemMutation =
     api.payables.deletePayablesIdLineItemsId.useMutation(undefined, {
-      onSuccess: (lineItem) =>
+      onSuccess: () =>
         api.payables.getPayablesIdLineItems.invalidateQueries(
           {
             parameters: { path: { payable_id: payableId } },
