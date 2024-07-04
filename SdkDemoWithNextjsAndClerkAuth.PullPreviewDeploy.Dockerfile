@@ -14,6 +14,7 @@ ARG TURBO_TEAM
 ARG TURBO_TOKEN
 ARG NEXT_PUBLIC_CLERK_IS_SATELLITE=true
 ARG NEXT_PUBLIC_CLERK_DOMAIN
+ARG APP_SIGN_IN_URL
 
 RUN yarn build --filter='sdk-demo-with-nextjs-and-clerk-auth'
 
@@ -31,6 +32,9 @@ RUN --mount=type=secret,id=monite_project_client_id \
 
 RUN --mount=type=secret,id=monite_project_client_secret \
     echo "MONITE_PROJECT_CLIENT_SECRET=$(cat /run/secrets/monite_project_client_secret)" >> examples/with-nextjs-and-clerk-auth/.env.local
+
+# Must be main domain Sign In URL, not the satellite one
+RUN echo "APP_SIGN_IN_URL=$APP_SIGN_IN_URL" >> examples/with-nextjs-and-clerk-auth/.env.local
 
 CMD ["yarn", "workspace", "sdk-demo-with-nextjs-and-clerk-auth", "run", "start"]
 EXPOSE 3000

@@ -6,10 +6,18 @@ import { authMiddleware as createAuthMiddleware } from '@clerk/nextjs';
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
 
+const authMiddlewareDomainOptions = process.env.CLERK_SATELLITE_APP_DOMAIN
+  ? {
+      domain: process.env.CLERK_SATELLITE_APP_DOMAIN,
+    }
+  : undefined;
+
 const authMiddleware = createAuthMiddleware({
   publicRoutes: ['/api/in/clerk', '/api/healthcheck', '/public'],
   publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
-});
+  signInUrl: process.env.APP_SIGN_IN_URL, // main domain SignIn URL, not satellite
+  ...authMiddlewareDomainOptions,
+} as never);
 
 const authMiddlewareNo401Response: NextMiddleware = async (request, event) => {
   const response = await authMiddleware(request, event);

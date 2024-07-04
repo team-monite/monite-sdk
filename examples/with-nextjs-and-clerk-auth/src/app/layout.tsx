@@ -33,7 +33,11 @@ export default async function RootLayout({
   const selectedTheme = getSelectedTheme(user);
 
   return (
-    <ClerkProvider publishableKey={process.env.CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider
+      publishableKey={process.env.CLERK_PUBLISHABLE_KEY}
+      signInUrl={process.env.APP_SIGN_IN_URL}
+      domain={process.env.CLERK_SATELLITE_APP_DOMAIN}
+    >
       <MultisessionAppSupport>
         <html lang="en">
           <body className={themeFont.className}>

@@ -16,3 +16,4 @@ services:
     image: "${PREVIEW_SDK_DEMO_WITH_NEXTJS_AND_CLERK_AUTH_IMAGE}"
     environment:
       MONITE_API_URL: "https://api.dev.monite.com/v1"
+      CLERK_SATELLITE_APP_DOMAIN: "${PULLPREVIEW_PUBLIC_DNS}"

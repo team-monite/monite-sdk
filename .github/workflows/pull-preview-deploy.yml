@@ -54,7 +54,7 @@ jobs:
             "monite_project_client_secret=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_SECRET_DEV }}"
             "monite_project_client_id=${{ secrets.PULL_PREVIEW_MONITE_PROJECT_CLIENT_ID_DEV }}"
           build-args: |
-            NEXT_PUBLIC_CLERK_DOMAIN=${{ vars.PULL_PREVIEW_CLERK_DOMAIN_DEV }}
+            APP_SIGN_IN_URL=https://${{ vars.PULL_PREVIEW_CLERK_DOMAIN_DEV }}/sign-in
             TURBO_API=http://${{ env.turbo_api_ip }}:41230
             TURBO_TEAM=turbogha
             TURBO_TOKEN=turbogha
