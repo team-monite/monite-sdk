@@ -4,7 +4,10 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { CounterpartResponse as Counterpart } from '@monite/sdk-api';
+import {
+  CounterpartBankAccountResponse,
+  CounterpartResponse as Counterpart,
+} from '@monite/sdk-api';
 
 import { format } from 'date-fns';
 
@@ -52,7 +55,7 @@ export const counterpartsToSelect = (
 };
 
 export const counterpartBankAccountsToSelect = (
-  bankAccounts: components['schemas']['CounterpartBankAccountResponse'][]
+  bankAccounts: CounterpartBankAccountResponse[]
 ): Option[] => {
   return bankAccounts.map((bankAccount) => ({
     value: bankAccount.id,

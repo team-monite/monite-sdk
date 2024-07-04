@@ -221,13 +221,13 @@ export function usePayableDetails({
     error: payableQueryError,
     isLoading,
   } = api.payables.getPayablesId.useQuery(
-    { path: { payable_id: payableId! } },
+    { path: { payable_id: payableId ?? '' } },
     { enabled: !!payableId, ...payablesDefaultQueryConfig }
   );
 
   const { data: lineItemsData } = api.payables.getPayablesIdLineItems.useQuery(
     {
-      path: { payable_id: payableId! },
+      path: { payable_id: payableId ?? '' },
     },
     { enabled: !!payableId }
   );
@@ -302,11 +302,35 @@ export function usePayableDetails({
     },
   });
   const createLineItemMutation =
-    api.payables.postPayablesIdLineItems.useMutation();
+    api.payables.postPayablesIdLineItems.useMutation(undefined, {
+      onSuccess: (lineItem) =>
+        api.payables.getPayablesIdLineItems.invalidateQueries(
+          {
+            parameters: { path: { payable_id: payableId } },
+          },
+          queryClient
+        ),
+    });
   const updateLineItemMutation =
-    api.payables.patchPayablesIdLineItemsId.useMutation();
+    api.payables.patchPayablesIdLineItemsId.useMutation(undefined, {
+      onSuccess: (lineItem) =>
+        api.payables.getPayablesIdLineItems.invalidateQueries(
+          {
+            parameters: { path: { payable_id: payableId } },
+          },
+          queryClient
+        ),
+    });
   const deleteLineItemMutation =
-    api.payables.deletePayablesIdLineItemsId.useMutation();
+    api.payables.deletePayablesIdLineItemsId.useMutation(undefined, {
+      onSuccess: (lineItem) =>
+        api.payables.getPayablesIdLineItems.invalidateQueries(
+          {
+            parameters: { path: { payable_id: payableId } },
+          },
+          queryClient
+        ),
+    });
   const cancelMutation = api.payables.postPayablesIdCancel.useMutation(
     undefined,
     {
