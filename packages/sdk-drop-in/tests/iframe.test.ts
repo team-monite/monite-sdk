@@ -26,28 +26,14 @@ test.beforeEach(async ({ page }) => {
       await route.continue();
     }
   });
-
-  await page.goto(`${consumerPage}${routingPaths.receivables}`, {
-    waitUntil: 'domcontentloaded',
-    timeout: 60000,
-  });
-
-  const iframeElement = await page.locator('iframe').elementHandle();
-
-  if (!iframeElement) {
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
-  }
-
-  const frame = await iframeElement?.contentFrame();
-
-  if (!frame) {
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
-  }
 });
 
-test('test the theme switcher', async ({ page }) => {
+test('theme switching works', async ({ page }) => {
+  await page.goto(`${consumerPage}${routingPaths.receivables}`);
+
   const iframe = page.frameLocator('iframe');
-  await iframe.locator('body').waitFor({ state: 'visible', timeout: 10_000 });
+
+  await expect(iframe.getByRole('heading', { name: 'Sales' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Material UI' }).click();
   await page.getByText('Theme').click();
@@ -66,6 +52,8 @@ test('test the theme switcher', async ({ page }) => {
 });
 
 test('test the Roles button under Settings', async ({ page }) => {
+  await page.goto(`${consumerPage}${routingPaths.receivables}`);
+
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Roles' })).toBeVisible();
   await page.getByRole('button', { name: 'Roles' }).click();
@@ -75,6 +63,8 @@ test('test the Roles button under Settings', async ({ page }) => {
 });
 
 test('test the Tags button under Settings', async ({ page }) => {
+  await page.goto(`${consumerPage}${routingPaths.receivables}`);
+
   await page.getByRole('button', { name: 'Settings' }).click();
   await expect(page.getByRole('button', { name: 'Tags' })).toBeVisible();
   await page.getByRole('button', { name: 'Tags' }).click();
