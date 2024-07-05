@@ -17,8 +17,8 @@
   "scripts": {
     "test": "TESTS=true jest --coverage --silent --runInBand",
     "typecheck": "tsc",
-    "build": "cross-env NODE_ENV=production rollup --config config/rollup.config.mjs",
-    "dev": "cross-env NODE_ENV=development rollup --watch --config config/rollup.config.mjs",
+    "build": "cross-env NODE_ENV=production rollup --config rollup.config.mjs",
+    "dev": "cross-env NODE_ENV=development rollup --watch --config rollup.config.mjs",
     "clean": "rimraf dist/; rimraf --glob 'src/core/i18n/locales/*/messages.ts'; rimraf --glob 'src/core/i18n/locales/*/messages.d.ts'",
     "lint": "eslint src --ext ts,tsx,js,jsx,cjs,mjs --max-warnings 0",
     "extract-translations": "lingui extract",
