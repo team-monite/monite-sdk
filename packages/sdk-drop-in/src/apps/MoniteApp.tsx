@@ -7,11 +7,11 @@ import React, {
 } from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
-import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
+import { AppCircularProgress } from '@/lib/AppCircularProgress';
 import { css, Global } from '@emotion/react';
 import { type APISchema, RootElementsProvider } from '@monite/sdk-react';
 
-import { DropInMoniteProvider } from '../lib/DropInMoniteProvider.tsx';
+import { DropInMoniteProvider } from '../lib/DropInMoniteProvider';
 
 type ProviderProps = Pick<
   ComponentProps<typeof DropInMoniteProvider>,

@@ -3,8 +3,8 @@ import {
   MoniteAppElementBase,
   parseElementAttribute,
   SlotConfig,
-} from '@/custom-elements/MoniteAppElementBase.tsx';
-import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator.ts';
+} from '@/custom-elements/MoniteAppElementBase';
+import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 
 export class MoniteIframeAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale'

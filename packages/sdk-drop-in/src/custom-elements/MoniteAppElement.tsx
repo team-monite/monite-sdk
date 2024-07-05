@@ -7,7 +7,7 @@ import {
   MoniteAppElementBase,
   parseElementAttribute,
   SlotConfig,
-} from '@/custom-elements/MoniteAppElementBase.tsx';
+} from '@/custom-elements/MoniteAppElementBase';
 
 export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale'

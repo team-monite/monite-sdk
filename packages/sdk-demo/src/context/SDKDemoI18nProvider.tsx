@@ -1,6 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
-import { messages as defaultMessages } from '@/locales/en/messages.ts';
+import { messages as defaultMessages } from '@/locales/en/messages';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 
