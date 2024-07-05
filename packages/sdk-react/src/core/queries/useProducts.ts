@@ -1,6 +1,6 @@
 'use client';
 
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

@@ -2,7 +2,7 @@
 
 import React, { useId, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';

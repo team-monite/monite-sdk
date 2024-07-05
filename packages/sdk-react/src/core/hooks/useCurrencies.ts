@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { useCurrencyList } from '@/core/queries/useCurrency';
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -8,7 +8,7 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Button, Stack, Typography } from '@mui/material';
 
-import PDFObject from 'pdfobject';
+import { embed } from 'pdfobject';
 
 export const SUPPORTED_MIME_TYPES = [
   'image/png',
@@ -89,7 +89,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
   useEffect(() => {
     if (!pdfRef.current) return;
 
-    PDFObject.embed(url, pdfRef.current, {
+    embed(url, pdfRef.current, {
       fallbackLink: true,
       pdfOpenParams: {
         scrollBar: 0,

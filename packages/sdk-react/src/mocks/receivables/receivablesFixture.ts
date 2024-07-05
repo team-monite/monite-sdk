@@ -2,7 +2,7 @@ import { bankAccountsFixture } from '@/mocks/bankAccounts';
 import {
   counterpartsAddressesFixture,
   generateCounterpartAddress,
-} from '@/mocks/counterparts/address';
+} from '@/mocks/counterparts/address/counterpartsAddressesFixture';
 import { entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import { vatRatesFixture } from '@/mocks/vatRates';
