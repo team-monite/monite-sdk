@@ -14,7 +14,6 @@ import {
   PayableStateEnum,
   SourceOfPayableDataEnum,
 } from '@monite/sdk-api';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
 
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
