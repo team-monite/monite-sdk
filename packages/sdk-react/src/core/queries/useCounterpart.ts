@@ -203,23 +203,6 @@ export const useUpdateCounterpartAddress = (
   });
 };
 
-// export const useCounterpartBankList = (counterpartId?: string) => {
-//   const { monite } = useMoniteContext();
-//
-//   return useQuery<CounterpartBankAccountResponse[], Error>({
-//     queryKey: counterpartQueryKeys.bankList(counterpartId),
-//
-//     queryFn: () =>
-//       !!counterpartId
-//         ? monite.api.counterparts
-//             .getBankAccounts(counterpartId)
-//             .then((response) => response.data)
-//         : [],
-//
-//     enabled: !!counterpartId,
-//   });
-// };
-
 export const useCreateCounterpartBank = (counterpartId: string) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
