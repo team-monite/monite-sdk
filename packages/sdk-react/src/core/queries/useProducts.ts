@@ -45,24 +45,6 @@ const useProductListCache = () => {
   };
 };
 
-export const useProducts = (
-  params: ProductsServiceGetAllRequest,
-  options?: {
-    /** Should we enable the request or not? */
-    enabled: boolean;
-  }
-) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<ProductServicePaginationResponse, Error>({
-    queryKey: [...productQueryKeys.all(), params],
-
-    queryFn: () => monite.api.products.getAll(params),
-
-    enabled: options?.enabled,
-  });
-};
-
 export const useInfiniteProducts = (
   params: ProductsServiceGetAllRequest,
   options?: {
