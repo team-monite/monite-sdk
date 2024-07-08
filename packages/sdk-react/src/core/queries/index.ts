@@ -4,7 +4,6 @@ export * from './useCounterpart';
 export * from './useEntityUsers';
 export * from './useInternalSettings';
 export * from './useReceivables';
-export * from './useProducts';
 export * from './usePaymentTerms';
 export * from './useMeasureUnits';
 export * from './useVatRates';

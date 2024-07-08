@@ -8,11 +8,11 @@ import {
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useProductById } from '@/core/queries/useProducts';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -63,11 +63,14 @@ const ExistingProductDetailsBase = ({
 
   const dialogContext = useDialog();
   const { formatCurrencyToDisplay } = useCurrencies();
+  const { api } = useMoniteContext();
   const {
     data: product,
     error: productQueryError,
     isLoading,
-  } = useProductById(id);
+  } = api.products.getProductsId.useQuery({
+    path: { product_id: id },
+  });
 
   const { data: user } = useEntityUserByAuthToken();
 
@@ -172,7 +175,13 @@ const ExistingProductDetailsBase = ({
                 />
                 <ProductDetailsTableCell
                   label={t(i18n)`Unit:`}
-                  value={<MeasureUnit unitId={product.measure_unit_id} />}
+                  value={
+                    product.measure_unit_id ? (
+                      <MeasureUnit unitId={product.measure_unit_id} />
+                    ) : (
+                      '—'
+                    )
+                  }
                 />
                 <ProductDetailsTableCell
                   label={t(i18n)`Price:`}
