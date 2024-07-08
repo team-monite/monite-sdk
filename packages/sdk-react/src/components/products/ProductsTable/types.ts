@@ -1,8 +1,4 @@
-import {
-  ProductServiceTypeEnum,
-  ProductCursorFields,
-  OrderEnum,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -11,8 +7,8 @@ import {
 } from './consts';
 
 export type Sort = {
-  sort: ProductCursorFields;
-  order: OrderEnum;
+  sort: components['schemas']['ProductCursorFields'];
+  order: components['schemas']['OrderEnum'];
 };
 
 export type Filters = {
@@ -22,3 +18,5 @@ export type Filters = {
 };
 
 export type FilterValue = ProductServiceTypeEnum | 'all' | string | null;
+
+type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];

@@ -256,6 +256,7 @@ const EditInvoiceDetailsContent = ({
                 />
                 <ItemsSection
                   actualCurrency={actualCurrency}
+                  // @ts-expect-error - `CurrencyEnum` is coming from the legacy API client
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={isLoading} />

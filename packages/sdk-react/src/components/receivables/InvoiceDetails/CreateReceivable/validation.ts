@@ -158,7 +158,7 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   smallest_amount?: number;
   name: string;
   price?: components['schemas']['Price'];
-  measure_unit_id: string;
+  measure_unit_id?: string;
 }
 
 export interface CreateReceivablesFormBeforeValidationProps {
