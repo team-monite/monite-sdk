@@ -386,8 +386,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     fullWidth
                     disabled={
                       isCounterpartVatsLoading ||
-                      !counterpartVats ||
-                      counterpartVats.length === 0 ||
+                      !counterpartVats?.data ||
+                      counterpartVats?.data.length === 0 ||
                       disabled
                     }
                     error={Boolean(error)}
@@ -406,7 +406,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       }
                       {...field}
                     >
-                      {counterpartVats?.map((counterpartVat) => (
+                      {counterpartVats?.data?.map((counterpartVat) => (
                         <MenuItem
                           key={counterpartVat.id}
                           value={counterpartVat.id}

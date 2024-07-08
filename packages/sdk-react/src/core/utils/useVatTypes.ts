@@ -1,13 +1,16 @@
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TaxIDTypeEnum } from '@monite/sdk-api';
 
 type VatType = {
-  code: TaxIDTypeEnum;
+  code: components['schemas']['VatIDTypeEnum'];
   label: string;
 };
 
-export const useVatTypeLabelByCode = (code?: TaxIDTypeEnum): string => {
+export const useVatTypeLabelByCode = (
+  code?: components['schemas']['VatIDTypeEnum']
+): string => {
   const { i18n } = useLingui();
   const vatType = useVatTypes();
 

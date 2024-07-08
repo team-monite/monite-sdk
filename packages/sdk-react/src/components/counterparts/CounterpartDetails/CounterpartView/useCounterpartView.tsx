@@ -113,7 +113,7 @@ export function useCounterpartView({
     addresses: addresses || [],
     contacts: contacts || [],
     banks: banks?.data || [],
-    vats: vats || [],
+    vats: vats?.data || [],
     counterpart,
     deleteCounterpart,
     onEdit,

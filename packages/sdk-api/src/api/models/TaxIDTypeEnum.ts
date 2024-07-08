@@ -6,7 +6,7 @@
  * An enumeration.
  */
 export enum TaxIDTypeEnum {
-  AE_TRN = 'ae_trn',
+  // AE_TRN = 'ae_trn',
   AU_ABN = 'au_abn',
   AU_ARN = 'au_arn',
   BG_UIC = 'bg_uic',

@@ -1,5 +1,6 @@
 import { toast } from 'react-hot-toast';
 
+import { components } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
@@ -29,6 +30,10 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityCache, useEntityListCache } from './hooks';
+
+export type QConterpartResponse =
+  | components['schemas']['CounterpartIndividualRootResponse']
+  | components['schemas']['CounterpartOrganizationRootResponse'];
 
 type CounterpartUpdate = {
   id: string;
@@ -298,21 +303,36 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   });
 };
 
+// export const useCounterpartVatList = (counterpartId?: string) => {
+//   const { monite } = useMoniteContext();
+//
+//   return useQuery<CounterpartVatIDResponse[], Error>({
+//     queryKey: counterpartQueryKeys.vatList(counterpartId),
+//
+//     queryFn: () =>
+//       !!counterpartId
+//         ? monite.api.counterparts
+//             .getVats(counterpartId)
+//             .then((response) => response.data)
+//         : [],
+//
+//     enabled: !!counterpartId,
+//   });
+// };
+
 export const useCounterpartVatList = (counterpartId?: string) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartVatIDResponse[], Error>({
-    queryKey: counterpartQueryKeys.vatList(counterpartId),
-
-    queryFn: () =>
-      !!counterpartId
-        ? monite.api.counterparts
-            .getVats(counterpartId)
-            .then((response) => response.data)
-        : [],
-
-    enabled: !!counterpartId,
-  });
+  return api.counterparts.getCounterpartsIdVatIds.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId ?? '',
+      },
+    },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 };
 
 export const useCreateCounterpartVat = (counterpartId: string) => {

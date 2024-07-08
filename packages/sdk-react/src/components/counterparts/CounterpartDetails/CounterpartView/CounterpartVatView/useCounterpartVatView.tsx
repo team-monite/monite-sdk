@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { useDeleteCounterpartVat } from '@/core/queries/useCounterpart';
 import { CounterpartVatIDResponse } from '@monite/sdk-api';
 
 export type CounterpartVatViewProps = {
-  vat: CounterpartVatIDResponse;
+  vat: components['schemas']['CounterpartVatIDResponse'];
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   permissions: CounterpartActionsPermissions;
