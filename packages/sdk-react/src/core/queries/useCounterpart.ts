@@ -171,35 +171,6 @@ export const useCounterpartAddresses = (counterpartId?: string) => {
   });
 };
 
-export const useCounterpartAddressById = (
-  counterpartId?: string,
-  addressId?: string
-) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<
-    CounterpartAddressResponseWithCounterpartID | undefined,
-    Error
-  >({
-    queryKey: counterpartQueryKeys.addressDetail(counterpartId!, addressId!),
-
-    queryFn: () => {
-      if (!counterpartId || !addressId) {
-        throw new Error(
-          'MoniteReactSDK: counterpartId and addressId required.'
-        );
-      }
-
-      return monite.api.counterpartsAddresses.getCounterpartAddressesById(
-        addressId,
-        counterpartId
-      );
-    },
-
-    enabled: Boolean(counterpartId) && Boolean(addressId),
-  });
-};
-
 export const useUpdateCounterpartAddress = (
   addressId: string,
   counterpartId: string
