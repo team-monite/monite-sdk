@@ -1,4 +1,9 @@
 {
   "stand": "dev",
-  "api_url": "https://api.dev.monite.com"
+  "api_url": "https://api.dev.monite.com",
+  "app_basename": "monite-iframe-app",
+  "app_hostname": "127.0.0.1",
+  "entity_user_id": "mocked_entity_id",
+  "client_id": "mocked_client_id",
+  "client_secret": "mocked_client_secret"
 }

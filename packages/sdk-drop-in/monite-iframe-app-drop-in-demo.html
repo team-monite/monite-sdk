@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+    </style>
+    <title>Monite App Widget Label</title>
+  </head>
+  <body>
+    <monite-iframe-app disabled app-url="defer" component="defer">
+      <script slot="fetch-token">
+        async function fetchDropInToken() {
+          return await window.fetchToken();
+        }
+      </script>
+
+      <script slot="theme" type="application/json">
+        {
+          "typography": {
+            "fontFamily": "Comic Sans MS, Comic Sans, cursive, monospace"
+          }
+        }
+      </script>
+
+      <script slot="locale" type="application/json">
+        {
+          "code": "de-DE",
+          "messages": {
+            "Name, country, city": "City Test",
+            "Payables": "My Payables"
+          }
+        }
+      </script>
+    </monite-iframe-app>
+
+    <script type="module">
+      import { getConfig } from './src/lib/ConfigLoader.tsx';
+      import { fetchTokenDev } from './src/lib/fetchTokenDev.ts';
+
+      window.fetchToken = fetchTokenDev;
+
+      getConfig()
+        .then(({ app_basename, app_hostname }) => {
+          const moniteAppNode = document.querySelector('monite-iframe-app');
+          moniteAppNode.setAttribute(
+            'component',
+            location.pathname.split('/')[2] ?? 'payables'
+          );
+
+          const portSegment = location.port ? `:${location.port}` : '';
+          moniteAppNode.setAttribute(
+            'app-url',
+            `//${
+              app_hostname || location.hostname
+            }${portSegment}/${app_basename}`
+          );
+          moniteAppNode.removeAttribute('disabled');
+        })
+        .catch((error) => {
+          console.error(error);
+          throw new Error('Error while fetching credentials');
+        });
+    </script>
+
+    <script type="module" src="/src/custom-elements/monite-iframe-app.ts"></script>
+  </body>
+</html>
