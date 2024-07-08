@@ -115,10 +115,10 @@ const ProductsTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
 
   /** Controls the visibility of the deleting dialog */
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [selectedProduct, setSelectedProduct] = useState<
-    ProductServiceResponse | undefined
-  >(undefined);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
@@ -265,8 +265,10 @@ const ProductsTableBase = ({
                   }}
                   onEdit={() => onEdit?.(params.row)}
                   onDelete={() => {
-                    setSelectedProduct(params.row);
-                    setIsDeleteDialogOpen(true);
+                    setIsDeleteDialogOpen({
+                      id: params.row.id,
+                      open: true,
+                    });
                   }}
                 />
               ),
@@ -300,12 +302,19 @@ const ProductsTableBase = ({
             ),
           }}
         />
-        <ProductDeleteModal
-          id={selectedProduct?.id}
-          open={isDeleteDialogOpen}
-          onDeleted={onDeleted}
-          onClose={() => setIsDeleteDialogOpen(false)}
-        />
+        {isDeleteDialogOpen.id && (
+          <ProductDeleteModal
+            id={isDeleteDialogOpen.id}
+            open={isDeleteDialogOpen.open}
+            onDeleted={onDeleted}
+            onClose={() =>
+              setIsDeleteDialogOpen((prev) => ({
+                ...prev,
+                open: false,
+              }))
+            }
+          />
+        )}
       </Box>
     </>
   );

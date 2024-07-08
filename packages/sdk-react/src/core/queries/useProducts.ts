@@ -1,23 +1,16 @@
-import toast from 'react-hot-toast';
-
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
 import {
   ApiError,
   ProductServicePaginationResponse,
-  ProductServiceRequest,
   ProductServiceResponse,
   ProductsServiceGetAllRequest,
 } from '@monite/sdk-api';
 import {
   InfiniteData,
   useInfiniteQuery,
-  useMutation,
   useQuery,
 } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
-import { useEntityListCache } from './hooks';
 
 const PRODUCT_QUERY_ID = 'product';
 const PRODUCT_INFINITE_QUERY_ID = 'product-infinite';
@@ -26,23 +19,6 @@ const productQueryKeys = {
   all: () => [PRODUCT_QUERY_ID],
   allInfinite: () => [PRODUCT_INFINITE_QUERY_ID],
   detail: (id: string) => [...productQueryKeys.all(), 'detail', id],
-};
-
-const useProductListCache = () => {
-  /**
-   * We have two caches for the product list:
-   * - One for the regular list
-   * - One for the infinite list
-   * We need to invalidate both when we create/update/delete a product.
-   */
-  const listCaches = [
-    useEntityListCache<ProductServiceResponse>(productQueryKeys.all),
-    useEntityListCache<ProductServiceResponse>(productQueryKeys.allInfinite),
-  ];
-
-  return {
-    invalidate: () => listCaches.forEach((cache) => cache.invalidate()),
-  };
 };
 
 export const useInfiniteProducts = (
@@ -83,24 +59,5 @@ export const useProductById = (id?: string) => {
     queryFn: () => (id ? monite.api.products.getById(id) : undefined),
 
     enabled: !!id,
-  });
-};
-
-export const useDeleteProduct = () => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useProductListCache();
-
-  return useMutation<void, Error, string>({
-    mutationFn: (params) => monite.api.products.deleteById(params),
-
-    onSuccess: () => {
-      invalidate();
-      toast.success(t(i18n)`Product was deleted.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to delete product.`);
-    },
   });
 };
