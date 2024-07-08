@@ -86,25 +86,6 @@ export const useProductById = (id?: string) => {
   });
 };
 
-export const useUpdateProduct = (productId: string) => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useProductListCache();
-
-  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>({
-    mutationFn: (params) => monite.api.products.updateById(productId, params),
-
-    onSuccess: (product) => {
-      invalidate();
-      toast.success(t(i18n)`Product ${product.name} was updated.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to update product.`);
-    },
-  });
-};
-
 export const useDeleteProduct = () => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
