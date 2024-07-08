@@ -1,3 +1,5 @@
+import { components } from '@/api';
+import { QConterpartResponse } from '@/core/queries';
 import { counterpartListFixture } from '@/mocks';
 import {
   getRandomNumber,
@@ -15,8 +17,8 @@ import { organizationId } from '../counterpart.mocks.types';
 
 const genCounterpartContactFixture = (
   id: number = 0,
-  counterpart: CounterpartResponse
-): CounterpartContactResponse => {
+  counterpart: QConterpartResponse
+): components['schemas']['CounterpartContactResponse'] => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
 
@@ -33,6 +35,8 @@ const genCounterpartContactFixture = (
     phone: faker.phone.number('+ ### ### ## ##'),
     is_default: id === 0,
     address: {
+      // ToDo: check how to pass non enums to getRandomProperty
+      // @ts-ignore
       country: getRandomProperty(AllowedCountries),
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
@@ -48,7 +52,7 @@ const genCounterpartContactFixture = (
  * The key is `counterpartId` and the value is `Array<CounterpartContactResponse>`
  */
 export const counterpartsContactsFixtures = counterpartListFixture.reduce<
-  Record<string, Array<CounterpartContactResponse>>
+  Record<string, Array<components['schemas']['CounterpartContactResponse']>>
 >((acc, counterpart) => {
   acc[counterpart.id] = new Array(getRandomNumber(2, 4))
     .fill('_')

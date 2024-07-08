@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   approvalRequestsListFixture,
@@ -23,7 +24,12 @@ describe('ApprovalRequestTable', () => {
           }),
       });
 
-      renderWithClient(<ApprovalRequestsTable />, monite);
+      renderWithClient(
+        <MoniteScopedProviders>
+          <ApprovalRequestsTable />
+        </MoniteScopedProviders>,
+        monite
+      );
 
       expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
     });

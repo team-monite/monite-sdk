@@ -303,23 +303,6 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   });
 };
 
-// export const useCounterpartVatList = (counterpartId?: string) => {
-//   const { monite } = useMoniteContext();
-//
-//   return useQuery<CounterpartVatIDResponse[], Error>({
-//     queryKey: counterpartQueryKeys.vatList(counterpartId),
-//
-//     queryFn: () =>
-//       !!counterpartId
-//         ? monite.api.counterparts
-//             .getVats(counterpartId)
-//             .then((response) => response.data)
-//         : [],
-//
-//     enabled: !!counterpartId,
-//   });
-// };
-
 export const useCounterpartVatList = (counterpartId?: string) => {
   const { api } = useMoniteContext();
 
@@ -579,6 +562,9 @@ export const useCreateCounterpart = () => {
       invalidate();
 
       toast.success(
+        //ToDo: refactor next
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
       );
     },
@@ -589,16 +575,31 @@ export const useCreateCounterpart = () => {
   });
 };
 
+// export const useCounterpartById = (id?: string) => {
+//   const { monite } = useMoniteContext();
+//
+//   return useQuery<CounterpartResponse | undefined, Error>({
+//     queryKey: counterpartQueryKeys.detail(id),
+//
+//     queryFn: () => (id ? monite.api.counterparts.getById(id) : undefined),
+//
+//     enabled: !!id,
+//   });
+// };
+
 export const useCounterpartById = (id?: string) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.detail(id),
-
-    queryFn: () => (id ? monite.api.counterparts.getById(id) : undefined),
-
-    enabled: !!id,
-  });
+  return api.counterparts.getCounterpartsId.useQuery(
+    {
+      path: {
+        counterpart_id: id ?? '',
+      },
+    },
+    {
+      enabled: !!id,
+    }
+  );
 };
 
 export const useUpdateCounterpart = () => {
@@ -616,6 +617,9 @@ export const useUpdateCounterpart = () => {
       invalidate();
 
       toast.success(
+        //ToDo: refactor next
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
       );
     },

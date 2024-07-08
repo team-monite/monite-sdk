@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLatest } from 'react-use';
 
+import { components } from '@/api';
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
 import { CounterpartType } from '@monite/sdk-api';
@@ -169,7 +170,7 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
   );
 
   const onEdit = useCallback(
-    (id: string, type: CounterpartType) => {
+    (id: string, type: components['schemas']['CounterpartType']) => {
       if (type === CounterpartType.ORGANIZATION) {
         actions.showOrganizationForm();
       }

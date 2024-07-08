@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { useCounterpartById } from '@/core/queries';
+import { QConterpartResponse, useCounterpartById } from '@/core/queries';
 import {
   PayableResponseSchema,
   CounterpartResponse,
@@ -19,7 +19,7 @@ interface Props {
 export const CounterpartCell = ({ counterpartId }: Props) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
 
-  const getCounterpartText = useCallback((counterpart: CounterpartResponse) => {
+  const getCounterpartText = useCallback((counterpart: QConterpartResponse) => {
     return counterpart.type === CounterpartType.ORGANIZATION
       ? (counterpart as CounterpartOrganizationRootResponse).organization
           .legal_name

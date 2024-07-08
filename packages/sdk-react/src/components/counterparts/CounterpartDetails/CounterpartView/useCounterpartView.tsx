@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
@@ -9,16 +10,16 @@ import {
   useCounterpartVatList,
   useDeleteCounterpart,
 } from '@/core/queries/useCounterpart';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
 
 import { getCounterpartName } from '../../helpers';
 
 export type CounterpartViewProps = {
   id: string;
   showBankAccounts?: boolean;
-  onEdit?: (id: string, type: CounterpartType) => void;
+  onEdit?: (id: string, type: components['schemas']['CounterpartType']) => void;
   onDelete?: (id: string) => void;
 
   onAddressEdit?: (id: string) => void;
@@ -53,9 +54,7 @@ export function useCounterpartView({
 
   const { data: contacts, isLoading: isContactsLoading } =
     useCounterpartContactList(
-      counterpart?.type === CounterpartType.ORGANIZATION
-        ? counterpart?.id
-        : undefined
+      counterpart?.type === 'organization' ? counterpart?.id : undefined
     );
 
   const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
@@ -104,7 +103,8 @@ export function useCounterpartView({
 
   const title = useMemo((): string => {
     if (isLoading) return t(i18n)`Loading...`;
-    if (counterpartError) return counterpartError.message;
+    if (counterpartError)
+      return getLegacyAPIErrorMessage(counterpartError) as string;
     if (counterpart) return getCounterpartName(counterpart);
     return '';
   }, [isLoading, i18n, counterpartError, counterpart]);

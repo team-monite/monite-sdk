@@ -1,7 +1,6 @@
 import { components } from '@/api';
 import type { ErrorType } from '@/core/queries/types';
 import {
-  AllowedCountries,
   ApiError,
   type EntityOnboardingDocumentsPayload,
   type OnboardingDocumentsDescriptions,

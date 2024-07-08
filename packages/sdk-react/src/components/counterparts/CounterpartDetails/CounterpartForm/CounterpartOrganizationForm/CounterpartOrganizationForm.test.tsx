@@ -1,5 +1,6 @@
 import { Dialog } from '@/components';
 import { CounterpartOrganizationForm } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { organizationId } from '@/mocks/counterparts/counterpart.mocks.types';
 import i18n from '@/mocks/i18n';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
@@ -16,7 +17,9 @@ describe('CounterpartOrganizationForm', () => {
   describe('# Existing Organization', () => {
     test('should show "Cancel" button if it is NOT in Dialog', async () => {
       renderWithClient(
-        <CounterpartOrganizationForm id={organizationId} showCategories />
+        <MoniteScopedProviders>
+          <CounterpartOrganizationForm id={organizationId} showCategories />
+        </MoniteScopedProviders>
       );
 
       await waitUntilTableIsLoaded();
@@ -83,9 +86,11 @@ describe('CounterpartOrganizationForm', () => {
       });
 
       renderWithClient(
-        <I18nProvider i18n={customI18n}>
-          <CounterpartOrganizationForm showCategories />
-        </I18nProvider>
+        <MoniteScopedProviders>
+          <I18nProvider i18n={customI18n}>
+            <CounterpartOrganizationForm showCategories />
+          </I18nProvider>
+        </MoniteScopedProviders>
       );
 
       await waitForElementToBeRemoved(
@@ -111,9 +116,11 @@ describe('CounterpartOrganizationForm', () => {
       });
 
       renderWithClient(
-        <I18nProvider i18n={customI18n}>
-          <CounterpartOrganizationForm showCategories />
-        </I18nProvider>
+        <MoniteScopedProviders>
+          <I18nProvider i18n={customI18n}>
+            <CounterpartOrganizationForm showCategories />
+          </I18nProvider>
+        </MoniteScopedProviders>
       );
 
       await waitForElementToBeRemoved(

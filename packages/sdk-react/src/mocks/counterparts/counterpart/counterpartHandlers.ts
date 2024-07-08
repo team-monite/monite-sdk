@@ -1,3 +1,5 @@
+import { components } from '@/api';
+import { QConterpartResponse } from '@/core/queries';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -37,8 +39,8 @@ export const counterpartHandlers = [
   // read list
   http.get<
     {},
-    CounterpartResponse,
-    CounterpartPaginationResponse | ErrorSchemaResponse
+    QConterpartResponse,
+    components['schemas']['CounterpartPaginationResponse'] | ErrorSchemaResponse
   >(counterpartPath, async ({ request }) => {
     const entityId = request.headers.get('x-monite-entity-id');
 
@@ -127,24 +129,26 @@ export const counterpartHandlers = [
   http.post<
     CounterpartDetailParams,
     CounterpartCreatePayload,
-    CounterpartResponse
+    QConterpartResponse
   >(counterpartPath, async ({ request }) => {
     const json = await request.json();
 
     switch (json.type) {
       case CounterpartIndividualRootCreatePayload.type.INDIVIDUAL: {
-        const individualResponse: CounterpartIndividualRootResponse = {
-          ...counterpartIndividualFixture,
-          individual: json.individual,
-        };
+        const individualResponse: components['schemas']['CounterpartIndividualRootResponse'] =
+          {
+            ...counterpartIndividualFixture,
+            individual: json.individual,
+          };
 
         return HttpResponse.json(individualResponse);
       }
       case CounterpartOrganizationRootCreatePayload.type.ORGANIZATION: {
-        const organizationResponse: CounterpartOrganizationRootResponse = {
-          ...counterpartOrganizationFixture,
-          organization: json.organization,
-        };
+        const organizationResponse: components['schemas']['CounterpartOrganizationRootResponse'] =
+          {
+            ...counterpartOrganizationFixture,
+            organization: json.organization,
+          };
 
         await delay();
 

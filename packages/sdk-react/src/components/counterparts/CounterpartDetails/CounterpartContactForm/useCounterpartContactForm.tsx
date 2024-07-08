@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartContactById,
@@ -49,7 +50,7 @@ export function useCounterpartContactForm({
   const contactUpdateMutation = useUpdateCounterpartContact(counterpartId);
 
   const counterpart =
-    counterpartResponse as CounterpartOrganizationRootResponse;
+    counterpartResponse as components['schemas']['CounterpartOrganizationRootResponse'];
 
   const methods = useForm<CounterpartContactFields>({
     resolver: yupResolver(getValidationSchema(i18n)),

@@ -1,3 +1,5 @@
+import { components } from '@/api';
+import { QConterpartResponse } from '@/core/queries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { getRandomBoolean, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
@@ -10,7 +12,7 @@ import {
 
 import { individualId, organizationId } from '../counterpart.mocks.types';
 
-function createCounterpartOrganization(): CounterpartOrganizationRootResponse {
+function createCounterpartOrganization(): components['schemas']['CounterpartOrganizationRootResponse'] {
   const taxId = faker.datatype.boolean(0.9)
     ? faker.string.numeric(10)
     : undefined;
@@ -19,6 +21,7 @@ function createCounterpartOrganization(): CounterpartOrganizationRootResponse {
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
+    created_automatically: false,
     type: CounterpartType.ORGANIZATION,
     tax_id: taxId,
     organization: {
@@ -32,7 +35,7 @@ function createCounterpartOrganization(): CounterpartOrganizationRootResponse {
   };
 }
 
-function createCounterpartIndividual(): CounterpartIndividualRootResponse {
+function createCounterpartIndividual(): components['schemas']['CounterpartIndividualRootResponse'] {
   const taxId = faker.datatype.boolean(0.9)
     ? faker.string.numeric(10)
     : undefined;
@@ -42,6 +45,7 @@ function createCounterpartIndividual(): CounterpartIndividualRootResponse {
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     type: CounterpartType.INDIVIDUAL,
+    created_automatically: false,
     tax_id: taxId,
     individual: {
       first_name: faker.person.firstName(),
@@ -55,12 +59,13 @@ function createCounterpartIndividual(): CounterpartIndividualRootResponse {
   };
 }
 
-export const counterpartOrganizationFixture: CounterpartOrganizationRootResponse =
+export const counterpartOrganizationFixture: components['schemas']['CounterpartOrganizationRootResponse'] =
   {
     id: organizationId,
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     type: CounterpartType.ORGANIZATION,
+    created_automatically: false,
     organization: {
       legal_name: faker.company.name(),
       is_vendor: true,
@@ -71,32 +76,34 @@ export const counterpartOrganizationFixture: CounterpartOrganizationRootResponse
     created_by_entity_user_id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f5',
   };
 
-export const counterpartIndividualFixture: CounterpartIndividualRootResponse = {
-  id: individualId,
-  created_at: faker.date.past().toString(),
-  updated_at: faker.date.past().toString(),
-  type: CounterpartType.INDIVIDUAL,
-  individual: {
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    is_vendor: true,
-    is_customer: true,
-    phone: faker.phone.number('+ ### ### ## ##'),
-    email: faker.internet.email(),
-  },
-  created_by_entity_user_id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f5',
-};
+export const counterpartIndividualFixture: components['schemas']['CounterpartIndividualRootResponse'] =
+  {
+    id: individualId,
+    created_at: faker.date.past().toString(),
+    updated_at: faker.date.past().toString(),
+    type: CounterpartType.INDIVIDUAL,
+    created_automatically: false,
+    individual: {
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      is_vendor: true,
+      is_customer: true,
+      phone: faker.phone.number('+ ### ### ## ##'),
+      email: faker.internet.email(),
+    },
+    created_by_entity_user_id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f5',
+  };
 
 export const counterpartDetailsFixtures: {
   [key: string]:
-    | CounterpartOrganizationRootResponse
-    | CounterpartIndividualRootResponse;
+    | components['schemas']['CounterpartOrganizationRootResponse']
+    | components['schemas']['CounterpartIndividualRootResponse'];
 } = {
   [organizationId]: counterpartOrganizationFixture,
   [individualId]: counterpartIndividualFixture,
 };
 
-export const counterpartListFixture: CounterpartResponse[] = [
+export const counterpartListFixture: QConterpartResponse[] = [
   counterpartOrganizationFixture,
   counterpartIndividualFixture,
   createCounterpartOrganization(),

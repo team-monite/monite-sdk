@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Dialog } from '@/components';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -11,7 +12,9 @@ describe('CounterpartIndividualForm', () => {
   describe('# Existing Individual', () => {
     test('should show "Cancel" button no matter if it is in Dialog or not', async () => {
       renderWithClient(
-        <CounterpartIndividualForm id={individualId} showCategories />
+        <MoniteScopedProviders>
+          <CounterpartIndividualForm id={individualId} showCategories />
+        </MoniteScopedProviders>
       );
 
       await waitUntilTableIsLoaded();
@@ -28,11 +31,13 @@ describe('CounterpartIndividualForm', () => {
         const onCancelMock = jest.fn();
 
         renderWithClient(
-          <CounterpartIndividualForm
-            id={individualId}
-            showCategories
-            onCancel={onCancelMock}
-          />
+          <MoniteScopedProviders>
+            <CounterpartIndividualForm
+              id={individualId}
+              showCategories
+              onCancel={onCancelMock}
+            />
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();
@@ -66,7 +71,11 @@ describe('CounterpartIndividualForm', () => {
     });
 
     test('should NOT show "Cancel" button when CounterpartIndividual NOT in Dialog component', async () => {
-      renderWithClient(<CounterpartIndividualForm showCategories />);
+      renderWithClient(
+        <MoniteScopedProviders>
+          <CounterpartIndividualForm showCategories />
+        </MoniteScopedProviders>
+      );
 
       await waitUntilTableIsLoaded();
 
