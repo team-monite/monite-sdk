@@ -1,7 +1,10 @@
 import React, { ReactElement, ReactNode } from 'react';
 
 import { createAPIClient } from '@/api/client';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import {
+  MoniteAPIProvider,
+  MoniteQraftContext,
+} from '@/core/context/MoniteAPIProvider';
 import { MoniteContext } from '@/core/context/MoniteContext';
 import {
   getLocaleWithDefaults,
@@ -112,11 +115,14 @@ export const Provider = ({
           fetchToken: monite.fetchToken,
           ...createAPIClient({
             entityId: monite.entityId,
+            headers: monite.headers,
             context: MoniteQraftContext,
           }),
         }}
       >
-        <MoniteI18nProvider>{children}</MoniteI18nProvider>
+        <MoniteI18nProvider>
+          <MoniteAPIProvider>{children}</MoniteAPIProvider>
+        </MoniteI18nProvider>
       </MoniteContext.Provider>
     </QueryClientProvider>
   );

@@ -19,10 +19,13 @@ export interface CreateMoniteAPIClientResult {
 export interface CreateMoniteAPIClientOptions extends QraftClientOptions {
   /** Used in entity-specific endpoints **/
   entityId?: string;
+  /** Used for testing authentication **/
+  headers?: HeadersOptions;
 }
 
 export const createAPIClient = ({
   entityId,
+  headers: creationHeaders,
   ...qraftClientOptions
 }:
   | CreateMoniteAPIClientOptions
@@ -39,7 +42,11 @@ export const createAPIClient = ({
       schema,
       {
         ...requestInfo,
-        headers: mergeHeaders(predefinedHeaders, requestInfo.headers),
+        headers: mergeHeaders(
+          predefinedHeaders,
+          creationHeaders,
+          requestInfo.headers
+        ),
       },
       options
     );

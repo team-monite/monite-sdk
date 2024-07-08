@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { createAPIClient } from '@/api/client';
 import { Payables } from '@/components';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -20,6 +21,8 @@ import userEvent from '@testing-library/user-event';
 
 jest.useFakeTimers();
 jest.setTimeout(10000);
+
+const { api } = createAPIClient();
 
 describe('Payables', () => {
   // todo::Skipped: the test is freezing because of `userEvent.upload()`, need to investigate
@@ -157,11 +160,7 @@ describe('Payables', () => {
 });
 
 function checkPayableQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['payable'],
-    predicate: (query) => query.state.status === 'success',
-  });
+  const data = api.payables.getPayables.getQueriesData({}, queryClient);
 
   if (!data.length) throw new Error('Payable query is not executed');
 }
