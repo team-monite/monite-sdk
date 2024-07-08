@@ -86,25 +86,6 @@ export const useProductById = (id?: string) => {
   });
 };
 
-export const useCreateProduct = () => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useProductListCache();
-
-  return useMutation<ProductServiceResponse, Error, ProductServiceRequest>({
-    mutationFn: (params) => monite.api.products.createProduct(params),
-
-    onSuccess: (product) => {
-      invalidate();
-      toast.success(t(i18n)`Product ${product.name} was created.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to create product.`);
-    },
-  });
-};
-
 export const useUpdateProduct = (productId: string) => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();

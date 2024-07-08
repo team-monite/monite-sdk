@@ -1,13 +1,14 @@
-import { useCallback, useId, useMemo, useRef } from 'react';
+import { useId, useMemo } from 'react';
+import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { ProductDetailsCreateProps } from '@/components/products/ProductDetails/ProductDetails';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { useCreateProduct } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceRequest, ProductServiceTypeEnum } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
@@ -24,7 +25,7 @@ import { IProductFormSubmitValues, ProductFormValues } from '../validation';
 
 const initialValues: ProductFormValues = {
   name: '',
-  type: ProductServiceTypeEnum.PRODUCT,
+  type: 'product',
   units: '',
   smallestAmount: undefined,
   pricePerUnit: undefined,
@@ -48,18 +49,19 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
     [props.defaultValues]
   );
 
-  const productCreateMutation = useCreateProduct();
+  const { api, queryClient } = useMoniteContext();
 
-  const createProduct = useCallback(
-    (req: ProductServiceRequest) => {
-      productCreateMutation.mutate(req, {
-        onSuccess: (product) => {
-          props.onCreated?.(product);
-        },
-      });
-    },
-    [productCreateMutation, props]
-  );
+  const { mutate: createProduct, isPending } =
+    api.products.postProducts.useMutation(undefined, {
+      onSuccess: async (product) => {
+        props.onCreated?.(product);
+        await api.products.getProducts.invalidateQueries(queryClient);
+        toast.success(t(i18n)`Product ${product.name} was created.`);
+      },
+      onError: () => {
+        toast.error(t(i18n)`Failed to create product.`);
+      },
+    });
 
   const handleSubmit = async (values: IProductFormSubmitValues) => {
     const payload: ProductServiceRequest = {
@@ -76,7 +78,9 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
       description: values.description,
     };
 
-    return createProduct(payload);
+    return createProduct({
+      body: payload,
+    });
   };
 
   const productFormId = `Monite-ProductForm-${useId()}`;
@@ -124,7 +128,7 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
           variant="outlined"
           type="submit"
           form={productFormId}
-          disabled={productCreateMutation.isPending}
+          disabled={isPending}
         >
           {t(i18n)`Create`}
         </Button>
@@ -132,3 +136,5 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
     </>
   );
 };
+
+type ProductServiceRequest = components['schemas']['ProductServiceRequest'];
