@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react';
 
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useCounterpartAddresses,
-  useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
   useCounterpartVatList,
@@ -62,9 +62,14 @@ export function useCounterpartView({
     counterpart?.id
   );
 
-  const { data: banks, isLoading: isBanksLoading } = useCounterpartBankList(
-    counterpart?.id
-  );
+  const { api } = useMoniteContext();
+
+  const { data: banks, isLoading: isBanksLoading } =
+    api.counterparts.getCounterpartsIdBankAccounts.useQuery({
+      path: {
+        counterpart_id: counterpart?.id || '',
+      },
+    });
 
   const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =
     useDeleteCounterpart();
@@ -107,7 +112,7 @@ export function useCounterpartView({
   return {
     addresses: addresses || [],
     contacts: contacts || [],
-    banks: banks || [],
+    banks: banks?.data || [],
     vats: vats || [],
     counterpart,
     deleteCounterpart,

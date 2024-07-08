@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { useDeleteCounterpartBank } from '@/core/queries/useCounterpart';
 import { CounterpartBankAccountResponse } from '@monite/sdk-api';
 
 export type CounterpartBankViewProps = {
-  bank: CounterpartBankAccountResponse;
+  bank: components['schemas']['CounterpartBankAccountResponse'];
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   permissions: CounterpartActionsPermissions;
