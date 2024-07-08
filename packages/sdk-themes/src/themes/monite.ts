@@ -6,12 +6,26 @@ import type {
 } from '@mui/material/styles/createPalette.js';
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
+import { deepmerge } from '@mui/utils';
 import type {} from '@mui/x-data-grid/themeAugmentation';
+
+export const neutralLight = {
+  '10': '#111111',
+  '50': '#707070',
+  '80': '#DDDDDD',
+};
+
+export const neutralDark = {
+  '10': '#FFFFFF',
+  '50': '#F3F3F3',
+  '80': '#B8B8B8',
+};
 
 export const paletteLight: PaletteOptions = {
   primary: {
-    main: '#246FFF',
-    light: '#F4F4FE',
+    dark: '#1D59CC',
+    main: '#3737FF',
+    light: '#F4F8FF',
   },
   secondary: {
     main: '#707070',
@@ -20,8 +34,9 @@ export const paletteLight: PaletteOptions = {
 
 export const paletteDark: PaletteOptions = {
   primary: {
-    main: '#f5d14d',
-    light: '#e1e1ef',
+    dark: '#1D59CC',
+    main: '#3737FF',
+    light: '#F4F8FF',
   },
   secondary: {
     main: '#707070',
@@ -42,6 +57,7 @@ export const defaultMoniteTypography:
   },
   h3: {
     fontSize: '1.5rem',
+    fontStyle: 'normal',
     fontWeight: 600,
   },
   subtitle2: {
@@ -71,6 +87,27 @@ export const defaultMoniteTypography:
 };
 
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
+  MuiButton: {
+    styleOverrides: {
+      containedPrimary: {
+        padding: '6px 16px',
+        height: 40,
+        boxShadow: 'none',
+        borderRadius: 8,
+        fontSize: 16,
+        fontWeight: 500,
+      },
+
+      root: {
+        '&.ThemeSelect': {
+          borderRadius: 8,
+        },
+        '&.ThemeSelect .ThemeSelect-modeLabel': {
+          display: 'flex',
+        },
+      },
+    },
+  },
   MuiTypography: {
     styleOverrides: {
       subtitle2: {
@@ -143,6 +180,32 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       variant: 'outlined',
     },
   },
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        fontSize: 14,
+        marginRight: 24,
+        color: neutralLight['50'],
+
+        '&.Mui-selected': {
+          color: neutralLight['10'],
+        },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        marginBottom: 32,
+      },
+      indicator: {
+        height: 4,
+        backgroundColor: neutralLight['50'],
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
+      },
+    },
+  },
   MuiTableHead: {
     styleOverrides: {
       root: {
@@ -185,6 +248,22 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
 };
 
+const defaultMoniteComponentsDark = deepmerge(defaultMoniteComponents, {
+  MuiTab: {
+    styleOverrides: {
+      root: {
+        color: neutralDark['80'],
+        '&.Mui-selected': { color: 'primary.main' },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      indicator: { backgroundColor: 'primary.main' },
+    },
+  },
+});
+
 export const moniteLight: ThemeOptions = {
   palette: {
     mode: 'light',
@@ -200,5 +279,5 @@ export const moniteDark: ThemeOptions = {
     ...paletteDark,
   },
   typography: defaultMoniteTypography,
-  components: defaultMoniteComponents,
+  components: defaultMoniteComponentsDark,
 };
