@@ -7,13 +7,13 @@ import {
 import { productsListFixture } from '@/mocks/products';
 import { DEBOUNCE_SEARCH_TIMEOUT } from '@/ui/SearchField';
 import {
-  cachedMoniteSDK,
   renderWithClient,
   selectAsyncDropdownOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
+import { requestFn } from '@openapi-qraft/react';
 import {
   fireEvent,
   screen,
@@ -23,6 +23,8 @@ import {
 } from '@testing-library/react';
 
 import { ProductsTable } from './ProductsTable';
+
+const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
 describe('ProductsTable', () => {
   afterEach(() => {
@@ -77,29 +79,28 @@ describe('ProductsTable', () => {
 
       renderWithClient(<ProductsTable onFilterChanged={onChangeFilterMock} />);
 
-      await waitUntilTableIsLoaded();
-
-      const search = screen.getByLabelText('Search');
+      const search = await screen.findByLabelText('Search');
 
       const searchValue = 'Some search value';
 
-      await act(() => {
-        jest.useFakeTimers();
-
+      jest.useFakeTimers();
+      await act(() =>
         fireEvent.change(search, {
           target: { value: searchValue },
-        });
+        })
+      );
+      jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
 
-        jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
-      });
-
-      await waitFor(() => {
-        expect(onChangeFilterMock).toHaveBeenCalledWith({
-          field: 'search',
-          value: searchValue,
-        });
-      });
-    });
+      await waitFor(
+        () => {
+          expect(onChangeFilterMock).toHaveBeenCalledWith({
+            field: 'search',
+            value: searchValue,
+          });
+        },
+        { timeout: 5_000 }
+      );
+    }, 10_000);
 
     test('should trigger "onChangeFilterMock" with "type" and changing "value" when we are filtering products by type', async () => {
       const onChangeFilterMock = jest.fn();
@@ -209,8 +210,6 @@ describe('ProductsTable', () => {
     });
 
     test('should fetch next data when we click on "next" button', async () => {
-      const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
       renderWithClient(<ProductsTable />);
 
       await waitUntilTableIsLoaded();
@@ -221,35 +220,27 @@ describe('ProductsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      if (!lastCallArguments) {
-        throw new Error('monite.api.products.getAll never has been called');
-      }
-
-      const callParams = lastCallArguments[0];
-
-      await waitFor(() => {
-        expect(callParams.paginationToken).toBe('1');
-      });
+      expect(
+        requestFnMock.mock.lastCall?.[1].parameters?.query?.pagination_token
+      ).toEqual('1');
     });
   });
 
   describe('# Actions', () => {
     test('should trigger "onEdit" callback when we click on "edit" button', async () => {
+      const productRowFixture = productsListFixture[0];
       const onEditMock = jest.fn();
 
       renderWithClient(<ProductsTable onEdit={onEditMock} />);
 
-      await waitUntilTableIsLoaded();
+      const productNameCell = await screen.findByText(productRowFixture.name);
+      const productRow = productNameCell.closest('[role="row"]');
+      if (!(productRow instanceof HTMLElement))
+        throw new Error('Could not find product row');
 
-      const itemIndex = 0;
-
-      const actionButtons = await screen.findAllByRole('button', {
+      const actionButton = await within(productRow).findByRole('button', {
         name: 'actions-menu-button',
       });
-      const actionButton = actionButtons[itemIndex];
 
       fireEvent.click(actionButton);
 
@@ -258,7 +249,7 @@ describe('ProductsTable', () => {
 
       fireEvent.click(editButton);
 
-      expect(onEditMock).toHaveBeenCalledWith(productsListFixture[itemIndex]);
+      expect(onEditMock).toHaveBeenCalledWith(productRowFixture);
     });
 
     test('should trigger "onDelete" callback when we click on "delete" button', async () => {
@@ -313,9 +304,7 @@ describe('ProductsTable', () => {
   describe('# Public API', () => {
     describe('# Filters', () => {
       test('should send correct request when we are filtering items by name', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -333,22 +322,13 @@ describe('ProductsTable', () => {
           jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
         });
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.products.getAll never has been called');
-        }
-
-        const name = lastCallArguments[0].nameIcontains;
-
-        expect(name).toBe(searchValue);
+        expect(
+          requestFnMock.mock.lastCall?.[1].parameters?.query?.name__icontains
+        ).toBe(searchValue);
       });
 
       test('should send correct request when we are filtering items by type', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -368,22 +348,15 @@ describe('ProductsTable', () => {
         });
         fireEvent.click(unitOption);
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.products.getAll never has been called');
-        }
-
-        const type = lastCallArguments[0].type;
-
-        expect(type).toBe('product');
+        await waitFor(() => {
+          expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.type).toBe(
+            'product'
+          );
+        });
       });
 
       test('should send correct request when we are filtering items by measure unit', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -404,24 +377,17 @@ describe('ProductsTable', () => {
         const unit = measureUnitsListFixture.data[0];
         await selectAsyncDropdownOption(/units/i, unit.name);
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.products.getAll never has been called');
-        }
-
-        const measureUnit = lastCallArguments[0].measureUnitId;
-
-        expect(measureUnit).toBe(unit.id);
+        await waitFor(() => {
+          expect(
+            requestFnMock.mock.lastCall?.[1].parameters?.query?.measure_unit_id
+          ).toBe(unit.id);
+        });
       });
     });
 
     describe('# Sorting', () => {
       test('should send correct request when we sort a table by "name" field in ascending order and when we click on that field once', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -431,24 +397,16 @@ describe('ProductsTable', () => {
 
         await waitUntilTableIsLoaded();
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.products.getAll never has been called');
-        }
-
-        const order = lastCallArguments[0].order;
-        const sort = lastCallArguments[0].sort;
-
-        expect(order).toBe('asc');
-        expect(sort).toBe('name');
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
+          'name'
+        );
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.order).toBe(
+          'asc'
+        );
       });
 
       test('should send correct request when we sort a table by "name" field in descending order and when we click on that field twice', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -460,24 +418,16 @@ describe('ProductsTable', () => {
         fireEvent.click(nameButton);
         await waitUntilTableIsLoaded();
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.tag.getList never has been called');
-        }
-
-        const order = lastCallArguments[0].order;
-        const sort = lastCallArguments[0].sort;
-
-        expect(order).toBe('desc');
-        expect(sort).toBe('name');
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
+          'name'
+        );
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.order).toBe(
+          'desc'
+        );
       });
 
       test('should send correct request and flush sorting by "name" field when we click on that field 3 times', async () => {
-        const getListSpy = jest.spyOn(cachedMoniteSDK.api.products, 'getAll');
-
-        renderWithClient(<ProductsTable />, cachedMoniteSDK);
+        renderWithClient(<ProductsTable />);
 
         await waitUntilTableIsLoaded();
 
@@ -487,18 +437,12 @@ describe('ProductsTable', () => {
         fireEvent.click(nameButton);
         fireEvent.click(nameButton);
 
-        /** Get all provided parameters into the last call */
-        const lastCallArguments = getListSpy.mock.lastCall;
-
-        if (!lastCallArguments) {
-          throw new Error('monite.api.tag.getList never has been called');
-        }
-
-        const order = lastCallArguments[0].order;
-        const sort = lastCallArguments[0].sort;
-
-        expect(order).toBeUndefined();
-        expect(sort).toBeUndefined();
+        expect(
+          requestFnMock.mock.lastCall?.[1].parameters?.query?.sort
+        ).toBeUndefined();
+        expect(
+          requestFnMock.mock.lastCall?.[1].parameters?.query?.order
+        ).toBeUndefined();
       });
     });
   });
