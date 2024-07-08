@@ -1,8 +1,9 @@
 import { components } from '@/api';
 
-const schema: {
-  [key in components['schemas']['AllowedCountries']]: key;
-} = {
+const countries: Record<
+  components['schemas']['AllowedCountries'],
+  components['schemas']['AllowedCountries']
+> = {
   AF: 'AF',
   AX: 'AX',
   AL: 'AL',
@@ -73,7 +74,6 @@ const schema: {
   GQ: 'GQ',
   ER: 'ER',
   EE: 'EE',
-  SZ: 'SZ',
   ET: 'ET',
   FK: 'FK',
   FO: 'FO',
@@ -135,6 +135,7 @@ const schema: {
   LT: 'LT',
   LU: 'LU',
   MO: 'MO',
+  MK: 'MK',
   MG: 'MG',
   MW: 'MW',
   MY: 'MY',
@@ -150,8 +151,8 @@ const schema: {
   FM: 'FM',
   MD: 'MD',
   MC: 'MC',
-  MN: 'MN',
   ME: 'ME',
+  MN: 'MN',
   MS: 'MS',
   MA: 'MA',
   MZ: 'MZ',
@@ -169,7 +170,6 @@ const schema: {
   NU: 'NU',
   NF: 'NF',
   MP: 'MP',
-  MK: 'MK',
   NO: 'NO',
   OM: 'OM',
   PK: 'PK',
@@ -187,6 +187,7 @@ const schema: {
   QA: 'QA',
   RE: 'RE',
   RO: 'RO',
+  RS: 'RS',
   RU: 'RU',
   RW: 'RW',
   SH: 'SH',
@@ -199,7 +200,7 @@ const schema: {
   ST: 'ST',
   SA: 'SA',
   SN: 'SN',
-  RS: 'RS',
+  SS: 'SS',
   SC: 'SC',
   SL: 'SL',
   SG: 'SG',
@@ -208,13 +209,13 @@ const schema: {
   SB: 'SB',
   SO: 'SO',
   ZA: 'ZA',
-  SS: 'SS',
   GS: 'GS',
   ES: 'ES',
   LK: 'LK',
   SD: 'SD',
   SR: 'SR',
   SJ: 'SJ',
+  SZ: 'SZ',
   SE: 'SE',
   CH: 'CH',
   SY: 'SY',
@@ -250,11 +251,6 @@ const schema: {
   YE: 'YE',
   ZM: 'ZM',
   ZW: 'ZW',
-  BL: 'BL',
-  BQ: 'BQ',
-  CW: 'CW',
-  MF: 'MF',
-  SX: 'SX',
 };
 
-export const AllowedCountries = Object.values(schema);
+export const AllowedCountries = Object.values(countries);
