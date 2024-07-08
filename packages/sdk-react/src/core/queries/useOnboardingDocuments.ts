@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import type { ErrorType } from '@/core/queries/types';
 import {
   AllowedCountries,
@@ -14,7 +15,7 @@ export const ONBOARDING_DOCUMENT_QUERY = 'onboarding_documents';
 
 const documentQueryKeys = {
   all: () => [ONBOARDING_DOCUMENT_QUERY],
-  descriptions: (country?: AllowedCountries) =>
+  descriptions: (country?: components['schemas']['AllowedCountries']) =>
     country
       ? [...documentQueryKeys.all(), 'descriptions', country]
       : [...documentQueryKeys.all(), 'descriptions'],
@@ -58,7 +59,9 @@ export const useCreatePersonDocumentsById = () => {
   });
 };
 
-export const useDocumentDescriptions = (country?: AllowedCountries) => {
+export const useDocumentDescriptions = (
+  country?: components['schemas']['AllowedCountries']
+) => {
   const { monite } = useMoniteContext();
 
   return useQuery<OnboardingDocumentsDescriptions | undefined, ErrorType>({
@@ -68,7 +71,9 @@ export const useDocumentDescriptions = (country?: AllowedCountries) => {
       if (!country) {
         throw new Error('Country is not provided');
       }
-
+      // TODO: remove after migration of this
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       return monite.api.onboardingDocuments.getDocumentDescriptions(country);
     },
 

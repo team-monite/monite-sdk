@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { components } from '@/api';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -43,7 +44,9 @@ export const OnboardingPersonDocuments = () => {
   );
 
   const { data: descriptions } = useDocumentDescriptions(
-    person?.address?.country as AllowedCountries | undefined
+    person?.address?.country as
+      | components['schemas']['AllowedCountries']
+      | undefined
   );
 
   const personDocuments = useMemo(
