@@ -6,7 +6,6 @@ const schema: {
   processing: 'processing',
   error: 'error',
   success: 'success',
-  canceled: 'canceled',
 };
 
 export const OcrStatusEnum = Object.values(schema);
