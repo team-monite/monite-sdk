@@ -26,12 +26,7 @@ import {
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
 } from '@monite/sdk-api';
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityCache, useEntityListCache } from './hooks';
@@ -553,43 +548,54 @@ export const useCounterpartList = (
   });
 };
 
-// export const useCounterpartList = (
-//   ...args: (string | number | boolean | undefined)[]
-// ) => {
-//   const { api } = useMoniteContext();
+// export const useCreateCounterpart = () => {
+//   const { i18n } = useLingui();
+//   const { monite } = useMoniteContext();
+//   const { invalidate } = useCounterpartListCache();
+//   const { setEntity } = useCounterpartDetailCache();
 //
-//   return api.counterparts.getCounterparts.useQuery({
-//     path: {
-//       ...args,
+//   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>({
+//     mutationFn: (payload) => monite.api.counterparts.create(payload),
+//
+//     onSuccess: (counterpart) => {
+//       setEntity(counterpart);
+//       invalidate();
+//
+//       toast.success(
+//         //ToDo: refactor next
+//         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//         // @ts-ignore
+//         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
+//       );
+//     },
+//
+//     onError: () => {
+//       toast.error(t(i18n)`Failed to create Counterpart.`);
 //     },
 //   });
 // };
 
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { setEntity } = useCounterpartDetailCache();
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
-  return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>({
-    mutationFn: (payload) => monite.api.counterparts.create(payload),
+  return api.counterparts.postCounterparts.useMutation(
+    {},
+    {
+      onSuccess: (counterpart) => {
+        api.counterparts.getCounterpartsId.removeQueries(queryClient);
+        api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
+        toast.success(
+          t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
+        );
+      },
 
-    onSuccess: (counterpart) => {
-      setEntity(counterpart);
-      invalidate();
-
-      toast.success(
-        //ToDo: refactor next
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
-      );
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to create Counterpart.`);
-    },
-  });
+      onError: () => {
+        toast.error(t(i18n)`Failed to create Counterpart.`);
+      },
+    }
+  );
 };
 
 export const useCounterpartById = (id?: string) => {
