@@ -79,7 +79,6 @@ const CreateProductBase = (props: ProductDetailsCreateProps) => {
     return createProduct(payload);
   };
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const productFormId = `Monite-ProductForm-${useId()}`;
 
   return (
