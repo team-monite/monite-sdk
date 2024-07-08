@@ -26,7 +26,12 @@ import {
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
 } from '@monite/sdk-api';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityCache, useEntityListCache } from './hooks';
@@ -548,6 +553,18 @@ export const useCounterpartList = (
   });
 };
 
+// export const useCounterpartList = (
+//   ...args: (string | number | boolean | undefined)[]
+// ) => {
+//   const { api } = useMoniteContext();
+//
+//   return api.counterparts.getCounterparts.useQuery({
+//     path: {
+//       ...args,
+//     },
+//   });
+// };
+
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
   const { monite } = useMoniteContext();
@@ -574,18 +591,6 @@ export const useCreateCounterpart = () => {
     },
   });
 };
-
-// export const useCounterpartById = (id?: string) => {
-//   const { monite } = useMoniteContext();
-//
-//   return useQuery<CounterpartResponse | undefined, Error>({
-//     queryKey: counterpartQueryKeys.detail(id),
-//
-//     queryFn: () => (id ? monite.api.counterparts.getById(id) : undefined),
-//
-//     enabled: !!id,
-//   });
-// };
 
 export const useCounterpartById = (id?: string) => {
   const { api } = useMoniteContext();
@@ -631,21 +636,17 @@ export const useUpdateCounterpart = () => {
 };
 
 export const useDeleteCounterpart = () => {
+  const queryClient = useQueryClient();
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { removeEntity } = useCounterpartDetailCache();
+  const { api } = useMoniteContext();
 
-  return useMutation<void, Error, CounterpartResponse, CounterpartResponse>({
-    mutationFn: (counterpart) => monite.api.counterparts.delete(counterpart.id),
-
-    onSuccess: (_, counterpart) => {
+  return api.counterparts.deleteCounterpartsId.useMutation(undefined, {
+    onSuccess: () => {
       toast.success(t(i18n)`Counterpart was deleted.`);
 
-      removeEntity(counterpart.id);
-      invalidate();
+      api.counterparts.getCounterpartsId.removeQueries(queryClient);
+      api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
     },
-
     onError: () => {
       toast.error(t(i18n)`Failed to delete Counterpart.`);
     },
