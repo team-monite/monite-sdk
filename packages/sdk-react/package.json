@@ -1,7 +1,7 @@
 {
   "name": "@monite/sdk-react",
   "version": "3.14.1",
-  "apiVersion": "2024-05-25",
+  "apiVersion": "2023-09-01",
   "publishConfig": {
     "access": "public"
   },
