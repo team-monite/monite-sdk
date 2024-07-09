@@ -295,6 +295,10 @@ describe('PayableDetails', () => {
             mutationKey: api.payables.patchPayablesId.getMutationKey(),
           });
 
+          if (!updatePayableMutation) {
+            throw new Error('update mutation has never been called');
+          }
+
           return updatePayableMutation?.state.variables?.body;
         });
 

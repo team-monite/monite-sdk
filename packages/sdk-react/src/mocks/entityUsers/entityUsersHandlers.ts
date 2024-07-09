@@ -42,6 +42,7 @@ export const entityUsersHandlers = [
   http.get<{}, undefined, EntityUserResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/me`,
     async ({ request }) => {
+      // TODO Real API doesn't use the next two headers for this method.
       const entityId = request.headers.get('x-monite-entity-id');
       const entityUserId = request.headers.get('x-monite-entity-user-id');
 
@@ -92,6 +93,7 @@ export const entityUsersHandlers = [
 
   http.get<{}, undefined, RoleResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/my_role`,
+    // TODO Real API doesn't use the next header for this method.
     async ({ request }) => {
       const entityId = request.headers.get('x-monite-entity-id');
 

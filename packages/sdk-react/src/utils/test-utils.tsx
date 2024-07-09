@@ -280,8 +280,6 @@ export function triggerChangeInput(
   });
 }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 /**
  * Selects an option in the async dropdown field.
  * @param dropdownName The name of the dropdown field.
