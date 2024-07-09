@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
 import { AllowedCountries, CounterpartAddress } from '@monite/sdk-api';
@@ -7,7 +8,7 @@ export interface CounterpartAddressFormFields {
   line2?: string;
   city: string;
   state: string;
-  country: AllowedCountries;
+  country: components['schemas']['AllowedCountries'];
   postalCode: string;
 }
 

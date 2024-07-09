@@ -57,9 +57,13 @@ export const prepareCounterpartIndividualCreate = ({
   phone,
   isCustomer,
   isVendor,
-  ...address
+  city,
+  country,
+  line1,
+  line2,
+  postalCode,
+  state,
 }: CounterpartIndividualFields): components['schemas']['CounterpartIndividualCreatePayload'] => {
-  const { postalCode, ...restAddress } = address;
   return {
     first_name: firstName,
     last_name: lastName,
@@ -68,8 +72,12 @@ export const prepareCounterpartIndividualCreate = ({
     phone,
     email,
     residential_address: {
-      ...restAddress,
+      city,
+      country,
+      line1,
+      line2,
       postal_code: postalCode,
+      state,
     },
   };
 };
