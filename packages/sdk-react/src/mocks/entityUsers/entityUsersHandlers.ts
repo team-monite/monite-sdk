@@ -42,7 +42,7 @@ export const entityUsersHandlers = [
   http.get<{}, undefined, EntityUserResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/me`,
     async ({ request }) => {
-      // TODO Real API doesn't use the next two headers for this method.
+      // TODO Real API doesn't use the next header for this method. Replace this workaround https://monite.atlassian.net/browse/DEV-11719
       const entityId = request.headers.get('x-monite-entity-id');
 
       if (entityId === ENTITY_ID_FOR_LOW_PERMISSIONS) {
@@ -83,7 +83,7 @@ export const entityUsersHandlers = [
 
   http.get<{}, undefined, RoleResponse>(
     `*/${ENTITY_USERS_ENDPOINT}/my_role`,
-    // TODO Real API doesn't use the next header for this method.
+    // TODO Real API doesn't use the next header for this method. Replace this workaround https://monite.atlassian.net/browse/DEV-11719
     async ({ request }) => {
       const entityId = request.headers.get('x-monite-entity-id');
 
