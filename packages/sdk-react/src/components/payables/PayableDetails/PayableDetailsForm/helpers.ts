@@ -6,12 +6,9 @@ import {
 } from '@/components/counterparts/helpers';
 import { QCounterpartResponse } from '@/core/queries';
 import {
-  CounterpartBankAccountResponse,
-  CounterpartResponse as Counterpart,
   CurrencyEnum,
   LineItemRequest,
   PayableResponseSchema,
-  PayableUpdateSchema,
   TagReadSchema,
   LineItemResponse,
 } from '@monite/sdk-api';
@@ -44,9 +41,7 @@ export interface SubmitPayload extends PayableDetailsFormFields {
 }
 
 export const counterpartsToSelect = (
-  counterparts:
-    | components['schemas']['CounterpartIndividualRootResponse'][]
-    | undefined
+  counterparts: QCounterpartResponse[] | undefined
 ): Option[] => {
   if (!counterparts) return [];
 
@@ -58,10 +53,7 @@ export const counterpartsToSelect = (
           counterpart.individual.last_name
         )
       : isOrganizationCounterpart(counterpart)
-      ? //ToDo: refactor next
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        counterpart.organization.legal_name
+      ? counterpart.organization.legal_name
       : '',
   }));
 };

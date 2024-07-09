@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
 import {
   CounterpartIndividualResponse,
@@ -57,7 +58,7 @@ export const prepareCounterpartIndividualCreate = ({
   isCustomer,
   isVendor,
   ...address
-}: CounterpartIndividualFields): CounterpartIndividualCreatePayload => {
+}: CounterpartIndividualFields): components['schemas']['CounterpartIndividualCreatePayload'] => {
   const { postalCode, ...restAddress } = address;
   return {
     first_name: firstName,

@@ -4,7 +4,7 @@ import { counterpartsToSelect } from '@/components/payables/PayableDetails/Payab
 import { type ReceivablesFilterHandler } from '@/components/receivables/Filters/useReceivablesFilters';
 import { FilterTypes } from '@/components/receivables/ReceivablesTable/types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCounterpartList } from '@/core/queries';
+import { QCounterpartResponse, useCounterpartList } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -129,7 +129,9 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
             >
               {[
                 { label: t(i18n)`All customers`, value: 'all' },
-                ...counterpartsToSelect(counterpartQuery?.data?.data),
+                ...counterpartsToSelect(
+                  counterpartQuery?.data?.data as QCounterpartResponse[]
+                ),
               ].map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
                   {label}
