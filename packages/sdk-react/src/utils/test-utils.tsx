@@ -58,8 +58,6 @@ afterEach(() => {
   queryClient.removeQueries();
 });
 
-const { api } = createAPIClient();
-
 export const cachedMoniteSDK = new MoniteSDK({
   entityId: entityIds[0],
   fetchToken: () =>
@@ -101,7 +99,6 @@ export const Provider = ({
   const sentryHub = new Hub(sentryClient);
   const apiClient = createAPIClient({
     entityId: monite.entityId,
-    headers: monite.headers,
     context: MoniteQraftContext,
   });
 
@@ -359,6 +356,8 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
+  const { api } = createAPIClient();
+
   const roleQuery = api.entityUsers.getEntityUsersMyRole.getQueryState(
     {},
     queryClient
