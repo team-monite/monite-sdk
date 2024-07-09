@@ -1,6 +1,8 @@
-import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
+import { createAPIClient } from '@/api/client';
 import { checkPermissionQueriesLoaded } from '@/utils/test-utils';
 import { QueryClient } from '@tanstack/react-query';
+
+const { api } = createAPIClient();
 
 describe('Test Utils', () => {
   describe('# checkPermissionQueriesLoaded(..)', () => {
@@ -13,11 +15,16 @@ describe('Test Utils', () => {
     test('resolve "true" if query state "success" for both of queries', async () => {
       const queryClient = new QueryClient();
 
-      queryClient.setQueryData([ENTITY_USERS_QUERY_ID, 'my_role'], {
-        dummy: true,
-      });
+      api.entityUsers.getEntityUsersMyRole.getQueryKey();
 
-      queryClient.setQueryData([ENTITY_USERS_QUERY_ID, 'me'], {
+      queryClient.setQueryData(
+        api.entityUsers.getEntityUsersMyRole.getQueryKey(),
+        {
+          dummy: true,
+        }
+      );
+
+      queryClient.setQueryData(api.entityUsers.getEntityUsersMe.getQueryKey(), {
         dummy: true,
       });
 
@@ -29,9 +36,12 @@ describe('Test Utils', () => {
     test('throw error if query state of "me" query is not "success"', async () => {
       const queryClient = new QueryClient();
 
-      queryClient.setQueryData([ENTITY_USERS_QUERY_ID, 'my_role'], {
-        dummy: true,
-      });
+      queryClient.setQueryData(
+        api.entityUsers.getEntityUsersMyRole.getQueryKey(),
+        {
+          dummy: true,
+        }
+      );
 
       await expect(
         checkPermissionQueriesLoaded(new QueryClient())
@@ -41,7 +51,7 @@ describe('Test Utils', () => {
     test('throw error if query state of "my_role" query is not "success"', async () => {
       const queryClient = new QueryClient();
 
-      queryClient.setQueryData([ENTITY_USERS_QUERY_ID, 'me'], {
+      queryClient.setQueryData(api.entityUsers.getEntityUsersMe.getQueryKey(), {
         dummy: true,
       });
 

@@ -1,14 +1,16 @@
 import React, { ReactElement, ReactNode } from 'react';
 
 import { createAPIClient } from '@/api/client';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import {
+  MoniteAPIProvider,
+  MoniteQraftContext,
+} from '@/core/context/MoniteAPIProvider';
 import { MoniteContext } from '@/core/context/MoniteContext';
 import {
   getLocaleWithDefaults,
   MoniteI18nProvider,
 } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
-import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
@@ -95,6 +97,10 @@ export const Provider = ({
     integrations: [],
   });
   const sentryHub = new Hub(sentryClient);
+  const apiClient = createAPIClient({
+    entityId: monite.entityId,
+    context: MoniteQraftContext,
+  });
 
   return (
     <QueryClientProvider client={client}>
@@ -109,13 +115,20 @@ export const Provider = ({
           dateFnsLocale,
           apiUrl: monite.baseUrl,
           fetchToken: monite.fetchToken,
-          ...createAPIClient({
-            entityId: monite.entityId,
-            context: MoniteQraftContext,
-          }),
+          ...apiClient,
         }}
       >
-        <MoniteI18nProvider>{children}</MoniteI18nProvider>
+        <MoniteI18nProvider>
+          <MoniteAPIProvider
+            apiUrl={monite.baseUrl}
+            fetchToken={monite.fetchToken}
+            requestFn={apiClient.requestFn}
+            queryClient={queryClient}
+            APIContext={MoniteQraftContext}
+          >
+            {children}
+          </MoniteAPIProvider>
+        </MoniteI18nProvider>
       </MoniteContext.Provider>
     </QueryClientProvider>
   );
@@ -264,8 +277,6 @@ export function triggerChangeInput(
   });
 }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 /**
  * Selects an option in the async dropdown field.
  * @param dropdownName The name of the dropdown field.
@@ -345,12 +356,17 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
-  const roleQuery = queryClient.getQueryState([
-    ENTITY_USERS_QUERY_ID,
-    'my_role',
-  ]);
+  const { api } = createAPIClient();
 
-  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me']);
+  const roleQuery = api.entityUsers.getEntityUsersMyRole.getQueryState(
+    {},
+    queryClient
+  );
+
+  const meQuery = api.entityUsers.getEntityUsersMe.getQueryState(
+    {},
+    queryClient
+  );
 
   if (!roleQuery || !meQuery) throw new Error('Permissions query not exists');
 

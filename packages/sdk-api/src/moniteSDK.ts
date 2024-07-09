@@ -74,6 +74,9 @@ export class MoniteSDK {
   /** Provided `entityId` of the client */
   public readonly entityId: MoniteSDKConfig['entityId'];
 
+  /** Provided `headers` of the client */
+  public readonly headers: MoniteSDKConfig['headers'];
+
   /**
    * Environment on which one MoniteSDK works
    *  (on which API handlers we will make API requests to Monite)
@@ -93,6 +96,7 @@ export class MoniteSDK {
     const defaultApiUrl = 'https://api.sandbox.monite.com/v1';
 
     this.entityId = entityId;
+    this.headers = headers;
     this.fetchToken = fetchToken;
 
     if (apiUrl) {

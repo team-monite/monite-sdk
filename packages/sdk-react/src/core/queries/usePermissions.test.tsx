@@ -4,6 +4,7 @@ import {
   ENTITY_ID_FOR_LOW_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
+import { entityUserByIdWithOwnerPermissionsFixture } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { createRenderWithClient } from '@/utils/test-utils';
 import { ActionEnum } from '@/utils/types';
 import { MoniteSDK, PayableActionEnum, PermissionEnum } from '@monite/sdk-api';
@@ -383,10 +384,6 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-          headers: {
-            // @ts-expect-error We need to nullish entity id from `entity_users/me` request
-            'x-monite-entity-user-id': null,
-          },
         });
 
         const { result } = renderHook(
@@ -406,8 +403,6 @@ describe('useRoles', () => {
       });
 
       test('should return "true" when the user IS the owner of "payable" but "payable" returns ALLOWED_FOR_OWN status', async () => {
-        const entityUserId = '5b4daced-6b9a-4707-83c6-08193d999fab';
-
         const monite = new MoniteSDK({
           fetchToken: () =>
             Promise.resolve({
@@ -416,10 +411,6 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-          headers: {
-            /** This user is the owner of the first Payable */
-            'x-monite-entity-user-id': entityUserId,
-          },
         });
 
         const { result } = renderHook(
@@ -427,7 +418,7 @@ describe('useRoles', () => {
             useIsActionAllowed({
               method: 'payable',
               action: PayableActionEnum.READ,
-              entityUserId,
+              entityUserId: entityUserByIdWithOwnerPermissionsFixture.id,
             }),
           {
             wrapper: createRenderWithClient({ monite }),
@@ -448,10 +439,6 @@ describe('useRoles', () => {
               expires_in: 3600,
             }),
           entityId: ENTITY_ID_FOR_OWNER_PERMISSIONS,
-          headers: {
-            /** This user IS NOT the owner of the first Payable */
-            'x-monite-entity-user-id': 'not-owner',
-          },
         });
 
         const { result } = renderHook(

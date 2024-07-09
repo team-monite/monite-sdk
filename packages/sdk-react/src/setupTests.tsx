@@ -4,7 +4,9 @@
 // learn more: https://github.com/testing-library/jest-dom
 import { ReactNode } from 'react';
 
-import { DataGridProps } from '@mui/x-data-grid';
+import type { createAPIClient } from '@/api/client';
+import type { DataGridProps } from '@mui/x-data-grid';
+import { mergeHeaders, requestFn } from '@openapi-qraft/react';
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -56,6 +58,52 @@ jest.mock('@openapi-qraft/react', () => {
     ...module,
     requestFn: jest.fn(module.requestFn),
     __esModule: true,
+  };
+});
+
+jest.mock('@/api/client', () => {
+  const originalModule = jest.requireActual('@/api/client');
+
+  const createAPIClientMocked: typeof createAPIClient = (options) => {
+    const apiClient = originalModule.createAPIClient(options);
+
+    /**
+     * Mock implementation of `requestFn` for testing purposes.
+     *
+     * Note: The '/me' and '/my_role' endpoints do not accept the 'x-monite-entity-id' header by type (just as the real API).
+     * However, the internal implementation of handlers for MSW (Mock Service Worker) uses this header to determine permissions (full, low, empty).
+     */
+    const requestFnMocked: typeof requestFn = (
+      schema,
+      requestInfo,
+      requestOptions
+    ) => {
+      return apiClient.requestFn(
+        schema,
+        {
+          ...requestInfo,
+          headers:
+            options?.entityId && ['/me', '/my_role'].includes(schema.url)
+              ? mergeHeaders(requestInfo.headers, {
+                  'x-monite-entity-id': options?.entityId,
+                })
+              : requestInfo.headers,
+        },
+        requestOptions
+      );
+    };
+
+    return {
+      ...apiClient,
+      requestFn: requestFnMocked,
+    };
+  };
+
+  //Mock the default export and named export 'foo'
+  return {
+    __esModule: true,
+    ...originalModule,
+    createAPIClient: createAPIClientMocked,
   };
 });
 

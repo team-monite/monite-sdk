@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
-import { payablesDefaultQueryConfig } from '@/core/queries';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_LOW_PERMISSIONS,
@@ -15,10 +15,10 @@ import {
   triggerClickOnSelectOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
-import type { PayableResponseSchema } from '@monite/sdk-api';
 import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { PayablesTable } from './PayablesTable';
 
 jest.useFakeTimers();
@@ -240,7 +240,7 @@ describe('PayablesTable', () => {
 
   describe('# Pagination', () => {
     test('should fetch only first 10 elements when the page limit is 10', async () => {
-      const { container } = renderWithClient(<PayablesTable />);
+      renderWithClient(<PayablesTable />);
 
       await waitUntilTableIsLoaded();
 
@@ -298,7 +298,9 @@ describe('PayablesTable', () => {
 
   describe('# Live Updates', () => {
     test('should update the table list of payables when the data has been added on the server', async () => {
-      let resultItem: PayableResponseSchema | undefined = undefined;
+      let resultItem:
+        | components['schemas']['PayableResponseSchema']
+        | undefined = undefined;
 
       renderWithClient(
         <PayablesTable

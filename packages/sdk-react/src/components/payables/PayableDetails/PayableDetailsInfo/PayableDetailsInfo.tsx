@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getIndividualName,
@@ -16,7 +17,6 @@ import { CenteredContentBox } from '@/ui/box';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, PayableResponseSchema } from '@monite/sdk-api';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import {
   Box,
@@ -38,7 +38,7 @@ import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 
 export type PayablesDetailsInfoProps = {
-  payable: PayableResponseSchema;
+  payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
 };
 
@@ -302,7 +302,7 @@ const PayableDetailsInfoBase = ({
                         item.quantity &&
                         formatFromMinorUnits(
                           item.subtotal / item.quantity ?? 0,
-                          payable.currency ?? CurrencyEnum.EUR
+                          payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">
