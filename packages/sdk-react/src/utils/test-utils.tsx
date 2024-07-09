@@ -99,6 +99,11 @@ export const Provider = ({
     integrations: [],
   });
   const sentryHub = new Hub(sentryClient);
+  const apiClient = createAPIClient({
+    entityId: monite.entityId,
+    headers: monite.headers,
+    context: MoniteQraftContext,
+  });
 
   return (
     <QueryClientProvider client={client}>
@@ -113,15 +118,19 @@ export const Provider = ({
           dateFnsLocale,
           apiUrl: monite.baseUrl,
           fetchToken: monite.fetchToken,
-          ...createAPIClient({
-            entityId: monite.entityId,
-            headers: monite.headers,
-            context: MoniteQraftContext,
-          }),
+          ...apiClient,
         }}
       >
         <MoniteI18nProvider>
-          <MoniteAPIProvider>{children}</MoniteAPIProvider>
+          <MoniteAPIProvider
+            apiUrl={monite.baseUrl}
+            fetchToken={monite.fetchToken}
+            requestFn={apiClient.requestFn}
+            queryClient={queryClient}
+            APIContext={MoniteQraftContext}
+          >
+            {children}
+          </MoniteAPIProvider>
         </MoniteI18nProvider>
       </MoniteContext.Provider>
     </QueryClientProvider>
