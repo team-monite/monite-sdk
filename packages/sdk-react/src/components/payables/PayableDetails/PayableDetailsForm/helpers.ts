@@ -1,8 +1,10 @@
+import { components } from '@/api';
 import {
   getIndividualName,
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
+import { QCounterpartResponse } from '@/core/queries';
 import {
   CounterpartBankAccountResponse,
   CounterpartResponse as Counterpart,
@@ -32,7 +34,7 @@ export interface PayableDetailsFormFields {
   counterpartBankAccount?: string;
   invoiceDate?: Date;
   dueDate?: Date;
-  currency: CurrencyEnum;
+  currency: components['schemas']['CurrencyEnum'];
   tags: Option[];
   lineItems: LineItem[];
 }
@@ -42,7 +44,9 @@ export interface SubmitPayload extends PayableDetailsFormFields {
 }
 
 export const counterpartsToSelect = (
-  counterparts: Counterpart[] | undefined
+  counterparts:
+    | components['schemas']['CounterpartIndividualRootResponse'][]
+    | undefined
 ): Option[] => {
   if (!counterparts) return [];
 
@@ -54,13 +58,16 @@ export const counterpartsToSelect = (
           counterpart.individual.last_name
         )
       : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
+      ? //ToDo: refactor next
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        counterpart.organization.legal_name
       : '',
   }));
 };
 
 export const counterpartBankAccountsToSelect = (
-  bankAccounts: CounterpartBankAccountResponse[]
+  bankAccounts: components['schemas']['CounterpartBankAccountResponse'][]
 ): Option[] => {
   return bankAccounts.map((bankAccount) => ({
     value: bankAccount.id,
@@ -158,7 +165,7 @@ export const prepareSubmit = ({
   currency,
   tags,
   counterpartAddressId,
-}: SubmitPayload): PayableUpdateSchema => ({
+}: SubmitPayload): components['schemas']['PayableUpdateSchema'] => ({
   document_id: invoiceNumber,
   counterpart_id: counterpart || undefined,
   counterpart_bank_account_id: counterpartBankAccount || undefined,

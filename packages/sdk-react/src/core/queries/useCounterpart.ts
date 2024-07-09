@@ -15,25 +15,21 @@ import {
   CreateCounterpartBankAccount,
   UpdateCounterpartBankAccount,
   CounterpartContactResponse,
-  CounterpartCreatePayload,
   CounterpartPaginationResponse,
   CounterpartResponse,
   CounterpartsService,
   CounterpartUpdateAddress,
-  CounterpartUpdatePayload,
   CounterpartVatID,
   CounterpartVatIDResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
-  type CounterpartIndividualRootUpdatePayload,
-  type CounterpartOrganizationRootUpdatePayload,
 } from '@monite/sdk-api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityCache, useEntityListCache } from './hooks';
 
-export type QConterpartResponse =
+export type QCounterpartResponse =
   | components['schemas']['CounterpartIndividualRootResponse']
   | components['schemas']['CounterpartOrganizationRootResponse'];
 

@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { QConterpartResponse } from '@/core/queries';
+import { QCounterpartResponse } from '@/core/queries';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -39,7 +39,7 @@ export const counterpartHandlers = [
   // read list
   http.get<
     {},
-    QConterpartResponse,
+    QCounterpartResponse,
     components['schemas']['CounterpartPaginationResponse'] | ErrorSchemaResponse
   >(counterpartPath, async ({ request }) => {
     const entityId = request.headers.get('x-monite-entity-id');
@@ -129,7 +129,7 @@ export const counterpartHandlers = [
   http.post<
     CounterpartDetailParams,
     CounterpartCreatePayload,
-    QConterpartResponse
+    QCounterpartResponse
   >(counterpartPath, async ({ request }) => {
     const json = await request.json();
 

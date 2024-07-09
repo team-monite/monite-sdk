@@ -117,6 +117,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       counterparts
         ? counterparts?.data.map((counterpart) => ({
             id: counterpart.id,
+            //ToDo: refactor next
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             label: getCounterpartName(counterpart),
           }))
         : [],
@@ -228,6 +231,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       </Box>,
       counterparts?.data.map((counterpart) => (
         <MenuItem key={counterpart.id} value={counterpart.id}>
+          {/*ToDo: refactor next*/}
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+          {/* @ts-ignore*/}
           {getCounterpartName(counterpart)}
         </MenuItem>
       )),
@@ -264,6 +270,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                   const selectedCounterpartOption = selectedCounterpart
                     ? {
                         id: selectedCounterpart.id,
+                        //ToDo: refactor next
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
                         label: getCounterpartName(selectedCounterpart),
                       }
                     : null;

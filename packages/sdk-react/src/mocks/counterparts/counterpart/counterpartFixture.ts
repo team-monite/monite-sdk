@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { QConterpartResponse } from '@/core/queries';
+import { QCounterpartResponse } from '@/core/queries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { getRandomBoolean, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
@@ -103,7 +103,7 @@ export const counterpartDetailsFixtures: {
   [individualId]: counterpartIndividualFixture,
 };
 
-export const counterpartListFixture: QConterpartResponse[] = [
+export const counterpartListFixture: QCounterpartResponse[] = [
   counterpartOrganizationFixture,
   counterpartIndividualFixture,
   createCounterpartOrganization(),

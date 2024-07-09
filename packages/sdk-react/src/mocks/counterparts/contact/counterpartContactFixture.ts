@@ -1,5 +1,5 @@
 import { components } from '@/api';
-import { QConterpartResponse } from '@/core/queries';
+import { QCounterpartResponse } from '@/core/queries';
 import { counterpartListFixture } from '@/mocks';
 import {
   getRandomNumber,
@@ -17,7 +17,7 @@ import { organizationId } from '../counterpart.mocks.types';
 
 const genCounterpartContactFixture = (
   id: number = 0,
-  counterpart: QConterpartResponse
+  counterpart: QCounterpartResponse
 ): components['schemas']['CounterpartContactResponse'] => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();

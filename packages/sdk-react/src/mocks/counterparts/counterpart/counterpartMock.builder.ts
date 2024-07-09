@@ -1,4 +1,4 @@
-import { QConterpartResponse } from '@/core/queries';
+import { QCounterpartResponse } from '@/core/queries';
 import {
   CounterpartCursorFields,
   CounterpartResponse,
@@ -26,7 +26,7 @@ export class CounterpartMockBuilder {
   sort: CounterpartCursorFields | undefined;
   order: GetRequest['order'] = OrderEnum.ASC;
 
-  data: Array<QConterpartResponse> = counterpartListFixture;
+  data: Array<QCounterpartResponse> = counterpartListFixture;
 
   withPage(
     page: number
@@ -152,7 +152,7 @@ export class CounterpartMockBuilder {
     return this;
   }
 
-  build(): Array<QConterpartResponse> {
+  build(): Array<QCounterpartResponse> {
     return this.data;
   }
 }

@@ -11,11 +11,6 @@ import { ActionEnum } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartIndividualRootCreatePayload,
-  CounterpartIndividualRootResponse,
-  CounterpartIndividualRootUpdatePayload,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
@@ -77,7 +72,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     });
 
   const individualCounterpart = counterpart as
-    | CounterpartIndividualRootResponse
+    | components['schemas']['CounterpartIndividualRootResponse']
     | undefined;
 
   const { showCategories, defaultValues } = props;

@@ -5,7 +5,7 @@ import type { CounterpartShowCategories } from '@/components/counterparts/Counte
 import { TableActions } from '@/components/TableActions';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { QConterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
+import { QCounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
 import {
   useCounterpartCache,
   useCounterpartList,
@@ -122,7 +122,7 @@ const CounterpartsTableBase = ({
   const { i18n } = useLingui();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [selectedCounterpart, setSelectedCounterpart] = useState<
-    QConterpartResponse | undefined
+    QCounterpartResponse | undefined
   >(undefined);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
