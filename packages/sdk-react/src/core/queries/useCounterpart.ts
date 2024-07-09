@@ -25,6 +25,8 @@ import {
   CounterpartVatIDResponse,
   CreateCounterpartContactPayload,
   UpdateCounterpartContactPayload,
+  type CounterpartIndividualRootUpdatePayload,
+  type CounterpartOrganizationRootUpdatePayload,
 } from '@monite/sdk-api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -35,9 +37,17 @@ export type QConterpartResponse =
   | components['schemas']['CounterpartIndividualRootResponse']
   | components['schemas']['CounterpartOrganizationRootResponse'];
 
+export type QCounterpartCreatePayload =
+  | components['schemas']['CounterpartIndividualRootCreatePayload']
+  | components['schemas']['CounterpartOrganizationRootCreatePayload'];
+
+export type QCounterpartUpdatePayload =
+  | components['schemas']['CounterpartIndividualRootUpdatePayload']
+  | components['schemas']['CounterpartOrganizationRootUpdatePayload'];
+
 type CounterpartUpdate = {
   id: string;
-  payload: CounterpartUpdatePayload;
+  payload: QCounterpartUpdatePayload;
 };
 
 type CounterpartContactUpdate = {
@@ -621,6 +631,9 @@ export const useUpdateCounterpart = () => {
 
   return useMutation<CounterpartResponse, Error, CounterpartUpdate>({
     mutationFn: ({ id, payload }) =>
+      //ToDo: refactor next
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       monite.api.counterparts.update(id, payload),
 
     onSuccess: (counterpart) => {

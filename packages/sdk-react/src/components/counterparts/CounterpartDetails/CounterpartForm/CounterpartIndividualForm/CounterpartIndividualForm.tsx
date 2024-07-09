@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -111,20 +112,24 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
       handleSubmit((values) => {
         if (!!counterpart) {
-          const payload: CounterpartIndividualRootUpdatePayload = {
-            type: CounterpartIndividualRootUpdatePayload.type.INDIVIDUAL,
-            tax_id: values.tax_id ?? '',
-            individual: prepareCounterpartIndividualUpdate(values.individual),
-          };
+          const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
+            {
+              created_automatically: counterpart.created_automatically,
+              type: 'individual',
+              tax_id: values.tax_id ?? '',
+              individual: prepareCounterpartIndividualUpdate(values.individual),
+            };
 
           return updateCounterpart(payload);
         }
 
-        const payload: CounterpartIndividualRootCreatePayload = {
-          type: CounterpartIndividualRootCreatePayload.type.INDIVIDUAL,
-          tax_id: values.tax_id ?? '',
-          individual: prepareCounterpartIndividualCreate(values.individual),
-        };
+        const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
+          {
+            type: 'individual',
+            tax_id: values.tax_id ?? '',
+            individual: prepareCounterpartIndividualCreate(values.individual),
+            created_automatically: false,
+          };
 
         return createCounterpart(payload);
       })(e);

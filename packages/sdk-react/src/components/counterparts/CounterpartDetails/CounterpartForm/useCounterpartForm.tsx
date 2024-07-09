@@ -5,6 +5,8 @@ import type {
   CounterpartShowCategories,
 } from '@/components/counterparts/Counterpart.types';
 import {
+  QCounterpartCreatePayload,
+  QCounterpartUpdatePayload,
   useCounterpartById,
   useCreateCounterpart,
   useUpdateCounterpart,
@@ -49,7 +51,7 @@ export function useCounterpartForm({
   }, [formRef]);
 
   const createCounterpart = useCallback(
-    (req: CounterpartCreatePayload) => {
+    (req: QCounterpartCreatePayload) => {
       counterpartCreateMutation.mutate(req, {
         onSuccess: ({ id }) => {
           onCreate && onCreate(id);
@@ -60,7 +62,7 @@ export function useCounterpartForm({
   );
 
   const updateCounterpart = useCallback(
-    (payload: CounterpartUpdatePayload) => {
+    (payload: QCounterpartUpdatePayload) => {
       if (!counterpart) return;
 
       const counterpartUpdateMutate = counterpartUpdateMutation.mutate;
