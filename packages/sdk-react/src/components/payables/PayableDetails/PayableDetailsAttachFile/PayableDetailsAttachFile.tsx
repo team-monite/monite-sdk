@@ -18,7 +18,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useQueryClient } from '@tanstack/react-query';
 
 const maxFileSizeInMB = 10;
 const maxFileSizeInKB = 1024 * 1024 * maxFileSizeInMB;
@@ -41,8 +40,7 @@ export const PayableDetailsAttachFile = ({
   payableId,
 }: PayableDetailsAttachFileProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
   const theme = useTheme();
 
   const [dragIsOver, setDragIsOver] = useState(false);

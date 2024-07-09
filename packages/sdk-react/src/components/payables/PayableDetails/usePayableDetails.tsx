@@ -14,7 +14,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { payablesDefaultQueryConfig } from '../consts';
 
@@ -158,8 +157,7 @@ export function usePayableDetails({
   onApproved,
   onPay,
 }: UsePayableDetailsProps) {
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
   const { formatToMinorUnits } = useCurrencies();
 

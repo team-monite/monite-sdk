@@ -30,7 +30,6 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 export type PayablesProps = Pick<
   UsePayableDetailsProps,
@@ -59,8 +58,7 @@ const PayablesBase = ({
   onPay,
 }: PayablesProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   const [invoiceIdDialog, setInvoiceIdDialog] = useState<{
     invoiceId: string | undefined;
