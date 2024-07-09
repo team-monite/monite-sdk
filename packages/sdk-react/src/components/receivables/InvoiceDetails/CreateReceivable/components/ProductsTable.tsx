@@ -2,6 +2,7 @@ import React, { useCallback, useId, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { Dialog } from '@/components/Dialog';
 import { ProductDetails } from '@/components/products';
@@ -19,15 +20,14 @@ import {
   getCreateInvoiceProductsValidationSchema,
   CreateReceivablesProductsFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useInfiniteProducts } from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, ProductServiceResponse } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import FileIcon from '@mui/icons-material/InsertDriveFile';
 import {
@@ -159,41 +159,37 @@ export const ProductsTable = ({
   });
   const currency = watch('currency');
   const dialogContent = useDialog();
+  const { api } = useMoniteContext();
+
   const {
     data: productsInfinity,
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteProducts(
+  } = api.products.getProducts.useInfiniteQuery(
     {
-      limit: 20,
-      currency,
-      type: currentFilter[FILTER_TYPE_TYPE] || undefined,
-      nameIcontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      query: {
+        limit: 20,
+        currency,
+        type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+        name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      },
     },
     {
-      enabled: Boolean(currency),
+      initialPageParam: {
+        query: {
+          pagination_token: undefined,
+        },
+      },
+      getNextPageParam: (lastPage) => ({
+        query: {
+          pagination_token: lastPage.next_pagination_token,
+        },
+      }),
+      enabled: !!currency,
     }
   );
 
-  /**
-   * We need to flatten the product array because we use `useInfiniteQuery`
-   *  and it returns an array of pages.
-   * ### Example
-   * ```ts
-   * {
-   *  pages: [
-   *    {
-   *      data: [First page data]
-   *    },
-   *    {
-   *      data: [Second page data]
-   *    }
-   *  ]
-   * }
-   * ```
-   * @see {@link https://react-query.tanstack.com/guides/infinite-queries#using-infinite-queries-with-react-table}
-   */
   const flattenProducts = useMemo(
     () =>
       productsInfinity
@@ -221,7 +217,7 @@ export const ProductsTable = ({
    *  -> `ProductsTable` (form)
    *
    * To prevent this, we need to stop the propagation of the event.
-   * @see {@link https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals}
+   * [See](https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
    */
   const handleSubmitWithoutPropagation = useCallback(
     (e: React.BaseSyntheticEvent) => {
@@ -542,3 +538,6 @@ export const ProductsTable = ({
     </>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

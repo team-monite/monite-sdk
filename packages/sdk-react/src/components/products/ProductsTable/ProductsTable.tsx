@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -17,11 +19,6 @@ import {
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ProductCursorFields,
-  OrderEnum,
-  ProductServiceResponse,
-} from '@monite/sdk-api';
 import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
@@ -118,10 +115,10 @@ const ProductsTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
 
   /** Controls the visibility of the deleting dialog */
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [selectedProduct, setSelectedProduct] = useState<
-    ProductServiceResponse | undefined
-  >(undefined);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
@@ -141,18 +138,22 @@ const ProductsTableBase = ({
     entityUserId: user?.id,
   });
 
-  const { data: products, isLoading } = useProducts({
-    order: sortModelItem
-      ? (sortModelItem.sort as unknown as OrderEnum)
-      : undefined,
-    limit: pageSize,
-    type: currentFilter[FILTER_TYPE_TYPE] || undefined,
-    paginationToken: currentPaginationToken || undefined,
-    sort: sortModelItem
-      ? (sortModelItem.field as ProductCursorFields)
-      : undefined,
-    nameIcontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    measureUnitId: currentFilter[FILTER_TYPE_UNITS] || undefined,
+  const { api } = useMoniteContext();
+
+  const { data: products, isLoading } = api.products.getProducts.useQuery({
+    query: {
+      order: sortModelItem
+        ? (sortModelItem.sort as unknown as OrderEnum)
+        : undefined,
+      limit: pageSize,
+      type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+      pagination_token: currentPaginationToken || undefined,
+      sort: sortModelItem
+        ? (sortModelItem.field as ProductCursorFields)
+        : undefined,
+      name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      measure_unit_id: currentFilter[FILTER_TYPE_UNITS] || undefined,
+    },
   });
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
@@ -264,8 +265,10 @@ const ProductsTableBase = ({
                   }}
                   onEdit={() => onEdit?.(params.row)}
                   onDelete={() => {
-                    setSelectedProduct(params.row);
-                    setIsDeleteDialogOpen(true);
+                    setIsDeleteDialogOpen({
+                      id: params.row.id,
+                      open: true,
+                    });
                   }}
                 />
               ),
@@ -299,13 +302,24 @@ const ProductsTableBase = ({
             ),
           }}
         />
-        <ProductDeleteModal
-          id={selectedProduct?.id}
-          open={isDeleteDialogOpen}
-          onDeleted={onDeleted}
-          onClose={() => setIsDeleteDialogOpen(false)}
-        />
+        {isDeleteDialogOpen.id && (
+          <ProductDeleteModal
+            id={isDeleteDialogOpen.id}
+            open={isDeleteDialogOpen.open}
+            onDeleted={onDeleted}
+            onClose={() =>
+              setIsDeleteDialogOpen((prev) => ({
+                ...prev,
+                open: false,
+              }))
+            }
+          />
+        )}
       </Box>
     </>
   );
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
+type ProductCursorFields = components['schemas']['ProductCursorFields'];
+type OrderEnum = components['schemas']['OrderEnum'];

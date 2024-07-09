@@ -9,7 +9,6 @@ import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import {
   FormControl,
   FormHelperText,
@@ -84,11 +83,11 @@ export const ProductForm = (props: ProductFormProps) => {
               control={control}
               options={[
                 {
-                  value: ProductServiceTypeEnum.PRODUCT,
+                  value: 'product',
                   label: t(i18n)`Product`,
                 },
                 {
-                  value: ProductServiceTypeEnum.SERVICE,
+                  value: 'service',
                   label: t(i18n)`Service`,
                 },
               ]}
