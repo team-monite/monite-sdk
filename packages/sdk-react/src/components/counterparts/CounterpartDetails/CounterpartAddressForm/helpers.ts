@@ -13,8 +13,7 @@ export interface CounterpartAddressFormFields {
 }
 
 export const prepareCounterpartAddress = (
-  address: CounterpartAddress | undefined,
-  i18n: I18n
+  address: CounterpartAddress | undefined
 ): CounterpartAddressFormFields => {
   return {
     city: address?.city ?? '',
@@ -40,7 +39,7 @@ export const prepareCounterpartAddressSubmit = ({
   line1,
   line2,
   postalCode: postal_code,
-}: CounterpartAddressFormFields): CounterpartAddress => {
+}: CounterpartAddressFormFields): components['schemas']['CounterpartAddress'] => {
   return {
     city,
     state,

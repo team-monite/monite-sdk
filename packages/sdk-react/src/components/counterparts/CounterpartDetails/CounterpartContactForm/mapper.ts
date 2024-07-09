@@ -29,7 +29,7 @@ export const prepareCounterpartContact = (
     lastName: contact?.last_name ?? '',
     email: contact?.email ?? '',
     phone: contact?.phone ?? '',
-    ...prepareCounterpartAddress(contact?.address, i18n),
+    ...prepareCounterpartAddress(contact?.address),
   };
 };
 
