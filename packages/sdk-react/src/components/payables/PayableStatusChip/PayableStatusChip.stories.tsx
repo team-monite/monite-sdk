@@ -1,5 +1,4 @@
 import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { PayableStateEnum } from '@monite/sdk-api';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof PayableStatusChipComponent>;
 
 export const PayableStatusChip: Story = {
   args: {
-    status: PayableStateEnum.PAID,
+    status: 'paid',
   },
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
@@ -27,13 +26,13 @@ export const PayableStatusChip: Story = {
               },
               variants: [
                 {
-                  props: { status: PayableStateEnum.PAID },
+                  props: { status: 'paid' },
                   style: {
                     border: '2px dashed blue',
                   },
                 },
                 {
-                  props: { status: PayableStateEnum.APPROVE_IN_PROGRESS },
+                  props: { status: 'approve_in_progress' },
                   style: {
                     border: '2px dashed orange',
                   },

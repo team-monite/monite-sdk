@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -14,7 +15,6 @@ import {
   triggerClickOnSelectOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
-import type { PayableResponseSchema } from '@monite/sdk-api';
 import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
@@ -298,7 +298,9 @@ describe('PayablesTable', () => {
 
   describe('# Live Updates', () => {
     test('should update the table list of payables when the data has been added on the server', async () => {
-      let resultItem: PayableResponseSchema | undefined = undefined;
+      let resultItem:
+        | components['schemas']['PayableResponseSchema']
+        | undefined = undefined;
 
       renderWithClient(
         <PayablesTable

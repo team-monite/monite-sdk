@@ -1,3 +1,6 @@
+import { components } from '@/api';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { counterpartListFixture } from '@/mocks';
 import { approvalPolicyByIdFixtures } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
@@ -6,35 +9,22 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  CurrencyEnum,
-  OcrStatusEnum,
-  PayableOriginEnum,
-  PayableResponseSchema,
-  PayableStateEnum,
-  SourceOfPayableDataEnum,
-} from '@monite/sdk-api';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { deepmerge } from '@mui/utils';
 
 export const PAYABLE_ID_WITHOUT_FILE = 'payable-without-file';
 
 function generatePayable(
-  payable?: Partial<PayableResponseSchema>
-): PayableResponseSchema {
-  const createdPayable: PayableResponseSchema = {
+  payable?: Partial<components['schemas']['PayableResponseSchema']>
+): components['schemas']['PayableResponseSchema'] {
+  const createdPayable: components['schemas']['PayableResponseSchema'] = {
     id: faker.string.uuid(),
     entity_id: getRandomProperty(entityUsers).id,
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
-    status: getRandomProperty(PayableStateEnum),
-    source_of_payable_data: SourceOfPayableDataEnum.OCR,
-    currency: getRandomProperty({
-      euro: CurrencyEnum.EUR,
-      usd: CurrencyEnum.USD,
-      kzt: CurrencyEnum.KZT,
-      gel: CurrencyEnum.GEL,
-    }),
+    status: getRandomItemFromArray(PayableStateEnum),
+    source_of_payable_data: 'ocr',
+    currency: getRandomItemFromArray(CurrencyEnum),
     amount_due: Number(faker.finance.amount()),
     amount_paid: Number(faker.finance.amount()),
     amount_to_pay: Number(faker.finance.amount()),
@@ -45,10 +35,10 @@ function generatePayable(
     suggested_payment_term: undefined,
     issued_at: faker.date.past().toString(),
     counterpart_id: getRandomItemFromArray(counterpartListFixture).id,
-    payable_origin: PayableOriginEnum.UPLOAD,
+    payable_origin: 'upload',
     was_created_by_user_id: '5b4daced-6b9a-4707-83c6-08193d999fab',
     currency_exchange: {
-      default_currency_code: CurrencyEnum.USD,
+      default_currency_code: 'USD',
       rate: 1.1,
       total: 13475,
     },
@@ -83,7 +73,6 @@ function generatePayable(
       counterpart_address: undefined,
       counterpart_account_id: undefined,
       document_id: '0001',
-      payment_terms: undefined,
       tax_payer_id: undefined,
       document_issued_at_date: '2023-02-17',
       document_due_date: '2023-03-19',
@@ -125,39 +114,39 @@ function generatePayable(
   return deepmerge(createdPayable, payable ?? {});
 }
 
-export const payableFixturePages: PayableResponseSchema[] = [
-  generatePayable({
-    status: PayableStateEnum.WAITING_TO_BE_PAID,
-    amount_to_pay: 9990,
-    currency: CurrencyEnum.EUR,
-    created_at: faker.date.soon().toString(),
-  }),
-  // payable in OCR processing
-  generatePayable({
-    document_id: '181023-01',
-    created_at: faker.date.soon().toString(),
-    source_of_payable_data: SourceOfPayableDataEnum.OCR,
-    ocr_status: OcrStatusEnum.PROCESSING,
-    amount_to_pay: undefined,
-    status: PayableStateEnum.DRAFT,
-  }),
-  generatePayable({
-    status: PayableStateEnum.DRAFT,
-  }),
-  generatePayable({
-    id: '9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0',
-    status: PayableStateEnum.DRAFT,
-  }),
-  generatePayable({
-    status: PayableStateEnum.NEW,
-    ocr_status: OcrStatusEnum.ERROR,
-  }),
-  ...new Array(15).fill('_').map(() => generatePayable()),
-];
+export const payableFixturePages: components['schemas']['PayableResponseSchema'][] =
+  [
+    generatePayable({
+      status: 'waiting_to_be_paid',
+      amount_to_pay: 9990,
+      currency: 'EUR',
+      created_at: faker.date.soon().toString(),
+    }),
+    // payable in OCR processing
+    generatePayable({
+      document_id: '181023-01',
+      created_at: faker.date.soon().toString(),
+      source_of_payable_data: 'ocr',
+      ocr_status: 'processing',
+      amount_to_pay: undefined,
+      status: 'draft',
+    }),
+    generatePayable({
+      status: 'draft',
+    }),
+    generatePayable({
+      id: '9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0',
+      status: 'draft',
+    }),
+    generatePayable({
+      status: 'new',
+      ocr_status: 'error',
+    }),
+    ...new Array(15).fill('_').map(() => generatePayable()),
+  ];
 
-export const payableFixtureWithoutFile: PayableResponseSchema = generatePayable(
-  {
+export const payableFixtureWithoutFile: components['schemas']['PayableResponseSchema'] =
+  generatePayable({
     id: PAYABLE_ID_WITHOUT_FILE,
     file: undefined,
-  }
-);
+  });

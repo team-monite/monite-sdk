@@ -310,6 +310,9 @@ export function usePayableDetails({
           },
           queryClient
         ),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     });
   const updateLineItemMutation =
     api.payables.patchPayablesIdLineItemsId.useMutation(undefined, {
@@ -320,6 +323,9 @@ export function usePayableDetails({
           },
           queryClient
         ),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     });
   const deleteLineItemMutation =
     api.payables.deletePayablesIdLineItemsId.useMutation(undefined, {
@@ -330,6 +336,9 @@ export function usePayableDetails({
           },
           queryClient
         ),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     });
   const cancelMutation = api.payables.postPayablesIdCancel.useMutation(
     undefined,
@@ -342,6 +351,9 @@ export function usePayableDetails({
           ),
           api.payables.getPayables.invalidateQueries(queryClient),
         ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     }
   );
   const submitMutation =
@@ -354,6 +366,9 @@ export function usePayableDetails({
           ),
           api.payables.getPayables.invalidateQueries(queryClient),
         ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     });
   const rejectMutation = api.payables.postPayablesIdReject.useMutation(
     undefined,
@@ -366,6 +381,9 @@ export function usePayableDetails({
           ),
           api.payables.getPayables.invalidateQueries(queryClient),
         ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     }
   );
   const approveMutation =
@@ -378,6 +396,9 @@ export function usePayableDetails({
           ),
           api.payables.getPayables.invalidateQueries(queryClient),
         ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
     });
 
   const status = payable?.status;
