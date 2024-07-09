@@ -4,7 +4,9 @@ describe('moniteEntityIdPathsRegExp', () => {
   test('should not match paths that are not in the list of paths that require', () => {
     expect(isMoniteEntityIdPath('/auth')).toBe(false);
     expect(isMoniteEntityIdPath('/entities')).toBe(false);
+    expect(isMoniteEntityIdPath('/entity_users/me')).toBe(false);
     expect(isMoniteEntityIdPath('/entity_users/my_entity')).toBe(false);
+    expect(isMoniteEntityIdPath('/entity_users/my_role')).toBe(false);
     expect(isMoniteEntityIdPath('/receivables/variables')).toBe(false);
   });
 
