@@ -44,7 +44,6 @@ export const entityUsersHandlers = [
     async ({ request }) => {
       // TODO Real API doesn't use the next two headers for this method.
       const entityId = request.headers.get('x-monite-entity-id');
-      const entityUserId = request.headers.get('x-monite-entity-user-id');
 
       if (entityId === ENTITY_ID_FOR_LOW_PERMISSIONS) {
         await delay();
@@ -71,18 +70,9 @@ export const entityUsersHandlers = [
       }
 
       if (entityId === ENTITY_ID_FOR_OWNER_PERMISSIONS) {
-        if (!entityUserId) {
-          await delay();
+        await delay();
 
-          return HttpResponse.json(entityUserByIdWithOwnerPermissionsFixture);
-        } else {
-          await delay();
-
-          return HttpResponse.json({
-            ...entityUserByIdWithOwnerPermissionsFixture,
-            id: entityUserId,
-          });
-        }
+        return HttpResponse.json(entityUserByIdWithOwnerPermissionsFixture);
       }
 
       await delay();
