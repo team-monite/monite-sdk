@@ -571,6 +571,17 @@ export const useDeleteCounterpartContact = () => {
   );
 };
 
+export const useCounterpartList2 = (
+  ...args: Parameters<CounterpartsService['getList']>
+) => {
+  const { monite } = useMoniteContext();
+
+  return useQuery<CounterpartPaginationResponse, Error>({
+    queryKey: [...counterpartQueryKeys.list(), ...args] as const,
+    queryFn: () => monite.api.counterparts.getList(...args),
+  });
+};
+
 export const useCounterpartList = (
   parameters?: Services['counterparts']['getCounterparts']['types']['parameters']
 ) => {

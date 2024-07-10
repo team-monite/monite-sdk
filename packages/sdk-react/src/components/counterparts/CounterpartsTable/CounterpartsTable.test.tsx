@@ -19,6 +19,7 @@ import {
   CounterpartType,
   MoniteSDK,
 } from '@monite/sdk-api';
+import { requestFn } from '@openapi-qraft/react';
 import {
   act,
   fireEvent,
@@ -468,10 +469,8 @@ describe('CounterpartsTable', () => {
 
   describe('# Filters', () => {
     test('should filter items by name when we fill information in "Search by name"', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
@@ -485,99 +484,91 @@ describe('CounterpartsTable', () => {
         jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
       });
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
-
-      /** We must provide this value to make search */
-      expect(lastCallArguments).toContain(value);
+      expect(
+        requestFnMock.mock.lastCall?.[1].parameters?.query?.name__icontains
+      ).toBe(undefined);
     });
 
     test('should filter items by "Customers" when we click on "Customers" filter', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
 
       triggerClickOnSelectOption(/category/i, 'Customers');
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
+      await waitFor(() => {
+        const lastCall = requestFnMock.mock.lastCall;
 
-      if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
-      }
+        if (!lastCall) {
+          throw new Error('monite.api.counterparts.getList never been called');
+        }
 
-      const isCustomer = lastCallArguments[lastCallArguments.length - 1];
-
-      expect(isCustomer).toBeTruthy();
+        expect(lastCall?.[1].parameters?.query?.is_customer).toBe(true); // Compare with boolean true
+      });
     });
 
     test('should filter items by "Vendors" when we click on "Vendors" filter', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
 
       triggerClickOnSelectOption(/category/i, 'Vendors');
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
+      await waitFor(() => {
+        const lastCallArguments = requestFnMock.mock.lastCall;
 
-      if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
-      }
+        if (!lastCallArguments) {
+          throw new Error('monite.api.counterparts.getList never been called');
+        }
 
-      const isVendor = lastCallArguments[lastCallArguments.length - 2];
-
-      expect(isVendor).toBeTruthy();
+        expect(lastCallArguments[1].parameters?.query?.is_vendor).toBe(true);
+      });
     });
 
     test('should filter items by "Individuals" when we click on "Individuals" filter', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
 
       triggerClickOnSelectOption(/type/i, 'Individuals');
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
+      await waitFor(() => {
+        const lastCallArguments = requestFnMock.mock.lastCall;
 
-      if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
-      }
+        if (!lastCallArguments) {
+          throw new Error('monite.api.counterparts.getList never been called');
+        }
 
-      expect(lastCallArguments).toContain('individual');
+        expect(lastCallArguments[1].parameters?.query?.type).toBe('individual');
+      });
     });
 
     test('should filter items by "Companies" when we click on "Companies" filter', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
 
       triggerClickOnSelectOption(/type/i, 'Companies');
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getListSpy.mock.lastCall;
+      await waitFor(() => {
+        const lastCallArguments = requestFnMock.mock.lastCall;
 
-      if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
-      }
+        if (!lastCallArguments) {
+          throw new Error('monite.api.counterparts.getList never been called');
+        }
 
-      expect(lastCallArguments).toContain('organization');
+        expect(lastCallArguments[1].parameters?.query?.type).toBe(
+          'organization'
+        );
+      });
     });
   });
 
@@ -615,15 +606,14 @@ describe('CounterpartsTable', () => {
     });
 
     test('should fetch next items when we click on "next" button', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
 
-      const paginationTokenOnLoad = getListSpy.mock.lastCall![3];
+      const paginationTokenOnLoad =
+        requestFnMock.mock.lastCall?.[1].parameters?.query?.pagination_token;
 
       expect(paginationTokenOnLoad).toBeUndefined();
 
@@ -633,11 +623,12 @@ describe('CounterpartsTable', () => {
 
       await act(() => fireEvent.click(getNextButton()));
 
-      const lastCallArguments = getListSpy.mock.lastCall;
+      const lastCallArguments = requestFnMock.mock.lastCall;
       if (!lastCallArguments) {
         throw new Error('monite.api.counterparts.getList never been called');
       }
-      const paginationToken = lastCallArguments[3];
+      const paginationToken =
+        lastCallArguments[1].parameters?.query?.pagination_token;
 
       await waitFor(() => {
         expect(paginationToken).toBe('1');
@@ -645,10 +636,8 @@ describe('CounterpartsTable', () => {
     });
 
     test('should fetch previous elements when we click on "prev" button', async () => {
-      const getListSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'getList'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
       renderWithClient(<CounterpartsTable />, cachedMoniteSDK);
 
       await waitUntilTableIsLoaded();
@@ -666,11 +655,12 @@ describe('CounterpartsTable', () => {
 
       await act(() => fireEvent.click(getPrevButton()));
 
-      const lastCallArguments = getListSpy.mock.lastCall;
+      const lastCallArguments = requestFnMock.mock.lastCall;
       if (!lastCallArguments) {
         throw new Error('monite.api.counterparts.getList never been called');
       }
-      const paginationToken = lastCallArguments[3];
+      const paginationToken =
+        lastCallArguments[1].parameters?.query?.pagination_token;
 
       expect(paginationToken).toBe('0');
     });

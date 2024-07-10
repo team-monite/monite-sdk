@@ -187,7 +187,7 @@ const CounterpartsTableBase = ({
     {
       query: {
         order: sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-        limit: pageSize,
+        limit: pageSize || undefined,
         pagination_token: currentPaginationToken || undefined,
         sort: sortModelItem
           ? (sortModelItem.field as CounterpartCursorFields)
