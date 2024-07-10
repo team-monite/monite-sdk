@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ApprovalPolicyResource } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -26,7 +26,7 @@ import {
 
 export interface ExistingApprovalPolicyDetailsProps {
   /** Approval policy to be displayed */
-  approvalPolicy: ApprovalPolicyResource;
+  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
 
   /** Set the edit mode
    *

@@ -1,6 +1,7 @@
 import React, { useId } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { JSONFormatterInput } from '@/components/approvalPolicies/ApprovalPolicyDetails/JSONFormatterInput';
 import { useApprovalPolicyDetails } from '@/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails';
@@ -11,7 +12,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, ApprovalPolicyResource } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
@@ -59,7 +59,7 @@ export interface ApprovalPolicyFormFields {
 
 interface ApprovalPolicyDetailsFormProps {
   /** Approval policy to be edited */
-  approvalPolicy?: ApprovalPolicyResource;
+  approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
 
   /** Set the edit mode
    *
@@ -122,11 +122,10 @@ export const ApprovalPolicyDetailsFormBase = ({
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'approval_policy',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: approvalPolicy?.created_by,
   });
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-approvalPolicyDetails-${useId()}`;
 
   return (

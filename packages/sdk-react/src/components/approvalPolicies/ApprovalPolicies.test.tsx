@@ -4,38 +4,26 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { checkPermissionQueriesLoaded, Provider } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import { QueryClient } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 
 import { ApprovalPolicies } from './ApprovalPolicies';
 
 describe('ApprovalPolicies', () => {
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<ApprovalPolicies />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkApprovalPolicyQueriesLoaded(queryClient));
+      renderWithClient(<ApprovalPolicies />);
 
       const createApprovalPolicyButton = screen.findByRole('button', {
         name: t`Create`,
       });
 
       await expect(createApprovalPolicyButton).resolves.toBeInTheDocument();
-      await expect(createApprovalPolicyButton).resolves.not.toBeDisabled();
+      await waitFor(() =>
+        expect(createApprovalPolicyButton).resolves.not.toBeDisabled()
+      );
 
       const approvalPolicyCell = await screen.findByText(
         t`Users from the list`
@@ -55,29 +43,17 @@ describe('ApprovalPolicies', () => {
           }),
       });
 
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<ApprovalPolicies />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
+      renderWithClient(<ApprovalPolicies />, monite);
 
       const createTagButton = screen.findByRole('button', {
         name: t`Create`,
       });
 
       await expect(createTagButton).resolves.toBeInTheDocument();
-      await expect(createTagButton).resolves.toBeDisabled();
       await expect(
         screen.findByText(t`Access Restricted`, { selector: 'h3' })
       ).resolves.toBeInTheDocument();
+      await expect(createTagButton).resolves.toBeDisabled();
     });
 
     test('support "allowed_for_own" access for "read" and "create" permissions', async () => {
@@ -91,40 +67,19 @@ describe('ApprovalPolicies', () => {
           }),
       });
 
-      const queryClient = new QueryClient({
-        defaultOptions: {
-          queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
-        },
-      });
-
-      render(<ApprovalPolicies />, {
-        wrapper: ({ children }) => (
-          <Provider client={queryClient} sdk={monite} children={children} />
-        ),
-      });
-
-      await waitFor(() => checkPermissionQueriesLoaded(queryClient));
-      await waitFor(() => checkApprovalPolicyQueriesLoaded(queryClient));
+      renderWithClient(<ApprovalPolicies />, monite);
 
       const createApprovalPolicyButton = screen.findByRole('button', {
         name: t`Create`,
       });
 
       await expect(createApprovalPolicyButton).resolves.toBeInTheDocument();
-      await expect(createApprovalPolicyButton).resolves.not.toBeDisabled();
+      await waitFor(() =>
+        expect(createApprovalPolicyButton).resolves.not.toBeDisabled()
+      );
 
       const approvalPolicyCell = screen.findByText(t`Users from the list`);
       await expect(approvalPolicyCell).resolves.toBeInTheDocument();
     });
   });
 });
-
-function checkApprovalPolicyQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['approval_policies'],
-    predicate: (query) => query.state.status === 'success',
-  });
-
-  if (!data.length) throw new Error('Approval Policies query is not executed');
-}
