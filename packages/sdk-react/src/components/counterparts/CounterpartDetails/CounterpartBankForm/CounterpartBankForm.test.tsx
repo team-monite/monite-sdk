@@ -256,10 +256,9 @@ describe('CounterpartBankForm', () => {
 
     describe('# Backend Requests', () => {
       test('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
-        const getCreateSpy = jest.spyOn(
-          cachedMoniteSDK.api.counterparts,
-          'createBankAccount'
-        );
+        const requestFnMock = requestFn as jest.MockedFunction<
+          typeof requestFn
+        >;
 
         renderWithClient(
           <MoniteScopedProviders>
@@ -270,13 +269,12 @@ describe('CounterpartBankForm', () => {
 
         const countrySelectName = /country/i;
 
-        await waitFor(() =>
-          expect(
-            screen.findByRole('button', { name: countrySelectName })
-          ).resolves.not.toBeDisabled()
-        );
+        const countryButton = await screen.findByRole('button', {
+          name: countrySelectName,
+        });
 
-        /** Fill all required fields */
+        await waitFor(() => expect(countryButton).not.toBeDisabled());
+
         triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
         triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
 
@@ -284,10 +282,10 @@ describe('CounterpartBankForm', () => {
           name: t`Add bank account`,
         });
 
-        await act(() => fireEvent.click(submitBtn));
+        await act(async () => fireEvent.click(submitBtn));
 
-        const [requestCounterpartId, requestBody] = await waitFor(() => {
-          const request = getCreateSpy.mock.lastCall;
+        const lastCallArguments = await waitFor(() => {
+          const request = requestFnMock.mock.lastCall;
 
           if (!request) {
             throw new Error(
@@ -298,20 +296,29 @@ describe('CounterpartBankForm', () => {
           return request;
         });
 
-        const serverRequestBody: CreateCounterpartBankAccount = {
-          account_holder_name: '',
-          account_number: '',
-          bic: '',
-          country: AllowedCountries.GB,
-          currency: CurrencyEnum.AMD,
-          iban: '',
-          name: '',
-          routing_number: '',
-          sort_code: '',
-        };
+        const [requestConfig, requestBody] = lastCallArguments;
 
-        expect(requestCounterpartId).toBe(individualId);
-        expect(requestBody).toEqual(serverRequestBody);
+        const serverRequestBody: components['schemas']['CreateCounterpartBankAccount'] =
+          {
+            account_holder_name: '',
+            account_number: '',
+            bic: '',
+            country: AllowedCountries.GB,
+            currency: CurrencyEnum.AMD,
+            iban: '',
+            name: '',
+            routing_number: '',
+            sort_code: '',
+            is_default: false,
+          };
+
+        const actualRequestBody = requestBody.body;
+
+        expect(requestConfig.url).toBe(
+          '/counterparts/{counterpart_id}/bank_accounts'
+        );
+
+        expect(actualRequestBody).toEqual(serverRequestBody);
       }, 10_000);
 
       test('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
