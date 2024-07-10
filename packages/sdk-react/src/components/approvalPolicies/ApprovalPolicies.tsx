@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 
+import { components } from '@/api';
 import { ApprovalPoliciesTable } from '@/components/approvalPolicies/ApprovalPoliciesTable';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
@@ -9,7 +10,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, ApprovalPolicyResource } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
 import { ApprovalPolicyDetails } from './ApprovalPolicyDetails';
@@ -34,10 +34,13 @@ const ApprovalPoliciesBase = () => {
   const [isCreateDialogOpened, setIsCreateDialogOpened] =
     useState<boolean>(false);
 
-  const onRowClick = useCallback((approvalPolicy: ApprovalPolicyResource) => {
-    setSelectedApprovalPolicyId(approvalPolicy.id);
-    setIsCreateDialogOpened(true);
-  }, []);
+  const onRowClick = useCallback(
+    (approvalPolicy: components['schemas']['ApprovalPolicyResource']) => {
+      setSelectedApprovalPolicyId(approvalPolicy.id);
+      setIsCreateDialogOpened(true);
+    },
+    []
+  );
 
   const onCreateClick = useCallback(() => {
     setIsCreateDialogOpened(true);
@@ -48,13 +51,13 @@ const ApprovalPoliciesBase = () => {
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'approval_policy',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'approval_policy',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 

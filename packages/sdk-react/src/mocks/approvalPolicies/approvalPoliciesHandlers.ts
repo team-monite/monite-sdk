@@ -1,13 +1,5 @@
+import { components, paths } from '@/api';
 import { entityUser2 } from '@/mocks/entityUsers/entityUserByIdFixture';
-import {
-  APPROVAL_POLICIES_ENDPOINT,
-  ApprovalPolicyCreate,
-  ApprovalPolicyResource,
-  ApprovalPolicyResourceList,
-  ApprovalPolicyStatus,
-  ApprovalPolicyUpdate,
-  ErrorSchemaResponse,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -16,7 +8,10 @@ import {
   approvalPolicyByIdFixtures,
 } from './approvalPoliciesFixture';
 
-const approvalPoliciesPath = `*${APPROVAL_POLICIES_ENDPOINT}`;
+const approvalPoliciesPath: `*${Extract<
+  keyof paths,
+  '/approval_policies'
+>}` = `*/approval_policies`;
 const approvalPolicyPathById = `${approvalPoliciesPath}/:approvalPolicyId`;
 
 let approvalPoliciesList = approvalPoliciesSearchFixture.data;
@@ -126,7 +121,7 @@ export const approvalPoliciesHandlers = [
       created_by: entityUser2.id,
       updated_at: new Date().toISOString(),
       updated_by: entityUser2.id,
-      status: ApprovalPolicyStatus.ACTIVE,
+      status: 'active',
     };
 
     await delay();
@@ -177,3 +172,10 @@ export const approvalPoliciesHandlers = [
     return HttpResponse.json(updatedApprovalPolicy);
   }),
 ];
+
+type ApprovalPolicyCreate = components['schemas']['ApprovalPolicyCreate'];
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];
+type ApprovalPolicyResourceList =
+  components['schemas']['ApprovalPolicyResourceList'];
+type ApprovalPolicyUpdate = components['schemas']['ApprovalPolicyUpdate'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
