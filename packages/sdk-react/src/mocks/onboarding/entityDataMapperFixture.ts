@@ -7,7 +7,7 @@ import {
   UpdateEntityRequest,
 } from '@monite/sdk-api';
 
-import type { OnboardingTestData } from '../../../types';
+import type { OnboardingTestData } from '../../components/onboarding/types';
 
 function getEntityByType(
   type: 'individual' | 'organization'
