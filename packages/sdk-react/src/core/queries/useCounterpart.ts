@@ -1,6 +1,6 @@
 import { toast } from 'react-hot-toast';
 
-import { components } from '@/api';
+import { components, Services } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
@@ -554,6 +554,13 @@ export const useCounterpartList = (
   });
 };
 
+// export const useCounterpartList = (
+//   parameters?: Services['counterparts']['getCounterparts']['types']['parameters']
+// ) => {
+//   const { api } = useMoniteContext();
+//   return api.counterparts.getCounterparts.useQuery(parameters ?? {});
+// };
+
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -594,21 +601,18 @@ export const useCounterpartById = (id?: string) => {
 
 export const useUpdateCounterpart = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { setEntity } = useCounterpartDetailCache();
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
-  return useMutation<CounterpartResponse, Error, CounterpartUpdate>({
-    mutationFn: ({ id, payload }) =>
-      // @ts-expect-error - we have to fix this
-      monite.api.counterparts.update(id, payload),
-
+  return api.counterparts.patchCounterpartsId.useMutation(undefined, {
     onSuccess: (counterpart) => {
-      setEntity(counterpart);
-      invalidate();
-
+      api.counterparts.getCounterpartsId.invalidateQueries(
+        {
+          parameters: { path: { counterpart_id: counterpart.id } },
+        },
+        queryClient
+      );
       toast.success(
-        // @ts-expect-error - we have to fix this
         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
       );
     },

@@ -71,8 +71,8 @@ export function useCounterpartForm({
       const counterpartUpdateMutate = counterpartUpdateMutation.mutate;
       counterpartUpdateMutate(
         {
-          id: counterpart.id,
-          payload,
+          path: { counterpart_id: counterpart.id },
+          body: payload,
         },
         {
           onSuccess: ({ id }) => {
