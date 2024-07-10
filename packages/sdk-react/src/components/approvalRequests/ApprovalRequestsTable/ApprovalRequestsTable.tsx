@@ -18,6 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { PayableActionEnum } from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
@@ -66,18 +67,30 @@ const ApprovalRequestsTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { data: user } = useEntityUserByAuthToken();
 
-  const { data: isReadSupported, isLoading: isReadSupportedLoading } =
-    useIsActionAllowed({
-      method: 'approval_request',
-      action: ActionEnum.READ,
-      entityUserId: user?.id,
-    });
-  const { data: isUpdateSupported, isLoading: isUpdateSupportedLoading } =
-    useIsActionAllowed({
-      method: 'approval_request',
-      action: ActionEnum.UPDATE,
-      entityUserId: user?.id,
-    });
+  const {
+    data: isApprovalReadSupported,
+    isLoading: isApprovalReadSupportedLoading,
+  } = useIsActionAllowed({
+    method: 'approval_request',
+    action: ActionEnum.READ,
+    entityUserId: user?.id,
+  });
+  const {
+    data: isPayableReadSupported,
+    isLoading: isPayableReadSupportedLoading,
+  } = useIsActionAllowed({
+    method: 'payable',
+    action: PayableActionEnum.READ,
+    entityUserId: user?.id,
+  });
+  const {
+    data: isApprovalUpdateSupported,
+    isLoading: isApprovalUpdateSupportedLoading,
+  } = useIsActionAllowed({
+    method: 'approval_request',
+    action: ActionEnum.UPDATE,
+    entityUserId: user?.id,
+  });
 
   const actionsCell = useApprovalRequestActionsCell({
     onRowActionClick:
@@ -154,11 +167,15 @@ const ApprovalRequestsTableBase = ({
     }));
   };
 
-  if (isReadSupportedLoading || isUpdateSupportedLoading) {
+  if (
+    isApprovalReadSupportedLoading ||
+    isPayableReadSupportedLoading ||
+    isApprovalUpdateSupportedLoading
+  ) {
     return <LoadingPage />;
   }
 
-  if (!isReadSupported) {
+  if (!isApprovalReadSupported || !isPayableReadSupported) {
     return <AccessRestriction />;
   }
 
@@ -276,7 +293,7 @@ const ApprovalRequestsTableBase = ({
           ...(actionsCell ? [actionsCell] : []),
         ]}
         columnVisibilityModel={{
-          actions: isUpdateSupported && 'onRowActionClick' in restProps,
+          actions: isApprovalUpdateSupported && 'onRowActionClick' in restProps,
         }}
         rows={rows ?? []}
       />
