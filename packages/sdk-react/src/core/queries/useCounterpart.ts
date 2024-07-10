@@ -224,78 +224,113 @@ export const useUpdateCounterpartAddress = () => {
   );
 };
 
-export const useCreateCounterpartBank = (counterpartId: string) => {
+// export const useCreateCounterpartBank = (counterpartId: string) => {
+//   const { i18n } = useLingui();
+//   const { monite } = useMoniteContext();
+//   const { add } = useCounterpartBankListCache(counterpartId);
+//
+//   return useMutation<
+//     CounterpartBankAccountResponse,
+//     Error,
+//     CreateCounterpartBankAccount
+//   >({
+//     mutationFn: (bank) =>
+//       monite.api.counterparts.createBankAccount(counterpartId, bank),
+//
+//     onSuccess: (bank) => {
+//       add(bank);
+//
+//       toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
+//     },
+//
+//     onError: () => {
+//       toast.error(t(i18n)`Failed to create Bank Account.`);
+//     },
+//   });
+// };
+
+export const useCreateCounterpartBank = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { add } = useCounterpartBankListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<
-    CounterpartBankAccountResponse,
-    Error,
-    CreateCounterpartBankAccount
-  >({
-    mutationFn: (bank) =>
-      monite.api.counterparts.createBankAccount(counterpartId, bank),
+  return api.counterparts.postCounterpartsIdBankAccounts.useMutation(
+    undefined,
+    {
+      onSuccess: (bank) => {
+        toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
+      },
 
-    onSuccess: (bank) => {
-      add(bank);
-
-      toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to create Bank Account.`);
-    },
-  });
+      onError: () => {
+        toast.error(t(i18n)`Failed to create Bank Account.`);
+      },
+    }
+  );
 };
+
+// export const useCounterpartBankById = (
+//   counterpartId: string,
+//   bankId?: string
+// ) => {
+//   const { monite } = useMoniteContext();
+//   const { findById } = useCounterpartBankListCache(counterpartId);
+//
+//   return useQuery<CounterpartBankAccountResponse | undefined, Error>({
+//     queryKey: counterpartQueryKeys.bankDetail(counterpartId, bankId),
+//
+//     queryFn: () => {
+//       if (!bankId) return undefined;
+//
+//       const existedBank = findById(bankId);
+//
+//       if (existedBank) return existedBank;
+//
+//       return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
+//     },
+//
+//     enabled: !!bankId,
+//   });
+// };
 
 export const useCounterpartBankById = (
   counterpartId: string,
   bankId?: string
 ) => {
-  const { monite } = useMoniteContext();
-  const { findById } = useCounterpartBankListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartBankAccountResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.bankDetail(counterpartId, bankId),
-
-    queryFn: () => {
-      if (!bankId) return undefined;
-
-      const existedBank = findById(bankId);
-
-      if (existedBank) return existedBank;
-
-      return monite.api.counterparts.getBankAccountById(counterpartId, bankId);
+  return api.counterparts.getCounterpartsIdBankAccountsId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId,
+        bank_account_id: bankId ?? '',
+      },
     },
-
-    enabled: !!bankId,
-  });
+    {
+      enabled: !!bankId,
+    }
+  );
 };
 
-export const useUpdateCounterpartBank = (counterpartId: string) => {
+export const useUpdateCounterpartBank = () => {
+  const { api } = useMoniteContext();
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { update } = useCounterpartBankListCache(counterpartId);
+  const queryClient = useQueryClient();
 
-  return useMutation<
-    CounterpartBankAccountResponse,
-    Error,
-    CounterpartBankUpdate
-  >({
-    mutationFn: ({ bankId, payload }) =>
-      monite.api.counterparts.updateBankAccount(counterpartId, bankId, payload),
+  return api.counterparts.patchCounterpartsIdBankAccountsId.useMutation(
+    undefined,
+    {
+      onSuccess: (bank) => {
+        toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
 
-    onSuccess: (bank) => {
-      update(bank);
+        api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+          queryClient
+        );
+      },
 
-      toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to update Bank Account.`);
-    },
-  });
+      onError: () => {
+        toast.error(t(i18n)`Failed to update Bank Account.`);
+      },
+    }
+  );
 };
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
@@ -535,17 +570,6 @@ export const useDeleteCounterpartContact = () => {
     }
   );
 };
-
-// export const useCounterpartList = (
-//   ...args: Parameters<CounterpartsService['getList']>
-// ) => {
-//   const { monite } = useMoniteContext();
-//
-//   return useQuery<CounterpartPaginationResponse, Error>({
-//     queryKey: [...counterpartQueryKeys.list(), ...args] as const,
-//     queryFn: () => monite.api.counterparts.getList(...args),
-//   });
-// };
 
 export const useCounterpartList = (
   parameters?: Services['counterparts']['getCounterparts']['types']['parameters']

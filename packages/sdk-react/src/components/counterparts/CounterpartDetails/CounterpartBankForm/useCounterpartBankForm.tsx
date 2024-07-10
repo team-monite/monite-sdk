@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartBankById,
@@ -9,10 +10,6 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import {
-  CreateCounterpartBankAccount,
-  UpdateCounterpartBankAccount,
-} from '@monite/sdk-api';
 
 import {
   CounterpartBankFields,
@@ -44,8 +41,8 @@ export function useCounterpartBankForm({
     bankId
   );
 
-  const createBankMutation = useCreateCounterpartBank(counterpartId);
-  const updateBankMutation = useUpdateCounterpartBank(counterpartId);
+  const createBankMutation = useCreateCounterpartBank();
+  const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
   const methods = useForm<CounterpartBankFields>({
@@ -67,33 +64,44 @@ export function useCounterpartBankForm({
   }, [formRef]);
 
   const createBank = useCallback(
-    (req: CreateCounterpartBankAccount) => {
-      return createBankMutation.mutate(req, {
-        onSuccess: ({ id }) => {
-          onCreate && onCreate(id);
+    (req: components['schemas']['CreateCounterpartBankAccount']) => {
+      return createBankMutation.mutate(
+        {
+          path: {
+            counterpart_id: counterpartId,
+          },
+          body: req,
         },
-      });
+        {
+          onSuccess: (bank) => {
+            onCreate && onCreate(bank.id);
+          },
+        }
+      );
     },
-    [createBankMutation, onCreate]
+    [counterpartId, createBankMutation, onCreate]
   );
 
   const updateBank = useCallback(
-    (payload: UpdateCounterpartBankAccount) => {
+    (payload: components['schemas']['UpdateCounterpartBankAccount']) => {
       if (!bank) return;
 
       return updateBankMutation.mutate(
         {
-          bankId: bank.id,
-          payload,
+          path: {
+            counterpart_id: counterpartId,
+            bank_account_id: bank.id,
+          },
+          body: payload,
         },
         {
-          onSuccess: () => {
+          onSuccess: (bank) => {
             onUpdate && onUpdate(bank.id);
           },
         }
       );
     },
-    [updateBankMutation, bank, onUpdate]
+    [bank, updateBankMutation, counterpartId, onUpdate]
   );
 
   const saveBank = useCallback(
