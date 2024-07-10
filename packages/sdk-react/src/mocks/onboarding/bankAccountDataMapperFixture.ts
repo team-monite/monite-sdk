@@ -1,3 +1,4 @@
+import type { OnboardingTestData } from '@/components/onboarding/types';
 import {
   AllowedCountries,
   CreateEntityBankAccountRequest,
@@ -5,8 +6,6 @@ import {
   OnboardingBankAccount,
   UpdateEntityBankAccountRequest,
 } from '@monite/sdk-api';
-
-import type { OnboardingTestData } from '../../../types';
 
 function getBankAccount(): CreateEntityBankAccountRequest {
   return {
