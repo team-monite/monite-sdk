@@ -142,11 +142,6 @@ export const useCounterpartCache = () =>
 const useCounterpartListCache = () =>
   useEntityListCache<CounterpartResponse>(counterpartQueryKeys.list);
 
-const useCounterpartAddressListCache = (id: string) =>
-  useEntityListCache<CounterpartAddressResponseWithCounterpartID>(() => [
-    ...counterpartQueryKeys.addressList(id),
-  ]);
-
 const useCounterpartBankListCache = (id: string) =>
   useEntityListCache<CounterpartBankAccountResponse>(() => [
     ...counterpartQueryKeys.bankList(id),
@@ -541,23 +536,23 @@ export const useDeleteCounterpartContact = () => {
   );
 };
 
-export const useCounterpartList = (
-  ...args: Parameters<CounterpartsService['getList']>
-) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<CounterpartPaginationResponse, Error>({
-    queryKey: [...counterpartQueryKeys.list(), ...args] as const,
-    queryFn: () => monite.api.counterparts.getList(...args),
-  });
-};
-
 // export const useCounterpartList = (
-//   parameters?: Services['counterparts']['getCounterparts']['types']['parameters']
+//   ...args: Parameters<CounterpartsService['getList']>
 // ) => {
-//   const { api } = useMoniteContext();
-//   return api.counterparts.getCounterparts.useQuery(parameters ?? {});
+//   const { monite } = useMoniteContext();
+//
+//   return useQuery<CounterpartPaginationResponse, Error>({
+//     queryKey: [...counterpartQueryKeys.list(), ...args] as const,
+//     queryFn: () => monite.api.counterparts.getList(...args),
+//   });
 // };
+
+export const useCounterpartList = (
+  parameters?: Services['counterparts']['getCounterparts']['types']['parameters']
+) => {
+  const { api } = useMoniteContext();
+  return api.counterparts.getCounterparts.useQuery(parameters ?? {});
+};
 
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();

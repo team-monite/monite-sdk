@@ -117,7 +117,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       counterparts
         ? counterparts?.data.map((counterpart) => ({
             id: counterpart.id,
-            // @ts-expect-error - we have to fix this
             label: getCounterpartName(counterpart),
           }))
         : [],
@@ -229,7 +228,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       </Box>,
       counterparts?.data.map((counterpart) => (
         <MenuItem key={counterpart.id} value={counterpart.id}>
-          {/* @ts-expect-error - we have to fix this */}
           {getCounterpartName(counterpart)}
         </MenuItem>
       )),
@@ -266,7 +264,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                   const selectedCounterpartOption = selectedCounterpart
                     ? {
                         id: selectedCounterpart.id,
-                        // @ts-expect-error - we have to fix this
                         label: getCounterpartName(selectedCounterpart),
                       }
                     : null;

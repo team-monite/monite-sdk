@@ -171,19 +171,36 @@ const CounterpartsTableBase = ({
     isLoading,
     refetch,
   } = useCounterpartList(
-    undefined,
-    sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModelItem
-      ? (sortModelItem.field as CounterpartCursorFields)
-      : undefined,
-    currentFilter[FILTER_TYPE_TYPE] || undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
-    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined
+    // undefined,
+    // sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
+    // pageSize,
+    // currentPaginationToken || undefined,
+    // sortModelItem
+    //   ? (sortModelItem.field as CounterpartCursorFields)
+    //   : undefined,
+    // currentFilter[FILTER_TYPE_TYPE] || undefined,
+    // undefined,
+    // undefined,
+    // currentFilter[FILTER_TYPE_SEARCH] || undefined,
+    // currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
+    // currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined
+    {
+      query: {
+        order: sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
+        limit: pageSize,
+        pagination_token: currentPaginationToken || undefined,
+        sort: sortModelItem
+          ? (sortModelItem.field as CounterpartCursorFields)
+          : undefined,
+        type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+        counterpart_name__icontains:
+          currentFilter[FILTER_TYPE_SEARCH] || undefined,
+        is_vendor:
+          currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
+        is_customer:
+          currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined,
+      },
+    }
   );
 
   useEffect(() => {
@@ -401,16 +418,16 @@ const CounterpartsTableBase = ({
 
                 return (
                   <Stack spacing={1} direction="column">
-                    {data.email && (
+                    {data?.email && (
                       <Styled.MuiColContacts>
                         <MuiEnvelopeIcon fontSize="small" color="disabled" />
                         <Typography variant="body2">{data.email}</Typography>
                       </Styled.MuiColContacts>
                     )}
-                    {data.phone && (
+                    {data?.phone && (
                       <Styled.MuiColContacts>
                         <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data.phone}</Typography>
+                        <Typography variant="body2">{data?.phone}</Typography>
                       </Styled.MuiColContacts>
                     )}
                   </Stack>
