@@ -485,28 +485,16 @@ export const useCounterpartContactById = (
   });
 };
 
-export const useUpdateCounterpartContact = (counterpartId: string) => {
+export const useUpdateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { update } = useCounterpartContactListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<
-    CounterpartContactResponse,
-    Error,
-    CounterpartContactUpdate
-  >({
-    mutationFn: ({ contactId, payload }) =>
-      monite.api.counterparts.updateContact(counterpartId, contactId, payload),
-
-    onSuccess: (contact) => {
-      update(contact);
-      invalidate();
-
+  return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
+    onSuccess: (counterpart) => {
       toast.success(
         t(i18n)`Contact Person “${getIndividualName(
-          contact.first_name,
-          contact.last_name
+          counterpart.first_name,
+          counterpart.last_name
         )}” was updated.`
       );
     },
@@ -516,32 +504,6 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
     },
   });
 };
-
-// export const useDeleteCounterpartContact = (counterpartId: string) => {
-//   const { i18n } = useLingui();
-//   const { monite } = useMoniteContext();
-//   const { invalidate } = useCounterpartListCache();
-//   const { remove } = useCounterpartContactListCache(counterpartId);
-//
-//   return useMutation<void, Error, string>({
-//     mutationFn: (contactId) =>
-//       monite.api.counterparts.deleteContact(counterpartId, contactId),
-//
-//     onSuccess: (_, contactId) => {
-//       remove(contactId);
-//       invalidate();
-//
-//       toast.success(t(i18n)`Contact Person was deleted.`);
-//     },
-//
-//     onError: (error) => {
-//       toast.error(
-//         getLegacyAPIErrorMessage(error) ||
-//           t(i18n)`Failed to delete Contact Person.`
-//       );
-//     },
-//   });
-// };
 
 export const useDeleteCounterpartContact = () => {
   const { i18n } = useLingui();
