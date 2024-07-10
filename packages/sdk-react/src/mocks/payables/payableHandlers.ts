@@ -1,26 +1,13 @@
+import { components } from '@/api';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   PAYABLE_ID_WITHOUT_FILE,
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
-import {
-  CurrencyEnum,
-  OrderEnum,
-  PayableCursorFields,
-  PayableOriginEnum,
-  PayablePaginationResponse,
-  PayableResponseSchema,
-  PAYABLES_ENDPOINT,
-  PayableStateEnum,
-  PayableUpdateSchema,
-  SourceOfPayableDataEnum,
-  ErrorSchemaResponse,
-  CreatePayableFromFileRequest,
-  PayableUploadWithDataSchema,
-  AttachFileToPayableRequest,
-  type TagReadSchema,
-} from '@monite/sdk-api';
+import { getRandomItemFromArray } from '@/utils/storybook-utils';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -33,10 +20,12 @@ import {
 
 type PayableParams = { payableId: string };
 
+export const PAYABLES_ENDPOINT = 'payables';
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
 const payableIdPath = `${payablePath}/:payableId`;
 
-let payable: PayableResponseSchema = payableFixturePages[0];
+let payable: components['schemas']['PayableResponseSchema'] =
+  payableFixturePages[0];
 
 /** Returns a random value from provided enum */
 function getRandomEnum<T extends { [s: string]: unknown }>(
@@ -71,15 +60,15 @@ export function changeDocumentIdByPayableId(payableId: string): string {
  * Adds one item with some random status to payables list
  *  at the beginning of the list
  */
-export function addNewItemToPayablesList(): PayableResponseSchema {
-  const newItem: PayableResponseSchema = {
+export function addNewItemToPayablesList(): components['schemas']['PayableResponseSchema'] {
+  const newItem: components['schemas']['PayableResponseSchema'] = {
     id: (Math.random() + 1).toString(36).substring(2),
     entity_id: entityIds[0],
     marked_as_paid_with_comment: undefined,
     marked_as_paid_by_entity_user_id: undefined,
-    status: getRandomEnum(PayableStateEnum),
-    source_of_payable_data: SourceOfPayableDataEnum.USER_SPECIFIED,
-    currency: getRandomEnum(CurrencyEnum),
+    status: getRandomItemFromArray(PayableStateEnum),
+    source_of_payable_data: 'user_specified',
+    currency: getRandomItemFromArray(CurrencyEnum),
     amount_due: Math.floor(Math.random() * 10_000 + 1),
     amount_paid: Math.floor(Math.random() * 10_000 + 1),
     amount_to_pay: Math.floor(Math.random() * 10_000 + 1),
@@ -103,7 +92,7 @@ export function addNewItemToPayablesList(): PayableResponseSchema {
     },
     issued_at: '2023-01-15',
     counterpart_id: undefined,
-    payable_origin: PayableOriginEnum.UPLOAD,
+    payable_origin: 'upload',
     was_created_by_user_id: undefined,
     currency_exchange: undefined,
     file: {
@@ -143,94 +132,103 @@ export function addNewItemToPayablesList(): PayableResponseSchema {
 
 export const payableHandlers = [
   // read the list
-  http.get<{}, {}, PayablePaginationResponse | ErrorSchemaResponse>(
-    payablePath,
-    async ({ request }) => {
-      const entityId = request.headers.get('x-monite-entity-id');
+  http.get<
+    {},
+    {},
+    | components['schemas']['PayablePaginationResponse']
+    | components['schemas']['ErrorSchemaResponse']
+  >(payablePath, async ({ request }) => {
+    const entityId = request.headers.get('x-monite-entity-id');
 
-      if (
-        entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
-        entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
-      ) {
-        await delay();
+    if (
+      entityId === ENTITY_ID_FOR_ABSENT_PERMISSIONS ||
+      entityId === ENTITY_ID_FOR_EMPTY_PERMISSIONS
+    ) {
+      await delay();
 
-        return HttpResponse.json(
-          {
-            error: {
-              message: 'Action read for payable not allowed',
-            },
+      return HttpResponse.json(
+        {
+          error: {
+            message: 'Action read for payable not allowed',
           },
-          {
-            status: 409,
-          }
-        );
-      }
+        },
+        {
+          status: 409,
+        }
+      );
+    }
 
-      const url = new URL(request.url);
-      const limit = Number(url.searchParams.get('limit') ?? '10');
-      const id__in = url.searchParams.getAll('id__in');
+    const url = new URL(request.url);
+    const limit = Number(url.searchParams.get('limit') ?? '10');
+    const id__in = url.searchParams.getAll('id__in');
 
-      if (id__in.length > 0) {
-        const payables = id__in.map((id, index) => ({
-          ...payableFixturePages[index],
-          id: id,
-        }));
+    if (id__in.length > 0) {
+      const payables = id__in.map((id, index) => ({
+        ...payableFixturePages[index],
+        id: id,
+      }));
 
-        return HttpResponse.json({
-          data: payables,
-          prev_pagination_token: undefined,
-          next_pagination_token: undefined,
+      return HttpResponse.json({
+        data: payables,
+        prev_pagination_token: undefined,
+        next_pagination_token: undefined,
+      });
+    }
+
+    const filteredPayableFixtures = (() => {
+      let filtered: typeof payableFixturePages;
+
+      // TODO add filtering by counterpart_name
+
+      filtered = filterByStatus(
+        url.searchParams.get(
+          'status'
+        ) as components['schemas']['PayableStateEnum'],
+        payableFixturePages
+      );
+
+      if (url.searchParams.get('sort') && url.searchParams.get('order')) {
+        filtered = sortBy(filtered, {
+          sort: url.searchParams.get(
+            'sort'
+          ) as components['schemas']['PayableCursorFields'],
+          order: url.searchParams.get(
+            'order'
+          ) as components['schemas']['OrderEnum'],
         });
       }
 
-      const filteredPayableFixtures = (() => {
-        let filtered: typeof payableFixturePages;
+      return filtered;
+    })();
 
-        // TODO add filtering by counterpart_name
+    const [payablesPaginatedFixtures, { prevPage, nextPage }] =
+      filterByPageAndLimit<components['schemas']['PayableResponseSchema']>(
+        {
+          page: url.searchParams.get('pagination_token'),
+          limit,
+        },
+        filteredPayableFixtures
+      );
 
-        filtered = filterByStatus(
-          url.searchParams.get('status') as PayableStateEnum,
-          payableFixturePages
-        );
+    await delay();
 
-        if (url.searchParams.get('sort') && url.searchParams.get('order')) {
-          filtered = sortBy(filtered, {
-            sort: url.searchParams.get('sort') as PayableCursorFields,
-            order: url.searchParams.get('order') as OrderEnum,
-          });
-        }
-
-        return filtered;
-      })();
-
-      const [payablesPaginatedFixtures, { prevPage, nextPage }] =
-        filterByPageAndLimit<PayableResponseSchema>(
-          {
-            page: url.searchParams.get('pagination_token'),
-            limit,
-          },
-          filteredPayableFixtures
-        );
-
-      await delay();
-
-      return HttpResponse.json({
-        data: payablesPaginatedFixtures,
-        prev_pagination_token: prevPage,
-        next_pagination_token: nextPage,
-      });
-    }
-  ),
+    return HttpResponse.json({
+      data: payablesPaginatedFixtures,
+      prev_pagination_token: prevPage,
+      next_pagination_token: nextPage,
+    });
+  }),
 
   // create payable
   http.post<
     {},
-    PayableUploadWithDataSchema,
-    PayableResponseSchema | ErrorSchemaResponse
+    components['schemas']['PayableUploadWithDataSchema'],
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(payablePath, async ({ request }) => {
     const body = await request.json();
 
-    const newPayable: PayableResponseSchema = {
+    const newPayable: components['schemas']['PayableResponseSchema'] = {
       ...payableFixturePages[0],
       ...body,
       tags: body.tag_ids
@@ -238,9 +236,11 @@ export const payableHandlers = [
             .map((tagId: string) => {
               return tagListFixture.find((tag) => tag.id === tagId);
             })
-            .filter<TagReadSchema>((tag): tag is TagReadSchema => !!tag)
+            .filter<components['schemas']['TagReadSchema']>(
+              (tag): tag is components['schemas']['TagReadSchema'] => !!tag
+            )
         : undefined,
-      status: PayableStateEnum.NEW,
+      status: 'new',
     };
 
     payableFixturePages.unshift(newPayable);
@@ -252,7 +252,8 @@ export const payableHandlers = [
   http.get<
     PayableParams,
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(payableIdPath, async ({ params, request }) => {
     const { payableId } = params;
     const entityId = request.headers.get('x-monite-entity-id');
@@ -288,7 +289,7 @@ export const payableHandlers = [
 
       return HttpResponse.json({
         ...payableFixturePages[0],
-        status: payableId as PayableStateEnum,
+        status: payableId as components['schemas']['PayableStateEnum'],
       });
     } else {
       const payableById = payableFixturePages.find(
@@ -324,8 +325,9 @@ export const payableHandlers = [
   // update (patch) payable by id
   http.patch<
     { payableId: string },
-    PayableUpdateSchema,
-    PayableResponseSchema | ErrorSchemaResponse
+    components['schemas']['PayableUpdateSchema'],
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(payableIdPath, async ({ request, params }) => {
     const body = await request.json();
 
@@ -334,8 +336,8 @@ export const payableHandlers = [
       ...body,
       tags: (body.tag_ids ?? [])
         .map((tagId: string) => tagListFixture.find((tag) => tag.id === tagId))
-        .filter((tag): tag is TagReadSchema => !!tag),
-      status: PayableStateEnum.NEW,
+        .filter((tag): tag is components['schemas']['TagReadSchema'] => !!tag),
+      status: 'new',
     };
 
     /** Handle an error when the authentication token is expired */
@@ -361,9 +363,10 @@ export const payableHandlers = [
   http.post<
     { payableId: string },
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/submit_for_approval`, async () => {
-    payable = { ...payable, status: PayableStateEnum.APPROVE_IN_PROGRESS };
+    payable = { ...payable, status: 'approve_in_progress' };
 
     await delay();
 
@@ -378,9 +381,10 @@ export const payableHandlers = [
   http.post<
     { payableId: string },
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/reject`, async () => {
-    payable.status = PayableStateEnum.REJECTED;
+    payable.status = 'rejected';
 
     await delay();
 
@@ -395,9 +399,10 @@ export const payableHandlers = [
   http.post<
     { payableId: string },
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/cancel`, async () => {
-    payable.status = PayableStateEnum.CANCELED;
+    payable.status = 'canceled';
 
     await delay();
 
@@ -412,9 +417,10 @@ export const payableHandlers = [
   http.post<
     { payableId: string },
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/approve_payment_operation`, async () => {
-    payable.status = PayableStateEnum.WAITING_TO_BE_PAID;
+    payable.status = 'waiting_to_be_paid';
 
     await delay();
 
@@ -429,9 +435,10 @@ export const payableHandlers = [
   http.post<
     { payableId: string },
     undefined,
-    PayableResponseSchema | ErrorSchemaResponse
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/pay`, async () => {
-    payable.status = PayableStateEnum.PAID;
+    payable.status = 'paid';
 
     await delay();
 
@@ -444,8 +451,9 @@ export const payableHandlers = [
 
   http.post<
     {},
-    CreatePayableFromFileRequest,
-    PayableResponseSchema | ErrorSchemaResponse
+    components['schemas']['Body_post_payables_upload_from_file'],
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payablePath}/upload_from_file`, async ({ request }) => {
     const file = await request.formData();
 
@@ -488,8 +496,9 @@ export const payableHandlers = [
 
   http.post<
     { payableId: string },
-    AttachFileToPayableRequest,
-    PayableResponseSchema | ErrorSchemaResponse
+    components['schemas']['Body_post_payables_id_attach_file'],
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/attach_file`, async ({ request }) => {
     const file = await request.formData(); // todo::Upgrade MSW to use req.formData() method
 
@@ -553,12 +562,16 @@ export const payableHandlers = [
 ];
 
 const filterByStatus = (
-  status: PayableStateEnum | string,
+  status: components['schemas']['PayableStateEnum'] | string,
   fixtures: typeof payableFixturePages
 ) => {
   if (!status) return fixtures;
 
-  if (!Object.values(PayableStateEnum).includes(status as PayableStateEnum))
+  if (
+    !Object.values(PayableStateEnum).includes(
+      status as components['schemas']['PayableStateEnum']
+    )
+  )
     throw new Error('Invalid status');
 
   return fixtures.filter((payable) => payable.status === status);
@@ -566,20 +579,24 @@ const filterByStatus = (
 
 const sortBy = (
   fixtures: typeof payableFixturePages,
-  { sort, order }: { sort: PayableCursorFields; order: OrderEnum }
+  {
+    sort,
+    order,
+  }: {
+    sort: components['schemas']['PayableCursorFields'];
+    order: components['schemas']['OrderEnum'];
+  }
 ) => {
   return [...fixtures].sort((a, b) => {
     if (sort in a && sort in b) {
-      const aDate =
-        sort === PayableCursorFields.CREATED_AT ? new Date(a[sort]) : a[sort];
-      const bDate =
-        sort === PayableCursorFields.CREATED_AT ? new Date(b[sort]) : b[sort];
+      const aDate = sort === 'created_at' ? new Date(a[sort]) : a[sort];
+      const bDate = sort === 'created_at' ? new Date(b[sort]) : b[sort];
 
       if (aDate < bDate) {
-        return order === OrderEnum.ASC ? -1 : 1;
+        return order === 'asc' ? -1 : 1;
       }
       if (aDate > bDate) {
-        return order === OrderEnum.ASC ? 1 : -1;
+        return order === 'asc' ? 1 : -1;
       }
     }
     return 0;

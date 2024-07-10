@@ -5,7 +5,6 @@ import { useMeasureUnits } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
@@ -53,12 +52,12 @@ export const Filters = ({ onChangeFilter }: Props) => {
               { label: t(i18n)`All`, value: 'all' },
               {
                 label: t(i18n)`Products`,
-                value: ProductServiceTypeEnum.PRODUCT,
+                value: 'product',
                 icons: <PersonIcon color="primary" fontSize="small" />,
               },
               {
                 label: t(i18n)`Services`,
-                value: ProductServiceTypeEnum.SERVICE,
+                value: 'service',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
             ].map(({ label, value, icons }) => (

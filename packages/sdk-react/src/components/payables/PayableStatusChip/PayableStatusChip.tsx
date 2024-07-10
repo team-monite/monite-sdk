@@ -1,18 +1,18 @@
 import { forwardRef } from 'react';
 
+import { components } from '@/api';
 import {
   getRowToStatusTextMap,
   PAYABLE_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/payables/consts';
 import { useLingui } from '@lingui/react';
-import { PayableStateEnum } from '@monite/sdk-api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 interface PayableStatusChipRootProps {
   /** The status of the payable. */
-  status: PayableStateEnum;
+  status: components['schemas']['PayableStateEnum'];
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
 }

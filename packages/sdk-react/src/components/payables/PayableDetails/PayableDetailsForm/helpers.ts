@@ -11,6 +11,8 @@ import {
   PayableResponseSchema,
   TagReadSchema,
   LineItemResponse,
+  CounterpartBankAccountResponse,
+  CounterpartResponse as Counterpart,
 } from '@monite/sdk-api';
 
 import { format } from 'date-fns';
@@ -67,7 +69,9 @@ export const counterpartBankAccountsToSelect = (
   }));
 };
 
-export const tagsToSelect = (tags: TagReadSchema[] | undefined): Option[] => {
+export const tagsToSelect = (
+  tags: components['schemas']['TagReadSchema'][] | undefined
+): Option[] => {
   if (!tags) return [];
 
   return tags.map(({ id: value, name: label }) => ({
@@ -89,10 +93,10 @@ export const dateToString = (date: Date): string => {
 export const prepareDefaultValues = (
   formatFromMinorUnits: (
     amount: number,
-    currency: CurrencyEnum | string
+    currency: components['schemas']['CurrencyEnum'] | string
   ) => number | null,
-  payable?: PayableResponseSchema,
-  lineItems?: LineItemResponse[]
+  payable?: components['schemas']['PayableResponseSchema'],
+  lineItems?: components['schemas']['LineItemResponse'][]
 ): PayableDetailsFormFields => {
   if (!payable) {
     return {
@@ -101,7 +105,7 @@ export const prepareDefaultValues = (
       counterpartBankAccount: '',
       invoiceDate: undefined,
       dueDate: undefined,
-      currency: CurrencyEnum.EUR,
+      currency: 'EUR',
       tags: [],
       lineItems: [
         {
@@ -131,7 +135,7 @@ export const prepareDefaultValues = (
     counterpartBankAccount: counterpart_bank_account_id ?? '',
     invoiceDate: issued_at ? new Date(issued_at) : undefined,
     dueDate: due_date ? new Date(due_date) : undefined,
-    currency: currency ?? CurrencyEnum.EUR,
+    currency: currency ?? 'EUR',
     tags: tagsToSelect(tags),
     lineItems: (lineItems || []).map((lineItem) => {
       return {
@@ -218,10 +222,10 @@ export const calculateTotalsForPayable = (
 };
 
 export const prepareLineItemSubmit = (
-  currency: CurrencyEnum,
+  currency: components['schemas']['CurrencyEnum'],
   lineItem: LineItem,
   formatToMinorUnits: (amount: number, currency: string) => number | null
-): LineItemRequest => {
+): components['schemas']['LineItemRequest'] => {
   const { name, quantity, price, tax } = lineItem;
 
   return {

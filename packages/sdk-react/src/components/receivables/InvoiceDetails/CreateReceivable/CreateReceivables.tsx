@@ -233,6 +233,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                 <ItemsSection
                   defaultCurrency={settings?.currency?.default}
                   actualCurrency={actualCurrency}
+                  // @ts-expect-error - `CurrencyEnum` is coming from the legacy API client
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={createReceivable.isPending} />

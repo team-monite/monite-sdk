@@ -1,6 +1,8 @@
+import { toast } from 'react-hot-toast';
+
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDeleteProduct, useProductById } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -14,28 +16,47 @@ import {
   Skeleton,
 } from '@mui/material';
 
-type OptionalValues = Partial<Pick<ExistingProductDetailsProps, 'id'>>;
+type ProductDeleteModalProps = Pick<
+  ExistingProductDetailsProps,
+  'onDeleted' | 'id'
+> & {
+  /** Is the modal open? */
+  open: boolean;
 
-type IProductDeleteModalProps = Pick<ExistingProductDetailsProps, 'onDeleted'> &
-  OptionalValues & {
-    /** Is the modal open */
-    open: boolean;
-
-    /** Callback which fires when the user decided to close the modal or deletion was sucsessful */
-    onClose: () => void;
-  };
+  /** Callback which fires when the user decided to close the modal or deletion was sucsessful */
+  onClose: () => void;
+};
 
 export const ProductDeleteModal = ({
   id,
   open,
   onClose,
   onDeleted,
-}: IProductDeleteModalProps) => {
+}: ProductDeleteModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { data: product, isLoading } = useProductById(id);
+  const { api, queryClient } = useMoniteContext();
+  const { data: product, isLoading } = api.products.getProductsId.useQuery({
+    path: { product_id: id },
+  });
 
-  const deleteProductMutation = useDeleteProduct();
+  const deleteProductMutation = api.products.deleteProductsId.useMutation(
+    {
+      path: {
+        product_id: id,
+      },
+    },
+    {
+      onSuccess: async () => {
+        await api.products.getProducts.invalidateQueries(queryClient);
+        toast.success(t(i18n)`Product was deleted.`);
+      },
+
+      onError: () => {
+        toast.error(t(i18n)`Failed to delete product.`);
+      },
+    }
+  );
 
   return (
     <Dialog
@@ -64,10 +85,10 @@ export const ProductDeleteModal = ({
           color="error"
           disabled={deleteProductMutation.isPending || isLoading}
           onClick={() => {
-            deleteProductMutation.mutate(id!, {
+            deleteProductMutation.mutate(undefined, {
               onSuccess: () => {
                 onClose();
-                onDeleted?.(id!);
+                onDeleted?.(id);
               },
             });
           }}

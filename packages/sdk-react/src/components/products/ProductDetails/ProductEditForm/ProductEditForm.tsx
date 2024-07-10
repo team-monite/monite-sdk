@@ -1,23 +1,16 @@
-import { useCallback, useId, useRef } from 'react';
+import { useId } from 'react';
+import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { ExistingProductDetailsProps } from '@/components/products/ProductDetails/ProductDetails';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import {
-  useMeasureUnits,
-  useProductById,
-  useUpdateProduct,
-} from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
 import { LoadingPage } from '@/ui/loadingPage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CurrencyEnum,
-  ProductServiceRequest,
-  ProductServiceTypeEnum,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import {
@@ -57,16 +50,37 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
   const dialogContext = useDialog();
   const { formatToMinorUnits, formatFromMinorUnits } = useCurrencies();
 
+  const { api, queryClient } = useMoniteContext();
+
   const {
     data: product,
     error: productQueryError,
     isLoading,
-  } = useProductById(props.id);
-  const { isLoading: isMeasureUnitsLoading } = useMeasureUnits();
+  } = api.products.getProductsId.useQuery({ path: { product_id: props.id } });
 
-  const productUpdateMutation = useUpdateProduct('id' in props ? props.id : '');
+  const { isLoading: isMeasureUnitsLoading } =
+    api.measureUnits.getMeasureUnits.useQuery({});
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const productUpdateMutation = api.products.patchProductsId.useMutation(
+    { path: { product_id: props.id } },
+    {
+      onSuccess: async (product) => {
+        await api.products.getProducts.invalidateQueries(queryClient);
+        await api.products.getProductsId.invalidateQueries(
+          {
+            parameters: { path: { product_id: product.id } },
+          },
+          queryClient
+        );
+        toast.success(t(i18n)`Product ${product.name} was updated.`);
+      },
+
+      onError: () => {
+        toast.error(t(i18n)`Failed to update product.`);
+      },
+    }
+  );
+
   const productFormId = `Monite-ProductForm-${useId()}`;
 
   if (isLoading) {
@@ -113,7 +127,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
   const defaultValues = {
     name: product.name,
-    type: product.type ?? ProductServiceTypeEnum.PRODUCT,
+    type: product.type,
     units: product.measure_unit_id,
     smallestAmount: product.smallest_amount,
     pricePerUnit:
@@ -196,3 +210,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
     </>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type ProductServiceRequest = components['schemas']['ProductServiceRequest'];
+type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];

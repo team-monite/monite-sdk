@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -19,12 +20,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  LineItemResponse,
-  PayableResponseSchema,
-  PayableUpdateSchema,
-  PayableUploadWithDataSchema,
-} from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -63,19 +58,19 @@ import { usePayableDetailsForm } from './usePayableDetailsForm';
 
 interface PayableDetailsFormProps {
   setEdit?: (isEdit: boolean) => void;
-  payable?: PayableResponseSchema;
+  payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,
-    payable: PayableUpdateSchema,
+    payable: components['schemas']['PayableUpdateSchema'],
     lineItems?: Array<LineItem>,
     dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
   ) => void;
   createPayable?: (
-    payable: PayableUploadWithDataSchema,
+    payable: components['schemas']['PayableUploadWithDataSchema'],
     createdLineItems?: Array<LineItem>
   ) => void;
   optionalFields?: OptionalFields;
-  lineItems: LineItemResponse[] | undefined;
+  lineItems: components['schemas']['LineItemResponse'][] | undefined;
 }
 
 const getValidationSchema = (i18n: I18n) =>

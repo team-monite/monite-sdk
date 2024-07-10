@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { components } from '@/api';
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import {
@@ -14,7 +15,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceResponse } from '@monite/sdk-api';
 import { Button, CircularProgress } from '@mui/material';
 
 import { ProductsTable } from './ProductsTable';
@@ -133,3 +133,5 @@ const ProductsBase = () => {
     </>
   );
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

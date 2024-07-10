@@ -1,12 +1,12 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   ActionEnum,
-  ActionSchema,
   InvoiceResponsePayload,
   ReceivableResponse,
   ReceivablesStatusEnum,
@@ -102,7 +102,7 @@ const getInvoiceActionMenuItems = ({
 }: {
   invoice: InvoiceResponsePayload;
   actions?: Partial<InvoicesTableRowActionSchema>;
-  receivableActionSchema: ActionSchema[] | undefined;
+  receivableActionSchema: components['schemas']['ActionSchema'][] | undefined;
   userIdFromAuthToken: string | undefined;
   i18n: I18n;
 }): InvoicesTableRowActionMenuItem[] => {
@@ -127,7 +127,7 @@ const getInvoiceActionMenuItems = ({
 };
 
 export const filterInvoiceActionMenuAllowedItems = (
-  actionSchema: ActionSchema[] | undefined,
+  actionSchema: components['schemas']['ActionSchema'][] | undefined,
   menuItemsToFilter: InvoicesTableRowAction[],
   invoice: InvoiceResponsePayload,
   userIdFromAuthToken: string | undefined

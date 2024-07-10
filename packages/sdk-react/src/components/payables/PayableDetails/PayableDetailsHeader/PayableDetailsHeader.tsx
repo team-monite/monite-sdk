@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { PayableDataTestId } from '@/components/payables/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableResponseSchema, PayableStateEnum } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
@@ -22,7 +22,7 @@ import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { PayableDetailsPermissions } from '../usePayableDetails';
 
 export interface PayablesDetailsHeaderProps {
-  payable?: PayableResponseSchema;
+  payable?: components['schemas']['PayableResponseSchema'];
   permissions: PayableDetailsPermissions[];
   setEdit: (isEdit: boolean) => void;
   submitInvoice: () => void;
@@ -115,9 +115,7 @@ export const PayableDetailsHeader = ({
           <Typography variant="h3" sx={{ ml: 2, flex: 1 }} component="div">
             {payable?.document_id ?? t(i18n)`New incoming invoice`}
           </Typography>
-          <PayableStatusChip
-            status={payable?.status ?? PayableStateEnum.DRAFT}
-          />
+          <PayableStatusChip status={payable?.status ?? 'draft'} />
         </Box>
 
         {(!payable || !isPayableInOCRProcessing(payable)) && (
