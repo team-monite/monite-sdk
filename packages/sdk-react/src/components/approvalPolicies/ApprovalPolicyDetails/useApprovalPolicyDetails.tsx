@@ -33,10 +33,18 @@ export const useApprovalPolicyDetails = ({
   const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
     {},
     {
-      onSuccess: async () => {
-        await api.approvalPolicies.getApprovalPolicies.invalidateQueries(
-          queryClient
-        );
+      onSuccess: async (approvalPolicy) => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+            {
+              parameters: { path: { approval_policy_id: approvalPolicy.id } },
+            },
+            queryClient
+          ),
+        ]);
         toast.success(t(i18n)`Approval policy created`);
       },
 
