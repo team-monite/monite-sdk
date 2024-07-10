@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   counterpartBankFixture,
@@ -19,6 +20,7 @@ import {
   CurrencyEnum,
   UpdateCounterpartBankAccount,
 } from '@monite/sdk-api';
+import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 
 import { CounterpartBankForm } from './CounterpartBankForm';
@@ -187,11 +189,8 @@ describe('CounterpartBankForm', () => {
       expect(parameters.bic).toBe(bic);
     }, 10_000);
 
-    test('should send correct request when we are choose any country', async () => {
-      const getCreateSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'createBankAccount'
-      );
+    test('should send correct request when we choose any country', async () => {
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
         <MoniteScopedProviders>
@@ -207,48 +206,52 @@ describe('CounterpartBankForm', () => {
       const sortCode = '[create] Sort code';
       const countrySelectName = /country/i;
 
-      await waitFor(
-        () =>
-          expect(
-            screen.findByRole('button', { name: countrySelectName })
-          ).resolves.not.toBeDisabled(),
-        { timeout: 5_000 }
+      await waitFor(() =>
+        expect(
+          screen.getByRole('button', { name: countrySelectName })
+        ).not.toBeDisabled()
       );
 
       triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
-      triggerChangeInput(/account name/i, accountName);
-      triggerChangeInput(/iban/i, iban);
-      triggerChangeInput(/bic/i, bic);
-      triggerChangeInput(/account number/i, accountNumber);
-      triggerChangeInput(/sort code/i, sortCode);
+
+      fireEvent.change(screen.getByLabelText(/account name/i), {
+        target: { value: accountName },
+      });
+      fireEvent.change(screen.getByLabelText(/iban/i), {
+        target: { value: iban },
+      });
+      fireEvent.change(screen.getByLabelText(/bic/i), {
+        target: { value: bic },
+      });
+      fireEvent.change(screen.getByLabelText(/account number/i), {
+        target: { value: accountNumber },
+      });
+      fireEvent.change(screen.getByLabelText(/sort code/i), {
+        target: { value: sortCode },
+      });
 
       const submitBtn = screen.getByRole('button', {
         name: t`Add bank account`,
       });
-
-      await act(() => fireEvent.click(submitBtn));
-
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getCreateSpy.mock.lastCall;
+      await act(async () => fireEvent.click(submitBtn));
 
       await waitFor(() => {
-        expect(getCreateSpy).toHaveBeenCalled();
+        expect(requestFnMock).toHaveBeenCalled();
       });
 
-      if (!lastCallArguments) {
-        throw new Error(
-          'monite.api.counterparts.createBankAccount never has been called'
-        );
-      }
+      const lastCallArguments = requestFnMock.mock.lastCall;
 
-      const parameters = lastCallArguments[1];
+      const body = lastCallArguments?.[1]
+        .body as components['schemas']['CreateCounterpartBankAccount'];
 
-      expect(parameters.name).toBe(accountName);
-      expect(parameters.iban).toBe(iban);
-      expect(parameters.bic).toBe(bic);
-      expect(parameters.account_number).toBe(accountNumber);
-      expect(parameters.sort_code).toBe(sortCode);
+      await waitFor(() => {
+        expect(body?.name).toBe(accountName);
+        expect(body?.iban).toBe(iban);
+        expect(body?.bic).toBe(bic);
+        expect(body?.account_number).toBe(accountNumber);
+        expect(body?.sort_code).toBe(sortCode);
+      });
     }, 10_000);
 
     describe('# Backend Requests', () => {
