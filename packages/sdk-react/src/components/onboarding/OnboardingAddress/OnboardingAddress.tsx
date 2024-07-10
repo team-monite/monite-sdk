@@ -6,9 +6,9 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries } from '@monite/sdk-api';
 
 import { OnboardingStepContent, OnboardingSubTitle } from '../OnboardingLayout';
 import { OnboardingAddressType } from '../types';
@@ -45,7 +45,7 @@ export const OnboardingAddress = ({
           label={t(i18n)`Country`}
           optionKey="code"
           labelKey="label"
-          options={Object.values(AllowedCountries).map((code) => ({
+          options={AllowedCountries.map((code) => ({
             code,
             label: t(i18n)`${getRegionName(code)}`,
           }))}
@@ -53,6 +53,7 @@ export const OnboardingAddress = ({
             <CountryOption
               key={option.code}
               props={props}
+              // @ts-expect-error - Will be fixed in DEV-11737
               option={option}
               state={state}
             />

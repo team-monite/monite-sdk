@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -7,10 +8,6 @@ import {
 import { usePersonList } from '@/core/queries/usePerson';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OnboardingPersonDocuments,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button } from '@mui/material';
 
@@ -82,7 +79,7 @@ export const OnboardingPersonDocumentList = () => {
         if (filteredPersonDocuments.length > 0) return;
 
         patchOnboardingRequirements({
-          requirements: [OnboardingRequirement.PERSONS_DOCUMENTS],
+          requirements: ['persons_documents'],
         });
       }}
     >
@@ -156,3 +153,6 @@ export const OnboardingPersonDocumentList = () => {
     </OnboardingForm>
   );
 };
+
+type OnboardingPersonDocuments =
+  components['schemas']['OnboardingPersonDocuments'];

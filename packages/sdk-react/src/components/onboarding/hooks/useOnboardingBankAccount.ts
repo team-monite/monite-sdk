@@ -1,25 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ErrorType } from '@/core/queries/types';
-import {
-  useCreateBankAccount,
-  useDeleteBankAccount,
-} from '@/core/queries/useBankAccounts';
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useDeleteBankAccount } from '@/core/queries/useBankAccounts';
 import {
   useOnboardingBankAccountMask,
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
   useOnboardingCurrencyToCountries,
 } from '@/core/queries/useOnboarding';
-import {
-  AllowedCountries,
-  CreateEntityBankAccountRequest,
-  CurrencyEnum,
-  EntityBankAccountResponse,
-  OnboardingBankAccount,
-  OnboardingBankAccountMask,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 
 import { enrichFieldsByValues, generateFieldsByMask } from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';
@@ -31,7 +20,11 @@ export type OnboardingBankAccountReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
   isLoading: boolean;
 
-  error: ErrorType;
+  error:
+    | Error
+    | components['schemas']['HTTPValidationError']
+    | components['schemas']['ErrorSchemaResponse']
+    | null;
 
   currencies: CurrencyEnum[];
 
@@ -56,10 +49,11 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
+  const { api } = useMoniteContext();
   const {
     mutateAsync: createBankAccountMutation,
     isPending: isCreateBankAccountPending,
-  } = useCreateBankAccount();
+  } = api.bankAccounts.postBankAccounts.useMutation(undefined);
 
   const {
     mutateAsync: deleteBankAccountMutation,
@@ -135,8 +129,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   const primaryAction = useCallback(
     async (payload: CreateEntityBankAccountRequest) => {
       const response = await createBankAccountMutation({
-        ...payload,
-        is_default_for_currency: true,
+        body: payload,
       });
 
       if (currentBankAccount) {
@@ -144,7 +137,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       }
 
       patchOnboardingRequirements({
-        requirements: [OnboardingRequirement.BANK_ACCOUNTS],
+        requirements: ['bank_accounts'],
         data: {
           bank_accounts: [enrichFieldsByValues(fields, payload)],
         },
@@ -179,3 +172,14 @@ const getDefaultMask = (): OnboardingBankAccountMask => ({
   country: true,
   currency: true,
 });
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type CreateEntityBankAccountRequest =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type EntityBankAccountResponse =
+  components['schemas']['EntityBankAccountResponse'];
+type OnboardingBankAccount = components['schemas']['OnboardingBankAccount'];
+type OnboardingBankAccountMask =
+  components['schemas']['OnboardingBankAccountMask'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

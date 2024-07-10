@@ -1,4 +1,4 @@
-import { BusinessProfile, OnboardingBusinessProfile } from '@monite/sdk-api';
+import { components } from '@/api';
 
 import type { OnboardingTestData } from '../../../types';
 
@@ -37,3 +37,7 @@ export const onboardingBusinessProfileMixedFixture = (): OnboardingTestData<
     ],
   };
 };
+
+type BusinessProfile = components['schemas']['BusinessProfile'];
+type OnboardingBusinessProfile =
+  components['schemas']['OnboardingBusinessProfile'];

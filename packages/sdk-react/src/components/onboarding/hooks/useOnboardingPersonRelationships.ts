@@ -7,20 +7,11 @@ import {
   useState,
 } from 'react';
 
+import { components } from '@/api';
 import {
   useOnboardingPersonMask,
   useOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  AllowedCountries,
-  OnboardingPerson,
-  OnboardingPersonMask,
-  OnboardingPersonRelationshipMask,
-  OnboardingRequirement,
-  OptionalPersonRequest,
-  PersonRequest,
-  PersonResponse,
-} from '@monite/sdk-api';
 
 import deepEqual from 'deep-eql';
 
@@ -62,13 +53,12 @@ export type OnboardingRelationshipReturnType = {
   isRoleProvided: (role: OnboardingRequirement) => boolean;
 };
 
-const { REPRESENTATIVE, OWNERS, EXECUTIVES, DIRECTORS } = OnboardingRequirement;
-
 const getDefaultMask = (roles: PersonRole[] = []): OnboardingPersonMask => {
   const isRoleProvided = (role: OnboardingRequirement) =>
     roles.some(({ requirement }) => requirement === role);
 
-  const onlyDirectorProvided = isRoleProvided(DIRECTORS) && roles.length === 1;
+  const onlyDirectorProvided =
+    isRoleProvided('directors') && roles.length === 1;
   const shouldRenderAddress =
     !roles.length || (!!roles.length && !onlyDirectorProvided);
 
@@ -150,10 +140,10 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
   const roles = useMemo<PersonRole[]>(
     () =>
       Object.entries({
-        [REPRESENTATIVE]: representative,
-        [OWNERS]: owner,
-        [DIRECTORS]: director,
-        [EXECUTIVES]: executive,
+        representative: representative,
+        owners: owner,
+        directors: director,
+        executives: executive,
       }).reduce<PersonRole[]>((acc, [key, checked]) => {
         if (typeof checked !== 'boolean') return acc;
 
@@ -228,10 +218,10 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
     };
 
     if (isRepresentative(currentRequirement!)) {
-      if (isRoleProvided(OnboardingRequirement.OWNERS) && isOwnerProvided)
+      if (isRoleProvided('owners') && isOwnerProvided)
         payload.owners_provided = true;
 
-      if (isRoleProvided(OnboardingRequirement.DIRECTORS) && isDirectorProvided)
+      if (isRoleProvided('directors') && isDirectorProvided)
         payload.directors_provided = true;
     }
 
@@ -249,3 +239,13 @@ export function useOnboardingPersonRelationships(): OnboardingRelationshipReturn
     isRoleProvided,
   };
 }
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type OnboardingPerson = components['schemas']['OnboardingPerson'];
+type OnboardingPersonMask = components['schemas']['OnboardingPersonMask'];
+type OnboardingPersonRelationshipMask =
+  components['schemas']['OnboardingPersonRelationshipMask'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
+type PersonRequest = components['schemas']['PersonRequest'];
+type PersonResponse = components['schemas']['PersonResponse'];

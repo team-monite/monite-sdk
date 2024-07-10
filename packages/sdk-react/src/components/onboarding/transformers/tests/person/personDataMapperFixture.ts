@@ -1,10 +1,4 @@
-import {
-  OnboardingPerson,
-  OnboardingPersonMask,
-  OptionalPersonAddress,
-  OptionalPersonRelationship,
-  OptionalPersonRequest,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import type { RecursivePartial, OnboardingTestData } from '../../../types';
 
@@ -248,3 +242,10 @@ export const onboardingPersonOptionalFixture = (): OnboardingTestData<
     errors: [],
   };
 };
+
+type OnboardingPerson = components['schemas']['OnboardingPerson'];
+type OnboardingPersonMask = components['schemas']['OnboardingPersonMask'];
+type OptionalPersonAddress = components['schemas']['OptionalPersonAddress'];
+type OptionalPersonRelationship =
+  components['schemas']['OptionalPersonRelationship'];
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];

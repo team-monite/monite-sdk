@@ -33,27 +33,6 @@ export const usePersonList = () => {
   });
 };
 
-export const useCreatePerson = () => {
-  const { monite } = useMoniteContext();
-
-  return useMutation<PersonResponse, ErrorType, PersonRequest>({
-    mutationFn: (payload) => monite.api.persons.create(payload),
-  });
-};
-
-export const usePersonById = (personId?: string) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<PersonResponse | undefined, ErrorType>({
-    queryKey: personQueryKeys.detail(personId),
-
-    queryFn: () =>
-      personId ? monite.api.persons.getById(personId) : undefined,
-
-    enabled: !!personId,
-  });
-};
-
 export const useUpdatePerson = () => {
   const { monite } = useMoniteContext();
 

@@ -1,16 +1,14 @@
+import { components } from '@/api';
 import type { OnboardingTestData } from '@/components/onboarding/types';
-import {
-  AllowedCountries,
-  CreateEntityBankAccountRequest,
-  CurrencyEnum,
-  OnboardingBankAccount,
-  UpdateEntityBankAccountRequest,
-} from '@monite/sdk-api';
 
-function getBankAccount(): CreateEntityBankAccountRequest {
+function getBankAccount(): Omit<
+  CreateEntityBankAccountRequest,
+  // `is_default_for_currency` was not added to the `OnboardingBankAccount` schema
+  'is_default_for_currency'
+> {
   return {
-    country: AllowedCountries.DE,
-    currency: CurrencyEnum.EUR,
+    country: 'DE',
+    currency: 'EUR',
     account_holder_name: 'John Doe',
     iban: 'DE89370400440532013000',
     account_number: 'DE89370400440532013000',
@@ -33,12 +31,12 @@ export const onboardingBankAccountMixedFixture = (): OnboardingTestData<
       country: {
         error: null,
         required: true,
-        value: AllowedCountries.DE,
+        value: 'DE',
       },
       currency: {
         error: null,
         required: true,
-        value: CurrencyEnum.EUR,
+        value: 'EUR',
       },
       iban: {
         error: null,
@@ -61,3 +59,9 @@ export const onboardingBankAccountMixedFixture = (): OnboardingTestData<
     ],
   };
 };
+
+type CreateEntityBankAccountRequest =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type OnboardingBankAccount = components['schemas']['OnboardingBankAccount'];
+type UpdateEntityBankAccountRequest =
+  components['schemas']['UpdateEntityBankAccountRequest'];

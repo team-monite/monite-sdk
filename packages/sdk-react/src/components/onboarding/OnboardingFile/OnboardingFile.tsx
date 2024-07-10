@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
-import { AllowedFileTypes } from '@monite/sdk-api';
+import { components } from '@/api';
 import { Typography } from '@mui/material';
 
 import { OnboardingFileUploader } from './OnboardingFileUploader';
@@ -9,9 +9,10 @@ import { OnboardingFileViewer } from './OnboardingFileViever';
 
 type OnboardingFileProps = {
   label: string;
-  fileType:
-    | AllowedFileTypes.IDENTITY_DOCUMENTS
-    | AllowedFileTypes.ADDITIONAL_IDENTITY_DOCUMENTS;
+  fileType: Extract<
+    components['schemas']['AllowedFileTypes'],
+    'identity_documents' | 'additional_identity_documents'
+  >;
   description?: string[];
 };
 

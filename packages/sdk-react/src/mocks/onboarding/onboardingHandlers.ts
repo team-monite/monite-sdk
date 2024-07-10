@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import {
   enrichFieldsByValues,
   generateOptionalFields,
@@ -6,19 +7,6 @@ import {
 import { personMask } from '@/components/onboarding/transformers/tests/person';
 import { onboardingBankAccountFixture } from '@/mocks/onboarding/onboardingBankAccountFixtures';
 import { faker } from '@faker-js/faker';
-import {
-  ErrorSchemaResponse,
-  InternalOnboardingRequirementsResponse,
-  OnboardingPerson,
-  OnboardingPersonMask,
-  OnboardingRequirement,
-  Relationship,
-  AllowedCountries,
-  CurrencyEnum,
-  OnboardingBankAccountMaskResponse,
-  OnboardingAddress,
-  PersonRequest,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -55,6 +43,8 @@ const getNewRepresentativePerson = () => {
     relationship: {
       representative: true,
       executive: true,
+      director: false,
+      owner: false,
     },
   });
 
@@ -69,6 +59,9 @@ const getNewPersonWithErrors = () => {
     first_name: 'WithErrorsPerson',
     relationship: {
       director: true,
+      owner: false,
+      representative: false,
+      executive: false,
     },
   });
 
@@ -95,6 +88,9 @@ const getNewPersonWithRequiredFields = () => {
     first_name: 'WithRequiredFieldsPerson',
     relationship: {
       director: true,
+      executive: false,
+      owner: false,
+      representative: false,
     },
   });
 
@@ -158,18 +154,18 @@ export const onboardingHandlers = [
     return HttpResponse.json(
       {
         requirements: [
-          // OnboardingRequirement.ENTITY,
-          // OnboardingRequirement.BUSINESS_PROFILE,
-          // OnboardingRequirement.REPRESENTATIVE,
-          // OnboardingRequirement.OWNERS,
-          // OnboardingRequirement.DIRECTORS,
-          // OnboardingRequirement.EXECUTIVES,
-          // OnboardingRequirement.PERSONS,
-          // OnboardingRequirement.PERSONS_DOCUMENTS,
-          // OnboardingRequirement.ENTITY_DOCUMENTS,
-          OnboardingRequirement.BANK_ACCOUNTS,
-          OnboardingRequirement.OWNERSHIP_DECLARATION,
-          OnboardingRequirement.TOS_ACCEPTANCE,
+          // 'entity',
+          // 'business_profile'
+          // 'representative',
+          // 'owners',
+          // 'directors',
+          // 'executives',
+          // 'persons',
+          // 'persons_documents',
+          // 'entity_documents',
+          'bank_accounts',
+          'ownership_declaration',
+          'tos_acceptance',
         ],
         data: {
           entity,
@@ -229,15 +225,12 @@ export const onboardingHandlers = [
 
     const relationshipLength = filter.relationships.length;
 
-    const isRepresentative = filter.relationships.includes(
-      Relationship.REPRESENTATIVE
-    );
+    const isRepresentative = filter.relationships.includes('representative');
 
     const isDirector =
-      filter.relationships.includes(Relationship.DIRECTOR) &&
-      relationshipLength === 1;
+      filter.relationships.includes('director') && relationshipLength === 1;
 
-    const isOwner = filter.relationships.includes(Relationship.OWNER);
+    const isOwner = filter.relationships.includes('owner');
 
     await delay();
 
@@ -295,20 +288,21 @@ export const onboardingHandlers = [
 
     return HttpResponse.json(
       {
-        [CurrencyEnum.EUR]: {
+        // @ts-expect-error - Ask @nekedos, why response type doesn't match the schema
+        EUR: {
           country: true,
           currency: true,
           iban: true,
           account_holder_name: false,
         },
-        [CurrencyEnum.GBP]: {
+        GBP: {
           country: true,
           currency: true,
           account_holder_name: true,
           account_number: true,
           sort_code: true,
         },
-        [CurrencyEnum.USD]: {
+        USD: {
           country: true,
           currency: true,
           account_holder_name: true,
@@ -370,3 +364,15 @@ export const onboardingHandlers = [
     );
   }),
 ];
+
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type InternalOnboardingRequirementsResponse =
+  components['schemas']['InternalOnboardingRequirementsResponse'];
+type OnboardingPerson = components['schemas']['OnboardingPerson'];
+type OnboardingPersonMask = components['schemas']['OnboardingPersonMask'];
+type Relationship = components['schemas']['Relationship'];
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type OnboardingBankAccountMaskResponse =
+  components['schemas']['OnboardingBankAccountMask'];
+type OnboardingAddress = components['schemas']['OnboardingAddress'];
+type PersonRequest = components['schemas']['PersonRequest'];

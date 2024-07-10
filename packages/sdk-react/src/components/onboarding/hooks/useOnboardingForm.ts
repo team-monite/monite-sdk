@@ -8,12 +8,8 @@ import {
 } from 'react-hook-form';
 import { useEffectOnce } from 'react-use';
 
+import { components } from '@/api';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  ErrorSchema,
-  HTTPValidationError,
-  ValidationError,
-} from '@monite/sdk-api';
 
 import deepEqual from 'deep-eql';
 
@@ -183,3 +179,7 @@ export function useOnboardingForm<
 
   return { methods, checkValue, defaultValues: nextValues, handleSubmit };
 }
+
+type ErrorSchema = components['schemas']['ErrorSchemaResponse'];
+type HTTPValidationError = components['schemas']['HTTPValidationError'];
+type ValidationError = components['schemas']['ValidationError'];

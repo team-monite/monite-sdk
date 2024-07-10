@@ -1,16 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { ErrorType } from '@/core/queries/types';
+import { components } from '@/api';
 import { useUpdateMyEntity } from '@/core/queries/useEntities';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  EntityResponse,
-  OnboardingEntity,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 
 import { companyRoleToRequirement } from '../helpers';
 import { generateValuesByFields, prepareValuesToSubmit } from '../transformers';
@@ -23,7 +18,11 @@ export type OnboardingEntityReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
   isPending: boolean;
 
-  error: ErrorType;
+  error:
+    | Error
+    | components['schemas']['ErrorSchemaResponse']
+    | components['schemas']['HTTPValidationError']
+    | null;
 
   entity: OnboardingEntity | undefined;
 
@@ -99,3 +98,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
     entity,
   };
 }
+
+type EntityResponse = components['schemas']['EntityResponse'];
+type OnboardingEntity = components['schemas']['OnboardingEntity'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

@@ -1,18 +1,15 @@
 import { useMemo } from 'react';
 
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  useCreatePersonDocumentsById,
-  useDocumentDescriptions,
-} from '@/core/queries/useOnboardingDocuments';
+import { useDocumentDescriptions } from '@/core/queries/useOnboardingDocuments';
 import { usePersonList } from '@/core/queries/usePerson';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries, AllowedFileTypes } from '@monite/sdk-api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import { useOnboardingForm } from '../hooks';
@@ -32,7 +29,9 @@ export const OnboardingPersonDocuments = () => {
 
   const { personId, disableEditMode } = useOnboardingRequirementsContext();
 
-  const { mutateAsync, isPending } = useCreatePersonDocumentsById();
+  const { api } = useMoniteContext();
+  const { mutateAsync, isPending } =
+    api.persons.postPersonsIdOnboardingDocuments.useMutation(undefined);
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
@@ -44,9 +43,7 @@ export const OnboardingPersonDocuments = () => {
   );
 
   const { data: descriptions } = useDocumentDescriptions(
-    person?.address?.country as
-      | components['schemas']['AllowedCountries']
-      | undefined
+    person?.address?.country as AllowedCountries | undefined
   );
 
   const personDocuments = useMemo(
@@ -72,8 +69,6 @@ export const OnboardingPersonDocuments = () => {
 
   const { control } = methods;
 
-  console.log(descriptions);
-
   if (!personId || !person || !defaultValues || !fields) return null;
 
   return (
@@ -86,8 +81,8 @@ export const OnboardingPersonDocuments = () => {
       }
       onSubmit={handleSubmit(async (payload) => {
         const response = await mutateAsync({
-          personId,
-          payload,
+          path: { person_id: personId },
+          body: payload,
         });
 
         patchOnboardingRequirements({
@@ -117,7 +112,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="verification_document_front"
             label={t(i18n)`Front of your identity document`}
-            fileType={AllowedFileTypes.IDENTITY_DOCUMENTS}
+            fileType={'identity_documents'}
             description={descriptions?.verification}
           />
         </OnboardingStepContent>
@@ -129,7 +124,7 @@ export const OnboardingPersonDocuments = () => {
             name="verification_document_back"
             control={control}
             label={t(i18n)`Back of your identity document`}
-            fileType={AllowedFileTypes.IDENTITY_DOCUMENTS}
+            fileType={'identity_documents'}
             description={descriptions?.verification}
           />
         </OnboardingStepContent>
@@ -141,7 +136,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="additional_verification_document_back"
             label={t(i18n)`Front of your additional identity document`}
-            fileType={AllowedFileTypes.ADDITIONAL_IDENTITY_DOCUMENTS}
+            fileType={'additional_identity_documents'}
             description={descriptions?.additional_verification}
           />
         </OnboardingStepContent>
@@ -153,7 +148,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="additional_verification_document_back"
             label={t(i18n)`Back of your additional identity document`}
-            fileType={AllowedFileTypes.ADDITIONAL_IDENTITY_DOCUMENTS}
+            fileType={'additional_identity_documents'}
             description={descriptions?.additional_verification}
           />
         </OnboardingStepContent>
@@ -161,3 +156,5 @@ export const OnboardingPersonDocuments = () => {
     </OnboardingForm>
   );
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
