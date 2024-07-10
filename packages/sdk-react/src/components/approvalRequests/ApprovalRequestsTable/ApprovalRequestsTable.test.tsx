@@ -57,11 +57,8 @@ describe('ApprovalRequestTable', () => {
         name: /previous/i,
       });
 
-      const nextDisabled = nextButton.hasAttribute('disabled');
-      const prevDisabled = prevButton.hasAttribute('disabled');
-
-      expect(prevDisabled).toBeTruthy();
-      expect(nextDisabled).toBeFalsy();
+      expect(prevButton).toBeDisabled();
+      expect(nextButton).toBeEnabled();
     });
   });
 

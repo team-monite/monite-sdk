@@ -322,10 +322,10 @@ describe('CounterpartBankForm', () => {
       }, 10_000);
 
       test('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
-        const getUpdateSpy = jest.spyOn(
-          cachedMoniteSDK.api.counterparts,
-          'updateBankAccount'
-        );
+        const requestFnMock = requestFn as jest.MockedFunction<
+          typeof requestFn
+        >;
+
         const firstBankListFixture = counterpartBankListFixture[0];
 
         renderWithClient(
@@ -346,33 +346,53 @@ describe('CounterpartBankForm', () => {
 
         fireEvent.click(submitBtn);
 
-        const [requestCounterpartId, requestBankId, requestBody] =
-          await waitFor(() => {
-            const request = getUpdateSpy.mock.lastCall;
+        const lastCallArguments = await waitFor(() => {
+          const request = requestFnMock.mock.calls.find(
+            (call) => call[0].method === 'patch'
+          );
 
-            if (!request) {
-              throw new Error(
-                'monite.api.counterparts.updateBankAccount never has been called'
-              );
-            }
+          if (!request) {
+            throw new Error(
+              'monite.api.counterparts.updateBankAccount never has been called'
+            );
+          }
 
-            return request;
-          });
+          return request;
+        });
 
-        const serverRequestBody: UpdateCounterpartBankAccount = {
-          account_holder_name: firstBankListFixture.account_holder_name,
-          account_number: firstBankListFixture.account_number,
-          bic: firstBankListFixture.bic,
-          country: firstBankListFixture.country,
-          currency: firstBankListFixture.currency,
-          iban: firstBankListFixture.iban,
-          name: firstBankListFixture.name,
-          routing_number: firstBankListFixture.routing_number,
-          sort_code: firstBankListFixture.sort_code,
-        };
+        const [requestConfig, requestOptions] = lastCallArguments;
 
-        expect(requestCounterpartId).toBe(individualId);
-        expect(requestBody).toEqual(serverRequestBody);
+        console.log('Request Config:', requestConfig);
+        console.log('Request Options:', requestOptions);
+
+        const serverRequestBody: components['schemas']['UpdateCounterpartBankAccount'] =
+          {
+            account_holder_name: firstBankListFixture.account_holder_name,
+            account_number: firstBankListFixture.account_number,
+            bic: firstBankListFixture.bic,
+            country:
+              firstBankListFixture.country as components['schemas']['AllowedCountries'],
+            currency: firstBankListFixture.currency,
+            iban: firstBankListFixture.iban,
+            name: firstBankListFixture.name,
+            routing_number: firstBankListFixture.routing_number,
+            sort_code: firstBankListFixture.sort_code,
+            // @ts-expect-error - check why it's required new schema as a must for UpdateCounterpartBankAccount
+            is_default: false,
+          };
+
+        const actualRequestBody = requestOptions.body;
+
+        expect(requestConfig.method).toBe('patch');
+
+        expect(actualRequestBody).toEqual(serverRequestBody);
+
+        expect(requestOptions?.parameters?.path?.counterpart_id).toBe(
+          individualId
+        );
+        expect(requestOptions?.parameters?.path?.bank_account_id).toBe(
+          firstBankListFixture.id
+        );
       }, 10_000);
     });
   });
