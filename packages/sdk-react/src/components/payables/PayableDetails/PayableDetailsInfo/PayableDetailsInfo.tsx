@@ -101,20 +101,11 @@ const PayableDetailsInfoBase = ({
     counterpart &&
     (isIndividualCounterpart(counterpart)
       ? getIndividualName(
-          //ToDo: refactor next
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           counterpart.individual.first_name,
-          //ToDo: refactor next
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           counterpart.individual.last_name
         )
       : isOrganizationCounterpart(counterpart)
-      ? //ToDo: refactor next
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        counterpart.organization.legal_name
+      ? counterpart.organization.legal_name
       : '—');
   const defaultContact = useMemo(
     () => contacts?.find((contact) => contact.is_default),

@@ -554,33 +554,6 @@ export const useCounterpartList = (
   });
 };
 
-// export const useCreateCounterpart = () => {
-//   const { i18n } = useLingui();
-//   const { monite } = useMoniteContext();
-//   const { invalidate } = useCounterpartListCache();
-//   const { setEntity } = useCounterpartDetailCache();
-//
-//   return useMutation<CounterpartResponse, Error, CounterpartCreatePayload>({
-//     mutationFn: (payload) => monite.api.counterparts.create(payload),
-//
-//     onSuccess: (counterpart) => {
-//       setEntity(counterpart);
-//       invalidate();
-//
-//       toast.success(
-//         //ToDo: refactor next
-//         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//         // @ts-ignore
-//         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
-//       );
-//     },
-//
-//     onError: () => {
-//       toast.error(t(i18n)`Failed to create Counterpart.`);
-//     },
-//   });
-// };
-
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -627,9 +600,7 @@ export const useUpdateCounterpart = () => {
 
   return useMutation<CounterpartResponse, Error, CounterpartUpdate>({
     mutationFn: ({ id, payload }) =>
-      //ToDo: refactor next
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error - we have to fix this
       monite.api.counterparts.update(id, payload),
 
     onSuccess: (counterpart) => {
@@ -637,9 +608,7 @@ export const useUpdateCounterpart = () => {
       invalidate();
 
       toast.success(
-        //ToDo: refactor next
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error - we have to fix this
         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
       );
     },
