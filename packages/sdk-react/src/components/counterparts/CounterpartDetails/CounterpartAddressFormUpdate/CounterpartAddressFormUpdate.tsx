@@ -54,7 +54,6 @@ export const CounterpartAddressFormUpdate = (
           id={formName}
           ref={formRef}
           onSubmit={handleSubmit((values) => {
-            // @ts-expect-error - we need to fix this
             updateAddress(prepareCounterpartAddressSubmit(values));
           })}
         >

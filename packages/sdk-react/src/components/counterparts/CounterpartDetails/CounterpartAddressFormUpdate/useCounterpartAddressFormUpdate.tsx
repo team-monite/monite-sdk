@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartAddresses,
   useUpdateCounterpartAddress,
@@ -43,10 +44,7 @@ export function useCounterpartAddressFormUpdate({
     ),
   });
 
-  const addressUpdateMutation = useUpdateCounterpartAddress(
-    addressId,
-    counterpartId
-  );
+  const addressUpdateMutation = useUpdateCounterpartAddress();
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -57,14 +55,23 @@ export function useCounterpartAddressFormUpdate({
   }, [formRef]);
 
   const updateAddress = useCallback(
-    (payload: CounterpartUpdateAddress) => {
+    (payload: components['schemas']['CounterpartUpdateAddress']) => {
       if (!address) return;
 
-      return addressUpdateMutation.mutate(payload, {
-        onSuccess: () => {
-          onUpdate && onUpdate(address[0].id);
+      return addressUpdateMutation.mutate(
+        {
+          path: {
+            counterpart_id: address[0].counterpart_id,
+            address_id: address[0].id,
+          },
+          body: payload,
         },
-      });
+        {
+          onSuccess: () => {
+            onUpdate && onUpdate(address[0].id);
+          },
+        }
+      );
     },
     [addressUpdateMutation, address, onUpdate]
   );

@@ -142,9 +142,6 @@ export const useCounterpartCache = () =>
 const useCounterpartListCache = () =>
   useEntityListCache<CounterpartResponse>(counterpartQueryKeys.list);
 
-const useCounterpartDetailCache = () =>
-  useEntityCache<CounterpartResponse>(counterpartQueryKeys.detail);
-
 const useCounterpartAddressListCache = (id: string) =>
   useEntityListCache<CounterpartAddressResponseWithCounterpartID>(() => [
     ...counterpartQueryKeys.addressList(id),
@@ -182,36 +179,54 @@ export const useCounterpartAddresses = (counterpartId?: string) => {
   });
 };
 
-export const useUpdateCounterpartAddress = (
-  addressId: string,
-  counterpartId: string
-) => {
+// export const useUpdateCounterpartAddress = (
+//   addressId: string,
+//   counterpartId: string
+// ) => {
+//   const { i18n } = useLingui();
+//   const { monite } = useMoniteContext();
+//   const { update } = useCounterpartAddressListCache(counterpartId);
+//
+//   return useMutation<
+//     CounterpartAddressResponseWithCounterpartID,
+//     ApiError,
+//     CounterpartUpdateAddress
+//   >({
+//     mutationFn: (payload) =>
+//       monite.api.counterpartsAddresses.updateCounterpartsAddress(
+//         addressId,
+//         counterpartId,
+//         payload
+//       ),
+//
+//     onSuccess: (address) => {
+//       update(address);
+//
+//       toast.success(t(i18n)`Successful update.`);
+//     },
+//
+//     onError: () => {
+//       toast.error(t(i18n)`Failed to update.`);
+//     },
+//   });
+// };
+
+export const useUpdateCounterpartAddress = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { update } = useCounterpartAddressListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<
-    CounterpartAddressResponseWithCounterpartID,
-    ApiError,
-    CounterpartUpdateAddress
-  >({
-    mutationFn: (payload) =>
-      monite.api.counterpartsAddresses.updateCounterpartsAddress(
-        addressId,
-        counterpartId,
-        payload
-      ),
+  return api.counterparts.patchCounterpartsIdAddressesId.useMutation(
+    undefined,
+    {
+      onSuccess: (counterpart) => {
+        toast.success(t(i18n)`Address “${counterpart.line1}” was updated.`);
+      },
 
-    onSuccess: (address) => {
-      update(address);
-
-      toast.success(t(i18n)`Successful update.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to update.`);
-    },
-  });
+      onError: () => {
+        toast.error(t(i18n)`Failed to update Address.`);
+      },
+    }
+  );
 };
 
 export const useCreateCounterpartBank = (counterpartId: string) => {
