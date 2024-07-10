@@ -89,7 +89,7 @@ export const prepareCounterpartIndividualUpdate = ({
   phone,
   isCustomer,
   isVendor,
-}: CounterpartIndividualFields): CounterpartIndividualUpdatePayload => {
+}: CounterpartIndividualFields): components['schemas']['CounterpartIndividualUpdatePayload'] => {
   return {
     first_name: firstName,
     last_name: lastName,

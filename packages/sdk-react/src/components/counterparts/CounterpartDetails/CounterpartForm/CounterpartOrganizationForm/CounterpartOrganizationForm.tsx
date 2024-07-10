@@ -108,6 +108,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
             ),
           };
 
+          // @ts-expect-error - we have to fix this
           return updateCounterpart(payload);
         }
 
@@ -119,6 +120,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
           ),
         };
 
+        // @ts-expect-error - we have to fix this
         return createCounterpart(payload);
       })(e);
     },

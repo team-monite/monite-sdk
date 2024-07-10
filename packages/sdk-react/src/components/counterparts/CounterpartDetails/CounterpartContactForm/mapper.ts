@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import {
   CreateCounterpartContactPayload,
@@ -40,7 +41,7 @@ export const prepareCounterpartContactSubmit = ({
   phone,
   ...address
 }: CounterpartContactFields):
-  | CreateCounterpartContactPayload
+  | components['schemas']['CreateCounterpartContactPayload']
   | UpdateCounterpartContactPayload => {
   return {
     first_name: firstName,

@@ -10,6 +10,10 @@ import {
   useCreateCounterpart,
   useUpdateCounterpart,
 } from '@/core/queries/useCounterpart';
+import {
+  CounterpartOrganizationRootCreatePayload,
+  CounterpartOrganizationRootUpdatePayload,
+} from '@monite/sdk-api';
 
 export type CounterpartsFormProps = {
   /**
@@ -46,7 +50,9 @@ export function useCounterpartForm({
   }, [formRef]);
 
   const createCounterpart = useCallback(
-    (req: components['schemas']['CounterpartCreatePayload']) => {
+    (
+      req: components['schemas']['CounterpartOrganizationRootCreatePayload']
+    ) => {
       counterpartCreateMutation.mutate(req, {
         onSuccess: ({ id }) => {
           onCreate && onCreate(id);
@@ -57,7 +63,9 @@ export function useCounterpartForm({
   );
 
   const updateCounterpart = useCallback(
-    (payload: components['schemas']['CounterpartUpdatePayload']) => {
+    (
+      payload: components['schemas']['CounterpartOrganizationRootUpdatePayload']
+    ) => {
       if (!counterpart) return;
 
       const counterpartUpdateMutate = counterpartUpdateMutation.mutate;
