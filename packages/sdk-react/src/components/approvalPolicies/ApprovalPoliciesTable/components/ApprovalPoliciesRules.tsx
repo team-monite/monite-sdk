@@ -1,4 +1,4 @@
-import { useApprovalPolicyById } from '@/core/queries';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 
 import * as Styled from '../styles';
 import {
@@ -14,7 +14,11 @@ interface ApprovalPoliciesRulesProps {
 export const ApprovalPoliciesRules = ({
   approvalPolicyId,
 }: ApprovalPoliciesRulesProps) => {
-  const { data: approvalPolicy } = useApprovalPolicyById(approvalPolicyId);
+  const { api } = useMoniteContext();
+  const { data: approvalPolicy } =
+    api.approvalPolicies.getApprovalPoliciesId.useQuery({
+      path: { approval_policy_id: approvalPolicyId },
+    });
 
   if (!approvalPolicy) {
     return null;
