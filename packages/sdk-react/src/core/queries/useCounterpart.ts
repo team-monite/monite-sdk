@@ -517,30 +517,51 @@ export const useUpdateCounterpartContact = (counterpartId: string) => {
   });
 };
 
-export const useDeleteCounterpartContact = (counterpartId: string) => {
+// export const useDeleteCounterpartContact = (counterpartId: string) => {
+//   const { i18n } = useLingui();
+//   const { monite } = useMoniteContext();
+//   const { invalidate } = useCounterpartListCache();
+//   const { remove } = useCounterpartContactListCache(counterpartId);
+//
+//   return useMutation<void, Error, string>({
+//     mutationFn: (contactId) =>
+//       monite.api.counterparts.deleteContact(counterpartId, contactId),
+//
+//     onSuccess: (_, contactId) => {
+//       remove(contactId);
+//       invalidate();
+//
+//       toast.success(t(i18n)`Contact Person was deleted.`);
+//     },
+//
+//     onError: (error) => {
+//       toast.error(
+//         getLegacyAPIErrorMessage(error) ||
+//           t(i18n)`Failed to delete Contact Person.`
+//       );
+//     },
+//   });
+// };
+
+export const useDeleteCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { remove } = useCounterpartContactListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<void, Error, string>({
-    mutationFn: (contactId) =>
-      monite.api.counterparts.deleteContact(counterpartId, contactId),
+  return api.counterparts.deleteCounterpartsIdContactsId.useMutation(
+    undefined,
+    {
+      onSuccess: () => {
+        toast.success(t(i18n)`Contact Person was deleted.`);
+      },
 
-    onSuccess: (_, contactId) => {
-      remove(contactId);
-      invalidate();
-
-      toast.success(t(i18n)`Contact Person was deleted.`);
-    },
-
-    onError: (error) => {
-      toast.error(
-        getLegacyAPIErrorMessage(error) ||
-          t(i18n)`Failed to delete Contact Person.`
-      );
-    },
-  });
+      onError: (error) => {
+        toast.error(
+          getLegacyAPIErrorMessage(error) ||
+            t(i18n)`Failed to delete Contact Person.`
+        );
+      },
+    }
+  );
 };
 
 export const useCounterpartList = (

@@ -16,16 +16,23 @@ export function useCounterpartContactView({
   onEdit: onExternalEdit,
   contact: { id, counterpart_id },
 }: CounterpartContactViewProps) {
-  const contactDeleteMutation = useDeleteCounterpartContact(counterpart_id);
+  const contactDeleteMutation = useDeleteCounterpartContact();
 
   const deleteContact = useCallback(async () => {
     const contactDeleteMutateAsync = contactDeleteMutation.mutateAsync;
-    return await contactDeleteMutateAsync(id, {
-      onSuccess: () => {
-        onDelete && onDelete(id);
+
+    return await contactDeleteMutateAsync(
+      {
+        path: { counterpart_id: counterpart_id, contact_id: id },
+        body: undefined,
       },
-    });
-  }, [contactDeleteMutation.mutateAsync, id, onDelete]);
+      {
+        onSuccess: () => {
+          onDelete && onDelete(id);
+        },
+      }
+    );
+  }, [contactDeleteMutation.mutateAsync, counterpart_id, id, onDelete]);
 
   const onEdit = useCallback(() => {
     onExternalEdit && onExternalEdit(id);
