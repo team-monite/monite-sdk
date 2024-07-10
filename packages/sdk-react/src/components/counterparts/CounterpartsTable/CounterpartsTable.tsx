@@ -221,17 +221,25 @@ const CounterpartsTableBase = ({
       return;
     }
 
-    deleteCounterpartMutation.mutate(selectedCounterpart, {
-      onSuccess() {
-        onDelete?.(selectedCounterpart.id);
-        closeDeleteCounterpartModal();
+    deleteCounterpartMutation.mutate(
+      {
+        body: undefined,
+        path: {
+          counterpart_id: selectedCounterpart.id,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          onDelete?.(selectedCounterpart.id);
+          closeDeleteCounterpartModal();
+        },
+      }
+    );
   }, [
-    closeDeleteCounterpartModal,
+    selectedCounterpart,
     deleteCounterpartMutation,
     onDelete,
-    selectedCounterpart,
+    closeDeleteCounterpartModal,
   ]);
 
   const { root } = useRootElements();
@@ -424,7 +432,7 @@ const CounterpartsTableBase = ({
                     onEdit?.(params.row.id);
                   }}
                   onDelete={() => {
-                    setSelectedCounterpart(params.row);
+                    setSelectedCounterpart(params.row as QCounterpartResponse);
                     setIsDeleteDialogOpen(true);
                   }}
                 />

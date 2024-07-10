@@ -115,6 +115,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
         const payload: CounterpartOrganizationRootCreatePayload = {
           type: CounterpartOrganizationRootCreatePayload.type.ORGANIZATION,
           tax_id: values.tax_id ?? '',
+          // @ts-expect-error - we have to fix this
           organization: prepareCounterpartOrganizationCreate(
             values.organization
           ),

@@ -115,6 +115,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               individual: prepareCounterpartIndividualUpdate(values.individual),
             };
 
+          // @ts-expect-error - we have to fix this
           return updateCounterpart(payload);
         }
 
@@ -126,6 +127,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
             created_automatically: false,
           };
 
+        // @ts-expect-error - we have to fix this
         return createCounterpart(payload);
       })(e);
     },

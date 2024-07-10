@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import type { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
 import {
   CounterpartOrganizationResponse,
@@ -53,7 +54,7 @@ export const prepareCounterpartOrganizationCreate = ({
   isCustomer,
   isVendor,
   ...address
-}: CounterpartOrganizationFields): CounterpartOrganizationCreatePayload => {
+}: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationCreatePayload'] => {
   const { postalCode, ...restAddress } = address;
   return {
     legal_name: companyName,

@@ -78,12 +78,20 @@ export function useCounterpartView({
     (cb?: () => void) => {
       if (!counterpart) return;
 
-      return deleteMutate(counterpart, {
-        onSuccess: () => {
-          onDelete && onDelete(counterpart.id);
-          cb?.();
+      return deleteMutate(
+        {
+          body: undefined,
+          path: {
+            counterpart_id: counterpart.id,
+          },
         },
-      });
+        {
+          onSuccess: () => {
+            onDelete?.(counterpart.id);
+            cb?.();
+          },
+        }
+      );
     },
     [deleteMutate, counterpart, onDelete]
   );
