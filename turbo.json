@@ -60,6 +60,7 @@
       "dependsOn": [
         "write-package-version-file",
         "compile-translations",
+        "codegen",
         "^build"
       ]
     },
