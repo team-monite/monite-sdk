@@ -1,3 +1,5 @@
+'use client';
+
 import {
   type MouseEvent,
   type KeyboardEvent,

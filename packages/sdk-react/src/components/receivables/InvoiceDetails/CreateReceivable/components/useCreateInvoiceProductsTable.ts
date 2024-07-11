@@ -1,3 +1,5 @@
+'use client';
+
 import { useMemo } from 'react';
 
 import { CreateReceivablesFormBeforeValidationLineItemProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';

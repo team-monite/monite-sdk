@@ -1,3 +1,5 @@
+'use client';
+
 import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
 import {
   Controller,

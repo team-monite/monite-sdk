@@ -1,3 +1,5 @@
+'use client';
+
 import { Context, createContext, ReactNode } from 'react';
 
 import { MoniteContextValue } from '@/core/context/MoniteContext';

@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useState } from 'react';
 import { FieldNamesMarkedBoolean } from 'react-hook-form';
 

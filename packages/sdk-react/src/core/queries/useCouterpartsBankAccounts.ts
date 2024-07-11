@@ -1,3 +1,5 @@
+'use client';
+
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { ApiError, CounterpartBankAccountResourceList } from '@monite/sdk-api';
 import { useQuery } from '@tanstack/react-query';

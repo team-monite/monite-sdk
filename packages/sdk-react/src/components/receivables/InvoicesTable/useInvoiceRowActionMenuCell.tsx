@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';

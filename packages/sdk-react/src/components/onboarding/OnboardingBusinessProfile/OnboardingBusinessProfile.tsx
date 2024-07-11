@@ -1,3 +1,5 @@
+'use client';
+
 import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';

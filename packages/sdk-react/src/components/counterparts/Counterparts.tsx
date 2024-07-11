@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';

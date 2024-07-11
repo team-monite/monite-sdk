@@ -1,3 +1,5 @@
+'use client';
+
 import { useFileById } from '@/core/queries/useFiles';
 import { Avatar, AvatarProps } from '@mui/material';
 

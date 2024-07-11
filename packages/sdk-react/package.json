@@ -91,6 +91,7 @@
     "babel-plugin-macros": "~3.1.0",
     "cross-env": "^7.0.3",
     "eslint": "~8.38.0",
+    "eslint-plugin-react-server-components": "~1.2.0",
     "i18next": "~21.8.10",
     "jest": "~29.7.0",
     "jest-environment-jsdom": "~29.7.0",

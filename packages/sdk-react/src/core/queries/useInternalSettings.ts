@@ -1,3 +1,5 @@
+'use client';
+
 import { ApiError, PartnerProjectSettingsResponse } from '@monite/sdk-api';
 import { useQuery } from '@tanstack/react-query';
 

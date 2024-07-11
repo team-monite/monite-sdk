@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 
 import { OnboardingFileDescription } from '@/components/onboarding/OnboardingFile/OnboardingFileDescription';

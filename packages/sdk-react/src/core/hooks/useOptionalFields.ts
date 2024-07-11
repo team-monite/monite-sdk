@@ -1,3 +1,5 @@
+'use client';
+
 type ShowFields<T> = {
   [K in keyof T as `show${Capitalize<string & K>}`]: boolean;
 };

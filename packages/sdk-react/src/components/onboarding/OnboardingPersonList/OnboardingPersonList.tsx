@@ -1,3 +1,5 @@
+'use client';
+
 import { FormProvider } from 'react-hook-form';
 
 import { I18n } from '@lingui/core';
