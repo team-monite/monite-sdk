@@ -43,7 +43,10 @@ export function useCounterpartAddressFormUpdate({
     ),
   });
 
-  const addressUpdateMutation = useUpdateCounterpartAddress();
+  const addressUpdateMutation = useUpdateCounterpartAddress({
+    counterpartId: counterpartId,
+    addressId: addressId,
+  });
 
   const submitForm = useCallback(() => {
     formRef.current?.dispatchEvent(
@@ -57,22 +60,13 @@ export function useCounterpartAddressFormUpdate({
     (payload: components['schemas']['CounterpartUpdateAddress']) => {
       if (!address) return;
 
-      return addressUpdateMutation.mutate(
-        {
-          path: {
-            counterpart_id: address.data[0].counterpart_id,
-            address_id: address.data[0].id,
-          },
-          body: payload,
+      return addressUpdateMutation.mutate(payload, {
+        onSuccess: () => {
+          onUpdate?.(addressId);
         },
-        {
-          onSuccess: () => {
-            onUpdate && onUpdate(address.data[0].id);
-          },
-        }
-      );
+      });
     },
-    [addressUpdateMutation, address, onUpdate]
+    [address, addressUpdateMutation, onUpdate, addressId]
   );
 
   return {

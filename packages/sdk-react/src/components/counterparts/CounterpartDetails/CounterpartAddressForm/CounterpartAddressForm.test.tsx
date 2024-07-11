@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { CounterpartAddressFormFields } from '@/components/counterparts/CounterpartDetails/CounterpartAddressForm/helpers';
 import { renderWithClient } from '@/utils/test-utils';
-import { AllowedCountries } from '@monite/sdk-api';
 import { screen } from '@testing-library/dom';
 
 import { CounterpartAddressForm } from './CounterpartAddressForm';
@@ -14,7 +13,7 @@ describe('CounterpartAddressForm', () => {
       const methods = useForm<CounterpartAddressFormFields>({
         defaultValues: {
           city: 'city',
-          country: AllowedCountries.DE,
+          country: 'DE',
           line1: 'line1',
           line2: 'line2',
           postalCode: 'postalCode',
@@ -52,7 +51,7 @@ describe('CounterpartAddressForm', () => {
         defaultValues: {
           myCustomParentField: {
             city: 'city',
-            country: AllowedCountries.DE,
+            country: 'DE',
             line1: 'line1',
             line2: 'line2',
             postalCode: 'postalCode',

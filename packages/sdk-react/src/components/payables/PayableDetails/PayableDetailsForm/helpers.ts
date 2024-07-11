@@ -5,15 +5,6 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { CounterpartResponse } from '@/core/queries';
-import {
-  CurrencyEnum,
-  LineItemRequest,
-  PayableResponseSchema,
-  TagReadSchema,
-  LineItemResponse,
-  CounterpartBankAccountResponse,
-  CounterpartResponse as Counterpart,
-} from '@monite/sdk-api';
 
 import { format } from 'date-fns';
 

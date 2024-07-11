@@ -14,12 +14,6 @@ import {
   triggerClickOnSelectOption,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import {
-  AllowedCountries,
-  CreateCounterpartBankAccount,
-  CurrencyEnum,
-  UpdateCounterpartBankAccount,
-} from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 
@@ -296,8 +290,8 @@ describe('CounterpartBankForm', () => {
             account_holder_name: '',
             account_number: '',
             bic: '',
-            country: AllowedCountries.GB,
-            currency: CurrencyEnum.AMD,
+            country: 'GB',
+            currency: 'AMD',
             iban: '',
             name: '',
             routing_number: '',

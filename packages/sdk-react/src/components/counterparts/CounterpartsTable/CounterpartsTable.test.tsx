@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -14,11 +15,7 @@ import {
   cachedMoniteSDK,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import {
-  CounterpartOrganizationRootResponse,
-  CounterpartType,
-  MoniteSDK,
-} from '@monite/sdk-api';
+import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import {
   act,
@@ -40,10 +37,10 @@ function getPrevButton() {
   return screen.getByRole('button', { name: /Previous page/i });
 }
 
-function getFirstOrganization(): CounterpartOrganizationRootResponse {
+function getFirstOrganization(): components['schemas']['CounterpartOrganizationRootResponse'] {
   const organization = counterpartListFixture.find(
-    (counterpart) => counterpart.type === CounterpartType.ORGANIZATION
-  ) as CounterpartOrganizationRootResponse | undefined;
+    (counterpart) => counterpart.type === 'organization'
+  ) as components['schemas']['CounterpartOrganizationRootResponse'] | undefined;
 
   if (!organization) {
     throw new Error('Could not find any organization in the fixtures list');

@@ -108,15 +108,43 @@ export const useCounterpartAddresses = (counterpartId?: string) => {
   );
 };
 
-export const useUpdateCounterpartAddress = () => {
+export const useUpdateCounterpartAddress = ({
+  counterpartId,
+  addressId,
+}: {
+  addressId: string;
+  counterpartId: string;
+}) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsIdAddressesId.useMutation(
-    undefined,
     {
-      onSuccess: (counterpart) => {
-        toast.success(t(i18n)`Address “${counterpart.line1}” was updated.`);
+      path: { counterpart_id: counterpartId, address_id: addressId },
+    },
+    {
+      onSuccess: async (updatedAddress) => {
+        api.counterparts.getCounterpartsIdAddressesId.setQueryData(
+          {
+            path: { counterpart_id: counterpartId, address_id: addressId },
+          },
+          (prevAddress) => ({
+            ...prevAddress,
+            ...updatedAddress,
+          }),
+          queryClient
+        );
+
+        await api.counterparts.getCounterpartsIdAddresses.invalidateQueries(
+          {
+            parameters: {
+              path: { counterpart_id: counterpartId },
+            },
+          },
+          queryClient
+        );
+
+        toast.success(t(i18n)`Address “${updatedAddress.line1}” was updated.`);
       },
 
       onError: () => {
