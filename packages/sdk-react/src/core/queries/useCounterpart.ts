@@ -311,16 +311,18 @@ export const useUpdateCounterpartVat = () => {
 };
 
 export const useDeleteCounterpartVat = (counterpartId: string) => {
+  const { api } = useMoniteContext();
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { remove } = useCounterpartVatListCache(counterpartId);
+  const queryClient = useQueryClient();
 
-  return useMutation<void, Error, string>({
-    mutationFn: (vatId) =>
-      monite.api.counterparts.deleteVat(counterpartId, vatId),
-
-    onSuccess: (_, vatId) => {
-      remove(vatId);
+  return api.counterparts.deleteCounterpartsIdVatIdsId.useMutation(undefined, {
+    onSuccess: () => {
+      api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
+        {
+          parameters: { path: { counterpart_id: counterpartId } },
+        },
+        queryClient
+      );
 
       toast.success(t(i18n)`VAT was deleted.`);
     },
@@ -347,23 +349,12 @@ export const useCounterpartContactList = (
   );
 };
 
-export const useCreateCounterpartContact = (counterpartId: string) => {
+export const useCreateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useCounterpartListCache();
-  const { add } = useCounterpartContactListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<
-    CounterpartContactResponse,
-    Error,
-    CreateCounterpartContactPayload
-  >({
-    mutationFn: (contact) =>
-      monite.api.counterparts.createContact(counterpartId, contact),
-
+  return api.counterparts.postCounterpartsIdContacts.useMutation(undefined, {
     onSuccess: (contact) => {
-      add(contact);
-      invalidate();
       toast.success(
         t(i18n)`Contact Person “${getIndividualName(
           contact.first_name,

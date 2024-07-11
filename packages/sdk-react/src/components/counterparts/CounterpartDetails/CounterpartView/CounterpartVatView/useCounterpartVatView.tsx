@@ -23,14 +23,23 @@ export function useCounterpartVatView({
     async (cb?: () => void) => {
       const vatDeleteMutateAsync = vatDeleteMutation.mutateAsync;
 
-      return await vatDeleteMutateAsync(id, {
-        onSuccess: () => {
-          onDelete && onDelete(id);
-          cb?.();
+      return await vatDeleteMutateAsync(
+        {
+          path: {
+            counterpart_id: counterpart_id,
+            vat_id: id,
+          },
+          body: undefined,
         },
-      });
+        {
+          onSuccess: () => {
+            onDelete && onDelete(id);
+            cb?.();
+          },
+        }
+      );
     },
-    [vatDeleteMutation.mutateAsync, id, onDelete]
+    [vatDeleteMutation.mutateAsync, counterpart_id, id, onDelete]
   );
 
   const onEdit = useCallback(async () => {

@@ -46,7 +46,7 @@ export function useCounterpartContactForm({
     contactId
   );
 
-  const contactCreateMutation = useCreateCounterpartContact(counterpartId);
+  const contactCreateMutation = useCreateCounterpartContact();
   const contactUpdateMutation = useUpdateCounterpartContact();
 
   const counterpart =
@@ -73,14 +73,22 @@ export function useCounterpartContactForm({
   }, [formRef]);
 
   const createContact = useCallback(
-    async (req: CreateCounterpartContactPayload) => {
-      return await contactCreateMutation.mutateAsync(req, {
-        onSuccess: ({ id }) => {
-          onCreate && onCreate(id);
+    async (req: components['schemas']['CreateCounterpartContactPayload']) => {
+      return await contactCreateMutation.mutateAsync(
+        {
+          path: {
+            counterpart_id: counterpartId,
+          },
+          body: req,
         },
-      });
+        {
+          onSuccess: ({ id }) => {
+            onCreate && onCreate(id);
+          },
+        }
+      );
     },
-    [contactCreateMutation, onCreate]
+    [contactCreateMutation, counterpartId, onCreate]
   );
 
   const updateContact = useCallback(
@@ -115,7 +123,9 @@ export function useCounterpartContactForm({
         ? updateContact(
             payload as components['schemas']['UpdateCounterpartContactPayload']
           )
-        : createContact(payload as CreateCounterpartContactPayload);
+        : createContact(
+            payload as components['schemas']['CreateCounterpartContactPayload']
+          );
     },
     [contact, updateContact, createContact]
   );
