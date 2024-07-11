@@ -359,9 +359,6 @@ describe('CounterpartBankForm', () => {
 
         const [requestConfig, requestOptions] = lastCallArguments;
 
-        console.log('Request Config:', requestConfig);
-        console.log('Request Options:', requestOptions);
-
         const serverRequestBody: components['schemas']['UpdateCounterpartBankAccount'] =
           {
             account_holder_name: firstBankListFixture.account_holder_name,
