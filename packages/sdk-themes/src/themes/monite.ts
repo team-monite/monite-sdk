@@ -9,6 +9,24 @@ import type { TypographyOptions } from '@mui/material/styles/createTypography.js
 import { deepmerge } from '@mui/utils';
 import type {} from '@mui/x-data-grid/themeAugmentation';
 
+const primaryLight = {
+  dark: '#1D59CC',
+  main: '#3737FF',
+  light: '#F4F8FF',
+  lightest: '#F4F4FE',
+};
+
+const primaryDark = {
+  dark: '#1D59CC',
+  main: '#3737FF',
+  light: '#12129E',
+  lightest: '#0C0C40',
+};
+
+const secondary = {
+  main: '#707070',
+};
+
 export const neutralLight = {
   '10': '#111111',
   '50': '#707070',
@@ -21,26 +39,26 @@ export const neutralDark = {
   '80': '#B8B8B8',
 };
 
+export const neutralTransparentLight = {
+  '50': '#0000008F',
+  '80': '#00000021',
+  '90': '#0000000D',
+};
+
+export const neutralTransparentDark = {
+  '50': '#9595958F',
+  '80': '#FFFFFF21',
+  '90': '#FFFFFF0D',
+};
+
 export const paletteLight: PaletteOptions = {
-  primary: {
-    dark: '#1D59CC',
-    main: '#3737FF',
-    light: '#F4F8FF',
-  },
-  secondary: {
-    main: '#707070',
-  },
+  primary: primaryLight,
+  secondary,
 };
 
 export const paletteDark: PaletteOptions = {
-  primary: {
-    dark: '#1D59CC',
-    main: '#3737FF',
-    light: '#F4F8FF',
-  },
-  secondary: {
-    main: '#707070',
-  },
+  primary: primaryDark,
+  secondary,
 };
 
 export const defaultMoniteTypography:
@@ -183,12 +201,36 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiTab: {
     styleOverrides: {
       root: {
+        position: 'relative',
         fontSize: 14,
+        fontWeight: 700,
         marginRight: 24,
-        color: neutralLight['50'],
+        color: neutralTransparentLight['50'],
+        padding: '10px 40px',
+        borderRadius: 10,
+        overflow: 'visible',
+
+        '&:active': {
+          backgroundColor: neutralTransparentLight['90'],
+        },
+
+        '&:after': {
+          position: 'absolute',
+          display: 'block',
+          content: '""',
+          backgroundColor: 'transparent',
+          width: '100%',
+          height: 4,
+          bottom: 0,
+          borderRadius: 10,
+        },
+
+        '&:hover:after': {
+          backgroundColor: neutralTransparentLight['50'],
+        },
 
         '&.Mui-selected': {
-          color: neutralLight['10'],
+          backgroundColor: primaryLight.lightest,
         },
       },
     },
@@ -196,13 +238,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiTabs: {
     styleOverrides: {
       root: {
+        borderBottomColor: neutralTransparentLight['80'],
+        borderBottomStyle: 'solid',
+        borderBottomWidth: 1,
         marginBottom: 32,
       },
       indicator: {
         height: 4,
-        backgroundColor: neutralLight['50'],
-        borderTopRightRadius: 8,
-        borderTopLeftRadius: 8,
+        borderRadius: 10,
       },
     },
   },
@@ -252,14 +295,16 @@ const defaultMoniteComponentsDark = deepmerge(defaultMoniteComponents, {
   MuiTab: {
     styleOverrides: {
       root: {
-        color: neutralDark['80'],
-        '&.Mui-selected': { color: 'primary.main' },
+        color: neutralTransparentDark['50'],
+        '&:active': { backgroundColor: neutralTransparentDark['90'] },
+        '&:hover:after': { backgroundColor: neutralTransparentDark['50'] },
+        '&.Mui-selected': { backgroundColor: primaryDark.lightest },
       },
     },
   },
   MuiTabs: {
     styleOverrides: {
-      indicator: { backgroundColor: 'primary.main' },
+      root: { borderBottomColor: neutralTransparentDark['80'] },
     },
   },
 });
