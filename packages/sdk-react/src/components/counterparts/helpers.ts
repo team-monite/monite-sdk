@@ -23,8 +23,7 @@ export function getCounterpartName(counterpart?: QCounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
     const {
       individual: { first_name, last_name },
-    } =
-      counterpart as components['schemas']['CounterpartIndividualRootResponse'];
+    } = counterpart;
 
     return getIndividualName(first_name, last_name);
   }
@@ -32,8 +31,7 @@ export function getCounterpartName(counterpart?: QCounterpartResponse): string {
   if (isOrganizationCounterpart(counterpart)) {
     const {
       organization: { legal_name },
-    } =
-      counterpart as components['schemas']['CounterpartOrganizationRootResponse'];
+    } = counterpart;
 
     return legal_name;
   }
