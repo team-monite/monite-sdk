@@ -17,9 +17,7 @@ describe('CounterpartOrganizationForm', () => {
   describe('# Existing Organization', () => {
     test('should show "Cancel" button if it is NOT in Dialog', async () => {
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartOrganizationForm id={organizationId} showCategories />
-        </MoniteScopedProviders>
+        <CounterpartOrganizationForm id={organizationId} showCategories />
       );
 
       await waitUntilTableIsLoaded();
@@ -86,11 +84,9 @@ describe('CounterpartOrganizationForm', () => {
       });
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <I18nProvider i18n={customI18n}>
-            <CounterpartOrganizationForm showCategories />
-          </I18nProvider>
-        </MoniteScopedProviders>
+        <I18nProvider i18n={customI18n}>
+          <CounterpartOrganizationForm showCategories />
+        </I18nProvider>
       );
 
       await waitForElementToBeRemoved(
@@ -116,11 +112,9 @@ describe('CounterpartOrganizationForm', () => {
       });
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <I18nProvider i18n={customI18n}>
-            <CounterpartOrganizationForm showCategories />
-          </I18nProvider>
-        </MoniteScopedProviders>
+        <I18nProvider i18n={customI18n}>
+          <CounterpartOrganizationForm showCategories />
+        </I18nProvider>
       );
 
       await waitForElementToBeRemoved(

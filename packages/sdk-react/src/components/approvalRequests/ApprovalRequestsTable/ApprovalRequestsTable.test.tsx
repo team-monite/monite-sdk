@@ -24,12 +24,7 @@ describe('ApprovalRequestTable', () => {
           }),
       });
 
-      renderWithClient(
-        <MoniteScopedProviders>
-          <ApprovalRequestsTable />
-        </MoniteScopedProviders>,
-        monite
-      );
+      renderWithClient(<ApprovalRequestsTable />, monite);
 
       expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
     });

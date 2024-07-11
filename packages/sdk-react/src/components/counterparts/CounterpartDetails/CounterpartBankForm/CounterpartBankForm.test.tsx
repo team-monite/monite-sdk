@@ -144,9 +144,7 @@ describe('CounterpartBankForm', () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartBankForm counterpartId={individualId} />
-        </MoniteScopedProviders>,
+        <CounterpartBankForm counterpartId={individualId} />,
         cachedMoniteSDK
       );
 
@@ -190,9 +188,7 @@ describe('CounterpartBankForm', () => {
       const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartBankForm counterpartId={individualId} />
-        </MoniteScopedProviders>,
+        <CounterpartBankForm counterpartId={individualId} />,
         cachedMoniteSDK
       );
 

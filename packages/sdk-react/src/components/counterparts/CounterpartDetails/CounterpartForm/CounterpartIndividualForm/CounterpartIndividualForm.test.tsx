@@ -12,9 +12,7 @@ describe('CounterpartIndividualForm', () => {
   describe('# Existing Individual', () => {
     test('should show "Cancel" button no matter if it is in Dialog or not', async () => {
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartIndividualForm id={individualId} showCategories />
-        </MoniteScopedProviders>
+        <CounterpartIndividualForm id={individualId} showCategories />
       );
 
       await waitUntilTableIsLoaded();
@@ -71,11 +69,7 @@ describe('CounterpartIndividualForm', () => {
     });
 
     test('should NOT show "Cancel" button when CounterpartIndividual NOT in Dialog component', async () => {
-      renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartIndividualForm showCategories />
-        </MoniteScopedProviders>
-      );
+      renderWithClient(<CounterpartIndividualForm showCategories />);
 
       await waitUntilTableIsLoaded();
 
