@@ -481,9 +481,13 @@ describe('CounterpartsTable', () => {
         jest.advanceTimersByTime(DEBOUNCE_SEARCH_TIMEOUT);
       });
 
-      expect(
-        requestFnMock.mock.lastCall?.[1].parameters?.query?.name__icontains
-      ).toBe(undefined);
+      const lastCallArguments =
+        requestFnMock?.mock?.lastCall?.[1]?.parameters?.query
+          ?.counterpart_name__icontains;
+
+      await waitFor(() => {
+        expect(lastCallArguments).toContain(value);
+      });
     });
 
     test('should filter items by "Customers" when we click on "Customers" filter', async () => {

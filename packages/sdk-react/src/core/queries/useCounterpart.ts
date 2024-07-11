@@ -161,7 +161,7 @@ export const useCreateCounterpartBank = () => {
   return api.counterparts.postCounterpartsIdBankAccounts.useMutation(
     undefined,
     {
-      onSuccess: (bank) => {
+      onSuccess: async (bank) => {
         toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
       },
 
@@ -201,6 +201,20 @@ export const useUpdateCounterpartBank = () => {
     {
       onSuccess: async (bank) => {
         toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
+
+        api.counterparts.getCounterpartsIdBankAccountsId.setQueryData(
+          {
+            path: {
+              counterpart_id: bank.counterpart_id,
+              bank_account_id: bank.id,
+            },
+          },
+          (prevBankAccount) => ({
+            ...prevBankAccount,
+            ...bank,
+          }),
+          queryClient
+        );
 
         await api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
           queryClient
@@ -346,9 +360,13 @@ export const useCounterpartContactList = (
 export const useCreateCounterpartContact = () => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   return api.counterparts.postCounterpartsIdContacts.useMutation(undefined, {
-    onSuccess: (contact) => {
+    onSuccess: async (contact) => {
+      await api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+        queryClient
+      );
       toast.success(
         t(i18n)`Contact Person “${getIndividualName(
           contact.first_name,
@@ -385,9 +403,13 @@ export const useCounterpartContactById = (
 export const useUpdateCounterpartContact = () => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
-    onSuccess: (contact) => {
+    onSuccess: async (contact) => {
+      await api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+        queryClient
+      );
       toast.success(
         t(i18n)`Contact Person “${getIndividualName(
           contact.first_name,
@@ -405,11 +427,13 @@ export const useUpdateCounterpartContact = () => {
 export const useDeleteCounterpartContact = () => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
   return api.counterparts.deleteCounterpartsIdContactsId.useMutation(
     undefined,
     {
-      onSuccess: () => {
+      onSuccess: async () => {
+        await api.counterparts.getCounterparts.invalidateQueries(queryClient);
         toast.success(t(i18n)`Contact Person was deleted.`);
       },
 
@@ -439,7 +463,7 @@ export const useCreateCounterpart = () => {
     {},
     {
       onSuccess: async (counterpart) => {
-        await api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
+        await api.counterparts.getCounterparts.invalidateQueries(queryClient);
         toast.success(
           t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
         );
