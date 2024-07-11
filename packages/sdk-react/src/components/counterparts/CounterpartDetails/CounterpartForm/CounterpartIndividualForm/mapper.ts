@@ -1,11 +1,5 @@
 import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
-import {
-  CounterpartIndividualResponse,
-  AllowedCountries,
-  CounterpartIndividualUpdatePayload,
-  CounterpartIndividualCreatePayload,
-} from '@monite/sdk-api';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 
@@ -20,7 +14,7 @@ export interface CounterpartIndividualFields
 }
 
 export const prepareCounterpartIndividual = (
-  individual?: CounterpartIndividualResponse,
+  individual?: components['schemas']['CounterpartIndividualResponse'],
   defaultValues?: CounterpartDefaultValues
 ): CounterpartIndividualFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? individual?.is_customer);

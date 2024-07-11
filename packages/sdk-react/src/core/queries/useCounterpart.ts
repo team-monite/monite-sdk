@@ -8,15 +8,7 @@ import {
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartBankAccountResponse,
-  CounterpartContactResponse,
-  CounterpartResponse,
-  CounterpartVatID,
-  CounterpartVatIDResponse,
-  CreateCounterpartContactPayload,
-} from '@monite/sdk-api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityListCache } from './hooks';
@@ -32,11 +24,6 @@ export type QCounterpartCreatePayload =
 export type QCounterpartUpdatePayload =
   | components['schemas']['CounterpartIndividualRootUpdatePayload']
   | components['schemas']['CounterpartOrganizationRootUpdatePayload'];
-
-type CounterpartVatUpdate = {
-  vatId: string;
-  payload: CounterpartVatID;
-};
 
 const COUNTERPARTS_QUERY = 'counterparts';
 const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
@@ -116,19 +103,6 @@ export const counterpartQueryKeys = {
 export const useCounterpartCache = () =>
   useEntityListCache(counterpartQueryKeys.all);
 
-const useCounterpartListCache = () =>
-  useEntityListCache<CounterpartResponse>(counterpartQueryKeys.list);
-
-const useCounterpartContactListCache = (counterpartId: string) =>
-  useEntityListCache<CounterpartContactResponse>(() => [
-    ...counterpartQueryKeys.contactList(counterpartId),
-  ]);
-
-const useCounterpartVatListCache = (counterpartId: string) =>
-  useEntityListCache<CounterpartVatIDResponse>(() => [
-    ...counterpartQueryKeys.vatList(counterpartId),
-  ]);
-
 export const useCounterpartAddresses = (counterpartId?: string) => {
   const { api } = useMoniteContext();
 
@@ -205,10 +179,10 @@ export const useUpdateCounterpartBank = () => {
   return api.counterparts.patchCounterpartsIdBankAccountsId.useMutation(
     undefined,
     {
-      onSuccess: (bank) => {
+      onSuccess: async (bank) => {
         toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
 
-        api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+        await api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
           queryClient
         );
       },
@@ -228,8 +202,8 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
   return api.counterparts.deleteCounterpartsIdBankAccountsId.useMutation(
     undefined,
     {
-      onSuccess: () => {
-        api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+      onSuccess: async () => {
+        await api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
           {
             parameters: { path: { counterpart_id: counterpartId } },
           },
@@ -316,8 +290,8 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
   const queryClient = useQueryClient();
 
   return api.counterparts.deleteCounterpartsIdVatIdsId.useMutation(undefined, {
-    onSuccess: () => {
-      api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
+    onSuccess: async () => {
+      await api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
         {
           parameters: { path: { counterpart_id: counterpartId } },
         },
@@ -444,9 +418,8 @@ export const useCreateCounterpart = () => {
   return api.counterparts.postCounterparts.useMutation(
     {},
     {
-      onSuccess: (counterpart) => {
-        api.counterparts.getCounterpartsId.removeQueries(queryClient);
-        api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
+      onSuccess: async (counterpart) => {
+        await api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
         toast.success(
           t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
         );
@@ -480,8 +453,8 @@ export const useUpdateCounterpart = () => {
   const queryClient = useQueryClient();
 
   return api.counterparts.patchCounterpartsId.useMutation(undefined, {
-    onSuccess: (counterpart) => {
-      api.counterparts.getCounterpartsId.invalidateQueries(
+    onSuccess: async (counterpart) => {
+      await api.counterparts.getCounterpartsId.invalidateQueries(
         {
           parameters: { path: { counterpart_id: counterpart.id } },
         },
@@ -504,11 +477,10 @@ export const useDeleteCounterpart = () => {
   const { api } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsId.useMutation(undefined, {
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(t(i18n)`Counterpart was deleted.`);
 
-      api.counterparts.getCounterpartsId.removeQueries(queryClient);
-      api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
+      await api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
     },
     onError: () => {
       toast.error(t(i18n)`Failed to delete Counterpart.`);

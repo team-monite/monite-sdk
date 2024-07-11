@@ -10,10 +10,6 @@ import {
   useCreateCounterpart,
   useUpdateCounterpart,
 } from '@/core/queries/useCounterpart';
-import {
-  CounterpartOrganizationRootCreatePayload,
-  CounterpartOrganizationRootUpdatePayload,
-} from '@monite/sdk-api';
 
 export type CounterpartsFormProps = {
   /**

@@ -1,11 +1,6 @@
 import { counterpartBankListFixture } from '@/mocks/counterparts';
-import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import {
-  CounterpartAddressResponseWithCounterpartID,
-  CounterpartBankAccountResponse,
-} from '@monite/sdk-api';
 import { screen, waitFor, within } from '@testing-library/react';
 
 import { CounterpartDataTestId } from '../Counterpart.types';
@@ -141,6 +136,6 @@ export async function findFirstActionButtonInBankAccountSection(
   return allButtons[0];
 }
 
-export function getFirstBankAccountFixture(): CounterpartBankAccountResponse {
+export function getFirstBankAccountFixture() {
   return counterpartBankListFixture[0];
 }

@@ -4,7 +4,6 @@ import { useLatest } from 'react-use';
 import { components } from '@/api';
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { CounterpartsFormProps } from '@/components/counterparts/CounterpartDetails/CounterpartForm/useCounterpartForm';
-import { CounterpartType } from '@monite/sdk-api';
 
 type CounterpartId = string;
 type BankAccountId = string;
@@ -29,7 +28,7 @@ interface NewCounterpartDetail
   extends CommonCounterpartDetailsProps,
     Pick<CounterpartsFormProps, 'defaultValues'> {
   id?: undefined;
-  type: CounterpartType;
+  type: components['schemas']['CounterpartType'];
 }
 
 interface CommonCounterpartDetailsProps
@@ -141,11 +140,11 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
       return actions.showView();
     }
 
-    if (props.type === CounterpartType.INDIVIDUAL) {
+    if (props.type === 'individual') {
       return actions.showIndividualForm();
     }
 
-    if (props.type === CounterpartType.ORGANIZATION) {
+    if (props.type === 'organization') {
       return actions.showOrganizationForm();
     }
   }, [actions, props.id, props.type]);
@@ -171,11 +170,11 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
 
   const onEdit = useCallback(
     (id: string, type: components['schemas']['CounterpartType']) => {
-      if (type === CounterpartType.ORGANIZATION) {
+      if (type === 'organization') {
         actions.showOrganizationForm();
       }
 
-      if (type === CounterpartType.INDIVIDUAL) {
+      if (type === 'individual') {
         actions.showIndividualForm();
       }
     },

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
@@ -21,14 +22,6 @@ import {
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartCursorFields,
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartType,
-  OrderEnum,
-} from '@monite/sdk-api';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
 import MuiPhoneIcon from '@mui/icons-material/LocalPhone';
 import {
@@ -59,7 +52,7 @@ import * as Styled from './styles';
 import { Filters, FilterValue, Sort } from './types';
 
 interface CounterpartsTableSortModel {
-  field: CounterpartCursorFields;
+  field: components['schemas']['CounterpartCursorFields'];
   sort: GridSortDirection;
 }
 
@@ -172,11 +165,13 @@ const CounterpartsTableBase = ({
     refetch,
   } = useCounterpartList({
     query: {
-      order: sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
+      order: sortModelItem
+        ? (sortModelItem.sort as components['schemas']['OrderEnum'])
+        : undefined,
       limit: pageSize || undefined,
       pagination_token: currentPaginationToken || undefined,
       sort: sortModelItem
-        ? (sortModelItem.field as CounterpartCursorFields)
+        ? (sortModelItem.field as components['schemas']['CounterpartCursorFields'])
         : undefined,
       type: currentFilter[FILTER_TYPE_TYPE] || undefined,
       counterpart_name__icontains:
@@ -313,11 +308,13 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const name =
-                  counterpart.type === CounterpartType.ORGANIZATION
-                    ? (counterpart as CounterpartOrganizationRootResponse)
-                        .organization.legal_name
-                    : (counterpart as CounterpartIndividualRootResponse)
-                        .individual.first_name;
+                  counterpart.type === 'organization'
+                    ? (
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
+                      ).organization.legal_name
+                    : (
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
+                      ).individual.first_name;
 
                 return (
                   <>
@@ -336,11 +333,13 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const counterpartData =
-                  counterpart.type === CounterpartType.ORGANIZATION
-                    ? (counterpart as CounterpartOrganizationRootResponse)
-                        .organization
-                    : (counterpart as CounterpartIndividualRootResponse)
-                        .individual;
+                  counterpart.type === 'organization'
+                    ? (
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
+                      ).organization
+                    : (
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
+                      ).individual;
 
                 const items = [
                   {
@@ -377,9 +376,9 @@ const CounterpartsTableBase = ({
 
                 const data = (() => {
                   switch (counterpart.type) {
-                    case CounterpartType.ORGANIZATION: {
+                    case 'organization': {
                       const organization = (
-                        counterpart as CounterpartOrganizationRootResponse
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
                       ).organization;
 
                       return {
@@ -388,9 +387,9 @@ const CounterpartsTableBase = ({
                       };
                     }
 
-                    case CounterpartType.INDIVIDUAL: {
+                    case 'individual': {
                       const individual = (
-                        counterpart as CounterpartIndividualRootResponse
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
                       ).individual;
 
                       return {

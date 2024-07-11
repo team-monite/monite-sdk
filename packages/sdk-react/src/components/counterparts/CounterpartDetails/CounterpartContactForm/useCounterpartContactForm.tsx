@@ -10,11 +10,6 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartOrganizationRootResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
 
 import {
   CounterpartContactFields,

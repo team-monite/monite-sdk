@@ -8,7 +8,6 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import { CounterpartUpdateAddress } from '@monite/sdk-api';
 
 import * as yup from 'yup';
 
