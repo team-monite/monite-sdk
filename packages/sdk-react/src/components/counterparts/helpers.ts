@@ -1,13 +1,13 @@
 import { components } from '@/api';
-import { QCounterpartResponse } from '@/core/queries';
+import { CounterpartResponse } from '@/core/queries';
 
 export const isIndividualCounterpart = (
-  counterpart: QCounterpartResponse
+  counterpart: CounterpartResponse
 ): counterpart is components['schemas']['CounterpartIndividualRootResponse'] =>
   counterpart.type === 'individual';
 
 export const isOrganizationCounterpart = (
-  counterpart: QCounterpartResponse
+  counterpart: CounterpartResponse
 ): counterpart is components['schemas']['CounterpartOrganizationRootResponse'] =>
   counterpart.type === 'organization';
 
@@ -15,7 +15,7 @@ export function getIndividualName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
 }
 
-export function getCounterpartName(counterpart?: QCounterpartResponse): string {
+export function getCounterpartName(counterpart?: CounterpartResponse): string {
   if (!counterpart) {
     return '';
   }

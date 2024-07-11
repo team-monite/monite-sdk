@@ -4,7 +4,7 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { QCounterpartResponse } from '@/core/queries';
+import { CounterpartResponse } from '@/core/queries';
 import {
   CurrencyEnum,
   LineItemRequest,
@@ -43,7 +43,7 @@ export interface SubmitPayload extends PayableDetailsFormFields {
 }
 
 export const counterpartsToSelect = (
-  counterparts: QCounterpartResponse[] | undefined
+  counterparts: CounterpartResponse[] | undefined
 ): Option[] => {
   if (!counterparts) return [];
 

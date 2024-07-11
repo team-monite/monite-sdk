@@ -1,20 +1,15 @@
-import { QCounterpartResponse } from '@/core/queries';
-import {
-  CounterpartCursorFields,
-  CounterpartResponse,
-  CounterpartType,
-  OrderEnum,
-} from '@monite/sdk-api';
+import { components } from '@/api';
+import { CounterpartResponse } from '@/core/queries';
 
 import { counterpartListFixture } from './counterpartFixture';
 
 export interface GetRequest {
   limit: string;
-  sort?: CounterpartCursorFields;
-  order?: OrderEnum;
+  sort?: components['schemas']['CounterpartCursorFields'];
+  order?: components['schemas']['OrderEnum'];
   counterpart_name__contains?: string;
   counterpart_name__icontains?: string;
-  type?: CounterpartType;
+  type?: components['schemas']['CounterpartType'];
   pagination_token?: string;
   is_customer?: boolean;
   is_vendor?: boolean;
@@ -23,10 +18,10 @@ export interface GetRequest {
 export class CounterpartMockBuilder {
   page: number = 0;
   limit: number = 3;
-  sort: CounterpartCursorFields | undefined;
-  order: GetRequest['order'] = OrderEnum.ASC;
+  sort: components['schemas']['CounterpartCursorFields'] | undefined;
+  order: GetRequest['order'] = 'asc';
 
-  data: Array<QCounterpartResponse> = counterpartListFixture;
+  data: Array<CounterpartResponse> = counterpartListFixture;
 
   withPage(
     page: number
@@ -45,7 +40,7 @@ export class CounterpartMockBuilder {
   }
 
   withSort(
-    sort: CounterpartCursorFields | undefined
+    sort: components['schemas']['CounterpartCursorFields'] | undefined
   ): Pick<CounterpartMockBuilder, 'build'> {
     if (!sort) {
       return this;
@@ -67,7 +62,7 @@ export class CounterpartMockBuilder {
         leftComparisonField = left.organization.legal_name;
       }
 
-      if (this.order === OrderEnum.DESC) {
+      if (this.order === 'desc') {
         return rightComparisonField.localeCompare(leftComparisonField);
       } else {
         return leftComparisonField.localeCompare(rightComparisonField);
@@ -116,7 +111,7 @@ export class CounterpartMockBuilder {
   }
 
   withType(
-    type: CounterpartType | undefined
+    type: components['schemas']['CounterpartType'] | undefined
   ): Pick<CounterpartMockBuilder, 'withFilter' | 'withSubType'> {
     if (!type) {
       return this;
@@ -152,7 +147,7 @@ export class CounterpartMockBuilder {
     return this;
   }
 
-  build(): Array<QCounterpartResponse> {
+  build(): Array<CounterpartResponse> {
     return this.data;
   }
 }

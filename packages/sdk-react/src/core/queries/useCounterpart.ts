@@ -13,17 +13,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMoniteContext } from '../context/MoniteContext';
 import { useEntityListCache } from './hooks';
 
-export type QCounterpartResponse =
+export type CounterpartResponse =
   | components['schemas']['CounterpartIndividualRootResponse']
   | components['schemas']['CounterpartOrganizationRootResponse'];
-
-export type QCounterpartCreatePayload =
-  | components['schemas']['CounterpartIndividualRootCreatePayload']
-  | components['schemas']['CounterpartOrganizationRootCreatePayload'];
-
-export type QCounterpartUpdatePayload =
-  | components['schemas']['CounterpartIndividualRootUpdatePayload']
-  | components['schemas']['CounterpartOrganizationRootUpdatePayload'];
 
 const COUNTERPARTS_QUERY = 'counterparts';
 const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';

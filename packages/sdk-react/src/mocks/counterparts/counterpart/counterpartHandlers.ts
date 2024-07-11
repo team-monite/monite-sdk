@@ -1,23 +1,9 @@
 import { components } from '@/api';
-import { QCounterpartResponse } from '@/core/queries';
+import { CounterpartResponse } from '@/core/queries';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks/entityUsers';
-import type {
-  CounterpartCreatePayload,
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartUpdatePayload,
-} from '@monite/sdk-api';
-import {
-  CounterpartIndividualRootCreatePayload,
-  CounterpartOrganizationRootCreatePayload,
-  CounterpartPaginationResponse,
-  COUNTERPARTS_ENDPOINT,
-  ErrorSchemaResponse,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -32,15 +18,16 @@ import { CounterpartMockBuilder, GetRequest } from './counterpartMock.builder';
 
 type CounterpartDetailParams = { counterpartId: string };
 
-const counterpartPath = `*/${COUNTERPARTS_ENDPOINT}`;
+const counterpartPath = `*/counterparts`;
 const counterpartDetailPath = `${counterpartPath}/:counterpartId`;
 
 export const counterpartHandlers = [
   // read list
   http.get<
     {},
-    QCounterpartResponse,
-    components['schemas']['CounterpartPaginationResponse'] | ErrorSchemaResponse
+    CounterpartResponse,
+    | components['schemas']['CounterpartPaginationResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(counterpartPath, async ({ request }) => {
     const entityId = request.headers.get('x-monite-entity-id');
 
@@ -128,13 +115,13 @@ export const counterpartHandlers = [
    */
   http.post<
     CounterpartDetailParams,
-    CounterpartCreatePayload,
-    QCounterpartResponse
+    components['schemas']['CounterpartCreatePayload'],
+    CounterpartResponse
   >(counterpartPath, async ({ request }) => {
     const json = await request.json();
 
     switch (json.type) {
-      case CounterpartIndividualRootCreatePayload.type.INDIVIDUAL: {
+      case 'individual': {
         const individualResponse: components['schemas']['CounterpartIndividualRootResponse'] =
           {
             ...counterpartIndividualFixture,
@@ -143,7 +130,7 @@ export const counterpartHandlers = [
 
         return HttpResponse.json(individualResponse);
       }
-      case CounterpartOrganizationRootCreatePayload.type.ORGANIZATION: {
+      case 'organization': {
         const organizationResponse: components['schemas']['CounterpartOrganizationRootResponse'] =
           {
             ...counterpartOrganizationFixture,
@@ -190,26 +177,26 @@ export const counterpartHandlers = [
   ),
 
   // update
-  http.patch<CounterpartDetailParams, CounterpartUpdatePayload>(
-    counterpartDetailPath,
-    async ({ params }) => {
-      if (params.counterpartId) {
-        const response = counterpartDetailsFixtures[params.counterpartId];
+  http.patch<
+    CounterpartDetailParams,
+    components['schemas']['CounterpartUpdatePayload']
+  >(counterpartDetailPath, async ({ params }) => {
+    if (params.counterpartId) {
+      const response = counterpartDetailsFixtures[params.counterpartId];
 
-        if (response) {
-          return HttpResponse.json(response);
-        } else {
-          return new HttpResponse(null, {
-            status: 404,
-          });
-        }
+      if (response) {
+        return HttpResponse.json(response);
+      } else {
+        return new HttpResponse(null, {
+          status: 404,
+        });
       }
-
-      return new HttpResponse(null, {
-        status: 404,
-      });
     }
-  ),
+
+    return new HttpResponse(null, {
+      status: 404,
+    });
+  }),
 
   // delete
   http.delete<CounterpartDetailParams, undefined>(

@@ -1,14 +1,8 @@
 import { components } from '@/api';
-import { QCounterpartResponse } from '@/core/queries';
+import { CounterpartResponse } from '@/core/queries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { getRandomBoolean, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartType,
-} from '@monite/sdk-api';
 
 import { individualId, organizationId } from '../counterpart.mocks.types';
 
@@ -22,7 +16,7 @@ function createCounterpartOrganization(): components['schemas']['CounterpartOrga
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     created_automatically: false,
-    type: CounterpartType.ORGANIZATION,
+    type: 'organization',
     tax_id: taxId,
     organization: {
       legal_name: faker.company.name(),
@@ -44,7 +38,7 @@ function createCounterpartIndividual(): components['schemas']['CounterpartIndivi
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    type: CounterpartType.INDIVIDUAL,
+    type: 'individual',
     created_automatically: false,
     tax_id: taxId,
     individual: {
@@ -64,7 +58,7 @@ export const counterpartOrganizationFixture: components['schemas']['CounterpartO
     id: organizationId,
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    type: CounterpartType.ORGANIZATION,
+    type: 'organization',
     created_automatically: false,
     organization: {
       legal_name: faker.company.name(),
@@ -81,7 +75,7 @@ export const counterpartIndividualFixture: components['schemas']['CounterpartInd
     id: individualId,
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    type: CounterpartType.INDIVIDUAL,
+    type: 'individual',
     created_automatically: false,
     individual: {
       first_name: faker.person.firstName(),
@@ -103,7 +97,7 @@ export const counterpartDetailsFixtures: {
   [individualId]: counterpartIndividualFixture,
 };
 
-export const counterpartListFixture: QCounterpartResponse[] = [
+export const counterpartListFixture: CounterpartResponse[] = [
   counterpartOrganizationFixture,
   counterpartIndividualFixture,
   createCounterpartOrganization(),

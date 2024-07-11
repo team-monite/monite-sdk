@@ -1,23 +1,12 @@
 import { components } from '@/api';
-import { QCounterpartResponse } from '@/core/queries';
+import { CounterpartResponse } from '@/core/queries';
 import { counterpartListFixture } from '@/mocks';
-import {
-  getRandomNumber,
-  getRandomProperty,
-  getRandomBoolean,
-} from '@/utils/storybook-utils';
+import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CounterpartContactResponse,
-  CounterpartResponse,
-} from '@monite/sdk-api';
-
-import { organizationId } from '../counterpart.mocks.types';
 
 const genCounterpartContactFixture = (
   id: number = 0,
-  counterpart: QCounterpartResponse
+  counterpart: CounterpartResponse
 ): components['schemas']['CounterpartContactResponse'] => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();

@@ -1,12 +1,8 @@
+import { components } from '@/api';
 import {
   CounterpartData,
   COUNTERPARTS_BANK_ENDPOINT,
   COUNTERPARTS_ENDPOINT,
-} from '@monite/sdk-api';
-import type {
-  CreateCounterpartBankAccount,
-  CounterpartBankAccountResponse,
-  UpdateCounterpartBankAccount,
 } from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
@@ -34,7 +30,7 @@ export const counterpartBankHandlers = [
   http.get<
     {},
     CreateCounterpartBankAccountParams,
-    CounterpartData<CounterpartBankAccountResponse[]>
+    CounterpartData<components['schemas']['CounterpartBankAccountResponse'][]>
   >(bankAccountPath, async () => {
     await delay();
 
@@ -51,12 +47,12 @@ export const counterpartBankHandlers = [
    */
   http.post<
     CreateCounterpartBankAccountParams,
-    CreateCounterpartBankAccount,
-    CounterpartBankAccountResponse
+    components['schemas']['CreateCounterpartBankAccount'],
+    components['schemas']['CounterpartBankAccountResponse']
   >(bankAccountPath, async ({ request }) => {
     const json = await request.json();
 
-    const response: CounterpartBankAccountResponse = {
+    const response: components['schemas']['CounterpartBankAccountResponse'] = {
       id: String(++bankAccountId),
       counterpart_id: counterpartBankFixture.counterpart_id,
       name: json.name,
@@ -68,6 +64,7 @@ export const counterpartBankHandlers = [
       currency: json.currency,
       routing_number: json.routing_number,
       sort_code: json.sort_code,
+      is_default: false,
     };
 
     return HttpResponse.json(response);
@@ -76,24 +73,24 @@ export const counterpartBankHandlers = [
   /**
    * Read counterpart bank account
    */
-  http.get<UpdateCounterpartBankAccountParams, CounterpartBankAccountResponse>(
-    bankAccountIdPath,
-    ({ params }) => {
-      const { bankAccountId } = params;
-      const fixture =
-        genCounterpartBankFixture(bankAccountId) || genCounterpartBankFixture();
+  http.get<
+    UpdateCounterpartBankAccountParams,
+    components['schemas']['CounterpartBankAccountResponse']
+  >(bankAccountIdPath, ({ params }) => {
+    const { bankAccountId } = params;
+    const fixture =
+      genCounterpartBankFixture(bankAccountId) || genCounterpartBankFixture();
 
-      return HttpResponse.json(fixture);
-    }
-  ),
+    return HttpResponse.json(fixture);
+  }),
 
   /**
    * Update counterpart bank account
    */
   http.patch<
     UpdateCounterpartBankAccountParams,
-    UpdateCounterpartBankAccount,
-    CounterpartBankAccountResponse
+    components['schemas']['UpdateCounterpartBankAccount'],
+    components['schemas']['CounterpartBankAccountResponse']
   >(bankAccountIdPath, async () => {
     await delay();
     return HttpResponse.json(counterpartBankFixture);

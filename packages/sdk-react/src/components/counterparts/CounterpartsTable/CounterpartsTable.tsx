@@ -6,7 +6,7 @@ import type { CounterpartShowCategories } from '@/components/counterparts/Counte
 import { TableActions } from '@/components/TableActions';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { QCounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
+import { CounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
 import {
   useCounterpartCache,
   useCounterpartList,
@@ -115,7 +115,7 @@ const CounterpartsTableBase = ({
   const { i18n } = useLingui();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [selectedCounterpart, setSelectedCounterpart] = useState<
-    QCounterpartResponse | undefined
+    CounterpartResponse | undefined
   >(undefined);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -433,7 +433,7 @@ const CounterpartsTableBase = ({
                     onEdit?.(params.row.id);
                   }}
                   onDelete={() => {
-                    setSelectedCounterpart(params.row as QCounterpartResponse);
+                    setSelectedCounterpart(params.row as CounterpartResponse);
                     setIsDeleteDialogOpen(true);
                   }}
                 />

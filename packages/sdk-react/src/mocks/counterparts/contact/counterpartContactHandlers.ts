@@ -2,15 +2,9 @@ import { components } from '@/api';
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
 import { counterpartListFixture } from '@/mocks';
 import {
-  CounterpartContactsResourceList,
   COUNTERPARTS_CONTACT_ENDPOINT,
   COUNTERPARTS_ENDPOINT,
   ErrorSchemaResponse,
-} from '@monite/sdk-api';
-import type {
-  CounterpartContactResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
 } from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';

@@ -258,7 +258,9 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
           counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
         )
       : undefined,
+    // @ts-expect-error - fix receivables types
     counterpart_billing_address: generateCounterpartAddress(),
+    // @ts-expect-error - fix receivables types
     counterpart_shipping_address: counterpartAddress,
     counterpart_contact: faker.datatype.boolean()
       ? {
@@ -287,6 +289,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
+    // @ts-expect-error - fix receivables types
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
     entity_bank_account: faker.datatype.boolean()
