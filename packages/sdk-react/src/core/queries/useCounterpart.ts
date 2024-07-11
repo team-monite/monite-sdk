@@ -9,8 +9,6 @@ import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage'
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  ApiError,
-  CounterpartAddressResponseWithCounterpartID,
   CounterpartBankAccountResponse,
   CounterpartContactResponse,
   CounterpartResponse,
@@ -227,25 +225,51 @@ export const useUpdateCounterpartBank = () => {
   );
 };
 
+// export const useDeleteCounterpartBank = (counterpartId: string) => {
+//   const { i18n } = useLingui();
+//   const { monite } = useMoniteContext();
+//   const { remove } = useCounterpartBankListCache(counterpartId);
+//
+//   return useMutation<void, Error, string>({
+//     mutationFn: (bankId) =>
+//       monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
+//
+//     onSuccess: (_, bankId) => {
+//       remove(bankId);
+//
+//       toast.success(t(i18n)`Bank Account was deleted.`);
+//     },
+//
+//     onError: () => {
+//       toast.error(t(i18n)`Failed to delete Bank Account.`);
+//     },
+//   });
+// };
+
 export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { remove } = useCounterpartBankListCache(counterpartId);
+  const { api } = useMoniteContext();
+  const queryClient = useQueryClient();
 
-  return useMutation<void, Error, string>({
-    mutationFn: (bankId) =>
-      monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
+  return api.counterparts.deleteCounterpartsIdBankAccountsId.useMutation(
+    undefined,
+    {
+      onSuccess: () => {
+        api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+          {
+            parameters: { path: { counterpart_id: counterpartId } },
+          },
+          queryClient
+        );
 
-    onSuccess: (_, bankId) => {
-      remove(bankId);
+        toast.success(t(i18n)`Bank Account was deleted.`);
+      },
 
-      toast.success(t(i18n)`Bank Account was deleted.`);
-    },
-
-    onError: () => {
-      toast.error(t(i18n)`Failed to delete Bank Account.`);
-    },
-  });
+      onError: () => {
+        toast.error(t(i18n)`Failed to delete Bank Account.`);
+      },
+    }
+  );
 };
 
 export const useCounterpartVatList = (counterpartId?: string) => {

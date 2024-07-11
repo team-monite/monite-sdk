@@ -23,14 +23,23 @@ export function useCounterpartBankView({
     async (cb?: () => void) => {
       const bankDeleteMutateAsync = bankDeleteMutation.mutateAsync;
 
-      return await bankDeleteMutateAsync(id, {
-        onSuccess: () => {
-          onDelete && onDelete(id);
-          cb?.();
+      return await bankDeleteMutateAsync(
+        {
+          path: {
+            counterpart_id: counterpart_id,
+            bank_account_id: id,
+          },
+          body: undefined,
         },
-      });
+        {
+          onSuccess: () => {
+            onDelete && onDelete(id);
+            cb?.();
+          },
+        }
+      );
     },
-    [bankDeleteMutation.mutateAsync, id, onDelete]
+    [bankDeleteMutation.mutateAsync, counterpart_id, id, onDelete]
   );
 
   const onEdit = useCallback(async () => {
