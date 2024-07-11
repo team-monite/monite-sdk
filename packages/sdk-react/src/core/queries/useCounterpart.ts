@@ -359,11 +359,11 @@ export const useUpdateCounterpartContact = () => {
   const { api } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
-    onSuccess: (counterpart) => {
+    onSuccess: (contact) => {
       toast.success(
         t(i18n)`Contact Person “${getIndividualName(
-          counterpart.first_name,
-          counterpart.last_name
+          contact.first_name,
+          contact.last_name
         )}” was updated.`
       );
     },
@@ -446,10 +446,16 @@ export const useUpdateCounterpart = () => {
 
   return api.counterparts.patchCounterpartsId.useMutation(undefined, {
     onSuccess: async (counterpart) => {
-      await api.counterparts.getCounterpartsId.invalidateQueries(
+      await api.counterparts.getCounterparts.invalidateQueries(queryClient);
+
+      api.counterparts.getCounterpartsId.setQueryData(
         {
-          parameters: { path: { counterpart_id: counterpart.id } },
+          path: { counterpart_id: counterpart.id },
         },
+        (prevCounterpart) => ({
+          ...prevCounterpart,
+          ...counterpart,
+        }),
         queryClient
       );
       toast.success(
@@ -472,7 +478,7 @@ export const useDeleteCounterpart = () => {
     onSuccess: async () => {
       toast.success(t(i18n)`Counterpart was deleted.`);
 
-      await api.counterparts.getCounterpartsId.invalidateQueries(queryClient);
+      await api.counterparts.getCounterparts.invalidateQueries(queryClient);
     },
     onError: () => {
       toast.error(t(i18n)`Failed to delete Counterpart.`);

@@ -17,7 +17,14 @@ export const prepareCounterpartAddress = (
   return {
     city: address?.city ?? '',
     state: address?.state ?? '',
-    country: address?.country ?? 'US',
+    /**
+     * @todo: Anashev. We have to split this types into 2.
+     * More info in Jira task
+     * @see {@link https://monite.atlassian.net/browse/DEV-7254}
+     */
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    country: address?.country ?? '',
     line1: address?.line1 ?? '',
     line2: address?.line2 ?? '',
     postalCode: address?.postal_code ?? '',

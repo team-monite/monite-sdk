@@ -80,7 +80,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isPayableReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
