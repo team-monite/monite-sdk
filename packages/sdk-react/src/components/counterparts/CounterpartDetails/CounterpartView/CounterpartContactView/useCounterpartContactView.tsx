@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { useDeleteCounterpartContact } from '@/core/queries/useCounterpart';
-import { CounterpartContactResponse } from '@monite/sdk-api';
 
 export type CounterpartContactViewProps = {
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
-  contact: CounterpartContactResponse;
+  contact: components['schemas']['CounterpartContactResponse'];
   permissions: CounterpartActionsPermissions;
 };
 

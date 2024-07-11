@@ -119,8 +119,8 @@ export function useCounterpartView({
   }, [isLoading, i18n, counterpartError, counterpart]);
 
   return {
-    addresses: addresses || [],
-    contacts: contacts || [],
+    addresses: addresses?.data || [],
+    contacts: contacts?.data || [],
     banks: banks?.data || [],
     vats: vats?.data || [],
     counterpart,

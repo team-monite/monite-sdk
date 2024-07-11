@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
-import { CounterpartAddressResponseWithCounterpartID } from '@monite/sdk-api';
 
 export interface CounterpartAddressViewProps {
-  address: CounterpartAddressResponseWithCounterpartID;
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
   onEdit?: (id: string) => void;
   permissions: CounterpartActionsPermissions;
 }

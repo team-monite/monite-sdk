@@ -1,9 +1,5 @@
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
-import {
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
 
 import {
   CounterpartAddressFormFields,
@@ -20,8 +16,8 @@ export interface CounterpartContactFields extends CounterpartAddressFormFields {
 
 export const prepareCounterpartContact = (
   contact:
-    | CreateCounterpartContactPayload
-    | UpdateCounterpartContactPayload
+    | components['schemas']['CreateCounterpartContactPayload']
+    | components['schemas']['UpdateCounterpartContactPayload']
     | undefined,
   i18n: I18n
 ): CounterpartContactFields => {
@@ -42,7 +38,7 @@ export const prepareCounterpartContactSubmit = ({
   ...address
 }: CounterpartContactFields):
   | components['schemas']['CreateCounterpartContactPayload']
-  | UpdateCounterpartContactPayload => {
+  | components['schemas']['UpdateCounterpartContactPayload'] => {
   return {
     first_name: firstName,
     last_name: lastName,

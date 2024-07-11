@@ -1,6 +1,7 @@
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
 import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
@@ -44,10 +45,12 @@ import {
 import { format } from 'date-fns';
 
 interface EditInvoiceDetailsProps {
-  invoice: InvoiceResponsePayload;
+  invoice: components['schemas']['InvoiceResponsePayload'];
 
   /** Callback that is called when the invoice is updated */
-  onUpdated: (updatedReceivable: ReceivableResponse) => void;
+  onUpdated: (
+    updatedReceivable: components['schemas']['ReceivableResponse']
+  ) => void;
 
   /** Callback that is called when the user cancels the editing */
   onCancel: () => void;
@@ -55,7 +58,9 @@ interface EditInvoiceDetailsProps {
 
 interface EditInvoiceDetailsContentProps extends EditInvoiceDetailsProps {
   counterpartAddresses:
-    | Array<CounterpartAddressResponseWithCounterpartID>
+    | Array<
+        components['schemas']['CounterpartAddressResponseWithCounterpartID']
+      >
     | undefined;
 }
 
@@ -193,50 +198,52 @@ const EditInvoiceDetailsContent = ({
                 })),
               };
 
-              const invoicePayload: ReceivableUpdatePayload = {
-                invoice: {
-                  /** Customer section */
-                  counterpart_id: values.counterpart_id,
-                  counterpart_vat_id_id:
-                    values.counterpart_vat_id_id || undefined,
-                  currency: actualCurrency,
-                  vat_exemption_rationale: values.vat_exemption_rationale,
-                  /**
-                   * Note: We shouldn't send `counterpart_billing_address`
-                   *  because it's auto-selected from UI.
-                   * There is no way to change it (at least right now)
-                   */
-                  counterpart_shipping_address: counterpartShippingAddress
-                    ? {
-                        country: counterpartShippingAddress.country,
-                        city: counterpartShippingAddress.city,
-                        postal_code: counterpartShippingAddress.postal_code,
-                        state: counterpartShippingAddress.state,
-                        line1: counterpartShippingAddress.line1,
-                        line2: counterpartShippingAddress.line2,
-                      }
-                    : undefined,
-                  /** We shouldn't send an empty string to the server if the value is not set */
-                  entity_bank_account_id:
-                    values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
-                  fulfillment_date: values.fulfillment_date
-                    ? /**
-                       * We have to change the date as Backend accepts it.
-                       * There is no `time` in request, only year, month and date
-                       */
-                      format(values.fulfillment_date, 'yyyy-MM-dd')
-                    : undefined,
-                  /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
-                  // purchase_order: values.purchase_order || undefined,
-                },
-              };
+              const invoicePayload: components['schemas']['ReceivableUpdatePayload'] =
+                {
+                  invoice: {
+                    /** Customer section */
+                    counterpart_id: values.counterpart_id,
+                    counterpart_vat_id_id:
+                      values.counterpart_vat_id_id || undefined,
+                    currency: actualCurrency,
+                    vat_exemption_rationale: values.vat_exemption_rationale,
+                    /**
+                     * Note: We shouldn't send `counterpart_billing_address`
+                     *  because it's auto-selected from UI.
+                     * There is no way to change it (at least right now)
+                     */
+                    counterpart_shipping_address: counterpartShippingAddress
+                      ? {
+                          country: counterpartShippingAddress.country,
+                          city: counterpartShippingAddress.city,
+                          postal_code: counterpartShippingAddress.postal_code,
+                          state: counterpartShippingAddress.state,
+                          line1: counterpartShippingAddress.line1,
+                          line2: counterpartShippingAddress.line2,
+                        }
+                      : undefined,
+                    /** We shouldn't send an empty string to the server if the value is not set */
+                    entity_bank_account_id:
+                      values.entity_bank_account_id || undefined,
+                    payment_terms_id: values.payment_terms_id,
+                    entity_vat_id_id: values.entity_vat_id_id || undefined,
+                    fulfillment_date: values.fulfillment_date
+                      ? /**
+                         * We have to change the date as Backend accepts it.
+                         * There is no `time` in request, only year, month and date
+                         */
+                        format(values.fulfillment_date, 'yyyy-MM-dd')
+                      : undefined,
+                    /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
+                    // purchase_order: values.purchase_order || undefined,
+                  },
+                };
 
               updateReceivableLineItems.mutate(lineItems, {
                 onSuccess: () => {
                   updateReceivable.mutate(invoicePayload, {
                     onSuccess: (updatedReceivable) => {
+                      // @ts-expect-error - update receivables schema to fix
                       onUpdated(updatedReceivable);
                     },
                   });
@@ -256,7 +263,6 @@ const EditInvoiceDetailsContent = ({
                 />
                 <ItemsSection
                   actualCurrency={actualCurrency}
-                  // @ts-expect-error - `CurrencyEnum` is coming from the legacy API client
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={isLoading} />
@@ -303,7 +309,7 @@ export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
   return (
     <EditInvoiceDetailsContent
       {...props}
-      counterpartAddresses={counterpartAddresses}
+      counterpartAddresses={counterpartAddresses?.data}
     />
   );
 };

@@ -137,20 +137,16 @@ const useCounterpartVatListCache = (counterpartId: string) =>
   ]);
 
 export const useCounterpartAddresses = (counterpartId?: string) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartAddressResponseWithCounterpartID[], Error>({
-    queryKey: counterpartQueryKeys.addressList(counterpartId),
-
-    queryFn: () =>
-      !!counterpartId
-        ? monite.api.counterpartsAddresses
-            .getCounterpartAddresses(counterpartId)
-            .then((response) => response.data)
-        : [],
-
-    enabled: !!counterpartId,
-  });
+  return api.counterparts.getCounterpartsIdAddresses.useQuery(
+    {
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 };
 
 export const useUpdateCounterpartAddress = () => {
@@ -357,20 +353,16 @@ export const useCounterpartContactList = (
   counterpartId?: string,
   isOrganization?: boolean
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<Array<CounterpartContactResponse> | undefined, ApiError>({
-    queryKey: counterpartQueryKeys.contactList(counterpartId),
-
-    queryFn: () =>
-      counterpartId
-        ? monite.api.counterparts
-            .getContacts(counterpartId)
-            .then((res) => res.data)
-        : undefined,
-
-    enabled: !!counterpartId && isOrganization,
-  });
+  return api.counterparts.getCounterpartsIdContacts.useQuery(
+    {
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: !!counterpartId && isOrganization,
+    }
+  );
 };
 
 export const useCreateCounterpartContact = (counterpartId: string) => {
@@ -408,24 +400,19 @@ export const useCounterpartContactById = (
   counterpartId: string,
   contactId?: string
 ) => {
-  const { monite } = useMoniteContext();
-  const { findById } = useCounterpartContactListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartContactResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.contactDetail(counterpartId, contactId!),
-
-    queryFn: () => {
-      if (!contactId) return undefined;
-
-      const existedContact = findById(contactId);
-
-      if (existedContact) return existedContact;
-
-      return monite.api.counterparts.getContactById(counterpartId, contactId);
+  return api.counterparts.getCounterpartsIdContactsId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId,
+        contact_id: contactId ?? '',
+      },
     },
-
-    enabled: Boolean(contactId) && Boolean(counterpartId),
-  });
+    {
+      enabled: !!counterpartId && !!contactId,
+    }
+  );
 };
 
 export const useUpdateCounterpartContact = () => {

@@ -38,7 +38,7 @@ export function useCounterpartAddressFormUpdate({
   const methods = useForm<CounterpartAddressFormFields>({
     resolver: yupResolver(yup.object().shape(getAddressValidationSchema(i18n))),
     defaultValues: useMemo(
-      () => address && prepareCounterpartAddress(address[0]),
+      () => address && prepareCounterpartAddress(address.data[0]),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [address, i18n]
     ),
@@ -61,14 +61,14 @@ export function useCounterpartAddressFormUpdate({
       return addressUpdateMutation.mutate(
         {
           path: {
-            counterpart_id: address[0].counterpart_id,
-            address_id: address[0].id,
+            counterpart_id: address.data[0].counterpart_id,
+            address_id: address.data[0].id,
           },
           body: payload,
         },
         {
           onSuccess: () => {
-            onUpdate && onUpdate(address[0].id);
+            onUpdate && onUpdate(address.data[0].id);
           },
         }
       );

@@ -1,7 +1,6 @@
 import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
-import { AllowedCountries, CounterpartAddress } from '@monite/sdk-api';
 
 export interface CounterpartAddressFormFields {
   line1: string;
@@ -13,7 +12,7 @@ export interface CounterpartAddressFormFields {
 }
 
 export const prepareCounterpartAddress = (
-  address: CounterpartAddress | undefined
+  address: components['schemas']['CounterpartAddress'] | undefined
 ): CounterpartAddressFormFields => {
   return {
     city: address?.city ?? '',

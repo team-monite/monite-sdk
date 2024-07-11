@@ -108,7 +108,7 @@ const PayableDetailsInfoBase = ({
       ? counterpart.organization.legal_name
       : '—');
   const defaultContact = useMemo(
-    () => contacts?.find((contact) => contact.is_default),
+    () => contacts?.data.find((contact) => contact.is_default),
     [contacts]
   );
   const counterpartBankAccount = useMemo(
