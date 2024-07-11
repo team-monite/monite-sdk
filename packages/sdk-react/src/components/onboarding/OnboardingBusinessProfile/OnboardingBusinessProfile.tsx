@@ -38,7 +38,7 @@ export const OnboardingBusinessProfile = () => {
   return (
     <OnboardingForm
       actions={<OnboardingFormActions isLoading={isPending} />}
-      onSubmit={handleSubmit(async (values) => {
+      onSubmit={handleSubmit(async ({ operating_countries: _, ...values }) => {
         const response = await mutateAsync({
           business_profile: values,
         });
