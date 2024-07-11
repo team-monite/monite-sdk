@@ -141,10 +141,7 @@ describe('CounterpartBankForm', () => {
 
   describe('# Public API', () => {
     test('should send correct request when we are choose not UK and not US country', async () => {
-      const getCreateSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'createBankAccount'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
         <MoniteScopedProviders>
@@ -178,15 +175,15 @@ describe('CounterpartBankForm', () => {
 
       await act(() => fireEvent.click(submitBtn));
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getCreateSpy.mock.lastCall;
-      expect(getCreateSpy.mock.lastCall).toBeDefined();
+      const lastCallArguments = requestFnMock.mock.lastCall;
 
-      const parameters = lastCallArguments![1];
+      const body = lastCallArguments?.[1]
+        .body as components['schemas']['CreateCounterpartBankAccount'];
 
-      expect(parameters.name).toBe(accountName);
-      expect(parameters.iban).toBe(iban);
-      expect(parameters.bic).toBe(bic);
+      expect(lastCallArguments).toBeDefined();
+      expect(body?.name).toBe(accountName);
+      expect(body?.iban).toBe(iban);
+      expect(body?.bic).toBe(bic);
     }, 10_000);
 
     test('should send correct request when we choose any country', async () => {
