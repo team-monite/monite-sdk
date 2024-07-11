@@ -44,8 +44,7 @@ export function useCounterpartContactForm({
   const contactCreateMutation = useCreateCounterpartContact();
   const contactUpdateMutation = useUpdateCounterpartContact();
 
-  const counterpart =
-    counterpartResponse as components['schemas']['CounterpartOrganizationRootResponse'];
+  const counterpart = counterpartResponse;
 
   const methods = useForm<CounterpartContactFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
@@ -115,9 +114,7 @@ export function useCounterpartContactForm({
       const payload = prepareCounterpartContactSubmit(values);
 
       return !!contact
-        ? updateContact(
-            payload as components['schemas']['UpdateCounterpartContactPayload']
-          )
+        ? updateContact(payload)
         : createContact(
             payload as components['schemas']['CreateCounterpartContactPayload']
           );

@@ -42,8 +42,7 @@ export function useCounterpartVatForm({
     resolver: yupResolver(getValidationSchema(i18n)),
     defaultValues: useMemo(() => {
       return {
-        country:
-          vat?.country ?? ('' as components['schemas']['AllowedCountries']),
+        country: vat?.country,
         type: vat?.type,
         value: vat?.value ?? '',
       };

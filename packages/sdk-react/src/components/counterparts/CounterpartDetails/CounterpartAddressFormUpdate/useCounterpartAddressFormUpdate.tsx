@@ -38,8 +38,7 @@ export function useCounterpartAddressFormUpdate({
     resolver: yupResolver(yup.object().shape(getAddressValidationSchema(i18n))),
     defaultValues: useMemo(
       () => address && prepareCounterpartAddress(address.data[0]),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [address, i18n]
+      [address]
     ),
   });
 

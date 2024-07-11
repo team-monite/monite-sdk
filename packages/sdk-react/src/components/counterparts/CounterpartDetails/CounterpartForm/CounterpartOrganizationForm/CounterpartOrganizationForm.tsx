@@ -5,6 +5,7 @@ import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { ActionEnum } from '@/utils/types';
@@ -101,7 +102,10 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
               type: 'organization',
               tax_id: values.tax_id ?? '',
               created_automatically: false,
-              language: 'en',
+              language:
+                LanguageCodeEnum.find(
+                  (code) => code === i18n.locale.split('-')[0]
+                ) ?? 'en',
               reminders_enabled: false,
               organization: prepareCounterpartOrganizationUpdate(
                 values.organization
@@ -116,7 +120,10 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
             type: 'organization',
             tax_id: values.tax_id ?? '',
             created_automatically: false,
-            language: 'en',
+            language:
+              LanguageCodeEnum.find(
+                (code) => code === i18n.locale.split('-')[0]
+              ) ?? 'en',
             reminders_enabled: false,
             organization: prepareCounterpartOrganizationCreate(
               values.organization
@@ -126,7 +133,13 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
         return createCounterpart(payload);
       })(e);
     },
-    [counterpart, createCounterpart, handleSubmit, updateCounterpart]
+    [
+      counterpart,
+      createCounterpart,
+      handleSubmit,
+      i18n.locale,
+      updateCounterpart,
+    ]
   );
 
   /** Returns `true` if the form works for `update` but not `create` flow */
