@@ -7,7 +7,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum } from '@monite/sdk-api';
 import { Button } from '@mui/material';
 
 import { UserRolesTable } from './UserRolesTable';
@@ -28,13 +27,13 @@ const UserRolesBase = () => {
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'role',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'role',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 

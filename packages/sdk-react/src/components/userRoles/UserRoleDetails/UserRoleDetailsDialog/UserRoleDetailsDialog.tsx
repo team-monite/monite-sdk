@@ -2,6 +2,7 @@ import React, { useState, useId } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import {
@@ -10,26 +11,17 @@ import {
   isPayablePermissionObjectType,
   createInitialPermissionsState,
 } from '@/components/userRoles/UserRoleDetails/helpers';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
-  useUpdateRole,
-  UserRoleRequest,
-  UserRolePayablePermissions,
-  UserRoleCommonPermissions,
-  useCreateRole,
-} from '@/core/queries/useRoles';
+  commonPermissionsObjectType,
+  payablePermissionsObjectType,
+  useIsActionAllowed,
+} from '@/core/queries/usePermissions';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ActionEnum,
-  CreateRoleRequest,
-  PayableActionEnum,
-  PermissionEnum,
-  RoleResponse,
-  UpdateRoleRequest,
-} from '@monite/sdk-api';
 import {
   Close as CloseIcon,
   OpenInNew as OpenInNewIcon,
@@ -70,6 +62,29 @@ export enum UserRoleDetailsView {
 interface UserRoleFormValues {
   name: string;
   permissions: PermissionRow[];
+}
+
+export interface UserRoleCommonPermissions {
+  object_type: commonPermissionsObjectType;
+  actions: {
+    action_name: components['schemas']['ActionEnum'];
+    permission: components['schemas']['PermissionEnum'];
+  }[];
+}
+
+export interface UserRolePayablePermissions {
+  object_type: payablePermissionsObjectType;
+  actions: {
+    action_name: components['schemas']['PayableActionEnum'];
+    permission: components['schemas']['PermissionEnum'];
+  }[];
+}
+
+interface UserRoleRequest {
+  name: string;
+  permissions: {
+    objects: (UserRolePayablePermissions | UserRoleCommonPermissions)[];
+  };
 }
 
 const StyledDialogContainer = styled(DialogContent)`
@@ -120,9 +135,9 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 interface UserRoleDetailsDialogProps {
-  role?: RoleResponse;
-  onCreated?: (role: RoleResponse) => void;
-  onUpdated?: (role: RoleResponse) => void;
+  role?: components['schemas']['RoleResponse'];
+  onCreated?: (role: components['schemas']['RoleResponse']) => void;
+  onUpdated?: (role: components['schemas']['RoleResponse']) => void;
 }
 
 export const UserRoleDetailsDialog = ({
@@ -131,6 +146,7 @@ export const UserRoleDetailsDialog = ({
   onUpdated,
 }: UserRoleDetailsDialogProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const dialogContext = useDialog();
   const { data: user } = useEntityUserByAuthToken();
 
@@ -151,12 +167,39 @@ export const UserRoleDetailsDialog = ({
     role ? UserRoleDetailsView.Read : UserRoleDetailsView.Mutate
   );
 
-  const updateRoleMutation = useUpdateRole(role?.id);
-  const createRoleMutation = useCreateRole();
+  const roleCreateMutation = api.roles.postRoles.useMutation(
+    {},
+    {
+      onSuccess: (role) =>
+        Promise.all([
+          api.roles.getRoles.invalidateQueries(queryClient),
+          api.roles.getRolesId.invalidateQueries(
+            { parameters: { path: { role_id: role.id } } },
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+  const roleUpdateMutation = api.roles.patchRolesId.useMutation(undefined, {
+    onSuccess: (role) =>
+      Promise.all([
+        api.roles.getRoles.invalidateQueries(queryClient),
+        api.roles.getRolesId.invalidateQueries(
+          { parameters: { path: { role_id: role.id } } },
+          queryClient
+        ),
+      ]),
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'role',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 
@@ -165,7 +208,10 @@ export const UserRoleDetailsDialog = ({
     : createInitialPermissionsState();
 
   const columns: {
-    id: 'name' | ActionEnum | PayableActionEnum;
+    id:
+      | 'name'
+      | components['schemas']['ActionEnum']
+      | components['schemas']['PayableActionEnum'];
     headerName: string;
     cellClassName?: string;
   }[] = [
@@ -174,69 +220,73 @@ export const UserRoleDetailsDialog = ({
       headerName: t(i18n)`Resource name`,
     },
     {
-      id: ActionEnum.READ,
+      id: 'read',
       headerName: t(i18n)`Read`,
     },
     {
-      id: ActionEnum.CREATE,
+      id: 'create',
       headerName: t(i18n)`Create`,
     },
     {
-      id: ActionEnum.UPDATE,
+      id: 'update',
       headerName: t(i18n)`Update`,
     },
     {
-      id: ActionEnum.DELETE,
+      id: 'delete',
       headerName: t(i18n)`Delete`,
     },
     {
-      id: PayableActionEnum.SUBMIT,
+      id: 'submit',
       headerName: t(i18n)`Submit`,
     },
     {
-      id: PayableActionEnum.APPROVE,
+      id: 'approve',
       headerName: t(i18n)`Approve`,
     },
     {
-      id: PayableActionEnum.PAY,
+      id: 'pay',
       headerName: t(i18n)`Pay`,
     },
     {
-      id: PayableActionEnum.CANCEL,
+      id: 'cancel',
       headerName: t(i18n)`Cancel`,
     },
     {
-      id: PayableActionEnum.REOPEN,
+      id: 'reopen',
       headerName: t(i18n)`Reopen`,
     },
     {
-      id: PayableActionEnum.CREATE_FROM_MAIL,
+      id: 'create_from_mail',
       headerName: t(i18n)`Create from mail`,
     },
   ];
 
-  const createRole = (role: CreateRoleRequest) => {
-    createRoleMutation.mutate(role, {
-      onSuccess: (role) => {
-        onCreated?.(role);
-        setView(UserRoleDetailsView.Read);
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      },
-    });
-  };
-
-  const updateRole = (roleId: string, req: UpdateRoleRequest) => {
-    updateRoleMutation.mutate(
-      { roleId, payload: req },
+  const createRole = (role: components['schemas']['CreateRoleRequest']) => {
+    roleCreateMutation.mutate(
+      { ...role },
       {
         onSuccess: (role) => {
-          onUpdated?.(role);
+          toast.success(t(i18n)`Role ${role.name} was created`);
+
+          onCreated?.(role);
           setView(UserRoleDetailsView.Read);
         },
-        onError: (error) => {
-          toast.error(error.message);
+      }
+    );
+  };
+
+  const updateRole = (
+    roleId: string,
+    req: components['schemas']['UpdateRoleRequest']
+  ) => {
+    roleUpdateMutation.mutate(
+      { path: { role_id: roleId }, body: req },
+      {
+        onSuccess: (role) => {
+          toast.success(t(i18n)`Role ${role.name} was updated`);
+
+          onUpdated?.(role);
+          setView(UserRoleDetailsView.Read);
         },
       }
     );
@@ -259,10 +309,9 @@ export const UserRoleDetailsDialog = ({
                   .filter(([key]) => key !== 'name')
                   .map(([action, permission]) => {
                     return {
-                      action_name: action as ActionEnum,
-                      permission: permission
-                        ? PermissionEnum.ALLOWED
-                        : PermissionEnum.NOT_ALLOWED,
+                      action_name:
+                        action as components['schemas']['ActionEnum'],
+                      permission: permission ? 'allowed' : 'not_allowed',
                     };
                   }),
               };
@@ -275,10 +324,9 @@ export const UserRoleDetailsDialog = ({
                   .filter(([key]) => key !== 'name')
                   .map(([action, permission]) => {
                     return {
-                      action_name: action as PayableActionEnum,
-                      permission: permission
-                        ? PermissionEnum.ALLOWED
-                        : PermissionEnum.NOT_ALLOWED,
+                      action_name:
+                        action as components['schemas']['PayableActionEnum'],
+                      permission: permission ? 'allowed' : 'not_allowed',
                     };
                   }),
               };
@@ -305,10 +353,15 @@ export const UserRoleDetailsDialog = ({
      * The problem should be fixed when the sdk will use the Qraft library.
      * */
     if (roleId) {
-      return updateRole(roleId, formattedData as unknown as UpdateRoleRequest);
+      return updateRole(
+        roleId,
+        formattedData as unknown as components['schemas']['UpdateRoleRequest']
+      );
     }
 
-    return createRole(formattedData as unknown as CreateRoleRequest);
+    return createRole(
+      formattedData as unknown as components['schemas']['CreateRoleRequest']
+    );
   };
 
   const handleCancel = () => {
@@ -430,8 +483,8 @@ export const UserRoleDetailsDialog = ({
               type="submit"
               form={formName}
               disabled={
-                updateRoleMutation.isPending ||
-                createRoleMutation.isPending ||
+                roleUpdateMutation.isPending ||
+                roleCreateMutation.isPending ||
                 (role && (!formState.isDirty || !isUpdateAllowed))
               }
             >
