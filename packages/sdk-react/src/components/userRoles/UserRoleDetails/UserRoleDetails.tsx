@@ -10,7 +10,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { RoleResponse } from '@monite/sdk-api';
 
-import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
+import { UserRoleDetailsDialog } from './UserRoleDetailsDialog/UserRoleDetailsDialog';
 
 export interface UserRoleDetailsProps {
   /** The id of the role to be displayed */

@@ -43,6 +43,7 @@
       "dependsOn": [
         "write-package-version-file",
         "compile-translations",
+        "codegen",
         "^build"
       ]
     },
@@ -111,7 +112,7 @@
         "!src/api/client.ts",
         "!src/api/client.test.ts"
       ],
-      "inputs": ["src/api/schema.json", "src/api/client.ts"]
+      "inputs": ["src/api/schema.json", "src/api/client.ts", "package.json", "yarn.lock"]
     }
   }
 }

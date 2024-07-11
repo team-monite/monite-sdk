@@ -10,10 +10,10 @@ import {
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
-import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
-import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
+import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider';
+import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
-import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
+import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig';
 import { Global } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -23,7 +23,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { getFontFaceStyles } from './fontStyles.ts';
+import { getFontFaceStyles } from './fontStyles';
 
 export const SDKDemo = () => {
   const queryClient = useMemo(() => new QueryClient(), []);

@@ -1,5 +1,5 @@
-import React, { ComponentProps } from 'react';
-import ReactDOM, { Root } from 'react-dom/client';
+import { ComponentProps, StrictMode } from 'react';
+import { Root, createRoot } from 'react-dom/client';
 
 import { MoniteApp } from '@/apps/MoniteApp';
 import {
@@ -7,7 +7,7 @@ import {
   MoniteAppElementBase,
   parseElementAttribute,
   SlotConfig,
-} from '@/custom-elements/MoniteAppElementBase.tsx';
+} from '@/custom-elements/MoniteAppElementBase';
 
 export class MoniteAppElement extends MoniteAppElementBase<
   'fetch-token' | 'theme' | 'locale'
@@ -110,7 +110,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
     if (!stylesRootNode)
       throw new Error('#monite-app-styles not found in Shadow DOM');
 
-    this.reactAppRoot = this.reactAppRoot || ReactDOM.createRoot(appRootNode);
+    this.reactAppRoot = this.reactAppRoot || createRoot(appRootNode);
 
     const attributesProperties = Object.entries(
       MoniteAppElement.attributesSchema
@@ -144,7 +144,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
     } as Omit<ComponentProps<typeof MoniteApp>, 'rootElements'>;
 
     this.reactAppRoot.render(
-      <React.StrictMode>
+      <StrictMode>
         <MoniteApp
           {...props}
           rootElements={{
@@ -152,7 +152,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
             styles: stylesRootNode ?? undefined,
           }}
         />
-      </React.StrictMode>
+      </StrictMode>
     );
   }
 }

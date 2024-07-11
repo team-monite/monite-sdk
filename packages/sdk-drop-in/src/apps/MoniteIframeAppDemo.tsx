@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
-import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
+import { AppCircularProgress } from '@/lib/AppCircularProgress';
 import { ConfigLoader } from '@/lib/ConfigLoader';
 import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';

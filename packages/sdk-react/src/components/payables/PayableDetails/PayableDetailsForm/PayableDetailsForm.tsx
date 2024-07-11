@@ -1,6 +1,6 @@
 'use client';
 
-import React, { forwardRef, useEffect, useMemo, useRef } from 'react';
+import { forwardRef, useEffect, useMemo, useRef } from 'react';
 import {
   Controller,
   useForm,
@@ -8,7 +8,7 @@ import {
   FieldNamesMarkedBoolean,
   FormProvider,
 } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';

@@ -61,6 +61,7 @@
         "src/utils/form/FillForm.executor.ts",
         "src/utils/test-utils.tsx",
         "src/components/onboarding/onboardingTestUtils.ts",
+        "src/utils/storybook-utils.tsx",
         "src/setupTests.tsx"
       ],
       "rules": {

@@ -1,6 +1,13 @@
 'use client';
 
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import {
+  Fragment,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
@@ -86,7 +93,7 @@ export interface ProductsTableProps {
 }
 
 const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
-  Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+  Scroller: forwardRef<HTMLDivElement>((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
@@ -97,14 +104,14 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
       sx={{ borderCollapse: 'separate' }}
     />
   ),
-  TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableHead: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableHead {...props} ref={ref} />
   )),
-  TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
   TableFoot: ({ children }) => {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <Fragment>{children}</Fragment>;
   },
 };
 
@@ -457,7 +464,7 @@ export const ProductsTable = ({
                     }
 
                     return (
-                      <React.Fragment>
+                      <Fragment>
                         <TableRow>
                           {tableHeadCells.map((headCell) => (
                             <TableCell
@@ -479,7 +486,7 @@ export const ProductsTable = ({
                             </TableCell>
                           ))}
                         </TableRow>
-                      </React.Fragment>
+                      </Fragment>
                     );
                   }}
                   fixedFooterContent={() => {
@@ -510,7 +517,7 @@ export const ProductsTable = ({
                     );
                   }}
                   itemContent={(_index, row) => (
-                    <React.Fragment>
+                    <Fragment>
                       <TableCell>
                         <Checkbox checked={isSelected(row).selected} />
                       </TableCell>
@@ -523,7 +530,7 @@ export const ProductsTable = ({
                             )
                           : ''}
                       </TableCell>
-                    </React.Fragment>
+                    </Fragment>
                   )}
                   endReached={() => hasNextPage && fetchNextPage()}
                 />
