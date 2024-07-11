@@ -18,7 +18,6 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 

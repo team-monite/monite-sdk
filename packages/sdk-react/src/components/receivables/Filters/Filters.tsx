@@ -129,9 +129,7 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
             >
               {[
                 { label: t(i18n)`All customers`, value: 'all' },
-                ...counterpartsToSelect(
-                  counterpartQuery?.data?.data as CounterpartResponse[]
-                ),
+                ...counterpartsToSelect(counterpartQuery?.data?.data),
               ].map(({ value, label }) => (
                 <MenuItem key={value} value={value}>
                   {label}

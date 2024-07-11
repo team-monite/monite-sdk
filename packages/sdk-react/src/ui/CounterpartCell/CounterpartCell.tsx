@@ -2,13 +2,12 @@ import React, { useCallback } from 'react';
 
 import { components } from '@/api';
 import { useCounterpartById } from '@/core/queries';
-import { PayableResponseSchema, CounterpartType } from '@monite/sdk-api';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PersonIcon from '@mui/icons-material/Person';
 import { Chip, Box, Avatar, Skeleton, Typography } from '@mui/material';
 
 interface Props {
-  counterpartId: PayableResponseSchema['counterpart_id'];
+  counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
 export const CounterpartCell = ({ counterpartId }: Props) => {
@@ -51,7 +50,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
             />
           ) : (
             <Avatar sx={{ width: 24, height: 24 }}>
-              {counterpart?.type === CounterpartType.ORGANIZATION ? (
+              {counterpart?.type === 'organization' ? (
                 <CorporateFareIcon sx={{ fontSize: 16 }} />
               ) : (
                 <PersonIcon sx={{ fontSize: 20 }} />
