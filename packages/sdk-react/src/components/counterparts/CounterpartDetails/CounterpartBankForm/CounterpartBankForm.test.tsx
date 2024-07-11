@@ -202,6 +202,12 @@ describe('CounterpartBankForm', () => {
       triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
 
+      triggerChangeInput(/account name/i, accountName);
+      triggerChangeInput(/iban/i, iban);
+      triggerChangeInput(/bic/i, bic);
+      triggerChangeInput(/account number/i, accountNumber);
+      triggerChangeInput(/sort code/i, sortCode);
+
       fireEvent.change(screen.getByLabelText(/account name/i), {
         target: { value: accountName },
       });

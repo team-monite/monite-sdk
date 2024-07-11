@@ -46,9 +46,7 @@ export function useCounterpartForm({
   }, [formRef]);
 
   const createCounterpart = useCallback(
-    (
-      req: components['schemas']['CounterpartOrganizationRootCreatePayload']
-    ) => {
+    (req: components['schemas']['CounterpartCreatePayload']) => {
       counterpartCreateMutation.mutate(req, {
         onSuccess: ({ id }) => {
           onCreate && onCreate(id);

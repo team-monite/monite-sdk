@@ -499,10 +499,10 @@ describe('CounterpartsTable', () => {
         const lastCall = requestFnMock.mock.lastCall;
 
         if (!lastCall) {
-          throw new Error('monite.api.counterparts.getList never been called');
+          throw new Error('api.counterparts never been called');
         }
 
-        expect(lastCall?.[1].parameters?.query?.is_customer).toBe(true); // Compare with boolean true
+        expect(lastCall?.[1].parameters?.query?.is_customer).toBe(true);
       });
     });
 
@@ -519,7 +519,7 @@ describe('CounterpartsTable', () => {
         const lastCallArguments = requestFnMock.mock.lastCall;
 
         if (!lastCallArguments) {
-          throw new Error('monite.api.counterparts.getList never been called');
+          throw new Error('api.counterparts never been called');
         }
 
         expect(lastCallArguments[1].parameters?.query?.is_vendor).toBe(true);
@@ -539,7 +539,7 @@ describe('CounterpartsTable', () => {
         const lastCallArguments = requestFnMock.mock.lastCall;
 
         if (!lastCallArguments) {
-          throw new Error('monite.api.counterparts.getList never been called');
+          throw new Error('api.counterparts never been called');
         }
 
         expect(lastCallArguments[1].parameters?.query?.type).toBe('individual');
@@ -559,7 +559,7 @@ describe('CounterpartsTable', () => {
         const lastCallArguments = requestFnMock.mock.lastCall;
 
         if (!lastCallArguments) {
-          throw new Error('monite.api.counterparts.getList never been called');
+          throw new Error('api.counterparts never been called');
         }
 
         expect(lastCallArguments[1].parameters?.query?.type).toBe(
@@ -622,7 +622,7 @@ describe('CounterpartsTable', () => {
 
       const lastCallArguments = requestFnMock.mock.lastCall;
       if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
+        throw new Error('api.counterparts never been called');
       }
       const paginationToken =
         lastCallArguments[1].parameters?.query?.pagination_token;
@@ -654,7 +654,7 @@ describe('CounterpartsTable', () => {
 
       const lastCallArguments = requestFnMock.mock.lastCall;
       if (!lastCallArguments) {
-        throw new Error('monite.api.counterparts.getList never been called');
+        throw new Error('api.counterparts never been called');
       }
       const paginationToken =
         lastCallArguments[1].parameters?.query?.pagination_token;
