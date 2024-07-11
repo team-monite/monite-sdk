@@ -13,11 +13,7 @@ import {
 } from '@/components/userRoles/UserRoleDetails/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useEntityUserByAuthToken } from '@/core/queries';
-import {
-  commonPermissionsObjectType,
-  payablePermissionsObjectType,
-  useIsActionAllowed,
-} from '@/core/queries/usePermissions';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -64,27 +60,9 @@ interface UserRoleFormValues {
   permissions: PermissionRow[];
 }
 
-export interface UserRoleCommonPermissions {
-  object_type: commonPermissionsObjectType;
-  actions: {
-    action_name: components['schemas']['ActionEnum'];
-    permission: components['schemas']['PermissionEnum'];
-  }[];
-}
-
-export interface UserRolePayablePermissions {
-  object_type: payablePermissionsObjectType;
-  actions: {
-    action_name: components['schemas']['PayableActionEnum'];
-    permission: components['schemas']['PermissionEnum'];
-  }[];
-}
-
 interface UserRoleRequest {
   name: string;
-  permissions: {
-    objects: (UserRolePayablePermissions | UserRoleCommonPermissions)[];
-  };
+  permissions: components['schemas']['BizObjectsSchema'];
 }
 
 const StyledDialogContainer = styled(DialogContent)`
@@ -302,7 +280,9 @@ export const UserRoleDetailsDialog = ({
           .map((permission) => {
             const objectType = permission.name;
 
-            if (objectType && isCommonPermissionObjectType(objectType)) {
+            if (!objectType) return null;
+
+            if (isCommonPermissionObjectType(objectType)) {
               return {
                 object_type: objectType,
                 actions: Object.entries(permission)
@@ -311,13 +291,15 @@ export const UserRoleDetailsDialog = ({
                     return {
                       action_name:
                         action as components['schemas']['ActionEnum'],
-                      permission: permission ? 'allowed' : 'not_allowed',
+                      permission: (permission
+                        ? 'allowed'
+                        : 'not_allowed') as components['schemas']['PermissionEnum'],
                     };
                   }),
               };
             }
 
-            if (objectType && isPayablePermissionObjectType(objectType)) {
+            if (isPayablePermissionObjectType(objectType)) {
               return {
                 object_type: objectType,
                 actions: Object.entries(permission)
@@ -326,42 +308,28 @@ export const UserRoleDetailsDialog = ({
                     return {
                       action_name:
                         action as components['schemas']['PayableActionEnum'],
-                      permission: permission ? 'allowed' : 'not_allowed',
+                      permission: (permission
+                        ? 'allowed'
+                        : 'not_allowed') as components['schemas']['PermissionEnum'],
                     };
                   }),
               };
             }
-
-            return null;
           })
           .filter(
-            (
-              permission
-            ): permission is
-              | UserRoleCommonPermissions
-              | UserRolePayablePermissions => permission !== null
+            <T,>(value: T | null | undefined): value is T =>
+              value !== null && value !== undefined
           ),
       },
     };
 
     const roleId = role?.id;
 
-    /*
-     * Generated types UpdateRoleRequest & CreateRoleRequest don't describe the real payload
-     * due to limitations of the current type generation library.
-     * We have to cast formattedData to UpdateRoleRequest to avoid type errors.
-     * The problem should be fixed when the sdk will use the Qraft library.
-     * */
     if (roleId) {
-      return updateRole(
-        roleId,
-        formattedData as unknown as components['schemas']['UpdateRoleRequest']
-      );
+      return updateRole(roleId, formattedData);
     }
 
-    return createRole(
-      formattedData as unknown as components['schemas']['CreateRoleRequest']
-    );
+    return createRole(formattedData);
   };
 
   const handleCancel = () => {
