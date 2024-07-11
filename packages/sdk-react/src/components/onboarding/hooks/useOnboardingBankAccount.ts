@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -9,6 +10,8 @@ import {
   usePatchOnboardingRequirementsData,
   useOnboardingCurrencyToCountries,
 } from '@/core/queries/useOnboarding';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { useLingui } from '@lingui/react';
 
 import { enrichFieldsByValues, generateFieldsByMask } from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';
@@ -49,11 +52,16 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
+  const { i18n } = useLingui();
   const { api } = useMoniteContext();
   const {
     mutateAsync: createBankAccountMutation,
     isPending: isCreateBankAccountPending,
-  } = api.bankAccounts.postBankAccounts.useMutation(undefined);
+  } = api.bankAccounts.postBankAccounts.useMutation(undefined, {
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
 
   const {
     mutateAsync: deleteBankAccountMutation,
