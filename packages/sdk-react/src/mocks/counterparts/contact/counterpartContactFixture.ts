@@ -1,9 +1,12 @@
 import { components } from '@/api';
 import { CounterpartResponse } from '@/core/queries';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { counterpartListFixture } from '@/mocks';
-import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
+import {
+  getRandomItemFromArray,
+  getRandomNumber,
+} from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { AllowedCountries } from '@monite/sdk-api';
 
 const genCounterpartContactFixture = (
   id: number = 0,
@@ -25,8 +28,7 @@ const genCounterpartContactFixture = (
     phone: faker.phone.number('+ ### ### ## ##'),
     is_default: id === 0,
     address: {
-      // @ts-expect-error - getRandomProperty is not working because AllowedCountries is not an enum
-      country: getRandomProperty(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries),
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),

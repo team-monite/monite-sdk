@@ -1,8 +1,11 @@
 import { components } from '@/api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { counterpartListFixture } from '@/mocks';
-import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
+import {
+  getRandomItemFromArray,
+  getRandomNumber,
+} from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { AllowedCountries } from '@monite/sdk-api';
 
 import { organizationId } from '../counterpart.mocks.types';
 
@@ -10,9 +13,8 @@ function generateRandomAddress(
   counterpartId: string
 ): components['schemas']['CounterpartAddressResourceList'] {
   return {
-    // @ts-expect-error - check how to get property for country without enums
     data: new Array(getRandomNumber(1, 5)).fill(1).map((_, index) => ({
-      country: getRandomProperty(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries),
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -27,8 +29,7 @@ function generateRandomAddress(
 
 export function generateCounterpartAddress(): components['schemas']['CounterpartAddress'] {
   return {
-    // @ts-expect-error - check how to get property for country without enums
-    country: getRandomProperty(AllowedCountries),
+    country: getRandomItemFromArray(AllowedCountries),
     city: faker.location.city(),
     postal_code: faker.location.zipCode(),
     state: faker.datatype.boolean() ? faker.location.state() : undefined,
@@ -46,7 +47,7 @@ export const counterpartsAddressesFixture = counterpartListFixture
   .concat({
     data: [
       {
-        country: AllowedCountries.GE,
+        country: 'GE',
         city: faker.location.city(),
         postal_code: faker.location.zipCode(),
         state: faker.location.state(),
