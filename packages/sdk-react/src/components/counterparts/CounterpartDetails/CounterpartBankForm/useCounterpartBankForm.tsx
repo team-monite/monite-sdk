@@ -64,13 +64,13 @@ export function useCounterpartBankForm({
   }, [formRef]);
 
   const createBank = useCallback(
-    (req: components['schemas']['CreateCounterpartBankAccount']) => {
+    (payload: components['schemas']['CreateCounterpartBankAccount']) => {
       return createBankMutation.mutate(
         {
           path: {
             counterpart_id: counterpartId,
           },
-          body: req,
+          body: payload,
         },
         {
           onSuccess: (bank) => {
