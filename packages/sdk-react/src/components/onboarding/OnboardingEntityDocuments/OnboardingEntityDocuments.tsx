@@ -38,10 +38,7 @@ export const OnboardingEntityDocuments = () => {
   const fields = onboarding?.data?.entity_documents;
 
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<EntityDocumentsSchema, EntityDocumentsSchema>(
-      fields,
-      'entityDocuments'
-    );
+    useOnboardingForm<EntityDocumentsSchema, void>(fields, 'entityDocuments');
 
   const { control } = methods;
 
@@ -71,7 +68,7 @@ export const OnboardingEntityDocuments = () => {
     <OnboardingForm
       actions={<OnboardingFormActions isLoading={isPending} />}
       onSubmit={handleSubmit(async (values) => {
-        const response = await mutateAsync({
+        await mutateAsync({
           body: values,
         });
 
@@ -81,8 +78,6 @@ export const OnboardingEntityDocuments = () => {
             entity_documents: enrichFieldsByValues(fields, values),
           },
         });
-
-        return response;
       })}
     >
       {checkValue('verification_document_front') && (

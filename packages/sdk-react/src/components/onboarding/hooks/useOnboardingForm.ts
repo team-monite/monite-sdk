@@ -31,7 +31,7 @@ type HandleSubmitType<V, R> = (apiContract: ApiContractType<V, R>) => FormType;
 
 export type OnboardingFormType<
   V extends FieldValues,
-  R extends FieldValues | undefined
+  R extends FieldValues | undefined | void
 > = {
   defaultValues: DefaultValues<V> | undefined;
   methods: UseFormReturn<V>;
@@ -61,7 +61,7 @@ const getErrorsFieldsByValidationErrors = (
 
 export function useOnboardingForm<
   V extends FieldValues,
-  R extends FieldValues | undefined
+  R extends FieldValues | undefined | void
 >(
   nextFields: OnboardingOutputFieldsType | undefined,
   type: ValidationSchemasType
@@ -159,7 +159,7 @@ export function useOnboardingForm<
 
         return handleFormSubmit(async (values) => {
           try {
-            return await apiContract(prepareValuesToSubmit(values));
+            return void (await apiContract(prepareValuesToSubmit(values)));
           } catch (e) {
             const error = e as ErrorType;
             const errorBody = error.body;

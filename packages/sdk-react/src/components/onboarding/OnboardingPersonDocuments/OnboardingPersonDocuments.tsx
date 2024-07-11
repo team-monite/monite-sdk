@@ -62,10 +62,7 @@ export const OnboardingPersonDocuments = () => {
   }, [personDocuments, personId]);
 
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<PersonDocumentsSchema, PersonDocumentsSchema>(
-      fields,
-      'personDocuments'
-    );
+    useOnboardingForm<PersonDocumentsSchema, void>(fields, 'personDocuments');
 
   const { control } = methods;
 
@@ -80,7 +77,7 @@ export const OnboardingPersonDocuments = () => {
         />
       }
       onSubmit={handleSubmit(async (payload) => {
-        const response = await mutateAsync({
+        await mutateAsync({
           path: { person_id: personId },
           body: payload,
         });
@@ -96,8 +93,6 @@ export const OnboardingPersonDocuments = () => {
         });
 
         disableEditMode();
-
-        return response;
       })}
     >
       <OnboardingStepContent>
