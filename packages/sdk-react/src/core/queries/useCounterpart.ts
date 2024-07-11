@@ -119,11 +119,6 @@ export const useCounterpartCache = () =>
 const useCounterpartListCache = () =>
   useEntityListCache<CounterpartResponse>(counterpartQueryKeys.list);
 
-const useCounterpartBankListCache = (id: string) =>
-  useEntityListCache<CounterpartBankAccountResponse>(() => [
-    ...counterpartQueryKeys.bankList(id),
-  ]);
-
 const useCounterpartContactListCache = (counterpartId: string) =>
   useEntityListCache<CounterpartContactResponse>(() => [
     ...counterpartQueryKeys.contactList(counterpartId),
@@ -225,27 +220,6 @@ export const useUpdateCounterpartBank = () => {
   );
 };
 
-// export const useDeleteCounterpartBank = (counterpartId: string) => {
-//   const { i18n } = useLingui();
-//   const { monite } = useMoniteContext();
-//   const { remove } = useCounterpartBankListCache(counterpartId);
-//
-//   return useMutation<void, Error, string>({
-//     mutationFn: (bankId) =>
-//       monite.api.counterparts.deleteBankAccount(counterpartId, bankId),
-//
-//     onSuccess: (_, bankId) => {
-//       remove(bankId);
-//
-//       toast.success(t(i18n)`Bank Account was deleted.`);
-//     },
-//
-//     onError: () => {
-//       toast.error(t(i18n)`Failed to delete Bank Account.`);
-//     },
-//   });
-// };
-
 export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
@@ -287,18 +261,13 @@ export const useCounterpartVatList = (counterpartId?: string) => {
   );
 };
 
-export const useCreateCounterpartVat = (counterpartId: string) => {
+export const useCreateCounterpartVat = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { add } = useCounterpartVatListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatID>({
-    mutationFn: (vat) => monite.api.counterparts.createVat(counterpartId, vat),
-
-    onSuccess: (vat) => {
-      add(vat);
-
-      toast.success(t(i18n)`Vat “${vat.value}” was created.`);
+  return api.counterparts.postCounterpartsIdVatIds.useMutation(undefined, {
+    onSuccess: (counterpart) => {
+      toast.success(t(i18n)`Vat “${counterpart.value}” was created.`);
     },
 
     onError: () => {
@@ -311,39 +280,28 @@ export const useCounterpartVatById = (
   counterpartId: string,
   vatId?: string
 ) => {
-  const { monite } = useMoniteContext();
-  const { findById } = useCounterpartVatListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useQuery<CounterpartVatIDResponse | undefined, Error>({
-    queryKey: counterpartQueryKeys.vatDetail(counterpartId, vatId),
-
-    queryFn: () => {
-      if (!vatId) return undefined;
-
-      const existedVat = findById(vatId);
-
-      if (existedVat) return existedVat;
-
-      return monite.api.counterparts.getVatById(counterpartId, vatId);
+  return api.counterparts.getCounterpartsIdVatIdsId.useQuery(
+    {
+      path: {
+        counterpart_id: counterpartId,
+        vat_id: vatId ?? '',
+      },
     },
-
-    enabled: !!vatId,
-  });
+    {
+      enabled: !!counterpartId && !!vatId,
+    }
+  );
 };
 
-export const useUpdateCounterpartVat = (counterpartId: string) => {
+export const useUpdateCounterpartVat = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { update } = useCounterpartVatListCache(counterpartId);
+  const { api } = useMoniteContext();
 
-  return useMutation<CounterpartVatIDResponse, Error, CounterpartVatUpdate>({
-    mutationFn: ({ vatId, payload }) =>
-      monite.api.counterparts.updateVat(counterpartId, vatId, payload),
-
-    onSuccess: (vat) => {
-      update(vat);
-
-      toast.success(t(i18n)`Vat “${vat.value}” was updated.`);
+  return api.counterparts.patchCounterpartsIdVatIdsId.useMutation(undefined, {
+    onSuccess: (counterpart) => {
+      toast.success(t(i18n)`Vat “${counterpart.value}” was updated.`);
     },
 
     onError: () => {
