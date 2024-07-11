@@ -129,7 +129,10 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   const primaryAction = useCallback(
     async (payload: CreateEntityBankAccountRequest) => {
       const response = await createBankAccountMutation({
-        body: payload,
+        body: {
+          ...payload,
+          is_default_for_currency: true,
+        },
       });
 
       if (currentBankAccount) {
