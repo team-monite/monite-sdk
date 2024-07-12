@@ -448,6 +448,20 @@ export const useUpdateCounterpartContact = () => {
 
   return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
     onSuccess: async (contact) => {
+      api.counterparts.getCounterpartsIdContactsId.setQueryData(
+        {
+          path: {
+            counterpart_id: contact.counterpart_id,
+            contact_id: contact.id,
+          },
+        },
+        (prevContact) => ({
+          ...prevContact,
+          ...contact,
+        }),
+        queryClient
+      );
+
       await api.counterparts.getCounterpartsIdContacts.invalidateQueries(
         {
           parameters: {
