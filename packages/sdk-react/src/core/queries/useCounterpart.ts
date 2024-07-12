@@ -280,10 +280,16 @@ export const useCounterpartVatList = (counterpartId?: string) => {
 
 export const useCreateCounterpartVat = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdVatIds.useMutation(undefined, {
-    onSuccess: (counterpart) => {
+    onSuccess: async (counterpart) => {
+      await api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
+        {
+          parameters: { path: { counterpart_id: counterpart.id } },
+        },
+        queryClient
+      );
       toast.success(t(i18n)`Vat “${counterpart.value}” was created.`);
     },
 
