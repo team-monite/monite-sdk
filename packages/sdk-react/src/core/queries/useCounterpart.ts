@@ -323,14 +323,29 @@ export const useUpdateCounterpartVat = () => {
   const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsIdVatIdsId.useMutation(undefined, {
-    onSuccess: async (counterpart) => {
-      await api.counterparts.getCounterpartsIdVatIdsId.invalidateQueries(
+    onSuccess: async (updatedVatId) => {
+      api.counterparts.getCounterpartsIdVatIdsId.setQueryData(
         {
-          parameters: { path: { counterpart_id: counterpart.counterpart_id } },
+          path: {
+            counterpart_id: updatedVatId.counterpart_id,
+            vat_id: updatedVatId.id,
+          },
+        },
+        (prevVatId) => ({
+          ...prevVatId,
+          ...updatedVatId,
+        }),
+        queryClient
+      );
+
+      await api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
+        {
+          parameters: { path: { counterpart_id: updatedVatId.counterpart_id } },
         },
         queryClient
       );
-      toast.success(t(i18n)`Vat “${counterpart.value}” was updated.`);
+
+      toast.success(t(i18n)`Vat “${updatedVatId.value}” was updated.`);
     },
 
     onError: () => {
