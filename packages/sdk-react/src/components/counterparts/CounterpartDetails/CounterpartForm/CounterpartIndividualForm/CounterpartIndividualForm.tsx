@@ -5,6 +5,7 @@ import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { ActionEnum } from '@/utils/types';
@@ -115,23 +116,26 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               individual: prepareCounterpartIndividualUpdate(values.individual),
             };
 
-          // @ts-expect-error - we have to fix this
           return updateCounterpart(payload);
         }
 
-        const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
+        const payload: components['schemas']['CounterpartIndividualRootCreatePayload'] =
           {
             type: 'individual',
             tax_id: values.tax_id ?? '',
             individual: prepareCounterpartIndividualCreate(values.individual),
             created_automatically: false,
+            language:
+              LanguageCodeEnum.find(
+                (code) => code === i18n.locale.split('-')[0]
+              ) ?? 'en',
+            reminders_enabled: false,
           };
 
-        // @ts-expect-error - we have to fix this
         return createCounterpart(payload);
       })(e);
     },
-    [counterpart, createCounterpart, handleSubmit, updateCounterpart]
+    [counterpart, createCounterpart, handleSubmit, i18n, updateCounterpart]
   );
 
   useEffect(() => {

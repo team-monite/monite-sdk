@@ -57,9 +57,7 @@ export function useCounterpartForm({
   );
 
   const updateCounterpart = useCallback(
-    (
-      payload: components['schemas']['CounterpartOrganizationRootUpdatePayload']
-    ) => {
+    (payload: components['schemas']['CounterpartUpdatePayload']) => {
       if (!counterpart) return;
 
       const counterpartUpdateMutate = counterpartUpdateMutation.mutate;
