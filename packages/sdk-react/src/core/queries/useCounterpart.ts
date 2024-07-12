@@ -223,6 +223,9 @@ export const useUpdateCounterpartBank = () => {
         );
 
         await api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+          {
+            parameters: { path: { counterpart_id: bank.counterpart_id } },
+          },
           queryClient
         );
       },
