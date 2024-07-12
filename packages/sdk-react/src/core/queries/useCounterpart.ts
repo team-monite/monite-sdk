@@ -156,12 +156,18 @@ export const useUpdateCounterpartAddress = ({
 
 export const useCreateCounterpartBank = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdBankAccounts.useMutation(
     undefined,
     {
       onSuccess: async (bank) => {
+        await api.counterparts.getCounterpartsIdBankAccounts.invalidateQueries(
+          {
+            parameters: { path: { counterpart_id: bank.counterpart_id } },
+          },
+          queryClient
+        );
         toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
       },
 
