@@ -585,9 +585,9 @@ export const useDeleteCounterpart = () => {
 
   return api.counterparts.deleteCounterpartsId.useMutation(undefined, {
     onSuccess: async () => {
-      toast.success(t(i18n)`Counterpart was deleted.`);
-
       await api.counterparts.getCounterparts.invalidateQueries(queryClient);
+
+      toast.success(t(i18n)`Counterpart was deleted.`);
     },
     onError: () => {
       toast.error(t(i18n)`Failed to delete Counterpart.`);
