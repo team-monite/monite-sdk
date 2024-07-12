@@ -36,9 +36,7 @@ export const prepareCounterpartContactSubmit = ({
   email,
   phone,
   ...address
-}: CounterpartContactFields):
-  | components['schemas']['CreateCounterpartContactPayload']
-  | components['schemas']['UpdateCounterpartContactPayload'] => {
+}: CounterpartContactFields): components['schemas']['CreateCounterpartContactPayload'] => {
   return {
     first_name: firstName,
     last_name: lastName,

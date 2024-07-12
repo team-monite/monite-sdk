@@ -113,11 +113,7 @@ export function useCounterpartContactForm({
     (values: CounterpartContactFields) => {
       const payload = prepareCounterpartContactSubmit(values);
 
-      return !!contact
-        ? updateContact(payload)
-        : createContact(
-            payload as components['schemas']['CreateCounterpartContactPayload']
-          );
+      return !!contact ? updateContact(payload) : createContact(payload);
     },
     [contact, updateContact, createContact]
   );
