@@ -329,7 +329,6 @@ const PayableDetailsFormBase = forwardRef<
                             }
                           >
                             {counterpartBankAccountsToSelect(
-                              // @ts-expect-error - we have to fix this
                               counterpartBankAccountQuery?.data?.data || []
                             ).map((bankAccount) => (
                               <MenuItem
