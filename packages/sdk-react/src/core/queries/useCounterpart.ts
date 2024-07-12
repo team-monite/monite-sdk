@@ -401,6 +401,11 @@ export const useCreateCounterpartContact = () => {
   return api.counterparts.postCounterpartsIdContacts.useMutation(undefined, {
     onSuccess: async (contact) => {
       await api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+        {
+          parameters: {
+            path: { counterpart_id: contact.counterpart_id },
+          },
+        },
         queryClient
       );
       toast.success(
