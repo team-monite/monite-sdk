@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   approvalRequestsListFixture,

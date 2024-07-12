@@ -8,7 +8,6 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { CounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
 import {
-  useCounterpartCache,
   useCounterpartList,
   useDeleteCounterpart,
 } from '@/core/queries/useCounterpart';
@@ -131,8 +130,6 @@ const CounterpartsTableBase = ({
   );
   const sortModelItem = sortModel[0];
 
-  const { destroy } = useCounterpartCache();
-
   /**
    * `isUpdateSupported` and `isDeleteSupported` should be defined by `created_by_entity_user_id` from counterpart record.
    * Currently, it is not possible, counterpart record does not have this parameter
@@ -155,9 +152,6 @@ const CounterpartsTableBase = ({
     action: ActionEnum.DELETE,
     entityUserId: user?.id,
   });
-
-  // clear cache before unmount
-  useEffect(() => destroy, [destroy]);
 
   const {
     data: counterparts,

@@ -208,22 +208,6 @@ describe('CounterpartBankForm', () => {
       triggerChangeInput(/account number/i, accountNumber);
       triggerChangeInput(/sort code/i, sortCode);
 
-      fireEvent.change(screen.getByLabelText(/account name/i), {
-        target: { value: accountName },
-      });
-      fireEvent.change(screen.getByLabelText(/iban/i), {
-        target: { value: iban },
-      });
-      fireEvent.change(screen.getByLabelText(/bic/i), {
-        target: { value: bic },
-      });
-      fireEvent.change(screen.getByLabelText(/account number/i), {
-        target: { value: accountNumber },
-      });
-      fireEvent.change(screen.getByLabelText(/sort code/i), {
-        target: { value: sortCode },
-      });
-
       const submitBtn = screen.getByRole('button', {
         name: t`Add bank account`,
       });

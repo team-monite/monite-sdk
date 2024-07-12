@@ -11,89 +11,10 @@ import { useLingui } from '@lingui/react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
-import { useEntityListCache } from './hooks';
 
 export type CounterpartResponse =
   | components['schemas']['CounterpartIndividualRootResponse']
   | components['schemas']['CounterpartOrganizationRootResponse'];
-
-const COUNTERPARTS_QUERY = 'counterparts';
-const COUNTERPARTS_CONTACTS_QUERY = 'counterpartContacts';
-const COUNTERPARTS_ADDRESS_QUERY = 'counterpartAddress';
-const COUNTERPARTS_BANKS_QUERY = 'counterpartBanks';
-const COUNTERPARTS_VATS_QUERY = 'counterpartVats';
-
-export const counterpartQueryKeys = {
-  all: () => [COUNTERPARTS_QUERY],
-  list: () => [...counterpartQueryKeys.all(), 'list'],
-  detail: (counterpartId?: string) =>
-    counterpartId
-      ? [...counterpartQueryKeys.all(), 'detail', counterpartId]
-      : [...counterpartQueryKeys.all(), 'detail'],
-
-  addressList: (id?: string) =>
-    id
-      ? [
-          ...counterpartQueryKeys.detail(id),
-          COUNTERPARTS_ADDRESS_QUERY,
-          'list',
-          id,
-        ]
-      : [...counterpartQueryKeys.detail(), COUNTERPARTS_ADDRESS_QUERY, 'list'],
-  addressDetail: (counterpartId: string, addressId: string) => [
-    ...counterpartQueryKeys.detail(counterpartId),
-    COUNTERPARTS_ADDRESS_QUERY,
-    'details',
-    addressId,
-  ],
-
-  contactList: (counterpartId?: string) => [
-    ...counterpartQueryKeys.detail(counterpartId),
-    COUNTERPARTS_CONTACTS_QUERY,
-    'list',
-  ],
-  contactDetail: (counterpartId: string, contactId: string) => [
-    ...counterpartQueryKeys.detail(counterpartId),
-    COUNTERPARTS_CONTACTS_QUERY,
-    'detail',
-    contactId,
-  ],
-
-  bankList: (counterpartId?: string) =>
-    counterpartId
-      ? [
-          ...counterpartQueryKeys.list(),
-          COUNTERPARTS_BANKS_QUERY,
-          'list',
-          counterpartId,
-        ]
-      : [...counterpartQueryKeys.list(), COUNTERPARTS_BANKS_QUERY, 'list'],
-  bankDetail: (counterpartId?: string, bankId?: string) => [
-    ...counterpartQueryKeys.detail(counterpartId),
-    COUNTERPARTS_BANKS_QUERY,
-    'detail',
-    bankId,
-  ],
-
-  vatList: (counterpartId?: string) =>
-    counterpartId
-      ? [
-          ...counterpartQueryKeys.detail(counterpartId),
-          COUNTERPARTS_VATS_QUERY,
-          'list',
-          counterpartId,
-        ]
-      : [...counterpartQueryKeys.detail(), COUNTERPARTS_VATS_QUERY, 'list'],
-  vatDetail: (counterpartId?: string, vatId?: string) => [
-    ...counterpartQueryKeys.detail(counterpartId),
-    COUNTERPARTS_VATS_QUERY,
-    'detail',
-    vatId,
-  ],
-};
-
-export const useCounterpartCache = () =>
-  useEntityListCache(counterpartQueryKeys.all);
 
 export const useCounterpartAddresses = (counterpartId?: string) => {
   const { api } = useMoniteContext();

@@ -43,8 +43,8 @@ export function useCounterpartAddressFormUpdate({
   });
 
   const addressUpdateMutation = useUpdateCounterpartAddress({
-    counterpartId: counterpartId,
-    addressId: addressId,
+    counterpartId,
+    addressId,
   });
 
   const submitForm = useCallback(() => {
