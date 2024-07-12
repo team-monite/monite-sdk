@@ -478,8 +478,18 @@ export const useDeleteCounterpartContact = () => {
   return api.counterparts.deleteCounterpartsIdContactsId.useMutation(
     undefined,
     {
-      onSuccess: async () => {
-        await api.counterparts.getCounterparts.invalidateQueries(queryClient);
+      onSuccess: async (_, { path }) => {
+        await Promise.all([
+          api.counterparts.getCounterparts.invalidateQueries(queryClient),
+          api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+            {
+              parameters: {
+                path: { counterpart_id: path.counterpart_id },
+              },
+            },
+            queryClient
+          ),
+        ]);
         toast.success(t(i18n)`Contact Person was deleted.`);
       },
 
