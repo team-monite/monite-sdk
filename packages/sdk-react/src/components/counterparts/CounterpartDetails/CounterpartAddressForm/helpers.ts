@@ -23,7 +23,7 @@ export const prepareCounterpartAddress = (
      * @see {@link https://monite.atlassian.net/browse/DEV-7254}
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - must be fixed in https://monite.atlassian.net/browse/DEV-7254
     country: address?.country ?? '',
     line1: address?.line1 ?? '',
     line2: address?.line2 ?? '',
