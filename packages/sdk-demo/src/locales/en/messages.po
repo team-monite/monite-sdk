@@ -39,7 +39,7 @@ msgstr "Entity User ID"
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:140
+#: src/apps/SDKDemo/SDKDemo.tsx:130
 msgid "Logout"
 msgstr "Logout"
 

@@ -15,10 +15,8 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
@@ -72,7 +70,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
@@ -80,7 +78,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isPayableReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
@@ -88,7 +86,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalUpdateSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 
