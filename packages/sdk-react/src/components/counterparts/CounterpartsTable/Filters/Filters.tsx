@@ -5,7 +5,6 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
 import {
@@ -58,12 +57,12 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
               { label: t(i18n)`All`, value: 'all' },
               {
                 label: t(i18n)`Individuals`,
-                value: CounterpartType.INDIVIDUAL,
+                value: 'individual',
                 icons: <PersonIcon color="primary" fontSize="small" />,
               },
               {
                 label: t(i18n)`Companies`,
-                value: CounterpartType.ORGANIZATION,
+                value: 'organization',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
             ].map(({ label, value, icons }) => (

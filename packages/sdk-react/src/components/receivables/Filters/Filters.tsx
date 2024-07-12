@@ -4,7 +4,7 @@ import { counterpartsToSelect } from '@/components/payables/PayableDetails/Payab
 import { type ReceivablesFilterHandler } from '@/components/receivables/Filters/useReceivablesFilters';
 import { FilterTypes } from '@/components/receivables/ReceivablesTable/types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCounterpartList } from '@/core/queries';
+import { CounterpartResponse, useCounterpartList } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

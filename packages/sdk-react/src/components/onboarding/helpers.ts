@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import {
   EntityIndividualResponse,
   EntityOrganizationResponse,
@@ -316,7 +317,9 @@ export const isRequirementPresentInPersonList = (
  * @param {EntityResponse} entity - The entity to check.
  * @returns {boolean} - Returns true if the entity is an individual, false otherwise.
  */
-export const isIndividual = (entity: EntityResponse) => {
+export const isIndividual = (
+  entity: components['schemas']['EntityResponse']
+) => {
   return entity?.type === 'individual';
 };
 
@@ -336,7 +339,9 @@ export const isOrganization = (entity: EntityResponse) => {
  * @param {EntityResponse} entity - The entity to get the name for.
  * @returns {string} - Returns the name of the entity.
  */
-export const getEntityName = (entity?: EntityResponse) => {
+export const getEntityName = (
+  entity?: components['schemas']['EntityResponse']
+) => {
   if (!entity) return '';
 
   return isIndividual(entity)

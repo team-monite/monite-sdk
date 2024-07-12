@@ -1,9 +1,5 @@
+import { components } from '@/api';
 import { SortOrderEnum } from '@/utils/types';
-import {
-  PayableStateEnum,
-  CounterpartType,
-  CounterpartCursorFields,
-} from '@monite/sdk-api';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -12,14 +8,19 @@ import {
 } from './consts';
 
 export type Sort = {
-  sort: CounterpartCursorFields;
+  sort: components['schemas']['CounterpartCursorFields'];
   order: SortOrderEnum;
 };
 
 export type Filters = {
   [FILTER_TYPE_SEARCH]?: string | null;
-  [FILTER_TYPE_TYPE]?: CounterpartType | null;
+  [FILTER_TYPE_TYPE]?: components['schemas']['CounterpartType'] | null;
   [FILTER_TYPE_IS_CUSTOMER]?: string | null;
 };
 
-export type FilterValue = PayableStateEnum | 'all' | Date | string | null;
+export type FilterValue =
+  | components['schemas']['PayableStateEnum']
+  | 'all'
+  | Date
+  | string
+  | null;

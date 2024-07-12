@@ -1,20 +1,17 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { ActionEnum } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartIndividualRootCreatePayload,
-  CounterpartIndividualRootResponse,
-  CounterpartIndividualRootUpdatePayload,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
@@ -76,7 +73,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
     });
 
   const individualCounterpart = counterpart as
-    | CounterpartIndividualRootResponse
+    | components['schemas']['CounterpartIndividualRootResponse']
     | undefined;
 
   const { showCategories, defaultValues } = props;
@@ -111,25 +108,34 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
       handleSubmit((values) => {
         if (!!counterpart) {
-          const payload: CounterpartIndividualRootUpdatePayload = {
-            type: CounterpartIndividualRootUpdatePayload.type.INDIVIDUAL,
-            tax_id: values.tax_id ?? '',
-            individual: prepareCounterpartIndividualUpdate(values.individual),
-          };
+          const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
+            {
+              created_automatically: counterpart.created_automatically,
+              type: 'individual',
+              tax_id: values.tax_id ?? '',
+              individual: prepareCounterpartIndividualUpdate(values.individual),
+            };
 
           return updateCounterpart(payload);
         }
 
-        const payload: CounterpartIndividualRootCreatePayload = {
-          type: CounterpartIndividualRootCreatePayload.type.INDIVIDUAL,
-          tax_id: values.tax_id ?? '',
-          individual: prepareCounterpartIndividualCreate(values.individual),
-        };
+        const payload: components['schemas']['CounterpartIndividualRootCreatePayload'] =
+          {
+            type: 'individual',
+            tax_id: values.tax_id ?? '',
+            individual: prepareCounterpartIndividualCreate(values.individual),
+            created_automatically: false,
+            language:
+              LanguageCodeEnum.find(
+                (code) => code === i18n.locale.split('-')[0]
+              ) ?? 'en',
+            reminders_enabled: false,
+          };
 
         return createCounterpart(payload);
       })(e);
     },
-    [counterpart, createCounterpart, handleSubmit, updateCounterpart]
+    [counterpart, createCounterpart, handleSubmit, i18n, updateCounterpart]
   );
 
   useEffect(() => {

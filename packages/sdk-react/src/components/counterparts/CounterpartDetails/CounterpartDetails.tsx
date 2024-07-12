@@ -166,7 +166,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     vatId,
   ]);
 
-  const renderComponent = useMemo(() => {
+  return useMemo(() => {
     switch (counterpartView) {
       case COUNTERPART_VIEW.individualForm:
         return (
@@ -205,6 +205,4 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     showCategories,
     showView,
   ]);
-
-  return renderComponent;
 };

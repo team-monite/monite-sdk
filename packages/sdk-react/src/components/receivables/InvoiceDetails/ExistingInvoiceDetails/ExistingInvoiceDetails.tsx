@@ -178,6 +178,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   if (view === ExistingInvoiceDetailsView.Edit) {
     return (
       <EditInvoiceDetails
+        // @ts-expect-error - receivables schema to fix
         invoice={receivable}
         onUpdated={callbacks.handleChangeViewInvoice}
         onCancel={callbacks.handleChangeViewInvoice}

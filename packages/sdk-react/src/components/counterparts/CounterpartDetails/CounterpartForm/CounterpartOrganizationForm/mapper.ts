@@ -1,9 +1,5 @@
+import { components } from '@/api';
 import type { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
-import {
-  CounterpartOrganizationResponse,
-  CounterpartOrganizationCreatePayload,
-  CounterpartOrganizationUpdatePayload,
-} from '@monite/sdk-api';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 
@@ -17,7 +13,7 @@ export interface CounterpartOrganizationFields
 }
 
 export const prepareCounterpartOrganization = (
-  organization?: CounterpartOrganizationResponse,
+  organization?: components['schemas']['CounterpartOrganizationResponse'],
   defaultValues?: CounterpartDefaultValues
 ): CounterpartOrganizationFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? organization?.is_customer);
@@ -53,7 +49,7 @@ export const prepareCounterpartOrganizationCreate = ({
   isCustomer,
   isVendor,
   ...address
-}: CounterpartOrganizationFields): CounterpartOrganizationCreatePayload => {
+}: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationCreatePayload'] => {
   const { postalCode, ...restAddress } = address;
   return {
     legal_name: companyName,
@@ -74,7 +70,7 @@ export const prepareCounterpartOrganizationUpdate = ({
   phone,
   isCustomer,
   isVendor,
-}: CounterpartOrganizationFields): CounterpartOrganizationUpdatePayload => {
+}: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationUpdatePayload'] => {
   return {
     legal_name: companyName,
     is_customer: isCustomer,

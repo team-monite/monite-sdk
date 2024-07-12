@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { TableActions } from '@/components/TableActions';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useEntityUserByAuthToken } from '@/core/queries';
+import { CounterpartResponse, useEntityUserByAuthToken } from '@/core/queries';
 import {
-  useCounterpartCache,
   useCounterpartList,
   useDeleteCounterpart,
 } from '@/core/queries/useCounterpart';
@@ -21,14 +21,6 @@ import {
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartCursorFields,
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartType,
-  OrderEnum,
-} from '@monite/sdk-api';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
 import MuiPhoneIcon from '@mui/icons-material/LocalPhone';
 import {
@@ -59,7 +51,7 @@ import * as Styled from './styles';
 import { Filters, FilterValue, Sort } from './types';
 
 interface CounterpartsTableSortModel {
-  field: CounterpartCursorFields;
+  field: components['schemas']['CounterpartCursorFields'];
   sort: GridSortDirection;
 }
 
@@ -138,8 +130,6 @@ const CounterpartsTableBase = ({
   );
   const sortModelItem = sortModel[0];
 
-  const { destroy } = useCounterpartCache();
-
   /**
    * `isUpdateSupported` and `isDeleteSupported` should be defined by `created_by_entity_user_id` from counterpart record.
    * Currently, it is not possible, counterpart record does not have this parameter
@@ -163,28 +153,29 @@ const CounterpartsTableBase = ({
     entityUserId: user?.id,
   });
 
-  // clear cache before unmount
-  useEffect(() => destroy, [destroy]);
-
   const {
     data: counterparts,
     isLoading,
     refetch,
-  } = useCounterpartList(
-    undefined,
-    sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModelItem
-      ? (sortModelItem.field as CounterpartCursorFields)
-      : undefined,
-    currentFilter[FILTER_TYPE_TYPE] || undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
-    currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined
-  );
+  } = useCounterpartList({
+    query: {
+      order: sortModelItem
+        ? (sortModelItem.sort as components['schemas']['OrderEnum'])
+        : undefined,
+      limit: pageSize || undefined,
+      pagination_token: currentPaginationToken || undefined,
+      sort: sortModelItem
+        ? (sortModelItem.field as components['schemas']['CounterpartCursorFields'])
+        : undefined,
+      type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+      counterpart_name__icontains:
+        currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      is_vendor:
+        currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'false' ? true : undefined,
+      is_customer:
+        currentFilter[FILTER_TYPE_IS_CUSTOMER] === 'true' ? true : undefined,
+    },
+  });
 
   useEffect(() => {
     refetch();
@@ -221,17 +212,25 @@ const CounterpartsTableBase = ({
       return;
     }
 
-    deleteCounterpartMutation.mutate(selectedCounterpart, {
-      onSuccess() {
-        onDelete?.(selectedCounterpart.id);
-        closeDeleteCounterpartModal();
+    deleteCounterpartMutation.mutate(
+      {
+        body: undefined,
+        path: {
+          counterpart_id: selectedCounterpart.id,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          onDelete?.(selectedCounterpart.id);
+          closeDeleteCounterpartModal();
+        },
+      }
+    );
   }, [
-    closeDeleteCounterpartModal,
+    selectedCounterpart,
     deleteCounterpartMutation,
     onDelete,
-    selectedCounterpart,
+    closeDeleteCounterpartModal,
   ]);
 
   const { root } = useRootElements();
@@ -303,11 +302,13 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const name =
-                  counterpart.type === CounterpartType.ORGANIZATION
-                    ? (counterpart as CounterpartOrganizationRootResponse)
-                        .organization.legal_name
-                    : (counterpart as CounterpartIndividualRootResponse)
-                        .individual.first_name;
+                  counterpart.type === 'organization'
+                    ? (
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
+                      ).organization.legal_name
+                    : (
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
+                      ).individual.first_name;
 
                 return (
                   <>
@@ -326,11 +327,13 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const counterpartData =
-                  counterpart.type === CounterpartType.ORGANIZATION
-                    ? (counterpart as CounterpartOrganizationRootResponse)
-                        .organization
-                    : (counterpart as CounterpartIndividualRootResponse)
-                        .individual;
+                  counterpart.type === 'organization'
+                    ? (
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
+                      ).organization
+                    : (
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
+                      ).individual;
 
                 const items = [
                   {
@@ -367,9 +370,9 @@ const CounterpartsTableBase = ({
 
                 const data = (() => {
                   switch (counterpart.type) {
-                    case CounterpartType.ORGANIZATION: {
+                    case 'organization': {
                       const organization = (
-                        counterpart as CounterpartOrganizationRootResponse
+                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
                       ).organization;
 
                       return {
@@ -378,9 +381,9 @@ const CounterpartsTableBase = ({
                       };
                     }
 
-                    case CounterpartType.INDIVIDUAL: {
+                    case 'individual': {
                       const individual = (
-                        counterpart as CounterpartIndividualRootResponse
+                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
                       ).individual;
 
                       return {
@@ -393,16 +396,16 @@ const CounterpartsTableBase = ({
 
                 return (
                   <Stack spacing={1} direction="column">
-                    {data.email && (
+                    {data?.email && (
                       <Styled.MuiColContacts>
                         <MuiEnvelopeIcon fontSize="small" color="disabled" />
                         <Typography variant="body2">{data.email}</Typography>
                       </Styled.MuiColContacts>
                     )}
-                    {data.phone && (
+                    {data?.phone && (
                       <Styled.MuiColContacts>
                         <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data.phone}</Typography>
+                        <Typography variant="body2">{data?.phone}</Typography>
                       </Styled.MuiColContacts>
                     )}
                   </Stack>
@@ -424,7 +427,7 @@ const CounterpartsTableBase = ({
                     onEdit?.(params.row.id);
                   }}
                   onDelete={() => {
-                    setSelectedCounterpart(params.row);
+                    setSelectedCounterpart(params.row as CounterpartResponse);
                     setIsDeleteDialogOpen(true);
                   }}
                 />

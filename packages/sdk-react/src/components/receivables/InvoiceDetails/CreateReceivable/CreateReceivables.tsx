@@ -153,18 +153,20 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               }
 
               const billingAddressId = values.default_billing_address_id;
-              const counterpartBillingAddress = counterpartAddresses?.find(
-                (address) => address.id === billingAddressId
-              );
+              const counterpartBillingAddress =
+                counterpartAddresses?.data?.find(
+                  (address) => address.id === billingAddressId
+                );
 
               if (!counterpartBillingAddress) {
                 throw new Error('`Billing address` is not provided');
               }
 
               const shippingAddressId = values.default_shipping_address_id;
-              const counterpartShippingAddress = counterpartAddresses?.find(
-                (address) => address.id === shippingAddressId
-              );
+              const counterpartShippingAddress =
+                counterpartAddresses?.data?.find(
+                  (address) => address.id === shippingAddressId
+                );
 
               const invoicePayload: ReceivableFacadeCreateInvoicePayload = {
                 type: values.type,
@@ -172,6 +174,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                 counterpart_vat_id_id:
                   values.counterpart_vat_id_id || undefined,
                 counterpart_billing_address: {
+                  // @ts-expect-error - receivables schema to fix
                   country: counterpartBillingAddress.country,
                   city: counterpartBillingAddress.city,
                   postal_code: counterpartBillingAddress.postal_code,
@@ -179,6 +182,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   line1: counterpartBillingAddress.line1,
                   line2: counterpartBillingAddress.line2,
                 },
+                // @ts-expect-error - receivables schema to fix
                 counterpart_shipping_address: counterpartShippingAddress
                   ? {
                       country: counterpartShippingAddress.country,

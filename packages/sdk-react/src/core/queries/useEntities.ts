@@ -71,13 +71,9 @@ export const useEntityVatIdList = () => {
 
 /** Retrieves information of an entity, which this entity user belongs to */
 export const useMyEntity = () => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<EntityResponse, ApiError>({
-    queryKey: [...entityQueryKeys.myEntity()],
-
-    queryFn: () => monite.api.entityUser.getMyEntity(),
-  });
+  return api.entityUsers.getEntityUsersMyEntity.useQuery({});
 };
 
 export const useUpdateMyEntity = () => {

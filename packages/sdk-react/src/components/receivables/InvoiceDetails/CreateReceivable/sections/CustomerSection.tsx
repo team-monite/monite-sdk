@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
@@ -12,6 +13,7 @@ import {
   useCounterpartList,
   useCounterpartVatList,
 } from '@/core/queries';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CounterpartAddressResponseWithCounterpartID } from '@monite/sdk-api';
@@ -51,7 +53,9 @@ const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 const CounterpartAddressView = ({
   address,
 }: {
-  address: CounterpartAddressResponseWithCounterpartID | undefined;
+  address:
+    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
+    | undefined;
 }) => {
   if (!address) {
     return null;
@@ -131,11 +135,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
    *  break MUI lifecycle
    */
   const defaultContactName = useMemo(() => {
-    if (counterpartContacts?.length === 0) {
+    if (counterpartContacts?.data.length === 0) {
       return '';
     }
 
-    const defaultContact = counterpartContacts?.find(
+    const defaultContact = counterpartContacts?.data.find(
       (contact) => contact.is_default
     );
 
@@ -151,7 +155,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       return undefined;
     }
 
-    const defaultAddress = counterpartAddresses.find(
+    const defaultAddress = counterpartAddresses.data.find(
       (address) => address.is_default
     );
 
@@ -362,13 +366,15 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 }}
               />
               <Collapse in={Boolean(contactPersonError)}>
-                <FormHelperText>{contactPersonError?.message}</FormHelperText>
+                <FormHelperText>
+                  {getLegacyAPIErrorMessage(contactPersonError)}
+                </FormHelperText>
               </Collapse>
               <Collapse
                 in={
                   !Boolean(contactPersonError) &&
                   !isContactPersonsLoading &&
-                  counterpartContacts?.length === 0
+                  counterpartContacts?.data.length === 0
                 }
               >
                 <FormHelperText>
@@ -386,8 +392,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     fullWidth
                     disabled={
                       isCounterpartVatsLoading ||
-                      !counterpartVats ||
-                      counterpartVats.length === 0 ||
+                      !counterpartVats?.data ||
+                      counterpartVats?.data.length === 0 ||
                       disabled
                     }
                     error={Boolean(error)}
@@ -406,7 +412,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       }
                       {...field}
                     >
-                      {counterpartVats?.map((counterpartVat) => (
+                      {counterpartVats?.data?.map((counterpartVat) => (
                         <MenuItem
                           key={counterpartVat.id}
                           value={counterpartVat.id}
@@ -535,7 +541,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                         </IconButton>
                       }
                     >
-                      {counterpartAddresses?.map((shippingAddress) => (
+                      {counterpartAddresses?.data.map((shippingAddress) => (
                         <MenuItem
                           key={shippingAddress.id}
                           value={shippingAddress.id}

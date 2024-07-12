@@ -1,21 +1,15 @@
-import {
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartType,
-} from '@monite/sdk-api';
+import { components } from '@/api';
+import { CounterpartResponse } from '@/core/queries';
 
-export function isIndividualCounterpart(
+export const isIndividualCounterpart = (
   counterpart: CounterpartResponse
-): counterpart is CounterpartIndividualRootResponse {
-  return counterpart.type === CounterpartType.INDIVIDUAL;
-}
+): counterpart is components['schemas']['CounterpartIndividualRootResponse'] =>
+  counterpart.type === 'individual';
 
-export function isOrganizationCounterpart(
+export const isOrganizationCounterpart = (
   counterpart: CounterpartResponse
-): counterpart is CounterpartOrganizationRootResponse {
-  return counterpart.type === CounterpartType.ORGANIZATION;
-}
+): counterpart is components['schemas']['CounterpartOrganizationRootResponse'] =>
+  counterpart.type === 'organization';
 
 export function getIndividualName(firstName: string, lastName: string): string {
   return `${firstName} ${lastName}`;
@@ -29,7 +23,7 @@ export function getCounterpartName(counterpart?: CounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
     const {
       individual: { first_name, last_name },
-    } = counterpart as CounterpartIndividualRootResponse;
+    } = counterpart;
 
     return getIndividualName(first_name, last_name);
   }
@@ -37,7 +31,7 @@ export function getCounterpartName(counterpart?: CounterpartResponse): string {
   if (isOrganizationCounterpart(counterpart)) {
     const {
       organization: { legal_name },
-    } = counterpart as CounterpartOrganizationRootResponse;
+    } = counterpart;
 
     return legal_name;
   }

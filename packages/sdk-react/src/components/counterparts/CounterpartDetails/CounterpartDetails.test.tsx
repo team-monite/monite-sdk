@@ -19,7 +19,7 @@ import {
 } from '@/utils/test-utils';
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { CounterpartType, MoniteSDK } from '@monite/sdk-api';
+import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -560,7 +560,7 @@ describe('CounterpartDetails', () => {
         test('should mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is provided', async () => {
           renderWithClient(
             <CounterpartDetails
-              type={CounterpartType.ORGANIZATION}
+              type={'organization'}
               defaultValues={{
                 isCustomer: true,
                 isVendor: true,
@@ -584,10 +584,7 @@ describe('CounterpartDetails', () => {
         const onCreateMock = jest.fn();
 
         renderWithClient(
-          <CounterpartDetails
-            type={CounterpartType.ORGANIZATION}
-            onCreate={onCreateMock}
-          />
+          <CounterpartDetails type={'organization'} onCreate={onCreateMock} />
         );
 
         await waitUntilTableIsLoaded();
@@ -609,7 +606,7 @@ describe('CounterpartDetails', () => {
       test('should mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is provided', async () => {
         renderWithClient(
           <CounterpartDetails
-            type={CounterpartType.INDIVIDUAL}
+            type={'individual'}
             defaultValues={{
               isCustomer: true,
               isVendor: true,
@@ -629,9 +626,7 @@ describe('CounterpartDetails', () => {
       });
 
       test('should NOT mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is NOT provided', async () => {
-        renderWithClient(
-          <CounterpartDetails type={CounterpartType.INDIVIDUAL} />
-        );
+        renderWithClient(<CounterpartDetails type={'individual'} />);
 
         await waitUntilTableIsLoaded();
 

@@ -4,10 +4,7 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import {
-  CounterpartBankAccountResponse,
-  CounterpartResponse as Counterpart,
-} from '@monite/sdk-api';
+import { CounterpartResponse } from '@/core/queries';
 
 import { format } from 'date-fns';
 
@@ -37,7 +34,7 @@ export interface SubmitPayload extends PayableDetailsFormFields {
 }
 
 export const counterpartsToSelect = (
-  counterparts: Counterpart[] | undefined
+  counterparts: CounterpartResponse[] | undefined
 ): Option[] => {
   if (!counterparts) return [];
 
@@ -55,7 +52,7 @@ export const counterpartsToSelect = (
 };
 
 export const counterpartBankAccountsToSelect = (
-  bankAccounts: CounterpartBankAccountResponse[]
+  bankAccounts: components['schemas']['CounterpartBankAccountResponse'][]
 ): Option[] => {
   return bankAccounts.map((bankAccount) => ({
     value: bankAccount.id,

@@ -1,22 +1,17 @@
+import { components } from '@/api';
+import { CounterpartResponse } from '@/core/queries';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { counterpartListFixture } from '@/mocks';
 import {
+  getRandomItemFromArray,
   getRandomNumber,
-  getRandomProperty,
-  getRandomBoolean,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CounterpartContactResponse,
-  CounterpartResponse,
-} from '@monite/sdk-api';
-
-import { organizationId } from '../counterpart.mocks.types';
 
 const genCounterpartContactFixture = (
   id: number = 0,
   counterpart: CounterpartResponse
-): CounterpartContactResponse => {
+): components['schemas']['CounterpartContactResponse'] => {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
 
@@ -33,7 +28,7 @@ const genCounterpartContactFixture = (
     phone: faker.phone.number('+ ### ### ## ##'),
     is_default: id === 0,
     address: {
-      country: getRandomProperty(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries),
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -48,7 +43,7 @@ const genCounterpartContactFixture = (
  * The key is `counterpartId` and the value is `Array<CounterpartContactResponse>`
  */
 export const counterpartsContactsFixtures = counterpartListFixture.reduce<
-  Record<string, Array<CounterpartContactResponse>>
+  Record<string, Array<components['schemas']['CounterpartContactResponse']>>
 >((acc, counterpart) => {
   acc[counterpart.id] = new Array(getRandomNumber(2, 4))
     .fill('_')
