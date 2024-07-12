@@ -15,6 +15,7 @@ declare module '@mui/material/styles' {
     neutral: {
       '10': string;
       '50': string;
+      '70': string;
       '80': string;
     };
   }
@@ -23,6 +24,7 @@ declare module '@mui/material/styles' {
     neutral?: {
       '10': string;
       '50': string;
+      '70': string;
       '80': string;
     };
   }

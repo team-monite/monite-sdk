@@ -192,13 +192,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       density: 'comfortable',
     },
   },
-  MuiOutlinedInput: {
-    styleOverrides: {
-      root: {
-        borderRadius: 10,
-      },
-    },
-  },
   MuiFormHelperText: {
     styleOverrides: {
       root: {
@@ -304,6 +297,59 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         padding: '1em 1.5em',
+      },
+    },
+  },
+  MuiInputAdornment: {
+    styleOverrides: {
+      positionEnd: {
+        svg: {
+          margin: 0,
+        },
+        button: {
+          padding: 0,
+        },
+      },
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: {
+        top: 10,
+        left: 48,
+        transform: 'none',
+      },
+      shrink: {
+        display: 'none',
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      input: {
+        padding: '10px 16px 10px 8px',
+      },
+      notchedOutline: {
+        top: 0,
+        borderColor: neutralTransparentLight['90'],
+        legend: { display: 'none' },
+      },
+      root: {
+        borderRadius: 100,
+        flexDirection: 'row-reverse',
+        padding: '0 3px',
+        '&:hover': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: neutralTransparentLight['90'],
+          },
+        },
+        '&.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: neutralTransparentLight['90'],
+            borderWidth: 1,
+            boxShadow: '0px 0px 0px 4px rgba(55, 55, 255, 0.20)',
+          },
+        },
       },
     },
   },
