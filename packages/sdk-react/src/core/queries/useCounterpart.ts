@@ -554,8 +554,6 @@ export const useUpdateCounterpart = () => {
 
   return api.counterparts.patchCounterpartsId.useMutation(undefined, {
     onSuccess: async (counterpart) => {
-      await api.counterparts.getCounterparts.invalidateQueries(queryClient);
-
       api.counterparts.getCounterpartsId.setQueryData(
         {
           path: { counterpart_id: counterpart.id },
@@ -566,6 +564,9 @@ export const useUpdateCounterpart = () => {
         }),
         queryClient
       );
+
+      await api.counterparts.getCounterparts.invalidateQueries(queryClient);
+
       toast.success(
         t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
       );
