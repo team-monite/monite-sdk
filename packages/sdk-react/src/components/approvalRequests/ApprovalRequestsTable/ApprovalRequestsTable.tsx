@@ -15,7 +15,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -71,7 +70,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
@@ -87,7 +86,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalUpdateSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 

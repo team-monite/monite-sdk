@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useRoles } from '@/core/queries/useRoles';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -18,11 +19,6 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OrderEnum,
-  PayableResponseSchema,
-  type RoleCursorFields,
-} from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import {
   DataGrid,
@@ -69,7 +65,7 @@ interface UserRolesTableProps {
 }
 
 interface UserRolesTableSortModel {
-  field: RoleCursorFields;
+  field: components['schemas']['RoleCursorFields'];
   sort: GridSortDirection;
 }
 
@@ -85,6 +81,7 @@ const UserRolesTableBase = ({
   onRowClick,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -105,20 +102,24 @@ const UserRolesTableBase = ({
       entityUserId: user?.id,
     });
 
-  const { data: roles, isLoading } = useRoles({
-    order: sortModelItem
-      ? (sortModelItem.sort as unknown as OrderEnum)
-      : undefined,
-    limit: pageSize,
-    paginationToken: currentPaginationToken || undefined,
-    sort: sortModelItem ? (sortModelItem.field as RoleCursorFields) : undefined,
-    name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    createdAtGte: currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-      : undefined,
-    createdAtLte: currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-      : undefined,
+  const { data: roles, isLoading } = api.roles.getRoles.useQuery({
+    query: {
+      order: sortModelItem
+        ? (sortModelItem.sort as unknown as components['schemas']['OrderEnum'])
+        : undefined,
+      limit: pageSize,
+      pagination_token: currentPaginationToken || undefined,
+      sort: sortModelItem
+        ? (sortModelItem.field as components['schemas']['RoleCursorFields'])
+        : undefined,
+      name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_at__lte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+    },
   });
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
@@ -190,7 +191,7 @@ const UserRolesTableBase = ({
               valueFormatter: ({
                 value,
               }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
+                components['schemas']['PayableResponseSchema']['created_at']
               >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
           ]}

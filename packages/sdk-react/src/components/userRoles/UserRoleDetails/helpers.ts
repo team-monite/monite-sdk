@@ -1,17 +1,12 @@
+import { components } from '@/api';
 import {
   COMMON_PERMISSIONS_OBJECTS_TYPES,
   commonPermissionsObjectType,
   PAYABLE_PERMISSIONS_OBJECTS_TYPES,
   payablePermissionsObjectType,
 } from '@/core/queries/usePermissions';
-import {
-  ActionEnum,
-  ActionSchema,
-  PayableActionEnum,
-  PayableActionSchema,
-  PermissionEnum,
-  RootSchema,
-} from '@monite/sdk-api';
+import { ActionEnum } from '@/enums/ActionEnum';
+import { PayableActionEnum } from '@/enums/PayableActionEnum';
 
 import {
   PermissionRow,
@@ -35,25 +30,28 @@ export const isPayablePermissionObjectType = (
   );
 };
 
-const checkIfPermissionIsAllowed = (permission?: PermissionEnum) => {
-  return (
-    permission === PermissionEnum.ALLOWED ||
-    permission === PermissionEnum.ALLOWED_FOR_OWN
-  );
+const checkIfPermissionIsAllowed = (
+  permission?: components['schemas']['PermissionEnum']
+) => {
+  return permission === 'allowed' || permission === 'allowed_for_own';
 };
 
-const transformActionsToComponentFormat = <T extends string, P>(
-  actions: ActionSchema[] | PayableActionSchema[],
-  enumType: Record<string, T>,
+const transformActionsToComponentFormat = <
+  T extends
+    | components['schemas']['ActionEnum']
+    | components['schemas']['PayableActionEnum'],
+  P
+>(
+  actions:
+    | components['schemas']['ActionSchema'][]
+    | components['schemas']['PayableActionSchema'][],
+  enumType: T[],
   permission: P
 ): P => {
   const permissionsObject = actions?.map((action) => {
-    if (
-      action.action_name &&
-      Object.values(enumType).includes(action.action_name as T)
-    ) {
+    if (action.action_name && enumType.includes(action.action_name as T)) {
       const result = {
-        key: action.action_name as T,
+        key: action.action_name,
         value: checkIfPermissionIsAllowed(action.permission),
       };
 
@@ -65,8 +63,27 @@ const transformActionsToComponentFormat = <T extends string, P>(
   return Object.assign({}, permission, ...permissionsObject);
 };
 
+const createInitialPermissionState = <
+  T extends
+    | components['schemas']['ActionEnum']
+    | components['schemas']['PayableActionEnum']
+>(
+  objectType: payablePermissionsObjectType | commonPermissionsObjectType,
+  actionEnum: T[]
+): PayablePermissionRow | CommonPermissionRow => {
+  let permission: Record<string, boolean | typeof objectType> = {};
+
+  permission.name = objectType;
+
+  actionEnum.forEach((action) => {
+    permission[action] = false;
+  });
+
+  return permission as PayablePermissionRow | CommonPermissionRow;
+};
+
 export const transformPermissionsToComponentFormat = (
-  objects: RootSchema[]
+  objects: components['schemas']['RootSchema'][]
 ): PermissionRow[] => {
   return objects
     .map((object) => {
@@ -76,7 +93,7 @@ export const transformPermissionsToComponentFormat = (
         let permission: CommonPermissionRow = { name: object.object_type };
 
         return transformActionsToComponentFormat(
-          object.actions as ActionSchema[],
+          object.actions as components['schemas']['ActionSchema'][],
           ActionEnum,
           permission
         );
@@ -86,7 +103,7 @@ export const transformPermissionsToComponentFormat = (
         let permission: PayablePermissionRow = { name: object.object_type };
 
         return transformActionsToComponentFormat(
-          object.actions as PayableActionSchema[],
+          object.actions as components['schemas']['PayableActionSchema'][],
           PayableActionEnum,
           permission
         );
@@ -98,21 +115,6 @@ export const transformPermissionsToComponentFormat = (
       (permission): permission is CommonPermissionRow | PayablePermissionRow =>
         permission !== null
     );
-};
-
-const createInitialPermissionState = <T extends string>(
-  objectType: payablePermissionsObjectType | commonPermissionsObjectType,
-  actionEnum: Record<string, T>
-): PayablePermissionRow | CommonPermissionRow => {
-  let permission: Record<string, boolean | typeof objectType> = {};
-
-  permission.name = objectType;
-
-  Object.values(actionEnum).forEach((action) => {
-    permission[action] = false;
-  });
-
-  return permission as PayablePermissionRow | CommonPermissionRow;
 };
 
 export const createInitialPermissionsState = (): PermissionRow[] => {
