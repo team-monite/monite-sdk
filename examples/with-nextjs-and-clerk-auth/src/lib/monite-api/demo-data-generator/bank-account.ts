@@ -24,9 +24,21 @@ export const createBankAccount = async ({
   });
 
   const display_name = faker.company.name();
-  const country = getRandomItemFromArray(['GE', 'DE', 'GB'] satisfies Array<
-    components['schemas']['AllowedCountries']
-  >);
+
+  const countriesToCurrencies = {
+    GE: 'GEL',
+    DE: 'EUR',
+    GB: 'GBP',
+  } satisfies Partial<
+    Record<
+      components['schemas']['AllowedCountries'],
+      components['schemas']['CurrencyEnum']
+    >
+  >;
+
+  const country = getRandomItemFromArray(
+    Object.keys(countriesToCurrencies) as (keyof typeof countriesToCurrencies)[]
+  );
 
   const { data, error, response } = await POST('/bank_accounts', {
     params: {
@@ -44,9 +56,7 @@ export const createBankAccount = async ({
       account_number: faker.finance.accountNumber(),
       account_holder_name: faker.finance.accountName(),
       routing_number: faker.finance.routingNumber(),
-      currency: getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
-        components['schemas']['CurrencyEnum']
-      >),
+      currency: countriesToCurrencies[country],
       country,
     },
   });
