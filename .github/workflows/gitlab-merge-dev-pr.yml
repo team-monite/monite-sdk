@@ -18,7 +18,7 @@ jobs:
   merge-gitlab-mr:
     name: Merge GitLab MR
     environment: gitlab
-    if: ${{ github.event.pull_request.base.ref == 'main' && startsWith(github.event.pull_request.head.ref, 'changeset-release/') == false }}
+    if: ${{ github.event.pull_request.base.ref == 'dev' && startsWith(github.event.pull_request.head.ref, 'changeset-release/') == false }}
     runs-on: ubuntu-latest
     env:
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}

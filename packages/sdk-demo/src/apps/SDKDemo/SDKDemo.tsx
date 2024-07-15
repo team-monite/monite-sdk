@@ -10,13 +10,13 @@ import {
 import { DefaultLayout } from '@/components/Layout';
 import { LoginForm } from '@/components/LoginForm';
 import { ConfigProvider, useConfig } from '@/context/ConfigContext';
-import { fetchToken } from '@/core/fetchToken';
-import { getThemeConfig, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
-import { messages as defaultMessages } from '@/locales/en/messages.ts';
+import { SDKDemoAPIProvider } from '@/context/SDKDemoAPIProvider.tsx';
+import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
+import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
+import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
-import { setupI18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { I18nProvider, useLingui } from '@lingui/react';
+import { useLingui } from '@lingui/react';
 import { useMoniteContext } from '@monite/sdk-react';
 import { Button, createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -53,7 +53,7 @@ const SDKDemoComponent = ({
   const { api_url } = useConfig();
   const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
-  const sdkDemoTheme = createTheme(getThemeConfig(themeConfig), {
+  const sdkDemoTheme = createTheme(getThemeOptions(themeConfig), {
     components: {
       MoniteInvoiceStatusChip: {
         defaultProps: {
@@ -65,6 +65,11 @@ const SDKDemoComponent = ({
           icon: true,
         },
       },
+      MoniteApprovalRequestStatusChip: {
+        defaultProps: {
+          icon: false,
+        },
+      },
       MoniteTablePagination: {
         defaultProps: {
           pageSizeOptions: [10, 15, 20],
@@ -72,57 +77,47 @@ const SDKDemoComponent = ({
       },
     },
   });
-  const [sdkDemoLocale, sdkDemoI18n] = useMemo(() => {
-    const localeCode = 'en-US';
-    return [
-      {
-        code: localeCode,
-        messages: {
-          defaultMessages,
-        },
-      },
-      setupI18n({
-        locale: localeCode,
-        messages: {
-          [localeCode]: defaultMessages,
-        },
-      }),
-    ];
-  }, []);
+
+  const fetchToken = () =>
+    authData
+      ? fetchTokenBase(apiUrl, authData).catch(logout)
+      : Promise.reject();
 
   return (
     <ThemeProvider theme={sdkDemoTheme}>
-      <I18nProvider i18n={sdkDemoI18n}>
+      <SDKDemoI18nProvider localeCode="en-US">
         <CssBaseline enableColorScheme />
         <AppMoniteProvider
-          locale={sdkDemoLocale}
           theme={sdkDemoTheme}
           sdkConfig={{
             entityId: authData?.entity_id ?? 'lazy',
             apiUrl,
-            fetchToken: () =>
-              authData
-                ? fetchToken(apiUrl, authData).catch(logout)
-                : Promise.reject(),
+            fetchToken,
           }}
         >
-          <MoniteReactQueryDevtools />
-          <Global styles={getFontFaceStyles} />
-          {authData ? (
-            <BrowserRouter>
-              <DefaultLayout
-                themeConfig={themeConfig}
-                setThemeConfig={setThemeConfig}
-                siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
-              >
-                <Base />
-              </DefaultLayout>
-            </BrowserRouter>
-          ) : (
-            <LoginForm login={login} />
-          )}
+          <SDKDemoAPIProvider
+            apiUrl={apiUrl}
+            fetchToken={fetchToken}
+            entityId={authData?.entity_id}
+          >
+            <MoniteReactQueryDevtools />
+            <Global styles={getFontFaceStyles} />
+            {authData ? (
+              <BrowserRouter>
+                <DefaultLayout
+                  themeConfig={themeConfig}
+                  setThemeConfig={setThemeConfig}
+                  siderProps={{ footer: <SiderFooter onLogout={logout} /> }}
+                >
+                  <Base />
+                </DefaultLayout>
+              </BrowserRouter>
+            ) : (
+              <LoginForm login={login} />
+            )}
+          </SDKDemoAPIProvider>
         </AppMoniteProvider>
-      </I18nProvider>
+      </SDKDemoI18nProvider>
     </ThemeProvider>
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { InvoicesTableProps } from '@/components';
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';

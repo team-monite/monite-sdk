@@ -94,10 +94,23 @@
     "clean": {
       "cache": false
     },
+    "e2e": {
+      "cache": true,
+      "outputs": ["test-results/**"],
+      "dependsOn": [
+        "write-package-version-file",
+        "compile-translations",
+        "^build"
+      ]
+    },
     "codegen": {
       "cache": true,
-      "outputs": ["src/api/**/*.ts", "!src/api/client.ts", "!src/api/client.test.ts"],
-      "inputs": ["src/api/schema.json"]
+      "outputs": [
+        "src/api/**/*.ts",
+        "!src/api/client.ts",
+        "!src/api/client.test.ts"
+      ],
+      "inputs": ["src/api/schema.json", "src/api/client.ts"]
     }
   }
 }
