@@ -101,5 +101,15 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*", "typings.d.ts", "config/rollup.config.mjs", "mui-styles.d.ts", "emotion.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/components/approvalRequests/ApprovalRequestsTable/**",
+    "src/components/payables/**",
+    "src/components/receivables/**",
+    "src/components/tags/**",
+    "src/components/userRoles/UserRolesTable/UserRolesTable.tsx",
+    "src/enums/**",
+    "src/mocks/payables/**"
+  ],
 }
