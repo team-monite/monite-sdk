@@ -39,7 +39,7 @@ msgstr "{0}"
 
 #. Counterpart Organization create form Business address Section description.
 #. js-lingui-explicit-id
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:334
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:331
 msgid "CounterpartDetails--CounterpartOrganizationForm--businessAddressSection--caption"
 msgstr "🚫"
 
@@ -153,8 +153,8 @@ msgstr "Add another owner"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:36
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:62
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:165
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:228
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:275
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:212
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:259
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:91
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:232
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:128
@@ -198,7 +198,7 @@ msgstr "Added on"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:49
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:153
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:350
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:347
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:83
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:230
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:156
@@ -206,7 +206,7 @@ msgstr "Added on"
 msgid "Address"
 msgstr "Address"
 
-#: src/core/queries/useCounterpart.ts:147
+#: src/core/queries/useCounterpart.ts:68
 msgid "Address “{0}” was updated."
 msgstr "Address “{0}” was updated."
 
@@ -413,8 +413,8 @@ msgid "Approval Requests"
 msgstr "Approval Requests"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:192
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:524
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:545
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:525
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:546
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:85
 #: src/components/userRoles/consts.ts:72
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:222
@@ -630,15 +630,15 @@ msgstr "Bank account"
 msgid "Bank Account"
 msgstr "Bank Account"
 
-#: src/core/queries/useCounterpart.ts:171
+#: src/core/queries/useCounterpart.ts:92
 msgid "Bank Account “{0}” was created."
 msgstr "Bank Account “{0}” was created."
 
-#: src/core/queries/useCounterpart.ts:209
+#: src/core/queries/useCounterpart.ts:130
 msgid "Bank Account “{0}” was updated."
 msgstr "Bank Account “{0}” was updated."
 
-#: src/core/queries/useCounterpart.ts:256
+#: src/core/queries/useCounterpart.ts:177
 msgid "Bank Account was deleted."
 msgstr "Bank Account was deleted."
 
@@ -830,7 +830,7 @@ msgstr "Burundian Franc"
 msgid "Bus Lines"
 msgstr "Bus Lines"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:331
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:328
 msgid "Business address"
 msgstr "Business address"
 
@@ -919,18 +919,18 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:124
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:222
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:168
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:388
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:388
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:385
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:385
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:105
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:473
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:467
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:88
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:109
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:146
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:186
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:398
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:419
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:399
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:420
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:69
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:91
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:81
@@ -1020,7 +1020,7 @@ msgstr "Carpet/Upholstery Cleaning"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:43
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:33
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:330
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:324
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:80
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:83
 msgid "Category"
@@ -1209,7 +1209,7 @@ msgstr "Companies"
 msgid "Company details"
 msgstr "Company details"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:213
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:210
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:29
 msgid "Company name"
 msgstr "Company name"
@@ -1267,7 +1267,7 @@ msgstr "Construction Materials (Not Elsewhere Classified)"
 msgid "Consulting, Public Relations"
 msgstr "Consulting, Public Relations"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:373
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:367
 msgid "Contact information"
 msgstr "Contact information"
 
@@ -1281,15 +1281,15 @@ msgstr "Contact person"
 msgid "Contact Person"
 msgstr "Contact Person"
 
-#: src/core/queries/useCounterpart.ts:412
+#: src/core/queries/useCounterpart.ts:333
 msgid "Contact Person “{0}” was created."
 msgstr "Contact Person “{0}” was created."
 
-#: src/core/queries/useCounterpart.ts:474
+#: src/core/queries/useCounterpart.ts:395
 msgid "Contact Person “{0}” was updated."
 msgstr "Contact Person “{0}” was updated."
 
-#: src/core/queries/useCounterpart.ts:507
+#: src/core/queries/useCounterpart.ts:428
 msgid "Contact Person was deleted."
 msgstr "Contact Person was deleted."
 
@@ -1367,11 +1367,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:538
+#: src/core/queries/useCounterpart.ts:459
 msgid "Counterpart “{0}” was created."
 msgstr "Counterpart “{0}” was created."
 
-#: src/core/queries/useCounterpart.ts:585
+#: src/core/queries/useCounterpart.ts:506
 msgid "Counterpart “{0}” was updated."
 msgstr "Counterpart “{0}” was updated."
 
@@ -1379,8 +1379,8 @@ msgstr "Counterpart “{0}” was updated."
 msgid "Counterpart bank account"
 msgstr "Counterpart bank account"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:184
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:188
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:181
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:185
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:181
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
@@ -1395,7 +1395,7 @@ msgstr "Counterpart not found"
 msgid "Counterpart VAT ID"
 msgstr "Counterpart VAT ID"
 
-#: src/core/queries/useCounterpart.ts:604
+#: src/core/queries/useCounterpart.ts:525
 msgid "Counterpart was deleted."
 msgstr "Counterpart was deleted."
 
@@ -1452,8 +1452,8 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:82
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:283
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:593
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:392
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:397
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:389
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:394
 #: src/components/products/ProductDetails/ProductCreate/CreateProduct.tsx:133
 #: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:136
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:23
@@ -1479,11 +1479,11 @@ msgstr "Create Approval Policy"
 msgid "Create counterpart"
 msgstr "Create counterpart"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:178
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:175
 msgid "Create Counterpart - Individual"
 msgstr "Create Counterpart - Individual"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:182
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:179
 msgid "Create Counterpart – Company"
 msgstr "Create Counterpart – Company"
 
@@ -1625,13 +1625,13 @@ msgstr "Currency"
 msgid "Current status"
 msgstr "Current status"
 
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:272
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:275
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:278
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:254
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:257
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:260
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:37
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:346
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:340
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:183
 #: src/components/receivables/Filters/Filters.tsx:117
 #: src/components/receivables/Filters/Filters.tsx:120
@@ -1708,7 +1708,7 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:311
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:341
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:373
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:481
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:475
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:242
 #: src/components/products/Products.test.tsx:162
@@ -1752,12 +1752,12 @@ msgstr "Delete {type} “{name}”?"
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:42
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:12
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:449
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:443
 #: src/core/context/MoniteI18nProvider.test.tsx:37
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:457
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:451
 msgid "Delete Counterpart \"{0}\"?"
 msgstr "Delete Counterpart \"{0}\"?"
 
@@ -2031,10 +2031,9 @@ msgstr "Ecuador"
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:103
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:124
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:143
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:274
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:345
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:371
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:590
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:346
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:372
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:591
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:54
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:250
 #: src/components/products/Products.test.tsx:161
@@ -2134,8 +2133,8 @@ msgid "Elementary, Secondary Schools"
 msgstr "Elementary, Secondary Schools"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:121
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:317
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:298
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:314
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:295
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:101
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:56
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:46
@@ -2256,15 +2255,15 @@ msgstr "Export"
 msgid "Exterminating Services"
 msgstr "Exterminating Services"
 
-#: src/core/queries/useCounterpart.ts:175
+#: src/core/queries/useCounterpart.ts:96
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
 
-#: src/core/queries/useCounterpart.ts:420
+#: src/core/queries/useCounterpart.ts:341
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:543
+#: src/core/queries/useCounterpart.ts:464
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2272,19 +2271,19 @@ msgstr "Failed to create Counterpart."
 msgid "Failed to create product."
 msgstr "Failed to create product."
 
-#: src/core/queries/useCounterpart.ts:297
+#: src/core/queries/useCounterpart.ts:218
 msgid "Failed to create VAT."
 msgstr "Failed to create VAT."
 
-#: src/core/queries/useCounterpart.ts:260
+#: src/core/queries/useCounterpart.ts:181
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:513
+#: src/core/queries/useCounterpart.ts:434
 msgid "Failed to delete Contact Person."
 msgstr "Failed to delete Contact Person."
 
-#: src/core/queries/useCounterpart.ts:607
+#: src/core/queries/useCounterpart.ts:528
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2292,7 +2291,7 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
-#: src/core/queries/useCounterpart.ts:375
+#: src/core/queries/useCounterpart.ts:296
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
@@ -2304,19 +2303,19 @@ msgstr "Failed to load PDF Viewer"
 #~ msgid "Failed to load PDF Viewer: {errorMessage}"
 #~ msgstr "Failed to load PDF Viewer: {errorMessage}"
 
-#: src/core/queries/useCounterpart.ts:151
+#: src/core/queries/useCounterpart.ts:72
 msgid "Failed to update Address."
 msgstr "Failed to update Address."
 
-#: src/core/queries/useCounterpart.ts:234
+#: src/core/queries/useCounterpart.ts:155
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
 
-#: src/core/queries/useCounterpart.ts:482
+#: src/core/queries/useCounterpart.ts:403
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:590
+#: src/core/queries/useCounterpart.ts:511
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -2324,7 +2323,7 @@ msgstr "Failed to update Counterpart."
 msgid "Failed to update product."
 msgstr "Failed to update product."
 
-#: src/core/queries/useCounterpart.ts:352
+#: src/core/queries/useCounterpart.ts:273
 msgid "Failed to update VAT."
 msgstr "Failed to update VAT."
 
@@ -2398,7 +2397,7 @@ msgid "Fireplace, Fireplace Screens, and Accessories Stores"
 msgstr "Fireplace, Fireplace Screens, and Accessories Stores"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:83
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:211
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:208
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:32
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:98
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:57
@@ -2896,8 +2895,8 @@ msgid "Invoice Number"
 msgstr "Invoice Number"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:280
-msgid "Invoice Number *"
-msgstr "Invoice Number *"
+#~ msgid "Invoice Number *"
+#~ msgstr "Invoice Number *"
 
 #: src/core/queries/useReceivables.ts:99
 msgid "Invoice to “{0}” was created"
@@ -3151,7 +3150,7 @@ msgid "Last 4 digits of Social Security number"
 msgstr "Last 4 digits of Social Security number"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:101
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:229
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:226
 #: src/components/onboarding/OnboardingEntity/OnboardingEntityIndividual/OnboardingEntityIndividual.tsx:41
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:107
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:58
@@ -3571,7 +3570,7 @@ msgstr "Name"
 msgid "Name *"
 msgstr "Name *"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:305
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:299
 msgid "Name, country, city"
 msgstr "Name, country, city"
 
@@ -3944,7 +3943,7 @@ msgid "Pawn Shops"
 msgstr "Pawn Shops"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:230
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:564
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:565
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:96
 #: src/components/payables/PayablesTable/components/PayablesTableAction.tsx:45
 #: src/components/userRoles/consts.ts:73
@@ -4089,8 +4088,8 @@ msgid "Philippines"
 msgstr "Philippines"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:139
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:335
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:316
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:332
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:313
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:97
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:52
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:42
@@ -4476,8 +4475,8 @@ msgid "Registered Number (Japan)"
 msgstr "Registered Number (Japan)"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:189
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:482
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:503
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:483
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:504
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:80
 msgid "Reject"
 msgstr "Reject"
@@ -4678,9 +4677,8 @@ msgstr "Saudi Riyal"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:90
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:111
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:286
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:351
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:377
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:352
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:378
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:61
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:157
 #: src/components/tags/TagFormModal/TagFormModal.test.tsx:224
@@ -4790,8 +4788,8 @@ msgstr "Service Stations"
 msgid "Services"
 msgstr "Services"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:249
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:231
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:246
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:228
 msgid "Set this counterpart as:"
 msgstr "Set this counterpart as:"
 
@@ -5006,8 +5004,8 @@ msgid "Subject"
 msgstr "Subject"
 
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:149
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:440
-#: src/components/payables/PayableDetails/PayableDetails.test.tsx:461
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:441
+#: src/components/payables/PayableDetails/PayableDetails.test.tsx:462
 #: src/components/payables/PayableDetails/PayableDetailsHeader/PayableDetailsHeader.tsx:74
 #: src/components/userRoles/consts.ts:71
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:218
@@ -5137,8 +5135,8 @@ msgstr "Tanzanian Shilling"
 msgid "TAX"
 msgstr "TAX"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:366
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:366
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:363
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:363
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:60
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:50
 msgid "Tax ID"
@@ -5317,7 +5315,7 @@ msgid "There was an issue reading the file."
 msgstr "There was an issue reading the file."
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:51
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:463
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:457
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:56
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:99
@@ -5627,8 +5625,8 @@ msgstr "Unsupported file type"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:283
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:185
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:392
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:397
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:389
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:394
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:47
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:207
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:182
@@ -5644,7 +5642,7 @@ msgid "Update Approval Policy"
 msgstr "Update Approval Policy"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:99
-#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:335
+#: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.test.tsx:319
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:231
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:297
 msgid "Update bank account"
@@ -5802,11 +5800,11 @@ msgstr "Variety Stores"
 msgid "VAT"
 msgstr "VAT"
 
-#: src/core/queries/useCounterpart.ts:293
+#: src/core/queries/useCounterpart.ts:214
 msgid "Vat “{0}” was created."
 msgstr "Vat “{0}” was created."
 
-#: src/core/queries/useCounterpart.ts:348
+#: src/core/queries/useCounterpart.ts:269
 msgid "Vat “{0}” was updated."
 msgstr "Vat “{0}” was updated."
 
@@ -5865,16 +5863,16 @@ msgstr "Vat value"
 msgid "Vat Value"
 msgstr "Vat Value"
 
-#: src/core/queries/useCounterpart.ts:371
+#: src/core/queries/useCounterpart.ts:292
 msgid "VAT was deleted."
 msgstr "VAT was deleted."
 
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:296
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:299
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:302
-#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:283
+#: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:280
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:48
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:38
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:349
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:343
 msgid "Vendor"
 msgstr "Vendor"
 
