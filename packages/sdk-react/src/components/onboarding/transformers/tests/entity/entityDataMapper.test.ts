@@ -1,13 +1,13 @@
-import { waitFor } from '@testing-library/react';
-
-import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
-import { generateErrorsByFields, generateFieldsByValues } from '../../index';
 import {
   onboardingEntityIndividualFixture,
   onboardingEntityIndividualMixedFixture,
   onboardingEntityOrganizationFixture,
   onboardingEntityOrganizationMixedFixture,
-} from './entityDataMapperFixture';
+} from '@/mocks/onboarding/entityDataMapperFixture';
+import { waitFor } from '@testing-library/react';
+
+import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
+import { generateErrorsByFields, generateFieldsByValues } from '../../index';
 
 describe('Onboarding entity', () => {
   describe('Individual Entity', () => {

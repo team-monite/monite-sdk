@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { components } from '@/api';
 import { useMyEntity } from '@/core/queries/useEntities';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
-import { OnboardingRequirement } from '@monite/sdk-api';
+import { OnboardingRequirement } from '@/enums/OnboardingRequirement';
 
 import { getEntityName } from '../helpers';
 import { OnboardingPersonId } from '../types';
@@ -74,21 +75,6 @@ export type OnboardingRequirementsType = {
   onboardingCompleted: boolean;
 };
 
-const {
-  ENTITY,
-  BUSINESS_PROFILE,
-  REPRESENTATIVE,
-  OWNERS,
-  DIRECTORS,
-  EXECUTIVES,
-  PERSONS,
-  BANK_ACCOUNTS,
-  TOS_ACCEPTANCE,
-  OWNERSHIP_DECLARATION,
-  ENTITY_DOCUMENTS,
-  PERSONS_DOCUMENTS,
-} = OnboardingRequirement;
-
 export const useOnboardingRequirements = (): OnboardingRequirementsType => {
   const { data: onboarding } = useOnboardingRequirementsData();
 
@@ -110,24 +96,11 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     [onboarding?.requirements]
   );
 
-  const requirements = useMemo(
-    () =>
-      [
-        ENTITY,
-        BUSINESS_PROFILE,
-        REPRESENTATIVE,
-        OWNERS,
-        DIRECTORS,
-        EXECUTIVES,
-        PERSONS,
-        BANK_ACCOUNTS,
-        ENTITY_DOCUMENTS,
-        PERSONS_DOCUMENTS,
-        OWNERSHIP_DECLARATION,
-        TOS_ACCEPTANCE,
-      ].filter((requirement) => onboardingRequirements.includes(requirement)),
-    [onboardingRequirements]
-  );
+  const requirements = useMemo(() => {
+    return OnboardingRequirement.filter((requirement) =>
+      onboardingRequirements.includes(requirement)
+    );
+  }, [onboardingRequirements]);
 
   const [requirement, setRequirement] = useState<
     OnboardingRequirement | undefined
@@ -199,3 +172,5 @@ export const useOnboardingRequirements = (): OnboardingRequirementsType => {
     onboardingCompleted,
   };
 };
+
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

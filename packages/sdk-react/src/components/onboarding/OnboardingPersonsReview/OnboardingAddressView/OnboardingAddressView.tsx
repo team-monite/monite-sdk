@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries, OnboardingAddress } from '@monite/sdk-api';
 
 import { getRegionName } from '../../utils';
 import { OnboardingViewRow } from '../OnboardingReviewStyles';
@@ -34,3 +34,6 @@ export function OnboardingAddressView({
     </>
   );
 }
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type OnboardingAddress = components['schemas']['OnboardingAddress'];

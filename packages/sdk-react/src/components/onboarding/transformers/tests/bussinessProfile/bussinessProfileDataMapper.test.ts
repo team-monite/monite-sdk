@@ -1,4 +1,4 @@
-import { OnboardingBusinessProfile } from '@monite/sdk-api';
+import { components } from '@/api';
 import { waitFor } from '@testing-library/react';
 
 import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
@@ -9,7 +9,9 @@ describe('Onboarding business profile', () => {
   test('should generate business profile with mixed fields', async () => {
     const { values, fields, errors } = onboardingBusinessProfileMixedFixture();
 
-    const generatedFields = generateFieldsByValues<OnboardingBusinessProfile>({
+    const generatedFields = generateFieldsByValues<
+      components['schemas']['OnboardingBusinessProfile']
+    >({
       values,
       optional: ['url'],
       errors: [

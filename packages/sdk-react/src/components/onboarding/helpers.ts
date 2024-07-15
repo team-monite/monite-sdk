@@ -1,12 +1,4 @@
 import { components } from '@/api';
-import {
-  EntityIndividualResponse,
-  EntityOrganizationResponse,
-  EntityResponse,
-  OnboardingPerson,
-  OnboardingRequirement,
-  Relationship,
-} from '@monite/sdk-api';
 
 import type {
   EntityOrganizationRelationshipCode,
@@ -14,29 +6,16 @@ import type {
   OnboardingRequirementMask,
 } from './types';
 
-const {
-  ENTITY,
-  ENTITY_DOCUMENTS,
-  BANK_ACCOUNTS,
-  BUSINESS_PROFILE,
-  REPRESENTATIVE,
-  OWNERS,
-  EXECUTIVES,
-  DIRECTORS,
-  PERSONS,
-  PERSONS_DOCUMENTS,
-  TOS_ACCEPTANCE,
-  OWNERSHIP_DECLARATION,
-} = OnboardingRequirement;
-
 /**
  * Determines if the given requirement is for a representative.
  *
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for a representative.
  */
-export function isRepresentative(requirement?: OnboardingRequirement): boolean {
-  return requirement === REPRESENTATIVE;
+export function isRepresentative(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'representative';
 }
 
 /**
@@ -45,8 +24,10 @@ export function isRepresentative(requirement?: OnboardingRequirement): boolean {
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for directors.
  */
-export function isDirectors(requirement?: OnboardingRequirement): boolean {
-  return requirement === DIRECTORS;
+export function isDirectors(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'directors';
 }
 
 /**
@@ -55,8 +36,10 @@ export function isDirectors(requirement?: OnboardingRequirement): boolean {
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for owners.
  */
-export function isOwners(requirement?: OnboardingRequirement): boolean {
-  return requirement === OWNERS;
+export function isOwners(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'owners';
 }
 
 /**
@@ -65,8 +48,10 @@ export function isOwners(requirement?: OnboardingRequirement): boolean {
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for executives.
  */
-export function isExecutives(requirement?: OnboardingRequirement): boolean {
-  return requirement === EXECUTIVES;
+export function isExecutives(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'executives';
 }
 
 /**
@@ -75,8 +60,10 @@ export function isExecutives(requirement?: OnboardingRequirement): boolean {
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is entity.
  */
-export function isEntity(requirement?: OnboardingRequirement): boolean {
-  return requirement === ENTITY;
+export function isEntity(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'entity';
 }
 
 /**
@@ -85,18 +72,22 @@ export function isEntity(requirement?: OnboardingRequirement): boolean {
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for a bank account.
  */
-export function isBankAccount(requirement?: OnboardingRequirement): boolean {
-  return requirement === BANK_ACCOUNTS;
+export function isBankAccount(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'bank_accounts';
 }
 
 /**
- * Determines if the given requirement is for a persons.
+ * Determines if the given requirement is for a person.
  *
  * @param requirement - The onboarding requirement to be checked.
- * @returns A boolean value indicating if the requirement is for a persons.
+ * @returns A boolean value indicating if the requirement is for a person.
  */
-export function isPersons(requirement?: OnboardingRequirement): boolean {
-  return requirement === PERSONS;
+export function isPersons(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'persons';
 }
 
 /**
@@ -106,9 +97,9 @@ export function isPersons(requirement?: OnboardingRequirement): boolean {
  * @returns A boolean value indicating if the requirement is for a business profile.
  */
 export function isBusinessProfile(
-  requirement?: OnboardingRequirement
+  requirement: OnboardingRequirement | undefined
 ): boolean {
-  return requirement === BUSINESS_PROFILE;
+  return requirement === 'business_profile';
 }
 
 /**
@@ -116,8 +107,10 @@ export function isBusinessProfile(
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for a TOS acceptance.
  */
-export function isTosAcceptance(requirement?: OnboardingRequirement): boolean {
-  return requirement === TOS_ACCEPTANCE;
+export function isTosAcceptance(
+  requirement: OnboardingRequirement | undefined
+): boolean {
+  return requirement === 'tos_acceptance';
 }
 
 /**
@@ -127,9 +120,9 @@ export function isTosAcceptance(requirement?: OnboardingRequirement): boolean {
  * @returns A boolean value indicating if the requirement is for an ownership declaration.
  */
 export function isOwnershipDeclaration(
-  requirement?: OnboardingRequirement
+  requirement: OnboardingRequirement | undefined
 ): boolean {
-  return requirement === OWNERSHIP_DECLARATION;
+  return requirement === 'ownership_declaration';
 }
 
 /**
@@ -139,9 +132,9 @@ export function isOwnershipDeclaration(
  * @returns A boolean value indicating if the requirement is for entity documents.
  */
 export const isEntityDocuments = (
-  requirement?: OnboardingRequirement
+  requirement: OnboardingRequirement | undefined
 ): boolean => {
-  return requirement === ENTITY_DOCUMENTS;
+  return requirement === 'entity_documents';
 };
 
 /**
@@ -171,13 +164,13 @@ export function companyRoleToRequirement(
 ): OnboardingRequirement {
   switch (companyRequirement) {
     case 'representative_provided':
-      return REPRESENTATIVE;
+      return 'representative';
     case 'directors_provided':
-      return DIRECTORS;
+      return 'directors';
     case 'owners_provided':
-      return OWNERS;
+      return 'owners';
     default:
-      return EXECUTIVES;
+      return 'executives';
   }
 }
 
@@ -190,10 +183,10 @@ export function companyRoleToRequirement(
 export function requirementToRelationship(
   requirement: OnboardingRequirement
 ): Relationship {
-  if (isRepresentative(requirement)) return Relationship.REPRESENTATIVE;
-  if (isDirectors(requirement)) return Relationship.DIRECTOR;
-  if (isOwners(requirement)) return Relationship.OWNER;
-  return Relationship.EXECUTIVE;
+  if (isRepresentative(requirement)) return 'representative';
+  if (isDirectors(requirement)) return 'director';
+  if (isOwners(requirement)) return 'owner';
+  return 'executive';
 }
 
 /**
@@ -211,7 +204,7 @@ export function isPersonList(requirement?: OnboardingRequirement): boolean {
 }
 
 /**
- * Determines if the given requirement is for a persons documents.
+ * Determines if the given requirement is for a persons document.
  *
  * @param requirement - The onboarding requirement to be checked.
  * @returns A boolean value indicating if the requirement is for a persons documents.
@@ -219,7 +212,7 @@ export function isPersonList(requirement?: OnboardingRequirement): boolean {
 export function isPersonsDocuments(
   requirement?: OnboardingRequirement
 ): boolean {
-  return requirement === PERSONS_DOCUMENTS;
+  return requirement === 'persons_documents';
 }
 /**
  * Checks if the requirement is a mask requirement.
@@ -317,9 +310,7 @@ export const isRequirementPresentInPersonList = (
  * @param {EntityResponse} entity - The entity to check.
  * @returns {boolean} - Returns true if the entity is an individual, false otherwise.
  */
-export const isIndividual = (
-  entity: components['schemas']['EntityResponse']
-) => {
+export const isIndividual = (entity: EntityResponse) => {
   return entity?.type === 'individual';
 };
 
@@ -339,9 +330,7 @@ export const isOrganization = (entity: EntityResponse) => {
  * @param {EntityResponse} entity - The entity to get the name for.
  * @returns {string} - Returns the name of the entity.
  */
-export const getEntityName = (
-  entity?: components['schemas']['EntityResponse']
-) => {
+export const getEntityName = (entity?: EntityResponse) => {
   if (!entity) return '';
 
   return isIndividual(entity)
@@ -350,3 +339,12 @@ export const getEntityName = (
       }`
     : (entity as EntityOrganizationResponse).organization?.legal_name;
 };
+
+type EntityIndividualResponse =
+  components['schemas']['EntityIndividualResponse'];
+type EntityOrganizationResponse =
+  components['schemas']['EntityOrganizationResponse'];
+type EntityResponse = components['schemas']['EntityResponse'];
+type OnboardingPerson = components['schemas']['OnboardingPerson'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
+type Relationship = components['schemas']['Relationship'];

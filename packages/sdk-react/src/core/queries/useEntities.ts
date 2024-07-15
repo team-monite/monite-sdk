@@ -1,20 +1,17 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
-  EntityResponse,
   MergedSettingsResponse,
-  UpdateEntityRequest,
   ApiError,
   EntityVatIDResourceList,
   OnboardingPaymentMethodsResponse,
 } from '@monite/sdk-api';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { ErrorType } from './types';
 
 const ENTITIES_QUERY_ID = 'entities';
 
 const entityQueryKeys = {
-  myEntity: () => [ENTITIES_QUERY_ID, 'me'],
   settings: (entityId: string) => [ENTITIES_QUERY_ID, entityId, 'settings'],
   taxIds: (entityId: string) => [ENTITIES_QUERY_ID, entityId, 'taxIds'],
   paymentMethods: (entityId: string) => [
@@ -32,19 +29,6 @@ export const useEntitySettings = () => {
     queryKey: [...entityQueryKeys.settings(monite.entityId)],
 
     queryFn: () => monite.api.entity.getSettingsById(monite.entityId),
-  });
-};
-
-export const useUpdateEntity = () => {
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
-
-  return useMutation<EntityResponse, ErrorType, UpdateEntityRequest>({
-    mutationFn: (payload) => monite.api.entity.update(monite.entityId, payload),
-
-    onSuccess: (data) => {
-      queryClient.setQueryData([...entityQueryKeys.myEntity()], data);
-    },
   });
 };
 
@@ -77,14 +61,19 @@ export const useMyEntity = () => {
 };
 
 export const useUpdateMyEntity = () => {
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<EntityResponse, ApiError, UpdateEntityRequest>({
-    mutationFn: (payload) => monite.api.entityUser.updateMyEntity(payload),
+  return api.entityUsers.patchEntityUsersMyEntity.useMutation(undefined, {
+    onSuccess: async (data) => {
+      api.entityUsers.getEntityUsersMyEntity.setQueryData(
+        {},
+        data,
+        queryClient
+      );
 
-    onSuccess: (data) => {
-      queryClient.setQueryData([...entityQueryKeys.myEntity()], data);
+      await api.entityUsers.getEntityUsersMyEntity.invalidateQueries(
+        queryClient
+      );
     },
   });
 };

@@ -1,15 +1,15 @@
+import { components } from '@/api';
 import { generateOptionalFields } from '@/components/onboarding/transformers';
+import { OnboardingOptionalParams } from '@/components/onboarding/types';
 import {
   onboardingEntityIndividualFixture,
   onboardingEntityOrganizationFixture,
-} from '@/components/onboarding/transformers/tests/entity';
-import { OnboardingOptionalParams } from '@/components/onboarding/types';
-import { OnboardingEntity } from '@monite/sdk-api';
+} from '@/mocks/onboarding/entityDataMapperFixture';
 
 export const onboardingEntityFixture = (
   type: 'individual' | 'organization',
   params?: OnboardingOptionalParams
-): OnboardingEntity => {
+): components['schemas']['OnboardingEntity'] => {
   const entity =
     type === 'individual'
       ? onboardingEntityIndividualFixture()

@@ -8,12 +8,8 @@ import {
 } from 'react-hook-form';
 import { useEffectOnce } from 'react-use';
 
+import { components } from '@/api';
 import { yupResolver } from '@hookform/resolvers/yup';
-import {
-  ErrorSchema,
-  HTTPValidationError,
-  ValidationError,
-} from '@monite/sdk-api';
 
 import deepEqual from 'deep-eql';
 
@@ -35,7 +31,7 @@ type HandleSubmitType<V, R> = (apiContract: ApiContractType<V, R>) => FormType;
 
 export type OnboardingFormType<
   V extends FieldValues,
-  R extends FieldValues | undefined
+  R extends FieldValues | undefined | void
 > = {
   defaultValues: DefaultValues<V> | undefined;
   methods: UseFormReturn<V>;
@@ -65,7 +61,7 @@ const getErrorsFieldsByValidationErrors = (
 
 export function useOnboardingForm<
   V extends FieldValues,
-  R extends FieldValues | undefined
+  R extends FieldValues | undefined | void
 >(
   nextFields: OnboardingOutputFieldsType | undefined,
   type: ValidationSchemasType
@@ -163,7 +159,7 @@ export function useOnboardingForm<
 
         return handleFormSubmit(async (values) => {
           try {
-            return await apiContract(prepareValuesToSubmit(values));
+            return void (await apiContract(prepareValuesToSubmit(values)));
           } catch (e) {
             const error = e as ErrorType;
             const errorBody = error.body;
@@ -183,3 +179,7 @@ export function useOnboardingForm<
 
   return { methods, checkValue, defaultValues: nextValues, handleSubmit };
 }
+
+type ErrorSchema = components['schemas']['ErrorSchemaResponse'];
+type HTTPValidationError = components['schemas']['HTTPValidationError'];
+type ValidationError = components['schemas']['ValidationError'];

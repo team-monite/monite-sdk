@@ -1,9 +1,6 @@
+import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import {
-  AllowedCountries,
-  OnboardingPersonRelationship,
-} from '@monite/sdk-api';
 
 // TODO add default locale
 const regionNames = new Intl.DisplayNames(['en'], {
@@ -53,3 +50,7 @@ export const relationshipToLabel = (
 
   return list.join(', ');
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type OnboardingPersonRelationship =
+  components['schemas']['OnboardingPersonRelationship'];
