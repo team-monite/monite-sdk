@@ -7,7 +7,6 @@ import {
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
 import { useDocumentDescriptions } from '@/core/queries/useOnboardingDocuments';
-import { usePersonList } from '@/core/queries/usePerson';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -35,11 +34,13 @@ export const OnboardingPersonDocuments = () => {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const { data: personsList } = usePersonList();
-
-  const person = useMemo(
-    () => personsList?.data?.find(({ id }) => id === personId),
-    [personsList?.data, personId]
+  const { data: person } = api.persons.getPersonsId.useQuery(
+    {
+      path: { person_id: personId ?? '' },
+    },
+    {
+      enabled: Boolean(personId),
+    }
   );
 
   const { data: descriptions } = useDocumentDescriptions(

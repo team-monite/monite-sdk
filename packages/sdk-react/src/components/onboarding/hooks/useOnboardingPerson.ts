@@ -6,7 +6,6 @@ import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import { useDeletePerson, useUpdatePerson } from '@/core/queries/usePerson';
 
 import { useOnboardingRequirementsContext } from '../context';
 import { isRepresentative } from '../helpers';
@@ -89,7 +88,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     mutateAsync: deletePersonMutation,
     isPending: isDeleteLoading,
     error: deletePersonError,
-  } = useDeletePerson();
+  } = api.persons.deletePersonsId.useMutation(undefined);
 
   const persons = useMemo(
     () => onboarding?.data?.persons || [],
@@ -201,7 +200,12 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
   );
 
   const deletePerson = useCallback(async () => {
-    const response = await deletePersonMutation(personId!);
+    if (!personId) throw new Error('Person id is not defined');
+
+    await deletePersonMutation({
+      body: undefined,
+      path: { person_id: personId },
+    });
 
     patchOnboardingRequirements({
       data: {
@@ -210,8 +214,6 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     });
 
     disableEditMode();
-
-    return response;
   }, [
     deletePersonMutation,
     patchOnboardingRequirements,
