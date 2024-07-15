@@ -54,7 +54,6 @@ export const counterpartsAddressesFixture = counterpartListFixture
         line1: faker.location.street(),
         line2: faker.location.streetAddress(),
         id: 'aa5a332e-7af1-401f-a741-df2c494f6e47',
-        is_default: true,
         counterpart_id: organizationId,
       },
     ],
