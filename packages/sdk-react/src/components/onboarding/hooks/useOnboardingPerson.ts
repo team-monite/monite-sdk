@@ -1,21 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import type { ErrorType } from '@/core/queries/types';
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  useCreatePerson,
-  useDeletePerson,
-  useUpdatePerson,
-} from '@/core/queries/usePerson';
-import {
-  EntityResponse,
-  OptionalPersonRequest,
-  PersonRequest,
-  PersonResponse,
-} from '@monite/sdk-api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import { isRepresentative } from '../helpers';
@@ -43,11 +33,17 @@ export type OnboardingPersonReturnType = {
 
   deletePerson: () => Promise<void> | undefined;
 
-  updateOrganizationRequirements: () => Promise<EntityResponse>;
+  updateOrganizationRequirements: () => Promise<
+    components['schemas']['EntityResponse']
+  >;
 
   relationships: OnboardingRelationshipReturnType;
 
-  error: ErrorType;
+  error:
+    | Error
+    | components['schemas']['ErrorSchemaResponse']
+    | components['schemas']['HTTPValidationError']
+    | null;
 };
 
 export function useOnboardingPerson(): OnboardingPersonReturnType {
@@ -74,23 +70,25 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     error: updateEntityError,
   } = useOnboardingEntity();
 
+  const { api } = useMoniteContext();
+
   const {
     mutateAsync: createPersonMutation,
     isPending: isCreateLoading,
     error: createPersonError,
-  } = useCreatePerson();
+  } = api.persons.postPersons.useMutation(undefined);
 
   const {
     mutateAsync: updatePersonMutation,
     isPending: isUpdateLoading,
     error: updatePersonError,
-  } = useUpdatePerson();
+  } = api.persons.patchPersonsId.useMutation(undefined);
 
   const {
     mutateAsync: deletePersonMutation,
     isPending: isDeleteLoading,
     error: deletePersonError,
-  } = useDeletePerson();
+  } = api.persons.deletePersonsId.useMutation(undefined);
 
   const persons = useMemo(
     () => onboarding?.data?.persons || [],
@@ -104,7 +102,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
 
   const createPerson = useCallback(
     async (payload: PersonRequest) => {
-      const response = await createPersonMutation(payload);
+      const response = await createPersonMutation({
+        body: payload,
+      });
 
       const requirement = isRepresentative(currentRequirement)
         ? currentRequirement
@@ -145,8 +145,8 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
   const updatePerson = useCallback(
     async (personId: string, payload: OptionalPersonRequest) => {
       const response = await updatePersonMutation({
-        id: personId,
-        payload,
+        path: { person_id: personId },
+        body: payload,
       });
 
       patchOnboardingRequirements({
@@ -174,8 +174,8 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
   const updateRepresentativePerson = useCallback(
     async (personId: string, payload: OptionalPersonRequest) => {
       const response = await updatePersonMutation({
-        id: personId,
-        payload,
+        path: { person_id: personId },
+        body: payload,
       });
 
       patchOnboardingRequirements({
@@ -200,7 +200,12 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
   );
 
   const deletePerson = useCallback(async () => {
-    const response = await deletePersonMutation(personId!);
+    if (!personId) throw new Error('Person id is not defined');
+
+    await deletePersonMutation({
+      body: undefined,
+      path: { person_id: personId },
+    });
 
     patchOnboardingRequirements({
       data: {
@@ -209,8 +214,6 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     });
 
     disableEditMode();
-
-    return response;
   }, [
     deletePersonMutation,
     patchOnboardingRequirements,
@@ -264,3 +267,7 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     error,
   };
 }
+
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
+type PersonRequest = components['schemas']['PersonRequest'];
+type PersonResponse = components['schemas']['PersonResponse'];

@@ -1,20 +1,13 @@
-import {
-  AllowedCountries,
-  EntityAddressSchema,
-  OnboardingEntity,
-  OptionalIndividualSchema,
-  OptionalOrganizationSchema,
-  UpdateEntityRequest,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
-import type { OnboardingTestData } from '../../../types';
+import type { OnboardingTestData } from '../../components/onboarding/types';
 
 function getEntityByType(
   type: 'individual' | 'organization'
 ): UpdateEntityRequest {
   const address: EntityAddressSchema = {
     city: 'Fresno',
-    country: AllowedCountries.DE,
+    country: 'DE',
     line1: 'Florida Well',
     line2: '8379 Quinton Stravenue',
     postal_code: '37388-5841',
@@ -60,7 +53,7 @@ export const onboardingEntityIndividualFixture = (): OnboardingTestData<
         country: {
           error: null,
           required: true,
-          value: AllowedCountries.DE,
+          value: 'DE',
         },
         line1: {
           error: null,
@@ -151,7 +144,7 @@ export const onboardingEntityIndividualMixedFixture = (): OnboardingTestData<
         country: {
           error: null,
           required: true,
-          value: AllowedCountries.DE,
+          value: 'DE',
         },
         line1: {
           error: null,
@@ -234,7 +227,7 @@ export function onboardingEntityOrganizationFixture(): OnboardingTestData<
         country: {
           error: null,
           required: true,
-          value: AllowedCountries.DE,
+          value: 'DE',
         },
         line1: {
           error: null,
@@ -343,3 +336,11 @@ export function onboardingEntityOrganizationMixedFixture(): OnboardingTestData {
     ],
   };
 }
+
+type EntityAddressSchema = components['schemas']['EntityAddressSchema'];
+type OnboardingEntity = components['schemas']['OnboardingEntity'];
+type OptionalIndividualSchema =
+  components['schemas']['OptionalIndividualSchema'];
+type OptionalOrganizationSchema =
+  components['schemas']['OptionalOrganizationSchema'];
+type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];

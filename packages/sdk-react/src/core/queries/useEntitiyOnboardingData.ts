@@ -1,21 +1,11 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import {
-  EntityOnboardingDataRequest,
-  EntityOnboardingDataResponse,
-} from '@monite/sdk-api';
-import { useMutation } from '@tanstack/react-query';
-
-import { ErrorType } from './types';
 
 export const useUpdateEntityOnboardingData = () => {
-  const { monite } = useMoniteContext();
+  const { monite, api } = useMoniteContext();
 
-  return useMutation<
-    EntityOnboardingDataResponse,
-    ErrorType,
-    EntityOnboardingDataRequest
-  >({
-    mutationFn: (payload) =>
-      monite.api.entity.patchOnboardingData(monite.entityId, payload),
+  return api.entities.patchEntitiesIdOnboardingData.useMutation({
+    path: {
+      entity_id: monite.entityId,
+    },
   });
 };

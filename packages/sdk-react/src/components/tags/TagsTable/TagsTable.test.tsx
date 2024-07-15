@@ -182,16 +182,17 @@ describe('TagsTable', () => {
       // Flush sorting
       fireEvent.click(createdAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
+
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: undefined,
           sort: undefined,
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
 
     test('should sort a table by `updated_at` field in ascending order when we click on that field once', async () => {

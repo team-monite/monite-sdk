@@ -1,15 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  EntityResponse,
-  OnboardingPerson,
-  OnboardingRequirement,
-  PersonResponse,
-} from '@monite/sdk-api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import {
@@ -140,7 +135,7 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
     }
 
     patchOnboardingRequirementsData({
-      requirements: [OnboardingRequirement.PERSONS],
+      requirements: ['persons'],
     });
   }, [errors.length, patchOnboardingRequirementsData, scrollToError]);
 
@@ -157,3 +152,7 @@ export function useOnboardingPersonList(): OnboardingPersonListReturnType {
     submitPersonsReview,
   };
 }
+
+type OnboardingPerson = components['schemas']['OnboardingPerson'];
+type EntityResponse = components['schemas']['EntityResponse'];
+type PersonResponse = components['schemas']['PersonResponse'];

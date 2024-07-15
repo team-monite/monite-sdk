@@ -1,5 +1,5 @@
+import { components } from '@/api';
 import { faker } from '@faker-js/faker';
-import { PersonRequest, PersonResponse } from '@monite/sdk-api';
 
 export const personFixture = (
   person?: Partial<PersonRequest>
@@ -34,3 +34,6 @@ export const personFixture = (
     updated_at: faker.date.recent().toISOString(),
   };
 };
+
+type PersonRequest = components['schemas']['PersonRequest'];
+type PersonResponse = components['schemas']['PersonResponse'];

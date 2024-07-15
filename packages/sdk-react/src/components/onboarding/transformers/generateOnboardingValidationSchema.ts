@@ -1,16 +1,6 @@
+import { components } from '@/api';
 import { OnboardingFieldsType } from '@/components/onboarding/types';
 import { I18n } from '@lingui/core';
-import {
-  BusinessProfile,
-  EntityAddressSchema,
-  OptionalIndividualSchema,
-  OptionalOrganizationSchema,
-  OptionalPersonAddress,
-  OptionalPersonRelationship,
-  OptionalPersonRequest,
-  UpdateEntityBankAccountRequest,
-  UpdateEntityRequest,
-} from '@monite/sdk-api';
 
 import type { AnyObjectSchema } from 'yup';
 import { object } from 'yup';
@@ -155,3 +145,17 @@ const getValidatorSettings = (
   if (!field.required) return validator;
   return validator.required();
 };
+
+type BusinessProfile = components['schemas']['BusinessProfile'];
+type EntityAddressSchema = components['schemas']['EntityAddressSchema'];
+type OptionalIndividualSchema =
+  components['schemas']['OptionalIndividualSchema'];
+type OptionalOrganizationSchema =
+  components['schemas']['OptionalOrganizationSchema'];
+type OptionalPersonAddress = components['schemas']['OptionalPersonAddress'];
+type OptionalPersonRelationship =
+  components['schemas']['OptionalPersonRelationship'];
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
+type UpdateEntityBankAccountRequest =
+  components['schemas']['UpdateEntityBankAccountRequest'];
+type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];

@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OnboardingPerson } from '@monite/sdk-api';
 import { Typography, styled } from '@mui/material';
 
 import { relationshipToLabel } from '../../utils';
@@ -29,7 +29,7 @@ export function OnboardingPersonView({
   address,
   relationship,
   emptyFields,
-}: OnboardingPerson & {
+}: components['schemas']['OnboardingPerson'] & {
   emptyFields?: string[];
 }) {
   const { i18n } = useLingui();

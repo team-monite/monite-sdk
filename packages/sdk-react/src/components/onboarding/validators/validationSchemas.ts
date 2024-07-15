@@ -1,18 +1,6 @@
+import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import {
-  BusinessProfile,
-  CreateEntityBankAccountRequest,
-  EntityAddressSchema,
-  EntityOnboardingDocumentsPayload,
-  OptionalIndividualSchema,
-  OptionalOrganizationSchema,
-  OptionalPersonAddress,
-  OptionalPersonRelationship,
-  OptionalPersonRequest,
-  PersonOnboardingDocumentsPayload,
-  UpdateEntityRequest,
-} from '@monite/sdk-api';
 
 import {
   booleanValidator,
@@ -179,3 +167,21 @@ export const agreementsSchema = (
     .oneOf([true], t(i18n)`Please accept Ownership Declaration to proceed.`)
     .label(t(i18n)`Ownership declaration`),
 });
+
+type BusinessProfile = components['schemas']['BusinessProfile'];
+type CreateEntityBankAccountRequest =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type EntityAddressSchema = components['schemas']['EntityAddressSchema'];
+type EntityOnboardingDocumentsPayload =
+  components['schemas']['EntityOnboardingDocumentsPayload'];
+type OptionalIndividualSchema =
+  components['schemas']['OptionalIndividualSchema'];
+type OptionalOrganizationSchema =
+  components['schemas']['OptionalOrganizationSchema'];
+type OptionalPersonAddress = components['schemas']['OptionalPersonAddress'];
+type OptionalPersonRelationship =
+  components['schemas']['OptionalPersonRelationship'];
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
+type PersonOnboardingDocumentsPayload =
+  components['schemas']['PersonOnboardingDocumentsPayload'];
+type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];

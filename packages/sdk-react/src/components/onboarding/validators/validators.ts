@@ -1,6 +1,6 @@
+import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { AllowedCountries } from '@monite/sdk-api';
 
 import { differenceInCalendarYears, isValid } from 'date-fns';
 import { electronicFormatIBAN, extractIBAN, isValidIBAN } from 'ibantools';
@@ -44,7 +44,7 @@ export const phoneValidator = (i18n: I18n) =>
 
 function validateIBAN(
   i18n: I18n,
-  countryCode: AllowedCountries,
+  countryCode: components['schemas']['AllowedCountries'],
   ctx: CustomValidationContext<string | null>,
   iban?: string | null
 ): true | ValidationError {

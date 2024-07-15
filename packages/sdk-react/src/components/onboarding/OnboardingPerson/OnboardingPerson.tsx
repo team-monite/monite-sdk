@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -8,10 +9,6 @@ import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OnboardingPersonRelationship,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 import { FormGroup, FormHelperText } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';
@@ -52,9 +49,9 @@ export function OnboardingPerson() {
     },
   } = useOnboardingPerson();
 
-  const representative = isRoleProvided(OnboardingRequirement.REPRESENTATIVE);
-  const owner = isRoleProvided(OnboardingRequirement.OWNERS);
-  const director = isRoleProvided(OnboardingRequirement.DIRECTORS);
+  const representative = isRoleProvided('representative');
+  const owner = isRoleProvided('owners');
+  const director = isRoleProvided('directors');
 
   const { control, getFieldState } = methods;
 
@@ -296,3 +293,7 @@ const translateMask = (
       return '';
   }
 };
+
+type OnboardingPersonRelationship =
+  components['schemas']['OnboardingPersonRelationship'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

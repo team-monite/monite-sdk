@@ -1,15 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  EntityOnboardingDataRequest,
-  type EntityOnboardingDataResponse,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 
 import { generateFieldsByValues } from '../transformers';
 import { type OnboardingAgreementsSchema } from '../validators';
@@ -45,11 +41,9 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
   const requirements = useMemo(() => {
     if (!onboarding?.requirements) return [];
 
-    return onboarding.requirements.filter((item) =>
-      [
-        OnboardingRequirement.TOS_ACCEPTANCE,
-        OnboardingRequirement.OWNERSHIP_DECLARATION,
-      ].includes(item)
+    return onboarding.requirements.filter(
+      (item): item is 'tos_acceptance' | 'ownership_declaration' =>
+        item === 'tos_acceptance' || item === 'ownership_declaration'
     );
   }, [onboarding?.requirements]);
 
@@ -74,7 +68,11 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
     async (values: OnboardingAgreementsSchema) => {
       const date = new Date().toISOString();
 
-      const data = Object.entries(values).reduce<EntityOnboardingDataRequest>(
+      const data: {
+        [key in (typeof requirements)[number]]?: {
+          date: string;
+        };
+      } = Object.entries(values).reduce(
         (acc, [requirement]) => ({
           ...acc,
           [requirement]: {
@@ -102,3 +100,6 @@ export const useOnboardingAgreements = (): OnboardingAgreementsReturnType => {
     form,
   };
 };
+
+type EntityOnboardingDataResponse =
+  components['schemas']['EntityOnboardingDataResponse'];

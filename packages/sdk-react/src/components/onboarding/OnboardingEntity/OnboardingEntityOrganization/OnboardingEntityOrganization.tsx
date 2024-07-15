@@ -1,10 +1,10 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OptionalOrganizationSchema } from '@monite/sdk-api';
 
 type OrganizationType = { organization: OptionalOrganizationSchema };
 
@@ -34,3 +34,6 @@ export const OnboardingEntityOrganization = ({
     />
   );
 };
+
+type OptionalOrganizationSchema =
+  components['schemas']['OptionalOrganizationSchema'];
