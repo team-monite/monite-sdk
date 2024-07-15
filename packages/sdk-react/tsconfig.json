@@ -110,6 +110,7 @@
     "src/components/tags/**",
     "src/components/userRoles/UserRolesTable/UserRolesTable.tsx",
     "src/enums/**",
-    "src/mocks/payables/**"
+    "src/mocks/payables/**",
+    "src/components/payables"
   ],
 }
