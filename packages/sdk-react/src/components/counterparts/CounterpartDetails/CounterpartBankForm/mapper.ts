@@ -26,18 +26,12 @@ export const prepareCounterpartBank = (
 };
 
 export const prepareCounterpartBankSubmit = (
-  bank?: CounterpartBankFields
+  bank: CounterpartBankFields
 ): components['schemas']['CreateCounterpartBankAccount'] => {
   return {
+    ...bank,
     is_default: bank?.is_default ?? false,
-    account_holder_name: bank?.account_holder_name ?? '',
-    account_number: bank?.account_number ?? '',
     country: bank?.country as components['schemas']['AllowedCountries'],
     currency: bank?.currency as components['schemas']['CurrencyEnum'],
-    routing_number: bank?.routing_number ?? '',
-    sort_code: bank?.sort_code ?? '',
-    name: bank?.name ?? '',
-    bic: bank?.bic ?? '',
-    iban: bank?.iban ?? '',
   };
 };
