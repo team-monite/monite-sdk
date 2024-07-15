@@ -110,8 +110,6 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
         if (!!counterpart) {
           const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
             {
-              created_automatically: counterpart.created_automatically,
-              type: 'individual',
               tax_id: values.tax_id ?? '',
               individual: prepareCounterpartIndividualUpdate(values.individual),
             };
@@ -124,7 +122,6 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
             type: 'individual',
             tax_id: values.tax_id ?? '',
             individual: prepareCounterpartIndividualCreate(values.individual),
-            created_automatically: false,
             language:
               LanguageCodeEnum.find(
                 (code) => code === i18n.locale.split('-')[0]

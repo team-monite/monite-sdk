@@ -65,7 +65,7 @@ export const prepareCounterpartIndividualCreate = ({
     is_vendor: isVendor,
     phone,
     email,
-    residential_address: {
+    address: {
       city,
       country,
       line1,

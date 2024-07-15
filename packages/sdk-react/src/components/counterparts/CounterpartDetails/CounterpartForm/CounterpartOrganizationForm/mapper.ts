@@ -57,7 +57,7 @@ export const prepareCounterpartOrganizationCreate = ({
     is_vendor: isVendor,
     phone,
     email,
-    registered_address: {
+    address: {
       ...restAddress,
       postal_code: postalCode,
     },
