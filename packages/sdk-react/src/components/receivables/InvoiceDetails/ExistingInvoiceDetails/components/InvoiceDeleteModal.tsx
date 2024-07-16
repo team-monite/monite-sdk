@@ -1,5 +1,8 @@
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useDeleteReceivableById, useReceivableById } from '@/core/queries';
+import {
+  useDeleteReceivableById,
+  useReceivableById,
+} from '@/core/queries/useReceivables';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -33,7 +36,7 @@ export const InvoiceDeleteModal = ({
   const { data: receivable, isLoading: isReceivableLoading } =
     useReceivableById(id);
 
-  const deleteMutation = useDeleteReceivableById();
+  const deleteMutation = useDeleteReceivableById(id);
 
   return (
     <Dialog
@@ -64,10 +67,8 @@ export const InvoiceDeleteModal = ({
           color="error"
           disabled={deleteMutation.isPending || isReceivableLoading}
           onClick={() => {
-            deleteMutation.mutate(id, {
-              onSuccess: () => {
-                onClose();
-              },
+            deleteMutation.mutate(undefined, {
+              onSuccess: onClose,
             });
           }}
           autoFocus

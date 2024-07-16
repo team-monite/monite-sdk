@@ -54,13 +54,14 @@ interface EntitySectionProps extends SectionGeneralProps {
 
 export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   const { i18n } = useLingui();
-  const { control, watch, resetField, setValue } =
+  const { control, resetField, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
   const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
     useEntityVatIdList();
+
   const { data: entity, isLoading: isEntityLoading } = useMyEntity();
 
   /** Describes if `Same as invoice date` checkbox is checked */
@@ -107,6 +108,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                       i18n
                     )`Your VAT ID`}</InputLabel>
                     <Select
+                      {...field}
                       labelId={field.name}
                       label={t(i18n)`Your VAT ID`}
                       MenuProps={{ container: root }}
@@ -117,7 +119,6 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                           <CountryInvoiceOption code={entity.address.country} />
                         ) : null
                       }
-                      {...field}
                     >
                       {entityVatIds?.data.map((vatId) => (
                         <MenuItem key={vatId.id} value={vatId.id}>
@@ -225,13 +226,13 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
+                      {...field}
                       fullWidth
                       variant="outlined"
                       label={t(i18n)`Purchase order`}
                       error={Boolean(error)}
                       helperText={error?.message}
                       disabled={disabled}
-                      {...field}
                     />
                   )}
                 />

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -43,7 +43,7 @@ import {
 } from '@mui/material';
 
 interface CardTableItemProps {
-  label: string | React.ReactNode;
+  label: string | ReactNode;
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];

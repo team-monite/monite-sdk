@@ -16,12 +16,10 @@ import {
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartAddressResponseWithCounterpartID } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
   Autocomplete,
-  Box,
   Button,
   Card,
   CardContent,
@@ -53,20 +51,12 @@ const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 const CounterpartAddressView = ({
   address,
 }: {
-  address:
-    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
-    | undefined;
-}) => {
-  if (!address) {
-    return null;
-  }
-
-  return (
-    <>
-      {address.postal_code}, {address.city}, {address.line1}
-    </>
-  );
-};
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+}) => (
+  <>
+    {address.postal_code}, {address.city}, {address.line1}
+  </>
+);
 
 const customerGridItemProps = {
   xs: 12,
@@ -190,53 +180,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       });
     }
   }, [counterpartBillingAddress, setValue]);
-
-  const counterpartListContent = useMemo(() => {
-    if (!counterparts || counterparts.data.length === 0) {
-      return (
-        <Box
-          sx={{
-            padding: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="body1" sx={{ mb: 2, fontWeight: 500 }}>{t(
-            i18n
-          )`No counterparts found.`}</Typography>
-          <Button
-            variant="text"
-            startIcon={<AddIcon />}
-            onClick={handleCreateNewCounterpart}
-          >{t(i18n)`Create New`}</Button>
-        </Box>
-      );
-    }
-
-    return [
-      <Box key="counterpart-create-new">
-        <Button
-          variant="text"
-          startIcon={<AddIcon />}
-          fullWidth
-          sx={{
-            justifyContent: 'flex-start',
-            px: 2,
-          }}
-          onClick={handleCreateNewCounterpart}
-        >
-          {t(i18n)`Create new counterpart`}
-        </Button>
-      </Box>,
-      counterparts?.data.map((counterpart) => (
-        <MenuItem key={counterpart.id} value={counterpart.id}>
-          {getCounterpartName(counterpart)}
-        </MenuItem>
-      )),
-    ];
-  }, [counterparts, handleCreateNewCounterpart, i18n]);
 
   return (
     <Stack spacing={1}>
@@ -402,6 +345,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       i18n
                     )`VAT ID`}</InputLabel>
                     <Select
+                      {...field}
                       labelId={field.name}
                       label={t(i18n)`VAT ID`}
                       MenuProps={{ container: root }}
@@ -410,15 +354,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           <CircularProgress size={20} />
                         ) : null
                       }
-                      {...field}
                     >
-                      {counterpartVats?.data?.map((counterpartVat) => (
-                        <MenuItem
-                          key={counterpartVat.id}
-                          value={counterpartVat.id}
-                        >
-                          <CountryInvoiceOption code={counterpartVat.country} />
-                          {counterpartVat.value}
+                      {counterpartVats?.data?.map(({ id, country, value }) => (
+                        <MenuItem key={id} value={id}>
+                          {country && <CountryInvoiceOption code={country} />}
+                          {value}
                         </MenuItem>
                       ))}
                     </Select>
@@ -475,6 +415,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       i18n
                     )`Billing address`}</InputLabel>
                     <Select
+                      {...field}
                       labelId={field.name}
                       label={t(i18n)`Billing address`}
                       MenuProps={{ container: root }}
@@ -483,13 +424,14 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           <CircularProgress size={20} />
                         ) : null
                       }
-                      {...field}
                     >
-                      <MenuItem value={counterpartBillingAddress?.id}>
-                        <CounterpartAddressView
-                          address={counterpartBillingAddress}
-                        />
-                      </MenuItem>
+                      {counterpartBillingAddress && (
+                        <MenuItem value={counterpartBillingAddress?.id}>
+                          <CounterpartAddressView
+                            address={counterpartBillingAddress}
+                          />
+                        </MenuItem>
+                      )}
                     </Select>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
                   </FormControl>
@@ -546,7 +488,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           key={shippingAddress.id}
                           value={shippingAddress.id}
                         >
-                          <CounterpartAddressView address={shippingAddress} />
+                          {shippingAddress && (
+                            <CounterpartAddressView address={shippingAddress} />
+                          )}
                         </MenuItem>
                       ))}
                     </Select>

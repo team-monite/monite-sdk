@@ -1,23 +1,4 @@
-import { I18n } from '@lingui/core';
-import { t } from '@lingui/macro';
-import { ReceivableResponse, ReceivablesStatusEnum } from '@monite/sdk-api';
-
-export const getReceivableStatusNameMap = (
-  i18n: I18n
-): Record<ReceivablesStatusEnum, string> => ({
-  [ReceivablesStatusEnum.DRAFT]: t(i18n)`Draft`,
-  [ReceivablesStatusEnum.ISSUED]: t(i18n)`Issued`,
-  [ReceivablesStatusEnum.ACCEPTED]: t(i18n)`Accepted`,
-  [ReceivablesStatusEnum.EXPIRED]: t(i18n)`Expired`,
-  [ReceivablesStatusEnum.DECLINED]: t(i18n)`Declined`,
-  [ReceivablesStatusEnum.RECURRING]: t(i18n)`Recurring`,
-  [ReceivablesStatusEnum.PARTIALLY_PAID]: t(i18n)`Partially paid`,
-  [ReceivablesStatusEnum.PAID]: t(i18n)`Paid`,
-  [ReceivablesStatusEnum.OVERDUE]: t(i18n)`Overdue`,
-  [ReceivablesStatusEnum.UNCOLLECTIBLE]: t(i18n)`Uncollectible`,
-  [ReceivablesStatusEnum.CANCELED]: t(i18n)`Canceled`,
-  [ReceivablesStatusEnum.DELETED]: t(i18n)`Deleted`,
-});
+import { components } from '@/api';
 
 export interface ExistingReceivableDetailsProps {
   /** Receivable ID */
@@ -85,7 +66,7 @@ export interface InvoiceDetailsCreateProps {
   id?: never;
 
   /** The type of the receivable */
-  type: ReceivableResponse['type'];
+  type: components['schemas']['ReceivableResponse']['type'];
 
   /**
    * Indicates that the invoice has been successfuly created.

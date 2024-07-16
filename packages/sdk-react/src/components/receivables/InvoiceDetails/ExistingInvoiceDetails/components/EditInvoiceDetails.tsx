@@ -11,22 +11,11 @@ import {
   CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import {
-  useCounterpartAddresses,
-  useUpdateReceivable,
-  useUpdateReceivableLineItems,
-} from '@/core/queries';
+import { useCounterpartAddresses } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartAddressResponseWithCounterpartID,
-  InvoiceResponsePayload,
-  ReceivableResponse,
-  ReceivableUpdatePayload,
-  UpdateLineItems,
-} from '@monite/sdk-api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,
@@ -44,12 +33,17 @@ import {
 
 import { format } from 'date-fns';
 
+import {
+  useUpdateReceivable,
+  useUpdateReceivableLineItems,
+} from '../@/core/queries/useReceivables';
+
 interface EditInvoiceDetailsProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
 
   /** Callback that is called when the invoice is updated */
   onUpdated: (
-    updatedReceivable: components['schemas']['ReceivableResponse']
+    updatedReceivable: components['schemas']['InvoiceResponsePayload']
   ) => void;
 
   /** Callback that is called when the user cancels the editing */
@@ -190,7 +184,7 @@ const EditInvoiceDetailsContent = ({
             id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
-              const lineItems: UpdateLineItems = {
+              const lineItems: components['schemas']['UpdateLineItems'] = {
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
                   product_id: lineItem.product_id,
@@ -242,9 +236,10 @@ const EditInvoiceDetailsContent = ({
               updateReceivableLineItems.mutate(lineItems, {
                 onSuccess: () => {
                   updateReceivable.mutate(invoicePayload, {
-                    onSuccess: (updatedReceivable) => {
-                      // @ts-expect-error - update receivables schema to fix
-                      onUpdated(updatedReceivable);
+                    onSuccess: (receivable) => {
+                      onUpdated(
+                        receivable as components['schemas']['InvoiceResponsePayload']
+                      );
                     },
                   });
                 },

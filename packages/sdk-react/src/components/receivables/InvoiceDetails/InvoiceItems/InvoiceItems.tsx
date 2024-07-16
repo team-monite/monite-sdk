@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ReceivableResponse } from '@monite/sdk-api';
 import {
   Box,
   Card,
@@ -14,11 +14,9 @@ import {
   Typography,
 } from '@mui/material';
 
-export type PayablesDetailsInfoProps = {
-  invoice: ReceivableResponse;
-};
-
-export const InvoiceItems = ({ invoice }: PayablesDetailsInfoProps) => {
+export const InvoiceItems = ({
+  line_items,
+}: components['schemas']['ReceivableResponse']) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -42,32 +40,29 @@ export const InvoiceItems = ({ invoice }: PayablesDetailsInfoProps) => {
                 <Typography>{t(i18n)`Total`}</Typography>
               </TableCell>
             </TableRow>
-            {invoice?.line_items?.map((item, index) => (
-              <TableRow key={index}>
+            {line_items?.map(({ product: { id, name, price }, quantity }) => (
+              <TableRow key={id}>
                 <TableCell style={{ width: '45%' }}>
-                  <Typography>{item.product.name}</Typography>
+                  <Typography>{name}</Typography>
                 </TableCell>
                 <TableCell style={{ width: '20%' }}>
                   <Typography>
-                    {item.product.price &&
-                      item.product.price.value &&
-                      item.product.price.currency &&
-                      formatCurrencyToDisplay(
-                        item.product.price.value,
-                        item.product.price.currency
-                      )}
+                    {price &&
+                      price.value &&
+                      price.currency &&
+                      formatCurrencyToDisplay(price.value, price.currency)}
                   </Typography>
                 </TableCell>
                 <TableCell style={{ width: '15%' }}>
-                  <Typography>{item.quantity}</Typography>
+                  <Typography>{quantity}</Typography>
                 </TableCell>
                 <TableCell style={{ width: '20%' }}>
                   <Typography>
-                    {item.product.price &&
-                      item.product.price.currency &&
+                    {price &&
+                      price.currency &&
                       formatCurrencyToDisplay(
-                        item.quantity * item.product.price.value,
-                        item.product.price.currency
+                        quantity * price.value,
+                        price.currency
                       )}
                   </Typography>
                 </TableCell>

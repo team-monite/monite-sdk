@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
@@ -10,15 +11,17 @@ import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
-import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import {
+  useReceivablePDFById,
+  useReceivableById,
+} from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -57,6 +60,7 @@ const StyledMenu = styled((props: MenuProps) => {
 
   return (
     <Menu
+      {...props}
       elevation={0}
       anchorOrigin={{
         vertical: 'bottom',
@@ -67,7 +71,6 @@ const StyledMenu = styled((props: MenuProps) => {
         horizontal: 'right',
       }}
       container={root}
-      {...props}
     />
   );
 })(({ theme }) => ({
@@ -125,9 +128,11 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     props.id
   );
 
+  const invoice = receivable as components['schemas']['InvoiceResponsePayload'];
+
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: receivable?.entity_user_id,
   });
 
@@ -139,7 +144,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     isLoading: isPdfLoading,
     error: pdfError,
     refetch: refetchPdf,
-  } = usePDFReceivableById(props.id);
+  } = useReceivablePDFById(props.id);
 
   const handleIssueAndSend = useCallback(() => {
     setPresentation(InvoiceDetailsPresentation.Email);
@@ -147,7 +152,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
-    receivable,
+    receivable: invoice,
     deliveryMethod,
   });
 
@@ -164,13 +169,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  if (receivable.type !== InvoiceResponsePayload.type.INVOICE) {
+  if (receivable.type !== 'invoice') {
     return (
       <NotFound
         title={t(i18n)`Receivable type not supported`}
         description={t(
           i18n
-        )`Receivable type ${receivable.type} is not supported. Only ${InvoiceResponsePayload.type.INVOICE} is supported.`}
+        )`Receivable type ${receivable.type} is not supported. Only invoice is supported.`}
       />
     );
   }
@@ -178,8 +183,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   if (view === ExistingInvoiceDetailsView.Edit) {
     return (
       <EditInvoiceDetails
-        // @ts-expect-error - receivables schema to fix
-        invoice={receivable}
+        invoice={invoice}
         onUpdated={callbacks.handleChangeViewInvoice}
         onCancel={callbacks.handleChangeViewInvoice}
       />
@@ -260,7 +264,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   >{t(i18n)`Edit invoice`}</Button>
                 )}
                 {buttons.isMoreButtonVisible && (
-                  <React.Fragment>
+                  <>
                     <Button
                       {...buttonProps}
                       variant="text"
@@ -279,7 +283,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         {t(i18n)`Send invoice`}
                       </MenuItem>
                     </StyledMenu>
-                  </React.Fragment>
+                  </>
                 )}
                 {buttons.isDownloadPDFButtonVisible && (
                   <Button
@@ -360,7 +364,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview invoice={receivable} />
+              <Overview {...invoice} />
             </Stack>
           </Grid>
         </Grid>

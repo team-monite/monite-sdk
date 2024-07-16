@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -34,7 +34,7 @@ const DeliveryMethodView = ({
   title: string;
   description: string;
   disabled?: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
 }) => {
   const theme = useTheme();
 
