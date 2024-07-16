@@ -5,6 +5,10 @@ import { toast } from 'react-hot-toast';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityPaymentMethods } from '@/core/queries/useEntities';
+import {
+  useIssueReceivableById,
+  useSendReceivableById,
+} from '@/core/queries/useReceivables';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -20,10 +24,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import {
-  useIssueReceivableById,
-  useSendReceivableById,
-} from '../@/core/queries/useReceivables';
 import { getEmailInvoiceDetailsSchema } from './EmailInvoiceDetails.form';
 
 interface EmailInvoiceDetailsProps {

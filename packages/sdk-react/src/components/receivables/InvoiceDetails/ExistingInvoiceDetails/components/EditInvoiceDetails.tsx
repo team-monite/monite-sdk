@@ -12,6 +12,10 @@ import {
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCounterpartAddresses } from '@/core/queries';
+import {
+  useUpdateReceivable,
+  useUpdateReceivableLineItems,
+} from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -32,11 +36,6 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
-
-import {
-  useUpdateReceivable,
-  useUpdateReceivableLineItems,
-} from '../@/core/queries/useReceivables';
 
 interface EditInvoiceDetailsProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
