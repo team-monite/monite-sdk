@@ -150,7 +150,6 @@ const EditInvoiceDetailsContent = ({
   const isLoading =
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
   return (

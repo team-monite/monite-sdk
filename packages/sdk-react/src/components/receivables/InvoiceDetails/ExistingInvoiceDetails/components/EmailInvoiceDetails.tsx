@@ -58,7 +58,6 @@ const EmailInvoiceDetailsBase = ({
 
   const { data: paymentMethods } = useEntityPaymentMethods();
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-emailInvoiceDetails-${useId()}`;
 
   const handleIssueAndSend = useCallback(

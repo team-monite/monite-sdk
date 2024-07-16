@@ -83,7 +83,6 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
   if (isSettingsLoading) {
