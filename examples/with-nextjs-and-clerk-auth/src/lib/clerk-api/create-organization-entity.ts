@@ -1,8 +1,8 @@
-import type { Organization, User } from '@clerk/clerk-sdk-node';
-
 import { createEntity } from '@/lib/monite-api/create-entity';
 import { generateEntityAddress } from '@/lib/monite-api/demo-data-generator/generate-entity';
+import { getRandomCountry } from '@/lib/monite-api/demo-data-generator/seed-values';
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
+
 
 type CreateOrganizationEntityParams = {
   /** Organization email */
@@ -21,6 +21,7 @@ export const createOrganizationEntity = (
   { email, legal_name }: CreateOrganizationEntityParams,
   token: AccessToken
 ) => {
+  const country = getRandomCountry();
   return createEntity(
     {
       email,
@@ -29,7 +30,7 @@ export const createOrganizationEntity = (
         legal_name,
       },
       address: {
-        country: 'DE', // We have to use EU country code, because the VAT IDs are used for the data generation
+        country: country,
         ...generateEntityAddress(),
       },
     },

@@ -2,17 +2,22 @@ import chalk from 'chalk';
 
 import { faker } from '@faker-js/faker';
 
-import { demoBankAccountBICList } from '@/lib/monite-api/demo-data-generator/bank-account';
 import {
   GeneralService,
   getRandomItemFromArray,
 } from '@/lib/monite-api/demo-data-generator/general.service';
+import {
+  bankCountriesToCurrencies,
+  demoBankAccountBICList,
+  getRandomCountry,
+} from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
+
 
 type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
@@ -332,14 +337,8 @@ export const createCounterpartBankAccount = async ({
     },
   });
 
-  const countryCode = getRandomItemFromArray([
-    'GE',
-    'DE',
-    'GB',
-  ] satisfies Array<AllowedCountries>);
-  const currency = getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
-    components['schemas']['CurrencyEnum']
-  >);
+  const countryCode = getRandomCountry();
+  const currency = bankCountriesToCurrencies[countryCode];
 
   const { data, error, response } = await POST(
     '/counterparts/{counterpart_id}/bank_accounts',

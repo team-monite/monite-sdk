@@ -1,15 +1,16 @@
-import { AccessToken, fetchTokenServer } from '@/lib/monite-api/fetch-token';
+import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 
-import { paths } from './schema';
+import { components, paths } from './schema';
+
 
 export const createEntity = async (
   entity: paths['/entities']['post']['requestBody']['content']['application/json'],
   token: AccessToken
-) => {
+): Promise<components['schemas']['EntityResponse']> => {
   const { POST } = createMoniteClient({
     headers: {
       Authorization: `${token.token_type} ${token.access_token}`,

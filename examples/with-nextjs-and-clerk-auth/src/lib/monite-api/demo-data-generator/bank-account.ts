@@ -1,12 +1,16 @@
 import { faker } from '@faker-js/faker';
 
-import { getRandomItemFromArray } from '@/lib/monite-api/demo-data-generator/general.service';
+import {
+  bankCountriesToCurrencies,
+  getRandomCountry,
+} from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
+
 
 export const createBankAccount = async ({
   token,
@@ -17,29 +21,72 @@ export const createBankAccount = async ({
   is_default_for_currency: true;
   entity_id: string;
 }) => {
-  const { POST } = createMoniteClient({
+  const { GET, POST } = createMoniteClient({
     headers: {
       Authorization: `${token.token_type} ${token.access_token}`,
     },
   });
 
-  const display_name = faker.company.name();
+  const entityResponse = await GET(`/entities/{entity_id}`, {
+    params: {
+      path: { entity_id },
+      header: {
+        'x-monite-version': getMoniteApiVersion(),
+      },
+    },
+  });
 
-  const countriesToCurrencies = {
-    GE: 'GEL',
-    DE: 'EUR',
-    GB: 'GBP',
-  } satisfies Partial<
-    Record<
-      components['schemas']['AllowedCountries'],
-      components['schemas']['CurrencyEnum']
-    >
-  >;
+  if (entityResponse.error) {
+    console.error(
+      `Failed to fetch entity details when creating a Bank Account for the entity_id: "${entity_id}"`,
+      `x-request-id: ${entityResponse.response.headers.get('x-request-id')}`
+    );
 
-  const country = getRandomItemFromArray(
-    Object.keys(countriesToCurrencies) as (keyof typeof countriesToCurrencies)[]
-  );
+    throw new Error(
+      `Bank account create failed: ${JSON.stringify(entityResponse.error)}`
+    );
+  }
 
+  const entity = entityResponse.data;
+  if (entity.type != 'organization')
+    throw new Error(`Cannot generate bank account for an individual entity`);
+
+  const entityCountry = entity.address.country;
+  const country: keyof typeof bankCountriesToCurrencies = (
+    entityCountry in bankCountriesToCurrencies
+      ? entityCountry
+      : getRandomCountry()
+  ) as keyof typeof bankCountriesToCurrencies;
+
+  const bankName = faker.company.name();
+  const currency = bankCountriesToCurrencies[country];
+  const accountCreationParams = {
+    is_default_for_currency,
+    bank_name: `${bankName} Bank`,
+    display_name: faker.finance.accountName(),
+    currency: currency,
+    country,
+  } as components['schemas']['CreateEntityBankAccountRequest'];
+  switch (currency) {
+    case 'EUR':
+      accountCreationParams.iban = faker.finance.iban(false, country);
+      break;
+    case 'GBP':
+      accountCreationParams.account_holder_name =
+        entity.organization.legal_name;
+      accountCreationParams.account_number = faker.finance.accountNumber(8);
+      accountCreationParams.sort_code = faker.finance.accountNumber(6);
+      break;
+    // case 'USD':
+    //   accountCreationParams.account_holder_name = entity.organization.legal_name;
+    //   accountCreationParams.account_number = faker.finance.accountNumber(8);
+    //   accountCreationParams.routing_number = faker.finance.accountNumber(6);
+    //   break;
+    default:
+      throw new Error(
+        `Bank account generator - unsupported currency: ${currency}`
+      );
+  }
   const { data, error, response } = await POST('/bank_accounts', {
     params: {
       header: {
@@ -47,18 +94,7 @@ export const createBankAccount = async ({
         'x-monite-version': getMoniteApiVersion(),
       },
     },
-    body: {
-      is_default_for_currency,
-      iban: faker.finance.iban(false, country),
-      bic: getRandomItemFromArray(demoBankAccountBICList[country]),
-      bank_name: `${display_name} Bank`,
-      display_name,
-      account_number: faker.finance.accountNumber(),
-      account_holder_name: faker.finance.accountName(),
-      routing_number: faker.finance.routingNumber(),
-      currency: countriesToCurrencies[country],
-      country,
-    },
+    body: accountCreationParams,
   });
 
   if (error) {
@@ -105,43 +141,4 @@ export const getBankAccounts = async ({
   }
 
   return data.data;
-};
-
-export const demoBankAccountBICList = {
-  GE: [
-    'BAGAGE22',
-    'TBCBGE22',
-    'LBRTGE22',
-    'BASISGE22',
-    'MIBTGE22',
-    'REPLGE22',
-    'FINVGE22',
-    'CTRBGE22',
-    'PASOGE22',
-    'PRBAGE22',
-  ],
-  DE: [
-    'DEUTDEFF',
-    'COBADEFF',
-    'DRESDEFF',
-    'HYVEDEMM',
-    'BYLADEM1',
-    'BAYBDE61',
-    'GENODEF1',
-    'SOGEDEFF',
-    'DEUTDEBB',
-    'DEUTDE3BXXX',
-  ],
-  GB: [
-    'BARCGB22',
-    'HBUKGB4B',
-    'LOYDGB2L',
-    'NWBKGB2L',
-    'RBOSGB2L',
-    'MIDLGB22',
-    'BOFIGB2B',
-    'BSCHGB2L',
-    'CHASGB2L',
-    'CITIGB2L',
-  ],
 };
