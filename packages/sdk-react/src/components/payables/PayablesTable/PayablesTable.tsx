@@ -130,7 +130,9 @@ const PayablesTableBase = ({
           : undefined,
         status: currentFilter[FILTER_TYPE_STATUS] || undefined,
         due_date: currentFilter[FILTER_TYPE_DUE_DATE]
-          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
+              representation: 'date',
+            })
           : undefined,
         document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       },
