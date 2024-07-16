@@ -14,8 +14,6 @@ describe('InvoicesTable', () => {
     await expect(
       screen.findByRole('columnheader', { name: 'Action menu' })
     ).resolves.toBeInTheDocument();
-
-    screen.debug(undefined, 90_000);
   });
 
   test('renders action menu default items', async () => {
@@ -96,8 +94,6 @@ describe('InvoicesTable', () => {
   }, 10_000);
 
   test('not renders action menu if onRowAction property is not specified', async () => {
-    const onClick = jest.fn();
-
     renderWithClient(<InvoicesTable />);
 
     const firstInvoiceNotEmptyDocumentId = receivableListFixture.invoice.find(
@@ -111,7 +107,7 @@ describe('InvoicesTable', () => {
         name: String(firstInvoiceNotEmptyDocumentId),
       })
     ).resolves.toBeInstanceOf(Array);
-    screen.debug(undefined, 90_000);
+
     expect(
       screen.queryByRole('columnheader', { name: 'Action menu' })
     ).not.toBeInTheDocument();

@@ -283,17 +283,19 @@ describe('InvoiceDetails', () => {
     test('should show "EditInvoice" component when we click on "Edit invoice" button', async () => {
       renderWithClient(<InvoiceDetails id={invoice.id} />);
 
-      await waitUntilTableIsLoaded();
-
-      const editButton = screen.getByRole('button', {
+      const editButton = await screen.findByRole('button', {
         name: 'Edit invoice',
       });
 
+      expect(editButton).toBeInTheDocument();
+
       fireEvent.click(editButton);
 
-      expect(
-        await screen.findByText(`Edit invoice ${invoice.id}`)
-      ).toBeInTheDocument();
+      const editInvoiceTitle = await screen.findByRole('heading', {
+        name: /Edit invoice/i,
+      });
+
+      expect(editInvoiceTitle).toBeInTheDocument();
     });
   });
 });

@@ -24,8 +24,6 @@ describe('ReceivablesTable', () => {
       />
     );
 
-    await waitUntilTableIsLoaded();
-
     const documents = await screen.findAllByText(/quote-/);
 
     expect(documents[0]).toBeInTheDocument();
