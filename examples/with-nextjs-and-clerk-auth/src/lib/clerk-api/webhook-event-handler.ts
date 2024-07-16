@@ -36,6 +36,7 @@ import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
 import { nonNullable } from '@/lib/no-nullable';
 
+
 export const webhookEventHandler = async (
   event: WebhookEvent | OrganizationDomainWebhookEvent
 ) => {
@@ -57,6 +58,12 @@ export const webhookEventHandler = async (
   } else if (event.type === 'organizationDomain.deleted') {
     await organizationDomainDeleteEvent(event);
   }
+};
+
+const getRole = (eventRole: string) => {
+  if (!eventRole) return null;
+  const dotIndex = eventRole.indexOf(':');
+  return dotIndex >= 0 ? eventRole.substring(dotIndex + 1) : eventRole;
 };
 
 const handleOrganizationMembershipCreatedEvent = async (
@@ -99,13 +106,12 @@ const handleOrganizationMembershipCreatedEvent = async (
     const { entity_user_id } = getEntityUserData(entity_id, user);
     if (entity_user_id) return resolve(entity_user_id);
 
+    const role = getRole(event.data.role);
     const newEntityUser = await createUserEntity(
       {
         organizationId: organization.id,
         userId: user.id,
-        role: isExistingRole(event.data.role)
-          ? event.data.role
-          : 'guest_member',
+        role: isExistingRole(role) ? role : 'basic_member',
         entity: {
           entity_id,
           default_roles,
