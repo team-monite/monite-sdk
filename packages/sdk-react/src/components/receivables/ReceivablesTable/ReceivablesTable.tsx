@@ -6,9 +6,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Tabs, Tab, Box } from '@mui/material';
 
-import { CreditNotesTable } from '../CreditNotesTable';
 import { InvoicesTable } from '../InvoicesTable';
-import { QuotesTable } from '../QuotesTable';
 
 interface ReceivablesTableUncontrolledProps {
   tab?: undefined;
@@ -96,9 +94,7 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
-        >
-          <QuotesTable onRowClick={onRowClick} />
-        </Box>
+        ></Box>
       )}
 
       {activeTab === ReceivablesTableTabEnum.Invoices && (
@@ -116,9 +112,7 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
-        >
-          <CreditNotesTable onRowClick={onRowClick} />
-        </Box>
+        ></Box>
       )}
     </>
   );

@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  FILTER_TYPE_CUSTOMER,
-  FILTER_TYPE_DUE_DATE_LTE,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-} from '@/components/receivables/consts';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries';
+import { useReceivables } from '@/core/queries/useReceivables';
+import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -18,27 +14,17 @@ import {
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  InvoiceResponsePayload,
-  OrderEnum,
-  ReceivableCursorFields,
-  ReceivableResponse,
-  ReceivablesStatusEnum,
-  ReceivableType,
-} from '@monite/sdk-api';
 import { Box, Typography } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
   GridSortModel,
+  GridSortDirection,
 } from '@mui/x-data-grid';
-import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { formatISO } from 'date-fns';
-
-import { Filters } from '../Filters';
-import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
+import { ReceivableFilters } from '../ReceivableFilters';
+import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
   useInvoiceRowActionMenuCell,
   type UseInvoiceRowActionMenuCellProps,
@@ -57,9 +43,9 @@ export type InvoicesTableProps =
   | InvoicesTableBaseProps
   | (UseInvoiceRowActionMenuCellProps & InvoicesTableBaseProps);
 
-export interface InvoicesTableSortModel {
-  field: ReceivableCursorFields;
-  sort: GridSortDirection;
+export interface ReceivableGridSortModel {
+  field: components['schemas']['ReceivableCursorFields'];
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const InvoicesTable = (props: InvoicesTableProps) => (
@@ -73,59 +59,35 @@ const InvoicesTableBase = ({
   ...restProps
 }: InvoicesTableProps) => {
   const { i18n } = useLingui();
-  const [currentPaginationToken, setCurrentPaginationToken] = useState<
-    string | null
-  >(null);
+
+  const [paginationToken, setPaginationToken] = useState<string | undefined>(
+    undefined
+  );
+
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [sortModel, setSortModel] = useState<Array<InvoicesTableSortModel>>([]);
-  const sortModelItem = sortModel[0];
+
+  const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { onChangeFilter, currentFilters } = useReceivablesFilters();
+  const { filters, onChangeFilter } = useReceivablesFilters();
 
-  const { data: invoices, isLoading } = useReceivables(
-    sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModelItem ? sortModelItem.field : undefined,
-    ReceivableType.INVOICE,
-    undefined,
-    currentFilters[FILTER_TYPE_SEARCH] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_CUSTOMER] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_STATUS] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_DUE_DATE_LTE]
-      ? formatISO(currentFilters[FILTER_TYPE_DUE_DATE_LTE], {
-          representation: 'date',
-        })
-      : undefined
-  );
+  const { data: invoices, isLoading } = useReceivables({
+    ...filters,
+    sort: sortModel?.field,
+    order: sortModel?.sort,
+    limit: pageSize,
+    pagination_token: paginationToken,
+    type: 'invoice',
+  });
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<InvoicesTableSortModel>;
-    setSortModel(model);
-    setCurrentPaginationToken(null);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as ReceivableGridSortModel);
+    setPaginationToken(undefined);
   };
 
   const invoiceActionCell = useInvoiceRowActionMenuCell({
@@ -134,9 +96,6 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
-  // Workaround to prevent illegal sorting fields
-  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
-
   return (
     <>
       <Box
@@ -144,15 +103,21 @@ const InvoicesTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters
-            onChangeFilter={(field, value) => {
-              setCurrentPaginationToken(null);
+          <ReceivableFilters
+            onChange={(field, value) => {
+              setPaginationToken(undefined);
               onChangeFilter(field, value);
             }}
-            filters={['search', 'status', 'customer', 'due_date__lte']}
+            filters={[
+              'document_id__contains',
+              'status',
+              'counterpart_id',
+              'due_date__lte',
+            ]}
           />
         </Box>
-        <DataGrid
+
+        <DataGrid<components['schemas']['ReceivableResponse']>
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -164,7 +129,6 @@ const InvoicesTableBase = ({
               borderColor: 'divider',
             },
           }}
-          sortModel={sortModel}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           slots={{
@@ -174,11 +138,11 @@ const InvoicesTableBase = ({
                 prevPage={invoices?.prev_pagination_token}
                 paginationModel={{
                   pageSize,
-                  page: currentPaginationToken,
+                  page: paginationToken,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
                   setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
+                  setPaginationToken(page ?? undefined);
                 }}
               />
             ),
@@ -204,9 +168,7 @@ const InvoicesTableBase = ({
             {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.COUNTERPART_NAME
-              ),
+              sortable: ReceivableCursorFields.includes('counterpart_name'),
               flex: 1.3,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -240,13 +202,13 @@ const InvoicesTableBase = ({
             {
               field: 'status',
               headerName: t(i18n)`Status`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.STATUS
-              ),
+              sortable: ReceivableCursorFields.includes('status'),
               renderCell: (
-                params: GridRenderCellParams<ReceivableResponse>
+                params: GridRenderCellParams<
+                  components['schemas']['ReceivableResponse']
+                >
               ) => {
-                const status = params.value as ReceivablesStatusEnum;
+                const status = params.value;
                 return <InvoiceStatusChip status={status} />;
               },
               flex: 1,
@@ -254,11 +216,9 @@ const InvoicesTableBase = ({
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.AMOUNT
-              ),
+              sortable: ReceivableCursorFields.includes('amount'),
               valueGetter: (params) => {
-                const row = params.row as InvoiceResponsePayload;
+                const row = params.row;
                 const value = row.total_amount;
 
                 return value

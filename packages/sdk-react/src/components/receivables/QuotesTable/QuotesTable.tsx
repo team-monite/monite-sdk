@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  FILTER_TYPE_CUSTOMER,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-} from '@/components/receivables/consts';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries';
+import { useReceivables } from '@/core/queries/useReceivables';
+import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -18,13 +15,6 @@ import {
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OrderEnum,
-  QuoteResponsePayload,
-  ReceivableCursorFields,
-  ReceivablesStatusEnum,
-  ReceivableType,
-} from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import {
   DataGrid,
@@ -33,12 +23,12 @@ import {
 } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { Filters } from '../Filters';
-import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
+import { ReceivableFilters } from '../ReceivableFilters';
+import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 
 export interface QuotesTableSortModel {
-  field: ReceivableCursorFields;
-  sort: GridSortDirection;
+  field: components['schemas']['ReceivableCursorFields'];
+  sort: NonNullable<GridSortDirection>;
 }
 
 type QuotesTableProps = {
@@ -68,62 +58,40 @@ const QuotesTableBase = ({
   onChangeSort: onChangeSortCallback,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
-  const [currentPaginationToken, setCurrentPaginationToken] = useState<
-    string | null
-  >(null);
+
+  const [paginationToken, setPaginationToken] = useState<string | undefined>(
+    undefined
+  );
+
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
 
+  const [sortModel, setSortModel] = useState<QuotesTableSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
+
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { onChangeFilter, currentFilters } = useReceivablesFilters();
-  const [sortModel, setSortModel] = useState<Array<QuotesTableSortModel>>([]);
-  const sortModelItem = sortModel[0];
+  const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: quotes, isLoading } = useReceivables(
-    sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModelItem ? sortModelItem.field : undefined,
-    ReceivableType.QUOTE,
-    undefined,
-    currentFilters[FILTER_TYPE_SEARCH] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_CUSTOMER] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_STATUS] || undefined
-  );
+  const { data: quotes, isLoading } = useReceivables({
+    ...filters,
+    sort: sortModel?.field,
+    order: sortModel?.sort,
+    limit: pageSize,
+    pagination_token: paginationToken,
+    type: 'quote',
+  });
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<QuotesTableSortModel>;
+  const onChangeSort = (models: GridSortModel) => {
+    const model = models[0] as QuotesTableSortModel;
+
     setSortModel(model);
-    setCurrentPaginationToken(null);
+    setPaginationToken(undefined);
 
-    onChangeSortCallback?.(model[0]);
+    onChangeSortCallback?.(model);
   };
-
-  const onPrev = () =>
-    setCurrentPaginationToken(quotes?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(quotes?.next_pagination_token || null);
-
-  // Workaround to prevent illegal sorting fields
-  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
 
   return (
     <>
@@ -132,16 +100,15 @@ const QuotesTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters
-            onChangeFilter={onChangeFilter}
-            filters={['search', 'status', 'customer']}
+          <ReceivableFilters
+            onChange={onChangeFilter}
+            filters={['document_id__contains', 'status', 'counterpart_id']}
           />
         </Box>
         <DataGrid
           autoHeight
           rowSelection={false}
           loading={isLoading}
-          sortModel={sortModel}
           onSortModelChange={onChangeSort}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
@@ -159,11 +126,11 @@ const QuotesTableBase = ({
                 prevPage={quotes?.prev_pagination_token}
                 paginationModel={{
                   pageSize,
-                  page: currentPaginationToken,
+                  page: paginationToken,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
                   setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
+                  setPaginationToken(page ?? undefined);
                 }}
               />
             ),
@@ -191,17 +158,13 @@ const QuotesTableBase = ({
               headerName: t(i18n)`Issue Date`,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<
-                QuoteResponsePayload['issue_date']
-              >) =>
+              }: GridValueFormatterParams<'issue_date'>) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 1,
             },
             {
               field: 'counterpart_name',
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.COUNTERPART_NAME
-              ),
+              sortable: ReceivableCursorFields.includes('counterpart_name'),
               headerName: t(i18n)`Customer`,
               flex: 1,
               renderCell: (params) => (
@@ -216,20 +179,16 @@ const QuotesTableBase = ({
               headerName: t(i18n)`Due date`,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<
-                QuoteResponsePayload['expiry_date']
-              >) =>
+              }: GridValueFormatterParams<'expiry_date'>) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 1,
             },
             {
               field: 'status',
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.STATUS
-              ),
+              sortable: ReceivableCursorFields.includes('status'),
               headerName: t(i18n)`Status`,
               renderCell: (params) => {
-                const status = params.value as ReceivablesStatusEnum;
+                const status = params.value;
 
                 return <InvoiceStatusChip status={status} />;
               },
@@ -238,11 +197,9 @@ const QuotesTableBase = ({
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.AMOUNT
-              ),
+              sortable: ReceivableCursorFields.includes('amount'),
               valueGetter: (params) => {
-                const row = params.row as QuoteResponsePayload;
+                const row = params.row;
                 const value = row.total_amount;
 
                 return value
