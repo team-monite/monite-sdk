@@ -1,6 +1,6 @@
+import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { CurrencyEnum } from '@monite/sdk-api';
 
 export type CurrenciesType = Record<CurrencyEnum, string>;
 
@@ -153,3 +153,5 @@ export const getCurrenciesArray = (i18n: I18n): Array<CurrencyType> =>
     code: code as CurrencyEnum,
     label,
   }));
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
