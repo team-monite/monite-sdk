@@ -7,7 +7,6 @@ import { components } from '@/lib/monite-api/schema';
 
 import { GeneralService, getRandomItemFromArray } from './general.service';
 
-
 interface IReceivablesServiceOptions {
   /**
    * Describes, how many receivables should be created.

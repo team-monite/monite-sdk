@@ -5,7 +5,6 @@ import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
   const randomIndex = faker.number.int({ min: 0, max: array.length - 1 });
 

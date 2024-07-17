@@ -4,7 +4,6 @@ import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' assert
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { components, paths } from '@/lib/monite-api/schema';
 
-
 const apiVersion = apiPackage.apiVersion;
 
 export type MoniteClient = ReturnType<typeof createClient<paths>> & {

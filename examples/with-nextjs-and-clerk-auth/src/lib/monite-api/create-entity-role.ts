@@ -6,7 +6,6 @@ import {
 
 import type { components, paths } from './schema';
 
-
 export const createEntityRole = async (
   {
     entity_id,

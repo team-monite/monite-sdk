@@ -6,7 +6,6 @@ import {
 
 import { components, paths } from './schema';
 
-
 export const createEntity = async (
   entity: paths['/entities']['post']['requestBody']['content']['application/json'],
   token: AccessToken

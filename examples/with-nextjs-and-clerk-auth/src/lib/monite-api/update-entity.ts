@@ -6,7 +6,6 @@ import {
 
 import { paths } from './schema';
 
-
 export const updateEntity = async ({
   entity_id,
   entity,

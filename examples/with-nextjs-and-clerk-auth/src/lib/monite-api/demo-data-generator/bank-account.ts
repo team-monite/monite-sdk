@@ -11,7 +11,6 @@ import {
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 export const createBankAccount = async ({
   token,
   is_default_for_currency,
