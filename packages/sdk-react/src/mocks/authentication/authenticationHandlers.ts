@@ -1,15 +1,10 @@
-import {
-  AccessTokenResponse,
-  AUTH_TOKEN_ENDPOINT,
-  ErrorSchemaResponse,
-  ObtainTokenPayload,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
-import { http, HttpResponse, delay } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 
 import { authenticationTokenFixture } from './authenticationFixtures';
 
-const tokenAuthPath = `*/${AUTH_TOKEN_ENDPOINT}`;
+const tokenAuthPath = `*/auth/token`;
 
 export const authenticationHandlers = [
   http.post<{}, ObtainTokenPayload, AccessTokenResponse | ErrorSchemaResponse>(
@@ -36,3 +31,7 @@ export const authenticationHandlers = [
     }
   ),
 ];
+
+type AccessTokenResponse = components['schemas']['AccessTokenResponse'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type ObtainTokenPayload = components['schemas']['ObtainTokenPayload'];
