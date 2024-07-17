@@ -11,10 +11,9 @@ import {
   demoBankAccountBICList,
   getRandomCountry,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
-import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
-  createMoniteClient,
   getMoniteApiVersion,
+  MoniteClient,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
@@ -103,7 +102,7 @@ export class CounterpartsService extends GeneralService {
       );
 
       const counterpart = await createCounterpart({
-        token: this.token,
+        moniteClient: this.request,
         entity_id: this.entityId,
       });
 
@@ -135,9 +134,9 @@ export class CounterpartsService extends GeneralService {
         const counterpart = counterparts[counterpartIndex];
         try {
           const counterpartBankAccount = await createCounterpartBankAccount({
+            moniteClient: this.request,
             is_default_for_currency: true,
             counterpart_id: counterpart.id,
-            token: this.token,
             entity_id: this.entityId,
           });
           counterpartBankAccounts.push(counterpartBankAccount);
@@ -188,8 +187,8 @@ export class CounterpartsService extends GeneralService {
         const counterpart = counterparts[counterpartsIndex];
         try {
           const counterpartVat = await createCounterpartVatId({
+            moniteClient: this.request,
             counterpart_id: counterpart.id,
-            token: this.token,
             entity,
           });
           counterpartVats.push(counterpartVat);
@@ -217,18 +216,16 @@ export class CounterpartsService extends GeneralService {
 }
 
 export const createCounterpart = async ({
-  token,
+  moniteClient,
   entity_id,
 }: {
-  token: AccessToken;
+  moniteClient: MoniteClient;
   entity_id: string;
 }): Promise<components['schemas']['CounterpartResponse']> => {
-  const { POST } = createMoniteClient(token);
-
   const is_vendor = faker.datatype.boolean();
   const addressCountries = ['DE'] satisfies Array<AllowedCountries>;
 
-  const { data, error, response } = await POST('/counterparts', {
+  const { data, error, response } = await moniteClient.POST('/counterparts', {
     params: {
       header: {
         'x-monite-entity-id': entity_id,
@@ -271,16 +268,14 @@ export const createCounterpart = async ({
 };
 
 export const createCounterpartVatId = async ({
+  moniteClient,
   counterpart_id,
   entity,
-  token,
 }: {
+  moniteClient: MoniteClient;
   counterpart_id: string;
   entity: components['schemas']['EntityOrganizationResponse'];
-  token: AccessToken;
 }): Promise<CounterpartVatIDResponse> => {
-  const { POST } = createMoniteClient(token);
-
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
   const counterpartCountry = getRandomItemFromArray(addressCountries);
@@ -303,7 +298,7 @@ export const createCounterpartVatId = async ({
       break;
   }
 
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/counterparts/{counterpart_id}/vat_ids',
     {
       params: {
@@ -336,22 +331,20 @@ export const createCounterpartVatId = async ({
 };
 
 export const createCounterpartBankAccount = async ({
+  moniteClient,
   is_default_for_currency,
   counterpart_id,
   entity_id,
-  token,
 }: {
+  moniteClient: MoniteClient;
   is_default_for_currency: true;
   counterpart_id: string;
   entity_id: string;
-  token: AccessToken;
 }): Promise<CounterpartBankAccountResponse> => {
-  const { POST } = createMoniteClient(token);
-
   const countryCode = getRandomCountry();
   const currency = bankCountriesToCurrencies[countryCode];
 
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/counterparts/{counterpart_id}/bank_accounts',
     {
       params: {

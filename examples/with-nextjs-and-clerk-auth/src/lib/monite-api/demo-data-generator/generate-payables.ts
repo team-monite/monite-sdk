@@ -14,7 +14,10 @@ import {
   PayableCounterpart,
 } from '@/lib/monite-api/demo-data-generator/payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
-import { createMoniteClient } from '@/lib/monite-api/monite-client';
+import {
+  createMoniteClient,
+  MoniteClient,
+} from '@/lib/monite-api/monite-client';
 
 export const generateCounterpartsWithPayables = async (
   {
@@ -52,7 +55,7 @@ export const generateCounterpartsWithPayables = async (
 
     try {
       const counterpart = await createCounterpart({
-        token,
+        moniteClient,
         entity_id,
       });
 
@@ -61,7 +64,7 @@ export const generateCounterpartsWithPayables = async (
       const counterpart_bank_account = await createCounterpartBankAccount({
         is_default_for_currency: true,
         counterpart_id: counterpart.id,
-        token,
+        moniteClient,
         entity_id,
       });
 
@@ -69,7 +72,7 @@ export const generateCounterpartsWithPayables = async (
 
       const vat = await createCounterpartVatId({
         counterpart_id: counterpart.id,
-        token,
+        moniteClient,
         entity,
       });
 
@@ -104,7 +107,7 @@ export const generateCounterpartsWithPayables = async (
   for (let payableIndex = 0; payableIndex < payable_count; payableIndex++) {
     try {
       await generatePayableWithLineItems({
-        token,
+        moniteClient,
         entity_id,
         counterparts,
       });
@@ -133,7 +136,7 @@ const generatePayableWithLineItems = async (
     ...entityParams
   }: {
     entity_id: string;
-    token: AccessToken;
+    moniteClient: MoniteClient;
     counterparts: PayableCounterpart[];
   },
   {
