@@ -5,7 +5,6 @@ import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { usePaymentTerms } from '@/core/queries';
 import { getCountries, getCurrencies } from '@/core/utils';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -56,7 +55,7 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
     api.bankAccounts.getBankAccounts.useQuery({});
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
-    usePaymentTerms();
+    api.paymentTerms.getPaymentTerms.useQuery({});
 
   const noPaymentTerms = useMemo(() => {
     if (!paymentTerms) {
