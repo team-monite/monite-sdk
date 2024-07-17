@@ -58,12 +58,12 @@ export const InvoiceItems = ({
                 </TableCell>
                 <TableCell style={{ width: '20%' }}>
                   <Typography>
-                    {price &&
-                      price.currency &&
-                      formatCurrencyToDisplay(
-                        quantity * price.value,
-                        price.currency
-                      )}
+                    {price?.currency
+                      ? formatCurrencyToDisplay(
+                          quantity * price.value,
+                          price.currency
+                        )
+                      : '—'}
                   </Typography>
                 </TableCell>
               </TableRow>
