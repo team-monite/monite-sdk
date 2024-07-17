@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 import {
   createCounterpart,
   createCounterpartBankAccount,
+  createCounterpartContact,
   createCounterpartVatId,
 } from '@/lib/monite-api/demo-data-generator/counterparts';
 import {
@@ -85,6 +86,22 @@ export const generateCounterpartsWithPayables = async (
             currency: counterpart_bank_account.currency,
           },
         });
+
+        if (counterpart.type == 'organization') {
+          console.log(chalk.green('- Creating Counterpart Contact'));
+
+          await createCounterpartContact({
+            counterpart_id: counterpart.id,
+            moniteClient,
+            entity,
+          });
+        } else {
+          console.log(
+            chalk.blue(
+              "- Skipping Contact creation because the counterpart isn't an organization"
+            )
+          );
+        }
 
         logger?.({ message: 'Generating counterparts...' });
       } else {
