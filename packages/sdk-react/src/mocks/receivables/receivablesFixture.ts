@@ -20,7 +20,6 @@ import {
   getRandomNumber,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { CounterpartType } from '@monite/sdk-api';
 
 export type ReceivablesListFixture = {
   quote: Array<components['schemas']['QuoteResponsePayload']>;
@@ -235,14 +234,11 @@ function createRandomInvoice(
       .map(createRandomLineItem),
     counterpart_id: randomExistingCounterpart.id,
     counterpart_name:
-      counterpart_type === CounterpartType.ORGANIZATION
-        ? faker.company.name()
-        : undefined,
+      counterpart_type === 'organization' ? faker.company.name() : undefined,
     counterpart_type,
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
-    // @ts-expect-error - `CounterpartVatIDResponse` is coming from the legacy API client
     counterpart_vat_id: faker.datatype.boolean()
       ? getRandomItemFromArray(
           counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
@@ -276,7 +272,6 @@ function createRandomInvoice(
     },
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
-    // @ts-expect-error - `EntityVatIDResponse` is coming from the legacy API client
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
@@ -322,7 +317,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     },
     counterpart_id: faker.string.uuid(),
     counterpart_name: faker.company.name(),
-    counterpart_type: CounterpartType.INDIVIDUAL,
+    counterpart_type: 'individual',
     counterpart_address: {
       country: 'DE',
       city: 'Berlin',
