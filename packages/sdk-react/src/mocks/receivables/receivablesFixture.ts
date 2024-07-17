@@ -85,6 +85,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
     quantity: faker.number.int({ min: 1, max: 10 }),
     product: {
       id: faker.string.uuid(),
+      type: 'product',
       name: faker.commerce.productName(),
       price: {
         value: faker.number.int({ min: 10, max: 30_000 }),
