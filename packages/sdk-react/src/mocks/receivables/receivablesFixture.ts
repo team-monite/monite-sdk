@@ -275,9 +275,11 @@ function createRandomInvoice(
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
-    // @ts-expect-error - `EntityBankAccount` is coming from the legacy API client
     entity_bank_account: faker.datatype.boolean()
-      ? getRandomItemFromArray(bankAccountsFixture.data)
+      ? {
+          ...getRandomItemFromArray(bankAccountsFixture.data),
+          is_default: true,
+        }
       : undefined,
     related_documents: {
       credit_note_ids: undefined,
@@ -292,6 +294,9 @@ function createRandomInvoice(
     discounted_subtotal: discount,
     total_vat_amount: totalVatAmount,
     total_amount_with_credit_notes: total,
+    file_language: 'en',
+    original_file_language: 'en',
+    total_amount: Number(faker.commerce.price()),
   };
 }
 
