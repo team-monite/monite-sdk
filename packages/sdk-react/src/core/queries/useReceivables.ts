@@ -211,8 +211,6 @@ export const useDeleteReceivableById = (receivable_id: string) => {
           queryClient
         );
 
-        // remove(receivableId);
-
         toast.success(t(i18n)`${receivable.type} has been deleted`);
       },
     }
