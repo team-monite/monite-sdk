@@ -1,7 +1,6 @@
 export * from './useWorkflows';
 export * from './useCounterpart';
 export * from './useEntityUsers';
-export * from './useInternalSettings';
 export * from './useReceivables';
 export * from './useMeasureUnits';
 export * from './useVatRates';
