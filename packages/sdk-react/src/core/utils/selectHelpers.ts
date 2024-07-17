@@ -1,7 +1,7 @@
 import type { AllowedCountries, CurrencyEnum } from '@monite/sdk-api';
 
 import type { CountriesType } from './countries';
-import type { CurrenciesType } from './currenices';
+import type { CurrenciesType } from './currencies';
 
 export type SelectOption = { label: string; value: string };
 
