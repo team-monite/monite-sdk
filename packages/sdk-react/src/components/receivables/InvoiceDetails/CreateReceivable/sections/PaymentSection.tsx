@@ -3,9 +3,9 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { usePaymentTerms } from '@/core/queries';
-import { useBankAccounts } from '@/core/queries/useBankAccounts';
 import { getCountries, getCurrencies } from '@/core/utils';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -51,9 +51,10 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { control } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
 
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
-    useBankAccounts();
+    api.bankAccounts.getBankAccounts.useQuery({});
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
     usePaymentTerms();
 
@@ -101,7 +102,6 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
                     >
                       {bankAccounts?.data.map((bankAccount) => (
                         <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                          {/* @ts-expect-error - `EntityBankAccountResponse` is coming from the legacy API client */}
                           {`${getBankAccountName(i18n, bankAccount)} ${
                             bankAccount.is_default_for_currency
                               ? t(i18n)`(Default)`

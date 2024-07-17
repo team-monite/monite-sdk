@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useMyEntity } from '@/core/queries/useEntities';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -23,13 +22,13 @@ export const OnboardingEntityDocuments = () => {
 
   const { data: onboarding } = useOnboardingRequirementsData();
 
-  const { data: entity } = useMyEntity();
+  const { api } = useMoniteContext();
+
+  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery({});
 
   const { data: descriptions } = useDocumentDescriptions(
     entity?.address.country
   );
-
-  const { api } = useMoniteContext();
   const { mutateAsync, isPending } =
     api.onboardingDocuments.postOnboardingDocuments.useMutation(undefined);
 
