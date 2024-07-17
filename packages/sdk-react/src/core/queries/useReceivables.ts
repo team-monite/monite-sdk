@@ -5,7 +5,7 @@ import type { Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { isInvoice } from '@/components/receivables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { t } from '@lingui/macro';
+import { t, select } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 export const useReceivables = (
@@ -190,28 +190,35 @@ export const useDeleteReceivableById = (receivable_id: string) => {
     },
     {
       onSuccess: () => {
-        const receivable = api.receivables.getReceivablesId.getQueryData(
-          {
-            path: {
-              receivable_id,
+        const previousReceivable =
+          api.receivables.getReceivablesId.getQueryData(
+            {
+              path: {
+                receivable_id,
+              },
             },
-          },
-          queryClient
-        );
+            queryClient
+          );
 
-        if (!receivable) return;
-
-        api.receivables.getReceivablesId.setQueryData(
-          {
-            path: {
-              receivable_id,
+        if (previousReceivable)
+          api.receivables.getReceivablesId.setQueryData(
+            {
+              path: {
+                receivable_id,
+              },
             },
-          },
-          { ...receivable, status: 'deleted' },
-          queryClient
-        );
+            { ...previousReceivable, status: 'deleted' },
+            queryClient
+          );
 
-        toast.success(t(i18n)`${receivable.type} has been deleted`);
+        t(i18n)({
+          message: select(previousReceivable?.type ?? '', {
+            credit_note: 'Credit Note has been deleted',
+            invoice: 'Invoice has been deleted',
+            quote: 'Quote has been deleted',
+            other: 'Receivable has been deleted',
+          }),
+        });
       },
     }
   );
