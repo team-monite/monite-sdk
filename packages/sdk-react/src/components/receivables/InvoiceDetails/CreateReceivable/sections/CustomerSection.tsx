@@ -488,9 +488,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           key={shippingAddress.id}
                           value={shippingAddress.id}
                         >
-                          {shippingAddress && (
-                            <CounterpartAddressView address={shippingAddress} />
-                          )}
+                          <CounterpartAddressView address={shippingAddress} />
                         </MenuItem>
                       ))}
                     </Select>
