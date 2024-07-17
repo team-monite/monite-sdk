@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMeasureUnits } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -23,8 +23,9 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
-    useMeasureUnits();
+    api.measureUnits.getMeasureUnits.useQuery({});
 
   return (
     <Grid container spacing={2}>

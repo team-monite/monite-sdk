@@ -1,10 +1,10 @@
-import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMeasureUnits } from '@/core/queries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -46,7 +46,9 @@ interface ProductFormProps {
 export const ProductForm = (props: ProductFormProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { data: measureUnits, isLoading } = useMeasureUnits();
+  const { api } = useMoniteContext();
+  const { data: measureUnits, isLoading } =
+    api.measureUnits.getMeasureUnits.useQuery({});
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
