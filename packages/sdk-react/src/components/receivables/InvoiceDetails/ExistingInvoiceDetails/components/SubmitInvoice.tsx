@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -14,10 +14,7 @@ import {
 } from '@mui/material';
 import { lighten, useTheme } from '@mui/material/styles';
 
-enum DeliveryMethod {
-  Email = 'email',
-  Download = 'download',
-}
+import { DeliveryMethod } from '../useExistingInvoiceDetails';
 
 const DeliveryMethodView = ({
   icon,
@@ -34,7 +31,7 @@ const DeliveryMethodView = ({
   title: string;
   description: string;
   disabled?: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
 }) => {
   const theme = useTheme();
 

@@ -1,163 +1,114 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
 
+import type { Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
-import { t } from '@lingui/macro';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { t, select } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ApiError,
-  CreditNoteResponsePayload,
-  CreditNoteStateEnum,
-  InvoiceResponsePayload,
-  LineItemsResponse,
-  QuoteResponsePayload,
-  QuoteStateEnum,
-  ReceivableFacadeCreatePayload,
-  ReceivableFileUrl,
-  ReceivablePaginationResponse,
-  ReceivableResponse,
-  ReceivableSendRequest,
-  ReceivableSendResponse,
-  ReceivableService,
-  ReceivablesStatusEnum,
-  ReceivableUpdatePayload,
-  UpdateLineItems,
-} from '@monite/sdk-api';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { useMoniteContext } from '../context/MoniteContext';
-import { useEntityCache, useEntityListCache } from './hooks';
-
-const receivablesQueryKeys = {
-  all: () => ['receivable'],
-  pdf: (id: string) => [...receivablesQueryKeys.all(), 'detail', id, 'pdf'],
-  detail: (id: string) => [...receivablesQueryKeys.all(), 'detail', id],
-};
-
-export const receivablesDefaultQueryConfig = {
-  refetchInterval: 15_000,
-};
-
-function exhaustiveMatchingGuard(_: never): never {
-  throw new Error('Should not have reached here');
-}
-
-const useReceivableListCache = () =>
-  useEntityListCache<ReceivableResponse>(receivablesQueryKeys.all);
-
-const useReceivableDetailCache = (id: string) =>
-  useEntityCache<ReceivableResponse>(() => receivablesQueryKeys.detail(id));
 
 export const useReceivables = (
-  ...args: Parameters<ReceivableService['getAllReceivables']>
+  query: Services['receivables']['getReceivables']['types']['parameters']['query']
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<ReceivablePaginationResponse, Error>({
-    queryKey: [...receivablesQueryKeys.all(), { variables: args }],
-
-    queryFn: () => monite.api.receivable.getAllReceivables(...args),
-    ...receivablesDefaultQueryConfig,
+  return api.receivables.getReceivables.useQuery({
+    query,
   });
-};
-
-const useInvalidateReceivablePDF = () => {
-  const queryClient = useQueryClient();
-
-  return {
-    /**
-     * Invalidate receivable PDF cache and remove current PDF from the cache
-     *
-     * @param id Receivable ID
-     */
-    invalidate(id: string) {
-      /**
-       * We have to invalidate a PDF query to get the
-       *  latest PDF & remove current PDF from the cache
-       */
-      queryClient.invalidateQueries({
-        queryKey: receivablesQueryKeys.pdf(id),
-      });
-      queryClient.setQueryData(receivablesQueryKeys.pdf(id), null);
-    },
-  };
 };
 
 export const useCreateReceivable = () => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<ReceivableResponse, Error, ReceivableFacadeCreatePayload>({
-    mutationFn: (payload) => monite.api.receivable.createNewReceivable(payload),
+  return api.receivables.postReceivables.useMutation(
+    {},
+    {
+      onSuccess: async (receivable) => {
+        await api.receivables.getReceivables.invalidateQueries(queryClient);
 
-    onSuccess: (receivable) => {
-      invalidate();
-      if (receivable.counterpart_name) {
-        toast.success(
-          t(i18n)`Invoice to “${receivable.counterpart_name}” was created`
-        );
+        if (receivable.counterpart_name) {
+          return toast.success(
+            t(i18n)`Invoice to “${receivable.counterpart_name}” was created`
+          );
+        }
 
-        return;
-      }
-
-      toast.success(t(i18n)`Invoice with id “${receivable.id}” was created`);
-    },
-  });
+        toast.success(t(i18n)`${receivable.type} has been created`);
+      },
+    }
+  );
 };
 
 /**
  * Update receivable line items
  *
- * @param id - Receivable id
+ * @param receivable_id - Receivable id
  */
-export const useUpdateReceivableLineItems = (id: string) => {
-  const { monite } = useMoniteContext();
+export const useUpdateReceivableLineItems = (receivable_id: string) => {
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<LineItemsResponse, Error, UpdateLineItems>({
-    mutationFn: (payload) =>
-      monite.api.receivable.updateLineItemsById(id, payload),
-  });
+  return api.receivables.putReceivablesIdLineItems.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
+    },
+    {
+      onSuccess: async () => {
+        await api.receivables.getReceivablesId.invalidateQueries(
+          {
+            parameters: {
+              path: {
+                receivable_id,
+              },
+            },
+          },
+          queryClient
+        );
+      },
+    }
+  );
 };
 
 /**
  * Update receivable by provided `id`
  *
- * @param id - Receivable id
+ * @param receivable_id - Receivable id
  */
-export const useUpdateReceivable = (id: string) => {
+export const useUpdateReceivable = (receivable_id: string) => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
-  const { setEntity } = useReceivableDetailCache(id);
-  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<
-    ReceivableResponse,
-    Error,
-    Omit<ReceivableUpdatePayload, 'lineItems'>
-  >({
-    mutationFn: (payload) => monite.api.receivable.updateById(id, payload),
-
-    onSuccess: (receivable) => {
-      /** Update receivable details */
-      setEntity(receivable);
-
-      /** Invalidate the whole receivable list */
-      invalidate();
-
-      /**
-       * We have to invalidate a PDF query to get the
-       *  latest PDF & remove current PDF from the cache
-       */
-      invalidatePDF(receivable.id);
-
-      toast.success(t(i18n)`Invoice “${receivable.id}” was updated`);
-
-      return;
+  return api.receivables.patchReceivablesId.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
-  });
+    {
+      onSuccess: async (receivable) => {
+        api.receivables.getReceivablesId.setQueryData(
+          {
+            path: {
+              receivable_id,
+            },
+          },
+          receivable,
+          queryClient
+        );
+
+        await Promise.all([
+          api.receivables.getReceivablesIdPdfLink.resetQueries(
+            { parameters: { path: { receivable_id } } },
+            queryClient
+          ),
+          api.receivables.getReceivables.invalidateQueries(queryClient),
+        ]);
+
+        toast.success(t(i18n)`${receivable.type} has been updated`);
+      },
+    }
+  );
 };
 
 /**
@@ -165,13 +116,13 @@ export const useUpdateReceivable = (id: string) => {
  *
  * @see {@link https://docs.monite.com/reference/get_receivables_id} Monite backend call API
  */
-export const useReceivableById = (receivableId: string) => {
-  const { monite } = useMoniteContext();
+export const useReceivableById = (receivable_id: string) => {
+  const { api } = useMoniteContext();
 
-  return useQuery<ReceivableResponse | undefined, ApiError>({
-    queryKey: receivablesQueryKeys.detail(receivableId),
-    queryFn: () => monite.api.receivable.getById(receivableId),
-    ...receivablesDefaultQueryConfig,
+  return api.receivables.getReceivablesId.useQuery({
+    path: {
+      receivable_id,
+    },
   });
 };
 
@@ -180,32 +131,46 @@ export const useReceivableById = (receivableId: string) => {
  *
  * @see {@link https://docs.monite.com/reference/post_receivables_id_issue} Monite backend call API
  */
-export const useIssueReceivableById = () => {
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
+export const useIssueReceivableById = (receivable_id: string) => {
   const { i18n } = useLingui();
-  const { invalidate: invalidatePDF } = useInvalidateReceivablePDF();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<ReceivableResponse, ApiError, string>({
-    mutationFn: (receivableId) => monite.api.receivable.issueById(receivableId),
-
-    onSuccess: (receivable, id) => {
-      queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
-      invalidate();
-
-      /**
-       * We have to invalidate a PDF query to get the
-       *  latest PDF & remove current PDF from the cache
-       */
-      invalidatePDF(receivable.id);
-
-      toast.success(t(i18n)`Issued`);
+  return api.receivables.postReceivablesIdIssue.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
-    onError: (error) => {
-      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
-    },
-  });
+    {
+      onSuccess: async (receivable) => {
+        api.receivables.getReceivablesId.setQueryData(
+          {
+            path: {
+              receivable_id,
+            },
+          },
+          receivable,
+          queryClient
+        );
+
+        await Promise.all([
+          api.receivables.getReceivables.invalidateQueries(queryClient),
+          api.receivables.getReceivablesIdPdfLink.resetQueries(
+            {
+              parameters: {
+                path: {
+                  receivable_id,
+                },
+              },
+            },
+            queryClient
+          ),
+        ]);
+
+        toast.success(t(i18n)`${receivable.type} has been issued`);
+      },
+    }
+  );
 };
 
 /**
@@ -213,57 +178,50 @@ export const useIssueReceivableById = () => {
  *
  * @see {@link https://docs.monite.com/reference/delete_receivables_id} Monite backend call API
  */
-export const useDeleteReceivableById = () => {
+export const useDeleteReceivableById = (receivable_id: string) => {
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
-  const { remove } = useReceivableListCache();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<void, ApiError, string>({
-    mutationFn: (id) => monite.api.receivable.deleteById(id),
-
-    onSuccess: (_, receivableId) => {
-      /** Update current receivable status */
-      queryClient.setQueryData<ReceivableResponse>(
-        receivablesQueryKeys.detail(receivableId),
-        (currentReceivable) => {
-          if (!currentReceivable) {
-            return undefined;
-          }
-
-          switch (currentReceivable.type) {
-            case CreditNoteResponsePayload.type.CREDIT_NOTE: {
-              return {
-                ...currentReceivable,
-                status: CreditNoteStateEnum.DELETED,
-              };
-            }
-
-            case QuoteResponsePayload.type.QUOTE: {
-              return {
-                ...currentReceivable,
-                status: QuoteStateEnum.DELETED,
-              };
-            }
-
-            case InvoiceResponsePayload.type.INVOICE: {
-              return {
-                ...currentReceivable,
-                status: ReceivablesStatusEnum.DELETED,
-              };
-            }
-          }
-        }
-      );
-      remove(receivableId);
-
-      toast.success(t(i18n)`Receivable was deleted`);
+  return api.receivables.deleteReceivablesId.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
+    {
+      onSuccess: () => {
+        const previousReceivable =
+          api.receivables.getReceivablesId.getQueryData(
+            {
+              path: {
+                receivable_id,
+              },
+            },
+            queryClient
+          );
 
-    onError: (error) => {
-      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
-    },
-  });
+        if (previousReceivable)
+          api.receivables.getReceivablesId.setQueryData(
+            {
+              path: {
+                receivable_id,
+              },
+            },
+            { ...previousReceivable, status: 'deleted' },
+            queryClient
+          );
+
+        t(i18n)({
+          message: select(previousReceivable?.type ?? '', {
+            credit_note: 'Credit Note has been deleted',
+            invoice: 'Invoice has been deleted',
+            quote: 'Quote has been deleted',
+            other: 'Receivable has been deleted',
+          }),
+        });
+      },
+    }
+  );
 };
 
 /**
@@ -271,40 +229,54 @@ export const useDeleteReceivableById = () => {
  *
  * @see {@link https://docs.monite.com/reference/post_receivables_id_cancel} Monite backend call API
  */
-export const useCancelReceivableById = () => {
+export const useCancelReceivableById = (receivable_id: string) => {
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<void, ApiError, string>({
-    mutationFn: (id) => monite.api.receivable.cancelById(id),
-
-    onSuccess: (_, receivableId) => {
-      /** Update current receivable status */
-      queryClient.setQueryData<InvoiceResponsePayload>(
-        receivablesQueryKeys.detail(receivableId),
-        (currentReceivable) => {
-          if (!currentReceivable) {
-            return undefined;
-          }
-
-          return {
-            ...currentReceivable,
-            status: ReceivablesStatusEnum.CANCELED,
-          };
-        }
-      );
-
-      invalidate();
-
-      toast.success(t(i18n)`Canceled`);
+  return api.receivables.postReceivablesIdCancel.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
+    {
+      onSuccess: async () => {
+        const previousReceivable =
+          api.receivables.getReceivablesId.getQueryData(
+            {
+              path: {
+                receivable_id,
+              },
+            },
+            queryClient
+          );
 
-    onError: (error) => {
-      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
-    },
-  });
+        if (previousReceivable?.type === 'invoice')
+          api.receivables.getReceivablesId.setQueryData(
+            {
+              path: {
+                receivable_id,
+              },
+            },
+            { ...previousReceivable, status: 'canceled' },
+            queryClient
+          );
+
+        await api.receivables.getReceivables.invalidateQueries(queryClient);
+
+        toast.success(
+          t(i18n)({
+            message: select(previousReceivable?.type ?? '', {
+              credit_note: 'Credit Note has been canceled',
+              invoice: 'Invoice has been canceled',
+              quote: 'Quote has been canceled',
+              other: 'Receivable has been canceled',
+            }),
+          })
+        );
+      },
+    }
+  );
 };
 
 /**
@@ -312,133 +284,103 @@ export const useCancelReceivableById = () => {
  *
  * @see {@link https://docs.monite.com/reference/post_receivables_id_mark_as_uncollectible} Monite backend call API
  */
-export const useMarkAsUncollectibleReceivableById = () => {
-  const queryClient = useQueryClient();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
+export const useMarkAsUncollectibleReceivableById = (receivable_id: string) => {
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
 
-  return useMutation<ReceivableResponse, ApiError, string>({
-    mutationFn: (id) => monite.api.receivable.markAsUncollectibleById(id),
-
-    onSuccess: (receivable, id) => {
-      queryClient.setQueryData(receivablesQueryKeys.detail(id), receivable);
-      invalidate();
-
-      toast.success(t(i18n)`Marked as uncollectible`);
+  return api.receivables.postReceivablesIdMarkAsUncollectible.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
+    {
+      onSuccess: async (receivable) => {
+        api.receivables.getReceivablesId.setQueryData(
+          {
+            path: {
+              receivable_id,
+            },
+          },
+          receivable,
+          queryClient
+        );
 
-    onError: (error) => {
-      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
-    },
-  });
+        await api.receivables.getReceivables.invalidateQueries(queryClient);
+
+        toast.success(t(i18n)`Marked as uncollectible`);
+      },
+    }
+  );
 };
 
 /**
- * Issue an invoice and send PDF with an email
+ * Issue a receivable and send PDF with an email
  *  to the counterpart
  */
-export const useSendReceivableById = () => {
+export const useSendReceivableById = (receivable_id: string) => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useReceivableListCache();
+  const { api, queryClient } = useMoniteContext();
 
-  return useMutation<
-    ReceivableSendResponse,
-    ApiError,
+  return api.receivables.postReceivablesIdSend.useMutation(
     {
-      receivableId: string;
-      body: ReceivableSendRequest;
+      path: {
+        receivable_id,
+      },
+    },
+    {
+      onSuccess: async () => {
+        await Promise.all([
+          api.receivables.getReceivables.invalidateQueries(queryClient),
+          api.receivables.getReceivablesId.invalidateQueries(
+            {
+              parameters: { path: { receivable_id } },
+            },
+            queryClient
+          ),
+        ]);
+
+        const receivable = api.receivables.getReceivablesId.getQueryData(
+          { path: { receivable_id } },
+          queryClient
+        );
+
+        toast.success(
+          t(i18n)({
+            message: select(receivable?.type ?? '', {
+              credit_note: 'Credit Note has been sent',
+              invoice: 'Invoice has been sent',
+              quote: 'Quote has been sent',
+              other: 'Receivable has been sent',
+            }),
+          })
+        );
+      },
     }
-  >({
-    mutationFn: ({ receivableId, body }) =>
-      monite.api.receivable.send(receivableId, body),
-
-    onSuccess: () => {
-      invalidate();
-
-      toast.success(t(i18n)`Sent`);
-    },
-
-    onError: (error) => {
-      toast.error(getLegacyAPIErrorMessage(error) || t(i18n)`Unknown error`);
-    },
-  });
+  );
 };
 
-export const usePDFReceivableByIdMutation = (
-  receivableId: string,
-  options?: {
-    onSuccess?: (data: ReceivableFileUrl) => void;
-  }
+export const useReceivablePDFById = (
+  receivable_id: string,
+  options?: { refetchInterval: 15_000 }
 ) => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useMutation<ReceivableFileUrl, ApiError>({
-    mutationKey: receivablesQueryKeys.pdf(receivableId),
-    mutationFn: () => monite.api.receivable.getPdfLink(receivableId),
-    retry: false,
-    onSuccess: (response) => {
-      toast.success(t(i18n)`PDF was generated`);
-
-      options?.onSuccess?.(response);
+  return api.receivables.getReceivablesIdPdfLink.useQuery(
+    {
+      path: {
+        receivable_id,
+      },
     },
-  });
+    options
+  );
 };
 
-export const usePDFReceivableById = (
-  receivableId: string,
-  options?: {
-    enabled?: boolean;
-  }
-) => {
-  const { monite } = useMoniteContext();
-  const queryClient = useQueryClient();
-
-  return useQuery<ReceivableFileUrl, ApiError>({
-    queryKey: receivablesQueryKeys.pdf(receivableId),
-    queryFn: async () => {
-      const response = await monite.api.receivable.getPdfLink(receivableId);
-
-      if (!response.file_url) {
-        /**
-         * We have to flush current query data to show the error
-         *  but not previous data
-         */
-        queryClient.setQueryData(receivablesQueryKeys.pdf(receivableId), null);
-
-        throw new Error('File URL is not provided');
-      }
-
-      return response;
-    },
-
-    enabled: options?.enabled,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    gcTime: 0,
-    refetchIntervalInBackground: false,
-    staleTime: 0,
-    /** Implement `retry` logic only if we have "File URL is not provided" error */
-    retry: (failureCount, error) => {
-      /** Implement `retry` logic only if we have "File URL is not provided" error */
-      if (error.message === 'File URL is not provided') {
-        return failureCount <= 4;
-      }
-
-      return false;
-    },
-    retryDelay: 1_000,
-  });
-};
-
-export enum InvoiceDetailsPermissions {
-  Cancel = 'cancel',
-  Delete = 'delete',
-  Issue = 'issue',
-  MarkAsUncollectible = 'mark_as_uncollectible',
-}
+export type InvoiceDetailsPermissions =
+  | 'cancel'
+  | 'delete'
+  | 'issue'
+  | 'mark_as_uncollectible';
 
 type IUseInvoiceDetailsProps = {
   id: string;
@@ -447,49 +389,30 @@ type IUseInvoiceDetailsProps = {
   'onIssue' | 'onDelete' | 'onCancel' | 'onMarkAsUncollectible'
 >;
 
-interface IReceivableDetailsResult {
-  permissions: Array<InvoiceDetailsPermissions>;
-  receivable: ReceivableResponse | undefined;
-
-  isLoading: boolean;
-
-  /**
-   * `isButtonsLoading` means that some mutation
-   *  (issue action, cancel action, etc)
-   *  is on the fly and we have no ability to call any other action
-   */
-  isButtonsLoading: boolean;
-  error: ApiError | null;
-
-  actions: {
-    issueInvoice: () => Promise<void>;
-    deleteInvoice: () => Promise<void>;
-    cancelInvoice: () => Promise<void>;
-    markAsUncollectibleInvoice: () => Promise<void>;
-  };
-}
-
 export function useInvoiceDetails({
   id,
   onCancel,
   onIssue,
   onMarkAsUncollectible,
   onDelete,
-}: IUseInvoiceDetailsProps): IReceivableDetailsResult {
+}: IUseInvoiceDetailsProps) {
   const { data: receivable, isLoading, error } = useReceivableById(id);
+
   const [permissions, setPermissions] = useState<
     Array<InvoiceDetailsPermissions>
   >([]);
+
   const [isPermissionsLoading, setIsPermissionsLoading] =
     useState<boolean>(true);
+
   const [isButtonsLoading, setIsButtonsLoading] = useState<boolean>(true);
 
-  const issueMutation = useIssueReceivableById();
-  const deleteMutation = useDeleteReceivableById();
-  const cancelMutation = useCancelReceivableById();
-  const markAsUncollectibleMutation = useMarkAsUncollectibleReceivableById();
+  const issueMutation = useIssueReceivableById(id);
+  const deleteMutation = useDeleteReceivableById(id);
+  const cancelMutation = useCancelReceivableById(id);
+  const markAsUncollectibleMutation = useMarkAsUncollectibleReceivableById(id);
 
-  const status = receivable?.status as ReceivablesStatusEnum | undefined;
+  const status = receivable?.status;
   const type = receivable?.type;
 
   useEffect(() => {
@@ -505,52 +428,34 @@ export function useInvoiceDetails({
     setIsPermissionsLoading(true);
 
     switch (status) {
-      case ReceivablesStatusEnum.DRAFT: {
-        setPermissions([
-          InvoiceDetailsPermissions.Delete,
-          InvoiceDetailsPermissions.Issue,
-        ]);
+      case 'draft': {
+        setPermissions(['delete', 'issue']);
 
         break;
       }
 
-      case ReceivablesStatusEnum.ISSUED: {
+      case 'issued': {
         /**
          * We can cancel only `Invoice` type of `Receivable`.
          * It's not possible for `Quote` or `CreditNote` types
          */
-        if (type === InvoiceResponsePayload.type.INVOICE) {
-          setPermissions([InvoiceDetailsPermissions.Cancel]);
+        if (type === 'invoice') {
+          setPermissions(['cancel']);
         }
 
         break;
       }
 
-      case ReceivablesStatusEnum.OVERDUE: {
-        setPermissions([
-          InvoiceDetailsPermissions.Cancel,
-          InvoiceDetailsPermissions.MarkAsUncollectible,
-        ]);
+      case 'overdue': {
+        setPermissions(['cancel', 'mark_as_uncollectible']);
 
         break;
       }
 
-      case ReceivablesStatusEnum.ACCEPTED:
-      case ReceivablesStatusEnum.EXPIRED:
-      case ReceivablesStatusEnum.DECLINED:
-      case ReceivablesStatusEnum.RECURRING:
-      case ReceivablesStatusEnum.PARTIALLY_PAID:
-      case ReceivablesStatusEnum.PAID:
-      case ReceivablesStatusEnum.UNCOLLECTIBLE:
-      case ReceivablesStatusEnum.CANCELED:
-      case ReceivablesStatusEnum.DELETED: {
+      default: {
         setPermissions([]);
-
         break;
       }
-
-      default:
-        exhaustiveMatchingGuard(status);
     }
 
     setIsPermissionsLoading(false);
@@ -571,25 +476,28 @@ export function useInvoiceDetails({
   ]);
 
   const issueInvoice = useCallback(async () => {
-    await issueMutation.mutateAsync(id);
+    await issueMutation.mutateAsync(undefined);
 
     onIssue?.(id);
   }, [issueMutation, id, onIssue]);
 
   const deleteInvoice = useCallback(async () => {
-    await deleteMutation.mutateAsync(id);
+    await deleteMutation.mutateAsync(undefined);
 
     onDelete?.(id);
   }, [deleteMutation, id, onDelete]);
 
   const cancelInvoice = useCallback(async () => {
-    await cancelMutation.mutateAsync(id);
+    await cancelMutation.mutateAsync(undefined);
 
     onCancel?.(id);
   }, [cancelMutation, id, onCancel]);
 
   const markAsUncollectibleInvoice = useCallback(async () => {
-    await markAsUncollectibleMutation.mutateAsync(id);
+    await markAsUncollectibleMutation.mutateAsync({
+      // TODO provide a comment
+      comment: '',
+    });
 
     onMarkAsUncollectible?.(id);
   }, [markAsUncollectibleMutation, id, onMarkAsUncollectible]);

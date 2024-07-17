@@ -2,6 +2,7 @@ import React, { useEffect, useId } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -10,7 +11,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TagReadSchema } from '@monite/sdk-api';
 import {
   Dialog,
   DialogActions,
@@ -42,8 +42,8 @@ interface ITag {
 
 interface TagFormModalProps {
   tag?: ITag;
-  onCreate?: (tag: TagReadSchema) => void;
-  onUpdate?: (tag: TagReadSchema) => void;
+  onCreate?: (tag: components['schemas']['TagReadSchema']) => void;
+  onUpdate?: (tag: components['schemas']['TagReadSchema']) => void;
   onClose?: () => void;
 
   /** Whether the modal is open or not */

@@ -1,21 +1,17 @@
-import React, { useCallback, useId } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useIssueReceivableById, useSendReceivableById } from '@/core/queries';
 import { useEntityPaymentMethods } from '@/core/queries/useEntities';
-import { useCreatePaymentLink } from '@/core/queries/usePayments';
+import {
+  useIssueReceivableById,
+  useSendReceivableById,
+} from '@/core/queries/useReceivables';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  PaymentAccountType,
-  PaymentMethodDirection,
-  PaymentMethodStatus,
-  PaymentObjectType,
-} from '@monite/sdk-api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Button,
@@ -46,7 +42,7 @@ const EmailInvoiceDetailsBase = ({
   onClose,
 }: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
+  const { monite, api } = useMoniteContext();
   const { control, handleSubmit, formState } = useForm({
     resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
     defaultValues: {
@@ -54,17 +50,18 @@ const EmailInvoiceDetailsBase = ({
       body: '',
     },
   });
-  const sendMutation = useSendReceivableById();
-  const issueMutation = useIssueReceivableById();
-  const createPaymentLinkMutation = useCreatePaymentLink();
+  const sendMutation = useSendReceivableById(invoiceId);
+  const issueMutation = useIssueReceivableById(invoiceId);
+
+  const createPaymentLinkMutation =
+    api.paymentLinks.postPaymentLinks.useMutation({});
 
   const { data: paymentMethods } = useEntityPaymentMethods();
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-emailInvoiceDetails-${useId()}`;
 
   const handleIssueAndSend = useCallback(
-    (e: React.BaseSyntheticEvent) => {
+    (e: BaseSyntheticEvent) => {
       e.preventDefault();
       const createPaymentLink = createPaymentLinkMutation.mutateAsync;
       const issue = issueMutation.mutateAsync;
@@ -74,8 +71,7 @@ const EmailInvoiceDetailsBase = ({
         const availablePaymentMethods = paymentMethods
           ? paymentMethods.data.filter(
               ({ status, direction }) =>
-                status === PaymentMethodStatus.ACTIVE &&
-                direction === PaymentMethodDirection.RECEIVE
+                status === 'active' && direction === 'receive'
             )
           : [];
 
@@ -90,7 +86,7 @@ const EmailInvoiceDetailsBase = ({
             )`No active payment methods available. The email will be sent without a payment link`
           );
         } else {
-          await issue(invoiceId);
+          await issue(undefined);
 
           /**
            * We need to create a payment link for the invoice before sending the email.
@@ -105,14 +101,14 @@ const EmailInvoiceDetailsBase = ({
           await createPaymentLink({
             recipient: {
               id: monite.entityId,
-              type: PaymentAccountType.ENTITY,
+              type: 'entity',
             },
             payment_methods: availablePaymentMethods.map(
               (method) => method.type
             ),
             object: {
               id: invoiceId,
-              type: PaymentObjectType.RECEIVABLE,
+              type: 'receivable',
             },
           });
         }
@@ -123,16 +119,11 @@ const EmailInvoiceDetailsBase = ({
          */
         sendEmail(
           {
-            receivableId: invoiceId,
-            body: {
-              subject_text: values.subject,
-              body_text: values.body,
-            },
+            body_text: values.body,
+            subject_text: values.subject,
           },
           {
-            onSuccess: () => {
-              onClose();
-            },
+            onSuccess: onClose,
           }
         );
       })(e);

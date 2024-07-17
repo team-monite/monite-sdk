@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { usePaymentTerms } from '@/core/queries';
@@ -9,7 +10,6 @@ import { getCountries, getCurrencies } from '@/core/utils';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { EntityBankAccountResponse } from '@monite/sdk-api';
 import {
   Card,
   CardContent,
@@ -27,7 +27,7 @@ import type { SectionGeneralProps } from './Section.types';
 
 const getBankAccountName = (
   i18n: I18n,
-  bankAccount: EntityBankAccountResponse
+  bankAccount: components['schemas']['EntityBankAccountResponse']
 ) => {
   if (bankAccount.display_name) {
     return bankAccount.display_name;
@@ -48,8 +48,7 @@ const getBankAccountName = (
 
 export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch, resetField, setValue } =
-    useFormContext<CreateReceivablesFormProps>();
+  const { control } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
@@ -102,6 +101,7 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
                     >
                       {bankAccounts?.data.map((bankAccount) => (
                         <MenuItem key={bankAccount.id} value={bankAccount.id}>
+                          {/* @ts-expect-error - `EntityBankAccountResponse` is coming from the legacy API client */}
                           {`${getBankAccountName(i18n, bankAccount)} ${
                             bankAccount.is_default_for_currency
                               ? t(i18n)`(Default)`

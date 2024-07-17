@@ -1,101 +1,85 @@
+import { components } from '@/api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
+import { CreditNoteStateEnum } from '@/enums/CreditNoteStateEnum';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
+import { QuoteStateEnum } from '@/enums/QuoteStateEnum';
+import { ReceivablesStatusEnum } from '@/enums/ReceivablesStatusEnum';
 import { bankAccountsFixture } from '@/mocks/bankAccounts';
 import {
   counterpartsAddressesFixture,
   generateCounterpartAddress,
 } from '@/mocks/counterparts/address';
+import { counterpartListFixture } from '@/mocks/counterparts/counterpart/counterpartFixture';
+import { counterpartVatsByCounterpartIdFixture } from '@/mocks/counterparts/vat/counterpartVatFixture';
 import { entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
   getRandomNumber,
-  getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CounterpartType,
-  CreditNoteResponsePayload,
-  CreditNoteStateEnum,
-  CurrencyEnum,
-  ReceivablesEntityIndividual,
-  ReceivablesEntityOrganization,
-  InvoiceResponsePayload,
-  QuoteResponsePayload,
-  QuoteStateEnum,
-  ReceivablesStatusEnum,
-  ResponseItem,
-} from '@monite/sdk-api';
-
-import { counterpartListFixture } from '../counterparts/counterpart/counterpartFixture';
-import { counterpartVatsByCounterpartIdFixture } from '../counterparts/vat/counterpartVatFixture';
+import { CounterpartType } from '@monite/sdk-api';
 
 export type ReceivablesListFixture = {
-  quote: Array<QuoteResponsePayload>;
-  invoice: Array<InvoiceResponsePayload>;
-  credit_note: Array<CreditNoteResponsePayload>;
+  quote: Array<components['schemas']['QuoteResponsePayload']>;
+  invoice: Array<components['schemas']['InvoiceResponsePayload']>;
+  credit_note: Array<components['schemas']['CreditNoteResponsePayload']>;
 };
 
 function createRandomEntity():
-  | ReceivablesEntityOrganization
-  | ReceivablesEntityIndividual {
+  | components['schemas']['ReceivablesEntityOrganization']
+  | components['schemas']['ReceivablesEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
-    const organization: ReceivablesEntityOrganization = {
-      type: ReceivablesEntityOrganization.type.ORGANIZATION,
+    return {
+      type: 'organization',
       email: faker.internet.email(),
       phone: faker.phone.number(),
       name: faker.company.name(),
     };
-
-    return organization;
   } else {
-    const individual: ReceivablesEntityIndividual = {
-      type: ReceivablesEntityIndividual.type.INDIVIDUAL,
+    return {
+      type: 'individual',
       email: faker.internet.email(),
       phone: faker.phone.number(),
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
     };
-
-    return individual;
   }
 }
 
 function createRandomInvoiceEntity():
-  | ReceivablesEntityOrganization
-  | ReceivablesEntityIndividual {
+  | components['schemas']['ReceivablesEntityOrganization']
+  | components['schemas']['ReceivablesEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
-    const organization: ReceivablesEntityOrganization = {
+    return {
       phone: faker.phone.number(),
       logo: faker.image.avatar(),
       email: faker.internet.email(),
       name: faker.company.name(),
       tax_id: faker.string.uuid(),
       vat_id: faker.string.uuid(),
-      type: ReceivablesEntityOrganization.type.ORGANIZATION,
+      type: 'organization',
     };
-
-    return organization;
   } else {
-    const individual: ReceivablesEntityIndividual = {
+    return {
       phone: faker.phone.number(),
       logo: faker.image.avatar(),
       email: faker.internet.email(),
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
       tax_id: faker.string.uuid(),
-      type: ReceivablesEntityIndividual.type.INDIVIDUAL,
+      type: 'individual',
     };
-
-    return individual;
   }
 }
 
-function createRandomLineItem(): ResponseItem {
+function createRandomLineItem(): components['schemas']['ResponseItem'] {
   const productVatId = getRandomItemFromArray(vatRatesFixture.data);
 
   return {
@@ -105,7 +89,7 @@ function createRandomLineItem(): ResponseItem {
       name: faker.commerce.productName(),
       price: {
         value: faker.number.int({ min: 10, max: 30_000 }),
-        currency: CurrencyEnum.EUR,
+        currency: 'EUR',
       },
       measure_unit_id: faker.string.sample(),
       created_at: faker.date.past().toString(),
@@ -116,6 +100,7 @@ function createRandomLineItem(): ResponseItem {
         created_at: productVatId.created_at,
         updated_at: productVatId.updated_at,
         value: productVatId.value,
+        // @ts-expect-error - `AllowedCountries` is coming from the legacy API client
         country: productVatId.country,
       },
       measure_unit: {
@@ -128,19 +113,21 @@ function createRandomLineItem(): ResponseItem {
   };
 }
 
-function createRandomQuote(): QuoteResponsePayload {
+function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
   return {
-    type: QuoteResponsePayload.type.QUOTE,
+    type: 'quote',
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     document_id: `quote--${faker.string.nanoid(20)}`,
     expiry_date: faker.date.future().toString(),
     issue_date: faker.date.past().toString(),
-    currency: getRandomProperty(CurrencyEnum),
+    currency: getRandomItemFromArray(CurrencyEnum),
+    file_language: getRandomItemFromArray(LanguageCodeEnum),
+    original_file_language: getRandomItemFromArray(LanguageCodeEnum),
     line_items: [],
     entity_address: {
-      country: AllowedCountries.DE,
+      country: 'DE',
       city: 'string',
       postal_code: 'string',
       state: 'string',
@@ -149,9 +136,9 @@ function createRandomQuote(): QuoteResponsePayload {
     },
     counterpart_id: faker.string.uuid(),
     counterpart_name: faker.company.name(),
-    counterpart_type: CounterpartType.INDIVIDUAL,
+    counterpart_type: 'individual',
     counterpart_address: {
-      country: AllowedCountries.DE,
+      country: 'DE',
       city: 'Berlin',
       postal_code: '10115',
       state: 'string',
@@ -161,17 +148,19 @@ function createRandomQuote(): QuoteResponsePayload {
     total_vat_amount: faker.number.int(),
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
-    status: getRandomProperty(QuoteStateEnum),
+    status: getRandomItemFromArray(QuoteStateEnum),
   };
 }
 
-function returnIfDraft(status: ReceivablesStatusEnum) {
+function returnIfDraft(status: components['schemas']['ReceivablesStatusEnum']) {
   return function <T>(value: T) {
-    return status === ReceivablesStatusEnum.DRAFT ? undefined : value;
+    return status === 'draft' ? undefined : value;
   };
 }
 
-function createRandomInvoice(index: number): InvoiceResponsePayload {
+function createRandomInvoice(
+  index: number
+): components['schemas']['InvoiceResponsePayload'] {
   const randomExistingCounterpart = getRandomItemFromArray(
     counterpartListFixture
   );
@@ -181,10 +170,10 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
   }
 
   const status =
-    index === 0
-      ? ReceivablesStatusEnum.DRAFT
-      : getRandomProperty(ReceivablesStatusEnum);
-  const counterpartType = getRandomProperty(CounterpartType);
+    index === 0 ? 'draft' : getRandomItemFromArray(ReceivablesStatusEnum);
+  const counterpart_type = getRandomItemFromArray<
+    components['schemas']['CounterpartType']
+  >(['individual', 'organization']);
   const rid = returnIfDraft(status);
 
   const lineItems = new Array(getRandomNumber(1, 15))
@@ -231,7 +220,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
   const counterpartAddress = getRandomItemFromArray(counterpartAddresses);
 
   return {
-    type: InvoiceResponsePayload.type.INVOICE,
+    type: 'invoice',
     id: faker.string.uuid(),
     amount_paid: faker.number.int(),
     created_at: faker.date.past().toString(),
@@ -240,27 +229,26 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     issue_date: rid(faker.date.past().toString()),
     fulfillment_date: faker.date.future().toString(),
     payment_terms: getRandomItemFromArray(paymentTermsFixtures.data!),
-    currency: CurrencyEnum.EUR,
+    currency: 'EUR',
     line_items: new Array(getRandomNumber(1, 15))
       .fill('_')
       .map(createRandomLineItem),
     counterpart_id: randomExistingCounterpart.id,
     counterpart_name:
-      counterpartType === CounterpartType.ORGANIZATION
+      counterpart_type === CounterpartType.ORGANIZATION
         ? faker.company.name()
         : undefined,
-    counterpart_type: counterpartType,
+    counterpart_type,
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
+    // @ts-expect-error - `CounterpartVatIDResponse` is coming from the legacy API client
     counterpart_vat_id: faker.datatype.boolean()
       ? getRandomItemFromArray(
           counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
         )
       : undefined,
-    // @ts-expect-error - fix receivables types
     counterpart_billing_address: generateCounterpartAddress(),
-    // @ts-expect-error - fix receivables types
     counterpart_shipping_address: counterpartAddress,
     counterpart_contact: faker.datatype.boolean()
       ? {
@@ -269,7 +257,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
           email: faker.internet.email(),
           phone: faker.phone.number(),
           address: {
-            country: getRandomProperty(AllowedCountries),
+            country: getRandomItemFromArray(AllowedCountries),
             city: faker.location.city(),
             postal_code: faker.location.zipCode(),
             state: faker.location.state(),
@@ -279,7 +267,7 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
         }
       : undefined,
     counterpart_address: {
-      country: getRandomProperty(AllowedCountries),
+      country: getRandomItemFromArray(AllowedCountries),
       city: faker.location.city(),
       postal_code: faker.location.zipCode(),
       state: faker.location.state(),
@@ -288,10 +276,11 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
     },
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
+    // @ts-expect-error - `EntityVatIDResponse` is coming from the legacy API client
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
-    // @ts-expect-error - fix receivables types
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
+    // @ts-expect-error - `EntityBankAccount` is coming from the legacy API client
     entity_bank_account: faker.datatype.boolean()
       ? getRandomItemFromArray(bankAccountsFixture.data)
       : undefined,
@@ -311,18 +300,20 @@ function createRandomInvoice(index: number): InvoiceResponsePayload {
   };
 }
 
-function createRandomCreditNote(): CreditNoteResponsePayload {
+function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayload'] {
   return {
-    type: CreditNoteResponsePayload.type.CREDIT_NOTE,
+    type: 'credit_note',
     id: faker.string.uuid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     document_id: `credit_note--${faker.string.nanoid(20)}`,
     issue_date: faker.date.past().toString(),
-    currency: getRandomProperty(CurrencyEnum),
+    currency: getRandomItemFromArray(CurrencyEnum),
+    file_language: getRandomItemFromArray(LanguageCodeEnum),
+    original_file_language: getRandomItemFromArray(LanguageCodeEnum),
     line_items: [],
     entity_address: {
-      country: AllowedCountries.DE,
+      country: 'DE',
       city: 'string',
       postal_code: 'string',
       state: 'string',
@@ -333,7 +324,7 @@ function createRandomCreditNote(): CreditNoteResponsePayload {
     counterpart_name: faker.company.name(),
     counterpart_type: CounterpartType.INDIVIDUAL,
     counterpart_address: {
-      country: AllowedCountries.DE,
+      country: 'DE',
       city: 'Berlin',
       postal_code: '10115',
       state: 'string',
@@ -343,7 +334,7 @@ function createRandomCreditNote(): CreditNoteResponsePayload {
     total_vat_amount: faker.number.int(),
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
-    status: getRandomProperty(CreditNoteStateEnum),
+    status: getRandomItemFromArray(CreditNoteStateEnum),
   };
 }
 
