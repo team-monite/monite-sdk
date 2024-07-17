@@ -99,7 +99,6 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         created_at: productVatId.created_at,
         updated_at: productVatId.updated_at,
         value: productVatId.value,
-        // @ts-expect-error - `AllowedCountries` is coming from the legacy API client
         country: productVatId.country,
       },
       measure_unit: {
