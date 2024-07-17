@@ -159,6 +159,8 @@ export class CounterpartsService extends GeneralService {
       );
     }
 
+    const entity = await this.getEntity();
+
     const counterpartVats: Array<
       components['schemas']['CounterpartVatIDResponse']
     > = [];
@@ -184,7 +186,7 @@ export class CounterpartsService extends GeneralService {
         await createCounterpartVatId({
           counterpart_id: counterpart.id,
           token: this.token,
-          entity_id: this.entityId,
+          entity,
         })
           .then((counterpartVat) => {
             counterpartVats.push(counterpartVat);
@@ -267,11 +269,11 @@ export const createCounterpart = async ({
 
 export const createCounterpartVatId = async ({
   counterpart_id,
-  entity_id,
+  entity,
   token,
 }: {
   counterpart_id: string;
-  entity_id: string;
+  entity: components['schemas']['EntityOrganizationResponse'];
   token: AccessToken;
 }): Promise<CounterpartVatIDResponse> => {
   const { POST } = createMoniteClient({
@@ -280,13 +282,27 @@ export const createCounterpartVatId = async ({
     },
   });
 
-  const type = getRandomItemFromArray([
-    'eu_vat',
-    'no_vat',
-    'unknown',
-  ] satisfies Array<VatIDTypeEnum>);
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
+  const counterpartCountry = getRandomItemFromArray(addressCountries);
+  const entityCountry = entity.address.country;
+  let vatIdType: VatIDTypeEnum = 'unknown';
+  switch (entityCountry) {
+    case 'GB':
+      vatIdType =
+        counterpartCountry == 'GB'
+          ? 'gb_vat'
+          : counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+    case 'DE':
+      vatIdType =
+        counterpartCountry == 'GB' || counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+  }
 
   const { data, error, response } = await POST(
     '/counterparts/{counterpart_id}/vat_ids',
@@ -297,20 +313,20 @@ export const createCounterpartVatId = async ({
         },
         header: {
           'x-monite-version': getMoniteApiVersion(),
-          'x-monite-entity-id': entity_id,
+          'x-monite-entity-id': entity.id,
         },
       },
       body: {
-        type,
+        type: vatIdType,
         value,
-        country: getRandomItemFromArray(addressCountries),
-      },
+        country: counterpartCountry,
+      } as components['schemas']['CounterpartVatID'],
     }
   );
 
   if (error) {
     console.error(
-      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity_id}"`,
+      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity.id}"`,
       `x-request-id: ${response.headers.get('x-request-id')}`
     );
 

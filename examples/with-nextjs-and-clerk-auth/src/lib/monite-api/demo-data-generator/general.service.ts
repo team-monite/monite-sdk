@@ -2,7 +2,12 @@ import { faker } from '@faker-js/faker';
 
 import { DemoDataGenerationMessage } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
-import { createMoniteClient } from '@/lib/monite-api/monite-client';
+import {
+  createMoniteClient,
+  getMoniteApiVersion,
+} from '@/lib/monite-api/monite-client';
+import { components } from '@/lib/monite-api/schema';
+
 
 export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
   const randomIndex = faker.number.int({ min: 0, max: array.length - 1 });
@@ -31,6 +36,9 @@ export abstract class GeneralService {
   protected readonly entityId: string;
   protected readonly logger?: ILogger;
   protected readonly request: ReturnType<typeof createMoniteClient>;
+  private cachedEntity:
+    | components['schemas']['EntityOrganizationResponse']
+    | undefined;
 
   constructor(params: IGeneralServiceConstructor) {
     this.token = params.token;
@@ -41,6 +49,37 @@ export abstract class GeneralService {
         Authorization: `${params.token.token_type} ${params.token.access_token}`,
       },
     });
+  }
+
+  protected async getEntity(): Promise<
+    components['schemas']['EntityOrganizationResponse']
+  > {
+    if (this.cachedEntity) return this.cachedEntity;
+
+    const entityResponse = await this.request.GET(`/entities/{entity_id}`, {
+      params: {
+        path: { entity_id: this.entityId },
+        header: {
+          'x-monite-version': getMoniteApiVersion(),
+        },
+      },
+    });
+
+    if (entityResponse.error) {
+      console.error(
+        `Failed to fetch entity details when creating Receivables for the entity_id: "${this.entityId}"`,
+        `x-request-id: ${entityResponse.response.headers.get('x-request-id')}`
+      );
+
+      throw new Error(
+        `Bank account create failed: ${JSON.stringify(entityResponse.error)}`
+      );
+    }
+
+    const entity =
+      entityResponse.data as components['schemas']['EntityOrganizationResponse'];
+    this.cachedEntity = entity;
+    return entity;
   }
 
   /** Should be called to set options for the service */
