@@ -133,7 +133,6 @@ export const lowPermissionRole: RoleResponse = {
         ],
       },
       {
-        // TODO: remove @ts-expect-error  after fix https://monite.atlassian.net/browse/DEV-6294
         object_type: 'approval_policy',
         actions: [
           {
