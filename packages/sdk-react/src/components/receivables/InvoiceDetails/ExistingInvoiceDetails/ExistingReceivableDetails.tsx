@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
@@ -67,15 +66,13 @@ const ExistingReceivableDetailsBase = (
   const { i18n } = useLingui();
 
   const {
-    receivable,
+    receivable: invoice,
     error,
     isLoading,
     isButtonsLoading,
     permissions,
     actions: queryActions,
   } = useInvoiceDetails(props);
-
-  const invoice = receivable as components['schemas']['InvoiceResponsePayload'];
 
   const dialogContext = useDialog();
 
@@ -97,9 +94,15 @@ const ExistingReceivableDetailsBase = (
     entityUserId: invoice?.entity_user_id,
   });
 
-  const fulfillmentDate = invoice?.fulfillment_date;
-  const issueDate = invoice?.issue_date;
-  const numberOfDueDays = invoice?.payment_terms?.term_final.number_of_days;
+  const fulfillmentDate =
+    invoice?.type === 'invoice' ? invoice?.fulfillment_date : undefined;
+  const issueDate =
+    invoice?.type === 'invoice' ? invoice?.issue_date : undefined;
+  const numberOfDueDays =
+    invoice?.type === 'invoice'
+      ? invoice?.payment_terms?.term_final.number_of_days
+      : undefined;
+
   const dueDate =
     invoice &&
     issueDate &&
