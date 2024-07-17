@@ -46,13 +46,29 @@ export const useCreateReceivable = () => {
  * @param receivable_id - Receivable id
  */
 export const useUpdateReceivableLineItems = (receivable_id: string) => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
-  return api.receivables.putReceivablesIdLineItems.useMutation({
-    path: {
-      receivable_id,
+  return api.receivables.putReceivablesIdLineItems.useMutation(
+    {
+      path: {
+        receivable_id,
+      },
     },
-  });
+    {
+      onSuccess: async () => {
+        await api.receivables.getReceivablesId.invalidateQueries(
+          {
+            parameters: {
+              path: {
+                receivable_id,
+              },
+            },
+          },
+          queryClient
+        );
+      },
+    }
+  );
 };
 
 /**
