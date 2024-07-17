@@ -45,14 +45,10 @@ import { styled, alpha } from '@mui/material/styles';
 
 import { EmailInvoiceDetails } from './components/EmailInvoiceDetails';
 import {
+  DeliveryMethod,
   ExistingInvoiceDetailsView,
   useExistingInvoiceDetails,
 } from './useExistingInvoiceDetails';
-
-enum DeliveryMethod {
-  Email = 'email',
-  Download = 'download',
-}
 
 const StyledMenu = styled((props: MenuProps) => {
   const { root } = useRootElements();

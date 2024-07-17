@@ -14,10 +14,7 @@ import {
 } from '@mui/material';
 import { lighten, useTheme } from '@mui/material/styles';
 
-enum DeliveryMethod {
-  Email = 'email',
-  Download = 'download',
-}
+import { DeliveryMethod } from '../useExistingInvoiceDetails';
 
 const DeliveryMethodView = ({
   icon,
