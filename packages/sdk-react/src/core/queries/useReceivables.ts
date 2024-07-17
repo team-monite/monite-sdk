@@ -330,16 +330,20 @@ export const useSendReceivableById = (receivable_id: string) => {
     },
     {
       onSuccess: async () => {
-        const receivable = api.receivables.getReceivablesId.getQueryData(
-          {
-            path: {
-              receivable_id,
+        await Promise.all([
+          api.receivables.getReceivables.invalidateQueries(queryClient),
+          api.receivables.getReceivablesId.invalidateQueries(
+            {
+              parameters: { path: { receivable_id } },
             },
-          },
+            queryClient
+          ),
+        ]);
+
+        const receivable = api.receivables.getReceivablesId.getQueryData(
+          { path: { receivable_id } },
           queryClient
         );
-
-        await api.receivables.getReceivables.invalidateQueries(queryClient);
 
         toast.success(
           t(i18n)({
