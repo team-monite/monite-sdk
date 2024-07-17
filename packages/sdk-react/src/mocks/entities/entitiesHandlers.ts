@@ -1,11 +1,4 @@
-import {
-  EntityResponse,
-  ErrorSchemaResponse,
-  MergedSettingsResponse,
-  UpdateEntityRequest,
-  EntityVatIDResourceList,
-  OnboardingPaymentMethodsResponse,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -141,3 +134,11 @@ export const entitiesHandlers = [
     );
   }),
 ];
+
+type EntityResponse = components['schemas']['EntityResponse'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];
+type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
+type OnboardingPaymentMethodsResponse =
+  components['schemas']['OnboardingPaymentMethodsResponse'];
