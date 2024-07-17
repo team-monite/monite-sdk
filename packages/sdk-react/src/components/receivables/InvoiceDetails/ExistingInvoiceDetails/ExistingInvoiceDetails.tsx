@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
@@ -128,8 +127,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     props.id
   );
 
-  const invoice = receivable as components['schemas']['InvoiceResponsePayload'];
-
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
     action: 'update',
@@ -152,7 +149,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
-    receivable: invoice,
+    receivable: receivable,
     deliveryMethod,
   });
 
@@ -183,7 +180,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   if (view === ExistingInvoiceDetailsView.Edit) {
     return (
       <EditInvoiceDetails
-        invoice={invoice}
+        invoice={receivable}
         onUpdated={callbacks.handleChangeViewInvoice}
         onCancel={callbacks.handleChangeViewInvoice}
       />
@@ -364,7 +361,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview {...invoice} />
+              <Overview {...receivable} />
             </Stack>
           </Grid>
         </Grid>
