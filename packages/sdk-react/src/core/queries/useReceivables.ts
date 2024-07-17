@@ -340,9 +340,16 @@ export const useSendReceivableById = (receivable_id: string) => {
 
         await api.receivables.getReceivables.invalidateQueries(queryClient);
 
-        if (!receivable) return;
-
-        toast.success(t(i18n)`${receivable.type} has been sent`);
+        toast.success(
+          t(i18n)({
+            message: select(receivable?.type ?? '', {
+              credit_note: 'Credit Note has been sent',
+              invoice: 'Invoice has been sent',
+              quote: 'Quote has been sent',
+              other: 'Receivable has been sent',
+            }),
+          })
+        );
       },
     }
   );
