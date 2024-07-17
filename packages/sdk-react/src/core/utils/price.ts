@@ -1,4 +1,4 @@
-import { CurrencyEnum } from '@monite/sdk-api';
+import { components } from '@/api';
 
 export interface IPriceConstructor {
   value: string | number;
@@ -36,3 +36,5 @@ export class Price {
     return this.formatter(this.value, this.currency) ?? '';
   }
 }
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
