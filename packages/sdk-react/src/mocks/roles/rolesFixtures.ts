@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { ActionEnum } from '@/utils/types';
 import { faker } from '@faker-js/faker';
 
 export const FULL_PERMISSION_ROLE_ID = 'full_permission_role_id';
@@ -65,19 +64,19 @@ export const fullPermissionRole: RoleResponse = {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
           actions: [
             {
-              action_name: ActionEnum.READ,
+              action_name: 'read',
               permission: 'allowed',
             },
             {
-              action_name: ActionEnum.CREATE,
+              action_name: 'create',
               permission: 'allowed',
             },
             {
-              action_name: ActionEnum.UPDATE,
+              action_name: 'update',
               permission: 'allowed',
             },
             {
-              action_name: ActionEnum.DELETE,
+              action_name: 'delete',
               permission: 'allowed',
             },
           ],
@@ -136,19 +135,19 @@ export const lowPermissionRole: RoleResponse = {
         object_type: 'approval_policy',
         actions: [
           {
-            action_name: ActionEnum.READ,
+            action_name: 'read',
             permission: 'not_allowed',
           },
           {
-            action_name: ActionEnum.CREATE,
+            action_name: 'create',
             permission: 'not_allowed',
           },
           {
-            action_name: ActionEnum.UPDATE,
+            action_name: 'update',
             permission: 'not_allowed',
           },
           {
-            action_name: ActionEnum.DELETE,
+            action_name: 'delete',
             permission: 'not_allowed',
           },
         ],
@@ -165,19 +164,19 @@ export const lowPermissionRole: RoleResponse = {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
           actions: [
             {
-              action_name: ActionEnum.READ,
+              action_name: 'read',
               permission: 'allowed',
             },
             {
-              action_name: ActionEnum.CREATE,
+              action_name: 'create',
               permission: 'not_allowed',
             },
             {
-              action_name: ActionEnum.UPDATE,
+              action_name: 'update',
               permission: 'allowed',
             },
             {
-              action_name: ActionEnum.DELETE,
+              action_name: 'delete',
               permission: 'not_allowed',
             },
           ],
@@ -218,7 +217,7 @@ export const readOnlyRole: RoleResponse = {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
           actions: [
             {
-              action_name: ActionEnum.READ,
+              action_name: 'read',
               permission: 'allowed',
             },
           ],
@@ -286,19 +285,19 @@ export const allowedForOwnRole: RoleResponse = {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
           actions: [
             {
-              action_name: ActionEnum.READ,
+              action_name: 'read',
               permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.CREATE,
+              action_name: 'create',
               permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.UPDATE,
+              action_name: 'update',
               permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.DELETE,
+              action_name: 'delete',
               permission: 'allowed_for_own',
             },
           ],

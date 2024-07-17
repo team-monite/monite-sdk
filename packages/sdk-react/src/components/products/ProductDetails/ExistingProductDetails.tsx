@@ -17,7 +17,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -77,19 +76,19 @@ const ExistingProductDetailsBase = ({
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'product',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 
   const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id,
   });
 

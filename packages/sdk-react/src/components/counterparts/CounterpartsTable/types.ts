@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { SortOrderEnum } from '@/utils/types';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -9,7 +8,7 @@ import {
 
 export type Sort = {
   sort: components['schemas']['CounterpartCursorFields'];
-  order: SortOrderEnum;
+  order: 'asc' | 'desc';
 };
 
 export type Filters = {
