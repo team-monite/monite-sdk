@@ -18,7 +18,6 @@ import {
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
 type CounterpartVatIDResponse =
