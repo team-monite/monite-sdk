@@ -2,10 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { DemoDataGenerationMessage } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
-import {
-  createMoniteClient,
-  getMoniteApiVersion,
-} from '@/lib/monite-api/monite-client';
+import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
 
@@ -44,11 +41,7 @@ export abstract class GeneralService {
     this.token = params.token;
     this.entityId = params.entityId;
     this.logger = params.logger;
-    this.request = createMoniteClient({
-      headers: {
-        Authorization: `${params.token.token_type} ${params.token.access_token}`,
-      },
-    });
+    this.request = createMoniteClient(params.token);
   }
 
   protected async getEntity(): Promise<
@@ -56,28 +49,7 @@ export abstract class GeneralService {
   > {
     if (this.cachedEntity) return this.cachedEntity;
 
-    const entityResponse = await this.request.GET(`/entities/{entity_id}`, {
-      params: {
-        path: { entity_id: this.entityId },
-        header: {
-          'x-monite-version': getMoniteApiVersion(),
-        },
-      },
-    });
-
-    if (entityResponse.error) {
-      console.error(
-        `Failed to fetch entity details when creating Receivables for the entity_id: "${this.entityId}"`,
-        `x-request-id: ${entityResponse.response.headers.get('x-request-id')}`
-      );
-
-      throw new Error(
-        `Bank account create failed: ${JSON.stringify(entityResponse.error)}`
-      );
-    }
-
-    const entity =
-      entityResponse.data as components['schemas']['EntityOrganizationResponse'];
+    const entity = await this.request.getEntity(this.entityId);
     this.cachedEntity = entity;
     return entity;
   }

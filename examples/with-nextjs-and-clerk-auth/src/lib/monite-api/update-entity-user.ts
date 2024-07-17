@@ -6,6 +6,7 @@ import {
 
 import { paths } from './schema';
 
+
 export const updateEntityUser = async (
   {
     entity_id,
@@ -20,11 +21,7 @@ export const updateEntityUser = async (
 ) => {
   if (!entity_id) throw new Error('entity_id is empty');
 
-  const { PATCH } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { PATCH } = createMoniteClient(token);
 
   const { data, error } = await PATCH('/entity_users/{entity_user_id}', {
     params: {

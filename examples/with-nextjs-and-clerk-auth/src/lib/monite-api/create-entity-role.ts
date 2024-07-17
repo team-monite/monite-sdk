@@ -6,6 +6,7 @@ import {
 
 import type { components, paths } from './schema';
 
+
 export const createEntityRole = async (
   {
     entity_id,
@@ -16,11 +17,7 @@ export const createEntityRole = async (
   },
   token: AccessToken
 ) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const { data, error, response } = await POST('/roles', {
     params: {

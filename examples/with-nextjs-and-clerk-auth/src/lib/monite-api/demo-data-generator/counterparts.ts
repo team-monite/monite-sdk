@@ -216,11 +216,7 @@ export const createCounterpart = async ({
   token: AccessToken;
   entity_id: string;
 }): Promise<components['schemas']['CounterpartResponse']> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const is_vendor = faker.datatype.boolean();
   const addressCountries = ['DE'] satisfies Array<AllowedCountries>;
@@ -276,11 +272,7 @@ export const createCounterpartVatId = async ({
   entity: components['schemas']['EntityOrganizationResponse'];
   token: AccessToken;
 }): Promise<CounterpartVatIDResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
@@ -347,11 +339,7 @@ export const createCounterpartBankAccount = async ({
   entity_id: string;
   token: AccessToken;
 }): Promise<CounterpartBankAccountResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const countryCode = getRandomCountry();
   const currency = bankCountriesToCurrencies[countryCode];

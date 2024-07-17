@@ -21,35 +21,9 @@ export const createBankAccount = async ({
   is_default_for_currency: true;
   entity_id: string;
 }) => {
-  const { GET, POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST, getEntity } = createMoniteClient(token);
 
-  const entityResponse = await GET(`/entities/{entity_id}`, {
-    params: {
-      path: { entity_id },
-      header: {
-        'x-monite-version': getMoniteApiVersion(),
-      },
-    },
-  });
-
-  if (entityResponse.error) {
-    console.error(
-      `Failed to fetch entity details when creating a Bank Account for the entity_id: "${entity_id}"`,
-      `x-request-id: ${entityResponse.response.headers.get('x-request-id')}`
-    );
-
-    throw new Error(
-      `Bank account create failed: ${JSON.stringify(entityResponse.error)}`
-    );
-  }
-
-  const entity = entityResponse.data;
-  if (entity.type != 'organization')
-    throw new Error(`Cannot generate bank account for an individual entity`);
+  const entity = await getEntity(entity_id);
 
   const entityCountry = entity.address.country;
   const country: keyof typeof bankCountriesToCurrencies = (
@@ -116,11 +90,7 @@ export const getBankAccounts = async ({
   token: AccessToken;
   entity_id: string;
 }) => {
-  const { GET } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { GET } = createMoniteClient(token);
 
   const { data, error, response } = await GET('/bank_accounts', {
     params: {
