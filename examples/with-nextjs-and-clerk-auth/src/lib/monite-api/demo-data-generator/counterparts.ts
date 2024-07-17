@@ -58,7 +58,7 @@ interface ICounterpartsBuilderOptions {
   };
 }
 
-interface IConterpartsServiceResponse {
+interface ICounterpartsServiceResponse {
   counterparts: Array<components['schemas']['CounterpartResponse']>;
 }
 
@@ -86,7 +86,7 @@ export class CounterpartsService extends GeneralService {
     return this;
   }
 
-  public async create(): Promise<IConterpartsServiceResponse> {
+  public async create(): Promise<ICounterpartsServiceResponse> {
     const counterparts: Array<components['schemas']['CounterpartResponse']> =
       [];
     for (
@@ -133,18 +133,22 @@ export class CounterpartsService extends GeneralService {
         );
 
         const counterpart = counterparts[counterpartIndex];
-        await createCounterpartBankAccount({
-          is_default_for_currency: true,
-          counterpart_id: counterpart.id,
-          token: this.token,
-          entity_id: this.entityId,
-        })
-          .then((counterpartBankAccount) => {
-            counterpartBankAccounts.push(counterpartBankAccount);
-          })
-          .catch((error) => {
-            console.error(error);
+        try {
+          const counterpartBankAccount = await createCounterpartBankAccount({
+            is_default_for_currency: true,
+            counterpart_id: counterpart.id,
+            token: this.token,
+            entity_id: this.entityId,
           });
+          counterpartBankAccounts.push(counterpartBankAccount);
+        } catch (error) {
+          console.error(
+            chalk.redBright.bgBlack(
+              '❌ Error when creating a counterpart bank account'
+            ),
+            error
+          );
+        }
       }
     }
 
@@ -182,17 +186,21 @@ export class CounterpartsService extends GeneralService {
         );
 
         const counterpart = counterparts[counterpartsIndex];
-        await createCounterpartVatId({
-          counterpart_id: counterpart.id,
-          token: this.token,
-          entity,
-        })
-          .then((counterpartVat) => {
-            counterpartVats.push(counterpartVat);
-          })
-          .catch((error) => {
-            console.error(error);
+        try {
+          const counterpartVat = await createCounterpartVatId({
+            counterpart_id: counterpart.id,
+            token: this.token,
+            entity,
           });
+          counterpartVats.push(counterpartVat);
+        } catch (error) {
+          console.error(
+            chalk.redBright.bgBlack(
+              '❌ Error when creating a counterpart vat id'
+            ),
+            error
+          );
+        }
       }
     }
 
