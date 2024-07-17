@@ -1549,7 +1549,7 @@ msgstr "Create New Product Close"
 #: src/components/tags/Tags.test.tsx:20
 #: src/components/tags/Tags.test.tsx:44
 #: src/components/tags/Tags.test.tsx:68
-#: src/components/tags/Tags.tsx:65
+#: src/components/tags/Tags.tsx:64
 msgid "Create new tag"
 msgstr "Create new tag"
 
@@ -1584,7 +1584,7 @@ msgid "Created at:"
 msgstr "Created at:"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:202
-#: src/components/tags/TagsTable/TagsTable.tsx:193
+#: src/components/tags/TagsTable/TagsTable.tsx:195
 msgid "Created by"
 msgstr "Created by"
 
@@ -1741,7 +1741,7 @@ msgstr "Declined"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:383
 #: src/components/tags/TagsTable/TagsTable.test.tsx:414
 #: src/components/tags/TagsTable/TagsTable.test.tsx:445
-#: src/components/tags/TagsTable/TagsTable.tsx:219
+#: src/components/tags/TagsTable/TagsTable.tsx:221
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:214
 msgid "Delete"
@@ -2055,7 +2055,7 @@ msgstr "Ecuador"
 #: src/components/tags/TagsTable/TagsTable.test.tsx:379
 #: src/components/tags/TagsTable/TagsTable.test.tsx:410
 #: src/components/tags/TagsTable/TagsTable.test.tsx:441
-#: src/components/tags/TagsTable/TagsTable.tsx:210
+#: src/components/tags/TagsTable/TagsTable.tsx:212
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:38
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:441
 msgid "Edit"
@@ -5107,7 +5107,7 @@ msgstr "Tag “{0}” was deleted"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:118
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:436
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:247
-#: src/components/tags/Tags.tsx:53
+#: src/components/tags/Tags.tsx:52
 msgid "Tags"
 msgstr "Tags"
 
@@ -5663,7 +5663,7 @@ msgstr "Update contact"
 msgid "Update Vat Id"
 msgstr "Update Vat Id"
 
-#: src/components/tags/TagsTable/TagsTable.tsx:184
+#: src/components/tags/TagsTable/TagsTable.tsx:185
 msgid "Updated at"
 msgstr "Updated at"
 
