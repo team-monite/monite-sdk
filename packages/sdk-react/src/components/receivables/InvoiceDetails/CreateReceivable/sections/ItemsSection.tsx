@@ -10,9 +10,9 @@ import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
-import { useVatRates } from '@/core/queries';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -146,7 +146,8 @@ export const ItemsSection = ({
     name: 'line_items',
   });
   const watchedLineItems = watch('line_items');
-  const { data: vatRates } = useVatRates();
+  const { api } = useMoniteContext();
+  const { data: vatRates } = api.vatRates.getVatRates.useQuery({});
   const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(
@@ -385,7 +386,6 @@ export const ItemsSection = ({
             if (actualCurrency !== currency) {
               replace(
                 items.map((product) => {
-                  // @ts-expect-error - vatRates are coming from the legacy API client
                   return prepareLineItem(product, vatRates);
                 })
               );
@@ -395,7 +395,6 @@ export const ItemsSection = ({
             }
 
             const productItemsMapped = items.map((product) => {
-              // @ts-expect-error - vatRates are coming from the legacy API client
               return prepareLineItem(product, vatRates);
             });
             append(productItemsMapped);
