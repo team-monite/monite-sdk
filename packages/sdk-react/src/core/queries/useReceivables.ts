@@ -3,7 +3,6 @@ import { toast } from 'react-hot-toast';
 
 import type { Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
-import { isInvoice } from '@/components/receivables/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t, select } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -241,30 +240,39 @@ export const useCancelReceivableById = (receivable_id: string) => {
     },
     {
       onSuccess: async () => {
-        const receivable = api.receivables.getReceivablesId.getQueryData(
-          {
-            path: {
-              receivable_id,
+        const previousReceivable =
+          api.receivables.getReceivablesId.getQueryData(
+            {
+              path: {
+                receivable_id,
+              },
             },
-          },
-          queryClient
-        );
+            queryClient
+          );
 
-        if (!receivable || !isInvoice(receivable)) return;
-
-        api.receivables.getReceivablesId.setQueryData(
-          {
-            path: {
-              receivable_id,
+        if (previousReceivable?.type === 'invoice')
+          api.receivables.getReceivablesId.setQueryData(
+            {
+              path: {
+                receivable_id,
+              },
             },
-          },
-          { ...receivable, status: 'canceled' },
-          queryClient
-        );
+            { ...previousReceivable, status: 'canceled' },
+            queryClient
+          );
 
         await api.receivables.getReceivables.invalidateQueries(queryClient);
 
-        toast.success(t(i18n)`${receivable.type} has been canceled`);
+        toast.success(
+          t(i18n)({
+            message: select(previousReceivable?.type ?? '', {
+              credit_note: 'Credit Note has been canceled',
+              invoice: 'Invoice has been canceled',
+              quote: 'Quote has been canceled',
+              other: 'Receivable has been canceled',
+            }),
+          })
+        );
       },
     }
   );
