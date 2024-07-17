@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useCurrencyList } from '@/core/queries/useCurrency';
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum } from '@monite/sdk-api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
@@ -149,3 +149,5 @@ export const useCurrencies = () => {
     isSuccess,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
