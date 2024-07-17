@@ -356,7 +356,10 @@ export const useSendReceivableById = (receivable_id: string) => {
   );
 };
 
-export const useReceivablePDFById = (receivable_id: string) => {
+export const useReceivablePDFById = (
+  receivable_id: string,
+  options?: { refetchInterval: 15_000 }
+) => {
   const { api } = useMoniteContext();
 
   return api.receivables.getReceivablesIdPdfLink.useQuery(
@@ -365,7 +368,7 @@ export const useReceivablePDFById = (receivable_id: string) => {
         receivable_id,
       },
     },
-    { refetchInterval: 15_000 }
+    options
   );
 };
 

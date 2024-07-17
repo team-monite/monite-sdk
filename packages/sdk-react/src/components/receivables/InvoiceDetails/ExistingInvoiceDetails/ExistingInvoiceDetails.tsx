@@ -137,7 +137,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     isLoading: isPdfLoading,
     error: pdfError,
     refetch: refetchPdf,
-  } = useReceivablePDFById(props.id);
+  } = useReceivablePDFById(props.id, { refetchInterval: 15_000 });
 
   const handleIssueAndSend = useCallback(() => {
     setPresentation(InvoiceDetailsPresentation.Email);
