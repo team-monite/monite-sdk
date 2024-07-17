@@ -79,8 +79,6 @@ export const useUpdateReceivable = (receivable_id: string) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const pdf = useReceivablePDFById(receivable_id);
-
   return api.receivables.patchReceivablesId.useMutation(
     {
       path: {
@@ -100,7 +98,10 @@ export const useUpdateReceivable = (receivable_id: string) => {
         );
 
         await Promise.all([
-          pdf.refetch(),
+          api.receivables.getReceivablesIdPdfLink.resetQueries(
+            { parameters: { path: { receivable_id } } },
+            queryClient
+          ),
           api.receivables.getReceivables.invalidateQueries(queryClient),
         ]);
 
