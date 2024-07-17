@@ -1,9 +1,6 @@
+import { components } from '@/api';
 import { getRandomNumber } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  PaymentTermsListResponse,
-  PaymentTermsResponse,
-} from '@monite/sdk-api';
 
 export function generatePaymentTerm(index?: number): PaymentTermsResponse {
   const days = faker.number.int({ min: 2, max: 100 });
@@ -29,3 +26,7 @@ export const paymentTermsFixtures: PaymentTermsListResponse = {
     .fill('_')
     .map((_, index) => generatePaymentTerm(index)),
 };
+
+type PaymentTermsListResponse =
+  components['schemas']['PaymentTermsListResponse'];
+type PaymentTermsResponse = components['schemas']['PaymentTermsResponse'];
