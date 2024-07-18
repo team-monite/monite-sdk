@@ -9,7 +9,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum } from '@monite/sdk-api';
 import { Button, CircularProgress } from '@mui/material';
 
 export const Tags = () => (
@@ -34,14 +33,14 @@ const TagsBase = () => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'tag',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'tag',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 

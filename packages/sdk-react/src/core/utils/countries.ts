@@ -1,6 +1,6 @@
+import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { AllowedCountries } from '@monite/sdk-api';
 
 export type CountriesType = Record<string, string>;
 
@@ -260,3 +260,5 @@ export const getCountries = (i18n: I18n): CountriesType => ({
   ZM: t(i18n)`Zambia`,
   ZW: t(i18n)`Zimbabwe`,
 });
+
+type AllowedCountries = components['schemas']['AllowedCountries'];

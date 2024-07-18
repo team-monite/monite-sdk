@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { components } from '@/api';
-import { useUpdateMyEntity } from '@/core/queries/useEntities';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
@@ -41,11 +41,23 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
+  const { api, queryClient } = useMoniteContext();
   const {
     mutateAsync: updateEntityMutation,
     isPending,
     error,
-  } = useUpdateMyEntity();
+  } = api.entityUsers.patchEntityUsersMyEntity.useMutation(undefined, {
+    onSuccess: (updatedEntity) => {
+      api.entityUsers.getEntityUsersMyEntity.setQueryData(
+        {},
+        (prevEntity) => ({
+          ...prevEntity,
+          ...updatedEntity,
+        }),
+        queryClient
+      );
+    },
+  });
 
   const entity = useMemo(
     () => onboarding?.data?.entity,

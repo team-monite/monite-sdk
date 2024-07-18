@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { usePaymentTerms } from '@/core/queries';
-import { useBankAccounts } from '@/core/queries/useBankAccounts';
 import { getCountries, getCurrencies } from '@/core/utils';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { EntityBankAccountResponse } from '@monite/sdk-api';
 import {
   Card,
   CardContent,
@@ -27,7 +26,7 @@ import type { SectionGeneralProps } from './Section.types';
 
 const getBankAccountName = (
   i18n: I18n,
-  bankAccount: EntityBankAccountResponse
+  bankAccount: components['schemas']['EntityBankAccountResponse']
 ) => {
   if (bankAccount.display_name) {
     return bankAccount.display_name;
@@ -48,15 +47,15 @@ const getBankAccountName = (
 
 export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch, resetField, setValue } =
-    useFormContext<CreateReceivablesFormProps>();
+  const { control } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
 
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
-    useBankAccounts();
+    api.bankAccounts.getBankAccounts.useQuery({});
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
-    usePaymentTerms();
+    api.paymentTerms.getPaymentTerms.useQuery({});
 
   const noPaymentTerms = useMemo(() => {
     if (!paymentTerms) {

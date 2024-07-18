@@ -1,4 +1,11 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import React, {
+  BaseSyntheticEvent,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
@@ -84,7 +91,7 @@ export interface ProductsTableProps {
 }
 
 const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
-  Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+  Scroller: forwardRef<HTMLDivElement>((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
@@ -95,14 +102,14 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
       sx={{ borderCollapse: 'separate' }}
     />
   ),
-  TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableHead: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableHead {...props} ref={ref} />
   )),
-  TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
   TableFoot: ({ children }) => {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   },
 };
 
@@ -200,7 +207,6 @@ export const ProductsTable = ({
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-productsTable-${useId()}`;
 
   /**
@@ -220,7 +226,7 @@ export const ProductsTable = ({
    * [See](https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
    */
   const handleSubmitWithoutPropagation = useCallback(
-    (e: React.BaseSyntheticEvent) => {
+    (e: BaseSyntheticEvent) => {
       e.preventDefault();
       e.stopPropagation();
       handleSubmit((values) => {
@@ -451,7 +457,7 @@ export const ProductsTable = ({
                     }
 
                     return (
-                      <React.Fragment>
+                      <>
                         <TableRow>
                           {tableHeadCells.map((headCell) => (
                             <TableCell
@@ -473,7 +479,7 @@ export const ProductsTable = ({
                             </TableCell>
                           ))}
                         </TableRow>
-                      </React.Fragment>
+                      </>
                     );
                   }}
                   fixedFooterContent={() => {
@@ -504,7 +510,7 @@ export const ProductsTable = ({
                     );
                   }}
                   itemContent={(_index, row) => (
-                    <React.Fragment>
+                    <>
                       <TableCell>
                         <Checkbox checked={isSelected(row).selected} />
                       </TableCell>
@@ -517,7 +523,7 @@ export const ProductsTable = ({
                             )
                           : ''}
                       </TableCell>
-                    </React.Fragment>
+                    </>
                   )}
                   endReached={() => hasNextPage && fetchNextPage()}
                 />

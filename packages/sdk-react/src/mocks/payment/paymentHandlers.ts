@@ -1,14 +1,6 @@
+import { components } from '@/api';
 import { receivableListFixture } from '@/mocks';
 import { faker } from '@faker-js/faker';
-import {
-  CreatePaymentLinkRequest,
-  CurrencyEnum,
-  ErrorSchemaResponse,
-  MoniteAllPaymentMethodsTypes,
-  PaymentAccountType,
-  PublicPaymentLinkResponse,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -41,7 +33,7 @@ export const paymentHandlers = [
         );
       }
 
-      if (invoice.status === ReceivablesStatusEnum.DRAFT) {
+      if (invoice.status === 'draft') {
         await delay();
 
         return HttpResponse.json(
@@ -60,6 +52,11 @@ export const paymentHandlers = [
 
     await delay();
 
+    const paymentMethods: MoniteAllPaymentMethodsTypes[] = [
+      'card',
+      'sepa_credit',
+    ];
+
     return HttpResponse.json(
       {
         id: faker.string.uuid(),
@@ -67,15 +64,12 @@ export const paymentHandlers = [
         payment_page_url: faker.internet.url(),
         status: 'active',
         amount: 1,
-        currency: CurrencyEnum.EUR,
+        currency: 'EUR',
         expires_at: new Date().toISOString(),
-        payment_methods: [
-          MoniteAllPaymentMethodsTypes.CARD,
-          MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
-        ],
+        payment_methods: paymentMethods,
         recipient: {
           id: faker.string.uuid(),
-          type: PaymentAccountType.ENTITY,
+          type: 'entity',
         },
       },
       {
@@ -84,3 +78,13 @@ export const paymentHandlers = [
     );
   }),
 ];
+
+type CreatePaymentLinkRequest =
+  components['schemas']['CreatePaymentLinkRequest'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type PaymentAccountType = components['schemas']['PaymentAccountType'];
+type PublicPaymentLinkResponse =
+  components['schemas']['PublicPaymentLinkResponse'];
+
+type MoniteAllPaymentMethodsTypes =
+  components['schemas']['MoniteAllPaymentMethodsTypes'];

@@ -16,7 +16,6 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Stack, Typography } from '@mui/material';
@@ -124,17 +123,17 @@ const ProductsTableBase = ({
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'product',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
   const { data: isUpdateSupported } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
   const { data: isDeleteSupported } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id,
   });
 

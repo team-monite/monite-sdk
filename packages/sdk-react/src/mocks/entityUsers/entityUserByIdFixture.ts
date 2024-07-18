@@ -1,4 +1,4 @@
-import { EntityUserResponse, StatusEnum } from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { FileNames } from '../files';
 import {
@@ -18,7 +18,7 @@ export const entityUserByIdFixture: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Ivan',
   last_name: 'Ivanov',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
   userpic_file_id: FileNames.file_snake,
@@ -31,7 +31,7 @@ export const entityUser2: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'John',
   last_name: 'Doe',
-  status: StatusEnum.DELETED,
+  status: 'deleted',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -43,7 +43,7 @@ export const entityUser3: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Jane',
   last_name: 'Smith',
-  status: StatusEnum.DELETED,
+  status: 'deleted',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -55,7 +55,7 @@ export const entityUser4: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434736',
   first_name: 'Michael',
   last_name: 'Johnson',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -67,7 +67,7 @@ export const entityUser5: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434736',
   first_name: 'Emily',
   last_name: 'Williams',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -79,7 +79,7 @@ export const entityUser6: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434736',
   first_name: 'David',
   last_name: 'Brown',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -102,7 +102,7 @@ export const entityUserByIdWithLowPermissionsFixture: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Low',
   last_name: 'Permissions',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -116,7 +116,7 @@ export const entityUserByIdWithReadonlyPermissionsFixture: EntityUserResponse =
     login: 'monite_entity_user_login_083020221631434735',
     first_name: 'Low',
     last_name: 'Permissions',
-    status: StatusEnum.ACTIVE,
+    status: 'active',
     created_at: '2022-08-30T13:31:43.971531+00:00',
     updated_at: '2023-01-11T18:11:12.340654+00:00',
   };
@@ -128,7 +128,7 @@ export const entityUserByIdWithOwnerPermissionsFixture: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Low',
   last_name: 'Permissions',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -142,7 +142,7 @@ export const entityUserByIdWithEmptyPermissionsFixture: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Low',
   last_name: 'Permissions',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
@@ -154,7 +154,9 @@ export const entityUserByIdWithAbsentPermissionsFixture: EntityUserResponse = {
   login: 'monite_entity_user_login_083020221631434735',
   first_name: 'Low',
   last_name: 'Permissions',
-  status: StatusEnum.ACTIVE,
+  status: 'active',
   created_at: '2022-08-30T13:31:43.971531+00:00',
   updated_at: '2023-01-11T18:11:12.340654+00:00',
 };
+
+type EntityUserResponse = components['schemas']['EntityUserResponse'];

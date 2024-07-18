@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import {
-  FILTER_TYPE_CUSTOMER,
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-} from '@/components/receivables/consts';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useReceivables } from '@/core/queries';
+import { useReceivables } from '@/core/queries/useReceivables';
+import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -18,18 +15,12 @@ import {
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OrderEnum,
-  ReceivableCursorFields,
-  ReceivablesStatusEnum,
-  ReceivableType,
-} from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { Filters } from '../Filters';
-import { useReceivablesFilters } from '../Filters/useReceivablesFilters';
+import { ReceivableFilters } from '../ReceivableFilters';
+import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 
 type CreditNotesTableProps = {
   /**
@@ -41,8 +32,8 @@ type CreditNotesTableProps = {
 };
 
 export interface CreditNotesTableSortModel {
-  field: ReceivableCursorFields;
-  sort: GridSortDirection;
+  field: components['schemas']['ReceivableCursorFields'];
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const CreditNotesTable = (props: CreditNotesTableProps) => (
@@ -53,62 +44,36 @@ export const CreditNotesTable = (props: CreditNotesTableProps) => (
 
 const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const { i18n } = useLingui();
-  const [currentPaginationToken, setCurrentPaginationToken] = useState<
-    string | null
-  >(null);
+
+  const [paginationToken, setPaginationToken] = useState<string | undefined>(
+    undefined
+  );
+
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [sortModel, setSortModel] = useState<Array<CreditNotesTableSortModel>>(
-    []
-  );
-  const sortModelItem = sortModel[0];
+
+  const [sortModel, setSortModel] = useState<CreditNotesTableSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { onChangeFilter, currentFilters } = useReceivablesFilters();
+  const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: creditNotes, isLoading } = useReceivables(
-    sortModelItem ? (sortModelItem.sort as OrderEnum) : undefined,
-    pageSize,
-    currentPaginationToken || undefined,
-    sortModelItem ? sortModelItem.field : undefined,
-    ReceivableType.CREDIT_NOTE,
-    undefined,
-    currentFilters[FILTER_TYPE_SEARCH] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_CUSTOMER] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilters[FILTER_TYPE_STATUS] || undefined
-  );
+  const { data: creditNotes, isLoading } = useReceivables({
+    ...filters,
+    sort: sortModel?.field,
+    order: sortModel?.sort,
+    limit: pageSize,
+    pagination_token: paginationToken,
+    type: 'credit_note',
+  });
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<CreditNotesTableSortModel>;
-    setSortModel(model);
-    setCurrentPaginationToken(null);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as CreditNotesTableSortModel);
+    setPaginationToken(undefined);
   };
-
-  const onPrev = () =>
-    setCurrentPaginationToken(creditNotes?.prev_pagination_token || null);
-
-  const onNext = () =>
-    setCurrentPaginationToken(creditNotes?.next_pagination_token || null);
-
-  // Workaround to prevent illegal sorting fields
-  const receivableCursorFieldsList = Object.values(ReceivableCursorFields);
 
   return (
     <>
@@ -117,9 +82,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         className={ScopedCssBaselineContainerClassName}
       >
         <Box sx={{ marginBottom: 2 }}>
-          <Filters
-            onChangeFilter={onChangeFilter}
-            filters={['search', 'status', 'customer']}
+          <ReceivableFilters
+            onChange={onChangeFilter}
+            filters={['document_id__contains', 'status', 'counterpart_id']}
           />
         </Box>
         <DataGrid
@@ -134,7 +99,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               borderColor: 'divider',
             },
           }}
-          sortModel={sortModel}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           slots={{
@@ -144,11 +108,11 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
                 prevPage={creditNotes?.prev_pagination_token}
                 paginationModel={{
                   pageSize,
-                  page: currentPaginationToken,
+                  page: paginationToken,
                 }}
                 onPaginationModelChange={({ page, pageSize }) => {
                   setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
+                  setPaginationToken(page ?? undefined);
                 }}
               />
             ),
@@ -181,9 +145,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.COUNTERPART_NAME
-              ),
+              sortable: ReceivableCursorFields.includes('counterpart_name'),
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -194,22 +156,17 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'status',
               headerName: t(i18n)`Status`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.STATUS
-              ),
+              sortable: ReceivableCursorFields.includes('status'),
               flex: 1,
               renderCell: (params) => {
-                const status = params.value as ReceivablesStatusEnum;
-
+                const status = params.value;
                 return <InvoiceStatusChip status={status} />;
               },
             },
             {
               field: 'amount',
               headerName: t(i18n)`Amount`,
-              sortable: receivableCursorFieldsList.includes(
-                ReceivableCursorFields.AMOUNT
-              ),
+              sortable: ReceivableCursorFields.includes('amount'),
               valueGetter: (params) => {
                 const row = params.row;
                 const value = row.total_amount;

@@ -1,9 +1,4 @@
-import {
-  ENTITY_USERS_ENDPOINT,
-  EntityUserPaginationResponse,
-  EntityUserResponse,
-  RoleResponse,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -40,7 +35,7 @@ export const entityUsersHandlers = [
    * Get entity user by auth token
    */
   http.get<{}, undefined, EntityUserResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}/me`,
+    `*/entity_users/me`,
     async ({ request }) => {
       // TODO Real API doesn't use the next header for this method. Replace this workaround https://monite.atlassian.net/browse/DEV-11719
       const entityId = request.headers.get('x-monite-entity-id');
@@ -82,7 +77,7 @@ export const entityUsersHandlers = [
   ),
 
   http.get<{}, undefined, RoleResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}/my_role`,
+    `*/entity_users/my_role`,
     // TODO Real API doesn't use the next header for this method. Replace this workaround https://monite.atlassian.net/browse/DEV-11719
     async ({ request }) => {
       const entityId = request.headers.get('x-monite-entity-id');
@@ -124,7 +119,7 @@ export const entityUsersHandlers = [
   ),
 
   http.get<{ entityUserId: string }, string, EntityUserResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}/:entityUserId`,
+    `*/entity_users/:entityUserId`,
     async ({ params }) => {
       const userFixture =
         entityUsers[params.entityUserId] ?? entityUserByIdFixture;
@@ -136,7 +131,7 @@ export const entityUsersHandlers = [
   ),
 
   http.get<{}, undefined, EntityUserPaginationResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}`,
+    `*/entity_users`,
     async () => {
       await delay();
 
@@ -147,7 +142,7 @@ export const entityUsersHandlers = [
   ),
 
   http.patch<{}, EntityUserResponse, EntityUserResponse>(
-    `*/${ENTITY_USERS_ENDPOINT}/my_entity`,
+    `*/entity_users/my_entity`,
     async ({ request }) => {
       const jsonBody = await request.json();
 
@@ -157,3 +152,8 @@ export const entityUsersHandlers = [
     }
   ),
 ];
+
+type EntityUserPaginationResponse =
+  components['schemas']['EntityUserPaginationResponse'];
+type EntityUserResponse = components['schemas']['EntityUserResponse'];
+type RoleResponse = components['schemas']['RoleResponse'];

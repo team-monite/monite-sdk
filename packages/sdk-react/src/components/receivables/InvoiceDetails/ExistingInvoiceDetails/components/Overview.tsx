@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import React from 'react';
 
+import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useCurrencies } from '@/core/hooks';
@@ -8,7 +9,6 @@ import { useCounterpartById } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 import { PreviewCustomerSection } from './sections/PreviewCustomerSection';
@@ -29,7 +29,7 @@ const a11yProps = (index: ViewState) => {
 };
 
 interface TabPanelProps {
-  children: React.ReactNode;
+  children: ReactNode;
   index: ViewState;
   value: ViewState;
 }
@@ -47,11 +47,9 @@ const TabPanel = ({ value, index, children }: TabPanelProps) => {
   );
 };
 
-interface OverviewProps {
-  invoice: InvoiceResponsePayload;
-}
-
-export const Overview = ({ invoice }: OverviewProps) => {
+export const Overview = (
+  invoice: components['schemas']['InvoiceResponsePayload']
+) => {
   const { i18n } = useLingui();
   const [view, setView] = useState<ViewState>(ViewState.Overview);
 
@@ -132,10 +130,10 @@ export const Overview = ({ invoice }: OverviewProps) => {
 
       <TabPanel value={view} index={ViewState.Details}>
         <Stack spacing={4}>
-          <PreviewCustomerSection invoice={invoice} />
-          <PreviewDetailsSection invoice={invoice} />
-          <PreviewItemsSection invoice={invoice} />
-          <PreviewPaymentDetailsSection invoice={invoice} />
+          <PreviewCustomerSection {...invoice} />
+          <PreviewDetailsSection {...invoice} />
+          <PreviewItemsSection {...invoice} />
+          <PreviewPaymentDetailsSection {...invoice} />
         </Stack>
       </TabPanel>
     </Stack>

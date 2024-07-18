@@ -1,6 +1,5 @@
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
-import { CounterpartType } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
@@ -45,7 +44,7 @@ export const CounterpartFormIndividual: Story = {
   },
   render: (args) => (
     <Dialog {...args}>
-      <CounterpartDetails type={CounterpartType.INDIVIDUAL} {...actions} />
+      <CounterpartDetails type="individual" {...actions} />
     </Dialog>
   ),
 };

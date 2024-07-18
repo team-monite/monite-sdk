@@ -1,11 +1,4 @@
-import {
-  ErrorSchemaResponse,
-  LINE_ITEMS_ENDPOINT,
-  LineItemPaginationResponse,
-  LineItemRequest,
-  LineItemResponse,
-  PAYABLES_ENDPOINT,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -17,28 +10,25 @@ export const lineItemsHandlers = [
     { payableId: string },
     undefined,
     LineItemPaginationResponse | ErrorSchemaResponse
-  >(
-    `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}`,
-    async ({ params }) => {
-      const payableId = params.payableId;
+  >(`*/payables/:payableId/line_items`, async ({ params }) => {
+    const payableId = params.payableId;
 
-      await delay();
+    await delay();
 
-      return HttpResponse.json(
-        {
-          data: [generateLineItem(payableId), generateLineItem(payableId)],
-          prev_pagination_token: undefined,
-          next_pagination_token: undefined,
-        },
-        {
-          status: 200,
-        }
-      );
-    }
-  ),
+    return HttpResponse.json(
+      {
+        data: [generateLineItem(payableId), generateLineItem(payableId)],
+        prev_pagination_token: undefined,
+        next_pagination_token: undefined,
+      },
+      {
+        status: 200,
+      }
+    );
+  }),
   // create line item
   http.post<{}, LineItemRequest, LineItemResponse>(
-    `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}`,
+    `*/payables/:payableId/line_items`,
     async () => {
       await delay();
 
@@ -48,7 +38,7 @@ export const lineItemsHandlers = [
 
   // update line item
   http.patch<{}, LineItemRequest, LineItemResponse>(
-    `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}/:lineItemId`,
+    `*/payables/:payableId/line_items/:lineItemId`,
     async () => {
       await delay();
 
@@ -57,14 +47,17 @@ export const lineItemsHandlers = [
   ),
 
   // delete line item
-  http.delete(
-    `*/${PAYABLES_ENDPOINT}/:payableId/${LINE_ITEMS_ENDPOINT}/:lineItemId`,
-    async () => {
-      await delay();
+  http.delete(`*/payables/:payableId/line_items/:lineItemId`, async () => {
+    await delay();
 
-      return new HttpResponse(undefined, {
-        status: 204,
-      });
-    }
-  ),
+    return new HttpResponse(undefined, {
+      status: 204,
+    });
+  }),
 ];
+
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type LineItemPaginationResponse =
+  components['schemas']['LineItemPaginationResponse'];
+type LineItemRequest = components['schemas']['LineItemRequest'];
+type LineItemResponse = components['schemas']['LineItemResponse'];

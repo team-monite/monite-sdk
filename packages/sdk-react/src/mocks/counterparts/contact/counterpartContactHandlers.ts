@@ -1,11 +1,6 @@
 import { components } from '@/api';
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
 import { counterpartListFixture } from '@/mocks';
-import {
-  COUNTERPARTS_CONTACT_ENDPOINT,
-  COUNTERPARTS_ENDPOINT,
-  ErrorSchemaResponse,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -16,7 +11,7 @@ type UpdateCounterpartContactParams = CreateCounterpartContactParams & {
   contactAccountId: string;
 };
 
-const contactAccountPath = `*/${COUNTERPARTS_ENDPOINT}/:counterpartId/${COUNTERPARTS_CONTACT_ENDPOINT}`;
+const contactAccountPath = `*/counterparts/:counterpartId/contacts`;
 const contactAccountIdPath = `${contactAccountPath}/:contactAccountId`;
 
 export const counterpartContactHandlers = [
@@ -25,7 +20,7 @@ export const counterpartContactHandlers = [
     CreateCounterpartContactParams,
     undefined,
     | components['schemas']['CounterpartContactsResourceList']
-    | ErrorSchemaResponse
+    | components['schemas']['ErrorSchemaResponse']
   >(contactAccountPath, async ({ params }) => {
     const { counterpartId } = params;
 
@@ -95,7 +90,8 @@ export const counterpartContactHandlers = [
   http.get<
     UpdateCounterpartContactParams,
     undefined,
-    components['schemas']['CounterpartContactResponse'] | ErrorSchemaResponse
+    | components['schemas']['CounterpartContactResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(contactAccountIdPath, async ({ params }) => {
     const { contactAccountId, counterpartId } = params;
 

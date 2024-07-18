@@ -18,7 +18,6 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
@@ -139,17 +138,17 @@ const CounterpartsTableBase = ({
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
   const { data: isUpdateSupported } = useIsActionAllowed({
     method: 'counterpart',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
   const { data: isDeleteSupported } = useIsActionAllowed({
     method: 'counterpart',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id,
   });
 

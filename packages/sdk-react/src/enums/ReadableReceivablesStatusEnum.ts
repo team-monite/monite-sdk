@@ -1,6 +1,6 @@
 import { type Services } from '@/api';
 
-type ReadableReceivablesStatus = NonNullable<
+export type ReadableReceivablesStatus = NonNullable<
   NonNullable<
     Services['receivables']['getReceivables']['types']['parameters']['query']
   >['status']

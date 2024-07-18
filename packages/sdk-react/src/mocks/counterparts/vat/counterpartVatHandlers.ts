@@ -1,15 +1,4 @@
-import type {
-  CounterpartVatID,
-  CounterpartVatIDResponse,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
-import {
-  COUNTERPARTS_ENDPOINT,
-  COUNTERPARTS_VAT_ENDPOINT,
-  CounterpartVatIDResourceList,
-  ErrorSchemaResponse,
-  TaxIDTypeEnum,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -23,7 +12,7 @@ type UpdateCounterpartVatParams = CreateCounterpartVatParams & {
   vatId: string;
 };
 
-const vatPath = `*/${COUNTERPARTS_ENDPOINT}/:counterpartId/${COUNTERPARTS_VAT_ENDPOINT}`;
+const vatPath = `*/counterparts/:counterpartId/vat_ids`;
 const vatIdPath = `${vatPath}/:vatId`;
 
 export const counterpartVatHandlers = [
@@ -149,3 +138,13 @@ export const counterpartVatHandlers = [
     });
   }),
 ];
+
+type TaxIDTypeEnum = components['schemas']['VatIDTypeEnum'];
+type CounterpartVatIDResourceList =
+  components['schemas']['CounterpartVatIDResourceList'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type CounterpartVatID = components['schemas']['CounterpartVatID'];
+type CounterpartVatIDResponse =
+  components['schemas']['CounterpartVatIDResponse'];
+type UpdateCounterpartContactPayload =
+  components['schemas']['UpdateCounterpartContactPayload'];
