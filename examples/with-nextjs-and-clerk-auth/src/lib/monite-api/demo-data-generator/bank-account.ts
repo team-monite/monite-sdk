@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import {
   bankCountriesToCurrencies,
-  getRandomCountry,
+  chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
@@ -25,21 +25,21 @@ export const createBankAccount = async ({
   const entity = await getEntity(entity_id);
 
   const entityCountry = entity.address.country;
-  const country: keyof typeof bankCountriesToCurrencies = (
+  const country: keyof typeof bankCountriesToCurrencies =
     entityCountry in bankCountriesToCurrencies
-      ? entityCountry
-      : getRandomCountry()
-  ) as keyof typeof bankCountriesToCurrencies;
+      ? (entityCountry as keyof typeof bankCountriesToCurrencies)
+      : chooseRandomCountryForDataGeneration();
 
   const bankName = faker.company.name();
   const currency = bankCountriesToCurrencies[country];
-  const accountCreationParams = {
-    is_default_for_currency,
-    bank_name: `${bankName} Bank`,
-    display_name: faker.finance.accountName(),
-    currency: currency,
-    country,
-  } as components['schemas']['CreateEntityBankAccountRequest'];
+  const accountCreationParams: components['schemas']['CreateEntityBankAccountRequest'] =
+    {
+      is_default_for_currency,
+      bank_name: `${bankName} Bank`,
+      display_name: faker.finance.accountName(),
+      currency: currency,
+      country,
+    };
   switch (currency) {
     case 'EUR':
       accountCreationParams.iban = faker.finance.iban(false, country);
@@ -50,11 +50,7 @@ export const createBankAccount = async ({
       accountCreationParams.account_number = faker.finance.accountNumber(8);
       accountCreationParams.sort_code = faker.finance.accountNumber(6);
       break;
-    // case 'USD':
-    //   accountCreationParams.account_holder_name = entity.organization.legal_name;
-    //   accountCreationParams.account_number = faker.finance.accountNumber(8);
-    //   accountCreationParams.routing_number = faker.finance.accountNumber(6);
-    //   break;
+    // USD accounts will need account_holder_name, account_number and routing_number
     default:
       throw new Error(
         `Bank account generator - unsupported currency: ${currency}`

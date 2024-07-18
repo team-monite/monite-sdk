@@ -9,7 +9,7 @@ import {
 import {
   bankCountriesToCurrencies,
   demoBankAccountBICList,
-  getRandomCountry,
+  chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
 import {
   getMoniteApiVersion,
@@ -412,28 +412,11 @@ export const createCounterpartVatId = async ({
 }: {
   moniteClient: MoniteClient;
   counterpart_id: string;
-  entity: EntityOrganizationResponse;
+  entity: { id: string; address: { country: string } };
 }): Promise<CounterpartVatIDResponse> => {
   const value = String(faker.number.int(10_000));
   const counterpartCountry = getRandomItemFromArray(counterpartCountries);
-  const entityCountry = entity.address.country;
-  let vatIdType: VatIDTypeEnum = 'unknown';
-  switch (entityCountry) {
-    case 'GB':
-      vatIdType =
-        counterpartCountry == 'GB'
-          ? 'gb_vat'
-          : counterpartCountry == 'DE'
-          ? 'eu_vat'
-          : 'unknown';
-      break;
-    case 'DE':
-      vatIdType =
-        counterpartCountry == 'GB' || counterpartCountry == 'DE'
-          ? 'eu_vat'
-          : 'unknown';
-      break;
-  }
+  const vatIdType = getVatIdType(entity.address.country, counterpartCountry);
 
   const { data, error, response } = await moniteClient.POST(
     '/counterparts/{counterpart_id}/vat_ids',
@@ -478,7 +461,7 @@ export const createCounterpartBankAccount = async ({
   counterpart_id: string;
   entity_id: string;
 }): Promise<CounterpartBankAccountResponse> => {
-  const countryCode = getRandomCountry();
+  const countryCode = chooseRandomCountryForDataGeneration();
   const currency = bankCountriesToCurrencies[countryCode];
 
   const { data, error, response } = await moniteClient.POST(
@@ -518,3 +501,24 @@ export const createCounterpartBankAccount = async ({
 
   return data;
 };
+
+function getVatIdType(entityCountry: string, counterpartCountry: string) {
+  let vatIdType: VatIDTypeEnum = 'unknown';
+  switch (entityCountry) {
+    case 'GB':
+      vatIdType =
+        counterpartCountry == 'GB'
+          ? 'gb_vat'
+          : counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+    case 'DE':
+      vatIdType =
+        counterpartCountry == 'GB' || counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+  }
+  return vatIdType;
+}

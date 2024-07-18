@@ -12,7 +12,7 @@ module.exports = {
   ],
   plugins: ['import', 'testing-library', '@team-monite'],
   rules: {
-    'prettier/prettier': 'warn',
+    'prettier/prettier': 'error',
     'import/no-default-export': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: false }],
   },

@@ -72,7 +72,7 @@ Open your organization in Clerk dashboard and take `entity_id` value from the `p
 
 ```bash
 yarn build:demo-data-generator
-node dist/bin.js run --entity-id "your-org-entity-id"
+yarn demo-data-generator run --entity-id "your-org-entity-id"
 ```
 
 ### Provision of Application domain and Clerk subdomains
