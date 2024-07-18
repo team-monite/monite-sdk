@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useEntityPaymentMethods } from '@/core/queries/useEntities';
 import {
   useIssueReceivableById,
   useSendReceivableById,
@@ -56,7 +55,10 @@ const EmailInvoiceDetailsBase = ({
   const createPaymentLinkMutation =
     api.paymentLinks.postPaymentLinks.useMutation({});
 
-  const { data: paymentMethods } = useEntityPaymentMethods();
+  const { data: paymentMethods } =
+    api.entities.getEntitiesIdPaymentMethods.useQuery({
+      path: { entity_id: monite.entityId },
+    });
 
   const formName = `Monite-Form-emailInvoiceDetails-${useId()}`;
 

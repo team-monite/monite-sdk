@@ -1,7 +1,7 @@
+import { components } from '@/api';
 import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { ApiError, type FileResponse, type UploadFile } from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -72,7 +72,7 @@ const fileFixture = (): FileResponse => {
 };
 
 export const filesHandlers = [
-  http.post<{}, UploadFile, FileResponse | ApiError>(filePath, async () => {
+  http.post<{}, UploadFile, FileResponse>(filePath, async () => {
     await delay();
 
     return HttpResponse.json(fileFixture());
@@ -92,3 +92,11 @@ export const filesHandlers = [
     });
   }),
 ];
+
+type UploadFile = {
+  file: Blob;
+  file_type: AllowedFileTypes;
+};
+
+type AllowedFileTypes = components['schemas']['AllowedFileTypes'];
+type FileResponse = components['schemas']['FileResponse'];

@@ -18,7 +18,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
@@ -72,7 +71,7 @@ interface PayablesTableProps {
    */
   onChangeSort?: (params: {
     sort: 'created_at';
-    order: SortOrderEnum | null;
+    order: 'asc' | 'desc' | null;
   }) => void;
 }
 

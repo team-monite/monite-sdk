@@ -1,5 +1,4 @@
 import { createRenderWithClient } from '@/utils/test-utils';
-import { CurrencyEnum } from '@monite/sdk-api';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import { useCurrencies } from './useCurrencies';
@@ -13,7 +12,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.getSymbolFromCurrency(CurrencyEnum.USD)).toBe('$');
+      expect(result.current.getSymbolFromCurrency('USD')).toBe('$');
     });
 
     test('should return € sign when we provided currensy as EUR', async () => {
@@ -23,7 +22,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.getSymbolFromCurrency(CurrencyEnum.EUR)).toBe('€');
+      expect(result.current.getSymbolFromCurrency('EUR')).toBe('€');
     });
 
     test('should return ₸ sign when we provided currensy as KZT', async () => {
@@ -33,7 +32,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.getSymbolFromCurrency(CurrencyEnum.KZT)).toBe('₸');
+      expect(result.current.getSymbolFromCurrency('KZT')).toBe('₸');
     });
 
     test('should return "bitcoin" text when we provided unsupported currency', async () => {
@@ -55,9 +54,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(
-        result.current.formatFromMinorUnits(10_000, CurrencyEnum.USD)
-      ).toBe(100);
+      expect(result.current.formatFromMinorUnits(10_000, 'USD')).toBe(100);
     });
 
     test('should return 10 (yen) when we provide 10 minor units', async () => {
@@ -67,9 +64,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatFromMinorUnits(10, CurrencyEnum.JPY)).toBe(
-        10
-      );
+      expect(result.current.formatFromMinorUnits(10, 'JPY')).toBe(10);
     });
 
     test('should return 1 (tunisian dinar) when we provide 1000 minor units', async () => {
@@ -79,9 +74,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatFromMinorUnits(1_000, CurrencyEnum.TND)).toBe(
-        1
-      );
+      expect(result.current.formatFromMinorUnits(1_000, 'TND')).toBe(1);
     });
 
     test('should return "null" when the currency is not in the list', async () => {
@@ -103,9 +96,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatToMinorUnits(100, CurrencyEnum.USD)).toBe(
-        10_000
-      );
+      expect(result.current.formatToMinorUnits(100, 'USD')).toBe(10_000);
     });
 
     test('should return 10 minor units when we provide 10 yen', async () => {
@@ -115,7 +106,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatToMinorUnits(10, CurrencyEnum.JPY)).toBe(10);
+      expect(result.current.formatToMinorUnits(10, 'JPY')).toBe(10);
     });
 
     test('should return 1000 minor units when we provide 1 tunisian dinar', async () => {
@@ -125,9 +116,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatToMinorUnits(1, CurrencyEnum.TND)).toBe(
-        1_000
-      );
+      expect(result.current.formatToMinorUnits(1, 'TND')).toBe(1_000);
     });
 
     test('should return "null" when the currency is not in the list', async () => {
@@ -151,9 +140,9 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(
-        result.current.formatCurrencyToDisplay(10000, CurrencyEnum.USD)
-      ).toBe('100,00 $');
+      expect(result.current.formatCurrencyToDisplay(10000, 'USD')).toBe(
+        '100,00 $'
+      );
     });
 
     test('should return "$100.00" when we provide 10000 minor units in United States format', async () => {
@@ -169,9 +158,9 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(
-        result.current.formatCurrencyToDisplay(10000, CurrencyEnum.USD)
-      ).toBe('$100.00');
+      expect(result.current.formatCurrencyToDisplay(10000, 'USD')).toBe(
+        '$100.00'
+      );
     });
 
     test('should return "￥10" when we provide 10 minor units in Japanese format in Japanese Yen currency', async () => {
@@ -187,9 +176,7 @@ describe('useCurrencies', () => {
 
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-      expect(result.current.formatCurrencyToDisplay(10, CurrencyEnum.JPY)).toBe(
-        '￥10'
-      );
+      expect(result.current.formatCurrencyToDisplay(10, 'JPY')).toBe('￥10');
     });
 
     test('should return "null" when the currency is not in the list', async () => {

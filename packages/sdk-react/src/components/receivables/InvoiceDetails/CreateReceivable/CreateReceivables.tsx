@@ -4,9 +4,9 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses } from '@/core/queries';
-import { useEntitySettings } from '@/core/queries/useEntities';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -77,7 +77,11 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isLoading: isSettingsLoading } = useEntitySettings();
+  const { api, monite } = useMoniteContext();
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: monite.entityId },
+    });
 
   const [actualCurrency, setActualCurrency] = useState<
     components['schemas']['CurrencyEnum'] | undefined

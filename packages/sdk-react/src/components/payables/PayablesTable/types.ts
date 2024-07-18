@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { SortOrderEnum } from '@/utils/types';
 
 import {
   FILTER_TYPE_CREATED_AT,
@@ -10,7 +9,7 @@ import {
 
 export type Sort = {
   sort: components['schemas']['PayableCursorFields'];
-  order: SortOrderEnum;
+  order: 'asc' | 'desc';
 };
 
 export type FilterTypes = {

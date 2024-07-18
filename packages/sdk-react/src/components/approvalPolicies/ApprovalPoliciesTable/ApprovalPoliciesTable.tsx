@@ -10,7 +10,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -37,7 +36,7 @@ interface onChangeSortParams {
    * The value to order by. Defaults to SortOrderEnum.DESC.
    * null means no sorting.
    */
-  order: SortOrderEnum | null;
+  order: 'asc' | 'desc' | null;
 }
 
 interface onFilterChangeParams {

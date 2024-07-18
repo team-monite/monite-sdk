@@ -20,7 +20,6 @@ import {
   getRandomNumber,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { CounterpartType } from '@monite/sdk-api';
 
 export type ReceivablesListFixture = {
   quote: Array<components['schemas']['QuoteResponsePayload']>;
@@ -86,6 +85,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
     quantity: faker.number.int({ min: 1, max: 10 }),
     product: {
       id: faker.string.uuid(),
+      type: 'product',
       name: faker.commerce.productName(),
       price: {
         value: faker.number.int({ min: 10, max: 30_000 }),
@@ -100,7 +100,6 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         created_at: productVatId.created_at,
         updated_at: productVatId.updated_at,
         value: productVatId.value,
-        // @ts-expect-error - `AllowedCountries` is coming from the legacy API client
         country: productVatId.country,
       },
       measure_unit: {
@@ -235,14 +234,11 @@ function createRandomInvoice(
       .map(createRandomLineItem),
     counterpart_id: randomExistingCounterpart.id,
     counterpart_name:
-      counterpart_type === CounterpartType.ORGANIZATION
-        ? faker.company.name()
-        : undefined,
+      counterpart_type === 'organization' ? faker.company.name() : undefined,
     counterpart_type,
     counterpart_tax_id: faker.datatype.boolean()
       ? faker.string.numeric(10)
       : undefined,
-    // @ts-expect-error - `CounterpartVatIDResponse` is coming from the legacy API client
     counterpart_vat_id: faker.datatype.boolean()
       ? getRandomItemFromArray(
           counterpartVatsByCounterpartIdFixture[randomExistingCounterpart.id]
@@ -276,13 +272,14 @@ function createRandomInvoice(
     },
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
-    // @ts-expect-error - `EntityVatIDResponse` is coming from the legacy API client
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
-    // @ts-expect-error - `EntityBankAccount` is coming from the legacy API client
     entity_bank_account: faker.datatype.boolean()
-      ? getRandomItemFromArray(bankAccountsFixture.data)
+      ? {
+          ...getRandomItemFromArray(bankAccountsFixture.data),
+          is_default: true,
+        }
       : undefined,
     related_documents: {
       credit_note_ids: undefined,
@@ -297,6 +294,9 @@ function createRandomInvoice(
     discounted_subtotal: discount,
     total_vat_amount: totalVatAmount,
     total_amount_with_credit_notes: total,
+    file_language: 'en',
+    original_file_language: 'en',
+    total_amount: Number(faker.commerce.price()),
   };
 }
 
@@ -322,7 +322,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     },
     counterpart_id: faker.string.uuid(),
     counterpart_name: faker.company.name(),
-    counterpart_type: CounterpartType.INDIVIDUAL,
+    counterpart_type: 'individual',
     counterpart_address: {
       country: 'DE',
       city: 'Berlin',

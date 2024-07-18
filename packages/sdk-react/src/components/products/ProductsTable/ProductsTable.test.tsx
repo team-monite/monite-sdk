@@ -218,11 +218,11 @@ describe('ProductsTable', () => {
 
       fireEvent.click(nextButton);
 
-      await waitUntilTableIsLoaded();
-
-      expect(
-        requestFnMock.mock.lastCall?.[1].parameters?.query?.pagination_token
-      ).toEqual('1');
+      await waitFor(() =>
+        expect(
+          requestFnMock.mock.lastCall?.[1].parameters?.query?.pagination_token
+        ).toEqual('1')
+      );
     });
   });
 
@@ -395,34 +395,35 @@ describe('ProductsTable', () => {
 
         fireEvent.click(nameButton);
 
-        await waitUntilTableIsLoaded();
-
-        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
-          'name'
-        );
-        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.order).toBe(
-          'asc'
-        );
+        await waitFor(() => {
+          expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
+            'name'
+          );
+          expect(
+            requestFnMock.mock.lastCall?.[1].parameters?.query?.order
+          ).toBe('asc');
+        });
       });
 
       test('should send correct request when we sort a table by "name" field in descending order and when we click on that field twice', async () => {
         renderWithClient(<ProductsTable />);
 
-        await waitUntilTableIsLoaded();
+        const nameButton = screen.findByText('Name, description');
 
-        const nameButton = screen.getByText('Name, description');
+        fireEvent.click(await nameButton);
 
-        fireEvent.click(nameButton);
-        await waitUntilTableIsLoaded();
-
-        fireEvent.click(nameButton);
-        await waitUntilTableIsLoaded();
-
-        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
-          'name'
+        await waitFor(() =>
+          expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.sort).toBe(
+            'name'
+          )
         );
-        expect(requestFnMock.mock.lastCall?.[1].parameters?.query?.order).toBe(
-          'desc'
+
+        fireEvent.click(await nameButton);
+
+        await waitFor(() =>
+          expect(
+            requestFnMock.mock.lastCall?.[1].parameters?.query?.order
+          ).toBe('desc')
         );
       });
 

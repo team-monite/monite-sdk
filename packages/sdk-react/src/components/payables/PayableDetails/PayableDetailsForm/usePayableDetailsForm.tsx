@@ -1,6 +1,5 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
-import { useCounterpartsAddresses } from '@/core/queries/useCounterpartsAddresses';
 import { useCounterpartsBankAccountsList } from '@/core/queries/useCouterpartsBankAccounts';
 
 export type UsePayableDetailsFormProps = {
@@ -15,7 +14,10 @@ export function usePayableDetailsForm({
 
   const counterpartQuery = useCounterpartList();
   const counterpartAddressQuery =
-    useCounterpartsAddresses(currentCounterpartId);
+    api.counterparts.getCounterpartsIdAddresses.useQuery({
+      path: { counterpart_id: currentCounterpartId },
+    });
+
   const counterpartBankAccountQuery =
     useCounterpartsBankAccountsList(currentCounterpartId);
 

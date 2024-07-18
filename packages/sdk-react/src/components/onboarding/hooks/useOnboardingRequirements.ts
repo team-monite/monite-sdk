@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
-import { useMyEntity } from '@/core/queries/useEntities';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { OnboardingRequirement } from '@/enums/OnboardingRequirement';
 
@@ -77,8 +77,8 @@ export type OnboardingRequirementsType = {
 
 export const useOnboardingRequirements = (): OnboardingRequirementsType => {
   const { data: onboarding } = useOnboardingRequirementsData();
-
-  const { data: entity } = useMyEntity();
+  const { api } = useMoniteContext();
+  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery({});
 
   const entityName = useMemo(() => {
     return getEntityName(entity);

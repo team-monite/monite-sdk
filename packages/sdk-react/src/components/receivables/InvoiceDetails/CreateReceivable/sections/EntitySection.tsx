@@ -3,8 +3,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useEntityVatIdList, useMyEntity } from '@/core/queries/useEntities';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -59,10 +59,14 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
 
   const { root } = useRootElements();
 
+  const { api, monite } = useMoniteContext();
   const { data: entityVatIds, isLoading: isEntityVatIdsLoading } =
-    useEntityVatIdList();
+    api.entities.getEntitiesIdVatIds.useQuery({
+      path: { entity_id: monite.entityId },
+    });
 
-  const { data: entity, isLoading: isEntityLoading } = useMyEntity();
+  const { data: entity, isLoading: isEntityLoading } =
+    api.entityUsers.getEntityUsersMyEntity.useQuery({});
 
   /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =

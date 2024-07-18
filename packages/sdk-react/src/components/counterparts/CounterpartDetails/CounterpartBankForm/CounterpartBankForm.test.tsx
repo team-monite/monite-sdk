@@ -351,8 +351,6 @@ describe('CounterpartBankForm', () => {
             name: firstBankListFixture.name,
             routing_number: firstBankListFixture.routing_number,
             sort_code: firstBankListFixture.sort_code,
-            // @ts-expect-error - check why it's required new schema as a must for UpdateCounterpartBankAccount
-            is_default: false,
           };
 
         const actualRequestBody = requestOptions.body;

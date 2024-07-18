@@ -1,20 +1,17 @@
-import {
-  AllowedCountries,
-  OnboardingDocumentsDescriptions,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 export const getOnboardingDocumentDescriptionByCountry = (
   country: AllowedCountries
 ): OnboardingDocumentsDescriptions => {
   switch (country) {
-    case AllowedCountries.DE:
+    case 'DE':
       return {
         additional_verification: ['Meldebescheinigung', 'Führerschein'],
         entity_verification: ['Handelsregisterauszug', 'Gewerbeanmeldung'],
         verification: ['Personalausweisnummer', 'Biometrische Verifikation'],
       };
 
-    case AllowedCountries.ES:
+    case 'ES':
       return {
         additional_verification: [
           'Factura de servicios para comprobación de dirección',
@@ -44,3 +41,7 @@ export const getOnboardingDocumentDescriptionByCountry = (
       };
   }
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type OnboardingDocumentsDescriptions =
+  components['schemas']['OnboardingDocumentsDescriptions'];

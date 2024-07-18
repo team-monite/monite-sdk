@@ -1,7 +1,7 @@
-import type { AllowedCountries, CurrencyEnum } from '@monite/sdk-api';
+import { components } from '@/api';
 
 import type { CountriesType } from './countries';
-import type { CurrenciesType } from './currenices';
+import type { CurrenciesType } from './currencies';
 
 export type SelectOption = { label: string; value: string };
 
@@ -21,3 +21,6 @@ export const currenciesToStringArray = (
   currencies: CurrenciesType
 ): Array<CurrencyEnum> =>
   Object.keys(currencies).map((currency) => currency as CurrencyEnum);
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type AllowedCountries = components['schemas']['AllowedCountries'];
