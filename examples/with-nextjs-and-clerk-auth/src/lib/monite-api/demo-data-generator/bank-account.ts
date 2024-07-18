@@ -78,33 +78,3 @@ export const createBankAccount = async ({
 
   return data;
 };
-
-export const getBankAccounts = async ({
-  token,
-  entity_id,
-}: {
-  token: AccessToken;
-  entity_id: string;
-}) => {
-  const { GET } = createMoniteClient(token);
-
-  const { data, error, response } = await GET('/bank_accounts', {
-    params: {
-      header: {
-        'x-monite-entity-id': entity_id,
-        'x-monite-version': getMoniteApiVersion(),
-      },
-    },
-  });
-
-  if (error) {
-    console.error(
-      `Failed to get Bank Account for the entity_id: "${entity_id}"`,
-      `x-request-id: ${response.headers.get('x-request-id')}`
-    );
-
-    throw new Error(`Bank account fetch failed: ${JSON.stringify(error)}`);
-  }
-
-  return data.data;
-};
