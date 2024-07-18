@@ -5,6 +5,7 @@ import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -75,6 +76,7 @@ function isCreateNewCounterpartOption(
 
 export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
   const { control, watch, resetField, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
@@ -84,6 +86,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
+
   const {
     data: counterpartContacts,
     error: contactPersonError,
@@ -140,21 +143,20 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     return `${defaultContact.first_name} ${defaultContact.last_name}`;
   }, [counterpartContacts]);
 
-  const counterpartBillingAddress = useMemo(() => {
-    if (!counterpartAddresses) {
-      return undefined;
-    }
-
-    const defaultAddress = counterpartAddresses.data.find(
-      (address) => address.is_default
+  const { data: counterpartBillingAddress } =
+    api.counterparts.getCounterpartsIdAddressesId.useQuery(
+      {
+        path: {
+          counterpart_id: counterpart?.id ?? '',
+          address_id: counterpart?.default_billing_address_id ?? '',
+        },
+      },
+      {
+        enabled: Boolean(
+          counterpart?.id && counterpart?.default_billing_address_id
+        ),
+      }
     );
-
-    if (!defaultAddress) {
-      throw new Error('Monite SDK-React: default billing address is not found');
-    }
-
-    return defaultAddress;
-  }, [counterpartAddresses]);
 
   useEffect(() => {
     if (counterpartId) {
@@ -162,24 +164,28 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
        * For some reason `methods.resetField` doesn't work here,
        *  maybe because that `Select` triggers `onChange` event
        *  before `resetField` is called
-       * But `setValue` as empty string works fine
+       * But `setValue` as an empty string works fine
        */
       setValue('default_shipping_address_id', '');
     }
   }, [counterpartId, setValue]);
 
   useEffect(() => {
-    if (counterpartBillingAddress) {
+    if (counterpart?.default_billing_address_id) {
       /**
        * We have to set billing address id manually because
        *  the user never changes this field by themselves.
-       * This field is calculated based on counterpart billing address
+       * This field is calculated based on the counterpart billing address
        */
-      setValue('default_billing_address_id', counterpartBillingAddress.id, {
-        shouldValidate: true,
-      });
+      setValue(
+        'default_billing_address_id',
+        counterpart?.default_billing_address_id,
+        {
+          shouldValidate: true,
+        }
+      );
     }
-  }, [counterpartBillingAddress, setValue]);
+  }, [setValue, counterpart?.default_billing_address_id]);
 
   return (
     <Stack spacing={1}>
