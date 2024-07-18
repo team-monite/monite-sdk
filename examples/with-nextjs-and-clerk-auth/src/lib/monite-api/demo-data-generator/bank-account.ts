@@ -25,11 +25,10 @@ export const createBankAccount = async ({
   const entity = await getEntity(entity_id);
 
   const entityCountry = entity.address.country;
-  const country: keyof typeof bankCountriesToCurrencies = (
+  const country: keyof typeof bankCountriesToCurrencies =
     entityCountry in bankCountriesToCurrencies
-      ? entityCountry
-      : getRandomCountry()
-  ) as keyof typeof bankCountriesToCurrencies;
+      ? (entityCountry as keyof typeof bankCountriesToCurrencies)
+      : getRandomCountry();
 
   const bankName = faker.company.name();
   const currency = bankCountriesToCurrencies[country];
