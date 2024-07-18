@@ -299,17 +299,23 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
 };
 
 export const useCounterpartContactList = (
-  counterpartId?: string,
-  isOrganization?: boolean
+  counterpartId: string | undefined
 ) => {
   const { api } = useMoniteContext();
+
+  const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
+    { path: { counterpart_id: counterpartId ?? '' } },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 
   return api.counterparts.getCounterpartsIdContacts.useQuery(
     {
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!counterpartId && isOrganization,
+      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
 };
