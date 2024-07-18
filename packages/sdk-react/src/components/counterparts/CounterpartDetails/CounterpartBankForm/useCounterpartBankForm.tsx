@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -33,7 +33,7 @@ export function useCounterpartBankForm({
   onCreate,
   onUpdate,
 }: CounterpartBankFormProps) {
-  const formRef = useRef<HTMLFormElement>(null);
+  const formId = `Monite-CounterpartBankForm-${useId()}`;
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -55,15 +55,6 @@ export function useCounterpartBankForm({
     const resetForm = methods.reset;
     if (bank) resetForm(prepareCounterpartBank(bank));
   }, [methods.reset, bank, i18n]);
-
-  // todo::replace with "form" property on button
-  const submitForm = useCallback(() => {
-    formRef.current?.dispatchEvent(
-      new Event('submit', {
-        bubbles: true,
-      })
-    );
-  }, [formRef]);
 
   const saveBank = useCallback(
     (values: CounterpartBankFields) => {
@@ -115,8 +106,7 @@ export function useCounterpartBankForm({
     saveBank,
     counterpart,
     bank,
-    formRef,
-    submitForm,
+    formId,
     isLoading:
       createBankMutation.isPending ||
       updateBankMutation.isPending ||

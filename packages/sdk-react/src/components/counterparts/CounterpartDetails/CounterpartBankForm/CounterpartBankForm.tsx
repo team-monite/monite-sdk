@@ -36,16 +36,12 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     methods: { control, handleSubmit, watch, clearErrors, resetField },
     counterpart,
     bank,
-    formRef,
-    submitForm,
+    formId,
     saveBank,
     isLoading,
   } = useCounterpartBankForm(props);
   const { root } = useRootElements();
   const country = watch('country');
-
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const formName = `Monite-Form-counterpartBank-${useId()}`;
 
   useEffect(() => {
     if (country) {
@@ -93,7 +89,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
       </Stack>
       <Divider />
       <DialogContent>
-        <form id={formName} ref={formRef} onSubmit={handleSubmit(saveBank)}>
+        <form id={formId} onSubmit={handleSubmit(saveBank)} noValidate>
           <Stack spacing={3}>
             <Controller
               name="name"
@@ -222,9 +218,10 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           {t(i18n)`Cancel`}
         </Button>
         <Button
+          type="submit"
+          form={formId}
           variant="outlined"
           color="primary"
-          onClick={submitForm}
           disabled={isLoading}
         >
           {Boolean(bank)
