@@ -3,7 +3,6 @@ import { faker } from '@faker-js/faker';
 import { DemoDataGenerationMessage } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { createMoniteClient } from '@/lib/monite-api/monite-client';
-import { components } from '@/lib/monite-api/schema';
 
 export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
   const randomIndex = faker.number.int({ min: 0, max: array.length - 1 });
@@ -38,12 +37,6 @@ export abstract class GeneralService {
     this.entityId = params.entityId;
     this.logger = params.logger;
     this.request = createMoniteClient(params.token);
-  }
-
-  protected async getEntity(): Promise<
-    components['schemas']['EntityOrganizationResponse']
-  > {
-    return await this.request.getEntity(this.entityId);
   }
 
   /** Should be called to set options for the service */

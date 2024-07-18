@@ -158,7 +158,7 @@ export class CounterpartsService extends GeneralService {
       );
     }
 
-    const entity = await this.getEntity();
+    const entity = await this.request.getEntity(this.entityId);
 
     const counterpartVats: Array<
       components['schemas']['CounterpartVatIDResponse']
@@ -294,7 +294,7 @@ export const createCounterpartVatId = async ({
         type: vatIdType,
         value,
         country: counterpartCountry,
-      } as components['schemas']['CounterpartVatID'],
+      },
     }
   );
 
