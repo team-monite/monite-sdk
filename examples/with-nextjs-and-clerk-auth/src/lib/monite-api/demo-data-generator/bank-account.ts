@@ -7,6 +7,7 @@ import {
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
+  getEntity,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
@@ -20,9 +21,9 @@ export const createBankAccount = async ({
   is_default_for_currency: true;
   entity_id: string;
 }) => {
-  const { POST, getEntity } = createMoniteClient(token);
+  const moniteClient = createMoniteClient(token);
 
-  const entity = await getEntity(entity_id);
+  const entity = await getEntity(moniteClient, entity_id);
 
   const entityCountry = entity.address.country;
   const country: keyof typeof bankCountriesToCurrencies =
@@ -56,7 +57,7 @@ export const createBankAccount = async ({
         `Bank account generator - unsupported currency: ${currency}`
       );
   }
-  const { data, error, response } = await POST('/bank_accounts', {
+  const { data, error, response } = await moniteClient.POST('/bank_accounts', {
     params: {
       header: {
         'x-monite-entity-id': entity_id,
