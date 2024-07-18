@@ -4,6 +4,7 @@ import { useDialog } from '@/components/Dialog';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useInvoiceDetails } from '@/core/queries/useReceivables';
@@ -64,6 +65,7 @@ const ExistingReceivableDetailsBase = (
   props: ExistingReceivableDetailsProps
 ) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
 
   const {
     receivable: invoice,
@@ -113,6 +115,21 @@ const ExistingReceivableDetailsBase = (
     invoice?.counterpart_name?.[0] ||
     invoice?.counterpart_contact?.first_name?.[0] ||
     '/';
+
+  const { data: counterpartAddress } =
+    api.counterparts.getCounterpartsIdAddressesId.useQuery(
+      {
+        path: {
+          counterpart_id: invoice?.counterpart_id ?? '',
+          address_id: invoice?.counterpart_billing_address?.id ?? '',
+        },
+      },
+      {
+        enabled: Boolean(
+          invoice?.counterpart_billing_address?.id && invoice?.counterpart_id
+        ),
+      }
+    );
 
   if (!props.id) return null;
 
@@ -210,12 +227,14 @@ const ExistingReceivableDetailsBase = (
           </Card>
         </Box>
 
-        <InvoiceTo
-          counterpartAddress={invoice.counterpart_address}
-          counterpartName={
-            <InvoiceCounterpartName counterpartId={invoice.counterpart_id} />
-          }
-        />
+        {counterpartAddress && (
+          <InvoiceTo
+            counterpartAddress={counterpartAddress}
+            counterpartName={
+              <InvoiceCounterpartName counterpartId={invoice.counterpart_id} />
+            }
+          />
+        )}
 
         {invoice.entity_bank_account && (
           <InvoicePaymentDetails {...invoice.entity_bank_account} />
