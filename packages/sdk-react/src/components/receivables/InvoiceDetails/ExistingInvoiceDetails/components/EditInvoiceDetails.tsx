@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -11,12 +11,10 @@ import {
   CreateReceivablesFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useCounterpartAddresses } from '@/core/queries';
 import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
-import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -49,79 +47,48 @@ interface EditInvoiceDetailsProps {
   onCancel: () => void;
 }
 
-interface EditInvoiceDetailsContentProps extends EditInvoiceDetailsProps {
-  counterpartAddresses:
-    | Array<
-        components['schemas']['CounterpartAddressResponseWithCounterpartID']
-      >
-    | undefined;
-}
-
 const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
   onUpdated,
-  counterpartAddresses,
-}: EditInvoiceDetailsContentProps) => {
+}: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
-  const counterpartShippingAddress = counterpartAddresses?.find((address) => {
-    return (
-      address.city === invoice.counterpart_shipping_address?.city &&
-      address.country === invoice.counterpart_shipping_address.country &&
-      address.line1 === invoice.counterpart_shipping_address.line1
-    );
-  });
-
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        /** Customer section */
-        counterpart_id: invoice.counterpart_id,
-        counterpart_contact: invoice.counterpart_contact,
-        counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
-        default_shipping_address_id: counterpartShippingAddress?.id ?? '',
-        default_billing_address_id: '',
+    defaultValues: {
+      /** Customer section */
+      counterpart_id: invoice.counterpart_id,
+      counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
 
-        /** Entity section */
-        entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
-        fulfillment_date: invoice.fulfillment_date
-          ? new Date(invoice.fulfillment_date)
-          : null,
-        purchase_order: invoice.purchase_order ?? '',
+      default_shipping_address_id:
+        invoice.counterpart_shipping_address?.id ?? '',
+      default_billing_address_id: invoice.counterpart_billing_address?.id ?? '',
 
-        /** Items section */
-        line_items: invoice.line_items.map((lineItem) => ({
-          quantity: lineItem.quantity,
-          product_id: lineItem.product.id,
-          vat_rate_id: lineItem.product.vat_rate.id,
-          vat_rate_value: lineItem.product.vat_rate.value,
-          name: lineItem.product.name,
-          price: lineItem.product.price,
-          measure_unit_id: lineItem.product.measure_unit_id,
-        })),
-        vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+      /** Entity section */
+      entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
+      fulfillment_date: invoice.fulfillment_date
+        ? new Date(invoice.fulfillment_date)
+        : null,
+      purchase_order: invoice.purchase_order ?? '',
 
-        /** Items section */
-        entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
-        payment_terms_id: invoice.payment_terms?.id ?? '',
-      }),
-      [
-        counterpartShippingAddress?.id,
-        invoice.counterpart_contact,
-        invoice.counterpart_id,
-        invoice.counterpart_vat_id?.id,
-        invoice.entity_bank_account?.id,
-        invoice.entity_vat_id?.id,
-        invoice.fulfillment_date,
-        invoice.line_items,
-        invoice.payment_terms?.id,
-        invoice.purchase_order,
-        invoice.vat_exemption_rationale,
-      ]
-    ),
+      /** Items section */
+      line_items: invoice.line_items.map((lineItem) => ({
+        quantity: lineItem.quantity,
+        product_id: lineItem.product.id,
+        vat_rate_id: lineItem.product.vat_rate.id,
+        vat_rate_value: lineItem.product.vat_rate.value,
+        name: lineItem.product.name,
+        price: lineItem.product.price,
+        measure_unit_id: lineItem.product.measure_unit_id,
+      })),
+      vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+
+      /** Items section */
+      entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
+      payment_terms_id: invoice.payment_terms?.id ?? '',
+    },
   });
 
   const [actualCurrency, setActualCurrency] = useState(invoice.currency);
@@ -199,21 +166,10 @@ const EditInvoiceDetailsContent = ({
                       values.counterpart_vat_id_id || undefined,
                     currency: actualCurrency,
                     vat_exemption_rationale: values.vat_exemption_rationale,
-                    /**
-                     * Note: We shouldn't send `counterpart_billing_address`
-                     *  because it's auto-selected from UI.
-                     * There is no way to change it (at least right now)
-                     */
-                    counterpart_shipping_address: counterpartShippingAddress
-                      ? {
-                          country: counterpartShippingAddress.country,
-                          city: counterpartShippingAddress.city,
-                          postal_code: counterpartShippingAddress.postal_code,
-                          state: counterpartShippingAddress.state,
-                          line1: counterpartShippingAddress.line1,
-                          line2: counterpartShippingAddress.line2,
-                        }
-                      : undefined,
+                    counterpart_shipping_address_id:
+                      values?.default_shipping_address_id,
+                    counterpart_billing_address_id:
+                      values?.default_billing_address_id,
                     /** We shouldn't send an empty string to the server if the value is not set */
                     entity_bank_account_id:
                       values.entity_bank_account_id || undefined,
@@ -291,18 +247,5 @@ const EditInvoiceDetailsContent = ({
 };
 
 export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
-  const { data: counterpartAddresses, isLoading } = useCounterpartAddresses(
-    props.invoice.counterpart_id
-  );
-
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
-  return (
-    <EditInvoiceDetailsContent
-      {...props}
-      counterpartAddresses={counterpartAddresses?.data}
-    />
-  );
+  return <EditInvoiceDetailsContent {...props} />;
 };

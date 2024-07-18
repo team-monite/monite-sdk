@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { components } from '@/api';
-import { getCounterpartName } from '@/components/counterparts/helpers';
+import {
+  getCounterpartName,
+  getIndividualName,
+} from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -76,9 +78,7 @@ function isCreateNewCounterpartOption(
 
 export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const { control, watch, resetField, setValue } =
-    useFormContext<CreateReceivablesFormProps>();
+  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
@@ -120,72 +120,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     [counterparts]
   );
 
-  /**
-   * `defaultContactName` must return an empty string
-   *  if it has no contact, because MUI throws a warning
-   *  if input at the beginning has `undefined` and then
-   *  a string. We have to always set a string to do not
-   *  break MUI lifecycle
-   */
-  const defaultContactName = useMemo(() => {
-    if (counterpartContacts?.data.length === 0) {
-      return '';
-    }
-
-    const defaultContact = counterpartContacts?.data.find(
-      (contact) => contact.is_default
-    );
-
-    if (!defaultContact) {
-      return '';
-    }
-
-    return `${defaultContact.first_name} ${defaultContact.last_name}`;
-  }, [counterpartContacts]);
-
-  const { data: counterpartBillingAddress } =
-    api.counterparts.getCounterpartsIdAddressesId.useQuery(
-      {
-        path: {
-          counterpart_id: counterpart?.id ?? '',
-          address_id: counterpart?.default_billing_address_id ?? '',
-        },
-      },
-      {
-        enabled: Boolean(
-          counterpart?.id && counterpart?.default_billing_address_id
-        ),
-      }
-    );
-
-  useEffect(() => {
-    if (counterpartId) {
-      /**
-       * For some reason `methods.resetField` doesn't work here,
-       *  maybe because that `Select` triggers `onChange` event
-       *  before `resetField` is called
-       * But `setValue` as an empty string works fine
-       */
-      setValue('default_shipping_address_id', '');
-    }
-  }, [counterpartId, setValue]);
-
-  useEffect(() => {
-    if (counterpart?.default_billing_address_id) {
-      /**
-       * We have to set billing address id manually because
-       *  the user never changes this field by themselves.
-       * This field is calculated based on the counterpart billing address
-       */
-      setValue(
-        'default_billing_address_id',
-        counterpart?.default_billing_address_id,
-        {
-          shouldValidate: true,
-        }
-      );
-    }
-  }, [setValue, counterpart?.default_billing_address_id]);
+  const defaultContactName = counterpartContacts?.data.find(
+    (contact) => contact.is_default
+  );
 
   return (
     <Stack spacing={1}>
@@ -293,7 +230,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                             {counterpartOption.label}
                           </Button>
                         ) : (
-                          <li {...props}>{counterpartOption.label}</li>
+                          <li {...props} key={counterpartOption.id}>
+                            {counterpartOption.label}
+                          </li>
                         )
                       }
                     />
@@ -307,7 +246,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 fullWidth
                 variant="outlined"
                 label={t(i18n)`Contact person`}
-                value={defaultContactName}
+                value={
+                  defaultContactName
+                    ? getIndividualName(defaultContactName)
+                    : ''
+                }
                 InputProps={{
                   startAdornment: isContactPersonsLoading ? (
                     <CircularProgress size={20} />
@@ -414,8 +357,12 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     variant="outlined"
                     fullWidth
                     required
-                    disabled
                     error={Boolean(error)}
+                    disabled={
+                      isCounterpartAddressesLoading ||
+                      !counterpartId ||
+                      disabled
+                    }
                   >
                     <InputLabel id={field.name}>{t(
                       i18n
@@ -431,13 +378,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                         ) : null
                       }
                     >
-                      {counterpartBillingAddress && (
-                        <MenuItem value={counterpartBillingAddress?.id}>
-                          <CounterpartAddressView
-                            address={counterpartBillingAddress}
-                          />
+                      {counterpartAddresses?.data.map((address) => (
+                        <MenuItem key={address.id} value={address.id}>
+                          <CounterpartAddressView address={address} />
                         </MenuItem>
-                      )}
+                      ))}
                     </Select>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
                   </FormControl>
@@ -480,21 +425,14 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                             mr: 2,
                           }}
                           size="small"
-                          onClick={() => {
-                            /** On click, we want to clear this field state */
-                            resetField(field.name);
-                          }}
                         >
                           <ClearIcon fontSize="small" />
                         </IconButton>
                       }
                     >
-                      {counterpartAddresses?.data.map((shippingAddress) => (
-                        <MenuItem
-                          key={shippingAddress.id}
-                          value={shippingAddress.id}
-                        >
-                          <CounterpartAddressView address={shippingAddress} />
+                      {counterpartAddresses?.data.map((address) => (
+                        <MenuItem key={address.id} value={address.id}>
+                          <CounterpartAddressView address={address} />
                         </MenuItem>
                       ))}
                     </Select>
