@@ -14,6 +14,8 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -175,13 +177,12 @@ const PayableDetailsFormBase = forwardRef<
       showTags: true,
     }
   );
-
-  //TODO: Remove this error handling and replace with proper error handling
-  useEffect(() => {
-    if (tagQuery.isError) {
-      toast.error(getAPIErrorMessage(i18n, tagQuery.error));
-    }
-  }, [tagQuery.isError, tagQuery.error, i18n]);
+  const { data: user } = useEntityUserByAuthToken();
+  const { data: isTagsReadAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: 'read',
+    entityUserId: user?.id,
+  });
 
   const isSubmittedByKeyboardRef = useRef(false);
 
@@ -410,6 +411,7 @@ const PayableDetailsFormBase = forwardRef<
                             <Autocomplete
                               {...field}
                               id={field.name}
+                              disabled={!isTagsReadAllowed}
                               multiple
                               filterSelectedOptions
                               getOptionLabel={(option) => option.label}
