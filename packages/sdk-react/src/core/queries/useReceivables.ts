@@ -376,22 +376,6 @@ export const useSendReceivableById = (receivable_id: string) => {
   );
 };
 
-export const useReceivablePDFById = (
-  receivable_id: string,
-  options?: { refetchInterval: 15_000 }
-) => {
-  const { api } = useMoniteContext();
-
-  return api.receivables.getReceivablesIdPdfLink.useQuery(
-    {
-      path: {
-        receivable_id,
-      },
-    },
-    options
-  );
-};
-
 export type InvoiceDetailsPermissions =
   | 'cancel'
   | 'delete'

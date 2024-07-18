@@ -7,14 +7,12 @@ import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoic
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import {
-  useReceivablePDFById,
-  useReceivableById,
-} from '@/core/queries/useReceivables';
+import { useReceivableById } from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -109,6 +107,7 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
   );
@@ -136,8 +135,25 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     data: pdf,
     isLoading: isPdfLoading,
     error: pdfError,
-    refetch: refetchPdf,
-  } = useReceivablePDFById(props.id, { refetchInterval: 15_000 });
+  } = api.receivables.getReceivablesIdPdfLink.useQuery(
+    {
+      path: {
+        receivable_id: props.id,
+      },
+    },
+    {
+      staleTime: 10_000,
+      refetchIntervalInBackground: true,
+      refetchInterval: api.receivables.getReceivablesIdPdfLink.getQueryData(
+        {
+          path: { receivable_id: props.id },
+        },
+        queryClient
+      )?.file_url
+        ? false
+        : 1_000,
+    }
+  );
 
   const handleIssueAndSend = useCallback(() => {
     setPresentation(InvoiceDetailsPresentation.Email);
@@ -337,7 +353,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               <FileViewer
                 mimetype="application/pdf"
                 url={pdf.file_url}
-                onReloadCallback={refetchPdf}
+                onReloadCallback={() =>
+                  void api.receivables.getReceivablesIdPdfLink.resetQueries(
+                    {
+                      parameters: { path: { receivable_id: props.id } },
+                    },
+                    queryClient
+                  )
+                }
               />
             ) : null}
           </Grid>
