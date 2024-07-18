@@ -166,8 +166,9 @@ const EditInvoiceDetailsContent = ({
                       values.counterpart_vat_id_id || undefined,
                     currency: actualCurrency,
                     vat_exemption_rationale: values.vat_exemption_rationale,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                     counterpart_shipping_address_id:
-                      values?.default_shipping_address_id,
+                      values?.default_shipping_address_id || null,
                     counterpart_billing_address_id:
                       values?.default_billing_address_id,
                     /** We shouldn't send an empty string to the server if the value is not set */
@@ -175,13 +176,14 @@ const EditInvoiceDetailsContent = ({
                       values.entity_bank_account_id || undefined,
                     payment_terms_id: values.payment_terms_id,
                     entity_vat_id_id: values.entity_vat_id_id || undefined,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                     fulfillment_date: values.fulfillment_date
                       ? /**
                          * We have to change the date as Backend accepts it.
                          * There is no `time` in request, only year, month and date
                          */
                         format(values.fulfillment_date, 'yyyy-MM-dd')
-                      : undefined,
+                      : null,
                     /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
                     // purchase_order: values.purchase_order || undefined,
                   },
