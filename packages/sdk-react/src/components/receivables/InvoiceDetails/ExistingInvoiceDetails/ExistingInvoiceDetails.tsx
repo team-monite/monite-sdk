@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
@@ -68,10 +68,8 @@ const StyledMenu = styled((props: MenuProps) => {
   );
 })(({ theme }) => ({
   '& .MuiPaper-root': {
-    // borderRadius: theme.spacing(2),
     marginTop: theme.spacing(1),
     minWidth: 180,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     boxShadow: `0px 4px 16px 0px ${alpha(theme.palette.secondary.main, 0.4)}`,
     '& .MuiMenu-list': {
       padding: '4px 0',
@@ -165,7 +163,9 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     deliveryMethod,
   });
 
-  if (isInvoiceLoading) {
+  const [isViewChanging, startViewChange] = useTransition();
+
+  if (isInvoiceLoading || isViewChanging) {
     return <LoadingPage />;
   }
 
@@ -193,16 +193,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     return (
       <EditInvoiceDetails
         invoice={receivable}
-        onUpdated={callbacks.handleChangeViewInvoice}
-        onCancel={callbacks.handleChangeViewInvoice}
+        onUpdated={() => startViewChange(callbacks.handleChangeViewInvoice)}
+        onCancel={() => startViewChange(callbacks.handleChangeViewInvoice)}
       />
     );
   }
 
-  /**
-   * We don't need to localize this string
-   * because we will put `documentId` into i18n later
-   */
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const documentId = receivable.document_id ?? 'INV-auto';
 
@@ -268,7 +264,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={callbacks.handleChangeViewInvoice}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      startViewChange(callbacks.handleChangeViewInvoice);
+                    }}
                     disabled={loading}
                   >{t(i18n)`Edit invoice`}</Button>
                 )}
