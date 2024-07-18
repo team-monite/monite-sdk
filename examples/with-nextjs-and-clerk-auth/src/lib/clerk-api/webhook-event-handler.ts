@@ -36,7 +36,6 @@ import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
 import { nonNullable } from '@/lib/no-nullable';
 
-
 export const webhookEventHandler = async (
   event: WebhookEvent | OrganizationDomainWebhookEvent
 ) => {
@@ -58,12 +57,6 @@ export const webhookEventHandler = async (
   } else if (event.type === 'organizationDomain.deleted') {
     await organizationDomainDeleteEvent(event);
   }
-};
-
-const getRole = (eventRole: string) => {
-  if (!eventRole) return null;
-  const dotIndex = eventRole.indexOf(':');
-  return dotIndex >= 0 ? eventRole.substring(dotIndex + 1) : eventRole;
 };
 
 const handleOrganizationMembershipCreatedEvent = async (
@@ -375,4 +368,10 @@ const organizationDomainDeleteEvent = async (
     throw new Error('Invalid event type');
 
   await deleteOrganizationVerifiedDomainMetadata(event.data.id);
+};
+
+const getRole = (eventRole: string) => {
+  if (!eventRole) return null;
+  const dotIndex = eventRole.indexOf(':');
+  return dotIndex >= 0 ? eventRole.substring(dotIndex + 1) : eventRole;
 };
