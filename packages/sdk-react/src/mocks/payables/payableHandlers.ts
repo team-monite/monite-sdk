@@ -451,7 +451,7 @@ export const payableHandlers = [
 
   http.post<
     {},
-    components['schemas']['Body_post_payables_upload_from_file'],
+    components['schemas']['UploadFileAttach'],
     | components['schemas']['PayableResponseSchema']
     | components['schemas']['ErrorSchemaResponse']
   >(`${payablePath}/upload_from_file`, async ({ request }) => {
@@ -496,7 +496,7 @@ export const payableHandlers = [
 
   http.post<
     { payableId: string },
-    components['schemas']['Body_post_payables_id_attach_file'],
+    components['schemas']['UploadFileAttach'],
     | components['schemas']['PayableResponseSchema']
     | components['schemas']['ErrorSchemaResponse']
   >(`${payableIdPath}/attach_file`, async ({ request }) => {
