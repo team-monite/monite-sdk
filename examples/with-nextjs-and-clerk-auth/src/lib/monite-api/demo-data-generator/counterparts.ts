@@ -276,24 +276,7 @@ export const createCounterpartVatId = async ({
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
   const counterpartCountry = getRandomItemFromArray(addressCountries);
-  const entityCountry = entity.address.country;
-  let vatIdType: VatIDTypeEnum = 'unknown';
-  switch (entityCountry) {
-    case 'GB':
-      vatIdType =
-        counterpartCountry == 'GB'
-          ? 'gb_vat'
-          : counterpartCountry == 'DE'
-          ? 'eu_vat'
-          : 'unknown';
-      break;
-    case 'DE':
-      vatIdType =
-        counterpartCountry == 'GB' || counterpartCountry == 'DE'
-          ? 'eu_vat'
-          : 'unknown';
-      break;
-  }
+  const vatIdType = getVatIdType(entity.address.country, counterpartCountry);
 
   const { data, error, response } = await POST(
     '/counterparts/{counterpart_id}/vat_ids',
@@ -380,3 +363,24 @@ export const createCounterpartBankAccount = async ({
 
   return data;
 };
+
+function getVatIdType(entityCountry: string, counterpartCountry: string) {
+  let vatIdType: VatIDTypeEnum = 'unknown';
+  switch (entityCountry) {
+    case 'GB':
+      vatIdType =
+        counterpartCountry == 'GB'
+          ? 'gb_vat'
+          : counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+    case 'DE':
+      vatIdType =
+        counterpartCountry == 'GB' || counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+  }
+  return vatIdType;
+}
