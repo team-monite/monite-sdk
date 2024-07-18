@@ -32,13 +32,14 @@ export const createBankAccount = async ({
 
   const bankName = faker.company.name();
   const currency = bankCountriesToCurrencies[country];
-  const accountCreationParams = {
-    is_default_for_currency,
-    bank_name: `${bankName} Bank`,
-    display_name: faker.finance.accountName(),
-    currency: currency,
-    country,
-  } as components['schemas']['CreateEntityBankAccountRequest'];
+  const accountCreationParams: components['schemas']['CreateEntityBankAccountRequest'] =
+    {
+      is_default_for_currency,
+      bank_name: `${bankName} Bank`,
+      display_name: faker.finance.accountName(),
+      currency: currency,
+      country,
+    };
   switch (currency) {
     case 'EUR':
       accountCreationParams.iban = faker.finance.iban(false, country);
