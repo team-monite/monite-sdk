@@ -33,7 +33,6 @@ import { components } from '@/lib/monite-api/schema';
 import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
 
-
 dotenv.config({ path: '.env.local', override: false });
 dotenv.config({ path: '.env', override: false });
 
@@ -487,11 +486,10 @@ program
           process.exit(1);
         }
 
-        const token = await fetchTokenCLI(args);
         await generateApprovalPolicies({
           entity_id,
           entity_user_id,
-          token: token,
+          token: await fetchTokenCLI(args),
         });
       })
   );
