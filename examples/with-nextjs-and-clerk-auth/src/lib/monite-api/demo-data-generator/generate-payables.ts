@@ -15,10 +15,10 @@ import {
   PayableCounterpart,
 } from '@/lib/monite-api/demo-data-generator/payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
+import { getEntity } from '@/lib/monite-api/get-entity';
 import {
   createMoniteClient,
   MoniteClient,
-  getEntity,
 } from '@/lib/monite-api/monite-client';
 
 export const generateCounterpartsWithPayables = async (

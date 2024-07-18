@@ -5,9 +5,9 @@ import {
   chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
+import { getEntity } from '@/lib/monite-api/get-entity';
 import {
   createMoniteClient,
-  getEntity,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';

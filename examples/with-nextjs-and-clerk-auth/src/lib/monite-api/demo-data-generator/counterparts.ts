@@ -11,8 +11,8 @@ import {
   demoBankAccountBICList,
   chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
+import { getEntity } from '@/lib/monite-api/get-entity';
 import {
-  getEntity,
   getMoniteApiVersion,
   MoniteClient,
 } from '@/lib/monite-api/monite-client';
