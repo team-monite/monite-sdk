@@ -64,11 +64,14 @@ export function useCounterpartView({
   const { api } = useMoniteContext();
 
   const { data: banks, isLoading: isBanksLoading } =
-    api.counterparts.getCounterpartsIdBankAccounts.useQuery({
-      path: {
-        counterpart_id: counterpart?.id || '',
+    api.counterparts.getCounterpartsIdBankAccounts.useQuery(
+      {
+        path: {
+          counterpart_id: counterpart?.id ?? '',
+        },
       },
-    });
+      { enabled: Boolean(counterpart?.id) }
+    );
 
   const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =
     useDeleteCounterpart();

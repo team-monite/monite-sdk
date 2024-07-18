@@ -27,11 +27,7 @@ export const createPayable = async ({
   entity_id: string;
   token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const { data, error, response } = await POST('/payables', {
     params: {
@@ -72,11 +68,7 @@ export const createPayableLineItems = async ({
   entity_id: string;
   token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const quantity = faker.number.int({ min: 1, max: 10 });
   const unit_price = 100 * faker.number.int({ min: 150, max: 80000 });
@@ -133,11 +125,7 @@ export const approvePayablePaymentOperation = async ({
   entity_id: string;
   token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const { data, error, response } = await POST(
     '/payables/{payable_id}/approve_payment_operation',

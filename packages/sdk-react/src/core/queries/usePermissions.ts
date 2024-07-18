@@ -90,9 +90,9 @@ interface PermissionMap
 /**
  * ## Example
  * ```tsx
- * useIsActionAllowed('workflow', ActionEnum.CREATE);
- * useIsActionAllowed('payable', PayableActionEnum.CREATE);
- * useIsActionAllowed('payable', PayableActionEnum.CREATE, '5b4daced-6b9a-4707-83c6-08193d999fab');
+ * useIsActionAllowed('workflow', 'create');
+ * useIsActionAllowed('payable', Payable'create');
+ * useIsActionAllowed('payable', Payable'create', '5b4daced-6b9a-4707-83c6-08193d999fab');
  * ```
  * @param method What method we would like to check permissions for (payable, counterpart, etc.)
  * @param action What action we would like to check (create, update, delete, etc.)

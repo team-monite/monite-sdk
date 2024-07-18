@@ -1,6 +1,9 @@
-import { CurrencyDetails } from '@monite/sdk-api';
+import { components } from '@/api';
 
-export const currenciesFixture: Record<string, CurrencyDetails> = {
+export const currenciesFixture: Record<
+  string,
+  components['schemas']['CurrencyDetails']
+> = {
   AED: {
     symbol: 'د.إ',
     name: 'United Arab Emirates dirham',

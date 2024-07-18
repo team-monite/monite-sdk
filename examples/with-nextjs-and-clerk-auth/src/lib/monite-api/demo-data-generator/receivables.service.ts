@@ -163,6 +163,34 @@ export class ReceivablesService extends GeneralService {
 
     switch (this.options.type) {
       case 'invoice': {
+        const payload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
+          {
+            type: this.options.type,
+            currency: this.options.currency,
+            counterpart_id: counterpart.id,
+            counterpart_billing_address_id:
+              counterpart.default_billing_address_id,
+            line_items: this.options.products
+              /**
+               * Randomly take an item from `products`
+               *  (approximately products.length / 2 items)
+               */
+              .sort(() => 0.5 - Math.random())
+              .map((product) => {
+                const result = {
+                  product_id: product.id,
+                  quantity: faker.number.int({ min: 1, max: 20 }),
+                } as components['schemas']['LineItem'];
+                result.vat_rate_id = getRandomItemFromArray(
+                  this.options.vatRates
+                ).id;
+                return result;
+              }),
+            entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
+              .id,
+            payment_terms_id: getRandomItemFromArray(this.options.paymentTerms)
+              .id,
+          };
         const { data, error, response } = await this.request.POST(
           `/receivables`,
           {
@@ -172,39 +200,15 @@ export class ReceivablesService extends GeneralService {
                 'x-monite-version': getMoniteApiVersion(),
               },
             },
-            body: {
-              type: this.options.type,
-              currency: this.options.currency,
-              counterpart_id: counterpart.id,
-              counterpart_billing_address_id:
-                counterpart.default_billing_address_id,
-              line_items: this.options.products
-                /**
-                 * Randomly take an item from `products`
-                 *  (approximately products.length / 2 items)
-                 */
-                .sort(() => 0.5 - Math.random())
-                .map((product) => {
-                  return {
-                    product_id: product.id,
-                    quantity: faker.number.int({ min: 1, max: 20 }),
-                    vat_rate_id: getRandomItemFromArray(this.options.vatRates)
-                      .id,
-                  };
-                }),
-              entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
-                .id,
-              payment_terms_id: getRandomItemFromArray(
-                this.options.paymentTerms
-              ).id,
-            },
+            body: payload,
           }
         );
 
         if (error) {
           console.error(
             `❌ Failed to create receivable for the entity_id: "${this.entityId}"`,
-            `x-request-id: ${response.headers.get('x-request-id')}`
+            `x-request-id: ${response.headers.get('x-request-id')}`,
+            `payload: ${JSON.stringify(payload)}`
           );
 
           throw new Error(`Receivable create failed: ${JSON.stringify(error)}`);

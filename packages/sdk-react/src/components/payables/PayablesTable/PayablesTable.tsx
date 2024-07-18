@@ -18,7 +18,6 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
@@ -72,7 +71,7 @@ interface PayablesTableProps {
    */
   onChangeSort?: (params: {
     sort: 'created_at';
-    order: SortOrderEnum | null;
+    order: 'asc' | 'desc' | null;
   }) => void;
 }
 
@@ -130,7 +129,9 @@ const PayablesTableBase = ({
           : undefined,
         status: currentFilter[FILTER_TYPE_STATUS] || undefined,
         due_date: currentFilter[FILTER_TYPE_DUE_DATE]
-          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
+          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
+              representation: 'date',
+            })
           : undefined,
         document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       },

@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { EntityBankAccount } from '@monite/sdk-api';
 import {
   Box,
   Card,
@@ -13,11 +13,11 @@ import {
   TableRow,
 } from '@mui/material';
 
-export type Props = {
-  entityBankAccount: EntityBankAccount;
-};
-
-export const InvoicePaymentDetails = ({ entityBankAccount }: Props) => {
+export const InvoicePaymentDetails = ({
+  iban,
+  bic,
+  bank_name,
+}: components['schemas']['ReceivablesRepresentationOfEntityBankAccount']) => {
   const { i18n } = useLingui();
 
   return (
@@ -31,7 +31,7 @@ export const InvoicePaymentDetails = ({ entityBankAccount }: Props) => {
                 <Typography>{t(i18n)`Bank Name`}</Typography>
               </TableCell>
               <TableCell>
-                <Typography>{entityBankAccount.bank_name}</Typography>
+                <Typography>{bank_name}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>
@@ -39,7 +39,7 @@ export const InvoicePaymentDetails = ({ entityBankAccount }: Props) => {
                 <Typography>{t(i18n)`BIC`}</Typography>
               </TableCell>
               <TableCell>
-                <Typography>{entityBankAccount.bic}</Typography>
+                <Typography>{bic}</Typography>
               </TableCell>
             </TableRow>
             <TableRow>
@@ -47,7 +47,7 @@ export const InvoicePaymentDetails = ({ entityBankAccount }: Props) => {
                 <Typography>{t(i18n)`IBAN`}</Typography>
               </TableCell>
               <TableCell>
-                <Typography>{entityBankAccount.iban}</Typography>
+                <Typography>{iban}</Typography>
               </TableCell>
             </TableRow>
           </TableBody>

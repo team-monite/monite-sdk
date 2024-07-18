@@ -1,8 +1,4 @@
-import {
-  ErrorSchemaResponse,
-  EntityOnboardingDataResponse,
-  EntityOnboardingDataRequest,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -33,3 +29,9 @@ export const entityOnboardingDataHandlers = [
     return HttpResponse.json(getEntityOnboardingDataFixture(payload));
   }),
 ];
+
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type EntityOnboardingDataResponse =
+  components['schemas']['EntityOnboardingDataResponse'];
+type EntityOnboardingDataRequest =
+  components['schemas']['EntityOnboardingDataRequest'];

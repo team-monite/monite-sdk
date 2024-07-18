@@ -1,11 +1,10 @@
 import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-import { useCurrencyList } from '@/core/queries/useCurrency';
+import { components } from '@/api';
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum } from '@monite/sdk-api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
@@ -15,8 +14,13 @@ import { useMoniteContext } from '../context/MoniteContext';
  *  - Convert minor units into main currency and vise-versa
  */
 export const useCurrencies = () => {
-  const { data: currencyList, isSuccess, isError, error } = useCurrencyList();
-  const { locale } = useMoniteContext();
+  const { locale, api } = useMoniteContext();
+  const {
+    data: currencyList,
+    isSuccess,
+    isError,
+    error,
+  } = api.internal.getInternalCurrencies.useQuery({});
   const { i18n } = useLingui();
 
   //TODO: Remove this error handling and replace with proper error handling
@@ -42,7 +46,7 @@ export const useCurrencies = () => {
    */
   const getSymbolFromCurrency = (currency: CurrencyEnum | string) => {
     if (!currencyList || !currencyList[currency]) return currency;
-    return currencyList[currency].symbol;
+    return currencyList[currency]?.symbol;
   };
 
   /**
@@ -149,3 +153,5 @@ export const useCurrencies = () => {
     isSuccess,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

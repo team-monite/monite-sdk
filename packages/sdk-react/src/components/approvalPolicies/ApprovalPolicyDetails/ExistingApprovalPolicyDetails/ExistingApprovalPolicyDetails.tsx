@@ -4,7 +4,6 @@ import { components } from '@/api';
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -53,7 +52,7 @@ const ExistingApprovalPolicyDetailsBase = ({
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'approval_policy',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: approvalPolicy?.created_by,
   });
 

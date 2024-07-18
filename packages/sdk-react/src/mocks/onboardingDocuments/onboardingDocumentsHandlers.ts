@@ -1,8 +1,4 @@
-import {
-  AllowedCountries,
-  type EntityOnboardingDocumentsPayload,
-  type PersonOnboardingDocumentsPayload,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -56,3 +52,9 @@ export const onboardingDocumentsHandlers = [
     }
   ),
 ];
+
+type EntityOnboardingDocumentsPayload =
+  components['schemas']['EntityOnboardingDocumentsPayload'];
+type PersonOnboardingDocumentsPayload =
+  components['schemas']['PersonOnboardingDocumentsPayload'];
+type AllowedCountries = components['schemas']['AllowedCountries'];

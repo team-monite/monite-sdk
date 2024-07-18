@@ -3,7 +3,6 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useDeleteBankAccount } from '@/core/queries/useBankAccounts';
 import {
   useOnboardingBankAccountMask,
   useOnboardingRequirementsData,
@@ -53,7 +52,7 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const {
     mutateAsync: createBankAccountMutation,
     isPending: isCreateBankAccountPending,
@@ -66,7 +65,21 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   const {
     mutateAsync: deleteBankAccountMutation,
     isPending: isDeleteBankAccountPending,
-  } = useDeleteBankAccount();
+  } = api.bankAccounts.deleteBankAccountsId.useMutation(undefined, {
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        api.bankAccounts.getBankAccounts.invalidateQueries(queryClient),
+        api.bankAccounts.getBankAccountsId.invalidateQueries(
+          {
+            parameters: {
+              path: { bank_account_id: variables.path.bank_account_id },
+            },
+          },
+          queryClient
+        ),
+      ]);
+    },
+  });
 
   const {
     data: bankAccountMasks,
@@ -144,7 +157,12 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
       });
 
       if (currentBankAccount) {
-        await deleteBankAccountMutation(currentBankAccount.id);
+        await deleteBankAccountMutation({
+          body: undefined,
+          path: {
+            bank_account_id: currentBankAccount.id,
+          },
+        });
       }
 
       patchOnboardingRequirements({

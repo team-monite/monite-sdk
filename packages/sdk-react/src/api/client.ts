@@ -1,6 +1,7 @@
 import { apiVersion } from '@/api/api-version';
 import { createAPIClient as createAPIClientBase } from '@/api/create-api-client';
 import { Services } from '@/api/services';
+import { packageVersion } from '@/packageVersion';
 import {
   requestFn,
   mergeHeaders,
@@ -30,6 +31,7 @@ export const createAPIClient = ({
   const moniteRequestFn: typeof requestFn = (schema, requestInfo, options) => {
     const predefinedHeaders: HeadersOptions = {
       'x-monite-version': apiVersion,
+      'x-monite-sdk-version': packageVersion,
     };
 
     if (isMoniteEntityIdPath(schema.url))

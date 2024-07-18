@@ -8,7 +8,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { ActionEnum } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -68,7 +67,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 

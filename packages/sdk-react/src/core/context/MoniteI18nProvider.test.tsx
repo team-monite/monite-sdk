@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { CURRENCY_QUERY_ID } from '@/core/queries/useCurrency';
 import { Provider, renderWithClient } from '@/utils/test-utils';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -227,15 +226,10 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
     });
 
     await waitFor(() => {
-      if (queryClient.getQueryState([CURRENCY_QUERY_ID])?.status !== 'success')
-        throw new Error(
-          'Currency query has not been loaded. Please check the query or the test.'
-        );
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100,00 $'
+      );
     });
-
-    expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
-      '100,00 $'
-    );
   });
 
   test('supports `currencyDisplay: code` option', async () => {
@@ -260,15 +254,10 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
     });
 
     await waitFor(() => {
-      if (queryClient.getQueryState([CURRENCY_QUERY_ID])?.status !== 'success')
-        throw new Error(
-          'Currency query has not been loaded. Please check the query or the test.'
-        );
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100,00 USD'
+      );
     });
-
-    expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
-      '100,00 USD'
-    );
   });
 
   test('supports `currencyDisplay: name` option', async () => {
@@ -293,14 +282,9 @@ describe('MoniteI18nProvider currencyNumberFormat', () => {
     });
 
     await waitFor(() => {
-      if (queryClient.getQueryState([CURRENCY_QUERY_ID])?.status !== 'success')
-        throw new Error(
-          'Currency query has not been loaded. Please check the query or the test.'
-        );
+      expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
+        '100,00 US-Dollar'
+      );
     });
-
-    expect(result.current.formatCurrencyToDisplay(100_00, 'USD')).toEqual(
-      '100,00 US-Dollar'
-    );
   });
 });

@@ -5,12 +5,6 @@ import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ActionEnum,
-  InvoiceResponsePayload,
-  ReceivableResponse,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import type { GridActionsColDef } from '@mui/x-data-grid/models/colDef/gridColDef';
 
@@ -54,7 +48,9 @@ export interface UseInvoiceRowActionMenuCellProps {
 
 export const useInvoiceRowActionMenuCell = (
   props: UseInvoiceRowActionMenuCellProps | {}
-): GridActionsColDef<ReceivableResponse> | undefined => {
+):
+  | GridActionsColDef<components['schemas']['ReceivableResponse']>
+  | undefined => {
   const { data: receivableActionSchema, userIdFromAuthToken } =
     usePermissions('receivable');
   const { i18n } = useLingui();
@@ -72,7 +68,7 @@ export const useInvoiceRowActionMenuCell = (
     getActions: (params) => {
       const menuItems = getInvoiceActionMenuItems({
         // casts, because it is not possible to resolve `type` based on multiple different enum
-        invoice: params.row as InvoiceResponsePayload,
+        invoice: params.row as components['schemas']['InvoiceResponsePayload'],
         actions: props.rowActions,
         receivableActionSchema,
         userIdFromAuthToken,
@@ -100,7 +96,7 @@ const getInvoiceActionMenuItems = ({
   userIdFromAuthToken,
   i18n,
 }: {
-  invoice: InvoiceResponsePayload;
+  invoice: components['schemas']['InvoiceResponsePayload'];
   actions?: Partial<InvoicesTableRowActionSchema>;
   receivableActionSchema: components['schemas']['ActionSchema'][] | undefined;
   userIdFromAuthToken: string | undefined;
@@ -129,7 +125,7 @@ const getInvoiceActionMenuItems = ({
 export const filterInvoiceActionMenuAllowedItems = (
   actionSchema: components['schemas']['ActionSchema'][] | undefined,
   menuItemsToFilter: InvoicesTableRowAction[],
-  invoice: InvoiceResponsePayload,
+  invoice: components['schemas']['InvoiceResponsePayload'],
   userIdFromAuthToken: string | undefined
 ) => {
   const isAllowedInvoiceAction = (
@@ -137,24 +133,24 @@ export const filterInvoiceActionMenuAllowedItems = (
   ) =>
     isActionAllowed({
       action,
-      actions: actionSchema,
+      actions: actionSchema as Array<components['schemas']['ActionSchema']>,
       entityUserId: invoice.entity_user_id,
       entityUserIdFromAuthToken: userIdFromAuthToken,
     });
 
   const menuItemsPermissionMap: Record<InvoicesTableRowAction, boolean> = {
-    view: isAllowedInvoiceAction(ActionEnum.READ),
-    edit: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    issue: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    delete: isAllowedInvoiceAction(ActionEnum.DELETE),
-    copyPaymentLink: isAllowedInvoiceAction(ActionEnum.READ),
-    cancel: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    markUncollectible: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    recurrent: isAllowedInvoiceAction(ActionEnum.CREATE),
-    partiallyPay: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    pay: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    overduePayment: isAllowedInvoiceAction(ActionEnum.UPDATE),
-    send: isAllowedInvoiceAction(ActionEnum.CREATE),
+    view: isAllowedInvoiceAction('read'),
+    edit: isAllowedInvoiceAction('update'),
+    issue: isAllowedInvoiceAction('update'),
+    delete: isAllowedInvoiceAction('delete'),
+    copyPaymentLink: isAllowedInvoiceAction('read'),
+    cancel: isAllowedInvoiceAction('update'),
+    markUncollectible: isAllowedInvoiceAction('update'),
+    recurrent: isAllowedInvoiceAction('create'),
+    partiallyPay: isAllowedInvoiceAction('update'),
+    pay: isAllowedInvoiceAction('update'),
+    overduePayment: isAllowedInvoiceAction('update'),
+    send: isAllowedInvoiceAction('create'),
   };
 
   return menuItemsToFilter.filter(
@@ -163,23 +159,23 @@ export const filterInvoiceActionMenuAllowedItems = (
 };
 
 const DEFAULT_ACTION_LIST: InvoicesTableRowActionSchema = {
-  [ReceivablesStatusEnum.DRAFT]: ['view', 'edit', 'delete'], // 'issue', 'recurrent' are not default
-  [ReceivablesStatusEnum.ISSUED]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment' are not default
-  [ReceivablesStatusEnum.CANCELED]: ['view'],
-  [ReceivablesStatusEnum.PARTIALLY_PAID]: [
+  ['draft']: ['view', 'edit', 'delete'], // 'issue', 'recurrent' are not default
+  ['issued']: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'partiallyPay', 'overduePayment' are not default
+  ['canceled']: ['view'],
+  ['partially_paid']: [
     // 'copyPaymentLink', 'pay', 'overduePayment' are not default
     'view',
     'send',
     'cancel',
   ],
-  [ReceivablesStatusEnum.OVERDUE]: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'pay', 'markUncollectible' are not default
-  [ReceivablesStatusEnum.PAID]: ['view'],
-  [ReceivablesStatusEnum.UNCOLLECTIBLE]: ['view'],
-  [ReceivablesStatusEnum.EXPIRED]: ['view'],
-  [ReceivablesStatusEnum.ACCEPTED]: ['view'],
-  [ReceivablesStatusEnum.DECLINED]: ['view'],
-  [ReceivablesStatusEnum.RECURRING]: ['view'],
-  [ReceivablesStatusEnum.DELETED]: [],
+  ['overdue']: ['view', 'send', 'cancel'], // 'copyPaymentLink', 'pay','markUncollectible' are not default
+  ['paid']: ['view'],
+  ['uncollectible']: ['view'],
+  ['expired']: ['view'],
+  ['accepted']: ['view'],
+  ['declined']: ['view'],
+  ['recurring']: ['view'],
+  ['deleted']: [],
 };
 
 const getInvoiceActionMenuItemLabels = (
@@ -277,11 +273,12 @@ export type InvoicesTableRowAction =
  * @description Each status corresponds to a specific set of actions that can be executed on an invoice.
  */
 export interface InvoicesTableRowActionSchema
-  extends Record<ReceivablesStatusEnum, InvoicesTableRowAction[]> {
-  [ReceivablesStatusEnum.DRAFT]: Array<
-    'view' | 'edit' | 'issue' | 'recurrent' | 'delete'
-  >;
-  [ReceivablesStatusEnum.ISSUED]: Array<
+  extends Record<
+    components['schemas']['ReceivablesStatusEnum'],
+    InvoicesTableRowAction[]
+  > {
+  ['draft']: Array<'view' | 'edit' | 'issue' | 'recurrent' | 'delete'>;
+  ['issued']: Array<
     | 'view'
     | 'send'
     | 'copyPaymentLink'
@@ -290,18 +287,18 @@ export interface InvoicesTableRowActionSchema
     | 'overduePayment'
     | 'cancel'
   >;
-  [ReceivablesStatusEnum.CANCELED]: Array<'view'>;
-  [ReceivablesStatusEnum.PARTIALLY_PAID]: Array<
+  ['canceled']: Array<'view'>;
+  ['partially_paid']: Array<
     'view' | 'send' | 'copyPaymentLink' | 'pay' | 'overduePayment' | 'cancel'
   >;
-  [ReceivablesStatusEnum.OVERDUE]: Array<
+  ['overdue']: Array<
     'view' | 'send' | 'copyPaymentLink' | 'pay' | 'cancel' | 'markUncollectible'
   >;
-  [ReceivablesStatusEnum.PAID]: Array<'view'>;
-  [ReceivablesStatusEnum.UNCOLLECTIBLE]: Array<'view'>;
-  [ReceivablesStatusEnum.EXPIRED]: Array<'view'>;
-  [ReceivablesStatusEnum.ACCEPTED]: Array<'view'>;
-  [ReceivablesStatusEnum.DECLINED]: Array<'view'>;
-  [ReceivablesStatusEnum.RECURRING]: Array<'view'>;
-  [ReceivablesStatusEnum.DELETED]: Array<never>;
+  ['paid']: Array<'view'>;
+  ['uncollectible']: Array<'view'>;
+  ['expired']: Array<'view'>;
+  ['accepted']: Array<'view'>;
+  ['declined']: Array<'view'>;
+  ['recurring']: Array<'view'>;
+  ['deleted']: Array<never>;
 }

@@ -78,7 +78,6 @@ export const OnboardingBankAccount = () => {
               <CountryOption
                 key={option.code}
                 props={props}
-                // @ts-expect-error - Will be fixed in DEV-11737
                 option={option}
                 state={state}
               />

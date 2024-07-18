@@ -1,9 +1,4 @@
 import { components } from '@/api';
-import {
-  CounterpartData,
-  COUNTERPARTS_BANK_ENDPOINT,
-  COUNTERPARTS_ENDPOINT,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -18,7 +13,7 @@ type UpdateCounterpartBankAccountParams = CreateCounterpartBankAccountParams & {
   bankAccountId: string;
 };
 
-const bankAccountPath = `*/${COUNTERPARTS_ENDPOINT}/:counterpartId/${COUNTERPARTS_BANK_ENDPOINT}`;
+const bankAccountPath = `*/counterparts/:counterpartId/bank_accounts`;
 const bankAccountIdPath = `${bankAccountPath}/:bankAccountId`;
 
 let bankAccountId = 1;
@@ -30,7 +25,7 @@ export const counterpartBankHandlers = [
   http.get<
     {},
     CreateCounterpartBankAccountParams,
-    CounterpartData<components['schemas']['CounterpartBankAccountResponse'][]>
+    components['schemas']['CounterpartBankAccountResourceList']
   >(bankAccountPath, async () => {
     await delay();
 
