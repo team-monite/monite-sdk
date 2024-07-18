@@ -13,10 +13,6 @@ export function usePayableDetailsForm({
   const tagQuery = api.tags.getTags.useQuery({});
 
   const counterpartQuery = useCounterpartList();
-  const counterpartAddressQuery =
-    api.counterparts.getCounterpartsIdAddresses.useQuery({
-      path: { counterpart_id: currentCounterpartId },
-    });
 
   const counterpartBankAccountQuery =
     useCounterpartsBankAccountsList(currentCounterpartId);
@@ -24,7 +20,6 @@ export function usePayableDetailsForm({
   return {
     tagQuery,
     counterpartQuery,
-    counterpartAddressQuery,
     counterpartBankAccountQuery,
   };
 }

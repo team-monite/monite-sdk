@@ -164,14 +164,10 @@ const PayableDetailsFormBase = forwardRef<
     reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
   }, [payable, formatFromMinorUnits, reset, lineItems]);
 
-  const {
-    tagQuery,
-    counterpartQuery,
-    counterpartAddressQuery,
-    counterpartBankAccountQuery,
-  } = usePayableDetailsForm({
-    currentCounterpartId: currentCounterpart,
-  });
+  const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
+    usePayableDetailsForm({
+      currentCounterpartId: currentCounterpart,
+    });
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
     {
@@ -217,14 +213,11 @@ const PayableDetailsFormBase = forwardRef<
               isSubmittedByKeyboardRef.current = event.key === 'Enter';
             }}
             onSubmit={handleSubmit(async (values) => {
-              const counterpartAddress =
-                counterpartAddressQuery?.data?.data.find(
-                  (address) => address.is_default
-                );
-
               const invoiceData = prepareSubmit({
                 ...values,
-                counterpartAddressId: counterpartAddress?.id,
+                counterpartAddressId: counterpartQuery.data?.data?.find(
+                  ({ id }) => id === values.counterpart
+                )?.default_billing_address_id,
               });
 
               if (payable) {
