@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import {
   bankCountriesToCurrencies,
-  getRandomCountry,
+  chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
@@ -28,7 +28,7 @@ export const createBankAccount = async ({
   const country: keyof typeof bankCountriesToCurrencies =
     entityCountry in bankCountriesToCurrencies
       ? (entityCountry as keyof typeof bankCountriesToCurrencies)
-      : getRandomCountry();
+      : chooseRandomCountryForDataGeneration();
 
   const bankName = faker.company.name();
   const currency = bankCountriesToCurrencies[country];

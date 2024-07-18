@@ -4,7 +4,6 @@ import { components } from '@/lib/monite-api/schema';
 export const bankCountriesToCurrencies = {
   DE: 'EUR',
   GB: 'GBP',
-  // US: 'USD',
 } satisfies Partial<
   Record<
     components['schemas']['AllowedCountries'],
@@ -12,7 +11,10 @@ export const bankCountriesToCurrencies = {
   >
 >;
 
-export const getRandomCountry = () => {
+/**
+ * Returns a random country for data generation. Currently, we support 'DE', 'GB' with 'US' to be implemented in future
+ */
+export const chooseRandomCountryForDataGeneration = () => {
   return getRandomItemFromArray(
     Object.keys(bankCountriesToCurrencies)
   ) as keyof typeof bankCountriesToCurrencies;

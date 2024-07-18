@@ -9,7 +9,7 @@ import {
 import {
   bankCountriesToCurrencies,
   demoBankAccountBICList,
-  getRandomCountry,
+  chooseRandomCountryForDataGeneration,
 } from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
@@ -323,7 +323,7 @@ export const createCounterpartBankAccount = async ({
 }): Promise<CounterpartBankAccountResponse> => {
   const { POST } = createMoniteClient(token);
 
-  const countryCode = getRandomCountry();
+  const countryCode = chooseRandomCountryForDataGeneration();
   const currency = bankCountriesToCurrencies[countryCode];
 
   const { data, error, response } = await POST(

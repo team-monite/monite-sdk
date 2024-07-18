@@ -1,6 +1,6 @@
 import { createEntity } from '@/lib/monite-api/create-entity';
 import { generateEntityAddress } from '@/lib/monite-api/demo-data-generator/generate-entity';
-import { getRandomCountry } from '@/lib/monite-api/demo-data-generator/seed-values';
+import { chooseRandomCountryForDataGeneration } from '@/lib/monite-api/demo-data-generator/seed-values';
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
 
 type CreateOrganizationEntityParams = {
@@ -28,7 +28,7 @@ export const createOrganizationEntity = (
         legal_name,
       },
       address: {
-        country: getRandomCountry(),
+        country: chooseRandomCountryForDataGeneration(),
         ...generateEntityAddress(),
       },
     },
