@@ -38,7 +38,7 @@ export type OnboardingValuesType<
 export type OnboardingMaskType = NestedDictionary<boolean>;
 
 export type OnboardingAddressType =
-  | components['schemas']['OptionalPersonAddress']
+  | components['schemas']['OptionalPersonAddressRequest']
   | components['schemas']['EntityAddressSchema'];
 
 export type OnboardingValueType =
