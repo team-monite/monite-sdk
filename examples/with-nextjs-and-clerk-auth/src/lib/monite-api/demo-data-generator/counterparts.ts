@@ -14,6 +14,7 @@ import {
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
+  getEntity,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
@@ -158,7 +159,7 @@ export class CounterpartsService extends GeneralService {
       );
     }
 
-    const entity = await this.request.getEntity(this.entityId);
+    const entity = await getEntity(this.request, this.entityId);
 
     const counterpartVats: Array<
       components['schemas']['CounterpartVatIDResponse']
