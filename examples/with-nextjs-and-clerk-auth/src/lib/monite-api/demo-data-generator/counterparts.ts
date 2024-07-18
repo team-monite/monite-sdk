@@ -18,7 +18,6 @@ import {
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
 type CounterpartVatIDResponse =
@@ -269,7 +268,7 @@ export const createCounterpartVatId = async ({
   token,
 }: {
   counterpart_id: string;
-  entity: components['schemas']['EntityOrganizationResponse'];
+  entity: { id: string; address: { country: string } };
   token: AccessToken;
 }): Promise<CounterpartVatIDResponse> => {
   const { POST } = createMoniteClient(token);
