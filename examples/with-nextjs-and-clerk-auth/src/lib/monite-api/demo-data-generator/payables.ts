@@ -9,7 +9,6 @@ import {
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 export type PayableCounterpart = {
   counterpart_id: string;
   counterpart_vat_id: string;
