@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import type { Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t, select } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -35,6 +36,10 @@ export const useCreateReceivable = () => {
 
         toast.success(t(i18n)`${receivable.type} has been created`);
       },
+      onError: (error) => {
+        const errorMessage = getAPIErrorMessage(i18n, error);
+        toast.error(t(i18n)`Failed to create receivable: ${errorMessage}`);
+      },
     }
   );
 };
@@ -46,6 +51,7 @@ export const useCreateReceivable = () => {
  */
 export const useUpdateReceivableLineItems = (receivable_id: string) => {
   const { api, queryClient } = useMoniteContext();
+  const { i18n } = useLingui();
 
   return api.receivables.putReceivablesIdLineItems.useMutation(
     {
@@ -64,6 +70,12 @@ export const useUpdateReceivableLineItems = (receivable_id: string) => {
             },
           },
           queryClient
+        );
+      },
+      onError: (error) => {
+        const errorMessage = getAPIErrorMessage(i18n, error);
+        toast.error(
+          t(i18n)`Failed to update receivable line items: ${errorMessage}`
         );
       },
     }
@@ -106,6 +118,10 @@ export const useUpdateReceivable = (receivable_id: string) => {
         ]);
 
         toast.success(t(i18n)`${receivable.type} has been updated`);
+      },
+      onError: (error) => {
+        const errorMessage = getAPIErrorMessage(i18n, error);
+        toast.error(t(i18n)`Failed to update receivable: ${errorMessage}`);
       },
     }
   );
