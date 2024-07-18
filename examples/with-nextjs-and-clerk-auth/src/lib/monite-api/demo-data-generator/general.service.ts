@@ -5,7 +5,6 @@ import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 export function getRandomItemFromArray<T = unknown>(array: Array<T>): T {
   const randomIndex = faker.number.int({ min: 0, max: array.length - 1 });
 
@@ -33,9 +32,6 @@ export abstract class GeneralService {
   protected readonly entityId: string;
   protected readonly logger?: ILogger;
   protected readonly request: ReturnType<typeof createMoniteClient>;
-  private cachedEntity:
-    | components['schemas']['EntityOrganizationResponse']
-    | undefined;
 
   constructor(params: IGeneralServiceConstructor) {
     this.token = params.token;
@@ -47,11 +43,7 @@ export abstract class GeneralService {
   protected async getEntity(): Promise<
     components['schemas']['EntityOrganizationResponse']
   > {
-    if (this.cachedEntity) return this.cachedEntity;
-
-    const entity = await this.request.getEntity(this.entityId);
-    this.cachedEntity = entity;
-    return entity;
+    return await this.request.getEntity(this.entityId);
   }
 
   /** Should be called to set options for the service */
