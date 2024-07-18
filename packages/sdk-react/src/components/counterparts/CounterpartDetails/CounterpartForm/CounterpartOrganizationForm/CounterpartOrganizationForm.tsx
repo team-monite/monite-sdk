@@ -98,9 +98,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
         if (!!counterpart) {
           const payload: components['schemas']['CounterpartOrganizationRootUpdatePayload'] =
             {
-              type: 'organization',
               tax_id: values.tax_id ?? '',
-              created_automatically: false,
               language:
                 LanguageCodeEnum.find(
                   (code) => code === i18n.locale.split('-')[0]
@@ -118,7 +116,6 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
           {
             type: 'organization',
             tax_id: values.tax_id ?? '',
-            created_automatically: false,
             language:
               LanguageCodeEnum.find(
                 (code) => code === i18n.locale.split('-')[0]

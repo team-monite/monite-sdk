@@ -12,7 +12,7 @@ export const prepareCounterpartBank = (
   bank: components['schemas']['CreateCounterpartBankAccount'] | undefined
 ): CounterpartBankFields => {
   return {
-    is_default: bank?.is_default ?? false,
+    is_default_for_currency: bank?.is_default_for_currency ?? false,
     account_holder_name: bank?.account_holder_name ?? '',
     account_number: bank?.account_number ?? '',
     country: bank?.country ?? '',
@@ -29,6 +29,7 @@ export const prepareCreateCounterpartBankAccount = (
   bank: CounterpartBankFields
 ): components['schemas']['CreateCounterpartBankAccount'] => {
   return {
+    is_default_for_currency: bank?.is_default_for_currency,
     bic: bank?.bic,
     iban: bank?.iban,
     account_holder_name: bank?.account_holder_name,
@@ -37,7 +38,6 @@ export const prepareCreateCounterpartBankAccount = (
     sort_code: bank?.sort_code,
     name: bank?.name,
     partner_metadata: bank?.partner_metadata,
-    is_default: bank?.is_default ?? false,
     country: bank?.country as components['schemas']['AllowedCountries'],
     currency: bank?.currency as components['schemas']['CurrencyEnum'],
   };
