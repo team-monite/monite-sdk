@@ -78,7 +78,8 @@ function isCreateNewCounterpartOption(
 
 export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
+  const { control, watch, setValue } =
+    useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
 
@@ -425,6 +426,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                             mr: 2,
                           }}
                           size="small"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setValue('default_shipping_address_id', '');
+                          }}
                         >
                           <ClearIcon fontSize="small" />
                         </IconButton>
