@@ -36,11 +36,7 @@ export abstract class GeneralService {
     this.token = params.token;
     this.entityId = params.entityId;
     this.logger = params.logger;
-    this.request = createMoniteClient({
-      headers: {
-        Authorization: `${params.token.token_type} ${params.token.access_token}`,
-      },
-    });
+    this.request = createMoniteClient(params.token);
   }
 
   /** Should be called to set options for the service */

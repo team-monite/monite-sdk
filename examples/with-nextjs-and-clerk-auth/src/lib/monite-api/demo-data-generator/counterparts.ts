@@ -2,14 +2,19 @@ import chalk from 'chalk';
 
 import { faker } from '@faker-js/faker';
 
-import { demoBankAccountBICList } from '@/lib/monite-api/demo-data-generator/bank-account';
 import {
   GeneralService,
   getRandomItemFromArray,
 } from '@/lib/monite-api/demo-data-generator/general.service';
+import {
+  bankCountriesToCurrencies,
+  demoBankAccountBICList,
+  chooseRandomCountryForDataGeneration,
+} from '@/lib/monite-api/demo-data-generator/seed-values';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
   createMoniteClient,
+  getEntity,
   getMoniteApiVersion,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
@@ -154,6 +159,8 @@ export class CounterpartsService extends GeneralService {
       );
     }
 
+    const entity = await getEntity(this.request, this.entityId);
+
     const counterpartVats: Array<
       components['schemas']['CounterpartVatIDResponse']
     > = [];
@@ -179,7 +186,7 @@ export class CounterpartsService extends GeneralService {
         await createCounterpartVatId({
           counterpart_id: counterpart.id,
           token: this.token,
-          entity_id: this.entityId,
+          entity,
         })
           .then((counterpartVat) => {
             counterpartVats.push(counterpartVat);
@@ -209,11 +216,7 @@ export const createCounterpart = async ({
   token: AccessToken;
   entity_id: string;
 }): Promise<components['schemas']['CounterpartResponse']> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const is_vendor = faker.datatype.boolean();
   const addressCountries = ['DE'] satisfies Array<AllowedCountries>;
@@ -262,26 +265,19 @@ export const createCounterpart = async ({
 
 export const createCounterpartVatId = async ({
   counterpart_id,
-  entity_id,
+  entity,
   token,
 }: {
   counterpart_id: string;
-  entity_id: string;
+  entity: { id: string; address: { country: string } };
   token: AccessToken;
 }): Promise<CounterpartVatIDResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
-  const type = getRandomItemFromArray([
-    'eu_vat',
-    'no_vat',
-    'unknown',
-  ] satisfies Array<VatIDTypeEnum>);
   const value = String(faker.number.int(10_000));
   const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
+  const counterpartCountry = getRandomItemFromArray(addressCountries);
+  const vatIdType = getVatIdType(entity.address.country, counterpartCountry);
 
   const { data, error, response } = await POST(
     '/counterparts/{counterpart_id}/vat_ids',
@@ -292,20 +288,20 @@ export const createCounterpartVatId = async ({
         },
         header: {
           'x-monite-version': getMoniteApiVersion(),
-          'x-monite-entity-id': entity_id,
+          'x-monite-entity-id': entity.id,
         },
       },
       body: {
-        type,
+        type: vatIdType,
         value,
-        country: getRandomItemFromArray(addressCountries),
+        country: counterpartCountry,
       },
     }
   );
 
   if (error) {
     console.error(
-      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity_id}"`,
+      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity.id}"`,
       `x-request-id: ${response.headers.get('x-request-id')}`
     );
 
@@ -326,20 +322,10 @@ export const createCounterpartBankAccount = async ({
   entity_id: string;
   token: AccessToken;
 }): Promise<CounterpartBankAccountResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
-  const countryCode = getRandomItemFromArray([
-    'GE',
-    'DE',
-    'GB',
-  ] satisfies Array<AllowedCountries>);
-  const currency = getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
-    components['schemas']['CurrencyEnum']
-  >);
+  const countryCode = chooseRandomCountryForDataGeneration();
+  const currency = bankCountriesToCurrencies[countryCode];
 
   const { data, error, response } = await POST(
     '/counterparts/{counterpart_id}/bank_accounts',
@@ -378,3 +364,24 @@ export const createCounterpartBankAccount = async ({
 
   return data;
 };
+
+function getVatIdType(entityCountry: string, counterpartCountry: string) {
+  let vatIdType: VatIDTypeEnum = 'unknown';
+  switch (entityCountry) {
+    case 'GB':
+      vatIdType =
+        counterpartCountry == 'GB'
+          ? 'gb_vat'
+          : counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+    case 'DE':
+      vatIdType =
+        counterpartCountry == 'GB' || counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+  }
+  return vatIdType;
+}
