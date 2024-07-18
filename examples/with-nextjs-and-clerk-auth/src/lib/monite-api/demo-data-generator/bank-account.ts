@@ -11,7 +11,6 @@ import {
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-
 export const createBankAccount = async ({
   token,
   is_default_for_currency,
@@ -51,11 +50,7 @@ export const createBankAccount = async ({
       accountCreationParams.account_number = faker.finance.accountNumber(8);
       accountCreationParams.sort_code = faker.finance.accountNumber(6);
       break;
-    // case 'USD':
-    //   accountCreationParams.account_holder_name = entity.organization.legal_name;
-    //   accountCreationParams.account_number = faker.finance.accountNumber(8);
-    //   accountCreationParams.routing_number = faker.finance.accountNumber(6);
-    //   break;
+    // USD accounts will need account_holder_name, account_number and routing_number
     default:
       throw new Error(
         `Bank account generator - unsupported currency: ${currency}`
