@@ -259,58 +259,57 @@ describe('PayableDetails', () => {
     describe('# Public API', () => {
       const user = userEvent.setup();
 
-      // ToDo: should be uncommented after migrated payables to the new API
-      // test('should send correct request (required fields) when user update payable', async () => {
-      //   const queryClient = new QueryClient();
-      //
-      //   render(<PayableDetails id={payableId} />, {
-      //     wrapper: ({ children }) => (
-      //       <Provider client={queryClient} children={children} />
-      //     ),
-      //   });
-      //
-      //   await waitUntilTableIsLoaded();
-      //
-      //   const editButton = await screen.findByRole('button', {
-      //     name: t`Edit`,
-      //   });
-      //
-      //   fireEvent.click(editButton);
-      //
-      //   const InvoiceNumberValue = 'Invoice number';
-      //   const invoiceNumberInput = screen.getByLabelText(t`Invoice Number *`);
-      //   fireEvent.change(invoiceNumberInput, {
-      //     target: { value: InvoiceNumberValue },
-      //   });
-      //
-      //   const saveButton = screen.getByRole('button', {
-      //     name: t`Save`,
-      //   });
-      //
-      //   await user.click(saveButton);
-      //
-      //   const requestBody = await waitFor(() => {
-      //     const mutationsCache = queryClient.getMutationCache();
-      //
-      //     const updatePayableMutation = mutationsCache.find({
-      //       mutationKey: api.payables.patchPayablesId.getMutationKey(),
-      //     });
-      //
-      //     return updatePayableMutation?.state.variables?.body;
-      //   });
-      //
-      //   if (!requestBody) {
-      //     throw new Error(
-      //       'The mutation to update the payable has never been called'
-      //     );
-      //   }
-      //
-      //   expect(requestBody).toMatchObject({
-      //     document_id: InvoiceNumberValue,
-      //     due_date: format(new Date(fixture.due_date!), 'yyyy-MM-dd'),
-      //     currency: fixture.currency,
-      //   });
-      // });
+      test('should send correct request (required fields) when user update payable', async () => {
+        const queryClient = new QueryClient();
+
+        render(<PayableDetails id={payableId} />, {
+          wrapper: ({ children }) => (
+            <Provider client={queryClient} children={children} />
+          ),
+        });
+
+        await waitUntilTableIsLoaded();
+
+        const editButton = await screen.findByRole('button', {
+          name: t`Edit`,
+        });
+
+        fireEvent.click(editButton);
+
+        const InvoiceNumberValue = 'Invoice number';
+        const invoiceNumberInput = screen.getByLabelText(t`Invoice Number *`);
+        fireEvent.change(invoiceNumberInput, {
+          target: { value: InvoiceNumberValue },
+        });
+
+        const saveButton = screen.getByRole('button', {
+          name: t`Save`,
+        });
+
+        await user.click(saveButton);
+
+        const requestBody = await waitFor(() => {
+          const mutationsCache = queryClient.getMutationCache();
+
+          const updatePayableMutation = mutationsCache.find({
+            mutationKey: api.payables.patchPayablesId.getMutationKey(),
+          });
+
+          return updatePayableMutation?.state.variables?.body;
+        });
+
+        if (!requestBody) {
+          throw new Error(
+            'The mutation to update the payable has never been called'
+          );
+        }
+
+        expect(requestBody).toMatchObject({
+          document_id: InvoiceNumberValue,
+          due_date: format(new Date(fixture.due_date!), 'yyyy-MM-dd'),
+          currency: fixture.currency,
+        });
+      });
     });
 
     describe('# Actions', () => {
