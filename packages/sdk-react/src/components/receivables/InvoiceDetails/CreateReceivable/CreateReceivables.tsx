@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -218,6 +219,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={createReceivable.isPending} />
+                <ReminderSection disabled={createReceivable.isPending} />
               </Stack>
             </Stack>
           </form>
