@@ -4696,12 +4696,10 @@
             "in": "query"
           },
           {
-            "description": "A list of counterpart IDs to search through.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
-              "type": "array",
-              "description": "A list of counterpart IDs to search through."
+              "type": "array"
             },
             "name": "id__in",
             "in": "query"
@@ -12993,235 +12991,6 @@
           },
           "400": {
             "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        },
-        "security": [{ "HTTPBearer": [] }]
-      }
-    },
-    "/internal/quotes/{receivable_id}": {
-      "get": {
-        "tags": ["Quotes internal"],
-        "summary": "Get Quote By Id",
-        "operationId": "get_internal_quotes_id",
-        "parameters": [
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "example": "2024-01-31",
-            "name": "x-monite-version",
-            "in": "header"
-          },
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" },
-            "name": "receivable_id",
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/QuoteResponsePayloadExtended"
-                }
-              }
-            }
-          },
-          "405": {
-            "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        },
-        "security": [{ "HTTPBearer": [] }]
-      }
-    },
-    "/internal/quotes/{receivable_id}/accept": {
-      "post": {
-        "tags": ["Quotes internal"],
-        "summary": "Accept Quote",
-        "operationId": "post_internal_quotes_id_accept",
-        "parameters": [
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "example": "2024-01-31",
-            "name": "x-monite-version",
-            "in": "header"
-          },
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" },
-            "name": "receivable_id",
-            "in": "path"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": { "$ref": "#/components/schemas/QuoteAcceptRequest" }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SuccessResult" }
-              }
-            }
-          },
-          "405": {
-            "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "409": {
-            "description": "Business logic error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
-              }
-            }
-          }
-        },
-        "security": [{ "HTTPBearer": [] }]
-      }
-    },
-    "/internal/quotes/{receivable_id}/decline": {
-      "post": {
-        "tags": ["Quotes internal"],
-        "summary": "Decline Quote",
-        "operationId": "post_internal_quotes_id_decline",
-        "parameters": [
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "date" },
-            "example": "2024-01-31",
-            "name": "x-monite-version",
-            "in": "header"
-          },
-          {
-            "required": true,
-            "schema": { "type": "string", "format": "uuid" },
-            "name": "receivable_id",
-            "in": "path"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReceivableDeclinePayload"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SuccessResult" }
-              }
-            }
-          },
-          "405": {
-            "description": "Method Not Allowed",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
-              }
-            }
-          },
-          "409": {
-            "description": "Business logic error",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -27742,13 +27511,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "anyOf": [
-                  { "$ref": "#/components/schemas/QuoteAcceptRequest" },
-                  { "type": "object" }
-                ],
-                "title": "Payload"
-              }
+              "schema": { "type": "object", "title": "Payload" }
             }
           }
         },
@@ -33189,7 +32952,7 @@
               { "items": {}, "type": "array" },
               { "type": "object" }
             ],
-            "description": "A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.",
+            "description": "A JSON object that represents the trigger for the approval policy.The trigger specifies the event that will trigger the policy to be evaluated.",
             "example": "{amount >= 1000}"
           }
         },
@@ -33234,7 +32997,7 @@
               { "items": {}, "type": "array" },
               { "type": "object" }
             ],
-            "description": "A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.",
+            "description": "A JSON object that represents the trigger for the approval policy.The trigger specifies the event that will trigger the policy to be evaluated.",
             "example": "{amount >= 1000}"
           },
           "id": { "type": "string", "format": "uuid" },
@@ -36332,43 +36095,38 @@
         "properties": {
           "city": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
+            "maxLength": 255,
             "description": "A city (a full name) where the entity is registered"
           },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
             "description": "A country name (as ISO code) where the entity is registered ",
+            "default": "DE",
             "example": "DE"
           },
           "line1": {
             "type": "string",
-            "maxLength": 200,
-            "minLength": 1,
+            "maxLength": 255,
             "description": "A street where the entity is registered"
           },
           "line2": {
             "type": "string",
             "maxLength": 100,
-            "minLength": 1,
             "description": "An alternative street used by the entity"
           },
           "postal_code": {
             "type": "string",
             "maxLength": 10,
-            "minLength": 1,
             "description": "A postal code of the address where the entity is registered"
           },
           "state": {
             "type": "string",
-            "maxLength": 100,
-            "minLength": 1,
-            "description": "State, county, province, prefecture, region, or similar component of the entity's address. For US entities, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA."
+            "description": "A state in a country where the entity is registered"
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["city", "country", "line1", "postal_code"],
+        "required": ["city", "line1", "postal_code"],
         "description": "A schema represents address info of the entity"
       },
       "EntityBankAccountPaginationResponse": {
@@ -39246,6 +39004,7 @@
           "partner_settings",
           "partner_token",
           "payable",
+          "project",
           "payable_line_item",
           "payables_purchase_order",
           "payment",
@@ -41451,7 +41210,12 @@
             "description": "A state each new payable will have upon creation",
             "example": "new"
           },
-          "enable_line_items": { "type": "boolean", "default": true }
+          "enable_line_items": {
+            "type": "boolean",
+            "description": "Starting from version 2024-05-25 by default is always set to True.",
+            "default": true,
+            "deprecated": true
+          }
         },
         "type": "object",
         "required": ["approve_page_url"]
@@ -42530,6 +42294,11 @@
           "payment_page_domain": { "type": "string" },
           "payment_page_theme": {
             "$ref": "#/components/schemas/PaymentPageThemeResponse"
+          },
+          "support_email": {
+            "type": "string",
+            "format": "email",
+            "description": "The support email address"
           }
         },
         "type": "object"
@@ -43261,101 +43030,26 @@
       },
       "ProjectResponse": {
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID assigned to this project."
+          "id": { "type": "string", "format": "uuid" },
+          "company": { "$ref": "#/components/schemas/CompanyResponse" },
+          "created_by_user_id": { "type": "string", "format": "uuid" },
+          "description": { "type": "string", "minLength": 1 },
+          "environment": {
+            "allOf": [{ "$ref": "#/components/schemas/EnvironmentEnum" }],
+            "default": "EU sandbox"
           },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Project created at"
+          "features": {
+            "items": { "$ref": "#/components/schemas/FeaturesResponse" },
+            "type": "array"
           },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Last time project was updated at"
-          },
-          "counterpart": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/CounterpartIndividualRootResponse"
-              },
-              {
-                "$ref": "#/components/schemas/CounterpartOrganizationRootResponse"
-              }
-            ],
-            "description": "Default counterpart for this project."
-          },
-          "date_end": {
-            "type": "string",
-            "format": "date",
-            "description": "Project end date"
-          },
-          "date_start": {
-            "type": "string",
-            "format": "date",
-            "description": "Project start date"
-          },
-          "description": {
-            "type": "string",
-            "maxLength": 1024,
-            "description": "Description of project",
-            "null": true
-          },
-          "entity_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "The ID of the entity to which the project was issued."
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "The project name.",
-            "example": "Marketing"
-          },
-          "parent_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Parent project id",
-            "null": true
-          },
-          "project_code": {
-            "type": "string",
-            "maxLength": 3,
-            "description": "Project code",
-            "null": true
-          },
-          "project_color": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "Project color",
-            "null": true
-          },
-          "tag_ids": {
-            "items": { "type": "string", "format": "uuid" },
-            "type": "array",
-            "description": "A list of IDs of user-defined tags (labels) assigned to this payable. Tags can be used to trigger a specific approval policy for this payable.",
-            "null": true
-          },
-          "tags": {
-            "items": { "$ref": "#/components/schemas/TagReadSchema" },
-            "type": "array",
-            "description": "A list of user-defined tags (labels) assigned to this project."
+          "name": { "type": "string", "maxLength": 100, "minLength": 1 },
+          "region": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountriesNames" }],
+            "default": "Germany"
           }
         },
-        "additionalProperties": false,
         "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "date_end",
-          "date_start",
-          "entity_id",
-          "name"
-        ]
+        "required": ["id", "company", "created_by_user_id", "features", "name"]
       },
       "ProjectUpdateRequest": {
         "properties": {
@@ -43961,16 +43655,6 @@
         "type": "object",
         "required": ["id", "country", "entity_id", "type", "value"]
       },
-      "QuoteAcceptRequest": {
-        "properties": {
-          "signature": {
-            "allOf": [{ "$ref": "#/components/schemas/Signature" }],
-            "description": "A digital signature, if required for quote acceptance"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object"
-      },
       "QuoteResponsePayload": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -44146,10 +43830,6 @@
             "format": "uri",
             "description": "Link for custom quote accept page"
           },
-          "signature_required": {
-            "type": "boolean",
-            "description": "Whether acceptance a quote requires a signature."
-          },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/QuoteStateEnum" }],
             "description": "The status of the Quote inside the receivable workflow."
@@ -44211,281 +43891,6 @@
           "updated_at",
           "counterpart_id",
           "counterpart_type",
-          "currency",
-          "entity",
-          "entity_address",
-          "file_language",
-          "line_items",
-          "original_file_language",
-          "status",
-          "total_vat_amount",
-          "type"
-        ]
-      },
-      "QuoteResponsePayloadExtended": {
-        "properties": {
-          "id": { "type": "string", "format": "uuid" },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time at which the receivable was created. Timestamps follow the ISO 8601 standard."
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
-          },
-          "based_on": {
-            "type": "string",
-            "format": "uuid",
-            "description": "The unique ID of a previous document related to the receivable if applicable."
-          },
-          "based_on_document_id": {
-            "type": "string",
-            "description": "The unique document ID of a previous document related to the receivable if applicable."
-          },
-          "comment": {
-            "type": "string",
-            "description": "Field with a comment on why the client declined this Quote"
-          },
-          "commercial_condition_description": {
-            "type": "string",
-            "description": "The commercial terms of the receivable (e.g. The products must be delivered in X days)."
-          },
-          "counterpart_billing_address": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
-              }
-            ],
-            "description": "Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company."
-          },
-          "counterpart_business_type": {
-            "type": "string",
-            "maxLength": 50,
-            "description": "Different types of companies for different countries, ex. GmbH, SAS, SNC, etc."
-          },
-          "counterpart_contact": {
-            "allOf": [
-              { "$ref": "#/components/schemas/ReceivableCounterpartContact" }
-            ],
-            "description": "Additional information about counterpart contacts."
-          },
-          "counterpart_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique ID of the counterpart."
-          },
-          "counterpart_name": {
-            "type": "string",
-            "description": "A legal name of a counterpart it is an organization or first and last name if it is an individual"
-          },
-          "counterpart_shipping_address": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
-              }
-            ],
-            "description": "Address where goods were shipped / where services were provided."
-          },
-          "counterpart_tax_id": {
-            "type": "string",
-            "description": "The VAT/TAX ID of the counterpart."
-          },
-          "counterpart_type": {
-            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
-            "description": "The type of the counterpart."
-          },
-          "counterpart_universal_address": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
-              }
-            ],
-            "description": "Address of the counterpart, if we need to only one address"
-          },
-          "counterpart_vat_id": {
-            "$ref": "#/components/schemas/CounterpartVatIDResponse"
-          },
-          "currency": {
-            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
-            "description": "The currency used in the receivable."
-          },
-          "deduction_amount": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "minimum": 0.0,
-            "description": "The amount of tax deducted in minor units"
-          },
-          "deduction_memo": {
-            "type": "string",
-            "description": "A note with additional information about a tax deduction"
-          },
-          "deduction_title": {
-            "type": "string",
-            "description": "Partner level customizable deduction title"
-          },
-          "discount": {
-            "allOf": [{ "$ref": "#/components/schemas/Discount" }],
-            "description": "The discount for a receivable."
-          },
-          "discounted_subtotal": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "description": "Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units)."
-          },
-          "document_id": {
-            "type": "string",
-            "description": "The sequential code systematically assigned to invoices."
-          },
-          "due_date": {
-            "type": "string",
-            "format": "date",
-            "description": "Optional field representing date until which invoice should be paid"
-          },
-          "entity": {
-            "anyOf": [
-              { "$ref": "#/components/schemas/ReceivablesEntityOrganization" },
-              { "$ref": "#/components/schemas/ReceivablesEntityIndividual" }
-            ]
-          },
-          "entity_address": {
-            "$ref": "#/components/schemas/EntityAddressSchema"
-          },
-          "entity_bank_account": {
-            "$ref": "#/components/schemas/ReceivablesRepresentationOfEntityBankAccount"
-          },
-          "entity_user_id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "The entity user who created this document."
-          },
-          "entity_vat_id": {
-            "$ref": "#/components/schemas/EntityVatIDResponse"
-          },
-          "expiry_date": {
-            "type": "string",
-            "format": "date",
-            "description": "The date (in ISO 8601 format) until which the quote is valid."
-          },
-          "external_qr_code_link": {
-            "type": "string",
-            "maxLength": 65536,
-            "minLength": 1,
-            "format": "uri",
-            "description": "External link redirecting user from qr code"
-          },
-          "file": { "$ref": "#/components/schemas/FileSchema" },
-          "file_language": {
-            "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
-            "description": "The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated."
-          },
-          "file_url": {
-            "type": "string",
-            "description": "The receivable's PDF URL in the counterpart's default language."
-          },
-          "issue_date": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Optional field for the issue of the entry."
-          },
-          "line_items": {
-            "items": { "$ref": "#/components/schemas/ResponseItem" },
-            "type": "array"
-          },
-          "memo": {
-            "type": "string",
-            "description": "A note with additional information for a receivable."
-          },
-          "original_file_language": {
-            "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
-            "description": "The language of the entity's copy of the PDF file (`original_file_url`). The value matches the entity's `language` at the time when this PDF file was generated."
-          },
-          "original_file_url": {
-            "type": "string",
-            "description": "The receivable's PDF URL in the entity's default language."
-          },
-          "partner_metadata": {
-            "type": "object",
-            "description": "Metadata for partner needs"
-          },
-          "quote_accept_page_url": {
-            "type": "string",
-            "maxLength": 65536,
-            "minLength": 1,
-            "format": "uri",
-            "description": "Link for custom quote accept page"
-          },
-          "signature": {
-            "allOf": [{ "$ref": "#/components/schemas/SignatureResponse" }],
-            "description": "Quote's digital signature"
-          },
-          "signature_required": {
-            "type": "boolean",
-            "description": "Whether acceptance a quote requires a signature."
-          },
-          "status": {
-            "allOf": [{ "$ref": "#/components/schemas/QuoteStateEnum" }],
-            "description": "The status of the Quote inside the receivable workflow."
-          },
-          "subtotal": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "description": "The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
-          },
-          "total_amount": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "description": "Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount.",
-            "default": 0
-          },
-          "total_vat_amount": {
-            "type": "integer",
-            "maximum": 9007199254740991.0,
-            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
-          },
-          "total_vat_amounts": {
-            "items": { "$ref": "#/components/schemas/TotalVatAmountItem" },
-            "type": "array",
-            "description": "List of total vat amount for each VAT, presented in receivable"
-          },
-          "total_withholding_tax": {
-            "type": "integer",
-            "description": "Total price of the receivable with tax withheld in minor units"
-          },
-          "trade_name": {
-            "type": "string",
-            "maxLength": 255,
-            "description": "Trade name of the entity"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["quote"],
-            "description": "The type of the document uploaded."
-          },
-          "vat_exempt": {
-            "type": "boolean",
-            "description": "Indicates whether the goods, materials, or services listed in the receivable are exempt from VAT or not."
-          },
-          "vat_exemption_rationale": {
-            "type": "string",
-            "description": "The reason for the VAT exemption, if applicable."
-          },
-          "withholding_tax_rate": {
-            "type": "integer",
-            "maximum": 10000.0,
-            "minimum": 0.0,
-            "description": "The amount of tax withheld in percent minor units"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "created_at",
-          "updated_at",
-          "counterpart_id",
-          "counterpart_type",
-          "counterpart_universal_address",
           "currency",
           "entity",
           "entity_address",
@@ -44792,10 +44197,6 @@
             "minLength": 1,
             "format": "uri",
             "description": "Link for custom quote accept page"
-          },
-          "signature_required": {
-            "type": "boolean",
-            "description": "Whether acceptance a quote requires a signature."
           },
           "trade_name": {
             "type": "string",
@@ -45715,59 +45116,6 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["new_password", "token"]
-      },
-      "Signature": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "The email of a person who signed a quote"
-          },
-          "full_name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "The full name of a person who signed a quote"
-          },
-          "signature_image": {
-            "type": "string",
-            "maxLength": 524288,
-            "minLength": 32,
-            "description": "Base64 encoded PNG image of a signature"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["email", "full_name", "signature_image"]
-      },
-      "SignatureResponse": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "The email of a person who signed a quote"
-          },
-          "full_name": {
-            "type": "string",
-            "maxLength": 255,
-            "minLength": 1,
-            "description": "The full name of a person who signed a quote"
-          },
-          "signature_image_url": {
-            "type": "string",
-            "description": "URL of the signature image"
-          },
-          "signed_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Date and time when the receivable was signed"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["email", "full_name", "signature_image_url", "signed_at"]
       },
       "SingleOnboardingRequirementsResponse": {
         "properties": {
@@ -47053,10 +46401,6 @@
             "format": "uri",
             "description": "Link for custom quote accept page"
           },
-          "signature_required": {
-            "type": "boolean",
-            "description": "Whether acceptance a quote requires a signature."
-          },
           "trade_name": {
             "type": "string",
             "maxLength": 255,
@@ -48132,7 +47476,6 @@
     { "name": "Projects" },
     { "name": "Projects settings" },
     { "name": "Purchase orders" },
-    { "name": "Quotes internal" },
     { "name": "Receivables" },
     { "name": "Recurrences" },
     { "name": "Register" },
