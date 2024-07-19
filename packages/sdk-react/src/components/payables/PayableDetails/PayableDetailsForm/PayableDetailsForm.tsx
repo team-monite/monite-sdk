@@ -6,7 +6,6 @@ import {
   FieldNamesMarkedBoolean,
   FormProvider,
 } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -16,7 +15,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
@@ -48,7 +47,6 @@ import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   counterpartsToSelect,
-  counterpartBankAccountsToSelect,
   tagsToSelect,
   prepareDefaultValues,
   prepareSubmit,
@@ -322,16 +320,16 @@ const PayableDetailsFormBase = forwardRef<
                                 0
                             }
                           >
-                            {counterpartBankAccountsToSelect(
-                              counterpartBankAccountQuery?.data?.data || []
-                            ).map((bankAccount) => (
-                              <MenuItem
-                                key={bankAccount.value}
-                                value={bankAccount.value}
-                              >
-                                {bankAccount.label}
-                              </MenuItem>
-                            ))}
+                            {counterpartBankAccountQuery?.data?.data.map(
+                              (bankAccount) => (
+                                <MenuItem
+                                  key={bankAccount.id}
+                                  value={bankAccount.id}
+                                >
+                                  {getBankAccountName(i18n, bankAccount)}
+                                </MenuItem>
+                              )
+                            )}
                           </Select>
                           {error && (
                             <FormHelperText>{error.message}</FormHelperText>

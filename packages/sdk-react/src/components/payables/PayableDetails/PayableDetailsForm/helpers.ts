@@ -51,15 +51,6 @@ export const counterpartsToSelect = (
   }));
 };
 
-export const counterpartBankAccountsToSelect = (
-  bankAccounts: components['schemas']['CounterpartBankAccountResponse'][]
-): Option[] => {
-  return bankAccounts.map((bankAccount) => ({
-    value: bankAccount.id,
-    label: bankAccount.name ?? bankAccount.id,
-  }));
-};
-
 export const tagsToSelect = (
   tags: components['schemas']['TagReadSchema'][] | undefined
 ): Option[] => {
