@@ -2,14 +2,11 @@ import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { usePaymentTerms } from '@/core/queries';
-import { useBankAccounts } from '@/core/queries/useBankAccounts';
-import { getCountries, getCurrencies } from '@/core/utils';
-import { I18n } from '@lingui/core';
+import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { EntityBankAccountResponse } from '@monite/sdk-api';
 import {
   Card,
   CardContent,
@@ -25,38 +22,17 @@ import {
 
 import type { SectionGeneralProps } from './Section.types';
 
-const getBankAccountName = (
-  i18n: I18n,
-  bankAccount: EntityBankAccountResponse
-) => {
-  if (bankAccount.display_name) {
-    return bankAccount.display_name;
-  }
-
-  if (bankAccount.bank_name) {
-    return bankAccount.bank_name;
-  }
-
-  if (bankAccount.country && bankAccount.currency) {
-    return `${getCountries(i18n)[bankAccount.country]} (${
-      getCurrencies(i18n)[bankAccount.currency]
-    })`;
-  }
-
-  return bankAccount.id;
-};
-
 export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch, resetField, setValue } =
-    useFormContext<CreateReceivablesFormProps>();
+  const { control } = useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
 
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
-    useBankAccounts();
+    api.bankAccounts.getBankAccounts.useQuery({});
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
-    usePaymentTerms();
+    api.paymentTerms.getPaymentTerms.useQuery({});
 
   const noPaymentTerms = useMemo(() => {
     if (!paymentTerms) {
@@ -102,11 +78,7 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
                     >
                       {bankAccounts?.data.map((bankAccount) => (
                         <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                          {`${getBankAccountName(i18n, bankAccount)} ${
-                            bankAccount.is_default_for_currency
-                              ? t(i18n)`(Default)`
-                              : ''
-                          }`}
+                          {getBankAccountName(i18n, bankAccount)}
                         </MenuItem>
                       ))}
                     </Select>

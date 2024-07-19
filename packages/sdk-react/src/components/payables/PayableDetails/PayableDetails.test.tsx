@@ -1,24 +1,32 @@
 import React from 'react';
 
+import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
-import { payablesDefaultQueryConfig } from '@/core/queries';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import {
   changeDocumentIdByPayableId,
   payableFixturePages,
 } from '@/mocks/payables';
 import {
-  cachedMoniteSDK,
+  Provider,
   renderWithClient,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import { MoniteSDK, PayableStateEnum } from '@monite/sdk-api';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { MoniteSDK } from '@monite/sdk-api';
+import { QueryClient } from '@tanstack/react-query';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { PayableDataTestId } from '../types';
 import { PayableDetails } from './PayableDetails';
 
@@ -30,7 +38,9 @@ if (!fixture) {
   throw new Error(`Could not find fixture by id: ${payableId}`);
 }
 
-const initialStatus = PayableStateEnum.DRAFT;
+const initialStatus = 'draft';
+
+const { api } = createAPIClient();
 
 describe('PayableDetails', () => {
   afterEach(() => {
@@ -124,7 +134,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "New" tag, "Edit", "Cancel" and "Submit" buttons for payable in "New" status', async () => {
-        fixture.status = PayableStateEnum.NEW;
+        fixture.status = 'new';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -150,7 +160,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "Canceled" tag and no buttons for payable in "Canceled" status', async () => {
-        fixture.status = PayableStateEnum.CANCELED;
+        fixture.status = 'canceled';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -166,7 +176,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "Pending" tag, "Cancel", "Reject" and "Approve" button for payable in "Pending" status', async () => {
-        fixture.status = PayableStateEnum.APPROVE_IN_PROGRESS;
+        fixture.status = 'approve_in_progress';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -194,7 +204,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "Rejected" tag and no buttons for payable in "Rejected" status', async () => {
-        fixture.status = PayableStateEnum.REJECTED;
+        fixture.status = 'rejected';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -210,7 +220,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "Waiting to be paid" tag, "Pay" button for payable in "Waiting to be paid" status', async () => {
-        fixture.status = PayableStateEnum.WAITING_TO_BE_PAID;
+        fixture.status = 'waiting_to_be_paid';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -230,7 +240,7 @@ describe('PayableDetails', () => {
       });
 
       test('should show "Paid" tag and no buttons for payable in "Paid" status', async () => {
-        fixture.status = PayableStateEnum.PAID;
+        fixture.status = 'paid';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
@@ -250,12 +260,13 @@ describe('PayableDetails', () => {
       const user = userEvent.setup();
 
       test('should send correct request (required fields) when user update payable', async () => {
-        const createPayableSpy = jest.spyOn(
-          cachedMoniteSDK.api.payable,
-          'update'
-        );
+        const queryClient = new QueryClient();
 
-        renderWithClient(<PayableDetails id={payableId} />, cachedMoniteSDK);
+        render(<PayableDetails id={payableId} />, {
+          wrapper: ({ children }) => (
+            <Provider client={queryClient} children={children} />
+          ),
+        });
 
         await waitUntilTableIsLoaded();
 
@@ -277,13 +288,21 @@ describe('PayableDetails', () => {
 
         await user.click(saveButton);
 
-        const callsArguments = createPayableSpy.mock.calls;
+        const requestBody = await waitFor(() => {
+          const mutationsCache = queryClient.getMutationCache();
 
-        if (!callsArguments) {
-          throw new Error('monite.api.payables.create never has been called');
+          const updatePayableMutation = mutationsCache.find({
+            mutationKey: api.payables.patchPayablesId.getMutationKey(),
+          });
+
+          return updatePayableMutation?.state.variables?.body;
+        });
+
+        if (!requestBody) {
+          throw new Error(
+            'The mutation to update the payable has never been called'
+          );
         }
-
-        const requestBody = callsArguments[0][1];
 
         expect(requestBody).toMatchObject({
           document_id: InvoiceNumberValue,
@@ -366,7 +385,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onCancel" callback when we click on "Cancel" button', async () => {
-        fixture.status = PayableStateEnum.NEW;
+        fixture.status = 'new';
         const onCancelMock = jest.fn();
 
         renderWithClient(
@@ -387,8 +406,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onCanceled" callback when we click on "Cancel" button', async () => {
-        fixture.status = PayableStateEnum.NEW;
-        const onCancelMock = jest.fn();
+        fixture.status = 'new';
         const onCanceledMock = jest.fn();
 
         renderWithClient(
@@ -409,7 +427,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onSubmit" callback when we click on "Submit" button', async () => {
-        fixture.status = PayableStateEnum.NEW;
+        fixture.status = 'new';
         const onSubmitMock = jest.fn();
 
         renderWithClient(
@@ -430,7 +448,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onSubmitted" callback when we click on "Submit" button', async () => {
-        fixture.status = PayableStateEnum.NEW;
+        fixture.status = 'new';
         const onSubmittedMock = jest.fn();
 
         renderWithClient(
@@ -451,7 +469,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onReject" callback when we click on "Reject" button', async () => {
-        fixture.status = PayableStateEnum.APPROVE_IN_PROGRESS;
+        fixture.status = 'approve_in_progress';
         const onRejectMock = jest.fn();
 
         renderWithClient(
@@ -472,7 +490,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onRejected" callback when we click on "Reject" button', async () => {
-        fixture.status = PayableStateEnum.APPROVE_IN_PROGRESS;
+        fixture.status = 'approve_in_progress';
         const onRejectedMock = jest.fn();
 
         renderWithClient(
@@ -493,7 +511,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onApprove" callback when we click on "Approve" button', async () => {
-        fixture.status = PayableStateEnum.APPROVE_IN_PROGRESS;
+        fixture.status = 'approve_in_progress';
         const onApproveMock = jest.fn();
 
         renderWithClient(
@@ -514,7 +532,7 @@ describe('PayableDetails', () => {
       });
 
       test('should trigger "onApproved" callback when we click on "Approve" button', async () => {
-        fixture.status = PayableStateEnum.APPROVE_IN_PROGRESS;
+        fixture.status = 'approve_in_progress';
         const onApprovedMock = jest.fn();
 
         renderWithClient(
@@ -536,7 +554,7 @@ describe('PayableDetails', () => {
 
       test('should trigger "onPay" callback when we click on "Pay" button', async () => {
         const onPayMock = jest.fn();
-        fixture.status = PayableStateEnum.WAITING_TO_BE_PAID;
+        fixture.status = 'waiting_to_be_paid';
 
         renderWithClient(<PayableDetails id={payableId} onPay={onPayMock} />);
 

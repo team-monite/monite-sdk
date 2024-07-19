@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { useEntityUserByAuthToken, usePayablesList } from '@/core/queries';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCell } from '@/ui/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -14,21 +18,15 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OrderEnum,
-  PayableActionEnum,
-  PayableCursorFields,
-  PayableResponseSchema,
-} from '@monite/sdk-api';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress } from '@mui/material';
 import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
+import { payablesDefaultQueryConfig } from '../consts';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
@@ -68,12 +66,12 @@ interface PayablesTableProps {
    * Triggered when the sorting options are changed
    *
    * @param params - An object containing the sorting parameters.
-   * @param params.sort - The field to sort by, in this case PayableCursorFields.CREATED_AT.
+   * @param params.sort - The field to sort by, in this case 'created_at'.
    * @param params.order - The sort order can be either SortOrderEnum values or null.
    */
   onChangeSort?: (params: {
-    sort: PayableCursorFields.CREATED_AT;
-    order: SortOrderEnum | null;
+    sort: 'created_at';
+    order: 'asc' | 'desc' | null;
   }) => void;
 }
 
@@ -89,6 +87,8 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -104,42 +104,47 @@ const PayablesTableBase = ({
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
-  const { data: payables, isLoading } = usePayablesList(
-    OrderEnum.DESC,
-    pageSize,
-    currentPaginationToken || undefined,
-    PayableCursorFields.CREATED_AT,
-    undefined,
-    undefined,
-    // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-    currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-      : undefined,
-    currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-      : undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_STATUS] || undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_DUE_DATE]
-      ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date)
-      : undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    currentFilter[FILTER_TYPE_SEARCH] || undefined
+  const {
+    data: payables,
+    isLoading,
+    isError,
+    error,
+  } = api.payables.getPayables.useQuery(
+    {
+      query: {
+        order: 'desc',
+        limit: pageSize,
+        pagination_token: currentPaginationToken || undefined,
+        sort: 'created_at',
+        // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+          : undefined,
+        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
+        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+        due_date: currentFilter[FILTER_TYPE_DUE_DATE]
+          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
+              representation: 'date',
+            })
+          : undefined,
+        document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      },
+    },
+    { ...payablesDefaultQueryConfig }
   );
+
+  //TODO: Remove this error handling and replace with proper error handling
+  useEffect(() => {
+    if (isError) {
+      toast.error(getAPIErrorMessage(i18n, error));
+    }
+  }, [isError, error, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -259,7 +264,7 @@ const PayablesTableBase = ({
               valueFormatter: ({
                 value,
               }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
+                components['schemas']['PayableResponseSchema']['created_at']
               >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
@@ -275,7 +280,7 @@ const PayablesTableBase = ({
               valueFormatter: ({
                 value,
               }: GridValueFormatterParams<
-                PayableResponseSchema['issued_at']
+                components['schemas']['PayableResponseSchema']['issued_at']
               >) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
@@ -291,7 +296,9 @@ const PayablesTableBase = ({
               flex: 0.7,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<PayableResponseSchema['due_date']>) =>
+              }: GridValueFormatterParams<
+                components['schemas']['PayableResponseSchema']['due_date']
+              >) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {

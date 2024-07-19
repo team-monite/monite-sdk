@@ -1,16 +1,10 @@
-import {
-  ADDRESSES_ENDPOINT,
-  CounterpartAddress,
-  CounterpartAddressResourceList,
-  CounterpartAddressResponseWithCounterpartID,
-  ErrorSchemaResponse,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
 import { counterpartsAddressesFixture } from './counterpartsAddressesFixture';
 
-const counterpartsAddressesPath = `*/counterparts/:counterpartId/${ADDRESSES_ENDPOINT}`;
+const counterpartsAddressesPath = `*/counterparts/:counterpartId/addresses`;
 const counterpartAddressPath = `${counterpartsAddressesPath}/:addressId`;
 
 export const counterpartsAddressesHandlers = [
@@ -18,7 +12,8 @@ export const counterpartsAddressesHandlers = [
   http.get<
     { counterpartId: string },
     undefined,
-    CounterpartAddressResourceList | ErrorSchemaResponse
+    | components['schemas']['CounterpartAddressResourceList']
+    | components['schemas']['ErrorSchemaResponse']
   >(counterpartsAddressesPath, async ({ params }) => {
     const { counterpartId } = params;
     const address = counterpartsAddressesFixture.find((address) =>
@@ -49,7 +44,8 @@ export const counterpartsAddressesHandlers = [
   http.get<
     { counterpartId: string; addressId: string },
     undefined,
-    CounterpartAddressResponseWithCounterpartID | ErrorSchemaResponse
+    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
+    | components['schemas']['ErrorSchemaResponse']
   >(counterpartAddressPath, async ({ params }) => {
     const { counterpartId, addressId } = params;
 
@@ -96,8 +92,9 @@ export const counterpartsAddressesHandlers = [
 
   http.patch<
     { counterpartId: string; addressId: string },
-    CounterpartAddress,
-    CounterpartAddressResponseWithCounterpartID | ErrorSchemaResponse
+    components['schemas']['CounterpartAddress'],
+    | components['schemas']['CounterpartAddressResponseWithCounterpartID']
+    | components['schemas']['ErrorSchemaResponse']
   >(counterpartAddressPath, async ({ request, params }) => {
     const payload = await request.json();
     const { counterpartId } = params;

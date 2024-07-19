@@ -5,7 +5,6 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ApiError } from '@monite/sdk-api';
 import type { Hub } from '@sentry/react';
 import {
   MutationCache,
@@ -90,16 +89,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
           toast.error(t(i18n)`Unrecognized error. Please contact support.`);
         }
 
-        const isBackendError = err instanceof ApiError;
-
-        /**
-         * We have to send to Sentry only Client errors. If the error comes from the server,
-         *  we shouldn't send it because we can't do anything with it.
-         *  It's not a client-side error
-         */
-        if (!isBackendError) {
-          sentryHub?.captureException(err);
-        }
+        sentryHub?.captureException(err);
       },
     }),
 
@@ -127,24 +117,4 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
         staleTime: 1000 * 60 * 1,
       },
     },
-    queryCache: new QueryCache({
-      onError: (err: unknown) => {
-        const message = getLegacyAPIErrorMessage(err);
-
-        if (message) {
-          if (message.includes('Object type at permissions not found')) {
-            toast.error(
-              t(i18n)`You do not have permission to access this resource.`,
-              {
-                id: 'permission-error',
-              }
-            );
-
-            return;
-          }
-        } else {
-          toast.error(t(i18n)`Unrecognized error. Please contact support.`);
-        }
-      },
-    }),
   });

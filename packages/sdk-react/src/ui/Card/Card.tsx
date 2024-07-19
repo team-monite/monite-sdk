@@ -50,7 +50,7 @@ const MoniteCardItem = (props: ICardItemProps) => {
           </Typography>
         </Grid>
         <Grid item xs={8}>
-          <Typography>{value}</Typography>
+          {value}
         </Grid>
       </Grid>
     </>

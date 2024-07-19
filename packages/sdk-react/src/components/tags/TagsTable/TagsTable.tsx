@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { UserCell } from '@/components/tags/TagsTable/UserCell/UserCell';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -15,7 +16,6 @@ import {
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TagCursorFields, TagReadSchema, ActionEnum } from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
@@ -35,7 +35,7 @@ interface TagsTableProps {
 }
 
 interface TagsTableSortModel {
-  field: TagCursorFields;
+  field: components['schemas']['TagCursorFields'];
   sort: GridSortDirection;
 }
 
@@ -55,9 +55,9 @@ const TagsTableBase = ({
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [selectedTag, setSelectedTag] = useState<TagReadSchema | undefined>(
-    undefined
-  );
+  const [selectedTag, setSelectedTag] = useState<
+    components['schemas']['TagReadSchema'] | undefined
+  >(undefined);
   const [sortModels, setSortModels] = useState<Array<TagsTableSortModel>>([]);
   const sortModel = sortModels[0];
   const [editModalOpened, setEditModalOpened] = useState<boolean>(false);
@@ -117,13 +117,13 @@ const TagsTableBase = ({
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'tag',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
   const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'tag',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
@@ -176,8 +176,9 @@ const TagsTableBase = ({
               flex: 0.5,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<TagReadSchema['created_at']>) =>
-                i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              }: GridValueFormatterParams<
+                components['schemas']['TagReadSchema']['created_at']
+              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
               field: 'updated_at',
@@ -185,8 +186,9 @@ const TagsTableBase = ({
               flex: 0.5,
               valueFormatter: ({
                 value,
-              }: GridValueFormatterParams<TagReadSchema['updated_at']>) =>
-                i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              }: GridValueFormatterParams<
+                components['schemas']['TagReadSchema']['updated_at']
+              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
               field: 'created_by_entity_user_id',

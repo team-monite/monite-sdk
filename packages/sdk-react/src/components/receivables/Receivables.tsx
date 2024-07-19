@@ -12,7 +12,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
 export const Receivables = () => (
@@ -63,14 +62,14 @@ const ReceivablesBase = () => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
@@ -124,7 +123,7 @@ const ReceivablesBase = () => {
         }}
       >
         <InvoiceDetails
-          type={InvoiceResponsePayload.type.INVOICE}
+          type={'invoice'}
           onCreate={() => {
             setIsCreateInvoiceDialogOpen(false);
             setActiveTab(ReceivablesTableTabEnum.Invoices);

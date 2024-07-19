@@ -1,95 +1,14 @@
-import { toast } from 'react-hot-toast';
-
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import {
-  ApiError,
-  ApprovalPoliciesGetAllRequest,
-  ApprovalPolicyResource,
-  ApprovalPolicyResourceList,
-  ApprovalPolicyCreate,
-  ApprovalPolicyUpdate,
-} from '@monite/sdk-api';
-import { useMutation } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
 
-import { useEntityListCache } from './hooks';
+export const useApprovalPolicyById = (approvalPolicyId: string | undefined) => {
+  const { api } = useMoniteContext();
 
-const APPROVAL_POLICIES_QUERY_ID = 'approval_policies';
-
-const useApprovalPoliciesListCache = () =>
-  useEntityListCache<ApprovalPolicyResource>(() => [
-    APPROVAL_POLICIES_QUERY_ID,
-  ]);
-
-export const useApprovalPoliciesList = (
-  params: ApprovalPoliciesGetAllRequest
-) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<ApprovalPolicyResourceList, ApiError>({
-    queryKey: [APPROVAL_POLICIES_QUERY_ID, { variables: params }],
-    queryFn: () => monite.api.approvalPolicies.getAll(params),
-  });
-};
-
-export const useApprovalPolicyById = (approvalPolicyId?: string) => {
-  const { monite } = useMoniteContext();
-
-  return useQuery<ApprovalPolicyResource | undefined, ApiError>({
-    queryKey: [APPROVAL_POLICIES_QUERY_ID, { approvalPolicyId }],
-
-    queryFn: () => {
-      if (!approvalPolicyId) {
-        throw new Error('Approval policy id is not provided');
-      }
-      return monite.api.approvalPolicies.getById(approvalPolicyId);
+  return api.approvalPolicies.getApprovalPoliciesId.useQuery(
+    {
+      path: { approval_policy_id: approvalPolicyId ?? '' },
     },
-
-    enabled: !!approvalPolicyId,
-  });
-};
-
-export const useCreateApprovalPolicy = () => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useApprovalPoliciesListCache();
-
-  return useMutation<ApprovalPolicyResource, ApiError, ApprovalPolicyCreate>({
-    mutationFn: (args) => monite.api.approvalPolicies.create(args),
-
-    onSuccess: () => {
-      invalidate();
-      toast.success(t(i18n)`Approval policy created`);
-    },
-
-    onError: async (error) => {
-      toast.error(t(i18n)`Error creating approval policy`);
-    },
-  });
-};
-
-export const useUpdateApprovalPolicy = () => {
-  const { i18n } = useLingui();
-  const { monite } = useMoniteContext();
-  const { invalidate } = useApprovalPoliciesListCache();
-
-  return useMutation<
-    ApprovalPolicyResource,
-    ApiError,
-    { approvalPolicyId: string; body: ApprovalPolicyUpdate }
-  >({
-    mutationFn: ({ approvalPolicyId, body }) =>
-      monite.api.approvalPolicies.update(approvalPolicyId, body),
-
-    onSuccess: () => {
-      invalidate();
-      toast.success(t(i18n)`Approval policy updated`);
-    },
-
-    onError: async (error) => {
-      toast.error(t(i18n)`Error updating approval policy`);
-    },
-  });
+    {
+      enabled: !!approvalPolicyId,
+    }
+  );
 };

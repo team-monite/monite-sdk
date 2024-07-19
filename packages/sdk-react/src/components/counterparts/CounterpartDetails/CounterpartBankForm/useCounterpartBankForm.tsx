@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartBankById,
@@ -9,15 +10,12 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import {
-  CreateCounterpartBankAccount,
-  UpdateCounterpartBankAccount,
-} from '@monite/sdk-api';
 
 import {
   CounterpartBankFields,
   prepareCounterpartBank,
-  prepareCounterpartBankSubmit,
+  prepareCreateCounterpartBankAccount,
+  prepareUpdateCounterpartBankAccount,
 } from './mapper';
 import { getValidationSchema } from './validation';
 
@@ -35,7 +33,7 @@ export function useCounterpartBankForm({
   onCreate,
   onUpdate,
 }: CounterpartBankFormProps) {
-  const formRef = useRef<HTMLFormElement>(null);
+  const formId = `Monite-CounterpartBankForm-${useId()}`;
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -44,8 +42,8 @@ export function useCounterpartBankForm({
     bankId
   );
 
-  const createBankMutation = useCreateCounterpartBank(counterpartId);
-  const updateBankMutation = useUpdateCounterpartBank(counterpartId);
+  const createBankMutation = useCreateCounterpartBank();
+  const updateBankMutation = useUpdateCounterpartBank();
 
   const { i18n } = useLingui();
   const methods = useForm<CounterpartBankFields>({
@@ -58,51 +56,49 @@ export function useCounterpartBankForm({
     if (bank) resetForm(prepareCounterpartBank(bank));
   }, [methods.reset, bank, i18n]);
 
-  const submitForm = useCallback(() => {
-    formRef.current?.dispatchEvent(
-      new Event('submit', {
-        bubbles: true,
-      })
-    );
-  }, [formRef]);
-
-  const createBank = useCallback(
-    (req: CreateCounterpartBankAccount) => {
-      return createBankMutation.mutate(req, {
-        onSuccess: ({ id }) => {
-          onCreate && onCreate(id);
-        },
-      });
-    },
-    [createBankMutation, onCreate]
-  );
-
-  const updateBank = useCallback(
-    (payload: UpdateCounterpartBankAccount) => {
-      if (!bank) return;
-
-      return updateBankMutation.mutate(
-        {
-          bankId: bank.id,
-          payload,
-        },
-        {
-          onSuccess: () => {
-            onUpdate && onUpdate(bank.id);
-          },
-        }
-      );
-    },
-    [updateBankMutation, bank, onUpdate]
-  );
-
   const saveBank = useCallback(
     (values: CounterpartBankFields) => {
-      const bankValues = prepareCounterpartBankSubmit(values);
-
-      return !!bank ? updateBank(bankValues) : createBank(bankValues);
+      if (bank) {
+        const mutateUpdateBank = updateBankMutation.mutate;
+        mutateUpdateBank(
+          {
+            path: {
+              counterpart_id: counterpartId,
+              bank_account_id: bank.id,
+            },
+            body: prepareUpdateCounterpartBankAccount(values),
+          },
+          {
+            onSuccess: (bank) => {
+              onUpdate?.(bank.id);
+            },
+          }
+        );
+      } else {
+        const mutateCreateBank = createBankMutation.mutate;
+        mutateCreateBank(
+          {
+            path: {
+              counterpart_id: counterpartId,
+            },
+            body: prepareCreateCounterpartBankAccount(values),
+          },
+          {
+            onSuccess: (bank) => {
+              onCreate?.(bank.id);
+            },
+          }
+        );
+      }
     },
-    [bank, updateBank, createBank]
+    [
+      bank,
+      updateBankMutation.mutate,
+      counterpartId,
+      onUpdate,
+      createBankMutation.mutate,
+      onCreate,
+    ]
   );
 
   return {
@@ -110,8 +106,7 @@ export function useCounterpartBankForm({
     saveBank,
     counterpart,
     bank,
-    formRef,
-    submitForm,
+    formId,
     isLoading:
       createBankMutation.isPending ||
       updateBankMutation.isPending ||

@@ -1,5 +1,4 @@
-import { SortOrderEnum } from '@/utils/types';
-import { PayableCursorFields, PayableStateEnum } from '@monite/sdk-api';
+import { components } from '@/api';
 
 import {
   FILTER_TYPE_CREATED_AT,
@@ -9,15 +8,20 @@ import {
 } from './consts';
 
 export type Sort = {
-  sort: PayableCursorFields;
-  order: SortOrderEnum;
+  sort: components['schemas']['PayableCursorFields'];
+  order: 'asc' | 'desc';
 };
 
 export type FilterTypes = {
   [FILTER_TYPE_SEARCH]?: string | null;
-  [FILTER_TYPE_STATUS]?: PayableStateEnum | null;
+  [FILTER_TYPE_STATUS]?: components['schemas']['PayableStateEnum'] | null;
   [FILTER_TYPE_DUE_DATE]?: Date | null;
   [FILTER_TYPE_CREATED_AT]?: Date | null;
 };
 
-export type FilterValue = PayableStateEnum | 'all' | Date | string | null;
+export type FilterValue =
+  | components['schemas']['PayableStateEnum']
+  | 'all'
+  | Date
+  | string
+  | null;

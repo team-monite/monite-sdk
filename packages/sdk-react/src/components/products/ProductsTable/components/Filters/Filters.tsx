@@ -1,11 +1,10 @@
 import React from 'react';
 
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMeasureUnits } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
@@ -24,8 +23,9 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
-    useMeasureUnits();
+    api.measureUnits.getMeasureUnits.useQuery({});
 
   return (
     <Grid container spacing={2}>
@@ -53,12 +53,12 @@ export const Filters = ({ onChangeFilter }: Props) => {
               { label: t(i18n)`All`, value: 'all' },
               {
                 label: t(i18n)`Products`,
-                value: ProductServiceTypeEnum.PRODUCT,
+                value: 'product',
                 icons: <PersonIcon color="primary" fontSize="small" />,
               },
               {
                 label: t(i18n)`Services`,
-                value: ProductServiceTypeEnum.SERVICE,
+                value: 'service',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
             ].map(({ label, value, icons }) => (

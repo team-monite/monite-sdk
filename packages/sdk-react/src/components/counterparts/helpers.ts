@@ -1,24 +1,43 @@
-import {
-  CounterpartIndividualRootResponse,
-  CounterpartOrganizationRootResponse,
-  CounterpartResponse,
-  CounterpartType,
-} from '@monite/sdk-api';
+import { components } from '@/api';
+import { CounterpartResponse } from '@/core/queries';
 
-export function isIndividualCounterpart(
+export const isIndividualCounterpart = (
   counterpart: CounterpartResponse
-): counterpart is CounterpartIndividualRootResponse {
-  return counterpart.type === CounterpartType.INDIVIDUAL;
-}
+): counterpart is components['schemas']['CounterpartIndividualRootResponse'] =>
+  counterpart.type === 'individual';
 
-export function isOrganizationCounterpart(
+export const isOrganizationCounterpart = (
   counterpart: CounterpartResponse
-): counterpart is CounterpartOrganizationRootResponse {
-  return counterpart.type === CounterpartType.ORGANIZATION;
-}
+): counterpart is components['schemas']['CounterpartOrganizationRootResponse'] =>
+  counterpart.type === 'organization';
 
-export function getIndividualName(firstName: string, lastName: string): string {
-  return `${firstName} ${lastName}`;
+export function getIndividualName(name: {
+  first_name: string | undefined;
+  last_name: string | undefined;
+}): string;
+export function getIndividualName(
+  firstName: string | undefined,
+  lastName: string | undefined
+): string;
+export function getIndividualName(
+  firstName:
+    | string
+    | undefined
+    | {
+        first_name: string | undefined;
+        last_name: string | undefined;
+      },
+  lastName?: string
+): string {
+  const { first_name, last_name } =
+    firstName && typeof firstName === 'object'
+      ? firstName
+      : {
+          first_name: firstName,
+          last_name: lastName,
+        };
+
+  return `${first_name?.trim() ?? ''} ${last_name?.trim() ?? ''}`.trim();
 }
 
 export function getCounterpartName(counterpart?: CounterpartResponse): string {
@@ -29,7 +48,7 @@ export function getCounterpartName(counterpart?: CounterpartResponse): string {
   if (isIndividualCounterpart(counterpart)) {
     const {
       individual: { first_name, last_name },
-    } = counterpart as CounterpartIndividualRootResponse;
+    } = counterpart;
 
     return getIndividualName(first_name, last_name);
   }
@@ -37,7 +56,7 @@ export function getCounterpartName(counterpart?: CounterpartResponse): string {
   if (isOrganizationCounterpart(counterpart)) {
     const {
       organization: { legal_name },
-    } = counterpart as CounterpartOrganizationRootResponse;
+    } = counterpart;
 
     return legal_name;
   }

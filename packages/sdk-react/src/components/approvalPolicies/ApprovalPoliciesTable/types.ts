@@ -1,7 +1,6 @@
-import { SortOrderEnum } from '@/utils/types';
-import { ApprovalPolicyCursorFields } from '@monite/sdk-api';
+import { components } from '@/api';
 
 export type Sort = {
-  sort: ApprovalPolicyCursorFields;
-  order: SortOrderEnum;
+  sort: components['schemas']['ApprovalPolicyCursorFields'];
+  order: 'asc' | 'desc';
 };

@@ -1,15 +1,14 @@
-import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { RHFRadioGroup } from '@/components/RHF/RHFRadioGroup';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMeasureUnits } from '@/core/queries';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import {
   FormControl,
   FormHelperText,
@@ -47,7 +46,9 @@ interface ProductFormProps {
 export const ProductForm = (props: ProductFormProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  const { data: measureUnits, isLoading } = useMeasureUnits();
+  const { api } = useMoniteContext();
+  const { data: measureUnits, isLoading } =
+    api.measureUnits.getMeasureUnits.useQuery({});
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),
@@ -84,11 +85,11 @@ export const ProductForm = (props: ProductFormProps) => {
               control={control}
               options={[
                 {
-                  value: ProductServiceTypeEnum.PRODUCT,
+                  value: 'product',
                   label: t(i18n)`Product`,
                 },
                 {
-                  value: ProductServiceTypeEnum.SERVICE,
+                  value: 'service',
                   label: t(i18n)`Service`,
                 },
               ]}

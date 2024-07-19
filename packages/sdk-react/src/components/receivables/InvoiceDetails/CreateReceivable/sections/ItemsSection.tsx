@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { Dialog } from '@/components';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
@@ -9,17 +10,12 @@ import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
-import { useVatRates } from '@/core/queries';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CurrencyEnum,
-  ProductServiceResponse,
-  VatRateListResponse,
-} from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
@@ -47,7 +43,7 @@ import {
 } from '@mui/material';
 
 interface CardTableItemProps {
-  label: string | React.ReactNode;
+  label: string | ReactNode;
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
@@ -61,7 +57,7 @@ interface CardTableItemProps {
  */
 function prepareLineItem(
   product: ProductServiceResponse,
-  vatRates?: VatRateListResponse
+  vatRates: VatRateListResponse | undefined
 ): CreateReceivablesFormBeforeValidationLineItemProps {
   return {
     product_id: product.id,
@@ -150,7 +146,8 @@ export const ItemsSection = ({
     name: 'line_items',
   });
   const watchedLineItems = watch('line_items');
-  const { data: vatRates } = useVatRates();
+  const { api } = useMoniteContext();
+  const { data: vatRates } = api.vatRates.getVatRates.useQuery({});
   const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(
@@ -247,7 +244,11 @@ export const ItemsSection = ({
                     />
                   </TableCell>
                   <TableCell>
-                    <MeasureUnit unitId={field.measure_unit_id} />
+                    {field.measure_unit_id ? (
+                      <MeasureUnit unitId={field.measure_unit_id} />
+                    ) : (
+                      '—'
+                    )}
                   </TableCell>
                   <TableCell align="right">
                     {field.price &&
@@ -379,19 +380,23 @@ export const ItemsSection = ({
           actualCurrency={actualCurrency}
           hasProducts={fields.length > 0}
           onAdd={({ items, currency }) => {
+            if (!vatRates) throw new Error('Vat rates not loaded');
+
             handleCloseProductsTable();
             if (actualCurrency !== currency) {
               replace(
-                items.map((product) => prepareLineItem(product, vatRates))
+                items.map((product) => {
+                  return prepareLineItem(product, vatRates);
+                })
               );
               handleSetActualCurrency(currency);
 
               return;
             }
 
-            const productItemsMapped = items.map((product) =>
-              prepareLineItem(product, vatRates)
-            );
+            const productItemsMapped = items.map((product) => {
+              return prepareLineItem(product, vatRates);
+            });
             append(productItemsMapped);
             handleSetActualCurrency(currency);
           }}
@@ -400,3 +405,7 @@ export const ItemsSection = ({
     </Stack>
   );
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type VatRateListResponse = components['schemas']['VatRateListResponse'];

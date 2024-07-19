@@ -1,21 +1,17 @@
 import React, { useId, useMemo, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses, useCreateReceivable } from '@/core/queries';
-import { useEntitySettings } from '@/core/queries/useEntities';
+import { useCounterpartAddresses } from '@/core/queries';
+import { useCreateReceivable } from '@/core/queries/useReceivables';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CurrencyEnum,
-  InvoiceResponsePayload,
-  ReceivableFacadeCreateInvoicePayload,
-  ReceivableResponse,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
@@ -39,20 +35,6 @@ import {
   getCreateInvoiceValidationSchema,
   CreateReceivablesFormProps,
 } from './validation';
-
-enum ReceivableViewEnum {
-  CreateInvoice = 'create-invoice',
-  PreviewInvoice = 'preview-invoice',
-}
-
-type ReceivableViewState =
-  | {
-      state: ReceivableViewEnum.CreateInvoice;
-    }
-  | {
-      state: ReceivableViewEnum.PreviewInvoice;
-      invoice: ReceivableResponse;
-    };
 
 /**
  * A component for creating new Receivable
@@ -88,9 +70,6 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     ),
   });
 
-  const [view, setView] = useState<ReceivableViewState>({
-    state: ReceivableViewEnum.CreateInvoice,
-  });
   const { handleSubmit, watch } = methods;
 
   const counterpartId = watch('counterpart_id');
@@ -98,13 +77,16 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { data: settings, isLoading: isSettingsLoading } = useEntitySettings();
+  const { api, monite } = useMoniteContext();
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: monite.entityId },
+    });
 
   const [actualCurrency, setActualCurrency] = useState<
-    CurrencyEnum | undefined
+    components['schemas']['CurrencyEnum'] | undefined
   >(settings?.currency?.default);
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
   if (isSettingsLoading) {
@@ -144,7 +126,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
             id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
-              if (values.type !== InvoiceResponsePayload.type.INVOICE) {
+              if (values.type !== 'invoice') {
                 throw new Error('`type` except `invoice` is not supported yet');
               }
 
@@ -153,72 +135,57 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
               }
 
               const billingAddressId = values.default_billing_address_id;
-              const counterpartBillingAddress = counterpartAddresses?.find(
-                (address) => address.id === billingAddressId
-              );
+              const counterpartBillingAddress =
+                counterpartAddresses?.data?.find(
+                  (address) => address.id === billingAddressId
+                );
 
               if (!counterpartBillingAddress) {
                 throw new Error('`Billing address` is not provided');
               }
 
               const shippingAddressId = values.default_shipping_address_id;
-              const counterpartShippingAddress = counterpartAddresses?.find(
-                (address) => address.id === shippingAddressId
-              );
 
-              const invoicePayload: ReceivableFacadeCreateInvoicePayload = {
-                type: values.type,
-                counterpart_id: values.counterpart_id,
-                counterpart_vat_id_id:
-                  values.counterpart_vat_id_id || undefined,
-                counterpart_billing_address: {
-                  country: counterpartBillingAddress.country,
-                  city: counterpartBillingAddress.city,
-                  postal_code: counterpartBillingAddress.postal_code,
-                  state: counterpartBillingAddress.state,
-                  line1: counterpartBillingAddress.line1,
-                  line2: counterpartBillingAddress.line2,
-                },
-                counterpart_shipping_address: counterpartShippingAddress
-                  ? {
-                      country: counterpartShippingAddress.country,
-                      city: counterpartShippingAddress.city,
-                      postal_code: counterpartShippingAddress.postal_code,
-                      state: counterpartShippingAddress.state,
-                      line1: counterpartShippingAddress.line1,
-                      line2: counterpartShippingAddress.line2,
-                    }
-                  : undefined,
+              const counterpartShippingAddress =
+                counterpartAddresses?.data?.find(
+                  (address) => address.id === shippingAddressId
+                );
 
-                /** We shouldn't send an empty string to the server if the value is not set */
-                entity_bank_account_id:
-                  values.entity_bank_account_id || undefined,
-                payment_terms_id: values.payment_terms_id,
-                line_items: values.line_items.map((item) => ({
-                  quantity: item.quantity,
-                  product_id: item.product_id,
-                  vat_rate_id: item.vat_rate_id,
-                })),
-                vat_exemption_rationale: values.vat_exemption_rationale,
-                entity_vat_id_id: values.entity_vat_id_id || undefined,
-                fulfillment_date: values.fulfillment_date
-                  ? /**
-                     * We have to change the date as Backend accepts it.
-                     * There is no `time` in request, only year, month and date
-                     */
-                    format(values.fulfillment_date, 'yyyy-MM-dd')
-                  : undefined,
-                purchase_order: values.purchase_order || undefined,
-                currency: actualCurrency,
-              };
+              const invoicePayload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
+                {
+                  type: values.type,
+                  counterpart_id: values.counterpart_id,
+                  counterpart_vat_id_id:
+                    values.counterpart_vat_id_id || undefined,
+                  counterpart_billing_address_id: counterpartBillingAddress.id,
+                  counterpart_shipping_address_id:
+                    counterpartShippingAddress?.id,
+
+                  /** We shouldn't send an empty string to the server if the value is not set */
+                  entity_bank_account_id:
+                    values.entity_bank_account_id || undefined,
+                  payment_terms_id: values.payment_terms_id,
+                  line_items: values.line_items.map((item) => ({
+                    quantity: item.quantity,
+                    product_id: item.product_id,
+                    vat_rate_id: item.vat_rate_id,
+                  })),
+                  vat_exemption_rationale: values.vat_exemption_rationale,
+                  entity_vat_id_id: values.entity_vat_id_id || undefined,
+                  fulfillment_date: values.fulfillment_date
+                    ? /**
+                       * We have to change the date as Backend accepts it.
+                       * There is no `time` in request, only year, month and date
+                       */
+                      format(values.fulfillment_date, 'yyyy-MM-dd')
+                    : undefined,
+                  purchase_order: values.purchase_order || undefined,
+                  currency: actualCurrency,
+                };
 
               createReceivable.mutate(invoicePayload, {
                 onSuccess: (createdReceivable) => {
                   props.onCreate?.(createdReceivable.id);
-                  setView({
-                    state: ReceivableViewEnum.PreviewInvoice,
-                    invoice: createdReceivable,
-                  });
                 },
               });
             })}

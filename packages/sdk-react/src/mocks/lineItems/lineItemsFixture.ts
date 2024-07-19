@@ -1,6 +1,6 @@
+import { components } from '@/api';
 import { entityUserByIdFixture } from '@/mocks/entityUsers/entityUserByIdFixture';
 import { faker } from '@faker-js/faker';
-import { LineItemResponse } from '@monite/sdk-api';
 
 export const generateLineItem = (
   payableId?: string,
@@ -30,3 +30,5 @@ export const generateLineItem = (
 };
 
 export const lineItemFixture = generateLineItem();
+
+type LineItemResponse = components['schemas']['LineItemResponse'];

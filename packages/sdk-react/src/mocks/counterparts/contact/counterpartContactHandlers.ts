@@ -1,16 +1,6 @@
+import { components } from '@/api';
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
 import { counterpartListFixture } from '@/mocks';
-import {
-  CounterpartContactsResourceList,
-  COUNTERPARTS_CONTACT_ENDPOINT,
-  COUNTERPARTS_ENDPOINT,
-  ErrorSchemaResponse,
-} from '@monite/sdk-api';
-import type {
-  CounterpartContactResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -21,7 +11,7 @@ type UpdateCounterpartContactParams = CreateCounterpartContactParams & {
   contactAccountId: string;
 };
 
-const contactAccountPath = `*/${COUNTERPARTS_ENDPOINT}/:counterpartId/${COUNTERPARTS_CONTACT_ENDPOINT}`;
+const contactAccountPath = `*/counterparts/:counterpartId/contacts`;
 const contactAccountIdPath = `${contactAccountPath}/:contactAccountId`;
 
 export const counterpartContactHandlers = [
@@ -29,7 +19,8 @@ export const counterpartContactHandlers = [
   http.get<
     CreateCounterpartContactParams,
     undefined,
-    CounterpartContactsResourceList | ErrorSchemaResponse
+    | components['schemas']['CounterpartContactsResourceList']
+    | components['schemas']['ErrorSchemaResponse']
   >(contactAccountPath, async ({ params }) => {
     const { counterpartId } = params;
 
@@ -77,13 +68,13 @@ export const counterpartContactHandlers = [
   // create
   http.post<
     CreateCounterpartContactParams,
-    CreateCounterpartContactPayload,
-    CounterpartContactResponse
+    components['schemas']['CreateCounterpartContactPayload'],
+    components['schemas']['CounterpartContactResponse']
   >(contactAccountPath, async ({ request, params }) => {
     const json = await request.json();
     const { counterpartId } = params;
 
-    const response: CounterpartContactResponse = {
+    const response: components['schemas']['CounterpartContactResponse'] = {
       id: (Math.random() + 1).toString(36).substring(7),
       counterpart_id: counterpartId,
       is_default: false,
@@ -99,7 +90,8 @@ export const counterpartContactHandlers = [
   http.get<
     UpdateCounterpartContactParams,
     undefined,
-    CounterpartContactResponse | ErrorSchemaResponse
+    | components['schemas']['CounterpartContactResponse']
+    | components['schemas']['ErrorSchemaResponse']
   >(contactAccountIdPath, async ({ params }) => {
     const { contactAccountId, counterpartId } = params;
 
@@ -127,8 +119,8 @@ export const counterpartContactHandlers = [
   // update
   http.patch<
     UpdateCounterpartContactParams,
-    UpdateCounterpartContactPayload,
-    CounterpartContactResponse
+    components['schemas']['UpdateCounterpartContactPayload'],
+    components['schemas']['CounterpartContactResponse']
   >(contactAccountIdPath, async ({ params }) => {
     const { counterpartId } = params;
 

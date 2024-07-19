@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
+import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useApprovalPoliciesList } from '@/core/queries';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { SortOrderEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ApprovalPolicyCursorFields,
-  ApprovalPolicyResource,
-} from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -40,7 +36,7 @@ interface onChangeSortParams {
    * The value to order by. Defaults to SortOrderEnum.DESC.
    * null means no sorting.
    */
-  order: SortOrderEnum | null;
+  order: 'asc' | 'desc' | null;
 }
 
 interface onFilterChangeParams {
@@ -100,19 +96,25 @@ const ApprovalPoliciesTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
+  const { api } = useMoniteContext();
 
-  const { data: approvalPolicies, isLoading } = useApprovalPoliciesList({
-    limit: pageSize,
-    name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
-    created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
-    paginationToken: currentPaginationToken ?? undefined,
-    created_at__gte: currentFilters[FILTER_TYPE_CREATED_AT]
-      ? formatISO(currentFilters[FILTER_TYPE_CREATED_AT] as Date)
-      : undefined,
-    created_at__lte: currentFilters[FILTER_TYPE_CREATED_AT]
-      ? formatISO(addDays(currentFilters[FILTER_TYPE_CREATED_AT] as Date, 1))
-      : undefined,
-  });
+  const { data: approvalPolicies, isLoading } =
+    api.approvalPolicies.getApprovalPolicies.useQuery({
+      query: {
+        limit: pageSize,
+        name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
+        created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
+        pagination_token: currentPaginationToken ?? undefined,
+        created_at__gte: currentFilters[FILTER_TYPE_CREATED_AT]
+          ? formatISO(currentFilters[FILTER_TYPE_CREATED_AT] as Date)
+          : undefined,
+        created_at__lte: currentFilters[FILTER_TYPE_CREATED_AT]
+          ? formatISO(
+              addDays(currentFilters[FILTER_TYPE_CREATED_AT] as Date, 1)
+            )
+          : undefined,
+      },
+    });
 
   useEffect(() => {
     if (currentPaginationToken && approvalPolicies?.data.length === 0) {
@@ -227,3 +229,7 @@ const ApprovalPoliciesTableBase = ({
     </>
   );
 };
+
+type ApprovalPolicyResource = components['schemas']['ApprovalPolicyResource'];
+type ApprovalPolicyCursorFields =
+  components['schemas']['ApprovalPolicyCursorFields'];

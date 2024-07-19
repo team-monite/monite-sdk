@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 
-import { OnboardingPerson } from '@monite/sdk-api';
+import { components } from '@/api';
 import { Box, Typography, styled } from '@mui/material';
 
 export const OnboardingPersonListItem = ({
   person: { first_name, last_name, email },
   deleteButton,
 }: {
-  person: OnboardingPerson;
+  person: components['schemas']['OnboardingPerson'];
   deleteButton: ReactNode;
 }) => (
   <StyledPerson>

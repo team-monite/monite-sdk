@@ -1,9 +1,9 @@
 import { FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OnboardingRequirement } from '@monite/sdk-api';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
@@ -186,3 +186,5 @@ export function getFillListTitle(
   if (isOwners(requirement)) return t(i18n)`Add another owner`;
   return t(i18n)`Add another executive`;
 }
+
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

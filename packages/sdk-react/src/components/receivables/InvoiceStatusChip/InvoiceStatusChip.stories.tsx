@@ -1,5 +1,4 @@
 import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
-import { ReceivablesStatusEnum } from '@monite/sdk-api';
 import { Alert } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof InvoiceStatusChipComponent>;
 
 export const InvoiceStatusChip: Story = {
   args: {
-    status: ReceivablesStatusEnum.PAID,
+    status: 'paid',
   },
   render: (args) => (
     <div style={{ height: 500, padding: 20 }}>
@@ -27,13 +26,13 @@ export const InvoiceStatusChip: Story = {
               },
               variants: [
                 {
-                  props: { status: ReceivablesStatusEnum.PAID },
+                  props: { status: 'paid' },
                   style: {
                     border: '2px dashed lightgreen',
                   },
                 },
                 {
-                  props: { status: ReceivablesStatusEnum.OVERDUE },
+                  props: { status: 'overdue' },
                   style: {
                     border: '2px dashed red',
                   },

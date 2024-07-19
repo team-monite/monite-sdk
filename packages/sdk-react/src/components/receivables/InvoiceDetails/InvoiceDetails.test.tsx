@@ -1,15 +1,10 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { Dialog } from '@/components';
-import { InvoiceDetailsPermissions } from '@/core/queries';
+import { InvoiceDetailsPermissions } from '@/core/queries/useReceivables';
 import { receivableListFixture } from '@/mocks';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
-import {
-  CreditNoteResponsePayload,
-  InvoiceResponsePayload,
-  QuoteResponsePayload,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
 import { InvoiceDetails } from './InvoiceDetails';
@@ -22,7 +17,7 @@ interface TestConcurrentActionParams {
   callback: string;
   successAssertion: string;
   status: InvoiceDetailsPermissions;
-  invoiceStatus: ReceivablesStatusEnum;
+  invoiceStatus: components['schemas']['ReceivablesStatusEnum'];
 }
 
 function getActionButton(
@@ -31,25 +26,25 @@ function getActionButton(
   const actionsSection = screen.getByTestId('InvoiceDetailsFooter');
 
   switch (action) {
-    case InvoiceDetailsPermissions.Delete: {
+    case 'delete': {
       return within(actionsSection).findByRole('button', {
         name: /Delete/i,
       });
     }
 
-    case InvoiceDetailsPermissions.Cancel: {
+    case 'cancel': {
       return within(actionsSection).findByRole('button', {
         name: 'Cancel',
       });
     }
 
-    case InvoiceDetailsPermissions.Issue: {
+    case 'issue': {
       return within(actionsSection).findByRole('button', {
         name: /Issue/i,
       });
     }
 
-    case InvoiceDetailsPermissions.MarkAsUncollectible: {
+    case 'mark_as_uncollectible': {
       return within(actionsSection).findByRole('button', {
         name: 'Mark as uncollectible invoice',
       });
@@ -85,9 +80,7 @@ describe('InvoiceDetails', () => {
   describe('# UI', () => {
     describe('# Create invoice', () => {
       test('should render Create Invoice form when we provide `type` but not `id`', async () => {
-        renderWithClient(
-          <InvoiceDetails type={InvoiceResponsePayload.type.INVOICE} />
-        );
+        renderWithClient(<InvoiceDetails type="invoice" />);
 
         await waitUntilTableIsLoaded();
 
@@ -97,19 +90,17 @@ describe('InvoiceDetails', () => {
 
     describe('# Quote details', () => {
       test.skip('should show "Cancel" button for invoice in "ISSUED" status', async () => {
-        fixture.status = ReceivablesStatusEnum.ISSUED;
+        fixture.status = 'issued';
 
         renderWithClient(<InvoiceDetails id={quoteId} />);
 
         await waitUntilTableIsLoaded();
 
-        expect(
-          await getActionButton(InvoiceDetailsPermissions.Cancel)
-        ).toBeInTheDocument();
+        expect(await getActionButton('cancel')).toBeInTheDocument();
       });
 
       test.skip('should show "Cancel" and "MarkAsUncollectible" buttons for invoice in "OVERDUE" status', async () => {
-        fixture.status = ReceivablesStatusEnum.OVERDUE;
+        fixture.status = 'overdue';
 
         renderWithClient(
           <InvoiceDetails id="1b2fe86b-f02a-4f3f-a258-a19e53bd06ec" />
@@ -117,25 +108,23 @@ describe('InvoiceDetails', () => {
 
         await waitUntilTableIsLoaded();
 
+        expect(await getActionButton('cancel')).toBeInTheDocument();
         expect(
-          await getActionButton(InvoiceDetailsPermissions.Cancel)
-        ).toBeInTheDocument();
-        expect(
-          await getActionButton(InvoiceDetailsPermissions.MarkAsUncollectible)
+          await getActionButton('mark_as_uncollectible')
         ).toBeInTheDocument();
       });
 
       /** We should show **none** buttons for all these statuses */
       test.each([
-        ReceivablesStatusEnum.ACCEPTED,
-        ReceivablesStatusEnum.EXPIRED,
-        ReceivablesStatusEnum.DECLINED,
-        ReceivablesStatusEnum.RECURRING,
-        ReceivablesStatusEnum.PARTIALLY_PAID,
-        ReceivablesStatusEnum.PAID,
-        ReceivablesStatusEnum.UNCOLLECTIBLE,
-        ReceivablesStatusEnum.CANCELED,
-        ReceivablesStatusEnum.DELETED,
+        'accepted',
+        'expired',
+        'declined',
+        'recurring',
+        'partially_paid',
+        'paid',
+        'uncollectible',
+        'canceled',
+        'deleted',
       ] as const)(
         'should show none buttons for invoice in "%s" status',
         async (status) => {
@@ -178,32 +167,32 @@ describe('InvoiceDetails', () => {
       {
         callback: 'onIssue',
         successAssertion: 'issued',
-        status: InvoiceDetailsPermissions.Issue,
-        invoiceStatus: ReceivablesStatusEnum.DRAFT,
+        status: 'issue',
+        invoiceStatus: 'draft',
       },
       {
         callback: 'onDelete',
-        status: InvoiceDetailsPermissions.Delete,
+        status: 'delete',
         successAssertion: 'deleted',
-        invoiceStatus: ReceivablesStatusEnum.DRAFT,
+        invoiceStatus: 'draft',
       },
       {
         callback: 'onCancel',
-        status: InvoiceDetailsPermissions.Cancel,
+        status: 'cancel',
         successAssertion: 'cancelled',
-        invoiceStatus: ReceivablesStatusEnum.ISSUED,
+        invoiceStatus: 'issued',
       },
       {
         callback: 'onCancel',
-        status: InvoiceDetailsPermissions.Cancel,
+        status: 'cancel',
         successAssertion: 'cancelled',
-        invoiceStatus: ReceivablesStatusEnum.OVERDUE,
+        invoiceStatus: 'overdue',
       },
       {
         callback: 'onMarkAsUncollectible',
-        status: InvoiceDetailsPermissions.MarkAsUncollectible,
+        status: 'mark_as_uncollectible',
         successAssertion: 'marked as uncollectible',
-        invoiceStatus: ReceivablesStatusEnum.OVERDUE,
+        invoiceStatus: 'overdue',
       },
     ];
 
@@ -237,7 +226,7 @@ describe('InvoiceDetails', () => {
     );
 
     test('should call "onDelete" callback when the invoice has type "Quote"', async () => {
-      fixture.type = QuoteResponsePayload.type.QUOTE;
+      fixture.type = 'quote';
 
       const onDeleteMock = jest.fn();
 
@@ -245,9 +234,7 @@ describe('InvoiceDetails', () => {
 
       await waitUntilTableIsLoaded();
 
-      const deleteButton = await getActionButton(
-        InvoiceDetailsPermissions.Delete
-      );
+      const deleteButton = await getActionButton('delete');
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
@@ -256,7 +243,7 @@ describe('InvoiceDetails', () => {
     });
 
     test('should call "onDelete" callback when the invoice has type "CreditNote"', async () => {
-      fixture.type = CreditNoteResponsePayload.type.CREDIT_NOTE;
+      fixture.type = 'credit_note';
 
       const onDeleteMock = jest.fn();
 
@@ -264,9 +251,7 @@ describe('InvoiceDetails', () => {
 
       await waitUntilTableIsLoaded();
 
-      const deleteButton = await getActionButton(
-        InvoiceDetailsPermissions.Delete
-      );
+      const deleteButton = await getActionButton('delete');
       fireEvent.click(deleteButton);
 
       await waitFor(() => {
@@ -298,17 +283,19 @@ describe('InvoiceDetails', () => {
     test('should show "EditInvoice" component when we click on "Edit invoice" button', async () => {
       renderWithClient(<InvoiceDetails id={invoice.id} />);
 
-      await waitUntilTableIsLoaded();
-
-      const editButton = screen.getByRole('button', {
+      const editButton = await screen.findByRole('button', {
         name: 'Edit invoice',
       });
 
+      expect(editButton).toBeInTheDocument();
+
       fireEvent.click(editButton);
 
-      expect(
-        await screen.findByText(`Edit invoice ${invoice.id}`)
-      ).toBeInTheDocument();
+      const editInvoiceTitle = await screen.findByRole('heading', {
+        name: /Edit invoice/i,
+      });
+
+      expect(editInvoiceTitle).toBeInTheDocument();
     });
   });
 });

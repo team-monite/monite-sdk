@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Dialog } from '@/components';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -28,11 +29,13 @@ describe('CounterpartIndividualForm', () => {
         const onCancelMock = jest.fn();
 
         renderWithClient(
-          <CounterpartIndividualForm
-            id={individualId}
-            showCategories
-            onCancel={onCancelMock}
-          />
+          <MoniteScopedProviders>
+            <CounterpartIndividualForm
+              id={individualId}
+              showCategories
+              onCancel={onCancelMock}
+            />
+          </MoniteScopedProviders>
         );
 
         await waitUntilTableIsLoaded();

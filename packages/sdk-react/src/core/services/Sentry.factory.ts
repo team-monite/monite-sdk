@@ -1,9 +1,6 @@
-import { packageVersion as sdkReactPackageVersion } from '@/packageVersion';
+import { apiVersion } from '@/api/api-version';
+import { packageVersion } from '@/packageVersion';
 import type { MoniteSDK } from '@monite/sdk-api';
-import {
-  apiVersion as backendVersion,
-  packageVersion as sdkApiVersion,
-} from '@monite/sdk-api';
 import {
   Hub,
   BrowserClient,
@@ -55,7 +52,7 @@ export class SentryFactory implements ISentryService {
     const client = new BrowserClient({
       dsn: 'https://6639ef68c6db10ad889794dbd6822dca@o310686.ingest.sentry.io/4505629057286144',
       environment: sentryEnvironment,
-      release: sdkReactPackageVersion,
+      release: packageVersion,
       transport: makeFetchTransport,
       stackParser: defaultStackParser,
       integrations: [new BrowserProfilingIntegration(), new BrowserTracing()],
@@ -71,8 +68,8 @@ export class SentryFactory implements ISentryService {
     hub.configureScope((scope) => {
       scope.setTags({
         entityId: this.config.entityId,
-        sdkApiVersion,
-        backendVersion,
+        packageVersion,
+        apiVersion,
       });
     });
 

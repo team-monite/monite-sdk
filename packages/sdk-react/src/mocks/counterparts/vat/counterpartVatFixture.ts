@@ -1,10 +1,10 @@
-import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
-import { faker } from '@faker-js/faker';
+import { components } from '@/api';
+import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
 import {
-  AllowedCountries,
-  CounterpartVatIDResponse,
-  TaxIDTypeEnum,
-} from '@monite/sdk-api';
+  getRandomItemFromArray,
+  getRandomNumber,
+} from '@/utils/storybook-utils';
+import { faker } from '@faker-js/faker';
 
 import { organizationId } from '../counterpart.mocks.types';
 import { counterpartListFixture } from '../counterpart/counterpartFixture';
@@ -13,14 +13,9 @@ const genCounterpartVatFixture = (id: number = 0): CounterpartVatIDResponse => {
   return {
     id: `vat-id-${id}`,
     counterpart_id: organizationId,
-    type: getRandomProperty(TaxIDTypeEnum),
+    type: getRandomItemFromArray(VatIDTypeEnum),
     value: faker.string.numeric(10),
-    country: getRandomProperty({
-      DE: AllowedCountries.DE,
-      US: AllowedCountries.US,
-      KZ: AllowedCountries.KZ,
-      GE: AllowedCountries.GE,
-    }),
+    country: getRandomItemFromArray(['DE', 'US', 'KZ', 'GE']),
   };
 };
 
@@ -39,3 +34,6 @@ export const counterpartVatsByCounterpartIdFixture: Record<
 
   return acc;
 }, {});
+
+type CounterpartVatIDResponse =
+  components['schemas']['CounterpartVatIDResponse'];

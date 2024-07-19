@@ -1,4 +1,4 @@
-import { OnboardingPerson } from '@monite/sdk-api';
+import { components } from '@/api';
 import { waitFor } from '@testing-library/react';
 
 import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
@@ -49,3 +49,5 @@ describe('Onboarding person', () => {
     await waitFor(() => expect(schema?.isValidSync(values)).toBeFalsy());
   });
 });
+
+type OnboardingPerson = components['schemas']['OnboardingPerson'];

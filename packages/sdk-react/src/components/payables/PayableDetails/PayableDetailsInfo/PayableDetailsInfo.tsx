@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getIndividualName,
@@ -16,7 +17,6 @@ import { CenteredContentBox } from '@/ui/box';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, PayableResponseSchema } from '@monite/sdk-api';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import {
   Box,
@@ -38,7 +38,7 @@ import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 
 export type PayablesDetailsInfoProps = {
-  payable: PayableResponseSchema;
+  payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
 };
 
@@ -87,10 +87,7 @@ const PayableDetailsInfoBase = ({
 
   const lineItems = lineItemsData?.data;
 
-  const { data: contacts } = useCounterpartContactList(
-    payable.counterpart_id,
-    counterpart && isOrganizationCounterpart(counterpart)
-  );
+  const { data: contacts } = useCounterpartContactList(payable.counterpart_id);
   const { data: addedByUser } = useEntityUserById(
     payable.was_created_by_user_id ?? ''
   );
@@ -108,7 +105,7 @@ const PayableDetailsInfoBase = ({
       ? counterpart.organization.legal_name
       : '—');
   const defaultContact = useMemo(
-    () => contacts?.find((contact) => contact.is_default),
+    () => contacts?.data.find((contact) => contact.is_default),
     [contacts]
   );
   const counterpartBankAccount = useMemo(
@@ -302,7 +299,7 @@ const PayableDetailsInfoBase = ({
                         item.quantity &&
                         formatFromMinorUnits(
                           item.subtotal / item.quantity ?? 0,
-                          payable.currency ?? CurrencyEnum.EUR
+                          payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">

@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
+import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
-import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
 import {
   Box,
   Card,
-  CardContent,
   Divider,
   Stack,
   Table,
@@ -19,10 +17,6 @@ import {
   Typography,
 } from '@mui/material';
 import { TypographyTypeMap } from '@mui/material/Typography/Typography';
-
-interface PreviewItemsSectionProps {
-  invoice: InvoiceResponsePayload;
-}
 
 const tableCellStyles = {
   sx: {
@@ -36,12 +30,10 @@ const TotalView = ({
 }: {
   items: Array<{
     title: string;
-    value: string | number | React.ReactNode;
+    value: string | number | ReactNode;
     bold?: boolean;
   }>;
 }) => {
-  const { i18n } = useLingui();
-
   return (
     <>
       {items.map((item, index) => {
@@ -82,7 +74,14 @@ const TotalView = ({
   );
 };
 
-export const PreviewItemsSection = ({ invoice }: PreviewItemsSectionProps) => {
+export const PreviewItemsSection = ({
+  line_items,
+  subtotal,
+  discounted_subtotal,
+  total_vat_amount,
+  total_amount_with_credit_notes,
+  currency,
+}: components['schemas']['InvoiceResponsePayload']) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
 
@@ -105,7 +104,7 @@ export const PreviewItemsSection = ({ invoice }: PreviewItemsSectionProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {invoice.line_items.map((item, index) => {
+              {line_items.map((item, index) => {
                 const price = item.product.price
                   ? formatCurrencyToDisplay(
                       item.product.price.value,
@@ -158,30 +157,23 @@ export const PreviewItemsSection = ({ invoice }: PreviewItemsSectionProps) => {
                 {
                   title: t(i18n)`Subtotal`,
                   value:
-                    invoice.subtotal &&
-                    formatCurrencyToDisplay(invoice.subtotal, invoice.currency),
+                    subtotal && formatCurrencyToDisplay(subtotal, currency),
                 },
                 {
                   title: t(i18n)`Discounted subtotal`,
                   value:
-                    invoice.discounted_subtotal &&
-                    formatCurrencyToDisplay(
-                      invoice.discounted_subtotal,
-                      invoice.currency
-                    ),
+                    discounted_subtotal &&
+                    formatCurrencyToDisplay(discounted_subtotal, currency),
                 },
                 {
                   title: t(i18n)`Total taxes`,
-                  value: formatCurrencyToDisplay(
-                    invoice.total_vat_amount,
-                    invoice.currency
-                  ),
+                  value: formatCurrencyToDisplay(total_vat_amount, currency),
                 },
                 {
                   title: t(i18n)`Total`,
                   value: formatCurrencyToDisplay(
-                    invoice.total_amount_with_credit_notes,
-                    invoice.currency
+                    total_amount_with_credit_notes,
+                    currency
                   ),
                   bold: true,
                 },

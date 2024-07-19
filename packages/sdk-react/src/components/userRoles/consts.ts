@@ -1,6 +1,5 @@
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ActionEnum, PayableActionEnum } from '@monite/sdk-api';
 
 export const FILTER_TYPE_SEARCH = 'search';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
@@ -10,16 +9,16 @@ export const FILTER_TYPE_CREATED_AT = 'created_at';
  * This constant guarantees a consistent order of available actions in the UI.
  */
 export const actionOrder = {
-  [ActionEnum.READ]: 1,
-  [ActionEnum.CREATE]: 2,
-  [ActionEnum.UPDATE]: 3,
-  [ActionEnum.DELETE]: 4,
-  [PayableActionEnum.SUBMIT]: 5,
-  [PayableActionEnum.APPROVE]: 6,
-  [PayableActionEnum.PAY]: 7,
-  [PayableActionEnum.CREATE_FROM_MAIL]: 8,
-  [PayableActionEnum.CANCEL]: 9,
-  [PayableActionEnum.REOPEN]: 10,
+  read: 1,
+  create: 2,
+  update: 3,
+  delete: 4,
+  submit: 5,
+  approve: 6,
+  pay: 7,
+  create_from_mail: 8,
+  cancel: 9,
+  reopen: 10,
 };
 
 export const getPermissionToLabelMap = (i18n: I18n) => ({
@@ -52,27 +51,27 @@ export const getPermissionToLabelMap = (i18n: I18n) => ({
 });
 
 export const ACTION_TO_LATTER_MAP = {
-  [ActionEnum.READ]: 'R',
-  [ActionEnum.CREATE]: 'C',
-  [ActionEnum.UPDATE]: 'U',
-  [ActionEnum.DELETE]: 'D',
-  [PayableActionEnum.SUBMIT]: 'S',
-  [PayableActionEnum.APPROVE]: 'A',
-  [PayableActionEnum.PAY]: 'P',
-  [PayableActionEnum.CREATE_FROM_MAIL]: 'M',
-  [PayableActionEnum.CANCEL]: 'X',
-  [PayableActionEnum.REOPEN]: 'O',
+  read: 'R',
+  create: 'C',
+  update: 'U',
+  delete: 'D',
+  submit: 'S',
+  approve: 'A',
+  pay: 'P',
+  create_from_mail: 'M',
+  cancel: 'X',
+  reopen: 'O',
 };
 
 export const getActionToLabelMap = (i18n: I18n) => ({
-  [ActionEnum.READ]: t(i18n)`Read`,
-  [ActionEnum.CREATE]: t(i18n)`Create`,
-  [ActionEnum.UPDATE]: t(i18n)`Update`,
-  [ActionEnum.DELETE]: t(i18n)`Delete`,
-  [PayableActionEnum.SUBMIT]: t(i18n)`Submit`,
-  [PayableActionEnum.APPROVE]: t(i18n)`Approve`,
-  [PayableActionEnum.PAY]: t(i18n)`Pay`,
-  [PayableActionEnum.CREATE_FROM_MAIL]: t(i18n)`Create from mail`,
-  [PayableActionEnum.CANCEL]: t(i18n)`Cancel`,
-  [PayableActionEnum.REOPEN]: t(i18n)`Reopen`,
+  read: t(i18n)`Read`,
+  create: t(i18n)`Create`,
+  update: t(i18n)`Update`,
+  delete: t(i18n)`Delete`,
+  submit: t(i18n)`Submit`,
+  approve: t(i18n)`Approve`,
+  pay: t(i18n)`Pay`,
+  create_from_mail: t(i18n)`Create from mail`,
+  cancel: t(i18n)`Cancel`,
+  reopen: t(i18n)`Reopen`,
 });

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { components } from '@/api';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { Dialog } from '@/components/Dialog';
@@ -12,7 +13,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, CounterpartType } from '@monite/sdk-api';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
@@ -29,9 +29,9 @@ const CounterpartsBase = () => {
   const { open, menuProps, buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
-  const [counterpartType, setType] = useState<CounterpartType | undefined>(
-    undefined
-  );
+  const [counterpartType, setType] = useState<
+    components['schemas']['CounterpartType'] | undefined
+  >(undefined);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
 
   useEffect(() => {
@@ -60,14 +60,14 @@ const CounterpartsBase = () => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
@@ -135,14 +135,14 @@ const CounterpartsBase = () => {
             >
               <MenuItem
                 onClick={() => {
-                  setType(CounterpartType.ORGANIZATION);
+                  setType('organization');
                 }}
               >
                 {t(i18n)`Organization`}
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setType(CounterpartType.INDIVIDUAL);
+                  setType('individual');
                 }}
               >
                 {t(i18n)`Individual`}

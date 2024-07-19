@@ -17,11 +17,7 @@ export const updateEntity = async ({
     grant_type: 'client_credentials',
   });
 
-  const { PATCH } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { PATCH } = createMoniteClient(token);
 
   const { data, error, response } = await PATCH('/entities/{entity_id}', {
     params: {

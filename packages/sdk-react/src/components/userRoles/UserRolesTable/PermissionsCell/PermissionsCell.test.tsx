@@ -1,10 +1,5 @@
+import { components } from '@/api';
 import { renderWithClient } from '@/utils/test-utils';
-import {
-  ActionEnum,
-  ActionSchema,
-  BizObjectsSchema,
-  PermissionEnum,
-} from '@monite/sdk-api';
 import { screen, act, fireEvent } from '@testing-library/react';
 
 import { PermissionsCell } from './PermissionsCell';
@@ -15,18 +10,18 @@ const NOT_ALLOWED_PERMISSION = '-';
 describe('PermissionsCell', () => {
   test("should render 'R' for allowed read permission and '-' for not allowed create permission", () => {
     const onClickSeeAllMock = jest.fn();
-    const actions: ActionSchema[] = [
+    const actions: components['schemas']['ActionSchema'][] = [
       {
-        action_name: ActionEnum.READ,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'read',
+        permission: 'allowed',
       },
       {
-        action_name: ActionEnum.CREATE,
-        permission: PermissionEnum.NOT_ALLOWED,
+        action_name: 'create',
+        permission: 'not_allowed',
       },
     ];
 
-    const permissions: BizObjectsSchema = {
+    const permissions: components['schemas']['BizObjectsSchema'] = {
       objects: [
         {
           object_type: 'payment_record',
@@ -51,22 +46,18 @@ describe('PermissionsCell', () => {
 
   test('tooltip should contain action names when a permission letter is hovered over', async () => {
     const onClickSeeAllMock = jest.fn();
-    const actions: ActionSchema[] = [
+    const actions: components['schemas']['ActionSchema'][] = [
       {
-        action_name: ActionEnum.READ,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'read',
+        permission: 'allowed',
       },
       {
-        action_name: ActionEnum.CREATE,
-        permission: PermissionEnum.NOT_ALLOWED,
-      },
-      {
-        action_name: ActionEnum.DELETE,
-        permission: undefined,
+        action_name: 'create',
+        permission: 'not_allowed',
       },
     ];
 
-    const permissions: BizObjectsSchema = {
+    const permissions: components['schemas']['BizObjectsSchema'] = {
       objects: [
         {
           object_type: 'payment_record',

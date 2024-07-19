@@ -4,7 +4,7 @@ import {
   ApprovalPolicyPayload,
   createApprovalPolicy,
 } from '@/lib/monite-api/create-approval-policy';
-import { ILogger } from '@/lib/monite-api/demo-data-generator/general.service';
+import { Logger } from '@/lib/monite-api/demo-data-generator/general.service';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
 
 /**
@@ -21,7 +21,7 @@ export const generateApprovalPolicies = async (
     entity_user_id,
     token,
   }: { entity_id: string; entity_user_id: string; token: AccessToken },
-  logger?: ILogger
+  logger?: Logger
 ) => {
   const approvalPolicies: ApprovalPolicyPayload[] = [
     {
@@ -74,10 +74,7 @@ export const generateApprovalPolicies = async (
   for (const policy of approvalPolicies) {
     logger?.({ message: `Creating Approval Policy: ${policy.name}` });
     console.log(chalk.green(`Creating Approval Policy: ${policy.name}`));
-    const { id, name } = await createApprovalPolicy(
-      { entity_id, policy },
-      token
-    );
+    const { id } = await createApprovalPolicy({ entity_id, policy }, token);
     console.log(chalk.gray(`✔︎ Created Approval Policy with ID "${id}"`));
   }
 };

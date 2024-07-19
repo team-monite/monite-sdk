@@ -6,25 +6,21 @@ import {
   FieldNamesMarkedBoolean,
   FormProvider,
 } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { useEntityUserByAuthToken } from '@/core/queries';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  LineItemResponse,
-  PayableResponseSchema,
-  PayableUpdateSchema,
-  PayableUploadWithDataSchema,
-} from '@monite/sdk-api';
 import {
   Autocomplete,
   Box,
@@ -51,7 +47,6 @@ import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
   counterpartsToSelect,
-  counterpartBankAccountsToSelect,
   tagsToSelect,
   prepareDefaultValues,
   prepareSubmit,
@@ -63,19 +58,19 @@ import { usePayableDetailsForm } from './usePayableDetailsForm';
 
 interface PayableDetailsFormProps {
   setEdit?: (isEdit: boolean) => void;
-  payable?: PayableResponseSchema;
+  payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,
-    payable: PayableUpdateSchema,
+    payable: components['schemas']['PayableUpdateSchema'],
     lineItems?: Array<LineItem>,
     dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>
   ) => void;
   createPayable?: (
-    payable: PayableUploadWithDataSchema,
+    payable: components['schemas']['PayableUploadWithDataSchema'],
     createdLineItems?: Array<LineItem>
   ) => void;
   optionalFields?: OptionalFields;
-  lineItems: LineItemResponse[] | undefined;
+  lineItems: components['schemas']['LineItemResponse'][] | undefined;
 }
 
 const getValidationSchema = (i18n: I18n) =>
@@ -169,14 +164,10 @@ const PayableDetailsFormBase = forwardRef<
     reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
   }, [payable, formatFromMinorUnits, reset, lineItems]);
 
-  const {
-    tagQuery,
-    counterpartQuery,
-    counterpartAddressQuery,
-    counterpartBankAccountQuery,
-  } = usePayableDetailsForm({
-    currentCounterpartId: currentCounterpart,
-  });
+  const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
+    usePayableDetailsForm({
+      currentCounterpartId: currentCounterpart,
+    });
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
     {
@@ -184,13 +175,12 @@ const PayableDetailsFormBase = forwardRef<
       showTags: true,
     }
   );
-
-  //TODO: Remove this error handling and replace with proper error handling
-  useEffect(() => {
-    if (tagQuery.isError) {
-      toast.error(getAPIErrorMessage(i18n, tagQuery.error));
-    }
-  }, [tagQuery.isError, tagQuery.error, i18n]);
+  const { data: user } = useEntityUserByAuthToken();
+  const { data: isTagsReadAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: 'read',
+    entityUserId: user?.id,
+  });
 
   const isSubmittedByKeyboardRef = useRef(false);
 
@@ -222,14 +212,11 @@ const PayableDetailsFormBase = forwardRef<
               isSubmittedByKeyboardRef.current = event.key === 'Enter';
             }}
             onSubmit={handleSubmit(async (values) => {
-              const counterpartAddress =
-                counterpartAddressQuery?.data?.data.find(
-                  (address) => address.is_default
-                );
-
               const invoiceData = prepareSubmit({
                 ...values,
-                counterpartAddressId: counterpartAddress?.id,
+                counterpartAddressId: counterpartQuery.data?.data?.find(
+                  ({ id }) => id === values.counterpart
+                )?.default_billing_address_id,
               });
 
               if (payable) {
@@ -333,16 +320,16 @@ const PayableDetailsFormBase = forwardRef<
                                 0
                             }
                           >
-                            {counterpartBankAccountsToSelect(
-                              counterpartBankAccountQuery?.data?.data || []
-                            ).map((bankAccount) => (
-                              <MenuItem
-                                key={bankAccount.value}
-                                value={bankAccount.value}
-                              >
-                                {bankAccount.label}
-                              </MenuItem>
-                            ))}
+                            {counterpartBankAccountQuery?.data?.data.map(
+                              (bankAccount) => (
+                                <MenuItem
+                                  key={bankAccount.id}
+                                  value={bankAccount.id}
+                                >
+                                  {getBankAccountName(i18n, bankAccount)}
+                                </MenuItem>
+                              )
+                            )}
                           </Select>
                           {error && (
                             <FormHelperText>{error.message}</FormHelperText>
@@ -422,6 +409,7 @@ const PayableDetailsFormBase = forwardRef<
                             <Autocomplete
                               {...field}
                               id={field.name}
+                              disabled={!isTagsReadAllowed}
                               multiple
                               filterSelectedOptions
                               getOptionLabel={(option) => option.label}

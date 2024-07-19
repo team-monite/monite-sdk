@@ -1,19 +1,15 @@
-import {
-  AllowedCountries,
-  CurrencyEnum,
-  OnboardingBankAccount,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 export const onboardingBankAccountFixture = (): OnboardingBankAccount => {
   return {
     id: 'test',
     country: {
-      value: AllowedCountries.US,
+      value: 'US',
       required: true,
       error: null,
     },
     currency: {
-      value: CurrencyEnum.USD,
+      value: 'USD',
       required: true,
       error: null,
     },
@@ -38,3 +34,5 @@ export const onboardingBankAccountFixture = (): OnboardingBankAccount => {
     },
   };
 };
+
+type OnboardingBankAccount = components['schemas']['OnboardingBankAccount'];

@@ -1,7 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { getCounterpartName } from '@/components/counterparts/helpers';
+import { components } from '@/api';
+import {
+  getCounterpartName,
+  getIndividualName,
+} from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -12,14 +16,13 @@ import {
   useCounterpartList,
   useCounterpartVatList,
 } from '@/core/queries';
+import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartAddressResponseWithCounterpartID } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
 import {
   Autocomplete,
-  Box,
   Button,
   Card,
   CardContent,
@@ -51,18 +54,12 @@ const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
 const CounterpartAddressView = ({
   address,
 }: {
-  address: CounterpartAddressResponseWithCounterpartID | undefined;
-}) => {
-  if (!address) {
-    return null;
-  }
-
-  return (
-    <>
-      {address.postal_code}, {address.city}, {address.line1}
-    </>
-  );
-};
+  address: components['schemas']['CounterpartAddressResponseWithCounterpartID'];
+}) => (
+  <>
+    {address.postal_code}, {address.city}, {address.line1}
+  </>
+);
 
 const customerGridItemProps = {
   xs: 12,
@@ -81,7 +78,7 @@ function isCreateNewCounterpartOption(
 
 export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch, resetField, setValue } =
+  const { control, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
 
   const { root } = useRootElements();
@@ -90,6 +87,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
+
   const {
     data: counterpartContacts,
     error: contactPersonError,
@@ -123,116 +121,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     [counterparts]
   );
 
-  /**
-   * `defaultContactName` must return an empty string
-   *  if it has no contact, because MUI throws a warning
-   *  if input at the beginning has `undefined` and then
-   *  a string. We have to always set a string to do not
-   *  break MUI lifecycle
-   */
-  const defaultContactName = useMemo(() => {
-    if (counterpartContacts?.length === 0) {
-      return '';
-    }
-
-    const defaultContact = counterpartContacts?.find(
-      (contact) => contact.is_default
-    );
-
-    if (!defaultContact) {
-      return '';
-    }
-
-    return `${defaultContact.first_name} ${defaultContact.last_name}`;
-  }, [counterpartContacts]);
-
-  const counterpartBillingAddress = useMemo(() => {
-    if (!counterpartAddresses) {
-      return undefined;
-    }
-
-    const defaultAddress = counterpartAddresses.find(
-      (address) => address.is_default
-    );
-
-    if (!defaultAddress) {
-      throw new Error('Monite SDK-React: default billing address is not found');
-    }
-
-    return defaultAddress;
-  }, [counterpartAddresses]);
-
-  useEffect(() => {
-    if (counterpartId) {
-      /**
-       * For some reason `methods.resetField` doesn't work here,
-       *  maybe because that `Select` triggers `onChange` event
-       *  before `resetField` is called
-       * But `setValue` as empty string works fine
-       */
-      setValue('default_shipping_address_id', '');
-    }
-  }, [counterpartId, setValue]);
-
-  useEffect(() => {
-    if (counterpartBillingAddress) {
-      /**
-       * We have to set billing address id manually because
-       *  the user never changes this field by themselves.
-       * This field is calculated based on counterpart billing address
-       */
-      setValue('default_billing_address_id', counterpartBillingAddress.id, {
-        shouldValidate: true,
-      });
-    }
-  }, [counterpartBillingAddress, setValue]);
-
-  const counterpartListContent = useMemo(() => {
-    if (!counterparts || counterparts.data.length === 0) {
-      return (
-        <Box
-          sx={{
-            padding: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Typography variant="body1" sx={{ mb: 2, fontWeight: 500 }}>{t(
-            i18n
-          )`No counterparts found.`}</Typography>
-          <Button
-            variant="text"
-            startIcon={<AddIcon />}
-            onClick={handleCreateNewCounterpart}
-          >{t(i18n)`Create New`}</Button>
-        </Box>
-      );
-    }
-
-    return [
-      <Box key="counterpart-create-new">
-        <Button
-          variant="text"
-          startIcon={<AddIcon />}
-          fullWidth
-          sx={{
-            justifyContent: 'flex-start',
-            px: 2,
-          }}
-          onClick={handleCreateNewCounterpart}
-        >
-          {t(i18n)`Create new counterpart`}
-        </Button>
-      </Box>,
-      counterparts?.data.map((counterpart) => (
-        <MenuItem key={counterpart.id} value={counterpart.id}>
-          {getCounterpartName(counterpart)}
-        </MenuItem>
-      )),
-    ];
-  }, [counterparts, handleCreateNewCounterpart, i18n]);
+  const defaultContactName = counterpartContacts?.data.find(
+    (contact) => contact.is_default
+  );
 
   return (
     <Stack spacing={1}>
@@ -340,7 +231,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                             {counterpartOption.label}
                           </Button>
                         ) : (
-                          <li {...props}>{counterpartOption.label}</li>
+                          <li {...props} key={counterpartOption.id}>
+                            {counterpartOption.label}
+                          </li>
                         )
                       }
                     />
@@ -354,7 +247,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 fullWidth
                 variant="outlined"
                 label={t(i18n)`Contact person`}
-                value={defaultContactName}
+                value={
+                  defaultContactName
+                    ? getIndividualName(defaultContactName)
+                    : ''
+                }
                 InputProps={{
                   startAdornment: isContactPersonsLoading ? (
                     <CircularProgress size={20} />
@@ -362,13 +259,15 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 }}
               />
               <Collapse in={Boolean(contactPersonError)}>
-                <FormHelperText>{contactPersonError?.message}</FormHelperText>
+                <FormHelperText>
+                  {getLegacyAPIErrorMessage(contactPersonError)}
+                </FormHelperText>
               </Collapse>
               <Collapse
                 in={
                   !Boolean(contactPersonError) &&
                   !isContactPersonsLoading &&
-                  counterpartContacts?.length === 0
+                  counterpartContacts?.data.length === 0
                 }
               >
                 <FormHelperText>
@@ -386,8 +285,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     fullWidth
                     disabled={
                       isCounterpartVatsLoading ||
-                      !counterpartVats ||
-                      counterpartVats.length === 0 ||
+                      !counterpartVats?.data ||
+                      counterpartVats?.data.length === 0 ||
                       disabled
                     }
                     error={Boolean(error)}
@@ -396,6 +295,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                       i18n
                     )`VAT ID`}</InputLabel>
                     <Select
+                      {...field}
                       labelId={field.name}
                       label={t(i18n)`VAT ID`}
                       MenuProps={{ container: root }}
@@ -404,15 +304,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           <CircularProgress size={20} />
                         ) : null
                       }
-                      {...field}
                     >
-                      {counterpartVats?.map((counterpartVat) => (
-                        <MenuItem
-                          key={counterpartVat.id}
-                          value={counterpartVat.id}
-                        >
-                          <CountryInvoiceOption code={counterpartVat.country} />
-                          {counterpartVat.value}
+                      {counterpartVats?.data?.map(({ id, country, value }) => (
+                        <MenuItem key={id} value={id}>
+                          {country && <CountryInvoiceOption code={country} />}
+                          {value}
                         </MenuItem>
                       ))}
                     </Select>
@@ -462,13 +358,18 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     variant="outlined"
                     fullWidth
                     required
-                    disabled
                     error={Boolean(error)}
+                    disabled={
+                      isCounterpartAddressesLoading ||
+                      !counterpartId ||
+                      disabled
+                    }
                   >
                     <InputLabel id={field.name}>{t(
                       i18n
                     )`Billing address`}</InputLabel>
                     <Select
+                      {...field}
                       labelId={field.name}
                       label={t(i18n)`Billing address`}
                       MenuProps={{ container: root }}
@@ -477,13 +378,12 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                           <CircularProgress size={20} />
                         ) : null
                       }
-                      {...field}
                     >
-                      <MenuItem value={counterpartBillingAddress?.id}>
-                        <CounterpartAddressView
-                          address={counterpartBillingAddress}
-                        />
-                      </MenuItem>
+                      {counterpartAddresses?.data.map((address) => (
+                        <MenuItem key={address.id} value={address.id}>
+                          <CounterpartAddressView address={address} />
+                        </MenuItem>
+                      ))}
                     </Select>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
                   </FormControl>
@@ -526,21 +426,18 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                             mr: 2,
                           }}
                           size="small"
-                          onClick={() => {
-                            /** On click, we want to clear this field state */
-                            resetField(field.name);
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setValue('default_shipping_address_id', '');
                           }}
                         >
                           <ClearIcon fontSize="small" />
                         </IconButton>
                       }
                     >
-                      {counterpartAddresses?.map((shippingAddress) => (
-                        <MenuItem
-                          key={shippingAddress.id}
-                          value={shippingAddress.id}
-                        >
-                          <CounterpartAddressView address={shippingAddress} />
+                      {counterpartAddresses?.data.map((address) => (
+                        <MenuItem key={address.id} value={address.id}>
+                          <CounterpartAddressView address={address} />
                         </MenuItem>
                       ))}
                     </Select>

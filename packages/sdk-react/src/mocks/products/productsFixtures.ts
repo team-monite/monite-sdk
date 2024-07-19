@@ -1,3 +1,5 @@
+import type { components } from '@/api';
+import { ProductServiceTypeEnum } from '@/enums/ProductServiceTypeEnum';
 import { entityIds } from '@/mocks/entities';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
@@ -5,12 +7,6 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  CurrencyEnum,
-  ProductServiceRequest,
-  ProductServiceResponse,
-  ProductServiceTypeEnum,
-} from '@monite/sdk-api';
 
 import { measureUnitsListFixture } from '../measureUnits/measureUnitsFixture';
 
@@ -20,7 +16,7 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
     const product: ProductServiceResponse = {
       id: faker.string.nanoid(),
       name: faker.commerce.productName(),
-      type: getRandomProperty(ProductServiceTypeEnum),
+      type: getRandomItemFromArray(ProductServiceTypeEnum),
       description:
         !index || faker.datatype.boolean()
           ? faker.commerce.productDescription()
@@ -35,12 +31,7 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
       created_at: faker.date.past().toString(),
       updated_at: faker.date.past().toString(),
       price: {
-        currency: getRandomProperty({
-          EUR: CurrencyEnum.EUR,
-          USD: CurrencyEnum.USD,
-          GEL: CurrencyEnum.GEL,
-          KZT: CurrencyEnum.KZT,
-        }),
+        currency: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
         value: Number(faker.commerce.price({ min: 9, max: 9_999 })) * 100,
       },
     };
@@ -49,7 +40,7 @@ export const productsListFixture: Array<ProductServiceResponse> = new Array(130)
   });
 
 export const createProduct = (
-  product: ProductServiceRequest
+  product: components['schemas']['ProductServiceRequest']
 ): ProductServiceResponse => ({
   id: faker.string.nanoid(),
   name: product.name,
@@ -62,7 +53,9 @@ export const createProduct = (
   created_at: faker.date.past().toString(),
   updated_at: faker.date.past().toString(),
   price: {
-    currency: product.price?.currency as CurrencyEnum,
+    currency: product.price?.currency as components['schemas']['CurrencyEnum'],
     value: product.price?.value as number,
   },
 });
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

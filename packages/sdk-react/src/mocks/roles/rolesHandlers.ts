@@ -1,11 +1,4 @@
-import {
-  CreateRoleRequest,
-  ErrorSchemaResponse,
-  RolePaginationResponse,
-  RoleResponse,
-  ROLES_ENDPOINT,
-  UpdateRoleRequest,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -19,7 +12,7 @@ export const rolesHandlers = [
   }),
 
   http.get<{ roleId: string }, string, RoleResponse | ErrorSchemaResponse>(
-    `*/${ROLES_ENDPOINT}/:roleId`,
+    `*/roles/:roleId`,
     async ({ params }) => {
       const { roleId } = params;
       const role = getAllRolesFixture.data.find((item) => item.id === roleId);
@@ -43,7 +36,7 @@ export const rolesHandlers = [
   ),
 
   http.post<{}, CreateRoleRequest, RoleResponse | ErrorSchemaResponse>(
-    `*/${ROLES_ENDPOINT}`,
+    `*/roles`,
     async ({ request }) => {
       const jsonBody = await request.json();
 
@@ -61,7 +54,7 @@ export const rolesHandlers = [
     { roleId: string },
     UpdateRoleRequest,
     RoleResponse | ErrorSchemaResponse
-  >(`*/${ROLES_ENDPOINT}/:roleId`, async ({ request, params }) => {
+  >(`*/roles/:roleId`, async ({ request, params }) => {
     const jsonBody = await request.json();
     const { roleId } = params;
 
@@ -93,3 +86,9 @@ export const rolesHandlers = [
     return HttpResponse.json(updatedRole);
   }),
 ];
+
+type CreateRoleRequest = components['schemas']['CreateRoleRequest'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type RolePaginationResponse = components['schemas']['RolePaginationResponse'];
+type RoleResponse = components['schemas']['RoleResponse'];
+type UpdateRoleRequest = components['schemas']['UpdateRoleRequest'];

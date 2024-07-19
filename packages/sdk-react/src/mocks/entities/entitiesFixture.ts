@@ -1,35 +1,19 @@
-import { getRandomProperty } from '@/utils/storybook-utils';
+import { components } from '@/api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
+import { VatIDTypeEnum } from '@/enums/VatIDTypeEnum';
+import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CurrencyEnum,
-  EntityIndividualResponse,
-  EntityOrganizationResponse,
-  EntityResponse,
-  EntityVatIDResourceList,
-  EntityVatIDResponse,
-  MergedSettingsResponse,
-  MoniteAllPaymentMethods,
-  MoniteAllPaymentMethodsTypes,
-  OnboardingPaymentMethodsResponse,
-  PaymentMethodDirection,
-  PaymentMethodStatus,
-  StatusEnum,
-  VatIDTypeEnum,
-} from '@monite/sdk-api';
 
 export const entityIds = ['be035ef1-dd47-4f47-a6ad-eef2e7f2e608'] as const;
 
 function getEntitySettings(): MergedSettingsResponse {
   return {
+    allow_purchase_order_autolinking: false,
+    payment_priority: 'balanced',
+    receivable_edit_flow: 'non_compliant',
     currency: faker.datatype.boolean()
       ? {
-          default: getRandomProperty({
-            EUR: CurrencyEnum.EUR,
-            USD: CurrencyEnum.USD,
-            GEL: CurrencyEnum.GEL,
-            KZT: CurrencyEnum.KZT,
-          }),
+          default: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
           exchange_rates: [],
         }
       : undefined,
@@ -43,19 +27,15 @@ function generateEntityVatIdResourceList(
     id: faker.string.uuid(),
     entity_id: entityId,
     value: faker.string.numeric(10),
-    type: getRandomProperty(VatIDTypeEnum),
-    country: getRandomProperty(AllowedCountries),
+    type: getRandomItemFromArray(VatIDTypeEnum),
+    country: getRandomItemFromArray(AllowedCountries),
   }));
 }
 
 function generateEntityData(entityId: string): EntityResponse {
   const type = faker.datatype.boolean() ? 'individual' : 'organization';
-  const address = {
-    country: getRandomProperty({
-      DE: AllowedCountries.DE,
-      US: AllowedCountries.US,
-      KZ: AllowedCountries.KZ,
-    }),
+  const address: components['schemas']['EntityAddressSchema'] = {
+    country: getRandomItemFromArray(['DE', 'US', 'KZ']),
     city: faker.location.city(),
     line1: faker.location.streetAddress(),
     postal_code: faker.location.zipCode(),
@@ -73,7 +53,7 @@ function generateEntityData(entityId: string): EntityResponse {
       address,
       email: faker.datatype.boolean() ? faker.internet.email() : undefined,
       phone: faker.datatype.boolean() ? faker.phone.number() : undefined,
-      status: StatusEnum.ACTIVE,
+      status: 'active',
       tax_id: taxId,
       type: 'individual',
       individual: {
@@ -93,7 +73,7 @@ function generateEntityData(entityId: string): EntityResponse {
     address,
     email: faker.datatype.boolean() ? faker.internet.email() : undefined,
     phone: faker.datatype.boolean() ? faker.phone.number() : undefined,
-    status: StatusEnum.ACTIVE,
+    status: 'active',
     type: 'organization',
     tax_id: taxId,
     organization: {
@@ -123,22 +103,42 @@ export const getCurrentEntity = (): EntityResponse =>
 export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
   data: [
     {
-      direction: PaymentMethodDirection.RECEIVE,
-      name: MoniteAllPaymentMethods.CARD_PAYMENTS,
-      status: PaymentMethodStatus.ACTIVE,
-      type: MoniteAllPaymentMethodsTypes.CARD,
+      direction: 'receive',
+      name: 'Card payments',
+      status: 'active',
+      type: 'card',
     },
     {
-      direction: PaymentMethodDirection.RECEIVE,
-      name: MoniteAllPaymentMethods.SEPA_PAYMENTS,
-      status: PaymentMethodStatus.ACTIVE,
-      type: MoniteAllPaymentMethodsTypes.SEPA_CREDIT,
+      direction: 'receive',
+      name: 'SEPA Payments',
+      status: 'active',
+      type: 'sepa_credit',
     },
     {
-      direction: PaymentMethodDirection.RECEIVE,
-      name: MoniteAllPaymentMethods.SEPA_PAYMENTS,
-      status: PaymentMethodStatus.INACTIVE,
-      type: MoniteAllPaymentMethodsTypes.SEPA_DEBIT,
+      direction: 'receive',
+      name: 'SEPA Payments',
+      status: 'inactive',
+      type: 'sepa_debit',
     },
   ],
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type EntityIndividualResponse =
+  components['schemas']['EntityIndividualResponse'];
+type EntityOrganizationResponse =
+  components['schemas']['EntityOrganizationResponse'];
+type EntityResponse = components['schemas']['EntityResponse'];
+type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
+type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
+type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type MoniteAllPaymentMethods = components['schemas']['MoniteAllPaymentMethods'];
+type MoniteAllPaymentMethodsTypes =
+  components['schemas']['MoniteAllPaymentMethodsTypes'];
+type OnboardingPaymentMethodsResponse =
+  components['schemas']['OnboardingPaymentMethodsResponse'];
+type PaymentMethodDirection = components['schemas']['PaymentMethodDirection'];
+type PaymentMethodStatus = components['schemas']['PaymentMethodStatus'];
+type StatusEnum = components['schemas']['StatusEnum'];
+type VatIDTypeEnum = components['schemas']['VatIDTypeEnum'];

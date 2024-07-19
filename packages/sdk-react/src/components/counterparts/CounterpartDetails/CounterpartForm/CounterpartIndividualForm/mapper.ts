@@ -1,10 +1,5 @@
+import { components } from '@/api';
 import { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
-import {
-  CounterpartIndividualResponse,
-  AllowedCountries,
-  CounterpartIndividualUpdatePayload,
-  CounterpartIndividualCreatePayload,
-} from '@monite/sdk-api';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 
@@ -19,7 +14,7 @@ export interface CounterpartIndividualFields
 }
 
 export const prepareCounterpartIndividual = (
-  individual?: CounterpartIndividualResponse,
+  individual?: components['schemas']['CounterpartIndividualResponse'],
   defaultValues?: CounterpartDefaultValues
 ): CounterpartIndividualFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? individual?.is_customer);
@@ -56,9 +51,13 @@ export const prepareCounterpartIndividualCreate = ({
   phone,
   isCustomer,
   isVendor,
-  ...address
-}: CounterpartIndividualFields): CounterpartIndividualCreatePayload => {
-  const { postalCode, ...restAddress } = address;
+  city,
+  country,
+  line1,
+  line2,
+  postalCode,
+  state,
+}: CounterpartIndividualFields): components['schemas']['CounterpartIndividualCreatePayload'] => {
   return {
     first_name: firstName,
     last_name: lastName,
@@ -66,9 +65,13 @@ export const prepareCounterpartIndividualCreate = ({
     is_vendor: isVendor,
     phone,
     email,
-    residential_address: {
-      ...restAddress,
+    address: {
+      city,
+      country,
+      line1,
+      line2,
       postal_code: postalCode,
+      state,
     },
   };
 };
@@ -80,7 +83,7 @@ export const prepareCounterpartIndividualUpdate = ({
   phone,
   isCustomer,
   isVendor,
-}: CounterpartIndividualFields): CounterpartIndividualUpdatePayload => {
+}: CounterpartIndividualFields): components['schemas']['CounterpartIndividualUpdatePayload'] => {
   return {
     first_name: firstName,
     last_name: lastName,

@@ -1,22 +1,18 @@
 import React from 'react';
 
+import { components } from '@/api';
 import { css } from '@emotion/react';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries } from '@monite/sdk-api';
 import { useTheme } from '@mui/material/styles';
 
 interface CountryOptionProps {
-  code?: AllowedCountries;
+  code: components['schemas']['AllowedCountries'];
 }
 
 export function CountryInvoiceOption({ code }: CountryOptionProps) {
   const theme = useTheme();
   const { i18n } = useLingui();
-
-  if (!code) {
-    return null;
-  }
 
   return (
     <img

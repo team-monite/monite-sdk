@@ -14,12 +14,7 @@ import {
 export function isOnboardingField(
   field: OnboardingFieldsType
 ): field is OnboardingField {
-  return (
-    typeof field !== 'boolean' &&
-    typeof field !== 'string' &&
-    typeof field !== 'number' &&
-    'required' in field
-  );
+  return !!field && typeof field === 'object' && 'required' in field;
 }
 
 export const mapValueToForm = (

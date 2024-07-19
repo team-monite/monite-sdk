@@ -2,15 +2,19 @@ import chalk from 'chalk';
 
 import { faker } from '@faker-js/faker';
 
-import { demoBankAccountBICList } from '@/lib/monite-api/demo-data-generator/bank-account';
 import {
   GeneralService,
   getRandomItemFromArray,
 } from '@/lib/monite-api/demo-data-generator/general.service';
-import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
-  createMoniteClient,
+  bankCountriesToCurrencies,
+  demoBankAccountBICList,
+  chooseRandomCountryForDataGeneration,
+} from '@/lib/monite-api/demo-data-generator/seed-values';
+import { getEntity } from '@/lib/monite-api/get-entity';
+import {
   getMoniteApiVersion,
+  MoniteClient,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
@@ -18,10 +22,21 @@ type CounterpartBankAccountResponse =
   components['schemas']['CounterpartBankAccountResponse'];
 type CounterpartVatIDResponse =
   components['schemas']['CounterpartVatIDResponse'];
+type CounterpartResponse = components['schemas']['CounterpartResponse'];
+type EntityOrganizationResponse =
+  components['schemas']['EntityOrganizationResponse'];
+type CounterpartContactResponse =
+  components['schemas']['CounterpartContactResponse'];
 type VatIDTypeEnum = components['schemas']['VatIDTypeEnum'];
 type AllowedCountries = components['schemas']['AllowedCountries'];
 
-interface ICounterpartsBuilderOptions {
+const counterpartCountries = [
+  'DE',
+  'US',
+  'GB',
+] satisfies Array<AllowedCountries>;
+
+interface CounterpartsBuilderOptions {
   counterparts: {
     /**
      * How many counterparts to create
@@ -52,14 +67,25 @@ interface ICounterpartsBuilderOptions {
     enabled: boolean;
     count: number;
   };
+
+  contacts: {
+    /**
+     * Create counterparts with contacts
+     *
+     * By default, it is true, and contacts will be created
+     *  for the counterparts
+     */
+    enabled: boolean;
+    count: number;
+  };
 }
 
-interface IConterpartsServiceResponse {
-  counterparts: Array<components['schemas']['CounterpartResponse']>;
+interface CounterpartsServiceResponse {
+  counterparts: Array<CounterpartResponse>;
 }
 
 export class CounterpartsService extends GeneralService {
-  private options: ICounterpartsBuilderOptions = {
+  private options: CounterpartsBuilderOptions = {
     counterparts: {
       count: 3,
     },
@@ -71,9 +97,13 @@ export class CounterpartsService extends GeneralService {
       enabled: true,
       count: 2,
     },
+    contacts: {
+      enabled: true,
+      count: 1,
+    },
   };
 
-  public withOptions(options: Partial<ICounterpartsBuilderOptions>): this {
+  public withOptions(options: Partial<CounterpartsBuilderOptions>): this {
     this.options = {
       ...this.options,
       ...options,
@@ -82,9 +112,10 @@ export class CounterpartsService extends GeneralService {
     return this;
   }
 
-  public async create(): Promise<IConterpartsServiceResponse> {
-    const counterparts: Array<components['schemas']['CounterpartResponse']> =
-      [];
+  public async create(): Promise<CounterpartsServiceResponse> {
+    const counterparts: Array<CounterpartResponse> = [];
+    const moniteClient = this.request;
+
     for (
       let counterpartsIndex = 0;
       counterpartsIndex < this.options.counterparts.count;
@@ -99,7 +130,7 @@ export class CounterpartsService extends GeneralService {
       );
 
       const counterpart = await createCounterpart({
-        token: this.token,
+        moniteClient,
         entity_id: this.entityId,
       });
 
@@ -129,18 +160,22 @@ export class CounterpartsService extends GeneralService {
         );
 
         const counterpart = counterparts[counterpartIndex];
-        await createCounterpartBankAccount({
-          is_default_for_currency: true,
-          counterpart_id: counterpart.id,
-          token: this.token,
-          entity_id: this.entityId,
-        })
-          .then((counterpartBankAccount) => {
-            counterpartBankAccounts.push(counterpartBankAccount);
-          })
-          .catch((error) => {
-            console.error(error);
+        try {
+          const counterpartBankAccount = await createCounterpartBankAccount({
+            moniteClient,
+            is_default_for_currency: true,
+            counterpart_id: counterpart.id,
+            entity_id: this.entityId,
           });
+          counterpartBankAccounts.push(counterpartBankAccount);
+        } catch (error) {
+          console.error(
+            chalk.redBright.bgBlack(
+              '❌ Error when creating a counterpart bank account'
+            ),
+            error
+          );
+        }
       }
     }
 
@@ -154,9 +189,9 @@ export class CounterpartsService extends GeneralService {
       );
     }
 
-    const counterpartVats: Array<
-      components['schemas']['CounterpartVatIDResponse']
-    > = [];
+    const entity = await getEntity(this.request, this.entityId);
+
+    const counterpartVats: Array<CounterpartVatIDResponse> = [];
     for (
       let counterpartsIndex = 0;
       counterpartsIndex < counterparts.length;
@@ -176,17 +211,21 @@ export class CounterpartsService extends GeneralService {
         );
 
         const counterpart = counterparts[counterpartsIndex];
-        await createCounterpartVatId({
-          counterpart_id: counterpart.id,
-          token: this.token,
-          entity_id: this.entityId,
-        })
-          .then((counterpartVat) => {
-            counterpartVats.push(counterpartVat);
-          })
-          .catch((error) => {
-            console.error(error);
+        try {
+          const counterpartVat = await createCounterpartVatId({
+            moniteClient,
+            counterpart_id: counterpart.id,
+            entity,
           });
+          counterpartVats.push(counterpartVat);
+        } catch (error) {
+          console.error(
+            chalk.redBright.bgBlack(
+              '❌ Error when creating a counterpart vat id'
+            ),
+            error
+          );
+        }
       }
     }
 
@@ -196,6 +235,54 @@ export class CounterpartsService extends GeneralService {
       console.error(chalk.black.bgYellow(`❌ Counterparts vats list is empty`));
     }
 
+    const counterpartContacts: Array<CounterpartContactResponse> = [];
+    for (
+      let counterpartsIndex = 0;
+      counterpartsIndex < counterparts.length;
+      counterpartsIndex++
+    ) {
+      for (
+        let contactIndex = 0;
+        contactIndex < this.options.contacts.count;
+        contactIndex++
+      ) {
+        console.log(
+          chalk.bgBlueBright(
+            ` - Creating Contact for (${counterpartsIndex + 1}) counterpart (${
+              contactIndex + 1
+            }/${this.options.contacts.count})`
+          )
+        );
+
+        const counterpart = counterparts[counterpartsIndex];
+        try {
+          const counterpartContact = await createCounterpartContact({
+            moniteClient,
+            counterpart_id: counterpart.id,
+            entity,
+          });
+          counterpartContacts.push(counterpartContact);
+        } catch (error) {
+          console.error(
+            chalk.redBright.bgBlack(
+              '❌ Error when creating a counterpart contact'
+            ),
+            error
+          );
+        }
+      }
+    }
+
+    if (counterpartContacts.length) {
+      console.log(
+        chalk.black.bgGreenBright(`✅ Counterparts contacts created 👤`)
+      );
+    } else {
+      console.error(
+        chalk.black.bgYellow(`❌ Counterparts contacts list is empty`)
+      );
+    }
+
     return {
       counterparts,
     };
@@ -203,22 +290,16 @@ export class CounterpartsService extends GeneralService {
 }
 
 export const createCounterpart = async ({
-  token,
+  moniteClient,
   entity_id,
 }: {
-  token: AccessToken;
+  moniteClient: MoniteClient;
   entity_id: string;
-}): Promise<components['schemas']['CounterpartResponse']> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
-
+}): Promise<CounterpartResponse> => {
   const is_vendor = faker.datatype.boolean();
   const addressCountries = ['DE'] satisfies Array<AllowedCountries>;
 
-  const { data, error, response } = await POST('/counterparts', {
+  const { data, error, response } = await moniteClient.POST('/counterparts', {
     params: {
       header: {
         'x-monite-entity-id': entity_id,
@@ -260,30 +341,85 @@ export const createCounterpart = async ({
   return data;
 };
 
-export const createCounterpartVatId = async ({
+const orgEmailDomain = (legalName: string) => {
+  let result = '';
+  for (let c of legalName) {
+    c = c.toLowerCase();
+    if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) result += c;
+    else result += '-';
+  }
+  return result + '.com';
+};
+
+export const createCounterpartContact = async ({
+  moniteClient,
   counterpart_id,
-  entity_id,
-  token,
+  entity,
 }: {
+  moniteClient: MoniteClient;
   counterpart_id: string;
-  entity_id: string;
-  token: AccessToken;
+  entity: EntityOrganizationResponse;
+}): Promise<CounterpartContactResponse> => {
+  const isMale = Math.random() >= 0.5;
+  const sex = isMale ? 'male' : 'female';
+  const firstName = faker.person.firstName(sex);
+  const lastName = faker.person.lastName(sex);
+  const emailDomain = orgEmailDomain(entity.organization.legal_name);
+
+  const payload = {
+    first_name: firstName,
+    last_name: lastName,
+    email: faker.internet.email({
+      firstName,
+      lastName,
+      provider: emailDomain,
+    }),
+    phone: faker.phone.number(),
+    address: entity.address,
+    title: isMale ? 'Mr.' : 'Ms.',
+  } as components['schemas']['CreateCounterpartContactPayload'];
+  const { data, error, response } = await moniteClient.POST(
+    '/counterparts/{counterpart_id}/contacts',
+    {
+      params: {
+        path: {
+          counterpart_id,
+        },
+        header: {
+          'x-monite-version': getMoniteApiVersion(),
+          'x-monite-entity-id': entity.id,
+        },
+      },
+      body: payload,
+    }
+  );
+
+  if (error) {
+    console.error(
+      `Failed to create Contact for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity.id}"`,
+      `x-request-id: ${response.headers.get('x-request-id')}`
+    );
+
+    throw new Error(`Contact creation failed: ${JSON.stringify(error)}`);
+  }
+
+  return data;
+};
+
+export const createCounterpartVatId = async ({
+  moniteClient,
+  counterpart_id,
+  entity,
+}: {
+  moniteClient: MoniteClient;
+  counterpart_id: string;
+  entity: { id: string; address: { country: string } };
 }): Promise<CounterpartVatIDResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
-
-  const type = getRandomItemFromArray([
-    'eu_vat',
-    'no_vat',
-    'unknown',
-  ] satisfies Array<VatIDTypeEnum>);
   const value = String(faker.number.int(10_000));
-  const addressCountries = ['DE', 'US', 'GB'] satisfies Array<AllowedCountries>;
+  const counterpartCountry = getRandomItemFromArray(counterpartCountries);
+  const vatIdType = getVatIdType(entity.address.country, counterpartCountry);
 
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/counterparts/{counterpart_id}/vat_ids',
     {
       params: {
@@ -292,20 +428,20 @@ export const createCounterpartVatId = async ({
         },
         header: {
           'x-monite-version': getMoniteApiVersion(),
-          'x-monite-entity-id': entity_id,
+          'x-monite-entity-id': entity.id,
         },
       },
       body: {
-        type,
+        type: vatIdType,
         value,
-        country: getRandomItemFromArray(addressCountries),
+        country: counterpartCountry,
       },
     }
   );
 
   if (error) {
     console.error(
-      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity_id}"`,
+      `Failed to create VAT ID for the counterpart_id: "${counterpart_id}" in the entity_id: "${entity.id}"`,
       `x-request-id: ${response.headers.get('x-request-id')}`
     );
 
@@ -316,32 +452,20 @@ export const createCounterpartVatId = async ({
 };
 
 export const createCounterpartBankAccount = async ({
+  moniteClient,
   is_default_for_currency,
   counterpart_id,
   entity_id,
-  token,
 }: {
+  moniteClient: MoniteClient;
   is_default_for_currency: true;
   counterpart_id: string;
   entity_id: string;
-  token: AccessToken;
 }): Promise<CounterpartBankAccountResponse> => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const countryCode = chooseRandomCountryForDataGeneration();
+  const currency = bankCountriesToCurrencies[countryCode];
 
-  const countryCode = getRandomItemFromArray([
-    'GE',
-    'DE',
-    'GB',
-  ] satisfies Array<AllowedCountries>);
-  const currency = getRandomItemFromArray(['EUR', 'USD', 'GEL'] satisfies Array<
-    components['schemas']['CurrencyEnum']
-  >);
-
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/counterparts/{counterpart_id}/bank_accounts',
     {
       params: {
@@ -378,3 +502,24 @@ export const createCounterpartBankAccount = async ({
 
   return data;
 };
+
+function getVatIdType(entityCountry: string, counterpartCountry: string) {
+  let vatIdType: VatIDTypeEnum = 'unknown';
+  switch (entityCountry) {
+    case 'GB':
+      vatIdType =
+        counterpartCountry == 'GB'
+          ? 'gb_vat'
+          : counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+    case 'DE':
+      vatIdType =
+        counterpartCountry == 'GB' || counterpartCountry == 'DE'
+          ? 'eu_vat'
+          : 'unknown';
+      break;
+  }
+  return vatIdType;
+}

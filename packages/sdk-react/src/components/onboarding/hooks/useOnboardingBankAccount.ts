@@ -1,25 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
-import { ErrorType } from '@/core/queries/types';
-import {
-  useCreateBankAccount,
-  useDeleteBankAccount,
-} from '@/core/queries/useBankAccounts';
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingBankAccountMask,
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
   useOnboardingCurrencyToCountries,
 } from '@/core/queries/useOnboarding';
-import {
-  AllowedCountries,
-  CreateEntityBankAccountRequest,
-  CurrencyEnum,
-  EntityBankAccountResponse,
-  OnboardingBankAccount,
-  OnboardingBankAccountMask,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { useLingui } from '@lingui/react';
 
 import { enrichFieldsByValues, generateFieldsByMask } from '../transformers';
 import type { OnboardingFormType } from './useOnboardingForm';
@@ -31,7 +22,11 @@ export type OnboardingBankAccountReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
   isLoading: boolean;
 
-  error: ErrorType;
+  error:
+    | Error
+    | components['schemas']['HTTPValidationError']
+    | components['schemas']['ErrorSchemaResponse']
+    | null;
 
   currencies: CurrencyEnum[];
 
@@ -56,15 +51,35 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const {
     mutateAsync: createBankAccountMutation,
     isPending: isCreateBankAccountPending,
-  } = useCreateBankAccount();
+  } = api.bankAccounts.postBankAccounts.useMutation(undefined, {
+    onError: (error) => {
+      toast.error(getAPIErrorMessage(i18n, error));
+    },
+  });
 
   const {
     mutateAsync: deleteBankAccountMutation,
     isPending: isDeleteBankAccountPending,
-  } = useDeleteBankAccount();
+  } = api.bankAccounts.deleteBankAccountsId.useMutation(undefined, {
+    onSuccess: async (_, variables) => {
+      await Promise.all([
+        api.bankAccounts.getBankAccounts.invalidateQueries(queryClient),
+        api.bankAccounts.getBankAccountsId.invalidateQueries(
+          {
+            parameters: {
+              path: { bank_account_id: variables.path.bank_account_id },
+            },
+          },
+          queryClient
+        ),
+      ]);
+    },
+  });
 
   const {
     data: bankAccountMasks,
@@ -135,16 +150,23 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
   const primaryAction = useCallback(
     async (payload: CreateEntityBankAccountRequest) => {
       const response = await createBankAccountMutation({
-        ...payload,
-        is_default_for_currency: true,
+        body: {
+          ...payload,
+          is_default_for_currency: true,
+        },
       });
 
       if (currentBankAccount) {
-        await deleteBankAccountMutation(currentBankAccount.id);
+        await deleteBankAccountMutation({
+          body: undefined,
+          path: {
+            bank_account_id: currentBankAccount.id,
+          },
+        });
       }
 
       patchOnboardingRequirements({
-        requirements: [OnboardingRequirement.BANK_ACCOUNTS],
+        requirements: ['bank_accounts'],
         data: {
           bank_accounts: [enrichFieldsByValues(fields, payload)],
         },
@@ -179,3 +201,14 @@ const getDefaultMask = (): OnboardingBankAccountMask => ({
   country: true,
   currency: true,
 });
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type CreateEntityBankAccountRequest =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type EntityBankAccountResponse =
+  components['schemas']['EntityBankAccountResponse'];
+type OnboardingBankAccount = components['schemas']['OnboardingBankAccount'];
+type OnboardingBankAccountMask =
+  components['schemas']['OnboardingBankAccountMask'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

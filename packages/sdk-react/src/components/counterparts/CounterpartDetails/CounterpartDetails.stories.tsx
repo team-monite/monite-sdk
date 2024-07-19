@@ -3,7 +3,6 @@ import {
   individualId,
   organizationId,
 } from '@/mocks/counterparts/counterpart.mocks.types';
-import { CounterpartType } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 
@@ -46,7 +45,7 @@ export const DialogUpdateExistingIndividual: Story = {
 
 export const DialogCreateNewIndividual: Story = {
   args: {
-    type: CounterpartType.INDIVIDUAL,
+    type: 'individual',
     ...actions,
   },
   render: (args) => (
@@ -84,7 +83,7 @@ export const UpdateExistingOrganization: Story = {
 
 export const CreateNewIndividual: Story = {
   args: {
-    type: CounterpartType.INDIVIDUAL,
+    type: 'individual',
     ...actions,
   },
   render: (args) => (
@@ -96,7 +95,7 @@ export const CreateNewIndividual: Story = {
 
 export const CreateNewOrganization: Story = {
   args: {
-    type: CounterpartType.ORGANIZATION,
+    type: 'organization',
     ...actions,
   },
   render: (args) => (

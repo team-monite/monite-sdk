@@ -16,11 +16,7 @@ export const getEntityUserByLogin = async (
 ) => {
   if (!login) throw new Error('login is empty');
 
-  const { GET } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { GET } = createMoniteClient(token);
 
   const { data, error, response } = await GET('/entity_users', {
     params: {

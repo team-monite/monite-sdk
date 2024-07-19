@@ -1,17 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   useDeleteReceivableById,
   useIssueReceivableById,
-  usePDFReceivableByIdMutation,
   useSendReceivableById,
-} from '@/core/queries';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import {
-  ActionEnum,
-  ReceivableResponse,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
+} from '@/core/queries/useReceivables';
 
 export enum DeliveryMethod {
   Email = 'email',
@@ -19,63 +15,9 @@ export enum DeliveryMethod {
 }
 
 interface UseExistingInvoiceDetailsProps {
-  receivableId: ReceivableResponse['id'];
-  receivable?: ReceivableResponse;
+  receivableId: components['schemas']['ReceivableResponse']['id'];
+  receivable?: components['schemas']['ReceivableResponse'];
   deliveryMethod: DeliveryMethod;
-}
-
-interface UseExistingInvoiceDetailsReturns {
-  /**
-   * Describes which view should be rendered
-   * - `view` - by default; we render the view mode
-   * - `edit` - we render the edit mode
-   *   (the view is almost the same as create an invoice details component)
-   */
-  view: ExistingInvoiceDetailsView;
-
-  /** Callbacks for handling invoice actions */
-  callbacks: {
-    /** Fires when we need to issue an invoice */
-    handleIssueOnly: () => void;
-
-    /** Fires when we need to download an invoice PDF */
-    handleDownloadPDF: () => void;
-
-    /** Fires when we need to change invoice view (from view to edit) */
-    handleChangeViewInvoice: () => void;
-  };
-
-  /** Describes is any mutation or queries is in progress */
-  loading: boolean;
-
-  /** Describes which buttons should be visible */
-  buttons: {
-    /** Describes should we show "Download PDF" button or not */
-    isDownloadPDFButtonVisible: boolean;
-
-    /** Describes should we show "More" button or not */
-    isMoreButtonVisible: boolean;
-
-    /** Describes should we show "Compose email" button or not */
-    isComposeEmailButtonVisible: boolean;
-
-    /** Describes should we show "Issue" button or not */
-    isIssueButtonVisible: boolean;
-
-    /** Describes should "Delete" button be disabled or not */
-    isDeleteButtonDisabled: boolean;
-
-    /**
-     * Describes should we show "Delete" button or not
-     *
-     * Note: computed based on receivable status,
-     *  user permissions, and other checks
-     */
-    isDeleteButtonVisible: boolean;
-
-    /** Describes should we show "Edit" button or not */
-    isEditButtonVisible: boolean;
-  };
 }
 
 export enum ExistingInvoiceDetailsView {
@@ -87,41 +29,43 @@ export function useExistingInvoiceDetails({
   receivableId,
   receivable,
   deliveryMethod,
-}: UseExistingInvoiceDetailsProps): UseExistingInvoiceDetailsReturns {
+}: UseExistingInvoiceDetailsProps) {
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.DELETE,
+      action: 'delete',
       entityUserId: receivable?.entity_user_id,
     });
 
-  const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
-    useIsActionAllowed({
-      method: 'receivable',
-      action: ActionEnum.UPDATE,
-      entityUserId: receivable?.entity_user_id,
-    });
+  const { data: isUpdateAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: 'update',
+    entityUserId: receivable?.entity_user_id,
+  });
 
-  const deleteMutation = useDeleteReceivableById();
-  const sendMutation = useSendReceivableById();
-  const issueMutation = useIssueReceivableById();
-  const pdfMutation = usePDFReceivableByIdMutation(receivableId);
+  const deleteMutation = useDeleteReceivableById(receivableId);
+  const sendMutation = useSendReceivableById(receivableId);
+  const issueMutation = useIssueReceivableById(receivableId);
+  const { api } = useMoniteContext();
+  const pdfQuery = api.receivables.getReceivablesIdPdfLink.useQuery({
+    path: { receivable_id: receivableId },
+  });
 
   const mutationInProgress =
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
-    pdfMutation.isPending;
+    pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
     if (deliveryMethod !== DeliveryMethod.Download) {
       throw new Error('Unsupported delivery method');
     }
 
-    issueMutation.mutate(receivableId);
-  }, [deliveryMethod, issueMutation, receivableId]);
+    issueMutation.mutate(undefined);
+  }, [deliveryMethod, issueMutation]);
 
   const handleChangeInvoiceView = useCallback(() => {
     if (view === ExistingInvoiceDetailsView.Edit) {
@@ -131,23 +75,24 @@ export function useExistingInvoiceDetails({
     }
   }, [view]);
 
-  const handleDownloadPDF = useCallback(() => {
-    pdfMutation.mutate(undefined, {
-      onSuccess: (data) => {
-        window.open(data.file_url, '_blank');
-      },
-    });
-  }, [pdfMutation]);
+  const handleDownloadPDF = useCallback(async () => {
+    await pdfQuery.refetch();
+
+    if (pdfQuery.data) {
+      window.open(pdfQuery.data.file_url, '_blank');
+    }
+  }, [pdfQuery]);
 
   const isDownloadPDFButtonVisible = useMemo(() => {
     switch (receivable?.status) {
-      case ReceivablesStatusEnum.ISSUED:
-      case ReceivablesStatusEnum.PARTIALLY_PAID:
-      case ReceivablesStatusEnum.PAID:
-      case ReceivablesStatusEnum.OVERDUE:
-      case ReceivablesStatusEnum.CANCELED:
-      case ReceivablesStatusEnum.UNCOLLECTIBLE:
+      case 'issued':
+      case 'partially_paid':
+      case 'paid':
+      case 'overdue':
+      case 'canceled':
+      case 'uncollectible': {
         return true;
+      }
       default:
         return false;
     }
@@ -155,9 +100,9 @@ export function useExistingInvoiceDetails({
 
   const isMoreButtonVisible = useMemo(() => {
     switch (receivable?.status) {
-      case ReceivablesStatusEnum.ISSUED:
-      case ReceivablesStatusEnum.PARTIALLY_PAID:
-      case ReceivablesStatusEnum.OVERDUE:
+      case 'issued':
+      case 'partially_paid':
+      case 'overdue':
         return true;
       default:
         return false;
@@ -166,27 +111,27 @@ export function useExistingInvoiceDetails({
 
   const isComposeEmailButtonVisible =
     deliveryMethod === DeliveryMethod.Email &&
-    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    receivable?.status === 'draft' &&
     isUpdateAllowed;
 
   const isIssueButtonVisible =
     deliveryMethod === DeliveryMethod.Download &&
-    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    receivable?.status === 'draft' &&
     isUpdateAllowed;
 
   const isEditButtonVisible =
-    receivable?.status === ReceivablesStatusEnum.DRAFT &&
+    receivable?.status === 'draft' &&
     view !== ExistingInvoiceDetailsView.Edit &&
     isUpdateAllowed;
 
   const isDeleteButtonDisabled =
-    receivable?.status !== ReceivablesStatusEnum.DRAFT ||
+    receivable?.status !== 'draft' ||
     isDeleteAllowedLoading ||
     !isDeleteAllowed ||
     mutationInProgress;
 
   const isDeleteButtonVisible =
-    receivable?.status === ReceivablesStatusEnum.DRAFT && isDeleteAllowed;
+    receivable?.status === 'draft' && isDeleteAllowed;
 
   return {
     view,

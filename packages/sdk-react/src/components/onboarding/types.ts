@@ -1,31 +1,15 @@
-import type {
-  OnboardingCountryField,
-  OnboardingCurrencyField,
-  OnboardingDateField,
-  OnboardingEmailField,
-  OnboardingError,
-  OnboardingFloatField,
-  OnboardingStringField,
-  OnboardingUrlField,
-  OptionalPersonAddress,
-  OrganizationSchema,
-} from '@monite/sdk-api';
-import type { EntityAddressSchema } from '@monite/sdk-api';
-import {
-  OnboardingPersonRelationship,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 export type OnboardingPersonId = string | null;
 
 export type OnboardingField =
-  | OnboardingCurrencyField
-  | OnboardingDateField
-  | OnboardingEmailField
-  | OnboardingFloatField
-  | OnboardingStringField
-  | OnboardingCountryField
-  | OnboardingUrlField;
+  | components['schemas']['OnboardingCurrencyField']
+  | components['schemas']['OnboardingDateField']
+  | components['schemas']['OnboardingEmailField']
+  | components['schemas']['OnboardingFloatField']
+  | components['schemas']['OnboardingStringField']
+  | components['schemas']['OnboardingCountryField']
+  | components['schemas']['OnboardingUrlField'];
 
 export type OnboardingErrorField = {
   code: string;
@@ -36,7 +20,9 @@ export type OnboardingOutputFieldsType = NestedDictionary<
   OnboardingField | OnboardingValueType
 >;
 
-export type OnboardingOutputValuesType = NestedDictionary<OnboardingValueType>;
+export type OnboardingOutputValuesType<
+  TValue extends OnboardingValueType = OnboardingValueType
+> = NestedDictionary<TValue>;
 
 export type OnboardingFieldsType =
   | OnboardingOutputFieldsType
@@ -45,16 +31,15 @@ export type OnboardingFieldsType =
   | number
   | string;
 
-export type OnboardingValuesType =
-  | OnboardingOutputValuesType
-  | boolean
-  | Blob
-  | number
-  | string;
+export type OnboardingValuesType<
+  TValue extends OnboardingValueType = OnboardingValueType
+> = OnboardingOutputValuesType<TValue> | boolean | Blob | number | string;
 
 export type OnboardingMaskType = NestedDictionary<boolean>;
 
-export type OnboardingAddressType = OptionalPersonAddress | EntityAddressSchema;
+export type OnboardingAddressType =
+  | components['schemas']['OptionalPersonAddressRequest']
+  | components['schemas']['EntityAddressSchema'];
 
 export type OnboardingValueType =
   | undefined
@@ -63,7 +48,7 @@ export type OnboardingValueType =
   | number
   | Blob
   | null
-  | OnboardingError;
+  | components['schemas']['OnboardingError'];
 
 type NestedDictionary<T> = {
   [key: string]: T | NestedDictionary<T>;
@@ -98,12 +83,12 @@ export type OnboardingOptionalParams = {
 };
 
 export type OnboardingRelationshipCode = keyof Pick<
-  OnboardingPersonRelationship,
+  components['schemas']['OnboardingPersonRelationship'],
   'representative' | 'owner' | 'director' | 'executive'
 >;
 
 export type EntityOrganizationRelationshipCode = keyof Pick<
-  OrganizationSchema,
+  components['schemas']['OrganizationSchema'],
   | 'representative_provided'
   | 'owners_provided'
   | 'directors_provided'
@@ -116,8 +101,7 @@ export type OrganizationRequirements = Partial<
 
 export type OnboardingPersonIndex = string | null;
 
-export type OnboardingRequirementMask =
-  | OnboardingRequirement.REPRESENTATIVE
-  | OnboardingRequirement.DIRECTORS
-  | OnboardingRequirement.OWNERS
-  | OnboardingRequirement.EXECUTIVES;
+export type OnboardingRequirementMask = Extract<
+  components['schemas']['OnboardingRequirement'],
+  'representative' | 'directors' | 'executives' | 'owners'
+>;

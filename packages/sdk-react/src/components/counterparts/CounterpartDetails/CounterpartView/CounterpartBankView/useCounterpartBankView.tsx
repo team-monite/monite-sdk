@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { useDeleteCounterpartBank } from '@/core/queries/useCounterpart';
-import { CounterpartBankAccountResponse } from '@monite/sdk-api';
 
 export type CounterpartBankViewProps = {
-  bank: CounterpartBankAccountResponse;
+  bank: components['schemas']['CounterpartBankAccountResponse'];
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
   permissions: CounterpartActionsPermissions;
@@ -22,14 +22,23 @@ export function useCounterpartBankView({
     async (cb?: () => void) => {
       const bankDeleteMutateAsync = bankDeleteMutation.mutateAsync;
 
-      return await bankDeleteMutateAsync(id, {
-        onSuccess: () => {
-          onDelete && onDelete(id);
-          cb?.();
+      return await bankDeleteMutateAsync(
+        {
+          path: {
+            counterpart_id: counterpart_id,
+            bank_account_id: id,
+          },
+          body: undefined,
         },
-      });
+        {
+          onSuccess: () => {
+            onDelete && onDelete(id);
+            cb?.();
+          },
+        }
+      );
     },
-    [bankDeleteMutation.mutateAsync, id, onDelete]
+    [bankDeleteMutation.mutateAsync, counterpart_id, id, onDelete]
   );
 
   const onEdit = useCallback(async () => {

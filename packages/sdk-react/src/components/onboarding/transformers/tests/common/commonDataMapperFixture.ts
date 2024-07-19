@@ -1,4 +1,4 @@
-import { AllowedCountries, CurrencyEnum } from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { OnboardingOutputValuesType, OnboardingTestData } from '../../../types';
 
@@ -67,13 +67,13 @@ export const onboardingFilledNestedFixture: OnboardingTestData = {
     country: {
       required: true,
       error: null,
-      value: AllowedCountries.DE,
+      value: 'DE',
     },
     nested: {
       currency: {
         required: true,
         error: null,
-        value: CurrencyEnum.EUR,
+        value: 'EUR',
       },
       iban: {
         required: false,
@@ -84,9 +84,9 @@ export const onboardingFilledNestedFixture: OnboardingTestData = {
   },
 
   values: {
-    country: AllowedCountries.DE,
+    country: 'DE',
     nested: {
-      currency: CurrencyEnum.EUR,
+      currency: 'EUR',
       iban: 'iban',
     },
   },
@@ -111,7 +111,7 @@ export const onboardingMixedNestedFixture: OnboardingTestData = {
         error: {
           message: 'error 1',
         },
-        value: CurrencyEnum.EUR,
+        value: 'EUR',
       },
       date_of_birth: {
         required: false,
@@ -140,7 +140,7 @@ export const onboardingMixedNestedFixture: OnboardingTestData = {
     bool: false,
     country: null,
     nested: {
-      currency: CurrencyEnum.EUR,
+      currency: 'EUR',
       date_of_birth: '2023-11-13',
       nested: {
         iban: 'iban',
@@ -175,7 +175,7 @@ export const onboardingRestoreFieldsFixture: Record<
       error: {
         message: 'error',
       },
-      value: AllowedCountries.DE,
+      value: 'DE',
     },
     number: {
       required: true,
@@ -187,7 +187,7 @@ export const onboardingRestoreFieldsFixture: Record<
       currency: {
         required: true,
         error: null,
-        value: CurrencyEnum.EUR,
+        value: 'EUR',
       },
       iban: {
         required: false,
@@ -200,7 +200,7 @@ export const onboardingRestoreFieldsFixture: Record<
     country: {
       required: true,
       error: null,
-      value: AllowedCountries.GB,
+      value: 'GB',
     },
     trueBool: true,
     number: {
@@ -226,7 +226,7 @@ export const onboardingRestoreFieldsFixture: Record<
     country: {
       required: true,
       error: null,
-      value: AllowedCountries.GB,
+      value: 'GB',
     },
     trueBool: true,
     number: {

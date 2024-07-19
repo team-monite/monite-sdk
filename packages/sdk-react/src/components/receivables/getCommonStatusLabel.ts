@@ -1,37 +1,37 @@
+import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { ReceivablesStatusEnum } from '@monite/sdk-api';
 
 export const getCommonStatusLabel = (
-  value: ReceivablesStatusEnum,
-  i18n: I18n
+  i18n: I18n,
+  status: components['schemas']['ReceivablesStatusEnum']
 ) => {
-  switch (value) {
-    case ReceivablesStatusEnum.DRAFT:
+  switch (status) {
+    case 'draft':
       return t(i18n)`Draft`;
-    case ReceivablesStatusEnum.ISSUED:
+    case 'issued':
       return t(i18n)`Issued`;
-    case ReceivablesStatusEnum.ACCEPTED:
+    case 'accepted':
       return t(i18n)`Accepted`;
-    case ReceivablesStatusEnum.EXPIRED:
+    case 'expired':
       return t(i18n)`Expired`;
-    case ReceivablesStatusEnum.DECLINED:
+    case 'declined':
       return t(i18n)`Declined`;
-    case ReceivablesStatusEnum.RECURRING:
+    case 'recurring':
       return t(i18n)`Recurring`;
-    case ReceivablesStatusEnum.PARTIALLY_PAID:
+    case 'partially_paid':
       return t(i18n)`Partially Paid`;
-    case ReceivablesStatusEnum.PAID:
+    case 'paid':
       return t(i18n)`Paid`;
-    case ReceivablesStatusEnum.OVERDUE:
+    case 'overdue':
       return t(i18n)`Overdue`;
-    case ReceivablesStatusEnum.UNCOLLECTIBLE:
+    case 'uncollectible':
       return t(i18n)`Uncollectible`;
-    case ReceivablesStatusEnum.CANCELED:
+    case 'canceled':
       return t(i18n)`Canceled`;
-    case ReceivablesStatusEnum.DELETED:
+    case 'deleted':
       return t(i18n)`Deleted`;
     default:
-      throw new Error(`Unknown status ${JSON.stringify(value)}`);
+      throw new Error(`Unknown status ${JSON.stringify(status)}`);
   }
 };

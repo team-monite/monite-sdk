@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
@@ -7,18 +7,18 @@ import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoic
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useMenuButton } from '@/core/hooks';
-import { usePDFReceivableById, useReceivableById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { useReceivableById } from '@/core/queries/useReceivables';
 import { CenteredContentBox } from '@/ui/box';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -43,20 +43,17 @@ import { styled, alpha } from '@mui/material/styles';
 
 import { EmailInvoiceDetails } from './components/EmailInvoiceDetails';
 import {
+  DeliveryMethod,
   ExistingInvoiceDetailsView,
   useExistingInvoiceDetails,
 } from './useExistingInvoiceDetails';
-
-enum DeliveryMethod {
-  Email = 'email',
-  Download = 'download',
-}
 
 const StyledMenu = styled((props: MenuProps) => {
   const { root } = useRootElements();
 
   return (
     <Menu
+      {...props}
       elevation={0}
       anchorOrigin={{
         vertical: 'bottom',
@@ -67,15 +64,12 @@ const StyledMenu = styled((props: MenuProps) => {
         horizontal: 'right',
       }}
       container={root}
-      {...props}
     />
   );
 })(({ theme }) => ({
   '& .MuiPaper-root': {
-    // borderRadius: theme.spacing(2),
     marginTop: theme.spacing(1),
     minWidth: 180,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     boxShadow: `0px 4px 16px 0px ${alpha(theme.palette.secondary.main, 0.4)}`,
     '& .MuiMenu-list': {
       padding: '4px 0',
@@ -111,6 +105,7 @@ export const ExistingInvoiceDetails = (
 
 const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const [presentation, setPresentation] = useState<InvoiceDetailsPresentation>(
     InvoiceDetailsPresentation.Overview
   );
@@ -127,7 +122,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: receivable?.entity_user_id,
   });
 
@@ -138,8 +133,25 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     data: pdf,
     isLoading: isPdfLoading,
     error: pdfError,
-    refetch: refetchPdf,
-  } = usePDFReceivableById(props.id);
+  } = api.receivables.getReceivablesIdPdfLink.useQuery(
+    {
+      path: {
+        receivable_id: props.id,
+      },
+    },
+    {
+      staleTime: 10_000,
+      refetchIntervalInBackground: true,
+      refetchInterval: api.receivables.getReceivablesIdPdfLink.getQueryData(
+        {
+          path: { receivable_id: props.id },
+        },
+        queryClient
+      )?.file_url
+        ? false
+        : 1_000,
+    }
+  );
 
   const handleIssueAndSend = useCallback(() => {
     setPresentation(InvoiceDetailsPresentation.Email);
@@ -147,11 +159,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
-    receivable,
+    receivable: receivable,
     deliveryMethod,
   });
 
-  if (isInvoiceLoading) {
+  const [isViewChanging, startViewChange] = useTransition();
+
+  if (isInvoiceLoading || isViewChanging) {
     return <LoadingPage />;
   }
 
@@ -164,13 +178,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  if (receivable.type !== InvoiceResponsePayload.type.INVOICE) {
+  if (receivable.type !== 'invoice') {
     return (
       <NotFound
         title={t(i18n)`Receivable type not supported`}
         description={t(
           i18n
-        )`Receivable type ${receivable.type} is not supported. Only ${InvoiceResponsePayload.type.INVOICE} is supported.`}
+        )`Receivable type ${receivable.type} is not supported. Only invoice is supported.`}
       />
     );
   }
@@ -179,16 +193,12 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     return (
       <EditInvoiceDetails
         invoice={receivable}
-        onUpdated={callbacks.handleChangeViewInvoice}
-        onCancel={callbacks.handleChangeViewInvoice}
+        onUpdated={() => startViewChange(callbacks.handleChangeViewInvoice)}
+        onCancel={() => startViewChange(callbacks.handleChangeViewInvoice)}
       />
     );
   }
 
-  /**
-   * We don't need to localize this string
-   * because we will put `documentId` into i18n later
-   */
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const documentId = receivable.document_id ?? 'INV-auto';
 
@@ -254,12 +264,15 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   <Button
                     variant="outlined"
                     color="primary"
-                    onClick={callbacks.handleChangeViewInvoice}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      startViewChange(callbacks.handleChangeViewInvoice);
+                    }}
                     disabled={loading}
                   >{t(i18n)`Edit invoice`}</Button>
                 )}
                 {buttons.isMoreButtonVisible && (
-                  <React.Fragment>
+                  <>
                     <Button
                       {...buttonProps}
                       variant="text"
@@ -278,7 +291,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         {t(i18n)`Send invoice`}
                       </MenuItem>
                     </StyledMenu>
-                  </React.Fragment>
+                  </>
                 )}
                 {buttons.isDownloadPDFButtonVisible && (
                   <Button
@@ -339,7 +352,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               <FileViewer
                 mimetype="application/pdf"
                 url={pdf.file_url}
-                onReloadCallback={refetchPdf}
+                onReloadCallback={() =>
+                  void api.receivables.getReceivablesIdPdfLink.resetQueries(
+                    {
+                      parameters: { path: { receivable_id: props.id } },
+                    },
+                    queryClient
+                  )
+                }
               />
             ) : null}
           </Grid>
@@ -359,7 +379,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   />
                 )
               )}
-              <Overview invoice={receivable} />
+              <Overview {...receivable} />
             </Stack>
           </Grid>
         </Grid>
