@@ -32,12 +32,12 @@ export class PaymentTermsService extends GeneralService {
     components['schemas']['PaymentTermsResponse']
   > {
     const term_1 = {
-      discount: faker.number.int({ min: 1, max: 50 }),
+      discount: faker.number.int({ min: 10, max: 50 }),
       number_of_days: faker.number.int({ min: 1, max: 20 }),
     };
 
     const term_2 = {
-      discount: faker.number.int({ min: 1, max: 50 }),
+      discount: faker.number.int({ min: 1, max: term_1.discount }),
       number_of_days: faker.number.int({
         min: term_1.number_of_days + 1,
         max: term_1.number_of_days + 20,
