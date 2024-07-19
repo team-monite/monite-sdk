@@ -1,10 +1,14 @@
 import { components } from '@/api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
+import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
 
 export const personFixture = (
   person?: Partial<PersonRequest>
 ): PersonResponse => {
   return {
+    citizenship: getRandomItemFromArray(AllowedCountries),
+    created_by_entity_user_id: faker.string.uuid(),
     address: {
       country: person?.address?.country ?? faker.location.countryCode(),
       line1: faker.location.streetAddress(),

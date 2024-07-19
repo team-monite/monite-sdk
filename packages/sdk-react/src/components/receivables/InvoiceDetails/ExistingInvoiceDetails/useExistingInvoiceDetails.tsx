@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
   useDeleteReceivableById,
   useIssueReceivableById,
-  useReceivablePDFById,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
 
@@ -48,7 +48,10 @@ export function useExistingInvoiceDetails({
   const deleteMutation = useDeleteReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
   const issueMutation = useIssueReceivableById(receivableId);
-  const pdfQuery = useReceivablePDFById(receivableId);
+  const { api } = useMoniteContext();
+  const pdfQuery = api.receivables.getReceivablesIdPdfLink.useQuery({
+    path: { receivable_id: receivableId },
+  });
 
   const mutationInProgress =
     deleteMutation.isPending ||

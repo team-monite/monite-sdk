@@ -10,7 +10,10 @@ describe('Onboarding business profile', () => {
     const { values, fields, errors } = onboardingBusinessProfileMixedFixture();
 
     const generatedFields = generateFieldsByValues<
-      components['schemas']['OnboardingBusinessProfile']
+      Omit<
+        components['schemas']['OnboardingBusinessProfile'],
+        'operating_countries'
+      >
     >({
       values,
       optional: ['url'],

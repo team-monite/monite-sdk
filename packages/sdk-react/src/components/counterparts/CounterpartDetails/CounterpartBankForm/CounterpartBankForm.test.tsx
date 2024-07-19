@@ -286,7 +286,7 @@ describe('CounterpartBankForm', () => {
             name: '',
             routing_number: '',
             sort_code: '',
-            is_default: false,
+            is_default_for_currency: false,
           };
 
         const actualRequestBody = requestBody.body;

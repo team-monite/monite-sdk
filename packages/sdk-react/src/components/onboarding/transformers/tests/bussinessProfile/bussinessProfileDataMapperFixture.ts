@@ -10,7 +10,7 @@ function getBusinessProfile(): BusinessProfile {
 }
 
 export const onboardingBusinessProfileMixedFixture = (): OnboardingTestData<
-  OnboardingBusinessProfile,
+  Omit<OnboardingBusinessProfile, 'operating_countries'>,
   Omit<BusinessProfile, 'operating_countries'>
 > => {
   return {

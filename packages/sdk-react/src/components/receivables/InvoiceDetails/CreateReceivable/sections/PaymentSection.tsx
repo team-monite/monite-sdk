@@ -1,12 +1,10 @@
 import React, { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { getCountries, getCurrencies } from '@/core/utils';
-import { I18n } from '@lingui/core';
+import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -23,27 +21,6 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from './Section.types';
-
-const getBankAccountName = (
-  i18n: I18n,
-  bankAccount: components['schemas']['EntityBankAccountResponse']
-) => {
-  if (bankAccount.display_name) {
-    return bankAccount.display_name;
-  }
-
-  if (bankAccount.bank_name) {
-    return bankAccount.bank_name;
-  }
-
-  if (bankAccount.country && bankAccount.currency) {
-    return `${getCountries(i18n)[bankAccount.country]} (${
-      getCurrencies(i18n)[bankAccount.currency]
-    })`;
-  }
-
-  return bankAccount.id;
-};
 
 export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
@@ -101,11 +78,7 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
                     >
                       {bankAccounts?.data.map((bankAccount) => (
                         <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                          {`${getBankAccountName(i18n, bankAccount)} ${
-                            bankAccount.is_default_for_currency
-                              ? t(i18n)`(Default)`
-                              : ''
-                          }`}
+                          {getBankAccountName(i18n, bankAccount)}
                         </MenuItem>
                       ))}
                     </Select>

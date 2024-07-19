@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import { components } from '@/api';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {

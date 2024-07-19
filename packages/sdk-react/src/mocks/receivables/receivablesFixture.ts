@@ -97,8 +97,6 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
       updated_at: faker.date.past().toString(),
       vat_rate: {
         id: productVatId.id,
-        created_at: productVatId.created_at,
-        updated_at: productVatId.updated_at,
         value: productVatId.value,
         country: productVatId.country,
       },
@@ -136,7 +134,7 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
     counterpart_id: faker.string.uuid(),
     counterpart_name: faker.company.name(),
     counterpart_type: 'individual',
-    counterpart_address: {
+    counterpart_billing_address: {
       country: 'DE',
       city: 'Berlin',
       postal_code: '10115',
@@ -262,24 +260,13 @@ function createRandomInvoice(
           },
         }
       : undefined,
-    counterpart_address: {
-      country: getRandomItemFromArray(AllowedCountries),
-      city: faker.location.city(),
-      postal_code: faker.location.zipCode(),
-      state: faker.location.state(),
-      line1: faker.location.street(),
-      line2: faker.location.streetAddress(),
-    },
     amount_due: faker.number.int({ max: 10_000 }),
     entity: createRandomInvoiceEntity(),
     entity_vat_id: getRandomItemFromArray(entityVatIds.data),
     entity_address: generateCounterpartAddress(),
     memo: faker.lorem.sentence(),
     entity_bank_account: faker.datatype.boolean()
-      ? {
-          ...getRandomItemFromArray(bankAccountsFixture.data),
-          is_default: true,
-        }
+      ? getRandomItemFromArray(bankAccountsFixture.data)
       : undefined,
     related_documents: {
       credit_note_ids: undefined,
@@ -323,7 +310,7 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     counterpart_id: faker.string.uuid(),
     counterpart_name: faker.company.name(),
     counterpart_type: 'individual',
-    counterpart_address: {
+    counterpart_billing_address: {
       country: 'DE',
       city: 'Berlin',
       postal_code: '10115',
