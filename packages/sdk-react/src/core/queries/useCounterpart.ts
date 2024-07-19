@@ -204,14 +204,14 @@ export const useCreateCounterpartVat = () => {
   const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdVatIds.useMutation(undefined, {
-    onSuccess: async (counterpart) => {
+    onSuccess: async (vatId) => {
       await api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
         {
-          parameters: { path: { counterpart_id: counterpart.id } },
+          parameters: { path: { counterpart_id: vatId.counterpart_id } },
         },
         queryClient
       );
-      toast.success(t(i18n)`Vat “${counterpart.value}” was created.`);
+      toast.success(t(i18n)`Vat “${vatId.value}” was created.`);
     },
 
     onError: () => {
