@@ -6,7 +6,7 @@ import { GeneralService } from '@/lib/monite-api/demo-data-generator/general.ser
 import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-interface IPaymentTermsServiceOptions {
+interface PaymentTermsServiceOptions {
   /**
    * Describes, how many payment terms should be created.
    * By default, 5
@@ -15,11 +15,11 @@ interface IPaymentTermsServiceOptions {
 }
 
 export class PaymentTermsService extends GeneralService {
-  private options: IPaymentTermsServiceOptions = {
+  private options: PaymentTermsServiceOptions = {
     count: 5,
   };
 
-  public withOptions(options: Partial<IPaymentTermsServiceOptions>): this {
+  public withOptions(options: Partial<PaymentTermsServiceOptions>): this {
     this.options = {
       ...this.options,
       ...options,

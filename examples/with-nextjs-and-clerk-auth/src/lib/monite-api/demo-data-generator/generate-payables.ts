@@ -5,6 +5,7 @@ import { faker } from '@faker-js/faker';
 import {
   createCounterpart,
   createCounterpartBankAccount,
+  createCounterpartContact,
   createCounterpartVatId,
 } from '@/lib/monite-api/demo-data-generator/counterparts';
 import {
@@ -14,7 +15,11 @@ import {
   PayableCounterpart,
 } from '@/lib/monite-api/demo-data-generator/payables';
 import { AccessToken } from '@/lib/monite-api/fetch-token';
-import { createMoniteClient, getEntity } from '@/lib/monite-api/monite-client';
+import { getEntity } from '@/lib/monite-api/get-entity';
+import {
+  createMoniteClient,
+  MoniteClient,
+} from '@/lib/monite-api/monite-client';
 
 export const generateCounterpartsWithPayables = async (
   {
@@ -52,7 +57,7 @@ export const generateCounterpartsWithPayables = async (
 
     try {
       const counterpart = await createCounterpart({
-        token,
+        moniteClient,
         entity_id,
       });
 
@@ -61,7 +66,7 @@ export const generateCounterpartsWithPayables = async (
       const counterpart_bank_account = await createCounterpartBankAccount({
         is_default_for_currency: true,
         counterpart_id: counterpart.id,
-        token,
+        moniteClient,
         entity_id,
       });
 
@@ -69,7 +74,7 @@ export const generateCounterpartsWithPayables = async (
 
       const vat = await createCounterpartVatId({
         counterpart_id: counterpart.id,
-        token,
+        moniteClient,
         entity,
       });
 
@@ -82,6 +87,22 @@ export const generateCounterpartsWithPayables = async (
             currency: counterpart_bank_account.currency,
           },
         });
+
+        if (counterpart.type == 'organization') {
+          console.log(chalk.green('- Creating Counterpart Contact'));
+
+          await createCounterpartContact({
+            counterpart_id: counterpart.id,
+            moniteClient,
+            entity,
+          });
+        } else {
+          console.log(
+            chalk.blue(
+              "- Skipping Contact creation because the counterpart isn't an organization"
+            )
+          );
+        }
 
         logger?.({ message: 'Generating counterparts...' });
       } else {
@@ -104,7 +125,7 @@ export const generateCounterpartsWithPayables = async (
   for (let payableIndex = 0; payableIndex < payable_count; payableIndex++) {
     try {
       await generatePayableWithLineItems({
-        token,
+        moniteClient,
         entity_id,
         counterparts,
       });
@@ -133,7 +154,7 @@ const generatePayableWithLineItems = async (
     ...entityParams
   }: {
     entity_id: string;
-    token: AccessToken;
+    moniteClient: MoniteClient;
     counterparts: PayableCounterpart[];
   },
   {

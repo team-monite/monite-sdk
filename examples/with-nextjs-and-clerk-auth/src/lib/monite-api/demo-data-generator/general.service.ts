@@ -16,23 +16,23 @@ export function getRandomProperty<T = unknown>(obj: Record<string, T>): T {
   return obj[keys[(keys.length * Math.random()) << 0]];
 }
 
-export interface ILogger {
+export interface Logger {
   (message: DemoDataGenerationMessage): void;
 }
 
-export interface IGeneralServiceConstructor {
+export interface GeneralServiceConstructor {
   token: AccessToken;
   entityId: string;
-  logger?: ILogger;
+  logger?: Logger;
 }
 
 export abstract class GeneralService {
   protected readonly token: AccessToken;
   protected readonly entityId: string;
-  protected readonly logger?: ILogger;
+  protected readonly logger?: Logger;
   protected readonly request: ReturnType<typeof createMoniteClient>;
 
-  constructor(params: IGeneralServiceConstructor) {
+  constructor(params: GeneralServiceConstructor) {
     this.token = params.token;
     this.entityId = params.entityId;
     this.logger = params.logger;
