@@ -13,6 +13,7 @@ const primaryLight = {
   '30': '#2E2EE5',
   '50': '#3737FF',
   '60': '#9999FF',
+  '90': '#EBEBFF',
   '95': '#F4F4FE',
 };
 
@@ -20,6 +21,7 @@ const primaryDark = {
   '30': '#4545E8',
   '50': '#3737FF',
   '60': '#12129E',
+  '90': '#0F0F50',
   '95': '#0C0C40',
 };
 
@@ -43,12 +45,14 @@ export const neutralTransparentLight = {
   '50': '#0000008F',
   '80': '#00000021',
   '90': '#0000000D',
+  '95': '#00000005',
 };
 
 export const neutralTransparentDark = {
   '50': '#9595958F',
   '80': '#FFFFFF21',
   '90': '#FFFFFF0D',
+  '95': '#00000005',
 };
 
 export const paletteLight: PaletteOptions = {
@@ -331,7 +335,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
       notchedOutline: {
         top: 0,
-        borderColor: neutralTransparentLight['90'],
         legend: { display: 'none' },
       },
       root: {
@@ -349,6 +352,26 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             borderWidth: 1,
             boxShadow: '0px 0px 0px 4px rgba(55, 55, 255, 0.20)',
           },
+        },
+        '&.MoniteFilterField': {
+          backgroundColor: neutralTransparentLight['95'],
+
+          '&:hover': {
+            backgroundColor: neutralTransparentLight['90'],
+            fieldset: { borderColor: 'transparent' },
+          },
+
+          '&:active': {
+            backgroundColor: primaryLight['90'],
+            fieldset: { borderColor: 'transparent' },
+          },
+
+          '&:focused': {
+            backgroundColor: primaryLight['95'],
+            fieldset: { borderColor: 'transparent' },
+          },
+
+          fieldset: { borderColor: 'transparent' },
         },
       },
     },

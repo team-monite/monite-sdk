@@ -23,6 +23,7 @@ export const DEBOUNCE_SEARCH_TIMEOUT: number = 500;
  * @property {(value: string | null) => void} onChange - The function to be called when the input value changes.
  */
 interface Props {
+  className?: string;
   label: string;
   onChange: (value: string | null) => void;
 }
@@ -43,7 +44,7 @@ interface Props {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange }: Props) => {
+export const SearchField = ({ className, label, onChange }: Props) => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
@@ -62,6 +63,7 @@ export const SearchField = ({ label, onChange }: Props) => {
         id="search-by-name"
         name="search-by-name"
         aria-label="search-by-name"
+        className={className}
         label={label}
         onChange={(search) => {
           debouncedOnChange(search.target.value || null);

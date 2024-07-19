@@ -40,6 +40,7 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
       {filters.includes('search') && (
         <Grid item sm={6} md={4}>
           <SearchField
+            className="MoniteFilterField"
             label={t(i18n)`Search`}
             onChange={(search) => {
               onChangeFilter(FILTER_TYPE_SEARCH, search);
@@ -52,6 +53,7 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
           <MuiFormControl variant="outlined" fullWidth>
             <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
             <Select
+              className="MoniteFilterField"
               labelId="status"
               label={t(i18n)`Status`}
               defaultValue="all"
@@ -116,6 +118,7 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
           <MuiFormControl variant="outlined" fullWidth>
             <MuiInputLabel id="customer">{t(i18n)`Customer`}</MuiInputLabel>
             <Select
+              className="MoniteFilterField"
               labelId="customer"
               label={t(i18n)`Customer`}
               defaultValue="all"
@@ -142,6 +145,7 @@ export const Filters = ({ onChangeFilter, filters }: Props) => {
       {filters.includes('due_date__lte') && (
         <Grid item xs={6} sm={3} md={2} lg={2}>
           <DatePicker<Date>
+            className="MoniteFilterField"
             label={t(i18n)`Due date`}
             onChange={(value, error) => {
               if (error.validationError) {
