@@ -36,7 +36,7 @@ const counterpartCountries = [
   'GB',
 ] satisfies Array<AllowedCountries>;
 
-interface ICounterpartsBuilderOptions {
+interface CounterpartsBuilderOptions {
   counterparts: {
     /**
      * How many counterparts to create
@@ -80,12 +80,12 @@ interface ICounterpartsBuilderOptions {
   };
 }
 
-interface ICounterpartsServiceResponse {
+interface CounterpartsServiceResponse {
   counterparts: Array<CounterpartResponse>;
 }
 
 export class CounterpartsService extends GeneralService {
-  private options: ICounterpartsBuilderOptions = {
+  private options: CounterpartsBuilderOptions = {
     counterparts: {
       count: 3,
     },
@@ -103,7 +103,7 @@ export class CounterpartsService extends GeneralService {
     },
   };
 
-  public withOptions(options: Partial<ICounterpartsBuilderOptions>): this {
+  public withOptions(options: Partial<CounterpartsBuilderOptions>): this {
     this.options = {
       ...this.options,
       ...options,
@@ -112,7 +112,7 @@ export class CounterpartsService extends GeneralService {
     return this;
   }
 
-  public async create(): Promise<ICounterpartsServiceResponse> {
+  public async create(): Promise<CounterpartsServiceResponse> {
     const counterparts: Array<CounterpartResponse> = [];
     const moniteClient = this.request;
 
