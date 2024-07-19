@@ -19,16 +19,17 @@ export const getEntity = async (
 
   if (entityResponse.error) {
     console.error(
-      `Failed to fetch entity details when creating a Bank Account for the entity_id: "${entity_id}"`,
+      `Failed to fetch entity details for the entity_id: "${entity_id}"`,
       `x-request-id: ${entityResponse.response.headers.get('x-request-id')}`
     );
 
-    throw entityResponse.error;
+    throw new Error(
+      `Failed to fetch entity details: ${JSON.stringify(entityResponse.error)}`
+    );
   }
 
-  const entity =
-    entityResponse.data as components['schemas']['EntityOrganizationResponse'];
-  if (entity.type != 'organization')
+  if (entityResponse.data.type != 'organization')
     throw new Error(`Cannot fetch an individual entity`);
-  return entity;
+
+  return entityResponse.data;
 };
