@@ -129,5 +129,3 @@ export const OnboardingEntityDocuments = () => {
     </OnboardingForm>
   );
 };
-
-type AllowedFileTypes = components['schemas']['AllowedFileTypes'];
