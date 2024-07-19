@@ -10,17 +10,17 @@ import { deepmerge } from '@mui/utils';
 import type {} from '@mui/x-data-grid/themeAugmentation';
 
 const primaryLight = {
-  dark: '#1D59CC',
-  main: '#3737FF',
-  light: '#F4F8FF',
-  lightest: '#F4F4FE',
+  '30': '#2E2EE5',
+  '50': '#3737FF',
+  '60': '#9999FF',
+  '95': '#F4F4FE',
 };
 
 const primaryDark = {
-  dark: '#1D59CC',
-  main: '#3737FF',
-  light: '#12129E',
-  lightest: '#0C0C40',
+  '30': '#4545E8',
+  '50': '#3737FF',
+  '60': '#12129E',
+  '95': '#0C0C40',
 };
 
 const secondary = {
@@ -52,12 +52,20 @@ export const neutralTransparentDark = {
 };
 
 export const paletteLight: PaletteOptions = {
-  primary: primaryLight,
+  primary: {
+    dark: primaryLight['30'],
+    main: primaryLight['50'],
+    light: primaryLight['60'],
+  },
   secondary,
 };
 
 export const paletteDark: PaletteOptions = {
-  primary: primaryDark,
+  primary: {
+    dark: primaryDark['30'],
+    main: primaryDark['50'],
+    light: primaryDark['60'],
+  },
   secondary,
 };
 
@@ -108,12 +116,22 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiButton: {
     styleOverrides: {
       containedPrimary: {
-        padding: '6px 16px',
-        height: 40,
+        padding: '12px 20px',
         boxShadow: 'none',
         borderRadius: 8,
         fontSize: 16,
         fontWeight: 500,
+        backgroundColor: primaryLight['50'],
+
+        '&:hover': {
+          boxShadow: 'none',
+          backgroundColor: primaryLight['60'],
+        },
+
+        '&:active': {
+          boxShadow: 'none',
+          backgroundColor: primaryLight['30'],
+        },
       },
 
       root: {
@@ -230,7 +248,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
 
         '&.Mui-selected': {
-          backgroundColor: primaryLight.lightest,
+          backgroundColor: primaryLight['95'],
         },
       },
     },
@@ -298,7 +316,7 @@ const defaultMoniteComponentsDark = deepmerge(defaultMoniteComponents, {
         color: neutralTransparentDark['50'],
         '&:active': { backgroundColor: neutralTransparentDark['90'] },
         '&:hover:after': { backgroundColor: neutralTransparentDark['50'] },
-        '&.Mui-selected': { backgroundColor: primaryDark.lightest },
+        '&.Mui-selected': { backgroundColor: primaryDark['95'] },
       },
     },
   },
