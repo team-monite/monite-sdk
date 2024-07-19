@@ -24,11 +24,13 @@ import { generateBankAccount } from '@/lib/monite-api/demo-data-generator/genera
 import { generateEntity } from '@/lib/monite-api/demo-data-generator/generate-entity';
 import { generateCounterpartsWithPayables } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
+import { createPaymentReminder } from '@/lib/monite-api/demo-data-generator/payment-reminders';
 import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
 import { type AccessToken, fetchToken } from '@/lib/monite-api/fetch-token';
+import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
@@ -317,6 +319,22 @@ program
         await generateBankAccount({
           entity_id,
           token: await fetchTokenCLI(args),
+        });
+      })
+  )
+  .addCommand(
+    commandWithEntityOptions()
+      .name('reminders')
+      .description('Generate payment reminders for the entity_id')
+      .action(async (args) => {
+        const { entity_id } = getEntityArgs(args);
+        if (!entity_id) throw new Error('entity_id is empty');
+
+        const token = await fetchTokenCLI(args);
+        const moniteClient = createMoniteClient(token);
+        await createPaymentReminder({
+          entity_id,
+          moniteClient,
         });
       })
   )
