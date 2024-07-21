@@ -4,7 +4,7 @@ import { Control } from 'react-hook-form';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, InputLabel, Stack, Typography } from '@mui/material';
 
 import { CreateBeforeDueDateReminderFormFields } from './types';
 
@@ -19,7 +19,9 @@ export const ReminderForm = ({ control, termKey }: ReminderFormProps) => {
   return (
     <Stack spacing={2} mt={2}>
       <Box display="flex" alignItems="center" gap={1}>
-        <Typography>{t(i18n)`Remind`}</Typography>
+        <InputLabel htmlFor={`${termKey}.days_before`}>
+          <Typography>{t(i18n)`Remind`}</Typography>
+        </InputLabel>
         <RHFTextField
           name={`${termKey}.days_before`}
           type="number"
