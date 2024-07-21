@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import {
   Controller,
   ControllerRenderProps,
+  FieldError,
   FieldValues,
   useFormContext,
 } from 'react-hook-form';
@@ -64,8 +65,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     };
 
   const renderSelectField = (
-    field: ControllerRenderProps<FieldValues, string>,
-    error: Error | undefined,
+    field: ControllerRenderProps<any, any>,
+    error: FieldError | undefined,
     label: string
   ) => (
     <FormControl
@@ -142,7 +143,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 name="entity_bank_account_id"
                 control={control}
                 render={({ field, fieldState: { error } }) =>
-                  // @ts-expect-error - we need to pass `error` to the render function
                   renderSelectField(field, error, t(i18n)`Before due date`)
                 }
               />
@@ -152,7 +152,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 name="entity_bank_account_id"
                 control={control}
                 render={({ field, fieldState: { error } }) =>
-                  // @ts-expect-error - we need to pass `error` to the render function
                   renderSelectField(field, error, t(i18n)`Overdue reminders`)
                 }
               />
