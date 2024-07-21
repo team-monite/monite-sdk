@@ -57,12 +57,12 @@ msgstr "{0} has been updated"
 msgid "{bankAccountName} (Default)"
 msgstr "{bankAccountName} (Default)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:95
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:102
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:102
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:109
 msgid "{label}"
 msgstr "{label}"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:115
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:123
 msgid "{noOptionsText}"
 msgstr "{noOptionsText}"
 
@@ -689,7 +689,7 @@ msgstr "Barbados"
 msgid "Barber and Beauty Shops"
 msgstr "Barber and Beauty Shops"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:175
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:180
 msgid "Before due date"
 msgstr "Before due date"
 
@@ -1486,7 +1486,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 msgid "Create"
 msgstr "Create"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:128
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:136
 msgid "Create a reminder preset"
 msgstr "Create a reminder preset"
 
@@ -2051,7 +2051,7 @@ msgstr "Ecuador"
 #: src/components/products/Products.test.tsx:161
 #: src/components/products/Products.test.tsx:258
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:247
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:141
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:152
 #: src/components/TableActions/TableActions.tsx:52
 #: src/components/tags/TagsTable/TagsTable.test.tsx:379
 #: src/components/tags/TagsTable/TagsTable.test.tsx:410
@@ -3237,7 +3237,7 @@ msgid "Lithuania"
 msgstr "Lithuania"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:114
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:154
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:167
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -3708,11 +3708,11 @@ msgstr "No file provided"
 msgid "No items yet"
 msgstr "No items yet"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:192
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:198
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:177
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:182
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
 
@@ -3841,7 +3841,7 @@ msgstr "Overdue payment"
 msgid "Overdue reminder"
 msgstr "Overdue reminder"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:190
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:196
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
 
@@ -4491,7 +4491,7 @@ msgstr "Religious Organizations"
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:203
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:209
 msgid "Reminders"
 msgstr "Reminders"
 
@@ -5971,8 +5971,8 @@ msgid "You can not create receivable with a type other than \"{invoice}\""
 msgstr "You can not create receivable with a type other than \"{invoice}\""
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/RemindersSection.tsx:160
-msgid "You do not have permissions to view reminders."
-msgstr "You do not have permissions to view reminders."
+#~ msgid "You do not have permissions to view reminders."
+#~ msgstr "You do not have permissions to view reminders."
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:369
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
