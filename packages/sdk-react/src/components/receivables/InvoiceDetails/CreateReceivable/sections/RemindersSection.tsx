@@ -1,7 +1,11 @@
 import React, { useMemo } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  ControllerRenderProps,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 
-import { components } from '@/api';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -19,6 +23,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   Typography,
 } from '@mui/material';
@@ -28,6 +33,7 @@ import type { SectionGeneralProps } from './Section.types';
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
   const { control } = useFormContext<CreateReceivablesFormProps>();
+
   const { root } = useRootElements();
   const { api } = useMoniteContext();
 
@@ -46,31 +52,36 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     return !paymentReminders?.data?.length && !isPaymentRemindersLoading;
   }, [isPaymentRemindersLoading, paymentReminders]);
 
-  const handleSelectChange = (field) => (event) => {
-    const value = event.target.value;
-    if (value === 'create') {
-      // eslint-disable-next-line lingui/no-unlocalized-strings
-      alert('You have selected Create a reminder preset');
-    } else {
-      field.onChange(value);
-    }
-  };
+  const handleSelectChange =
+    (field: ControllerRenderProps<FieldValues, string>) =>
+    (event: SelectChangeEvent<string>) => {
+      const value = event.target.value;
+      if (value === 'create') {
+        alert(t(i18n)`You have selected Create a reminder preset`);
+      } else {
+        field.onChange(value);
+      }
+    };
 
-  const renderSelectField = (field, label) => (
+  const renderSelectField = (
+    field: ControllerRenderProps<FieldValues, string>,
+    error: Error | undefined,
+    label: string
+  ) => (
     <FormControl
       variant="outlined"
       fullWidth
-      error={Boolean(field.error)}
+      error={Boolean(error)}
       disabled={disabled}
     >
-      <InputLabel htmlFor={field.name}>{t(i18n)`{label}`}</InputLabel>
+      <InputLabel htmlFor={field.name}>{t(i18n)`${label}`}</InputLabel>
       <Grid container alignItems="center" spacing={1}>
         <Grid item xs={10}>
           <Select
             {...field}
             id={field.name}
             labelId={field.name}
-            label={t(i18n)`{label}`}
+            label={t(i18n)`${label}`}
             MenuProps={{ container: root }}
             onChange={handleSelectChange(field)}
             disabled={isBankAccountsLoading || bankAccounts?.data.length === 0}
@@ -100,17 +111,14 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         <Grid item xs={2}>
           <Button
             variant="outlined"
-            onClick={() => {
-              // eslint-disable-next-line lingui/no-unlocalized-strings
-              alert(`You have selected Edit`);
-            }}
+            onClick={() => alert(`You have selected Edit`)}
             fullWidth
           >
             {t(i18n)`Edit`}
           </Button>
         </Grid>
       </Grid>
-      {field.error && <FormHelperText>{field.error.message}</FormHelperText>}
+      {error && <FormHelperText>{error.message}</FormHelperText>}
       {!isBankAccountsLoading && bankAccounts?.data.length === 0 && (
         <FormHelperText>{t(i18n)`No bank accounts available`}</FormHelperText>
       )}
@@ -128,10 +136,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 name="entity_bank_account_id"
                 control={control}
                 render={({ field, fieldState: { error } }) =>
-                  renderSelectField(
-                    { ...field, error },
-                    t(i18n)`Before due date`
-                  )
+                  // @ts-expect-error - we need to pass `error` to the render function
+                  renderSelectField(field, error, t(i18n)`Before due date`)
                 }
               />
             </Grid>
@@ -140,10 +146,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 name="entity_bank_account_id"
                 control={control}
                 render={({ field, fieldState: { error } }) =>
-                  renderSelectField(
-                    { ...field, error },
-                    t(i18n)`Overdue reminders`
-                  )
+                  // @ts-expect-error - we need to pass `error` to the render function
+                  renderSelectField(field, error, t(i18n)`Overdue reminders`)
                 }
               />
             </Grid>
