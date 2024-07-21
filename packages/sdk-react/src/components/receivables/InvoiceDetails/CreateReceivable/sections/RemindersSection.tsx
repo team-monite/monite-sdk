@@ -72,7 +72,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     (event: SelectChangeEvent<string>) => {
       const value = event.target.value;
       if (value === 'create') {
-        alert(t(i18n)`You have selected Create a reminder preset`);
+        // eslint-disable-next-line lingui/no-unlocalized-strings
+        alert(`You have selected Create a reminder preset`);
       } else {
         field.onChange(value);
       }
@@ -131,7 +132,10 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         <Grid item xs={2}>
           <Button
             variant="outlined"
-            onClick={() => alert(`You have selected Edit`)}
+            onClick={() => {
+              // eslint-disable-next-line lingui/no-unlocalized-strings
+              alert(`You have selected Edit`);
+            }}
             fullWidth
           >
             {t(i18n)`Edit`}
