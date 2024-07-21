@@ -1,9 +1,10 @@
 import React, { useId } from 'react';
-import { FormProvider, useForm, Controller } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { RHFSwitch } from '@/components/RHF/RHFSwitch';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -115,7 +116,7 @@ export const CreateBeforeDueDateReminder = () => {
   const methods = useForm<CreateBeforeDueDateReminderFormFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
   });
-  const { control, handleSubmit, formState, watch } = methods;
+  const { control, handleSubmit, watch } = methods;
 
   const formName = `Monite-Form-createBeforeDueDateReminder-${useId()}`;
 
@@ -174,15 +175,8 @@ export const CreateBeforeDueDateReminder = () => {
                 required
               />
               <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <FormControlLabel
-                  sx={{ width: '100%' }}
-                  control={
-                    <Controller
-                      control={control}
-                      name="is_discount_date_1"
-                      render={({ field }) => <Switch {...field} />}
-                    />
-                  }
+                <RHFSwitch
+                  name="is_discount_date_1"
                   label={
                     <Typography variant="subtitle2">
                       {t(i18n)`Discount date 1`}
@@ -231,15 +225,8 @@ export const CreateBeforeDueDateReminder = () => {
                 )}
               </Card>
               <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <FormControlLabel
-                  sx={{ width: '100%' }}
-                  control={
-                    <Controller
-                      control={control}
-                      name="is_discount_date_2"
-                      render={({ field }) => <Switch {...field} />}
-                    />
-                  }
+                <RHFSwitch
+                  name="is_discount_date_2"
                   label={
                     <Typography variant="subtitle2">
                       {t(i18n)`Discount date 2`}
@@ -288,15 +275,8 @@ export const CreateBeforeDueDateReminder = () => {
                 )}
               </Card>
               <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <FormControlLabel
-                  sx={{ width: '100%' }}
-                  control={
-                    <Controller
-                      control={control}
-                      name="is_due_date"
-                      render={({ field }) => <Switch {...field} />}
-                    />
-                  }
+                <RHFSwitch
+                  name="is_due_date"
                   label={
                     <Typography variant="subtitle2">
                       {t(i18n)`Due date`}
