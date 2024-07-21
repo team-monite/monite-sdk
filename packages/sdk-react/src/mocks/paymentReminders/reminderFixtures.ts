@@ -14,9 +14,9 @@ export const getPaymentReminder = (
 });
 
 export const getOverdueReminder = (
-  paymentReminder: components['schemas']['OverdueReminderRequest']
+  overdueReminder: components['schemas']['OverdueReminderRequest']
 ): components['schemas']['PaymentReminderResponse'] => ({
-  ...paymentReminder,
+  ...overdueReminder,
   id: faker.string.nanoid(),
   created_at: faker.date.past().toString(),
   updated_at: faker.date.past().toString(),
