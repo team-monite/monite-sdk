@@ -166,13 +166,19 @@ const PayablesBase = ({
             return;
           }
 
-          toast.promise(payableUploadFromFileMutation.mutateAsync({ file }), {
-            loading: t(i18n)`Uploading payable file`,
-            success: t(i18n)`Payable uploaded successfully`,
-            error: (error) =>
-              getLegacyAPIErrorMessage(error) ??
-              t(i18n)`Error when uploading payable file`,
-          });
+          toast.promise(
+            payableUploadFromFileMutation.mutateAsync({
+              file,
+              file_type: 'payables',
+            }),
+            {
+              loading: t(i18n)`Uploading payable file`,
+              success: t(i18n)`Payable uploaded successfully`,
+              error: (error) =>
+                getLegacyAPIErrorMessage(error) ??
+                t(i18n)`Error when uploading payable file`,
+            }
+          );
         }}
       />
       <Dialog

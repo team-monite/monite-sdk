@@ -152,7 +152,8 @@ type OptionalIndividualSchema =
   components['schemas']['OptionalIndividualSchema'];
 type OptionalOrganizationSchema =
   components['schemas']['OptionalOrganizationSchema'];
-type OptionalPersonAddress = components['schemas']['OptionalPersonAddress'];
+type OptionalPersonAddress =
+  components['schemas']['OptionalPersonAddressRequest'];
 type OptionalPersonRelationship =
   components['schemas']['OptionalPersonRelationship'];
 type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];

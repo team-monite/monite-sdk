@@ -59,7 +59,7 @@ export const counterpartBankHandlers = [
       currency: json.currency,
       routing_number: json.routing_number,
       sort_code: json.sort_code,
-      is_default: false,
+      is_default_for_currency: false,
     };
 
     return HttpResponse.json(response);

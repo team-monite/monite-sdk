@@ -7,7 +7,7 @@ import { components } from '@/lib/monite-api/schema';
 
 import { GeneralService, getRandomItemFromArray } from './general.service';
 
-interface IProductsServiceOptions {
+interface ProductsServiceOptions {
   /**
    * Describes, how many products should be created.
    * By default, 5
@@ -39,14 +39,14 @@ interface IProductsServiceOptions {
 }
 
 export class ProductsService extends GeneralService {
-  private options: IProductsServiceOptions = {
+  private options: ProductsServiceOptions = {
     count: 5,
     type: 'all',
     measureUnits: [],
     currency: 'EUR',
   };
 
-  public withOptions(options: Partial<IProductsServiceOptions>): this {
+  public withOptions(options: Partial<ProductsServiceOptions>): this {
     this.options = {
       ...this.options,
       ...options,

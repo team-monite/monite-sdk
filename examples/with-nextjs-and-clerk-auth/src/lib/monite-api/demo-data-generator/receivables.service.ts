@@ -7,7 +7,7 @@ import { components } from '@/lib/monite-api/schema';
 
 import { GeneralService, getRandomItemFromArray } from './general.service';
 
-interface IReceivablesServiceOptions {
+interface ReceivablesServiceOptions {
   /**
    * Describes, how many receivables should be created.
    * By default, 15
@@ -66,7 +66,7 @@ interface IReceivablesServiceOptions {
 }
 
 export class ReceivablesService extends GeneralService {
-  private options: IReceivablesServiceOptions = {
+  private options: ReceivablesServiceOptions = {
     count: 15,
     type: 'invoice',
     products: [],
@@ -77,7 +77,7 @@ export class ReceivablesService extends GeneralService {
     currency: 'EUR',
   };
 
-  public withOptions(options: Partial<IReceivablesServiceOptions>): this {
+  public withOptions(options: Partial<ReceivablesServiceOptions>): this {
     this.options = {
       ...this.options,
       ...options,

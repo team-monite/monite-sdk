@@ -1,6 +1,8 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useCounterpartList } from '@/core/queries/useCounterpart';
 import { useCounterpartsBankAccountsList } from '@/core/queries/useCouterpartsBankAccounts';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 
 export type UsePayableDetailsFormProps = {
   currentCounterpartId: string;
@@ -10,13 +12,19 @@ export function usePayableDetailsForm({
   currentCounterpartId,
 }: UsePayableDetailsFormProps) {
   const { api } = useMoniteContext();
-  const tagQuery = api.tags.getTags.useQuery({});
+  const { data: user } = useEntityUserByAuthToken();
+  const { data: isTagsReadAllowed } = useIsActionAllowed({
+    method: 'tag',
+    action: 'read',
+    entityUserId: user?.id,
+  });
+
+  const tagQuery = api.tags.getTags.useQuery(
+    {},
+    { enabled: isTagsReadAllowed }
+  );
 
   const counterpartQuery = useCounterpartList();
-  const counterpartAddressQuery =
-    api.counterparts.getCounterpartsIdAddresses.useQuery({
-      path: { counterpart_id: currentCounterpartId },
-    });
 
   const counterpartBankAccountQuery =
     useCounterpartsBankAccountsList(currentCounterpartId);
@@ -24,7 +32,6 @@ export function usePayableDetailsForm({
   return {
     tagQuery,
     counterpartQuery,
-    counterpartAddressQuery,
     counterpartBankAccountQuery,
   };
 }

@@ -53,9 +53,7 @@ export function useCounterpartView({
     useCounterpartAddresses(counterpart?.id);
 
   const { data: contacts, isLoading: isContactsLoading } =
-    useCounterpartContactList(
-      counterpart?.type === 'organization' ? counterpart?.id : undefined
-    );
+    useCounterpartContactList(counterpart?.id);
 
   const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
     counterpart?.id

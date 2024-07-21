@@ -26,9 +26,7 @@ export const PreviewPaymentDetailsSection = ({
           },
           {
             label: t(i18n)`Bank account`,
-            value:
-              entity_bank_account?.bank_name ??
-              entity_bank_account?.display_name,
+            value: entity_bank_account?.bank_name ?? '—',
             withEmptyStateFiller: true,
           },
           {

@@ -117,24 +117,4 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
         staleTime: 1000 * 60 * 1,
       },
     },
-    queryCache: new QueryCache({
-      onError: (err: unknown) => {
-        const message = getLegacyAPIErrorMessage(err);
-
-        if (message) {
-          if (message.includes('Object type at permissions not found')) {
-            toast.error(
-              t(i18n)`You do not have permission to access this resource.`,
-              {
-                id: 'permission-error',
-              }
-            );
-
-            return;
-          }
-        } else {
-          toast.error(t(i18n)`Unrecognized error. Please contact support.`);
-        }
-      },
-    }),
   });

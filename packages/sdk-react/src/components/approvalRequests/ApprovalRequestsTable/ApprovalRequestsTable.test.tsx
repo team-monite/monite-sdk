@@ -44,15 +44,19 @@ describe('ApprovalRequestTable', () => {
     test('next button should be available for interaction but previous button not', async () => {
       renderWithClient(<ApprovalRequestsTable />);
 
-      const nextButton = await screen.findByRole('button', {
-        name: /next/i,
-      });
-      const prevButton = await screen.findByRole('button', {
-        name: /previous/i,
-      });
+      await waitFor(() =>
+        expect(
+          screen.findByRole('button', {
+            name: /next/i,
+          })
+        ).resolves.toBeEnabled()
+      );
 
-      expect(prevButton).toBeDisabled();
-      expect(nextButton).toBeEnabled();
+      expect(
+        screen.getByRole('button', {
+          name: /previous/i,
+        })
+      ).toBeDisabled();
     });
   });
 
@@ -63,16 +67,16 @@ describe('ApprovalRequestTable', () => {
       renderWithClient(<ApprovalRequestsTable onRowClick={onRowClickMock} />);
 
       const firstApproval = approvalRequestsListFixture[0];
+      expect(firstApproval.id).toBeDefined();
 
-      if (!firstApproval)
-        throw new Error('Could not find any approval in the fixtures list');
-
-      const rows = await screen.findAllByRole('row');
-      const firstRow = rows[1]; // skip the header row
+      const firstRow = await waitFor(async () => {
+        const rows = await screen.findAllByRole('row');
+        expect(rows.length).toBeGreaterThan(1);
+        return rows[1]; // skip the header row
+      });
 
       fireEvent.click(firstRow);
 
-      expect(firstApproval.id).toBeDefined();
       expect(onRowClickMock).toHaveBeenCalledWith(firstApproval.id);
     });
   });

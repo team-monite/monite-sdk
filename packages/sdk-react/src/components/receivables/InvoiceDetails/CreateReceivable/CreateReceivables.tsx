@@ -158,24 +158,9 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   counterpart_id: values.counterpart_id,
                   counterpart_vat_id_id:
                     values.counterpart_vat_id_id || undefined,
-                  counterpart_billing_address: {
-                    country: counterpartBillingAddress.country,
-                    city: counterpartBillingAddress.city,
-                    postal_code: counterpartBillingAddress.postal_code,
-                    state: counterpartBillingAddress.state,
-                    line1: counterpartBillingAddress.line1,
-                    line2: counterpartBillingAddress.line2,
-                  },
-                  counterpart_shipping_address: counterpartShippingAddress
-                    ? {
-                        country: counterpartShippingAddress.country,
-                        city: counterpartShippingAddress.city,
-                        postal_code: counterpartShippingAddress.postal_code,
-                        state: counterpartShippingAddress.state,
-                        line1: counterpartShippingAddress.line1,
-                        line2: counterpartShippingAddress.line2,
-                      }
-                    : undefined,
+                  counterpart_billing_address_id: counterpartBillingAddress.id,
+                  counterpart_shipping_address_id:
+                    counterpartShippingAddress?.id,
 
                   /** We shouldn't send an empty string to the server if the value is not set */
                   entity_bank_account_id:

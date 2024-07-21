@@ -188,11 +188,14 @@ export const ProductsTable = ({
           pagination_token: undefined,
         },
       },
-      getNextPageParam: (lastPage) => ({
-        query: {
-          pagination_token: lastPage.next_pagination_token,
-        },
-      }),
+      getNextPageParam: (lastPage) => {
+        if (!lastPage.next_pagination_token) return;
+        return {
+          query: {
+            pagination_token: lastPage.next_pagination_token,
+          },
+        };
+      },
       enabled: !!currency,
     }
   );

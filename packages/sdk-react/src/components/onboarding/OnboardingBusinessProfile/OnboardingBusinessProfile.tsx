@@ -23,7 +23,11 @@ export const OnboardingBusinessProfile = () => {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const fields = onboarding?.data?.business_profile;
+  const {
+    // operating_countries: is not used in the form
+    operating_countries: _,
+    ...fields
+  } = onboarding?.data?.business_profile ?? {};
 
   const { defaultValues, methods, checkValue, handleSubmit } =
     useOnboardingForm<

@@ -65,7 +65,9 @@ export const useUpdateCounterpartAddress = ({
           queryClient
         );
 
-        toast.success(t(i18n)`Address “${updatedAddress.line1}” was updated.`);
+        toast.success(
+          t(i18n)`Address “${updatedAddress.line1}” has been updated.`
+        );
       },
 
       onError: () => {
@@ -89,7 +91,7 @@ export const useCreateCounterpartBank = () => {
           },
           queryClient
         );
-        toast.success(t(i18n)`Bank Account “${bank.name}” was created.`);
+        toast.success(t(i18n)`Bank Account “${bank.name}” has been created.`);
       },
 
       onError: () => {
@@ -127,7 +129,7 @@ export const useUpdateCounterpartBank = () => {
     undefined,
     {
       onSuccess: async (bank) => {
-        toast.success(t(i18n)`Bank Account “${bank.name}” was updated.`);
+        toast.success(t(i18n)`Bank Account “${bank.name}” has been updated.`);
 
         api.counterparts.getCounterpartsIdBankAccountsId.setQueryData(
           {
@@ -174,7 +176,7 @@ export const useDeleteCounterpartBank = (counterpartId: string) => {
           queryClient
         );
 
-        toast.success(t(i18n)`Bank Account was deleted.`);
+        toast.success(t(i18n)`Bank Account has been deleted.`);
       },
 
       onError: () => {
@@ -204,14 +206,14 @@ export const useCreateCounterpartVat = () => {
   const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdVatIds.useMutation(undefined, {
-    onSuccess: async (counterpart) => {
+    onSuccess: async (vatId) => {
       await api.counterparts.getCounterpartsIdVatIds.invalidateQueries(
         {
-          parameters: { path: { counterpart_id: counterpart.id } },
+          parameters: { path: { counterpart_id: vatId.counterpart_id } },
         },
         queryClient
       );
-      toast.success(t(i18n)`Vat “${counterpart.value}” was created.`);
+      toast.success(t(i18n)`Vat “${vatId.value}” has been created.`);
     },
 
     onError: () => {
@@ -266,7 +268,7 @@ export const useUpdateCounterpartVat = () => {
         queryClient
       );
 
-      toast.success(t(i18n)`Vat “${updatedVatId.value}” was updated.`);
+      toast.success(t(i18n)`Vat “${updatedVatId.value}” has been updated.`);
     },
 
     onError: () => {
@@ -289,7 +291,7 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
         queryClient
       );
 
-      toast.success(t(i18n)`VAT was deleted.`);
+      toast.success(t(i18n)`VAT has been deleted.`);
     },
 
     onError: () => {
@@ -299,17 +301,23 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
 };
 
 export const useCounterpartContactList = (
-  counterpartId?: string,
-  isOrganization?: boolean
+  counterpartId: string | undefined
 ) => {
   const { api } = useMoniteContext();
+
+  const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
+    { path: { counterpart_id: counterpartId ?? '' } },
+    {
+      enabled: !!counterpartId,
+    }
+  );
 
   return api.counterparts.getCounterpartsIdContacts.useQuery(
     {
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!counterpartId && isOrganization,
+      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
 };
@@ -333,7 +341,7 @@ export const useCreateCounterpartContact = () => {
         t(i18n)`Contact Person “${getIndividualName(
           contact.first_name,
           contact.last_name
-        )}” was created.`
+        )}” has been created.`
       );
     },
 
@@ -395,7 +403,7 @@ export const useUpdateCounterpartContact = () => {
         t(i18n)`Contact Person “${getIndividualName(
           contact.first_name,
           contact.last_name
-        )}” was updated.`
+        )}” has been updated.`
       );
     },
 
@@ -425,7 +433,7 @@ export const useDeleteCounterpartContact = () => {
             queryClient
           ),
         ]);
-        toast.success(t(i18n)`Contact Person was deleted.`);
+        toast.success(t(i18n)`Contact Person has been deleted.`);
       },
 
       onError: (error) => {
@@ -456,7 +464,9 @@ export const useCreateCounterpart = () => {
       onSuccess: async (counterpart) => {
         await api.counterparts.getCounterparts.invalidateQueries(queryClient);
         toast.success(
-          t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was created.`
+          t(i18n)`Counterpart “${getCounterpartName(
+            counterpart
+          )}” has been created.`
         );
       },
 
@@ -503,7 +513,9 @@ export const useUpdateCounterpart = () => {
       await api.counterparts.getCounterparts.invalidateQueries(queryClient);
 
       toast.success(
-        t(i18n)`Counterpart “${getCounterpartName(counterpart)}” was updated.`
+        t(i18n)`Counterpart “${getCounterpartName(
+          counterpart
+        )}” has been updated.`
       );
     },
 
@@ -522,7 +534,7 @@ export const useDeleteCounterpart = () => {
     onSuccess: async () => {
       await api.counterparts.getCounterparts.invalidateQueries(queryClient);
 
-      toast.success(t(i18n)`Counterpart was deleted.`);
+      toast.success(t(i18n)`Counterpart has been deleted.`);
     },
     onError: () => {
       toast.error(t(i18n)`Failed to delete Counterpart.`);

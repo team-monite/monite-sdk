@@ -4,7 +4,7 @@ import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counte
 import { EntityService } from '@/lib/monite-api/demo-data-generator/entity.service';
 import {
   getRandomItemFromArray,
-  ILogger,
+  Logger,
 } from '@/lib/monite-api/demo-data-generator/general.service';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
 import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
@@ -23,7 +23,7 @@ import { generateCounterpartsWithPayables } from './generate-payables';
  */
 export const generateEntity = async (
   { entity_id }: Record<'entity_id', string>,
-  { logger, token }: { token: AccessToken; logger: ILogger }
+  { logger, token }: { token: AccessToken; logger: Logger }
 ) => {
   const serviceConstructorProps = {
     token,

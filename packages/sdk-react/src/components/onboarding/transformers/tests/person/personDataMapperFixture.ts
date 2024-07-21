@@ -245,7 +245,8 @@ export const onboardingPersonOptionalFixture = (): OnboardingTestData<
 
 type OnboardingPerson = components['schemas']['OnboardingPerson'];
 type OnboardingPersonMask = components['schemas']['OnboardingPersonMask'];
-type OptionalPersonAddress = components['schemas']['OptionalPersonAddress'];
+type OptionalPersonAddress =
+  components['schemas']['OptionalPersonAddressRequest'];
 type OptionalPersonRelationship =
   components['schemas']['OptionalPersonRelationship'];
 type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
