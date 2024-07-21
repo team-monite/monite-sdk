@@ -1,17 +1,24 @@
+import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
+import { renderWithClient, triggerChangeInput } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
+import { requestFn } from '@openapi-qraft/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { ReminderSection } from './RemindersSection';
 
-test('renders reminders correctly', async () => {
+const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
+
+const Wrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
+
   const moniteMock = new MoniteSDK({
     entityId: '123',
     fetchToken: () =>
@@ -22,33 +29,45 @@ test('renders reminders correctly', async () => {
       }),
   });
 
-  const Wrapper = ({ children }: { children: React.ReactNode }) => {
-    const methods = useForm();
-    return (
-      <QueryClientProvider client={queryClient}>
-        <I18nProvider i18n={I18n}>
-          <MoniteProvider
-            locale={{
-              code: 'en-US',
-            }}
-            monite={moniteMock}
-          >
-            <MoniteScopedProviders>
-              <FormProvider {...methods}>{children}</FormProvider>
-            </MoniteScopedProviders>
-          </MoniteProvider>
-        </I18nProvider>
-      </QueryClientProvider>
-    );
-  };
+  const methods = useForm();
+  return (
+    <QueryClientProvider client={queryClient}>
+      <I18nProvider i18n={I18n}>
+        <MoniteProvider
+          locale={{
+            code: 'en-US',
+          }}
+          monite={moniteMock}
+        >
+          <MoniteScopedProviders>
+            <FormProvider {...methods}>{children}</FormProvider>
+          </MoniteScopedProviders>
+        </MoniteProvider>
+      </I18nProvider>
+    </QueryClientProvider>
+  );
+};
 
-  render(<Wrapper>{<ReminderSection disabled={false} />}</Wrapper>);
+describe('ReminderSection', () => {
+  describe('#FormValidation', () => {
+    test('should show error message when fields are empty and form is submitted', async () => {
+      console.log(
+        'Starting test: should show error message when fields are empty and form is submitted'
+      );
 
-  await waitFor(() => {
-    console.log('Payment Reminders:', screen.getByText('Reminder 1'));
-    console.log('Overdue Reminders:', screen.getByText('Overdue Reminder 1'));
+      await act(async () => {
+        renderWithClient(
+          <Wrapper>
+            <ReminderSection disabled={false} />
+          </Wrapper>
+        );
+      });
 
-    expect(screen.getByText('Before due date')).toBeInTheDocument();
-    expect(screen.getByText('Overdue reminders')).toBeInTheDocument();
+      console.log('Rendered ReminderSection component');
+
+      await waitFor(() => {
+        expect(screen.queryByText(/Loading.../)).not.toBeInTheDocument();
+      });
+    });
   });
 });

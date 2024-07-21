@@ -59,13 +59,20 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
 
-  const noOverdueReminders = useMemo(() => {
-    return !overdueReminders?.data?.length && !isOverdueRemindersLoading;
-  }, [isOverdueRemindersLoading, overdueReminders]);
-
-  const noPaymentReminders = useMemo(() => {
-    return !paymentReminders?.data?.length && !isPaymentRemindersLoading;
-  }, [isPaymentRemindersLoading, paymentReminders]);
+  useEffect(() => {
+    console.log(
+      'IS Loading:',
+      isPaymentRemindersLoading,
+      isOverdueRemindersLoading
+    );
+    console.log('Payment Reminders:', paymentReminders?.data);
+    console.log('Overdue Reminders:', overdueReminders?.data);
+  }, [
+    paymentReminders,
+    overdueReminders,
+    isPaymentRemindersLoading,
+    isOverdueRemindersLoading,
+  ]);
 
   const handleSelectChange =
     (field: ControllerRenderProps<FieldValues, string>) =>
@@ -78,11 +85,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         field.onChange(value);
       }
     };
-
-  useEffect(() => {
-    console.log('OVERDUE REMINDERS', overdueReminders);
-    console.log('PAYMENT REMINDERS', paymentReminders);
-  }, [overdueReminders, paymentReminders]);
 
   const renderSelectField = (
     field: ControllerRenderProps<any, any>,
@@ -108,6 +110,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             MenuProps={{ container: root }}
             onChange={handleSelectChange(field)}
             fullWidth
+            value={field.value || ''}
           >
             {options.length > 0 ? (
               options.map((item) => (
@@ -137,6 +140,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         <Grid item xs={2}>
           <Button
             variant="outlined"
+            disabled={
+              isReadPaymentReminderAllowed || isReadOverdueReminderAllowed
+            }
             onClick={() => {
               // eslint-disable-next-line lingui/no-unlocalized-strings
               alert(`You have selected Edit`);
@@ -154,18 +160,12 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const renderRemindersSection = () => {
     if (
       isReadPaymentReminderAllowedLoading ||
-      isReadOverdueReminderAllowedLoading
+      isReadOverdueReminderAllowedLoading ||
+      isPaymentRemindersLoading ||
+      isOverdueRemindersLoading
     ) {
       return <Typography>{t(i18n)`Loading...`}</Typography>;
     }
-
-    // if (!isReadPaymentReminderAllowed && !isReadOverdueReminderAllowed) {
-    //   return (
-    //     <Typography color="error">
-    //       {t(i18n)`You do not have permissions to view reminders.`}
-    //     </Typography>
-    //   );
-    // }
 
     return (
       <Grid container spacing={3}>
@@ -186,7 +186,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Controller
-            name="payment_terms_id"
+            // ToDo: check type casting why this id is scoped to CreateReceivablesFormProps
+            name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
             control={control}
             render={({ field, fieldState: { error } }) =>
               renderSelectField(
