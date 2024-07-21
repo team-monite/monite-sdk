@@ -10,7 +10,7 @@ import {
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { getBankAccountName } from '@/core/utils/getBankAccountName';
+import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -38,12 +38,26 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { root } = useRootElements();
   const { api } = useMoniteContext();
 
-  const { data: bankAccounts, isLoading: isBankAccountsLoading } =
-    api.bankAccounts.getBankAccounts.useQuery({});
-  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
-    api.overdueReminders.getOverdueReminders.useQuery({});
+  const {
+    data: isReadPaymentReminderAllowed,
+    isLoading: isReadPaymentReminderAllowedLoading,
+  } = useIsActionAllowed({
+    method: 'payment_reminder',
+    action: 'read',
+  });
+
+  const {
+    data: isReadOverdueReminderAllowed,
+    isLoading: isReadOverdueReminderAllowedLoading,
+  } = useIsActionAllowed({
+    method: 'overdue_reminder',
+    action: 'read',
+  });
+
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
     api.paymentReminders.getPaymentReminders.useQuery({});
+  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
+    api.overdueReminders.getOverdueReminders.useQuery({});
 
   const noOverdueReminders = useMemo(() => {
     return !overdueReminders?.data?.length && !isOverdueRemindersLoading;
@@ -67,7 +81,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const renderSelectField = (
     field: ControllerRenderProps<any, any>,
     error: FieldError | undefined,
-    label: string
+    label: string,
+    options: any[],
+    noOptionsText: string
   ) => (
     <FormControl
       variant="outlined"
@@ -85,20 +101,17 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             label={t(i18n)`${label}`}
             MenuProps={{ container: root }}
             onChange={handleSelectChange(field)}
-            disabled={isBankAccountsLoading || bankAccounts?.data.length === 0}
             fullWidth
           >
-            {bankAccounts?.data && bankAccounts.data.length > 0 ? (
-              bankAccounts?.data.map((item) => (
+            {options.length > 0 ? (
+              options.map((item) => (
                 <MenuItem key={item.id} value={item.id}>
-                  {`${getBankAccountName(i18n, item)} ${
-                    item.is_default_for_currency ? t(i18n)`(Default)` : ''
-                  }`}
+                  {item.name}
                 </MenuItem>
               ))
             ) : (
               <MenuItem value="" disabled>
-                {t(i18n)`No reminder`}
+                {t(i18n)`${noOptionsText}`}
               </MenuItem>
             )}
             <MenuItem
@@ -126,38 +139,66 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         </Grid>
       </Grid>
       {error && <FormHelperText>{error.message}</FormHelperText>}
-      {!isBankAccountsLoading && bankAccounts?.data.length === 0 && (
-        <FormHelperText>{t(i18n)`No bank accounts available`}</FormHelperText>
-      )}
     </FormControl>
   );
+
+  const renderRemindersSection = () => {
+    if (
+      isReadPaymentReminderAllowedLoading ||
+      isReadOverdueReminderAllowedLoading
+    ) {
+      return <Typography>{t(i18n)`Loading...`}</Typography>;
+    }
+
+    if (!isReadPaymentReminderAllowed && !isReadOverdueReminderAllowed) {
+      return (
+        <Typography color="error">
+          {t(i18n)`You do not have permissions to view reminders.`}
+        </Typography>
+      );
+    }
+
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="payment_terms_id"
+            control={control}
+            render={({ field, fieldState: { error } }) =>
+              renderSelectField(
+                field,
+                error,
+                t(i18n)`Before due date`,
+                paymentReminders?.data || [],
+                t(i18n)`No payment reminders available`
+              )
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="payment_terms_id"
+            control={control}
+            render={({ field, fieldState: { error } }) =>
+              renderSelectField(
+                field,
+                error,
+                t(i18n)`Overdue reminders`,
+                overdueReminders?.data || [],
+                t(i18n)`No overdue reminders available`
+              )
+            }
+          />
+        </Grid>
+      </Grid>
+    );
+  };
 
   return (
     <Stack spacing={1}>
       <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="entity_bank_account_id"
-                control={control}
-                render={({ field, fieldState: { error } }) =>
-                  renderSelectField(field, error, t(i18n)`Before due date`)
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Controller
-                name="entity_bank_account_id"
-                control={control}
-                render={({ field, fieldState: { error } }) =>
-                  renderSelectField(field, error, t(i18n)`Overdue reminders`)
-                }
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
+        <CardContent>{renderRemindersSection()}</CardContent>
       </Card>
     </Stack>
   );
