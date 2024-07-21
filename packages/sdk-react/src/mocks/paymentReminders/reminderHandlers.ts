@@ -11,10 +11,13 @@ export const remindersHandlers = [
     components['schemas']['PaymentReminderResponse']
   >('*/payment_reminders', async ({ request }) => {
     const jsonBody = await request.json();
+    console.log('Received payment_reminders request:', jsonBody);
 
     await delay();
 
-    return HttpResponse.json(getPaymentReminder(jsonBody));
+    const response = getPaymentReminder(jsonBody);
+    console.log('Returning payment_reminders response:', response);
+    return HttpResponse.json(response);
   }),
 
   http.get<
@@ -23,9 +26,12 @@ export const remindersHandlers = [
     components['schemas']['PaymentReminderResponse']
   >('*/overdue_reminders', async ({ request }) => {
     const jsonBody = await request.json();
+    console.log('Received overdue_reminders request:', jsonBody);
 
     await delay();
 
-    return HttpResponse.json(getOverdueReminder(jsonBody));
+    const response = getOverdueReminder(jsonBody);
+    console.log('Returning overdue_reminders response:', response);
+    return HttpResponse.json(response);
   }),
 ];

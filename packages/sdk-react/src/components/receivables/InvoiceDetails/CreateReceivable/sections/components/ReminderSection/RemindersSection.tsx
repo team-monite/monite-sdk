@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Controller,
   ControllerRenderProps,
@@ -29,7 +29,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import type { SectionGeneralProps } from './Section.types';
+import type { SectionGeneralProps } from '../../Section.types';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
@@ -78,6 +78,11 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         field.onChange(value);
       }
     };
+
+  useEffect(() => {
+    console.log('OVERDUE REMINDERS', overdueReminders);
+    console.log('PAYMENT REMINDERS', paymentReminders);
+  }, [overdueReminders, paymentReminders]);
 
   const renderSelectField = (
     field: ControllerRenderProps<any, any>,
@@ -154,13 +159,13 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       return <Typography>{t(i18n)`Loading...`}</Typography>;
     }
 
-    if (!isReadPaymentReminderAllowed && !isReadOverdueReminderAllowed) {
-      return (
-        <Typography color="error">
-          {t(i18n)`You do not have permissions to view reminders.`}
-        </Typography>
-      );
-    }
+    // if (!isReadPaymentReminderAllowed && !isReadOverdueReminderAllowed) {
+    //   return (
+    //     <Typography color="error">
+    //       {t(i18n)`You do not have permissions to view reminders.`}
+    //     </Typography>
+    //   );
+    // }
 
     return (
       <Grid container spacing={3}>
