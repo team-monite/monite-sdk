@@ -10,6 +10,7 @@ import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Button,
   Card,
   CardContent,
   FormControl,
@@ -54,24 +55,40 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
     api.bankAccounts.getBankAccounts.useQuery({});
-  const { data: reminderTerms, isLoading: isPaymentTermsLoading } =
-    api.reminderTerms.getPaymentTerms.useQuery({});
 
-  const noPaymentTerms = useMemo(() => {
-    if (!reminderTerms) {
+  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
+    api.overdueReminders.getOverdueReminders.useQuery({});
+
+  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
+    api.paymentReminders.getPaymentReminders.useQuery({});
+
+  const noOverdueReminders = useMemo(() => {
+    if (!overdueReminders) {
       return true;
     }
 
     return !(
-      reminderTerms.data &&
-      reminderTerms.data.length > 0 &&
-      !isPaymentTermsLoading
+      overdueReminders.data &&
+      overdueReminders.data.length > 0 &&
+      !isOverdueRemindersLoading
     );
-  }, [isPaymentTermsLoading, reminderTerms]);
+  }, [isOverdueRemindersLoading, overdueReminders]);
+
+  const noPaymentReminders = useMemo(() => {
+    if (!paymentReminders) {
+      return true;
+    }
+
+    return !(
+      paymentReminders.data &&
+      paymentReminders.data.length > 0 &&
+      !isPaymentRemindersLoading
+    );
+  }, [isPaymentRemindersLoading, paymentReminders]);
 
   return (
     <Stack spacing={1}>
-      <Typography variant="subtitle2">{t(i18n)`Payment`}</Typography>
+      <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <Grid container spacing={3}>
@@ -88,27 +105,47 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   >
                     <InputLabel htmlFor={field.name}>{t(
                       i18n
-                    )`Bank account`}</InputLabel>
-                    <Select
-                      {...field}
-                      id={field.name}
-                      labelId={field.name}
-                      label={t(i18n)`Bank account`}
-                      MenuProps={{ container: root }}
-                      disabled={
-                        isBankAccountsLoading || bankAccounts?.data.length === 0
-                      }
-                    >
-                      {bankAccounts?.data.map((bankAccount) => (
-                        <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                          {`${getBankAccountName(i18n, bankAccount)} ${
-                            bankAccount.is_default_for_currency
-                              ? t(i18n)`(Default)`
-                              : ''
-                          }`}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    )`Before due date`}</InputLabel>
+                    <Grid container alignItems="center" spacing={1}>
+                      <Grid item xs={10}>
+                        <Select
+                          {...field}
+                          id={field.name}
+                          labelId={field.name}
+                          label={t(i18n)`Before due date`}
+                          MenuProps={{ container: root }}
+                          disabled={
+                            isBankAccountsLoading ||
+                            bankAccounts?.data.length === 0
+                          }
+                          fullWidth
+                        >
+                          {bankAccounts?.data.map((bankAccount) => (
+                            <MenuItem
+                              key={bankAccount.id}
+                              value={bankAccount.id}
+                            >
+                              {`${getBankAccountName(i18n, bankAccount)} ${
+                                bankAccount.is_default_for_currency
+                                  ? t(i18n)`(Default)`
+                                  : ''
+                              }`}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            console.log('add');
+                          }}
+                          fullWidth
+                        >
+                          {t(i18n)`Edit`}
+                        </Button>
+                      </Grid>
+                    </Grid>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
                     {!isBankAccountsLoading &&
                       bankAccounts?.data.length === 0 && (
@@ -122,42 +159,65 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Controller
-                name="reminder_terms_id"
+                name="entity_bank_account_id"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl
                     variant="outlined"
                     fullWidth
-                    required
-                    error={Boolean(error) || noPaymentTerms}
+                    error={Boolean(error)}
                     disabled={disabled}
                   >
-                    <InputLabel id={field.name}>{t(
+                    <InputLabel htmlFor={field.name}>{t(
                       i18n
-                    )`Payment term`}</InputLabel>
-                    <Select
-                      labelId={field.name}
-                      MenuProps={{ container: root }}
-                      label={t(i18n)`Reminder term`}
-                      disabled={noPaymentTerms}
-                      {...field}
-                    >
-                      {reminderTerms?.data?.map((reminderTerm) => (
-                        <MenuItem key={reminderTerm.id} value={reminderTerm.id}>
-                          {reminderTerm.name}
-                          {reminderTerm.description &&
-                            ` (${reminderTerm.description})`}
-                        </MenuItem>
-                      ))}
-                    </Select>
+                    )`Overdue reminders`}</InputLabel>
+                    <Grid container alignItems="center" spacing={1}>
+                      <Grid item xs={10}>
+                        <Select
+                          {...field}
+                          id={field.name}
+                          labelId={field.name}
+                          label={t(i18n)`Overdue reminders`}
+                          MenuProps={{ container: root }}
+                          disabled={
+                            isBankAccountsLoading ||
+                            bankAccounts?.data.length === 0
+                          }
+                          fullWidth
+                        >
+                          {bankAccounts?.data.map((bankAccount) => (
+                            <MenuItem
+                              key={bankAccount.id}
+                              value={bankAccount.id}
+                            >
+                              {`${getBankAccountName(i18n, bankAccount)} ${
+                                bankAccount.is_default_for_currency
+                                  ? t(i18n)`(Default)`
+                                  : ''
+                              }`}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Button
+                          variant="outlined"
+                          onClick={() => {
+                            console.log('edit');
+                          }}
+                          fullWidth
+                        >
+                          {t(i18n)`Edit`}
+                        </Button>
+                      </Grid>
+                    </Grid>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
-                    {noPaymentTerms && (
-                      <FormHelperText>
-                        {t(
+                    {!isBankAccountsLoading &&
+                      bankAccounts?.data.length === 0 && (
+                        <FormHelperText>{t(
                           i18n
-                        )`There is no reminder terms available. Please create one in the settings.`}
-                      </FormHelperText>
-                    )}
+                        )`No bank accounts available`}</FormHelperText>
+                      )}
                   </FormControl>
                 )}
               />
