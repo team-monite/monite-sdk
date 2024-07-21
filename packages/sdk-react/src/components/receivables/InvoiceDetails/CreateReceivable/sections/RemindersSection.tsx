@@ -87,18 +87,24 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             disabled={isBankAccountsLoading || bankAccounts?.data.length === 0}
             fullWidth
           >
-            {bankAccounts?.data.map((bankAccount) => (
-              <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                {`${getBankAccountName(i18n, bankAccount)} ${
-                  bankAccount.is_default_for_currency ? t(i18n)`(Default)` : ''
-                }`}
+            {bankAccounts?.data && bankAccounts.data.length > 0 ? (
+              bankAccounts?.data.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {`${getBankAccountName(i18n, item)} ${
+                    item.is_default_for_currency ? t(i18n)`(Default)` : ''
+                  }`}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem value="" disabled>
+                {t(i18n)`No reminder`}
               </MenuItem>
-            ))}
+            )}
             <MenuItem
               value="create"
               sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 color: 'primary.main',
               }}
