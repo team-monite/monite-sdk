@@ -20,6 +20,7 @@ import { onboardingHandlers } from './onboarding';
 import { onboardingDocumentsHandlers } from './onboardingDocuments';
 import { payableHandlers } from './payables';
 import { paymentHandlers } from './payment';
+import { paymentRemindersHandlers } from './paymentReminders';
 import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
 import { productsHandlers } from './products';
@@ -33,6 +34,7 @@ export const handlers = [
   ...entitiesHandlers,
   ...entityOnboardingDataHandlers,
   ...paymentHandlers,
+  ...paymentRemindersHandlers,
   ...productsHandlers,
   ...vatRatesHandlers,
   ...counterpartBankHandlers,

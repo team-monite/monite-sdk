@@ -1,9 +1,12 @@
 import React, { useId } from 'react';
 import { FormProvider, useForm, Controller } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -107,6 +110,7 @@ interface CreateBeforeDueDateReminderFormFields extends PaymentReminder {
 export const CreateBeforeDueDateReminder = () => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { api, queryClient } = useMoniteContext();
 
   const methods = useForm<CreateBeforeDueDateReminderFormFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
@@ -118,6 +122,22 @@ export const CreateBeforeDueDateReminder = () => {
   const isDiscountDate1 = watch('is_discount_date_1');
   const isDiscountDate2 = watch('is_discount_date_2');
   const isDueDate = watch('is_due_date');
+
+  const createBeforeDueDateReminderMutation =
+    api.paymentReminders.postPaymentReminders.useMutation(undefined, {
+      onSuccess: async () => {
+        dialogContext?.onClose?.();
+
+        await api.paymentReminders.getPaymentReminders.invalidateQueries(
+          queryClient
+        );
+
+        toast.success(t(i18n)`Reminder has been created`);
+      },
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    });
 
   return (
     <>
@@ -336,23 +356,22 @@ export const CreateBeforeDueDateReminder = () => {
           color="primary"
           type="submit"
           form={formName}
+          disabled={createBeforeDueDateReminderMutation.isPending}
           onClick={(e) => {
             e.preventDefault();
 
-            handleSubmit(
-              (values) => {
-                const {
-                  is_discount_date_1,
-                  is_discount_date_2,
-                  is_due_date,
-                  ...dataToSend
-                } = values;
-                console.log({ dataToSend });
-              },
-              (errors) => {
-                console.log(errors);
-              }
-            )(e);
+            handleSubmit((values) => {
+              const {
+                is_discount_date_1,
+                is_discount_date_2,
+                is_due_date,
+                ...body
+              } = values;
+
+              createBeforeDueDateReminderMutation.mutate({
+                body,
+              });
+            })(e);
           }}
         >
           {t(i18n)`Create`}
