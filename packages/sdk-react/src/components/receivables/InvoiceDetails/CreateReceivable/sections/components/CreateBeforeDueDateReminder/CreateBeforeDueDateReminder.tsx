@@ -2,7 +2,6 @@ import React, { useId } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import { components } from '@/api';
 import { useDialog } from '@/components';
 import { RHFSwitch } from '@/components/RHF/RHFSwitch';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -25,15 +24,9 @@ import {
   Typography,
 } from '@mui/material';
 
+import { ReminderForm } from './ReminderForm';
+import { CreateBeforeDueDateReminderFormFields } from './types';
 import { getValidationSchema } from './validation';
-
-type PaymentReminder = components['schemas']['PaymentReminder'];
-
-interface CreateBeforeDueDateReminderFormFields extends PaymentReminder {
-  is_discount_date_1: boolean;
-  is_discount_date_2: boolean;
-  is_due_date: boolean;
-}
 
 export const CreateBeforeDueDateReminder = () => {
   const { i18n } = useLingui();
@@ -111,44 +104,7 @@ export const CreateBeforeDueDateReminder = () => {
                   }
                 />
                 {isDiscountDate1 && (
-                  <Stack spacing={2} mt={2}>
-                    <Box display="flex" alignItems="center" gap={1}>
-                      <Typography>{t(i18n)`Remind`}</Typography>
-                      <RHFTextField
-                        name="term_1_reminder.days_before"
-                        type="number"
-                        size="small"
-                        sx={{ width: 60 }}
-                      />
-                      <Typography>{t(i18n)`days before`}</Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Subject`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Subject`}
-                        name="term_1_reminder.subject"
-                        control={control}
-                        fullWidth
-                        required
-                      />
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Body`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Body`}
-                        name="term_1_reminder.body"
-                        control={control}
-                        fullWidth
-                        required
-                        multiline
-                        rows={5}
-                      />
-                    </Box>
-                  </Stack>
+                  <ReminderForm control={control} termKey="term_1_reminder" />
                 )}
               </Card>
               <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
@@ -161,44 +117,7 @@ export const CreateBeforeDueDateReminder = () => {
                   }
                 />
                 {isDiscountDate2 && (
-                  <Stack spacing={2} mt={2}>
-                    <Box display="flex" alignItems="center" gap={1}>
-                      <Typography>{t(i18n)`Remind`}</Typography>
-                      <RHFTextField
-                        name="term_2_reminder.days_before"
-                        type="number"
-                        size="small"
-                        sx={{ width: 60 }}
-                      />
-                      <Typography>{t(i18n)`days before`}</Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Subject`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Subject`}
-                        name="term_2_reminder.subject"
-                        control={control}
-                        fullWidth
-                        required
-                      />
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Body`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Body`}
-                        name="term_2_reminder.body"
-                        control={control}
-                        fullWidth
-                        required
-                        multiline
-                        rows={5}
-                      />
-                    </Box>
-                  </Stack>
+                  <ReminderForm control={control} termKey="term_2_reminder" />
                 )}
               </Card>
               <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
@@ -211,44 +130,10 @@ export const CreateBeforeDueDateReminder = () => {
                   }
                 />
                 {isDueDate && (
-                  <Stack spacing={2} mt={2}>
-                    <Box display="flex" alignItems="center" gap={1}>
-                      <Typography>{t(i18n)`Remind`}</Typography>
-                      <RHFTextField
-                        name="term_final_reminder.days_before"
-                        type="number"
-                        size="small"
-                        sx={{ width: 60 }}
-                      />
-                      <Typography>{t(i18n)`days before`}</Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Subject`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Subject`}
-                        name="term_final_reminder.subject"
-                        control={control}
-                        fullWidth
-                        required
-                      />
-                    </Box>
-                    <Box>
-                      <Typography variant="subtitle2" mb={1}>
-                        {t(i18n)`Body`}
-                      </Typography>
-                      <RHFTextField
-                        label={t(i18n)`Body`}
-                        name="term_final_reminder.body"
-                        control={control}
-                        fullWidth
-                        required
-                        multiline
-                        rows={5}
-                      />
-                    </Box>
-                  </Stack>
+                  <ReminderForm
+                    control={control}
+                    termKey="term_final_reminder"
+                  />
                 )}
               </Card>
             </Stack>
@@ -257,7 +142,9 @@ export const CreateBeforeDueDateReminder = () => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined">{t(i18n)`Cancel`}</Button>
+        <Button variant="outlined" onClick={dialogContext?.onClose}>{t(
+          i18n
+        )`Cancel`}</Button>
         <Button
           variant="contained"
           color="primary"
