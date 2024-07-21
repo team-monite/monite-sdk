@@ -30,9 +30,9 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
   const { api } = useMoniteContext();
 
   const { data: bankAccounts, isLoading: isBankAccountsLoading } =
-    api.bankAccounts.getBankAccounts.useQuery({});
+    api.bankAccounts.getBankAccounts.useQuery();
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
-    api.paymentTerms.getPaymentTerms.useQuery({});
+    api.paymentTerms.getPaymentTerms.useQuery();
 
   const noPaymentTerms = useMemo(() => {
     if (!paymentTerms) {

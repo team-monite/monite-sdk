@@ -28,7 +28,6 @@ export function useCounterpartVatView({
             counterpart_id: counterpart_id,
             vat_id: id,
           },
-          body: undefined,
         },
         {
           onSuccess: () => {
