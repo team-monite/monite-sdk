@@ -18,7 +18,11 @@ import type { SelectChangeEvent } from '@mui/material';
 interface CustomSelectProps {
   label: string;
   options: Array<{ id: string | number; name: string }>;
+  createFnOption?: () => void;
   noOptionsText: string;
+  handleSelectChange: (
+    field: any
+  ) => (event: SelectChangeEvent<string | number>) => void;
 }
 
 type RHFSelectFieldProps<T extends FieldValues> = UseControllerProps<T> &
@@ -31,23 +35,14 @@ export const RHFSelectField = <T extends FieldValues>({
   label,
   options,
   noOptionsText,
+  createFnOption,
+  handleSelectChange,
   ...other
 }: RHFSelectFieldProps<T>) => {
   const isErrorCustom = (error: FieldError | undefined) =>
     error?.type === 'custom';
 
   const { root } = useRootElements();
-
-  const handleSelectChange =
-    (field: any) => (event: SelectChangeEvent<string | number>) => {
-      const value = event.target.value;
-      if (value === 'create') {
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        alert('You have selected Create a reminder preset');
-      } else {
-        field.onChange(value);
-      }
-    };
 
   return (
     <Controller
@@ -72,7 +67,7 @@ export const RHFSelectField = <T extends FieldValues>({
                 {...field}
                 {...other}
                 id={name}
-                value={field.value ?? ''} // Makes the component controlled
+                value={field.value ?? ''}
                 label={label}
                 MenuProps={{ container: root }}
                 onChange={handleSelectChange(field)}
