@@ -28,7 +28,7 @@ export const remindersHandlers = [
   http.get<
     {},
     components['schemas']['OverdueReminderRequest'],
-    components['schemas']['PaymentReminderResponse']
+    components['schemas']['OverdueReminderResponse']
   >(overdueReminderPath, async () => {
     await delay();
 

@@ -12,12 +12,10 @@ export const getPaymentReminder: components['schemas']['PaymentReminderResponse'
     status: faker.datatype.boolean() ? 'active' : 'deleted',
   };
 
-export const getOverdueReminder: components['schemas']['PaymentReminderResponse'] =
+export const getOverdueReminder: components['schemas']['OverdueReminderResponse'] =
   {
     name: 'overdue_reminder',
     id: faker.string.nanoid(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    entity_id: entityIds[0],
-    status: faker.datatype.boolean() ? 'active' : 'deleted',
   };
