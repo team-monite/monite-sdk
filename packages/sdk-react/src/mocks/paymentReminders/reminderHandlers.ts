@@ -1,8 +1,10 @@
-import { components, paths } from '@/api';
+import { paths } from '@/api';
+import {
+  overdueReminderListFixture,
+  paymentReminderListFixture,
+} from '@/mocks/paymentReminders/reminderFixtures';
 
-import { http, HttpResponse, delay } from 'msw';
-
-import { getPaymentReminder, getOverdueReminder } from './reminderFixtures';
+import { delay, http, HttpResponse } from 'msw';
 
 const paymentReminderPath: `*${Extract<
   keyof paths,
@@ -15,21 +17,23 @@ const overdueReminderPath: `*${Extract<
 >}` = `*/overdue_reminders`;
 
 export const remindersHandlers = [
-  http.get<{}, undefined, components['schemas']['PaymentReminderResponse']>(
-    paymentReminderPath,
-    async () => {
-      await delay();
+  http.get<
+    {},
+    undefined,
+    paths['/payment_reminders']['get']['responses']['200']['content']['application/json']
+  >(paymentReminderPath, async () => {
+    await delay();
 
-      return HttpResponse.json(getPaymentReminder);
-    }
-  ),
+    return HttpResponse.json({ data: paymentReminderListFixture });
+  }),
 
-  http.get<{}, undefined, components['schemas']['OverdueReminderResponse']>(
-    overdueReminderPath,
-    async () => {
-      await delay();
+  http.get<
+    {},
+    undefined,
+    paths['/overdue_reminders']['get']['responses']['200']['content']['application/json']
+  >(overdueReminderPath, async () => {
+    await delay();
 
-      return HttpResponse.json(getOverdueReminder);
-    }
-  ),
+    return HttpResponse.json({ data: overdueReminderListFixture });
+  }),
 ];

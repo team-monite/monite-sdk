@@ -8,6 +8,8 @@ import {
 } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
+import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -121,6 +123,16 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
               {t(i18n)`Create a reminder preset`}
             </MenuItem>
           </Select>
+          {/*ToDo: to refactor to RHFAutocomplete*/}
+          {/*<RHFAutocomplete*/}
+          {/*  label={t(i18n)`${label}`}*/}
+          {/*  name={field.name}*/}
+          {/*  control={control}*/}
+          {/*  options={options}*/}
+          {/*  renderOption={(props, option, state) => <h1>test</h1>}*/}
+          {/*  optionKey="id"*/}
+          {/*  labelKey="name"*/}
+          {/*/>*/}
         </Grid>
         <Grid item xs={2}>
           <Button
