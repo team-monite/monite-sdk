@@ -15,23 +15,21 @@ const overdueReminderPath: `*${Extract<
 >}` = `*/overdue_reminders`;
 
 export const remindersHandlers = [
-  http.get<
-    {},
-    components['schemas']['PaymentReminder'],
-    components['schemas']['PaymentReminderResponse']
-  >(paymentReminderPath, async () => {
-    await delay();
+  http.get<{}, undefined, components['schemas']['PaymentReminderResponse']>(
+    paymentReminderPath,
+    async () => {
+      await delay();
 
-    return HttpResponse.json(getPaymentReminder);
-  }),
+      return HttpResponse.json(getPaymentReminder);
+    }
+  ),
 
-  http.get<
-    {},
-    components['schemas']['OverdueReminderRequest'],
-    components['schemas']['OverdueReminderResponse']
-  >(overdueReminderPath, async () => {
-    await delay();
+  http.get<{}, undefined, components['schemas']['OverdueReminderResponse']>(
+    overdueReminderPath,
+    async () => {
+      await delay();
 
-    return HttpResponse.json(getOverdueReminder);
-  }),
+      return HttpResponse.json(getOverdueReminder);
+    }
+  ),
 ];
