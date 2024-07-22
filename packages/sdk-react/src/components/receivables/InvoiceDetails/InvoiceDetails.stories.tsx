@@ -1,5 +1,8 @@
 import { Dialog } from '@/components/Dialog';
+import { CreateBeforeDueDateReminder as CreateBeforeDueDateReminderComponent } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateBeforeDueDateReminder/CreateBeforeDueDateReminder';
+import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
+import { css } from '@emotion/react';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -67,6 +70,27 @@ export const CreateInvoice: Story = {
     ...actions,
   },
   render: (args) => <InvoiceDetails {...args} />,
+};
+
+export const CreateBeforeDueDateReminder: Story = {
+  args: {},
+  name: 'Create "Before Due Date Reminder"',
+  render: () => (
+    <div
+      css={css`
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 600px;
+        padding: 20px;
+      `}
+    >
+      <MoniteScopedProviders>
+        <CreateBeforeDueDateReminderComponent />
+      </MoniteScopedProviders>
+    </div>
+  ),
 };
 
 export const UndefinedOrError: Story = {
