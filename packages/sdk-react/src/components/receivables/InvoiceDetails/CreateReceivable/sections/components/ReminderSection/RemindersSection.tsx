@@ -12,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Alert,
+  Box,
   Card,
   CardContent,
   Grid,
@@ -65,14 +66,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       return <Typography>{t(i18n)`Loading...`}</Typography>;
     }
 
-    if (!isEmailValid) {
-      return (
-        <Alert severity="warning">{t(
-          i18n
-        )`Please provide a valid email for the counterpart before enabling reminders.`}</Alert>
-      );
-    }
-
     if (!areRemindersEnabled) {
       return (
         <Alert severity="warning">{t(
@@ -82,46 +75,56 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     }
 
     return (
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name="payment_terms_id"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <SelectFieldWithEdit
-                field={field}
-                error={error}
-                label={t(i18n)`Before due date`}
-                options={paymentReminders?.data || []}
-                noOptionsText={t(i18n)`No payment reminders available`}
-                disabled={disabled}
-                root={root as HTMLElement}
-                handleSelectChange={handleSelectChange}
-                control={control}
-              />
-            )}
-          />
+      <>
+        {!isEmailValid && (
+          <Alert severity="warning">
+            {t(
+              i18n
+            )`No default email for selected Counterpart. Reminders will not be sent.`}
+          </Alert>
+        )}
+        <Box mt={2} />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name="payment_terms_id"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <SelectFieldWithEdit
+                  field={field}
+                  error={error}
+                  label={t(i18n)`Before due date`}
+                  options={paymentReminders?.data || []}
+                  noOptionsText={t(i18n)`No payment reminders available`}
+                  disabled={disabled}
+                  root={root as HTMLElement}
+                  handleSelectChange={handleSelectChange}
+                  control={control}
+                />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Controller
+              name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <SelectFieldWithEdit
+                  field={field}
+                  error={error}
+                  label={t(i18n)`Overdue reminders`}
+                  options={overdueReminders?.data || []}
+                  noOptionsText={t(i18n)`No overdue reminders available`}
+                  disabled={disabled}
+                  root={root as HTMLElement}
+                  handleSelectChange={handleSelectChange}
+                  control={control}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Controller
-            name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <SelectFieldWithEdit
-                field={field}
-                error={error}
-                label={t(i18n)`Overdue reminders`}
-                options={overdueReminders?.data || []}
-                noOptionsText={t(i18n)`No overdue reminders available`}
-                disabled={disabled}
-                root={root as HTMLElement}
-                handleSelectChange={handleSelectChange}
-                control={control}
-              />
-            )}
-          />
-        </Grid>
-      </Grid>
+      </>
     );
   };
 
