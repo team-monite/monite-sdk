@@ -1,11 +1,16 @@
 import { useMoniteContext } from '../context/MoniteContext';
 
-export const useEntityUserById = (id: string) => {
+export const useEntityUserById = (id: string | undefined) => {
   const { api } = useMoniteContext();
 
-  return api.entityUsers.getEntityUsersId.useQuery({
-    path: { entity_user_id: id },
-  });
+  return api.entityUsers.getEntityUsersId.useQuery(
+    {
+      path: { entity_user_id: id ?? '' },
+    },
+    {
+      enabled: Boolean(id),
+    }
+  );
 };
 
 export const useEntityUserByAuthToken = () => {
