@@ -27,10 +27,8 @@ import type { SectionGeneralProps } from '../../Section.types';
 import { useReminderPermissions } from './hooks/useReminderPermissions';
 
 interface CustomSelectFieldProps extends FieldValues {
-  field: ControllerRenderProps<any, any>;
   error: FieldError | undefined;
   label: string;
-  options: any[];
   noOptionsText: string;
   disabled: boolean;
   root: HTMLElement;
@@ -41,15 +39,13 @@ interface CustomSelectFieldProps extends FieldValues {
 
 const SelectFieldWithEdit = ({
   field,
-  error,
   label,
   options,
   noOptionsText,
   disabled,
-  root,
   handleSelectChange,
   control,
-}: CustomSelectFieldProps & { control: any }) => {
+}: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
   return (
@@ -105,6 +101,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     (event: SelectChangeEvent<string | number>) => {
       const value = event.target.value;
       if (value === 'create') {
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         alert('You have selected Create a reminder preset');
       } else {
         field.onChange(value);
@@ -137,7 +134,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 disabled={disabled}
                 root={root as HTMLElement}
                 handleSelectChange={handleSelectChange}
-                control={control} // pass control here
+                control={control}
               />
             )}
           />
