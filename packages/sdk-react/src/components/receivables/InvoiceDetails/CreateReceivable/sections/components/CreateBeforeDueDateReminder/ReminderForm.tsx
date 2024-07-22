@@ -24,7 +24,9 @@ export const ReminderForm = ({ control, termKey }: ReminderFormProps) => {
         </InputLabel>
         <RHFTextField
           name={`${termKey}.days_before`}
+          // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
           type="number"
+          control={control}
           size="small"
           sx={{ width: 60 }}
         />
