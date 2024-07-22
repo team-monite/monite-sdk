@@ -326,16 +326,24 @@ program
     commandWithEntityOptions()
       .name('reminders')
       .description('Generate payment reminders for the entity_id')
+      .option('--no-payment', 'Do not generate payment reminders')
+      .option('--no-overdue', 'Do not generate overdue reminders')
       .action(async (args) => {
         const { entity_id } = getEntityArgs(args);
         if (!entity_id) throw new Error('entity_id is empty');
 
         const token = await fetchTokenCLI(args);
         const moniteClient = createMoniteClient(token);
-        await createPaymentReminder({
-          entity_id,
-          moniteClient,
-        });
+        if (!args.noPayment) {
+          await createPaymentReminder({
+            entity_id,
+            moniteClient,
+          });
+        }
+
+        if (!args.noOverdue) {
+          // to be implemented
+        }
       })
   )
   .addCommand(
