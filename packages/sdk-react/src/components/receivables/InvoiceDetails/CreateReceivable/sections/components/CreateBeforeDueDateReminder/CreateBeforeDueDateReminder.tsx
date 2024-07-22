@@ -91,64 +91,76 @@ export const CreateBeforeDueDateReminder = () => {
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <FormProvider {...methods}>
-          <form id={formName} noValidate>
-            <Stack spacing={3}>
-              <Typography variant="subtitle2" mb={1}>
-                {t(i18n)`Preset name`}
-              </Typography>
-              <RHFTextField
-                label={t(i18n)`Preset name`}
-                name="name"
+        <form
+          id={formName}
+          noValidate
+          onSubmit={handleSubmit(
+            ({
+              is_discount_date_1: _,
+              is_discount_date_2: __,
+              is_due_date: ___,
+              ...body
+            }) =>
+              createBeforeDueDateReminderMutation.mutate({
+                body,
+              })
+          )}
+        >
+          <Stack spacing={3}>
+            <Typography variant="subtitle2" mb={1}>
+              {t(i18n)`Preset name`}
+            </Typography>
+            <RHFTextField
+              label={t(i18n)`Preset name`}
+              name="name"
+              control={control}
+              fullWidth
+              required
+            />
+            <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
+              <RHFSwitch
                 control={control}
-                fullWidth
-                required
+                name="is_discount_date_1"
+                label={
+                  <Typography variant="subtitle2">
+                    {t(i18n)`Discount date 1`}
+                  </Typography>
+                }
               />
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <RHFSwitch
-                  name="is_discount_date_1"
-                  label={
-                    <Typography variant="subtitle2">
-                      {t(i18n)`Discount date 1`}
-                    </Typography>
-                  }
-                />
-                {isDiscountDate1 && (
-                  <ReminderForm control={control} termKey="term_1_reminder" />
-                )}
-              </Card>
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <RHFSwitch
-                  name="is_discount_date_2"
-                  label={
-                    <Typography variant="subtitle2">
-                      {t(i18n)`Discount date 2`}
-                    </Typography>
-                  }
-                />
-                {isDiscountDate2 && (
-                  <ReminderForm control={control} termKey="term_2_reminder" />
-                )}
-              </Card>
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <RHFSwitch
-                  name="is_due_date"
-                  label={
-                    <Typography variant="subtitle2">
-                      {t(i18n)`Due date`}
-                    </Typography>
-                  }
-                />
-                {isDueDate && (
-                  <ReminderForm
-                    control={control}
-                    termKey="term_final_reminder"
-                  />
-                )}
-              </Card>
-            </Stack>
-          </form>
-        </FormProvider>
+              {isDiscountDate1 && (
+                <ReminderForm control={control} termKey="term_1_reminder" />
+              )}
+            </Card>
+            <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
+              <RHFSwitch
+                control={control}
+                name="is_discount_date_2"
+                label={
+                  <Typography variant="subtitle2">
+                    {t(i18n)`Discount date 2`}
+                  </Typography>
+                }
+              />
+              {isDiscountDate2 && (
+                <ReminderForm control={control} termKey="term_2_reminder" />
+              )}
+            </Card>
+            <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
+              <RHFSwitch
+                control={control}
+                name="is_due_date"
+                label={
+                  <Typography variant="subtitle2">{t(
+                    i18n
+                  )`Due date`}</Typography>
+                }
+              />
+              {isDueDate && (
+                <ReminderForm control={control} termKey="term_final_reminder" />
+              )}
+            </Card>
+          </Stack>
+        </form>
       </DialogContent>
       <Divider />
       <DialogActions>
@@ -161,22 +173,6 @@ export const CreateBeforeDueDateReminder = () => {
           type="submit"
           form={formName}
           disabled={createBeforeDueDateReminderMutation.isPending}
-          onClick={(e) => {
-            e.preventDefault();
-
-            handleSubmit((values) => {
-              const {
-                is_discount_date_1,
-                is_discount_date_2,
-                is_due_date,
-                ...body
-              } = values;
-
-              createBeforeDueDateReminderMutation.mutate({
-                body,
-              });
-            })(e);
-          }}
         >
           {t(i18n)`Create`}
         </Button>
