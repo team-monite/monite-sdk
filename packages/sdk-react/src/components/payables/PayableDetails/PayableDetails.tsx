@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
@@ -100,6 +100,8 @@ const PayableDetailsBase = ({
       entityUserId: payable?.was_created_by_user_id,
     });
 
+  const payableDetailsFormId = `Monite-PayableDetailsForm-${useId()}`;
+
   if (isReadAllowedLoading || isUpdateAllowedLoading) {
     return <LoadingPage />;
   }
@@ -144,6 +146,7 @@ const PayableDetailsBase = ({
           approveInvoice={approveInvoice}
           cancelInvoice={cancelInvoice}
           payInvoice={payInvoice}
+          payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
         />
         <Divider />
@@ -191,6 +194,7 @@ const PayableDetailsBase = ({
                   payable={payable}
                   optionalFields={optionalFields}
                   lineItems={lineItems}
+                  payableDetailsFormId={payableDetailsFormId}
                 />
               ) : (
                 payable && (

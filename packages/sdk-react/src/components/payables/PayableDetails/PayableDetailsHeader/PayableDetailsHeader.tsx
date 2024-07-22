@@ -30,6 +30,8 @@ export interface PayablesDetailsHeaderProps {
   approveInvoice: () => void;
   cancelInvoice: () => void;
   payInvoice: () => void;
+  /** The "id" of the form used to edit the Payable */
+  payableDetailsFormId: string;
   onClose?: () => void;
 }
 
@@ -42,6 +44,7 @@ export const PayableDetailsHeader = ({
   approveInvoice,
   cancelInvoice,
   payInvoice,
+  payableDetailsFormId,
   onClose,
 }: PayablesDetailsHeaderProps) => {
   const { i18n } = useLingui();
@@ -55,7 +58,7 @@ export const PayableDetailsHeader = ({
     },
     save: {
       variant: 'contained',
-      form: 'payableDetailsForm',
+      form: payableDetailsFormId,
       type: 'submit',
       onClick: submitInvoice,
       children: t(i18n)`Save`,
