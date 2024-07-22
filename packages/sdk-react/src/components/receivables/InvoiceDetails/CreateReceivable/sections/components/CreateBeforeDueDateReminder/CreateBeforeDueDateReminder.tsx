@@ -33,8 +33,18 @@ export const CreateBeforeDueDateReminder = () => {
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
 
-  const methods = useForm<CreateBeforeDueDateReminderFormFields>({
+  const methods = useForm({
     resolver: yupResolver(getValidationSchema(i18n)),
+    defaultValues: ((): CreateBeforeDueDateReminderFormFields => ({
+      is_discount_date_1: false,
+      is_due_date: false,
+      is_discount_date_2: false,
+      name: '',
+      term_1_reminder: undefined,
+      term_2_reminder: undefined,
+      recipients: undefined,
+      term_final_reminder: undefined,
+    }))(),
   });
   const { control, handleSubmit, watch } = methods;
 
