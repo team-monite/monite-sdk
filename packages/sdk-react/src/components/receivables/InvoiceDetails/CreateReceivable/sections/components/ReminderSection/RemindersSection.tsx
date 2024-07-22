@@ -59,21 +59,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
 
-  useEffect(() => {
-    console.log(
-      'IS Loading:',
-      isPaymentRemindersLoading,
-      isOverdueRemindersLoading
-    );
-    console.log('Payment Reminders:', paymentReminders?.data);
-    console.log('Overdue Reminders:', overdueReminders?.data);
-  }, [
-    paymentReminders,
-    overdueReminders,
-    isPaymentRemindersLoading,
-    isOverdueRemindersLoading,
-  ]);
-
   const handleSelectChange =
     (field: ControllerRenderProps<FieldValues, string>) =>
     (event: SelectChangeEvent<string>) => {
