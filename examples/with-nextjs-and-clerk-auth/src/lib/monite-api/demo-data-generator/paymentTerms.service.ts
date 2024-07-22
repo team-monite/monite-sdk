@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import { faker } from '@faker-js/faker';
 
 import { GeneralService } from '@/lib/monite-api/demo-data-generator/general.service';
+import { reminderDaysBeforeTerm } from '@/lib/monite-api/demo-data-generator/payment-reminders';
 import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
@@ -32,21 +33,24 @@ export class PaymentTermsService extends GeneralService {
     components['schemas']['PaymentTermsResponse']
   > {
     const term_1 = {
-      discount: faker.number.int({ min: 1, max: 50 }),
-      number_of_days: faker.number.int({ min: 1, max: 20 }),
+      discount: faker.number.int({ min: 10, max: 50 }),
+      number_of_days: faker.number.int({
+        min: reminderDaysBeforeTerm + 2,
+        max: 20,
+      }),
     };
 
     const term_2 = {
-      discount: faker.number.int({ min: 1, max: 50 }),
+      discount: faker.number.int({ min: 1, max: term_1.discount }),
       number_of_days: faker.number.int({
-        min: term_1.number_of_days + 1,
+        min: term_1.number_of_days + reminderDaysBeforeTerm + 2,
         max: term_1.number_of_days + 20,
       }),
     };
 
     const term_final = {
       number_of_days: faker.number.int({
-        min: term_2.number_of_days + 1,
+        min: term_2.number_of_days + reminderDaysBeforeTerm + 2,
         max: term_2.number_of_days + 80,
       }),
     };

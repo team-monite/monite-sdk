@@ -24,11 +24,16 @@ import { generateBankAccount } from '@/lib/monite-api/demo-data-generator/genera
 import { generateEntity } from '@/lib/monite-api/demo-data-generator/generate-entity';
 import { generateCounterpartsWithPayables } from '@/lib/monite-api/demo-data-generator/generate-payables';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
+import {
+  createOverdueReminder,
+  createPaymentReminder,
+} from '@/lib/monite-api/demo-data-generator/payment-reminders';
 import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
 import { type AccessToken, fetchToken } from '@/lib/monite-api/fetch-token';
+import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 import { updateEntityUser } from '@/lib/monite-api/update-entity-user';
 import { createMqttMessenger } from '@/lib/mqtt/create-mqtt-messenger';
@@ -206,11 +211,13 @@ program
       .description('Generate receivables')
       .action(async (args) => {
         const { entity_id } = getEntityArgs(args);
-
         if (!entity_id) throw new Error('entity_id is empty');
 
+        const token = await fetchTokenCLI(args);
+        const moniteClient = createMoniteClient(token);
+
         const serviceConstructorProps = {
-          token: await fetchTokenCLI(args),
+          token: token,
           entityId: entity_id,
         };
 
@@ -270,6 +277,16 @@ program
         /** Merge products & services */
         const lineItems = [...products, ...services];
 
+        console.log(chalk.black.bgBlueBright(`- Generating reminders`));
+        const paymentReminder = await createPaymentReminder({
+          moniteClient,
+          entity_id,
+        });
+        const overdueReminder = await createOverdueReminder({
+          moniteClient,
+          entity_id,
+        });
+
         console.log(chalk.black.bgBlueBright(`- Preparing fetch receivables`));
         const receivablesService = new ReceivablesService(
           serviceConstructorProps
@@ -286,6 +303,8 @@ program
             paymentTerms,
             type: 'invoice',
             count: 15,
+            paymentReminders: [paymentReminder.id],
+            overdueReminders: [overdueReminder.id],
           })
           .create();
 
@@ -318,6 +337,43 @@ program
           entity_id,
           token: await fetchTokenCLI(args),
         });
+      })
+  )
+  .addCommand(
+    commandWithEntityOptions()
+      .name('reminders')
+      .description('Generate payment reminders for the entity_id')
+      .option('--no-payment', 'Do not generate payment reminders')
+      .option('--no-overdue', 'Do not generate overdue reminders')
+      .action(async (args) => {
+        const { entity_id } = getEntityArgs(args);
+        if (!entity_id) throw new Error('entity_id is empty');
+
+        const token = await fetchTokenCLI(args);
+        const moniteClient = createMoniteClient(token);
+        if (!args.noPayment) {
+          await createPaymentReminder({
+            entity_id,
+            moniteClient,
+          });
+          console.log(
+            chalk.greenBright(
+              `Created a payment reminder for entity: "${entity_id}"`
+            )
+          );
+        }
+
+        if (!args.noOverdue) {
+          await createOverdueReminder({
+            entity_id,
+            moniteClient,
+          });
+          console.log(
+            chalk.greenBright(
+              `Created an overdue reminder for entity: "${entity_id}"`
+            )
+          );
+        }
       })
   )
   .addCommand(
