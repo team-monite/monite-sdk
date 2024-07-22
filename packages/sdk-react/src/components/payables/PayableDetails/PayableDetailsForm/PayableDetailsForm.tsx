@@ -57,7 +57,6 @@ import {
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 
 interface PayableDetailsFormProps {
-  setEdit?: (isEdit: boolean) => void;
   payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,

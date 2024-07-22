@@ -188,7 +188,6 @@ const PayableDetailsBase = ({
                 )}
               {isEdit ? (
                 <PayableDetailsForm
-                  setEdit={setEdit}
                   savePayable={saveInvoice}
                   createPayable={createInvoice}
                   payable={payable}
