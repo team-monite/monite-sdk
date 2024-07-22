@@ -32,6 +32,7 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
+import { useReminderPermissions } from './hooks/useReminderPermissions';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
@@ -41,20 +42,15 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { api } = useMoniteContext();
 
   const {
-    data: isReadPaymentReminderAllowed,
-    isLoading: isReadPaymentReminderAllowedLoading,
-  } = useIsActionAllowed({
-    method: 'payment_reminder',
-    action: 'read',
-  });
-
-  const {
-    data: isReadOverdueReminderAllowed,
-    isLoading: isReadOverdueReminderAllowedLoading,
-  } = useIsActionAllowed({
-    method: 'overdue_reminder',
-    action: 'read',
-  });
+    isReadPaymentReminderAllowed,
+    isReadPaymentReminderAllowedLoading,
+    isReadOverdueReminderAllowed,
+    isReadOverdueReminderAllowedLoading,
+    isCreatePaymentReminderAllowed,
+    isCreatePaymentReminderAllowedLoading,
+    isCreateOverdueReminderAllowed,
+    isCreateOverdueReminderAllowedLoading,
+  } = useReminderPermissions();
 
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
     api.paymentReminders.getPaymentReminders.useQuery({});
