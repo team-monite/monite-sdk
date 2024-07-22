@@ -59,8 +59,9 @@ const SelectFieldWithEdit = ({
           noOptionsText={noOptionsText}
           handleSelectChange={handleSelectChange}
           disabled={disabled}
-          // @ts-expect-error - we need to fix event
-          onChange={(event) => handleSelectChange(field)(event)}
+          onChange={(event: SelectChangeEvent<unknown>) =>
+            handleSelectChange(field)(event as SelectChangeEvent<string>)
+          }
           createFnOption={() =>
             // eslint-disable-next-line lingui/no-unlocalized-strings
             alert('You have selected Create a reminder preset')
