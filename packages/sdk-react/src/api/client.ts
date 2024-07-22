@@ -1,12 +1,11 @@
+import type { Context } from 'react';
+
 import { apiVersion } from '@/api/api-version';
 import { createAPIClient as createAPIClientBase } from '@/api/create-api-client';
 import { Services } from '@/api/services';
-import {
-  requestFn,
-  mergeHeaders,
-  HeadersOptions,
-  QraftClientOptions,
-} from '@openapi-qraft/react';
+import { packageVersion } from '@/packageVersion';
+import { requestFn, mergeHeaders } from '@openapi-qraft/react';
+import type { QraftContextValue } from '@openapi-qraft/react';
 
 export type API = Services;
 
@@ -16,7 +15,8 @@ export interface CreateMoniteAPIClientResult {
   version: string;
 }
 
-export interface CreateMoniteAPIClientOptions extends QraftClientOptions {
+export interface CreateMoniteAPIClientOptions {
+  context?: Context<QraftContextValue>;
   /** Used in entity-specific endpoints **/
   entityId?: string;
 }
@@ -28,8 +28,9 @@ export const createAPIClient = ({
   | CreateMoniteAPIClientOptions
   | undefined = {}): CreateMoniteAPIClientResult => {
   const moniteRequestFn: typeof requestFn = (schema, requestInfo, options) => {
-    const predefinedHeaders: HeadersOptions = {
+    const predefinedHeaders: Record<string, string | undefined> = {
       'x-monite-version': apiVersion,
+      'x-monite-sdk-version': packageVersion,
     };
 
     if (isMoniteEntityIdPath(schema.url))

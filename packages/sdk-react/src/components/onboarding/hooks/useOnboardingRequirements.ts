@@ -78,7 +78,7 @@ export type OnboardingRequirementsType = {
 export const useOnboardingRequirements = (): OnboardingRequirementsType => {
   const { data: onboarding } = useOnboardingRequirementsData();
   const { api } = useMoniteContext();
-  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery({});
+  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery();
 
   const entityName = useMemo(() => {
     return getEntityName(entity);

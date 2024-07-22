@@ -1,7 +1,7 @@
 {
   "name": "@monite/sdk-react",
   "version": "3.14.1",
-  "apiVersion": "2023-09-01",
+  "apiVersion": "2024-01-31",
   "publishConfig": {
     "access": "public"
   },
@@ -42,7 +42,7 @@
     "@mui/material": "~5.14.2",
     "@mui/x-data-grid": "~6.10.2",
     "@mui/x-date-pickers": "~6.18.3",
-    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@openapi-qraft/react": "1.13.0-beta.1",
     "@sentry/react": "~7.75.1",
     "@tanstack/react-query": "~5.28.6",
     "date-fns": "^2.28.0",
@@ -70,7 +70,7 @@
     "@fontsource/roboto": "~5.0.8",
     "@hookform/devtools": "~4.3.1",
     "@lingui/cli": "~4.7.0",
-    "@openapi-qraft/cli": "~1.11.0-beta.2",
+    "@openapi-qraft/cli": "1.13.0-beta.1",
     "@storybook/addon-actions": "~7.6.17",
     "@storybook/addon-essentials": "~7.6.17",
     "@storybook/addon-storysource": "~7.6.17",

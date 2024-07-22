@@ -87,10 +87,7 @@ const PayableDetailsInfoBase = ({
 
   const lineItems = lineItemsData?.data;
 
-  const { data: contacts } = useCounterpartContactList(
-    payable.counterpart_id,
-    counterpart && isOrganizationCounterpart(counterpart)
-  );
+  const { data: contacts } = useCounterpartContactList(payable.counterpart_id);
   const { data: addedByUser } = useEntityUserById(
     payable.was_created_by_user_id ?? ''
   );

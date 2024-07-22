@@ -28,7 +28,6 @@ export function useCounterpartBankView({
             counterpart_id: counterpart_id,
             bank_account_id: id,
           },
-          body: undefined,
         },
         {
           onSuccess: () => {

@@ -48,7 +48,7 @@ export const ProductForm = (props: ProductFormProps) => {
   const { root } = useRootElements();
   const { api } = useMoniteContext();
   const { data: measureUnits, isLoading } =
-    api.measureUnits.getMeasureUnits.useQuery({});
+    api.measureUnits.getMeasureUnits.useQuery();
 
   const methods = useForm<IProductFormSubmitValues>({
     resolver: yupResolver(getValidationSchema(i18n)),

@@ -158,7 +158,6 @@ export function useOnboardingBankAccount(): OnboardingBankAccountReturnType {
 
       if (currentBankAccount) {
         await deleteBankAccountMutation({
-          body: undefined,
           path: {
             bank_account_id: currentBankAccount.id,
           },

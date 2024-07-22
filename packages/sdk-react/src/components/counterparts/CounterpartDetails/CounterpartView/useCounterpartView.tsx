@@ -53,9 +53,7 @@ export function useCounterpartView({
     useCounterpartAddresses(counterpart?.id);
 
   const { data: contacts, isLoading: isContactsLoading } =
-    useCounterpartContactList(
-      counterpart?.type === 'organization' ? counterpart?.id : undefined
-    );
+    useCounterpartContactList(counterpart?.id);
 
   const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
     counterpart?.id
@@ -82,7 +80,6 @@ export function useCounterpartView({
 
       return deleteMutate(
         {
-          body: undefined,
           path: {
             counterpart_id: counterpart.id,
           },

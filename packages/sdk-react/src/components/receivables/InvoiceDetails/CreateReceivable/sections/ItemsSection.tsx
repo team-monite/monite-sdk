@@ -147,7 +147,7 @@ export const ItemsSection = ({
   });
   const watchedLineItems = watch('line_items');
   const { api } = useMoniteContext();
-  const { data: vatRates } = api.vatRates.getVatRates.useQuery({});
+  const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(

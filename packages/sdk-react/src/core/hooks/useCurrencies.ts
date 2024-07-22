@@ -20,7 +20,7 @@ export const useCurrencies = () => {
     isSuccess,
     isError,
     error,
-  } = api.internal.getInternalCurrencies.useQuery({});
+  } = api.internal.getInternalCurrencies.useQuery();
   const { i18n } = useLingui();
 
   //TODO: Remove this error handling and replace with proper error handling

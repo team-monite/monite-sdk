@@ -24,7 +24,7 @@ export const OnboardingEntityDocuments = () => {
 
   const { api } = useMoniteContext();
 
-  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery({});
+  const { data: entity } = api.entityUsers.getEntityUsersMyEntity.useQuery();
 
   const { data: descriptions } = useDocumentDescriptions(
     entity?.address.country
@@ -129,5 +129,3 @@ export const OnboardingEntityDocuments = () => {
     </OnboardingForm>
   );
 };
-
-type AllowedFileTypes = components['schemas']['AllowedFileTypes'];

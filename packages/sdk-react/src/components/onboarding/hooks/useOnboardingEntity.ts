@@ -69,9 +69,9 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
       fields: OnboardingEntity,
       requirements: OnboardingRequirement[] = []
     ) => {
-      const response = await updateEntityMutation(
-        prepareValuesToSubmit(generateValuesByFields(fields))
-      );
+      const response = await updateEntityMutation({
+        body: prepareValuesToSubmit(generateValuesByFields(fields)),
+      });
 
       patchOnboardingRequirements({
         requirements,
