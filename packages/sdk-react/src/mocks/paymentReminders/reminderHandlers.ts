@@ -19,29 +19,19 @@ export const remindersHandlers = [
     {},
     components['schemas']['PaymentReminder'],
     components['schemas']['PaymentReminderResponse']
-  >(paymentReminderPath, async ({ request }) => {
-    const jsonBody = await request.json();
-    console.log('Received payment_reminders request:', jsonBody);
-
+  >(paymentReminderPath, async () => {
     await delay();
 
-    const response = getPaymentReminder(jsonBody);
-    console.log('Returning payment_reminders response:', response);
-    return HttpResponse.json(response);
+    return HttpResponse.json(getPaymentReminder);
   }),
 
   http.get<
     {},
     components['schemas']['OverdueReminderRequest'],
     components['schemas']['PaymentReminderResponse']
-  >(overdueReminderPath, async ({ request }) => {
-    const jsonBody = await request.json();
-    console.log('Received overdue_reminders request:', jsonBody);
-
+  >(overdueReminderPath, async () => {
     await delay();
 
-    const response = getOverdueReminder(jsonBody);
-    console.log('Returning overdue_reminders response:', response);
-    return HttpResponse.json(response);
+    return HttpResponse.json(getOverdueReminder);
   }),
 ];
