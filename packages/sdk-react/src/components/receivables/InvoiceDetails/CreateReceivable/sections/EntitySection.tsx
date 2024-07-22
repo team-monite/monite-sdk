@@ -66,7 +66,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
     });
 
   const { data: entity, isLoading: isEntityLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery({});
+    api.entityUsers.getEntityUsersMyEntity.useQuery();
 
   /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =

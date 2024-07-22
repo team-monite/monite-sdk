@@ -38,7 +38,7 @@ export const ReceivableFilters = ({
   const { root } = useRootElements();
   const { api } = useMoniteContext();
 
-  const { data: counterparts } = api.counterparts.getCounterparts.useQuery({});
+  const { data: counterparts } = api.counterparts.getCounterparts.useQuery();
 
   return (
     <Grid container spacing={2}>

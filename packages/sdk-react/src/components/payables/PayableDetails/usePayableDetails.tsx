@@ -672,7 +672,6 @@ export function usePayableDetails({
           lineItemsMutation.push(
             deleteLineItemMutation.mutateAsync({
               path: { payable_id: payable.id, line_item_id: defaultValue.id },
-              body: undefined,
             })
           );
         }
@@ -696,7 +695,6 @@ export function usePayableDetails({
       await cancelMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
@@ -716,7 +714,6 @@ export function usePayableDetails({
       await submitMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
@@ -736,7 +733,6 @@ export function usePayableDetails({
       await rejectMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
@@ -756,7 +752,6 @@ export function usePayableDetails({
       await approveMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {

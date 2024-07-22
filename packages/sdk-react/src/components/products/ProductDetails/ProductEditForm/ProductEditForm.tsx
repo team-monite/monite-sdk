@@ -59,7 +59,7 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
   } = api.products.getProductsId.useQuery({ path: { product_id: props.id } });
 
   const { isLoading: isMeasureUnitsLoading } =
-    api.measureUnits.getMeasureUnits.useQuery({});
+    api.measureUnits.getMeasureUnits.useQuery();
 
   const productUpdateMutation = api.products.patchProductsId.useMutation(
     { path: { product_id: props.id } },

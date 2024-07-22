@@ -24,7 +24,6 @@ export function useCounterpartContactView({
     return await contactDeleteMutateAsync(
       {
         path: { counterpart_id: counterpart_id, contact_id: id },
-        body: undefined,
       },
       {
         onSuccess: () => {

@@ -80,7 +80,6 @@ export function useCounterpartView({
 
       return deleteMutate(
         {
-          body: undefined,
           path: {
             counterpart_id: counterpart.id,
           },

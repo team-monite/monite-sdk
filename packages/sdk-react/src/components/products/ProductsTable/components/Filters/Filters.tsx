@@ -25,7 +25,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
   const { root } = useRootElements();
   const { api } = useMoniteContext();
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
-    api.measureUnits.getMeasureUnits.useQuery({});
+    api.measureUnits.getMeasureUnits.useQuery();
 
   return (
     <Grid container spacing={2}>

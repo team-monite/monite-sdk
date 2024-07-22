@@ -213,7 +213,6 @@ const CounterpartsTableBase = ({
 
     deleteCounterpartMutation.mutate(
       {
-        body: undefined,
         path: {
           counterpart_id: selectedCounterpart.id,
         },

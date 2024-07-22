@@ -35,7 +35,7 @@ export const OnboardingPersonDocumentList = () => {
   const { enablePersonEditMode } = useOnboardingRequirementsContext();
 
   const { api } = useMoniteContext();
-  const personsQuery = api.persons.getPersons.useQuery({});
+  const personsQuery = api.persons.getPersons.useQuery();
   const persons = personsQuery.data?.data;
 
   const personDocuments = useMemo(

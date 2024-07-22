@@ -55,7 +55,7 @@
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
     "@mui/material": "~5.14.2",
-    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@openapi-qraft/react": "1.13.0-beta.1",
     "@playwright/test": "~1.45.0",
     "@tanstack/react-query": "~5.28.6",
     "@team-monite/eslint-plugin": "workspace:~",
