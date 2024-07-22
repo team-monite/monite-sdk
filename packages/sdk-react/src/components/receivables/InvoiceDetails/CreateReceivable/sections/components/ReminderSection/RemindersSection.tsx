@@ -11,6 +11,7 @@ import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
+  Alert,
   Card,
   CardContent,
   Grid,
@@ -22,11 +23,11 @@ import {
 import type { SectionGeneralProps } from '../../Section.types';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 import { useReminderPermissions } from './useReminderPermissions';
+import { useValidateCounterpart } from './useValidateCounterpart';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
   const { control } = useFormContext<CreateReceivablesFormProps>();
-
   const { root } = useRootElements();
   const { api } = useMoniteContext();
 
@@ -34,6 +35,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     isReadPaymentReminderAllowedLoading,
     isReadOverdueReminderAllowedLoading,
   } = useReminderPermissions();
+
+  const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
     api.paymentReminders.getPaymentReminders.useQuery({});
@@ -60,6 +63,22 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       isOverdueRemindersLoading
     ) {
       return <Typography>{t(i18n)`Loading...`}</Typography>;
+    }
+
+    if (!isEmailValid) {
+      return (
+        <Alert severity="warning">{t(
+          i18n
+        )`Please provide a valid email for the counterpart before enabling reminders.`}</Alert>
+      );
+    }
+
+    if (!areRemindersEnabled) {
+      return (
+        <Alert severity="warning">{t(
+          i18n
+        )`Reminders are disabled for this counterpart.`}</Alert>
+      );
     }
 
     return (

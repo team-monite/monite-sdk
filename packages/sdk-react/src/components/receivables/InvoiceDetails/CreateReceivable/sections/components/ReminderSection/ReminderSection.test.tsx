@@ -4,13 +4,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
-import { renderWithClient, triggerChangeInput } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import { requestFn } from '@openapi-qraft/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, screen, waitFor, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, screen, waitFor } from '@testing-library/react';
 
 import { ReminderSection } from './RemindersSection';
 
