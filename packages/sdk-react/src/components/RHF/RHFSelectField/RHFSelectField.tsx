@@ -1,5 +1,9 @@
-import React from 'react';
-import { Controller, FieldError } from 'react-hook-form';
+import {
+  Controller,
+  FieldError,
+  ControllerRenderProps,
+  Path,
+} from 'react-hook-form';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -15,19 +19,19 @@ import {
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material';
 
-interface CustomSelectProps {
+interface CustomSelectProps<T extends FieldValues> {
   label: string;
   options: Array<{ id: string | number; name: string }>;
   createFnOption?: () => void;
   noOptionsText: string;
   handleSelectChange: (
-    field: any
+    field: ControllerRenderProps<T, Path<T>>
   ) => (event: SelectChangeEvent<string | number>) => void;
 }
 
 type RHFSelectFieldProps<T extends FieldValues> = UseControllerProps<T> &
   Omit<MUISelectProps, 'name' | 'defaultValue'> &
-  CustomSelectProps;
+  CustomSelectProps<T>;
 
 export const RHFSelectField = <T extends FieldValues>({
   control,

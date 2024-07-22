@@ -1,9 +1,9 @@
-import React from 'react';
 import {
   Controller,
   ControllerRenderProps,
   FieldError,
   FieldValues,
+  Path,
   useFormContext,
 } from 'react-hook-form';
 
@@ -33,7 +33,7 @@ interface CustomSelectFieldProps extends FieldValues {
   disabled: boolean;
   root: HTMLElement;
   handleSelectChange: (
-    field: ControllerRenderProps<any, any>
+    field: ControllerRenderProps<FieldValues, Path<FieldValues>>
   ) => (event: SelectChangeEvent<string | number>) => void;
 }
 
