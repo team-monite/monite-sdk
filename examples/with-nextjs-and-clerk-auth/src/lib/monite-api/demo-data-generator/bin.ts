@@ -211,11 +211,13 @@ program
       .description('Generate receivables')
       .action(async (args) => {
         const { entity_id } = getEntityArgs(args);
-
         if (!entity_id) throw new Error('entity_id is empty');
 
+        const token = await fetchTokenCLI(args);
+        const moniteClient = createMoniteClient(token);
+
         const serviceConstructorProps = {
-          token: await fetchTokenCLI(args),
+          token: token,
           entityId: entity_id,
         };
 
@@ -275,6 +277,16 @@ program
         /** Merge products & services */
         const lineItems = [...products, ...services];
 
+        console.log(chalk.black.bgBlueBright(`- Generating reminders`));
+        const paymentReminder = await createPaymentReminder({
+          moniteClient,
+          entity_id,
+        });
+        const overdueReminder = await createOverdueReminder({
+          moniteClient,
+          entity_id,
+        });
+
         console.log(chalk.black.bgBlueBright(`- Preparing fetch receivables`));
         const receivablesService = new ReceivablesService(
           serviceConstructorProps
@@ -291,6 +303,8 @@ program
             paymentTerms,
             type: 'invoice',
             count: 15,
+            paymentReminders: [paymentReminder.id],
+            overdueReminders: [overdueReminder.id],
           })
           .create();
 
