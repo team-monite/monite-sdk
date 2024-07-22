@@ -60,7 +60,6 @@ export const PayableDetailsHeader = ({
       variant: 'contained',
       form: payableDetailsFormId,
       type: 'submit',
-      onClick: submitInvoice,
       children: t(i18n)`Save`,
     },
     cancelEdit: {
