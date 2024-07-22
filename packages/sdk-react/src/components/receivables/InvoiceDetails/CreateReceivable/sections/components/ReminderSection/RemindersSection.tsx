@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   Controller,
   ControllerRenderProps,
@@ -8,11 +7,8 @@ import {
 } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
-import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -34,48 +30,30 @@ import {
 import type { SectionGeneralProps } from '../../Section.types';
 import { useReminderPermissions } from './hooks/useReminderPermissions';
 
-export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
+const SelectField = ({
+  field,
+  error,
+  label,
+  options,
+  noOptionsText,
+  disabled,
+  root,
+  handleSelectChange,
+}: {
+  field: ControllerRenderProps<any, any>;
+  error: FieldError | undefined;
+  label: string;
+  options: any[];
+  noOptionsText: string;
+  disabled: boolean;
+  root: HTMLElement;
+  handleSelectChange: (
+    field: ControllerRenderProps<any, any>
+  ) => (event: SelectChangeEvent<string>) => void;
+}) => {
   const { i18n } = useLingui();
-  const { control } = useFormContext<CreateReceivablesFormProps>();
 
-  const { root } = useRootElements();
-  const { api } = useMoniteContext();
-
-  const {
-    isReadPaymentReminderAllowed,
-    isReadPaymentReminderAllowedLoading,
-    isReadOverdueReminderAllowed,
-    isReadOverdueReminderAllowedLoading,
-    isCreatePaymentReminderAllowed,
-    isCreatePaymentReminderAllowedLoading,
-    isCreateOverdueReminderAllowed,
-    isCreateOverdueReminderAllowedLoading,
-  } = useReminderPermissions();
-
-  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
-    api.paymentReminders.getPaymentReminders.useQuery({});
-  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
-    api.overdueReminders.getOverdueReminders.useQuery({});
-
-  const handleSelectChange =
-    (field: ControllerRenderProps<FieldValues, string>) =>
-    (event: SelectChangeEvent<string>) => {
-      const value = event.target.value;
-      if (value === 'create') {
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        alert(`You have selected Create a reminder preset`);
-      } else {
-        field.onChange(value);
-      }
-    };
-
-  const renderSelectField = (
-    field: ControllerRenderProps<any, any>,
-    error: FieldError | undefined,
-    label: string,
-    options: any[],
-    noOptionsText: string
-  ) => (
+  return (
     <FormControl
       variant="outlined"
       fullWidth
@@ -119,23 +97,11 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
               {t(i18n)`Create a reminder preset`}
             </MenuItem>
           </Select>
-          {/*ToDo: to refactor to RHFAutocomplete*/}
-          {/*<RHFAutocomplete*/}
-          {/*  label={t(i18n)`${label}`}*/}
-          {/*  name={field.name}*/}
-          {/*  control={control}*/}
-          {/*  options={options}*/}
-          {/*  renderOption={(props, option, state) => <h1>test</h1>}*/}
-          {/*  optionKey="id"*/}
-          {/*  labelKey="name"*/}
-          {/*/>*/}
         </Grid>
         <Grid item xs={2}>
           <Button
             variant="outlined"
-            disabled={
-              isReadPaymentReminderAllowed || isReadOverdueReminderAllowed
-            }
+            disabled={disabled}
             onClick={() => {
               // eslint-disable-next-line lingui/no-unlocalized-strings
               alert(`You have selected Edit`);
@@ -149,6 +115,36 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       {error && <FormHelperText>{error.message}</FormHelperText>}
     </FormControl>
   );
+};
+
+export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
+  const { i18n } = useLingui();
+  const { control } = useFormContext<CreateReceivablesFormProps>();
+
+  const { root } = useRootElements();
+  const { api } = useMoniteContext();
+
+  const {
+    isReadPaymentReminderAllowedLoading,
+    isReadOverdueReminderAllowedLoading,
+  } = useReminderPermissions();
+
+  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
+    api.paymentReminders.getPaymentReminders.useQuery({});
+  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
+    api.overdueReminders.getOverdueReminders.useQuery({});
+
+  const handleSelectChange =
+    (field: ControllerRenderProps<FieldValues, string>) =>
+    (event: SelectChangeEvent<string>) => {
+      const value = event.target.value;
+      if (value === 'create') {
+        // eslint-disable-next-line lingui/no-unlocalized-strings
+        alert(`You have selected Create a reminder preset`);
+      } else {
+        field.onChange(value);
+      }
+    };
 
   const renderRemindersSection = () => {
     if (
@@ -166,15 +162,18 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
           <Controller
             name="payment_terms_id"
             control={control}
-            render={({ field, fieldState: { error } }) =>
-              renderSelectField(
-                field,
-                error,
-                t(i18n)`Before due date`,
-                paymentReminders?.data || [],
-                t(i18n)`No payment reminders available`
-              )
-            }
+            render={({ field, fieldState: { error } }) => (
+              <SelectField
+                field={field}
+                error={error}
+                label={t(i18n)`Before due date`}
+                options={paymentReminders?.data || []}
+                noOptionsText={t(i18n)`No payment reminders available`}
+                disabled={disabled}
+                root={root as HTMLElement}
+                handleSelectChange={handleSelectChange}
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -182,15 +181,18 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             // ToDo: check type casting why this id is scoped to CreateReceivablesFormProps
             name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
             control={control}
-            render={({ field, fieldState: { error } }) =>
-              renderSelectField(
-                field,
-                error,
-                t(i18n)`Overdue reminders`,
-                overdueReminders?.data || [],
-                t(i18n)`No overdue reminders available`
-              )
-            }
+            render={({ field, fieldState: { error } }) => (
+              <SelectField
+                field={field}
+                error={error}
+                label={t(i18n)`Overdue reminders`}
+                options={overdueReminders?.data || []}
+                noOptionsText={t(i18n)`No overdue reminders available`}
+                disabled={disabled}
+                root={root as HTMLElement}
+                handleSelectChange={handleSelectChange}
+              />
+            )}
           />
         </Grid>
       </Grid>
