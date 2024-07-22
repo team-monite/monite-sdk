@@ -1,20 +1,16 @@
 import {
   Controller,
   ControllerRenderProps,
-  FieldError,
   FieldValues,
-  Path,
   useFormContext,
 } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
-import { RHFSelectField } from '@/components/RHF/RHFSelectField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Button,
   Card,
   CardContent,
   Grid,
@@ -24,66 +20,8 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
-import { useReminderPermissions } from './hooks/useReminderPermissions';
-
-interface CustomSelectFieldProps extends FieldValues {
-  error: FieldError | undefined;
-  label: string;
-  noOptionsText: string;
-  disabled: boolean;
-  root: HTMLElement;
-  handleSelectChange: (
-    field: ControllerRenderProps<FieldValues, Path<FieldValues>>
-  ) => (event: SelectChangeEvent<string | number>) => void;
-}
-
-const SelectFieldWithEdit = ({
-  field,
-  label,
-  options,
-  noOptionsText,
-  disabled,
-  handleSelectChange,
-  control,
-}: CustomSelectFieldProps) => {
-  const { i18n } = useLingui();
-
-  return (
-    <Grid container alignItems="center" spacing={1}>
-      <Grid item xs={10}>
-        <RHFSelectField
-          control={control}
-          name={field.name}
-          label={label}
-          options={options}
-          noOptionsText={noOptionsText}
-          handleSelectChange={handleSelectChange}
-          disabled={disabled}
-          onChange={(event: SelectChangeEvent<unknown>) =>
-            handleSelectChange(field)(event as SelectChangeEvent<string>)
-          }
-          createFnOption={() =>
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            alert('You have selected Create a reminder preset')
-          }
-        />
-      </Grid>
-      <Grid item xs={2}>
-        <Button
-          variant="outlined"
-          disabled={disabled}
-          onClick={() => {
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            alert('You have selected Edit');
-          }}
-          fullWidth
-        >
-          {t(i18n)`Edit`}
-        </Button>
-      </Grid>
-    </Grid>
-  );
-};
+import { SelectFieldWithEdit } from './SelectFieldWithEdit';
+import { useReminderPermissions } from './useReminderPermissions';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
