@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
