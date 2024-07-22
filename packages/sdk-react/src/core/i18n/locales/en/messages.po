@@ -215,11 +215,11 @@ msgstr "Add VAT ID"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:286
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:75
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:389
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:390
 msgid "Added by"
 msgstr "Added by"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:415
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:416
 msgid "Added on"
 msgstr "Added on"
 
@@ -343,7 +343,7 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:82
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:270
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:210
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:211
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:168
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:219
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:37
@@ -406,7 +406,7 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:267
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:268
 msgid "Applied policy"
 msgstr "Applied policy"
 
@@ -642,7 +642,7 @@ msgid "Bangladeshi Taka"
 msgstr "Bangladeshi Taka"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:103
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:175
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:176
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:66
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:95
@@ -689,7 +689,7 @@ msgstr "Barbados"
 msgid "Barber and Beauty Shops"
 msgstr "Barber and Beauty Shops"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:75
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:96
 msgid "Before due date"
 msgstr "Before due date"
 
@@ -1290,7 +1290,7 @@ msgstr "Consulting, Public Relations"
 msgid "Contact information"
 msgstr "Contact information"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:165
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:166
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:249
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
@@ -1830,7 +1830,7 @@ msgid "Description:"
 msgstr "Description:"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:238
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:145
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:146
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:95
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:93
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:20
@@ -1975,7 +1975,7 @@ msgstr "Dry Cleaners"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:249
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:90
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:388
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:197
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:198
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:90
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:232
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:179
@@ -2246,7 +2246,7 @@ msgstr "Ethiopian Birr"
 msgid "Euro"
 msgstr "Euro"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:315
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:316
 msgid "excl. VAT"
 msgstr "excl. VAT"
 
@@ -2378,7 +2378,7 @@ msgstr "Fiji"
 msgid "Fijian Dollar"
 msgstr "Fijian Dollar"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:126
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:127
 msgid "File is being processed..."
 msgstr "File is being processed..."
 
@@ -2683,7 +2683,7 @@ msgstr "Hearing Aids Sales and Supplies"
 msgid "Heating, Plumbing, A/C"
 msgstr "Heating, Plumbing, A/C"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:381
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:382
 msgid "History"
 msgstr "History"
 
@@ -2691,7 +2691,7 @@ msgstr "History"
 msgid "Hobby, Toy, and Game Shops"
 msgstr "Hobby, Toy, and Game Shops"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:129
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:130
 msgid "Hold on, we’re processing the file you’ve uploaded."
 msgstr "Hold on, we’re processing the file you’ve uploaded."
 
@@ -2887,7 +2887,7 @@ msgstr "Invoice delete confirmation"
 msgid "Invoice not found"
 msgstr "Invoice not found"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:152
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:153
 msgid "Invoice number"
 msgstr "Invoice number"
 
@@ -2953,7 +2953,7 @@ msgid "Issue and send"
 msgstr "Issue and send"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:236
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:183
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:184
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:139
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:191
 msgid "Issue date"
@@ -3038,7 +3038,7 @@ msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:449
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:280
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:281
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:203
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:90
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:25
@@ -3237,7 +3237,7 @@ msgid "Lithuania"
 msgstr "Lithuania"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:114
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:62
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:66
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -3546,7 +3546,7 @@ msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgid "Myanmar"
 msgstr "Myanmar"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:286
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:287
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:40
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
@@ -3700,6 +3700,10 @@ msgstr "No bank accounts available"
 msgid "No contact persons available"
 msgstr "No contact persons available"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:81
+msgid "No default email for selected Counterpart. Reminders will not be sent."
+msgstr "No default email for selected Counterpart. Reminders will not be sent."
+
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:107
 msgid "No file provided"
 msgstr "No file provided"
@@ -3708,15 +3712,15 @@ msgstr "No file provided"
 msgid "No items yet"
 msgstr "No items yet"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:96
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:117
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:77
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:98
 msgid "No payment reminders available"
 msgstr "No payment reminders available"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:271
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:272
 msgid "no policy"
 msgstr "no policy"
 
@@ -3841,7 +3845,7 @@ msgstr "Overdue payment"
 msgid "Overdue reminder"
 msgstr "Overdue reminder"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:94
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:115
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
 
@@ -4251,7 +4255,7 @@ msgstr "Precious Stones and Metals, Watches and Jewelry"
 msgid "Previous page"
 msgstr "Previous page"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:288
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:289
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:102
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:218
@@ -4376,7 +4380,7 @@ msgstr "Qatar"
 msgid "Qatari Rial"
 msgstr "Qatari Rial"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:287
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:288
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:57
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:216
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:33
@@ -4491,9 +4495,13 @@ msgstr "Religious Organizations"
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:111
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:133
 msgid "Reminders"
 msgstr "Reminders"
+
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:71
+msgid "Reminders are disabled for this counterpart."
+msgstr "Reminders are disabled for this counterpart."
 
 #: src/components/onboarding/OnboardingPersonList/OnboardingPersonList.tsx:94
 msgid "Remove person"
@@ -4994,7 +5002,7 @@ msgid "Submit invoice"
 msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:460
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:342
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:343
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:357
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:33
@@ -5005,7 +5013,7 @@ msgstr "Subtotal"
 msgid "Sudan"
 msgstr "Sudan"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:158
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:159
 msgid "Supplier"
 msgstr "Supplier"
 
@@ -5071,7 +5079,7 @@ msgstr "Tag “{0}” was deleted"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:118
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:429
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:244
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:245
 #: src/components/tags/Tags.tsx:52
 msgid "Tags"
 msgstr "Tags"
@@ -5158,7 +5166,7 @@ msgid "Tax Registration Number (UAE)"
 msgstr "Tax Registration Number (UAE)"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:474
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:353
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:354
 msgid "Taxes"
 msgstr "Taxes"
 
@@ -5361,7 +5369,7 @@ msgid "Tongan Paʻanga"
 msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:488
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:364
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:365
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:363
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:40
@@ -5374,7 +5382,7 @@ msgstr "Total"
 msgid "Total taxes"
 msgstr "Total taxes"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:289
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:290
 msgid "Total, tax"
 msgstr "Total, tax"
 
@@ -5619,7 +5627,7 @@ msgstr "Update Vat Id"
 msgid "Updated at"
 msgstr "Updated at"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:428
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:429
 msgid "Updated on"
 msgstr "Updated on"
 
@@ -5671,7 +5679,7 @@ msgstr "Users from the list"
 msgid "Users from the list{0}"
 msgstr "Users from the list{0}"
 
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:132
+#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:133
 msgid "Usually it takes no more than 1–2 mins."
 msgstr "Usually it takes no more than 1–2 mins."
 
