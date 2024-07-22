@@ -57,9 +57,14 @@ const SelectFieldWithEdit = ({
           label={label}
           options={options}
           noOptionsText={noOptionsText}
+          handleSelectChange={handleSelectChange}
           disabled={disabled}
           // @ts-expect-error - we need to fix event
           onChange={(event) => handleSelectChange(field)(event)}
+          createFnOption={() =>
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            alert('You have selected Create a reminder preset')
+          }
         />
       </Grid>
       <Grid item xs={2}>
@@ -153,7 +158,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 disabled={disabled}
                 root={root as HTMLElement}
                 handleSelectChange={handleSelectChange}
-                control={control} // pass control here
+                control={control}
               />
             )}
           />
