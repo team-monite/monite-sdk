@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Controller,
   ControllerRenderProps,
@@ -7,21 +8,16 @@ import {
 } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { RHFSelectField } from '@/components/RHF/RHFSelectField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import AddIcon from '@mui/icons-material/Add';
 import {
   Button,
   Card,
   CardContent,
-  FormControl,
-  FormHelperText,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   SelectChangeEvent,
   Stack,
   Typography,
@@ -30,16 +26,7 @@ import {
 import type { SectionGeneralProps } from '../../Section.types';
 import { useReminderPermissions } from './hooks/useReminderPermissions';
 
-const SelectField = ({
-  field,
-  error,
-  label,
-  options,
-  noOptionsText,
-  disabled,
-  root,
-  handleSelectChange,
-}: {
+interface CustomSelectFieldProps extends FieldValues {
   field: ControllerRenderProps<any, any>;
   error: FieldError | undefined;
   label: string;
@@ -49,71 +36,50 @@ const SelectField = ({
   root: HTMLElement;
   handleSelectChange: (
     field: ControllerRenderProps<any, any>
-  ) => (event: SelectChangeEvent<string>) => void;
-}) => {
+  ) => (event: SelectChangeEvent<string | number>) => void;
+}
+
+const SelectFieldWithEdit = ({
+  field,
+  error,
+  label,
+  options,
+  noOptionsText,
+  disabled,
+  root,
+  handleSelectChange,
+  control,
+}: CustomSelectFieldProps & { control: any }) => {
   const { i18n } = useLingui();
 
   return (
-    <FormControl
-      variant="outlined"
-      fullWidth
-      error={Boolean(error)}
-      disabled={disabled}
-    >
-      <InputLabel htmlFor={field.name}>{t(i18n)`${label}`}</InputLabel>
-      <Grid container alignItems="center" spacing={1}>
-        <Grid item xs={10}>
-          <Select
-            {...field}
-            id={field.name}
-            labelId={field.name}
-            label={t(i18n)`${label}`}
-            MenuProps={{ container: root }}
-            onChange={handleSelectChange(field)}
-            fullWidth
-            value={field.value || ''}
-          >
-            {options.length > 0 ? (
-              options.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.name}
-                </MenuItem>
-              ))
-            ) : (
-              <MenuItem value="" disabled>
-                {t(i18n)`${noOptionsText}`}
-              </MenuItem>
-            )}
-            <MenuItem
-              value="create"
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                color: 'primary.main',
-              }}
-            >
-              <AddIcon sx={{ marginRight: 1 }} />
-              {t(i18n)`Create a reminder preset`}
-            </MenuItem>
-          </Select>
-        </Grid>
-        <Grid item xs={2}>
-          <Button
-            variant="outlined"
-            disabled={disabled}
-            onClick={() => {
-              // eslint-disable-next-line lingui/no-unlocalized-strings
-              alert(`You have selected Edit`);
-            }}
-            fullWidth
-          >
-            {t(i18n)`Edit`}
-          </Button>
-        </Grid>
+    <Grid container alignItems="center" spacing={1}>
+      <Grid item xs={10}>
+        <RHFSelectField
+          control={control}
+          name={field.name}
+          label={label}
+          options={options}
+          noOptionsText={noOptionsText}
+          disabled={disabled}
+          // @ts-expect-error - we need to fix event
+          onChange={(event) => handleSelectChange(field)(event)}
+        />
       </Grid>
-      {error && <FormHelperText>{error.message}</FormHelperText>}
-    </FormControl>
+      <Grid item xs={2}>
+        <Button
+          variant="outlined"
+          disabled={disabled}
+          onClick={() => {
+            // eslint-disable-next-line lingui/no-unlocalized-strings
+            alert('You have selected Edit');
+          }}
+          fullWidth
+        >
+          {t(i18n)`Edit`}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -136,11 +102,10 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
   const handleSelectChange =
     (field: ControllerRenderProps<FieldValues, string>) =>
-    (event: SelectChangeEvent<string>) => {
+    (event: SelectChangeEvent<string | number>) => {
       const value = event.target.value;
       if (value === 'create') {
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        alert(`You have selected Create a reminder preset`);
+        alert('You have selected Create a reminder preset');
       } else {
         field.onChange(value);
       }
@@ -163,7 +128,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
             name="payment_terms_id"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <SelectField
+              <SelectFieldWithEdit
                 field={field}
                 error={error}
                 label={t(i18n)`Before due date`}
@@ -172,17 +137,17 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 disabled={disabled}
                 root={root as HTMLElement}
                 handleSelectChange={handleSelectChange}
+                control={control} // pass control here
               />
             )}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <Controller
-            // ToDo: check type casting why this id is scoped to CreateReceivablesFormProps
             name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <SelectField
+              <SelectFieldWithEdit
                 field={field}
                 error={error}
                 label={t(i18n)`Overdue reminders`}
@@ -191,6 +156,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                 disabled={disabled}
                 root={root as HTMLElement}
                 handleSelectChange={handleSelectChange}
+                control={control} // pass control here
               />
             )}
           />
