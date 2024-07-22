@@ -380,8 +380,6 @@ export const ItemsSection = ({
           actualCurrency={actualCurrency}
           hasProducts={fields.length > 0}
           onAdd={({ items, currency }) => {
-            if (!vatRates) throw new Error('Vat rates not loaded');
-
             handleCloseProductsTable();
             if (actualCurrency !== currency) {
               replace(
