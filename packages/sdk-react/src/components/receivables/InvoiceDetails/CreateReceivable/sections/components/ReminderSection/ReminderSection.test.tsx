@@ -1,7 +1,10 @@
 import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
+import {
+  ReminderDetail,
+  ReminderDetails,
+} from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
@@ -90,50 +93,27 @@ describe('ReminderSection', () => {
       return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
     };
 
-    const mockDetails: Array<OverdueReminder | PaymentReminderResponse> = [
-      {
-        id: 'overdue-reminder-1',
-        name: 'Payment 1',
-        created_at: '2023-07-21',
-        updated_at: '2023-07-21',
-        recipients: {
-          bcc: undefined,
-          cc: undefined,
-          to: undefined,
-        },
-        term_1_reminder: {
-          body: 'test body',
-          days_before: 1,
-          subject: 'test subject',
-        },
-        term_2_reminder: {
-          body: 'test body',
-          days_before: 1,
-          subject: 'test subject',
-        },
+    const mockDetails: ReminderDetail = {
+      id: 'overdue-reminder-1',
+      name: 'Payment 1',
+      created_at: '2023-07-21',
+      updated_at: '2023-07-21',
+      recipients: {
+        bcc: undefined,
+        cc: undefined,
+        to: undefined,
       },
-      {
-        id: 'overdue-reminder-2',
-        name: 'Payment 2',
-        created_at: '2023-07-22',
-        updated_at: '2023-07-22',
-        recipients: {
-          bcc: undefined,
-          cc: undefined,
-          to: undefined,
-        },
-        term_1_reminder: {
-          body: 'test body',
-          days_before: 1,
-          subject: 'test subject',
-        },
-        term_2_reminder: {
-          body: 'test body',
-          days_before: 1,
-          subject: 'test subject',
-        },
+      term_1_reminder: {
+        body: 'test body',
+        days_before: 1,
+        subject: 'test subject',
       },
-    ];
+      term_2_reminder: {
+        body: 'test body',
+        days_before: 1,
+        subject: 'test subject',
+      },
+    };
 
     test('renders without crashing', () => {
       renderWithTheme(<ReminderDetails details={mockDetails} />);
@@ -144,7 +124,9 @@ describe('ReminderSection', () => {
     });
 
     test('does not render when details are empty', () => {
-      const { container } = renderWithTheme(<ReminderDetails details={[]} />);
+      const { container } = renderWithTheme(
+        <ReminderDetails details={undefined} />
+      );
       expect(container).toBeEmptyDOMElement();
     });
 
