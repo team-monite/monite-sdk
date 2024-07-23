@@ -154,6 +154,35 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiFormControl: {
+    styleOverrides: {},
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      // outlined: {
+      //   height: '40px',
+      //   fontSize: '14px',
+      //   transform: 'translate(38px, 10px)',
+      // },
+    },
+  },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        borderRadius: `100px !important`,
+        height: '40px',
+        '& .MuiInputBase-input': {
+          height: '40px',
+          padding: '0 14px', // Adjust padding if needed
+          boxSizing: 'border-box',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          border: 'none',
+          backgroundColor: 'rgba(0, 0, 0, 0.02)',
+        },
+      },
+    },
+  },
 };
 
 export const moniteLight = () =>

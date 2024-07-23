@@ -56,14 +56,34 @@ html {
     flex-basis: 0;
     flex-grow: 2;
     overflow: hidden;
+    /* prevent labels from being clipped */
+    margin-top: calc(var(--demo-padding) * -1);
+    padding-top: var(--demo-padding);
 
     > .MuiBox-root {
+      /* prevent labels from being clipped */
+      margin-top: calc(var(--demo-padding) * -1);
+      padding-top: var(--demo-padding);
 
+      /* occupy whole available space */
       display: flex;
       flex-direction: column;
       overflow: hidden;
       height: 100%;
       max-height: 100%;
+
+      > .MuiBox-root:first-child > .MuiGrid-root:first-child {
+        /* Filter labels customization */
+        > .MuiGrid-item {
+          label {
+            &:not(.MuiInputLabel-shrink) {
+              height: 40px;
+              font-size: 14px;
+              transform: translate(var(--demo-padding-2), 10px);
+            }
+          }
+        }
+      }
 
       > div:last-child {
         flex-basis: 0;
@@ -82,6 +102,11 @@ html {
   max-height: 100%;
 
   > .MuiBox-root {
+    /* prevent labels from being clipped */
+    margin-top: calc(var(--demo-padding) * -1);
+    padding-top: var(--demo-padding);
+
+    /* occupy whole available space */
     flex-basis: 0;
     flex-grow: 2;
     overflow: hidden;
@@ -90,5 +115,25 @@ html {
     flex-direction: column;
     height: 100%;
     max-height: 100%;
+
+    /* Filter pane styles */
+    > div:first-child {
+      > .MuiGrid-root:first-child {
+        > .MuiGrid-item:nth-child(2) {
+          flex-basis: 16%;
+        }
+
+        /* Filter labels customization */
+        > .MuiGrid-item:nth-child(1), > .MuiGrid-item:nth-child(3), > .MuiGrid-item:nth-child(4) {
+          label {
+            &:not(.MuiInputLabel-shrink) {
+              height: 40px;
+              font-size: 14px;
+              transform: translate(var(--demo-padding-2), 10px);
+            }
+          }
+        }
+      }
+    }
   }
 }
