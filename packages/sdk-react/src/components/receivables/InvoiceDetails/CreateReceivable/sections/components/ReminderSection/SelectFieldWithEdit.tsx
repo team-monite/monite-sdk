@@ -19,10 +19,12 @@ interface CustomSelectFieldProps extends FieldValues {
 
 const mockReminderDetails = [
   {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
     event: 'Before due date',
     time: '10:00',
   },
   {
+    // eslint-disable-next-line lingui/no-unlocalized-strings
     event: 'Overdue reminders',
     time: '10:00',
   },
