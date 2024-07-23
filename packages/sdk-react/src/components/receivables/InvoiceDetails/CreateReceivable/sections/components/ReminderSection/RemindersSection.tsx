@@ -27,7 +27,6 @@ import { useOverdueReminderById } from './hooks/useOverdueReminderById';
 import { usePaymentReminderById } from './hooks/usePaymentReminderById';
 import { useReminderPermissions } from './hooks/useReminderPermissions';
 import { useValidateCounterpart } from './hooks/useValidateCounterpart';
-import { ReminderDetail } from './ReminderDetail';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
@@ -41,15 +40,11 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     isReadOverdueReminderAllowedLoading,
   } = useReminderPermissions();
 
-  // const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
-  //   ReminderDetail[]
-  // >([]);
-  // const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
-  //   useState<ReminderDetail[]>([]);
   const [
     selectedPaymentIDReminderDetails,
     setSelectedPaymentIDReminderDetails,
   ] = useState<string | undefined>(undefined);
+
   const [
     selectedOverdueIDReminderDetails,
     setSelectedOverdueIDReminderDetails,
