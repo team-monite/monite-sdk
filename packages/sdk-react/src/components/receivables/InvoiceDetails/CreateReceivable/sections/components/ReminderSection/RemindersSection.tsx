@@ -23,10 +23,12 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
+import { useOverdueReminderById } from './hooks/useOverdueReminderById';
+import { usePaymentReminderById } from './hooks/usePaymentReminderById';
+import { useReminderPermissions } from './hooks/useReminderPermissions';
+import { useValidateCounterpart } from './hooks/useValidateCounterpart';
 import { ReminderDetail } from './ReminderDetail';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
-import { useReminderPermissions } from './useReminderPermissions';
-import { useValidateCounterpart } from './useValidateCounterpart';
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
@@ -39,6 +41,20 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     isReadOverdueReminderAllowedLoading,
   } = useReminderPermissions();
 
+  const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
+    ReminderDetail[]
+  >([]);
+  const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
+    useState<ReminderDetail[]>([]);
+  const [
+    selectedPaymentIDReminderDetails,
+    setSelectedPaymentIDReminderDetails,
+  ] = useState<ReminderDetail[]>([]);
+  const [
+    selectedOverdueIDReminderDetails,
+    setSelectedOverdueIDReminderDetails,
+  ] = useState<ReminderDetail[]>([]);
+
   const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
@@ -46,12 +62,14 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
 
-  const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
-    ReminderDetail[]
-  >([]);
-
-  const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
-    useState<ReminderDetail[]>([]);
+  const { data: paymentIDReminder } = usePaymentReminderById(
+    // @ts-expect-error - selectedPaymentIDReminderDetails is not defined
+    selectedPaymentIDReminderDetails
+  );
+  const { data: overdueIDReminder } = useOverdueReminderById(
+    // @ts-expect-error - selectedOverdueIDReminderDetails is not defined
+    selectedOverdueIDReminderDetails
+  );
 
   const handleSelectChangeAsync = async (
     field: ControllerRenderProps<FieldValues, string>,
@@ -69,31 +87,13 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
     try {
       if (type === 'payment') {
-        // ToDO: move this to top of the function unfortunately we can't call hooks inside of hooks
-        const { data: paymentIDReminder } =
-          api.paymentReminders.getPaymentRemindersId.useQuery({
-            path: {
-              payment_reminder_id: value.toString(),
-            },
-          });
-        if (paymentIDReminder) {
-          setSelectedReminderDetails(
-            paymentIDReminder as unknown as ReminderDetail[]
-          );
-        }
+        setSelectedPaymentIDReminderDetails(
+          paymentIDReminder as unknown as ReminderDetail[]
+        );
       } else if (type === 'overdue') {
-        // ToDO: move this to top of the function unfortunately we can't call hooks inside of hooks
-        const { data: overdueIDReminder } =
-          api.overdueReminders.getOverdueRemindersId.useQuery({
-            path: {
-              overdue_reminder_id: value.toString(),
-            },
-          });
-        if (overdueIDReminder) {
-          setSelectedReminderDetails(
-            overdueIDReminder as unknown as ReminderDetail[]
-          );
-        }
+        setSelectedOverdueIDReminderDetails(
+          overdueIDReminder as unknown as ReminderDetail[]
+        );
       }
     } catch (error) {
       console.error(error);
