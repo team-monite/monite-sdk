@@ -2,7 +2,6 @@ import {
   ControllerRenderProps,
   FieldError,
   FieldValues,
-  Path,
 } from 'react-hook-form';
 
 import { RHFSelectField } from '@/components/RHF/RHFSelectField';
@@ -12,14 +11,17 @@ import { Button, Grid, SelectChangeEvent } from '@mui/material';
 
 import { ReminderDetails } from './ReminderDetail';
 
-interface CustomSelectFieldProps extends FieldValues {
+interface CustomSelectFieldProps {
+  field: any;
   error: FieldError | undefined;
   label: string;
   noOptionsText: string;
   disabled: boolean;
+  options: any[];
+  control: any;
   root: HTMLElement;
   handleSelectChange: (
-    field: ControllerRenderProps<FieldValues, Path<FieldValues>>
+    field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
 }
 
@@ -37,9 +39,9 @@ const mockReminderDetails = [
 export const SelectFieldWithEdit = ({
   field,
   label,
-  options,
   noOptionsText,
   disabled,
+  options,
   handleSelectChange,
   control,
 }: CustomSelectFieldProps) => {
