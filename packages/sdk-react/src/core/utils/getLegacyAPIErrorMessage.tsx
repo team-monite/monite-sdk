@@ -24,4 +24,15 @@ export function getLegacyAPIErrorMessage(err: unknown): string | undefined {
   ) {
     return err.message;
   }
+
+  if (typeof err === 'object' && err !== null && 'error' in err) {
+    if (
+      typeof err.error === 'object' &&
+      err.error !== null &&
+      'message' in err.error &&
+      typeof err.error.message === 'string'
+    ) {
+      return err.error.message;
+    }
+  }
 }
