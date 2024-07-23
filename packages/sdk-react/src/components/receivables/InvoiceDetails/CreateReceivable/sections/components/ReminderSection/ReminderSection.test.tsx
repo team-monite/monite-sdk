@@ -12,13 +12,10 @@ import { renderWithClient } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { requestFn } from '@openapi-qraft/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, screen, waitFor } from '@testing-library/react';
 
 import { ReminderSection } from './RemindersSection';
-
-const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();

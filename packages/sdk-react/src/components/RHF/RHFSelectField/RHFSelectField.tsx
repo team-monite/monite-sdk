@@ -7,8 +7,6 @@ import {
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,
@@ -26,6 +24,7 @@ interface CustomSelectProps<T extends FieldValues> {
   options: Array<{ id: string | number; name: string }>;
   createFnOption?: () => void;
   noOptionsText: string;
+  createOptionLabel: string;
   handleSelectChange: (
     field: ControllerRenderProps<T, Path<T>>
   ) => (event: SelectChangeEvent<string | number>) => void;
@@ -41,6 +40,7 @@ export const RHFSelectField = <T extends FieldValues>({
   label,
   options,
   noOptionsText,
+  createOptionLabel,
   createFnOption,
   handleSelectChange,
   ...other
@@ -49,7 +49,6 @@ export const RHFSelectField = <T extends FieldValues>({
     error?.type === 'custom';
 
   const { root } = useRootElements();
-  const { i18n } = useLingui();
 
   return (
     <Controller
@@ -100,7 +99,7 @@ export const RHFSelectField = <T extends FieldValues>({
                   }}
                 >
                   <AddIcon sx={{ marginRight: 1 }} />
-                  {t(i18n)`Create a reminder preset`}
+                  {createOptionLabel}
                 </MenuItem>
               </Select>
               {isInvalid && <FormHelperText>{error?.message}</FormHelperText>}

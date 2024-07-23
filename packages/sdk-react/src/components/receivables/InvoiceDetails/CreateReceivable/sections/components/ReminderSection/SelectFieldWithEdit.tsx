@@ -23,6 +23,7 @@ export const SelectFieldWithEdit = ({
   handleSelectChange,
   control,
   details,
+  createOptionLabel,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
@@ -44,6 +45,7 @@ export const SelectFieldWithEdit = ({
             // eslint-disable-next-line lingui/no-unlocalized-strings
             alert('You have selected Create a reminder preset')
           }
+          createOptionLabel={createOptionLabel}
         />
       </Grid>
       <Grid item xs={2}>

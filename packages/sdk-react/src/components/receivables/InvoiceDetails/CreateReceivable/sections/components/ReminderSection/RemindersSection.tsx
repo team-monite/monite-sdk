@@ -141,6 +141,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   disabled={disabled}
                   root={root as HTMLElement}
                   details={paymentIDReminder}
+                  createOptionLabel={t(i18n)`Create a reminder preset`}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'payment')
                   }
@@ -162,6 +163,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   noOptionsText={t(i18n)`No overdue reminders available`}
                   disabled={disabled}
                   details={overdueIDReminder}
+                  createOptionLabel={t(i18n)`Create a reminder preset`}
                   root={root as HTMLElement}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'overdue')
