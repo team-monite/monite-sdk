@@ -551,7 +551,7 @@ export function usePayableDetails({
       {
         onSuccess: (createdPayable) => {
           toast.success(
-            t(i18n)`Payable "${createdPayable.document_id}" was created`
+            t(i18n)`Payable "${createdPayable.document_id}" has been created`
           );
         },
       }
@@ -606,7 +606,7 @@ export function usePayableDetails({
       {
         onSuccess: (updatedPayable) => {
           toast.success(
-            t(i18n)`Payable "${updatedPayable.document_id}" was updated`
+            t(i18n)`Payable "${updatedPayable.document_id}" has been updated`
           );
         },
       }
@@ -699,7 +699,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was canceled`
+              t(i18n)`Payable "${payable.document_id}" has been canceled`
             );
           },
         }
@@ -718,7 +718,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was submitted`
+              t(i18n)`Payable "${payable.document_id}" has been submitted`
             );
           },
         }
@@ -737,7 +737,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was rejected`
+              t(i18n)`Payable "${payable.document_id}" has been rejected`
             );
           },
         }
@@ -756,7 +756,7 @@ export function usePayableDetails({
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was approved`
+              t(i18n)`Payable "${payable.document_id}" has been approved`
             );
           },
         }

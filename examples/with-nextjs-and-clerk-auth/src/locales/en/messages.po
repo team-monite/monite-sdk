@@ -11,10 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:87
-#~ msgid "{variantName}"
-#~ msgstr "{variantName}"
-
 #: src/components/NavigationMenu/NavigationList.tsx:63
 msgid "Company"
 msgstr "Company"
@@ -60,11 +56,6 @@ msgstr "Language"
 msgid "Light Mode"
 msgstr "Light Mode"
 
-#: src/components/ThemeSelect/ThemeSelect.tsx:91
-#: src/components/ThemeSelect/useThemeSelect.ts:22
-#~ msgid "material"
-#~ msgstr "Material UI"
-
 #: src/components/ThemeSelect/ThemeSelect.tsx:46
 #: src/components/ThemeSelect/useThemeSelect.ts:22
 msgid "Material UI"
@@ -73,11 +64,6 @@ msgstr "Material UI"
 #: src/components/NavigationMenu/NavigationList.tsx:75
 msgid "Message Templates"
 msgstr "Message Templates"
-
-#: src/components/ThemeSelect/ThemeSelect.tsx:97
-#: src/components/ThemeSelect/useThemeSelect.ts:19
-#~ msgid "monite"
-#~ msgstr "Monite"
 
 #: src/components/ThemeSelect/ThemeSelect.tsx:47
 #: src/components/ThemeSelect/useThemeSelect.ts:19

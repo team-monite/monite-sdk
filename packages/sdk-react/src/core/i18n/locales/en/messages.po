@@ -426,7 +426,7 @@ msgstr "Approval policy updated"
 msgid "Approval request"
 msgstr "Approval request"
 
-#: src/components/approvalRequests/ApprovalRequests.tsx:85
+#: src/components/approvalRequests/ApprovalRequests.tsx:84
 msgid "Approval Requests"
 msgstr "Approval Requests"
 
@@ -941,7 +941,7 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:384
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:105
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:466
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:465
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:88
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:109
@@ -1026,7 +1026,7 @@ msgstr "Carpet/Upholstery Cleaning"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:43
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:33
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:323
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:322
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:80
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:83
 msgid "Category"
@@ -1225,7 +1225,7 @@ msgid "Company name is required"
 msgstr "Company name is required"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:165
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:312
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:311
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1273,7 +1273,7 @@ msgstr "Construction Materials (Not Elsewhere Classified)"
 msgid "Consulting, Public Relations"
 msgstr "Consulting, Public Relations"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:366
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:365
 msgid "Contact information"
 msgstr "Contact information"
 
@@ -1631,7 +1631,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:256
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:37
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:339
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:338
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:147
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:103
@@ -1706,7 +1706,7 @@ msgstr "Declined"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:311
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:341
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:373
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:474
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:473
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:241
 #: src/components/products/Products.test.tsx:162
@@ -1714,7 +1714,7 @@ msgstr "Declined"
 #: src/components/products/Products.test.tsx:221
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:271
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:75
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:262
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:261
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:288
 #: src/components/TableActions/TableActions.tsx:61
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:53
@@ -1750,12 +1750,12 @@ msgstr "Delete {type} “{name}”?"
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:42
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:12
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:441
 #: src/core/context/MoniteI18nProvider.test.tsx:36
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:450
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:449
 msgid "Delete Counterpart \"{0}\"?"
 msgstr "Delete Counterpart \"{0}\"?"
 
@@ -1916,7 +1916,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:303
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:302
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2057,7 +2057,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:273
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:272
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2812,7 +2812,7 @@ msgstr "Industry"
 msgid "Information Retrieval Services"
 msgstr "Information Retrieval Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:346
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:345
 msgid "information..."
 msgstr "information..."
 
@@ -2845,7 +2845,7 @@ msgstr "Invalid IBAN"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:243
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:242
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -2864,7 +2864,7 @@ msgstr "Invoice date"
 msgid "Invoice delete confirmation"
 msgstr "Invoice delete confirmation"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:177
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:175
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:147
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -2918,7 +2918,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:320
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:319
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:293
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:298
 msgid "Issue"
@@ -3218,7 +3218,7 @@ msgstr "Line 2"
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:114
+#: src/components/counterparts/CounterpartDetails/CounterpartView/useCounterpartView.tsx:113
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -3475,7 +3475,7 @@ msgstr "Mongolian Tugrik"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:284
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:283
 msgid "More"
 msgstr "More"
 
@@ -3547,7 +3547,7 @@ msgstr "Name"
 msgid "Name *"
 msgstr "Name *"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:298
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:297
 msgid "Name, country, city"
 msgstr "Name, country, city"
 
@@ -3927,29 +3927,29 @@ msgstr "Pay"
 msgid "Payable"
 msgstr "Payable"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:764
-msgid "Payable \"{0}\" was approved"
-msgstr "Payable \"{0}\" was approved"
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:759
+msgid "Payable \"{0}\" has been approved"
+msgstr "Payable \"{0}\" has been approved"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:704
-msgid "Payable \"{0}\" was canceled"
-msgstr "Payable \"{0}\" was canceled"
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:702
+msgid "Payable \"{0}\" has been canceled"
+msgstr "Payable \"{0}\" has been canceled"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:554
-msgid "Payable \"{0}\" was created"
-msgstr "Payable \"{0}\" was created"
+msgid "Payable \"{0}\" has been created"
+msgstr "Payable \"{0}\" has been created"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:744
-msgid "Payable \"{0}\" was rejected"
-msgstr "Payable \"{0}\" was rejected"
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:740
+msgid "Payable \"{0}\" has been rejected"
+msgstr "Payable \"{0}\" has been rejected"
 
-#: src/components/payables/PayableDetails/usePayableDetails.tsx:724
-msgid "Payable \"{0}\" was submitted"
-msgstr "Payable \"{0}\" was submitted"
+#: src/components/payables/PayableDetails/usePayableDetails.tsx:721
+msgid "Payable \"{0}\" has been submitted"
+msgstr "Payable \"{0}\" has been submitted"
 
 #: src/components/payables/PayableDetails/usePayableDetails.tsx:609
-msgid "Payable \"{0}\" was updated"
-msgstr "Payable \"{0}\" was updated"
+msgid "Payable \"{0}\" has been updated"
+msgstr "Payable \"{0}\" has been updated"
 
 #: src/components/payables/PayableDetails/PayableDetails.tsx:114
 msgid "Payable not found"
@@ -4390,11 +4390,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:187
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:185
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:186
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:184
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -4477,11 +4477,11 @@ msgstr "Reopen"
 msgid "Replace items"
 msgstr "Replace items"
 
-#: src/components/approvalRequests/ApprovalRequests.tsx:52
+#: src/components/approvalRequests/ApprovalRequests.tsx:51
 msgid "Request was approved"
 msgstr "Request was approved"
 
-#: src/components/approvalRequests/ApprovalRequests.tsx:71
+#: src/components/approvalRequests/ApprovalRequests.tsx:70
 msgid "Request was rejected"
 msgstr "Request was rejected"
 
@@ -4700,7 +4700,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:292
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:291
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -5220,7 +5220,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:178
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:176
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -5249,7 +5249,7 @@ msgid "There was an issue reading the file."
 msgstr "There was an issue reading the file."
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:51
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:456
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:455
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:99
@@ -5588,7 +5588,7 @@ msgstr "Updated at"
 msgid "Updated on"
 msgstr "Updated on"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:343
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:342
 msgid "Updating the invoice"
 msgstr "Updating the invoice"
 
@@ -5795,7 +5795,7 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:279
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:48
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:38
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:342
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:341
 msgid "Vendor"
 msgstr "Vendor"
 
@@ -5935,7 +5935,7 @@ msgstr "You can continue to the next step"
 msgid "You can not create receivable with a type other than \"{invoice}\""
 msgstr "You can not create receivable with a type other than \"{invoice}\""
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:370
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:369
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
