@@ -16,7 +16,7 @@ interface ReminderDetailsProps {
 export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
   const theme = useTheme();
 
-  if (!details.length) return null;
+  if (!details?.length) return null;
 
   const iconColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';
   const textColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';

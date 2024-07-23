@@ -41,19 +41,19 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     isReadOverdueReminderAllowedLoading,
   } = useReminderPermissions();
 
-  const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
-    ReminderDetail[]
-  >([]);
-  const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
-    useState<ReminderDetail[]>([]);
+  // const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
+  //   ReminderDetail[]
+  // >([]);
+  // const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
+  //   useState<ReminderDetail[]>([]);
   const [
     selectedPaymentIDReminderDetails,
     setSelectedPaymentIDReminderDetails,
-  ] = useState<ReminderDetail[]>([]);
+  ] = useState<string | undefined>(undefined);
   const [
     selectedOverdueIDReminderDetails,
     setSelectedOverdueIDReminderDetails,
-  ] = useState<ReminderDetail[]>([]);
+  ] = useState<string | undefined>(undefined);
 
   const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
@@ -63,11 +63,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     api.overdueReminders.getOverdueReminders.useQuery({});
 
   const { data: paymentIDReminder } = usePaymentReminderById(
-    // @ts-expect-error - selectedPaymentIDReminderDetails is not defined
     selectedPaymentIDReminderDetails
   );
   const { data: overdueIDReminder } = useOverdueReminderById(
-    // @ts-expect-error - selectedOverdueIDReminderDetails is not defined
     selectedOverdueIDReminderDetails
   );
 
@@ -87,13 +85,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
     try {
       if (type === 'payment') {
-        setSelectedPaymentIDReminderDetails(
-          paymentIDReminder as unknown as ReminderDetail[]
-        );
+        setSelectedPaymentIDReminderDetails(value as string);
       } else if (type === 'overdue') {
-        setSelectedOverdueIDReminderDetails(
-          overdueIDReminder as unknown as ReminderDetail[]
-        );
+        setSelectedOverdueIDReminderDetails(value as string);
       }
     } catch (error) {
       console.error(error);
@@ -151,7 +145,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   noOptionsText={t(i18n)`No payment reminders available`}
                   disabled={disabled}
                   root={root as HTMLElement}
-                  details={selectedPaymentReminderDetails}
+                  // @ts-expect-error - selectedPaymentIDReminderDetails is not defined
+                  details={paymentIDReminder}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'payment')
                   }
@@ -172,7 +167,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   options={overdueReminders?.data || []}
                   noOptionsText={t(i18n)`No overdue reminders available`}
                   disabled={disabled}
-                  details={selectedOverdueReminderDetails}
+                  // @ts-expect-error - selectedOverdueIDReminderDetails is not defined
+                  details={overdueIDReminder}
                   root={root as HTMLElement}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'overdue')
