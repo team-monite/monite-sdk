@@ -20,7 +20,7 @@ export const overdueReminderListFixture: paths['/overdue_reminders']['get']['res
     updated_at: faker.date.past().toString(),
   }));
 
-type OverdueReminder =
+export type OverdueReminder =
   paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
 export const overdueIDReminderListFixture: OverdueReminder[] = new Array(15)
@@ -56,7 +56,7 @@ export const overdueIDReminderListFixture: OverdueReminder[] = new Array(15)
     };
   });
 
-type PaymentReminderResponse =
+export type PaymentReminderResponse =
   paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
 export const paymentIDReminderListFixture: PaymentReminderResponse[] =

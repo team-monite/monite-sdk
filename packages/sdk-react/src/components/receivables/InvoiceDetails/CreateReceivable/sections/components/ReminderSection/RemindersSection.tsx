@@ -6,7 +6,6 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
-import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -24,6 +23,7 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
+import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 import { useReminderPermissions } from './useReminderPermissions';
 import { useValidateCounterpart } from './useValidateCounterpart';
@@ -46,9 +46,12 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
 
-  const [selectedReminderDetails, setSelectedReminderDetails] = useState<any>(
-    []
-  );
+  const [selectedPaymentReminderDetails, setSelectedReminderDetails] = useState<
+    ReminderDetail[]
+  >([]);
+
+  const [selectedOverdueReminderDetails, setSelectedOverdueReminderDetails] =
+    useState<ReminderDetail[]>([]);
 
   const handleSelectChangeAsync = async (
     field: ControllerRenderProps<FieldValues, string>,
@@ -72,7 +75,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
           },
         });
         if (data) {
-          setSelectedReminderDetails(data);
+          setSelectedReminderDetails(data as unknown as ReminderDetail[]);
         }
       } else if (type === 'overdue') {
         const { data } = api.overdueReminders.getOverdueRemindersId.useQuery({
@@ -81,7 +84,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
           },
         });
         if (data) {
-          setSelectedReminderDetails(data);
+          setSelectedReminderDetails(data as unknown as ReminderDetail[]);
         }
       }
     } catch (error) {
@@ -140,6 +143,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   noOptionsText={t(i18n)`No payment reminders available`}
                   disabled={disabled}
                   root={root as HTMLElement}
+                  details={selectedPaymentReminderDetails}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'payment')
                   }
@@ -160,6 +164,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   options={overdueReminders?.data || []}
                   noOptionsText={t(i18n)`No overdue reminders available`}
                   disabled={disabled}
+                  details={selectedOverdueReminderDetails}
                   root={root as HTMLElement}
                   handleSelectChange={(event) =>
                     handleSelectChange(event, 'overdue')
@@ -180,9 +185,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>{renderRemindersSection()}</CardContent>
       </Card>
-      {selectedReminderDetails && (
-        <ReminderDetails details={selectedReminderDetails} />
-      )}
     </Stack>
   );
 };
