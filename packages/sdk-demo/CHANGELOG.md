@@ -1,5 +1,15 @@
 # @monite/sdk-drop-in
 
+## 1.7.0
+
+### Minor Changes
+
+- d8dc9a26: feat(DEV-11087): add ApprovalRequestsTable component
+
+### Patch Changes
+
+- @monite/sdk-api@3.15.0
+
 ## 1.6.3
 
 ### Patch Changes
