@@ -13,7 +13,6 @@ import { useFileInput, useMenuButton } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -174,9 +173,7 @@ const PayablesBase = ({
             {
               loading: t(i18n)`Uploading payable file`,
               success: t(i18n)`Payable uploaded successfully`,
-              error: (error) =>
-                getLegacyAPIErrorMessage(error) ??
-                t(i18n)`Error when uploading payable file`,
+              error: (error) => getAPIErrorMessage(i18n, error),
             }
           );
         }}

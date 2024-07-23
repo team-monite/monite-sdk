@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { usePrevious } from 'react-use';
 
 import { components } from '@/api';
 import {
@@ -16,7 +17,7 @@ import {
   useCounterpartList,
   useCounterpartVatList,
 } from '@/core/queries';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -124,6 +125,9 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const defaultContactName = counterpartContacts?.data.find(
     (contact) => contact.is_default
   );
+
+  const contactPersonDisplayableError =
+    usePrevious(contactPersonError) ?? contactPersonError;
 
   return (
     <Stack spacing={1}>
@@ -260,7 +264,8 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
               />
               <Collapse in={Boolean(contactPersonError)}>
                 <FormHelperText>
-                  {getLegacyAPIErrorMessage(contactPersonError)}
+                  {contactPersonDisplayableError &&
+                    getAPIErrorMessage(i18n, contactPersonDisplayableError)}
                 </FormHelperText>
               </Collapse>
               <Collapse
