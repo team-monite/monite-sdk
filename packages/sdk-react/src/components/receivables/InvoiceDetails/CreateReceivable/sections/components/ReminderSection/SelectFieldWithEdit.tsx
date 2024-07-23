@@ -10,6 +10,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, Grid, SelectChangeEvent } from '@mui/material';
 
+import { ReminderDetails } from './ReminderDetail';
+
 interface CustomSelectFieldProps extends FieldValues {
   error: FieldError | undefined;
   label: string;
@@ -20,6 +22,17 @@ interface CustomSelectFieldProps extends FieldValues {
     field: ControllerRenderProps<FieldValues, Path<FieldValues>>
   ) => (event: SelectChangeEvent<string | number>) => void;
 }
+
+const mockReminderDetails = [
+  {
+    event: 'Before due date',
+    time: '10:00',
+  },
+  {
+    event: 'Overdue reminders',
+    time: '10:00',
+  },
+];
 
 export const SelectFieldWithEdit = ({
   field,
@@ -64,6 +77,9 @@ export const SelectFieldWithEdit = ({
         >
           {t(i18n)`Edit`}
         </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <ReminderDetails details={mockReminderDetails} />
       </Grid>
     </Grid>
   );
