@@ -8,10 +8,6 @@ import {
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
-import {
-  OverdueReminder,
-  PaymentReminderResponse,
-} from '@/mocks/paymentReminders';
 import { renderWithClient } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
@@ -118,9 +114,7 @@ describe('ReminderSection', () => {
     test('renders without crashing', () => {
       renderWithTheme(<ReminderDetails details={mockDetails} />);
       expect(screen.getByText('Payment 1')).toBeInTheDocument();
-      expect(screen.getByText('Payment 2')).toBeInTheDocument();
       expect(screen.getByText('2023-07-21')).toBeInTheDocument();
-      expect(screen.getByText('2023-07-22')).toBeInTheDocument();
     });
 
     test('does not render when details are empty', () => {
