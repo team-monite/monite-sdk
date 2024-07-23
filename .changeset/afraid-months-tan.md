@@ -2,4 +2,4 @@
 '@monite/sdk-react': major
 ---
 
-feat(proposal): add `"use client"` directive at the top of the proposal component for compatibility with Next.js server components.
+feat(DEV-11865): add payment reminders selection for invoice
