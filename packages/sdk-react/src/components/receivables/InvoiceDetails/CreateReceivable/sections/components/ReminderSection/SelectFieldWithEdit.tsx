@@ -11,15 +11,7 @@ import { Button, Grid, SelectChangeEvent } from '@mui/material';
 
 import { ReminderDetails } from './ReminderDetail';
 
-interface CustomSelectFieldProps {
-  field: any;
-  error: FieldError | undefined;
-  label: string;
-  noOptionsText: string;
-  disabled: boolean;
-  options: any[];
-  control: any;
-  root: HTMLElement;
+interface CustomSelectFieldProps extends FieldValues {
   handleSelectChange: (
     field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
