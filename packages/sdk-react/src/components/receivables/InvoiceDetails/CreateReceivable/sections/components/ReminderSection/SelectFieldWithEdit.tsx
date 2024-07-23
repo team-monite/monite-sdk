@@ -3,7 +3,7 @@ import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 import { RHFSelectField } from '@/components/RHF/RHFSelectField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, Grid, SelectChangeEvent } from '@mui/material';
+import { Button, Grid, MenuItem, SelectChangeEvent } from '@mui/material';
 
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
@@ -12,6 +12,12 @@ interface CustomSelectFieldProps extends FieldValues {
     field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
   details: ReminderDetail | undefined;
+  label: string;
+  noOptionsText: string;
+  disabled: boolean;
+  options: Array<{ id: string | number; name: string }>;
+  createOptionLabel: string;
+  control: any;
 }
 
 export const SelectFieldWithEdit = ({
@@ -34,19 +40,27 @@ export const SelectFieldWithEdit = ({
           control={control}
           name={field.name}
           label={label}
-          options={options}
           noOptionsText={noOptionsText}
           handleSelectChange={handleSelectChange}
           disabled={disabled}
-          onChange={(event: SelectChangeEvent<unknown>) =>
-            handleSelectChange(field)(event as SelectChangeEvent<string>)
-          }
           createFnOption={() =>
             // eslint-disable-next-line lingui/no-unlocalized-strings
             alert('You have selected Create a reminder preset')
           }
           createOptionLabel={createOptionLabel}
-        />
+        >
+          {options.length > 0 ? (
+            options.map((item) => (
+              <MenuItem key={item.id} value={item.id}>
+                {item.name}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem value="" disabled>
+              {noOptionsText}
+            </MenuItem>
+          )}
+        </RHFSelectField>
       </Grid>
       <Grid item xs={2}>
         <Button
