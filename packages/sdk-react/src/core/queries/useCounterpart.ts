@@ -5,7 +5,7 @@ import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -436,12 +436,7 @@ export const useDeleteCounterpartContact = () => {
         toast.success(t(i18n)`Contact Person has been deleted.`);
       },
 
-      onError: (error) => {
-        toast.error(
-          getLegacyAPIErrorMessage(error) ||
-            t(i18n)`Failed to delete Contact Person.`
-        );
-      },
+      onError: (error) => toast.error(getAPIErrorMessage(i18n, error)),
     }
   );
 };

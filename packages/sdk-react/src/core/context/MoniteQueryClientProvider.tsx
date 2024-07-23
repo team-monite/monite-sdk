@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import type { Hub } from '@sentry/react';
@@ -79,7 +79,7 @@ export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
           return;
         }
 
-        const message = getLegacyAPIErrorMessage(err);
+        const message = getAPIErrorMessage(i18n, err);
 
         if (message) {
           toast.error(message, {

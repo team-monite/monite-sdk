@@ -8,7 +8,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { useInvoiceDetails } from '@/core/queries/useReceivables';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -156,7 +156,7 @@ const ExistingReceivableDetailsBase = (
     return (
       <InvoiceError
         onClose={dialogContext?.onClose}
-        errorMessage={getLegacyAPIErrorMessage(error)}
+        errorMessage={getAPIErrorMessage(i18n, error)}
       />
     );
   }
