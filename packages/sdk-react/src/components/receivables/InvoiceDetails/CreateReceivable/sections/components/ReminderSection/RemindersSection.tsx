@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Controller,
   ControllerRenderProps,
@@ -5,6 +6,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 
+import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -44,16 +46,49 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
 
-  const handleSelectChange =
-    (field: ControllerRenderProps<FieldValues, string>) =>
-    (event: SelectChangeEvent<string | number>) => {
-      const value = event.target.value;
-      if (value === 'create') {
-        // eslint-disable-next-line lingui/no-unlocalized-strings
-        alert('You have selected Create a reminder preset');
-      } else {
-        field.onChange(value);
+  const [selectedReminderDetails, setSelectedReminderDetails] = useState<any>(
+    []
+  );
+
+  const handleSelectChangeAsync = async (
+    field: ControllerRenderProps<FieldValues, string>,
+    type: 'payment' | 'overdue',
+    value: string | number
+  ) => {
+    field.onChange(value);
+
+    if (value === 'create') {
+      // eslint-disable-next-line lingui/no-unlocalized-strings
+      alert('You have selected Create a reminder preset');
+      field.onChange('');
+    } else {
+      try {
+        if (type === 'payment') {
+          const { data } = api.paymentReminders.getPaymentReminders.useQuery(
+            {}
+          );
+          setSelectedReminderDetails(data?.data);
+        }
+
+        if (type === 'overdue') {
+          const { data } = api.overdueReminders.getOverdueReminders.useQuery(
+            {}
+          );
+          setSelectedReminderDetails(data?.data);
+        }
+      } catch (error) {
+        console.error(error);
       }
+    }
+  };
+
+  const handleSelectChange =
+    (
+      field: ControllerRenderProps<FieldValues, string>,
+      type: 'payment' | 'overdue'
+    ) =>
+    async (event: SelectChangeEvent<string | number>) => {
+      await handleSelectChangeAsync(field, type, event.target.value);
     };
 
   const renderRemindersSection = () => {
@@ -68,9 +103,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
     if (!areRemindersEnabled) {
       return (
-        <Alert severity="warning">{t(
-          i18n
-        )`Reminders are disabled for this counterpart.`}</Alert>
+        <Alert severity="warning">
+          {t(i18n)`Reminders are disabled for this counterpart.`}
+        </Alert>
       );
     }
 
@@ -98,7 +133,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   noOptionsText={t(i18n)`No payment reminders available`}
                   disabled={disabled}
                   root={root as HTMLElement}
-                  handleSelectChange={handleSelectChange}
+                  handleSelectChange={(event) =>
+                    handleSelectChange(event, 'payment')
+                  }
                   control={control}
                 />
               )}
@@ -117,7 +154,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   noOptionsText={t(i18n)`No overdue reminders available`}
                   disabled={disabled}
                   root={root as HTMLElement}
-                  handleSelectChange={handleSelectChange}
+                  handleSelectChange={(event) =>
+                    handleSelectChange(event, 'overdue')
+                  }
                   control={control}
                 />
               )}
@@ -134,6 +173,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>{renderRemindersSection()}</CardContent>
       </Card>
+      {selectedReminderDetails && (
+        <ReminderDetails details={selectedReminderDetails} />
+      )}
     </Stack>
   );
 };
