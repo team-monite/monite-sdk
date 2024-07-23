@@ -11,7 +11,7 @@ interface CustomSelectFieldProps extends FieldValues {
   handleSelectChange: (
     field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
-  details: ReminderDetail[];
+  details: ReminderDetail | undefined;
 }
 
 export const SelectFieldWithEdit = ({
