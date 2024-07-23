@@ -61,24 +61,31 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       // eslint-disable-next-line lingui/no-unlocalized-strings
       alert('You have selected Create a reminder preset');
       field.onChange('');
-    } else {
-      try {
-        if (type === 'payment') {
-          const { data } = api.paymentReminders.getPaymentReminders.useQuery(
-            {}
-          );
-          setSelectedReminderDetails(data?.data);
-        }
+      return;
+    }
 
-        if (type === 'overdue') {
-          const { data } = api.overdueReminders.getOverdueReminders.useQuery(
-            {}
-          );
-          setSelectedReminderDetails(data?.data);
+    try {
+      if (type === 'payment') {
+        const { data } = api.paymentReminders.getPaymentRemindersId.useQuery({
+          path: {
+            payment_reminder_id: value.toString(),
+          },
+        });
+        if (data) {
+          setSelectedReminderDetails(data);
         }
-      } catch (error) {
-        console.error(error);
+      } else if (type === 'overdue') {
+        const { data } = api.overdueReminders.getOverdueRemindersId.useQuery({
+          path: {
+            overdue_reminder_id: value.toString(),
+          },
+        });
+        if (data) {
+          setSelectedReminderDetails(data);
+        }
       }
+    } catch (error) {
+      console.error(error);
     }
   };
 
