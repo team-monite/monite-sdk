@@ -1,13 +1,12 @@
-import {
-  OverdueReminder,
-  PaymentReminderResponse,
-} from '@/mocks/paymentReminders';
+import { components } from '@/api';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Box, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export type ReminderDetail = OverdueReminder | PaymentReminderResponse;
+export type ReminderDetail =
+  | components['schemas']['OverdueReminderResponse']
+  | components['schemas']['PaymentReminderResponse'];
 
 interface ReminderDetailsProps {
   details: ReminderDetail | undefined;
@@ -15,14 +14,20 @@ interface ReminderDetailsProps {
 
 const isPaymentReminderResponse = (
   details: ReminderDetail
-): details is PaymentReminderResponse => {
-  return (details as PaymentReminderResponse).term_1_reminder !== undefined;
+): details is components['schemas']['PaymentReminderResponse'] => {
+  return (
+    (details as components['schemas']['PaymentReminderResponse'])
+      .term_1_reminder !== undefined
+  );
 };
 
 const isOverdueReminderResponse = (
   details: ReminderDetail
-): details is OverdueReminder => {
-  return (details as OverdueReminder).terms !== undefined;
+): details is components['schemas']['OverdueReminderResponse'] => {
+  return (
+    (details as components['schemas']['OverdueReminderResponse']).terms !==
+    undefined
+  );
 };
 
 export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
