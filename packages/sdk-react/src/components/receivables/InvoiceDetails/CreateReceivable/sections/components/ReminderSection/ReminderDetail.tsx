@@ -1,17 +1,22 @@
+import {
+  OverdueReminder,
+  PaymentReminderResponse,
+} from '@/mocks/paymentReminders';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { Grid, Typography, Box } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+export type ReminderDetail = OverdueReminder | PaymentReminderResponse;
+
 interface ReminderDetailsProps {
-  details: {
-    event: string;
-    time: string;
-  }[];
+  details: ReminderDetail[];
 }
 
 export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
   const theme = useTheme();
+
+  if (!details.length) return null;
 
   const iconColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';
   const textColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';
@@ -35,7 +40,7 @@ export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
                   textAlign: 'left',
                 }}
               >
-                {detail.event}
+                {detail.name}
               </Typography>
             </Box>
           </Grid>
@@ -57,7 +62,7 @@ export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
                   color: textColor,
                 }}
               >
-                {detail.time}
+                {detail.created_at}
               </Typography>
             </Box>
           </Grid>

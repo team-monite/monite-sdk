@@ -1,34 +1,18 @@
-import {
-  ControllerRenderProps,
-  FieldError,
-  FieldValues,
-} from 'react-hook-form';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
 import { RHFSelectField } from '@/components/RHF/RHFSelectField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button, Grid, SelectChangeEvent } from '@mui/material';
 
-import { ReminderDetails } from './ReminderDetail';
+import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
 interface CustomSelectFieldProps extends FieldValues {
   handleSelectChange: (
     field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
+  details: ReminderDetail[];
 }
-
-const mockReminderDetails = [
-  {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    event: 'Before due date',
-    time: '10:00',
-  },
-  {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    event: 'Overdue reminders',
-    time: '10:00',
-  },
-];
 
 export const SelectFieldWithEdit = ({
   field,
@@ -38,6 +22,7 @@ export const SelectFieldWithEdit = ({
   options,
   handleSelectChange,
   control,
+  details,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
@@ -75,7 +60,7 @@ export const SelectFieldWithEdit = ({
         </Button>
       </Grid>
       <Grid item xs={12}>
-        <ReminderDetails details={mockReminderDetails} />
+        <ReminderDetails details={details} />
       </Grid>
     </Grid>
   );
