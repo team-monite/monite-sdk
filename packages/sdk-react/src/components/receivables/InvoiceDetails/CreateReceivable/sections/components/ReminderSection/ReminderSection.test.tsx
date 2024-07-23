@@ -1,15 +1,21 @@
 import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
+import {
+  OverdueReminder,
+  PaymentReminderResponse,
+} from '@/mocks/paymentReminders';
 import { renderWithClient } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
+import { createTheme, ThemeProvider } from '@mui/material';
 import { requestFn } from '@openapi-qraft/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 
 import { ReminderSection } from './RemindersSection';
 
@@ -67,6 +73,105 @@ describe('ReminderSection', () => {
       await waitFor(() => {
         expect(screen.queryByText(/Loading.../)).not.toBeInTheDocument();
       });
+    });
+  });
+
+  describe('ReminderDetails Component', () => {
+    const renderWithTheme = (
+      component: React.ReactElement,
+      mode: 'light' | 'dark' = 'light'
+    ) => {
+      const theme = createTheme({
+        palette: {
+          mode,
+        },
+      });
+
+      return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+    };
+
+    const mockDetails: Array<OverdueReminder | PaymentReminderResponse> = [
+      {
+        id: 'overdue-reminder-1',
+        name: 'Payment 1',
+        created_at: '2023-07-21',
+        updated_at: '2023-07-21',
+        recipients: {
+          bcc: undefined,
+          cc: undefined,
+          to: undefined,
+        },
+        term_1_reminder: {
+          body: 'test body',
+          days_before: 1,
+          subject: 'test subject',
+        },
+        term_2_reminder: {
+          body: 'test body',
+          days_before: 1,
+          subject: 'test subject',
+        },
+      },
+      {
+        id: 'overdue-reminder-2',
+        name: 'Payment 2',
+        created_at: '2023-07-22',
+        updated_at: '2023-07-22',
+        recipients: {
+          bcc: undefined,
+          cc: undefined,
+          to: undefined,
+        },
+        term_1_reminder: {
+          body: 'test body',
+          days_before: 1,
+          subject: 'test subject',
+        },
+        term_2_reminder: {
+          body: 'test body',
+          days_before: 1,
+          subject: 'test subject',
+        },
+      },
+    ];
+
+    test('renders without crashing', () => {
+      renderWithTheme(<ReminderDetails details={mockDetails} />);
+      expect(screen.getByText('Payment 1')).toBeInTheDocument();
+      expect(screen.getByText('Payment 2')).toBeInTheDocument();
+      expect(screen.getByText('2023-07-21')).toBeInTheDocument();
+      expect(screen.getByText('2023-07-22')).toBeInTheDocument();
+    });
+
+    test('does not render when details are empty', () => {
+      const { container } = renderWithTheme(<ReminderDetails details={[]} />);
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    test('renders correctly in light mode', () => {
+      renderWithTheme(<ReminderDetails details={mockDetails} />, 'light');
+      const iconColor = '#0000008F';
+      const textColor = '#0000008F';
+
+      expect(screen.getAllByTestId('NotificationsActiveIcon')[0]).toHaveStyle(
+        `color: ${iconColor}`
+      );
+      expect(screen.getAllByText('2023-07-21')[0]).toHaveStyle(
+        `color: ${textColor}`
+      );
+    });
+
+    test('renders correctly in dark mode', () => {
+      renderWithTheme(<ReminderDetails details={mockDetails} />, 'dark');
+      const iconColor = '#FFFFFF';
+      const textColor = '#FFFFFF';
+
+      expect(screen.getAllByTestId('NotificationsActiveIcon')[0]).toHaveStyle(
+        `color: ${iconColor}`
+      );
+      expect(screen.getAllByText('2023-07-21')[0]).toHaveStyle(
+        `color: ${textColor}`
+      );
     });
   });
 });
