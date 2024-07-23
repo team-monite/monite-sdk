@@ -2,8 +2,7 @@ import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
-import { t } from '@lingui/macro';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
 
 import { useMoniteContext } from '../context/MoniteContext';
@@ -26,10 +25,7 @@ export const useCurrencies = () => {
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
-      toast.error(
-        getLegacyAPIErrorMessage(error) ||
-          t(i18n)`Error occurred in currencies fetching`
-      );
+      toast.error(getAPIErrorMessage(i18n, error));
     }
   }, [isError, error, i18n]);
 
