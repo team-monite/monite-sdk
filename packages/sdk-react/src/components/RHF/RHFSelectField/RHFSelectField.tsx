@@ -1,3 +1,4 @@
+import { Children } from 'react';
 import {
   Controller,
   FieldError,
@@ -21,7 +22,6 @@ import type { SelectChangeEvent } from '@mui/material';
 
 interface CustomSelectProps<T extends FieldValues> {
   label: string;
-  options: Array<{ id: string | number; name: string }>;
   createFnOption?: () => void;
   noOptionsText: string;
   createOptionLabel: string;
@@ -38,7 +38,7 @@ export const RHFSelectField = <T extends FieldValues>({
   control,
   name,
   label,
-  options,
+  children,
   noOptionsText,
   createOptionLabel,
   createFnOption,
@@ -78,12 +78,8 @@ export const RHFSelectField = <T extends FieldValues>({
                 MenuProps={{ container: root }}
                 onChange={handleSelectChange(field)}
               >
-                {options.length > 0 ? (
-                  options.map((item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.name}
-                    </MenuItem>
-                  ))
+                {Children.count(children) > 0 ? (
+                  children
                 ) : (
                   <MenuItem value="" disabled>
                     {noOptionsText}
