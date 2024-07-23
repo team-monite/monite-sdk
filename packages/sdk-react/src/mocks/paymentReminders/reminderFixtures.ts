@@ -1,8 +1,8 @@
-import { components } from '@/api';
+import { paths } from '@/api';
 import { entityIds } from '@/mocks/entities';
 import { faker } from '@faker-js/faker';
 
-export const paymentReminderListFixture: components['schemas']['PaymentReminderResponse'][] =
+export const paymentReminderListFixture: paths['/payment_reminders']['get']['responses']['200']['content']['application/json']['data'] =
   new Array(15).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: 'payment_reminder',
@@ -12,10 +12,76 @@ export const paymentReminderListFixture: components['schemas']['PaymentReminderR
     status: faker.datatype.boolean() ? 'active' : 'deleted',
   }));
 
-export const overdueReminderListFixture: components['schemas']['OverdueReminderResponse'][] =
+export const overdueReminderListFixture: paths['/overdue_reminders']['get']['responses']['200']['content']['application/json']['data'] =
   new Array(15).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: 'overdue_reminder',
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
   }));
+
+type OverdueReminder =
+  paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
+
+export const overdueIDReminderListFixture: OverdueReminder[] = new Array(15)
+  .fill(null)
+  .map<OverdueReminder>(() => {
+    const recipients: OverdueReminder['recipients'] =
+      Math.random() > 0.5
+        ? {
+            bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+            cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+            to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+          }
+        : undefined;
+
+    const terms: OverdueReminder['terms'] =
+      Math.random() > 0.5
+        ? [
+            {
+              body: faker.lorem.paragraph(),
+              days_after: faker.datatype.number({ min: 1, max: 30 }),
+              subject: faker.lorem.sentence(),
+            },
+          ]
+        : undefined;
+
+    return {
+      id: faker.string.uuid(),
+      name: 'overdue_reminder',
+      created_at: faker.date.past().toISOString(),
+      updated_at: faker.date.recent().toISOString(),
+      ...(recipients && { recipients }),
+      ...(terms && { terms }),
+    };
+  });
+
+type PaymentReminderResponse =
+  paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
+
+export const paymentIDReminderListFixture: PaymentReminderResponse[] =
+  new Array(15).fill(null).map<PaymentReminderResponse>(() => {
+    const recipients = {
+      bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+      cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+      to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+    };
+
+    const termReminder = {
+      body: faker.lorem.paragraph(),
+      days_after: faker.datatype.number({ min: 1, max: 30 }),
+      subject: faker.lorem.sentence(),
+    };
+
+    return {
+      id: faker.datatype.uuid(),
+      created_at: faker.date.past().toISOString(),
+      updated_at: faker.date.recent().toISOString(),
+      entity_id: faker.datatype.uuid(),
+      name: 'payment_reminder',
+      recipients,
+      term_1_reminder: Math.random() > 0.5 ? termReminder : undefined,
+      term_2_reminder: Math.random() > 0.5 ? termReminder : undefined,
+      term_final_reminder: Math.random() > 0.5 ? termReminder : undefined,
+    } as PaymentReminderResponse;
+  });
