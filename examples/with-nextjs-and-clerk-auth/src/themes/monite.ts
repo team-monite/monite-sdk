@@ -36,7 +36,7 @@ const paletteDark: PaletteOptions = {
     light: '#F4F8FF',
   },
   background: {
-    menu: '#F1F2F505',
+    menu: '#F1F2F5',
   },
   neutral: {
     '80': '#B8B8B8',
@@ -93,11 +93,13 @@ const typographyDark = deepmerge(typography, {
 const components: Components<Omit<Theme, 'components'>> = {
   MuiDrawer: {
     styleOverrides: {
-      root: {
-        '&.LayoutNavigationDrawer .MuiPaper-root': {
-          borderRight: 0,
-        },
-      },
+      root: ({ theme }) => ({
+        backgroundColor: theme.palette.background.menu,
+      }),
+      paper: ({ theme }) => ({
+        backgroundColor: theme.palette.background.menu,
+        borderRight: 0,
+      }),
     },
   },
   MuiList: {
