@@ -6,13 +6,9 @@ import { Box, Drawer } from '@mui/material';
 
 import { NavigationList } from '@/components/NavigationMenu';
 import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
-import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
-import { ThemeSelect } from '@/components/ThemeSelect/ThemeSelect';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { selectedTheme, onThemeChange } = useAppTheme();
-
   return (
     <Box
       bgcolor="background.default"
@@ -39,14 +35,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <UserButton />
           <OrganizationSwitcher />
         </Box>
-        <Box display="flex" flex="1" flexDirection="column" mt={1} mx={0}>
+        <Box
+          display="flex"
+          flex="1"
+          flexDirection="column"
+          mt={1}
+          mb={3}
+          mx={0}
+        >
           <NavigationList />
-        </Box>
-        <Box display="flex" flexShrink="1" mx={1.5} mb={3} mt={4}>
-          <ThemeSelect
-            selectedTheme={selectedTheme}
-            onThemeChange={onThemeChange}
-          />
         </Box>
       </Drawer>
       <Box
