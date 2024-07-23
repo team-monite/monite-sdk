@@ -63,7 +63,12 @@ export const MoniteProvider = ({
     <MoniteProviderBase
       monite={monite}
       theme={theme}
-      locale={{ code: i18n.locale }}
+      locale={{
+        code: i18n.locale,
+        messages: {
+          Payables: 'Purchases',
+        },
+      }}
     >
       {children}
     </MoniteProviderBase>
