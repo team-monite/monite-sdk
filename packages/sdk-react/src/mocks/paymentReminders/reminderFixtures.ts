@@ -6,7 +6,7 @@ const sendPaymentNameGenerator = (days: number, type: string) =>
   `Send ${type} reminders ${days} days before due date`;
 
 export const paymentReminderListFixture: paths['/payment_reminders']['get']['responses']['200']['content']['application/json']['data'] =
-  new Array(15).fill('_').map(() => ({
+  new Array(5).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: sendPaymentNameGenerator(
       faker.datatype.number({ min: 1, max: 30 }),
@@ -19,7 +19,7 @@ export const paymentReminderListFixture: paths['/payment_reminders']['get']['res
   }));
 
 export const overdueReminderListFixture: paths['/overdue_reminders']['get']['responses']['200']['content']['application/json']['data'] =
-  new Array(15).fill('_').map(() => ({
+  new Array(5).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: sendPaymentNameGenerator(
       faker.datatype.number({ min: 1, max: 30 }),
@@ -32,7 +32,7 @@ export const overdueReminderListFixture: paths['/overdue_reminders']['get']['res
 export type OverdueReminder =
   paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
-export const overdueIDReminderListFixture: OverdueReminder[] = new Array(15)
+export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
   .fill(null)
   .map<OverdueReminder>(() => {
     const recipients: OverdueReminder['recipients'] =
@@ -72,7 +72,7 @@ export type PaymentReminderResponse =
   paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
 export const paymentIDReminderListFixture: PaymentReminderResponse[] =
-  new Array(15).fill(null).map<PaymentReminderResponse>(() => {
+  new Array(5).fill(null).map<PaymentReminderResponse>(() => {
     const recipients = {
       bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
       cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,

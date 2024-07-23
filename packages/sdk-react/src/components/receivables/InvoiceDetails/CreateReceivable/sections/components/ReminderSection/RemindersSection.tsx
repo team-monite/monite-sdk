@@ -69,20 +69,20 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
     try {
       if (type === 'payment') {
-        console.log('payment');
+        // ToDO: move this to top of the function unfortunately we can't call hooks inside of hooks
         const { data: paymentIDReminder } =
           api.paymentReminders.getPaymentRemindersId.useQuery({
             path: {
               payment_reminder_id: value.toString(),
             },
           });
-        console.log('paymentIDReminder', paymentIDReminder);
         if (paymentIDReminder) {
           setSelectedReminderDetails(
             paymentIDReminder as unknown as ReminderDetail[]
           );
         }
       } else if (type === 'overdue') {
+        // ToDO: move this to top of the function unfortunately we can't call hooks inside of hooks
         const { data: overdueIDReminder } =
           api.overdueReminders.getOverdueRemindersId.useQuery({
             path: {
