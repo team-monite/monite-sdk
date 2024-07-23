@@ -12,12 +12,7 @@ interface CustomSelectFieldProps extends FieldValues {
     field: ControllerRenderProps<FieldValues, string>
   ) => (event: SelectChangeEvent<string | number>) => void;
   details: ReminderDetail | undefined;
-  label: string;
-  noOptionsText: string;
-  disabled: boolean;
   options: Array<{ id: string | number; name: string }>;
-  createOptionLabel: string;
-  control: any;
 }
 
 export const SelectFieldWithEdit = ({
