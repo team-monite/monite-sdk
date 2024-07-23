@@ -51,15 +51,12 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </Drawer>
       <Box
         component="main"
+        className="Monite-ContentContainer"
         flexGrow={1}
         mx={4}
-        my={4}
+        mt={4}
+        mb={0}
         minWidth={0}
-        maxHeight="100%"
-        sx={{
-          overflowY: 'auto',
-          overflowX: 'hidden',
-        }}
       >
         {children}
       </Box>

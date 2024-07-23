@@ -1,9 +1,94 @@
+:root {
+  --demo-padding: 8px;
+  --demo-padding-2: calc(var(--demo-padding) * 2);
+  --demo-padding-3: calc(var(--demo-padding) * 3);
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
 }
 
+/* Remove padding around complex Monite components */
 .Monite-ContainerCssBaseline.MuiBox-root {
   padding: 0;
+}
+
+/* DataGrid borders */
+.MuiDataGrid-root {
+  border-color: transparent !important;
+
+  .MuiDataGrid-withBorderColor {
+    border-color: transparent !important;
+  }
+}
+
+.Monite-ContentContainer {
+  overflow: hidden;
+  position: relative;
+
+  > .Monite-AbsoluteContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.Monite-Receivables {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+
+  > div:first-child {
+    margin-bottom: var(--demo-padding-3);
+  }
+
+  > div:nth-child(2) {
+    margin-bottom: var(--demo-padding-3);
+  }
+
+  > div:nth-child(3) {
+    flex-basis: 0;
+    flex-grow: 2;
+    overflow: hidden;
+
+    > .MuiBox-root {
+
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+      max-height: 100%;
+
+      > div:last-child {
+        flex-basis: 0;
+        flex-grow: 2;
+      }
+    }
+  }
+}
+
+.Monite-Payables {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  height: 100%;
+  max-height: 100%;
+
+  > .MuiBox-root {
+    flex-basis: 0;
+    flex-grow: 2;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+  }
 }

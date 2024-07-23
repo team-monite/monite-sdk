@@ -1,5 +1,11 @@
+import { Box } from '@mui/material';
+
 import { Payables } from '@/components/MoniteComponents';
 
 export default async function PayablesPage() {
-  return <Payables />;
+  return (
+    <Box className="Monite-AbsoluteContainer Monite-Payables">
+      <Payables />
+    </Box>
+  );
 }
