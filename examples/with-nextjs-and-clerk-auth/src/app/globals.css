@@ -52,10 +52,15 @@ html {
     margin-bottom: var(--demo-padding-3);
 
     .MuiTabs-root {
-      .MuiButtonBase-root.Mui-selected {
-        background-color: #F4F4FE;
-        border-radius: 10px;
+      .MuiButtonBase-root {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        &.Mui-selected {
+          background-color: #F4F4FE;
+          border-radius: 10px;
+        }
       }
+
       .MuiTabs-indicator {
         height: 4px;
         border-radius: 10px;
