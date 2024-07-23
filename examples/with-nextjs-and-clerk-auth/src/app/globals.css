@@ -133,6 +133,11 @@ html {
     /* DataGrid */
     > .MuiDataGrid-root {
       margin-left: 5px;
+
+      /* Align avatar with column header */
+      .MuiAvatar-root.MuiChip-avatar {
+        margin-left: 0;
+      }
     }
   }
 }

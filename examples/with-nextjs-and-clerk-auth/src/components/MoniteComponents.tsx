@@ -67,6 +67,7 @@ export const MoniteProvider = ({
         code: i18n.locale,
         messages: {
           Payables: 'Purchases',
+          Counterpart: 'Customer',
         },
       }}
     >
