@@ -479,10 +479,6 @@ export function usePayableDetails({
           permissions.push('reject', 'approve');
         }
 
-        if (isCancelAvailable) {
-          permissions.push('cancel');
-        }
-
         setPermissions(permissions);
 
         break;
