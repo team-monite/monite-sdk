@@ -83,19 +83,6 @@ html {
       height: 100%;
       max-height: 100%;
 
-      > .MuiBox-root:first-child > .MuiGrid-root:first-child {
-        /* Filter labels customization */
-        > .MuiGrid-item {
-          label {
-            &:not(.MuiInputLabel-shrink) {
-              height: 40px;
-              font-size: 14px;
-              transform: translate(var(--demo-padding-2), 10px);
-            }
-          }
-        }
-      }
-
       /* DataGrid */
       > div:last-child {
         flex-basis: 0;
@@ -135,23 +122,22 @@ html {
         > .MuiGrid-item:nth-child(2) {
           flex-basis: 16%;
         }
-
-        /* Filter labels customization */
-        > .MuiGrid-item:nth-child(1), > .MuiGrid-item:nth-child(3), > .MuiGrid-item:nth-child(4) {
-          label {
-            &:not(.MuiInputLabel-shrink) {
-              height: 40px;
-              font-size: 14px;
-              transform: translate(var(--demo-padding-2), 10px);
-            }
-          }
-        }
       }
     }
 
     /* DataGrid */
     > .MuiDataGrid-root {
       margin-left: 5px;
+    }
+  }
+}
+
+.MuiFormControl-root {
+  > label {
+    &:not(.MuiInputLabel-shrink) {
+      height: 40px;
+      font-size: 14px;
+      transform: translate(var(--demo-padding-2), 10px);
     }
   }
 }
