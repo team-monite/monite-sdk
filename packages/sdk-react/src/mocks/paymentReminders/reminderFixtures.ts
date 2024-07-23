@@ -2,10 +2,13 @@ import { paths } from '@/api';
 import { entityIds } from '@/mocks/entities';
 import { faker } from '@faker-js/faker';
 
+const sendPaymentNameGenerator = (days: number) =>
+  `Send payment reminders ${days} days before due date`;
+
 export const paymentReminderListFixture: paths['/payment_reminders']['get']['responses']['200']['content']['application/json']['data'] =
   new Array(15).fill('_').map(() => ({
     id: faker.string.nanoid(),
-    name: 'payment_reminder',
+    name: sendPaymentNameGenerator(faker.datatype.number({ min: 1, max: 30 })),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     entity_id: entityIds[0],
@@ -15,7 +18,7 @@ export const paymentReminderListFixture: paths['/payment_reminders']['get']['res
 export const overdueReminderListFixture: paths['/overdue_reminders']['get']['responses']['200']['content']['application/json']['data'] =
   new Array(15).fill('_').map(() => ({
     id: faker.string.nanoid(),
-    name: 'overdue_reminder',
+    name: sendPaymentNameGenerator(faker.datatype.number({ min: 1, max: 30 })),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
   }));
@@ -48,7 +51,9 @@ export const overdueIDReminderListFixture: OverdueReminder[] = new Array(15)
 
     return {
       id: faker.string.uuid(),
-      name: 'overdue_reminder',
+      name: sendPaymentNameGenerator(
+        faker.datatype.number({ min: 1, max: 30 })
+      ),
       created_at: faker.date.past().toISOString(),
       updated_at: faker.date.recent().toISOString(),
       ...(recipients && { recipients }),
@@ -74,11 +79,13 @@ export const paymentIDReminderListFixture: PaymentReminderResponse[] =
     };
 
     return {
-      id: faker.datatype.uuid(),
+      id: faker.string.uuid(),
       created_at: faker.date.past().toISOString(),
       updated_at: faker.date.recent().toISOString(),
-      entity_id: faker.datatype.uuid(),
-      name: 'payment_reminder',
+      entity_id: faker.string.uuid(),
+      name: sendPaymentNameGenerator(
+        faker.datatype.number({ min: 1, max: 30 })
+      ),
       recipients,
       term_1_reminder: Math.random() > 0.5 ? termReminder : undefined,
       term_2_reminder: Math.random() > 0.5 ? termReminder : undefined,

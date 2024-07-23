@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
-import { ReminderDetail, ReminderDetails } from './ReminderDetail';
+import { ReminderDetail } from './ReminderDetail';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 import { useReminderPermissions } from './useReminderPermissions';
 import { useValidateCounterpart } from './useValidateCounterpart';
@@ -69,22 +69,30 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
     try {
       if (type === 'payment') {
-        const { data } = api.paymentReminders.getPaymentRemindersId.useQuery({
-          path: {
-            payment_reminder_id: value.toString(),
-          },
-        });
-        if (data) {
-          setSelectedReminderDetails(data as unknown as ReminderDetail[]);
+        console.log('payment');
+        const { data: paymentIDReminder } =
+          api.paymentReminders.getPaymentRemindersId.useQuery({
+            path: {
+              payment_reminder_id: value.toString(),
+            },
+          });
+        console.log('paymentIDReminder', paymentIDReminder);
+        if (paymentIDReminder) {
+          setSelectedReminderDetails(
+            paymentIDReminder as unknown as ReminderDetail[]
+          );
         }
       } else if (type === 'overdue') {
-        const { data } = api.overdueReminders.getOverdueRemindersId.useQuery({
-          path: {
-            overdue_reminder_id: value.toString(),
-          },
-        });
-        if (data) {
-          setSelectedReminderDetails(data as unknown as ReminderDetail[]);
+        const { data: overdueIDReminder } =
+          api.overdueReminders.getOverdueRemindersId.useQuery({
+            path: {
+              overdue_reminder_id: value.toString(),
+            },
+          });
+        if (overdueIDReminder) {
+          setSelectedReminderDetails(
+            overdueIDReminder as unknown as ReminderDetail[]
+          );
         }
       }
     } catch (error) {
