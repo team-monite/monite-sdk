@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { findVariable } from '@typescript-eslint/utils/dist/ast-utils';
 import type {
   RuleRecommendation,
   RuleModule,
@@ -24,7 +23,7 @@ const ruleModule: RuleModule<string, Options> = {
             type: 'array',
             items: {
               type: 'object',
-              required: ['component', 'import'],
+              required: ['component', 'import', 'slotProps'],
               properties: {
                 component: {
                   type: 'string',
@@ -33,6 +32,13 @@ const ruleModule: RuleModule<string, Options> = {
                 import: {
                   type: 'string',
                   description: 'Import name',
+                },
+                slotProps: {
+                  type: 'array',
+                  description: 'List of slot props',
+                  items: {
+                    type: 'string',
+                  },
                 },
               },
             },
@@ -119,10 +125,18 @@ const ruleModule: RuleModule<string, Options> = {
   },
   create(context) {
     const componentsByRule: Record<string, Option[]> = {
-      // <Comp slotProps={{ popper: { container } }} />
+      // <Comp slotProps={{ popper: { container }, dialog: { container } }} />
       slotPropsPopperContainerPropertyMissing: [
-        { component: 'DatePicker', import: '@mui/x-date-pickers' },
-        { component: 'Autocomplete', import: '@mui/material' },
+        {
+          component: 'DatePicker',
+          import: '@mui/x-date-pickers',
+          slotProps: ['popper', 'dialog'],
+        },
+        {
+          component: 'Autocomplete',
+          import: '@mui/material',
+          slotProps: ['popper'],
+        },
       ],
 
       // <Comp MenuProps={{ container }} />
@@ -255,18 +269,27 @@ const ruleModule: RuleModule<string, Options> = {
           const slotPropsExpression = slotPropsAttribute.value.expression;
           if (
             slotPropsExpression.type !== 'ObjectExpression' ||
-            !slotPropsExpression.properties.some(
-              (prop) =>
-                prop.type === 'Property' &&
-                prop.key.type === 'Identifier' &&
-                prop.key.name === 'popper' && // finds `<Comp slotProps={{ popper }} />`
-                prop.value.type === 'ObjectExpression' &&
-                prop.value.properties.some(
-                  (innerProp) =>
-                    innerProp.type === 'Property' &&
-                    innerProp.key.type === 'Identifier' &&
-                    innerProp.key.name === 'container' // finds `<Comp slotProps={{ popper: { container } }} />`
-                )
+            !slotPropsPopperContainerPropertyMissingComponentItem.slotProps.every(
+              (slotProp) =>
+                slotPropsExpression.properties.some((prop) => {
+                  const isSlotProp =
+                    // finds `<Comp slotProps={{ popper }} />`
+                    prop.type === 'Property' &&
+                    prop.key.type === 'Identifier' &&
+                    slotProp === prop.key.name;
+
+                  if (!isSlotProp) return false;
+
+                  return (
+                    prop.value.type === 'ObjectExpression' &&
+                    prop.value.properties.some(
+                      (innerProp) =>
+                        innerProp.type === 'Property' &&
+                        innerProp.key.type === 'Identifier' &&
+                        innerProp.key.name === 'container' // finds `<Comp slotProps={{ popper: { container } }} />`
+                    )
+                  );
+                })
             )
           ) {
             return context.report({
@@ -423,6 +446,7 @@ function getIdentifierName(
 type Option = {
   component: string;
   import: string;
+  slotProps?: string[];
   requiredPropertyList?: string[];
 };
 
