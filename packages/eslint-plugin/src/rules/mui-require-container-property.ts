@@ -37,25 +37,6 @@ const ruleModule: RuleModule<string, Options> = {
               },
             },
           },
-          slotPropsDialogContainerPropertyMissing: {
-            description:
-              'List of components that have to match to "<Comp slotProps={{ dialog: { container } }} />"',
-            type: 'array',
-            items: {
-              type: 'object',
-              required: ['component', 'import'],
-              properties: {
-                component: {
-                  type: 'string',
-                  description: 'Component name',
-                },
-                import: {
-                  type: 'string',
-                  description: 'Import name',
-                },
-              },
-            },
-          },
           containerPropertyMissing: {
             description:
               'List of components that have to match to "<Comp container={} />"',
@@ -128,8 +109,6 @@ const ruleModule: RuleModule<string, Options> = {
     messages: {
       slotPropsPopperContainerPropertyMissing:
         'Component {{component}} must have `slotProps={{ popper: { container } }}` property specified.',
-      slotPropsDialogContainerPropertyMissing:
-        'Component {{component}} must have `slotProps={{ dialog: { container } }}` property specified.',
       containerPropertyMissing:
         'Component {{component}} must have `container` property with the specified.',
       menuPropsContainerPropertyMissing:
@@ -144,11 +123,6 @@ const ruleModule: RuleModule<string, Options> = {
       slotPropsPopperContainerPropertyMissing: [
         { component: 'DatePicker', import: '@mui/x-date-pickers' },
         { component: 'Autocomplete', import: '@mui/material' },
-      ],
-
-      // <Comp slotProps={{ dialog: { container } }} />
-      slotPropsDialogContainerPropertyMissing: [
-        { component: 'DatePicker', import: '@mui/x-date-pickers' },
       ],
 
       // <Comp MenuProps={{ container }} />
@@ -298,56 +272,6 @@ const ruleModule: RuleModule<string, Options> = {
             return context.report({
               node,
               messageId: 'slotPropsPopperContainerPropertyMissing',
-              data: { component: componentName },
-            });
-          }
-        }
-
-        const slotPropsDialogContainerPropertyMissingComponentItem =
-          componentsByRule.slotPropsDialogContainerPropertyMissing.find(
-            ({ component }) =>
-              component === muiImportedComponents[componentName]
-          );
-
-        if (slotPropsDialogContainerPropertyMissingComponentItem) {
-          const slotPropsAttribute = jsxOpeningElementNode.attributes.find(
-            (attribute) =>
-              attribute.type === 'JSXAttribute' &&
-              attribute.name.name === 'slotProps' // finds jsx props `<Comp slotProps={} />`
-          );
-
-          if (
-            !slotPropsAttribute ||
-            !('value' in slotPropsAttribute) ||
-            slotPropsAttribute.value.type !== 'JSXExpressionContainer'
-          ) {
-            return context.report({
-              node: node,
-              messageId: 'slotPropsDialogContainerPropertyMissing',
-              data: { component: componentName },
-            });
-          }
-
-          const slotPropsExpression = slotPropsAttribute.value.expression;
-          if (
-            slotPropsExpression.type !== 'ObjectExpression' ||
-            !slotPropsExpression.properties.some(
-              (prop) =>
-                prop.type === 'Property' &&
-                prop.key.type === 'Identifier' &&
-                prop.key.name === 'dialog' && // finds `<Comp slotProps={{ dialog }} />`
-                prop.value.type === 'ObjectExpression' &&
-                prop.value.properties.some(
-                  (innerProp) =>
-                    innerProp.type === 'Property' &&
-                    innerProp.key.type === 'Identifier' &&
-                    innerProp.key.name === 'container' // finds `<Comp slotProps={{ dialog: { container } }} />`
-                )
-            )
-          ) {
-            return context.report({
-              node,
-              messageId: 'slotPropsDialogContainerPropertyMissing',
               data: { component: componentName },
             });
           }
@@ -504,7 +428,6 @@ type Option = {
 
 type Options = Record<
   | 'slotPropsPopperContainerPropertyMissing'
-  | 'slotPropsDialogContainerPropertyMissing'
   | 'containerPropertyMissing'
   | 'menuPropsContainerPropertyMissing'
   | 'selectPropsMenuPropsContainerPropertyMissing',
