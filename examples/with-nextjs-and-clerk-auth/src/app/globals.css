@@ -4,6 +4,7 @@
   --demo-padding-3: calc(var(--demo-padding) * 3);
   --demo-padding-4: calc(var(--demo-padding) * 4);
   --demo-button-blue: #3737FF;
+  --demo-light-gray: #f9f9f9;
 }
 
 body,
@@ -112,9 +113,13 @@ html {
 }
 
 /* Outlined button style */
-.Monite-ContainerCssBaseline .MuiButton-outlined.MuiButton-outlinedPrimary {
+.Monite-ContainerCssBaseline .MuiButton-outlined {
   border-radius: 8px;
   box-shadow: none;
+
+  &.MuiButton-outlinedPrimary {
+    min-width: 120px;
+  }
 }
 
 .Monite-Purchases {
@@ -195,7 +200,7 @@ html {
   }
 }
 
-/* Invoice details */
+/* Payable details */
 .MuiDialog-container .Monite-ContainerCssBaseline {
   > .MuiDialogTitle-root.MuiTypography-h6 {
     /* Toolbar height should be 88px */
@@ -229,5 +234,28 @@ html {
     /* Fixes padding between content and header */
     padding-top: 7px;
     padding-right: var(--demo-padding-4);
+  }
+}
+
+/* Create invoice popup */
+.MuiDialog-container.MuiDialog-scrollPaper.monite-css-1sep8xo-MuiDialog-container:not(.MuiDialog-container__align-right) {
+  > .MuiPaper-root {
+    background-color: var(--demo-light-gray);
+
+    > h2 {
+      padding: 12px var(--demo-padding);
+    }
+
+    > .MuiDivider-root {
+      display: none;
+    }
+
+    > .MuiDialogContent-root {
+      background-color: white;
+      margin-left: 80px;
+      margin-right: 80px;
+      border-radius: var(--demo-padding-2);
+      padding: 56px 80px;
+    }
   }
 }
