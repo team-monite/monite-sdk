@@ -2,101 +2,48 @@ import { paths } from '@/api';
 import { entityIds } from '@/mocks/entities';
 import { faker } from '@faker-js/faker';
 
-const sendPaymentNameGenerator = (days: number, type: string) =>
-  `Send ${type} reminders ${days} days before due date`;
-
 export const paymentReminderListFixture: paths['/payment_reminders']['get']['responses']['200']['content']['application/json']['data'] =
-  new Array(5).fill('_').map(() => ({
+  new Array(faker.number.int({ min: 4, max: 6 })).fill('_').map(() => ({
     id: faker.string.nanoid(),
-    name: sendPaymentNameGenerator(
-      faker.datatype.number({ min: 1, max: 30 }),
-      'payment'
-    ),
+    name: `Send payment reminders ${faker.number.int({
+      min: 1,
+      max: 30,
+    })} days before due date`,
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
     entity_id: entityIds[0],
     status: faker.datatype.boolean() ? 'active' : 'deleted',
+    term_1_reminder: {
+      days_before: faker.number.int({ min: 1, max: 4 }),
+      body: faker.lorem.paragraph(),
+      subject: faker.lorem.sentence(),
+    },
+    term_2_reminder: {
+      days_before: faker.number.int({ min: 1, max: 4 }),
+      body: faker.lorem.paragraph(),
+      subject: faker.lorem.sentence(),
+    },
+    term_final_reminder: {
+      days_before: faker.number.int({ min: 1, max: 4 }),
+      body: faker.lorem.paragraph(),
+      subject: faker.lorem.sentence(),
+    },
   }));
 
 export const overdueReminderListFixture: paths['/overdue_reminders']['get']['responses']['200']['content']['application/json']['data'] =
-  new Array(5).fill('_').map(() => ({
+  new Array(faker.number.int({ min: 4, max: 6 })).fill('_').map(() => ({
     id: faker.string.nanoid(),
-    name: sendPaymentNameGenerator(
-      faker.datatype.number({ min: 1, max: 30 }),
-      'overdue'
-    ),
+    name: `Send payment reminders ${faker.number.int({
+      min: 1,
+      max: 30,
+    })} after due date`,
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
+    terms: new Array(faker.number.int({ min: 2, max: 5 }))
+      .fill('_')
+      .map(() => ({
+        days_after: faker.number.int({ min: 1, max: 5 }),
+        subject: faker.lorem.sentence(),
+        body: faker.lorem.paragraph(),
+      })),
   }));
-
-export type OverdueReminder =
-  paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
-
-export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
-  .fill(null)
-  .map<OverdueReminder>(() => {
-    const recipients: OverdueReminder['recipients'] =
-      Math.random() > 0.5
-        ? {
-            bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-            cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-            to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-          }
-        : undefined;
-
-    const terms: OverdueReminder['terms'] =
-      Math.random() > 0.5
-        ? [
-            {
-              body: faker.lorem.paragraph(),
-              days_after: faker.datatype.number({ min: 1, max: 30 }),
-              subject: faker.lorem.sentence(),
-            },
-          ]
-        : undefined;
-
-    return {
-      id: faker.string.uuid(),
-      name: sendPaymentNameGenerator(
-        faker.datatype.number({ min: 1, max: 30 }),
-        'payment'
-      ),
-      created_at: faker.date.past().toISOString(),
-      updated_at: faker.date.recent().toISOString(),
-      ...(recipients && { recipients }),
-      ...(terms && { terms }),
-    };
-  });
-
-export type PaymentReminderResponse =
-  paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
-
-export const paymentIDReminderListFixture: PaymentReminderResponse[] =
-  new Array(5).fill(null).map<PaymentReminderResponse>(() => {
-    const recipients = {
-      bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-      cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-      to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-    };
-
-    const termReminder = {
-      body: faker.lorem.paragraph(),
-      days_after: faker.datatype.number({ min: 1, max: 30 }),
-      subject: faker.lorem.sentence(),
-    };
-
-    return {
-      id: faker.string.uuid(),
-      created_at: faker.date.past().toISOString(),
-      updated_at: faker.date.recent().toISOString(),
-      entity_id: faker.string.uuid(),
-      name: sendPaymentNameGenerator(
-        faker.datatype.number({ min: 1, max: 30 }),
-        'payment'
-      ),
-      recipients,
-      term_1_reminder: Math.random() > 0.5 ? termReminder : undefined,
-      term_2_reminder: Math.random() > 0.5 ? termReminder : undefined,
-      term_final_reminder: Math.random() > 0.5 ? termReminder : undefined,
-    } as PaymentReminderResponse;
-  });
