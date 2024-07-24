@@ -88,6 +88,9 @@ export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
               popper: {
                 container: root,
               },
+              dialog: {
+                container: root,
+              },
               actionBar: {
                 actions: ['clear', 'today'],
               },

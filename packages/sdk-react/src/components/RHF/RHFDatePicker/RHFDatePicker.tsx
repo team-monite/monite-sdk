@@ -44,6 +44,9 @@ export const RHFDatePicker = <T extends FieldValues>({
                   ...slotProps?.popper,
                   container: root,
                 },
+                dialog: {
+                  container: root,
+                },
                 textField: {
                   ...slotProps?.textField,
                   id: name,

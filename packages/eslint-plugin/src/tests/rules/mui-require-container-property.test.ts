@@ -19,7 +19,7 @@ ruleTester.run<string, readonly unknown[]>(
     valid: [
       {
         code: `import { DatePickerCustom as MyDatePicker } from '@mui/material';
-               <MyDatePicker slotProps={{ popper: { container: root } }} />`,
+               <MyDatePicker slotProps={{ popper: { container: root }, dialog: { container: root } }} />`,
         options: [
           {
             slotPropsPopperContainerPropertyMissing: [
@@ -36,7 +36,7 @@ ruleTester.run<string, readonly unknown[]>(
       },
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
-               <DatePicker slotProps={{ popper: { container: root } }} />`,
+               <DatePicker slotProps={{ popper: { container: root }, dialog: { container: root } }} />`,
       },
       {
         code: `import { DatePicker } from 'my-custom-mui-datepicker';
@@ -54,7 +54,10 @@ ruleTester.run<string, readonly unknown[]>(
                    popper: {
                      id: 'date-picker',
                      container: root
-                   }
+                   },
+                   dialog: {
+                     container: root
+                   },
                  }}
                  views={['year', 'month', 'day']}
                />`,
@@ -121,6 +124,16 @@ ruleTester.run<string, readonly unknown[]>(
         code: `import { DatePicker } from '@mui/x-date-pickers';
                <DatePicker />`,
         errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
+      },
+      {
+        code: `import { DatePicker } from '@mui/x-date-pickers';
+               <DatePicker slotProps={{ popper: { container: root } }} />`,
+        errors: [{ messageId: 'slotPropsDialogContainerPropertyMissing' }],
+      },
+      {
+        code: `import { DatePicker } from '@mui/x-date-pickers';
+               <DatePicker slotProps={{ popper: { container: root }, dialog: {} }} />`,
+        errors: [{ messageId: 'slotPropsDialogContainerPropertyMissing' }],
       },
       {
         code: `import { Select } from '@mui/material';

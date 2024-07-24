@@ -360,6 +360,7 @@ const PayableDetailsFormBase = forwardRef<
                               maxDate={currentDueDate}
                               slotProps={{
                                 popper: { container: root },
+                                dialog: { container: root },
                                 actionBar: {
                                   actions: ['clear', 'today'],
                                 },
@@ -386,6 +387,7 @@ const PayableDetailsFormBase = forwardRef<
                             minDate={currentInvoiceDate}
                             slotProps={{
                               popper: { container: root },
+                              dialog: { container: root },
                               actionBar: {
                                 actions: ['clear', 'today'],
                               },
