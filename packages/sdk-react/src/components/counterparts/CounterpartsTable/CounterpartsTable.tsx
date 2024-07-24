@@ -127,7 +127,7 @@ const CounterpartsTableBase = ({
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
     []
   );
-  const sortModelItem = sortModel[0];
+  const sortModelItem = sortModel.at(0);
 
   /**
    * `isUpdateSupported` and `isDeleteSupported` should be defined by `created_by_entity_user_id` from counterpart record.
@@ -158,14 +158,10 @@ const CounterpartsTableBase = ({
     refetch,
   } = useCounterpartList({
     query: {
-      order: sortModelItem
-        ? (sortModelItem.sort as components['schemas']['OrderEnum'])
-        : undefined,
+      order: sortModelItem?.sort ?? undefined,
       limit: pageSize || undefined,
       pagination_token: currentPaginationToken || undefined,
-      sort: sortModelItem
-        ? (sortModelItem.field as components['schemas']['CounterpartCursorFields'])
-        : undefined,
+      sort: sortModelItem?.field ?? undefined,
       type: currentFilter[FILTER_TYPE_TYPE] || undefined,
       counterpart_name__icontains:
         currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -396,7 +392,7 @@ const CounterpartsTableBase = ({
                     onEdit?.(params.row.id);
                   }}
                   onDelete={() => {
-                    setSelectedCounterpart(params.row as CounterpartResponse);
+                    setSelectedCounterpart(params.row);
                     setIsDeleteDialogOpen(true);
                   }}
                 />
