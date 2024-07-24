@@ -169,8 +169,8 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiInputBase: {
     styleOverrides: {
       root: {
-        borderRadius: `100px !important`,
-        height: '40px',
+        borderRadius: `20px !important`,
+        minHeight: '40px',
         '& .MuiInputBase-input': {
           height: '40px',
           padding: '0 14px', // Adjust padding if needed

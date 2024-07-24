@@ -172,9 +172,17 @@ html {
 .MuiFormControl-root {
   > label {
     &:not(.MuiInputLabel-shrink) {
-      height: 40px;
       font-size: 14px;
       transform: translate(var(--demo-padding-2), 10px);
+    }
+  }
+}
+
+.MuiAutocomplete-root {
+  > .MuiFormControl-root {
+    > .MuiInputBase-root {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
     }
   }
 }
