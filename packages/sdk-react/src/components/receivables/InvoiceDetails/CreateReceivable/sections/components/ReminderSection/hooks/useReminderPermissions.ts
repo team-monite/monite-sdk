@@ -1,35 +1,31 @@
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 
-type PermissionMethod = 'payment_reminder' | 'overdue_reminder';
-type PermissionAction = 'read' | 'create';
-
-interface PermissionData {
-  data: boolean | undefined;
-  isLoading: boolean;
-}
-
-const usePermission = (
-  method: PermissionMethod,
-  action: PermissionAction
-): PermissionData => {
-  const { data, isLoading } = useIsActionAllowed({ method, action });
-  return { data, isLoading };
-};
-
 export const useReminderPermissions = () => {
-  const readPaymentReminder = usePermission('payment_reminder', 'read');
-  const readOverdueReminder = usePermission('overdue_reminder', 'read');
-  const createPaymentReminder = usePermission('payment_reminder', 'create');
-  const createOverdueReminder = usePermission('overdue_reminder', 'create');
+  const {
+    data: isReadPaymentReminderAllowed,
+    isLoading: isReadPaymentReminderAllowedLoading,
+  } = useIsActionAllowed({ method: 'payment_reminder', action: 'read' });
+  const {
+    data: isReadOverdueReminderAllowed,
+    isLoading: isReadOverdueReminderAllowedLoading,
+  } = useIsActionAllowed({ method: 'overdue_reminder', action: 'read' });
+  const {
+    data: isCreatePaymentReminderAllowed,
+    isLoading: isCreatePaymentReminderAllowedLoading,
+  } = useIsActionAllowed({ method: 'payment_reminder', action: 'create' });
+  const {
+    data: isCreateOverdueReminderAllowed,
+    isLoading: isCreateOverdueReminderAllowedLoading,
+  } = useIsActionAllowed({ method: 'overdue_reminder', action: 'create' });
 
   return {
-    isReadPaymentReminderAllowed: readPaymentReminder.data,
-    isReadPaymentReminderAllowedLoading: readPaymentReminder.isLoading,
-    isReadOverdueReminderAllowed: readOverdueReminder.data,
-    isReadOverdueReminderAllowedLoading: readOverdueReminder.isLoading,
-    isCreatePaymentReminderAllowed: createPaymentReminder.data,
-    isCreatePaymentReminderAllowedLoading: createPaymentReminder.isLoading,
-    isCreateOverdueReminderAllowed: createOverdueReminder.data,
-    isCreateOverdueReminderAllowedLoading: createOverdueReminder.isLoading,
+    isReadPaymentReminderAllowed,
+    isReadPaymentReminderAllowedLoading,
+    isReadOverdueReminderAllowed,
+    isReadOverdueReminderAllowedLoading,
+    isCreatePaymentReminderAllowed,
+    isCreatePaymentReminderAllowedLoading,
+    isCreateOverdueReminderAllowed,
+    isCreateOverdueReminderAllowedLoading,
   };
 };
