@@ -2,6 +2,7 @@
   --demo-padding: 8px;
   --demo-padding-2: calc(var(--demo-padding) * 2);
   --demo-padding-3: calc(var(--demo-padding) * 3);
+  --demo-button-blue: #3737FF;
 }
 
 body,
@@ -55,6 +56,7 @@ html {
       .MuiButtonBase-root {
         padding-top: 10px;
         padding-bottom: 10px;
+
         &.Mui-selected {
           background-color: #F4F4FE;
           border-radius: 10px;
@@ -98,13 +100,35 @@ html {
   }
 }
 
-.Monite-Payables {
+/* Default button style */
+.Monite-ContainerCssBaseline .MuiButton-containedPrimary {
+  background-color: var(--demo-button-blue);
+  color: #ffffff;
+  padding: 6px 18px;
+  border-radius: 8px;
+  box-shadow: none;
+}
+
+.Monite-Purchases {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: stretch;
   height: 100%;
   max-height: 100%;
+
+  /* Header */
+  > .MuiStack-root:first-child {
+
+    /* Default button style */
+    aside button {
+      background-color: var(--demo-button-blue);
+      color: #ffffff;
+      padding: 6px 18px;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+  }
 
   > .MuiBox-root {
     /* prevent labels from being clipped */
@@ -149,5 +173,41 @@ html {
       font-size: 14px;
       transform: translate(var(--demo-padding-2), 10px);
     }
+  }
+}
+
+/* Invoice details */
+.MuiDialog-container .Monite-ContainerCssBaseline {
+  > .MuiDialogTitle-root.MuiTypography-h6 {
+    /* Toolbar height should be 88px */
+    padding: 12px var(--demo-padding-3);
+
+    /* Hide toolbar bottom border on the dialog popup */
+    & + .MuiDivider-root {
+      opacity: 0;
+    }
+
+    .MuiToolbar-root {
+      padding: 0 var(--demo-padding) 0 var(--demo-padding-3);
+
+      /* Close button icon size */
+      > .MuiButtonBase-root:first-child {
+
+      }
+
+      /* Fixes gap between invoice # and status indicator */
+      > .MuiIconButton-root + .MuiBox-root {
+        gap: var(--demo-padding-3);
+
+        > .MuiTypography-h3 {
+          margin-left: var(--demo-padding-3);
+        }
+      }
+    }
+  }
+
+  > .MuiDialogContent-root {
+    /* Fixes padding between content and header */
+    padding-top: 7px;
   }
 }

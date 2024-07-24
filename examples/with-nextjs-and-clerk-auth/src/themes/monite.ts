@@ -183,6 +183,22 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        backgroundColor: '#F4F4FE',
+        borderRadius: '4px',
+        color: '#3737FF',
+        fontSize: '14px',
+        lineHeight: '16px',
+        fontWeight: 500,
+        padding: '7px 8px',
+      },
+      label: {
+        padding: '0',
+      },
+    },
+  },
 };
 
 export const moniteLight = () =>
