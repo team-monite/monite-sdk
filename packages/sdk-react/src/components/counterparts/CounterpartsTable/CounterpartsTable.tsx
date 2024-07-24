@@ -320,21 +320,17 @@ const CounterpartsTableBase = ({
               renderCell: (params) => {
                 const counterpart = params.row;
 
-                const counterpartData =
-                  counterpart.type === 'organization'
-                    ? (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization
-                    : (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual;
+                const { is_customer, is_vendor } =
+                  'organization' in counterpart
+                    ? counterpart.organization
+                    : counterpart.individual;
 
                 const items = [
                   {
                     label: t(i18n)`Customer`,
-                    value: counterpartData.is_customer,
+                    value: is_customer,
                   },
-                  { label: t(i18n)`Vendor`, value: counterpartData.is_vendor },
+                  { label: t(i18n)`Vendor`, value: is_vendor },
                 ].map(
                   ({ label, value }) =>
                     value && (
@@ -362,44 +358,23 @@ const CounterpartsTableBase = ({
               renderCell: (params) => {
                 const counterpart = params.row;
 
-                const data = (() => {
-                  switch (counterpart.type) {
-                    case 'organization': {
-                      const organization = (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization;
-
-                      return {
-                        email: organization.email,
-                        phone: organization.phone,
-                      };
-                    }
-
-                    case 'individual': {
-                      const individual = (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual;
-
-                      return {
-                        email: individual.email,
-                        phone: individual.phone,
-                      };
-                    }
-                  }
-                })();
+                const { email, phone } =
+                  'organization' in counterpart
+                    ? counterpart.organization
+                    : counterpart.individual;
 
                 return (
                   <Stack spacing={1} direction="column">
-                    {data?.email && (
+                    {email && (
                       <Styled.MuiColContacts>
                         <MuiEnvelopeIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data.email}</Typography>
+                        <Typography variant="body2">{email}</Typography>
                       </Styled.MuiColContacts>
                     )}
-                    {data?.phone && (
+                    {phone && (
                       <Styled.MuiColContacts>
                         <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data?.phone}</Typography>
+                        <Typography variant="body2">{phone}</Typography>
                       </Styled.MuiColContacts>
                     )}
                   </Stack>
