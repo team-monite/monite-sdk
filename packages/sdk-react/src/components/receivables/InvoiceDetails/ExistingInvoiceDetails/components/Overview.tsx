@@ -1,79 +1,23 @@
-import { ReactNode, useMemo, useState } from 'react';
-import React from 'react';
+import React, { useId, useState } from 'react';
 
 import { components } from '@/api';
-import { getCounterpartName } from '@/components/counterparts/helpers';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
-import { useCurrencies } from '@/core/hooks';
-import { useCounterpartById } from '@/core/queries';
-import { MoniteCard } from '@/ui/Card/Card';
+import { OverviewTabPanel } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Skeleton, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Stack, Tab, Tabs } from '@mui/material';
 
 import { PreviewCustomerSection } from './sections/PreviewCustomerSection';
 import { PreviewDetailsSection } from './sections/PreviewDetailsSection';
 import { PreviewItemsSection } from './sections/PreviewItemsSection';
 import { PreviewPaymentDetailsSection } from './sections/PreviewPaymentDetailsSection';
 
-enum ViewState {
-  Overview = 'overview',
-  Details = 'details',
-}
-
-const a11yProps = (index: ViewState) => {
-  return {
-    id: `tab-${index}`,
-    'aria-controls': `tabpanel-${index}`,
-  };
-};
-
-interface TabPanelProps {
-  children: ReactNode;
-  index: ViewState;
-  value: ViewState;
-}
-
-const TabPanel = ({ value, index, children }: TabPanelProps) => {
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tab-content-${index}`}
-      aria-labelledby={`Tab content ${index}`}
-    >
-      {value === index && children}
-    </div>
-  );
-};
-
 export const Overview = (
   invoice: components['schemas']['InvoiceResponsePayload']
 ) => {
   const { i18n } = useLingui();
-  const [view, setView] = useState<ViewState>(ViewState.Overview);
+  const [view, setView] = useState<'overview' | 'details'>('overview');
 
-  const {
-    data: counterpart,
-    isLoading: isCounterpartLoading,
-    error: counterpartError,
-  } = useCounterpartById(invoice.counterpart_id);
-
-  const counterpartName = useMemo(() => {
-    if (isCounterpartLoading) {
-      return <Skeleton variant="text" width="50%" />;
-    }
-
-    if (counterpartError) {
-      return '—';
-    }
-
-    if (counterpart) {
-      return getCounterpartName(counterpart);
-    }
-  }, [counterpart, counterpartError, isCounterpartLoading]);
-
-  const { formatCurrencyToDisplay } = useCurrencies();
+  const tabsBaseId = `Monite-InvoiceDetails-overview-${useId()}-tab-`;
 
   return (
     <Stack spacing={3}>
@@ -82,60 +26,44 @@ export const Overview = (
         onChange={(_, newValue) => {
           setView(newValue);
         }}
-        aria-label={t(i18n)`Overview or details tabs`}
       >
         <Tab
-          label={t(i18n)`Overview`}
-          {...a11yProps(ViewState.Overview)}
-          value={ViewState.Overview}
+          label={t(i18n)`Invoice overview`}
+          id={`${tabsBaseId}-overview-tab`}
+          aria-controls={`${tabsBaseId}-overview-tabpanel`}
+          value="overview"
         />
         <Tab
-          label={t(i18n)`Details`}
-          {...a11yProps(ViewState.Details)}
-          value={ViewState.Details}
+          label={t(i18n)`Invoice details`}
+          id={`${tabsBaseId}-details-tab`}
+          aria-controls={`${tabsBaseId}-details-tabpanel`}
+          value="details"
         />
       </Tabs>
 
-      <TabPanel value={view} index={ViewState.Overview}>
-        <MoniteCard
-          items={[
-            {
-              label: t(i18n)`Customer`,
-              value: (
-                <Typography fontWeight={500}>{counterpartName}</Typography>
-              ),
-            },
-            {
-              label: t(i18n)`Current status`,
-              value: (
-                <Box component="span" fontWeight={500} fontSize="0.9rem">
-                  <InvoiceStatusChip status={invoice.status} icon={false} />
-                </Box>
-              ),
-            },
-            {
-              label: t(i18n)`Invoice total`,
-              value: (
-                <Typography fontWeight={500}>
-                  {formatCurrencyToDisplay(
-                    invoice.total_amount_with_credit_notes,
-                    invoice.currency
-                  )}
-                </Typography>
-              ),
-            },
-          ]}
+      {view === 'overview' && (
+        <OverviewTabPanel
+          invoice={invoice}
+          role="tabpanel"
+          id={`${tabsBaseId}-overview-tabpanel`}
+          aria-labelledby={`${tabsBaseId}-overview-tab`}
         />
-      </TabPanel>
+      )}
 
-      <TabPanel value={view} index={ViewState.Details}>
-        <Stack spacing={4}>
-          <PreviewCustomerSection {...invoice} />
-          <PreviewDetailsSection {...invoice} />
-          <PreviewItemsSection {...invoice} />
-          <PreviewPaymentDetailsSection {...invoice} />
-        </Stack>
-      </TabPanel>
+      {view === 'details' && (
+        <Box
+          role="tabpanel"
+          id={`${tabsBaseId}-details-tabpanel`}
+          aria-labelledby={`${tabsBaseId}-details-tab`}
+        >
+          <Stack spacing={4}>
+            <PreviewCustomerSection {...invoice} />
+            <PreviewDetailsSection {...invoice} />
+            <PreviewItemsSection {...invoice} />
+            <PreviewPaymentDetailsSection {...invoice} />
+          </Stack>
+        </Box>
+      )}
     </Stack>
   );
 };
