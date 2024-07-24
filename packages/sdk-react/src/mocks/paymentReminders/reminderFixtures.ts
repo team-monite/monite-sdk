@@ -9,7 +9,7 @@ export const paymentReminderListFixture: paths['/payment_reminders']['get']['res
   new Array(5).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: sendPaymentNameGenerator(
-      faker.datatype.number({ min: 1, max: 30 }),
+      faker.number.int({ min: 1, max: 30 }),
       'payment'
     ),
     created_at: faker.date.past().toString(),
@@ -22,7 +22,7 @@ export const overdueReminderListFixture: paths['/overdue_reminders']['get']['res
   new Array(5).fill('_').map(() => ({
     id: faker.string.nanoid(),
     name: sendPaymentNameGenerator(
-      faker.datatype.number({ min: 1, max: 30 }),
+      faker.number.int({ min: 1, max: 30 }),
       'overdue'
     ),
     created_at: faker.date.past().toString(),
@@ -32,6 +32,8 @@ export const overdueReminderListFixture: paths['/overdue_reminders']['get']['res
 export type OverdueReminder =
   paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
+// ToDo: remove randomization for undefined data
+// we show    terms?: components["schemas"]["OverdueReminderTerm"][];  days_after: number;
 export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
   .fill(null)
   .map<OverdueReminder>(() => {
@@ -49,7 +51,7 @@ export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
         ? [
             {
               body: faker.lorem.paragraph(),
-              days_after: faker.datatype.number({ min: 1, max: 30 }),
+              days_after: faker.number.int({ min: 1, max: 30 }),
               subject: faker.lorem.sentence(),
             },
           ]
@@ -71,32 +73,39 @@ export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
 export type PaymentReminderResponse =
   paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
+// ToDo: height button the same height the input form
+
+// ToDo: remove randomization for undefined data
+// we show   term1, term2, term_final  recipients?: components["schemas"]["PaymentReminderRecipients"];
 export const paymentIDReminderListFixture: PaymentReminderResponse[] =
-  new Array(5).fill(null).map<PaymentReminderResponse>(() => {
-    const recipients = {
-      bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-      cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-      to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
-    };
+  new Array(5)
+    .fill(null)
+    .map<PaymentReminderResponse>((): PaymentReminderResponse => {
+      const recipients = {
+        bcc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+        cc: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+        to: Math.random() > 0.5 ? [faker.internet.email()] : undefined,
+      };
 
-    const termReminder = {
-      body: faker.lorem.paragraph(),
-      days_after: faker.datatype.number({ min: 1, max: 30 }),
-      subject: faker.lorem.sentence(),
-    };
+      const termReminder = {
+        body: faker.lorem.paragraph(),
+        days_before: faker.datatype.number({ min: 1, max: 30 }),
+        subject: faker.lorem.sentence(),
+      };
 
-    return {
-      id: faker.string.uuid(),
-      created_at: faker.date.past().toISOString(),
-      updated_at: faker.date.recent().toISOString(),
-      entity_id: faker.string.uuid(),
-      name: sendPaymentNameGenerator(
-        faker.datatype.number({ min: 1, max: 30 }),
-        'payment'
-      ),
-      recipients,
-      term_1_reminder: Math.random() > 0.5 ? termReminder : undefined,
-      term_2_reminder: Math.random() > 0.5 ? termReminder : undefined,
-      term_final_reminder: Math.random() > 0.5 ? termReminder : undefined,
-    } as PaymentReminderResponse;
-  });
+      return {
+        id: faker.string.uuid(),
+        created_at: faker.date.past().toISOString(),
+        updated_at: faker.date.recent().toISOString(),
+        entity_id: faker.string.uuid(),
+        name: sendPaymentNameGenerator(
+          faker.number.int({ min: 1, max: 30 }),
+          'payment'
+        ),
+        recipients,
+        term_1_reminder: Math.random() > 0.5 ? termReminder : undefined,
+        term_2_reminder: Math.random() > 0.5 ? termReminder : undefined,
+        term_final_reminder: Math.random() > 0.5 ? termReminder : undefined,
+        status: faker.helpers.arrayElement(['active', 'deleted']),
+      };
+    });
