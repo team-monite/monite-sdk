@@ -39,7 +39,7 @@ import {
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { getCounterpartName } from '../helpers';
+import { getCounterpartName, getIndividualName } from '../helpers';
 import {
   FILTER_TYPE_IS_CUSTOMER,
   FILTER_TYPE_SEARCH,
@@ -300,13 +300,9 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const name =
-                  counterpart.type === 'organization'
-                    ? (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization.legal_name
-                    : (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual.first_name;
+                  'organization' in counterpart
+                    ? counterpart.organization.legal_name
+                    : getIndividualName(counterpart.individual);
 
                 return (
                   <>
