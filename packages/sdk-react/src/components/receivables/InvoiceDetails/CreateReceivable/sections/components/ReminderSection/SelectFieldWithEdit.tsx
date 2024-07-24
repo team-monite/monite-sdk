@@ -13,6 +13,7 @@ interface CustomSelectFieldProps extends FieldValues {
   ) => (event: SelectChangeEvent<string | number>) => void;
   details: ReminderDetail | undefined;
   options: Array<{ id: string | number; name: string }>;
+  onEdit: () => void;
 }
 
 export const SelectFieldWithEdit = ({
@@ -25,6 +26,7 @@ export const SelectFieldWithEdit = ({
   control,
   details,
   createOptionLabel,
+  onEdit,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
@@ -61,9 +63,9 @@ export const SelectFieldWithEdit = ({
         <Button
           variant="outlined"
           disabled={disabled}
-          onClick={() => {
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            alert('You have selected Edit');
+          onClick={(event) => {
+            event.preventDefault();
+            onEdit();
           }}
           fullWidth
         >

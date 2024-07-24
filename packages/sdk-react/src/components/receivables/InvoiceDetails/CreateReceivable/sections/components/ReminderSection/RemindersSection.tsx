@@ -29,7 +29,16 @@ import { useReminderPermissions } from './hooks/useReminderPermissions';
 import { useValidateCounterpart } from './hooks/useValidateCounterpart';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 
-export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
+export const ReminderSection = ({
+  disabled,
+  onCreateReminder,
+  onEditPaymentReminder,
+  onEditOverdueReminder,
+}: SectionGeneralProps & {
+  onCreateReminder: (type: 'payment' | 'overdue') => void;
+  onEditPaymentReminder: () => void;
+  onEditOverdueReminder: () => void;
+}) => {
   const { i18n } = useLingui();
   const { control } = useFormContext<CreateReceivablesFormProps>();
   const { root } = useRootElements();
@@ -72,8 +81,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     field.onChange(value);
 
     if (value === 'create') {
-      // eslint-disable-next-line lingui/no-unlocalized-strings
-      alert('You have selected Create a reminder preset');
+      onCreateReminder(type);
       field.onChange('');
       return;
     }
@@ -146,6 +154,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                     handleSelectChange(event, 'payment')
                   }
                   control={control}
+                  onEdit={onEditPaymentReminder}
                 />
               )}
             />
@@ -169,6 +178,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                     handleSelectChange(event, 'overdue')
                   }
                   control={control}
+                  onEdit={onEditOverdueReminder}
                 />
               )}
             />

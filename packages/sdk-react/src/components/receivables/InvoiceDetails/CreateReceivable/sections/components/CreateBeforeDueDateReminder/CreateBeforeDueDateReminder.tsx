@@ -28,7 +28,11 @@ import { ReminderForm } from './ReminderForm';
 import { CreateBeforeDueDateReminderFormFields } from './types';
 import { getValidationSchema } from './validation';
 
-export const CreateBeforeDueDateReminder = () => {
+export const CreateBeforeDueDateReminder = ({
+  onCreate,
+}: {
+  onCreate(id: string): void;
+}) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
@@ -56,7 +60,7 @@ export const CreateBeforeDueDateReminder = () => {
 
   const createBeforeDueDateReminderMutation =
     api.paymentReminders.postPaymentReminders.useMutation(undefined, {
-      onSuccess: async () => {
+      onSuccess: async (newReminder) => {
         dialogContext?.onClose?.();
 
         await api.paymentReminders.getPaymentReminders.invalidateQueries(
@@ -64,6 +68,8 @@ export const CreateBeforeDueDateReminder = () => {
         );
 
         toast.success(t(i18n)`Reminder has been created`);
+
+        onCreate(newReminder.id);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));

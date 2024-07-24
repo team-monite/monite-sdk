@@ -2,14 +2,15 @@ import React, { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
+import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
 import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
 import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection';
-import {
-  getUpdateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
+import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useUpdateReceivable,
@@ -34,6 +35,7 @@ import {
 } from '@mui/material';
 
 import { format } from 'date-fns';
+import * as yup from 'yup';
 
 interface EditInvoiceDetailsProps {
   invoice: components['schemas']['InvoiceResponsePayload'];
@@ -47,6 +49,10 @@ interface EditInvoiceDetailsProps {
   onCancel: () => void;
 }
 
+type UpdateReceivablesFormProps = yup.InferType<
+  ReturnType<typeof getUpdateInvoiceValidationSchema>
+>;
+
 const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
@@ -55,7 +61,7 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
-  const methods = useForm<CreateReceivablesFormProps>({
+  const methods = useForm<UpdateReceivablesFormProps>({
     resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
     defaultValues: {
       /** Customer section */
@@ -88,6 +94,9 @@ const EditInvoiceDetailsContent = ({
       /** Items section */
       entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
       payment_terms_id: invoice.payment_terms?.id ?? '',
+
+      payment_reminder_id: invoice.payment_reminder_id ?? '',
+      overdue_reminder_id: invoice.overdue_reminder_id ?? '',
     },
   });
 
@@ -96,6 +105,7 @@ const EditInvoiceDetailsContent = ({
   const {
     handleSubmit,
     formState: { isDirty },
+    getValues,
   } = methods;
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -118,6 +128,16 @@ const EditInvoiceDetailsContent = ({
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  const {
+    createReminderDialog,
+    editReminderDialog,
+    onCreateReminder,
+    onEditOverdueReminder,
+    onEditPaymentReminder,
+    closeCreateReminderDialog,
+    closeUpdateReminderDialog,
+  } = useInvoiceReminderDialogs({ getValues });
 
   return (
     <>
@@ -217,6 +237,12 @@ const EditInvoiceDetailsContent = ({
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={isLoading} />
+                <ReminderSection
+                  disabled={isLoading}
+                  onEditOverdueReminder={onEditOverdueReminder}
+                  onEditPaymentReminder={onEditPaymentReminder}
+                  onCreateReminder={onCreateReminder}
+                />
               </Stack>
             </Stack>
             <Dialog
@@ -244,6 +270,21 @@ const EditInvoiceDetailsContent = ({
           </form>
         </FormProvider>
       </DialogContent>
+
+      <CreateInvoiceReminderDialog
+        open={createReminderDialog.open}
+        reminderType={createReminderDialog.reminderType}
+        onClose={closeCreateReminderDialog}
+      />
+
+      {editReminderDialog.reminderId && (
+        <EditInvoiceReminderDialog
+          open={editReminderDialog.open}
+          reminderId={editReminderDialog.reminderId}
+          reminderType={editReminderDialog.reminderType}
+          onClose={closeUpdateReminderDialog}
+        />
+      )}
     </>
   );
 };
