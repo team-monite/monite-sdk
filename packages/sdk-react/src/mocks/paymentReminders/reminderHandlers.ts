@@ -41,7 +41,7 @@ export const remindersHandlers = [
     { overdue_reminder_id: string },
     undefined,
     paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json']
-  >(`${overdueReminderPath}/:overdue_reminder_id`, async ({ params }) => {
+  >('*/overdue_reminders/:overdue_reminder_id', async ({ params }) => {
     const overdueReminder = overdueReminderListFixture.find(
       (overdueReminder) => overdueReminder.id === params.overdue_reminder_id
     );
@@ -63,7 +63,7 @@ export const remindersHandlers = [
     { payment_reminder_id: string },
     undefined,
     paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json']
-  >(`${paymentReminderPath}/:payment_reminder_id`, async ({ params }) => {
+  >('*/payment_reminders/:payment_reminder_id', async ({ params }) => {
     const paymentReminder = paymentReminderListFixture.find(
       (paymentReminder) => paymentReminder.id === params.payment_reminder_id
     );
