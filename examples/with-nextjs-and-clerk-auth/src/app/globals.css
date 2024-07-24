@@ -2,6 +2,7 @@
   --demo-padding: 8px;
   --demo-padding-2: calc(var(--demo-padding) * 2);
   --demo-padding-3: calc(var(--demo-padding) * 3);
+  --demo-padding-4: calc(var(--demo-padding) * 4);
   --demo-button-blue: #3737FF;
 }
 
@@ -105,6 +106,13 @@ html {
   background-color: var(--demo-button-blue);
   color: #ffffff;
   padding: 6px 18px;
+  border-radius: 8px;
+  box-shadow: none;
+  min-width: 120px;
+}
+
+/* Outlined button style */
+.Monite-ContainerCssBaseline .MuiButton-outlined.MuiButton-outlinedPrimary {
   border-radius: 8px;
   box-shadow: none;
 }
@@ -220,5 +228,6 @@ html {
   > .MuiDialogContent-root {
     /* Fixes padding between content and header */
     padding-top: 7px;
+    padding-right: var(--demo-padding-4);
   }
 }
