@@ -39,7 +39,7 @@ import {
 import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { getCounterpartName } from '../helpers';
+import { getCounterpartName, getIndividualName } from '../helpers';
 import {
   FILTER_TYPE_IS_CUSTOMER,
   FILTER_TYPE_SEARCH,
@@ -127,7 +127,7 @@ const CounterpartsTableBase = ({
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
     []
   );
-  const sortModelItem = sortModel[0];
+  const sortModelItem = sortModel.at(0);
 
   /**
    * `isUpdateSupported` and `isDeleteSupported` should be defined by `created_by_entity_user_id` from counterpart record.
@@ -158,14 +158,10 @@ const CounterpartsTableBase = ({
     refetch,
   } = useCounterpartList({
     query: {
-      order: sortModelItem
-        ? (sortModelItem.sort as components['schemas']['OrderEnum'])
-        : undefined,
+      order: sortModelItem?.sort ?? undefined,
       limit: pageSize || undefined,
       pagination_token: currentPaginationToken || undefined,
-      sort: sortModelItem
-        ? (sortModelItem.field as components['schemas']['CounterpartCursorFields'])
-        : undefined,
+      sort: sortModelItem?.field ?? undefined,
       type: currentFilter[FILTER_TYPE_TYPE] || undefined,
       counterpart_name__icontains:
         currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -300,13 +296,9 @@ const CounterpartsTableBase = ({
                 const counterpart = params.row;
 
                 const name =
-                  counterpart.type === 'organization'
-                    ? (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization.legal_name
-                    : (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual.first_name;
+                  'organization' in counterpart
+                    ? counterpart.organization.legal_name
+                    : getIndividualName(counterpart.individual);
 
                 return (
                   <>
@@ -324,21 +316,17 @@ const CounterpartsTableBase = ({
               renderCell: (params) => {
                 const counterpart = params.row;
 
-                const counterpartData =
-                  counterpart.type === 'organization'
-                    ? (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization
-                    : (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual;
+                const { is_customer, is_vendor } =
+                  'organization' in counterpart
+                    ? counterpart.organization
+                    : counterpart.individual;
 
                 const items = [
                   {
                     label: t(i18n)`Customer`,
-                    value: counterpartData.is_customer,
+                    value: is_customer,
                   },
-                  { label: t(i18n)`Vendor`, value: counterpartData.is_vendor },
+                  { label: t(i18n)`Vendor`, value: is_vendor },
                 ].map(
                   ({ label, value }) =>
                     value && (
@@ -366,44 +354,23 @@ const CounterpartsTableBase = ({
               renderCell: (params) => {
                 const counterpart = params.row;
 
-                const data = (() => {
-                  switch (counterpart.type) {
-                    case 'organization': {
-                      const organization = (
-                        counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-                      ).organization;
-
-                      return {
-                        email: organization.email,
-                        phone: organization.phone,
-                      };
-                    }
-
-                    case 'individual': {
-                      const individual = (
-                        counterpart as components['schemas']['CounterpartIndividualRootResponse']
-                      ).individual;
-
-                      return {
-                        email: individual.email,
-                        phone: individual.phone,
-                      };
-                    }
-                  }
-                })();
+                const { email, phone } =
+                  'organization' in counterpart
+                    ? counterpart.organization
+                    : counterpart.individual;
 
                 return (
                   <Stack spacing={1} direction="column">
-                    {data?.email && (
+                    {email && (
                       <Styled.MuiColContacts>
                         <MuiEnvelopeIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data.email}</Typography>
+                        <Typography variant="body2">{email}</Typography>
                       </Styled.MuiColContacts>
                     )}
-                    {data?.phone && (
+                    {phone && (
                       <Styled.MuiColContacts>
                         <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{data?.phone}</Typography>
+                        <Typography variant="body2">{phone}</Typography>
                       </Styled.MuiColContacts>
                     )}
                   </Stack>
@@ -425,7 +392,7 @@ const CounterpartsTableBase = ({
                     onEdit?.(params.row.id);
                   }}
                   onDelete={() => {
-                    setSelectedCounterpart(params.row as CounterpartResponse);
+                    setSelectedCounterpart(params.row);
                     setIsDeleteDialogOpen(true);
                   }}
                 />
