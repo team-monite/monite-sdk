@@ -15,7 +15,6 @@ import {
   Card,
   CardContent,
   Grid,
-  SelectChangeEvent,
   Stack,
   Typography,
 } from '@mui/material';
