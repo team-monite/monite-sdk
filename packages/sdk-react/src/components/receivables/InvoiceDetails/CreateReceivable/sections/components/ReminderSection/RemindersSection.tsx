@@ -45,14 +45,17 @@ const useOverdueReminderById = (id: string | undefined) => {
   );
 };
 
-export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
-  const { i18n } = useLingui();
+const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
   const { api } = useMoniteContext();
 
-  const {
-    isReadPaymentReminderAllowedLoading,
-    isReadOverdueReminderAllowedLoading,
-  } = useReminderPermissions();
+  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
+    api.paymentReminders.getPaymentReminders.useQuery({});
+  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
+    api.overdueReminders.getOverdueReminders.useQuery({});
+
+  const { i18n } = useLingui();
+
+  const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
   const [
     selectedPaymentIDReminderDetails,
@@ -63,13 +66,6 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     selectedOverdueIDReminderDetails,
     setSelectedOverdueIDReminderDetails,
   ] = useState<ControllerRenderProps<FieldValues, string>['value']>(undefined);
-
-  const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
-
-  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
-    api.paymentReminders.getPaymentReminders.useQuery({});
-  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
-    api.overdueReminders.getOverdueReminders.useQuery({});
 
   const { data: paymentIDReminder } = usePaymentReminderById(
     selectedPaymentIDReminderDetails
@@ -93,73 +89,82 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
     }
   };
 
-  const renderRemindersSection = () => {
-    if (
-      isReadPaymentReminderAllowedLoading ||
-      isReadOverdueReminderAllowedLoading ||
-      isPaymentRemindersLoading ||
-      isOverdueRemindersLoading
-    ) {
-      return <Typography>{t(i18n)`Loading...`}</Typography>;
-    }
+  const {
+    isReadPaymentReminderAllowedLoading,
+    isReadOverdueReminderAllowedLoading,
+  } = useReminderPermissions();
 
-    if (!areRemindersEnabled) {
-      return (
-        <Alert severity="warning">
-          {t(i18n)`Reminders are disabled for this counterpart.`}
-        </Alert>
-      );
-    }
+  if (
+    isReadPaymentReminderAllowedLoading ||
+    isReadOverdueReminderAllowedLoading ||
+    isPaymentRemindersLoading ||
+    isOverdueRemindersLoading
+  ) {
+    return <Typography>{t(i18n)`Loading...`}</Typography>;
+  }
 
+  if (!areRemindersEnabled) {
     return (
-      <>
-        {!isEmailValid && (
-          <Alert severity="warning">
-            {t(
-              i18n
-            )`No default email for selected Counterpart. Reminders will not be sent.`}
-          </Alert>
-        )}
-        <Box mt={2} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <SelectFieldWithEdit
-              name="payment_reminder_id"
-              label={t(i18n)`Before due date`}
-              options={paymentReminders?.data || []}
-              noOptionsText={t(i18n)`No payment reminders available`}
-              disabled={disabled}
-              details={paymentIDReminder}
-              createOptionLabel={t(i18n)`Create a reminder preset`}
-              handleSelectChange={(event) =>
-                handleSelectChangeAsync('payment', event)
-              }
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <SelectFieldWithEdit
-              name="overdue_reminder_id"
-              label={t(i18n)`Overdue reminders`}
-              options={overdueReminders?.data || []}
-              noOptionsText={t(i18n)`No overdue reminders available`}
-              disabled={disabled}
-              details={overdueIDReminder}
-              createOptionLabel={t(i18n)`Create a reminder preset`}
-              handleSelectChange={(event) =>
-                handleSelectChangeAsync('overdue', event)
-              }
-            />
-          </Grid>
-        </Grid>
-      </>
+      <Alert severity="warning">
+        {t(i18n)`Reminders are disabled for this counterpart.`}
+      </Alert>
     );
-  };
+  }
+
+  return (
+    <>
+      {!isEmailValid && (
+        <Alert severity="warning">
+          {t(
+            i18n
+          )`No default email for selected Counterpart. Reminders will not be sent.`}
+        </Alert>
+      )}
+      <Box mt={2} />
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <SelectFieldWithEdit
+            name="payment_reminder_id"
+            label={t(i18n)`Before due date`}
+            options={paymentReminders?.data || []}
+            noOptionsText={t(i18n)`No payment reminders available`}
+            disabled={disabled}
+            details={paymentIDReminder}
+            createOptionLabel={t(i18n)`Create a reminder preset`}
+            handleSelectChange={(event) =>
+              handleSelectChangeAsync('payment', event)
+            }
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <SelectFieldWithEdit
+            name="overdue_reminder_id"
+            label={t(i18n)`Overdue reminders`}
+            options={overdueReminders?.data || []}
+            noOptionsText={t(i18n)`No overdue reminders available`}
+            disabled={disabled}
+            details={overdueIDReminder}
+            createOptionLabel={t(i18n)`Create a reminder preset`}
+            handleSelectChange={(event) =>
+              handleSelectChangeAsync('overdue', event)
+            }
+          />
+        </Grid>
+      </Grid>
+    </>
+  );
+};
+
+export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
+  const { i18n } = useLingui();
 
   return (
     <Stack spacing={1}>
       <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <CardContent>{renderRemindersSection()}</CardContent>
+        <CardContent>
+          <ReminderPermissionSection disabled={disabled} />
+        </CardContent>
       </Card>
     </Stack>
   );

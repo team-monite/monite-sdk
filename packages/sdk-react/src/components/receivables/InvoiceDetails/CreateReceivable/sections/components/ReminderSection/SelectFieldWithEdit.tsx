@@ -4,7 +4,7 @@ import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Button, Grid, MenuItem } from '@mui/material';
 
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
