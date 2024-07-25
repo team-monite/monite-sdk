@@ -1,4 +1,6 @@
 import { components } from '@/api';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { Box, Grid, Typography } from '@mui/material';
@@ -36,41 +38,71 @@ const isOverdueReminderResponse = (
   );
 };
 
-const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => (
-  <Grid container spacing={1} alignItems="center">
-    <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-      <Box display="flex" alignItems="center" gap={1}>
-        <CalendarTodayIcon sx={{ fontSize: 20 }} />
-        <Typography
-          sx={{
-            fontSize: 14,
-            fontWeight: 500,
-            lineHeight: '20px',
-            textAlign: 'left',
-          }}
-        >
-          {details.name}
-        </Typography>
-      </Box>
+interface ReminderInfoProps {
+  details: ReminderDetail;
+  iconColor: string;
+  textColor: string;
+}
+
+const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
+  const { i18n } = useLingui();
+
+  let timeInfo: string;
+
+  if (isPaymentReminderResponse(details)) {
+    const daysBefore = details?.term_1_reminder?.days_before;
+    if (daysBefore === 1) {
+      timeInfo = t(i18n)`one day before`;
+    } else {
+      timeInfo = t(i18n)`days before: ${daysBefore}`;
+    }
+  } else if (isOverdueReminderResponse(details)) {
+    const daysAfter = details?.terms?.[0]?.days_after;
+    if (daysAfter === 1) {
+      timeInfo = t(i18n)`one day after`;
+    } else {
+      timeInfo = t(i18n)`days after: ${daysAfter}`;
+    }
+  } else {
+    timeInfo = t(i18n)`no time info`;
+  }
+
+  return (
+    <Grid container spacing={1} alignItems="center">
+      <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <Box display="flex" alignItems="center" gap={1}>
+          <CalendarTodayIcon sx={{ fontSize: 20 }} />
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: '20px',
+              textAlign: 'left',
+            }}
+          >
+            {details.name}
+          </Typography>
+        </Box>
+      </Grid>
+      <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Box display="flex" alignItems="center" gap={1}>
+          <NotificationsActiveIcon sx={{ fontSize: 20, color: iconColor }} />
+          <Typography
+            sx={{
+              fontSize: 14,
+              fontWeight: 500,
+              lineHeight: '20px',
+              textAlign: 'left',
+              color: textColor,
+            }}
+          >
+            {timeInfo}
+          </Typography>
+        </Box>
+      </Grid>
     </Grid>
-    <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <Box display="flex" alignItems="center" gap={1}>
-        <NotificationsActiveIcon sx={{ fontSize: 20, color: iconColor }} />
-        <Typography
-          sx={{
-            fontSize: 14,
-            fontWeight: 500,
-            lineHeight: '20px',
-            textAlign: 'left',
-            color: textColor,
-          }}
-        >
-          {details.created_at}
-        </Typography>
-      </Box>
-    </Grid>
-  </Grid>
-);
+  );
+};
 
 export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
   const theme = useTheme();
