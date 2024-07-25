@@ -17,7 +17,7 @@ interface CustomSelectFieldProps {
   noOptionsText: string;
   name: string;
   handleSelectChange: (
-    event: ControllerRenderProps<FieldValues, string>
+    event: ControllerRenderProps<FieldValues, string> | null | string | number
   ) => void;
 }
 
@@ -49,14 +49,15 @@ export const SelectFieldWithEdit = ({
           optionKey={'value'}
           labelKey={'label'}
           noOptionsText={noOptionsText}
-          // @ts-expect-error - we have to fix this
-          onChange={(_, data: Record<string, string> | null) => {
-            if (data?.value === 'create') {
-              // eslint-disable-next-line lingui/no-unlocalized-strings
-              alert('You have selected Create a reminder preset');
-            } else {
-              // @ts-expect-error - we have to fix this
-              handleSelectChange(data.value);
+          // @ts-expect-error - we have to fix inferred types in RHFAutocomplete
+          onChange={(_, data) => {
+            if (data && typeof data === 'object' && 'value' in data) {
+              if (data.value === 'create') {
+                // eslint-disable-next-line lingui/no-unlocalized-strings
+                alert('You have selected Create a reminder preset');
+              } else {
+                handleSelectChange(data.value);
+              }
             }
           }}
           renderOption={(props, option) => (

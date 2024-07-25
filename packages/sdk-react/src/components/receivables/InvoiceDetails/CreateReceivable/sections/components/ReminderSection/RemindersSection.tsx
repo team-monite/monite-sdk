@@ -1,11 +1,6 @@
-import { useEffect, useState } from 'react';
-import {
-  ControllerRenderProps,
-  FieldValues,
-  useFormContext,
-} from 'react-hook-form';
+import { useState } from 'react';
+import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -52,17 +47,7 @@ const useOverdueReminderById = (id: string | undefined) => {
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { watch } = useFormContext<CreateReceivablesFormProps>();
   const { api } = useMoniteContext();
-
-  const [payment_reminder_id, overdue_reminder_id] = [
-    watch('payment_reminder_id'),
-    watch('overdue_reminder_id'),
-  ];
-
-  useEffect(() => {
-    console.log({ payment_reminder_id, overdue_reminder_id });
-  }, [payment_reminder_id, overdue_reminder_id]);
 
   const {
     isReadPaymentReminderAllowedLoading,
@@ -95,7 +80,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
 
   const handleSelectChangeAsync = async (
     type: 'payment' | 'overdue',
-    value: ControllerRenderProps<FieldValues, string>
+    value: ControllerRenderProps<FieldValues, string> | string | number | null
   ) => {
     try {
       if (type === 'payment') {
