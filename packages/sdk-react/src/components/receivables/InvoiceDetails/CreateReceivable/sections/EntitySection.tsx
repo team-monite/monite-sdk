@@ -180,6 +180,9 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
                         popper: {
                           container: root,
                         },
+                        dialog: {
+                          container: root,
+                        },
                         actionBar: {
                           actions: ['today'],
                         },

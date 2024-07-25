@@ -19,11 +19,15 @@ ruleTester.run<string, readonly unknown[]>(
     valid: [
       {
         code: `import { DatePickerCustom as MyDatePicker } from '@mui/material';
-               <MyDatePicker slotProps={{ popper: { container: root } }} />`,
+               <MyDatePicker slotProps={{ popperCustom: { container: root }, dialogCustom: { container: root } }} />`,
         options: [
           {
             slotPropsPopperContainerPropertyMissing: [
-              { component: 'DatePickerCustom', import: '@mui/material' },
+              {
+                component: 'DatePickerCustom',
+                import: '@mui/material',
+                slotProps: ['popperCustom', 'dialogCustom'],
+              },
             ],
           },
         ],
@@ -36,7 +40,11 @@ ruleTester.run<string, readonly unknown[]>(
       },
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
-               <DatePicker slotProps={{ popper: { container: root } }} />`,
+               <DatePicker slotProps={{ popper: { container: root }, dialog: { container: root } }} />`,
+      },
+      {
+        code: `import { Autocomplete } from '@mui/material';
+               <Autocomplete slotProps={{ popper: { container: root } }} />`,
       },
       {
         code: `import { DatePicker } from 'my-custom-mui-datepicker';
@@ -48,16 +56,14 @@ ruleTester.run<string, readonly unknown[]>(
            <Menu {...config.menuProps} />`,
       },
       {
-        code: `import { DatePicker } from '@mui/x-date-pickers';
-               <DatePicker
-                 slotProps={{
-                   popper: {
-                     id: 'date-picker',
-                     container: root
-                   }
-                 }}
-                 views={['year', 'month', 'day']}
-               />`,
+        code: `
+        import { DatePicker } from '@mui/x-date-pickers';
+        <DatePicker
+          slotProps={{
+            popper: { container: root },
+            dialog: { container: root },
+          }}
+        />`,
       },
       {
         code: `import { Select } from '@mui/material';
@@ -94,15 +100,24 @@ ruleTester.run<string, readonly unknown[]>(
       },
       {
         code: `import { DatePickerCustom } from '@mui/x-date-pickers';
-               <DatePickerCustom />`,
+               <DatePickerCustom slotProps={{ popper: { container: root } }} />`,
         errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
         options: [
           {
             slotPropsPopperContainerPropertyMissing: [
-              { component: 'DatePickerCustom', import: '@mui/x-date-pickers' },
+              {
+                component: 'DatePickerCustom',
+                import: '@mui/x-date-pickers',
+                slotProps: ['popper', 'dialog'],
+              },
             ],
           },
         ],
+      },
+      {
+        code: `import { Autocomplete } from '@mui/material';
+               <Autocomplete slotProps={{ }} />`,
+        errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
       },
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
@@ -120,6 +135,14 @@ ruleTester.run<string, readonly unknown[]>(
       {
         code: `import { DatePicker } from '@mui/x-date-pickers';
                <DatePicker />`,
+        errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
+      },
+      {
+        code: `
+          import { DatePicker } from '@mui/x-date-pickers';
+          <DatePicker
+            slotProps={{ popper: { container: root } }}
+          />`,
         errors: [{ messageId: 'slotPropsPopperContainerPropertyMissing' }],
       },
       {
