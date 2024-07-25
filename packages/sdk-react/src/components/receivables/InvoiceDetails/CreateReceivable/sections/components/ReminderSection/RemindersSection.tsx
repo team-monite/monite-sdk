@@ -55,8 +55,7 @@ const useOverdueReminderById = (id: string | undefined) => {
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
-  const { root } = useRootElements();
+  const { watch } = useFormContext<CreateReceivablesFormProps>();
   const { api } = useMoniteContext();
 
   const [payment_reminder_id, overdue_reminder_id] = [
@@ -161,47 +160,31 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         <Box mt={2} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <Controller
+            <SelectFieldWithEdit
               name="payment_reminder_id"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <SelectFieldWithEdit
-                  field={field}
-                  error={error}
-                  label={t(i18n)`Before due date`}
-                  options={paymentReminders?.data || []}
-                  noOptionsText={t(i18n)`No payment reminders available`}
-                  disabled={disabled}
-                  details={paymentIDReminder}
-                  createOptionLabel={t(i18n)`Create a reminder preset`}
-                  /*handleSelectChange={(event) =>
+              label={t(i18n)`Before due date`}
+              options={paymentReminders?.data || []}
+              noOptionsText={t(i18n)`No payment reminders available`}
+              disabled={disabled}
+              details={paymentIDReminder}
+              createOptionLabel={t(i18n)`Create a reminder preset`}
+              /*handleSelectChange={(event) =>
                     handleSelectChange(event, 'payment')
                   }*/
-                  control={control}
-                />
-              )}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Controller
+            <SelectFieldWithEdit
               name="overdue_reminder_id"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <SelectFieldWithEdit
-                  field={field}
-                  error={error}
-                  label={t(i18n)`Overdue reminders`}
-                  options={overdueReminders?.data || []}
-                  noOptionsText={t(i18n)`No overdue reminders available`}
-                  disabled={disabled}
-                  details={overdueIDReminder}
-                  createOptionLabel={t(i18n)`Create a reminder preset`}
-                  /*handleSelectChange={(event) =>
+              label={t(i18n)`Overdue reminders`}
+              options={overdueReminders?.data || []}
+              noOptionsText={t(i18n)`No overdue reminders available`}
+              disabled={disabled}
+              details={overdueIDReminder}
+              createOptionLabel={t(i18n)`Create a reminder preset`}
+              /*handleSelectChange={(event) =>
                     handleSelectChange(event, 'overdue')
                   }*/
-                  control={control}
-                />
-              )}
             />
           </Grid>
         </Grid>

@@ -9,21 +9,23 @@ import { Button, Grid, MenuItem } from '@mui/material';
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
 interface CustomSelectFieldProps {
-  field: ControllerRenderProps<FieldValues, string>;
   label: string;
   disabled?: boolean;
   options: Array<{ id: string | number; name: string }>;
   createOptionLabel: string;
   details: ReminderDetail | undefined;
+  noOptionsText: string;
+  name: string;
 }
 
 export const SelectFieldWithEdit = ({
-  field,
+  name,
   label,
   disabled,
   options,
   details,
   createOptionLabel,
+  noOptionsText,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
@@ -36,19 +38,18 @@ export const SelectFieldWithEdit = ({
     <Grid container alignItems="center" spacing={1}>
       <Grid item xs={10}>
         <RHFAutocomplete
-          name={field.name}
-          value={field.value}
+          name={name}
           label={label}
           options={extendedOptions}
           disabled={disabled}
           optionKey={'value'}
           labelKey={'label'}
-          // @ts-expect-error - we have to use `onChange` to handle the case when the user selects "Create a reminder preset"
-          onChange={(_, data) => {
-            if (data.value === 'create') {
+          noOptionsText={noOptionsText}
+          // @ts-expect-error - we have to use `onChange` to handle the case when the user selects "Create a reminder preset" and to handle the case when the user selects "No payment reminders available"
+          onChange={(_, data: Record<string, string> | null) => {
+            if (data?.value === 'create') {
               // eslint-disable-next-line lingui/no-unlocalized-strings
               alert('You have selected Create a reminder preset');
-              field.onChange('');
             }
           }}
           renderOption={(props, option) => (
