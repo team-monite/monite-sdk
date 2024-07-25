@@ -72,14 +72,7 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
       <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
         <Box display="flex" alignItems="center" gap={1}>
           <CalendarTodayIcon sx={{ fontSize: 20 }} />
-          <Typography
-            sx={{
-              fontSize: 14,
-              fontWeight: 500,
-              lineHeight: '20px',
-              textAlign: 'left',
-            }}
-          >
+          <Typography variant="body2" fontWeight="500">
             {details.name}
           </Typography>
         </Box>
@@ -87,15 +80,7 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
       <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Box display="flex" alignItems="center" gap={1}>
           <NotificationsActiveIcon sx={{ fontSize: 20, color: iconColor }} />
-          <Typography
-            sx={{
-              fontSize: 14,
-              fontWeight: 500,
-              lineHeight: '20px',
-              textAlign: 'left',
-              color: textColor,
-            }}
-          >
+          <Typography variant="body2" fontWeight="500" color={textColor}>
             {timeInfo}
           </Typography>
         </Box>
