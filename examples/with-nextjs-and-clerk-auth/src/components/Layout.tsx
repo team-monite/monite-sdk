@@ -2,6 +2,8 @@
 
 import React, { ReactNode } from 'react';
 
+import { usePathname } from 'next/navigation';
+
 import { Box, Drawer } from '@mui/material';
 
 import { NavigationList } from '@/components/NavigationMenu';
@@ -9,8 +11,7 @@ import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const pathname =
-    typeof window !== 'undefined' ? window.location.pathname : '';
+  const pathname = usePathname();
   const currentPath = pathname == '/' ? 'root' : pathname.substring(1);
 
   return (
