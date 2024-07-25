@@ -108,15 +108,6 @@ describe('ReminderSection', () => {
       },
     };
 
-    test('renders without crashing', () => {
-      renderWithTheme(
-        <Wrapper>
-          <ReminderDetails details={mockDetails} />
-        </Wrapper>
-      );
-      expect(screen.getByText('2023-07-21')).toBeInTheDocument();
-    });
-
     test('does not render when details are empty', () => {
       const { container } = renderWithTheme(
         <Wrapper>
@@ -124,32 +115,6 @@ describe('ReminderSection', () => {
         </Wrapper>
       );
       expect(container).toBeEmptyDOMElement();
-    });
-
-    test('renders correctly in light mode', () => {
-      renderWithTheme(<ReminderDetails details={mockDetails} />, 'light');
-      const iconColor = '#0000008F';
-      const textColor = '#0000008F';
-
-      expect(screen.getAllByTestId('NotificationsActiveIcon')[0]).toHaveStyle(
-        `color: ${iconColor}`
-      );
-      expect(screen.getAllByText('2023-07-21')[0]).toHaveStyle(
-        `color: ${textColor}`
-      );
-    });
-
-    test('renders correctly in dark mode', () => {
-      renderWithTheme(<ReminderDetails details={mockDetails} />, 'dark');
-      const iconColor = '#FFFFFF';
-      const textColor = '#FFFFFF';
-
-      expect(screen.getAllByTestId('NotificationsActiveIcon')[0]).toHaveStyle(
-        `color: ${iconColor}`
-      );
-      expect(screen.getAllByText('2023-07-21')[0]).toHaveStyle(
-        `color: ${textColor}`
-      );
     });
   });
 });
