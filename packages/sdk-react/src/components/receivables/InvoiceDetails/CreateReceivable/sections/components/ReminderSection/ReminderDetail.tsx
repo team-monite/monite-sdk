@@ -49,20 +49,20 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
 
   let timeInfo: string;
 
+  const getDaysText = (
+    days: number | undefined,
+    beforeAfter: 'before' | 'after'
+  ) =>
+    days === 1
+      ? t(i18n)`${days} day ${beforeAfter}`
+      : t(i18n)`${days} days ${beforeAfter}`;
+
   if (isPaymentReminderResponse(details)) {
     const daysBefore = details?.term_1_reminder?.days_before;
-    if (daysBefore === 1) {
-      timeInfo = t(i18n)`one day before`;
-    } else {
-      timeInfo = t(i18n)`days before: ${daysBefore}`;
-    }
+    timeInfo = getDaysText(daysBefore, 'before');
   } else if (isOverdueReminderResponse(details)) {
     const daysAfter = details?.terms?.[0]?.days_after;
-    if (daysAfter === 1) {
-      timeInfo = t(i18n)`one day after`;
-    } else {
-      timeInfo = t(i18n)`days after: ${daysAfter}`;
-    }
+    timeInfo = getDaysText(daysAfter, 'after');
   } else {
     timeInfo = t(i18n)`no time info`;
   }

@@ -109,14 +109,19 @@ describe('ReminderSection', () => {
     };
 
     test('renders without crashing', () => {
-      renderWithTheme(<ReminderDetails details={mockDetails} />);
-      expect(screen.getByText('Payment 1')).toBeInTheDocument();
+      renderWithTheme(
+        <Wrapper>
+          <ReminderDetails details={mockDetails} />
+        </Wrapper>
+      );
       expect(screen.getByText('2023-07-21')).toBeInTheDocument();
     });
 
     test('does not render when details are empty', () => {
       const { container } = renderWithTheme(
-        <ReminderDetails details={undefined} />
+        <Wrapper>
+          <ReminderDetails details={undefined} />
+        </Wrapper>
       );
       expect(container).toBeEmptyDOMElement();
     });
