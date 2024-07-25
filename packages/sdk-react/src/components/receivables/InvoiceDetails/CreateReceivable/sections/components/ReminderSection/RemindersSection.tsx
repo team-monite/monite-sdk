@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  Controller,
   ControllerRenderProps,
   FieldValues,
   useFormContext,
@@ -8,7 +7,6 @@ import {
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
-import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -97,38 +95,21 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   );
 
   const handleSelectChangeAsync = async (
-    field: ControllerRenderProps<FieldValues, string>,
     type: 'payment' | 'overdue',
-    value: string | number
+    value: ControllerRenderProps<FieldValues, string>
   ) => {
-    field.onChange(value);
-
-    if (value === 'create') {
-      // eslint-disable-next-line lingui/no-unlocalized-strings
-      alert('You have selected Create a reminder preset');
-      field.onChange('');
-      return;
-    }
-
     try {
       if (type === 'payment') {
-        setSelectedPaymentIDReminderDetails(value as string);
+        // @ts-expect-error - value is a string
+        setSelectedPaymentIDReminderDetails(value);
       } else if (type === 'overdue') {
-        setSelectedOverdueIDReminderDetails(value as string);
+        // @ts-expect-error - value is a string
+        setSelectedOverdueIDReminderDetails(value);
       }
     } catch (error) {
       console.error(error);
     }
   };
-
-  const handleSelectChange =
-    (
-      field: ControllerRenderProps<FieldValues, string>,
-      type: 'payment' | 'overdue'
-    ) =>
-    async (event: SelectChangeEvent<string | number>) => {
-      await handleSelectChangeAsync(field, type, event.target.value);
-    };
 
   const renderRemindersSection = () => {
     if (
@@ -168,9 +149,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
               disabled={disabled}
               details={paymentIDReminder}
               createOptionLabel={t(i18n)`Create a reminder preset`}
-              /*handleSelectChange={(event) =>
-                    handleSelectChange(event, 'payment')
-                  }*/
+              handleSelectChange={(event) =>
+                handleSelectChangeAsync('payment', event)
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -182,9 +163,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
               disabled={disabled}
               details={overdueIDReminder}
               createOptionLabel={t(i18n)`Create a reminder preset`}
-              /*handleSelectChange={(event) =>
-                    handleSelectChange(event, 'overdue')
-                  }*/
+              handleSelectChange={(event) =>
+                handleSelectChangeAsync('overdue', event)
+              }
             />
           </Grid>
         </Grid>

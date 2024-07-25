@@ -4,7 +4,7 @@ import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid, MenuItem } from '@mui/material';
+import { Button, Grid, MenuItem, SelectChangeEvent } from '@mui/material';
 
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
@@ -16,6 +16,9 @@ interface CustomSelectFieldProps {
   details: ReminderDetail | undefined;
   noOptionsText: string;
   name: string;
+  handleSelectChange: (
+    event: ControllerRenderProps<FieldValues, string>
+  ) => void;
 }
 
 export const SelectFieldWithEdit = ({
@@ -26,6 +29,7 @@ export const SelectFieldWithEdit = ({
   details,
   createOptionLabel,
   noOptionsText,
+  handleSelectChange,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
@@ -45,11 +49,14 @@ export const SelectFieldWithEdit = ({
           optionKey={'value'}
           labelKey={'label'}
           noOptionsText={noOptionsText}
-          // @ts-expect-error - we have to use `onChange` to handle the case when the user selects "Create a reminder preset" and to handle the case when the user selects "No payment reminders available"
+          // @ts-expect-error - we have to fix this
           onChange={(_, data: Record<string, string> | null) => {
             if (data?.value === 'create') {
               // eslint-disable-next-line lingui/no-unlocalized-strings
               alert('You have selected Create a reminder preset');
+            } else {
+              // @ts-expect-error - we have to fix this
+              handleSelectChange(data.value);
             }
           }}
           renderOption={(props, option) => (
