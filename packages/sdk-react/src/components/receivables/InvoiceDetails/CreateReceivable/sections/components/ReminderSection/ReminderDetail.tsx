@@ -3,7 +3,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { alpha, Box, darken, Grid, Typography } from '@mui/material';
+import { alpha, Box, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 export type ReminderDetail =
