@@ -23,11 +23,35 @@ import {
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
-import { useOverdueReminderById } from './hooks/useOverdueReminderById';
-import { usePaymentReminderById } from './hooks/usePaymentReminderById';
 import { useReminderPermissions } from './hooks/useReminderPermissions';
 import { useValidateCounterpart } from './hooks/useValidateCounterpart';
 import { SelectFieldWithEdit } from './SelectFieldWithEdit';
+
+const usePaymentReminderById = (id: string | undefined) => {
+  const { api } = useMoniteContext();
+
+  return api.paymentReminders.getPaymentRemindersId.useQuery(
+    {
+      path: { payment_reminder_id: id ?? '' },
+    },
+    {
+      enabled: !!id,
+    }
+  );
+};
+
+const useOverdueReminderById = (id: string | undefined) => {
+  const { api } = useMoniteContext();
+
+  return api.overdueReminders.getOverdueRemindersId.useQuery(
+    {
+      path: { overdue_reminder_id: id ?? '' },
+    },
+    {
+      enabled: !!id,
+    }
+  );
+};
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
