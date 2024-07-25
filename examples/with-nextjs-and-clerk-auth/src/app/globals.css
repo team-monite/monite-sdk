@@ -270,44 +270,13 @@ html {
 }
 
 .Monite-Dashboard {
-  .Monite-Demo-Cash-On-Accounts-Icon {
-    width: 40px;
-    height: 40px;
-  }
+  img {
+    max-width: 100%;
+    height: auto;
 
-  .Monite-Cash-On-Accounts-Header {
-    margin-bottom: var(--demo-padding-3);
-
-    .Monite-Cash-On-Accounts-Header-Label {
-      flex-grow: 2;
-
-      h3 {
-        font-size: 20px;
-        margin: 0;
-      }
-
-      aside {
-        font-size: 16px;
-        margin: 0;
-      }
+    &:last-child {
+      margin-bottom: var(--demo-padding-3);
     }
-
-    .Monite-Cash-On-Accounts-Header-Balance {
-      flex-grow: 2;
-      text-align: right;
-      margin: 0;
-      font-size: 24px;
-    }
-  }
-
-  .Monite-Cash-On-Accounts-List,
-  .Monite-Cash-On-Accounts-Header-Label {
-    margin-left: var(--demo-padding-2);
-  }
-
-  .Monite-Cash-On-Accounts-Empty-Space {
-    min-width: 40px;
-    width: 40px;
   }
 }
 
@@ -328,4 +297,8 @@ html {
 
 .Monite-Page-root {
   background-color: var(--demo-light-gray) !important;
+  .Monite-ContentContainer {
+    margin: 0;
+    overflow-y: auto;
+  }
 }
