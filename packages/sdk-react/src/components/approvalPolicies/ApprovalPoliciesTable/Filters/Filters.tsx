@@ -43,6 +43,9 @@ export const Filters = (props: Props) => {
             popper: {
               container: root,
             },
+            dialog: {
+              container: root,
+            },
             actionBar: {
               actions: ['clear', 'today'],
             },

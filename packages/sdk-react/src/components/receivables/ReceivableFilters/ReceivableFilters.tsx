@@ -133,6 +133,9 @@ export const ReceivableFilters = ({
               popper: {
                 container: root,
               },
+              dialog: {
+                container: root,
+              },
               actionBar: {
                 actions: ['clear', 'today'],
               },

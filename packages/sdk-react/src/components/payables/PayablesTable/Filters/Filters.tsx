@@ -78,6 +78,9 @@ export const Filters = ({ onChangeFilter }: Props) => {
             popper: {
               container: root,
             },
+            dialog: {
+              container: root,
+            },
             actionBar: {
               actions: ['clear', 'today'],
             },
@@ -97,6 +100,9 @@ export const Filters = ({ onChangeFilter }: Props) => {
           }}
           slotProps={{
             popper: {
+              container: root,
+            },
+            dialog: {
               container: root,
             },
             actionBar: {
