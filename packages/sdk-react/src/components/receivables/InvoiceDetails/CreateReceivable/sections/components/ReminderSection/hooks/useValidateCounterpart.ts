@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { isIndividualCounterpart } from '@/components/counterparts/helpers';
@@ -23,7 +23,7 @@ export const useValidateCounterpart = (): UseValidateCounterpartResult => {
   const { data: counterpart } = counterpartQuery;
   const { data: contacts } = contactsQuery;
 
-  const validateEmailAndReminders = useCallback(() => {
+  useEffect(() => {
     if (!counterpartId || !counterpart) return;
 
     let counterpartEmail: string | undefined;
@@ -41,10 +41,6 @@ export const useValidateCounterpart = (): UseValidateCounterpartResult => {
     setIsEmailValid(!!counterpartEmail);
     setAreRemindersEnabled(counterpart.reminders_enabled !== false);
   }, [counterpartId, counterpart, contacts]);
-
-  useEffect(() => {
-    validateEmailAndReminders();
-  }, [validateEmailAndReminders]);
 
   return { isEmailValid, areRemindersEnabled };
 };
