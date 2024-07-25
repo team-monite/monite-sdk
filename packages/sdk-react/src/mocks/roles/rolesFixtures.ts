@@ -59,6 +59,8 @@ export const fullPermissionRole: RoleResponse = {
         'receivable',
         'tag',
         'workflow',
+        'payment_reminder',
+        'overdue_reminder',
       ].map((object_type): CommonSchema => {
         return {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
@@ -159,6 +161,8 @@ export const lowPermissionRole: RoleResponse = {
         'tag',
         'workflow',
         'role',
+        'payment_reminder',
+        'overdue_reminder',
       ].map((object_type): CommonSchema => {
         return {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
@@ -212,6 +216,8 @@ export const readOnlyRole: RoleResponse = {
         'receivable',
         'tag',
         'workflow',
+        'payment_reminder',
+        'overdue_reminder',
       ].map((object_type): CommonSchema => {
         return {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
@@ -280,6 +286,8 @@ export const allowedForOwnRole: RoleResponse = {
         'receivable',
         'tag',
         'workflow',
+        'payment_reminder',
+        'overdue_reminder',
       ].map((object_type): CommonSchema => {
         return {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
@@ -327,6 +335,8 @@ export const emptyPermissionRole: RoleResponse = {
         'receivable',
         'tag',
         'workflow',
+        'payment_reminder',
+        'overdue_reminder',
       ].map((object_type): CommonSchema => {
         return {
           object_type: object_type as unknown as CommonSchema['object_type'], // TODO: remove after fix https://monite.atlassian.net/browse/DEV-6294
