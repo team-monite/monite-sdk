@@ -3,7 +3,13 @@ import { t } from '@lingui/macro';
 
 import * as yup from 'yup';
 
-export const getValidationSchema = (i18n: I18n) => {
+interface Terms {
+  term_1_reminder: boolean;
+  term_2_reminder: boolean;
+  term_final_reminder: boolean;
+}
+
+export const getValidationSchema = (i18n: I18n, terms: Terms) => {
   const getReminderValidationSchema = (value: boolean) => {
     if (!value) return yup.object().notRequired();
 
@@ -32,18 +38,8 @@ export const getValidationSchema = (i18n: I18n) => {
       .min(1)
       .max(255)
       .required(),
-    term_1_reminder: yup
-      .object()
-      .when('is_discount_date_1', (value) =>
-        getReminderValidationSchema(value)
-      ),
-    term_2_reminder: yup
-      .object()
-      .when('is_discount_date_2', (value) =>
-        getReminderValidationSchema(value)
-      ),
-    term_final_reminder: yup
-      .object()
-      .when('is_due_date', (value) => getReminderValidationSchema(value)),
+    term_1_reminder: getReminderValidationSchema(terms.term_1_reminder),
+    term_2_reminder: getReminderValidationSchema(terms.term_2_reminder),
+    term_final_reminder: getReminderValidationSchema(terms.term_final_reminder),
   });
 };
