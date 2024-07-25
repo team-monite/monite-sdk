@@ -9,7 +9,8 @@ import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const pathname = location.pathname;
+  const pathname =
+    typeof window !== 'undefined' ? window.location.pathname : '';
   const currentPath = pathname == '/' ? 'root' : pathname.substring(1);
 
   return (
