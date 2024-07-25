@@ -76,6 +76,7 @@ html {
     flex-basis: 0;
     flex-grow: 2;
     overflow: hidden;
+
     /* prevent labels from being clipped */
     margin-top: calc(var(--demo-padding) * -1);
     padding-top: var(--demo-padding);
@@ -93,7 +94,6 @@ html {
       max-height: 100%;
 
       /* DataGrid */
-
       > div:last-child {
         flex-basis: 0;
         flex-grow: 2;
@@ -132,11 +132,9 @@ html {
   max-height: 100%;
 
   /* Header */
-
   > .MuiStack-root:first-child {
 
     /* Default button style */
-
     aside button {
       background-color: var(--demo-button-blue);
       color: #ffffff;
@@ -162,7 +160,6 @@ html {
     max-height: 100%;
 
     /* Filter pane styles */
-
     > div:first-child {
       > .MuiGrid-root:first-child {
         > .MuiGrid-item:nth-child(2) {
@@ -172,12 +169,10 @@ html {
     }
 
     /* DataGrid */
-
     > .MuiDataGrid-root {
       margin-left: 5px;
 
       /* Align avatar with column header */
-
       .MuiDataGrid-cell--withRenderer .MuiChip-root {
         .MuiAvatar-root.MuiChip-avatar {
           margin-left: calc(var(--demo-padding) * -1);
@@ -213,7 +208,6 @@ html {
     padding: 12px var(--demo-padding-3);
 
     /* Hide toolbar bottom border on the dialog popup */
-
     & + .MuiDivider-root {
       opacity: 0;
     }
@@ -221,14 +215,7 @@ html {
     .MuiToolbar-root {
       padding: 0 var(--demo-padding) 0 var(--demo-padding-3);
 
-      /* Close button icon size */
-
-      > .MuiButtonBase-root:first-child {
-
-      }
-
       /* Fixes gap between invoice # and status indicator */
-
       > .MuiIconButton-root + .MuiBox-root {
         gap: var(--demo-padding-3);
 
@@ -297,6 +284,7 @@ html {
 
 .Monite-Page-root {
   background-color: var(--demo-light-gray) !important;
+
   .Monite-ContentContainer {
     margin: 0;
     overflow-y: auto;

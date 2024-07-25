@@ -154,18 +154,6 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiFormControl: {
-    styleOverrides: {},
-  },
-  MuiInputLabel: {
-    styleOverrides: {
-      // outlined: {
-      //   height: '40px',
-      //   fontSize: '14px',
-      //   transform: 'translate(38px, 10px)',
-      // },
-    },
-  },
   MuiInputBase: {
     styleOverrides: {
       root: {
