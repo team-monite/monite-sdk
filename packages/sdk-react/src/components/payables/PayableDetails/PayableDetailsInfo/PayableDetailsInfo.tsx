@@ -100,10 +100,6 @@ const PayableDetailsInfoBase = ({
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
 
-  const counterpartName = getCounterpartName(counterpart);
-
-  //    '—';
-
   const defaultContact = useMemo(
     () => contacts?.data.find((contact) => contact.is_default),
     [contacts]
