@@ -93,6 +93,7 @@ html {
       max-height: 100%;
 
       /* DataGrid */
+
       > div:last-child {
         flex-basis: 0;
         flex-grow: 2;
@@ -131,9 +132,11 @@ html {
   max-height: 100%;
 
   /* Header */
+
   > .MuiStack-root:first-child {
 
     /* Default button style */
+
     aside button {
       background-color: var(--demo-button-blue);
       color: #ffffff;
@@ -159,6 +162,7 @@ html {
     max-height: 100%;
 
     /* Filter pane styles */
+
     > div:first-child {
       > .MuiGrid-root:first-child {
         > .MuiGrid-item:nth-child(2) {
@@ -168,10 +172,12 @@ html {
     }
 
     /* DataGrid */
+
     > .MuiDataGrid-root {
       margin-left: 5px;
 
       /* Align avatar with column header */
+
       .MuiDataGrid-cell--withRenderer .MuiChip-root {
         .MuiAvatar-root.MuiChip-avatar {
           margin-left: calc(var(--demo-padding) * -1);
@@ -207,6 +213,7 @@ html {
     padding: 12px var(--demo-padding-3);
 
     /* Hide toolbar bottom border on the dialog popup */
+
     & + .MuiDivider-root {
       opacity: 0;
     }
@@ -215,11 +222,13 @@ html {
       padding: 0 var(--demo-padding) 0 var(--demo-padding-3);
 
       /* Close button icon size */
+
       > .MuiButtonBase-root:first-child {
 
       }
 
       /* Fixes gap between invoice # and status indicator */
+
       > .MuiIconButton-root + .MuiBox-root {
         gap: var(--demo-padding-3);
 
@@ -258,4 +267,65 @@ html {
       padding: 56px 80px;
     }
   }
+}
+
+.Monite-Dashboard {
+  .Monite-Demo-Cash-On-Accounts-Icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .Monite-Cash-On-Accounts-Header {
+    margin-bottom: var(--demo-padding-3);
+
+    .Monite-Cash-On-Accounts-Header-Label {
+      flex-grow: 2;
+
+      h3 {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      aside {
+        font-size: 16px;
+        margin: 0;
+      }
+    }
+
+    .Monite-Cash-On-Accounts-Header-Balance {
+      flex-grow: 2;
+      text-align: right;
+      margin: 0;
+      font-size: 24px;
+    }
+  }
+
+  .Monite-Cash-On-Accounts-List,
+  .Monite-Cash-On-Accounts-Header-Label {
+    margin-left: var(--demo-padding-2);
+  }
+
+  .Monite-Cash-On-Accounts-Empty-Space {
+    min-width: 40px;
+    width: 40px;
+  }
+}
+
+.Monite-Cash-On-Accounts-Account-Balance {
+  width: 100%;
+
+  .Monite-Cash-On-Accounts-Account-Balance-Account-Name {
+    h4 {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    aside {
+      font-size: 14px;
+    }
+  }
+}
+
+.Monite-Page-root {
+  background-color: var(--demo-light-gray) !important;
 }

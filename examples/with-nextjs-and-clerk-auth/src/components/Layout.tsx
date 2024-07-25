@@ -9,10 +9,14 @@ import { OrganizationSwitcher } from '@/components/OrganizationSwitcher';
 import { UserButton } from '@/components/UserButton';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
+  const pathname = location.pathname;
+  const currentPath = pathname == '/' ? 'root' : pathname.substring(1);
+
   return (
     <Box
       bgcolor="background.default"
       display="flex"
+      className={`Monite-Page-${currentPath}`}
       sx={{
         position: 'absolute',
         left: '0',
