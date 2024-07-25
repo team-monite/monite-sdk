@@ -1,5 +1,5 @@
 import { Dialog } from '@/components/Dialog';
-import { CreateBeforeDueDateReminder as CreateBeforeDueDateReminderComponent } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateBeforeDueDateReminder/CreateBeforeDueDateReminder';
+import { CreateBeforeDueDateReminder as CreateBeforeDueDateReminderComponent } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateReminder/CreateBeforeDueDateReminder';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { receivableListFixture } from '@/mocks/receivables/receivablesFixture';
 import { css } from '@emotion/react';
