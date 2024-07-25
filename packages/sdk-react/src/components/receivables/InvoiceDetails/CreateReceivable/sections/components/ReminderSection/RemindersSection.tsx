@@ -21,40 +21,27 @@ import { SelectFieldWithEdit } from './SelectFieldWithEdit';
 
 const usePaymentReminderById = (id: string | undefined) => {
   const { api } = useMoniteContext();
-
   return api.paymentReminders.getPaymentRemindersId.useQuery(
-    {
-      path: { payment_reminder_id: id ?? '' },
-    },
-    {
-      enabled: !!id,
-    }
+    { path: { payment_reminder_id: id ?? '' } },
+    { enabled: !!id }
   );
 };
 
 const useOverdueReminderById = (id: string | undefined) => {
   const { api } = useMoniteContext();
-
   return api.overdueReminders.getOverdueRemindersId.useQuery(
-    {
-      path: { overdue_reminder_id: id ?? '' },
-    },
-    {
-      enabled: !!id,
-    }
+    { path: { overdue_reminder_id: id ?? '' } },
+    { enabled: !!id }
   );
 };
 
 const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
   const { api } = useMoniteContext();
-
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
     api.paymentReminders.getPaymentReminders.useQuery({});
   const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
     api.overdueReminders.getOverdueReminders.useQuery({});
-
   const { i18n } = useLingui();
-
   const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
   const [
@@ -105,20 +92,18 @@ const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
 
   if (!areRemindersEnabled) {
     return (
-      <Alert severity="warning">
-        {t(i18n)`Reminders are disabled for this counterpart.`}
-      </Alert>
+      <Alert severity="warning">{t(
+        i18n
+      )`Reminders are disabled for this counterpart.`}</Alert>
     );
   }
 
   return (
     <>
       {!isEmailValid && (
-        <Alert severity="warning">
-          {t(
-            i18n
-          )`No default email for selected Counterpart. Reminders will not be sent.`}
-        </Alert>
+        <Alert severity="warning">{t(
+          i18n
+        )`No default email for selected Counterpart. Reminders will not be sent.`}</Alert>
       )}
       <Box mt={2} />
       <Grid container spacing={3}>
