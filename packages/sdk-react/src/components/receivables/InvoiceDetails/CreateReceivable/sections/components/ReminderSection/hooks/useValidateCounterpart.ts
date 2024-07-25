@@ -26,18 +26,10 @@ export const useValidateCounterpart = (): UseValidateCounterpartResult => {
   useEffect(() => {
     if (!counterpartId || !counterpart) return;
 
-    let counterpartEmail: string | undefined;
-
-    if (
-      counterpart.type === 'individual' &&
-      isIndividualCounterpart(counterpart)
-    ) {
-      counterpartEmail = counterpart.individual.email;
-    } else {
-      counterpartEmail =
-        contacts?.data.find((contact) => contact.is_default)?.email ??
-        undefined;
-    }
+    const counterpartEmail: string | undefined =
+      counterpart.type === 'individual' && isIndividualCounterpart(counterpart)
+        ? counterpart.individual.email
+        : contacts?.data.find((contact) => contact.is_default)?.email;
 
     setIsEmailValid(!!counterpartEmail);
     setAreRemindersEnabled(counterpart.reminders_enabled !== false);
