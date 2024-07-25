@@ -1,8 +1,6 @@
 import { paths } from '@/api';
 import {
-  overdueIDReminderListFixture,
   overdueReminderListFixture,
-  paymentIDReminderListFixture,
   paymentReminderListFixture,
 } from '@/mocks/paymentReminders/reminderFixtures';
 
@@ -58,7 +56,7 @@ export const remindersHandlers = [
 
     await delay();
 
-    return HttpResponse.json(overdueIDReminderListFixture[0]);
+    return HttpResponse.json(overdueReminder);
   }),
 
   http.get<
@@ -80,6 +78,6 @@ export const remindersHandlers = [
 
     await delay();
 
-    return HttpResponse.json(paymentIDReminderListFixture[0]);
+    return HttpResponse.json(paymentReminder);
   }),
 ];

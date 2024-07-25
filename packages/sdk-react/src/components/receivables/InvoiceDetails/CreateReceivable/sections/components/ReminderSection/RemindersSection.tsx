@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Controller,
   ControllerRenderProps,
@@ -55,9 +55,18 @@ const useOverdueReminderById = (id: string | undefined) => {
 
 export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const { i18n } = useLingui();
-  const { control } = useFormContext<CreateReceivablesFormProps>();
+  const { control, watch } = useFormContext<CreateReceivablesFormProps>();
   const { root } = useRootElements();
   const { api } = useMoniteContext();
+
+  const [payment_reminder_id, overdue_reminder_id] = [
+    watch('payment_reminder_id'),
+    watch('overdue_reminder_id'),
+  ];
+
+  useEffect(() => {
+    console.log({ payment_reminder_id, overdue_reminder_id });
+  }, [payment_reminder_id, overdue_reminder_id]);
 
   const {
     isReadPaymentReminderAllowedLoading,
@@ -153,7 +162,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <Controller
-              name="payment_terms_id"
+              name="payment_reminder_id"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <SelectFieldWithEdit
@@ -163,12 +172,11 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   options={paymentReminders?.data || []}
                   noOptionsText={t(i18n)`No payment reminders available`}
                   disabled={disabled}
-                  root={root as HTMLElement}
                   details={paymentIDReminder}
                   createOptionLabel={t(i18n)`Create a reminder preset`}
-                  handleSelectChange={(event) =>
+                  /*handleSelectChange={(event) =>
                     handleSelectChange(event, 'payment')
-                  }
+                  }*/
                   control={control}
                 />
               )}
@@ -176,7 +184,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Controller
-              name={'overdue_reminder_id' as keyof CreateReceivablesFormProps}
+              name="overdue_reminder_id"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <SelectFieldWithEdit
@@ -188,10 +196,9 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
                   disabled={disabled}
                   details={overdueIDReminder}
                   createOptionLabel={t(i18n)`Create a reminder preset`}
-                  root={root as HTMLElement}
-                  handleSelectChange={(event) =>
+                  /*handleSelectChange={(event) =>
                     handleSelectChange(event, 'overdue')
-                  }
+                  }*/
                   control={control}
                 />
               )}

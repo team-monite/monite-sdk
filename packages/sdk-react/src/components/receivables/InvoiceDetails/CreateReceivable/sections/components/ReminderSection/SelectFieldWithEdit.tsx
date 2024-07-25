@@ -1,61 +1,72 @@
+import { useEffect } from 'react';
 import { ControllerRenderProps, FieldValues } from 'react-hook-form';
 
-import { RHFSelectField } from '@/components/RHF/RHFSelectField';
+import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Button, Grid, MenuItem, SelectChangeEvent } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Grid, TextField, MenuItem } from '@mui/material';
 
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
-interface CustomSelectFieldProps extends FieldValues {
-  handleSelectChange: (
-    field: ControllerRenderProps<FieldValues, string>
-  ) => (event: SelectChangeEvent<string | number>) => void;
-  details: ReminderDetail | undefined;
+interface CustomSelectFieldProps {
+  field: ControllerRenderProps<FieldValues, string>;
+  label: string;
+  disabled?: boolean;
   options: Array<{ id: string | number; name: string }>;
+  createOptionLabel: string;
+  details: ReminderDetail | undefined;
 }
 
 export const SelectFieldWithEdit = ({
   field,
   label,
-  noOptionsText,
   disabled,
   options,
-  handleSelectChange,
-  control,
   details,
   createOptionLabel,
 }: CustomSelectFieldProps) => {
   const { i18n } = useLingui();
 
+  const extendedOptions = [
+    { value: 'create', label: createOptionLabel },
+    ...options.map(({ id, name }) => ({ value: id, label: name })),
+  ];
+
   return (
     <Grid container alignItems="center" spacing={1}>
       <Grid item xs={10}>
-        <RHFSelectField
-          control={control}
+        <RHFAutocomplete
           name={field.name}
+          value={field.value}
           label={label}
-          noOptionsText={noOptionsText}
-          handleSelectChange={handleSelectChange}
+          options={extendedOptions}
           disabled={disabled}
-          createFnOption={() =>
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            alert('You have selected Create a reminder preset')
-          }
-          createOptionLabel={createOptionLabel}
-        >
-          {options.length > 0 ? (
-            options.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem value="" disabled>
-              {noOptionsText}
+          optionKey={'value'}
+          labelKey={'label'}
+          renderOption={(props, option) => (
+            <MenuItem
+              {...props}
+              key={option.value}
+              value={option.value}
+              sx={
+                option.value === 'create'
+                  ? {
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      color: 'primary.main',
+                    }
+                  : {
+                      whiteSpace: 'unset',
+                    }
+              }
+            >
+              {option.value === 'create' && <AddIcon sx={{ marginRight: 1 }} />}
+              {option.label}
             </MenuItem>
           )}
-        </RHFSelectField>
+        />
       </Grid>
       <Grid item xs={2}>
         <Button
@@ -66,6 +77,7 @@ export const SelectFieldWithEdit = ({
             alert('You have selected Edit');
           }}
           fullWidth
+          style={{ height: 50 }}
         >
           {t(i18n)`Edit`}
         </Button>
