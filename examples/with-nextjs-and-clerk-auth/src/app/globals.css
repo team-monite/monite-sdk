@@ -118,7 +118,7 @@ html {
   box-shadow: none;
 
   &.MuiButton-outlinedPrimary {
-    min-width: 120px;
+    /*min-width: 120px;*/
   }
 }
 
