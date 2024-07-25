@@ -46,8 +46,8 @@ export const SelectFieldWithEdit = ({
           label={label}
           options={extendedOptions}
           disabled={disabled}
-          optionKey={'value'}
-          labelKey={'label'}
+          optionKey="value"
+          labelKey="label"
           noOptionsText={noOptionsText}
           // @ts-expect-error - we have to fix inferred types in RHFAutocomplete
           onChange={(_, data) => {

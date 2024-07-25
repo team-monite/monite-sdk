@@ -1,25 +1,21 @@
 import { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import {
-  ReminderDetail,
-  ReminderDetails,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
+import { useValidateCounterpart } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/hooks/useValidateCounterpart';
+import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import I18n from '@/mocks/i18n';
-import { renderWithClient } from '@/utils/test-utils';
 import { I18nProvider } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 
-import { ReminderSection } from './RemindersSection';
+jest.mock('./hooks/useValidateCounterpart');
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient();
-
   const moniteMock = new MoniteSDK({
     entityId: '123',
     fetchToken: () =>
@@ -29,17 +25,11 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
         expires_in: 3600,
       }),
   });
-
   const methods = useForm();
   return (
     <QueryClientProvider client={queryClient}>
       <I18nProvider i18n={I18n}>
-        <MoniteProvider
-          locale={{
-            code: 'en-US',
-          }}
-          monite={moniteMock}
-        >
+        <MoniteProvider locale={{ code: 'en-US' }} monite={moniteMock}>
           <MoniteScopedProviders>
             <FormProvider {...methods}>{children}</FormProvider>
           </MoniteScopedProviders>
@@ -50,71 +40,60 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 };
 
 describe('ReminderSection', () => {
-  describe('#FormValidation', () => {
-    test('should show error message when fields are empty and form is submitted', async () => {
-      console.log(
-        'Starting test: should show error message when fields are empty and form is submitted'
-      );
+  const renderWithTheme = (
+    component: React.ReactElement,
+    mode: 'light' | 'dark' = 'light'
+  ) => {
+    const theme = createTheme({
+      palette: { mode },
+    });
+    return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+  };
 
-      await act(async () => {
-        renderWithClient(
-          <Wrapper>
-            <ReminderSection disabled={false} />
-          </Wrapper>
-        );
-      });
+  test('does not render when details are empty', () => {
+    const { container } = renderWithTheme(
+      <Wrapper>
+        <ReminderSection disabled={false} />
+      </Wrapper>
+    );
+    expect(container).toBeEmptyDOMElement();
+  });
 
-      console.log('Rendered ReminderSection component');
+  test('renders with reminders disabled alert', async () => {
+    (useValidateCounterpart as jest.Mock).mockReturnValue({
+      areRemindersEnabled: false,
+      isEmailValid: true,
+    });
 
-      await waitFor(() => {
-        expect(screen.queryByText(/Loading.../)).not.toBeInTheDocument();
-      });
+    renderWithTheme(
+      <Wrapper>
+        <ReminderSection disabled={false} />
+      </Wrapper>
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Reminders are disabled for this counterpart/i)
+      ).toBeInTheDocument();
     });
   });
 
-  describe('ReminderDetails Component', () => {
-    const renderWithTheme = (
-      component: React.ReactElement,
-      mode: 'light' | 'dark' = 'light'
-    ) => {
-      const theme = createTheme({
-        palette: {
-          mode,
-        },
-      });
+  test('renders with invalid email alert', async () => {
+    (useValidateCounterpart as jest.Mock).mockReturnValue({
+      areRemindersEnabled: true,
+      isEmailValid: false,
+    });
 
-      return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
-    };
+    renderWithTheme(
+      <Wrapper>
+        <ReminderSection disabled={false} />
+      </Wrapper>
+    );
 
-    const mockDetails: ReminderDetail = {
-      id: 'overdue-reminder-1',
-      name: 'Payment 1',
-      created_at: '2023-07-21',
-      updated_at: '2023-07-21',
-      recipients: {
-        bcc: undefined,
-        cc: undefined,
-        to: undefined,
-      },
-      term_1_reminder: {
-        body: 'test body',
-        days_before: 1,
-        subject: 'test subject',
-      },
-      term_2_reminder: {
-        body: 'test body',
-        days_before: 1,
-        subject: 'test subject',
-      },
-    };
-
-    test('does not render when details are empty', () => {
-      const { container } = renderWithTheme(
-        <Wrapper>
-          <ReminderDetails details={undefined} />
-        </Wrapper>
-      );
-      expect(container).toBeEmptyDOMElement();
+    await waitFor(() => {
+      expect(
+        screen.getByText(/No default email for selected Counterpart/i)
+      ).toBeInTheDocument();
     });
   });
 });
