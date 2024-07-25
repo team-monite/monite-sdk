@@ -1,5 +1,22 @@
 This file contains a list of changes, new features, and fixes in each release of Monite SDK.
 
+## @monite/sdk-react@3.15.0 & @monite/sdk-api@3.15.0
+This package is a minor release with no breaking changes.
+
+### New features and improvements
+- Added the ability to view OCR-processing status and error messages on the `PayableDetails` component.
+- Added the `ApprovalsRequestsTable` component to allow users to view and manage approval requests.
+
+## @monite/sdk-react@3.14.0 & @monite/sdk-api@3.14.0
+This package is a minor release with no breaking changes.
+### New features and improvements
+- Added client-side validation on line item selection that prevents adding products with a smaller quantity than allowed.
+
+### Bug fixes
+- Fixed entity user permissions on the `InvoiceDetails` component.
+- Fixed an issue that caused an error when viewing invoice details on the `Receivables` component.
+- Fixed an issue that prevented the issuing of emails on the `Receivables` component. 
+
 ## @monite/sdk-react@3.13.0 & @monite/sdk-api@3.13.0
 This package is a minor release with no breaking changes.
 
