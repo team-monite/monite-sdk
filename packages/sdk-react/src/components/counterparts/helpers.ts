@@ -40,7 +40,9 @@ export function getIndividualName(
   return `${first_name?.trim() ?? ''} ${last_name?.trim() ?? ''}`.trim();
 }
 
-export function getCounterpartName(counterpart?: CounterpartResponse): string {
+export function getCounterpartName(
+  counterpart: CounterpartResponse | undefined
+): string {
   if (!counterpart) {
     return '';
   }
