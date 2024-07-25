@@ -72,12 +72,12 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   const [
     selectedPaymentIDReminderDetails,
     setSelectedPaymentIDReminderDetails,
-  ] = useState<string | undefined>(undefined);
+  ] = useState<ControllerRenderProps<FieldValues, string>['value']>(undefined);
 
   const [
     selectedOverdueIDReminderDetails,
     setSelectedOverdueIDReminderDetails,
-  ] = useState<string | undefined>(undefined);
+  ] = useState<ControllerRenderProps<FieldValues, string>['value']>(undefined);
 
   const { isEmailValid, areRemindersEnabled } = useValidateCounterpart();
 
@@ -99,10 +99,8 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
   ) => {
     try {
       if (type === 'payment') {
-        // @ts-expect-error - value is a string
         setSelectedPaymentIDReminderDetails(value);
       } else if (type === 'overdue') {
-        // @ts-expect-error - value is a string
         setSelectedOverdueIDReminderDetails(value);
       }
     } catch (error) {
