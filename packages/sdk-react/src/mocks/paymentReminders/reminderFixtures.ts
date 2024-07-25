@@ -29,7 +29,7 @@ export const overdueReminderListFixture: paths['/overdue_reminders']['get']['res
     updated_at: faker.date.past().toString(),
   }));
 
-export type OverdueReminder =
+type OverdueReminder =
   paths['/overdue_reminders/{overdue_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
 // ToDo: remove randomization for undefined data
@@ -70,7 +70,7 @@ export const overdueIDReminderListFixture: OverdueReminder[] = new Array(5)
     };
   });
 
-export type PaymentReminderResponse =
+type PaymentReminderResponse =
   paths['/payment_reminders/{payment_reminder_id}']['get']['responses']['200']['content']['application/json'];
 
 // ToDo: height button the same height the input form
