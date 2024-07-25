@@ -44,6 +44,14 @@ export const SelectFieldWithEdit = ({
           disabled={disabled}
           optionKey={'value'}
           labelKey={'label'}
+          // @ts-expect-error - we have to use `onChange` to handle the case when the user selects "Create a reminder preset"
+          onChange={(_, data) => {
+            if (data.value === 'create') {
+              // eslint-disable-next-line lingui/no-unlocalized-strings
+              alert('You have selected Create a reminder preset');
+              field.onChange('');
+            }
+          }}
           renderOption={(props, option) => (
             <MenuItem
               {...props}
