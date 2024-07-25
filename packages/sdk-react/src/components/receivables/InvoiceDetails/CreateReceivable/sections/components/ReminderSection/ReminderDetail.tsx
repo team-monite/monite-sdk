@@ -3,7 +3,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { Box, Grid, Typography } from '@mui/material';
+import { alpha, Box, darken, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 export type ReminderDetail =
@@ -109,8 +109,10 @@ export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
 
   if (!details) return null;
 
-  const iconColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';
-  const textColor = theme.palette.mode === 'dark' ? '#FFFFFF' : '#0000008F';
+  const specialColor =
+    theme.palette.mode === 'dark'
+      ? theme.palette.primary.main
+      : alpha(theme.palette.grey[900], 0.56);
 
   return (
     <Box sx={{ backgroundColor: '#00000005', padding: 2, borderRadius: 3 }}>
@@ -118,8 +120,8 @@ export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
         isOverdueReminderResponse(details)) && (
         <ReminderInfo
           details={details}
-          iconColor={iconColor}
-          textColor={textColor}
+          iconColor={specialColor}
+          textColor={specialColor}
         />
       )}
     </Box>
