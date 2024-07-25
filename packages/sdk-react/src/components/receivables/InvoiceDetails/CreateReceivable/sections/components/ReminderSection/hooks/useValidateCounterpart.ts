@@ -35,7 +35,8 @@ export const useValidateCounterpart = (): UseValidateCounterpartResult => {
       counterpartEmail = counterpart.individual.email;
     } else {
       counterpartEmail =
-        contacts?.data.find((contact) => contact.is_default)?.email || '';
+        contacts?.data.find((contact) => contact.is_default)?.email ??
+        undefined;
     }
 
     setIsEmailValid(!!counterpartEmail);
