@@ -6,45 +6,47 @@ import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { alpha, Box, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-export type ReminderDetail =
+type Reminder =
   | components['schemas']['OverdueReminderResponse']
   | components['schemas']['PaymentReminderResponse'];
 
 interface ReminderDetailsProps {
-  details: ReminderDetail | undefined;
+  reminder: Reminder;
 }
 
 interface ReminderInfoProps {
-  details: ReminderDetail;
+  reminder: Reminder;
   iconColor: string;
   textColor: string;
 }
 
-const isPaymentReminderResponse = (
-  details: ReminderDetail
+const isPaymentReminder = (
+  details: Reminder
 ): details is components['schemas']['PaymentReminderResponse'] => {
   return (
-    (details as components['schemas']['PaymentReminderResponse'])
-      .term_1_reminder !== undefined
+    'term_1_reminder' in details ||
+    'term_2_reminder' in details ||
+    'term_final_reminder' in details
   );
 };
 
-const isOverdueReminderResponse = (
-  details: ReminderDetail
+const isOverdueReminder = (
+  details: Reminder
 ): details is components['schemas']['OverdueReminderResponse'] => {
-  return (
-    (details as components['schemas']['OverdueReminderResponse']).terms !==
-    undefined
-  );
+  return 'terms' in details && Array.isArray(details.terms);
 };
 
 interface ReminderInfoProps {
-  details: ReminderDetail;
+  reminder: Reminder;
   iconColor: string;
   textColor: string;
 }
 
-const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
+const ReminderInfo = ({
+  reminder,
+  iconColor,
+  textColor,
+}: ReminderInfoProps) => {
   const { i18n } = useLingui();
 
   let timeInfo: string;
@@ -57,11 +59,11 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
       ? t(i18n)`${days} day ${beforeAfter}`
       : t(i18n)`${days} days ${beforeAfter}`;
 
-  if (isPaymentReminderResponse(details)) {
-    const daysBefore = details?.term_1_reminder?.days_before;
+  if (isPaymentReminder(reminder)) {
+    const daysBefore = reminder?.term_1_reminder?.days_before;
     timeInfo = getDaysText(daysBefore, 'before');
-  } else if (isOverdueReminderResponse(details)) {
-    const daysAfter = details?.terms?.[0]?.days_after;
+  } else if (isOverdueReminder(reminder)) {
+    const daysAfter = reminder?.terms?.[0]?.days_after;
     timeInfo = getDaysText(daysAfter, 'after');
   } else {
     timeInfo = t(i18n)`no time info`;
@@ -73,7 +75,7 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
         <Box display="flex" alignItems="center" gap={1}>
           <CalendarTodayIcon sx={{ fontSize: 20 }} />
           <Typography variant="body2" fontWeight="500">
-            {details.name}
+            {reminder.name}
           </Typography>
         </Box>
       </Grid>
@@ -89,10 +91,8 @@ const ReminderInfo = ({ details, iconColor, textColor }: ReminderInfoProps) => {
   );
 };
 
-export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
+export const ReminderDetails = ({ reminder }: ReminderDetailsProps) => {
   const theme = useTheme();
-
-  if (!details) return null;
 
   const specialColor =
     theme.palette.mode === 'dark'
@@ -100,11 +100,10 @@ export const ReminderDetails = ({ details }: ReminderDetailsProps) => {
       : alpha(theme.palette.grey[900], 0.56);
 
   return (
-    <Box sx={{ backgroundColor: '#00000005', padding: 2, borderRadius: 3 }}>
-      {(isPaymentReminderResponse(details) ||
-        isOverdueReminderResponse(details)) && (
+    <Box sx={{ padding: 2, borderRadius: 3 }}>
+      {(isPaymentReminder(reminder) || isOverdueReminder(reminder)) && (
         <ReminderInfo
-          details={details}
+          reminder={reminder}
           iconColor={specialColor}
           textColor={specialColor}
         />
