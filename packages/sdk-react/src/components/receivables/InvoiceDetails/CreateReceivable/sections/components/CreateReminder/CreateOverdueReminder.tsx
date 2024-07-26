@@ -47,13 +47,12 @@ export const CreateOverdueReminder = (
   props: CreateOverdueReminderProps | UpdateOverdueReminderProps
 ) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
-
+  const { api } = useMoniteContext();
   const { id: reminderId } = props;
-
   const {
-    data: overdueReminder,
-    error: overdueReminderQueryError,
+    data: reminder,
+    error,
+    isError,
     isLoading,
   } = api.overdueReminders.getOverdueRemindersId.useQuery(
     {
@@ -66,26 +65,63 @@ export const CreateOverdueReminder = (
     }
   );
 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (isError) {
+    return (
+      <NotFound
+        title={t(i18n)`Overdue reminder error`}
+        description={getAPIErrorMessage(i18n, error)}
+      />
+    );
+  }
+
+  if (reminderId && !reminder) {
+    return (
+      <NotFound
+        title={t(i18n)`Reminder not found`}
+        description={t(
+          i18n
+        )`There is no reminder by provided id: ${reminderId}`}
+      />
+    );
+  }
+
+  return <CreateOverdueReminderComponent {...props} reminder={reminder} />;
+};
+
+const CreateOverdueReminderComponent = ({
+  reminder,
+  ...props
+}: (
+  | {
+      onCreate?(reminderId: string): void;
+    }
+  | { onUpdate?(reminderId: string): void }
+) &
+  OverdueReminderBasePropsProps & {
+    reminder?: components['schemas']['OverdueReminderResponse'];
+  }) => {
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
+
   const methods = useForm({
     resolver: yupResolver(getOverdueValidationSchema(i18n)),
     defaultValues: ((): components['schemas']['OverdueReminderRequest'] => ({
-      name: '',
-      terms: undefined,
+      name: reminder?.name ?? '',
+      terms: reminder?.terms ?? [],
     }))(),
   });
+
   const { control, handleSubmit, reset } = methods;
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'terms',
     rules: { maxLength: 3 },
   });
-
-  useEffect(() => {
-    reset({
-      name: overdueReminder?.name ?? '',
-      terms: overdueReminder?.terms ?? [],
-    });
-  }, [reset, overdueReminder]);
 
   const formName = `Monite-Form-createOverdueReminder-${useId()}`;
 
@@ -105,50 +141,42 @@ export const CreateOverdueReminder = (
       },
     });
   const updateOverdueReminderMutation =
-    api.overdueReminders.patchOverdueRemindersId.useMutation(undefined, {
-      onSuccess: async (updatedReminder) => {
-        api.overdueReminders.getOverdueRemindersId.setQueryData(
-          {
-            path: { overdue_reminder_id: updatedReminder.id },
-          },
-          updatedReminder,
-          queryClient
-        );
-
-        await api.overdueReminders.getOverdueReminders.invalidateQueries(
-          queryClient
-        );
-
-        toast.success(t(i18n)`Reminder has been updated`);
-
-        if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
+    api.overdueReminders.patchOverdueRemindersId.useMutation(
+      {
+        path: { overdue_reminder_id: reminder?.id ?? '' },
       },
-      onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
-      },
-    });
+      {
+        onSuccess: async (updatedReminder) => {
+          api.overdueReminders.getOverdueRemindersId.setQueryData(
+            {
+              path: { overdue_reminder_id: updatedReminder.id },
+            },
+            updatedReminder,
+            queryClient
+          );
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+          await api.overdueReminders.getOverdueReminders.invalidateQueries(
+            queryClient
+          );
 
-  if (reminderId && (overdueReminderQueryError || !overdueReminder)) {
-    return (
-      <NotFound
-        title={t(i18n)`Reminder not found`}
-        description={t(
-          i18n
-        )`There is no reminder by provided id: ${reminderId}`}
-      />
+          toast.success(t(i18n)`Reminder has been updated`);
+
+          if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
+        },
+        onError: (error) => {
+          toast.error(getAPIErrorMessage(i18n, error));
+        },
+      }
     );
-  }
 
   return (
     <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h3">
-            {t(i18n)`Create “Overdue” preset`}
+            {reminder
+              ? t(i18n)`Update “Overdue” reminder`
+              : t(i18n)`Create “Overdue” reminder`}
           </Typography>
           {props.onClose && (
             <IconButton
@@ -171,16 +199,8 @@ export const CreateOverdueReminder = (
           id={formName}
           noValidate
           onSubmit={handleSubmit((body) => {
-            if (reminderId) {
-              return updateOverdueReminderMutation.mutate({
-                path: { overdue_reminder_id: reminderId },
-                body,
-              });
-            }
-
-            return createOverdueReminderMutation.mutate({
-              body,
-            });
+            if (reminder) return updateOverdueReminderMutation.mutate(body);
+            return createOverdueReminderMutation.mutate({ body });
           })}
         >
           <Stack spacing={3}>
@@ -275,9 +295,12 @@ export const CreateOverdueReminder = (
           color="primary"
           type="submit"
           form={formName}
-          disabled={createOverdueReminderMutation.isPending}
+          disabled={
+            createOverdueReminderMutation.isPending ||
+            updateOverdueReminderMutation.isPending
+          }
         >
-          {t(i18n)`Create`}
+          {reminder ? t(i18n)`Update` : t(i18n)`Create`}
         </Button>
       </DialogActions>
     </>
