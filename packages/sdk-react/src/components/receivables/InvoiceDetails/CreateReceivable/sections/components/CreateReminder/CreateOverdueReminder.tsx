@@ -29,14 +29,27 @@ import {
 import { ReminderFormLayout } from './ReminderFormLayout';
 import { getOverdueValidationSchema } from './validation';
 
-interface CreateOverdueReminderProps {
-  id?: string;
+interface OverdueReminderBasePropsProps {
+  onClose?(): void;
 }
 
-export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
+interface CreateOverdueReminderProps extends OverdueReminderBasePropsProps {
+  onCreate?(reminderId: string): void;
+  id?: never;
+}
+
+interface UpdateOverdueReminderProps extends OverdueReminderBasePropsProps {
+  id: string;
+  onUpdate?(reminderId: string): void;
+}
+
+export const CreateOverdueReminder = (
+  props: CreateOverdueReminderProps | UpdateOverdueReminderProps
+) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
+
+  const { id: reminderId } = props;
 
   const {
     data: overdueReminder,
@@ -45,11 +58,11 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
   } = api.overdueReminders.getOverdueRemindersId.useQuery(
     {
       path: {
-        overdue_reminder_id: id || '',
+        overdue_reminder_id: reminderId || '',
       },
     },
     {
-      enabled: Boolean(id),
+      enabled: Boolean(reminderId),
     }
   );
 
@@ -78,14 +91,14 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
 
   const createOverdueReminderMutation =
     api.overdueReminders.postOverdueReminders.useMutation(undefined, {
-      onSuccess: async () => {
-        dialogContext?.onClose?.();
-
+      onSuccess: async (newReminder) => {
         await api.overdueReminders.getOverdueReminders.invalidateQueries(
           queryClient
         );
 
         toast.success(t(i18n)`Reminder has been created`);
+
+        if ('onCreate' in props) props.onCreate?.(newReminder.id);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
@@ -93,14 +106,22 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
     });
   const updateOverdueReminderMutation =
     api.overdueReminders.patchOverdueRemindersId.useMutation(undefined, {
-      onSuccess: async () => {
-        dialogContext?.onClose?.();
+      onSuccess: async (updatedReminder) => {
+        api.overdueReminders.getOverdueRemindersId.setQueryData(
+          {
+            path: { overdue_reminder_id: updatedReminder.id },
+          },
+          updatedReminder,
+          queryClient
+        );
 
         await api.overdueReminders.getOverdueReminders.invalidateQueries(
           queryClient
         );
 
         toast.success(t(i18n)`Reminder has been updated`);
+
+        if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
@@ -111,11 +132,13 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
     return <LoadingPage />;
   }
 
-  if (id && (overdueReminderQueryError || !overdueReminder)) {
+  if (reminderId && (overdueReminderQueryError || !overdueReminder)) {
     return (
       <NotFound
         title={t(i18n)`Reminder not found`}
-        description={t(i18n)`There is no reminder by provided id: ${id}`}
+        description={t(
+          i18n
+        )`There is no reminder by provided id: ${reminderId}`}
       />
     );
   }
@@ -127,11 +150,14 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
           <Typography variant="h3">
             {t(i18n)`Create “Overdue” preset`}
           </Typography>
-          {dialogContext?.isDialogContent && (
+          {props.onClose && (
             <IconButton
               edge="start"
               color="inherit"
-              onClick={dialogContext.onClose}
+              onClick={(event) => {
+                event.preventDefault();
+                props.onClose?.();
+              }}
               aria-label={t(i18n)`Close reminder's creation`}
             >
               <CloseIcon />
@@ -145,9 +171,9 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
           id={formName}
           noValidate
           onSubmit={handleSubmit((body) => {
-            if (id) {
+            if (reminderId) {
               return updateOverdueReminderMutation.mutate({
-                path: { overdue_reminder_id: id },
+                path: { overdue_reminder_id: reminderId },
                 body,
               });
             }
@@ -232,9 +258,18 @@ export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={dialogContext?.onClose}>
-          {t(i18n)`Cancel`}
-        </Button>
+        {props?.onClose && (
+          <Button
+            variant="outlined"
+            onClick={(event) => {
+              event.preventDefault();
+              props?.onClose?.();
+            }}
+          >
+            {/* todo::should we really add an extra "Cancel" button? Does it make sense if we have "Cancel" for the invoices? */}
+            {t(i18n)`Cancel`}
+          </Button>
+        )}
         <Button
           variant="contained"
           color="primary"
