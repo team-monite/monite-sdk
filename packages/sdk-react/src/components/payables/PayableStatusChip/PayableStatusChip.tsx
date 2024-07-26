@@ -63,6 +63,7 @@ export const PayableStatusChip = forwardRef<
 
   return (
     <StyledChip
+      className="Monite__PayableStatusChip"
       ref={ref}
       color={ROW_TO_STATUS_MUI_MAP[props.status]}
       icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}

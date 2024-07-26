@@ -147,6 +147,7 @@ export const PayableDetailsAttachFile = ({
     </CenteredContentBox>
   ) : (
     <Box
+      className="Monite__PayableDetailsAttachFile"
       sx={{
         width: '100%',
         height: '100%',

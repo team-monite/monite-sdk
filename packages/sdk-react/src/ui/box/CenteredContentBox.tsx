@@ -1,13 +1,16 @@
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { classNames } from '@/utils/css-utils';
 import { Box } from '@mui/material';
 
 export const CenteredContentBox = ({
   children,
+  className,
 }: {
   children: React.ReactNode;
+  className?: string;
 }) => (
   <Box
-    className={ScopedCssBaselineContainerClassName}
+    className={classNames(ScopedCssBaselineContainerClassName, className)}
     sx={{
       display: 'flex',
       alignItems: 'center',
