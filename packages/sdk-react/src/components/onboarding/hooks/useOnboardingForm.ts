@@ -41,10 +41,6 @@ export type OnboardingFormType<
 
 type ApiErrorType = ErrorSchema | HTTPValidationError | null;
 
-type ErrorType = {
-  body: ApiErrorType;
-};
-
 function isHTTPValidationErrorBody(
   body: ApiErrorType
 ): body is HTTPValidationError {
@@ -161,14 +157,10 @@ export function useOnboardingForm<
           try {
             return void (await apiContract(prepareValuesToSubmit(values)));
           } catch (e) {
-            const error = e as ErrorType;
-            const errorBody = error.body;
+            const error = e as ApiErrorType;
 
-            if (
-              isHTTPValidationErrorBody(errorBody) &&
-              errorBody.detail?.length
-            ) {
-              setErrors(getErrorsFieldsByValidationErrors(errorBody.detail));
+            if (isHTTPValidationErrorBody(error) && error.detail?.length) {
+              setErrors(getErrorsFieldsByValidationErrors(error.detail));
               scrollToError();
             }
           }
