@@ -92,11 +92,13 @@ export const CreateBeforeDueDateReminder = ({
   const { control, handleSubmit, reset } = methods;
 
   useEffect(() => {
-    setReminderStates({
-      isDiscountDate1: Boolean(paymentReminder?.term_1_reminder),
-      isDiscountDate2: Boolean(paymentReminder?.term_2_reminder),
-      isDueDate: Boolean(paymentReminder?.term_final_reminder),
-    });
+    if (id) {
+      setReminderStates({
+        isDiscountDate1: Boolean(paymentReminder?.term_1_reminder),
+        isDiscountDate2: Boolean(paymentReminder?.term_2_reminder),
+        isDueDate: Boolean(paymentReminder?.term_final_reminder),
+      });
+    }
 
     reset({
       name: paymentReminder?.name ?? '',
@@ -104,7 +106,7 @@ export const CreateBeforeDueDateReminder = ({
       term_2_reminder: paymentReminder?.term_2_reminder,
       term_final_reminder: paymentReminder?.term_final_reminder,
     });
-  }, [reset, paymentReminder]);
+  }, [reset, id, paymentReminder]);
 
   const formName = `Monite-Form-createBeforeDueDateReminder-${useId()}`;
 
