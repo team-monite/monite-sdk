@@ -1,86 +1,132 @@
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import React from 'react';
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  UseControllerProps,
+} from 'react-hook-form';
 
-import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid, MenuItem } from '@mui/material';
+import {
+  Autocomplete,
+  type AutocompleteRenderInputParams,
+  Button,
+  Grid,
+  MenuItem,
+  TextField,
+} from '@mui/material';
 
 import { ReminderDetail, ReminderDetails } from './ReminderDetail';
 
-interface CustomSelectFieldProps {
+interface CustomSelectFieldProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> extends UseControllerProps<TFieldValues, TName> {
   label: string;
-  disabled?: boolean;
   options: Array<{ id: string | number; name: string }>;
   createOptionLabel: string;
   details: ReminderDetail | undefined;
   noOptionsText: string;
-  name: string;
-  handleSelectChange: (
-    event: ControllerRenderProps<FieldValues, string> | null | string | number
-  ) => void;
+  onEdit: () => void;
+  onCreate: () => void;
 }
 
-export const SelectFieldWithEdit = ({
+export const SelectFieldWithEdit = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+>({
   name,
   label,
   disabled,
   options,
   details,
   createOptionLabel,
+  onEdit,
+  onCreate,
+  control,
+  rules,
+  shouldUnregister,
   noOptionsText,
-  handleSelectChange,
-}: CustomSelectFieldProps) => {
+  defaultValue,
+}: CustomSelectFieldProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
 
-  const extendedOptions = [
+  const optionsMap = [
     { value: 'create', label: createOptionLabel },
     ...options.map(({ id, name }) => ({ value: id, label: name })),
-  ];
+  ].reduce<Record<string | 'create', string>>((acc, { value, label }) => {
+    acc[value] = label;
+    return acc;
+  }, {});
+
+  const { root } = useRootElements();
 
   return (
     <Grid container alignItems="center" spacing={1}>
       <Grid item xs={10}>
-        <RHFAutocomplete
+        <Controller
+          control={control}
           name={name}
-          label={label}
-          options={extendedOptions}
+          rules={rules}
+          shouldUnregister={shouldUnregister}
           disabled={disabled}
-          optionKey="value"
-          labelKey="label"
-          noOptionsText={noOptionsText}
-          // @ts-expect-error - we have to fix inferred types in RHFAutocomplete
-          onChange={(_, data) => {
-            if (data && typeof data === 'object' && 'value' in data) {
-              if (data.value === 'create') {
-                // eslint-disable-next-line lingui/no-unlocalized-strings
-                alert('You have selected Create a reminder preset');
-              } else {
-                handleSelectChange(data.value);
-              }
-            }
-          }}
-          renderOption={(props, option) => (
-            <MenuItem
-              {...props}
-              key={option.value}
-              value={option.value}
-              sx={
-                option.value === 'create'
-                  ? {
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center',
-                      color: 'primary.main',
+          defaultValue={defaultValue}
+          render={({ field, fieldState: { error, isTouched, invalid } }) => (
+            <Autocomplete
+              {...field}
+              value={field.value}
+              multiple={false}
+              options={Object.keys(optionsMap)}
+              noOptionsText={noOptionsText}
+              onChange={(_, value) => {
+                if (value === 'create') return void onCreate();
+                if (value) field.onChange(value);
+              }}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <TextField
+                  {...params}
+                  label={label}
+                  error={isTouched && invalid}
+                  helperText={error?.message}
+                  inputProps={{
+                    ...params.inputProps,
+                  }}
+                />
+              )}
+              getOptionLabel={(option) => {
+                if (option === '') return '';
+                return optionsMap[option];
+              }}
+              renderOption={(props, option) => {
+                return (
+                  <MenuItem
+                    {...props}
+                    key={option}
+                    value={option}
+                    sx={
+                      option === 'create'
+                        ? {
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            color: 'primary.main',
+                            whiteSpace: 'unset',
+                          }
+                        : {
+                            whiteSpace: 'unset',
+                          }
                     }
-                  : {
-                      whiteSpace: 'unset',
-                    }
-              }
-            >
-              {option.value === 'create' && <AddIcon sx={{ marginRight: 1 }} />}
-              {option.label}
-            </MenuItem>
+                  >
+                    {option === 'create' && <AddIcon sx={{ marginRight: 1 }} />}
+                    {optionsMap[option]}
+                  </MenuItem>
+                );
+              }}
+              slotProps={{ popper: { container: root } }}
+            />
           )}
         />
       </Grid>
@@ -88,9 +134,9 @@ export const SelectFieldWithEdit = ({
         <Button
           variant="outlined"
           disabled={disabled}
-          onClick={() => {
-            // eslint-disable-next-line lingui/no-unlocalized-strings
-            alert('You have selected Edit');
+          onClick={(event) => {
+            event.preventDefault();
+            onEdit();
           }}
           fullWidth
           style={{ height: 50 }}
