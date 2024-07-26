@@ -41,15 +41,26 @@ interface ReminderStates {
   isDiscountDate2: boolean;
 }
 
-interface CreateBeforeDueDateReminderProps {
-  id?: string;
+interface BeforeDueDateReminderBasePropsProps {
+  onClose?(): void;
 }
 
-export const CreateBeforeDueDateReminder = ({
-  id,
-}: CreateBeforeDueDateReminderProps) => {
+interface CreateBeforeDueDateReminderProps
+  extends BeforeDueDateReminderBasePropsProps {
+  onCreate?(reminderId: string): void;
+  id?: never;
+}
+
+interface UpdateBeforeDueDateReminderProps
+  extends BeforeDueDateReminderBasePropsProps {
+  id: string;
+  onUpdate?(reminderId: string): void;
+}
+
+export const CreateBeforeDueDateReminder = (
+  props: CreateBeforeDueDateReminderProps | UpdateBeforeDueDateReminderProps
+) => {
   const { i18n } = useLingui();
-  const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
   const { buttonProps, menuProps, open } = useMenuButton();
 
@@ -63,15 +74,17 @@ export const CreateBeforeDueDateReminder = ({
     setReminderStates((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const { id: reminderId } = props;
+
   const {
     data: paymentReminder,
     error: paymentReminderQueryError,
     isLoading,
   } = api.paymentReminders.getPaymentRemindersId.useQuery(
     {
-      path: { payment_reminder_id: id || '' },
+      path: { payment_reminder_id: reminderId || '' },
     },
-    { enabled: Boolean(id) }
+    { enabled: Boolean(reminderId) }
   );
 
   const methods = useForm({
@@ -112,29 +125,38 @@ export const CreateBeforeDueDateReminder = ({
 
   const createBeforeDueDateReminderMutation =
     api.paymentReminders.postPaymentReminders.useMutation(undefined, {
-      onSuccess: async () => {
-        dialogContext?.onClose?.();
-
+      onSuccess: async (newReminder) => {
         await api.paymentReminders.getPaymentReminders.invalidateQueries(
           queryClient
         );
 
         toast.success(t(i18n)`Reminder has been created`);
+
+        if ('onCreate' in props) props.onCreate?.(newReminder.id);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
     });
+
   const updateBeforeDueDateReminderMutation =
     api.paymentReminders.patchPaymentRemindersId.useMutation(undefined, {
-      onSuccess: async () => {
-        dialogContext?.onClose?.();
+      onSuccess: async (updatedReminder) => {
+        api.paymentReminders.getPaymentRemindersId.setQueryData(
+          {
+            path: { payment_reminder_id: updatedReminder.id },
+          },
+          updatedReminder,
+          queryClient
+        );
 
         await api.paymentReminders.getPaymentReminders.invalidateQueries(
           queryClient
         );
 
         toast.success(t(i18n)`Reminder has been updated`);
+
+        if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
       },
       onError: (error) => {
         toast.error(getAPIErrorMessage(i18n, error));
@@ -145,11 +167,13 @@ export const CreateBeforeDueDateReminder = ({
     return <LoadingPage />;
   }
 
-  if (id && (paymentReminderQueryError || !paymentReminder)) {
+  if (reminderId && (paymentReminderQueryError || !paymentReminder)) {
     return (
       <NotFound
         title={t(i18n)`Reminder not found`}
-        description={t(i18n)`There is no reminder by provided id: ${id}`}
+        description={t(
+          i18n
+        )`There is no reminder by provided id: ${reminderId}`}
       />
     );
   }
@@ -161,11 +185,14 @@ export const CreateBeforeDueDateReminder = ({
           <Typography variant="h3">
             {t(i18n)`Create “Before due date” preset`}
           </Typography>
-          {dialogContext?.isDialogContent && (
+          {props.onClose && (
             <IconButton
               edge="start"
               color="inherit"
-              onClick={dialogContext.onClose}
+              onClick={(event) => {
+                event.preventDefault();
+                props.onClose?.();
+              }}
               aria-label={t(i18n)`Close reminder's creation`}
             >
               <CloseIcon />
@@ -179,9 +206,9 @@ export const CreateBeforeDueDateReminder = ({
           id={formName}
           noValidate
           onSubmit={handleSubmit((body) => {
-            if (id) {
+            if (reminderId) {
               return updateBeforeDueDateReminderMutation.mutate({
-                path: { payment_reminder_id: id },
+                path: { payment_reminder_id: reminderId },
                 body,
               });
             }
@@ -381,9 +408,18 @@ export const CreateBeforeDueDateReminder = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={dialogContext?.onClose}>
-          {t(i18n)`Cancel`}
-        </Button>
+        {props?.onClose && (
+          <Button
+            variant="outlined"
+            onClick={(event) => {
+              event.preventDefault();
+              props?.onClose?.();
+            }}
+          >
+            {/* todo::should we really add an extra "Cancel" button? Does it make sense if we have "Cancel" for the invoices? */}
+            {t(i18n)`Cancel`}
+          </Button>
+        )}
         <Button
           variant="contained"
           color="primary"
@@ -391,7 +427,7 @@ export const CreateBeforeDueDateReminder = ({
           form={formName}
           disabled={createBeforeDueDateReminderMutation.isPending}
         >
-          {id ? t(i18n)`Update` : t(i18n)`Create`}
+          {reminderId ? t(i18n)`Update` : t(i18n)`Create`}
         </Button>
       </DialogActions>
     </>
