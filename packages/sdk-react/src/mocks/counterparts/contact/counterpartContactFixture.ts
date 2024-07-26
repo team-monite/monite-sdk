@@ -45,6 +45,8 @@ const genCounterpartContactFixture = (
 export const counterpartsContactsFixtures = counterpartListFixture.reduce<
   Record<string, Array<components['schemas']['CounterpartContactResponse']>>
 >((acc, counterpart) => {
+  if (counterpart.type === 'individual') return acc;
+
   acc[counterpart.id] = new Array(getRandomNumber(2, 4))
     .fill('_')
     .map((_, id) => genCounterpartContactFixture(id, counterpart));
