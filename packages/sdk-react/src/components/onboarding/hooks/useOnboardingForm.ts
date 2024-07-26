@@ -90,8 +90,7 @@ export function useOnboardingForm<
   const {
     setError,
     getValues,
-    reset,
-    formState: { errors, defaultValues: prevValues },
+    formState: { errors },
     handleSubmit: handleFormSubmit,
   } = methods;
 
@@ -126,18 +125,6 @@ export function useOnboardingForm<
 
     setFields(restoredFields);
   }, [prevFields, nextFields, nextValues]);
-
-  useEffect(() => {
-    const values = getDefaultValues();
-
-    if (deepEqual(values, prevValues)) return;
-
-    reset(values, {
-      keepErrors: true,
-      keepIsValid: true,
-    });
-    setErrors(fieldsErrors);
-  }, [getDefaultValues, prevValues, reset, setErrors, fieldsErrors]);
 
   const checkValue = (key: keyof DefaultValues<V>) =>
     !!nextValues && key in nextValues && nextValues[key] !== undefined;
