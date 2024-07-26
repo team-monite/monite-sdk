@@ -28,7 +28,7 @@ export const ReminderFormLayout = ({
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle2">{title}</Typography>
           <Button
-            aria-label="Delete"
+            aria-label="delete"
             startIcon={<DeleteIcon />}
             color="error"
             onClick={onDelete}
