@@ -17,12 +17,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
   Box,
   Button,
-  Card,
   DialogTitle,
   DialogContent,
   DialogActions,
   Divider,
   IconButton,
+  InputLabel,
   ListItemText,
   Menu,
   MenuItem,
@@ -30,8 +30,8 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ReminderForm } from './ReminderForm';
-import { getValidationSchema } from './validation';
+import { ReminderFormLayout } from './ReminderFormLayout';
+import { getBeforeDueDateValidationSchema } from './validation';
 
 interface ReminderStates {
   isDueDate: boolean;
@@ -57,7 +57,7 @@ export const CreateBeforeDueDateReminder = () => {
 
   const methods = useForm({
     resolver: yupResolver(
-      getValidationSchema(i18n, {
+      getBeforeDueDateValidationSchema(i18n, {
         term_final_reminder: reminderStates.isDueDate,
         term_1_reminder: reminderStates.isDiscountDate1,
         term_2_reminder: reminderStates.isDiscountDate2,
@@ -130,31 +130,136 @@ export const CreateBeforeDueDateReminder = () => {
               required
             />
             {reminderStates.isDueDate && (
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <ReminderForm
-                  control={control}
-                  termKey="term_final_reminder"
-                  onDelete={() => toggleReminderState('isDueDate')}
-                />
-              </Card>
+              <ReminderFormLayout
+                title={t(i18n)`Due date`}
+                daysBeforeInput={
+                  <>
+                    <InputLabel htmlFor="term_final_reminder.days_before">
+                      <Typography>{t(i18n)`Remind`}</Typography>
+                    </InputLabel>
+                    <RHFTextField
+                      name="term_final_reminder.days_before"
+                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
+                      type="number"
+                      control={control}
+                      size="small"
+                      sx={{ width: 60 }}
+                    />
+                    <Typography variant="body1" color="text.secondary">
+                      {t(i18n)`days before`}
+                    </Typography>
+                  </>
+                }
+                subjectInput={
+                  <RHFTextField
+                    label={t(i18n)`Subject`}
+                    name="term_final_reminder.subject"
+                    control={control}
+                    fullWidth
+                    required
+                  />
+                }
+                bodyInput={
+                  <RHFTextField
+                    label={t(i18n)`Body`}
+                    name="term_final_reminder.body"
+                    control={control}
+                    fullWidth
+                    required
+                    multiline
+                    rows={5}
+                  />
+                }
+                onDelete={() => toggleReminderState('isDueDate')}
+              />
             )}
             {reminderStates.isDiscountDate1 && (
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <ReminderForm
-                  control={control}
-                  termKey="term_1_reminder"
-                  onDelete={() => toggleReminderState('isDiscountDate1')}
-                />
-              </Card>
+              <ReminderFormLayout
+                title={t(i18n)`Discount date 1`}
+                daysBeforeInput={
+                  <>
+                    <InputLabel htmlFor="term_1_reminder.days_before">
+                      <Typography>{t(i18n)`Remind`}</Typography>
+                    </InputLabel>
+                    <RHFTextField
+                      name="term_1_reminder.days_before"
+                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
+                      type="number"
+                      control={control}
+                      size="small"
+                      sx={{ width: 60 }}
+                    />
+                    <Typography variant="body1" color="text.secondary">
+                      {t(i18n)`days before`}
+                    </Typography>
+                  </>
+                }
+                subjectInput={
+                  <RHFTextField
+                    label={t(i18n)`Subject`}
+                    name="term_1_reminder.subject"
+                    control={control}
+                    fullWidth
+                    required
+                  />
+                }
+                bodyInput={
+                  <RHFTextField
+                    label={t(i18n)`Body`}
+                    name="term_1_reminder.body"
+                    control={control}
+                    fullWidth
+                    required
+                    multiline
+                    rows={5}
+                  />
+                }
+                onDelete={() => toggleReminderState('isDiscountDate1')}
+              />
             )}
             {reminderStates.isDiscountDate2 && (
-              <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-                <ReminderForm
-                  control={control}
-                  termKey="term_2_reminder"
-                  onDelete={() => toggleReminderState('isDiscountDate2')}
-                />
-              </Card>
+              <ReminderFormLayout
+                title={t(i18n)`Discount date 2`}
+                daysBeforeInput={
+                  <>
+                    <InputLabel htmlFor="term_2_reminder.days_before">
+                      <Typography>{t(i18n)`Remind`}</Typography>
+                    </InputLabel>
+                    <RHFTextField
+                      name="term_2_reminder.days_before"
+                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
+                      type="number"
+                      control={control}
+                      size="small"
+                      sx={{ width: 60 }}
+                    />
+                    <Typography variant="body1" color="text.secondary">
+                      {t(i18n)`days before`}
+                    </Typography>
+                  </>
+                }
+                subjectInput={
+                  <RHFTextField
+                    label={t(i18n)`Subject`}
+                    name="term_2_reminder.subject"
+                    control={control}
+                    fullWidth
+                    required
+                  />
+                }
+                bodyInput={
+                  <RHFTextField
+                    label={t(i18n)`Body`}
+                    name="term_2_reminder.body"
+                    control={control}
+                    fullWidth
+                    required
+                    multiline
+                    rows={5}
+                  />
+                }
+                onDelete={() => toggleReminderState('isDiscountDate2')}
+              />
             )}
             {!(
               reminderStates.isDiscountDate1 &&
