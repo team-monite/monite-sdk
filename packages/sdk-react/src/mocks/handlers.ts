@@ -18,6 +18,7 @@ import { lineItemsHandlers } from './lineItems';
 import { measureUnitsHandlers } from './measureUnits';
 import { onboardingHandlers } from './onboarding';
 import { onboardingDocumentsHandlers } from './onboardingDocuments';
+import { overdueRemindersHandlers } from './overdueReminders';
 import { payableHandlers } from './payables';
 import { paymentHandlers } from './payment';
 import { paymentRemindersHandlers } from './paymentReminders';
@@ -43,6 +44,7 @@ export const handlers = [
   ...counterpartVatHandlers,
   ...onboardingHandlers,
   ...onboardingDocumentsHandlers,
+  ...overdueRemindersHandlers,
   ...currenciesHandlers,
   ...filesHandlers,
   ...payableHandlers,
