@@ -18,8 +18,10 @@ import { lineItemsHandlers } from './lineItems';
 import { measureUnitsHandlers } from './measureUnits';
 import { onboardingHandlers } from './onboarding';
 import { onboardingDocumentsHandlers } from './onboardingDocuments';
+import { overdueRemindersHandlers } from './overdueReminders';
 import { payableHandlers } from './payables';
 import { paymentHandlers } from './payment';
+import { paymentRemindersHandlers } from './paymentReminders';
 import { remindersHandlers } from './paymentReminders';
 import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
@@ -34,6 +36,7 @@ export const handlers = [
   ...entitiesHandlers,
   ...entityOnboardingDataHandlers,
   ...paymentHandlers,
+  ...paymentRemindersHandlers,
   ...productsHandlers,
   ...vatRatesHandlers,
   ...counterpartBankHandlers,
@@ -43,6 +46,7 @@ export const handlers = [
   ...remindersHandlers,
   ...onboardingHandlers,
   ...onboardingDocumentsHandlers,
+  ...overdueRemindersHandlers,
   ...currenciesHandlers,
   ...filesHandlers,
   ...payableHandlers,
