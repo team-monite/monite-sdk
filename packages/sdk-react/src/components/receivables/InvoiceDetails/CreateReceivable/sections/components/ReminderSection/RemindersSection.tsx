@@ -1,6 +1,11 @@
 import { useState } from 'react';
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import {
+  ControllerRenderProps,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 
+import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -35,7 +40,12 @@ const useOverdueReminderById = (id: string | undefined) => {
   );
 };
 
-const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
+const ReminderSectionContent = ({
+  disabled,
+  onEditOverdueReminder,
+  onEditPaymentReminder,
+  onCreateReminder,
+}: ReminderSectionProps) => {
   const { api } = useMoniteContext();
   const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
     api.paymentReminders.getPaymentReminders.useQuery({});
@@ -61,20 +71,7 @@ const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
     selectedOverdueIDReminderDetails
   );
 
-  const handleSelectChangeAsync = async (
-    type: 'payment' | 'overdue',
-    value: ControllerRenderProps<FieldValues, string> | string | number | null
-  ) => {
-    try {
-      if (type === 'payment') {
-        setSelectedPaymentIDReminderDetails(value);
-      } else if (type === 'overdue') {
-        setSelectedOverdueIDReminderDetails(value);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const { control } = useFormContext<CreateReceivablesFormProps>();
 
   const {
     isReadPaymentReminderAllowedLoading,
@@ -116,9 +113,9 @@ const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
             disabled={disabled}
             details={paymentIDReminder}
             createOptionLabel={t(i18n)`Create a reminder preset`}
-            handleSelectChange={(event) =>
-              handleSelectChangeAsync('payment', event)
-            }
+            onEdit={onEditPaymentReminder}
+            onCreate={() => onCreateReminder('payment')}
+            control={control}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -130,9 +127,9 @@ const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
             disabled={disabled}
             details={overdueIDReminder}
             createOptionLabel={t(i18n)`Create a reminder preset`}
-            handleSelectChange={(event) =>
-              handleSelectChangeAsync('overdue', event)
-            }
+            onEdit={onEditOverdueReminder}
+            onCreate={() => onCreateReminder('overdue')}
+            control={control}
           />
         </Grid>
       </Grid>
@@ -140,7 +137,13 @@ const ReminderPermissionSection = ({ disabled }: SectionGeneralProps) => {
   );
 };
 
-export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
+interface ReminderSectionProps extends SectionGeneralProps {
+  onCreateReminder: (type: 'payment' | 'overdue') => void;
+  onEditPaymentReminder: () => void;
+  onEditOverdueReminder: () => void;
+}
+
+export const ReminderSection = (props: ReminderSectionProps) => {
   const { i18n } = useLingui();
 
   return (
@@ -148,7 +151,7 @@ export const ReminderSection = ({ disabled }: SectionGeneralProps) => {
       <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
-          <ReminderPermissionSection disabled={disabled} />
+          <ReminderSectionContent {...props} />
         </CardContent>
       </Card>
     </Stack>
