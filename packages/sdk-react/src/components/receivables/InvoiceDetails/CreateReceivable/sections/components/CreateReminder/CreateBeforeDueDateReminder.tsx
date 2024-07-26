@@ -61,24 +61,13 @@ export const CreateBeforeDueDateReminder = (
   props: CreateBeforeDueDateReminderProps | UpdateBeforeDueDateReminderProps
 ) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
-  const { buttonProps, menuProps, open } = useMenuButton();
-
-  const [reminderStates, setReminderStates] = useState<ReminderStates>({
-    isDueDate: true,
-    isDiscountDate1: false,
-    isDiscountDate2: false,
-  });
-
-  const toggleReminderState = (key: keyof ReminderStates) => {
-    setReminderStates((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
-
   const { id: reminderId } = props;
+  const { api } = useMoniteContext();
 
   const {
-    data: paymentReminder,
-    error: paymentReminderQueryError,
+    data: reminder,
+    error,
+    isError,
     isLoading,
   } = api.paymentReminders.getPaymentRemindersId.useQuery(
     {
@@ -86,6 +75,59 @@ export const CreateBeforeDueDateReminder = (
     },
     { enabled: Boolean(reminderId) }
   );
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (isError) {
+    return (
+      <NotFound
+        title={t(i18n)`Payment reminder error`}
+        description={getAPIErrorMessage(i18n, error)}
+      />
+    );
+  }
+
+  if (reminderId && !reminder) {
+    return (
+      <NotFound
+        title={t(i18n)`Reminder not found`}
+        description={t(
+          i18n
+        )`There is no reminder by provided id: ${reminderId}`}
+      />
+    );
+  }
+
+  return (
+    <CreateBeforeDueDateReminderComponent reminder={reminder} {...props} />
+  );
+};
+
+const CreateBeforeDueDateReminderComponent = ({
+  reminder,
+  ...props
+}: (
+  | { onCreate?(reminderId: string): void }
+  | { onUpdate?(reminderId: string): void }
+) &
+  BeforeDueDateReminderBasePropsProps & {
+    reminder?: components['schemas']['PaymentReminderResponse'];
+  }) => {
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
+  const { buttonProps, menuProps, open } = useMenuButton();
+
+  const [reminderStates, setReminderStates] = useState<ReminderStates>({
+    isDiscountDate1: Boolean(reminder?.term_1_reminder),
+    isDiscountDate2: Boolean(reminder?.term_2_reminder),
+    isDueDate: Boolean(reminder?.term_final_reminder),
+  });
+
+  const toggleReminderState = (key: keyof ReminderStates) => {
+    setReminderStates((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   const methods = useForm({
     resolver: yupResolver(
@@ -96,30 +138,28 @@ export const CreateBeforeDueDateReminder = (
       })
     ),
     defaultValues: ((): components['schemas']['PaymentReminder'] => ({
-      name: '',
-      term_1_reminder: undefined,
-      term_2_reminder: undefined,
-      term_final_reminder: undefined,
+      name: reminder?.name ?? '',
+      term_1_reminder: reminder?.term_1_reminder,
+      term_2_reminder: reminder?.term_2_reminder,
+      term_final_reminder: reminder?.term_final_reminder,
     }))(),
   });
   const { control, handleSubmit, reset } = methods;
 
   useEffect(() => {
-    if (id) {
-      setReminderStates({
-        isDiscountDate1: Boolean(paymentReminder?.term_1_reminder),
-        isDiscountDate2: Boolean(paymentReminder?.term_2_reminder),
-        isDueDate: Boolean(paymentReminder?.term_final_reminder),
-      });
-    }
-
-    reset({
-      name: paymentReminder?.name ?? '',
-      term_1_reminder: { ...paymentReminder?.term_1_reminder },
-      term_2_reminder: paymentReminder?.term_2_reminder,
-      term_final_reminder: paymentReminder?.term_final_reminder,
+    setReminderStates({
+      isDiscountDate1: Boolean(reminder?.term_1_reminder),
+      isDiscountDate2: Boolean(reminder?.term_2_reminder),
+      isDueDate: Boolean(reminder?.term_final_reminder),
     });
-  }, [reset, id, paymentReminder]);
+
+    reset();
+  }, [
+    reset,
+    reminder?.term_1_reminder,
+    reminder?.term_2_reminder,
+    reminder?.term_final_reminder,
+  ]);
 
   const formName = `Monite-Form-createBeforeDueDateReminder-${useId()}`;
 
@@ -140,50 +180,42 @@ export const CreateBeforeDueDateReminder = (
     });
 
   const updateBeforeDueDateReminderMutation =
-    api.paymentReminders.patchPaymentRemindersId.useMutation(undefined, {
-      onSuccess: async (updatedReminder) => {
-        api.paymentReminders.getPaymentRemindersId.setQueryData(
-          {
-            path: { payment_reminder_id: updatedReminder.id },
-          },
-          updatedReminder,
-          queryClient
-        );
-
-        await api.paymentReminders.getPaymentReminders.invalidateQueries(
-          queryClient
-        );
-
-        toast.success(t(i18n)`Reminder has been updated`);
-
-        if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
+    api.paymentReminders.patchPaymentRemindersId.useMutation(
+      {
+        path: { payment_reminder_id: reminder?.id ?? '' },
       },
-      onError: (error) => {
-        toast.error(getAPIErrorMessage(i18n, error));
-      },
-    });
+      {
+        onSuccess: async (updatedReminder) => {
+          api.paymentReminders.getPaymentRemindersId.setQueryData(
+            {
+              path: { payment_reminder_id: updatedReminder.id },
+            },
+            updatedReminder,
+            queryClient
+          );
 
-  if (isLoading) {
-    return <LoadingPage />;
-  }
+          await api.paymentReminders.getPaymentReminders.invalidateQueries(
+            queryClient
+          );
 
-  if (reminderId && (paymentReminderQueryError || !paymentReminder)) {
-    return (
-      <NotFound
-        title={t(i18n)`Reminder not found`}
-        description={t(
-          i18n
-        )`There is no reminder by provided id: ${reminderId}`}
-      />
+          toast.success(t(i18n)`Reminder has been updated`);
+
+          if ('onUpdate' in props) props.onUpdate?.(updatedReminder.id);
+        },
+        onError: (error) => {
+          toast.error(getAPIErrorMessage(i18n, error));
+        },
+      }
     );
-  }
 
   return (
     <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h3">
-            {t(i18n)`Create “Before due date” preset`}
+            {reminder
+              ? t(i18n)`Update “Before due date” reminder`
+              : t(i18n)`Create “Before due date” reminder`}
           </Typography>
           {props.onClose && (
             <IconButton
@@ -193,7 +225,7 @@ export const CreateBeforeDueDateReminder = (
                 event.preventDefault();
                 props.onClose?.();
               }}
-              aria-label={t(i18n)`Close reminder's creation`}
+              aria-label={t(i18n)`Close`}
             >
               <CloseIcon />
             </IconButton>
@@ -206,20 +238,14 @@ export const CreateBeforeDueDateReminder = (
           id={formName}
           noValidate
           onSubmit={handleSubmit((body) => {
-            if (reminderId) {
-              return updateBeforeDueDateReminderMutation.mutate({
-                path: { payment_reminder_id: reminderId },
-                body,
-              });
-            }
-
-            return createBeforeDueDateReminderMutation.mutate({
-              body,
-            });
+            if (reminder)
+              return updateBeforeDueDateReminderMutation.mutate(body);
+            return createBeforeDueDateReminderMutation.mutate({ body });
           })}
         >
           <Stack spacing={3}>
             <RHFTextField
+              // todo::add position sticky(top:0) on the input field
               label={t(i18n)`Preset name`}
               name="name"
               control={control}
@@ -427,7 +453,7 @@ export const CreateBeforeDueDateReminder = (
           form={formName}
           disabled={createBeforeDueDateReminderMutation.isPending}
         >
-          {reminderId ? t(i18n)`Update` : t(i18n)`Create`}
+          {reminder ? t(i18n)`Update` : t(i18n)`Create`}
         </Button>
       </DialogActions>
     </>
