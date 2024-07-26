@@ -323,15 +323,9 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent>
-        <Grid
-          container
-          columnSpacing={9}
-          alignItems="stretch"
-          flexGrow={1}
-          height="100%"
-        >
-          <Grid item container sm={7} xs={12} height="100%" minHeight={500}>
+      <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Grid container columnSpacing={4} height="100%">
+          <Grid item container xs={6} height="100%">
             {isPdfLoading ? (
               <LoadingPage />
             ) : !pdf?.file_url && !pdfError ? (
@@ -363,7 +357,13 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
               />
             ) : null}
           </Grid>
-          <Grid item sm={5} xs={12}>
+          <Grid
+            item
+            xs={6}
+            flexDirection="column"
+            height="100%"
+            overflow="auto"
+          >
             <Stack spacing={4}>
               {!isUpdateAllowed ? (
                 <Alert severity="info">{t(
