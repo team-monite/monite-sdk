@@ -15,7 +15,7 @@ export const createPaymentReminder = (
 
 export const paymentReminderListFixture: Array<
   components['schemas']['PaymentReminderResponse']
-> = new Array(10).fill('_').map((_, index) => {
+> = new Array(10).fill('_').map(() => {
   const paymentReminder: components['schemas']['PaymentReminderResponse'] = {
     id: faker.string.nanoid(),
     name: faker.lorem.word(),

@@ -12,7 +12,7 @@ export const paymentRemindersHandlers = [
     undefined,
     | components['schemas']['PaymentReminderResponse']
     | components['schemas']['ErrorSchemaResponse']
-  >('*/payment_reminders/:paymentReminderId', async ({ request, params }) => {
+  >('*/payment_reminders/:paymentReminderId', async () => {
     await delay();
 
     return HttpResponse.json(

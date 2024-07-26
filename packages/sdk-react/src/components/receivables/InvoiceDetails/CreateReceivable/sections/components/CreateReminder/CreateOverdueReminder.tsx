@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useEffect, useId } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -7,6 +7,8 @@ import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { LoadingPage } from '@/ui/loadingPage';
+import { NotFound } from '@/ui/notFound';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -27,10 +29,29 @@ import {
 import { ReminderFormLayout } from './ReminderFormLayout';
 import { getOverdueValidationSchema } from './validation';
 
-export const CreateOverdueReminder = () => {
+interface CreateOverdueReminderProps {
+  id?: string;
+}
+
+export const CreateOverdueReminder = ({ id }: CreateOverdueReminderProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
+
+  const {
+    data: overdueReminder,
+    error: overdueReminderQueryError,
+    isLoading,
+  } = api.overdueReminders.getOverdueRemindersId.useQuery(
+    {
+      path: {
+        overdue_reminder_id: id || '',
+      },
+    },
+    {
+      enabled: Boolean(id),
+    }
+  );
 
   const methods = useForm({
     resolver: yupResolver(getOverdueValidationSchema(i18n)),
@@ -39,12 +60,19 @@ export const CreateOverdueReminder = () => {
       terms: undefined,
     }))(),
   });
-  const { control, handleSubmit } = methods;
+  const { control, handleSubmit, reset } = methods;
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'terms',
     rules: { maxLength: 3 },
   });
+
+  useEffect(() => {
+    reset({
+      name: overdueReminder?.name ?? '',
+      terms: overdueReminder?.terms ?? [],
+    });
+  }, [reset, overdueReminder]);
 
   const formName = `Monite-Form-createOverdueReminder-${useId()}`;
 
@@ -63,6 +91,34 @@ export const CreateOverdueReminder = () => {
         toast.error(getAPIErrorMessage(i18n, error));
       },
     });
+  const updateOverdueReminderMutation =
+    api.overdueReminders.patchOverdueRemindersId.useMutation(undefined, {
+      onSuccess: async () => {
+        dialogContext?.onClose?.();
+
+        await api.overdueReminders.getOverdueReminders.invalidateQueries(
+          queryClient
+        );
+
+        toast.success(t(i18n)`Reminder has been updated`);
+      },
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    });
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  if (id && (overdueReminderQueryError || !overdueReminder)) {
+    return (
+      <NotFound
+        title={t(i18n)`Reminder not found`}
+        description={t(i18n)`There is no reminder by provided id: ${id}`}
+      />
+    );
+  }
 
   return (
     <>
@@ -88,11 +144,18 @@ export const CreateOverdueReminder = () => {
         <form
           id={formName}
           noValidate
-          onSubmit={handleSubmit((body) =>
-            createOverdueReminderMutation.mutate({
+          onSubmit={handleSubmit((body) => {
+            if (id) {
+              return updateOverdueReminderMutation.mutate({
+                path: { overdue_reminder_id: id },
+                body,
+              });
+            }
+
+            return createOverdueReminderMutation.mutate({
               body,
-            })
-          )}
+            });
+          })}
         >
           <Stack spacing={3}>
             <RHFTextField
