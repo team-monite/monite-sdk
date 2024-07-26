@@ -88,16 +88,10 @@ export const CreateOverdueReminder = () => {
         <form
           id={formName}
           noValidate
-          onSubmit={handleSubmit(
-            (body) => {
-              console.log({ body });
-              createOverdueReminderMutation.mutate({
-                body,
-              });
-            },
-            (errors, event) => {
-              console.log({ errors, event });
-            }
+          onSubmit={handleSubmit((body) =>
+            createOverdueReminderMutation.mutate({
+              body,
+            })
           )}
         >
           <Stack spacing={3}>
