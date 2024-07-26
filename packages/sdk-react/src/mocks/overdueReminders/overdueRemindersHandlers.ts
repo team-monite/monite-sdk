@@ -3,6 +3,7 @@ import {
   createOverdueReminder,
   overdueReminderListFixture,
 } from '@/mocks/overdueReminders/overdueRemindersFixtures';
+import { paymentReminderListFixture } from '@/mocks/paymentReminders';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -30,5 +31,28 @@ export const overdueRemindersHandlers = [
     await delay();
 
     return HttpResponse.json(createOverdueReminder(jsonBody));
+  }),
+
+  http.patch<
+    { overdueReminderId: string },
+    components['schemas']['OverdueReminderUpdateRequest'],
+    components['schemas']['OverdueReminderResponse']
+  >('*/overdue_reminders/:overdueReminderId', async ({ request, params }) => {
+    const jsonBody = await request.json();
+
+    let updatedOverdueReminder = overdueReminderListFixture.find(
+      (overdueReminder) => overdueReminder.id === params.overdueReminderId
+    );
+
+    if (updatedOverdueReminder) {
+      updatedOverdueReminder = {
+        ...updatedOverdueReminder,
+        ...jsonBody,
+      };
+    }
+
+    await delay();
+
+    return HttpResponse.json(updatedOverdueReminder);
   }),
 ];
