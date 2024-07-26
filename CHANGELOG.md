@@ -5,7 +5,7 @@ This package is a minor release with no breaking changes.
 
 ### New features and improvements
 - Added the ability to view OCR-processing status and error messages on the `PayableDetails` component.
-- Added the `ApprovalsRequestsTable` component to allow users to view and manage approval requests.
+- Added the `ApprovalsRequestsTable` component to allow users to view approval requests.
 
 ## @monite/sdk-react@3.14.0 & @monite/sdk-api@3.14.0
 This package is a minor release with no breaking changes.
