@@ -3,24 +3,29 @@ import React, { useMemo } from 'react';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
+  getCounterpartName,
   getIndividualName,
-  isIndividualCounterpart,
-  isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
-import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
+import {
+  useApprovalPolicyById,
+  useCounterpartById,
+  useEntityUserById,
+} from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
+import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
 import {
   Box,
   Chip,
+  CircularProgress,
   Grid,
   Paper,
   Stack,
@@ -29,6 +34,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -94,16 +100,6 @@ const PayableDetailsInfoBase = ({
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
 
-  const counterpartName =
-    counterpart &&
-    (isIndividualCounterpart(counterpart)
-      ? getIndividualName(
-          counterpart.individual.first_name,
-          counterpart.individual.last_name
-        )
-      : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
-      : '—');
   const defaultContact = useMemo(
     () => contacts?.data.find((contact) => contact.is_default),
     [contacts]
@@ -121,7 +117,7 @@ const PayableDetailsInfoBase = ({
       <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
         <CenteredContentBox>
           <Box textAlign="center">
-            <CachedOutlinedIcon color="primary" fontSize="large" />
+            <CachedOutlined color="primary" fontSize="large" />
             <Typography variant="h3" mb={2}>
               {t(i18n)`File is being processed...`}
             </Typography>
@@ -129,7 +125,7 @@ const PayableDetailsInfoBase = ({
               {t(i18n)`Hold on, we’re processing the file you’ve uploaded.`}
             </Typography>
             <Typography variant="body1">
-              {t(i18n)`Usually it takes no more than 1–2 mins.`}
+              {t(i18n)`Usually it takes no more than 1–2 minutes.`}
             </Typography>
           </Box>
         </CenteredContentBox>
@@ -157,7 +153,9 @@ const PayableDetailsInfoBase = ({
                   <StyledLabelTableCell>
                     {t(i18n)`Supplier`}:
                   </StyledLabelTableCell>
-                  <TableCell>{counterpartName}</TableCell>
+                  <TableCell>
+                    <PayableCounterpartName payable={payable} />
+                  </TableCell>
                 </TableRow>
                 {defaultContact && (
                   <TableRow>
@@ -442,5 +440,75 @@ const PayableDetailsInfoBase = ({
         </Grid>
       </Grid>
     </DetailsWrapper>
+  );
+};
+
+const PayableCounterpartName = ({
+  payable,
+}: {
+  payable: components['schemas']['PayableResponseSchema'];
+}) => {
+  const { i18n } = useLingui();
+  const { data: counterpart } = useCounterpartById(payable.counterpart_id);
+
+  const { api } = useMoniteContext();
+  const {
+    data: isCounterpartMatchingToOCRFound,
+    isLoading: isCounterpartMatchingToOCRLoading,
+  } = api.counterparts.getCounterparts.useQuery(
+    {
+      query: {
+        counterpart_name__icontains: payable.counterpart_raw_data?.name,
+        limit: 1,
+      },
+    },
+    {
+      enabled: Boolean(
+        !payable.counterpart_id && payable.counterpart_raw_data?.name
+      ),
+      select: (data) => Boolean(data.data.at(0)),
+    }
+  );
+
+  const counterpartName = getCounterpartName(counterpart);
+
+  if (counterpartName) {
+    return <>{counterpartName}</>;
+  }
+
+  if (!payable.counterpart_raw_data?.name) {
+    return <>—</>;
+  }
+
+  return (
+    <Stack component="span" gap={2} direction="row">
+      {payable.counterpart_raw_data.name}
+      {isCounterpartMatchingToOCRLoading && (
+        <CircularProgress
+          size={14}
+          color="secondary"
+          sx={{ alignSelf: 'center' }}
+        />
+      )}
+      {!isCounterpartMatchingToOCRLoading && (
+        <Tooltip
+          title={
+            isCounterpartMatchingToOCRFound
+              ? t(
+                  i18n
+                )`A counterpart with this name exists but has not been specified in the document.`
+              : t(
+                  i18n
+                )`There is no such counterpart yet, you can create it in respective section.`
+          }
+        >
+          <InfoOutlined
+            color={isCounterpartMatchingToOCRFound ? 'disabled' : 'info'}
+            fontSize="small"
+            sx={{ alignSelf: 'center' }}
+          />
+        </Tooltip>
+      )}
+    </Stack>
   );
 };

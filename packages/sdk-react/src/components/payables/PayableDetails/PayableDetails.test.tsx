@@ -26,7 +26,6 @@ import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
 
-import { payablesDefaultQueryConfig } from '../consts';
 import { PayableDataTestId } from '../types';
 import { PayableDetails } from './PayableDetails';
 
@@ -598,7 +597,7 @@ describe('PayableDetails', () => {
 
         const newDocumentId = changeDocumentIdByPayableId(payableId);
 
-        jest.advanceTimersByTime(payablesDefaultQueryConfig.refetchInterval);
+        jest.advanceTimersByTime(15_000);
 
         const newDocumentIdElement = await screen.findByDisplayValue(
           newDocumentId
