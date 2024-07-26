@@ -1,24 +1,15 @@
 import { components } from '@/api';
-import { t } from '@lingui/macro';
+import {
+  createOverdueReminderCardTerms,
+  createPaymentReminderCardTerms,
+} from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
 import { useLingui } from '@lingui/react';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { alpha, Box, Grid, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { CalendarToday, NotificationsActive } from '@mui/icons-material';
+import { Box, Grid, Typography } from '@mui/material';
 
 type Reminder =
   | components['schemas']['OverdueReminderResponse']
   | components['schemas']['PaymentReminderResponse'];
-
-interface ReminderDetailsProps {
-  reminder: Reminder;
-}
-
-interface ReminderInfoProps {
-  reminder: Reminder;
-  iconColor: string;
-  textColor: string;
-}
 
 const isPaymentReminder = (
   details: Reminder
@@ -30,84 +21,42 @@ const isPaymentReminder = (
   );
 };
 
-const isOverdueReminder = (
-  details: Reminder
-): details is components['schemas']['OverdueReminderResponse'] => {
-  return 'terms' in details && Array.isArray(details.terms);
-};
-
-interface ReminderInfoProps {
-  reminder: Reminder;
-  iconColor: string;
-  textColor: string;
-}
-
-const ReminderInfo = ({
-  reminder,
-  iconColor,
-  textColor,
-}: ReminderInfoProps) => {
+export const ReminderDetails = ({ reminder }: { reminder: Reminder }) => {
   const { i18n } = useLingui();
 
-  let timeInfo: string;
-
-  const getDaysText = (
-    days: number | undefined,
-    beforeAfter: 'before' | 'after'
-  ) =>
-    days === 1
-      ? t(i18n)`${days} day ${beforeAfter}`
-      : t(i18n)`${days} days ${beforeAfter}`;
-
-  if (isPaymentReminder(reminder)) {
-    const daysBefore = reminder?.term_1_reminder?.days_before;
-    timeInfo = getDaysText(daysBefore, 'before');
-  } else if (isOverdueReminder(reminder)) {
-    const daysAfter = reminder?.terms?.[0]?.days_after;
-    timeInfo = getDaysText(daysAfter, 'after');
-  } else {
-    timeInfo = t(i18n)`no time info`;
-  }
-
-  return (
-    <Grid container spacing={1} alignItems="center">
-      <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <Box display="flex" alignItems="center" gap={1}>
-          <CalendarTodayIcon sx={{ fontSize: 20 }} />
-          <Typography variant="body2" fontWeight="500">
-            {reminder.name}
-          </Typography>
-        </Box>
-      </Grid>
-      <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Box display="flex" alignItems="center" gap={1}>
-          <NotificationsActiveIcon sx={{ fontSize: 20, color: iconColor }} />
-          <Typography variant="body2" fontWeight="500" color={textColor}>
-            {timeInfo}
-          </Typography>
-        </Box>
-      </Grid>
-    </Grid>
-  );
-};
-
-export const ReminderDetails = ({ reminder }: ReminderDetailsProps) => {
-  const theme = useTheme();
-
-  const specialColor =
-    theme.palette.mode === 'dark'
-      ? theme.palette.primary.main
-      : alpha(theme.palette.grey[900], 0.56);
+  const cardTerms = isPaymentReminder(reminder)
+    ? createPaymentReminderCardTerms(i18n, reminder)
+    : createOverdueReminderCardTerms(i18n, reminder);
 
   return (
     <Box sx={{ padding: 2, borderRadius: 3 }}>
-      {(isPaymentReminder(reminder) || isOverdueReminder(reminder)) && (
-        <ReminderInfo
-          reminder={reminder}
-          iconColor={specialColor}
-          textColor={specialColor}
-        />
-      )}
+      <Grid container spacing={2}>
+        {cardTerms.map(({ termPeriodName, termPeriods }, index) => (
+          <Grid item container spacing={2} xs={12} key={index}>
+            <Grid item xs={6} display="flex" gap={1}>
+              <CalendarToday fontSize="small" />
+              <Typography variant="body2">{termPeriodName}</Typography>
+            </Grid>
+            <Grid
+              item
+              container
+              xs={6}
+              display="flex"
+              flexDirection="column"
+              spacing={2}
+            >
+              {termPeriods.map((period, index) => (
+                <Grid item display="flex" gap={1} key={index}>
+                  <NotificationsActive color="disabled" fontSize="small" />
+                  <Typography variant="body2" color="text.secondary">
+                    {period}
+                  </Typography>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 };
