@@ -103,6 +103,7 @@ const PayablesBase = ({
   return (
     <>
       <PageHeader
+        className="Monite__Payables__Header"
         title={
           <>
             {t(i18n)`Payables`}

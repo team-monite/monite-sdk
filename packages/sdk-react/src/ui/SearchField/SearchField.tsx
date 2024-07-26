@@ -43,7 +43,7 @@ interface Props {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange }: Props) => {
+export const SearchField = ({ label, onChange }: Props): React.ReactElement => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
@@ -56,7 +56,12 @@ export const SearchField = ({ label, onChange }: Props) => {
   }, [debouncedOnChange]);
 
   return (
-    <FormControl variant="outlined" fullWidth aria-label="search-by-name">
+    <FormControl
+      variant="outlined"
+      fullWidth
+      aria-label="search-by-name"
+      className="Monite__SearchField"
+    >
       <InputLabel htmlFor="search-by-name">{label}</InputLabel>
       <OutlinedInput
         id="search-by-name"

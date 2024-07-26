@@ -17,6 +17,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -169,15 +170,18 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite__PayablesTable';
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           padding: 2,
         }}
       >
         <Box
+          className={className + '__FiltersContainer'}
           sx={{
             marginBottom: 2,
           }}
@@ -185,6 +189,7 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          className={className + '__DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -202,6 +207,7 @@ const PayablesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
+                className={className + '__Pagination'}
                 nextPage={payables?.next_pagination_token}
                 prevPage={payables?.prev_pagination_token}
                 paginationModel={{

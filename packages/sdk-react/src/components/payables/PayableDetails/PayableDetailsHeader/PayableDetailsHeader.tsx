@@ -99,8 +99,11 @@ export const PayableDetailsHeader = ({
     },
   };
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite__PayableDetails__Header';
+
   return (
-    <DialogTitle sx={{ position: 'relative' }}>
+    <DialogTitle sx={{ position: 'relative' }} className={className}>
       <Toolbar>
         {dialogContext?.isDialogContent && (
           <IconButton
@@ -122,6 +125,7 @@ export const PayableDetailsHeader = ({
 
         {(!payable || !isPayableInOCRProcessing(payable)) && (
           <Stack
+            className={className + '__ActionsContainer'}
             spacing={2}
             direction="row"
             sx={{ marginLeft: 'auto' }}
@@ -132,7 +136,11 @@ export const PayableDetailsHeader = ({
                 buttonsByPermissions[permission];
 
               return (
-                <Button key={permission} {...restProps}>
+                <Button
+                  key={permission}
+                  className={className + '__Action--' + permission}
+                  {...restProps}
+                >
                   {children}
                 </Button>
               );

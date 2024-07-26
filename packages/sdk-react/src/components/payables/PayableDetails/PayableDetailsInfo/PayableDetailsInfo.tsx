@@ -18,6 +18,7 @@ import {
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -113,9 +114,18 @@ const PayableDetailsInfoBase = ({
     [counterpartBankAccountQuery, payable]
   );
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite__PayableDetailsInfo';
+
   if (isPayableInOCRProcessing(payable)) {
     return (
-      <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+      <DetailsWrapper
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className,
+          className + '--ocr-processing'
+        )}
+      >
         <CenteredContentBox>
           <Box textAlign="center">
             <CachedOutlined color="primary" fontSize="large" />
@@ -135,22 +145,24 @@ const PayableDetailsInfoBase = ({
   }
 
   return (
-    <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+    <DetailsWrapper
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+    >
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '__Details'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Details`}
           </Typography>
           <Paper variant="outlined">
             <Table>
               <TableBody>
-                <TableRow>
+                <TableRow className={className + '__Details__InvoiceNumber'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Invoice number`}:
                   </StyledLabelTableCell>
                   <TableCell>{payable.document_id ?? '—'}</TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow className={className + '__Details__Supplier'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Supplier`}:
                   </StyledLabelTableCell>
@@ -159,7 +171,7 @@ const PayableDetailsInfoBase = ({
                   </TableCell>
                 </TableRow>
                 {defaultContact && (
-                  <TableRow>
+                  <TableRow className={className + '__Details__ContactPerson'}>
                     <StyledLabelTableCell>
                       {t(i18n)`Contact person`}:
                     </StyledLabelTableCell>
@@ -169,7 +181,7 @@ const PayableDetailsInfoBase = ({
                   </TableRow>
                 )}
                 {counterpartBankAccount && (
-                  <TableRow>
+                  <TableRow className={className + '__Details__BankAccount'}>
                     <StyledLabelTableCell>
                       {t(i18n)`Bank account`}:
                     </StyledLabelTableCell>
@@ -177,7 +189,7 @@ const PayableDetailsInfoBase = ({
                   </TableRow>
                 )}
                 {showInvoiceDate && (
-                  <TableRow>
+                  <TableRow className={className + '__Details__IssueDate'}>
                     <StyledLabelTableCell>
                       {t(i18n)`Issue date`}:
                     </StyledLabelTableCell>
@@ -191,7 +203,7 @@ const PayableDetailsInfoBase = ({
                     </TableCell>
                   </TableRow>
                 )}
-                <TableRow>
+                <TableRow className={className + '__Details__DueDate'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Due date`}:
                   </StyledLabelTableCell>
@@ -204,7 +216,7 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow className={className + '__Details__InvoiceAmount'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Amount`}:
                   </StyledLabelTableCell>
@@ -238,7 +250,7 @@ const PayableDetailsInfoBase = ({
                   </TableCell>
                 </TableRow>
                 {showTags && payable.tags && payable.tags.length > 0 && (
-                  <TableRow>
+                  <TableRow className={className + '__Details__Tags'}>
                     <StyledLabelTableCell>
                       {t(i18n)`Tags`}:
                     </StyledLabelTableCell>
@@ -261,7 +273,7 @@ const PayableDetailsInfoBase = ({
                     </TableCell>
                   </TableRow>
                 )}
-                <TableRow>
+                <TableRow className={className + '__Details__AppliedPolicy'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Applied policy`}:
                   </StyledLabelTableCell>
@@ -274,13 +286,13 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '__Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
           </Typography>
           <Paper variant="outlined">
             <Table>
-              <TableHead>
+              <TableHead className={className + '__Items__Header'}>
                 <TableRow>
                   <TableCell>{t(i18n)`Name`}</TableCell>
                   <TableCell>{t(i18n)`Quantity`}</TableCell>
@@ -290,10 +302,17 @@ const PayableDetailsInfoBase = ({
               </TableHead>
               <TableBody>
                 {lineItems?.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>
+                  <TableRow
+                    className={className + '__Items__Row'}
+                    key={item.id}
+                  >
+                    <TableCell className={className + '__Items__Row__Name'}>
+                      {item.name}
+                    </TableCell>
+                    <TableCell className={className + '__Items__Row__Quantity'}>
+                      {item.quantity}
+                    </TableCell>
+                    <TableCell className={className + '__Items__Row__Subtotal'}>
                       {item.subtotal &&
                         item.quantity &&
                         formatFromMinorUnits(
@@ -301,7 +320,10 @@ const PayableDetailsInfoBase = ({
                           payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell
+                      className={className + '__Items__Row__Total'}
+                      align="right"
+                    >
                       {item.total && payable.currency ? (
                         <>
                           <Box>
@@ -333,11 +355,11 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '__Totals'}>
           <Paper variant="outlined">
             <Table>
               <TableBody>
-                <TableRow>
+                <TableRow className={className + '__Totals__Subtotal'}>
                   <TableCell>{t(i18n)`Subtotal`}</TableCell>
                   <TableCell align="right">
                     {payable.subtotal && payable.currency
@@ -348,7 +370,7 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow className={className + '__Totals__Taxes'}>
                   <TableCell>{t(i18n)`Taxes`}</TableCell>
                   <TableCell align="right">
                     {payable.tax_amount && payable.currency
@@ -359,7 +381,10 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow sx={{ '& td': { fontWeight: 500 } }}>
+                <TableRow
+                  className={className + '__Totals__Total'}
+                  sx={{ '& td': { fontWeight: 500 } }}
+                >
                   <TableCell>{t(i18n)`Total`}</TableCell>
                   <TableCell align="right">
                     {payable.amount_to_pay && payable.currency
@@ -375,7 +400,7 @@ const PayableDetailsInfoBase = ({
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '__History'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`History`}
           </Typography>
@@ -383,7 +408,7 @@ const PayableDetailsInfoBase = ({
             <Table>
               <TableBody>
                 {addedByUser && (
-                  <TableRow>
+                  <TableRow className={className + '__History__AddedBy'}>
                     <StyledLabelTableCell>
                       {t(i18n)`Added by`}:
                     </StyledLabelTableCell>
@@ -409,7 +434,7 @@ const PayableDetailsInfoBase = ({
                     </TableCell>
                   </TableRow>
                 )}
-                <TableRow>
+                <TableRow className={className + '__History__AddedOn'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Added on`}:
                   </StyledLabelTableCell>
@@ -422,7 +447,7 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow>
+                <TableRow className={className + '__History__UpdatedOn'}>
                   <StyledLabelTableCell>
                     {t(i18n)`Updated on`}:
                   </StyledLabelTableCell>

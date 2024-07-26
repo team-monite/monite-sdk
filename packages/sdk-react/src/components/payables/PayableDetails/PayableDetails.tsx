@@ -11,6 +11,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -119,10 +120,12 @@ const PayableDetailsBase = ({
     );
   }
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite__PayableDetails';
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           width: '100%',
           height: '100%',
@@ -150,7 +153,10 @@ const PayableDetailsBase = ({
           onClose={onClose}
         />
         <Divider />
-        <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
+        <DialogContent
+          className={className + '__Content'}
+          sx={{ display: 'flex', flexDirection: 'column' }}
+        >
           <Grid container columnSpacing={4} height="100%">
             <Grid item container xs={6} height="100%">
               {payable?.file && (
@@ -178,7 +184,7 @@ const PayableDetailsBase = ({
               {payable &&
                 (payable.status === 'new' || payable.status === 'draft') &&
                 payable.ocr_status === 'error' && (
-                  <Box mb={2}>
+                  <Box mb={2} className={className + '__Error'}>
                     <Alert severity="error">
                       {t(
                         i18n
