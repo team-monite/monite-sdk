@@ -116,6 +116,14 @@ export const getCreateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Payment terms`)
       .required(),
     line_items: getLineItemsSchema(i18n),
+    overdue_reminder_id: yup
+      .string()
+      .optional()
+      .label(t(i18n)`Overdue reminder`),
+    payment_reminder_id: yup
+      .string()
+      .optional()
+      .label(t(i18n)`Payment reminder`),
   });
 
 export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
@@ -148,6 +156,14 @@ export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Payment terms`)
       .required(),
     line_items: getLineItemsSchema(i18n),
+    overdue_reminder_id: yup
+      .string()
+      .optional()
+      .label(t(i18n)`Overdue reminder`),
+    payment_reminder_id: yup
+      .string()
+      .optional()
+      .label(t(i18n)`Payment reminder`),
   });
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {

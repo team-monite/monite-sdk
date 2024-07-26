@@ -89,6 +89,7 @@ const PayableDetailsInfoBase = ({
     });
 
   const { data: counterpart } = counterpartQuery;
+
   const { data: lineItemsData } = lineItemsQuery;
 
   const lineItems = lineItemsData?.data;
