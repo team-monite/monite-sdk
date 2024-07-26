@@ -18,15 +18,13 @@ import { lineItemsHandlers } from './lineItems';
 import { measureUnitsHandlers } from './measureUnits';
 import { onboardingHandlers } from './onboarding';
 import { onboardingDocumentsHandlers } from './onboardingDocuments';
-import { overdueRemindersHandlers } from './overdueReminders';
 import { payableHandlers } from './payables';
 import { paymentHandlers } from './payment';
-import { paymentRemindersHandlers } from './paymentReminders';
-import { remindersHandlers } from './paymentReminders';
 import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
 import { productsHandlers } from './products';
 import { receivableHandlers } from './receivables';
+import { remindersHandlers } from './reminders';
 import { rolesHandlers } from './roles';
 import { tagsHandlers } from './tags';
 import { vatRatesHandlers } from './vatRates';
@@ -36,17 +34,15 @@ export const handlers = [
   ...entitiesHandlers,
   ...entityOnboardingDataHandlers,
   ...paymentHandlers,
-  ...paymentRemindersHandlers,
+  ...remindersHandlers,
   ...productsHandlers,
   ...vatRatesHandlers,
   ...counterpartBankHandlers,
   ...counterpartContactHandlers,
   ...counterpartsAddressesHandlers,
   ...counterpartVatHandlers,
-  ...remindersHandlers,
   ...onboardingHandlers,
   ...onboardingDocumentsHandlers,
-  ...overdueRemindersHandlers,
   ...currenciesHandlers,
   ...filesHandlers,
   ...payableHandlers,
