@@ -17,6 +17,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { MoniteCurrency } from '@/ui/Currency';
+import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -200,10 +201,13 @@ const PayableDetailsFormBase = forwardRef<
 
     const { root } = useRootElements();
 
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    const className = 'Monite__PayableDetailsForm';
+
     return (
       <>
         <Box
-          className={ScopedCssBaselineContainerClassName}
+          className={classNames(ScopedCssBaselineContainerClassName, className)}
           sx={{
             pb: 6,
             display: 'flex',
@@ -247,7 +251,7 @@ const PayableDetailsFormBase = forwardRef<
               })}
             >
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '__Details'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Details`}
                   </Typography>
@@ -259,6 +263,7 @@ const PayableDetailsFormBase = forwardRef<
                         render={({ field, fieldState: { error } }) => (
                           <TextField
                             {...field}
+                            className={className + '__Details__InvoiceNumber'}
                             id={field.name}
                             label={t(i18n)`Invoice Number`}
                             variant="outlined"
@@ -274,6 +279,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
+                            className={className + '__Details__Counterpart'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -315,6 +321,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
+                            className={className + '__Details__BankAccount'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -357,6 +364,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <MuiDatePicker
+                              className={className + '__Details__InvoiceDate'}
                               maxDate={currentDueDate}
                               slotProps={{
                                 popper: { container: root },
@@ -384,6 +392,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <MuiDatePicker
+                            className={className + '__Details__DueDate'}
                             minDate={currentInvoiceDate}
                             slotProps={{
                               popper: { container: root },
@@ -417,6 +426,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
+                              className={className + '__Details__Tags'}
                               variant="outlined"
                               fullWidth
                               required
@@ -460,7 +470,7 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '__Items'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Items`}
                   </Typography>
@@ -468,11 +478,11 @@ const PayableDetailsFormBase = forwardRef<
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '__Totals'}>
                   <Paper variant="outlined">
                     <Table>
                       <TableBody>
-                        <TableRow>
+                        <TableRow className={className + '__Totals__Subtotal'}>
                           <TableCell>{t(i18n)`Subtotal`}</TableCell>
                           <TableCell align="right">
                             {totals.subtotal && currentCurrency
@@ -486,7 +496,7 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow>
+                        <TableRow className={className + '__Totals__Taxes'}>
                           <TableCell>{t(i18n)`Taxes`}</TableCell>
                           <TableCell align="right">
                             {totals.taxes && currentCurrency
@@ -500,7 +510,10 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow sx={{ '& td': { fontWeight: 500 } }}>
+                        <TableRow
+                          className={className + '__Totals__Total'}
+                          sx={{ '& td': { fontWeight: 500 } }}
+                        >
                           <TableCell>{t(i18n)`Total`}</TableCell>
                           <TableCell align="right">
                             {totals.total && currentCurrency

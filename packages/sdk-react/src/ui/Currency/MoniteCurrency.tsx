@@ -32,6 +32,7 @@ export const MoniteCurrency = <F extends FieldValues>(
   return (
     <RHFAutocomplete
       {...props}
+      className="Monite__Currency"
       label={t(i18n)`Currency`}
       options={getCurrenciesArray(i18n)}
       optionKey="code"

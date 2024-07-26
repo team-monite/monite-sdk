@@ -1,13 +1,12 @@
 import React from 'react';
 
 import { useDialog } from '@/components/Dialog';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { CenteredContentBox } from '@/ui/box';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import LockIcon from '@mui/icons-material/Lock';
-import { Typography, Box, Stack, IconButton, Grid } from '@mui/material';
+import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
 
 export interface AccessRestrictionProps {
   title?: React.ReactNode;
@@ -15,6 +14,8 @@ export interface AccessRestrictionProps {
 }
 
 export const AccessRestriction = (props: AccessRestrictionProps) => {
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite__AccessRestriction';
   const dialogContext = useDialog();
   const { i18n } = useLingui();
   const title = props.title ?? t(i18n)`Access Restricted`;
@@ -29,7 +30,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
   return (
     <>
       {dialogContext && (
-        <Grid container padding={2}>
+        <Grid container padding={2} className={className + '__InDialog-Header'}>
           <Grid item xs={11} />
           <Grid item xs={1}>
             <IconButton
@@ -42,7 +43,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
           </Grid>
         </Grid>
       )}
-      <CenteredContentBox>
+      <CenteredContentBox className={className + '__Content'}>
         <Stack alignItems="center" spacing={2}>
           <Box>
             <LockIcon fontSize="large" color="primary" />
