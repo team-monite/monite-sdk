@@ -41,11 +41,13 @@ interface ReminderStates {
   isDiscountDate2: boolean;
 }
 
-interface CreateReminderProps {
+interface CreateBeforeDueDateReminderProps {
   id?: string;
 }
 
-export const CreateBeforeDueDateReminder = ({ id }: CreateReminderProps) => {
+export const CreateBeforeDueDateReminder = ({
+  id,
+}: CreateBeforeDueDateReminderProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
@@ -124,6 +126,8 @@ export const CreateBeforeDueDateReminder = ({ id }: CreateReminderProps) => {
   const updateBeforeDueDateReminderMutation =
     api.paymentReminders.patchPaymentRemindersId.useMutation(undefined, {
       onSuccess: async () => {
+        dialogContext?.onClose?.();
+
         await api.paymentReminders.getPaymentReminders.invalidateQueries(
           queryClient
         );
@@ -375,9 +379,9 @@ export const CreateBeforeDueDateReminder = ({ id }: CreateReminderProps) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={dialogContext?.onClose}>{t(
-          i18n
-        )`Cancel`}</Button>
+        <Button variant="outlined" onClick={dialogContext?.onClose}>
+          {t(i18n)`Cancel`}
+        </Button>
         <Button
           variant="contained"
           color="primary"

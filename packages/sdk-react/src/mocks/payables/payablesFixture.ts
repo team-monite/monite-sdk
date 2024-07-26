@@ -34,7 +34,8 @@ function generatePayable(
     payment_terms: undefined,
     suggested_payment_term: undefined,
     issued_at: faker.date.past().toString(),
-    counterpart_id: getRandomItemFromArray(counterpartListFixture).id,
+    // counterpart_id: getRandomItemFromArray(counterpartListFixture).id,
+    counterpart_raw_data: { name: 'test' },
     payable_origin: 'upload',
     was_created_by_user_id: '5b4daced-6b9a-4707-83c6-08193d999fab',
     currency_exchange: {
