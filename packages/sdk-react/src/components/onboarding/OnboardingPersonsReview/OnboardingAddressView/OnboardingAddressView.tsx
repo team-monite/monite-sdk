@@ -19,7 +19,7 @@ export function OnboardingAddressView({
 
   const countryField = {
     required: !!country?.required,
-    value: t(i18n)`${getRegionName(country?.value as AllowedCountries)}`,
+    value: country?.value ? t(i18n)`${getRegionName(country.value)}` : null,
     error: country?.error,
   };
 

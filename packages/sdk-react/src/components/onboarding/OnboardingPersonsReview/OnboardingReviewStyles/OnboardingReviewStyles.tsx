@@ -19,9 +19,6 @@ const StyledErrorRow = styled(StyledRow, {
 const StyledCell = styled('td')`
   padding: ${({ theme }) => theme.spacing(1.5)};
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
 
   tr:last-child & {
     border-bottom: none;
@@ -50,7 +47,7 @@ const StyledKey = styled(StyledCell)`
 const StyledErrorValue = styled('div')`
   padding: ${({ theme }) => theme.spacing(1)};
   border-radius: 4px;
-  width: 100%;
+  width: calc(100% - ${({ theme }) => theme.spacing(2)});
   word-break: break-all;
   background-color: ${({ theme }) =>
     theme.palette.mode === 'dark' ? theme.palette.error.light : red[50]};
