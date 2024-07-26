@@ -67,6 +67,10 @@ export const RHFAutocomplete = <
   options,
   required,
   slotProps,
+  rules,
+  shouldUnregister,
+  disabled,
+  defaultValue,
   ...other
 }: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
   const getRenderInput = (error?: FieldError) => {
@@ -126,6 +130,10 @@ export const RHFAutocomplete = <
     <Controller
       control={control}
       name={name}
+      rules={rules}
+      shouldUnregister={shouldUnregister}
+      disabled={disabled}
+      defaultValue={defaultValue}
       render={({
         field,
         fieldState: { error, isTouched },
