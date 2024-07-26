@@ -13,11 +13,11 @@ import {
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart/counterpartFixture';
 import { counterpartVatsByCounterpartIdFixture } from '@/mocks/counterparts/vat/counterpartVatFixture';
 import { entityVatIdList } from '@/mocks/entities';
+import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import {
   overdueReminderListFixture,
   paymentReminderListFixture,
-} from '@/mocks/paymentReminders/reminderFixtures';
-import { paymentTermsFixtures } from '@/mocks/paymentTerms';
+} from '@/mocks/reminders/reminderListFixtures';
 import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
