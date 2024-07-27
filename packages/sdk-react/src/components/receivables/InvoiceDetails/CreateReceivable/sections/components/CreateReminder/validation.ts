@@ -57,7 +57,7 @@ export const getOverdueValidationSchema = (i18n: I18n) => {
       .required(),
     terms: yup
       .array()
-      .max(3)
+      .max(3, t(i18n)`No more than 3 reminders are allowed`)
       .of(
         yup.object({
           days_after: yup

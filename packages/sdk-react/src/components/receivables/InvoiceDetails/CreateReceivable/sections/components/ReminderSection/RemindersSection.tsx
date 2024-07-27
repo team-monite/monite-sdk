@@ -23,7 +23,7 @@ import {
 import type { SectionGeneralProps } from '../../Section.types';
 import { AutocompleteWithCreateItem } from './AutocompleteWithCreateItem';
 
-const usePaymentReminderById = (id: string | undefined) => {
+const usePaymentReminderById = (id: string | undefined | null) => {
   const { api } = useMoniteContext();
   return api.paymentReminders.getPaymentRemindersId.useQuery(
     { path: { payment_reminder_id: id ?? '' } },
@@ -31,7 +31,7 @@ const usePaymentReminderById = (id: string | undefined) => {
   );
 };
 
-const useOverdueReminderById = (id: string | undefined) => {
+const useOverdueReminderById = (id: string | undefined | null) => {
   const { api } = useMoniteContext();
   return api.overdueReminders.getOverdueRemindersId.useQuery(
     { path: { overdue_reminder_id: id ?? '' } },
