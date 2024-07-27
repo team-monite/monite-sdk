@@ -119,47 +119,32 @@ const CreateBeforeDueDateReminderComponent = ({
   const { api, queryClient } = useMoniteContext();
   const { buttonProps, menuProps, open } = useMenuButton();
 
-  const [reminderStates, setReminderStates] = useState<ReminderStates>({
-    isDiscountDate1: Boolean(reminder?.term_1_reminder),
-    isDiscountDate2: Boolean(reminder?.term_2_reminder),
-    isDueDate: Boolean(reminder?.term_final_reminder),
-  });
-
-  const toggleReminderState = (key: keyof ReminderStates) => {
-    setReminderStates((prev) => ({ ...prev, [key]: !prev[key] }));
+  const defaultTerm = {
+    days_before: 1,
+    body: '',
+    subject: '',
   };
 
   const methods = useForm({
-    resolver: yupResolver(
-      getBeforeDueDateValidationSchema(i18n, {
-        term_final_reminder: reminderStates.isDueDate,
-        term_1_reminder: reminderStates.isDiscountDate1,
-        term_2_reminder: reminderStates.isDiscountDate2,
-      })
-    ),
+    resolver: yupResolver(getBeforeDueDateValidationSchema(i18n)),
     defaultValues: ((): components['schemas']['PaymentReminder'] => ({
       name: reminder?.name ?? '',
-      term_1_reminder: reminder?.term_1_reminder,
-      term_2_reminder: reminder?.term_2_reminder,
-      term_final_reminder: reminder?.term_final_reminder,
+      // @ts-expect-error - back-end does not support `null` values
+      term_1_reminder: reminder?.term_1_reminder ?? null,
+      // @ts-expect-error - back-end does not support `null` values
+      term_2_reminder: reminder?.term_2_reminder ?? null,
+      // @ts-expect-error - back-end does not support `null` values
+      term_final_reminder: reminder?.term_final_reminder ?? null,
     }))(),
   });
-  const { control, handleSubmit, reset } = methods;
 
-  useEffect(() => {
-    setReminderStates({
-      isDiscountDate1: Boolean(reminder?.term_1_reminder),
-      isDiscountDate2: Boolean(reminder?.term_2_reminder),
-      isDueDate: Boolean(reminder?.term_final_reminder),
-    });
+  const { control, handleSubmit, setValue, watch, formState } = methods;
 
-    reset();
-  }, [
-    reset,
-    reminder?.term_1_reminder,
-    reminder?.term_2_reminder,
-    reminder?.term_final_reminder,
-  ]);
+  const [
+    term1ReminderFieldValue,
+    term2ReminderFieldValue,
+    termFinalReminderFieldValue,
+  ] = watch(['term_1_reminder', 'term_2_reminder', 'term_final_reminder']);
 
   const formName = `Monite-Form-createBeforeDueDateReminder-${useId()}`;
 
@@ -252,7 +237,7 @@ const CreateBeforeDueDateReminderComponent = ({
               fullWidth
               required
             />
-            {reminderStates.isDueDate && (
+            {Boolean(termFinalReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Due date`}
                 daysBeforeInput={
@@ -295,10 +280,16 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() => toggleReminderState('isDueDate')}
+                onDelete={() =>
+                  setValue(
+                    'term_final_reminder',
+                    // @ts-expect-error - back-end does not support `null` values
+                    null
+                  )
+                }
               />
             )}
-            {reminderStates.isDiscountDate1 && (
+            {Boolean(term1ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 1`}
                 daysBeforeInput={
@@ -341,10 +332,16 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() => toggleReminderState('isDiscountDate1')}
+                onDelete={() =>
+                  setValue(
+                    'term_1_reminder',
+                    // @ts-expect-error - back-end does not support `null` values
+                    null
+                  )
+                }
               />
             )}
-            {reminderStates.isDiscountDate2 && (
+            {Boolean(term2ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 2`}
                 daysBeforeInput={
@@ -387,13 +384,19 @@ const CreateBeforeDueDateReminderComponent = ({
                     rows={5}
                   />
                 }
-                onDelete={() => toggleReminderState('isDiscountDate2')}
+                onDelete={() =>
+                  setValue(
+                    'term_2_reminder',
+                    // @ts-expect-error - back-end does not support `null` values
+                    null
+                  )
+                }
               />
             )}
             {!(
-              reminderStates.isDiscountDate1 &&
-              reminderStates.isDiscountDate2 &&
-              reminderStates.isDueDate
+              termFinalReminderFieldValue &&
+              term1ReminderFieldValue &&
+              term2ReminderFieldValue
             ) && (
               <>
                 <Button
@@ -405,28 +408,30 @@ const CreateBeforeDueDateReminderComponent = ({
                   }
                 >{t(i18n)`Add reminder`}</Button>
                 <Menu {...menuProps}>
-                  {!reminderStates.isDueDate && (
+                  {!termFinalReminderFieldValue && (
                     <MenuItem>
                       <ListItemText
-                        onClick={() => toggleReminderState('isDueDate')}
+                        onClick={() =>
+                          setValue('term_final_reminder', defaultTerm)
+                        }
                       >
                         {t(i18n)`Due date`}
                       </ListItemText>
                     </MenuItem>
                   )}
-                  {!reminderStates.isDiscountDate1 && (
+                  {!term1ReminderFieldValue && (
                     <MenuItem>
                       <ListItemText
-                        onClick={() => toggleReminderState('isDiscountDate1')}
+                        onClick={() => setValue('term_1_reminder', defaultTerm)}
                       >
                         {t(i18n)`Discount date 1`}
                       </ListItemText>
                     </MenuItem>
                   )}
-                  {!reminderStates.isDiscountDate2 && (
+                  {!term2ReminderFieldValue && (
                     <MenuItem>
                       <ListItemText
-                        onClick={() => toggleReminderState('isDiscountDate2')}
+                        onClick={() => setValue('term_2_reminder', defaultTerm)}
                       >
                         {t(i18n)`Discount date 2`}
                       </ListItemText>
