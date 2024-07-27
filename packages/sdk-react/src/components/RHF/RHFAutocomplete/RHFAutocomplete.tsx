@@ -160,6 +160,7 @@ export const RHFAutocomplete = <
           }
           value={getValue(field.value)}
           id={name}
+          getOptionLabel={getOptionLabel}
           renderInput={getRenderInput(
             isTouched || !isValid ? error : undefined
           )}
