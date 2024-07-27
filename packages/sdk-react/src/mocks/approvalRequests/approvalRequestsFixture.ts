@@ -14,7 +14,7 @@ export const approvalRequestsListFixture: Services['approvalRequests']['getAppro
     approved_by: [],
     created_by: getRandomProperty(entityUsers).id,
     object_id: faker.string.nanoid(),
-    object_type: 'payable' as components['schemas']['ObjectType'],
+    object_type: 'payable',
     required_approval_count: 1,
     role_ids: [],
     status: faker.helpers.arrayElement([
