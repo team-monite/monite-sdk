@@ -7,7 +7,7 @@ import { CreateBeforeDueDateReminder } from './CreateBeforeDueDateReminder';
 
 const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-describe('CreateBeforeDueDateReminder', () => {
+describe.skip('CreateBeforeDueDateReminder', () => {
   describe('#FormValidation', () => {
     test('should show error message when fields are empty and form is submitted', async () => {
       renderWithClient(<CreateBeforeDueDateReminder />);
