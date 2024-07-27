@@ -48,20 +48,20 @@ interface BeforeDueDateReminderBasePropsProps {
 interface CreateBeforeDueDateReminderProps
   extends BeforeDueDateReminderBasePropsProps {
   onCreate?(reminderId: string): void;
-  id?: never;
+  reminderId?: never;
 }
 
 interface UpdateBeforeDueDateReminderProps
   extends BeforeDueDateReminderBasePropsProps {
-  id: string;
+  reminderId: string;
   onUpdate?(reminderId: string): void;
 }
 
-export const CreateBeforeDueDateReminder = (
-  props: CreateBeforeDueDateReminderProps | UpdateBeforeDueDateReminderProps
-) => {
+export const CreateBeforeDueDateReminder = ({
+  reminderId,
+  ...restProps
+}: CreateBeforeDueDateReminderProps | UpdateBeforeDueDateReminderProps) => {
   const { i18n } = useLingui();
-  const { id: reminderId } = props;
   const { api } = useMoniteContext();
 
   const {
@@ -101,7 +101,7 @@ export const CreateBeforeDueDateReminder = (
   }
 
   return (
-    <CreateBeforeDueDateReminderComponent reminder={reminder} {...props} />
+    <CreateBeforeDueDateReminderComponent reminder={reminder} {...restProps} />
   );
 };
 

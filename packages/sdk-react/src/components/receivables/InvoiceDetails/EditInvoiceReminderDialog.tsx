@@ -38,7 +38,7 @@ export const EditInvoiceReminderDialog = ({
       )}
       {reminderType === 'payment' && (
         <CreateBeforeDueDateReminder
-          id={reminderId}
+          reminderId={reminderId}
           onUpdate={(id) => {
             onClose();
             onUpdate?.({
@@ -51,7 +51,7 @@ export const EditInvoiceReminderDialog = ({
       )}
       {reminderType === 'overdue' && (
         <CreateOverdueReminder
-          id={reminderId}
+          reminderId={reminderId}
           onUpdate={(id) => {
             onClose();
             onUpdate?.({

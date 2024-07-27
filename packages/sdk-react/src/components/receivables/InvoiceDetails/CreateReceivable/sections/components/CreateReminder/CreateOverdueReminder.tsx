@@ -36,20 +36,20 @@ interface OverdueReminderBasePropsProps {
 
 interface CreateOverdueReminderProps extends OverdueReminderBasePropsProps {
   onCreate?(reminderId: string): void;
-  id?: never;
+  reminderId?: never;
 }
 
 interface UpdateOverdueReminderProps extends OverdueReminderBasePropsProps {
-  id: string;
+  reminderId: string;
   onUpdate?(reminderId: string): void;
 }
 
-export const CreateOverdueReminder = (
-  props: CreateOverdueReminderProps | UpdateOverdueReminderProps
-) => {
+export const CreateOverdueReminder = ({
+  reminderId,
+  ...restProps
+}: CreateOverdueReminderProps | UpdateOverdueReminderProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
-  const { id: reminderId } = props;
   const {
     data: reminder,
     error,
@@ -90,7 +90,7 @@ export const CreateOverdueReminder = (
     );
   }
 
-  return <CreateOverdueReminderComponent {...props} reminder={reminder} />;
+  return <CreateOverdueReminderComponent {...restProps} reminder={reminder} />;
 };
 
 const CreateOverdueReminderComponent = ({
