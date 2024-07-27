@@ -9,28 +9,29 @@ interface Terms {
   term_final_reminder: boolean;
 }
 
-const getReminderValidationSchema = (i18n: I18n, value: boolean) => {
-  if (!value) return yup.object().notRequired();
-
-  return yup.object({
-    days_before: yup
-      .number()
-      .label(t(i18n)`Remind`)
-      .min(1)
-      .max(10000)
-      .required(),
-    subject: yup
-      .string()
-      .label(t(i18n)`Subject`)
-      .required(),
-    body: yup
-      .string()
-      .label(t(i18n)`Body`)
-      .required(),
-  });
+const getReminderValidationSchema = (i18n: I18n) => {
+  return yup
+    .object({
+      days_before: yup
+        .number()
+        .label(t(i18n)`Remind`)
+        .min(1)
+        .max(10000)
+        .required(),
+      subject: yup
+        .string()
+        .label(t(i18n)`Subject`)
+        .required(),
+      body: yup
+        .string()
+        .label(t(i18n)`Body`)
+        .required(),
+    })
+    .optional()
+    .nullable();
 };
 
-export const getBeforeDueDateValidationSchema = (i18n: I18n, terms: Terms) => {
+export const getBeforeDueDateValidationSchema = (i18n: I18n) => {
   return yup.object({
     name: yup
       .string()
@@ -38,12 +39,9 @@ export const getBeforeDueDateValidationSchema = (i18n: I18n, terms: Terms) => {
       .min(1)
       .max(255)
       .required(),
-    term_1_reminder: getReminderValidationSchema(i18n, terms.term_1_reminder),
-    term_2_reminder: getReminderValidationSchema(i18n, terms.term_2_reminder),
-    term_final_reminder: getReminderValidationSchema(
-      i18n,
-      terms.term_final_reminder
-    ),
+    term_1_reminder: getReminderValidationSchema(i18n),
+    term_2_reminder: getReminderValidationSchema(i18n),
+    term_final_reminder: getReminderValidationSchema(i18n),
   });
 };
 
@@ -57,6 +55,7 @@ export const getOverdueValidationSchema = (i18n: I18n) => {
       .required(),
     terms: yup
       .array()
+      .min(1, t(i18n)`At least 1 reminder is required`)
       .max(3, t(i18n)`No more than 3 reminders are allowed`)
       .of(
         yup.object({
