@@ -12,5 +12,34 @@
     "@monite/sdk-react": "3.15.0",
     "@team-monite/sdk-themes": "0.1.0"
   },
-  "changesets": []
+  "changesets": [
+    "afraid-months-tan",
+    "chatty-llamas-juggle",
+    "chilly-pigs-allow",
+    "cool-cooks-repair",
+    "cuddly-pumpkins-train",
+    "dirty-peas-drop",
+    "gorgeous-flies-flow",
+    "great-candles-impress",
+    "green-ducks-wait",
+    "grumpy-schools-check",
+    "hungry-toys-report",
+    "large-schools-type",
+    "late-pillows-fetch",
+    "lazy-cats-lie",
+    "lazy-donkeys-sell",
+    "loud-plums-move",
+    "plenty-mails-smoke",
+    "plenty-points-double",
+    "polite-tomatoes-count",
+    "quick-moons-push",
+    "rare-carrots-clean",
+    "rude-toys-tie",
+    "shaggy-brooms-run",
+    "sharp-kangaroos-battle",
+    "sixty-hats-deliver",
+    "stupid-yaks-care",
+    "warm-pets-applaud",
+    "young-worms-report"
+  ]
 }
