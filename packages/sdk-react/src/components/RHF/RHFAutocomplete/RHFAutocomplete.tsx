@@ -71,6 +71,7 @@ export const RHFAutocomplete = <
   shouldUnregister,
   disabled,
   defaultValue,
+  onChange,
   ...other
 }: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
   const getRenderInput = (error?: FieldError) => {
@@ -151,10 +152,12 @@ export const RHFAutocomplete = <
           }}
           options={options}
           blurOnSelect
-          onChange={(event, value, reason, details) => {
-            field.onChange(getChangedValue(value));
-            other.onChange?.(event, value, reason, details);
-          }}
+          onChange={
+            onChange ??
+            ((_, value) => {
+              field.onChange(getChangedValue(value));
+            })
+          }
           value={getValue(field.value)}
           id={name}
           renderInput={getRenderInput(
