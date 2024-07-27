@@ -5,7 +5,7 @@
   "fixed": [["@monite/sdk-react", "@monite/sdk-api"]],
   "linked": [],
   "access": "public",
-  "baseBranch": "origin/feat/DEV-11981-payment-reminders-2",
+  "baseBranch": "origin/dev",
   "updateInternalDependencies": "patch",
   "ignore": ["sdk-demo-with-nextjs-and-clerk-auth"]
 }
