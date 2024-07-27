@@ -9,7 +9,6 @@
 
   - **State 1**: Counterpart not found in the system.
   - **State 2**: Counterpart found but not selected in the document.
-  - Added two images to illustrate these states with appropriate color indications.
   - Note: If a Counterpart is already selected for the Payable, no icon will be displayed.
 
 - 89d1fac7: feat(DEV-11981): **Invoice Creation and Editing**: Introduced the ability to specify PaymentReminders and
