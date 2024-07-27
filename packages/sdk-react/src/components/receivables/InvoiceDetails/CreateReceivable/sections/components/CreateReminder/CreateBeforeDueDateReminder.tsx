@@ -262,8 +262,10 @@ const CreateBeforeDueDateReminderComponent = ({
                     </InputLabel>
                     <RHFTextField
                       name="term_final_reminder.days_before"
-                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
                       type="number"
+                      InputProps={{
+                        inputProps: { min: 1, inputMode: 'numeric' },
+                      }}
                       control={control}
                       size="small"
                       sx={{ width: 60 }}
@@ -306,8 +308,10 @@ const CreateBeforeDueDateReminderComponent = ({
                     </InputLabel>
                     <RHFTextField
                       name="term_1_reminder.days_before"
-                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
                       type="number"
+                      InputProps={{
+                        inputProps: { min: 1, inputMode: 'numeric' },
+                      }}
                       control={control}
                       size="small"
                       sx={{ width: 60 }}
@@ -350,8 +354,10 @@ const CreateBeforeDueDateReminderComponent = ({
                     </InputLabel>
                     <RHFTextField
                       name="term_2_reminder.days_before"
-                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
                       type="number"
+                      InputProps={{
+                        inputProps: { min: 1, inputMode: 'numeric' },
+                      }}
                       control={control}
                       size="small"
                       sx={{ width: 60 }}

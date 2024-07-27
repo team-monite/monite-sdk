@@ -221,8 +221,10 @@ const CreateOverdueReminderComponent = ({
                     </InputLabel>
                     <RHFTextField
                       name={`terms.${index}.days_after`}
-                      // todo::add min max logic on input (???) inputProps.inputProps.min={1} seem not working
                       type="number"
+                      InputProps={{
+                        inputProps: { min: 1, inputMode: 'numeric' },
+                      }}
                       control={control}
                       size="small"
                       sx={{ width: 60 }}
