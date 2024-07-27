@@ -119,10 +119,12 @@ export const getCreateInvoiceValidationSchema = (i18n: I18n) =>
     overdue_reminder_id: yup
       .string()
       .optional()
+      .nullable()
       .label(t(i18n)`Overdue reminder`),
     payment_reminder_id: yup
       .string()
       .optional()
+      .nullable()
       .label(t(i18n)`Payment reminder`),
   });
 
@@ -159,10 +161,12 @@ export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
     overdue_reminder_id: yup
       .string()
       .optional()
+      .nullable()
       .label(t(i18n)`Overdue reminder`),
     payment_reminder_id: yup
       .string()
       .optional()
+      .nullable()
       .label(t(i18n)`Payment reminder`),
   });
 

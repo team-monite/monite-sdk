@@ -24,6 +24,7 @@ import {
   Stack,
   Typography,
   InputLabel,
+  Alert,
 } from '@mui/material';
 
 import { ReminderFormLayout } from './ReminderFormLayout';
@@ -107,15 +108,13 @@ const CreateOverdueReminderComponent = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const methods = useForm({
+  const { control, handleSubmit, formState } = useForm({
     resolver: yupResolver(getOverdueValidationSchema(i18n)),
     defaultValues: ((): components['schemas']['OverdueReminderRequest'] => ({
       name: reminder?.name ?? '',
       terms: reminder?.terms ?? [],
     }))(),
   });
-
-  const { control, handleSubmit, reset } = methods;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -274,6 +273,11 @@ const CreateOverdueReminderComponent = ({
               </>
             )}
           </Stack>
+          {formState.errors.terms && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {formState.errors.terms?.message}
+            </Alert>
+          )}
         </form>
       </DialogContent>
       <Divider />
