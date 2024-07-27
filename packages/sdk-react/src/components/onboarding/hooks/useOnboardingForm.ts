@@ -41,10 +41,6 @@ export type OnboardingFormType<
 
 type ApiErrorType = ErrorSchema | HTTPValidationError | null;
 
-type ErrorType = {
-  body: ApiErrorType;
-};
-
 function isHTTPValidationErrorBody(
   body: ApiErrorType
 ): body is HTTPValidationError {
@@ -94,8 +90,7 @@ export function useOnboardingForm<
   const {
     setError,
     getValues,
-    reset,
-    formState: { errors, defaultValues: prevValues },
+    formState: { errors },
     handleSubmit: handleFormSubmit,
   } = methods;
 
@@ -131,18 +126,6 @@ export function useOnboardingForm<
     setFields(restoredFields);
   }, [prevFields, nextFields, nextValues]);
 
-  useEffect(() => {
-    const values = getDefaultValues();
-
-    if (deepEqual(values, prevValues)) return;
-
-    reset(values, {
-      keepErrors: true,
-      keepIsValid: true,
-    });
-    setErrors(fieldsErrors);
-  }, [getDefaultValues, prevValues, reset, setErrors, fieldsErrors]);
-
   const checkValue = (key: keyof DefaultValues<V>) =>
     !!nextValues && key in nextValues && nextValues[key] !== undefined;
 
@@ -161,14 +144,10 @@ export function useOnboardingForm<
           try {
             return void (await apiContract(prepareValuesToSubmit(values)));
           } catch (e) {
-            const error = e as ErrorType;
-            const errorBody = error.body;
+            const error = e as ApiErrorType;
 
-            if (
-              isHTTPValidationErrorBody(errorBody) &&
-              errorBody.detail?.length
-            ) {
-              setErrors(getErrorsFieldsByValidationErrors(errorBody.detail));
+            if (isHTTPValidationErrorBody(error) && error.detail?.length) {
+              setErrors(getErrorsFieldsByValidationErrors(error.detail));
               scrollToError();
             }
           }

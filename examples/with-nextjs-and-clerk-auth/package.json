@@ -6,7 +6,7 @@
   "apiVersion": "2024-01-31",
   "scripts": {
     "dev": "next dev --port 3000 & dotenv -e .env.local -- npm run webhook-relay",
-    "build": "next build",
+    "build": "next build && yarn build:demo-data-generator",
     "start": "next start --port 3000",
     "lint": "next lint",
     "test": "jest",
@@ -53,7 +53,7 @@
     "@faker-js/faker": "~8.3.1",
     "@lingui/cli": "~4.7.0",
     "@lingui/swc-plugin": "4.0.4",
-    "@openapi-qraft/cli": "~1.11.0-beta.2",
+    "@openapi-qraft/cli": "1.13.0-beta.1",
     "@testing-library/jest-dom": "~6.1.4",
     "@testing-library/react": "~14.1.0",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",

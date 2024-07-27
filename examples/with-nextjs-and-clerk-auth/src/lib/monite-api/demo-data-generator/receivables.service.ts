@@ -63,6 +63,20 @@ interface ReceivablesServiceOptions {
    * No default value, this option must be set explicitly
    */
   paymentTerms: Array<components['schemas']['PaymentTermsResponse']>;
+
+  /**
+   * Describes, which payment reminders should be used for receivables.
+   *
+   * No default value, this option must be set explicitly
+   */
+  paymentReminders: Array<string | undefined>;
+
+  /**
+   * Describes, which payment reminders should be used for receivables.
+   *
+   * No default value, this option must be set explicitly
+   */
+  overdueReminders: Array<string | undefined>;
 }
 
 export class ReceivablesService extends GeneralService {
@@ -75,6 +89,8 @@ export class ReceivablesService extends GeneralService {
     entityVats: [],
     paymentTerms: [],
     currency: 'EUR',
+    paymentReminders: [],
+    overdueReminders: [],
   };
 
   public withOptions(options: Partial<ReceivablesServiceOptions>): this {
@@ -82,6 +98,13 @@ export class ReceivablesService extends GeneralService {
       ...this.options,
       ...options,
     };
+
+    // Add 'undefined' into the reminders list to randomly generate invoices without any reminder assigned
+    if (!this.options.paymentReminders.includes(undefined))
+      this.options.paymentReminders.push(undefined);
+
+    if (!this.options.overdueReminders.includes(undefined))
+      this.options.overdueReminders.push(undefined);
 
     return this;
   }
@@ -126,7 +149,7 @@ export class ReceivablesService extends GeneralService {
   ) {
     this.logger?.({ message: 'Issuing receivables...' });
 
-    const receivablesToIssue = receivables.filter((receivable, index) => {
+    const receivablesToIssue = receivables.filter((_, index) => {
       /**
        * Issue half of the receivables
        * We don't want to issue all of them
@@ -161,6 +184,13 @@ export class ReceivablesService extends GeneralService {
         `Counterpart ${counterpart.id} does not have default billing address`
       );
 
+    const paymentReminderId = getRandomItemFromArray(
+      this.options.paymentReminders
+    );
+    const overdueReminderId = getRandomItemFromArray(
+      this.options.overdueReminders
+    );
+
     switch (this.options.type) {
       case 'invoice': {
         const payload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
@@ -190,6 +220,8 @@ export class ReceivablesService extends GeneralService {
               .id,
             payment_terms_id: getRandomItemFromArray(this.options.paymentTerms)
               .id,
+            payment_reminder_id: paymentReminderId,
+            overdue_reminder_id: overdueReminderId,
           };
         const { data, error, response } = await this.request.POST(
           `/receivables`,

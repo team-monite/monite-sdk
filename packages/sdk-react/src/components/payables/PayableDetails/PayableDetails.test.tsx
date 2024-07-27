@@ -26,7 +26,6 @@ import userEvent from '@testing-library/user-event';
 
 import { format } from 'date-fns';
 
-import { payablesDefaultQueryConfig } from '../consts';
 import { PayableDataTestId } from '../types';
 import { PayableDetails } from './PayableDetails';
 
@@ -175,16 +174,13 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(0);
       });
 
-      test('should show "Pending" tag, "Cancel", "Reject" and "Approve" button for payable in "Pending" status', async () => {
+      test('should show "Pending" tag, "Reject" and "Approve" button for payable in "Pending" status', async () => {
         fixture.status = 'approve_in_progress';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
 
         const pendingStatus = screen.getByText(t`Pending`);
-        const cancelButton = await screen.findByRole('button', {
-          name: t`Cancel`,
-        });
         const rejectButton = await screen.findByRole('button', {
           name: t`Reject`,
         });
@@ -197,10 +193,9 @@ describe('PayableDetails', () => {
         const buttons = within(actionsSection).queryAllByRole('button');
 
         expect(pendingStatus).toBeInTheDocument();
-        expect(cancelButton).toBeInTheDocument();
         expect(rejectButton).toBeInTheDocument();
         expect(approveButton).toBeInTheDocument();
-        expect(buttons).toHaveLength(3);
+        expect(buttons).toHaveLength(2);
       });
 
       test('should show "Rejected" tag and no buttons for payable in "Rejected" status', async () => {
@@ -602,7 +597,7 @@ describe('PayableDetails', () => {
 
         const newDocumentId = changeDocumentIdByPayableId(payableId);
 
-        jest.advanceTimersByTime(payablesDefaultQueryConfig.refetchInterval);
+        jest.advanceTimersByTime(15_000);
 
         const newDocumentIdElement = await screen.findByDisplayValue(
           newDocumentId

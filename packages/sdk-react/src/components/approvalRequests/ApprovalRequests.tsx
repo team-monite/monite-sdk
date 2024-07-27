@@ -42,7 +42,6 @@ const ApprovalRequestsBase = () => {
   const onApprove = (approvalRequestId: string) =>
     approveRequestMutation.mutateAsync(
       {
-        body: undefined,
         path: {
           approval_request_id: approvalRequestId,
         },

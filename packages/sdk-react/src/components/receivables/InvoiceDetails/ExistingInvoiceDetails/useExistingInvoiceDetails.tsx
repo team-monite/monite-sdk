@@ -64,7 +64,7 @@ export function useExistingInvoiceDetails({
       throw new Error('Unsupported delivery method');
     }
 
-    issueMutation.mutate(undefined);
+    issueMutation.mutate();
   }, [deliveryMethod, issueMutation]);
 
   const handleChangeInvoiceView = useCallback(() => {

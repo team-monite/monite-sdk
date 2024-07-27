@@ -38,7 +38,7 @@ export const ReceivableFilters = ({
   const { root } = useRootElements();
   const { api } = useMoniteContext();
 
-  const { data: counterparts } = api.counterparts.getCounterparts.useQuery({});
+  const { data: counterparts } = api.counterparts.getCounterparts.useQuery();
 
   return (
     <Grid container spacing={2}>
@@ -131,6 +131,9 @@ export const ReceivableFilters = ({
             }}
             slotProps={{
               popper: {
+                container: root,
+              },
+              dialog: {
                 container: root,
               },
               actionBar: {

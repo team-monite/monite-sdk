@@ -1,6 +1,6 @@
 {
   "name": "@team-monite/sdk-demo",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -87,7 +87,7 @@
     "@monite/sdk-api": "workspace:~",
     "@mui/icons-material": "~5.14.3",
     "@mui/material": "~5.14.2",
-    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@openapi-qraft/react": "1.13.0-beta.1",
     "@tanstack/react-query": "~5.28.6",
     "@tanstack/react-query-devtools": "~5.28.6",
     "@team-monite/sdk-themes": "workspace:~"

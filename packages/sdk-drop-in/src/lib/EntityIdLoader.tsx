@@ -1,10 +1,8 @@
 import { createContext, ReactNode, useMemo } from 'react';
 
 import { type APISchema, createAPIClient } from '@monite/sdk-react';
-import {
-  createSecureRequestFn,
-  type QraftContextValue,
-} from '@openapi-qraft/react';
+import { type QraftContextValue } from '@openapi-qraft/react';
+import { createSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
 import { QueryClient } from '@tanstack/react-query';
 
 type EntityIdLoaderBaseProps = {

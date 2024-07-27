@@ -38,12 +38,6 @@ export const useApprovalPolicyDetails = ({
           api.approvalPolicies.getApprovalPolicies.invalidateQueries(
             queryClient
           ),
-          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
-            {
-              parameters: { path: { approval_policy_id: approvalPolicy.id } },
-            },
-            queryClient
-          ),
         ]);
         toast.success(t(i18n)`Approval policy created`);
       },
@@ -56,10 +50,20 @@ export const useApprovalPolicyDetails = ({
 
   const updateMutation =
     api.approvalPolicies.patchApprovalPoliciesId.useMutation(undefined, {
-      onSuccess: async () => {
-        await api.approvalPolicies.getApprovalPolicies.invalidateQueries(
-          queryClient
-        );
+      onSuccess: async (updatedAppprovalPolicy) => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+            {
+              parameters: {
+                path: { approval_policy_id: updatedAppprovalPolicy.id },
+              },
+            },
+            queryClient
+          ),
+        ]);
         toast.success(t(i18n)`Approval policy updated`);
       },
 

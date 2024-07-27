@@ -46,6 +46,9 @@ export const Filters = ({ onChangeFilter }: FiltersProps) => {
             popper: {
               container: root,
             },
+            dialog: {
+              container: root,
+            },
             actionBar: {
               actions: ['clear', 'today'],
             },

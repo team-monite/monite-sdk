@@ -1,5 +1,292 @@
+:root {
+  --demo-padding: 8px;
+  --demo-padding-2: calc(var(--demo-padding) * 2);
+  --demo-padding-3: calc(var(--demo-padding) * 3);
+  --demo-padding-4: calc(var(--demo-padding) * 4);
+  --demo-button-blue: #3737FF;
+  --demo-light-gray: #f9f9f9;
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
+}
+
+/* Remove padding around complex Monite components */
+.Monite-ContainerCssBaseline.MuiBox-root {
+  padding: 0;
+}
+
+/* DataGrid borders */
+.MuiDataGrid-root {
+  border-color: transparent !important;
+
+  .MuiDataGrid-withBorderColor {
+    border-color: transparent !important;
+  }
+}
+
+.Monite-ContentContainer {
+  overflow: hidden;
+  position: relative;
+
+  > .Monite-AbsoluteContainer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.Monite-Receivables {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+
+  > div:first-child {
+    margin-bottom: var(--demo-padding-3);
+  }
+
+  > div:nth-child(2) {
+    margin-bottom: var(--demo-padding-3);
+
+    .MuiTabs-root {
+      .MuiButtonBase-root {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &.Mui-selected {
+          background-color: #F4F4FE;
+          border-radius: 10px;
+        }
+      }
+
+      .MuiTabs-indicator {
+        height: 4px;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  > div:nth-child(3) {
+    flex-basis: 0;
+    flex-grow: 2;
+    overflow: hidden;
+
+    /* prevent labels from being clipped */
+    margin-top: calc(var(--demo-padding) * -1);
+    padding-top: var(--demo-padding);
+
+    > .MuiBox-root {
+      /* prevent labels from being clipped */
+      margin-top: calc(var(--demo-padding) * -1);
+      padding-top: var(--demo-padding);
+
+      /* occupy whole available space */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+      max-height: 100%;
+
+      /* DataGrid */
+      > div:last-child {
+        flex-basis: 0;
+        flex-grow: 2;
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+/* Default button style */
+.Monite-ContainerCssBaseline .MuiButton-containedPrimary {
+  background-color: var(--demo-button-blue);
+  color: #ffffff;
+  padding: 6px 18px;
+  border-radius: 8px;
+  box-shadow: none;
+  min-width: 120px;
+}
+
+/* Outlined button style */
+.Monite-ContainerCssBaseline .MuiButton-outlined {
+  border-radius: 8px;
+  box-shadow: none;
+
+  &.MuiButton-outlinedPrimary {
+    /*min-width: 120px;*/
+  }
+}
+
+.Monite-Purchases {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  height: 100%;
+  max-height: 100%;
+
+  /* Header */
+  > .MuiStack-root:first-child {
+
+    /* Default button style */
+    aside button {
+      background-color: var(--demo-button-blue);
+      color: #ffffff;
+      padding: 6px 18px;
+      border-radius: 8px;
+      box-shadow: none;
+    }
+  }
+
+  > .MuiBox-root {
+    /* prevent labels from being clipped */
+    margin-top: calc(var(--demo-padding) * -1);
+    padding-top: var(--demo-padding);
+
+    /* occupy whole available space */
+    flex-basis: 0;
+    flex-grow: 2;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+
+    /* Filter pane styles */
+    > div:first-child {
+      > .MuiGrid-root:first-child {
+        > .MuiGrid-item:nth-child(2) {
+          flex-basis: 16%;
+        }
+      }
+    }
+
+    /* DataGrid */
+    > .MuiDataGrid-root {
+      margin-left: 5px;
+
+      /* Align avatar with column header */
+      .MuiDataGrid-cell--withRenderer .MuiChip-root {
+        .MuiAvatar-root.MuiChip-avatar {
+          margin-left: calc(var(--demo-padding) * -1);
+          margin-right: var(--demo-padding);
+        }
+      }
+    }
+  }
+}
+
+.MuiFormControl-root {
+  > label {
+    &:not(.MuiInputLabel-shrink) {
+      font-size: 14px;
+      transform: translate(var(--demo-padding-2), 10px);
+    }
+  }
+}
+
+.MuiAutocomplete-root {
+  > .MuiFormControl-root {
+    > .MuiInputBase-root {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+}
+
+/* Payable details */
+.MuiDialog-container .Monite-ContainerCssBaseline {
+  > .MuiDialogTitle-root.MuiTypography-h6 {
+    /* Toolbar height should be 88px */
+    padding: 12px var(--demo-padding-3);
+
+    /* Hide toolbar bottom border on the dialog popup */
+    & + .MuiDivider-root {
+      opacity: 0;
+    }
+
+    .MuiToolbar-root {
+      padding: 0 var(--demo-padding) 0 var(--demo-padding-3);
+
+      /* Fixes gap between invoice # and status indicator */
+      > .MuiIconButton-root + .MuiBox-root {
+        gap: var(--demo-padding-3);
+
+        > .MuiTypography-h3 {
+          margin-left: var(--demo-padding-3);
+        }
+      }
+    }
+  }
+
+  > .MuiDialogContent-root {
+    /* Fixes padding between content and header */
+    padding-top: 7px;
+    padding-right: var(--demo-padding-4);
+  }
+}
+
+/* Create invoice popup */
+.MuiDialog-container.MuiDialog-scrollPaper.monite-css-1sep8xo-MuiDialog-container:not(.MuiDialog-container__align-right) {
+  > .MuiPaper-root {
+    background-color: var(--demo-light-gray);
+
+    > h2 {
+      padding: 12px var(--demo-padding);
+    }
+
+    > .MuiDivider-root {
+      display: none;
+    }
+
+    > .MuiDialogContent-root {
+      background-color: white;
+      margin-left: 80px;
+      margin-right: 80px;
+      border-radius: var(--demo-padding-2);
+      padding: 56px 80px;
+    }
+  }
+}
+
+.Monite-Dashboard {
+  img {
+    max-width: 100%;
+    height: auto;
+
+    &:last-child {
+      margin-bottom: var(--demo-padding-3);
+    }
+  }
+}
+
+.Monite-Cash-On-Accounts-Account-Balance {
+  width: 100%;
+
+  .Monite-Cash-On-Accounts-Account-Balance-Account-Name {
+    h4 {
+      font-size: 16px;
+      margin: 0;
+    }
+
+    aside {
+      font-size: 14px;
+    }
+  }
+}
+
+.Monite-Page-root {
+  background-color: var(--demo-light-gray) !important;
+
+  .Monite-ContentContainer {
+    margin: 0;
+    overflow-y: auto;
+  }
 }

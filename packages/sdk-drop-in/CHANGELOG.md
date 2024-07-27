@@ -1,5 +1,18 @@
 # @monite/sdk-drop-in
 
+## 1.5.0
+
+### Minor Changes
+
+- 7aeecda1: feat(DEV-11277): Implement the Monite Iframe Application
+- a9dd6747: feat(DEV-11277): add DropIn `disabled` property support
+
+  This allows deferred setting of attributes like `component` or `api-url` if they are not known at the time of initial page rendering.
+
+### Patch Changes
+
+- @monite/sdk-api@3.15.0
+
 ## 1.4.8
 
 ### Patch Changes

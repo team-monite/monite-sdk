@@ -36,7 +36,7 @@ const paletteDark: PaletteOptions = {
     light: '#F4F8FF',
   },
   background: {
-    menu: '#F1F2F505',
+    menu: '#F1F2F5',
   },
   neutral: {
     '80': '#B8B8B8',
@@ -93,11 +93,13 @@ const typographyDark = deepmerge(typography, {
 const components: Components<Omit<Theme, 'components'>> = {
   MuiDrawer: {
     styleOverrides: {
-      root: {
-        '&.LayoutNavigationDrawer .MuiPaper-root': {
-          borderRight: 0,
-        },
-      },
+      root: ({ theme }) => ({
+        backgroundColor: theme.palette.background.menu,
+      }),
+      paper: ({ theme }) => ({
+        backgroundColor: theme.palette.background.menu,
+        borderRight: 0,
+      }),
     },
   },
   MuiList: {
@@ -149,6 +151,39 @@ const components: Components<Omit<Theme, 'components'>> = {
         border: 'none',
         borderRadius: 16,
         width: 240,
+      },
+    },
+  },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        borderRadius: `20px !important`,
+        minHeight: '40px',
+        '& .MuiInputBase-input': {
+          height: '40px',
+          padding: '0 14px', // Adjust padding if needed
+          boxSizing: 'border-box',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          border: 'none',
+          backgroundColor: 'rgba(0, 0, 0, 0.02)',
+        },
+      },
+    },
+  },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        backgroundColor: '#F4F4FE',
+        borderRadius: '4px',
+        color: '#3737FF',
+        fontSize: '14px',
+        lineHeight: '16px',
+        fontWeight: 500,
+        padding: '7px 8px',
+      },
+      label: {
+        padding: '0',
       },
     },
   },

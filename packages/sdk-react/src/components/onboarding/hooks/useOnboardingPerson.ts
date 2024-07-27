@@ -203,7 +203,6 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     if (!personId) throw new Error('Person id is not defined');
 
     await deletePersonMutation({
-      body: undefined,
       path: { person_id: personId },
     });
 

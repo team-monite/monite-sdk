@@ -8,14 +8,13 @@ import {
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { payablesDefaultQueryConfig } from '../consts';
 
 export type PayableDetailsPermissions =
   | 'edit'
@@ -214,14 +213,33 @@ export function usePayableDetails({
     onApproved,
   ]);
 
+  const cachedPayable = api.payables.getPayablesId.getQueryData(
+    {
+      path: { payable_id: payableId ?? '' },
+    },
+    queryClient
+  );
+
+  const isOcrProcessing =
+    cachedPayable && isPayableInOCRProcessing(cachedPayable);
+
   const {
     data: payable,
     error: payableQueryError,
     isLoading,
   } = api.payables.getPayablesId.useQuery(
     { path: { payable_id: payableId ?? '' } },
-    { enabled: !!payableId, ...payablesDefaultQueryConfig }
+    {
+      enabled: !!payableId,
+      refetchInterval: isOcrProcessing ? 2_000 : 15_000,
+      refetchOnMount: true,
+    }
   );
+
+  useEffect(() => {
+    if (isOcrProcessing)
+      return () => void api.payables.getPayables.invalidateQueries(queryClient);
+  }, [api, isOcrProcessing, queryClient]);
 
   const { data: lineItemsData } = api.payables.getPayablesIdLineItems.useQuery(
     {
@@ -479,10 +497,6 @@ export function usePayableDetails({
           permissions.push('reject', 'approve');
         }
 
-        if (isCancelAvailable) {
-          permissions.push('cancel');
-        }
-
         setPermissions(permissions);
 
         break;
@@ -551,7 +565,7 @@ export function usePayableDetails({
       {
         onSuccess: (createdPayable) => {
           toast.success(
-            t(i18n)`Payable "${createdPayable.document_id}" was created`
+            t(i18n)`Payable "${createdPayable.document_id}" has been created`
           );
         },
       }
@@ -606,7 +620,7 @@ export function usePayableDetails({
       {
         onSuccess: (updatedPayable) => {
           toast.success(
-            t(i18n)`Payable "${updatedPayable.document_id}" was updated`
+            t(i18n)`Payable "${updatedPayable.document_id}" has been updated`
           );
         },
       }
@@ -672,7 +686,6 @@ export function usePayableDetails({
           lineItemsMutation.push(
             deleteLineItemMutation.mutateAsync({
               path: { payable_id: payable.id, line_item_id: defaultValue.id },
-              body: undefined,
             })
           );
         }
@@ -696,12 +709,11 @@ export function usePayableDetails({
       await cancelMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was canceled`
+              t(i18n)`Payable "${payable.document_id}" has been canceled`
             );
           },
         }
@@ -716,12 +728,11 @@ export function usePayableDetails({
       await submitMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was submitted`
+              t(i18n)`Payable "${payable.document_id}" has been submitted`
             );
           },
         }
@@ -736,12 +747,11 @@ export function usePayableDetails({
       await rejectMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was rejected`
+              t(i18n)`Payable "${payable.document_id}" has been rejected`
             );
           },
         }
@@ -756,12 +766,11 @@ export function usePayableDetails({
       await approveMutation.mutateAsync(
         {
           path: { payable_id: payableId },
-          body: undefined,
         },
         {
           onSuccess: (payable) => {
             toast.success(
-              t(i18n)`Payable "${payable.document_id}" was approved`
+              t(i18n)`Payable "${payable.document_id}" has been approved`
             );
           },
         }

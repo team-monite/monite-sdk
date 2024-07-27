@@ -18,7 +18,6 @@ import {
 import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 
-import { payablesDefaultQueryConfig } from '../consts';
 import { PayablesTable } from './PayablesTable';
 
 jest.useFakeTimers();
@@ -329,7 +328,7 @@ describe('PayablesTable', () => {
        *  to wait until the table will be re-fetched
        *  and new data will come
        */
-      jest.advanceTimersByTime(payablesDefaultQueryConfig.refetchInterval);
+      jest.advanceTimersByTime(2_000);
 
       expect(
         await screen.findByText(String(resultItem!.document_id))

@@ -124,11 +124,13 @@ const ExistingApprovalPolicyDetailsBase = ({
             overflow: 'auto',
           }}
         >
-          <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
-            <pre>
-              {approvalPolicy?.trigger &&
-                JSON.stringify(approvalPolicy.trigger, null, 2)}
-            </pre>
+          <Typography
+            variant="body1"
+            sx={{ fontFamily: 'monospace' }}
+            component="pre"
+          >
+            {approvalPolicy?.trigger &&
+              JSON.stringify(approvalPolicy.trigger, null, 2)}
           </Typography>
         </Paper>
         <Typography
@@ -167,11 +169,13 @@ const ExistingApprovalPolicyDetailsBase = ({
             overflow: 'auto',
           }}
         >
-          <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
-            <pre>
-              {approvalPolicy?.script &&
-                JSON.stringify(approvalPolicy.script, null, 2)}
-            </pre>
+          <Typography
+            variant="body1"
+            sx={{ fontFamily: 'monospace' }}
+            component="pre"
+          >
+            {approvalPolicy?.script &&
+              JSON.stringify(approvalPolicy.script, null, 2)}
           </Typography>
         </Paper>
       </DialogContent>

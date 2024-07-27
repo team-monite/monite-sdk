@@ -10,7 +10,7 @@ import {
   useCounterpartVatList,
   useDeleteCounterpart,
 } from '@/core/queries/useCounterpart';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -80,7 +80,6 @@ export function useCounterpartView({
 
       return deleteMutate(
         {
-          body: undefined,
           path: {
             counterpart_id: counterpart.id,
           },
@@ -112,8 +111,7 @@ export function useCounterpartView({
 
   const title = useMemo((): string => {
     if (isLoading) return t(i18n)`Loading...`;
-    if (counterpartError)
-      return getLegacyAPIErrorMessage(counterpartError) as string;
+    if (counterpartError) return getAPIErrorMessage(i18n, counterpartError);
     if (counterpart) return getCounterpartName(counterpart);
     return '';
   }, [isLoading, i18n, counterpartError, counterpart]);
