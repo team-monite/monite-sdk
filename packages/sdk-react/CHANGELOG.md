@@ -1,5 +1,17 @@
 # @monite/sdk-react
 
+## 3.15.0
+
+### Minor Changes
+
+- 34baadde: feat(DEV-8980): display OCR error message in PayableDetails
+- d8dc9a26: feat(DEV-11087): add ApprovalRequestsTable component
+
+### Patch Changes
+
+- f207a10e: fix: remove unnecessary `submitInvoice` in "Save" invoice action
+  - @monite/sdk-api@3.15.0
+
 ## 3.14.1
 
 ### Patch Changes
