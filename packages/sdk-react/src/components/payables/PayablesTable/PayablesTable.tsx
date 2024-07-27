@@ -26,7 +26,6 @@ import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
-import { payablesDefaultQueryConfig } from '../consts';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
@@ -87,7 +86,7 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -108,36 +107,41 @@ const PayablesTableBase = ({
       entityUserId: user?.id,
     });
 
+  const payablesQueryParameters = api.payables.getPayables.getQueryKey({
+    query: {
+      order: 'desc',
+      limit: pageSize,
+      pagination_token: currentPaginationToken || undefined,
+      sort: 'created_at',
+      // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
+      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+      due_date: currentFilter[FILTER_TYPE_DUE_DATE]
+        ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
+            representation: 'date',
+          })
+        : undefined,
+      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+    },
+  });
+
   const {
     data: payables,
     isLoading,
     isError,
     error,
-  } = api.payables.getPayables.useQuery(
-    {
-      query: {
-        order: 'desc',
-        limit: pageSize,
-        pagination_token: currentPaginationToken || undefined,
-        sort: 'created_at',
-        // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
-        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-          : undefined,
-        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-          : undefined,
-        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
-        due_date: currentFilter[FILTER_TYPE_DUE_DATE]
-          ? formatISO(currentFilter[FILTER_TYPE_DUE_DATE] as Date, {
-              representation: 'date',
-            })
-          : undefined,
-        document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      },
-    },
-    { ...payablesDefaultQueryConfig }
-  );
+  } = api.payables.getPayables.useQuery(payablesQueryParameters, {
+    refetchInterval: api.payables.getPayables
+      .getQueryData(payablesQueryParameters, queryClient)
+      ?.data.filter(isPayableInOCRProcessing).length
+      ? 2_000
+      : undefined,
+  });
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {

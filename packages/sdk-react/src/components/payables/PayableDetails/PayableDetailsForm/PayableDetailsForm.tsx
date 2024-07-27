@@ -9,6 +9,7 @@ import {
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -177,6 +178,36 @@ const PayableDetailsFormBase = forwardRef<
     useEffect(() => {
       reset(prepareDefaultValues(formatFromMinorUnits, payable, lineItems));
     }, [payable, formatFromMinorUnits, reset, lineItems]);
+
+    const { api } = useMoniteContext();
+    const { data: matchingToOCRCounterpartId } =
+      api.counterparts.getCounterparts.useQuery(
+        {
+          query: {
+            counterpart_name__icontains: payable?.counterpart_raw_data?.name,
+            limit: 1,
+          },
+        },
+        {
+          enabled: Boolean(
+            !payable?.counterpart_id && payable?.counterpart_raw_data?.name
+          ),
+          select: (data) => data.data.at(0)?.id,
+        }
+      );
+
+    useEffect(() => {
+      if (!matchingToOCRCounterpartId) return;
+      const getFieldState = methods.getFieldState;
+      if (getFieldState('counterpart').isTouched) return;
+      const setValue = methods.setValue;
+      setValue('counterpart', matchingToOCRCounterpartId);
+    }, [
+      matchingToOCRCounterpartId,
+      methods.resetField,
+      methods.getFieldState,
+      methods.setValue,
+    ]);
 
     const { tagQuery, counterpartQuery, counterpartBankAccountQuery } =
       usePayableDetailsForm({

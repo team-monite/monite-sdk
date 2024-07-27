@@ -8,14 +8,13 @@ import {
   PayableDetailsFormFields,
   prepareLineItemSubmit,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import { isPayableInOCRProcessing } from '@/components/payables/utils/isPayableInOcr';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-
-import { payablesDefaultQueryConfig } from '../consts';
 
 export type PayableDetailsPermissions =
   | 'edit'
@@ -214,14 +213,33 @@ export function usePayableDetails({
     onApproved,
   ]);
 
+  const cachedPayable = api.payables.getPayablesId.getQueryData(
+    {
+      path: { payable_id: payableId ?? '' },
+    },
+    queryClient
+  );
+
+  const isOcrProcessing =
+    cachedPayable && isPayableInOCRProcessing(cachedPayable);
+
   const {
     data: payable,
     error: payableQueryError,
     isLoading,
   } = api.payables.getPayablesId.useQuery(
     { path: { payable_id: payableId ?? '' } },
-    { enabled: !!payableId, ...payablesDefaultQueryConfig }
+    {
+      enabled: !!payableId,
+      refetchInterval: isOcrProcessing ? 2_000 : 15_000,
+      refetchOnMount: true,
+    }
   );
+
+  useEffect(() => {
+    if (isOcrProcessing)
+      return () => void api.payables.getPayables.invalidateQueries(queryClient);
+  }, [api, isOcrProcessing, queryClient]);
 
   const { data: lineItemsData } = api.payables.getPayablesIdLineItems.useQuery(
     {

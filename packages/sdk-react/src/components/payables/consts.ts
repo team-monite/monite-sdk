@@ -11,10 +11,6 @@ import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined';
 import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
 import { ChipTypeMap, type SvgIcon } from '@mui/material';
 
-export const payablesDefaultQueryConfig = {
-  refetchInterval: 15_000,
-};
-
 export const ROW_TO_STATUS_MUI_MAP: {
   [key in components['schemas']['PayableStateEnum']]: ChipTypeMap['props']['color'];
 } = {
