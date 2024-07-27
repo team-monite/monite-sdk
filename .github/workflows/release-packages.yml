@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_BRANCH: "feat/DEV-11981-payment-reminders-2"
+  RELEASE_BRANCH: "main"
 
 jobs:
   npm-publish:
