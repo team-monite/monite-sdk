@@ -245,12 +245,12 @@ const SelectReminderLayout = ({
   const { i18n } = useLingui();
 
   return (
-    <Grid container alignItems="center" spacing={1}>
+    <Grid container alignItems="stretch" spacing={1}>
       <Grid item xs={onUpdate ? 10 : 12}>
         {children}
       </Grid>
       {onUpdate && (
-        <Grid item xs={2}>
+        <Grid item xs={2} sx={{ display: 'flex' }}>
           <Button
             variant="outlined"
             disabled={updateDisabled}
