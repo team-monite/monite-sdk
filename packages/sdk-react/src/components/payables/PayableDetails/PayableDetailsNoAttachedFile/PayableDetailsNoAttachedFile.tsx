@@ -9,7 +9,7 @@ export const PayableDetailsNoAttachedFile = () => {
   const { i18n } = useLingui();
   return (
     <Box
-      className="Monite__PayableDetailsNoAttachedFile"
+      className="Monite-PayableDetailsNoAttachedFile"
       sx={{
         width: '100%',
         height: '100%',

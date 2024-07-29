@@ -233,7 +233,7 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
 
     // eslint-disable-next-line lingui/no-unlocalized-strings
-    const className = 'Monite__PayableDetailsForm';
+    const className = 'Monite-PayableDetailsForm';
 
     return (
       <>
@@ -282,7 +282,7 @@ const PayableDetailsFormBase = forwardRef<
               })}
             >
               <Grid container spacing={3}>
-                <Grid item xs={12} className={className + '__Details'}>
+                <Grid item xs={12} className={className + '-Details'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Details`}
                   </Typography>
@@ -294,7 +294,7 @@ const PayableDetailsFormBase = forwardRef<
                         render={({ field, fieldState: { error } }) => (
                           <TextField
                             {...field}
-                            className={className + '__Details__InvoiceNumber'}
+                            className={className + '-Details-InvoiceNumber'}
                             id={field.name}
                             label={t(i18n)`Invoice Number`}
                             variant="outlined"
@@ -310,7 +310,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            className={className + '__Details__Counterpart'}
+                            className={className + '-Details-Counterpart'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -352,7 +352,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            className={className + '__Details__BankAccount'}
+                            className={className + '-Details-BankAccount'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -395,7 +395,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <MuiDatePicker
-                              className={className + '__Details__InvoiceDate'}
+                              className={className + '-Details-InvoiceDate'}
                               maxDate={currentDueDate}
                               slotProps={{
                                 popper: { container: root },
@@ -423,7 +423,7 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <MuiDatePicker
-                            className={className + '__Details__DueDate'}
+                            className={className + '-Details-DueDate'}
                             minDate={currentInvoiceDate}
                             slotProps={{
                               popper: { container: root },
@@ -457,7 +457,7 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              className={className + '__Details__Tags'}
+                              className={className + '-Details-Tags'}
                               variant="outlined"
                               fullWidth
                               required
@@ -501,7 +501,7 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-                <Grid item xs={12} className={className + '__Items'}>
+                <Grid item xs={12} className={className + '-Items'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Items`}
                   </Typography>
@@ -509,11 +509,11 @@ const PayableDetailsFormBase = forwardRef<
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
-                <Grid item xs={12} className={className + '__Totals'}>
+                <Grid item xs={12} className={className + '-Totals'}>
                   <Paper variant="outlined">
                     <Table>
                       <TableBody>
-                        <TableRow className={className + '__Totals__Subtotal'}>
+                        <TableRow className={className + '-Totals-Subtotal'}>
                           <TableCell>{t(i18n)`Subtotal`}</TableCell>
                           <TableCell align="right">
                             {totals.subtotal && currentCurrency
@@ -527,7 +527,7 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow className={className + '__Totals__Taxes'}>
+                        <TableRow className={className + '-Totals-Taxes'}>
                           <TableCell>{t(i18n)`Taxes`}</TableCell>
                           <TableCell align="right">
                             {totals.taxes && currentCurrency
@@ -542,7 +542,7 @@ const PayableDetailsFormBase = forwardRef<
                           </TableCell>
                         </TableRow>
                         <TableRow
-                          className={className + '__Totals__Total'}
+                          className={className + '-Totals-Total'}
                           sx={{ '& td': { fontWeight: 500 } }}
                         >
                           <TableCell>{t(i18n)`Total`}</TableCell>
