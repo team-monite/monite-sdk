@@ -11,6 +11,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -96,11 +97,14 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-InvoicesTable';
+
   return (
     <>
       <Box
         sx={{ padding: 2, width: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
       >
         <Box sx={{ marginBottom: 2 }}>
           <ReceivableFilters
@@ -118,6 +122,7 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
+          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -134,6 +139,7 @@ const InvoicesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
+                className={className + '-Pagination'}
                 nextPage={invoices?.next_pagination_token}
                 prevPage={invoices?.prev_pagination_token}
                 paginationModel={{
