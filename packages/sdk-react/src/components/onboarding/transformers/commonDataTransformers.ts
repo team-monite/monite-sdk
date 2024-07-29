@@ -35,7 +35,7 @@ export const mapValueToField = (
   if (
     (typeof value === 'string' || value instanceof Date) &&
     key === 'date_of_birth' &&
-    isValid(value)
+    isValid(new Date(value))
   ) {
     return formatDate(new Date(value), 'yyyy-MM-dd');
   }
