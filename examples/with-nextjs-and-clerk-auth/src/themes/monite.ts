@@ -124,6 +124,19 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        borderRadius: `8px`,
+        minHeight: '40px',
+        '& .MuiInputBase-input': {
+          height: '40px',
+          padding: '0 14px', // Adjust padding if needed
+          boxSizing: 'border-box',
+        },
+      },
+    },
+  },
   MuiFormControl: {
     styleOverrides: {
       root: {
@@ -221,23 +234,6 @@ const components: Components<Omit<Theme, 'components'>> = {
         border: 'none',
         borderRadius: 16,
         width: 240,
-      },
-    },
-  },
-  MuiInputBase: {
-    styleOverrides: {
-      root: {
-        borderRadius: `8px`,
-        minHeight: '40px',
-        '& .MuiInputBase-input': {
-          height: '40px',
-          padding: '0 14px', // Adjust padding if needed
-          boxSizing: 'border-box',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          // border: 'none',
-          // backgroundColor: 'rgba(0, 0, 0, 0.02)',
-        },
       },
     },
   },
