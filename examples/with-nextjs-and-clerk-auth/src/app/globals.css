@@ -3,8 +3,10 @@
   --demo-padding-2: calc(var(--demo-padding) * 2);
   --demo-padding-3: calc(var(--demo-padding) * 3);
   --demo-padding-4: calc(var(--demo-padding) * 4);
+  --demo-padding-5: calc(var(--demo-padding) * 5);
   --demo-button-blue: #3737FF;
   --demo-light-gray: #f9f9f9;
+  --demo-form-header: 88px;
 }
 
 body,
@@ -94,6 +96,7 @@ html {
       max-height: 100%;
 
       /* DataGrid */
+
       > div:last-child {
         flex-basis: 0;
         flex-grow: 2;
@@ -132,9 +135,11 @@ html {
   max-height: 100%;
 
   /* Header */
+
   > .MuiStack-root:first-child {
 
     /* Default button style */
+
     aside button {
       background-color: var(--demo-button-blue);
       color: #ffffff;
@@ -160,6 +165,7 @@ html {
     max-height: 100%;
 
     /* Filter pane styles */
+
     > div:first-child {
       > .MuiGrid-root:first-child {
         > .MuiGrid-item:nth-child(2) {
@@ -169,10 +175,12 @@ html {
     }
 
     /* DataGrid */
+
     > .MuiDataGrid-root {
       margin-left: 5px;
 
       /* Align avatar with column header */
+
       .MuiDataGrid-cell--withRenderer .MuiChip-root {
         .MuiAvatar-root.MuiChip-avatar {
           margin-left: calc(var(--demo-padding) * -1);
@@ -208,6 +216,7 @@ html {
     padding: 12px var(--demo-padding-3);
 
     /* Hide toolbar bottom border on the dialog popup */
+
     & + .MuiDivider-root {
       opacity: 0;
     }
@@ -216,6 +225,7 @@ html {
       padding: 0 var(--demo-padding) 0 var(--demo-padding-3);
 
       /* Fixes gap between invoice # and status indicator */
+
       > .MuiIconButton-root + .MuiBox-root {
         gap: var(--demo-padding-3);
 
@@ -234,25 +244,49 @@ html {
 }
 
 /* Create invoice popup */
-.MuiDialog-container.MuiDialog-scrollPaper.monite-css-1sep8xo-MuiDialog-container:not(.MuiDialog-container__align-right) {
-  > .MuiPaper-root {
-    background-color: var(--demo-light-gray);
+.Monite-Receivables-Dialog-CreateReceivable {
 
-    > h2 {
-      padding: 12px var(--demo-padding);
-    }
+  .Monite-CreateReceivable-Title {
+    height: var(--demo-form-header);
+  }
 
-    > .MuiDivider-root {
-      display: none;
-    }
+  .Monite-CreateReceivable-Content {
+    margin: 0;
+    padding: var(--demo-padding-5) 180px 111px 180px;
 
-    > .MuiDialogContent-root {
-      background-color: white;
-      margin-left: 80px;
-      margin-right: 80px;
-      border-radius: var(--demo-padding-2);
-      padding: 56px 80px;
+    > form > .MuiStack-root {
+      margin-top: 0;
+
+      > h2 {
+        font-size: 48px;
+        padding: 12px 0;
+      }
+
+      .Monite-CreateReceivable-CustomerSection,
+      .Monite-CreateReceivable-EntitySection,
+      .Monite-CreateReceivable-ItemsSection,
+      .Monite-CreateReceivable-PaymentSection {
+        > h6 {
+          font-size: 24px;
+          height: 56px;
+          margin: 0;
+          padding: var(--demo-padding) var(--demo-padding) var(--demo-padding-2) var(--demo-padding);
+
+          & + .MuiCard-root {
+            margin-top: 0;
+          }
+        }
+
+        .MuiCardContent-root {
+          padding: var(--demo-padding-4);
+
+        }
+      }
     }
+  }
+
+  .Monite-CreateReceivable-Divider {
+    display: none;
   }
 }
 
