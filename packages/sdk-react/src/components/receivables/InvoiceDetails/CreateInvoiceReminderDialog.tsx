@@ -4,8 +4,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';
 
-import { CreateBeforeDueDateReminder } from './CreateReceivable/sections/components/CreateReminder/CreateBeforeDueDateReminder';
-import { CreateOverdueReminder } from './CreateReceivable/sections/components/CreateReminder/CreateOverdueReminder';
+import { BeforeDueDateReminderForm } from './CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm';
+import { OverdueReminderForm } from './CreateReceivable/sections/components/ReminderForm/OverdueReminderForm';
 
 interface ReminderDetailsDialog extends MoniteDialogProps {
   /** Invoice Reminder type */
@@ -35,7 +35,7 @@ export const CreateInvoiceReminderDialog = ({
         </Alert>
       )}
       {reminderType === 'payment' && (
-        <CreateBeforeDueDateReminder
+        <BeforeDueDateReminderForm
           onClose={onClose}
           onCreate={(reminderId) => {
             if (!reminderType) throw new Error('Reminder type is not provided');
@@ -48,7 +48,7 @@ export const CreateInvoiceReminderDialog = ({
         />
       )}
       {reminderType === 'overdue' && (
-        <CreateOverdueReminder
+        <OverdueReminderForm
           onClose={onClose}
           onCreate={(reminderId) => {
             if (!reminderType) throw new Error('Reminder type is not provided');

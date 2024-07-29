@@ -6,8 +6,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Alert } from '@mui/material';
 
-import { CreateBeforeDueDateReminder } from './CreateReceivable/sections/components/CreateReminder/CreateBeforeDueDateReminder';
-import { CreateOverdueReminder } from './CreateReceivable/sections/components/CreateReminder/CreateOverdueReminder';
+import { BeforeDueDateReminderForm } from './CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm';
+import { OverdueReminderForm } from './CreateReceivable/sections/components/ReminderForm/OverdueReminderForm';
 
 interface ReminderDetailsDialog extends MoniteDialogProps {
   reminderId: string;
@@ -37,7 +37,7 @@ export const EditInvoiceReminderDialog = ({
         </Alert>
       )}
       {reminderType === 'payment' && (
-        <CreateBeforeDueDateReminder
+        <BeforeDueDateReminderForm
           reminderId={reminderId}
           onUpdate={(id) => {
             onClose();
@@ -50,7 +50,7 @@ export const EditInvoiceReminderDialog = ({
         />
       )}
       {reminderType === 'overdue' && (
-        <CreateOverdueReminder
+        <OverdueReminderForm
           reminderId={reminderId}
           onUpdate={(id) => {
             onClose();

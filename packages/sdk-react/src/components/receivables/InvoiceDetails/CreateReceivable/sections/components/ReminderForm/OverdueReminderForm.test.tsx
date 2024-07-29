@@ -3,18 +3,20 @@ import { requestFn } from '@openapi-qraft/react';
 import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { CreateBeforeDueDateReminder } from './CreateBeforeDueDateReminder';
+import { OverdueReminderForm } from './OverdueReminderForm';
 
 const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
-describe.skip('CreateBeforeDueDateReminder', () => {
+describe('CreateOverdueReminder', () => {
   describe('#FormValidation', () => {
     test('should show error message when fields are empty and form is submitted', async () => {
-      renderWithClient(<CreateBeforeDueDateReminder />);
+      renderWithClient(<OverdueReminderForm />);
 
       const createButton = screen.getByRole('button', {
         name: /create/i,
       });
+
+      fireEvent.click(screen.getByText(/Add reminder/i));
 
       fireEvent.click(createButton);
 
@@ -24,60 +26,58 @@ describe.skip('CreateBeforeDueDateReminder', () => {
     });
   });
   test('show reminder form when select menu item is clicked', () => {
-    renderWithClient(<CreateBeforeDueDateReminder />);
+    renderWithClient(<OverdueReminderForm />);
 
-    expect(screen.queryByText('Discount date 1')).not.toBeInTheDocument();
+    expect(screen.queryByText('Reminder 1')).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('Add reminder'));
-
-    fireEvent.click(screen.getByText('Discount date 1'));
+    fireEvent.click(screen.getByText(/Add reminder/i));
 
     expect(
-      screen.getByRole('heading', { name: /Discount date 1/i })
+      screen.getByRole('heading', { name: /Reminder 1/i })
     ).toBeInTheDocument();
   });
 
   test('submits the form with valid data', async () => {
     const user = userEvent.setup();
 
-    renderWithClient(<CreateBeforeDueDateReminder />);
+    renderWithClient(<OverdueReminderForm />);
 
     triggerChangeInput('Preset name', 'Test Reminder');
 
+    fireEvent.click(screen.getByText(/Add reminder/i));
+
     fireEvent.change(screen.getByLabelText(/remind/i), {
-      target: { value: '15' },
-    });
-    fireEvent.change(screen.getByRole('textbox', { name: 'Subject' }), {
-      target: { value: 'Test Subject final' },
-    });
-    fireEvent.change(screen.getByRole('textbox', { name: 'Body' }), {
-      target: { value: 'Test Body final' },
-    });
-
-    fireEvent.click(screen.getByText('Add reminder'));
-    fireEvent.click(screen.getByText('Discount date 1'));
-
-    fireEvent.change(screen.getAllByLabelText(/remind/i)[1], {
       target: { value: '5' },
     });
-    fireEvent.change(screen.getAllByRole('textbox', { name: 'Subject' })[1], {
+    fireEvent.change(screen.getByRole('textbox', { name: 'Subject' }), {
       target: { value: 'Test Subject 1' },
     });
-    fireEvent.change(screen.getAllByRole('textbox', { name: 'Body' })[1], {
+    fireEvent.change(screen.getByRole('textbox', { name: 'Body' }), {
       target: { value: 'Test Body 1' },
     });
 
-    fireEvent.click(screen.getByText('Add reminder'));
-    fireEvent.click(screen.getByText('Discount date 2'));
+    fireEvent.click(screen.getByText(/Add reminder/i));
 
-    fireEvent.change(screen.getAllByLabelText(/remind/i)[2], {
+    fireEvent.change(screen.getAllByLabelText(/remind/i)[1], {
       target: { value: '10' },
     });
-    fireEvent.change(screen.getAllByRole('textbox', { name: 'Subject' })[2], {
+    fireEvent.change(screen.getAllByRole('textbox', { name: 'Subject' })[1], {
       target: { value: 'Test Subject 2' },
     });
-    fireEvent.change(screen.getAllByRole('textbox', { name: 'Body' })[2], {
+    fireEvent.change(screen.getAllByRole('textbox', { name: 'Body' })[1], {
       target: { value: 'Test Body 2' },
+    });
+
+    fireEvent.click(screen.getByText(/Add reminder/i));
+
+    fireEvent.change(screen.getAllByLabelText(/remind/i)[2], {
+      target: { value: '15' },
+    });
+    fireEvent.change(screen.getAllByRole('textbox', { name: 'Subject' })[2], {
+      target: { value: 'Test Subject 3' },
+    });
+    fireEvent.change(screen.getAllByRole('textbox', { name: 'Body' })[2], {
+      target: { value: 'Test Body 3' },
     });
 
     const createButton = screen.getByRole('button', {
@@ -88,21 +88,23 @@ describe.skip('CreateBeforeDueDateReminder', () => {
 
     expect(requestFnMock.mock.lastCall?.[1].body).toMatchObject({
       name: 'Test Reminder',
-      term_1_reminder: {
-        days_before: 5,
-        subject: 'Test Subject 1',
-        body: 'Test Body 1',
-      },
-      term_2_reminder: {
-        days_before: 10,
-        subject: 'Test Subject 2',
-        body: 'Test Body 2',
-      },
-      term_final_reminder: {
-        days_before: 15,
-        subject: 'Test Subject final',
-        body: 'Test Body final',
-      },
+      terms: [
+        {
+          days_after: 5,
+          subject: 'Test Subject 1',
+          body: 'Test Body 1',
+        },
+        {
+          days_after: 10,
+          subject: 'Test Subject 2',
+          body: 'Test Body 2',
+        },
+        {
+          days_after: 15,
+          subject: 'Test Subject 3',
+          body: 'Test Body 3',
+        },
+      ],
     });
   });
 });

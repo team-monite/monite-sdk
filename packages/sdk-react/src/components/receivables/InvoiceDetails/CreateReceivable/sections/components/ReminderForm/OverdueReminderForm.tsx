@@ -44,7 +44,7 @@ interface UpdateOverdueReminderProps extends OverdueReminderBasePropsProps {
   onUpdate?(reminderId: string): void;
 }
 
-export const CreateOverdueReminder = ({
+export const OverdueReminderForm = ({
   reminderId,
   ...restProps
 }: CreateOverdueReminderProps | UpdateOverdueReminderProps) => {
