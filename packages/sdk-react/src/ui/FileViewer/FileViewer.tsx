@@ -30,7 +30,7 @@ const ErrorComponent = ({
 
   return (
     <Box
-      className="Monite__ErrorComponent"
+      className="Monite-ErrorComponent"
       sx={{
         padding: 4,
       }}
@@ -74,7 +74,7 @@ export const FileViewer = ({
 
   return (
     <img
-      className="Monite__ImageFileViewer"
+      className="Monite-ImageFileViewer"
       src={url}
       alt={name}
       loading="lazy"
@@ -104,7 +104,7 @@ const PdfFileViewer = ({ url }: { url: string }) => {
 
   return (
     <div
-      className="Monite__PdfFileViewer"
+      className="Monite-PdfFileViewer"
       ref={pdfRef}
       style={{ width: '100%', minHeight: '100%', border: 'none' }}
     />
