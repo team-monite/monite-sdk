@@ -4,24 +4,26 @@ import { useFormContext } from 'react-hook-form';
 import { components } from '@/api';
 import { ReminderDetails } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/ReminderDetail';
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartById } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,
   Button,
   Card,
   CardContent,
   Grid,
+  MenuItem,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
 
 import type { SectionGeneralProps } from '../../Section.types';
-import { AutocompleteWithCreateItem } from './AutocompleteWithCreateItem';
 
 const usePaymentReminderById = (id: string | undefined | null) => {
   const { api } = useMoniteContext();
@@ -82,13 +84,15 @@ const ReminderSectionContent = ({
     action: 'create',
   });
 
-  const { control, watch, resetField } =
+  const { control, watch, resetField, formState } =
     useFormContext<CreateReceivablesFormProps>();
   const counterpartId = watch('counterpart_id');
+  const paymentReminderId = watch('payment_reminder_id');
+  const overdueReminderId = watch('overdue_reminder_id');
   const { data: paymentReminder, isLoading: isPaymentReminderLoading } =
-    usePaymentReminderById(watch('payment_reminder_id'));
+    usePaymentReminderById(paymentReminderId);
   const { data: overdueReminder, isLoading: isOverdueReminderLoading } =
-    useOverdueReminderById(watch('overdue_reminder_id'));
+    useOverdueReminderById(overdueReminderId);
 
   const { data: counterpart, isLoading: isCounterpartLoading } =
     useCounterpartById(counterpartId);
@@ -126,6 +130,20 @@ const ReminderSectionContent = ({
     hasValidReminderEmailLoading,
     resetField,
   ]);
+
+  useEffect(() => {
+    if (paymentReminderId === 'create') {
+      onCreateReminder('payment');
+
+      resetField('payment_reminder_id');
+    }
+
+    if (overdueReminderId === 'create') {
+      onCreateReminder('overdue');
+
+      resetField('overdue_reminder_id');
+    }
+  }, [paymentReminderId, overdueReminderId, onCreateReminder, resetField]);
 
   const paymentReminderOptions = paymentReminders?.some(
     ({ value }) => value === paymentReminder?.id
@@ -176,10 +194,16 @@ const ReminderSectionContent = ({
             }
             onUpdate={onUpdatePaymentReminder}
           >
-            <AutocompleteWithCreateItem
+            <RHFAutocomplete
+              control={control}
               name="payment_reminder_id"
               label={t(i18n)`Before due date`}
-              options={paymentReminderOptions}
+              options={[
+                { value: 'create', label: t(i18n)`Create a reminder preset` },
+                ...paymentReminderOptions,
+              ]}
+              optionKey="value"
+              labelKey="label"
               noOptionsText={t(i18n)`No payment reminders available`}
               disabled={
                 disabled ||
@@ -187,10 +211,45 @@ const ReminderSectionContent = ({
                 !hasValidReminderEmail ||
                 !counterpart?.reminders_enabled
               }
-              createOptionLabel={t(i18n)`Create a reminder preset`}
-              createOptionDisabled={!isCreatePaymentReminderAllowed}
-              onCreate={() => onCreateReminder('payment')}
-              control={control}
+              getOptionDisabled={(option) =>
+                option.value === 'create'
+                  ? Boolean(!isCreatePaymentReminderAllowed)
+                  : false
+              }
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') return option;
+
+                if (!option.value) return '';
+                if (option.value === 'create')
+                  return t(i18n)`Create a reminder preset` ?? '';
+                return option.label || '—';
+              }}
+              renderOption={(props, option) => (
+                <MenuItem
+                  {...props}
+                  key={option.value}
+                  value={option.value}
+                  disabled={!isCreatePaymentReminderAllowed}
+                  sx={
+                    option.value === 'create'
+                      ? {
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          color: 'primary.main',
+                          whiteSpace: 'unset',
+                        }
+                      : {
+                          whiteSpace: 'unset',
+                        }
+                  }
+                >
+                  {option.value === 'create' && (
+                    <AddIcon sx={{ marginRight: 1 }} />
+                  )}
+                  {option.label}
+                </MenuItem>
+              )}
             />
           </SelectReminderLayout>
         </Grid>
@@ -203,10 +262,16 @@ const ReminderSectionContent = ({
             }
             onUpdate={onUpdateOverdueReminder}
           >
-            <AutocompleteWithCreateItem
+            <RHFAutocomplete
+              control={control}
               name="overdue_reminder_id"
               label={t(i18n)`Overdue reminders`}
-              options={overdueReminderOptions}
+              options={[
+                { value: 'create', label: t(i18n)`Create a reminder preset` },
+                ...overdueReminderOptions,
+              ]}
+              optionKey="value"
+              labelKey="label"
               noOptionsText={t(i18n)`No overdue reminders available`}
               disabled={
                 disabled ||
@@ -214,10 +279,45 @@ const ReminderSectionContent = ({
                 !hasValidReminderEmail ||
                 !counterpart?.reminders_enabled
               }
-              createOptionLabel={t(i18n)`Create a reminder preset`}
-              createOptionDisabled={!isCreateOverdueReminderAllowed}
-              onCreate={() => onCreateReminder('overdue')}
-              control={control}
+              getOptionDisabled={(option) =>
+                option.value === 'create'
+                  ? Boolean(!isCreateOverdueReminderAllowed)
+                  : false
+              }
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') return option;
+
+                if (!option.value) return '';
+                if (option.value === 'create')
+                  return t(i18n)`Create a reminder preset` ?? '';
+                return option.label || '—';
+              }}
+              renderOption={(props, option) => (
+                <MenuItem
+                  {...props}
+                  key={option.value}
+                  value={option.value}
+                  disabled={!isCreatePaymentReminderAllowed}
+                  sx={
+                    option.value === 'create'
+                      ? {
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          color: 'primary.main',
+                          whiteSpace: 'unset',
+                        }
+                      : {
+                          whiteSpace: 'unset',
+                        }
+                  }
+                >
+                  {option.value === 'create' && (
+                    <AddIcon sx={{ marginRight: 1 }} />
+                  )}
+                  {option.label}
+                </MenuItem>
+              )}
             />
           </SelectReminderLayout>
         </Grid>
