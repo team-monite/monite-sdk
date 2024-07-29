@@ -131,7 +131,7 @@ const CreateBeforeDueDateReminderComponent = ({
     }))(),
   });
 
-  const { control, handleSubmit, setValue, watch, formState } = methods;
+  const { control, handleSubmit, setValue, watch } = methods;
 
   const [
     term1ReminderFieldValue,
