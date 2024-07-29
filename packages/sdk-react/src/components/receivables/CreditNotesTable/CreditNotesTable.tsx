@@ -12,6 +12,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -75,11 +76,14 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-CreditNotesTable';
+
   return (
     <>
       <Box
         sx={{ padding: 2, width: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
       >
         <Box sx={{ marginBottom: 2 }}>
           <ReceivableFilters
@@ -88,6 +92,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
+          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -104,6 +109,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           slots={{
             pagination: () => (
               <TablePagination
+                className={className + '-Pagination'}
                 nextPage={creditNotes?.next_pagination_token}
                 prevPage={creditNotes?.prev_pagination_token}
                 paginationModel={{
