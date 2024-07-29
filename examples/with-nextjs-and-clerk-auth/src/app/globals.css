@@ -282,6 +282,48 @@ html {
 
         }
       }
+
+      .Monite-CreateReceivable-ItemsSection {
+        > .MuiCollapse-root.MuiCollapse-hidden, > .MuiPaper-root {
+          margin-top: 0;
+        }
+
+        .MuiTable-root {
+          margin: var(--demo-padding-2) 36px;
+          width: calc(100% - 72px);
+
+          th {
+            border-bottom-style: none;
+            padding: 8px 12px;
+          }
+
+          .Monite-CreateReceivable-ItemsSection-TableBody-AddItem {
+            padding: 0;
+
+            button {
+              padding: 14px 18px 14px 12px;
+              font-size: 16px;
+            }
+          }
+        }
+
+        .Monite-CreateReceivable-ItemsSection-Totals {
+          margin-top: var(--demo-padding-3);
+
+          .Monite-CreateReceivable-ItemsSection-Totals-Total {
+            padding: 12px 32px 16px 32px;
+
+            .MuiTypography-root {
+              font-size: 20px;
+              font-weight: 600;
+            }
+          }
+
+          hr {
+            margin: 0 32px;
+          }
+        }
+      }
     }
   }
 

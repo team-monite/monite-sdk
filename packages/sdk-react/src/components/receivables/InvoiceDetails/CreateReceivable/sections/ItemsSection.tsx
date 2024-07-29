@@ -47,6 +47,7 @@ interface CardTableItemProps {
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
+  className?: string;
 }
 
 /**
@@ -80,8 +81,15 @@ const CardTableItem = ({
   value,
   variant = 'body1',
   sx,
+  className,
 }: CardTableItemProps) => (
-  <Grid container direction="row" alignItems="center" sx={{ px: 4, py: 2 }}>
+  <Grid
+    container
+    direction="row"
+    alignItems="center"
+    sx={{ px: 4, py: 2 }}
+    className={className}
+  >
     <Grid item xs={4}>
       {typeof label === 'string' ? (
         <Typography variant="body1">{label}</Typography>
@@ -213,22 +221,40 @@ export const ItemsSection = ({
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader>
-            <TableHead>
+            <TableHead className={className + '-TableHead'}>
               <TableRow>
-                <TableCell>{t(i18n)`Item`}</TableCell>
-                <TableCell>{t(i18n)`Quantity`}</TableCell>
-                <TableCell>{t(i18n)`Units`}</TableCell>
-                <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                <TableCell>{t(i18n)`VAT`}</TableCell>
-                <TableCell></TableCell>
+                <TableCell className={className + '-TableHead-Item'}>{t(
+                  i18n
+                )`Item`}</TableCell>
+                <TableCell className={className + '-TableHead-Quantity'}>{t(
+                  i18n
+                )`Quantity`}</TableCell>
+                <TableCell className={className + '-TableHead-Unit'}>{t(
+                  i18n
+                )`Units`}</TableCell>
+                <TableCell
+                  className={className + '-TableHead-Price'}
+                  align="right"
+                >{t(i18n)`Price`}</TableCell>
+                <TableCell
+                  className={className + '-TableHead-Amount'}
+                  align="right"
+                >{t(i18n)`Amount`}</TableCell>
+                <TableCell className={className + '-TableHead-VAT'}>{t(
+                  i18n
+                )`VAT`}</TableCell>
+                <TableCell
+                  className={className + '-TableHead-Remove'}
+                ></TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody className={className + '-TableBody'}>
               {fields.map((field, index) => (
                 <TableRow key={field.id}>
-                  <TableCell>{field.name}</TableCell>
-                  <TableCell>
+                  <TableCell className={className + '-TableBody-Item'}>
+                    {field.name}
+                  </TableCell>
+                  <TableCell className={className + '-TableBody-Quantity'}>
                     <Controller
                       name={`line_items.${index}.quantity`}
                       control={control}
@@ -246,27 +272,33 @@ export const ItemsSection = ({
                       )}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={className + '-TableBody-Unit'}>
                     {field.measure_unit_id ? (
                       <MeasureUnit unitId={field.measure_unit_id} />
                     ) : (
                       '—'
                     )}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell
+                    className={className + '-TableBody-Price'}
+                    align="right"
+                  >
                     {field.price &&
                       formatCurrencyToDisplay(
                         field.price.value,
                         field.price.currency
                       )}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell
+                    className={className + '-TableBody-Amount'}
+                    align="right"
+                  >
                     <TotalCell
                       item={watchedLineItems[index]}
                       formatCurrencyToDisplay={formatCurrencyToDisplay}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={className + '-TableBody-VAT'}>
                     <Controller
                       name={`line_items.${index}.vat_rate_id`}
                       control={control}
@@ -312,7 +344,7 @@ export const ItemsSection = ({
                       )}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className={className + '-TableBody-Remove'}>
                     <IconButton
                       onClick={() => {
                         remove(index);
@@ -324,7 +356,10 @@ export const ItemsSection = ({
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell
+                  colSpan={7}
+                  className={className + '-TableBody-AddItem'}
+                >
                   <Button
                     startIcon={<AddIcon />}
                     onClick={handleOpenProductsTable}
@@ -355,13 +390,26 @@ export const ItemsSection = ({
           </Box>
         </Collapse>
       </Card>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <Card
+        className={className + '-Totals'}
+        variant="outlined"
+        sx={{ borderRadius: 2 }}
+      >
         <Stack>
-          <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
-          <Divider />
-          <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
+          <CardTableItem
+            className={className + '-Totals-Subtotal'}
+            label={t(i18n)`Subtotal`}
+            value={subtotalPrice}
+          />
           <Divider />
           <CardTableItem
+            className={className + '-Totals-TaxesTotal'}
+            label={t(i18n)`Taxes total`}
+            value={totalTaxes}
+          />
+          <Divider />
+          <CardTableItem
+            className={className + '-Totals-Total'}
             label={
               <Typography variant="body1" sx={{ fontWeight: 500 }}>{t(
                 i18n
@@ -374,6 +422,7 @@ export const ItemsSection = ({
         </Stack>
       </Card>
       <Dialog
+        className={className + '-Dialog-ProductsTable'}
         open={productsTableOpen}
         onClose={handleCloseProductsTable}
         alignDialog="right"
