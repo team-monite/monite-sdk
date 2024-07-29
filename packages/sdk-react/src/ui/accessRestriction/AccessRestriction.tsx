@@ -15,7 +15,7 @@ export interface AccessRestrictionProps {
 
 export const AccessRestriction = (props: AccessRestrictionProps) => {
   // eslint-disable-next-line lingui/no-unlocalized-strings
-  const className = 'Monite__AccessRestriction';
+  const className = 'Monite-AccessRestriction';
   const dialogContext = useDialog();
   const { i18n } = useLingui();
   const title = props.title ?? t(i18n)`Access Restricted`;
@@ -30,7 +30,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
   return (
     <>
       {dialogContext && (
-        <Grid container padding={2} className={className + '__InDialog-Header'}>
+        <Grid container padding={2} className={className + '-InDialog-Header'}>
           <Grid item xs={11} />
           <Grid item xs={1}>
             <IconButton
@@ -43,7 +43,7 @@ export const AccessRestriction = (props: AccessRestrictionProps) => {
           </Grid>
         </Grid>
       )}
-      <CenteredContentBox className={className + '__Content'}>
+      <CenteredContentBox className={className + '-Content'}>
         <Stack alignItems="center" spacing={2}>
           <Box>
             <LockIcon fontSize="large" color="primary" />

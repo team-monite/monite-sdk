@@ -167,7 +167,7 @@ const PayablesTableBase = ({
   }
 
   // eslint-disable-next-line lingui/no-unlocalized-strings
-  const className = 'Monite__PayablesTable';
+  const className = 'Monite-PayablesTable';
   return (
     <>
       <Box
@@ -177,7 +177,7 @@ const PayablesTableBase = ({
         }}
       >
         <Box
-          className={className + '__FiltersContainer'}
+          className={className + '-FiltersContainer'}
           sx={{
             marginBottom: 2,
           }}
@@ -185,7 +185,7 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          className={className + '__DataGrid'}
+          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -203,7 +203,7 @@ const PayablesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                className={className + '__Pagination'}
+                className={className + '-Pagination'}
                 nextPage={payables?.next_pagination_token}
                 prevPage={payables?.prev_pagination_token}
                 paginationModel={{
