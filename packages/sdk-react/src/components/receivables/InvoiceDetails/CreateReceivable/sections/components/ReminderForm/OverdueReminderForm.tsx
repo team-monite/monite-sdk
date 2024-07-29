@@ -256,7 +256,7 @@ const CreateOverdueReminderComponent = ({
                 onDelete={() => remove(index)}
               />
             ))}
-            {fields.length !== 3 && (
+            {fields.length < 3 && (
               <>
                 <Button
                   sx={{ alignSelf: 'start' }}

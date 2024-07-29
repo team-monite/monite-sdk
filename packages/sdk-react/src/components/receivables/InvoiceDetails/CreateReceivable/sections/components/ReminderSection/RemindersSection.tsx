@@ -84,7 +84,7 @@ const ReminderSectionContent = ({
     action: 'create',
   });
 
-  const { control, watch, resetField, formState } =
+  const { control, watch, resetField } =
     useFormContext<CreateReceivablesFormProps>();
   const counterpartId = watch('counterpart_id');
   const paymentReminderId = watch('payment_reminder_id');
