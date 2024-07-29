@@ -57,7 +57,7 @@ interface UpdateBeforeDueDateReminderProps
   onUpdate?(reminderId: string): void;
 }
 
-export const CreateBeforeDueDateReminder = ({
+export const BeforeDueDateReminderForm = ({
   reminderId,
   ...restProps
 }: CreateBeforeDueDateReminderProps | UpdateBeforeDueDateReminderProps) => {
