@@ -165,9 +165,12 @@ const ExistingReceivableDetailsBase = (
     return <ExistingInvoiceDetails {...props} />;
   }
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-ExistingReceivable';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar sx={{ width: 44, height: 44 }}>{avatarSymbol}</Avatar>
@@ -186,8 +189,8 @@ const ExistingReceivableDetailsBase = (
           )}
         </Box>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider-1'} />
+      <DialogContent className={className + '-Content'}>
         <Box mt={2}>
           <Card variant="outlined">
             <Table>
@@ -264,10 +267,14 @@ const ExistingReceivableDetailsBase = (
           </>
         )}
       </DialogContent>
-      <Divider />
-      <DialogActions data-testid="InvoiceDetailsFooter">
+      <Divider className={className + '-Divider-1'} />
+      <DialogActions
+        data-testid="InvoiceDetailsFooter"
+        className={className + '-Actions'}
+      >
         {permissions.includes('cancel') && (
           <Button
+            className={className + '-Actions-Cancel'}
             aria-label={t(i18n)`Cancel invoice`}
             variant="outlined"
             color="error"
@@ -279,6 +286,7 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('delete') && (
           <Button
+            className={className + '-Actions-Delete'}
             aria-label={t(i18n)`Delete invoice`}
             variant="outlined"
             color="error"
@@ -290,6 +298,7 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('issue') && (
           <Button
+            className={className + '-Actions-Issue'}
             aria-label={t(i18n)`Issue`}
             onClick={queryActions.issueInvoice}
             variant="outlined"
@@ -300,6 +309,7 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('mark_as_uncollectible') && (
           <Button
+            className={className + '-Actions-MarkAsUncollectible'}
             aria-label={t(i18n)`Mark as uncollectible invoice`}
             onClick={queryActions.markAsUncollectibleInvoice}
             variant="outlined"

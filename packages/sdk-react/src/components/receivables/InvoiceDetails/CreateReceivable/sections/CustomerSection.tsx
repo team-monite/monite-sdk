@@ -129,8 +129,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const contactPersonDisplayableError =
     usePrevious(contactPersonError) ?? contactPersonError;
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-CreateReceivable-CustomerSection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <CreateCounterpartDialog
         open={isCreateCounterpartOpened}
         onClose={() => {
