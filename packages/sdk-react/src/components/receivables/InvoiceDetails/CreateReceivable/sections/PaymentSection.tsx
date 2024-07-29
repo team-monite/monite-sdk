@@ -46,8 +46,11 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
     );
   }, [isPaymentTermsLoading, paymentTerms]);
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-CreateReceivable-PaymentSection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <Typography variant="subtitle2">{t(i18n)`Payment`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>

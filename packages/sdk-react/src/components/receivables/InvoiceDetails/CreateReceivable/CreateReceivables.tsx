@@ -109,9 +109,12 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     return <LoadingPage />;
   }
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-CreateReceivable';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           {dialogContext?.isDialogContent && (
             <IconButton
@@ -135,8 +138,8 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
           </Box>
         </Toolbar>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <FormProvider {...methods}>
           <form
             id={formName}

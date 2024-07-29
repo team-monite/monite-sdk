@@ -198,8 +198,11 @@ export const ItemsSection = ({
     return quantityErr.quantity.message;
   }, [error]);
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-CreateReceivable-ItemsSection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <Typography variant="subtitle2">{t(i18n)`Items`}</Typography>
       <Collapse in={Boolean(generalError)}>
         <Alert severity="error">{generalError}</Alert>
