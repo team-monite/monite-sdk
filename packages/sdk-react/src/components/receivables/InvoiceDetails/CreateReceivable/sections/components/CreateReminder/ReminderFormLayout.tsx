@@ -23,10 +23,10 @@ export const ReminderFormLayout = ({
   const { i18n } = useLingui();
 
   return (
-    <Card variant="outlined" sx={{ p: 3, borderRadius: 2 }}>
-      <Stack spacing={2} mt={2}>
+    <Card variant="outlined">
+      <Stack useFlexGap spacing={3} p={3}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="subtitle2">{title}</Typography>
+          <Typography variant="h6">{title}</Typography>
           <Button
             aria-label="delete"
             startIcon={<DeleteIcon />}
