@@ -1,9 +1,8 @@
-import { useEffect, useId } from 'react';
+import { useId } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
@@ -214,7 +213,7 @@ const CreateOverdueReminderComponent = ({
               <ReminderFormLayout
                 title={t(i18n)`Reminder ${index + 1}`}
                 key={field.id}
-                daysBeforeInput={
+                daysBefore={
                   <>
                     <InputLabel htmlFor={`terms.${index}.days_after`}>
                       <Typography>{t(i18n)`Remind`}</Typography>
@@ -234,7 +233,7 @@ const CreateOverdueReminderComponent = ({
                     </Typography>
                   </>
                 }
-                subjectInput={
+                subject={
                   <RHFTextField
                     label={t(i18n)`Subject`}
                     name={`terms.${index}.subject`}
@@ -243,7 +242,7 @@ const CreateOverdueReminderComponent = ({
                     required
                   />
                 }
-                bodyInput={
+                body={
                   <RHFTextField
                     label={t(i18n)`Body`}
                     name={`terms.${index}.body`}

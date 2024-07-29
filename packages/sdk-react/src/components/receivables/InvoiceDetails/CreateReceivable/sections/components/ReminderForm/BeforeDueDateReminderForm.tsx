@@ -1,9 +1,8 @@
-import { useState, useEffect, useId } from 'react';
+import { useId } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
-import { useDialog } from '@/components';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useMenuButton } from '@/core/hooks';
@@ -34,12 +33,6 @@ import {
 
 import { ReminderFormLayout } from './ReminderFormLayout';
 import { getBeforeDueDateValidationSchema } from './validation';
-
-interface ReminderStates {
-  isDueDate: boolean;
-  isDiscountDate1: boolean;
-  isDiscountDate2: boolean;
-}
 
 interface BeforeDueDateReminderBasePropsProps {
   onClose?(): void;
@@ -240,7 +233,7 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(termFinalReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Due date`}
-                daysBeforeInput={
+                daysBefore={
                   <>
                     <InputLabel htmlFor="term_final_reminder.days_before">
                       <Typography>{t(i18n)`Remind`}</Typography>
@@ -260,7 +253,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     </Typography>
                   </>
                 }
-                subjectInput={
+                subject={
                   <RHFTextField
                     label={t(i18n)`Subject`}
                     name="term_final_reminder.subject"
@@ -269,7 +262,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     required
                   />
                 }
-                bodyInput={
+                body={
                   <RHFTextField
                     label={t(i18n)`Body`}
                     name="term_final_reminder.body"
@@ -292,7 +285,7 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(term1ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 1`}
-                daysBeforeInput={
+                daysBefore={
                   <>
                     <InputLabel htmlFor="term_1_reminder.days_before">
                       <Typography>{t(i18n)`Remind`}</Typography>
@@ -312,7 +305,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     </Typography>
                   </>
                 }
-                subjectInput={
+                subject={
                   <RHFTextField
                     label={t(i18n)`Subject`}
                     name="term_1_reminder.subject"
@@ -321,7 +314,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     required
                   />
                 }
-                bodyInput={
+                body={
                   <RHFTextField
                     label={t(i18n)`Body`}
                     name="term_1_reminder.body"
@@ -344,7 +337,7 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(term2ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 2`}
-                daysBeforeInput={
+                daysBefore={
                   <>
                     <InputLabel htmlFor="term_2_reminder.days_before">
                       <Typography>{t(i18n)`Remind`}</Typography>
@@ -364,7 +357,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     </Typography>
                   </>
                 }
-                subjectInput={
+                subject={
                   <RHFTextField
                     label={t(i18n)`Subject`}
                     name="term_2_reminder.subject"
@@ -373,7 +366,7 @@ const CreateBeforeDueDateReminderComponent = ({
                     required
                   />
                 }
-                bodyInput={
+                body={
                   <RHFTextField
                     label={t(i18n)`Body`}
                     name="term_2_reminder.body"
