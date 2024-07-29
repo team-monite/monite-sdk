@@ -73,10 +73,13 @@ const ReceivablesBase = () => {
       entityUserId: user?.id,
     });
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-Receivables';
+
   return (
     <>
       <PageHeader
-        className="Monite-Receivables-Header"
+        className={className + '-Header'}
         title={
           <>
             {t(i18n)`Sales`}
@@ -107,6 +110,7 @@ const ReceivablesBase = () => {
         />
       )}
       <Dialog
+        className={className + '-Dialog-ReceivableDetails'}
         open={openDetails}
         fullScreen
         container={root}
@@ -116,6 +120,7 @@ const ReceivablesBase = () => {
         <InvoiceDetails id={invoiceId} />
       </Dialog>
       <Dialog
+        className={className + '-Dialog-CreateReceivable'}
         open={isCreateInvoiceDialogOpen}
         container={root}
         fullScreen

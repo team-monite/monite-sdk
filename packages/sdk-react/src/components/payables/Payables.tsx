@@ -100,10 +100,13 @@ const PayablesBase = ({
 
   const { root } = useRootElements();
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-Monite-Payables-Header';
+
   return (
     <>
       <PageHeader
-        className="Monite-Payables-Header"
+        className={className + '-Header'}
         title={
           <>
             {t(i18n)`Payables`}
@@ -180,6 +183,7 @@ const PayablesBase = ({
         }}
       />
       <Dialog
+        className={className + '-Dialog-PayableDetails'}
         open={invoiceIdDialog.open}
         container={root}
         onClose={() => {
@@ -207,6 +211,7 @@ const PayablesBase = ({
       </Dialog>
 
       <Dialog
+        className={className + '-Dialog-CreatePayable'}
         open={isCreateInvoiceDialogOpen}
         container={root}
         onClose={() => setIsCreateInvoiceDialogOpen(false)}
