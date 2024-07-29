@@ -106,6 +106,45 @@ html {
   }
 }
 
+.Monite-PayableFilters {
+  .Monite-SearchField, .Monite-PayableStatusFilter,
+  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+
+    .MuiInputBase-root {
+      margin-top: 0;
+      height: 40px;
+      min-height: 40px;
+      max-height: 40px;
+      border-radius: 20px;
+      background-color: var(--demo-light-gray);
+      padding: 0 6px;
+
+      .MuiOutlinedInput-notchedOutline {
+        border-style: none;
+      }
+    }
+
+    .MuiFormLabel-root {
+      left: 20px;
+      top: 10px;
+      font-size: 14px;
+
+      &.MuiFormLabel-filled {
+        opacity: 0;
+      }
+    }
+  }
+
+  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
+    input::placeholder {
+      opacity: 0;
+    }
+  }
+}
+
 .Monite-ReceivableFilters {
   .Monite-SearchField, .Monite-ReceivableStatusFilter,
   .Monite-ReceivableCounterpartFilter, .Monite-ReceivableDueDateFilter {
