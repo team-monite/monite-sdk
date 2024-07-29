@@ -39,9 +39,11 @@ export const ReceivableFilters = ({
   const { api } = useMoniteContext();
 
   const { data: counterparts } = api.counterparts.getCounterparts.useQuery();
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-ReceivableFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className={className}>
       {filters.includes('document_id__contains') && (
         <Grid item sm={6} md={4}>
           <SearchField
@@ -55,7 +57,11 @@ export const ReceivableFilters = ({
 
       {filters.includes('status') && (
         <Grid item sm={3} md={2}>
-          <MuiFormControl variant="outlined" fullWidth>
+          <MuiFormControl
+            variant="outlined"
+            fullWidth
+            className={'Monite-ReceivableStatusFilter'}
+          >
             <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
             <Select<ReadableReceivablesStatus>
               labelId="status"
@@ -85,7 +91,11 @@ export const ReceivableFilters = ({
 
       {filters.includes('counterpart_id') && (
         <Grid item sm={3} md={2}>
-          <MuiFormControl variant="outlined" fullWidth>
+          <MuiFormControl
+            variant="outlined"
+            fullWidth
+            className="Monite-ReceivableCounterpartFilter"
+          >
             <MuiInputLabel id="counterpart_id">{t(
               i18n
             )`Customer`}</MuiInputLabel>
@@ -115,6 +125,7 @@ export const ReceivableFilters = ({
       {filters.includes('due_date__lte') && (
         <Grid item xs={6} sm={3} md={2} lg={2}>
           <DatePicker<Date>
+            className="Monite-ReceivableDueDateFilter"
             label={t(i18n)`Due date`}
             views={['year', 'month', 'day']}
             onChange={(value, error) => {

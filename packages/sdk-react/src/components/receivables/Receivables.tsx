@@ -76,6 +76,7 @@ const ReceivablesBase = () => {
   return (
     <>
       <PageHeader
+        className="Monite-Receivables-Header"
         title={
           <>
             {t(i18n)`Sales`}
