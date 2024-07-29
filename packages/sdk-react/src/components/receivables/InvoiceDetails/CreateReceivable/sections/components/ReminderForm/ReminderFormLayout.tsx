@@ -7,17 +7,17 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 
 interface ReminderFormLayoutProps {
   title: string;
-  daysBeforeInput: ReactNode;
-  subjectInput: ReactNode;
-  bodyInput: ReactNode;
+  daysBefore: ReactNode;
+  subject: ReactNode;
+  body: ReactNode;
   onDelete: () => void;
 }
 
 export const ReminderFormLayout = ({
   title,
-  daysBeforeInput,
-  subjectInput,
-  bodyInput,
+  daysBefore,
+  subject,
+  body,
   onDelete,
 }: ReminderFormLayoutProps) => {
   const { i18n } = useLingui();
@@ -37,10 +37,10 @@ export const ReminderFormLayout = ({
           </Button>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
-          {daysBeforeInput}
+          {daysBefore}
         </Box>
-        {subjectInput}
-        {bodyInput}
+        {subject}
+        {body}
       </Stack>
     </Card>
   );

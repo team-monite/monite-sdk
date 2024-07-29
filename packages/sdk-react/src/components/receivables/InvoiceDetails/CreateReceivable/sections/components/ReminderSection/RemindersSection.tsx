@@ -46,7 +46,7 @@ const ReminderSectionContent = ({
   onCreateReminder,
 }: ReminderSectionProps) => {
   const { api } = useMoniteContext();
-  const { data: paymentReminders, isLoading: isPaymentRemindersLoading } =
+  const { data: paymentReminders } =
     api.paymentReminders.getPaymentReminders.useQuery(undefined, {
       select: (data) =>
         data.data.map(({ id, name }) => ({
@@ -54,7 +54,7 @@ const ReminderSectionContent = ({
           label: name,
         })),
     });
-  const { data: overdueReminders, isLoading: isOverdueRemindersLoading } =
+  const { data: overdueReminders } =
     api.overdueReminders.getOverdueReminders.useQuery(undefined, {
       select: (data) =>
         data.data.map(({ id, name }) => ({
