@@ -171,7 +171,7 @@ const CreateOverdueReminderComponent = ({
     <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h3">
+          <Typography variant="h5">
             {reminder
               ? t(i18n)`Update “Overdue” reminder`
               : t(i18n)`Create “Overdue” reminder`}

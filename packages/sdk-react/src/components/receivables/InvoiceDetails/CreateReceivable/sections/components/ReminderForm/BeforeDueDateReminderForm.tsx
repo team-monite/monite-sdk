@@ -190,7 +190,7 @@ const CreateBeforeDueDateReminderComponent = ({
     <>
       <DialogTitle>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h3">
+          <Typography variant="h5">
             {reminder
               ? t(i18n)`Update “Before due date” reminder`
               : t(i18n)`Create “Before due date” reminder`}
