@@ -91,6 +91,76 @@ const typographyDark = deepmerge(typography, {
 });
 
 const components: Components<Omit<Theme, 'components'>> = {
+  MuiFormLabel: {
+    styleOverrides: {
+      disabled: {
+        color: 'black',
+      },
+    },
+  },
+  MuiInputLabel: {
+    defaultProps: {
+      shrink: true,
+    },
+    styleOverrides: {
+      root: {
+        fontSize: '14px',
+        transform: 'none',
+        color: 'black',
+        left: '0',
+        top: '0',
+        '&.Mui-disabled': {
+          color: 'black',
+        },
+      },
+      disabled: {
+        color: 'black',
+      },
+      asterisk: {
+        color: '#ff0000',
+        transform: 'scale(2) translate(6px, 2px)',
+        display: 'inline-block',
+        width: '20px',
+      },
+    },
+  },
+  MuiFormControl: {
+    styleOverrides: {
+      root: {
+        minHeight: '76px',
+        '& .MuiInputBase-root': {
+          marginTop: '28px',
+          minHeight: '48px',
+          borderRadius: '8px',
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          top: 0,
+        },
+        // Hide border cutout
+        '& .MuiOutlinedInput-notchedOutline legend': {
+          display: 'none',
+        },
+        '& .MuiOutlinedInput-root': {
+          left: 0,
+          top: 0,
+        },
+      },
+    },
+  },
+  MuiTextField: {
+    defaultProps: {
+      InputLabelProps: {
+        shrink: true,
+      },
+    },
+  },
+  MuiAutocomplete: {
+    styleOverrides: {
+      endAdornment: {
+        top: 'calc(50% - 16px)',
+      },
+    },
+  },
   MuiDrawer: {
     styleOverrides: {
       root: ({ theme }) => ({
@@ -157,7 +227,7 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiInputBase: {
     styleOverrides: {
       root: {
-        borderRadius: `20px !important`,
+        borderRadius: `8px`,
         minHeight: '40px',
         '& .MuiInputBase-input': {
           height: '40px',
@@ -165,8 +235,8 @@ const components: Components<Omit<Theme, 'components'>> = {
           boxSizing: 'border-box',
         },
         '& .MuiOutlinedInput-notchedOutline': {
-          border: 'none',
-          backgroundColor: 'rgba(0, 0, 0, 0.02)',
+          // border: 'none',
+          // backgroundColor: 'rgba(0, 0, 0, 0.02)',
         },
       },
     },
