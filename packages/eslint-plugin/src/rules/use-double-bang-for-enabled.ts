@@ -23,9 +23,7 @@ const rule: RuleModule<string> = {
   create(context: RuleContext<string, []>) {
     return {
       Property(node: TSESTree.Property) {
-        // Check if the property name is 'enabled'
         if (node.key.type === 'Identifier' && node.key.name === 'enabled') {
-          // Check if the value is a call to Boolean
           const value = node.value;
           if (
             value.type === 'CallExpression' &&
@@ -36,7 +34,6 @@ const rule: RuleModule<string> = {
               node,
               messageId: 'useDoubleBang',
               fix(fixer) {
-                // Fix by replacing `Boolean(something)` with `!!something`
                 const sourceCode = context.getSourceCode();
                 const argText = sourceCode.getText(value.arguments[0]);
                 return fixer.replaceText(value, `!!${argText}`);
