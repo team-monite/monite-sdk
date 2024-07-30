@@ -106,9 +106,9 @@ const components: Components<Omit<Theme, 'components'>> = {
       root: {
         fontSize: '14px',
         transform: 'none',
+        position: 'static',
         color: 'black',
-        left: '0',
-        top: '0',
+        minHeight: '28px',
         '&.Mui-disabled': {
           color: 'black',
         },
@@ -140,9 +140,7 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiFormControl: {
     styleOverrides: {
       root: {
-        minHeight: '76px',
         '& .MuiInputBase-root': {
-          marginTop: '28px',
           minHeight: '48px',
           borderRadius: '8px',
         },
