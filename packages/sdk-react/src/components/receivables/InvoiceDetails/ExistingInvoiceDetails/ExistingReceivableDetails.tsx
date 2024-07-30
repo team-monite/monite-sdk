@@ -125,7 +125,7 @@ const ExistingReceivableDetailsBase = (
         },
       },
       {
-        enabled: Boolean(
+        enabled: !!(
           invoice?.counterpart_billing_address?.id && invoice?.counterpart_id
         ),
       }

@@ -105,7 +105,7 @@ const ReminderSectionContent = ({
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: Boolean(counterpart?.type === 'organization'),
+      enabled: counterpart?.type === 'organization',
       select: (data) =>
         Boolean(data.data.find((contact) => contact.is_default)?.email),
     }

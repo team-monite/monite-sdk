@@ -39,7 +39,7 @@ export const OnboardingPersonDocuments = () => {
       path: { person_id: personId ?? '' },
     },
     {
-      enabled: Boolean(personId),
+      enabled: !!personId,
     }
   );
 
