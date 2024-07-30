@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { I18n } from '@lingui/core';
