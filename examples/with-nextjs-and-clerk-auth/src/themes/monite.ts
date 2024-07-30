@@ -113,9 +113,6 @@ const components: Components<Omit<Theme, 'components'>> = {
           color: 'black',
         },
       },
-      disabled: {
-        color: 'black',
-      },
       asterisk: {
         color: '#ff0000',
         transform: 'scale(2) translate(6px, 2px)',

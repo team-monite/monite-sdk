@@ -140,9 +140,12 @@ const EditInvoiceDetailsContent = ({
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
 
+  // eslint-disable-next-line lingui/no-unlocalized-strings
+  const className = 'Monite-EditInvoiceDetails';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Button
             variant="text"
@@ -163,8 +166,8 @@ const EditInvoiceDetailsContent = ({
           </Box>
         </Toolbar>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <FormProvider {...methods}>
           <form
             id={formName}
@@ -251,25 +254,40 @@ const EditInvoiceDetailsContent = ({
               </Stack>
             </Stack>
             <Dialog
+              className={className + '-Dialog-CancelWithoutSaving'}
               open={isAlertOpen}
               onClose={() => setIsAlertOpen(false)}
               container={root}
               maxWidth="sm"
             >
-              <DialogTitle>{t(i18n)`Cancel without saving?`}</DialogTitle>
-              <DialogContent>
+              <DialogTitle
+                className={className + '-Dialog-CancelWithoutSaving-Title'}
+              >{t(i18n)`Cancel without saving?`}</DialogTitle>
+              <DialogContent
+                className={className + '-Dialog-CancelWithoutSaving-Content'}
+              >
                 <DialogContentText>{t(
                   i18n
                 )`There are unsaved changes. If you leave, they will be lost.`}</DialogContentText>
               </DialogContent>
-              <DialogActions>
+              <DialogActions
+                className={className + '-Dialog-CancelWithoutSaving-Actions'}
+              >
                 <Button
+                  className={
+                    className + '-Dialog-CancelWithoutSaving-Actions-No'
+                  }
                   variant="outlined"
                   onClick={() => setIsAlertOpen(false)}
                 >{t(i18n)`No`}</Button>
-                <Button variant="contained" color="error" onClick={onCancel}>{t(
-                  i18n
-                )`Yes`}</Button>
+                <Button
+                  className={
+                    className + '-Dialog-CancelWithoutSaving-Actions-Yes'
+                  }
+                  variant="contained"
+                  color="error"
+                  onClick={onCancel}
+                >{t(i18n)`Yes`}</Button>
               </DialogActions>
             </Dialog>
           </form>
