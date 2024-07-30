@@ -57,6 +57,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
         queryClient
       );
     },
+    onError: () => {},
   });
 
   const entity = useMemo(

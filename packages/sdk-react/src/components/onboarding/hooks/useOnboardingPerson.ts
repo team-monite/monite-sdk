@@ -76,13 +76,17 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     mutateAsync: createPersonMutation,
     isPending: isCreateLoading,
     error: createPersonError,
-  } = api.persons.postPersons.useMutation(undefined);
+  } = api.persons.postPersons.useMutation(undefined, {
+    onError: () => {},
+  });
 
   const {
     mutateAsync: updatePersonMutation,
     isPending: isUpdateLoading,
     error: updatePersonError,
-  } = api.persons.patchPersonsId.useMutation(undefined);
+  } = api.persons.patchPersonsId.useMutation(undefined, {
+    onError: () => {},
+  });
 
   const {
     mutateAsync: deletePersonMutation,
