@@ -93,8 +93,10 @@ const typographyDark = deepmerge(typography, {
 const components: Components<Omit<Theme, 'components'>> = {
   MuiFormLabel: {
     styleOverrides: {
-      disabled: {
-        color: 'black',
+      root: {
+        '&.Mui-disabled': {
+          color: 'black',
+        },
       },
     },
   },
