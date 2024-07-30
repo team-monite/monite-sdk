@@ -68,7 +68,7 @@ export function useCounterpartView({
           counterpart_id: counterpart?.id ?? '',
         },
       },
-      { enabled: Boolean(counterpart?.id) }
+      { enabled: !!counterpart?.id }
     );
 
   const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =

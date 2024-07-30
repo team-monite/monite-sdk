@@ -61,7 +61,7 @@ export const OverdueReminderForm = ({
       },
     },
     {
-      enabled: Boolean(reminderId),
+      enabled: !!reminderId,
     }
   );
 

@@ -8,7 +8,7 @@ export const useEntityUserById = (id: string | undefined) => {
       path: { entity_user_id: id ?? '' },
     },
     {
-      enabled: Boolean(id),
+      enabled: !!id,
     }
   );
 };
