@@ -14,6 +14,10 @@ import { counterpartListFixture } from '@/mocks/counterparts/counterpart/counter
 import { counterpartVatsByCounterpartIdFixture } from '@/mocks/counterparts/vat/counterpartVatFixture';
 import { entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
+import {
+  overdueReminderListFixture,
+  paymentReminderListFixture,
+} from '@/mocks/reminders/reminderListFixtures';
 import { vatRatesFixture } from '@/mocks/vatRates';
 import {
   getRandomItemFromArray,
@@ -284,6 +288,8 @@ function createRandomInvoice(
     file_language: 'en',
     original_file_language: 'en',
     total_amount: Number(faker.commerce.price()),
+    overdue_reminder_id: overdueReminderListFixture[0].id,
+    payment_reminder_id: paymentReminderListFixture[0].id,
   };
 }
 

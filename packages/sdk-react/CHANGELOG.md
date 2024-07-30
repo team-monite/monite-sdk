@@ -1,5 +1,29 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.0
+
+### Minor Changes
+
+- a975061b: feat(DEV-11865): add payment reminders selection for invoice
+- 8964658c: feat(DEV-11928): introduced icon states to indicate the status of Counterparts for Payables processed via OCR.
+
+  - **State 1**: Counterpart not found in the system.
+  - **State 2**: Counterpart found but not selected in the document.
+  - Note: If a Counterpart is already selected for the Payable, no icon will be displayed.
+
+- 89d1fac7: feat(DEV-11981): **Invoice Creation and Editing**: Introduced the ability to specify PaymentReminders and
+  OverviewReminders during the creation and editing of invoices.
+- d6e715a0: feat(11876): Added a dialog for creating and editing both payment and overdue invoice reminders.
+- 8d3fd461: feat(DEV-11928): implemented automatic selection of Counterparts for Payables processed via OCR in the editing form.
+
+  - If a Counterpart is not selected for a Payable after file upload and OCR processing, it will be auto-selected if available.
+
+### Patch Changes
+
+- 55ce4cdb: fix(onboarding): fix mobile DatePicker for web component
+- 878fa936: fix(DEV-11734): updated `CounterpartsTable` component to show the full name of individuals.
+  - @monite/sdk-api@3.16.0-beta.0
+
 ## 3.15.0
 
 ### Minor Changes

@@ -135,16 +135,16 @@ describe('TagsTable', () => {
       const createdAtButton = await screen.findByText('Created at');
       fireEvent.click(createdAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: 'asc',
           sort: 'created_at',
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
 
     test('should sort a table by `created_at` field in descending order when we click on that field twice', async () => {
@@ -158,16 +158,16 @@ describe('TagsTable', () => {
       // Sort by `created_at` in descending order
       fireEvent.click(createdAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: 'desc',
           sort: 'created_at',
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
 
     test('should flush sorting by `created_at` field when we click on that field 3 times', async () => {
@@ -203,16 +203,16 @@ describe('TagsTable', () => {
       // Sort by `updated_at` in ascending order
       fireEvent.click(updatedAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: 'asc',
           sort: 'updated_at',
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
 
     test('should sort a table by `updated_at` field in descending order when we click on that field twice', async () => {
@@ -225,16 +225,16 @@ describe('TagsTable', () => {
       // Sort by `updated_at` in descending order
       fireEvent.click(updatedAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: 'desc',
           sort: 'updated_at',
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
 
     test('should flush sorting by `updated_at` field when we click on that field 3 times', async () => {
@@ -249,16 +249,16 @@ describe('TagsTable', () => {
       // Flush sorting
       fireEvent.click(updatedAtButton);
 
-      await waitFor(() =>
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
         expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
           limit: 10,
           order: undefined,
           sort: undefined,
-        })
-      );
-      expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-        api.tags.getTags.schema.url
-      );
+        });
+      });
     });
   });
 

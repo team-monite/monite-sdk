@@ -20,8 +20,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  moniteDark as themeMoniteDark,
-  moniteLight as themeMoniteLight,
+  materialDark as themeMoniteDark,
+  materialLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
 
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';

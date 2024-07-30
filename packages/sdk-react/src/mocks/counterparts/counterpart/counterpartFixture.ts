@@ -26,6 +26,7 @@ function createCounterpartOrganization(): components['schemas']['CounterpartOrga
       email: faker.internet.email(),
     },
     created_by_entity_user_id: getRandomProperty(entityUsers).id,
+    reminders_enabled: faker.datatype.boolean(),
   };
 }
 
@@ -50,6 +51,7 @@ function createCounterpartIndividual(): components['schemas']['CounterpartIndivi
       email: faker.internet.email(),
     },
     created_by_entity_user_id: getRandomProperty(entityUsers).id,
+    reminders_enabled: faker.datatype.boolean(),
   };
 }
 
@@ -68,6 +70,7 @@ export const counterpartOrganizationFixture: components['schemas']['CounterpartO
       email: faker.internet.email(),
     },
     created_by_entity_user_id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f5',
+    reminders_enabled: true,
   };
 
 export const counterpartIndividualFixture: components['schemas']['CounterpartIndividualRootResponse'] =
@@ -86,6 +89,7 @@ export const counterpartIndividualFixture: components['schemas']['CounterpartInd
       email: faker.internet.email(),
     },
     created_by_entity_user_id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f5',
+    reminders_enabled: true,
   };
 
 export const counterpartDetailsFixtures: {

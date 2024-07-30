@@ -3,7 +3,11 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
+import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
+import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses } from '@/core/queries';
@@ -37,7 +41,7 @@ import {
 } from './validation';
 
 /**
- * A component for creating new Receivable
+ * A component for creating a new Receivable
  * Supported only `invoice` type
  */
 export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
@@ -65,12 +69,14 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
         line_items: [],
         entity_bank_account_id: '',
         type: props.type,
+        overdue_reminder_id: '',
+        payment_reminder_id: '',
       }),
       [props.type]
     ),
   });
 
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, getValues, setValue } = methods;
 
   const counterpartId = watch('counterpart_id');
 
@@ -88,6 +94,16 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
   >(settings?.currency?.default);
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  const {
+    createReminderDialog,
+    editReminderDialog,
+    onCreateReminder,
+    onEditOverdueReminder,
+    onEditPaymentReminder,
+    closeCreateReminderDialog,
+    closeUpdateReminderDialog,
+  } = useInvoiceReminderDialogs({ getValues });
 
   if (isSettingsLoading) {
     return <LoadingPage />;
@@ -161,7 +177,6 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   counterpart_shipping_address_id:
                     counterpartShippingAddress?.id,
 
-                  /** We shouldn't send an empty string to the server if the value is not set */
                   entity_bank_account_id:
                     values.entity_bank_account_id || undefined,
                   payment_terms_id: values.payment_terms_id,
@@ -175,12 +190,14 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   fulfillment_date: values.fulfillment_date
                     ? /**
                        * We have to change the date as Backend accepts it.
-                       * There is no `time` in request, only year, month and date
+                       * There is no `time` in the request, only year, month and date
                        */
                       format(values.fulfillment_date, 'yyyy-MM-dd')
                     : undefined,
                   purchase_order: values.purchase_order || undefined,
                   currency: actualCurrency,
+                  payment_reminder_id: values.payment_reminder_id || undefined,
+                  overdue_reminder_id: values.overdue_reminder_id || undefined,
                 };
 
               createReceivable.mutate(invoicePayload, {
@@ -203,11 +220,39 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                   onCurrencyChanged={setActualCurrency}
                 />
                 <PaymentSection disabled={createReceivable.isPending} />
+                <ReminderSection
+                  disabled={createReceivable.isPending}
+                  onUpdateOverdueReminder={onEditOverdueReminder}
+                  onUpdatePaymentReminder={onEditPaymentReminder}
+                  onCreateReminder={onCreateReminder}
+                />
               </Stack>
             </Stack>
           </form>
         </FormProvider>
       </DialogContent>
+
+      <CreateInvoiceReminderDialog
+        open={createReminderDialog.open}
+        reminderType={createReminderDialog.reminderType}
+        onClose={closeCreateReminderDialog}
+        onCreate={({ reminderId, reminderType }) => {
+          if (reminderType === 'payment') {
+            setValue('payment_reminder_id', reminderId);
+          } else if (reminderType === 'overdue') {
+            setValue('overdue_reminder_id', reminderId);
+          }
+        }}
+      />
+
+      {editReminderDialog.reminderId && (
+        <EditInvoiceReminderDialog
+          open={editReminderDialog.open}
+          reminderId={editReminderDialog.reminderId}
+          reminderType={editReminderDialog.reminderType}
+          onClose={closeUpdateReminderDialog}
+        />
+      )}
     </>
   );
 };
