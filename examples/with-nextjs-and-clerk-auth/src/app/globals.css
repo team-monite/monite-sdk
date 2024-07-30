@@ -106,48 +106,12 @@ html {
   }
 }
 
-.Monite-PayableFilters {
-  .Monite-SearchField, .Monite-PayableStatusFilter,
-  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
-    height: 40px;
-    min-height: 40px;
-    max-height: 40px;
-
-    .MuiInputBase-root {
-      margin-top: 0;
-      height: 40px;
-      min-height: 40px;
-      max-height: 40px;
-      border-radius: 20px;
-      background-color: var(--demo-light-gray);
-      padding: 0 6px;
-
-      .MuiOutlinedInput-notchedOutline {
-        border-style: none;
-      }
-    }
-
-    .MuiFormLabel-root {
-      left: 20px;
-      top: 10px;
-      font-size: 14px;
-
-      &.MuiFormLabel-filled {
-        opacity: 0;
-      }
-    }
-  }
-
-  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
-    input::placeholder {
-      opacity: 0;
-    }
-  }
-}
-
-.Monite-ReceivableFilters {
+/* Filters styling */
+.Monite-ReceivableFilters, .Monite-PayableFilters {
   .Monite-SearchField, .Monite-ReceivableStatusFilter,
-  .Monite-ReceivableCounterpartFilter, .Monite-ReceivableDueDateFilter {
+  .Monite-ReceivableCounterpartFilter, .Monite-ReceivableDueDateFilter,
+  .Monite-PayableStatusFilter,
+  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
     height: 40px;
     min-height: 40px;
     max-height: 40px;
@@ -167,6 +131,7 @@ html {
     }
 
     .MuiFormLabel-root {
+      position: absolute;
       left: 20px;
       top: 10px;
       font-size: 14px;
@@ -177,7 +142,7 @@ html {
     }
   }
 
-  .Monite-ReceivableDueDateFilter {
+  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter, .Monite-ReceivableDueDateFilter {
     input::placeholder {
       opacity: 0;
     }
@@ -406,6 +371,93 @@ html {
 
   .Monite-CreateReceivable-Divider {
     display: none;
+  }
+}
+
+/* Edit invoice popup */
+.Monite-Receivables-Dialog-ReceivableDetails {
+  .Monite-EditInvoiceDetails-Title {
+    height: var(--demo-form-header);
+  }
+
+  .Monite-EditInvoiceDetails-Divider {
+    display: none;
+  }
+
+  .Monite-EditInvoiceDetails-Content {
+    margin: 0;
+    padding: var(--demo-padding-5) 180px 111px 180px;
+
+    > form > .MuiStack-root {
+      margin-top: 0;
+
+      > h2 {
+        font-size: 48px;
+        padding: 12px 0;
+      }
+
+      .Monite-CreateReceivable-CustomerSection,
+      .Monite-CreateReceivable-EntitySection,
+      .Monite-CreateReceivable-ItemsSection,
+      .Monite-CreateReceivable-PaymentSection {
+        > h6 {
+          font-size: 24px;
+          height: 56px;
+          margin: 0;
+          padding: var(--demo-padding) var(--demo-padding) var(--demo-padding-2) var(--demo-padding);
+
+          & + .MuiCard-root {
+            margin-top: 0;
+          }
+        }
+
+        .MuiCardContent-root {
+          padding: var(--demo-padding-4);
+        }
+      }
+
+      .Monite-CreateReceivable-ItemsSection {
+        > .MuiCollapse-root.MuiCollapse-hidden, > .MuiPaper-root {
+          margin-top: 0;
+        }
+
+        .MuiTable-root {
+          margin: var(--demo-padding-2) 36px;
+          width: calc(100% - 72px);
+
+          th {
+            border-bottom-style: none;
+            padding: 8px 12px;
+          }
+
+          .Monite-CreateReceivable-ItemsSection-TableBody-AddItem {
+            padding: 0;
+
+            button {
+              padding: 14px 18px 14px 12px;
+              font-size: 16px;
+            }
+          }
+        }
+
+        .Monite-CreateReceivable-ItemsSection-Totals {
+          margin-top: var(--demo-padding-3);
+
+          .Monite-CreateReceivable-ItemsSection-Totals-Total {
+            padding: 12px 32px 16px 32px;
+
+            .MuiTypography-root {
+              font-size: 20px;
+              font-weight: 600;
+            }
+          }
+
+          hr {
+            margin: 0 32px;
+          }
+        }
+      }
+    }
   }
 }
 
