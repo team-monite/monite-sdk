@@ -29,6 +29,7 @@ const paletteLight: PaletteOptions = {
     '50': '#707070',
     '80': '#DDDDDD',
   },
+  divider: '#DDDDDD',
 };
 
 const paletteDark: PaletteOptions = {
@@ -255,10 +256,18 @@ const components:
     },
   },
   MuiDataGrid: {
+    defaultProps: {
+      columnHeaderHeight: 40,
+      showCellVerticalBorder: false,
+      showColumnVerticalBorder: false,
+    },
     styleOverrides: {
       root: {
+        border: 0,
+        borderColor: 'transparent',
         '& .MuiDataGrid-columnHeaderTitle': {
           color: '#707070',
+          fontWeight: 700,
         },
       },
     },

@@ -20,15 +20,6 @@ html {
   padding: 0;
 }
 
-/* DataGrid borders */
-.MuiDataGrid-root {
-  border-color: transparent !important;
-
-  .MuiDataGrid-withBorderColor {
-    border-color: transparent !important;
-  }
-}
-
 .Monite-ContentContainer {
   overflow: hidden;
   position: relative;
