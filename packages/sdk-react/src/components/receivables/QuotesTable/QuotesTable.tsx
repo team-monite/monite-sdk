@@ -109,7 +109,6 @@ const QuotesTableBase = ({
           />
         </Box>
         <DataGrid
-          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -126,7 +125,6 @@ const QuotesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                className={className + '-Pagination'}
                 nextPage={quotes?.next_pagination_token}
                 prevPage={quotes?.prev_pagination_token}
                 paginationModel={{

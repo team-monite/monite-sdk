@@ -152,10 +152,7 @@ const PayableDetailsBase = ({
           onClose={onClose}
         />
         <Divider />
-        <DialogContent
-          className={className + '-Content'}
-          sx={{ display: 'flex', flexDirection: 'column' }}
-        >
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid container columnSpacing={4} height="100%">
             <Grid item container xs={6} height="100%">
               {payable?.file && (
@@ -183,7 +180,7 @@ const PayableDetailsBase = ({
               {payable &&
                 (payable.status === 'new' || payable.status === 'draft') &&
                 payable.ocr_status === 'error' && (
-                  <Box mb={2} className={className + '-Error'}>
+                  <Box mb={2}>
                     <Alert severity="error">
                       {t(
                         i18n

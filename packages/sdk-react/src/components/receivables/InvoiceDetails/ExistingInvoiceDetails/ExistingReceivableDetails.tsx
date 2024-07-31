@@ -188,7 +188,7 @@ const ExistingReceivableDetailsBase = (
           )}
         </Box>
       </DialogTitle>
-      <Divider className={className + '-Divider-1'} />
+      <Divider className={className + '-Divider'} />
       <DialogContent className={className + '-Content'}>
         <Box mt={2}>
           <Card variant="outlined">
@@ -266,14 +266,10 @@ const ExistingReceivableDetailsBase = (
           </>
         )}
       </DialogContent>
-      <Divider className={className + '-Divider-1'} />
-      <DialogActions
-        data-testid="InvoiceDetailsFooter"
-        className={className + '-Actions'}
-      >
+      <Divider className={className + '-Divider'} />
+      <DialogActions data-testid="InvoiceDetailsFooter">
         {permissions.includes('cancel') && (
           <Button
-            className={className + '-Actions-Cancel'}
             aria-label={t(i18n)`Cancel invoice`}
             variant="outlined"
             color="error"
@@ -285,7 +281,6 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('delete') && (
           <Button
-            className={className + '-Actions-Delete'}
             aria-label={t(i18n)`Delete invoice`}
             variant="outlined"
             color="error"
@@ -297,7 +292,6 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('issue') && (
           <Button
-            className={className + '-Actions-Issue'}
             aria-label={t(i18n)`Issue`}
             onClick={queryActions.issueInvoice}
             variant="outlined"
@@ -308,7 +302,6 @@ const ExistingReceivableDetailsBase = (
         )}
         {permissions.includes('mark_as_uncollectible') && (
           <Button
-            className={className + '-Actions-MarkAsUncollectible'}
             aria-label={t(i18n)`Mark as uncollectible invoice`}
             onClick={queryActions.markAsUncollectibleInvoice}
             variant="outlined"

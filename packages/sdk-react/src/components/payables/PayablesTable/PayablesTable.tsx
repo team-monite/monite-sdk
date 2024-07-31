@@ -180,7 +180,6 @@ const PayablesTableBase = ({
         }}
       >
         <Box
-          className={className + '-FiltersContainer'}
           sx={{
             marginBottom: 2,
           }}
@@ -188,7 +187,6 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
-          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -206,7 +204,6 @@ const PayablesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                className={className + '-Pagination'}
                 nextPage={payables?.next_pagination_token}
                 prevPage={payables?.prev_pagination_token}
                 paginationModel={{

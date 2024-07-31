@@ -293,7 +293,6 @@ const PayableDetailsFormBase = forwardRef<
                         render={({ field, fieldState: { error } }) => (
                           <TextField
                             {...field}
-                            className={className + '-Details-InvoiceNumber'}
                             id={field.name}
                             label={t(i18n)`Invoice Number`}
                             variant="outlined"
@@ -309,7 +308,6 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            className={className + '-Details-Counterpart'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}

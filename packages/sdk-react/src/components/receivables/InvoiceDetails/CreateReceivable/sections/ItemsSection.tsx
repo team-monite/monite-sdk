@@ -220,40 +220,22 @@ export const ItemsSection = ({
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader>
-            <TableHead className={className + '-TableHead'}>
+            <TableHead>
               <TableRow>
-                <TableCell className={className + '-TableHead-Item'}>{t(
-                  i18n
-                )`Item`}</TableCell>
-                <TableCell className={className + '-TableHead-Quantity'}>{t(
-                  i18n
-                )`Quantity`}</TableCell>
-                <TableCell className={className + '-TableHead-Unit'}>{t(
-                  i18n
-                )`Units`}</TableCell>
-                <TableCell
-                  className={className + '-TableHead-Price'}
-                  align="right"
-                >{t(i18n)`Price`}</TableCell>
-                <TableCell
-                  className={className + '-TableHead-Amount'}
-                  align="right"
-                >{t(i18n)`Amount`}</TableCell>
-                <TableCell className={className + '-TableHead-VAT'}>{t(
-                  i18n
-                )`VAT`}</TableCell>
-                <TableCell
-                  className={className + '-TableHead-Remove'}
-                ></TableCell>
+                <TableCell>{t(i18n)`Item`}</TableCell>
+                <TableCell>{t(i18n)`Quantity`}</TableCell>
+                <TableCell>{t(i18n)`Units`}</TableCell>
+                <TableCell align="right">{t(i18n)`Price`}</TableCell>
+                <TableCell align="right">{t(i18n)`Amount`}</TableCell>
+                <TableCell>{t(i18n)`VAT`}</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
-            <TableBody className={className + '-TableBody'}>
+            <TableBody>
               {fields.map((field, index) => (
                 <TableRow key={field.id}>
-                  <TableCell className={className + '-TableBody-Item'}>
-                    {field.name}
-                  </TableCell>
-                  <TableCell className={className + '-TableBody-Quantity'}>
+                  <TableCell>{field.name}</TableCell>
+                  <TableCell>
                     <Controller
                       name={`line_items.${index}.quantity`}
                       control={control}
@@ -271,33 +253,27 @@ export const ItemsSection = ({
                       )}
                     />
                   </TableCell>
-                  <TableCell className={className + '-TableBody-Unit'}>
+                  <TableCell>
                     {field.measure_unit_id ? (
                       <MeasureUnit unitId={field.measure_unit_id} />
                     ) : (
                       '—'
                     )}
                   </TableCell>
-                  <TableCell
-                    className={className + '-TableBody-Price'}
-                    align="right"
-                  >
+                  <TableCell align="right">
                     {field.price &&
                       formatCurrencyToDisplay(
                         field.price.value,
                         field.price.currency
                       )}
                   </TableCell>
-                  <TableCell
-                    className={className + '-TableBody-Amount'}
-                    align="right"
-                  >
+                  <TableCell align="right">
                     <TotalCell
                       item={watchedLineItems[index]}
                       formatCurrencyToDisplay={formatCurrencyToDisplay}
                     />
                   </TableCell>
-                  <TableCell className={className + '-TableBody-VAT'}>
+                  <TableCell>
                     <Controller
                       name={`line_items.${index}.vat_rate_id`}
                       control={control}
@@ -343,7 +319,7 @@ export const ItemsSection = ({
                       )}
                     />
                   </TableCell>
-                  <TableCell className={className + '-TableBody-Remove'}>
+                  <TableCell>
                     <IconButton
                       onClick={() => {
                         remove(index);
@@ -355,10 +331,7 @@ export const ItemsSection = ({
                 </TableRow>
               ))}
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className={className + '-TableBody-AddItem'}
-                >
+                <TableCell colSpan={7}>
                   <Button
                     startIcon={<AddIcon />}
                     onClick={handleOpenProductsTable}
@@ -395,20 +368,11 @@ export const ItemsSection = ({
         sx={{ borderRadius: 2 }}
       >
         <Stack>
-          <CardTableItem
-            className={className + '-Totals-Subtotal'}
-            label={t(i18n)`Subtotal`}
-            value={subtotalPrice}
-          />
+          <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
+          <Divider />
+          <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
           <Divider />
           <CardTableItem
-            className={className + '-Totals-TaxesTotal'}
-            label={t(i18n)`Taxes total`}
-            value={totalTaxes}
-          />
-          <Divider />
-          <CardTableItem
-            className={className + '-Totals-Total'}
             label={
               <Typography variant="body1" sx={{ fontWeight: 500 }}>{t(
                 i18n

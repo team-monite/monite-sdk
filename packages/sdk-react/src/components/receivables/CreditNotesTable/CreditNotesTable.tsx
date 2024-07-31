@@ -91,7 +91,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
-          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -108,7 +107,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           slots={{
             pagination: () => (
               <TablePagination
-                className={className + '-Pagination'}
                 nextPage={creditNotes?.next_pagination_token}
                 prevPage={creditNotes?.prev_pagination_token}
                 paginationModel={{

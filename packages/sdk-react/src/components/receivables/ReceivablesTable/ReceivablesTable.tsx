@@ -64,7 +64,6 @@ const ReceivablesTableBase = ({
         className={classNames(ScopedCssBaselineContainerClassName, className)}
       >
         <Tabs
-          className={className + '-Tabs'}
           value={activeTab}
           variant="standard"
           aria-label={t(i18n)`Receivables tabs`}
@@ -75,7 +74,6 @@ const ReceivablesTableBase = ({
             aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
             label={t(i18n)`Invoices`}
             value={ReceivablesTableTabEnum.Invoices}
-            className={className + '-Tabs-Invoices'}
           />
 
           <Tab
@@ -83,7 +81,6 @@ const ReceivablesTableBase = ({
             aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
             label={t(i18n)`Quotes`}
             value={ReceivablesTableTabEnum.Quotes}
-            className={className + '-Tabs-Quotes'}
           />
 
           <Tab
@@ -91,7 +88,6 @@ const ReceivablesTableBase = ({
             aria-controls={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
             label={t(i18n)`Credit notes`}
             value={ReceivablesTableTabEnum.CreditNotes}
-            className={className + '-Tabs-CreditNotes'}
           />
         </Tabs>
       </Box>

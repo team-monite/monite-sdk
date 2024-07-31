@@ -121,7 +121,6 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
-          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -138,7 +137,6 @@ const InvoicesTableBase = ({
           slots={{
             pagination: () => (
               <TablePagination
-                className={className + '-Pagination'}
                 nextPage={invoices?.next_pagination_token}
                 prevPage={invoices?.prev_pagination_token}
                 paginationModel={{

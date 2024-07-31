@@ -259,34 +259,20 @@ const EditInvoiceDetailsContent = ({
               container={root}
               maxWidth="sm"
             >
-              <DialogTitle
-                className={className + '-Dialog-CancelWithoutSaving-Title'}
-              >{t(i18n)`Cancel without saving?`}</DialogTitle>
-              <DialogContent
-                className={className + '-Dialog-CancelWithoutSaving-Content'}
-              >
+              <DialogTitle>{t(i18n)`Cancel without saving?`}</DialogTitle>
+              <DialogContent>
                 <DialogContentText>{t(
                   i18n
                 )`There are unsaved changes. If you leave, they will be lost.`}</DialogContentText>
               </DialogContent>
-              <DialogActions
-                className={className + '-Dialog-CancelWithoutSaving-Actions'}
-              >
+              <DialogActions>
                 <Button
-                  className={
-                    className + '-Dialog-CancelWithoutSaving-Actions-No'
-                  }
                   variant="outlined"
                   onClick={() => setIsAlertOpen(false)}
                 >{t(i18n)`No`}</Button>
-                <Button
-                  className={
-                    className + '-Dialog-CancelWithoutSaving-Actions-Yes'
-                  }
-                  variant="contained"
-                  color="error"
-                  onClick={onCancel}
-                >{t(i18n)`Yes`}</Button>
+                <Button variant="contained" color="error" onClick={onCancel}>{t(
+                  i18n
+                )`Yes`}</Button>
               </DialogActions>
             </Dialog>
           </form>

@@ -78,7 +78,6 @@ const ReceivablesBase = () => {
   return (
     <>
       <PageHeader
-        className={className + '-Header'}
         title={
           <>
             {t(i18n)`Sales`}
