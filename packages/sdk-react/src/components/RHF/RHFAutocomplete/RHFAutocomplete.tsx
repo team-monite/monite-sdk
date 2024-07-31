@@ -152,12 +152,10 @@ export const RHFAutocomplete = <
           }}
           options={options}
           blurOnSelect
-          onChange={
-            onChange ??
-            ((_, value) => {
-              field.onChange(getChangedValue(value));
-            })
-          }
+          onChange={(event, value, reason, details) => {
+            field.onChange(getChangedValue(value));
+            onChange?.(event, value, reason, details);
+          }}
           value={getValue(field.value)}
           id={name}
           getOptionLabel={getOptionLabel}
