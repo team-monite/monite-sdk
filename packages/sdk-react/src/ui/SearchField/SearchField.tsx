@@ -56,7 +56,12 @@ export const SearchField = ({ label, onChange }: Props) => {
   }, [debouncedOnChange]);
 
   return (
-    <FormControl variant="outlined" fullWidth aria-label="search-by-name">
+    <FormControl
+      variant="outlined"
+      fullWidth
+      aria-label="search-by-name"
+      className="Monite-SearchField"
+    >
       <InputLabel htmlFor="search-by-name">{label}</InputLabel>
       <OutlinedInput
         id="search-by-name"

@@ -317,7 +317,7 @@ export const useCounterpartContactList = (
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
+      enabled: !!(counterpartId && counterpart?.type === 'organization'),
     }
   );
 };

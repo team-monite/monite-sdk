@@ -100,9 +100,12 @@ const PayablesBase = ({
 
   const { root } = useRootElements();
 
+  const className = 'Monite-Payables-Header';
+
   return (
     <>
       <PageHeader
+        className={className + '-Header'}
         title={
           <>
             {t(i18n)`Payables`}
@@ -179,6 +182,7 @@ const PayablesBase = ({
         }}
       />
       <Dialog
+        className={className + '-Dialog-PayableDetails'}
         open={invoiceIdDialog.open}
         container={root}
         onClose={() => {
@@ -206,6 +210,7 @@ const PayablesBase = ({
       </Dialog>
 
       <Dialog
+        className={className + '-Dialog-CreatePayable'}
         open={isCreateInvoiceDialogOpen}
         container={root}
         onClose={() => setIsCreateInvoiceDialogOpen(false)}

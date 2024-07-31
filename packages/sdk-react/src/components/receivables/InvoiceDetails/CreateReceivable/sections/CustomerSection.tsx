@@ -129,8 +129,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const contactPersonDisplayableError =
     usePrevious(contactPersonError) ?? contactPersonError;
 
+  const className = 'Monite-CreateReceivable-CustomerSection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <CreateCounterpartDialog
         open={isCreateCounterpartOpened}
         onClose={() => {
