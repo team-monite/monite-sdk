@@ -100,7 +100,7 @@ const PayablesBase = ({
 
   const { root } = useRootElements();
 
-  const className = 'Monite-Monite-Payables-Header';
+  const className = 'Monite-Payables-Header';
 
   return (
     <>
