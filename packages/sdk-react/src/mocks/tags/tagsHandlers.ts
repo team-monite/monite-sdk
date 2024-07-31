@@ -238,5 +238,4 @@ export const tagsHandlers = [
 ];
 
 type TagsPaginationResponse = components['schemas']['TagsPaginationResponse'];
-type TagCreateOrUpdateSchema = components['schemas']['TagCreateSchema'];
 type TagReadSchema = components['schemas']['TagReadSchema'];

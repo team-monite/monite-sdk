@@ -83,13 +83,12 @@ const PayableDetailsInfoBase = ({
       showTags: true,
     }
   );
-  const { counterpartQuery, counterpartBankAccountQuery, lineItemsQuery } =
-    usePayableDetailsInfo({
+  const { counterpartBankAccountQuery, lineItemsQuery } = usePayableDetailsInfo(
+    {
       currentCounterpartId: payable.counterpart_id,
       payableId: payable.id,
-    });
-
-  const { data: counterpart } = counterpartQuery;
+    }
+  );
 
   const { data: lineItemsData } = lineItemsQuery;
 

@@ -57,7 +57,7 @@ export const createPaymentReminderCardTerms = (
       termPeriodName: ReactNode;
       termPeriods: ReactNode[];
     }[]
-  >((acc, { reminderTerm, termPeriodName, isDueDate }, index) => {
+  >((acc, { reminderTerm, termPeriodName, isDueDate }) => {
     if (!reminderTerm) return acc;
     const { days_before } = reminderTerm;
     return [

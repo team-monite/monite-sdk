@@ -39,7 +39,7 @@ export const OnboardingFileUploader = ({
   const { mutateAsync, isPending } = api.files.postFiles.useMutation(
     undefined,
     {
-      onSuccess: async (file) => {
+      onSuccess: async () => {
         await api.files.getFiles.invalidateQueries(queryClient);
       },
     }

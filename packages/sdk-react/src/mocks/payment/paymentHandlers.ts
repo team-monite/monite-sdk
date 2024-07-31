@@ -82,7 +82,6 @@ export const paymentHandlers = [
 type CreatePaymentLinkRequest =
   components['schemas']['CreatePaymentLinkRequest'];
 type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
-type PaymentAccountType = components['schemas']['PaymentAccountType'];
 type PublicPaymentLinkResponse =
   components['schemas']['PublicPaymentLinkResponse'];
 
