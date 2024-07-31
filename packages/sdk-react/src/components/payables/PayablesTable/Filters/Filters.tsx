@@ -3,6 +3,7 @@ import React from 'react';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
@@ -27,7 +28,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
   const className = 'Monite-PayableFilters';
 
   return (
-    <Grid container spacing={2} className={className}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={6} sm={3} md={4} lg={3}>
         <SearchField
           label={t(i18n)`Search`}
@@ -40,7 +45,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
         <FormControl
           variant="outlined"
           fullWidth
-          className="Monite-PayableStatusFilter"
+          className="Monite-PayableStatusFilter Monite-FilterControl"
         >
           <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
           <Select
@@ -71,7 +76,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
-          className="Monite-PayableDateFilter"
+          className="Monite-PayableDateFilter Monite-FilterControl"
           label={t(i18n)`Invoice date`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -96,7 +101,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
-          className="Monite-PayableDueDateFilter"
+          className="Monite-PayableDueDateFilter Monite-FilterControl"
           label={t(i18n)`Due date`}
           onChange={(value, error) => {
             if (error.validationError) {
