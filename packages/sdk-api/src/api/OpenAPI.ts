@@ -1,5 +1,4 @@
 import { MoniteFetchToken } from '../moniteSDK.types';
-import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import { AccessTokenResponse } from './models/AccessTokenResponse';
 

@@ -1,4 +1,4 @@
-import { OpenAPI, OpenAPIConfig } from '../OpenAPI';
+import { OpenAPI } from '../OpenAPI';
 
 export abstract class CommonService {
   protected readonly openApi: OpenAPI;
