@@ -18,6 +18,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getBankAccountName } from '@/core/utils/getBankAccountName';
 import { MoniteCurrency } from '@/ui/Currency';
+import { classNames } from '@/utils/css-utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -231,10 +232,12 @@ const PayableDetailsFormBase = forwardRef<
 
     const { root } = useRootElements();
 
+    const className = 'Monite-PayableDetailsForm';
+
     return (
       <>
         <Box
-          className={ScopedCssBaselineContainerClassName}
+          className={classNames(ScopedCssBaselineContainerClassName, className)}
           sx={{
             pb: 6,
             display: 'flex',
@@ -278,7 +281,7 @@ const PayableDetailsFormBase = forwardRef<
               })}
             >
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '-Details'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Details`}
                   </Typography>
@@ -491,7 +494,7 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '-Items'}>
                   <Typography variant="subtitle2" mb={2}>
                     {t(i18n)`Items`}
                   </Typography>
@@ -499,11 +502,11 @@ const PayableDetailsFormBase = forwardRef<
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={className + '-Totals'}>
                   <Paper variant="outlined">
                     <Table>
                       <TableBody>
-                        <TableRow>
+                        <TableRow className={className + '-Totals-Subtotal'}>
                           <TableCell>{t(i18n)`Subtotal`}</TableCell>
                           <TableCell align="right">
                             {totals.subtotal && currentCurrency
@@ -517,7 +520,7 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow>
+                        <TableRow className={className + '-Totals-Taxes'}>
                           <TableCell>{t(i18n)`Taxes`}</TableCell>
                           <TableCell align="right">
                             {totals.taxes && currentCurrency
@@ -531,7 +534,10 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow sx={{ '& td': { fontWeight: 500 } }}>
+                        <TableRow
+                          className={className + '-Totals-Total'}
+                          sx={{ '& td': { fontWeight: 500 } }}
+                        >
                           <TableCell>{t(i18n)`Total`}</TableCell>
                           <TableCell align="right">
                             {totals.total && currentCurrency

@@ -90,8 +90,10 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
     };
   }, [visibleFields]);
 
+  const className = 'Monite-CreateReceivable-EntitySection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <Typography variant="subtitle2">{t(i18n)`Details`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>

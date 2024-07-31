@@ -99,8 +99,10 @@ export const PayableDetailsHeader = ({
     },
   };
 
+  const className = 'Monite-PayableDetails-Header';
+
   return (
-    <DialogTitle sx={{ position: 'relative' }}>
+    <DialogTitle sx={{ position: 'relative' }} className={className}>
       <Toolbar>
         {dialogContext?.isDialogContent && (
           <IconButton

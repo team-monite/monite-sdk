@@ -5,10 +5,12 @@ import { Stack, Typography } from '@mui/material';
 type PageHeaderProps = {
   title: React.ReactNode;
   extra?: React.ReactNode;
+  className?: string;
 };
 
-export const PageHeader = ({ title, extra }: PageHeaderProps) => (
+export const PageHeader = ({ title, extra, className }: PageHeaderProps) => (
   <Stack
+    className={className}
     direction="row"
     justifyContent="space-between"
     alignItems="center"

@@ -47,6 +47,7 @@ interface TablePaginationProps<T> extends MoniteTablePaginationProps {
   onPaginationModelChange: (paginationModel: PaginationModel<T>) => void;
   nextPage: T | undefined;
   prevPage: T | undefined;
+  className?: string;
 }
 
 /**
@@ -81,6 +82,7 @@ export const TablePagination = <T,>({
   prevPage,
   pageSizeOptions: inSizeOptionsProp,
   slotProps: inSlotProps,
+  className,
 }: TablePaginationProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
@@ -99,7 +101,7 @@ export const TablePagination = <T,>({
   const hasPageSizeSelect = pageSizeOptions && pageSizeOptions.length > 1;
 
   return (
-    <RootGrid container m={2} boxSizing="border-box">
+    <RootGrid container m={2} boxSizing="border-box" className={className}>
       <Grid
         xs={12}
         item

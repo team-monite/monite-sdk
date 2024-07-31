@@ -73,6 +73,8 @@ const ReceivablesBase = () => {
       entityUserId: user?.id,
     });
 
+  const className = 'Monite-Receivables';
+
   return (
     <>
       <PageHeader
@@ -106,6 +108,7 @@ const ReceivablesBase = () => {
         />
       )}
       <Dialog
+        className={className + '-Dialog-ReceivableDetails'}
         open={openDetails}
         fullScreen
         container={root}
@@ -115,6 +118,7 @@ const ReceivablesBase = () => {
         <InvoiceDetails id={invoiceId} />
       </Dialog>
       <Dialog
+        className={className + '-Dialog-CreateReceivable'}
         open={isCreateInvoiceDialogOpen}
         container={root}
         fullScreen

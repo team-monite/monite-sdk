@@ -5,7 +5,16 @@ import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
 export class MeasureUnitsService extends GeneralService {
-  private measureUnitNames: Array<string> = ['kg', 'g', 'lbs', 'm', 'cm'];
+  private measureUnitNames: Array<string> = [
+    'pc',
+    'hr',
+    'kg',
+    'g',
+    'lbs',
+    'm',
+    'cm',
+    'unit',
+  ];
 
   private async createMeasureUnit(
     measureUnitName: string
@@ -79,7 +88,7 @@ export class MeasureUnitsService extends GeneralService {
   }
 
   public async getAll(): Promise<components['schemas']['UnitResponse'][]> {
-    const { data, error, response } = await this.request.GET('/measure_units', {
+    const { data, error } = await this.request.GET('/measure_units', {
       params: {
         header: {
           'x-monite-entity-id': this.entityId,
