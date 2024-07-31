@@ -316,7 +316,7 @@ const PayableDetailsInfoBase = ({
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
-                              item.subtotal,
+                              item.subtotal ?? 0,
                               payable.currency
                             )}
                           </Box>
