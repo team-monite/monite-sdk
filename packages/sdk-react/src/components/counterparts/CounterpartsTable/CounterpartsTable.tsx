@@ -123,7 +123,7 @@ const CounterpartsTableBase = ({
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const [currentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
     []
@@ -259,8 +259,6 @@ const CounterpartsTableBase = ({
           />
         </Box>
         <DataGrid
-          className={className + '-DataGrid'}
-          autoHeight
           rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}

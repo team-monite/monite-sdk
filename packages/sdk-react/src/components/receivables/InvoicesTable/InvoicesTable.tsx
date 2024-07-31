@@ -121,7 +121,6 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
-          autoHeight
           rowSelection={false}
           loading={isLoading}
           sx={{
