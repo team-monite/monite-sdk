@@ -124,7 +124,6 @@ export const PayableDetailsHeader = ({
 
         {(!payable || !isPayableInOCRProcessing(payable)) && (
           <Stack
-            className={className + '-ActionsContainer'}
             spacing={2}
             direction="row"
             sx={{ marginLeft: 'auto' }}
@@ -135,11 +134,7 @@ export const PayableDetailsHeader = ({
                 buttonsByPermissions[permission];
 
               return (
-                <Button
-                  key={permission}
-                  className={className + '-Action--' + permission}
-                  {...restProps}
-                >
+                <Button key={permission} {...restProps}>
                   {children}
                 </Button>
               );

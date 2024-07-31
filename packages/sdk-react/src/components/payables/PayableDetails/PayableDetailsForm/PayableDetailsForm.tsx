@@ -349,7 +349,6 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <FormControl
-                            className={className + '-Details-BankAccount'}
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
@@ -392,7 +391,6 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <MuiDatePicker
-                              className={className + '-Details-InvoiceDate'}
                               maxDate={currentDueDate}
                               slotProps={{
                                 popper: { container: root },
@@ -420,7 +418,6 @@ const PayableDetailsFormBase = forwardRef<
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <MuiDatePicker
-                            className={className + '-Details-DueDate'}
                             minDate={currentInvoiceDate}
                             slotProps={{
                               popper: { container: root },
@@ -454,7 +451,6 @@ const PayableDetailsFormBase = forwardRef<
                           control={control}
                           render={({ field, fieldState: { error } }) => (
                             <FormControl
-                              className={className + '-Details-Tags'}
                               variant="outlined"
                               fullWidth
                               required
