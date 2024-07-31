@@ -18,7 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -236,11 +236,9 @@ const ApprovalRequestsTableBase = ({
             headerName: t(i18n)`Issue date`,
             sortable: false,
             flex: 0.7,
-            valueFormatter: ({
-              value,
-            }: GridValueFormatterParams<
-              components['schemas']['PayableResponseSchema']['issued_at']
-            >) =>
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['issued_at']
+            ) =>
               value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
           },
           {
@@ -249,11 +247,9 @@ const ApprovalRequestsTableBase = ({
             headerName: t(i18n)`Due date`,
             sortable: false,
             flex: 0.7,
-            valueFormatter: ({
-              value,
-            }: GridValueFormatterParams<
-              components['schemas']['PayableResponseSchema']['due_date']
-            >) =>
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['due_date']
+            ) =>
               value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
           },
           {
@@ -270,8 +266,8 @@ const ApprovalRequestsTableBase = ({
             headerName: t(i18n)`Amount`,
             sortable: false,
             flex: 0.5,
-            valueGetter: (params) => {
-              const payable = params.row;
+            valueGetter: (_, row) => {
+              const payable = row;
 
               return payable.amount_to_pay && payable.currency
                 ? formatCurrencyToDisplay(
