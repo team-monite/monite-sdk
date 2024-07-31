@@ -37,7 +37,7 @@ module.exports = {
       },
     },
     {
-      files: ['sdk-api/src/api/**/*'],
+      files: ['packages/sdk-api/src/api/**/*'],
       rules: {
         'unused-imports/no-unused-imports': 'off',
       },
