@@ -107,11 +107,12 @@ html {
 }
 
 /* Filters styling */
-.Monite-ReceivableFilters, .Monite-PayableFilters {
+.Monite-ReceivableFilters, .Monite-PayableFilters, .Monite-CounterpartFilters {
   .Monite-SearchField, .Monite-ReceivableStatusFilter,
   .Monite-ReceivableCounterpartFilter, .Monite-ReceivableDueDateFilter,
   .Monite-PayableStatusFilter,
-  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter {
+  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter,
+  .Monite-CounterpartTypeFilter, .Monite-CounterpartCategoryFilter {
     height: 40px;
     min-height: 40px;
     max-height: 40px;
