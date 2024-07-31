@@ -311,11 +311,7 @@ const PayableDetailsInfoBase = ({
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. VAT`}{' '}
-                            {`${
-                              item.tax
-                                ? (item.tax / 100)
-                                : 0
-                            }%`}
+                            {`${item.tax ? item.tax / 100 : 0}%`}
                           </Box>
                         </>
                       ) : (
