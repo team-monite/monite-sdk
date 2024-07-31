@@ -5,11 +5,7 @@ import { ComponentProps } from 'react';
 import { normalizePathTrailingSlash } from 'next/dist/client/normalize-trailing-slash';
 import { usePathname } from 'next/navigation';
 
-import {
-  OrganizationSwitcher as OrganizationSwitcherBase,
-  useAuth,
-  useOrganizationList,
-} from '@clerk/nextjs';
+import { OrganizationSwitcher as OrganizationSwitcherBase } from '@clerk/nextjs';
 
 export const OrganizationSwitcher = ({
   hidePersonal = true,
@@ -17,14 +13,7 @@ export const OrganizationSwitcher = ({
 }: ComponentProps<typeof OrganizationSwitcherBase>) => {
   const pathname = usePathname();
 
-  const { orgRole } = useAuth();
-
-  const { userMemberships, setActive } = useOrganizationList({
-    userMemberships: true,
-  });
-
-  return (userMemberships.count && userMemberships.count > 1) ||
-    orgRole === 'admin' ? (
+  return (
     <OrganizationSwitcherBase
       hidePersonal={hidePersonal}
       afterCreateOrganizationUrl="/counterparts/?display_demo_data_generation_progress"
@@ -35,5 +24,5 @@ export const OrganizationSwitcher = ({
       }}
       {...restProps}
     />
-  ) : null;
+  );
 };
