@@ -9,6 +9,6 @@ module.exports = {
   rules: {
     'lingui-require-argument-for-t-function': require('../rules/lingui-require-argument-for-t-function'),
     'mui-require-container-property': require('../rules/mui-require-container-property'),
-    'use-double-bang-for-enabled': require('../rules/use-double-bang-for-enabled'),
+    'use-boolean-for-enabled': require('../rules/use-boolean-for-enabled'),
   },
 };
