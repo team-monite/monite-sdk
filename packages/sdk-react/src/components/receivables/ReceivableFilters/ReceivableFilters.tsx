@@ -10,6 +10,7 @@ import {
   ReadableReceivableStatuses,
 } from '@/enums/ReadableReceivablesStatusEnum';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -42,7 +43,11 @@ export const ReceivableFilters = ({
   const className = 'Monite-ReceivableFilters';
 
   return (
-    <Grid container spacing={2} className={className}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       {filters.includes('document_id__contains') && (
         <Grid item sm={6} md={4}>
           <SearchField
@@ -59,7 +64,7 @@ export const ReceivableFilters = ({
           <MuiFormControl
             variant="outlined"
             fullWidth
-            className={'Monite-ReceivableStatusFilter'}
+            className="Monite-ReceivableStatusFilter Monite-FilterControl"
           >
             <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
             <Select<ReadableReceivablesStatus>
@@ -93,7 +98,7 @@ export const ReceivableFilters = ({
           <MuiFormControl
             variant="outlined"
             fullWidth
-            className="Monite-ReceivableCounterpartFilter"
+            className="Monite-ReceivableCounterpartFilter Monite-FilterControl"
           >
             <MuiInputLabel id="counterpart_id">{t(
               i18n
@@ -124,7 +129,7 @@ export const ReceivableFilters = ({
       {filters.includes('due_date__lte') && (
         <Grid item xs={6} sm={3} md={2} lg={2}>
           <DatePicker<Date>
-            className="Monite-ReceivableDueDateFilter"
+            className="Monite-ReceivableDueDateFilter Monite-FilterControl"
             label={t(i18n)`Due date`}
             views={['year', 'month', 'day']}
             onChange={(value, error) => {
