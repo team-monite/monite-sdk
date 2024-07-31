@@ -1,5 +1,6 @@
 import type { CancelablePromise } from '../CancelablePromise';
 import type { CurrencyDetails } from '../models/CurrencyDetails';
+import { OpenAPIConfig } from '../OpenAPI';
 import { request as __request } from '../request';
 import { CommonService } from './CommonService';
 
