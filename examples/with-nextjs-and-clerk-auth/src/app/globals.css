@@ -33,6 +33,26 @@ html {
   }
 }
 
+.Monite-Counterparts {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+
+  > .MuiBox-root {
+    /* occupy whole available space */
+    flex-basis: 0;
+    flex-grow: 2;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
 .Monite-Receivables {
   display: flex;
   flex-direction: column;
