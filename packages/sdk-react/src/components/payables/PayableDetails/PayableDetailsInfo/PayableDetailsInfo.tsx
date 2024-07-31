@@ -133,7 +133,6 @@ const PayableDetailsInfoBase = ({
       </DetailsWrapper>
     );
   }
-
   return (
     <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
       <Grid container spacing={3}>
@@ -306,19 +305,15 @@ const PayableDetailsInfoBase = ({
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
-                              item.total,
+                              item.subtotal,
                               payable.currency
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. VAT`}{' '}
                             {`${
-                              item.subtotal
-                                ? (
-                                    ((item.total - item.subtotal) /
-                                      item.subtotal) *
-                                    100
-                                  ).toFixed(2)
+                              item.tax
+                                ? (item.tax / 100)
                                 : 0
                             }%`}
                           </Box>
