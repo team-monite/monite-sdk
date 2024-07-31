@@ -43,7 +43,7 @@ interface Props {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange }: Props): React.ReactElement => {
+export const SearchField = ({ label, onChange }: Props) => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
