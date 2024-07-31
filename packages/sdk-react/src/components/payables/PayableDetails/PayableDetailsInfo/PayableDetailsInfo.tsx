@@ -475,7 +475,7 @@ const PayableCounterpartName = ({
       },
     },
     {
-      enabled: !!(
+      enabled: Boolean(
         !payable.counterpart_id && payable.counterpart_raw_data?.name
       ),
       select: (data) => Boolean(data.data.at(0)),
