@@ -35,13 +35,7 @@ module.exports = {
           { devDependencies: true },
         ],
       },
-    },
-    {
-      files: ['packages/sdk-api/src/api/**/*'],
-      rules: {
-        'unused-imports/no-unused-imports': 'off',
-      },
-    },
+    }
   ],
   settings: {
     'import/resolver': {
