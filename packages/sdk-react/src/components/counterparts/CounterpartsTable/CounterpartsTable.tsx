@@ -18,6 +18,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
@@ -122,7 +123,7 @@ const CounterpartsTableBase = ({
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const [currentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
     []
@@ -237,22 +238,28 @@ const CounterpartsTableBase = ({
     return <AccessRestriction />;
   }
 
+  const className = 'Monite-CounterpartsTable';
+
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           padding: 2,
           width: '100%',
         }}
       >
-        <Box sx={{ marginBottom: 2 }}>
+        <Box
+          sx={{ marginBottom: 2 }}
+          className={className + '-FiltersContainer'}
+        >
           <FiltersComponent
             onChangeFilter={onChangeFilter}
             showCategories={showCategories}
           />
         </Box>
         <DataGrid
+          className={className + '-DataGrid'}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -402,6 +409,7 @@ const CounterpartsTableBase = ({
           rows={counterparts?.data || []}
         />
         <Dialog
+          className={className + 'Dialog-DeleteCounterpart'}
           open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
           container={root}
           onClose={closeDeleteCounterpartModal}
@@ -412,22 +420,30 @@ const CounterpartsTableBase = ({
             onExited: closedDeleteCounterpartModal,
           }}
         >
-          <DialogTitle variant="h3">
+          <DialogTitle
+            variant="h3"
+            className={className + 'Dialog-DeleteCounterpart-Title'}
+          >
             {t(i18n)`Delete Counterpart "${getCounterpartName(
               selectedCounterpart!
             )}"?`}
           </DialogTitle>
-          <DialogContent>
+          <DialogContent
+            className={className + 'Dialog-DeleteCounterpart-Content'}
+          >
             <DialogContentText>
               {t(i18n)`This action can't be undone.`}
             </DialogContentText>
           </DialogContent>
-          <Divider />
-          <DialogActions>
+          <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
+          <DialogActions
+            className={className + 'Dialog-DeleteCounterpart-Actions'}
+          >
             <Button
               variant="outlined"
               onClick={closeDeleteCounterpartModal}
               color="inherit"
+              className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
             >
               {t(i18n)`Cancel`}
             </Button>
@@ -436,6 +452,7 @@ const CounterpartsTableBase = ({
               color="error"
               onClick={deleteCounterpart}
               autoFocus
+              className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
             >
               {t(i18n)`Delete`}
             </Button>

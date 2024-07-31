@@ -73,6 +73,8 @@ const CounterpartsBase = () => {
 
   const { root } = useRootElements();
 
+  const className = 'Monite-Counterparts';
+
   const counterpartDetails = (() => {
     if (counterpartId) {
       return (
@@ -106,6 +108,7 @@ const CounterpartsBase = () => {
   return (
     <>
       <PageHeader
+        className={className + '-Title'}
         title={
           <>
             {t(i18n)`Counterparts`}
@@ -115,9 +118,10 @@ const CounterpartsBase = () => {
           </>
         }
         extra={
-          <Box>
+          <Box className={className + '-Actions'}>
             <Button
               {...buttonProps}
+              className={className + '-Actions-CreateNew'}
               variant="contained"
               disabled={!isCreateAllowed}
               endIcon={
@@ -128,12 +132,14 @@ const CounterpartsBase = () => {
             </Button>
             <Menu
               {...menuProps}
+              className={className + '-Actions-Menu'}
               container={root}
               MenuListProps={{
                 'aria-labelledby': 'actions',
               }}
             >
               <MenuItem
+                className={className + '-Actions-CreateNew-Organization'}
                 onClick={() => {
                   setType('organization');
                 }}
@@ -141,6 +147,7 @@ const CounterpartsBase = () => {
                 {t(i18n)`Organization`}
               </MenuItem>
               <MenuItem
+                className={className + '-Actions-CreateNew-Individual'}
                 onClick={() => {
                   setType('individual');
                 }}
