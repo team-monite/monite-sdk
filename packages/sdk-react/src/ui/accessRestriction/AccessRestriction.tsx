@@ -14,7 +14,6 @@ export interface AccessRestrictionProps {
 }
 
 export const AccessRestriction = (props: AccessRestrictionProps) => {
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-AccessRestriction';
   const dialogContext = useDialog();
   const { i18n } = useLingui();

@@ -170,7 +170,6 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-PayablesTable';
   return (
     <>

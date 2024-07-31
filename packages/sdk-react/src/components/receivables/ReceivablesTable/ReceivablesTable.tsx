@@ -55,7 +55,6 @@ const ReceivablesTableBase = ({
   const tabIdPrefix = `ReceivablesTable-Tab-${useId()}-`;
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const tabPanelIdPrefix = `ReceivablesTable-TabPanel-${useId()}-`;
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-ReceivablesTable';
 
   return (

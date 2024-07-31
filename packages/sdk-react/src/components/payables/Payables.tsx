@@ -100,7 +100,6 @@ const PayablesBase = ({
 
   const { root } = useRootElements();
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-Monite-Payables-Header';
 
   return (

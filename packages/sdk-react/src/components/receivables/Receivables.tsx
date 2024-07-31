@@ -73,7 +73,6 @@ const ReceivablesBase = () => {
       entityUserId: user?.id,
     });
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-Receivables';
 
   return (

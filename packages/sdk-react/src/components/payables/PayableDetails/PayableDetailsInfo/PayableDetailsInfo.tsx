@@ -114,7 +114,6 @@ const PayableDetailsInfoBase = ({
     [counterpartBankAccountQuery, payable]
   );
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-PayableDetailsInfo';
 
   if (isPayableInOCRProcessing(payable)) {

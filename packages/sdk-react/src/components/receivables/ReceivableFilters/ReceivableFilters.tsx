@@ -39,7 +39,6 @@ export const ReceivableFilters = ({
   const { api } = useMoniteContext();
 
   const { data: counterparts } = api.counterparts.getCounterparts.useQuery();
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-ReceivableFilters';
 
   return (

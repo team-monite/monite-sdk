@@ -90,7 +90,6 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
     };
   }, [visibleFields]);
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-CreateReceivable-EntitySection';
 
   return (

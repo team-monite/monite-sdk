@@ -120,7 +120,6 @@ const PayableDetailsBase = ({
     );
   }
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-PayableDetails';
   return (
     <>

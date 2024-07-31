@@ -76,7 +76,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-CreditNotesTable';
 
   return (

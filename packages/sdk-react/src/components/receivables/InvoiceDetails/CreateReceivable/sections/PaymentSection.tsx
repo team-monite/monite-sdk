@@ -46,7 +46,6 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
     );
   }, [isPaymentTermsLoading, paymentTerms]);
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-CreateReceivable-PaymentSection';
 
   return (

@@ -99,7 +99,6 @@ export const PayableDetailsHeader = ({
     },
   };
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-PayableDetails-Header';
 
   return (

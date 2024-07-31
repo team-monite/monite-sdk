@@ -94,7 +94,6 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-QuotesTable';
 
   return (

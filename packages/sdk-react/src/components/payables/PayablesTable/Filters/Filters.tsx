@@ -24,7 +24,6 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-PayableFilters';
 
   return (

@@ -109,7 +109,6 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     return <LoadingPage />;
   }
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-CreateReceivable';
 
   return (

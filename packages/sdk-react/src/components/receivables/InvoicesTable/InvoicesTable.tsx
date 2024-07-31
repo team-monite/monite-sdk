@@ -97,7 +97,6 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-InvoicesTable';
 
   return (

@@ -129,7 +129,6 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const contactPersonDisplayableError =
     usePrevious(contactPersonError) ?? contactPersonError;
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const className = 'Monite-CreateReceivable-CustomerSection';
 
   return (
