@@ -107,12 +107,8 @@ html {
 }
 
 /* Filters styling */
-.Monite-ReceivableFilters, .Monite-PayableFilters, .Monite-CounterpartFilters {
-  .Monite-SearchField, .Monite-ReceivableStatusFilter,
-  .Monite-ReceivableCounterpartFilter, .Monite-ReceivableDueDateFilter,
-  .Monite-PayableStatusFilter,
-  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter,
-  .Monite-CounterpartTypeFilter, .Monite-CounterpartCategoryFilter {
+.Monite-Filters {
+  .Monite-FilterControl {
     height: 40px;
     min-height: 40px;
     max-height: 40px;

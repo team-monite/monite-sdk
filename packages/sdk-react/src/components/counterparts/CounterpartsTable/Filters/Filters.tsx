@@ -3,6 +3,7 @@ import React from 'react';
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -33,7 +34,11 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
   const className = 'Monite-CounterpartFilters';
 
   return (
-    <Grid container spacing={2} className={className}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={4} sm={5} md={5} lg={4}>
         <SearchField
           label={t(i18n)`Search by name`}
@@ -46,7 +51,7 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
         <FormControl
           variant="outlined"
           fullWidth
-          className="Monite-CounterpartTypeFilter"
+          className="Monite-CounterpartTypeFilter Monite-FilterControl"
         >
           <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
           <Select
@@ -84,7 +89,7 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
           <FormControl
             variant="outlined"
             fullWidth
-            className="Monite-CounterpartCategoryFilter"
+            className="Monite-CounterpartCategoryFilter Monite-FilterControl"
           >
             <InputLabel id="category">{t(i18n)`Category`}</InputLabel>
             <Select
