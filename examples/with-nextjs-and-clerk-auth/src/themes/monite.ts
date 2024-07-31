@@ -272,6 +272,20 @@ const components:
       },
     },
   },
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        '& .MuiButtonBase-root': {
+          paddingTop: 10,
+          paddingBottom: 10,
+        },
+        '& .MuiButtonBase-root.Mui-selected': {
+          backgroundColor: '#F4F4FE',
+          borderRadius: 10,
+        },
+      },
+    },
+  },
 };
 
 export const moniteLight = () =>
