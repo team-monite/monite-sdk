@@ -236,7 +236,7 @@ export const useCounterpartVatById = (
       },
     },
     {
-      enabled: !!counterpartId && !!vatId,
+      enabled: Boolean(counterpartId) && Boolean(vatId),
     }
   );
 };
@@ -317,7 +317,7 @@ export const useCounterpartContactList = (
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!(counterpartId && counterpart?.type === 'organization'),
+      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
 };
@@ -365,7 +365,7 @@ export const useCounterpartContactById = (
       },
     },
     {
-      enabled: !!counterpartId && !!contactId,
+      enabled: Boolean(counterpartId) && Boolean(contactId),
     }
   );
 };
