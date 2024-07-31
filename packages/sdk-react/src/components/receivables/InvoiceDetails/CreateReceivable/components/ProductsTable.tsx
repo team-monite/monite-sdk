@@ -196,7 +196,7 @@ export const ProductsTable = ({
           },
         };
       },
-      enabled: !!currency,
+      enabled: Boolean(currency),
     }
   );
 

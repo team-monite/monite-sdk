@@ -24,7 +24,7 @@ export const useCounterpartAddresses = (counterpartId?: string) => {
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!counterpartId,
+      enabled: Boolean(counterpartId),
     }
   );
 };
@@ -115,7 +115,7 @@ export const useCounterpartBankById = (
       },
     },
     {
-      enabled: !!bankId,
+      enabled: Boolean(bankId),
     }
   );
 };
@@ -196,7 +196,7 @@ export const useCounterpartVatList = (counterpartId?: string) => {
       },
     },
     {
-      enabled: !!counterpartId,
+      enabled: Boolean(counterpartId),
     }
   );
 };
@@ -308,7 +308,7 @@ export const useCounterpartContactList = (
   const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
     { path: { counterpart_id: counterpartId ?? '' } },
     {
-      enabled: !!counterpartId,
+      enabled: Boolean(counterpartId),
     }
   );
 
@@ -317,7 +317,7 @@ export const useCounterpartContactList = (
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!(counterpartId && counterpart?.type === 'organization'),
+      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
 };
@@ -482,7 +482,7 @@ export const useCounterpartById = (id?: string) => {
       },
     },
     {
-      enabled: !!id,
+      enabled: Boolean(id),
     }
   );
 };

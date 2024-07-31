@@ -66,7 +66,7 @@ export const BeforeDueDateReminderForm = ({
     {
       path: { payment_reminder_id: reminderId || '' },
     },
-    { enabled: !!reminderId }
+    { enabled: Boolean(reminderId) }
   );
 
   if (isLoading) {

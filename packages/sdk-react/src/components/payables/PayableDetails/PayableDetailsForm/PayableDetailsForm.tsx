@@ -189,7 +189,7 @@ const PayableDetailsFormBase = forwardRef<
           },
         },
         {
-          enabled: !!(
+          enabled: Boolean(
             !payable?.counterpart_id && payable?.counterpart_raw_data?.name
           ),
           select: (data) => data.data.at(0)?.id,

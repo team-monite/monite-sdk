@@ -14,7 +14,7 @@ export const useDocumentDescriptions = (
       },
     },
     {
-      enabled: !!country,
+      enabled: Boolean(country),
     }
   );
 };

@@ -29,7 +29,7 @@ const usePaymentReminderById = (id: string | undefined | null) => {
   const { api } = useMoniteContext();
   return api.paymentReminders.getPaymentRemindersId.useQuery(
     { path: { payment_reminder_id: id ?? '' } },
-    { enabled: !!id }
+    { enabled: Boolean(id) }
   );
 };
 
@@ -37,7 +37,7 @@ const useOverdueReminderById = (id: string | undefined | null) => {
   const { api } = useMoniteContext();
   return api.overdueReminders.getOverdueRemindersId.useQuery(
     { path: { overdue_reminder_id: id ?? '' } },
-    { enabled: !!id }
+    { enabled: Boolean(id) }
   );
 };
 

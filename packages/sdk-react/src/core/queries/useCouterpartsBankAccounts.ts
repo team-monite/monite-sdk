@@ -8,7 +8,7 @@ export const useCounterpartsBankAccountsList = (counterpartId?: string) => {
       path: { counterpart_id: counterpartId ?? '' },
     },
     {
-      enabled: !!counterpartId,
+      enabled: Boolean(counterpartId),
     }
   );
 };

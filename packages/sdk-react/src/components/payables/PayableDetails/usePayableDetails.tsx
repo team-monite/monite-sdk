@@ -230,7 +230,7 @@ export function usePayableDetails({
   } = api.payables.getPayablesId.useQuery(
     { path: { payable_id: payableId ?? '' } },
     {
-      enabled: !!payableId,
+      enabled: Boolean(payableId),
       refetchInterval: isOcrProcessing ? 2_000 : 15_000,
       refetchOnMount: true,
     }
@@ -245,7 +245,7 @@ export function usePayableDetails({
     {
       path: { payable_id: payableId ?? '' },
     },
-    { enabled: !!payableId }
+    { enabled: Boolean(payableId) }
   );
 
   const lineItems = lineItemsData?.data;

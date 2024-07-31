@@ -8,7 +8,7 @@ export const useFileById = (fileId: string | undefined) => {
       path: { file_id: fileId ?? '' },
     },
     {
-      enabled: !!fileId,
+      enabled: Boolean(fileId),
     }
   );
 };

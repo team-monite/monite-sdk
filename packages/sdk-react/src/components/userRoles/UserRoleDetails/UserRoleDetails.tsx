@@ -49,7 +49,7 @@ const UserRoleDetailsBase = ({
     error: roleQueryError,
   } = api.roles.getRolesId.useQuery(
     { path: { role_id: id ?? '' } },
-    { enabled: !!id }
+    { enabled: Boolean(id) }
   );
 
   if (id && (isLoading || isPending)) {

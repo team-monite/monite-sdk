@@ -8,7 +8,7 @@ export const useApprovalPolicyById = (approvalPolicyId: string | undefined) => {
       path: { approval_policy_id: approvalPolicyId ?? '' },
     },
     {
-      enabled: !!approvalPolicyId,
+      enabled: Boolean(approvalPolicyId),
     }
   );
 };

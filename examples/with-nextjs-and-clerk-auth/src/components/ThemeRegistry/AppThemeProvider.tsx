@@ -41,7 +41,7 @@ export function AppThemeProvider(props: RootThemeProviderProps) {
   const queryClient = useQueryClient();
 
   const selectedTheme = useQuery<ThemeConfig>({
-    enabled: !!userId,
+    enabled: Boolean(userId),
     queryKey: SELECTED_THEME_QUERY_KEY,
     initialData: () => initialTheme,
     queryFn: async () => {
