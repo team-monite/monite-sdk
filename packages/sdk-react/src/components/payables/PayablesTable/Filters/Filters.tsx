@@ -24,9 +24,10 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const className = 'Monite-PayableFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className={className}>
       <Grid item xs={6} sm={3} md={4} lg={3}>
         <SearchField
           label={t(i18n)`Search`}
@@ -36,7 +37,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
         />
       </Grid>
       <Grid item xs={6} sm={3} md={4} lg={3}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className="Monite-PayableStatusFilter"
+        >
           <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
           <Select
             labelId="status"
@@ -66,6 +71,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
+          className="Monite-PayableDateFilter"
           label={t(i18n)`Invoice date`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -90,6 +96,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
+          className="Monite-PayableDueDateFilter"
           label={t(i18n)`Due date`}
           onChange={(value, error) => {
             if (error.validationError) {

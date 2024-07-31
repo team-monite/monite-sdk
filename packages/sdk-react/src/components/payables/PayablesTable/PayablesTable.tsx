@@ -17,6 +17,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -169,10 +170,11 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
+  const className = 'Monite-PayablesTable';
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           padding: 2,
         }}

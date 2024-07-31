@@ -47,6 +47,7 @@ interface CardTableItemProps {
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
+  className?: string;
 }
 
 /**
@@ -80,8 +81,15 @@ const CardTableItem = ({
   value,
   variant = 'body1',
   sx,
+  className,
 }: CardTableItemProps) => (
-  <Grid container direction="row" alignItems="center" sx={{ px: 4, py: 2 }}>
+  <Grid
+    container
+    direction="row"
+    alignItems="center"
+    sx={{ px: 4, py: 2 }}
+    className={className}
+  >
     <Grid item xs={4}>
       {typeof label === 'string' ? (
         <Typography variant="body1">{label}</Typography>
@@ -198,8 +206,10 @@ export const ItemsSection = ({
     return quantityErr.quantity.message;
   }, [error]);
 
+  const className = 'Monite-CreateReceivable-ItemsSection';
+
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <Typography variant="subtitle2">{t(i18n)`Items`}</Typography>
       <Collapse in={Boolean(generalError)}>
         <Alert severity="error">{generalError}</Alert>
@@ -352,7 +362,11 @@ export const ItemsSection = ({
           </Box>
         </Collapse>
       </Card>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <Card
+        className={className + '-Totals'}
+        variant="outlined"
+        sx={{ borderRadius: 2 }}
+      >
         <Stack>
           <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
           <Divider />
@@ -371,6 +385,7 @@ export const ItemsSection = ({
         </Stack>
       </Card>
       <Dialog
+        className={className + '-Dialog-ProductsTable'}
         open={productsTableOpen}
         onClose={handleCloseProductsTable}
         alignDialog="right"

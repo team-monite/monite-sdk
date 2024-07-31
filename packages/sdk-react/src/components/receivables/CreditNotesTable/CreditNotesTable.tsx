@@ -12,6 +12,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -75,11 +76,13 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  const className = 'Monite-CreditNotesTable';
+
   return (
     <>
       <Box
         sx={{ padding: 2, width: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
       >
         <Box sx={{ marginBottom: 2 }}>
           <ReceivableFilters

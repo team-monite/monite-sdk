@@ -11,6 +11,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -119,10 +120,11 @@ const PayableDetailsBase = ({
     );
   }
 
+  const className = 'Monite-PayableDetails';
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           width: '100%',
           height: '100%',

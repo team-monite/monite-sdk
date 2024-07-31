@@ -140,9 +140,11 @@ const EditInvoiceDetailsContent = ({
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
 
+  const className = 'Monite-EditInvoiceDetails';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Button
             variant="text"
@@ -163,8 +165,8 @@ const EditInvoiceDetailsContent = ({
           </Box>
         </Toolbar>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <FormProvider {...methods}>
           <form
             id={formName}
@@ -251,6 +253,7 @@ const EditInvoiceDetailsContent = ({
               </Stack>
             </Stack>
             <Dialog
+              className={className + '-Dialog-CancelWithoutSaving'}
               open={isAlertOpen}
               onClose={() => setIsAlertOpen(false)}
               container={root}

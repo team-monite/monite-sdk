@@ -18,6 +18,7 @@ import {
 } from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -113,9 +114,17 @@ const PayableDetailsInfoBase = ({
     [counterpartBankAccountQuery, payable]
   );
 
+  const className = 'Monite-PayableDetailsInfo';
+
   if (isPayableInOCRProcessing(payable)) {
     return (
-      <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+      <DetailsWrapper
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className,
+          className + '--ocr-processing'
+        )}
+      >
         <CenteredContentBox>
           <Box textAlign="center">
             <CachedOutlined color="primary" fontSize="large" />
@@ -134,9 +143,11 @@ const PayableDetailsInfoBase = ({
     );
   }
   return (
-    <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+    <DetailsWrapper
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+    >
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Details'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Details`}
           </Typography>
@@ -273,7 +284,7 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
           </Typography>
@@ -305,13 +316,13 @@ const PayableDetailsInfoBase = ({
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
-                              item.subtotal,
+                              item.subtotal ?? 0,
                               payable.currency
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. VAT`}{' '}
-                            {`${item.tax ? item.tax / 100 : 0}%`}
+                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>
                       ) : (
@@ -324,7 +335,7 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Totals'}>
           <Paper variant="outlined">
             <Table>
               <TableBody>
@@ -366,7 +377,7 @@ const PayableDetailsInfoBase = ({
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-History'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`History`}
           </Typography>

@@ -165,9 +165,11 @@ const ExistingReceivableDetailsBase = (
     return <ExistingInvoiceDetails {...props} />;
   }
 
+  const className = 'Monite-ExistingReceivable';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar sx={{ width: 44, height: 44 }}>{avatarSymbol}</Avatar>
@@ -186,8 +188,8 @@ const ExistingReceivableDetailsBase = (
           )}
         </Box>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <Box mt={2}>
           <Card variant="outlined">
             <Table>
@@ -264,7 +266,7 @@ const ExistingReceivableDetailsBase = (
           </>
         )}
       </DialogContent>
-      <Divider />
+      <Divider className={className + '-Divider'} />
       <DialogActions data-testid="InvoiceDetailsFooter">
         {permissions.includes('cancel') && (
           <Button
