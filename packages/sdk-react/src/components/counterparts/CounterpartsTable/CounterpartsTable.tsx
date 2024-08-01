@@ -255,6 +255,13 @@ const CounterpartsTableBase = ({
         <DataGrid
           autoHeight
           rowSelection={false}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                category: showCategories,
+              },
+            },
+          }}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           sortModel={sortModel}
