@@ -179,7 +179,7 @@ const InvoicesTableBase = ({
               field: 'created_at',
               headerName: t(i18n)`Created on`,
               sortable: false,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
