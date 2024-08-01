@@ -34,42 +34,44 @@ const TotalView = ({
     bold?: boolean;
   }>;
 }) => {
-  return <>
-    {items.map((item, index) => {
-      const labelProps = item.bold
-        ? {
-            fontWeight: 500,
-          }
-        : {};
-      const valueProps: TypographyTypeMap['props'] = item.bold
-        ? {
-            variant: 'subtitle2',
-            fontWeight: 600,
-          }
-        : {
-            variant: 'body1',
-          };
+  return (
+    <>
+      {items.map((item, index) => {
+        const labelProps = item.bold
+          ? {
+              fontWeight: 500,
+            }
+          : {};
+        const valueProps: TypographyTypeMap['props'] = item.bold
+          ? {
+              variant: 'subtitle2',
+              fontWeight: 600,
+            }
+          : {
+              variant: 'body1',
+            };
 
-      return (
-        <Fragment key={index}>
-          {index !== 0 && <Divider />}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              px: 2,
-              py: 1.5,
-            }}
-          >
-            <Typography variant="body1" {...labelProps}>
-              {item.title}
-            </Typography>
-            <Typography {...valueProps}>{item.value}</Typography>
-          </Box>
-        </Fragment>
-      );
-    })}
-  </>;
+        return (
+          <Fragment key={index}>
+            {index !== 0 && <Divider />}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                px: 2,
+                py: 1.5,
+              }}
+            >
+              <Typography variant="body1" {...labelProps}>
+                {item.title}
+              </Typography>
+              <Typography {...valueProps}>{item.value}</Typography>
+            </Box>
+          </Fragment>
+        );
+      })}
+    </>
+  );
 };
 
 export const PreviewItemsSection = ({
