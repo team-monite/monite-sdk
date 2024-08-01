@@ -13,7 +13,6 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
 
 import { OnboardingFileDescription } from '../OnboardingFileDescription';
 
@@ -40,7 +39,7 @@ export const OnboardingFileUploader = ({
   const { mutateAsync, isPending } = api.files.postFiles.useMutation(
     undefined,
     {
-      onSuccess: async (file) => {
+      onSuccess: async () => {
         await api.files.getFiles.invalidateQueries(queryClient);
       },
     }

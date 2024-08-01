@@ -19,7 +19,7 @@ export const RHFTextFieldPhone = <T extends FieldValues>({
       control={control}
       name={name}
       render={({
-        field: { ref, value, onChange, ...otherField },
+        field: { value, onChange, ...otherField },
         fieldState: { error, isTouched },
         formState: { isValid },
       }) => {

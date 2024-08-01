@@ -57,7 +57,7 @@ export const OnboardingPersonDocuments = () => {
 
     if (!fields) return undefined;
 
-    const { id, ...documents } = fields;
+    const { ...documents } = fields;
 
     return documents;
   }, [personDocuments, personId]);

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
