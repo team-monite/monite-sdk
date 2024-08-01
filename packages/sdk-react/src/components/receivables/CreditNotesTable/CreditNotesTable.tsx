@@ -170,8 +170,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'amount',
               headerName: t(i18n)`Amount`,
               sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (params) => {
-                const row = params.row;
+              valueGetter: (_, row) => {
                 const value = row.total_amount;
 
                 return value && formatCurrencyToDisplay(value, row.currency);
