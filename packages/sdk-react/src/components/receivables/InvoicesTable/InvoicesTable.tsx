@@ -158,14 +158,10 @@ const InvoicesTableBase = ({
               flex: 1,
               renderCell: ({ value }) => {
                 if (!value) {
-                  return (
-                    <Typography variant="body1" color="secondary">{t(
-                      i18n
-                    )`INV-auto`}</Typography>
-                  );
+                  return t(i18n)`INV-auto`;
                 }
 
-                return <Typography variant="body1">{value}</Typography>;
+                return value;
               },
             },
             {
@@ -193,12 +189,9 @@ const InvoicesTableBase = ({
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
               sortable: false,
-              valueFormatter: (params) =>
-                params.value
-                  ? i18n.date(
-                      params.value,
-                      DateTimeFormatOptions.EightDigitDate
-                    )
+              valueFormatter: (value) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
               flex: 0.7,
             },
@@ -220,8 +213,7 @@ const InvoicesTableBase = ({
               field: 'amount',
               headerName: t(i18n)`Amount`,
               sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (params) => {
-                const row = params.row;
+              valueGetter: (_, row) => {
                 const value = row.total_amount;
 
                 return value
@@ -234,12 +226,9 @@ const InvoicesTableBase = ({
               field: 'due_date',
               headerName: t(i18n)`Due date`,
               sortable: false,
-              valueFormatter: (params) =>
-                params.value
-                  ? i18n.date(
-                      params.value,
-                      DateTimeFormatOptions.EightDigitDate
-                    )
+              valueFormatter: (value) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
               flex: 0.7,
             },

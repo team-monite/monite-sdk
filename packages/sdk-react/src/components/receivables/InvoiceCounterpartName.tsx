@@ -20,8 +20,8 @@ export const InvoiceCounterpartName = ({
   }
 
   if (error) {
-    return <Typography>—</Typography>;
+    return <>—</>;
   }
 
-  return <Typography>{getCounterpartName(counterpart)}</Typography>;
+  return <>{getCounterpartName(counterpart)}</>;
 };
