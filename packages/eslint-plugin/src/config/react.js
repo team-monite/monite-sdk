@@ -8,6 +8,18 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-hooks/exhaustive-deps': 'error',
+    'no-restricted-imports': [
+      'error',
+      {
+        'paths': [
+          {
+            'name': 'react',
+            'importNames': ['default'],
+            // "message": "some messages for who import 'React' accidentally"
+          }
+        ]
+      }
+    ],
   },
   overrides: [
     {
