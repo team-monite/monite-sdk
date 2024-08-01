@@ -39,7 +39,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
     city,
     country,
     state,
-  } = prepareCounterpartContact(props.contact, i18n);
+  } = prepareCounterpartContact(props.contact);
 
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
 

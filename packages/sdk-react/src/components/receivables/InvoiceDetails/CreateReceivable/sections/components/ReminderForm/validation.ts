@@ -3,12 +3,6 @@ import { t } from '@lingui/macro';
 
 import * as yup from 'yup';
 
-interface Terms {
-  term_1_reminder: boolean;
-  term_2_reminder: boolean;
-  term_final_reminder: boolean;
-}
-
 const getReminderValidationSchema = (i18n: I18n) => {
   return yup
     .object({

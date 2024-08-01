@@ -21,13 +21,12 @@ export interface CounterpartAddressFormUpdateProps {
   counterpartId: string;
   addressId: string;
   onUpdate?: (id: string) => void;
-  onCancel?: () => void;
+  onCancel?: () => void | undefined;
 }
 export function useCounterpartAddressFormUpdate({
   counterpartId,
   addressId,
   onUpdate,
-  onCancel,
 }: CounterpartAddressFormUpdateProps) {
   const { data: address } = useCounterpartAddresses(counterpartId);
 

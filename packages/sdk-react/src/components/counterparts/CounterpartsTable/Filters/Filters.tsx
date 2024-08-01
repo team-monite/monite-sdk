@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
@@ -65,7 +63,7 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
                 value: 'organization',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
-            ].map(({ label, value, icons }) => (
+            ].map(({ label, value }) => (
               <MenuItem value={value} key={value}>
                 {/* We should use `ListItemIcon` component to be able to show `icons` */}
                 <Box sx={{ marginLeft: 1 }}>{label}</Box>

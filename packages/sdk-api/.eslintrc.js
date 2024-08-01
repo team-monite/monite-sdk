@@ -44,6 +44,13 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
+        'unused-imports/no-unused-imports': 'off',
+      },
+    },
+    {
+      files: ['src/api/**/*'],
+      rules: {
+        'unused-imports/no-unused-imports': 'off',
       },
     },
   ],

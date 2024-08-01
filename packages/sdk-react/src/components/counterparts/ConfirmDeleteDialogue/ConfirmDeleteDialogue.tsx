@@ -11,7 +11,6 @@ import {
   Button,
   DialogContentText,
   Divider,
-  Typography,
 } from '@mui/material';
 
 type ConfirmDeleteDialogueProps = {

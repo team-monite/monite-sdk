@@ -41,7 +41,7 @@ const UserRoleDetailsBase = ({
   onCreated,
 }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api } = useMoniteContext();
   const {
     isLoading,
     isPending,

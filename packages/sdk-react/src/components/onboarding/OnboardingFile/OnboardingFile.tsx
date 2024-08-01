@@ -1,8 +1,6 @@
-import React, { ReactNode } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 import { components } from '@/api';
-import { Typography } from '@mui/material';
 
 import { OnboardingFileUploader } from './OnboardingFileUploader';
 import { OnboardingFileViewer } from './OnboardingFileViever';
@@ -26,7 +24,7 @@ export const OnboardingFile = <T extends FieldValues>({
     <Controller
       control={control}
       name={name}
-      render={({ field: { ref, ...field }, fieldState: { error } }) => {
+      render={({ field: { ...field }, fieldState: { error } }) => {
         if (!field.value)
           return (
             <OnboardingFileUploader
@@ -42,26 +40,5 @@ export const OnboardingFile = <T extends FieldValues>({
         );
       }}
     />
-  );
-};
-
-const OnboardingFileContent = ({
-  description,
-  children,
-}: {
-  description?: ReactNode;
-  children: ReactNode;
-}) => {
-  return (
-    <>
-      {description && (
-        <>
-          <Typography variant="body2" color="text.secondary">
-            {description}
-          </Typography>
-          {children}
-        </>
-      )}
-    </>
   );
 };
