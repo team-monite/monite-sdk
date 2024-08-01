@@ -15,7 +15,7 @@ import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
