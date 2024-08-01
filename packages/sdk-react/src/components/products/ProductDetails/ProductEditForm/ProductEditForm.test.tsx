@@ -1,5 +1,5 @@
 import { productsListFixture } from '@/mocks/products';
-import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { ProductEditForm } from './ProductEditForm';

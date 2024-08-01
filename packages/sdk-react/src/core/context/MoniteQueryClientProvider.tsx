@@ -8,7 +8,6 @@ import { t } from '@lingui/macro';
 import type { Hub } from '@sentry/react';
 import {
   MutationCache,
-  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';

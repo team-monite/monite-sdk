@@ -122,7 +122,7 @@ const CounterpartsTableBase = ({
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
-  const [currentSort, setCurrentSort] = useState<Sort | null>(null);
+  const [currentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
   const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
     []

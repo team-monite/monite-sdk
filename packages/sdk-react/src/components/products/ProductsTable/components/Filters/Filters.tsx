@@ -61,7 +61,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
                 value: 'service',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
-            ].map(({ label, value, icons }) => (
+            ].map(({ label, value }) => (
               <MenuItem value={value} key={value}>
                 {/* We should use `ListItemIcon` component to be able to show `icons` */}
                 {label}

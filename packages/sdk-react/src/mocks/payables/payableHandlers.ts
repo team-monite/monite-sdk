@@ -27,16 +27,6 @@ const payableIdPath = `${payablePath}/:payableId`;
 let payable: components['schemas']['PayableResponseSchema'] =
   payableFixturePages[0];
 
-/** Returns a random value from provided enum */
-function getRandomEnum<T extends { [s: string]: unknown }>(
-  anEnum: T
-): T[keyof T] {
-  const enumValues = Object.values(anEnum) as unknown as T[keyof T][];
-  const randomIndex = Math.floor(Math.random() * enumValues.length);
-
-  return enumValues[randomIndex];
-}
-
 /**
  * Change document id for specific payable id
  *

@@ -48,14 +48,11 @@ export function useCounterpartContactForm({
 
   const methods = useForm<CounterpartContactFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => prepareCounterpartContact(contact, i18n),
-      [i18n, contact]
-    ),
+    defaultValues: useMemo(() => prepareCounterpartContact(contact), [contact]),
   });
 
   useEffect(() => {
-    methods.reset(prepareCounterpartContact(contact, i18n));
+    methods.reset(prepareCounterpartContact(contact));
   }, [i18n, methods, contact]);
 
   const submitForm = useCallback(() => {

@@ -16,7 +16,7 @@ const approvalPolicyId = approvalPoliciesSearchFixture.data[0].id;
 
 export const DialogDetailsView: Story = {
   args: {},
-  render: (args) => (
+  render: () => (
     <Dialog open={true} alignDialog="right" onClose={action('onClose')}>
       <ApprovalPolicyDetails id={approvalPolicyId} />
     </Dialog>
@@ -25,7 +25,7 @@ export const DialogDetailsView: Story = {
 
 export const CreateApprovalPolicy: Story = {
   args: {},
-  render: (args) => (
+  render: () => (
     <Dialog open={true} alignDialog="right" onClose={action('onClose')}>
       <ApprovalPolicyDetails />
     </Dialog>

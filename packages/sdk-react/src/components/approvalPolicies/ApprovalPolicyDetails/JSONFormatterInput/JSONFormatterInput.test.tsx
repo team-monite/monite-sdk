@@ -3,7 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/dom';
-import { act, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 
 import { JSONFormatterInput, Props } from './JSONFormatterInput';
 

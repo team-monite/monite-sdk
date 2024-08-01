@@ -213,4 +213,3 @@ const ProductEditFormBase = (props: IProductEditFormProps) => {
 
 type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type ProductServiceRequest = components['schemas']['ProductServiceRequest'];
-type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];

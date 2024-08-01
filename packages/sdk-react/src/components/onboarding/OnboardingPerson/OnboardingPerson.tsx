@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -296,4 +295,3 @@ const translateMask = (
 
 type OnboardingPersonRelationship =
   components['schemas']['OnboardingPersonRelationship'];
-type OnboardingRequirement = components['schemas']['OnboardingRequirement'];
