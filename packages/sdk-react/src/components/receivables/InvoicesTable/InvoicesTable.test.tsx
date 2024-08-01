@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { InvoicesTable } from '@/components';
 import { receivableListFixture } from '@/mocks/receivables';
 import { renderWithClient } from '@/utils/test-utils';

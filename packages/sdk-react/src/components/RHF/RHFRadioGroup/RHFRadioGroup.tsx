@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
 
 import {
@@ -52,7 +52,7 @@ export const RHFRadioGroup = <F extends FieldValues>({
               disablePadding
             >
               {options.map((option, index) => (
-                <React.Fragment key={option.value}>
+                <Fragment key={option.value}>
                   <ListItem disablePadding>
                     <ListItemButton>
                       <FormControlLabel
@@ -66,7 +66,7 @@ export const RHFRadioGroup = <F extends FieldValues>({
                     </ListItemButton>
                   </ListItem>
                   {index < options.length - 1 && <Divider />}
-                </React.Fragment>
+                </Fragment>
               ))}
             </List>
           </RadioGroup>

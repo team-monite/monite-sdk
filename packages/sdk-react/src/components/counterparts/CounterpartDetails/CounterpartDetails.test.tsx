@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,

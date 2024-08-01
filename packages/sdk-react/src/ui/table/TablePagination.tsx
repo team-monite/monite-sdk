@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';

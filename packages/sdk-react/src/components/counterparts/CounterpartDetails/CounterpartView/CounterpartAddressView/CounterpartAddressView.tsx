@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { getCountries } from '@/core/utils/countries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';

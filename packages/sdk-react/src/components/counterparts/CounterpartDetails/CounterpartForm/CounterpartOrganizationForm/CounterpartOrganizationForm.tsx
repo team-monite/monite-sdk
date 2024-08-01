@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -90,7 +90,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { control, handleSubmit, reset, watch } = methods;
 
   const handleSubmitWithoutPropagation = useCallback(
-    (e: React.BaseSyntheticEvent) => {
+    (e: BaseSyntheticEvent) => {
       e.preventDefault();
       e.stopPropagation();
 

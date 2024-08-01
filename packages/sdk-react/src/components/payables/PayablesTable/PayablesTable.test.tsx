@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {

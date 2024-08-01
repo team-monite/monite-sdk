@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import {
   ACTION_TO_LATTER_MAP,

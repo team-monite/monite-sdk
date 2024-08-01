@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { fullPermissionRole } from '@/mocks/roles';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';

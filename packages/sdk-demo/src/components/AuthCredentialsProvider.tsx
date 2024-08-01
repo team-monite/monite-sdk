@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
 
 import { MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY } from '@/core/consts';

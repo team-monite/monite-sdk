@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import createCache from '@emotion/cache';

@@ -1,4 +1,4 @@
-import React, { ComponentProps, ReactNode, useMemo } from 'react';
+import { ComponentProps, ReactNode, useMemo } from 'react';
 import { useLatest } from 'react-use';
 
 import { useLingui } from '@lingui/react';

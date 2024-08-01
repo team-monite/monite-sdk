@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

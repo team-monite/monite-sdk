@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import { Controller, FormProvider } from 'react-hook-form';
 
 import { LoadingPage } from '@/ui/loadingPage';

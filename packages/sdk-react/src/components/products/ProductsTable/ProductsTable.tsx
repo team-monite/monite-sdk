@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';

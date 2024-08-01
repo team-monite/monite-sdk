@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { approvalPoliciesSearchFixture } from '@/mocks/approvalPolicies/approvalPoliciesFixture';
 import {

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';

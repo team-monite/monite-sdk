@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Dialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { individualId } from '@/mocks/counterparts/counterpart.mocks.types';

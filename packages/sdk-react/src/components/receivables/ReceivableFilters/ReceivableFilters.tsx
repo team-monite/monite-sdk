@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { counterpartsToSelect } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { ReceivableFilterType } from '@/components/receivables/ReceivablesTable/types';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_CREATED_AT,

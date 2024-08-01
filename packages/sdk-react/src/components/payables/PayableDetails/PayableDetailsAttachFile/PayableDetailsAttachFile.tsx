@@ -1,4 +1,4 @@
-import React, { useState, useMemo, DragEvent } from 'react';
+import { useState, useMemo, DragEvent, ChangeEvent } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -94,7 +94,7 @@ export const PayableDetailsAttachFile = ({
     processFile(droppedFiles[0]);
   };
 
-  const handleButtonUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleButtonUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const uploadedFiles = Array.from(event.target.files);
 

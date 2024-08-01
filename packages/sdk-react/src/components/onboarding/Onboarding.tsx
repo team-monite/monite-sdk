@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';

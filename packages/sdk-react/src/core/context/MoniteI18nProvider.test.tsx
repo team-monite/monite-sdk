@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { MoniteContext, useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';

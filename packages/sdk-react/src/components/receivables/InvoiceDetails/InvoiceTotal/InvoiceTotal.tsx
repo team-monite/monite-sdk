@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
