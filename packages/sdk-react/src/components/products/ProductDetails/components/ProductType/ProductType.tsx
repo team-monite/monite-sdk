@@ -30,7 +30,7 @@ export const ProductType = ({ type }: { type: ProductServiceTypeEnum }) => {
   const { i18n } = useLingui();
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box height="100%" display="flex" alignItems="center">
       {getTypeComponent(type, i18n)}
     </Box>
   );

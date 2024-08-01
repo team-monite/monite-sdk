@@ -234,8 +234,8 @@ const ProductsTableBase = ({
               sortable: false,
               align: 'right',
               headerAlign: 'right',
-              valueGetter: (params) => {
-                const price = params.value as ProductServiceResponse['price'];
+              valueGetter: (value: ProductServiceResponse['price']) => {
+                const price = value;
 
                 return price
                   ? formatCurrencyToDisplay(price.value, price.currency)
