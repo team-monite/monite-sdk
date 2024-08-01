@@ -15,7 +15,6 @@ module.exports = {
           {
             'name': 'react',
             'importNames': ['default'],
-            // "message": "some messages for who import 'React' accidentally"
           }
         ]
       }
