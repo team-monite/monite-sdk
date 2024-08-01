@@ -54,7 +54,7 @@
     "@emotion/react": "~11.11.1",
     "@monite/sdk-api": "workspace:~",
     "@monite/sdk-react": "workspace:~",
-    "@mui/material": "~5.14.2",
+    "@mui/material": "~5.15.14",
     "@openapi-qraft/react": "1.13.0-beta.1",
     "@playwright/test": "~1.45.0",
     "@tanstack/react-query": "~5.28.6",
