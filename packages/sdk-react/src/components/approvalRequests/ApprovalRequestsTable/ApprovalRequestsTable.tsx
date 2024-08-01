@@ -188,6 +188,14 @@ const ApprovalRequestsTableBase = ({
       <DataGrid
         autoHeight
         rowSelection={false}
+        initialState={{
+          columns: {
+            columnVisibilityModel: {
+              actions:
+                isApprovalUpdateSupported && 'onRowActionClick' in restProps,
+            },
+          },
+        }}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         sx={{
@@ -286,9 +294,6 @@ const ApprovalRequestsTableBase = ({
           },
           ...(actionsCell ? [actionsCell] : []),
         ]}
-        columnVisibilityModel={{
-          actions: isApprovalUpdateSupported && 'onRowActionClick' in restProps,
-        }}
         rows={rows ?? []}
       />
     </Box>
