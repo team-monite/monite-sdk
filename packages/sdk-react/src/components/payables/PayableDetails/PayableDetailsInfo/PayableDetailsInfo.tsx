@@ -312,7 +312,7 @@ const PayableDetailsInfoBase = ({
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">
-                      {item.total && payable.currency ? (
+                      {item.subtotal && payable.currency ? (
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
