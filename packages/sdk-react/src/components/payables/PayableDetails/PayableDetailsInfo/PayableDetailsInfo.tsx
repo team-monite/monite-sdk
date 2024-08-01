@@ -141,7 +141,6 @@ const PayableDetailsInfoBase = ({
       </DetailsWrapper>
     );
   }
-
   return (
     <DetailsWrapper
       className={classNames(ScopedCssBaselineContainerClassName, className)}
@@ -226,9 +225,9 @@ const PayableDetailsInfoBase = ({
                       }}
                     >
                       <Box>
-                        {payable.amount_to_pay && payable.currency
+                        {payable.total_amount && payable.currency
                           ? formatCurrencyToDisplay(
-                              payable.amount_to_pay,
+                              payable.total_amount,
                               payable.currency
                             )
                           : '—'}
@@ -312,25 +311,17 @@ const PayableDetailsInfoBase = ({
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">
-                      {item.total && payable.currency ? (
+                      {item.subtotal && payable.currency ? (
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
-                              item.total,
+                              item.subtotal ?? 0,
                               payable.currency
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. VAT`}{' '}
-                            {`${
-                              item.subtotal
-                                ? (
-                                    ((item.total - item.subtotal) /
-                                      item.subtotal) *
-                                    100
-                                  ).toFixed(2)
-                                : 0
-                            }%`}
+                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>
                       ) : (
@@ -372,9 +363,9 @@ const PayableDetailsInfoBase = ({
                 <TableRow sx={{ '& td': { fontWeight: 500 } }}>
                   <TableCell>{t(i18n)`Total`}</TableCell>
                   <TableCell align="right">
-                    {payable.amount_to_pay && payable.currency
+                    {payable.total_amount && payable.currency
                       ? formatCurrencyToDisplay(
-                          payable.amount_to_pay,
+                          payable.total_amount,
                           payable.currency
                         )
                       : '—'}
