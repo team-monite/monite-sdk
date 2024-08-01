@@ -228,6 +228,12 @@ const components:
           display: 'flex',
         },
       },
+      containedPrimary: ({ theme }) => ({
+        backgroundColor: theme.palette.primary.main,
+        '&:hover': {
+          backgroundColor: theme.palette.primary.main,
+        },
+      }),
     },
   },
   MuiPopover: {

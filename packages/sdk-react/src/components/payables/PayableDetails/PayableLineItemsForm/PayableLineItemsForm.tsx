@@ -6,10 +6,10 @@ import {
   PayableDetailsFormFields,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
+import { DeleteIcon } from '@/ui/icons';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 
 export const PayableLineItemsForm = () => {
@@ -27,7 +27,13 @@ export const PayableLineItemsForm = () => {
   return (
     <Grid container direction="column" spacing={4}>
       {fields.map((item, index) => (
-        <Grid item container gap={2} key={item.id}>
+        <Grid
+          item
+          container
+          gap={2}
+          key={item.id}
+          className="Monite-PayableDetailsForm-Item"
+        >
           <Grid item xs={12} gap={2} container flexWrap="nowrap">
             <Grid item xs={8}>
               <Controller
@@ -91,7 +97,7 @@ export const PayableLineItemsForm = () => {
             flexWrap="nowrap"
             justifyContent="flex-end"
           >
-            <Grid item xs={4}>
+            <Grid item xs={8}>
               <Controller
                 name={`lineItems.${index}.price`}
                 control={control}
@@ -138,7 +144,12 @@ export const PayableLineItemsForm = () => {
             <Grid item xs={1} />
           </Grid>
           {currentLineItems?.[index] && currentCurrency && (
-            <Grid item xs={12} gap={2}>
+            <Grid
+              item
+              xs={12}
+              gap={2}
+              className="Monite-PayableDetailsForm-Item-Total"
+            >
               <Typography fontWeight="bold" align="right">
                 {formatCurrencyToDisplay(
                   formatToMinorUnits(

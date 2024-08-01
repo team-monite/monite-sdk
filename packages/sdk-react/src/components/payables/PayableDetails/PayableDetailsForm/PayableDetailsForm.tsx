@@ -282,10 +282,10 @@ const PayableDetailsFormBase = forwardRef<
             >
               <Grid container spacing={3}>
                 <Grid item xs={12} className={className + '-Details'}>
-                  <Typography variant="subtitle2" mb={2}>
-                    {t(i18n)`Details`}
-                  </Typography>
                   <Paper variant="outlined" sx={{ p: 2 }}>
+                    <Typography variant="subtitle2" mb={2}>
+                      {t(i18n)`Details`}
+                    </Typography>
                     <Stack spacing={3}>
                       <Controller
                         name="invoiceNumber"
@@ -495,10 +495,10 @@ const PayableDetailsFormBase = forwardRef<
                   </Paper>
                 </Grid>
                 <Grid item xs={12} className={className + '-Items'}>
-                  <Typography variant="subtitle2" mb={2}>
-                    {t(i18n)`Items`}
-                  </Typography>
                   <Paper variant="outlined" sx={{ p: 2 }}>
+                    <Typography variant="subtitle2" mb={2}>
+                      {t(i18n)`Items`}
+                    </Typography>
                     <PayableLineItemsForm />
                   </Paper>
                 </Grid>
