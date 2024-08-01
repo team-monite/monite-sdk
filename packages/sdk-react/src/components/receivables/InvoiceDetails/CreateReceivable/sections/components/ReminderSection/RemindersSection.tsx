@@ -386,9 +386,10 @@ interface ReminderSectionProps extends SectionGeneralProps {
 
 export const ReminderSection = (props: ReminderSectionProps) => {
   const { i18n } = useLingui();
+  const className = 'Monite-CreateReceivable-ReminderSection';
 
   return (
-    <Stack spacing={1}>
+    <Stack spacing={1} className={className}>
       <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
