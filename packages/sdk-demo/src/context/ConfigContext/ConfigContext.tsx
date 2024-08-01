@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import * as React from 'react';
+import { createContext, ReactNode, useContext, lazy } from 'react';
 
 import { getConfig, ConfigSchema } from '@/core/getConfig';
 
@@ -9,7 +8,7 @@ const ConfigContext = createContext<ConfigContextType>(null);
 
 interface ConfigProviderProps {
   config: ConfigSchema;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const ConfigProviderComponent = ({ config, children }: ConfigProviderProps) => {
@@ -26,14 +25,10 @@ export function useConfig() {
   return context;
 }
 
-export const ConfigProvider = React.lazy(async () => {
+export const ConfigProvider = lazy(async () => {
   const config = await getConfig();
   return {
-    default: function WrapperComponent({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) {
+    default: function WrapperComponent({ children }: { children: ReactNode }) {
       return (
         <ConfigProviderComponent config={config}>
           {children}

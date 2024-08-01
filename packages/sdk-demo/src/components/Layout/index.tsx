@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import * as React from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { ThemeSelect } from '@/components/Layout/ThemeSelect';
@@ -16,8 +15,8 @@ import {
 } from '@mui/material';
 
 type DefaultLayoutProps = {
-  children?: React.ReactNode;
-  siderProps?: { footer?: React.ReactNode };
+  children?: ReactNode;
+  siderProps?: { footer?: ReactNode };
   themeConfig: ThemeConfig;
   setThemeConfig: (themeConfig: ThemeConfig) => void;
 };

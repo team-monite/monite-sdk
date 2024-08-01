@@ -1,5 +1,4 @@
 import { ReactNode, useMemo } from 'react';
-import * as React from 'react';
 
 import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -75,7 +74,7 @@ export const withGlobalStorybookDecorator = (
 };
 
 export const GlobalStorybookDecorator = (props: {
-  children: React.ReactNode;
+  children: ReactNode;
   theme?: ThemeOptions;
   monite?: MoniteSDK;
 }) => {

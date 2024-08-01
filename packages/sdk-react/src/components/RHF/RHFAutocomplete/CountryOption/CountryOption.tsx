@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { HTMLAttributes } from 'react';
 
 import { CountryType } from '@/core/utils';
 import { css } from '@emotion/react';
@@ -6,7 +6,7 @@ import { AutocompleteRenderOptionState } from '@mui/material/Autocomplete/Autoco
 
 export type CountryOptionProps = {
   option: CountryType;
-  props: React.HTMLAttributes<HTMLLIElement>;
+  props: HTMLAttributes<HTMLLIElement>;
   state: AutocompleteRenderOptionState;
 };
 

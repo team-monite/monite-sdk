@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { CSSProperties } from 'react';
 
 import '@mui/material/styles';
 import '@mui/x-data-grid/themeAugmentation';
@@ -28,13 +28,13 @@ declare module '@mui/material/styles' {
   }
 
   interface TypographyVariants {
-    label2: React.CSSProperties;
-    label3: React.CSSProperties;
+    label2: CSSProperties;
+    label3: CSSProperties;
   }
 
   interface TypographyVariantsOptions {
-    label2: React.CSSProperties;
-    label3: React.CSSProperties;
+    label2: CSSProperties;
+    label3: CSSProperties;
   }
 }
 

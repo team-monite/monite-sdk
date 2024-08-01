@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { ReactNode } from 'react';
 
 import { Stack, Typography } from '@mui/material';
 
 type PageHeaderProps = {
-  title: React.ReactNode;
-  extra?: React.ReactNode;
+  title: ReactNode;
+  extra?: ReactNode;
   className?: string;
 };
 

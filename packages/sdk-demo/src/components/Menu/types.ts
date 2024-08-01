@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { BaseSyntheticEvent, ReactNode } from 'react';
 
 import { SvgIconOwnProps } from '@mui/material';
 
 export type MenuItemType = {
   label: string;
   url: string;
-  renderIcon: (props?: SvgIconOwnProps) => React.ReactNode;
+  renderIcon: (props?: SvgIconOwnProps) => ReactNode;
   children?: Record<string, MenuItemType>;
-  onClick?: (e: React.BaseSyntheticEvent) => void;
+  onClick?: (e: BaseSyntheticEvent) => void;
 };
