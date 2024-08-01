@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef, FocusEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { RHFTextField } from '@/components/RHF/RHFTextField';
@@ -54,7 +54,7 @@ export const JSONFormatterInput = ({ name, label }: Props) => {
    * @returns {void} Nothing.
    */
   const handleJsonBlur = useCallback(
-    (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    (e: FocusEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
 
       formatJson(value);

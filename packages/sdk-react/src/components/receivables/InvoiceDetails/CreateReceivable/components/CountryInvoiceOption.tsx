@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { css } from '@emotion/react';
 import { t } from '@lingui/macro';

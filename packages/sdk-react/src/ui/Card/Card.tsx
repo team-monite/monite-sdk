@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import {
   Card as MuiCard,
@@ -11,7 +11,7 @@ import {
 
 interface ICardItem {
   label: string;
-  value?: string | false | React.ReactNode;
+  value?: string | false | ReactNode;
 
   /**
    * If `true`, then the card item will be rendered
@@ -65,7 +65,7 @@ export interface ICardProps extends MuiCardProps {
   items: Array<ICardItem>;
 
   /** Children to be rendered after the items */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**

@@ -1,4 +1,4 @@
-import React, { FormEventHandler, ReactNode } from 'react';
+import { FormEventHandler, ReactNode } from 'react';
 
 import { Box, styled } from '@mui/material';
 

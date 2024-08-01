@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { createAPIClient } from '@/api/client';
 import {
   ENTITY_ID_FOR_OWNER_PERMISSIONS,

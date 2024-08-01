@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { MoniteCard } from '@/ui/Card/Card';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';

@@ -1,4 +1,4 @@
-import React, { ComponentProps, Suspense, useMemo } from 'react';
+import { ComponentProps, Suspense, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';

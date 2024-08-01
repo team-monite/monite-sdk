@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import { components } from '@/api';
 import { OverviewTabPanel } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel';

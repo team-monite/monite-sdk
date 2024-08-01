@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ExtendThemeProvider } from '@/utils/ExtendThemeProvider';
 import { renderWithClient } from '@/utils/test-utils';
 import { screen, fireEvent, act, within } from '@testing-library/react';

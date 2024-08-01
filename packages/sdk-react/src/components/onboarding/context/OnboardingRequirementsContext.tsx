@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 
 import { useOnboardingRequirements } from '../hooks';
 import type { OnboardingRequirementsType } from '../hooks';

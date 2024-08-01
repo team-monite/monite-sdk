@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';

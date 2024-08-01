@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import { StrictMode, ComponentProps } from 'react';
 import ReactDOM, { Root } from 'react-dom/client';
 
 import { MoniteApp } from '@/apps/MoniteApp';
@@ -144,7 +144,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
     } as Omit<ComponentProps<typeof MoniteApp>, 'rootElements'>;
 
     this.reactAppRoot.render(
-      <React.StrictMode>
+      <StrictMode>
         <MoniteApp
           {...props}
           rootElements={{
@@ -152,7 +152,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
             styles: stylesRootNode ?? undefined,
           }}
         />
-      </React.StrictMode>
+      </StrictMode>
     );
   }
 }

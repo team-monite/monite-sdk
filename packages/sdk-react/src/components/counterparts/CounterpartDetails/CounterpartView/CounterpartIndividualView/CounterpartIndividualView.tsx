@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';

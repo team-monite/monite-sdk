@@ -1,4 +1,4 @@
-import React, { lazy, ReactNode, Suspense, useMemo, useRef } from 'react';
+import { lazy, ReactNode, Suspense, useMemo, useRef } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { compileLinguiDynamicMessages } from '@/utils/compile-lingui-dynamic-messages';

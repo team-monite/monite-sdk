@@ -1,10 +1,4 @@
-import React, {
-  ComponentProps,
-  ElementType,
-  lazy,
-  ReactNode,
-  Suspense,
-} from 'react';
+import { ComponentProps, ElementType, lazy, ReactNode, Suspense } from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';

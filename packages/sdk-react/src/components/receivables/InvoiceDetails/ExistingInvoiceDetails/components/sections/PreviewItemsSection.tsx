@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 
 import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks';
@@ -52,7 +52,7 @@ const TotalView = ({
             };
 
         return (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             {index !== 0 && <Divider />}
             <Box
               sx={{
@@ -67,7 +67,7 @@ const TotalView = ({
               </Typography>
               <Typography {...valueProps}>{item.value}</Typography>
             </Box>
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </>

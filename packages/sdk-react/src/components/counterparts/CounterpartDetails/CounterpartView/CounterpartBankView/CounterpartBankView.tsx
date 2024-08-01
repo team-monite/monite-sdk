@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getCountries } from '@/core/utils/countries';
 import { getCurrencies } from '@/core/utils/currencies';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';

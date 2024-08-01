@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   counterpartOrganizationFixture,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useTransition } from 'react';
+import { useCallback, useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
