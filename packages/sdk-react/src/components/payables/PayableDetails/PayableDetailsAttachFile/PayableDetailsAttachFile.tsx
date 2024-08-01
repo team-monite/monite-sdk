@@ -1,4 +1,5 @@
-import React, { useState, useMemo, DragEvent } from 'react';
+import { useState, useMemo, DragEvent } from 'react';
+import * as React from 'react';
 import { toast } from 'react-hot-toast';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';

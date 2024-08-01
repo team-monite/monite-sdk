@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
 import { Chip, Skeleton } from '@mui/material';

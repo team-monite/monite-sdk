@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

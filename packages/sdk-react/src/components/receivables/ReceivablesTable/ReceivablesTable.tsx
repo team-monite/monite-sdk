@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 import { CreditNotesTable } from '@/components';
 import { InvoicesTable } from '@/components';

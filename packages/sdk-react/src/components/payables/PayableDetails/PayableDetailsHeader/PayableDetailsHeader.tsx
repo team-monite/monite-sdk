@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { useDialog } from '@/components/Dialog';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';

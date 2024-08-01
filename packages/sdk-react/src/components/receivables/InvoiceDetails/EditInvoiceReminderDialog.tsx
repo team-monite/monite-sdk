@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Dialog } from '@/components';
 import { MoniteDialogProps } from '@/components/Dialog/DialogProps.types';
 import { t } from '@lingui/macro';

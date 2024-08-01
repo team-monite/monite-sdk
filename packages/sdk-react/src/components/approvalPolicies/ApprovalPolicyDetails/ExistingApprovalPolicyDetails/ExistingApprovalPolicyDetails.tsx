@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';

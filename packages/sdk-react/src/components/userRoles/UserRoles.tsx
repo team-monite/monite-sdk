@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { Dialog, PageHeader, UserRoleDetails } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';

@@ -1,11 +1,4 @@
-import React, {
-  ComponentProps,
-  ContextType,
-  createContext,
-  ReactNode,
-  useContext,
-  useMemo,
-} from 'react';
+import { ComponentProps, ContextType, createContext, ReactNode, useContext, useMemo } from 'react';
 
 import { createAPIClient, MoniteAPIProvider } from '@monite/sdk-react';
 import { useQueryClient } from '@tanstack/react-query';

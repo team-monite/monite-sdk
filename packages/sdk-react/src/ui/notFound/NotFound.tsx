@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';

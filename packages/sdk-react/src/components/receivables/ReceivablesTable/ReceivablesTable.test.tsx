@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 

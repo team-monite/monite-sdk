@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import { CountryType } from '@/core/utils';
 import { css } from '@emotion/react';

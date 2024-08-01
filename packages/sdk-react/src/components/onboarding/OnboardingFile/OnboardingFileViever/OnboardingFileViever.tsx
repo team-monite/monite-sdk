@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { OnboardingFileDescription } from '@/components/onboarding/OnboardingFile/OnboardingFileDescription';
 import { useFileById } from '@/core/queries';

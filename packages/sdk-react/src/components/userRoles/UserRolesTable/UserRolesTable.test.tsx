@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { UserRolesTable } from '@/components/userRoles';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks';
