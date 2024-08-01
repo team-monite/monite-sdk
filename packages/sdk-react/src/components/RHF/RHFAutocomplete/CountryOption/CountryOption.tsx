@@ -28,7 +28,7 @@ export function CountryOption({ option, props }: CountryOptionProps) {
         srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
         alt={option.label}
       />
-      {`${option.label} (${option.code})`}
+      {`${option.label}`}
     </li>
   );
 }

@@ -85,6 +85,7 @@ export const RHFAutocomplete = <
         helperText={error?.message}
         inputProps={{
           ...params.inputProps,
+          autoComplete: 'new-password',
         }}
       />
     );
