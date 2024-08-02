@@ -150,7 +150,7 @@ describe('CounterpartBankForm', () => {
       await waitFor(
         () =>
           expect(
-            screen.findByRole('button', { name: countrySelectName })
+            screen.findByRole('combobox', { name: countrySelectName })
           ).resolves.not.toBeDisabled(),
         { timeout: 5_000 }
       );
@@ -195,7 +195,7 @@ describe('CounterpartBankForm', () => {
 
       await waitFor(() =>
         expect(
-          screen.getByRole('button', { name: countrySelectName })
+          screen.getByRole('combobox', { name: countrySelectName })
         ).not.toBeDisabled()
       );
 
@@ -246,7 +246,7 @@ describe('CounterpartBankForm', () => {
 
         const countrySelectName = /country/i;
 
-        const countryButton = await screen.findByRole('button', {
+        const countryButton = await screen.findByRole('combobox', {
           name: countrySelectName,
         });
 

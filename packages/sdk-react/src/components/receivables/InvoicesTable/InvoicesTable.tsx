@@ -15,7 +15,7 @@ import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
@@ -158,20 +158,17 @@ const InvoicesTableBase = ({
               flex: 1,
               renderCell: ({ value }) => {
                 if (!value) {
-                  return (
-                    <Typography variant="body1" color="secondary">{t(
-                      i18n
-                    )`INV-auto`}</Typography>
-                  );
+                  return t(i18n)`INV-auto`;
                 }
 
-                return <Typography variant="body1">{value}</Typography>;
+                return value;
               },
             },
             {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
+              display: 'flex',
               flex: 1.3,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -183,7 +180,7 @@ const InvoicesTableBase = ({
               field: 'created_at',
               headerName: t(i18n)`Created on`,
               sortable: false,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
@@ -193,12 +190,9 @@ const InvoicesTableBase = ({
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
               sortable: false,
-              valueFormatter: (params) =>
-                params.value
-                  ? i18n.date(
-                      params.value,
-                      DateTimeFormatOptions.EightDigitDate
-                    )
+              valueFormatter: (value) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
               flex: 0.7,
             },
@@ -220,8 +214,7 @@ const InvoicesTableBase = ({
               field: 'amount',
               headerName: t(i18n)`Amount`,
               sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (params) => {
-                const row = params.row;
+              valueGetter: (_, row) => {
                 const value = row.total_amount;
 
                 return value
@@ -234,12 +227,9 @@ const InvoicesTableBase = ({
               field: 'due_date',
               headerName: t(i18n)`Due date`,
               sortable: false,
-              valueFormatter: (params) =>
-                params.value
-                  ? i18n.date(
-                      params.value,
-                      DateTimeFormatOptions.EightDigitDate
-                    )
+              valueFormatter: (value) =>
+                value
+                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
               flex: 0.7,
             },

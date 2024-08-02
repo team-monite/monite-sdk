@@ -19,12 +19,7 @@ import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridSortModel,
-  GridValueFormatterParams,
-} from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
@@ -174,21 +169,17 @@ const TagsTableBase = ({
               field: 'created_at',
               headerName: t(i18n)`Created at`,
               flex: 0.5,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['TagReadSchema']['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              valueFormatter: (
+                value: components['schemas']['TagReadSchema']['created_at']
+              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
               field: 'updated_at',
               headerName: t(i18n)`Updated at`,
               flex: 0.5,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['TagReadSchema']['updated_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              valueFormatter: (
+                value: components['schemas']['TagReadSchema']['updated_at']
+              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
               field: 'created_by_entity_user_id',

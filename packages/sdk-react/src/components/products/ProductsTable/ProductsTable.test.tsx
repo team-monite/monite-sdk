@@ -110,7 +110,7 @@ describe('ProductsTable', () => {
       await waitUntilTableIsLoaded();
 
       fireEvent.mouseDown(
-        screen.getByRole('button', {
+        screen.getByRole('combobox', {
           name: /type/i,
         })
       );
@@ -140,7 +140,7 @@ describe('ProductsTable', () => {
 
       await waitUntilTableIsLoaded();
 
-      const dropdownButton = await screen.findByRole('button', {
+      const dropdownButton = await screen.findByRole('combobox', {
         name: /units/i,
       });
 
@@ -333,7 +333,7 @@ describe('ProductsTable', () => {
         await waitUntilTableIsLoaded();
 
         fireEvent.mouseDown(
-          screen.getByRole('button', {
+          screen.getByRole('combobox', {
             name: /type/i,
           })
         );
@@ -361,12 +361,12 @@ describe('ProductsTable', () => {
         await waitUntilTableIsLoaded();
 
         fireEvent.mouseDown(
-          screen.getByRole('button', {
+          screen.getByRole('combobox', {
             name: /units/i,
           })
         );
 
-        const dropdownButton = await screen.findByRole('button', {
+        const dropdownButton = await screen.findByRole('combobox', {
           name: /units/i,
         });
 

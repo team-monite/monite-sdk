@@ -76,11 +76,7 @@ describe('TablePagination', () => {
       />
     );
 
-    fireEvent.mouseDown(
-      screen.getByRole('button', {
-        name: customPageSizeOptions[0].toString(),
-      })
-    );
+    fireEvent.mouseDown(screen.getByRole('combobox'));
 
     const dropdown = screen.getByRole('listbox', { name: '' });
     const { getByRole } = within(dropdown);
@@ -170,11 +166,7 @@ describe('TablePagination', () => {
       </ExtendThemeProvider>
     );
 
-    fireEvent.mouseDown(
-      screen.getByRole('button', {
-        name: '111',
-      })
-    );
+    fireEvent.mouseDown(screen.getByRole('combobox'));
 
     const dropdown = screen.getByRole('listbox', { name: '' });
     const { findByRole } = within(dropdown);
@@ -228,9 +220,7 @@ describe('TablePagination', () => {
       </ExtendThemeProvider>
     );
 
-    const element = screen.getByRole('button', {
-      name: '111',
-    });
+    const element = screen.getByRole('combobox');
 
     expect(element.closest('.test-class-name')).toBeInTheDocument();
   });
