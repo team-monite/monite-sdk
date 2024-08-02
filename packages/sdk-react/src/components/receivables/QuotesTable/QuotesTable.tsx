@@ -163,6 +163,7 @@ const QuotesTableBase = ({
               field: 'counterpart_name',
               sortable: ReceivableCursorFields.includes('counterpart_name'),
               headerName: t(i18n)`Customer`,
+              display: 'flex',
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName

@@ -149,6 +149,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
+              display: 'flex',
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName

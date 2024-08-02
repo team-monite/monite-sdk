@@ -203,6 +203,7 @@ const ProductsTableBase = ({
             {
               field: 'name',
               headerName: t(i18n)`Name, description`,
+              display: 'flex',
               flex: 3,
               renderCell: (params) => (
                 <Stack spacing={1} width="100%">

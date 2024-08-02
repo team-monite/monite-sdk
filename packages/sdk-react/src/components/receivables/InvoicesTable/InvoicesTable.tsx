@@ -168,6 +168,7 @@ const InvoicesTableBase = ({
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
+              display: 'flex',
               flex: 1.3,
               renderCell: (params) => (
                 <InvoiceCounterpartName
