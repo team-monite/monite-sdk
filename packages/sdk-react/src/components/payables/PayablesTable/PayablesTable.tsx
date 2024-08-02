@@ -162,12 +162,14 @@ const PayablesTableBase = ({
     setTimeout(() => {
       ReactDOM.flushSync(() => {
         setTimeout(() => {
-          // noinspection JSIgnoredPromiseFromCall
-          gridApiRef.current?.autosizeColumns({
-            columns: ['amount'],
-            includeHeaders: true,
-            includeOutliers: true,
-          });
+          if (gridApiRef.current?.autosizeColumns) {
+            // noinspection JSIgnoredPromiseFromCall
+            gridApiRef.current?.autosizeColumns({
+              columns: ['amount'],
+              includeHeaders: true,
+              includeOutliers: true,
+            });
+          }
         }, 1);
       });
     }, 1);
