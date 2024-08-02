@@ -7,6 +7,7 @@ import type {
 import type { Theme } from '@mui/material/styles/createTheme';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 import { deepmerge } from '@mui/utils';
+import '@mui/x-data-grid/themeAugmentation';
 import {
   moniteLight as baseMoniteLight,
   moniteDark as baseMoniteDark,
@@ -27,6 +28,7 @@ const paletteLight: PaletteOptions = {
     '50': '#707070',
     '80': '#DDDDDD',
   },
+  divider: '#DDDDDD',
 };
 
 const paletteDark: PaletteOptions = {
@@ -223,6 +225,12 @@ const components: Components<Omit<Theme, 'components'>> = {
           display: 'flex',
         },
       },
+      containedPrimary: ({ theme }) => ({
+        backgroundColor: theme.palette.primary.main,
+        '&:hover': {
+          backgroundColor: theme.palette.primary.main,
+        },
+      }),
     },
   },
   MuiPopover: {
@@ -247,6 +255,37 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
       label: {
         padding: '0',
+      },
+    },
+  },
+  MuiDataGrid: {
+    defaultProps: {
+      columnHeaderHeight: 40,
+      showCellVerticalBorder: false,
+      showColumnVerticalBorder: false,
+    },
+    styleOverrides: {
+      root: {
+        border: 0,
+        borderColor: 'transparent',
+        '& .MuiDataGrid-columnHeaderTitle': {
+          color: '#707070',
+          fontWeight: 700,
+        },
+      },
+    },
+  },
+  MuiTabs: {
+    styleOverrides: {
+      root: {
+        '& .MuiButtonBase-root': {
+          paddingTop: 10,
+          paddingBottom: 10,
+        },
+        '& .MuiButtonBase-root.Mui-selected': {
+          backgroundColor: '#F4F4FE',
+          borderRadius: 10,
+        },
       },
     },
   },

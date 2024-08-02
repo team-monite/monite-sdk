@@ -1,4 +1,4 @@
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestStatusChip';
+import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';

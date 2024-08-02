@@ -1,6 +1,7 @@
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -24,9 +25,14 @@ export const Filters = ({ onChangeFilter }: Props) => {
   const { api } = useMoniteContext();
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
     api.measureUnits.getMeasureUnits.useQuery();
+  const className = 'Monite-ProductFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={4} sm={4} md={4} lg={4}>
         <SearchField
           label={t(i18n)`Search`}
@@ -36,7 +42,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
         />
       </Grid>
       <Grid item xs={4} sm={3} md={2}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className="Monite-ProductTypeFilter Monite-FilterControl"
+        >
           <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
           <Select
             labelId="type"
@@ -74,6 +84,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
           variant="outlined"
           fullWidth
           disabled={isMeasureUnitsLoading}
+          className="Monite-ProductUnitFilter Monite-FilterControl"
         >
           <InputLabel id="units">{t(i18n)`Units`}</InputLabel>
           <Select

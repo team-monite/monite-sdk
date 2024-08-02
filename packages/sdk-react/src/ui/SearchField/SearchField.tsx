@@ -60,7 +60,7 @@ export const SearchField = ({ label, onChange }: Props) => {
       variant="outlined"
       fullWidth
       aria-label="search-by-name"
-      className="Monite-SearchField"
+      className="Monite-SearchField Monite-FilterControl"
     >
       <InputLabel htmlFor="search-by-name">{label}</InputLabel>
       <OutlinedInput
