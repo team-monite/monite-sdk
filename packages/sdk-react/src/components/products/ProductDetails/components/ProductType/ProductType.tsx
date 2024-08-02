@@ -2,7 +2,7 @@ import { components } from '@/api';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { UBox } from '../../../ProductsTable/components/icons/UBox';
 import { UBusiness } from '../../../ProductsTable/components/icons/UBusiness';
@@ -29,11 +29,7 @@ const getTypeComponent = (type: ProductServiceTypeEnum, i18n: I18n) => {
 export const ProductType = ({ type }: { type: ProductServiceTypeEnum }) => {
   const { i18n } = useLingui();
 
-  return (
-    <Box height="100%" display="flex" alignItems="center">
-      {getTypeComponent(type, i18n)}
-    </Box>
-  );
+  return <Stack direction="row">{getTypeComponent(type, i18n)}</Stack>;
 };
 
 type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];

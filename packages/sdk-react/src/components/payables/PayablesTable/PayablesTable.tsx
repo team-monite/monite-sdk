@@ -22,7 +22,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
@@ -222,6 +222,7 @@ const PayablesTableBase = ({
               field: 'document_id',
               sortable: false,
               headerName: t(i18n)`Invoice #`,
+              display: 'flex',
               flex: 1.1,
               colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
               renderCell: (params) => {
@@ -229,10 +230,10 @@ const PayablesTableBase = ({
 
                 if (isPayableInOCRProcessing(payable)) {
                   return (
-                    <Box display="flex" alignItems="center">
+                    <>
                       <FindInPageOutlinedIcon fontSize="small" />
                       {payable.file?.name}
-                    </Box>
+                    </>
                   );
                 }
 
@@ -253,15 +254,16 @@ const PayablesTableBase = ({
               sortable: false,
               type: 'date',
               headerName: t(i18n)`Invoice date`,
+              display: 'flex',
               flex: 0.7,
               colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
               renderCell: ({ row, formattedValue }) => {
                 if (isPayableInOCRProcessing(row)) {
                   return (
-                    <Box display="flex" alignItems="center">
-                      <CircularProgress size={22} sx={{ mr: 1.5 }} />
+                    <Stack direction="row">
+                      <CircularProgress size={22} sx={{ mr: 1 }} />
                       {t(i18n)`Processing file…`}
-                    </Box>
+                    </Stack>
                   );
                 }
 

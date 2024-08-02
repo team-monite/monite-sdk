@@ -91,7 +91,7 @@ export const useApprovalRequestActionsCell = (
     field: 'actions',
     renderHeader: () => null,
     sortable: false,
-    flex: 0.6,
+    display: 'flex',
     align: 'right',
     renderCell: (params) => {
       if (
@@ -101,7 +101,7 @@ export const useApprovalRequestActionsCell = (
         !params.row.approved_by?.includes(user.id)
       ) {
         return (
-          <Stack direction="row" height="100%" sx={{ alignItems: 'center' }}>
+          <Stack direction="row">
             <ApproveButton
               id={params.row.id}
               onClick={props.onRowActionClick}

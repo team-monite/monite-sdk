@@ -219,6 +219,7 @@ const ProductsTableBase = ({
             {
               field: 'type',
               headerName: t(i18n)`Type`,
+              display: 'flex',
               flex: 1,
               sortable: false,
               renderCell: (params) => {
