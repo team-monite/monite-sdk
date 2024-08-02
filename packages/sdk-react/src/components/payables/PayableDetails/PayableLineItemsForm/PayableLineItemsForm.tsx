@@ -5,10 +5,10 @@ import {
   PayableDetailsFormFields,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
-import { DeleteIcon } from '@/ui/icons';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
 import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 
 export const PayableLineItemsForm = () => {
