@@ -1,3 +1,4 @@
+import '@monite/sdk-react/mui-styles.d.ts';
 import { createTheme } from '@mui/material';
 import type { Components } from '@mui/material/styles/components';
 import type {
@@ -288,6 +289,77 @@ const components: Components<Omit<Theme, 'components'>> = {
         },
       },
     },
+  },
+  MoniteInvoiceStatusChip: {
+    variants: [
+      {
+        props: { status: 'paid' },
+        style: {
+          color: 'rgba(13, 170, 142)',
+          backgroundColor: 'rgb(238, 251, 249)',
+        },
+      },
+      {
+        props: { status: 'partially_paid' },
+        style: {
+          color: 'rgb(160, 109, 200)',
+          backgroundColor: 'rgb(251, 241, 252)',
+        },
+      },
+      {
+        props: { status: 'issued' },
+        style: {
+          color: 'rgb(55, 55, 255)',
+          backgroundColor: 'rgb(244, 244, 254)',
+        },
+      },
+      {
+        props: { status: 'draft' },
+        style: {
+          color: 'rgba(0, 0, 0, 0.84)',
+          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        },
+      },
+    ],
+  },
+  MonitePayableStatusChip: {
+    variants: [
+      {
+        props: { status: 'paid' },
+        style: {
+          color: 'rgba(13, 170, 142)',
+          backgroundColor: 'rgb(238, 251, 249)',
+        },
+      },
+      {
+        props: { status: 'partially_paid' },
+        style: {
+          color: 'rgb(160, 109, 200)',
+          backgroundColor: 'rgb(251, 241, 252)',
+        },
+      },
+      {
+        props: { status: 'issued' },
+        style: {
+          color: 'rgb(55, 55, 255)',
+          backgroundColor: 'rgb(244, 244, 254)',
+        },
+      },
+      {
+        props: { status: 'draft' },
+        style: {
+          color: 'rgba(0, 0, 0, 0.84)',
+          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        },
+      },
+      {
+        props: { status: 'canceled' },
+        style: {
+          color: 'rgb(226, 126, 70)',
+          backgroundColor: 'rgb(255, 245, 235)',
+        },
+      },
+    ],
   },
 };
 
