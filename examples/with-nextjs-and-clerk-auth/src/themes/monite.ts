@@ -265,14 +265,15 @@ const components: Components<Omit<Theme, 'components'>> = {
       showColumnVerticalBorder: false,
     },
     styleOverrides: {
-      root: {
+      root: ({ theme }) => ({
         border: 0,
         borderColor: 'transparent',
+        '--DataGrid-rowBorderColor': theme.palette.divider,
         '& .MuiDataGrid-columnHeaderTitle': {
           color: '#707070',
           fontWeight: 700,
         },
-      },
+      }),
     },
   },
   MuiTabs: {
