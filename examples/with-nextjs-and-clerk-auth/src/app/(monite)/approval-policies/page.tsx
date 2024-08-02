@@ -4,7 +4,7 @@ import { ApprovalPolicies } from '@/components/MoniteComponents';
 
 export default async function ApprovalPoliciesPage() {
   return (
-    <Box className="Monite-AbsoluteContainer Monite-UserRoles">
+    <Box className="Monite-AbsoluteContainer Monite-ApprovalPolicies">
       <ApprovalPolicies />
     </Box>
   );
