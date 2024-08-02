@@ -255,6 +255,13 @@ const CounterpartsTableBase = ({
         <DataGrid
           autoHeight
           rowSelection={false}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                category: showCategories,
+              },
+            },
+          }}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           sortModel={sortModel}
@@ -291,6 +298,7 @@ const CounterpartsTableBase = ({
               field: 'counterpart_name',
               sortable: true,
               headerName: t(i18n)`Name, country, city`,
+              display: 'flex',
               flex: 1,
               renderCell: (params) => {
                 const counterpart = params.row;
@@ -312,6 +320,7 @@ const CounterpartsTableBase = ({
               field: 'category',
               sortable: false,
               headerName: t(i18n)`Category`,
+              display: 'flex',
               flex: 0.6,
               renderCell: (params) => {
                 const counterpart = params.row;

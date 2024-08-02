@@ -22,8 +22,8 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress } from '@mui/material';
-import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
+import { Box, CircularProgress, Stack } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -222,17 +222,18 @@ const PayablesTableBase = ({
               field: 'document_id',
               sortable: false,
               headerName: t(i18n)`Invoice #`,
+              display: 'flex',
               flex: 1.1,
-              colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 2 : 1),
+              colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
               renderCell: (params) => {
                 const payable = params.row;
 
                 if (isPayableInOCRProcessing(payable)) {
                   return (
-                    <Box display="flex">
+                    <>
                       <FindInPageOutlinedIcon fontSize="small" />
                       {payable.file?.name}
-                    </Box>
+                    </>
                   );
                 }
 
@@ -253,25 +254,24 @@ const PayablesTableBase = ({
               sortable: false,
               type: 'date',
               headerName: t(i18n)`Invoice date`,
+              display: 'flex',
               flex: 0.7,
-              colSpan: ({ row }) => (isPayableInOCRProcessing(row) ? 3 : 1),
+              colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
               renderCell: ({ row, formattedValue }) => {
                 if (isPayableInOCRProcessing(row)) {
                   return (
-                    <Box display="flex">
-                      <CircularProgress size={22} sx={{ mr: 1.5 }} />
+                    <Stack direction="row">
+                      <CircularProgress size={22} sx={{ mr: 1 }} />
                       {t(i18n)`Processing file…`}
-                    </Box>
+                    </Stack>
                   );
                 }
 
                 return formattedValue;
               },
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['PayableResponseSchema']['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              valueFormatter: (
+                value: components['schemas']['PayableResponseSchema']['created_at']
+              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
               field: 'issued_at',
@@ -283,11 +283,9 @@ const PayablesTableBase = ({
                 comment: 'Payables Table "Issue date" heading title',
               }),
               flex: 0.7,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['PayableResponseSchema']['issued_at']
-              >) =>
+              valueFormatter: (
+                value: components['schemas']['PayableResponseSchema']['issued_at']
+              ) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
@@ -300,11 +298,9 @@ const PayablesTableBase = ({
                 comment: 'Payables Table "Due date" heading title',
               }),
               flex: 0.7,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['PayableResponseSchema']['due_date']
-              >) =>
+              valueFormatter: (
+                value: components['schemas']['PayableResponseSchema']['due_date']
+              ) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
@@ -329,8 +325,8 @@ const PayablesTableBase = ({
                 comment: 'Payables Table "Amount" heading title',
               }),
               width: 100,
-              valueGetter: (params) => {
-                const payable = params.row;
+              valueGetter: (_, row) => {
+                const payable = row;
 
                 return payable.amount_to_pay && payable.currency
                   ? formatCurrencyToDisplay(

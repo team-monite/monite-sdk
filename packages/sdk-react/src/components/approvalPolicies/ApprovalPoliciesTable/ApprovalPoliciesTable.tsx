@@ -193,7 +193,7 @@ const ApprovalPoliciesTableBase = ({
               headerName: t(i18n)`Created at`,
               sortable: false,
               flex: 0.7,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
             {
