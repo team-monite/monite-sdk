@@ -496,7 +496,6 @@ html {
 }
 
 .MuiDataGrid-cell[data-field="counterpart_id"] {
-  /*padding-left: 0 !important;*/
   .MuiChip-root {
     padding-left: 0;
 
