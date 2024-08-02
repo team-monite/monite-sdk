@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import * as ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -23,7 +24,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, useGridApiRef } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -151,6 +152,27 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
+  // Adapted from https://mui.com/x/react-data-grid/column-dimensions/#autosizing-asynchronously
+  // setTimeout and flushSync are necessary for call order control
+  // Docs say:
+  // The Data Grid can only autosize based on the currently rendered cells.
+  // DOM access is required to accurately calculate dimensions
+  const gridApiRef = useGridApiRef();
+  useEffect(() => {
+    setTimeout(() => {
+      ReactDOM.flushSync(() => {
+        setTimeout(() => {
+          // noinspection JSIgnoredPromiseFromCall
+          gridApiRef.current?.autosizeColumns({
+            columns: ['amount'],
+            includeHeaders: true,
+            includeOutliers: true,
+          });
+        }, 1);
+      });
+    }, 1);
+  }, [gridApiRef, payables]);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -187,6 +209,7 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => {
@@ -323,7 +346,6 @@ const PayablesTableBase = ({
                 message: 'Amount',
                 comment: 'Payables Table "Amount" heading title',
               }),
-              width: 100,
               valueGetter: (_, row) => {
                 const payable = row;
 

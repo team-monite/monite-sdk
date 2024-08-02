@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -17,7 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridSortModel, useGridApiRef } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -76,6 +77,27 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  // Adapted from https://mui.com/x/react-data-grid/column-dimensions/#autosizing-asynchronously
+  // setTimeout and flushSync are necessary for call order control
+  // Docs say:
+  // The Data Grid can only autosize based on the currently rendered cells.
+  // DOM access is required to accurately calculate dimensions
+  const gridApiRef = useGridApiRef();
+  useEffect(() => {
+    setTimeout(() => {
+      ReactDOM.flushSync(() => {
+        setTimeout(() => {
+          // noinspection JSIgnoredPromiseFromCall
+          gridApiRef.current?.autosizeColumns({
+            columns: ['amount'],
+            includeHeaders: true,
+            includeOutliers: true,
+          });
+        }, 1);
+      });
+    }, 1);
+  }, [gridApiRef, creditNotes]);
+
   const className = 'Monite-CreditNotesTable';
 
   return (
@@ -91,7 +113,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
-          autoHeight
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           sx={{

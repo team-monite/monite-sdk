@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as ReactDOM from 'react-dom';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -19,8 +20,9 @@ import { Box } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
-  GridSortModel,
   GridSortDirection,
+  GridSortModel,
+  useGridApiRef,
 } from '@mui/x-data-grid';
 
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
@@ -97,6 +99,27 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
+  // Adapted from https://mui.com/x/react-data-grid/column-dimensions/#autosizing-asynchronously
+  // setTimeout and flushSync are necessary for call order control
+  // Docs say:
+  // The Data Grid can only autosize based on the currently rendered cells.
+  // DOM access is required to accurately calculate dimensions
+  const gridApiRef = useGridApiRef();
+  useEffect(() => {
+    setTimeout(() => {
+      ReactDOM.flushSync(() => {
+        setTimeout(() => {
+          // noinspection JSIgnoredPromiseFromCall
+          gridApiRef.current?.autosizeColumns({
+            columns: ['amount'],
+            includeHeaders: true,
+            includeOutliers: true,
+          });
+        }, 1);
+      });
+    }, 1);
+  }, [gridApiRef, invoices]);
+
   const className = 'Monite-InvoicesTable';
 
   return (
@@ -121,6 +144,7 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           sx={{
@@ -220,7 +244,6 @@ const InvoicesTableBase = ({
                   ? formatCurrencyToDisplay(value, row.currency)
                   : '';
               },
-              flex: 0.5,
             },
             {
               field: 'due_date',
