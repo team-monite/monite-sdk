@@ -98,6 +98,10 @@ export const DefaultLayout = ({
               flexDirection: 'column',
               minWidth: 0,
               minHeight: '100vh',
+
+              '& .MuiDataGrid-root': {
+                height: 'calc(100vh - 272px)',
+              },
             }}
           >
             {children}
