@@ -210,4 +210,3 @@ type EntityBankAccountResponse =
 type OnboardingBankAccount = components['schemas']['OnboardingBankAccount'];
 type OnboardingBankAccountMask =
   components['schemas']['OnboardingBankAccountMask'];
-type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

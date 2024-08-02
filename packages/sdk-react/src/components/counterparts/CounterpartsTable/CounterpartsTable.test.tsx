@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { counterpartListFixture } from '@/mocks/counterparts/counterpart';
 import {
@@ -591,12 +589,6 @@ describe('CounterpartsTable', () => {
       renderWithClient(<CounterpartsTable />);
 
       await waitUntilTableIsLoaded();
-
-      const nextButton = getNextButton();
-      const prevButton = getPrevButton();
-
-      const nextDisabled = nextButton.hasAttribute('disabled');
-      const prevDisabled = prevButton.hasAttribute('disabled');
 
       await waitFor(() => {
         expect(getNextButton()).not.toBeDisabled();

@@ -12,7 +12,7 @@ import { screen, within } from '@testing-library/react';
 import { CounterpartView } from './CounterpartView';
 
 describe('CounterpartView', () => {
-  const sdkWithEmptyPermissions = new MoniteSDK({
+  new MoniteSDK({
     entityId: ENTITY_ID_FOR_EMPTY_PERMISSIONS,
     fetchToken: () =>
       Promise.resolve({
@@ -21,7 +21,6 @@ describe('CounterpartView', () => {
         expires_in: 3600,
       }),
   });
-
   const sdkWithReadPermissions = new MoniteSDK({
     entityId: ENTITY_ID_FOR_READONLY_PERMISSIONS,
     fetchToken: () =>

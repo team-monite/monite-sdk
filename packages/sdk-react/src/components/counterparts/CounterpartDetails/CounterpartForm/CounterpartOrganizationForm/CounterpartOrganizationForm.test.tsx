@@ -1,6 +1,5 @@
 import { Dialog } from '@/components';
 import { CounterpartOrganizationForm } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { organizationId } from '@/mocks/counterparts/counterpart.mocks.types';
 import i18n from '@/mocks/i18n';
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';

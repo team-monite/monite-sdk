@@ -33,7 +33,7 @@ export const useApprovalPolicyDetails = ({
   const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
     {},
     {
-      onSuccess: async (approvalPolicy) => {
+      onSuccess: async () => {
         await Promise.all([
           api.approvalPolicies.getApprovalPolicies.invalidateQueries(
             queryClient

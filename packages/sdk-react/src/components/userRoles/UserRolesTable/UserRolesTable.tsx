@@ -80,7 +80,7 @@ const UserRolesTableBase = ({
   onRowClick,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
-  const { api, queryClient } = useMoniteContext();
+  const { api } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);

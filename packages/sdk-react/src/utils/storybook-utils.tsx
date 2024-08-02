@@ -59,10 +59,6 @@ export const withGlobalStorybookDecorator = (
 ): any => {
   const { monite } = cb?.() ?? { monite: undefined };
 
-  const customStyles = {
-    components: {},
-  };
-
   return withThemeFromJSXProvider({
     themes: {
       light: themeMoniteLight,
