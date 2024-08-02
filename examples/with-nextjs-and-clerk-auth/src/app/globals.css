@@ -472,3 +472,15 @@ html {
     margin-right: 10.8%;
   }
 }
+
+.Monite-EmailInvoiceDetails-Title {
+  height: 88px;
+}
+.Monite-EmailInvoiceDetails-Content {
+
+  > form {
+    padding: var(--demo-padding-4);
+    max-width: 1006px;
+    margin: 0 auto;
+  }
+}

@@ -148,9 +148,11 @@ const EmailInvoiceDetailsBase = ({
     sendMutation.isPending ||
     createPaymentLinkMutation.isPending;
 
+  const className = 'Monite-EmailInvoiceDetails';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
             <Grid item xs={6}>
@@ -184,7 +186,7 @@ const EmailInvoiceDetailsBase = ({
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={className + '-Content'}>
         <form id={formName} noValidate onSubmit={handleIssueAndSend}>
           <Stack spacing={3}>
             <Stack spacing={2}>
