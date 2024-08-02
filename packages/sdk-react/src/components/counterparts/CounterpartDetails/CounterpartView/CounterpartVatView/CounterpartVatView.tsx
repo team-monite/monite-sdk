@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getCountries } from '@/core/utils/countries';
 import { useVatTypeLabelByCode } from '@/core/utils/useVatTypes';

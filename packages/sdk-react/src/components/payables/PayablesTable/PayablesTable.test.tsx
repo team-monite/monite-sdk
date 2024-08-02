@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
@@ -52,10 +50,10 @@ describe('PayablesTable', () => {
 
       const payableInOcr = payableFixturePages[1];
 
-      const fileNameCell = await screen.findByRole('cell', {
+      const fileNameCell = await screen.findByRole('gridcell', {
         name: String(payableInOcr.file?.name),
       });
-      const ocrStatusCell = screen.getByRole('cell', {
+      const ocrStatusCell = screen.getByRole('gridcell', {
         name: /Processing file/i,
       });
 
@@ -124,7 +122,7 @@ describe('PayablesTable', () => {
       await waitUntilTableIsLoaded();
 
       fireEvent.mouseDown(
-        screen.getByRole('button', {
+        screen.getByRole('combobox', {
           name: /status/i,
         })
       );

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { InvoiceDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { AccessRestriction } from '@/ui/accessRestriction';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/react';
 

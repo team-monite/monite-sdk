@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';

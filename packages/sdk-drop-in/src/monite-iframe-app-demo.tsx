@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import { MoniteIframeAppDemo } from '@/apps/MoniteIframeAppDemo';
@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <MoniteIframeAppDemo />
-  </React.StrictMode>
+  </StrictMode>
 );

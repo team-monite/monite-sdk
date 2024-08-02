@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller, useFormContext, FieldPath } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 
 import {
@@ -47,7 +46,7 @@ export const MoniteCurrency = <
       optionKey="code"
       labelKey="label"
       renderOption={(props, option) => (
-        <MenuItem key={option.code} value={option.label} {...props}>
+        <MenuItem {...props} key={option.code} value={option.label}>
           {option.label}, {getSymbolFromCurrency(option.code)}
         </MenuItem>
       )}

@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 import { createAPIClient } from '@/api/client';
 import {
@@ -229,7 +229,7 @@ export function triggerClickOnSelectOption(
   selectOption: string | RegExp
 ) {
   fireEvent.mouseDown(
-    screen.getByRole('button', {
+    screen.getByRole('combobox', {
       name: selectName,
     })
   );
@@ -286,7 +286,7 @@ export async function selectAsyncDropdownOption(
   dropdownName: string | RegExp,
   optionText: string | RegExp
 ) {
-  const dropdownButton = await screen.findByRole('button', {
+  const dropdownButton = await screen.findByRole('combobox', {
     name: dropdownName,
   });
 

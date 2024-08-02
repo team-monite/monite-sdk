@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -47,7 +46,7 @@ export const OnboardingAddress = ({
           labelKey="label"
           options={AllowedCountries.map((code) => ({
             code,
-            label: t(i18n)`${getRegionName(code)}`,
+            label: t(i18n)`${getRegionName(code)} (${code})`,
           }))}
           renderOption={(props, option, state) => (
             <CountryOption

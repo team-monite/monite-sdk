@@ -1,4 +1,10 @@
-import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  FormEvent,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {
   FieldValues,
   Path,
@@ -112,7 +118,7 @@ export function useOnboardingForm<
     setErrors(fieldsErrors);
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!prevFields) return;
     if (!nextFields) return;
     if (!nextValues) return;
@@ -127,7 +133,7 @@ export function useOnboardingForm<
     setFields(restoredFields);
   }, [prevFields, nextFields, nextValues]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const values = getDefaultValues();
 
     if (deepEqual(values, prevValues)) return;
@@ -136,6 +142,7 @@ export function useOnboardingForm<
       keepErrors: true,
       keepIsValid: true,
     });
+
     setErrors(fieldsErrors);
   }, [getDefaultValues, prevValues, reset, setErrors, fieldsErrors]);
 

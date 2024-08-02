@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { PageHeader } from '@/components/PageHeader';
 import { TagFormModal } from '@/components/tags/TagFormModal';

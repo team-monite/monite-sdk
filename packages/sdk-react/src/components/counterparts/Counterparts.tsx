@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { components } from '@/api';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';

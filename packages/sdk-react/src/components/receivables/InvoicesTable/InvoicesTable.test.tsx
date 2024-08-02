@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { InvoicesTable } from '@/components';
 import { receivableListFixture } from '@/mocks/receivables';
 import { renderWithClient } from '@/utils/test-utils';
@@ -19,7 +17,7 @@ describe('InvoicesTable', () => {
   test('renders action menu default items', async () => {
     renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
 
-    const draftCellNodes = screen.findAllByRole('cell', {
+    const draftCellNodes = screen.findAllByRole('gridcell', {
       name: 'INV-auto',
     });
 
@@ -56,7 +54,7 @@ describe('InvoicesTable', () => {
       />
     );
 
-    const draftCellNodes = screen.findAllByRole('cell', {
+    const draftCellNodes = screen.findAllByRole('gridcell', {
       name: 'INV-auto',
     });
 
@@ -103,7 +101,7 @@ describe('InvoicesTable', () => {
     expect(firstInvoiceNotEmptyDocumentId).toBeDefined();
 
     await expect(
-      screen.findAllByRole('cell', {
+      screen.findAllByRole('gridcell', {
         name: String(firstInvoiceNotEmptyDocumentId),
       })
     ).resolves.toBeInstanceOf(Array);

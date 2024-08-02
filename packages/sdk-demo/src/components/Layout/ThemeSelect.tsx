@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { ThemeConfig } from '@/types';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';

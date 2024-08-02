@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';

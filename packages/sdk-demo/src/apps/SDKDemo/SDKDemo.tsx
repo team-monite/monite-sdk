@@ -1,4 +1,4 @@
-import React, { StrictMode, Suspense, useMemo } from 'react';
+import { StrictMode, Suspense, useMemo } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { Base } from '@/apps/Base';

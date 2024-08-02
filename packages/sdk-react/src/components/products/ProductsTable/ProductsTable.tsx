@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -202,6 +202,7 @@ const ProductsTableBase = ({
             {
               field: 'name',
               headerName: t(i18n)`Name, description`,
+              display: 'flex',
               flex: 3,
               renderCell: (params) => (
                 <Stack spacing={1} width="100%">
@@ -218,6 +219,7 @@ const ProductsTableBase = ({
             {
               field: 'type',
               headerName: t(i18n)`Type`,
+              display: 'flex',
               flex: 1,
               sortable: false,
               renderCell: (params) => {
@@ -233,8 +235,8 @@ const ProductsTableBase = ({
               sortable: false,
               align: 'right',
               headerAlign: 'right',
-              valueGetter: (params) => {
-                const price = params.value as ProductServiceResponse['price'];
+              valueGetter: (value: ProductServiceResponse['price']) => {
+                const price = value;
 
                 return price
                   ? formatCurrencyToDisplay(price.value, price.currency)

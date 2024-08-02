@@ -1,4 +1,3 @@
-import { CSSProperties } from '@mui/material/styles/createMixins';
 import { Meta, StoryObj } from '@storybook/react';
 
 import { FileViewer } from './FileViewer';
@@ -10,7 +9,7 @@ const meta: Meta<typeof FileViewer> = {
 
 type Story = StoryObj<typeof FileViewer>;
 
-const customStyles: CSSProperties = {
+const customStyles = {
   width: '100%',
   maxWidth: 600,
 };

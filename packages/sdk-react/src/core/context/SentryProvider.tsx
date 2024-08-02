@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { Error as ErrorComponent } from '@/ui/error';

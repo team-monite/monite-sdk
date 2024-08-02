@@ -1,6 +1,6 @@
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
-import { Skeleton, Typography } from '@mui/material';
+import { Skeleton } from '@mui/material';
 
 interface InvoiceCounterpartNameProps {
   counterpartId: string | undefined;
@@ -20,8 +20,8 @@ export const InvoiceCounterpartName = ({
   }
 
   if (error) {
-    return <Typography>—</Typography>;
+    return <>—</>;
   }
 
-  return <Typography>{getCounterpartName(counterpart)}</Typography>;
+  return <>{getCounterpartName(counterpart)}</>;
 };

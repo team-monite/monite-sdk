@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';

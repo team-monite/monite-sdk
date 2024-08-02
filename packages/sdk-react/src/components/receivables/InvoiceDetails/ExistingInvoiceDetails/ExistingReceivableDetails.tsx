@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useDialog } from '@/components/Dialog';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';

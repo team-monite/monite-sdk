@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useCallback, useId } from 'react';
+import { BaseSyntheticEvent, useCallback, useId } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 

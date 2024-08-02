@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { Dialog } from '@/components';
 import { InvoiceDetailsPermissions } from '@/core/queries/useReceivables';

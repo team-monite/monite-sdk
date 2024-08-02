@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

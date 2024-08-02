@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { t } from '@lingui/macro';

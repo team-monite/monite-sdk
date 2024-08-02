@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
 import { classNames } from '@/utils/css-utils';

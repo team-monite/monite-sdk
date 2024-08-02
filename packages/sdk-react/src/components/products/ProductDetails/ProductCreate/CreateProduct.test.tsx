@@ -51,7 +51,7 @@ describe('CreateProduct', () => {
     triggerChangeInput(/price per unit/i, '100');
     triggerChangeInput(/description/i, 'test description');
 
-    const dropdownButton = await screen.findByRole('button', {
+    const dropdownButton = await screen.findByRole('combobox', {
       name: /units/i,
     });
 

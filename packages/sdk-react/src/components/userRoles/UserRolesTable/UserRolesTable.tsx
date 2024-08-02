@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
@@ -19,12 +19,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import {
-  DataGrid,
-  GridValueFormatterParams,
-  gridClasses,
-  GridSortModel,
-} from '@mui/x-data-grid';
+import { DataGrid, gridClasses, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { addDays, formatISO } from 'date-fns';
@@ -187,11 +182,9 @@ const UserRolesTableBase = ({
               sortable: true,
               type: 'date',
               flex: 1,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                components['schemas']['PayableResponseSchema']['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+              valueFormatter: (
+                value: components['schemas']['PayableResponseSchema']['created_at']
+              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
             },
           ]}
           rows={roles?.data || []}

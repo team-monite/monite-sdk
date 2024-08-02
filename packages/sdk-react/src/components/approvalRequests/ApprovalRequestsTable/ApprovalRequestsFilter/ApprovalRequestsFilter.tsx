@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';

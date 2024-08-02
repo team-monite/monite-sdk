@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -17,11 +17,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import {
-  DataGrid,
-  GridSortModel,
-  GridValueFormatterParams,
-} from '@mui/x-data-grid';
+import { DataGrid, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -149,7 +145,7 @@ const QuotesTableBase = ({
               field: 'created_at',
               sortable: false,
               headerName: t(i18n)`Created on`,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
@@ -159,9 +155,7 @@ const QuotesTableBase = ({
               field: 'issue_date',
               sortable: false,
               headerName: t(i18n)`Issue Date`,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<'issue_date'>) =>
+              valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 1,
             },
@@ -169,6 +163,7 @@ const QuotesTableBase = ({
               field: 'counterpart_name',
               sortable: ReceivableCursorFields.includes('counterpart_name'),
               headerName: t(i18n)`Customer`,
+              display: 'flex',
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -180,9 +175,7 @@ const QuotesTableBase = ({
               field: 'expiry_date',
               sortable: false,
               headerName: t(i18n)`Due date`,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<'expiry_date'>) =>
+              valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 1,
             },
@@ -201,8 +194,7 @@ const QuotesTableBase = ({
               field: 'amount',
               headerName: t(i18n)`Amount`,
               sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (params) => {
-                const row = params.row;
+              valueGetter: (_, row) => {
                 const value = row.total_amount;
 
                 return value

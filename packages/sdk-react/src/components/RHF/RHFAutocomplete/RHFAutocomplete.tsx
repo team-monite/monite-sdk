@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller, FieldPath } from 'react-hook-form';
 import type {
   FieldValues,
@@ -86,6 +85,7 @@ export const RHFAutocomplete = <
         helperText={error?.message}
         inputProps={{
           ...params.inputProps,
+          autoComplete: 'new-password',
         }}
       />
     );

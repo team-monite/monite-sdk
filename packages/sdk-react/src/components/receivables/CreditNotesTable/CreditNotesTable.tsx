@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -131,7 +131,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'created_at',
               headerName: t(i18n)`Created on`,
               sortable: false,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
@@ -141,7 +141,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
               sortable: false,
-              valueFormatter: ({ value }) =>
+              valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 0.7,
             },
@@ -149,6 +149,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
+              display: 'flex',
               flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
@@ -170,8 +171,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'amount',
               headerName: t(i18n)`Amount`,
               sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (params) => {
-                const row = params.row;
+              valueGetter: (_, row) => {
                 const value = row.total_amount;
 
                 return value && formatCurrencyToDisplay(value, row.currency);
