@@ -8,7 +8,6 @@ import type { Theme } from '@mui/material/styles/createTheme';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 import { deepmerge } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
-import { DataGridComponentNameToClassKey } from '@mui/x-data-grid/themeAugmentation/overrides';
 import {
   moniteLight as baseMoniteLight,
   moniteDark as baseMoniteDark,
@@ -93,9 +92,7 @@ const typographyDark = deepmerge(typography, {
   },
 });
 
-const components:
-  | Components<Omit<Theme, 'components'>>
-  | DataGridComponentNameToClassKey = {
+const components: Components<Omit<Theme, 'components'>> = {
   MuiFormLabel: {
     styleOverrides: {
       root: {
