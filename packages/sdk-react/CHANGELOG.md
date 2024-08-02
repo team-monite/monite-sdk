@@ -1,5 +1,16 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.1
+
+### Minor Changes
+
+- c36b9802: fix(DEV-12101): [SDK] [AP] OCR is not showing the correct Total, Tax field
+
+### Patch Changes
+
+- eb4a7fe8: fix(DEV-12146): fix generated fields for <Onboarding />
+  - @monite/sdk-api@3.16.0-beta.1
+
 ## 3.16.0-beta.0
 
 ### Minor Changes
