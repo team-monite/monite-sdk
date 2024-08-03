@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import * as ReactDOM from 'react-dom';
 import toast from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -7,6 +6,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -24,7 +24,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
-import { DataGrid, useGridApiRef } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -152,28 +152,7 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
-  // Adapted from https://mui.com/x/react-data-grid/column-dimensions/#autosizing-asynchronously
-  // setTimeout and flushSync are necessary for call order control
-  // Docs say:
-  // The Data Grid can only autosize based on the currently rendered cells.
-  // DOM access is required to accurately calculate dimensions
-  const gridApiRef = useGridApiRef();
-  useEffect(() => {
-    setTimeout(() => {
-      ReactDOM.flushSync(() => {
-        setTimeout(() => {
-          if (gridApiRef.current?.autosizeColumns) {
-            // noinspection JSIgnoredPromiseFromCall
-            gridApiRef.current?.autosizeColumns({
-              columns: ['amount'],
-              includeHeaders: true,
-              includeOutliers: true,
-            });
-          }
-        }, 1);
-      });
-    }, 1);
-  }, [gridApiRef, payables]);
+  const gridApiRef = useAutosizeGridColumns(payables);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
