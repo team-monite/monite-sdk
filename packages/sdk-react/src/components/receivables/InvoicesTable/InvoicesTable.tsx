@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -19,8 +20,8 @@ import { Box } from '@mui/material';
 import {
   DataGrid,
   GridRenderCellParams,
-  GridSortModel,
   GridSortDirection,
+  GridSortModel,
 } from '@mui/x-data-grid';
 
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
@@ -97,6 +98,8 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
+  const gridApiRef = useAutosizeGridColumns(invoices);
+
   const className = 'Monite-InvoicesTable';
 
   return (
@@ -121,6 +124,7 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           sx={{
@@ -220,7 +224,6 @@ const InvoicesTableBase = ({
                   ? formatCurrencyToDisplay(value, row.currency)
                   : '';
               },
-              flex: 0.5,
             },
             {
               field: 'due_date',

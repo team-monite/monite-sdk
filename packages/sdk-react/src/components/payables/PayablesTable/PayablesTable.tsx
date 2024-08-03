@@ -6,6 +6,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -151,6 +152,8 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
+  const gridApiRef = useAutosizeGridColumns(payables);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -187,6 +190,7 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           onRowClick={(params) => {
@@ -323,7 +327,6 @@ const PayablesTableBase = ({
                 message: 'Amount',
                 comment: 'Payables Table "Amount" heading title',
               }),
-              width: 100,
               valueGetter: (_, row) => {
                 const payable = row;
 

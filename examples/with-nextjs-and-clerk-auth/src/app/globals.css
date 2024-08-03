@@ -494,3 +494,13 @@ html {
     font-weight: 700;
   }
 }
+
+.MuiDataGrid-cell[data-field="counterpart_id"] {
+  .MuiChip-root {
+    padding-left: 0;
+
+    .MuiAvatar-root {
+      margin: 0;
+    }
+  }
+}
