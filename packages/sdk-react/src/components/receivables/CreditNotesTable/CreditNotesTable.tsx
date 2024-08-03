@@ -5,6 +5,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -76,6 +77,8 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  const gridApiRef = useAutosizeGridColumns(creditNotes);
+
   const className = 'Monite-CreditNotesTable';
 
   return (
@@ -91,7 +94,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
-          autoHeight
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           sx={{

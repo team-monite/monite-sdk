@@ -5,6 +5,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -90,6 +91,8 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
+  const gridApiRef = useAutosizeGridColumns(quotes);
+
   const className = 'Monite-QuotesTable';
 
   return (
@@ -105,7 +108,7 @@ const QuotesTableBase = ({
           />
         </Box>
         <DataGrid
-          autoHeight
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           onSortModelChange={onChangeSort}
