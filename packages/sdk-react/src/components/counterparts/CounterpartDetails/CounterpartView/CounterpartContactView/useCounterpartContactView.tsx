@@ -9,6 +9,7 @@ export type CounterpartContactViewProps = {
   onDelete?: (id: string) => void;
   contact: components['schemas']['CounterpartContactResponse'];
   permissions: CounterpartActionsPermissions;
+  refetchContacts: () => void;
 };
 
 export function useCounterpartContactView({

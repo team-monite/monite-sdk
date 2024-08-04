@@ -80,7 +80,7 @@ export const InvoiceStatusChip = forwardRef<
   );
 });
 
-const StyledChip = styled(
+export const StyledChip = styled(
   forwardRef<HTMLDivElement, ChipProps & InvoiceStatusChipRootProps>(
     (props, ref) => <Chip ref={ref} {...props} />
   ),

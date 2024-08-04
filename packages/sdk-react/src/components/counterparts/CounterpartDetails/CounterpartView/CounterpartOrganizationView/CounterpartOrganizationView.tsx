@@ -3,22 +3,48 @@ import { ReactNode } from 'react';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Divider, CardActions } from '@mui/material';
+import { Divider, CardActions, Box, Typography, Chip } from '@mui/material';
 
 import type { CounterpartShowCategories } from '../../../Counterpart.types';
 import { CounterpartDataTestId } from '../../../Counterpart.types';
 import { CounterpartOrganizationFields } from '../../CounterpartForm';
 import { printCounterpartType } from '../../helpers';
 
+type EmailDefaultDisplayProps = {
+  email: string;
+  isDefault?: boolean;
+};
+
+export const EmailDefaultDisplay = ({
+  email,
+  isDefault,
+}: EmailDefaultDisplayProps) => {
+  const { i18n } = useLingui();
+  return (
+    <Box display="flex" alignItems="center">
+      <Typography noWrap sx={{ maxWidth: 250 }} title={email} component="div">
+        {email}
+      </Typography>
+      {isDefault && (
+        <Box ml="auto" mr={1}>
+          <Chip label={t(i18n)`default`} variant="filled" color="default" />
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 type CounterpartOrganizationViewProps = {
   actions: ReactNode;
   counterpart: CounterpartOrganizationFields & { taxId: string | undefined };
+  defaultEmail?: boolean;
 } & CounterpartShowCategories;
 
 export const CounterpartOrganizationView = ({
   actions,
   counterpart: { companyName, phone, email, isVendor, taxId, isCustomer },
   showCategories,
+  defaultEmail,
 }: CounterpartOrganizationViewProps) => {
   const { i18n } = useLingui();
 
@@ -44,7 +70,7 @@ export const CounterpartOrganizationView = ({
         },
         {
           label: t(i18n)`Email`,
-          value: email,
+          value: <EmailDefaultDisplay email={email} isDefault={defaultEmail} />,
         },
         {
           label: t(i18n)`Tax ID`,

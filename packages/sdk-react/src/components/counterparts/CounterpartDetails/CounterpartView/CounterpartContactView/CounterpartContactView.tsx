@@ -1,10 +1,13 @@
 import { useCallback, useState } from 'react';
 
+import { EmailDefaultDisplay } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import { useMakeCounterpartContactDefault } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import StarIcon from '@mui/icons-material/Star';
 import { Button, CardActions, Divider } from '@mui/material';
 
 import { ConfirmDeleteDialogue } from '../../../ConfirmDeleteDialogue';
@@ -42,6 +45,23 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
   } = prepareCounterpartContact(props.contact);
 
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
+  const contactMakeDefaultMutation = useMakeCounterpartContactDefault();
+
+  const onDefault = useCallback(() => {
+    const contactMakeDefault = contactMakeDefaultMutation.mutateAsync;
+
+    return contactMakeDefault(
+      {
+        path: {
+          counterpart_id: props.contact.counterpart_id,
+          contact_id: props.contact.id,
+        },
+      },
+      {
+        onSuccess: () => props.refetchContacts(),
+      }
+    );
+  }, [contactMakeDefaultMutation.mutateAsync, props]);
 
   const { isUpdateAllowed, isDeleteAllowed } = props.permissions;
 
@@ -56,6 +76,17 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
           startIcon={<EditIcon />}
         >
           {t(i18n)`Edit`}
+        </Button>
+      )}
+      {isUpdateAllowed && !props.contact.is_default && (
+        <Button
+          onClick={onDefault}
+          variant="text"
+          color="primary"
+          size="small"
+          startIcon={<StarIcon />}
+        >
+          {t(i18n)`Make default`}
         </Button>
       )}
       {isDeleteAllowed && !props.contact.is_default && (
@@ -99,7 +130,12 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
         },
         {
           label: t(i18n)`Email`,
-          value: email,
+          value: (
+            <EmailDefaultDisplay
+              email={email}
+              isDefault={props.contact.is_default}
+            />
+          ),
         },
       ]}
     >

@@ -441,6 +441,20 @@ export const useDeleteCounterpartContact = () => {
   );
 };
 
+export const useMakeCounterpartContactDefault = () => {
+  const { i18n } = useLingui();
+  const { api } = useMoniteContext();
+
+  return api.counterparts.postCounterpartsIdContactsIdMakeDefault.useMutation(
+    undefined,
+    {
+      onSuccess: () =>
+        toast.success(t(i18n)`Contact Person has been made default.`),
+      onError: (error) => toast.error(getAPIErrorMessage(i18n, error)),
+    }
+  );
+};
+
 export const useCounterpartList = (
   parameters?: Services['counterparts']['getCounterparts']['types']['parameters']
 ) => {

@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { useDialog } from '@/components/Dialog';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -54,7 +55,9 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     isLoading,
     onEdit,
     title,
+    refetchContacts,
   } = useCounterpartView(props);
+  const { api } = useMoniteContext();
   const dialogContext = useDialog();
 
   const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
@@ -103,6 +106,30 @@ export const CounterpartView = (props: CounterpartViewProps) => {
   const handleDeleteCounterpart = useCallback(() => {
     deleteCounterpart(handleCloseDeleteCounterpartDialog);
   }, [deleteCounterpart, handleCloseDeleteCounterpartDialog]);
+
+  const { data: hasCounterpartDefault } =
+    api.counterparts.getCounterpartsIdContacts.useQuery(
+      {
+        path: { counterpart_id: counterpart?.id ?? '' },
+      },
+      {
+        enabled: Boolean(counterpart?.type === 'organization'),
+      }
+    );
+
+  const getDefaultOrganizationContact = useCallback(() => {
+    if (counterpart && isOrganizationCounterpart(counterpart)) {
+      const counterpartOrganization = counterpart.organization;
+
+      const organizationEmail = counterpartOrganization?.email;
+
+      const matchingContact = hasCounterpartDefault?.data?.find(
+        (contact) => contact.email === organizationEmail
+      );
+
+      return matchingContact?.is_default;
+    }
+  }, [counterpart, hasCounterpartDefault]);
 
   const actions = useMemo(() => {
     return (
@@ -202,6 +229,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             <CounterpartOrganizationView
               actions={actions}
               showCategories={props.showCategories ?? true}
+              defaultEmail={getDefaultOrganizationContact()}
               counterpart={{
                 taxId: counterpart.tax_id,
                 ...prepareCounterpartOrganization(counterpart.organization),
@@ -283,6 +311,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
                   onEdit={props.onContactEdit}
                   onDelete={props.onContactDelete}
                   permissions={counterpartPermissions}
+                  refetchContacts={refetchContacts}
                 />
               ))}
 
