@@ -108,6 +108,11 @@ const QuotesTableBase = ({
           />
         </Box>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
           apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
@@ -140,13 +145,11 @@ const QuotesTableBase = ({
           columns={[
             {
               field: 'document_id',
-              sortable: false,
               headerName: t(i18n)`Number`,
               flex: 1.2,
             },
             {
               field: 'created_at',
-              sortable: false,
               headerName: t(i18n)`Created on`,
               valueFormatter: (value) =>
                 value
@@ -156,7 +159,6 @@ const QuotesTableBase = ({
             },
             {
               field: 'issue_date',
-              sortable: false,
               headerName: t(i18n)`Issue Date`,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),

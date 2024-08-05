@@ -85,7 +85,7 @@ export interface ProductTableProps {
 
 interface ProductsTableSortModel {
   field: ProductCursorFields;
-  sort: GridSortDirection;
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const ProductsTable = (props: ProductTableProps) => (
@@ -109,8 +109,9 @@ const ProductsTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
-  const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
-  const sortModelItem = sortModel[0];
+  const [sortModel, setSortModel] = useState<
+    ProductsTableSortModel | undefined
+  >();
   const { formatCurrencyToDisplay } = useCurrencies();
 
   /** Controls the visibility of the deleting dialog */
@@ -141,15 +142,11 @@ const ProductsTableBase = ({
 
   const { data: products, isLoading } = api.products.getProducts.useQuery({
     query: {
-      order: sortModelItem
-        ? (sortModelItem.sort as unknown as OrderEnum)
-        : undefined,
+      sort: sortModel?.field,
+      order: sortModel?.sort,
       limit: pageSize,
       type: currentFilter[FILTER_TYPE_TYPE] || undefined,
       pagination_token: currentPaginationToken || undefined,
-      sort: sortModelItem
-        ? (sortModelItem.field as ProductCursorFields)
-        : undefined,
       name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       measure_unit_id: currentFilter[FILTER_TYPE_UNITS] || undefined,
     },
@@ -165,12 +162,11 @@ const ProductsTableBase = ({
     onChangeFilterCallback?.({ field, value });
   };
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<ProductsTableSortModel>;
-    setSortModel(model);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as ProductsTableSortModel);
     setCurrentPaginationToken(null);
 
-    onChangeSortCallback?.(model[0]);
+    onChangeSortCallback?.(model[0] as ProductsTableSortModel);
   };
 
   if (isReadSupportedLoading) {
@@ -193,8 +189,14 @@ const ProductsTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: sortModel && [sortModel],
+            },
+          }}
           rowSelection={false}
           rows={products?.data || []}
+          onSortModelChange={onChangeSort}
           onRowClick={(params) => {
             onRowClick?.(params.row);
           }}
@@ -275,8 +277,6 @@ const ProductsTableBase = ({
             },
           ]}
           loading={isLoading}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
               borderColor: 'divider',
