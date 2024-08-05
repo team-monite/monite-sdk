@@ -3,7 +3,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
 import { useDialog } from '@/components/Dialog';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -57,7 +56,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     title,
     refetchContacts,
   } = useCounterpartView(props);
-  const { api } = useMoniteContext();
   const dialogContext = useDialog();
 
   const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
@@ -107,29 +105,19 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     deleteCounterpart(handleCloseDeleteCounterpartDialog);
   }, [deleteCounterpart, handleCloseDeleteCounterpartDialog]);
 
-  const { data: hasCounterpartDefault } =
-    api.counterparts.getCounterpartsIdContacts.useQuery(
-      {
-        path: { counterpart_id: counterpart?.id ?? '' },
-      },
-      {
-        enabled: Boolean(counterpart?.type === 'organization'),
-      }
-    );
-
   const getDefaultOrganizationContact = useCallback(() => {
     if (counterpart && isOrganizationCounterpart(counterpart)) {
       const counterpartOrganization = counterpart.organization;
 
       const organizationEmail = counterpartOrganization?.email;
 
-      const matchingContact = hasCounterpartDefault?.data?.find(
+      const matchingContact = contacts?.find(
         (contact) => contact.email === organizationEmail
       );
 
       return matchingContact?.is_default;
     }
-  }, [counterpart, hasCounterpartDefault]);
+  }, [counterpart, contacts]);
 
   const actions = useMemo(() => {
     return (
