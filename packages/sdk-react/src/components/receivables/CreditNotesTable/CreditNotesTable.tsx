@@ -94,6 +94,11 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
           apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
@@ -127,13 +132,11 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'document_id',
               headerName: t(i18n)`Number`,
-              sortable: false,
               flex: 1.3,
             },
             {
               field: 'created_at',
               headerName: t(i18n)`Created on`,
-              sortable: false,
               valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
@@ -143,7 +146,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
-              sortable: false,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 0.7,

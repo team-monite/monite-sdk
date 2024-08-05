@@ -124,6 +124,11 @@ const InvoicesTableBase = ({
         </Box>
 
         <DataGrid<components['schemas']['ReceivableResponse']>
+          initialState={{
+            sorting: {
+              sortModel: sortModel && [sortModel],
+            },
+          }}
           apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}

@@ -50,9 +50,9 @@ import { Filters as FiltersComponent } from './Filters';
 import * as Styled from './styles';
 import { Filters, FilterValue, Sort } from './types';
 
-interface CounterpartsTableSortModel {
+interface CounterpartGridSortModel {
   field: components['schemas']['CounterpartCursorFields'];
-  sort: GridSortDirection;
+  sort: NonNullable<GridSortDirection>;
 }
 
 /**
@@ -83,7 +83,7 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
    * @param params.field - The field to sort by.
    * @param params.sort - The sort order (either ascending, descending, or null).
    */
-  onChangeSort?: (params: CounterpartsTableSortModel) => void;
+  onChangeSort?: (params: CounterpartGridSortModel) => void;
 
   /**
    * Callback function that is called when the filter is changed.
@@ -125,10 +125,9 @@ const CounterpartsTableBase = ({
   );
   const [currentSort] = useState<Sort | null>(null);
   const [currentFilter, setCurrentFilter] = useState<Filters>({});
-  const [sortModel, setSortModel] = useState<Array<CounterpartsTableSortModel>>(
-    []
-  );
-  const sortModelItem = sortModel.at(0);
+  const [sortModel, setSortModel] = useState<
+    CounterpartGridSortModel | undefined
+  >(undefined);
 
   /**
    * `isUpdateSupported` and `isDeleteSupported` should be defined by `created_by_entity_user_id` from counterpart record.
@@ -159,10 +158,10 @@ const CounterpartsTableBase = ({
     refetch,
   } = useCounterpartList({
     query: {
-      order: sortModelItem?.sort ?? undefined,
+      sort: sortModel?.field,
+      order: sortModel?.sort,
       limit: pageSize || undefined,
       pagination_token: currentPaginationToken || undefined,
-      sort: sortModelItem?.field ?? undefined,
       type: currentFilter[FILTER_TYPE_TYPE] || undefined,
       counterpart_name__icontains:
         currentFilter[FILTER_TYPE_SEARCH] || undefined,
@@ -185,11 +184,10 @@ const CounterpartsTableBase = ({
   }, []);
 
   const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<CounterpartsTableSortModel>;
-    setSortModel(model);
+    setSortModel(m[0] as CounterpartGridSortModel);
     setCurrentPaginationToken(null);
 
-    onChangeSortCallback?.(model[0]);
+    onChangeSortCallback?.(m[0] as CounterpartGridSortModel);
   };
 
   const onChangeFilter = (field: keyof Filters, value: FilterValue) => {
@@ -261,19 +259,21 @@ const CounterpartsTableBase = ({
         <DataGrid
           rowSelection={false}
           initialState={{
+            sorting: {
+              sortModel: sortModel && [sortModel],
+            },
             columns: {
               columnVisibilityModel: {
                 category: showCategories,
               },
             },
           }}
+          onSortModelChange={onChangeSort}
           loading={isLoading}
           onRowClick={(params) => onRowClick?.(params.row.id)}
-          sortModel={sortModel}
           columnVisibilityModel={{
             category: showCategories,
           }}
-          onSortModelChange={onChangeSort}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
               borderColor: 'divider',
