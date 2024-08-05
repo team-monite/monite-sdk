@@ -450,7 +450,6 @@ export const useMakeCounterpartContactDefault = () => {
     {
       onSuccess: () =>
         toast.success(t(i18n)`Contact Person has been made default.`),
-      onError: (error) => toast.error(getAPIErrorMessage(i18n, error)),
     }
   );
 };

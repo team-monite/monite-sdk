@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { EmailDefaultDisplay } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMakeCounterpartContactDefault } from '@/core/queries';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
@@ -45,12 +45,12 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
   } = prepareCounterpartContact(props.contact);
 
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
-  const contactMakeDefaultMutation = useMakeCounterpartContactDefault();
+  const makeContactDefaultMutation = useMakeCounterpartContactDefault();
 
   const onDefault = useCallback(() => {
-    const contactMakeDefault = contactMakeDefaultMutation.mutateAsync;
+    const makeContactDefault = makeContactDefaultMutation.mutateAsync;
 
-    return contactMakeDefault(
+    return makeContactDefault(
       {
         path: {
           counterpart_id: props.contact.counterpart_id,
@@ -61,7 +61,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
         onSuccess: () => props.refetchContacts(),
       }
     );
-  }, [contactMakeDefaultMutation.mutateAsync, props]);
+  }, [makeContactDefaultMutation.mutateAsync, props]);
 
   const { isUpdateAllowed, isDeleteAllowed } = props.permissions;
 
@@ -131,10 +131,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
         {
           label: t(i18n)`Email`,
           value: (
-            <EmailDefaultDisplay
-              email={email}
-              isDefault={props.contact.is_default}
-            />
+            <DefaultEmail email={email} isDefault={props.contact.is_default} />
           ),
         },
       ]}

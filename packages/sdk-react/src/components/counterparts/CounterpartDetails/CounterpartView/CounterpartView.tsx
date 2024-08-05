@@ -107,12 +107,8 @@ export const CounterpartView = (props: CounterpartViewProps) => {
 
   const getDefaultOrganizationContact = useCallback(() => {
     if (counterpart && isOrganizationCounterpart(counterpart)) {
-      const counterpartOrganization = counterpart.organization;
-
-      const organizationEmail = counterpartOrganization?.email;
-
       const matchingContact = contacts?.find(
-        (contact) => contact.email === organizationEmail
+        (contact) => contact.email === counterpart.organization?.email
       );
 
       return matchingContact?.is_default;
@@ -217,7 +213,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
             <CounterpartOrganizationView
               actions={actions}
               showCategories={props.showCategories ?? true}
-              defaultEmail={getDefaultOrganizationContact()}
+              isEmailDefault={getDefaultOrganizationContact()}
               counterpart={{
                 taxId: counterpart.tax_id,
                 ...prepareCounterpartOrganization(counterpart.organization),

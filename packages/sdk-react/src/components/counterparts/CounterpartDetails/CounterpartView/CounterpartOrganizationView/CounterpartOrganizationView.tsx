@@ -15,7 +15,7 @@ type EmailDefaultDisplayProps = {
   isDefault?: boolean;
 };
 
-export const EmailDefaultDisplay = ({
+export const DefaultEmail = ({
   email,
   isDefault,
 }: EmailDefaultDisplayProps) => {
@@ -37,14 +37,14 @@ export const EmailDefaultDisplay = ({
 type CounterpartOrganizationViewProps = {
   actions: ReactNode;
   counterpart: CounterpartOrganizationFields & { taxId: string | undefined };
-  defaultEmail?: boolean;
+  isEmailDefault?: boolean;
 } & CounterpartShowCategories;
 
 export const CounterpartOrganizationView = ({
   actions,
   counterpart: { companyName, phone, email, isVendor, taxId, isCustomer },
   showCategories,
-  defaultEmail,
+  isEmailDefault,
 }: CounterpartOrganizationViewProps) => {
   const { i18n } = useLingui();
 
@@ -70,7 +70,7 @@ export const CounterpartOrganizationView = ({
         },
         {
           label: t(i18n)`Email`,
-          value: <EmailDefaultDisplay email={email} isDefault={defaultEmail} />,
+          value: <DefaultEmail email={email} isDefault={isEmailDefault} />,
         },
         {
           label: t(i18n)`Tax ID`,
