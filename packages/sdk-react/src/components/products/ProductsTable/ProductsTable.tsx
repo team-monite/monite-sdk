@@ -322,4 +322,3 @@ const ProductsTableBase = ({
 
 type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
 type ProductCursorFields = components['schemas']['ProductCursorFields'];
-type OrderEnum = components['schemas']['OrderEnum'];
