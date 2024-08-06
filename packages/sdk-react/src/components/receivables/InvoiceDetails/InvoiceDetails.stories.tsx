@@ -52,7 +52,7 @@ export const DialogCreateView: Story = {
   ),
 };
 
-export const IvoiceDetails: Story = {
+export const InvoiceDetailsDraft: Story = {
   args: {
     id: invoiceIdInDraftStatus,
     ...actions,

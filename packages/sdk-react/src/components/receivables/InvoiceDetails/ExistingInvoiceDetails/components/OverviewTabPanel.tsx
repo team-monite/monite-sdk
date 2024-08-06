@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
+import { InvoiceRecurrence } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence';
+import { InvoiceRecurrenceBasedOn } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceBasedOn';
 import {
   createOverdueReminderCardTerms,
   createPaymentReminderCardTerms,
@@ -20,6 +22,7 @@ import {
   Alert,
   Box,
   BoxProps,
+  Button,
   Card,
   Grid,
   Skeleton,
@@ -27,12 +30,17 @@ import {
   Typography,
 } from '@mui/material';
 
+interface OverviewTabPanelProps
+  extends Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'> {
+  onSetView: (view: 'recurrence') => void;
+  invoice: components['schemas']['InvoiceResponsePayload'];
+}
+
 export const OverviewTabPanel = ({
   invoice,
+  onSetView,
   ...restProps
-}: {
-  invoice: components['schemas']['InvoiceResponsePayload'];
-} & Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'>) => {
+}: OverviewTabPanelProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
@@ -99,14 +107,6 @@ export const OverviewTabPanel = ({
             ),
           },
           {
-            label: t(i18n)`Current status`,
-            value: (
-              <Box component="span" fontWeight={500} fontSize="0.9rem">
-                <InvoiceStatusChip status={invoice.status} icon={false} />
-              </Box>
-            ),
-          },
-          {
             label: t(i18n)`Invoice total`,
             value: (
               <Typography fontWeight={500}>
@@ -119,6 +119,31 @@ export const OverviewTabPanel = ({
           },
         ]}
       />
+
+      {(invoice.status === 'draft' || Boolean(invoice.recurrence_id)) && (
+        <Box>
+          <InvoiceRecurrence
+            invoiceId={invoice.id}
+            viewAll={
+              <Button
+                size="small"
+                variant="text"
+                onClick={(event) => {
+                  event.preventDefault();
+                  onSetView('recurrence');
+                }}
+              >
+                {t(i18n)`View all`}
+              </Button>
+            }
+          />
+        </Box>
+      )}
+      {!!invoice.based_on && (
+        <Box>
+          <InvoiceRecurrenceBasedOn receivableId={invoice.based_on} />
+        </Box>
+      )}
 
       {Boolean(
         paymentReminderQuery.data ||
