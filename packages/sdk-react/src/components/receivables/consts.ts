@@ -25,7 +25,7 @@ export const ROW_TO_TAG_STATUS_MUI_MAP: Record<
   expired: 'warning',
   uncollectible: 'warning',
   canceled: 'error',
-  recurring: 'warning',
+  recurring: 'info',
   declined: 'error',
   overdue: 'warning',
   deleted: 'error',

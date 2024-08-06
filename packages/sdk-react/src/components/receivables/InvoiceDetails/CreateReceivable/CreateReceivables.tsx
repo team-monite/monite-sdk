@@ -50,13 +50,17 @@ export const CreateReceivables = (props: InvoiceDetailsCreateProps) => (
   </MoniteScopedProviders>
 );
 
-const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
+const CreateReceivablesBase = ({
+  type,
+  onCreate,
+}: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const methods = useForm<CreateReceivablesFormProps>({
     resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
     defaultValues: useMemo(
       () => ({
+        type,
         counterpart_id: '',
         counterpart_contact: '',
         counterpart_vat_id_id: '',
@@ -68,11 +72,10 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
         entity_vat_id_id: '',
         line_items: [],
         entity_bank_account_id: '',
-        type: props.type,
         overdue_reminder_id: '',
         payment_reminder_id: '',
       }),
-      [props.type]
+      [type]
     ),
   });
 
@@ -204,7 +207,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
 
               createReceivable.mutate(invoicePayload, {
                 onSuccess: (createdReceivable) => {
-                  props.onCreate?.(createdReceivable.id);
+                  onCreate?.(createdReceivable.id);
                 },
               });
             })}

@@ -153,12 +153,6 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
   };
 }
 
-function returnIfDraft(status: components['schemas']['ReceivablesStatusEnum']) {
-  return function <T>(value: T) {
-    return status === 'draft' ? undefined : value;
-  };
-}
-
 function createRandomInvoice(
   index: number
 ): components['schemas']['InvoiceResponsePayload'] {
@@ -170,15 +164,15 @@ function createRandomInvoice(
     throw new Error('No counterpart found');
   }
 
-  const status =
-    index === 0 ? 'draft' : getRandomItemFromArray(ReceivablesStatusEnum);
+  const status: components['schemas']['ReceivablesStatusEnum'] =
+    index === 0 ? 'recurring' : getRandomItemFromArray(ReceivablesStatusEnum);
+
   const counterpart_type = getRandomItemFromArray<
     components['schemas']['CounterpartType']
   >(['individual', 'organization']);
-  const rid = returnIfDraft(status);
 
   const lineItems = new Array(getRandomNumber(1, 15))
-    .fill('_')
+    .fill('')
     .map(createRandomLineItem);
 
   const subtotal = lineItems.reduce((acc, item) => {
@@ -220,14 +214,23 @@ function createRandomInvoice(
   );
   const counterpartAddress = getRandomItemFromArray(counterpartAddresses);
 
+  const id = faker.string.uuid();
+
   return {
     type: 'invoice',
-    id: faker.string.uuid(),
+    id,
     amount_paid: faker.number.int(),
     created_at: faker.date.past().toString(),
     updated_at: faker.date.past().toString(),
-    document_id: rid(`INV-${faker.string.nanoid(20)}`),
-    issue_date: rid(faker.date.past().toString()),
+    document_id:
+      status !== 'draft' ? `INV-${faker.string.nanoid(20)}` : undefined,
+    issue_date: status !== 'draft' ? faker.date.past().toString() : undefined,
+    recurrence_id: status === 'recurring' ? faker.string.uuid() : undefined,
+    // based_on:
+    //   status !== 'draft' && faker.datatype.boolean()
+    //     ? faker.string.uuid()
+    //     : undefined,
+    based_on: id,
     fulfillment_date: faker.date.future().toString(),
     payment_terms: getRandomItemFromArray(paymentTermsFixtures.data!),
     currency: 'EUR',

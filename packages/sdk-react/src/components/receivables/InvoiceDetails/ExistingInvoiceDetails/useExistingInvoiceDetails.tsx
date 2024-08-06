@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -8,6 +9,7 @@ import {
   useIssueReceivableById,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 
 export enum DeliveryMethod {
   Email = 'email',
@@ -30,6 +32,8 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: UseExistingInvoiceDetailsProps) {
+  const { monite, queryClient } = useMoniteContext();
+
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
@@ -45,18 +49,51 @@ export function useExistingInvoiceDetails({
     entityUserId: receivable?.entity_user_id,
   });
 
+  const { data: isCancelAllowed, isLoading: isCancelAllowedLoading } =
+    useIsActionAllowed({
+      method: 'receivable',
+      action: 'cancel',
+      entityUserId: receivable?.entity_user_id,
+    });
+
   const deleteMutation = useDeleteReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
   const issueMutation = useIssueReceivableById(receivableId);
-  const { api } = useMoniteContext();
+  const { api, i18n } = useMoniteContext();
   const pdfQuery = api.receivables.getReceivablesIdPdfLink.useQuery({
     path: { receivable_id: receivableId },
   });
+
+  const cancelRecurrenceMutation =
+    api.recurrences.postRecurrencesIdCancel.useMutation(
+      {
+        path: {
+          recurrence_id:
+            receivable?.type === 'invoice' && receivable.recurrence_id
+              ? receivable.recurrence_id
+              : '',
+        },
+      },
+      {
+        onError: (error) => {
+          toast.error(getAPIErrorMessage(i18n, error));
+        },
+        onSuccess: () =>
+          Promise.all([
+            api.receivables.getReceivables.invalidateQueries(queryClient),
+            api.receivables.getReceivablesId.invalidateQueries(
+              { parameters: { path: { receivable_id: receivableId } } },
+              queryClient
+            ),
+          ]),
+      }
+    );
 
   const mutationInProgress =
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
+    cancelRecurrenceMutation.isPending ||
     pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
@@ -90,6 +127,7 @@ export function useExistingInvoiceDetails({
       case 'paid':
       case 'overdue':
       case 'canceled':
+      case 'recurring':
       case 'uncollectible': {
         return true;
       }
@@ -133,12 +171,16 @@ export function useExistingInvoiceDetails({
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
 
+  const isCancelRecurrenceButtonDisabled =
+    !isCancelAllowed || mutationInProgress;
+
   return {
     view,
     callbacks: {
       handleIssueOnly,
       handleDownloadPDF,
       handleChangeViewInvoice: handleChangeInvoiceView,
+      handleCancelRecurrence: cancelRecurrenceMutation.mutate,
     },
     loading: mutationInProgress,
     buttons: {
@@ -149,6 +191,7 @@ export function useExistingInvoiceDetails({
       isEditButtonVisible,
       isComposeEmailButtonVisible,
       isIssueButtonVisible,
+      isCancelRecurrenceButtonDisabled,
     },
   };
 }
