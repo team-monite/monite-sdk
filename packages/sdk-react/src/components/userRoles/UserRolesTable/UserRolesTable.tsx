@@ -60,7 +60,7 @@ interface UserRolesTableProps {
 
 interface UserRolesTableSortModel {
   field: components['schemas']['RoleCursorFields'];
-  sort: GridSortDirection;
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const UserRolesTable = (props: UserRolesTableProps) => (
@@ -83,10 +83,10 @@ const UserRolesTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
-  const [sortModel, setSortModel] = useState<Array<UserRolesTableSortModel>>(
-    []
-  );
-  const sortModelItem = sortModel[0];
+  const [sortModel, setSortModel] = useState<UserRolesTableSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
@@ -98,14 +98,10 @@ const UserRolesTableBase = ({
 
   const { data: roles, isLoading } = api.roles.getRoles.useQuery({
     query: {
-      order: sortModelItem
-        ? (sortModelItem.sort as unknown as components['schemas']['OrderEnum'])
-        : undefined,
+      sort: sortModel?.field,
+      order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
-      sort: sortModelItem
-        ? (sortModelItem.field as components['schemas']['RoleCursorFields'])
-        : undefined,
       name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
         ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
@@ -126,12 +122,11 @@ const UserRolesTableBase = ({
     onFilterChanged?.({ field, value });
   };
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<UserRolesTableSortModel>;
-    setSortModel(model);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as UserRolesTableSortModel);
     setCurrentPaginationToken(null);
 
-    onSortChanged?.(model[0]);
+    onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
   if (isReadSupportedLoading) {
@@ -154,6 +149,11 @@ const UserRolesTableBase = ({
           <Filters onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
           autoHeight
           rowSelection={false}
           loading={isLoading}
@@ -188,10 +188,9 @@ const UserRolesTableBase = ({
             },
           ]}
           rows={roles?.data || []}
+          onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}
           getRowHeight={() => 'auto'}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
           sx={{
             [`& .${gridClasses.cell}`]: {
               py: 1,
