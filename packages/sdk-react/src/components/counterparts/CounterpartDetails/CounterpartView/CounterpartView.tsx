@@ -54,7 +54,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     isLoading,
     onEdit,
     title,
-    refetchContacts,
   } = useCounterpartView(props);
   const dialogContext = useDialog();
 
@@ -295,7 +294,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
                   onEdit={props.onContactEdit}
                   onDelete={props.onContactDelete}
                   permissions={counterpartPermissions}
-                  refetchContacts={refetchContacts}
                 />
               ))}
 

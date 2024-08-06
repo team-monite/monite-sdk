@@ -45,23 +45,15 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
   } = prepareCounterpartContact(props.contact);
 
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
-  const makeContactDefaultMutation = useMakeCounterpartContactDefault();
+  const { mutate } = useMakeCounterpartContactDefault();
 
-  const onDefault = useCallback(() => {
-    const makeContactDefault = makeContactDefaultMutation.mutateAsync;
-
-    return makeContactDefault(
-      {
-        path: {
-          counterpart_id: props.contact.counterpart_id,
-          contact_id: props.contact.id,
-        },
+  const makeDefault = () =>
+    mutate({
+      path: {
+        counterpart_id: props.contact.counterpart_id,
+        contact_id: props.contact.id,
       },
-      {
-        onSuccess: () => props.refetchContacts(),
-      }
-    );
-  }, [makeContactDefaultMutation.mutateAsync, props]);
+    });
 
   const { isUpdateAllowed, isDeleteAllowed } = props.permissions;
 
@@ -80,7 +72,7 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
       )}
       {isUpdateAllowed && !props.contact.is_default && (
         <Button
-          onClick={onDefault}
+          onClick={makeDefault}
           variant="text"
           color="primary"
           size="small"

@@ -442,14 +442,19 @@ export const useDeleteCounterpartContact = () => {
 };
 
 export const useMakeCounterpartContactDefault = () => {
+  const queryClient = useQueryClient();
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdContactsIdMakeDefault.useMutation(
     undefined,
     {
-      onSuccess: () =>
-        toast.success(t(i18n)`Contact Person has been made default.`),
+      onSuccess: async () => {
+        await api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+          queryClient
+        );
+        toast.success(t(i18n)`Contact Person has been made default.`);
+      },
     }
   );
 };

@@ -52,11 +52,8 @@ export function useCounterpartView({
   const { data: addresses, isLoading: isAddressesLoading } =
     useCounterpartAddresses(counterpart?.id);
 
-  const {
-    data: contacts,
-    isLoading: isContactsLoading,
-    refetch: refetchContacts,
-  } = useCounterpartContactList(counterpart?.id);
+  const { data: contacts, isLoading: isContactsLoading } =
+    useCounterpartContactList(counterpart?.id);
 
   const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
     counterpart?.id
@@ -122,7 +119,6 @@ export function useCounterpartView({
   return {
     addresses: addresses?.data || [],
     contacts: contacts?.data || [],
-    refetchContacts,
     banks: banks?.data || [],
     vats: vats?.data || [],
     counterpart,
