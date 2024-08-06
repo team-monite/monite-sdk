@@ -216,7 +216,7 @@ msgstr "Add another owner"
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:87
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/CounterpartBankForm.tsx:229
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:128
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:361
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:345
 msgid "Add bank account"
 msgstr "Add bank account"
 
@@ -225,7 +225,7 @@ msgid "Add contact"
 msgstr "Add contact"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:62
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:326
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:310
 msgid "Add contact person"
 msgstr "Add contact person"
 
@@ -244,7 +244,7 @@ msgid "Add someone new"
 msgstr "Add someone new"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:58
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:291
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:275
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
 
@@ -262,7 +262,7 @@ msgstr "Added on"
 #: src/components/counterparts/CounterpartDetails/CounterpartContactForm/CounterpartContactForm.tsx:153
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:346
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:114
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:257
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:241
 #: src/components/onboarding/OnboardingPerson/OnboardingPerson.tsx:152
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:75
 msgid "Address"
@@ -708,7 +708,7 @@ msgstr "Bank Account “{0}” has been updated."
 msgid "Bank Account has been deleted."
 msgstr "Bank Account has been deleted."
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:340
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:324
 msgid "Bank accounts"
 msgstr "Bank accounts"
 
@@ -1350,7 +1350,7 @@ msgstr "Contact information"
 msgid "Contact person"
 msgstr "Contact person"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:152
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:149
 msgid "Contact Person"
 msgstr "Contact Person"
 
@@ -1370,7 +1370,7 @@ msgstr "Contact Person has been deleted."
 msgid "Contact Person has been made default."
 msgstr "Contact Person has been made default."
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:304
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:288
 msgid "Contact persons"
 msgstr "Contact persons"
 
@@ -1433,7 +1433,7 @@ msgid "Counseling Services"
 msgstr "Counseling Services"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:234
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:221
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:205
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:85
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:316
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:322
@@ -1444,11 +1444,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:476
+#: src/core/queries/useCounterpart.ts:475
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:525
+#: src/core/queries/useCounterpart.ts:524
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
 
@@ -1458,15 +1458,15 @@ msgstr "Counterpart bank account"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:180
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:184
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:207
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:191
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
-#: src/core/queries/useCounterpart.ts:546
+#: src/core/queries/useCounterpart.ts:545
 msgid "Counterpart has been deleted."
 msgstr "Counterpart has been deleted."
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:188
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:172
 msgid "Counterpart not found"
 msgstr "Counterpart not found"
 
@@ -1803,7 +1803,7 @@ msgstr "default"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:71
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:100
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:65
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:158
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:142
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:260
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:309
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:339
@@ -2133,7 +2133,7 @@ msgstr "Ecuador"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:60
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView/CounterpartContactView.tsx:78
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView/CounterpartVatView.tsx:54
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:146
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:130
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:259
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:285
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonsReview.tsx:44
@@ -2364,7 +2364,7 @@ msgstr "Failed to create Bank Account."
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:483
+#: src/core/queries/useCounterpart.ts:482
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2384,7 +2384,7 @@ msgstr "Failed to create VAT."
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:549
+#: src/core/queries/useCounterpart.ts:548
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2412,7 +2412,7 @@ msgstr "Failed to update Bank Account."
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:532
+#: src/core/queries/useCounterpart.ts:531
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -5430,7 +5430,7 @@ msgstr "There are no items here"
 msgid "There are unsaved changes. If you leave, they will be lost."
 msgstr "There are unsaved changes. If you leave, they will be lost."
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:189
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:173
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
@@ -6001,7 +6001,7 @@ msgstr "VAT ID"
 msgid "VAT ID {0}"
 msgstr "VAT ID {0}"
 
-#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:271
+#: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:255
 msgid "Vat IDs"
 msgstr "Vat IDs"
 
