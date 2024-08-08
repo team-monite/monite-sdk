@@ -316,12 +316,6 @@ const mockedLinkedDocumentsCardData = [
   },
 ];
 
-/*Array of objects:
-  title: Credit note #CN-123
-  description: Issued on 10.09.2023 by Author of action
-  authorTitle: https://monite.com
-  onClick: some callback
- */
 const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
   if (!data || data.length === 0) {
     return <Typography>No documents available.</Typography>;
@@ -329,21 +323,22 @@ const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
 
   return (
     <Card
-      sx={{ borderRadius: 3, bgcolor: 'background.paper', p: 2 }}
+      sx={{ borderRadius: 3, bgcolor: 'background.paper', px: 2 }}
       variant="outlined"
     >
-      <Grid container direction="column" gap={2}>
+      <Grid container direction="column">
         {data.map((item, index) => (
           <Grid
-            key={index}
+            key={item.title}
             container
             direction="row"
             alignItems="center"
             justifyContent="space-between"
             sx={{
-              p: 1.5,
-              borderBottom: index !== data.length - 1 ? '1px solid' : 'none',
-              borderBottomColor: 'divider',
+              py: 1.5,
+              ...(index
+                ? { borderTop: '1px solid', borderTopColor: 'divider' }
+                : {}),
               cursor: 'pointer',
             }}
             onClick={item.onClick}
