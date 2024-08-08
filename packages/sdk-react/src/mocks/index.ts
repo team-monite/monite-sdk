@@ -1,5 +1,4 @@
 export * from './counterparts';
-export * from './counterparts/address';
 export * from './currencies';
 export * from './payables';
 export * from './approvalPolicies';

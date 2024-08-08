@@ -1,5 +1,5 @@
 import { StrictMode, ComponentProps } from 'react';
-import ReactDOM, { Root } from 'react-dom/client';
+import { Root, createRoot } from 'react-dom/client';
 
 import { MoniteApp } from '@/apps/MoniteApp';
 import {
@@ -110,7 +110,7 @@ export class MoniteAppElement extends MoniteAppElementBase<
     if (!stylesRootNode)
       throw new Error('#monite-app-styles not found in Shadow DOM');
 
-    this.reactAppRoot = this.reactAppRoot || ReactDOM.createRoot(appRootNode);
+    this.reactAppRoot = this.reactAppRoot || createRoot(appRootNode);
 
     const attributesProperties = Object.entries(
       MoniteAppElement.attributesSchema
