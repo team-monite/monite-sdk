@@ -58,7 +58,6 @@ const CardItem = ({
       variant="outlined"
       sx={{
         cursor: 'pointer',
-        borderRadius: 2,
       }}
       onClick={handleClick}
     >
