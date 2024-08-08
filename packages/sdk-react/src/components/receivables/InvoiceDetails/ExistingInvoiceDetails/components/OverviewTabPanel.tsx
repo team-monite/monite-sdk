@@ -94,6 +94,7 @@ export const OverviewTabPanel = ({
 
   const creditNoteQuery = useReceivables({
     id__in: creditNoteIds,
+    type: 'credit_note',
   });
 
   return (
@@ -157,12 +158,7 @@ export const OverviewTabPanel = ({
             i18n
           )`Linked documents`}</Typography>
           {creditNoteQuery.isLoading && <Skeleton variant="text" />}
-          {/*<LinkedDocumentsCard*/}
-          {/*  status={creditNoteQuery.data?.status}*/}
-          {/*  cardTitle={creditNoteQuery.data?.document_id}*/}
-          {/*  creditNoteTerms={creditNoteQuery.data?.terms ?? []}*/}
-          {/*  sx={{ mb: 2 }}*/}
-          {/*/>*/}
+          <LinkedDocumentsCard {...mockedLinkedDocumentsCardData} />
         </Box>
       )}
 
@@ -296,6 +292,26 @@ const RemindersCard = ({
   );
 };
 
+const mockedLinkedDocumentsCardData = {
+  cardTitle: 'Credit Note Terms',
+  status: 'issued',
+  creditNoteTerms: [
+    {
+      termPeriodName: 'Term 1',
+      termPeriods: ['Period 1.1', 'Period 1.2', 'Period 1.3'],
+    },
+    {
+      termPeriodName: 'Term 2',
+      termPeriods: ['Period 2.1', 'Period 2.2'],
+    },
+    {
+      termPeriodName: 'Term 3',
+      termPeriods: ['Period 3.1'],
+    },
+  ],
+  sx: { bgcolor: 'background.paper', padding: 2 },
+};
+
 const LinkedDocumentsCard = ({
   cardTitle,
   creditNoteTerms,
@@ -323,7 +339,6 @@ const LinkedDocumentsCard = ({
   }>;
   sx?: BoxProps;
 }) => {
-  const { i18n } = useLingui();
   return (
     <Card sx={{ borderRadius: 3, ...sx }} variant="outlined">
       <Grid container direction="row" gap={1} sx={{ p: 1.5, pb: 0 }}>
@@ -335,15 +350,6 @@ const LinkedDocumentsCard = ({
         >
           {cardTitle}
         </Typography>
-        {status === 'deleted' && (
-          <Tooltip title={t(i18n)`Reminder has been deleted`}>
-            <CancelScheduleSend
-              fontSize="small"
-              color="warning"
-              sx={{ cursor: 'help', alignSelf: 'center' }}
-            />
-          </Tooltip>
-        )}
       </Grid>
       {creditNoteTerms.map((item, index) => (
         <Grid
