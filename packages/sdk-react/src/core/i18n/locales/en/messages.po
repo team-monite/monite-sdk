@@ -956,6 +956,10 @@ msgstr "Business/Secretarial Schools"
 msgid "Buying/Shopping Services"
 msgstr "Buying/Shopping Services"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
+msgid "by"
+msgstr "by"
+
 #: src/components/onboarding/dicts/mccCodes.ts:204
 msgid "Cable, Satellite, and Other Pay Television and Radio"
 msgstr "Cable, Satellite, and Other Pay Television and Radio"
@@ -1012,7 +1016,10 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:450
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:155
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:57
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:70
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:62
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:278
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:277
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:24
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:104
@@ -1031,6 +1038,14 @@ msgstr "Cancel"
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:271
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:49
+msgid "Cancel receivable \"{0}\"?"
+msgstr "Cancel receivable \"{0}\"?"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:51
+msgid "Cancel receivable?"
+msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:262
 msgid "Cancel without saving?"
@@ -1288,7 +1303,7 @@ msgid "Company name is required"
 msgstr "Company name is required"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:167
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:311
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:328
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1701,7 +1716,7 @@ msgstr "Cuba"
 msgid "Currency"
 msgstr "Currency"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:102
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:169
 msgid "Current status"
 msgstr "Current status"
 
@@ -1714,7 +1729,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:340
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:155
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:143
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:90
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:157
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:177
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:170
@@ -1805,7 +1820,7 @@ msgstr "Declined"
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:271
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:36
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:75
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:261
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:270
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:288
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -1905,7 +1920,7 @@ msgstr "Description:"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:287
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:151
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:97
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:93
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:18
 msgid "Details"
 msgstr "Details"
@@ -2016,7 +2031,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:302
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:319
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2161,7 +2176,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:272
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:289
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2556,7 +2571,7 @@ msgstr "Front of your identity document"
 msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:180
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:176
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:103
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:145
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:29
@@ -2904,7 +2919,7 @@ msgstr "Industry"
 msgid "Information Retrieval Services"
 msgstr "Information Retrieval Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:339
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:356
 msgid "information..."
 msgstr "information..."
 
@@ -2937,7 +2952,7 @@ msgstr "Invalid IBAN"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:242
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:251
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -2945,6 +2960,10 @@ msgstr "Invoice {documentId}"
 #: src/components/payables/PayablesTable/PayablesTable.tsx:247
 msgid "Invoice #"
 msgstr "Invoice #"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:41
+msgid "Invoice cancel confirmation"
+msgstr "Invoice cancel confirmation"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:410
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:78
@@ -2960,7 +2979,7 @@ msgstr "Invoice delete confirmation"
 msgid "Invoice details"
 msgstr "Invoice details"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:175
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:176
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:145
 msgid "Invoice not found"
 msgstr "Invoice not found"
@@ -2991,7 +3010,7 @@ msgstr "Invoice Reminder type is not provided"
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:110
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:177
 msgid "Invoice total"
 msgstr "Invoice total"
 
@@ -3023,7 +3042,7 @@ msgstr "Israel"
 msgid "Israeli New Shekel"
 msgstr "Israeli New Shekel"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:319
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:336
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:293
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:298
 msgid "Issue"
@@ -3067,6 +3086,10 @@ msgstr "Issue only"
 #: src/components/receivables/getCommonStatusLabel.ts:13
 msgid "Issued"
 msgstr "Issued"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
+msgid "Issued on"
+msgstr "Issued on"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:152
 msgid "It is a non-human legal entity, i.e. an organisation recognised by law as a legal person."
@@ -3318,6 +3341,10 @@ msgstr "Line 1"
 #: src/components/onboarding/validators/validationSchemas.ts:149
 msgid "Line 2"
 msgstr "Line 2"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:200
+msgid "Linked documents"
+msgstr "Linked documents"
 
 #: src/core/utils/countries.ts:145
 msgid "Lithuania"
@@ -3580,7 +3607,7 @@ msgstr "Mongolian Tugrik"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:283
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:300
 msgid "More"
 msgstr "More"
 
@@ -3815,7 +3842,7 @@ msgid "no policy"
 msgstr "no policy"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:356
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:156
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:152
 msgid "No TAX ID available"
 msgstr "No TAX ID available"
 
@@ -4470,7 +4497,7 @@ msgstr "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Hous
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:241
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:237
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:105
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:147
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:39
@@ -4530,11 +4557,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:185
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:186
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:184
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:185
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -4613,7 +4640,7 @@ msgstr "Remind"
 msgid "Reminder {0}"
 msgstr "Reminder {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:138
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:227
 msgid "Reminder emails"
 msgstr "Reminder emails"
 
@@ -4622,7 +4649,7 @@ msgstr "Reminder emails"
 msgid "Reminder has been created"
 msgstr "Reminder has been created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:208
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:297
 msgid "Reminder has been deleted"
 msgstr "Reminder has been deleted"
 
@@ -4780,7 +4807,7 @@ msgstr "Sales"
 msgid "Sales and Service Tax (Malaysia)"
 msgstr "Sales and Service Tax (Malaysia)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:225
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:221
 msgid "Same as invoice date"
 msgstr "Same as invoice date"
 
@@ -4884,7 +4911,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:291
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:308
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -5410,7 +5437,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:176
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:177
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -5450,6 +5477,7 @@ msgstr "There was an issue reading the file."
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:48
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:98
 msgid "This action can't be undone."
@@ -5737,6 +5765,10 @@ msgstr "Units"
 msgid "Unknown"
 msgstr "Unknown"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:126
+msgid "Unknown date"
+msgstr "Unknown date"
+
 #: src/core/context/MoniteQueryClientProvider.tsx:88
 msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
@@ -5797,7 +5829,7 @@ msgstr "Updated at"
 msgid "Updated on"
 msgstr "Updated on"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:336
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:353
 msgid "Updating the invoice"
 msgstr "Updating the invoice"
 
@@ -6144,7 +6176,7 @@ msgstr "You can continue to the next step"
 msgid "You can not create receivable with a type other than \"{invoice}\""
 msgstr "You can not create receivable with a type other than \"{invoice}\""
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:369
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:386
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
@@ -6152,7 +6184,7 @@ msgstr "You don't have permission to issue this document. Please, contact your s
 msgid "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 msgstr "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:145
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:141
 msgid "Your TAX ID"
 msgstr "Your TAX ID"
 
@@ -6160,8 +6192,8 @@ msgstr "Your TAX ID"
 msgid "Your tax information"
 msgstr "Your tax information"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:113
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:119
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:109
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:115
 msgid "Your VAT ID"
 msgstr "Your VAT ID"
 

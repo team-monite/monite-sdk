@@ -38,7 +38,7 @@ import {
 interface TransformCreditNotes {
   onClick: () => void;
   description: string;
-  title: string;
+  title: string | undefined;
   authorTitle: string;
 }
 
@@ -113,7 +113,7 @@ export const OverviewTabPanel = ({
 
   const transformCreditNotes = (
     creditNotes: components['schemas']['InvoiceResponsePayload'][]
-  ): Array<Partial<TransformCreditNotes>> => {
+  ): TransformCreditNotes[] => {
     if (!creditNotes) return [];
 
     return creditNotes.map((creditNote) => {
@@ -123,7 +123,7 @@ export const OverviewTabPanel = ({
 
       const formattedDate = issueDate
         ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
-        : 'Unknown date';
+        : t(i18n)`Unknown date`;
 
       const authorName =
         creditNote.entity.type !== 'individual' && creditNote.entity.name
@@ -134,7 +134,7 @@ export const OverviewTabPanel = ({
 
       return {
         title: creditNote.document_id,
-        description: `Issued on ${formattedDate} by`,
+        description: `${t(i18n)`Issued on`} ${formattedDate} ${t(i18n)`by`}`,
         authorTitle: authorName || '',
         onClick: () =>
           console.log(`Clicked on Credit note #${creditNote.document_id}`),
@@ -339,11 +339,7 @@ const RemindersCard = ({
   );
 };
 
-const LinkedDocumentsCard = ({
-  data = [],
-}: {
-  data: Array<Partial<TransformCreditNotes>>;
-}) => {
+const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
   if (!data || data.length === 0) return null;
 
   return (
