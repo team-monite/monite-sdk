@@ -9,7 +9,12 @@ import {
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useCounterpartById, useEntityUserByAuthToken } from '@/core/queries';
+import {
+  useCounterpartById,
+  useEntityUserByAuthToken,
+  useReceivableById,
+  useReceivables,
+} from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
@@ -75,6 +80,22 @@ export const OverviewTabPanel = ({
       }
     );
 
+  const { data: receivable } = useReceivableById(invoice.id);
+
+  const isInvoiceResponsePayload = (
+    receivable: components['schemas']['ReceivableResponse'] | undefined
+  ): receivable is components['schemas']['InvoiceResponsePayload'] =>
+    (receivable as components['schemas']['InvoiceResponsePayload'])
+      .related_documents !== undefined;
+
+  const creditNoteIds = isInvoiceResponsePayload(receivable)
+    ? receivable.related_documents.credit_note_ids
+    : [];
+
+  const creditNoteQuery = useReceivables({
+    id__in: creditNoteIds,
+  });
+
   return (
     <Box
       sx={{
@@ -119,6 +140,31 @@ export const OverviewTabPanel = ({
           },
         ]}
       />
+
+      {Boolean(
+        creditNoteQuery.data ||
+          creditNoteQuery.isLoading ||
+          creditNoteQuery.isError
+      ) && (
+        <Box
+          sx={{
+            '& > * + *': {
+              mt: 2,
+            },
+          }}
+        >
+          <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
+            i18n
+          )`Linked documents`}</Typography>
+          {creditNoteQuery.isLoading && <Skeleton variant="text" />}
+          {/*<LinkedDocumentsCard*/}
+          {/*  status={creditNoteQuery.data?.status}*/}
+          {/*  cardTitle={creditNoteQuery.data?.document_id}*/}
+          {/*  creditNoteTerms={creditNoteQuery.data?.terms ?? []}*/}
+          {/*  sx={{ mb: 2 }}*/}
+          {/*/>*/}
+        </Box>
+      )}
 
       {Boolean(
         paymentReminderQuery.data ||
@@ -215,6 +261,91 @@ const RemindersCard = ({
         )}
       </Grid>
       {reminderTerms.map((item, index) => (
+        <Grid
+          key={index}
+          container
+          direction="column"
+          gap={0.2}
+          sx={{
+            mx: 1.5,
+            py: 1.5,
+            ...(index
+              ? { borderTop: '1px solid', borderTopColor: 'divider' }
+              : {}),
+          }}
+        >
+          <Grid item>
+            <Typography variant="body1">{item.termPeriodName}</Typography>
+          </Grid>
+          <Grid item container gap={0.5} direction="column">
+            {item.termPeriods.map((presetPeriod, index) => (
+              <Grid
+                item
+                component={Typography}
+                variant="body2"
+                color="text.secondary"
+                key={index}
+              >
+                {presetPeriod}
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      ))}
+    </Card>
+  );
+};
+
+const LinkedDocumentsCard = ({
+  cardTitle,
+  creditNoteTerms,
+  status,
+  sx,
+}: {
+  status:
+    | 'deleted'
+    | 'draft'
+    | 'issued'
+    | 'accepted'
+    | 'expired'
+    | 'declined'
+    | 'recurring'
+    | 'partially_paid'
+    | 'paid'
+    | 'overdue'
+    | 'uncollectible'
+    | 'canceled'
+    | undefined;
+  cardTitle: ReactNode;
+  creditNoteTerms: Array<{
+    termPeriodName: ReactNode;
+    termPeriods: ReactNode[];
+  }>;
+  sx?: BoxProps;
+}) => {
+  const { i18n } = useLingui();
+  return (
+    <Card sx={{ borderRadius: 3, ...sx }} variant="outlined">
+      <Grid container direction="row" gap={1} sx={{ p: 1.5, pb: 0 }}>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          component="h4"
+          color={status === 'deleted' ? 'text.secondary' : undefined}
+        >
+          {cardTitle}
+        </Typography>
+        {status === 'deleted' && (
+          <Tooltip title={t(i18n)`Reminder has been deleted`}>
+            <CancelScheduleSend
+              fontSize="small"
+              color="warning"
+              sx={{ cursor: 'help', alignSelf: 'center' }}
+            />
+          </Tooltip>
+        )}
+      </Grid>
+      {creditNoteTerms.map((item, index) => (
         <Grid
           key={index}
           container
