@@ -21,12 +21,15 @@ import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Alert,
   Box,
   BoxProps,
   Card,
   Grid,
+  IconButton,
+  Link,
   Skeleton,
   Tooltip,
   Typography,
@@ -158,7 +161,7 @@ export const OverviewTabPanel = ({
             i18n
           )`Linked documents`}</Typography>
           {creditNoteQuery.isLoading && <Skeleton variant="text" />}
-          <LinkedDocumentsCard {...mockedLinkedDocumentsCardData} />
+          <LinkedDocumentsCard data={mockedLinkedDocumentsCardData} />
         </Box>
       )}
 
@@ -292,97 +295,83 @@ const RemindersCard = ({
   );
 };
 
-const mockedLinkedDocumentsCardData = {
-  cardTitle: 'Credit Note Terms',
-  status: 'issued',
-  creditNoteTerms: [
-    {
-      termPeriodName: 'Term 1',
-      termPeriods: ['Period 1.1', 'Period 1.2', 'Period 1.3'],
-    },
-    {
-      termPeriodName: 'Term 2',
-      termPeriods: ['Period 2.1', 'Period 2.2'],
-    },
-    {
-      termPeriodName: 'Term 3',
-      termPeriods: ['Period 3.1'],
-    },
-  ],
-  sx: { bgcolor: 'background.paper', padding: 2 },
-};
+const mockedLinkedDocumentsCardData = [
+  {
+    title: 'Credit note #CN-123',
+    description: 'Issued on 10.09.2023 by',
+    authorTitle: 'Author of action',
+    onClick: () => console.log('Clicked on Credit note #CN-123'),
+  },
+  {
+    title: 'Credit note #CN-124',
+    description: 'Issued on 11.09.2023 by',
+    authorTitle: 'Author of action',
+    onClick: () => console.log('Clicked on Credit note #CN-124'),
+  },
+  {
+    title: 'Credit note #CN-125',
+    description: 'Issued on 12.09.2023 by',
+    authorTitle: 'Author of action',
+    onClick: () => console.log('Clicked on Credit note #CN-125'),
+  },
+];
 
-const LinkedDocumentsCard = ({
-  cardTitle,
-  creditNoteTerms,
-  status,
-  sx,
-}: {
-  status:
-    | 'deleted'
-    | 'draft'
-    | 'issued'
-    | 'accepted'
-    | 'expired'
-    | 'declined'
-    | 'recurring'
-    | 'partially_paid'
-    | 'paid'
-    | 'overdue'
-    | 'uncollectible'
-    | 'canceled'
-    | undefined;
-  cardTitle: ReactNode;
-  creditNoteTerms: Array<{
-    termPeriodName: ReactNode;
-    termPeriods: ReactNode[];
-  }>;
-  sx?: BoxProps;
-}) => {
+/*Array of objects:
+  title: Credit note #CN-123
+  description: Issued on 10.09.2023 by Author of action
+  authorTitle: https://monite.com
+  onClick: some callback
+ */
+const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
+  if (!data || data.length === 0) {
+    return <Typography>No documents available.</Typography>;
+  }
+
   return (
-    <Card sx={{ borderRadius: 3, ...sx }} variant="outlined">
-      <Grid container direction="row" gap={1} sx={{ p: 1.5, pb: 0 }}>
-        <Typography
-          variant="body1"
-          fontWeight="bold"
-          component="h4"
-          color={status === 'deleted' ? 'text.secondary' : undefined}
-        >
-          {cardTitle}
-        </Typography>
+    <Card
+      sx={{ borderRadius: 3, bgcolor: 'background.paper', p: 2 }}
+      variant="outlined"
+    >
+      <Grid container direction="column" gap={2}>
+        {data.map((item, index) => (
+          <Grid
+            key={index}
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              p: 1.5,
+              borderBottom: index !== data.length - 1 ? '1px solid' : 'none',
+              borderBottomColor: 'divider',
+              cursor: 'pointer',
+            }}
+            onClick={item.onClick}
+          >
+            <Grid item container direction="column" xs>
+              <Typography variant="body1" fontWeight="bold">
+                {item.title}
+              </Typography>
+              <Typography variant="body2">
+                {item.description}{' '}
+                <Link
+                  href={item.authorTitle}
+                  underline="hover"
+                  color="primary"
+                  variant="body2"
+                >
+                  {item.authorTitle}
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton edge="end" size="small">
+                <ArrowForwardIcon fontSize="small" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        ))}
       </Grid>
-      {creditNoteTerms.map((item, index) => (
-        <Grid
-          key={index}
-          container
-          direction="column"
-          gap={0.2}
-          sx={{
-            mx: 1.5,
-            py: 1.5,
-            ...(index
-              ? { borderTop: '1px solid', borderTopColor: 'divider' }
-              : {}),
-          }}
-        >
-          <Grid item>
-            <Typography variant="body1">{item.termPeriodName}</Typography>
-          </Grid>
-          <Grid item container gap={0.5} direction="column">
-            {item.termPeriods.map((presetPeriod, index) => (
-              <Grid
-                item
-                component={Typography}
-                variant="body2"
-                color="text.secondary"
-                key={index}
-              >
-                {presetPeriod}
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-      ))}
     </Card>
   );
 };
