@@ -2,6 +2,7 @@ import { useCallback, useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
@@ -126,8 +127,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     entityUserId: receivable?.entity_user_id,
   });
 
-  /** Is the deleting modal opened? */
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
+  const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
 
   const {
     data: pdf,
@@ -223,6 +224,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         }}
       />
 
+      <InvoiceCancelModal
+        id={props.id}
+        open={cancelModalOpened}
+        onClose={() => {
+          setCancelModalOpened(false);
+        }}
+      />
+
       <DialogTitle>
         <Toolbar>
           <Grid container>
@@ -264,7 +273,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   <Button
                     variant="text"
                     color="error"
-                    onClick={() => callbacks.handleCancelInvoice()}
+                    onClick={() => setCancelModalOpened(true)}
                     // disabled={buttons.isCancelButtonDisabled}
                   >{t(i18n)`Cancel`}</Button>
                 )}
