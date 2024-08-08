@@ -112,23 +112,34 @@ export const OverviewTabPanel = ({
   });
 
   const transformCreditNotes = (
-    creditNotes: components['schemas']['CreditNoteResponsePayload'][]
+    creditNotes: components['schemas']['InvoiceResponsePayload'][]
   ): Array<Partial<TransformCreditNotes>> => {
-    if (!creditNotes) {
-      return [];
-    }
+    if (!creditNotes) return [];
 
-    return creditNotes?.map((creditNote) => ({
-      title: creditNote.document_id,
-      description: `Issued on ${new Date(
-        creditNote.issue_date
-      ).toLocaleDateString()} by`,
-      authorTitle:
-        creditNote.entity?.name ||
-        `${creditNote.entity?.first_name} ${creditNote.entity?.last_name}`,
-      onClick: () =>
-        console.log(`Clicked on Credit note #${creditNote.document_id}`),
-    }));
+    return creditNotes.map((creditNote) => {
+      const issueDate = creditNote.issue_date
+        ? new Date(creditNote.issue_date)
+        : null;
+
+      const formattedDate = issueDate
+        ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
+        : 'Unknown date';
+
+      const authorName =
+        creditNote.entity.type !== 'individual' && creditNote.entity.name
+          ? creditNote.entity.name
+          : creditNote.entity.type !== 'organization'
+          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
+          : null;
+
+      return {
+        title: creditNote.document_id,
+        description: `Issued on ${formattedDate} by`,
+        authorTitle: authorName || '',
+        onClick: () =>
+          console.log(`Clicked on Credit note #${creditNote.document_id}`),
+      };
+    });
   };
 
   return (
@@ -191,7 +202,9 @@ export const OverviewTabPanel = ({
           )`Linked documents`}</Typography>
           {isCreditNoteLoading && <Skeleton variant="text" />}
           <LinkedDocumentsCard
-            data={transformCreditNotes(creditNoteQuery?.data)}
+            data={transformCreditNotes(
+              creditNoteQuery?.data as components['schemas']['InvoiceResponsePayload'][]
+            )}
           />
         </Box>
       )}
@@ -331,9 +344,7 @@ const LinkedDocumentsCard = ({
 }: {
   data: Array<Partial<TransformCreditNotes>>;
 }) => {
-  if (!data || data.length === 0) {
-    return <Typography>No documents available.</Typography>;
-  }
+  if (!data || data.length === 0) return null;
 
   return (
     <Card
@@ -357,14 +368,12 @@ const LinkedDocumentsCard = ({
             }}
             onClick={item.onClick}
           >
-            <Grid
-              item
-              container
-              direction="column"
-              xs
-              sx={{ textTransform: 'capitalize' }}
-            >
-              <Typography variant="body1" fontWeight="bold">
+            <Grid item container direction="column" xs>
+              <Typography
+                variant="body1"
+                fontWeight="bold"
+                sx={{ textTransform: 'capitalize' }}
+              >
                 {item.title}
               </Typography>
               <Typography variant="body2">
