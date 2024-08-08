@@ -182,7 +182,6 @@ const RemindersCard = ({
   cardTitle,
   reminderTerms,
   status,
-  sx,
 }: {
   status: 'active' | 'deleted' | undefined;
   cardTitle: ReactNode;
@@ -190,11 +189,10 @@ const RemindersCard = ({
     termPeriodName: ReactNode;
     termPeriods: ReactNode[];
   }>;
-  sx?: BoxProps;
 }) => {
   const { i18n } = useLingui();
   return (
-    <Card sx={{ borderRadius: 3, ...sx }} variant="outlined">
+    <Card variant="outlined">
       <Grid container direction="row" gap={1} sx={{ p: 1.5, pb: 0 }}>
         <Typography
           variant="body1"
