@@ -91,7 +91,7 @@ export abstract class MoniteAppElementBase<
       );
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  attributeChangedCallback(_: string, oldValue: string, newValue: string) {
     if (oldValue !== newValue) {
       this.render();
     }
