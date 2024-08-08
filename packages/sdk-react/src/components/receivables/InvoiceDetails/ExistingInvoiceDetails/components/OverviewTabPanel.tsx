@@ -35,6 +35,13 @@ import {
   Typography,
 } from '@mui/material';
 
+interface TransformCreditNotes {
+  onClick: () => void;
+  description: string;
+  title: string;
+  authorTitle: string;
+}
+
 export const OverviewTabPanel = ({
   invoice,
   ...restProps
@@ -95,10 +102,34 @@ export const OverviewTabPanel = ({
     ? receivable.related_documents.credit_note_ids
     : [];
 
-  const creditNoteQuery = useReceivables({
+  const {
+    data: creditNoteQuery,
+    isLoading: isCreditNoteLoading,
+    error: creditNoteError,
+  } = useReceivables({
     id__in: creditNoteIds,
     type: 'credit_note',
   });
+
+  const transformCreditNotes = (
+    creditNotes: components['schemas']['CreditNoteResponsePayload'][]
+  ): Array<Partial<TransformCreditNotes>> => {
+    if (!creditNotes) {
+      return [];
+    }
+
+    return creditNotes?.map((creditNote) => ({
+      title: creditNote.document_id,
+      description: `Issued on ${new Date(
+        creditNote.issue_date
+      ).toLocaleDateString()} by`,
+      authorTitle:
+        creditNote.entity?.name ||
+        `${creditNote.entity?.first_name} ${creditNote.entity?.last_name}`,
+      onClick: () =>
+        console.log(`Clicked on Credit note #${creditNote.document_id}`),
+    }));
+  };
 
   return (
     <Box
@@ -146,9 +177,7 @@ export const OverviewTabPanel = ({
       />
 
       {Boolean(
-        creditNoteQuery.data ||
-          creditNoteQuery.isLoading ||
-          creditNoteQuery.isError
+        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
       ) && (
         <Box
           sx={{
@@ -160,8 +189,10 @@ export const OverviewTabPanel = ({
           <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
             i18n
           )`Linked documents`}</Typography>
-          {creditNoteQuery.isLoading && <Skeleton variant="text" />}
-          <LinkedDocumentsCard data={mockedLinkedDocumentsCardData} />
+          {isCreditNoteLoading && <Skeleton variant="text" />}
+          <LinkedDocumentsCard
+            data={transformCreditNotes(creditNoteQuery?.data)}
+          />
         </Box>
       )}
 
@@ -295,28 +326,11 @@ const RemindersCard = ({
   );
 };
 
-const mockedLinkedDocumentsCardData = [
-  {
-    title: 'Credit note #CN-123',
-    description: 'Issued on 10.09.2023 by',
-    authorTitle: 'Author of action',
-    onClick: () => console.log('Clicked on Credit note #CN-123'),
-  },
-  {
-    title: 'Credit note #CN-124',
-    description: 'Issued on 11.09.2023 by',
-    authorTitle: 'Author of action',
-    onClick: () => console.log('Clicked on Credit note #CN-124'),
-  },
-  {
-    title: 'Credit note #CN-125',
-    description: 'Issued on 12.09.2023 by',
-    authorTitle: 'Author of action',
-    onClick: () => console.log('Clicked on Credit note #CN-125'),
-  },
-];
-
-const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
+const LinkedDocumentsCard = ({
+  data = [],
+}: {
+  data: Array<Partial<TransformCreditNotes>>;
+}) => {
   if (!data || data.length === 0) {
     return <Typography>No documents available.</Typography>;
   }
@@ -327,7 +341,7 @@ const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
       variant="outlined"
     >
       <Grid container direction="column">
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <Grid
             key={item.title}
             container
@@ -343,7 +357,13 @@ const LinkedDocumentsCard = ({ data = [] }: { data: Array<any> }) => {
             }}
             onClick={item.onClick}
           >
-            <Grid item container direction="column" xs>
+            <Grid
+              item
+              container
+              direction="column"
+              xs
+              sx={{ textTransform: 'capitalize' }}
+            >
               <Typography variant="body1" fontWeight="bold">
                 {item.title}
               </Typography>
