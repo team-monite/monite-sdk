@@ -260,6 +260,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     disabled={buttons.isDeleteButtonDisabled}
                   >{t(i18n)`Delete`}</Button>
                 )}
+                {buttons.isCancelButtonVisible && (
+                  <Button
+                    variant="text"
+                    color="error"
+                    onClick={() => callbacks.handleCancelInvoice()}
+                    disabled={buttons.isCancelButtonDisabled}
+                  >{t(i18n)`Cancel`}</Button>
+                )}
                 {buttons.isEditButtonVisible && (
                   <Button
                     variant="outlined"
