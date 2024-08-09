@@ -195,6 +195,7 @@ const ProductsTableBase = ({
             },
           }}
           rowSelection={false}
+          disableColumnFilter={true}
           rows={products?.data || []}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => {

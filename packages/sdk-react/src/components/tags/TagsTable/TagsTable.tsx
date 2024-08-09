@@ -137,6 +137,7 @@ const TagsTableBase = ({
           }}
           autoHeight
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           onSortModelChange={onChangeSort}
           sx={{

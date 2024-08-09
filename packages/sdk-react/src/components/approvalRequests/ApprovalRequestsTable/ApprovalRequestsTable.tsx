@@ -188,6 +188,7 @@ const ApprovalRequestsTableBase = ({
       <DataGrid
         autoHeight
         rowSelection={false}
+        disableColumnFilter={true}
         initialState={{
           columns: {
             columnVisibilityModel: {

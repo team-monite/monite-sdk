@@ -115,7 +115,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
     defaultProps: {
-      disableColumnMenu: true,
       density: 'comfortable',
     },
   },
