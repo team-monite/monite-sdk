@@ -64,7 +64,10 @@ export const withGlobalStorybookDecorator = (
       light: themeMoniteLight,
       dark: themeMoniteDark,
     },
-    defaultTheme: 'light',
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    defaultTheme: window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
     Provider: (...args: any[]) => {
       const updatedArgs = monite ? { ...args[0], monite } : args[0];
 

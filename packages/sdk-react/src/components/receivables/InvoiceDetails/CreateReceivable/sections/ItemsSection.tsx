@@ -217,7 +217,7 @@ export const ItemsSection = ({
       <Collapse in={Boolean(quantityError)}>
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <Card variant="outlined">
         <TableContainer sx={{ maxHeight: 400 }}>
           <Table stickyHeader>
             <TableHead>
@@ -362,11 +362,7 @@ export const ItemsSection = ({
           </Box>
         </Collapse>
       </Card>
-      <Card
-        className={className + '-Totals'}
-        variant="outlined"
-        sx={{ borderRadius: 2 }}
-      >
+      <Card className={className + '-Totals'} variant="outlined">
         <Stack>
           <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
           <Divider />

@@ -91,7 +91,7 @@ export const PreviewItemsSection = ({
         i18n
       )`Items`}</Typography>
       <Stack spacing={2}>
-        <Card variant="outlined" sx={{ borderRadius: 3 }}>
+        <Card variant="outlined">
           <Table>
             <TableHead>
               <TableRow>
