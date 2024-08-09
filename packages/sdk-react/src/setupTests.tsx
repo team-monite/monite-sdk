@@ -30,9 +30,12 @@ jest.mock('@mui/x-data-grid', () => {
 
   return {
     ...jest.requireActual('@mui/x-data-grid'),
-    DataGrid: (props: DataGridProps) => (
-      <DataGrid {...props} disableVirtualization />
-    ),
+    DataGrid: (props: DataGridProps) => {
+      // Assert that column filter is disabled: DataGrid filtering
+      // isn't compatible with our datasources.
+      console.assert(props.disableColumnFilter);
+      return <DataGrid {...props} disableVirtualization />;
+    },
   };
 });
 

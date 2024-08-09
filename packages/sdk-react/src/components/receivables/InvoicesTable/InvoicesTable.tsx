@@ -131,6 +131,7 @@ const InvoicesTableBase = ({
           }}
           apiRef={gridApiRef}
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {
