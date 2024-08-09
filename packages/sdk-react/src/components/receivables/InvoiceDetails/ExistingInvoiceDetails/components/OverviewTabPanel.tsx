@@ -9,23 +9,38 @@ import {
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useCounterpartById, useEntityUserByAuthToken } from '@/core/queries';
+import {
+  useCounterpartById,
+  useEntityUserByAuthToken,
+  useReceivableById,
+  useReceivables,
+} from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Alert,
   Box,
   BoxProps,
   Card,
   Grid,
+  IconButton,
+  Link,
   Skeleton,
   Tooltip,
   Typography,
 } from '@mui/material';
+
+interface TransformCreditNotes {
+  onClick: () => void;
+  description: string;
+  title: string | undefined;
+  authorTitle: string;
+}
 
 export const OverviewTabPanel = ({
   invoice,
@@ -75,6 +90,58 @@ export const OverviewTabPanel = ({
       }
     );
 
+  const { data: receivable } = useReceivableById(invoice.id);
+
+  const isInvoiceResponsePayload = (
+    receivable: components['schemas']['ReceivableResponse'] | undefined
+  ): receivable is components['schemas']['InvoiceResponsePayload'] =>
+    (receivable as components['schemas']['InvoiceResponsePayload'])
+      .related_documents !== undefined;
+
+  const creditNoteIds = isInvoiceResponsePayload(receivable)
+    ? receivable.related_documents.credit_note_ids
+    : [];
+
+  const {
+    data: creditNoteQuery,
+    isLoading: isCreditNoteLoading,
+    error: creditNoteError,
+  } = useReceivables({
+    id__in: creditNoteIds,
+    type: 'credit_note',
+  });
+
+  const transformCreditNotes = (
+    creditNotes: components['schemas']['InvoiceResponsePayload'][]
+  ): TransformCreditNotes[] => {
+    if (!creditNotes) return [];
+
+    return creditNotes.map((creditNote) => {
+      const issueDate = creditNote.issue_date
+        ? new Date(creditNote.issue_date)
+        : null;
+
+      const formattedDate = issueDate
+        ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
+        : t(i18n)`Unknown date`;
+
+      const authorName =
+        creditNote.entity.type !== 'individual' && creditNote.entity.name
+          ? creditNote.entity.name
+          : creditNote.entity.type !== 'organization'
+          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
+          : null;
+
+      return {
+        title: creditNote.document_id,
+        description: `${t(i18n)`Issued on`} ${formattedDate} ${t(i18n)`by`}`,
+        authorTitle: authorName || '',
+        onClick: () =>
+          console.log(`Clicked on Credit note #${creditNote.document_id}`),
+      };
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -119,6 +186,28 @@ export const OverviewTabPanel = ({
           },
         ]}
       />
+
+      {Boolean(
+        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
+      ) && (
+        <Box
+          sx={{
+            '& > * + *': {
+              mt: 2,
+            },
+          }}
+        >
+          <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
+            i18n
+          )`Linked documents`}</Typography>
+          {isCreditNoteLoading && <Skeleton variant="text" />}
+          <LinkedDocumentsCard
+            data={transformCreditNotes(
+              creditNoteQuery?.data as components['schemas']['InvoiceResponsePayload'][]
+            )}
+          />
+        </Box>
+      )}
 
       {Boolean(
         paymentReminderQuery.data ||
@@ -246,6 +335,63 @@ const RemindersCard = ({
           </Grid>
         </Grid>
       ))}
+    </Card>
+  );
+};
+
+const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
+  if (!data || data.length === 0) return null;
+
+  return (
+    <Card
+      sx={{ borderRadius: 3, bgcolor: 'background.paper', px: 2 }}
+      variant="outlined"
+    >
+      <Grid container direction="column">
+        {data?.map((item, index) => (
+          <Grid
+            key={item.title}
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              py: 1.5,
+              ...(index
+                ? { borderTop: '1px solid', borderTopColor: 'divider' }
+                : {}),
+              cursor: 'pointer',
+            }}
+            onClick={item.onClick}
+          >
+            <Grid item container direction="column" xs>
+              <Typography
+                variant="body1"
+                fontWeight="bold"
+                sx={{ textTransform: 'capitalize' }}
+              >
+                {item.title}
+              </Typography>
+              <Typography variant="body2">
+                {item.description}{' '}
+                <Link
+                  href={item.authorTitle}
+                  underline="hover"
+                  color="primary"
+                  variant="body2"
+                >
+                  {item.authorTitle}
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <IconButton edge="end" size="small">
+                <ArrowForwardIcon fontSize="small" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
     </Card>
   );
 };
