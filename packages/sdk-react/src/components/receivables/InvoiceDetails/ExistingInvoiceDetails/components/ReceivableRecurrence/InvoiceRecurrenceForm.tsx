@@ -1,4 +1,4 @@
-import { useEffect, useId } from 'react';
+import { useCallback, useEffect, useId, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
@@ -119,33 +119,33 @@ export const InvoiceRecurrenceForm = ({
 
   const errorMessage = createErrorMessage || updateErrorMessage;
 
+  const getDefaultValues = useCallback(
+    () => ({
+      day_of_month: recurrence?.day_of_month
+        ? recurrence.day_of_month
+        : 'first_day',
+      startDate: recurrence
+        ? new Date(recurrence.start_year, recurrence.start_month - 1, 1)
+        : null,
+      endDate: recurrence
+        ? new Date(recurrence.end_year, recurrence.end_month - 1, 1)
+        : null,
+    }),
+    [recurrence]
+  );
+
   const { control, handleSubmit, watch, setValue, reset } = useForm<{
     startDate: Date | null;
     endDate: Date | null;
     day_of_month: 'first_day' | 'last_day';
   }>({
     resolver: yupResolver(useValidationSchema()),
-    defaultValues: {
-      startDate: null,
-      endDate: null,
-      day_of_month: 'first_day',
-    },
+    defaultValues: getDefaultValues(),
   });
 
-  useEffect(() => {
-    if (!recurrence) return;
+  useEffect(() => void reset(getDefaultValues()), [reset, getDefaultValues]);
 
-    const { start_month, start_year, end_month, end_year, day_of_month } =
-      recurrence;
-
-    reset({
-      day_of_month,
-      startDate: new Date(start_year, start_month, 1),
-      endDate: new Date(end_year, end_month, 1),
-    });
-  }, [recurrence, reset]);
-
-  const currentDate = new Date();
+  const currentDate = useMemo(() => new Date(), []);
 
   const startDate = watch('startDate');
   const endDate = watch('endDate');
@@ -208,12 +208,13 @@ export const InvoiceRecurrenceForm = ({
           id={formId}
           onSubmit={handleSubmit(
             async ({ startDate, endDate, day_of_month }) => {
-              if (!startDate || !endDate) return;
+              if (!startDate || !endDate)
+                throw new Error('Invalid incoming data');
 
-              const start_month = getMonth(startDate);
+              const start_month = getMonth(startDate) + 1;
               const start_year = getYear(startDate);
 
-              const end_month = getMonth(endDate);
+              const end_month = getMonth(endDate) + 1;
               const end_year = getYear(endDate);
 
               const response = recurrence

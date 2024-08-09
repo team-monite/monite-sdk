@@ -38,7 +38,7 @@ export const InvoiceRecurrenceDetails = ({
       <MoniteCardItem
         divider
         label={t(i18n)`Start date`}
-        value={t(i18n)`${i18n.date(new Date(start_year, start_month, 1), {
+        value={t(i18n)`${i18n.date(new Date(start_year, start_month - 1, 1), {
           month: 'long',
           year: 'numeric',
         })}`}
@@ -47,7 +47,7 @@ export const InvoiceRecurrenceDetails = ({
       <MoniteCardItem
         divider
         label={t(i18n)`End date`}
-        value={t(i18n)`${i18n.date(new Date(end_year, end_month, 1), {
+        value={t(i18n)`${i18n.date(new Date(end_year, end_month - 1, 1), {
           month: 'long',
           year: 'numeric',
         })}`}
