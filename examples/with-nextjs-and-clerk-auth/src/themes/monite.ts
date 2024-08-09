@@ -48,6 +48,35 @@ const paletteDark: PaletteOptions = {
   },
 };
 
+const statusColors: {
+  [key: string]: { color: string; backgroundColor: string };
+} = {
+  black: {
+    color: '#292929',
+    backgroundColor: '#F2F2F2',
+  },
+  blue: {
+    color: '#3737FF',
+    backgroundColor: '#F4F4FE',
+  },
+  violet: {
+    color: '#A06DC8',
+    backgroundColor: '#FBF1FC',
+  },
+  green: {
+    color: '#0DAA8E',
+    backgroundColor: '#EEFBF9',
+  },
+  orange: {
+    color: '#E27E46',
+    backgroundColor: '#FFF5EB',
+  },
+  red: {
+    color: '#CC394B',
+    backgroundColor: '#FFE0E4',
+  },
+};
+
 const typography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
@@ -291,73 +320,100 @@ const components: Components<Omit<Theme, 'components'>> = {
     },
   },
   MoniteInvoiceStatusChip: {
+    styleOverrides: {
+      root: {
+        fontSize: '13px',
+      },
+    },
     variants: [
       {
-        props: { status: 'paid' },
-        style: {
-          color: 'rgba(13, 170, 142)',
-          backgroundColor: 'rgb(238, 251, 249)',
-        },
-      },
-      {
-        props: { status: 'partially_paid' },
-        style: {
-          color: 'rgb(160, 109, 200)',
-          backgroundColor: 'rgb(251, 241, 252)',
-        },
+        props: { status: 'draft' },
+        style: statusColors.black,
       },
       {
         props: { status: 'issued' },
-        style: {
-          color: 'rgb(55, 55, 255)',
-          backgroundColor: 'rgb(244, 244, 254)',
-        },
+        style: statusColors.blue,
       },
       {
-        props: { status: 'draft' },
-        style: {
-          color: 'rgba(0, 0, 0, 0.84)',
-          backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        },
+        props: { status: 'accepted' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'expired' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'declined' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'recurring' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'partially_paid' },
+        style: statusColors.violet,
+      },
+      {
+        props: { status: 'paid' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'overdue' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'uncollectible' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'canceled' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'deleted' },
+        style: statusColors.black,
       },
     ],
   },
   MonitePayableStatusChip: {
+    styleOverrides: {
+      root: {
+        fontSize: '13px',
+      },
+    },
     variants: [
       {
-        props: { status: 'paid' },
-        style: {
-          color: 'rgba(13, 170, 142)',
-          backgroundColor: 'rgb(238, 251, 249)',
-        },
+        props: { status: 'draft' },
+        style: statusColors.black,
+      },
+      {
+        props: { status: 'new' },
+        style: statusColors.blue,
+      },
+      {
+        props: { status: 'approve_in_progress' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'waiting_to_be_paid' },
+        style: statusColors.orange,
       },
       {
         props: { status: 'partially_paid' },
-        style: {
-          color: 'rgb(160, 109, 200)',
-          backgroundColor: 'rgb(251, 241, 252)',
-        },
+        style: statusColors.violet,
       },
       {
-        props: { status: 'issued' },
-        style: {
-          color: 'rgb(55, 55, 255)',
-          backgroundColor: 'rgb(244, 244, 254)',
-        },
-      },
-      {
-        props: { status: 'draft' },
-        style: {
-          color: 'rgba(0, 0, 0, 0.84)',
-          backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        },
+        props: { status: 'paid' },
+        style: statusColors.green,
       },
       {
         props: { status: 'canceled' },
-        style: {
-          color: 'rgb(226, 126, 70)',
-          backgroundColor: 'rgb(255, 245, 235)',
-        },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'rejected' },
+        style: statusColors.red,
       },
     ],
   },
