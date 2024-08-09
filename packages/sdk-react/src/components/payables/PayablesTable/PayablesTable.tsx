@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -23,7 +24,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridSortDirection, GridSortModel } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -75,6 +76,11 @@ interface PayablesTableProps {
   }) => void;
 }
 
+export interface PayableGridSortModel {
+  field: components['schemas']['PayableCursorFields'];
+  sort: NonNullable<GridSortDirection>;
+}
+
 export const PayablesTable = (props: PayablesTableProps) => (
   <MoniteScopedProviders>
     <PayablesTableBase {...props} />
@@ -95,6 +101,10 @@ const PayablesTableBase = ({
   const [pageSize, setPageSize] = useState<number>(
     useTablePaginationThemeDefaultPageSize()
   );
+  const [sortModel, setSortModel] = useState<PayableGridSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
   const { formatCurrencyToDisplay } = useCurrencies();
@@ -110,10 +120,10 @@ const PayablesTableBase = ({
 
   const payablesQueryParameters = api.payables.getPayables.getQueryKey({
     query: {
-      order: 'desc',
+      sort: sortModel?.field,
+      order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
-      sort: 'created_at',
       // HACK: api filter parameter 'created_at' requires full match with seconds. Could not be used
       created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
         ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
@@ -151,6 +161,8 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
+  const gridApiRef = useAutosizeGridColumns(payables);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -159,6 +171,11 @@ const PayablesTableBase = ({
     }));
 
     onChangeFilterCallback?.({ field, value });
+  };
+
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as PayableGridSortModel);
+    setCurrentPaginationToken(null);
   };
 
   if (isReadSupportedLoading) {
@@ -187,8 +204,15 @@ const PayablesTableBase = ({
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
+          onSortModelChange={onChangeSort}
           onRowClick={(params) => {
             onRowClick?.(params.row.id);
           }}
@@ -250,7 +274,6 @@ const PayablesTableBase = ({
             },
             {
               field: 'created_at',
-              sortable: false,
               type: 'date',
               headerName: t(i18n)`Invoice date`,
               display: 'flex',
@@ -323,7 +346,6 @@ const PayablesTableBase = ({
                 message: 'Amount',
                 comment: 'Payables Table "Amount" heading title',
               }),
-              width: 100,
               valueGetter: (_, row) => {
                 const payable = row;
 

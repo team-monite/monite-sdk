@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-api",
-  "version": "3.16.0-beta.0",
+  "version": "3.16.0-beta.1",
   "apiVersion": "2023-09-01",
   "publishConfig": {
     "access": "public"
@@ -31,7 +31,7 @@
     "@team-monite/eslint-plugin": "workspace:~",
     "@types/jest": "~29.5.11",
     "cross-env": "^7.0.3",
-    "eslint": "^8.38.0",
+    "eslint": "~8.57.0",
     "jest": "~29.7.0",
     "jest-environment-jsdom": "~29.7.0",
     "jest-fetch-mock": "~3.0.3",
@@ -39,7 +39,7 @@
     "openapi-typescript-codegen": "~0.24.0",
     "rimraf": "~5.0.0",
     "tsup": "~8.0.2",
-    "typescript": "~5.0.4"
+    "typescript": "~5.5.4"
   },
   "peerDependencies": {
     "typescript": "*"

@@ -10,6 +10,7 @@ import {
 import { useOnboardingRequirementsContext } from '../context';
 import { isRepresentative } from '../helpers';
 import { enrichFieldsByValues } from '../transformers';
+import { showErrorToast } from '../utils';
 import { useOnboardingActions } from './useOnboardingActions';
 import { useOnboardingEntity } from './useOnboardingEntity';
 import type {
@@ -77,7 +78,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     isPending: isCreateLoading,
     error: createPersonError,
   } = api.persons.postPersons.useMutation(undefined, {
-    onError: () => {},
+    onError: (error) => {
+      showErrorToast(error);
+    },
   });
 
   const {
@@ -85,7 +88,9 @@ export function useOnboardingPerson(): OnboardingPersonReturnType {
     isPending: isUpdateLoading,
     error: updatePersonError,
   } = api.persons.patchPersonsId.useMutation(undefined, {
-    onError: () => {},
+    onError: (error) => {
+      showErrorToast(error);
+    },
   });
 
   const {

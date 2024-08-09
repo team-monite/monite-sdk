@@ -5,6 +5,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -76,6 +77,8 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  const gridApiRef = useAutosizeGridColumns(creditNotes);
+
   const className = 'Monite-CreditNotesTable';
 
   return (
@@ -91,7 +94,12 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           />
         </Box>
         <DataGrid
-          autoHeight
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           sx={{
@@ -124,13 +132,11 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'document_id',
               headerName: t(i18n)`Number`,
-              sortable: false,
               flex: 1.3,
             },
             {
               field: 'created_at',
               headerName: t(i18n)`Created on`,
-              sortable: false,
               valueFormatter: (value) =>
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
@@ -140,7 +146,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
-              sortable: false,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
               flex: 0.7,

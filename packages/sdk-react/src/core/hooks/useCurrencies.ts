@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';

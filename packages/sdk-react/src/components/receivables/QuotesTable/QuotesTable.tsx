@@ -5,6 +5,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -90,6 +91,8 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
+  const gridApiRef = useAutosizeGridColumns(quotes);
+
   const className = 'Monite-QuotesTable';
 
   return (
@@ -105,7 +108,12 @@ const QuotesTableBase = ({
           />
         </Box>
         <DataGrid
-          autoHeight
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
+          apiRef={gridApiRef}
           rowSelection={false}
           loading={isLoading}
           onSortModelChange={onChangeSort}
@@ -137,13 +145,11 @@ const QuotesTableBase = ({
           columns={[
             {
               field: 'document_id',
-              sortable: false,
               headerName: t(i18n)`Number`,
               flex: 1.2,
             },
             {
               field: 'created_at',
-              sortable: false,
               headerName: t(i18n)`Created on`,
               valueFormatter: (value) =>
                 value
@@ -153,7 +159,6 @@ const QuotesTableBase = ({
             },
             {
               field: 'issue_date',
-              sortable: false,
               headerName: t(i18n)`Issue Date`,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),

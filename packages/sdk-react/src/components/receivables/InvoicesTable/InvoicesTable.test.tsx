@@ -82,9 +82,7 @@ describe('InvoicesTable', () => {
 
     fireEvent.click(await screen.findByRole('menuitem', { name: 'Recurring' }));
 
-    const firstDraftInvoiceId = receivableListFixture.invoice.find(
-      ({ status }) => status === 'draft'
-    )?.id;
+    const firstDraftInvoiceId = invoiceRowNode?.getAttribute('data-id');
 
     expect(onRowActionClick.mock.calls).toEqual([
       [{ id: firstDraftInvoiceId, action: 'recurrent' }],

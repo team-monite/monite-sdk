@@ -1,24 +1,39 @@
-name: Merge GitLab MR
+name: Sync dev with GitLab
 
 on:
   # Avoid using `pull_request_target`, to prevent insecure actions
   # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
-      - dev
+       - dev
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number }}"
   # Cancel in-progress runs when a new workflow with the same group name is triggered
   cancel-in-progress: true
 
 jobs:
+  sync-branch-with-gitlab:
+    name: Sync GitHub dev branch with GitLab MR branch
+    environment: gitlab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync PR with GitLab
+        uses: team-monite/sync-gitlab-repo-submodule-action@1335a83ed6c174eb7b3f477a6915d7d0d9a1f526
+        with:
+          action: sync-branch
+          gitlab_token: ${{ secrets.GITLAB_TOKEN }}
+          gitlab_host: ${{ secrets.GITLAB_HOST }}
+          gitlab_project_id: ${{ secrets.GITLAB_PROJECT_ID }}
+          gitlab_target_branch: ${{ secrets.GITLAB_TARGET_DEV_BRANCH }}
+          submodule_name: ${{ secrets.GITLAB_SUBMODULE_NAME }}
+          branch: ${{ github.ref_name }}
+          sha: ${{ github.sha }}
+
   merge-gitlab-mr:
+    needs: sync-branch-with-gitlab
     name: Merge GitLab MR
     environment: gitlab
-    if: ${{ github.event.pull_request.base.ref == 'dev' && startsWith(github.event.pull_request.head.ref, 'changeset-release/') == false }}
     runs-on: ubuntu-latest
     env:
       GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
@@ -34,6 +49,6 @@ jobs:
           gitlab_project_id: ${{ secrets.GITLAB_PROJECT_ID }}
           gitlab_target_branch: ${{ secrets.GITLAB_TARGET_DEV_BRANCH }}
           submodule_name: ${{ secrets.GITLAB_SUBMODULE_NAME }}
-          branch: ${{ github.event.pull_request.head.ref }}
-          sha: ${{ github.event.pull_request.head.sha }}
+          branch: ${{ github.ref_name }}
+          sha: ${{ github.sha }}
           gitlab_merge_when_pipeline_succeeds: "true"

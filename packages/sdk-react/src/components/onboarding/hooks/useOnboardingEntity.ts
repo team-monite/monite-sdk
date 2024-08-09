@@ -13,6 +13,7 @@ import type {
   EntityOrganizationRelationshipCode,
   OrganizationRequirements,
 } from '../types';
+import { showErrorToast } from '../utils';
 
 export type OnboardingEntityReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
@@ -57,7 +58,9 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
         queryClient
       );
     },
-    onError: () => {},
+    onError: (error) => {
+      showErrorToast(error);
+    },
   });
 
   const entity = useMemo(

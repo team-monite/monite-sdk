@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -31,7 +31,7 @@ interface TagsTableProps {
 
 interface TagsTableSortModel {
   field: components['schemas']['TagCursorFields'];
-  sort: GridSortDirection;
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const TagsTable = (props: TagsTableProps) => (
@@ -53,8 +53,10 @@ const TagsTableBase = ({
   const [selectedTag, setSelectedTag] = useState<
     components['schemas']['TagReadSchema'] | undefined
   >(undefined);
-  const [sortModels, setSortModels] = useState<Array<TagsTableSortModel>>([]);
-  const sortModel = sortModels[0];
+  const [sortModel, setSortModels] = useState<TagsTableSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
   const [editModalOpened, setEditModalOpened] = useState<boolean>(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
 
@@ -80,10 +82,10 @@ const TagsTableBase = ({
     error,
   } = api.tags.getTags.useQuery({
     query: {
-      order: sortModel ? sortModel.sort ?? undefined : undefined,
+      sort: sortModel?.field,
+      order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken ?? undefined,
-      sort: sortModel ? sortModel.field : undefined,
     },
   });
 
@@ -100,12 +102,11 @@ const TagsTableBase = ({
     }
   }, [currentPaginationToken, tags]);
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<TagsTableSortModel>;
-    setSortModels(model);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModels(model[0] as TagsTableSortModel);
     setCurrentPaginationToken(null);
 
-    onChangeSortCallback?.(model[0]);
+    onChangeSortCallback?.(model[0] as TagsTableSortModel);
   };
 
   const { data: user } = useEntityUserByAuthToken();
@@ -129,10 +130,14 @@ const TagsTableBase = ({
         className={ScopedCssBaselineContainerClassName}
       >
         <DataGrid
+          initialState={{
+            sorting: {
+              sortModel: [sortModel],
+            },
+          }}
           autoHeight
           rowSelection={false}
           loading={isLoading}
-          sortModel={sortModels}
           onSortModelChange={onChangeSort}
           sx={{
             '& .MuiDataGrid-withBorderColor': {

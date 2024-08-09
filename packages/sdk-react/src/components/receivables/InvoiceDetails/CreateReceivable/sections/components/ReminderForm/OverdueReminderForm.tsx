@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { RHFTextField } from '@/components/RHF/RHFTextField';

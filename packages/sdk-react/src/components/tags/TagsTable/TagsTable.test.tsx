@@ -127,10 +127,34 @@ describe('TagsTable', () => {
    *  and we have no ability to provide `de-DE` locale
    */
   describe('# Sorting', () => {
-    test('should sort a table by `created_at` field in ascending order when we click on that field once', async () => {
+    test('should flush sorting by `created_at` field when we click on that field 1 time', async () => {
       renderWithClient(<TagsTable />);
 
       const createdAtButton = await screen.findByText('Created at');
+
+      // Flush sorting
+      fireEvent.click(createdAtButton);
+
+      await waitFor(() => {
+        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
+          api.tags.getTags.schema.url
+        );
+
+        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
+          limit: 10,
+          order: undefined,
+          sort: undefined,
+        });
+      });
+    });
+    test('should sort a table by `created_at` field in ascending order when we click on that 2 times', async () => {
+      renderWithClient(<TagsTable />);
+
+      const createdAtButton = await screen.findByText('Created at');
+
+      // Flush sorting
+      fireEvent.click(createdAtButton);
+      // Sort by `created_at` in ascending order
       fireEvent.click(createdAtButton);
 
       await waitFor(() => {
@@ -145,14 +169,15 @@ describe('TagsTable', () => {
       });
     });
 
-    test('should sort a table by `created_at` field in descending order when we click on that field twice', async () => {
+    test('should sort a table by `created_at` field in descending order when we click on that field 3 times', async () => {
       renderWithClient(<TagsTable />);
 
       const createdAtButton = await screen.findByText('Created at');
 
+      // Flush sorting
+      fireEvent.click(createdAtButton);
       // Sort by `created_at` in ascending order
       fireEvent.click(createdAtButton);
-
       // Sort by `created_at` in descending order
       fireEvent.click(createdAtButton);
 
@@ -164,31 +189,6 @@ describe('TagsTable', () => {
           limit: 10,
           order: 'desc',
           sort: 'created_at',
-        });
-      });
-    });
-
-    test('should flush sorting by `created_at` field when we click on that field 3 times', async () => {
-      renderWithClient(<TagsTable />);
-
-      const createdAtButton = await screen.findByText('Created at');
-
-      // Sort by `created_at` in ascending order
-      fireEvent.click(createdAtButton);
-      // Sort by `created_at` in descending order
-      fireEvent.click(createdAtButton);
-      // Flush sorting
-      fireEvent.click(createdAtButton);
-
-      await waitFor(() => {
-        expect(requestFnMock.mock.lastCall?.[0].url).toEqual(
-          api.tags.getTags.schema.url
-        );
-
-        expect(requestFnMock.mock.lastCall?.[1].parameters?.query).toEqual({
-          limit: 10,
-          order: undefined,
-          sort: undefined,
         });
       });
     });
@@ -309,7 +309,7 @@ describe('TagsTable', () => {
       expect(deleteModalButton).toBeInTheDocument();
     });
 
-    test('should trigger a callback with "asc" order when we click on "created_at" button once', async () => {
+    test('should trigger a callback with no order when we click on "created_at" button', async () => {
       const onChangeSortMock = jest.fn();
 
       renderWithClient(<TagsTable onChangeSort={onChangeSortMock} />);
@@ -320,13 +320,10 @@ describe('TagsTable', () => {
 
       fireEvent.click(createdAtButton);
 
-      expect(onChangeSortMock).toHaveBeenNthCalledWith(1, {
-        field: 'created_at',
-        sort: 'asc',
-      });
+      expect(onChangeSortMock).toHaveBeenLastCalledWith(undefined);
     });
 
-    test('should trigger a callback with "desc" order when we click on "created_at" button twice', async () => {
+    test('should trigger a callback with "asc" order when we click on "created_at" button twice', async () => {
       const onChangeSortMock = jest.fn();
 
       renderWithClient(<TagsTable onChangeSort={onChangeSortMock} />);
@@ -340,11 +337,11 @@ describe('TagsTable', () => {
 
       expect(onChangeSortMock).toHaveBeenLastCalledWith({
         field: 'created_at',
-        sort: 'desc',
+        sort: 'asc',
       });
     });
 
-    test('should trigger a callback with no order when we click on "created_at" button 3 times', async () => {
+    test('should trigger a callback with "desc" order when we click on "created_at" button 3 times', async () => {
       const onChangeSortMock = jest.fn();
 
       renderWithClient(<TagsTable onChangeSort={onChangeSortMock} />);
@@ -357,7 +354,10 @@ describe('TagsTable', () => {
       fireEvent.click(createdAtButton);
       fireEvent.click(createdAtButton);
 
-      expect(onChangeSortMock).toHaveBeenLastCalledWith(undefined);
+      expect(onChangeSortMock).toHaveBeenLastCalledWith({
+        field: 'created_at',
+        sort: 'desc',
+      });
     });
   });
 

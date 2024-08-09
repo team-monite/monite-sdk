@@ -17,7 +17,7 @@ export function OnboardingAddressView({
 
   const countryField = {
     required: !!country?.required,
-    value: t(i18n)`${getRegionName(country?.value as AllowedCountries)}`,
+    value: country?.value ? t(i18n)`${getRegionName(country?.value)}` : '',
     error: country?.error,
   };
 
@@ -33,5 +33,4 @@ export function OnboardingAddressView({
   );
 }
 
-type AllowedCountries = components['schemas']['AllowedCountries'];
 type OnboardingAddress = components['schemas']['OnboardingAddress'];
