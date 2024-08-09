@@ -12,7 +12,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import {
-  Alert,
   Button,
   Card,
   CardContent,
@@ -169,21 +168,6 @@ const ReminderSectionContent = ({
 
   return (
     <>
-      {!hasValidReminderEmailLoading && Boolean(counterpartId) && (
-        <>
-          {!counterpart?.reminders_enabled && (
-            <Alert severity="warning" sx={{ mb: 2 }}>{t(
-              i18n
-            )`Reminders are disabled for this Counterpart.`}</Alert>
-          )}
-          {!hasValidReminderEmail && (
-            <Alert severity="warning" sx={{ mb: 2 }}>{t(
-              i18n
-            )`No default email for selected Counterpart. Reminders will not be sent.`}</Alert>
-          )}
-        </>
-      )}
-
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <SelectReminderLayout
