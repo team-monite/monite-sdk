@@ -1,3 +1,4 @@
+import '@monite/sdk-react/mui-styles.d.ts';
 import { createTheme } from '@mui/material';
 import type { Components } from '@mui/material/styles/components';
 import type {
@@ -44,6 +45,35 @@ const paletteDark: PaletteOptions = {
     '80': '#B8B8B8',
     '50': '#F3F3F3',
     '10': '#FFFFFF',
+  },
+};
+
+const statusColors: {
+  [key: string]: { color: string; backgroundColor: string };
+} = {
+  black: {
+    color: '#292929',
+    backgroundColor: '#F2F2F2',
+  },
+  blue: {
+    color: '#3737FF',
+    backgroundColor: '#F4F4FE',
+  },
+  violet: {
+    color: '#A06DC8',
+    backgroundColor: '#FBF1FC',
+  },
+  green: {
+    color: '#0DAA8E',
+    backgroundColor: '#EEFBF9',
+  },
+  orange: {
+    color: '#E27E46',
+    backgroundColor: '#FFF5EB',
+  },
+  red: {
+    color: '#CC394B',
+    backgroundColor: '#FFE0E4',
   },
 };
 
@@ -289,6 +319,104 @@ const components: Components<Omit<Theme, 'components'>> = {
         },
       },
     },
+  },
+  MoniteInvoiceStatusChip: {
+    styleOverrides: {
+      root: {
+        fontSize: '13px',
+      },
+    },
+    variants: [
+      {
+        props: { status: 'draft' },
+        style: statusColors.black,
+      },
+      {
+        props: { status: 'issued' },
+        style: statusColors.blue,
+      },
+      {
+        props: { status: 'accepted' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'expired' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'declined' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'recurring' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'partially_paid' },
+        style: statusColors.violet,
+      },
+      {
+        props: { status: 'paid' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'overdue' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'uncollectible' },
+        style: statusColors.red,
+      },
+      {
+        props: { status: 'canceled' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'deleted' },
+        style: statusColors.black,
+      },
+    ],
+  },
+  MonitePayableStatusChip: {
+    styleOverrides: {
+      root: {
+        fontSize: '13px',
+      },
+    },
+    variants: [
+      {
+        props: { status: 'draft' },
+        style: statusColors.black,
+      },
+      {
+        props: { status: 'new' },
+        style: statusColors.blue,
+      },
+      {
+        props: { status: 'approve_in_progress' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'waiting_to_be_paid' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'partially_paid' },
+        style: statusColors.violet,
+      },
+      {
+        props: { status: 'paid' },
+        style: statusColors.green,
+      },
+      {
+        props: { status: 'canceled' },
+        style: statusColors.orange,
+      },
+      {
+        props: { status: 'rejected' },
+        style: statusColors.red,
+      },
+    ],
   },
 };
 
