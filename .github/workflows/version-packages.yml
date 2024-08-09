@@ -29,7 +29,7 @@ jobs:
         run: .changeset/validate-changesets-base-branch.sh ${{ github.ref_name }}
 
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
         with:
           # Do not use the cache if merged PR source branch starts with `changeset-release/`
           cache: ${{ !startsWith(github.event.pull_request.head.ref, 'changeset-release/') }}
