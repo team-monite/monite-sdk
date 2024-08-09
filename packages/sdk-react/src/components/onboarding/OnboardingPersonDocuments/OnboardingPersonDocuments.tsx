@@ -30,7 +30,7 @@ export const OnboardingPersonDocuments = () => {
 
   const { api } = useMoniteContext();
   const { mutateAsync, isPending } =
-    api.persons.postPersonsIdOnboardingDocuments.useMutation(undefined);
+    api.persons.postPersonsIdOnboardingDocuments.useMutation();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
@@ -77,24 +77,30 @@ export const OnboardingPersonDocuments = () => {
           onSecondaryAction={disableEditMode}
         />
       }
-      onSubmit={handleSubmit(async (payload) => {
-        await mutateAsync({
-          path: { person_id: personId },
-          body: payload,
-        });
+      onSubmit={handleSubmit(
+        async ({
+          // @ts-expect-error - id received from onboarding_requirements doesn't need in PersonDocumentsSchema
+          id,
+          ...payload
+        }) => {
+          await mutateAsync({
+            path: { person_id: personId },
+            body: payload,
+          });
 
-        patchOnboardingRequirements({
-          data: {
-            persons_documents: personDocuments.map((person) =>
-              person.id === personId
-                ? enrichFieldsByValues(person, payload)
-                : person
-            ),
-          },
-        });
+          patchOnboardingRequirements({
+            data: {
+              persons_documents: personDocuments.map((person) =>
+                person.id === personId
+                  ? enrichFieldsByValues(person, { id, ...payload })
+                  : person
+              ),
+            },
+          });
 
-        disableEditMode();
-      })}
+          disableEditMode();
+        }
+      )}
     >
       <OnboardingStepContent>
         <OnboardingSubTitle>
