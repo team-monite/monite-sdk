@@ -47,7 +47,7 @@ export const ReceivableFilters = ({
       className={classNames(className, 'Monite-Filters')}
     >
       {filters.includes('document_id__contains') && (
-        <Grid item sm={3}>
+        <Grid item sm={6} md={4}>
           <SearchField
             label={t(i18n)`Search`}
             onChange={(search) => {
@@ -58,7 +58,7 @@ export const ReceivableFilters = ({
       )}
 
       {filters.includes('status') && (
-        <Grid item sm={3}>
+        <Grid item sm={3} md={2}>
           <MuiFormControl
             variant="outlined"
             fullWidth
@@ -92,7 +92,7 @@ export const ReceivableFilters = ({
       )}
 
       {filters.includes('counterpart_id') && (
-        <Grid item sm={3}>
+        <Grid item sm={3} md={2}>
           <MuiFormControl
             variant="outlined"
             fullWidth
@@ -125,7 +125,7 @@ export const ReceivableFilters = ({
       )}
 
       {filters.includes('due_date__lte') && (
-        <Grid item sm={3}>
+        <Grid item xs={6} sm={3} md={2} lg={2}>
           <DatePicker<Date>
             className="Monite-ReceivableDueDateFilter Monite-FilterControl"
             label={t(i18n)`Due date`}
