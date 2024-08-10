@@ -4,6 +4,7 @@
   --demo-padding-3: calc(var(--demo-padding) * 3);
   --demo-padding-4: calc(var(--demo-padding) * 4);
   --demo-padding-5: calc(var(--demo-padding) * 5);
+  --demo-padding-6: calc(var(--demo-padding) * 6);
   --demo-button-blue: #3737FF;
   --demo-light-gray: #f9f9f9;
   --demo-divider: #DDDDDD;
@@ -411,14 +412,19 @@ html {
 .MuiDialog-container .Monite-CreateReceivable-Content,
 .MuiDialog-container .Monite-EditInvoiceDetails-Content {
   margin: 0;
-  padding: var(--demo-padding-5) 180px 111px 180px;
+  padding: var(--demo-padding-5) var(--demo-padding-4) 111px  var(--demo-padding-4);
 
-  > form > .MuiStack-root {
-    margin-top: 0;
+  > form {
+    max-width: 940px;
+    margin: 0 auto;
 
-    > h2 {
-      font-size: 48px;
-      padding: 12px 0;
+    > .MuiStack-root {
+      margin-top: 0;
+
+      > h2 {
+        font-size: 48px;
+        padding: 12px 0;
+      }
     }
   }
 }
