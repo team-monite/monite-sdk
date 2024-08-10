@@ -91,7 +91,7 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
-  const gridApiRef = useAutosizeGridColumns(quotes);
+  const gridApiRef = useAutosizeGridColumns(quotes?.data);
 
   const className = 'Monite-QuotesTable';
 
@@ -147,7 +147,6 @@ const QuotesTableBase = ({
             {
               field: 'document_id',
               headerName: t(i18n)`Number`,
-              flex: 1.2,
             },
             {
               field: 'created_at',
@@ -156,21 +155,17 @@ const QuotesTableBase = ({
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
-              flex: 1,
             },
             {
               field: 'issue_date',
               headerName: t(i18n)`Issue Date`,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
             },
             {
               field: 'counterpart_name',
               sortable: ReceivableCursorFields.includes('counterpart_name'),
               headerName: t(i18n)`Customer`,
-              display: 'flex',
-              flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
                   counterpartId={params.row.counterpart_id}
@@ -183,7 +178,6 @@ const QuotesTableBase = ({
               headerName: t(i18n)`Due date`,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
             },
             {
               field: 'status',
@@ -194,7 +188,6 @@ const QuotesTableBase = ({
 
                 return <InvoiceStatusChip status={status} />;
               },
-              flex: 1,
             },
             {
               field: 'amount',
@@ -207,7 +200,6 @@ const QuotesTableBase = ({
                   ? formatCurrencyToDisplay(value, row.currency)
                   : '';
               },
-              flex: 0.8,
             },
           ]}
           rows={quotes?.data || []}

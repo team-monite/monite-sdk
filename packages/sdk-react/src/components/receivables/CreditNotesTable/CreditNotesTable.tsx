@@ -77,7 +77,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
-  const gridApiRef = useAutosizeGridColumns(creditNotes);
+  const gridApiRef = useAutosizeGridColumns(creditNotes?.data);
 
   const className = 'Monite-CreditNotesTable';
 
@@ -133,7 +133,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
             {
               field: 'document_id',
               headerName: t(i18n)`Number`,
-              flex: 1.3,
             },
             {
               field: 'created_at',
@@ -142,21 +141,17 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
-              flex: 0.7,
             },
             {
               field: 'issue_date',
               headerName: t(i18n)`Issue date`,
               valueFormatter: (value) =>
                 value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 0.7,
             },
             {
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
-              display: 'flex',
-              flex: 1,
               renderCell: (params) => (
                 <InvoiceCounterpartName
                   counterpartId={params.row.counterpart_id}
@@ -167,7 +162,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               field: 'status',
               headerName: t(i18n)`Status`,
               sortable: ReceivableCursorFields.includes('status'),
-              flex: 1,
               renderCell: (params) => {
                 const status = params.value;
                 return <InvoiceStatusChip status={status} />;
@@ -182,7 +176,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
 
                 return value && formatCurrencyToDisplay(value, row.currency);
               },
-              flex: 0.5,
             },
           ]}
           rows={creditNotes?.data ?? []}

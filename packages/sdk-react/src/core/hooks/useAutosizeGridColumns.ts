@@ -10,6 +10,7 @@ import { useGridApiRef } from '@mui/x-data-grid';
 // DOM access is required to accurately calculate dimensions
 export function useAutosizeGridColumns(rows: any) {
   const gridApiRef = useGridApiRef();
+
   useEffect(() => {
     setTimeout(() => {
       ReactDOM.flushSync(() => {
@@ -17,9 +18,9 @@ export function useAutosizeGridColumns(rows: any) {
           if (gridApiRef.current?.autosizeColumns) {
             // noinspection JSIgnoredPromiseFromCall
             gridApiRef.current?.autosizeColumns({
-              columns: ['amount'],
               includeHeaders: true,
               includeOutliers: true,
+              expand: true,
             });
           }
         }, 1);

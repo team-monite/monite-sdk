@@ -98,7 +98,7 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
-  const gridApiRef = useAutosizeGridColumns(invoices);
+  const gridApiRef = useAutosizeGridColumns(invoices?.data);
 
   const className = 'Monite-InvoicesTable';
 
@@ -164,7 +164,6 @@ const InvoicesTableBase = ({
               field: 'document_id',
               headerName: t(i18n)`Number`,
               sortable: false,
-              flex: 1,
               renderCell: ({ value }) => {
                 if (!value) {
                   return t(i18n)`INV-auto`;
@@ -177,8 +176,6 @@ const InvoicesTableBase = ({
               field: 'counterpart_name',
               headerName: t(i18n)`Customer`,
               sortable: ReceivableCursorFields.includes('counterpart_name'),
-              display: 'flex',
-              flex: 1.3,
               renderCell: (params) => (
                 <InvoiceCounterpartName
                   counterpartId={params.row.counterpart_id}
@@ -193,7 +190,6 @@ const InvoicesTableBase = ({
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
-              flex: 0.7,
             },
             {
               field: 'issue_date',
@@ -203,7 +199,6 @@ const InvoicesTableBase = ({
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
-              flex: 0.7,
             },
             {
               field: 'status',
@@ -217,7 +212,6 @@ const InvoicesTableBase = ({
                 const status = params.value;
                 return <InvoiceStatusChip status={status} />;
               },
-              flex: 1,
             },
             {
               field: 'amount',
@@ -239,7 +233,6 @@ const InvoicesTableBase = ({
                 value
                   ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
                   : '—',
-              flex: 0.7,
             },
             ...(invoiceActionCell ? [invoiceActionCell] : []),
           ]}

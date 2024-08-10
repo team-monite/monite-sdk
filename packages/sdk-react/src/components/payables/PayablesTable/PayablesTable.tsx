@@ -161,7 +161,7 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
-  const gridApiRef = useAutosizeGridColumns(payables);
+  const gridApiRef = useAutosizeGridColumns(payables?.data);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -246,8 +246,6 @@ const PayablesTableBase = ({
               field: 'document_id',
               sortable: false,
               headerName: t(i18n)`Invoice #`,
-              display: 'flex',
-              flex: 1.1,
               colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
               renderCell: (params) => {
                 const payable = params.row;
@@ -268,7 +266,6 @@ const PayablesTableBase = ({
               field: 'counterpart_id',
               sortable: false,
               headerName: t(i18n)`Counterpart`,
-              flex: 1.2,
               renderCell: (params) => (
                 <CounterpartCell counterpartId={params.value} />
               ),
@@ -277,8 +274,6 @@ const PayablesTableBase = ({
               field: 'created_at',
               type: 'date',
               headerName: t(i18n)`Invoice date`,
-              display: 'flex',
-              flex: 0.7,
               colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
               renderCell: ({ row, formattedValue }) => {
                 if (isPayableInOCRProcessing(row)) {
@@ -305,7 +300,6 @@ const PayablesTableBase = ({
                 message: 'Issue date',
                 comment: 'Payables Table "Issue date" heading title',
               }),
-              flex: 0.7,
               valueFormatter: (
                 value: components['schemas']['PayableResponseSchema']['issued_at']
               ) =>
@@ -320,7 +314,6 @@ const PayablesTableBase = ({
                 message: 'Due date',
                 comment: 'Payables Table "Due date" heading title',
               }),
-              flex: 0.7,
               valueFormatter: (
                 value: components['schemas']['PayableResponseSchema']['due_date']
               ) =>
@@ -334,7 +327,6 @@ const PayablesTableBase = ({
                 message: 'Status',
                 comment: 'Payables Table "Status" heading title',
               }),
-              flex: 0.9,
               renderCell: (params) => (
                 <PayableStatusChip status={params.value} />
               ),
