@@ -294,8 +294,19 @@ html {
 
 /* Edit invoice popup */
 .Monite-Receivables-Dialog-ReceivableDetails {
-  .Monite-EditInvoiceDetails-Title {
+  .Monite-ExistingInvoiceDetails-Title, .Monite-EditInvoiceDetails-Title {
     height: var(--demo-form-header);
+
+    padding: 12px var(--demo-padding-4) 12px var(--demo-padding-4);
+
+    .MuiToolbar-root {
+      padding: 0;
+    }
+  }
+
+  .Monite-ExistingInvoiceDetails-Content {
+    padding-left: var(--demo-padding-4);
+    padding-right: var(--demo-padding-4);
   }
 
   .Monite-EditInvoiceDetails-Divider {
