@@ -127,6 +127,8 @@ html {
       left: 20px;
       top: 10px;
       font-size: 14px;
+      max-width: calc(100% - 52px);
+      text-overflow: ellipsis;
 
       &.MuiFormLabel-filled {
         opacity: 0;
