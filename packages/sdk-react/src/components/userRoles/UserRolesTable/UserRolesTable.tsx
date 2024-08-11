@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
@@ -134,36 +134,39 @@ const UserRolesTableBase = ({
     onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
-  const [columns] = useState<GridColDef[]>([
-    {
-      field: 'name',
-      headerName: t(i18n)`Name`,
-      sortable: false,
-      flex: 1,
-    },
-    {
-      field: 'permissions',
-      headerName: t(i18n)`Permissions`,
-      sortable: false,
-      flex: 2,
-      renderCell: (params) => (
-        <PermissionsCell
-          permissions={params.value}
-          onCLickSeeAll={() => onRowClick?.(params.row.id)}
-        />
-      ),
-    },
-    {
-      field: 'created_at',
-      headerName: t(i18n)`Created on`,
-      sortable: true,
-      type: 'date',
-      flex: 1,
-      valueFormatter: (
-        value: components['schemas']['PayableResponseSchema']['created_at']
-      ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-    },
-  ]);
+  const [columns, setColumns] = useState<GridColDef[]>([]);
+  useEffect(() => {
+    setColumns([
+      {
+        field: 'name',
+        headerName: t(i18n)`Name`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'permissions',
+        headerName: t(i18n)`Permissions`,
+        sortable: false,
+        flex: 2,
+        renderCell: (params) => (
+          <PermissionsCell
+            permissions={params.value}
+            onCLickSeeAll={() => onRowClick?.(params.row.id)}
+          />
+        ),
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created on`,
+        sortable: true,
+        type: 'date',
+        flex: 1,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['created_at']
+        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+    ]);
+  }, [i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

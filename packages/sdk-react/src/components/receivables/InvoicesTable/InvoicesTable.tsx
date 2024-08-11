@@ -151,7 +151,7 @@ const InvoicesTableBase = ({
         },
       },
       {
-        field: 'amount',
+        field: 'total_amount',
         headerName: t(i18n)`Amount`,
         sortable: ReceivableCursorFields.includes('amount'),
         valueGetter: (_, row) => {
@@ -169,8 +169,7 @@ const InvoicesTableBase = ({
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invoiceActionCell]);
+  }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
 
   const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);
 

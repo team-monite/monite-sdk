@@ -228,121 +228,124 @@ const CounterpartsTableBase = ({
 
   const { root } = useRootElements();
 
-  const [columns] = useState<GridColDef[]>([
-    {
-      field: 'counterpart_name',
-      sortable: true,
-      headerName: t(i18n)`Name, country, city`,
-      display: 'flex',
-      flex: 1,
-      renderCell: (params) => {
-        const counterpart = params.row;
+  const [columns, setColumns] = useState<GridColDef[]>([]);
+  useEffect(() => {
+    setColumns([
+      {
+        field: 'counterpart_name',
+        sortable: true,
+        headerName: t(i18n)`Name, country, city`,
+        display: 'flex',
+        flex: 1,
+        renderCell: (params) => {
+          const counterpart = params.row;
 
-        const name =
-          'organization' in counterpart
-            ? counterpart.organization.legal_name
-            : getIndividualName(counterpart.individual);
+          const name =
+            'organization' in counterpart
+              ? counterpart.organization.legal_name
+              : getIndividualName(counterpart.individual);
 
-        return (
-          <>
-            <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
-            <Typography variant="caption">{name}</Typography>
-          </>
-        );
+          return (
+            <>
+              <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
+              <Typography variant="caption">{name}</Typography>
+            </>
+          );
+        },
       },
-    },
-    {
-      field: 'category',
-      sortable: false,
-      headerName: t(i18n)`Category`,
-      display: 'flex',
-      flex: 0.6,
-      renderCell: (params) => {
-        const counterpart = params.row;
+      {
+        field: 'category',
+        sortable: false,
+        headerName: t(i18n)`Category`,
+        display: 'flex',
+        flex: 0.6,
+        renderCell: (params) => {
+          const counterpart = params.row;
 
-        const { is_customer, is_vendor } =
-          'organization' in counterpart
-            ? counterpart.organization
-            : counterpart.individual;
+          const { is_customer, is_vendor } =
+            'organization' in counterpart
+              ? counterpart.organization
+              : counterpart.individual;
 
-        const items = [
-          {
-            label: t(i18n)`Customer`,
-            value: is_customer,
-          },
-          { label: t(i18n)`Vendor`, value: is_vendor },
-        ].map(
-          ({ label, value }) =>
-            value && (
-              <Chip
-                key={label}
-                label={label}
-                variant="outlined"
-                color="default"
-              />
-            )
-        );
+          const items = [
+            {
+              label: t(i18n)`Customer`,
+              value: is_customer,
+            },
+            { label: t(i18n)`Vendor`, value: is_vendor },
+          ].map(
+            ({ label, value }) =>
+              value && (
+                <Chip
+                  key={label}
+                  label={label}
+                  variant="outlined"
+                  color="default"
+                />
+              )
+          );
 
-        return (
-          <Stack direction="row" spacing={1}>
-            {items}
-          </Stack>
-        );
+          return (
+            <Stack direction="row" spacing={1}>
+              {items}
+            </Stack>
+          );
+        },
       },
-    },
-    {
-      field: 'contacts',
-      sortable: false,
-      flex: 1,
-      headerName: t(i18n)`Contact information`,
-      renderCell: (params) => {
-        const counterpart = params.row;
+      {
+        field: 'contacts',
+        sortable: false,
+        flex: 1,
+        headerName: t(i18n)`Contact information`,
+        renderCell: (params) => {
+          const counterpart = params.row;
 
-        const { email, phone } =
-          'organization' in counterpart
-            ? counterpart.organization
-            : counterpart.individual;
+          const { email, phone } =
+            'organization' in counterpart
+              ? counterpart.organization
+              : counterpart.individual;
 
-        return (
-          <Stack spacing={1} direction="column">
-            {email && (
-              <Styled.MuiColContacts>
-                <MuiEnvelopeIcon fontSize="small" color="disabled" />
-                <Typography variant="body2">{email}</Typography>
-              </Styled.MuiColContacts>
-            )}
-            {phone && (
-              <Styled.MuiColContacts>
-                <MuiPhoneIcon fontSize="small" color="disabled" />
-                <Typography variant="body2">{phone}</Typography>
-              </Styled.MuiColContacts>
-            )}
-          </Stack>
-        );
+          return (
+            <Stack spacing={1} direction="column">
+              {email && (
+                <Styled.MuiColContacts>
+                  <MuiEnvelopeIcon fontSize="small" color="disabled" />
+                  <Typography variant="body2">{email}</Typography>
+                </Styled.MuiColContacts>
+              )}
+              {phone && (
+                <Styled.MuiColContacts>
+                  <MuiPhoneIcon fontSize="small" color="disabled" />
+                  <Typography variant="body2">{phone}</Typography>
+                </Styled.MuiColContacts>
+              )}
+            </Stack>
+          );
+        },
       },
-    },
-    {
-      field: 'actions',
-      sortable: false,
-      headerName: '',
-      width: 70,
-      renderCell: (params) => (
-        <TableActions
-          permissions={{
-            isUpdateAllowed: isUpdateSupported,
-            isDeleteAllowed: isDeleteSupported,
-          }}
-          onEdit={() => {
-            onEdit?.(params.row.id);
-          }}
-          onDelete={() => {
-            setSelectedCounterpart(params.row);
-            setIsDeleteDialogOpen(true);
-          }}
-        />
-      ),
-    },
-  ]);
+      {
+        field: 'actions',
+        sortable: false,
+        headerName: '',
+        width: 70,
+        renderCell: (params) => (
+          <TableActions
+            permissions={{
+              isUpdateAllowed: isUpdateSupported,
+              isDeleteAllowed: isDeleteSupported,
+            }}
+            onEdit={() => {
+              onEdit?.(params.row.id);
+            }}
+            onDelete={() => {
+              setSelectedCounterpart(params.row);
+              setIsDeleteDialogOpen(true);
+            }}
+          />
+        ),
+      },
+    ]);
+  }, [i18n, isDeleteSupported, isUpdateSupported, onEdit]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

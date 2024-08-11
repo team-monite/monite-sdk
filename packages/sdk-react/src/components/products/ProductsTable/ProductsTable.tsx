@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -169,79 +169,90 @@ const ProductsTableBase = ({
     onChangeSortCallback?.(model[0] as ProductsTableSortModel);
   };
 
-  const [columns] = useState<GridColDef[]>([
-    {
-      field: 'name',
-      headerName: t(i18n)`Name, description`,
-      display: 'flex',
-      flex: 3,
-      renderCell: (params) => (
-        <Stack spacing={1} width="100%">
-          <Typography variant="caption">{params.row.name}</Typography>
-          <Typography
-            color="secondary"
-            sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-          >
-            {params.row.description}
-          </Typography>
-        </Stack>
-      ),
-    },
-    {
-      field: 'type',
-      headerName: t(i18n)`Type`,
-      display: 'flex',
-      flex: 1,
-      sortable: false,
-      renderCell: (params) => {
-        return params.row.type ? <ProductType type={params.row.type} /> : null;
+  const [columns, setColumns] = useState<GridColDef[]>([]);
+  useEffect(() => {
+    setColumns([
+      {
+        field: 'name',
+        headerName: t(i18n)`Name, description`,
+        display: 'flex',
+        flex: 3,
+        renderCell: (params) => (
+          <Stack spacing={1} width="100%">
+            <Typography variant="caption">{params.row.name}</Typography>
+            <Typography
+              color="secondary"
+              sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {params.row.description}
+            </Typography>
+          </Stack>
+        ),
       },
-    },
-    {
-      field: 'price',
-      headerName: t(i18n)`Price per unit`,
-      flex: 1,
-      sortable: false,
-      align: 'right',
-      headerAlign: 'right',
-      valueGetter: (value: ProductServiceResponse['price']) => {
-        const price = value;
+      {
+        field: 'type',
+        headerName: t(i18n)`Type`,
+        display: 'flex',
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return params.row.type ? (
+            <ProductType type={params.row.type} />
+          ) : null;
+        },
+      },
+      {
+        field: 'price',
+        headerName: t(i18n)`Price per unit`,
+        flex: 1,
+        sortable: false,
+        align: 'right',
+        headerAlign: 'right',
+        valueGetter: (value: ProductServiceResponse['price']) => {
+          const price = value;
 
-        return price
-          ? formatCurrencyToDisplay(price.value, price.currency)
-          : '';
+          return price
+            ? formatCurrencyToDisplay(price.value, price.currency)
+            : '';
+        },
       },
-    },
-    {
-      field: 'measure_unit_id',
-      headerName: t(i18n)`Units`,
-      flex: 1,
-      sortable: false,
-      renderCell: (params) => {
-        return <MeasureUnit unitId={params.value} />;
+      {
+        field: 'measure_unit_id',
+        headerName: t(i18n)`Units`,
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return <MeasureUnit unitId={params.value} />;
+        },
       },
-    },
-    {
-      field: 'actions',
-      sortable: false,
-      headerName: '',
-      width: 70,
-      renderCell: (params) => (
-        <TableActions
-          permissions={{
-            isUpdateAllowed: isUpdateSupported,
-            isDeleteAllowed: isDeleteSupported,
-          }}
-          onEdit={() => onEdit?.(params.row)}
-          onDelete={() => {
-            setIsDeleteDialogOpen({
-              id: params.row.id,
-              open: true,
-            });
-          }}
-        />
-      ),
-    },
+      {
+        field: 'actions',
+        sortable: false,
+        headerName: '',
+        width: 70,
+        renderCell: (params) => (
+          <TableActions
+            permissions={{
+              isUpdateAllowed: isUpdateSupported,
+              isDeleteAllowed: isDeleteSupported,
+            }}
+            onEdit={() => onEdit?.(params.row)}
+            onDelete={() => {
+              setIsDeleteDialogOpen({
+                id: params.row.id,
+                open: true,
+              });
+            }}
+          />
+        ),
+      },
+    ]);
+  }, [
+    formatCurrencyToDisplay,
+    i18n,
+    isDeleteSupported,
+    isUpdateSupported,
+    onEdit,
   ]);
 
   if (isReadSupportedLoading) {
