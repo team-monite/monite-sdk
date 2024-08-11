@@ -18,7 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -77,7 +77,53 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
-  const gridApiRef = useAutosizeGridColumns(creditNotes?.data);
+  const [columns] = useState<GridColDef[]>([
+    {
+      field: 'document_id',
+      headerName: t(i18n)`Number`,
+    },
+    {
+      field: 'created_at',
+      headerName: t(i18n)`Created on`,
+      valueFormatter: (value) =>
+        value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+    },
+    {
+      field: 'issue_date',
+      headerName: t(i18n)`Issue date`,
+      valueFormatter: (value) =>
+        value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+    },
+    {
+      field: 'counterpart_name',
+      headerName: t(i18n)`Customer`,
+      sortable: ReceivableCursorFields.includes('counterpart_name'),
+      renderCell: (params) => (
+        <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+      ),
+    },
+    {
+      field: 'status',
+      headerName: t(i18n)`Status`,
+      sortable: ReceivableCursorFields.includes('status'),
+      renderCell: (params) => {
+        const status = params.value;
+        return <InvoiceStatusChip status={status} />;
+      },
+    },
+    {
+      field: 'amount',
+      headerName: t(i18n)`Amount`,
+      sortable: ReceivableCursorFields.includes('amount'),
+      valueGetter: (_, row) => {
+        const value = row.total_amount;
+
+        return value && formatCurrencyToDisplay(value, row.currency);
+      },
+    },
+  ]);
+
+  const gridApiRef = useAutosizeGridColumns(creditNotes?.data, columns);
 
   const className = 'Monite-CreditNotesTable';
 
@@ -129,55 +175,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               />
             ),
           }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'counterpart_name',
-              headerName: t(i18n)`Customer`,
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'status',
-              headerName: t(i18n)`Status`,
-              sortable: ReceivableCursorFields.includes('status'),
-              renderCell: (params) => {
-                const status = params.value;
-                return <InvoiceStatusChip status={status} />;
-              },
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value && formatCurrencyToDisplay(value, row.currency);
-              },
-            },
-          ]}
+          columns={columns}
           rows={creditNotes?.data ?? []}
         />
       </Box>

@@ -1,50 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { useGridApiRef } from '@mui/x-data-grid';
+import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
 // Adapted from https://mui.com/x/react-data-grid/column-dimensions/#autosizing-asynchronously
 // setTimeout and flushSync are necessary for call order control
 // Docs say:
 // The Data Grid can only autosize based on the currently rendered cells.
 // DOM access is required to accurately calculate dimensions
-export function useAutosizeGridColumns(rows: any) {
+export function useAutosizeGridColumns(rows: any, columns: GridColDef[]) {
   const gridApiRef = useGridApiRef();
-  const [columnWidths, setColumnWidths] = useState<
-    { field: string; width: number }[]
-  >([]);
 
   useEffect(() => {
     const grid = gridApiRef.current;
-    if (!grid || !grid.autosizeColumns) return;
-    if (columnWidths && columnWidths.length > 0) {
-      for (const column of columnWidths) {
-        grid.setColumnWidth(column.field, column.width ?? 100);
+    if (!grid || !grid.autosizeColumns || !rows || !rows.length) return;
+    const gridColumns = grid.getAllColumns();
+    let columnsToAutoSize: string[] | undefined;
+    for (const gridColumn of gridColumns) {
+      // Skip columns that were already resized
+      if (!gridColumn.hasBeenResized) {
+        if (!columnsToAutoSize) columnsToAutoSize = [];
+        columnsToAutoSize.push(gridColumn.field);
       }
-    } else {
-      setTimeout(() => {
-        ReactDOM.flushSync(() => {
-          setTimeout(async () => {
-            await grid.autosizeColumns({
-              includeHeaders: true,
-              includeOutliers: true,
-              expand: true,
-            });
-            if (rows && rows.length > 0) {
-              const columns = grid.getAllColumns();
-              setColumnWidths(
-                columns.map((c) => ({
-                  field: c.field,
-                  width: c.width ?? 100,
-                }))
-              );
-              console.log(columns.map((c) => c.width));
-            }
-          }, 1);
-        });
-      }, 1);
     }
-  }, [gridApiRef, rows, columnWidths]);
+    if (!columnsToAutoSize) return;
+    setTimeout(() => {
+      ReactDOM.flushSync(() => {
+        setTimeout(async () => {
+          await grid.autosizeColumns({
+            columns: columnsToAutoSize,
+            includeHeaders: true,
+            includeOutliers: true,
+            expand: true,
+          });
+        }, 1);
+      });
+    }, 1);
+  }, [gridApiRef, rows, columns]);
 
   return gridApiRef;
 }

@@ -19,7 +19,12 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, gridClasses, GridSortModel } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  gridClasses,
+  GridColDef,
+  GridSortModel,
+} from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { addDays, formatISO } from 'date-fns';
@@ -129,6 +134,37 @@ const UserRolesTableBase = ({
     onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
+  const [columns] = useState<GridColDef[]>([
+    {
+      field: 'name',
+      headerName: t(i18n)`Name`,
+      sortable: false,
+      flex: 1,
+    },
+    {
+      field: 'permissions',
+      headerName: t(i18n)`Permissions`,
+      sortable: false,
+      flex: 2,
+      renderCell: (params) => (
+        <PermissionsCell
+          permissions={params.value}
+          onCLickSeeAll={() => onRowClick?.(params.row.id)}
+        />
+      ),
+    },
+    {
+      field: 'created_at',
+      headerName: t(i18n)`Created on`,
+      sortable: true,
+      type: 'date',
+      flex: 1,
+      valueFormatter: (
+        value: components['schemas']['PayableResponseSchema']['created_at']
+      ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+    },
+  ]);
+
   if (isReadSupportedLoading) {
     return <LoadingPage />;
   }
@@ -158,36 +194,7 @@ const UserRolesTableBase = ({
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'permissions',
-              headerName: t(i18n)`Permissions`,
-              sortable: false,
-              flex: 2,
-              renderCell: (params) => (
-                <PermissionsCell
-                  permissions={params.value}
-                  onCLickSeeAll={() => onRowClick?.(params.row.id)}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: true,
-              type: 'date',
-              flex: 1,
-              valueFormatter: (
-                value: components['schemas']['PayableResponseSchema']['created_at']
-              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-          ]}
+          columns={columns}
           rows={roles?.data || []}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => onRowClick?.(params.row.id)}

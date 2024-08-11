@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -19,6 +19,7 @@ import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
 import {
   DataGrid,
+  GridColDef,
   GridRenderCellParams,
   GridSortDirection,
   GridSortModel,
@@ -98,7 +99,80 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps && restProps.onRowActionClick,
   });
 
-  const gridApiRef = useAutosizeGridColumns(invoices?.data);
+  const [columns, setColumns] = useState<GridColDef[]>([]);
+  useEffect(() => {
+    setColumns([
+      {
+        field: 'document_id',
+        headerName: t(i18n)`Number`,
+        sortable: false,
+        renderCell: ({ value }) => {
+          if (!value) {
+            return t(i18n)`INV-auto`;
+          }
+
+          return value;
+        },
+      },
+      {
+        field: 'counterpart_name',
+        headerName: t(i18n)`Customer`,
+        sortable: ReceivableCursorFields.includes('counterpart_name'),
+        display: 'flex',
+        renderCell: (params) => (
+          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+        ),
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created on`,
+        sortable: false,
+        valueFormatter: (value) =>
+          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+      },
+      {
+        field: 'issue_date',
+        headerName: t(i18n)`Issue date`,
+        sortable: false,
+        valueFormatter: (value) =>
+          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: ReceivableCursorFields.includes('status'),
+        renderCell: (
+          params: GridRenderCellParams<
+            components['schemas']['ReceivableResponse']
+          >
+        ) => {
+          const status = params.value;
+          return <InvoiceStatusChip status={status} />;
+        },
+      },
+      {
+        field: 'amount',
+        headerName: t(i18n)`Amount`,
+        sortable: ReceivableCursorFields.includes('amount'),
+        valueGetter: (_, row) => {
+          const value = row.total_amount;
+
+          return value ? formatCurrencyToDisplay(value, row.currency) : '';
+        },
+      },
+      {
+        field: 'due_date',
+        headerName: t(i18n)`Due date`,
+        sortable: false,
+        valueFormatter: (value) =>
+          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+      },
+      ...(invoiceActionCell ? [invoiceActionCell] : []),
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [invoiceActionCell]);
+
+  const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);
 
   const className = 'Monite-InvoicesTable';
 
@@ -159,83 +233,7 @@ const InvoicesTableBase = ({
               />
             ),
           }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-              sortable: false,
-              renderCell: ({ value }) => {
-                if (!value) {
-                  return t(i18n)`INV-auto`;
-                }
-
-                return value;
-              },
-            },
-            {
-              field: 'counterpart_name',
-              headerName: t(i18n)`Customer`,
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue date`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-            },
-            {
-              field: 'status',
-              headerName: t(i18n)`Status`,
-              sortable: ReceivableCursorFields.includes('status'),
-              renderCell: (
-                params: GridRenderCellParams<
-                  components['schemas']['ReceivableResponse']
-                >
-              ) => {
-                const status = params.value;
-                return <InvoiceStatusChip status={status} />;
-              },
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value
-                  ? formatCurrencyToDisplay(value, row.currency)
-                  : '';
-              },
-            },
-            {
-              field: 'due_date',
-              headerName: t(i18n)`Due date`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-            },
-            ...(invoiceActionCell ? [invoiceActionCell] : []),
-          ]}
+          columns={columns}
           rows={invoices?.data ?? []}
         />
       </Box>

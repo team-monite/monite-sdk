@@ -13,7 +13,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
@@ -122,6 +122,48 @@ const ApprovalPoliciesTableBase = ({
     }
   }, [currentPaginationToken, approvalPolicies]);
 
+  const [columns] = useState<GridColDef[]>([
+    {
+      field: 'name',
+      headerName: t(i18n)`Policy name`,
+      sortable: false,
+      flex: 1,
+    },
+    {
+      field: 'triggers',
+      headerName: t(i18n)`Triggers`,
+      sortable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+      ),
+    },
+    {
+      field: 'rule',
+      headerName: t(i18n)`Rule`,
+      sortable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+      ),
+    },
+    {
+      field: 'created_at',
+      headerName: t(i18n)`Created at`,
+      sortable: false,
+      flex: 0.7,
+      valueFormatter: (value) =>
+        i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+    },
+    {
+      field: 'created_by',
+      headerName: t(i18n)`Created by`,
+      sortable: false,
+      flex: 0.8,
+      renderCell: ({ value }) => <ApprovalPoliciesUser entityUserId={value} />,
+    },
+  ]);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilters((prevFilters) => ({
@@ -164,49 +206,7 @@ const ApprovalPoliciesTableBase = ({
           }}
           loading={isLoading}
           getRowHeight={() => 'auto'}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Policy name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'triggers',
-              headerName: t(i18n)`Triggers`,
-              sortable: false,
-              flex: 1,
-              renderCell: (params) => (
-                <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
-              ),
-            },
-            {
-              field: 'rule',
-              headerName: t(i18n)`Rule`,
-              sortable: false,
-              flex: 1,
-              renderCell: (params) => (
-                <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created at`,
-              sortable: false,
-              flex: 0.7,
-              valueFormatter: (value) =>
-                i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'created_by',
-              headerName: t(i18n)`Created by`,
-              sortable: false,
-              flex: 0.8,
-              renderCell: ({ value }) => (
-                <ApprovalPoliciesUser entityUserId={value} />
-              ),
-            },
-          ]}
+          columns={columns}
           rows={approvalPolicies?.data || []}
           onRowClick={(params) => onRowClick?.(params.row)}
           slots={{

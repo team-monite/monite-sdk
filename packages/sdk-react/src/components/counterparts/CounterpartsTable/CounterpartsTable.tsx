@@ -37,7 +37,7 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { getCounterpartName, getIndividualName } from '../helpers';
@@ -228,6 +228,122 @@ const CounterpartsTableBase = ({
 
   const { root } = useRootElements();
 
+  const [columns] = useState<GridColDef[]>([
+    {
+      field: 'counterpart_name',
+      sortable: true,
+      headerName: t(i18n)`Name, country, city`,
+      display: 'flex',
+      flex: 1,
+      renderCell: (params) => {
+        const counterpart = params.row;
+
+        const name =
+          'organization' in counterpart
+            ? counterpart.organization.legal_name
+            : getIndividualName(counterpart.individual);
+
+        return (
+          <>
+            <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
+            <Typography variant="caption">{name}</Typography>
+          </>
+        );
+      },
+    },
+    {
+      field: 'category',
+      sortable: false,
+      headerName: t(i18n)`Category`,
+      display: 'flex',
+      flex: 0.6,
+      renderCell: (params) => {
+        const counterpart = params.row;
+
+        const { is_customer, is_vendor } =
+          'organization' in counterpart
+            ? counterpart.organization
+            : counterpart.individual;
+
+        const items = [
+          {
+            label: t(i18n)`Customer`,
+            value: is_customer,
+          },
+          { label: t(i18n)`Vendor`, value: is_vendor },
+        ].map(
+          ({ label, value }) =>
+            value && (
+              <Chip
+                key={label}
+                label={label}
+                variant="outlined"
+                color="default"
+              />
+            )
+        );
+
+        return (
+          <Stack direction="row" spacing={1}>
+            {items}
+          </Stack>
+        );
+      },
+    },
+    {
+      field: 'contacts',
+      sortable: false,
+      flex: 1,
+      headerName: t(i18n)`Contact information`,
+      renderCell: (params) => {
+        const counterpart = params.row;
+
+        const { email, phone } =
+          'organization' in counterpart
+            ? counterpart.organization
+            : counterpart.individual;
+
+        return (
+          <Stack spacing={1} direction="column">
+            {email && (
+              <Styled.MuiColContacts>
+                <MuiEnvelopeIcon fontSize="small" color="disabled" />
+                <Typography variant="body2">{email}</Typography>
+              </Styled.MuiColContacts>
+            )}
+            {phone && (
+              <Styled.MuiColContacts>
+                <MuiPhoneIcon fontSize="small" color="disabled" />
+                <Typography variant="body2">{phone}</Typography>
+              </Styled.MuiColContacts>
+            )}
+          </Stack>
+        );
+      },
+    },
+    {
+      field: 'actions',
+      sortable: false,
+      headerName: '',
+      width: 70,
+      renderCell: (params) => (
+        <TableActions
+          permissions={{
+            isUpdateAllowed: isUpdateSupported,
+            isDeleteAllowed: isDeleteSupported,
+          }}
+          onEdit={() => {
+            onEdit?.(params.row.id);
+          }}
+          onDelete={() => {
+            setSelectedCounterpart(params.row);
+            setIsDeleteDialogOpen(true);
+          }}
+        />
+      ),
+    },
+  ]);
+
   if (isReadSupportedLoading) {
     return <LoadingPage />;
   }
@@ -299,121 +415,7 @@ const CounterpartsTableBase = ({
               />
             ),
           }}
-          columns={[
-            {
-              field: 'counterpart_name',
-              sortable: true,
-              headerName: t(i18n)`Name, country, city`,
-              display: 'flex',
-              flex: 1,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const name =
-                  'organization' in counterpart
-                    ? counterpart.organization.legal_name
-                    : getIndividualName(counterpart.individual);
-
-                return (
-                  <>
-                    <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
-                    <Typography variant="caption">{name}</Typography>
-                  </>
-                );
-              },
-            },
-            {
-              field: 'category',
-              sortable: false,
-              headerName: t(i18n)`Category`,
-              display: 'flex',
-              flex: 0.6,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const { is_customer, is_vendor } =
-                  'organization' in counterpart
-                    ? counterpart.organization
-                    : counterpart.individual;
-
-                const items = [
-                  {
-                    label: t(i18n)`Customer`,
-                    value: is_customer,
-                  },
-                  { label: t(i18n)`Vendor`, value: is_vendor },
-                ].map(
-                  ({ label, value }) =>
-                    value && (
-                      <Chip
-                        key={label}
-                        label={label}
-                        variant="outlined"
-                        color="default"
-                      />
-                    )
-                );
-
-                return (
-                  <Stack direction="row" spacing={1}>
-                    {items}
-                  </Stack>
-                );
-              },
-            },
-            {
-              field: 'contacts',
-              sortable: false,
-              flex: 1,
-              headerName: t(i18n)`Contact information`,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const { email, phone } =
-                  'organization' in counterpart
-                    ? counterpart.organization
-                    : counterpart.individual;
-
-                return (
-                  <Stack spacing={1} direction="column">
-                    {email && (
-                      <Styled.MuiColContacts>
-                        <MuiEnvelopeIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{email}</Typography>
-                      </Styled.MuiColContacts>
-                    )}
-                    {phone && (
-                      <Styled.MuiColContacts>
-                        <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{phone}</Typography>
-                      </Styled.MuiColContacts>
-                    )}
-                  </Stack>
-                );
-              },
-            },
-            {
-              field: 'actions',
-              sortable: false,
-              headerName: '',
-              width: 70,
-              renderCell: (params) => (
-                <TableActions
-                  permissions={{
-                    isUpdateAllowed: isUpdateSupported,
-                    isDeleteAllowed: isDeleteSupported,
-                  }}
-                  onEdit={() => {
-                    onEdit?.(params.row.id);
-                  }}
-                  onDelete={() => {
-                    setSelectedCounterpart(params.row);
-                    setIsDeleteDialogOpen(true);
-                  }}
-                />
-              ),
-            },
-          ]}
+          columns={columns}
           rows={counterparts?.data || []}
         />
         <Dialog

@@ -18,7 +18,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -91,7 +91,61 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
-  const gridApiRef = useAutosizeGridColumns(quotes?.data);
+  const [columns] = useState<GridColDef[]>([
+    {
+      field: 'document_id',
+      headerName: t(i18n)`Number`,
+    },
+    {
+      field: 'created_at',
+      headerName: t(i18n)`Created on`,
+      valueFormatter: (value) =>
+        value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+    },
+    {
+      field: 'issue_date',
+      headerName: t(i18n)`Issue Date`,
+      valueFormatter: (value) =>
+        value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+    },
+    {
+      field: 'counterpart_name',
+      sortable: ReceivableCursorFields.includes('counterpart_name'),
+      headerName: t(i18n)`Customer`,
+      renderCell: (params) => (
+        <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+      ),
+    },
+    {
+      field: 'expiry_date',
+      sortable: false,
+      headerName: t(i18n)`Due date`,
+      valueFormatter: (value) =>
+        value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+    },
+    {
+      field: 'status',
+      sortable: ReceivableCursorFields.includes('status'),
+      headerName: t(i18n)`Status`,
+      renderCell: (params) => {
+        const status = params.value;
+
+        return <InvoiceStatusChip status={status} />;
+      },
+    },
+    {
+      field: 'amount',
+      headerName: t(i18n)`Amount`,
+      sortable: ReceivableCursorFields.includes('amount'),
+      valueGetter: (_, row) => {
+        const value = row.total_amount;
+
+        return value ? formatCurrencyToDisplay(value, row.currency) : '';
+      },
+    },
+  ]);
+
+  const gridApiRef = useAutosizeGridColumns(quotes?.data, columns);
 
   const className = 'Monite-QuotesTable';
 
@@ -143,65 +197,7 @@ const QuotesTableBase = ({
               />
             ),
           }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue Date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'counterpart_name',
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              headerName: t(i18n)`Customer`,
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'expiry_date',
-              sortable: false,
-              headerName: t(i18n)`Due date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'status',
-              sortable: ReceivableCursorFields.includes('status'),
-              headerName: t(i18n)`Status`,
-              renderCell: (params) => {
-                const status = params.value;
-
-                return <InvoiceStatusChip status={status} />;
-              },
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value
-                  ? formatCurrencyToDisplay(value, row.currency)
-                  : '';
-              },
-            },
-          ]}
+          columns={columns}
           rows={quotes?.data || []}
         />
       </Box>
