@@ -189,189 +189,192 @@ const PayablesTableBase = ({
 
   const className = 'Monite-PayablesTable';
   return (
-    <>
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        pt: 2,
+      }}
+    >
       <Box
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
-          padding: 2,
+          marginBottom: 2,
         }}
       >
-        <Box
-          sx={{
-            marginBottom: 2,
-          }}
-        >
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => {
-            onRowClick?.(params.row.id);
-          }}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={payables?.next_pagination_token}
-                prevPage={payables?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'document_id',
-              sortable: false,
-              headerName: t(i18n)`Invoice #`,
-              display: 'flex',
-              flex: 1.1,
-              colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
-              renderCell: (params) => {
-                const payable = params.row;
-
-                if (isPayableInOCRProcessing(payable)) {
-                  return (
-                    <>
-                      <FindInPageOutlinedIcon fontSize="small" />
-                      {payable.file?.name}
-                    </>
-                  );
-                }
-
-                return payable.document_id;
-              },
-            },
-            {
-              field: 'counterpart_id',
-              sortable: false,
-              headerName: t(i18n)`Counterpart`,
-              flex: 1.2,
-              renderCell: (params) => (
-                <CounterpartCell counterpartId={params.value} />
-              ),
-            },
-            {
-              field: 'created_at',
-              type: 'date',
-              headerName: t(i18n)`Invoice date`,
-              display: 'flex',
-              flex: 0.7,
-              colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
-              renderCell: ({ row, formattedValue }) => {
-                if (isPayableInOCRProcessing(row)) {
-                  return (
-                    <Stack direction="row">
-                      <CircularProgress size={22} sx={{ mr: 1 }} />
-                      {t(i18n)`Processing file…`}
-                    </Stack>
-                  );
-                }
-
-                return formattedValue;
-              },
-              valueFormatter: (
-                value: components['schemas']['PayableResponseSchema']['created_at']
-              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'issued_at',
-              sortable: false,
-              type: 'date',
-              headerName: t(i18n)({
-                id: 'Issue date Name',
-                message: 'Issue date',
-                comment: 'Payables Table "Issue date" heading title',
-              }),
-              flex: 0.7,
-              valueFormatter: (
-                value: components['schemas']['PayableResponseSchema']['issued_at']
-              ) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'due_date',
-              sortable: false,
-              type: 'date',
-              headerName: t(i18n)({
-                id: 'Due date Name',
-                message: 'Due date',
-                comment: 'Payables Table "Due date" heading title',
-              }),
-              flex: 0.7,
-              valueFormatter: (
-                value: components['schemas']['PayableResponseSchema']['due_date']
-              ) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'status',
-              sortable: false,
-              headerName: t(i18n)({
-                id: 'Status Name',
-                message: 'Status',
-                comment: 'Payables Table "Status" heading title',
-              }),
-              flex: 0.9,
-              renderCell: (params) => (
-                <PayableStatusChip status={params.value} />
-              ),
-            },
-            {
-              field: 'amount',
-              sortable: false,
-              headerName: t(i18n)({
-                id: 'Amount Name',
-                message: 'Amount',
-                comment: 'Payables Table "Amount" heading title',
-              }),
-              valueGetter: (_, row) => {
-                const payable = row;
-
-                return payable.amount_to_pay && payable.currency
-                  ? formatCurrencyToDisplay(
-                      payable.amount_to_pay,
-                      payable.currency
-                    )
-                  : '';
-              },
-            },
-            {
-              field: 'pay',
-              headerName: '',
-              sortable: false,
-              renderCell: (params) => {
-                const payable = params.row;
-
-                return <PayablesTableAction payable={payable} onPay={onPay} />;
-              },
-            },
-          ]}
-          rows={payables?.data || []}
-        />
+        <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        // autoHeight
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => {
+          onRowClick?.(params.row.id);
+        }}
+        sx={{
+          display: 'flex',
+          flex: '1 1 auto',
+          minHeight: 0,
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={payables?.next_pagination_token}
+              prevPage={payables?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'document_id',
+            sortable: false,
+            headerName: t(i18n)`Invoice #`,
+            display: 'flex',
+            flex: 1.1,
+            colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
+            renderCell: (params) => {
+              const payable = params.row;
+
+              if (isPayableInOCRProcessing(payable)) {
+                return (
+                  <>
+                    <FindInPageOutlinedIcon fontSize="small" />
+                    {payable.file?.name}
+                  </>
+                );
+              }
+
+              return payable.document_id;
+            },
+          },
+          {
+            field: 'counterpart_id',
+            sortable: false,
+            headerName: t(i18n)`Counterpart`,
+            flex: 1.2,
+            renderCell: (params) => (
+              <CounterpartCell counterpartId={params.value} />
+            ),
+          },
+          {
+            field: 'created_at',
+            type: 'date',
+            headerName: t(i18n)`Invoice date`,
+            display: 'flex',
+            flex: 0.7,
+            colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
+            renderCell: ({ row, formattedValue }) => {
+              if (isPayableInOCRProcessing(row)) {
+                return (
+                  <Stack direction="row">
+                    <CircularProgress size={22} sx={{ mr: 1 }} />
+                    {t(i18n)`Processing file…`}
+                  </Stack>
+                );
+              }
+
+              return formattedValue;
+            },
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['created_at']
+            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'issued_at',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Issue date Name',
+              message: 'Issue date',
+              comment: 'Payables Table "Issue date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['issued_at']
+            ) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'due_date',
+            sortable: false,
+            type: 'date',
+            headerName: t(i18n)({
+              id: 'Due date Name',
+              message: 'Due date',
+              comment: 'Payables Table "Due date" heading title',
+            }),
+            flex: 0.7,
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['due_date']
+            ) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'status',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Status Name',
+              message: 'Status',
+              comment: 'Payables Table "Status" heading title',
+            }),
+            flex: 0.9,
+            renderCell: (params) => <PayableStatusChip status={params.value} />,
+          },
+          {
+            field: 'amount',
+            sortable: false,
+            headerName: t(i18n)({
+              id: 'Amount Name',
+              message: 'Amount',
+              comment: 'Payables Table "Amount" heading title',
+            }),
+            valueGetter: (_, row) => {
+              const payable = row;
+
+              return payable.amount_to_pay && payable.currency
+                ? formatCurrencyToDisplay(
+                    payable.amount_to_pay,
+                    payable.currency
+                  )
+                : '';
+            },
+          },
+          {
+            field: 'pay',
+            headerName: '',
+            sortable: false,
+            renderCell: (params) => {
+              const payable = params.row;
+
+              return <PayablesTableAction payable={payable} onPay={onPay} />;
+            },
+          },
+        ]}
+        rows={payables?.data || []}
+      />
+    </Box>
   );
 };
