@@ -37,6 +37,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:73
 msgid "{0}"
 msgstr "{0}"
 
@@ -61,25 +62,20 @@ msgid "{bankAccountName} (Default)"
 msgstr "{bankAccountName} (Default)"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:22
-msgid "{days_after, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
-msgstr "{days_after, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
+msgid "{days_after} {day_plural} overdue"
+msgstr "{days_after} {day_plural} overdue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:22
-msgid "{days_after} {0} overdue"
-msgstr "{days_after} {0} overdue"
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:65
+msgid "{days_before} {day_plural} before overdue"
+msgstr "{days_before} {day_plural} before overdue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:69
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:77
-msgid "{days_before, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
-msgstr "{days_before, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:64
+msgid "{days_before} {day_plural} till overdue"
+msgstr "{days_before} {day_plural} till overdue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:77
-msgid "{days_before} {0} before overdue"
-msgstr "{days_before} {0} before overdue"
-
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:69
-msgid "{days_before} {0} till overdue"
-msgstr "{days_before} {0} till overdue"
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:73
+msgid "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
+msgstr "{days, plural, one {day} two {days} few {days} many {days} zero {days} other {days}}"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:272
 msgid "+ Add reminder"
@@ -91,11 +87,11 @@ msgstr "+ Add reminder"
 msgid "CounterpartDetails--CounterpartOrganizationForm--businessAddressSection--caption"
 msgstr "🚫"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:42
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:35
 msgid "1st discount period"
 msgstr "1st discount period"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:47
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:40
 msgid "2nd discount period"
 msgstr "2nd discount period"
 
@@ -2074,7 +2070,7 @@ msgstr "Dry Cleaners"
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:103
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:411
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:52
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:235
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:182
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:131
@@ -3961,14 +3957,6 @@ msgstr "Overdue reminder error"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:252
 msgid "Overdue reminders"
 msgstr "Overdue reminders"
-
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:88
-#~ msgid "Overview"
-#~ msgstr "Overview"
-
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:85
-#~ msgid "Overview or details tabs"
-#~ msgstr "Overview or details tabs"
 
 #: src/components/onboarding/utils/codeToLabel.ts:40
 msgid "Owner"
@@ -5868,10 +5856,6 @@ msgstr "Users from the list"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRulesItem.tsx:38
 msgid "Users from the list{0}"
 msgstr "Users from the list{0}"
-
-#: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:132
-#~ msgid "Usually it takes no more than 1–2 mins."
-#~ msgstr "Usually it takes no more than 1–2 mins."
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:137
 msgid "Usually it takes no more than 1–2 minutes."

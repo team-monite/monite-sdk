@@ -19,9 +19,6 @@ const StyledErrorRow = styled(StyledRow, {
 const StyledCell = styled('td')`
   padding: ${({ theme }) => theme.spacing(1.5)};
   border-bottom: 1px solid ${({ theme }) => theme.palette.divider};
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
 
   tr:last-child & {
     border-bottom: none;

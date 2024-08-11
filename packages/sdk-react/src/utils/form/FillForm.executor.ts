@@ -1,4 +1,4 @@
-import selectEvent from 'react-select-event';
+import { select } from 'react-select-event';
 
 import { fireEvent, screen } from '@testing-library/react';
 
@@ -71,7 +71,7 @@ export class FillFormExecutor {
         case 'dropdown': {
           const htmlElement = screen.getByLabelText(field.name);
 
-          await selectEvent.select(htmlElement, field.value);
+          await select(htmlElement, field.value);
 
           break;
         }

@@ -156,6 +156,7 @@ const UserRolesTableBase = ({
           }}
           autoHeight
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           columns={[
             {

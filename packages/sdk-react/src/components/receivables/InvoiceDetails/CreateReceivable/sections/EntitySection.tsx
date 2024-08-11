@@ -72,13 +72,9 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
     useState<boolean>(false);
 
-  const visibleFields = useMemo(() => {
-    if (!hidden) {
-      return allFields;
-    }
-
-    return allFields.filter((field) => field !== 'purchase_order');
-  }, [hidden]);
+  const visibleFields = allFields.filter((field) =>
+    hidden ? field !== 'purchase_order' : true
+  );
 
   const gridItemProps = useMemo(() => {
     const proportion = Math.floor(12 / visibleFields.length);

@@ -17,17 +17,10 @@ export const createOverdueReminderCardTerms = (
     {
       termPeriodName: t(i18n)`Overdue`,
       termPeriods:
-        overdueReminder?.terms?.map(
-          ({ days_after }) =>
-            t(i18n)`${days_after} ${plural(days_after, {
-              one: 'day',
-              two: 'days',
-              few: 'days',
-              many: 'days',
-              zero: 'days',
-              other: 'days',
-            })} overdue`
-        ) ?? [],
+        overdueReminder?.terms?.map(({ days_after }) => {
+          const day_plural = createDayPluralForm(i18n, days_after);
+          return t(i18n)`${days_after} ${day_plural} overdue`;
+        }) ?? [],
     },
   ];
 };
@@ -60,30 +53,28 @@ export const createPaymentReminderCardTerms = (
   >((acc, { reminderTerm, termPeriodName, isDueDate }) => {
     if (!reminderTerm) return acc;
     const { days_before } = reminderTerm;
+    const day_plural = createDayPluralForm(i18n, days_before);
+
     return [
       ...acc,
       {
         termPeriodName,
         termPeriods: [
           isDueDate
-            ? t(i18n)`${days_before} ${plural(days_before, {
-                one: 'day',
-                two: 'days',
-                few: 'days',
-                many: 'days',
-                zero: 'days',
-                other: 'days',
-              })} till overdue`
-            : t(i18n)`${days_before} ${plural(days_before, {
-                one: 'day',
-                two: 'days',
-                few: 'days',
-                many: 'days',
-                zero: 'days',
-                other: 'days',
-              })} before overdue`,
+            ? t(i18n)`${days_before} ${day_plural} till overdue`
+            : t(i18n)`${days_before} ${day_plural} before overdue`,
         ],
       },
     ];
   }, []);
 };
+
+const createDayPluralForm = (i18n: I18n, days: number) =>
+  t(i18n)`${plural(days, {
+    one: 'day',
+    two: 'days',
+    few: 'days',
+    many: 'days',
+    zero: 'days',
+    other: 'days',
+  })}`;
