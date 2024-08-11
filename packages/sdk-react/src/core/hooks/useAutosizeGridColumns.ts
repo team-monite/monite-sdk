@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import * as ReactDOM from 'react-dom';
+import { flushSync } from 'react-dom';
 
 import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
@@ -25,7 +25,7 @@ export function useAutosizeGridColumns(rows: any, columns: GridColDef[]) {
     }
     if (!columnsToAutoSize) return;
     setTimeout(() => {
-      ReactDOM.flushSync(() => {
+      flushSync(() => {
         setTimeout(async () => {
           await grid.autosizeColumns({
             columns: columnsToAutoSize,
