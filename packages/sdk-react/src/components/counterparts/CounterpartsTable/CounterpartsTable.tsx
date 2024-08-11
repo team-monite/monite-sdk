@@ -258,6 +258,7 @@ const CounterpartsTableBase = ({
         </Box>
         <DataGrid
           rowSelection={false}
+          disableColumnFilter={true}
           initialState={{
             sorting: {
               sortModel: sortModel && [sortModel],

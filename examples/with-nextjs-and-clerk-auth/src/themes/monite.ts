@@ -196,13 +196,6 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiAutocomplete: {
-    styleOverrides: {
-      endAdornment: {
-        top: 'calc(50% - 16px)',
-      },
-    },
-  },
   MuiDrawer: {
     styleOverrides: {
       root: ({ theme }) => ({

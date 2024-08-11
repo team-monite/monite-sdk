@@ -115,6 +115,7 @@ const QuotesTableBase = ({
           }}
           apiRef={gridApiRef}
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           onSortModelChange={onChangeSort}
           sx={{

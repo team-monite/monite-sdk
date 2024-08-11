@@ -4,6 +4,7 @@
   --demo-padding-3: calc(var(--demo-padding) * 3);
   --demo-padding-4: calc(var(--demo-padding) * 4);
   --demo-padding-5: calc(var(--demo-padding) * 5);
+  --demo-padding-6: calc(var(--demo-padding) * 6);
   --demo-button-blue: #3737FF;
   --demo-light-gray: #f9f9f9;
   --demo-divider: #DDDDDD;
@@ -127,6 +128,8 @@ html {
       left: 20px;
       top: 10px;
       font-size: 14px;
+      max-width: calc(100% - 52px);
+      text-overflow: ellipsis;
 
       &.MuiFormLabel-filled {
         opacity: 0;
@@ -291,8 +294,19 @@ html {
 
 /* Edit invoice popup */
 .Monite-Receivables-Dialog-ReceivableDetails {
-  .Monite-EditInvoiceDetails-Title {
+  .Monite-ExistingInvoiceDetails-Title, .Monite-EditInvoiceDetails-Title {
     height: var(--demo-form-header);
+
+    padding: 12px var(--demo-padding-4) 12px var(--demo-padding-4);
+
+    .MuiToolbar-root {
+      padding: 0;
+    }
+  }
+
+  .Monite-ExistingInvoiceDetails-Content {
+    padding-left: var(--demo-padding-4);
+    padding-right: var(--demo-padding-4);
   }
 
   .Monite-EditInvoiceDetails-Divider {
@@ -409,14 +423,19 @@ html {
 .MuiDialog-container .Monite-CreateReceivable-Content,
 .MuiDialog-container .Monite-EditInvoiceDetails-Content {
   margin: 0;
-  padding: var(--demo-padding-5) 180px 111px 180px;
+  padding: var(--demo-padding-5) var(--demo-padding-4) 111px  var(--demo-padding-4);
 
-  > form > .MuiStack-root {
-    margin-top: 0;
+  > form {
+    max-width: 940px;
+    margin: 0 auto;
 
-    > h2 {
-      font-size: 48px;
-      padding: 12px 0;
+    > .MuiStack-root {
+      margin-top: 0;
+
+      > h2 {
+        font-size: 48px;
+        padding: 12px 0;
+      }
     }
   }
 }

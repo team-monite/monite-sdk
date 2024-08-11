@@ -211,6 +211,7 @@ const PayablesTableBase = ({
           }}
           apiRef={gridApiRef}
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           onSortModelChange={onChangeSort}
           onRowClick={(params) => {
