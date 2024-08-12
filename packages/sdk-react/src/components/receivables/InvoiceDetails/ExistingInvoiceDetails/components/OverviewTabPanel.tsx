@@ -165,11 +165,7 @@ export const OverviewTabPanel = ({
           )`Linked documents`}</Typography>
           {isCreditNoteLoading && <Skeleton variant="text" />}
           {creditNoteQuery?.data && (
-            <LinkedDocumentsCard
-              creditNotes={
-                creditNoteQuery?.data as components['schemas']['InvoiceResponsePayload'][]
-              }
-            />
+            <LinkedDocumentsCard creditNotes={creditNoteQuery?.data} />
           )}
         </Box>
       )}
@@ -308,13 +304,13 @@ const LinkedDocumentsCard = ({
   creditNotes,
   internalNavigation = false,
 }: {
-  creditNotes: components['schemas']['InvoiceResponsePayload'][];
+  creditNotes: components['schemas']['ReceivableResponse'][];
   internalNavigation?: boolean;
 }) => {
   const { i18n } = useLingui();
 
   const transformCreditNotes = (
-    creditNotes: components['schemas']['InvoiceResponsePayload'][]
+    creditNotes: components['schemas']['ReceivableResponse'][]
   ): TransformCreditNotes[] => {
     if (!creditNotes) return [];
 
