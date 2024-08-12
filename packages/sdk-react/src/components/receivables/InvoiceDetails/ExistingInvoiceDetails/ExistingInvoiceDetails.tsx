@@ -228,7 +228,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
       />
 
       <InvoiceCancelModal
-        id={props.id}
+        invoiceId={props.id}
         open={cancelModalOpened}
         onClose={() => {
           setCancelModalOpened(false);
