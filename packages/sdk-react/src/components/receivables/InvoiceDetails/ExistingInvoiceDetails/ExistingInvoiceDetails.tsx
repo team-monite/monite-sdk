@@ -302,16 +302,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
                       </MenuItem>
-                      <MenuItem
-                        onClick={(event) => {
-                          event.preventDefault();
-                          setCancelModalOpened(true);
-                        }}
-                        disabled={buttons.isCancelButtonDisabled}
-                      >
-                        <CancelIcon fontSize="small" />
-                        {t(i18n)`Cancel`}
-                      </MenuItem>
+                      {buttons.isCancelButtonVisible && (
+                        <MenuItem
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCancelModalOpened(true);
+                          }}
+                          disabled={buttons.isCancelButtonDisabled}
+                        >
+                          <CancelIcon fontSize="small" />
+                          {t(i18n)`Cancel`}
+                        </MenuItem>
+                      )}
                     </StyledMenu>
                   </>
                 )}

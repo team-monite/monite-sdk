@@ -151,7 +151,9 @@ export const OverviewTabPanel = ({
       />
 
       {Boolean(
-        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
+        creditNoteIds &&
+          creditNoteIds?.length > 0 &&
+          (creditNoteQuery?.data || isCreditNoteLoading || creditNoteError)
       ) && (
         <Box
           sx={{
