@@ -103,149 +103,151 @@ const InvoicesTableBase = ({
   const className = 'Monite-InvoicesTable';
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%' }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <ReceivableFilters
-            onChange={(field, value) => {
-              setPaginationToken(undefined);
-              onChangeFilter(field, value);
-            }}
-            filters={[
-              'document_id__contains',
-              'status',
-              'counterpart_id',
-              'due_date__lte',
-            ]}
-          />
-        </Box>
-
-        <DataGrid<components['schemas']['ReceivableResponse']>
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
-            },
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters
+          onChange={(field, value) => {
+            setPaginationToken(undefined);
+            onChangeFilter(field, value);
           }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={invoices?.next_pagination_token}
-                prevPage={invoices?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: paginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setPaginationToken(page ?? undefined);
-                }}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-              sortable: false,
-              flex: 1,
-              renderCell: ({ value }) => {
-                if (!value) {
-                  return t(i18n)`INV-auto`;
-                }
-
-                return value;
-              },
-            },
-            {
-              field: 'counterpart_name',
-              headerName: t(i18n)`Customer`,
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              display: 'flex',
-              flex: 1.3,
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 0.7,
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue date`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 0.7,
-            },
-            {
-              field: 'status',
-              headerName: t(i18n)`Status`,
-              sortable: ReceivableCursorFields.includes('status'),
-              renderCell: (
-                params: GridRenderCellParams<
-                  components['schemas']['ReceivableResponse']
-                >
-              ) => {
-                const status = params.value;
-                return <InvoiceStatusChip status={status} />;
-              },
-              flex: 1,
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value
-                  ? formatCurrencyToDisplay(value, row.currency)
-                  : '';
-              },
-            },
-            {
-              field: 'due_date',
-              headerName: t(i18n)`Due date`,
-              sortable: false,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 0.7,
-            },
-            ...(invoiceActionCell ? [invoiceActionCell] : []),
+          filters={[
+            'document_id__contains',
+            'status',
+            'counterpart_id',
+            'due_date__lte',
           ]}
-          rows={invoices?.data ?? []}
         />
       </Box>
-    </>
+
+      <DataGrid<components['schemas']['ReceivableResponse']>
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={invoices?.next_pagination_token}
+              prevPage={invoices?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: paginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setPaginationToken(page ?? undefined);
+              }}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'document_id',
+            headerName: t(i18n)`Number`,
+            sortable: false,
+            flex: 1,
+            renderCell: ({ value }) => {
+              if (!value) {
+                return t(i18n)`INV-auto`;
+              }
+
+              return value;
+            },
+          },
+          {
+            field: 'counterpart_name',
+            headerName: t(i18n)`Customer`,
+            sortable: ReceivableCursorFields.includes('counterpart_name'),
+            display: 'flex',
+            flex: 1.3,
+            renderCell: (params) => (
+              <InvoiceCounterpartName
+                counterpartId={params.row.counterpart_id}
+              />
+            ),
+          },
+          {
+            field: 'created_at',
+            headerName: t(i18n)`Created on`,
+            sortable: false,
+            valueFormatter: (value) =>
+              value
+                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                : '—',
+            flex: 0.7,
+          },
+          {
+            field: 'issue_date',
+            headerName: t(i18n)`Issue date`,
+            sortable: false,
+            valueFormatter: (value) =>
+              value
+                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                : '—',
+            flex: 0.7,
+          },
+          {
+            field: 'status',
+            headerName: t(i18n)`Status`,
+            sortable: ReceivableCursorFields.includes('status'),
+            renderCell: (
+              params: GridRenderCellParams<
+                components['schemas']['ReceivableResponse']
+              >
+            ) => {
+              const status = params.value;
+              return <InvoiceStatusChip status={status} />;
+            },
+            flex: 1,
+          },
+          {
+            field: 'amount',
+            headerName: t(i18n)`Amount`,
+            sortable: ReceivableCursorFields.includes('amount'),
+            valueGetter: (_, row) => {
+              const value = row.total_amount;
+
+              return value ? formatCurrencyToDisplay(value, row.currency) : '';
+            },
+          },
+          {
+            field: 'due_date',
+            headerName: t(i18n)`Due date`,
+            sortable: false,
+            valueFormatter: (value) =>
+              value
+                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                : '—',
+            flex: 0.7,
+          },
+          ...(invoiceActionCell ? [invoiceActionCell] : []),
+        ]}
+        rows={invoices?.data ?? []}
+      />
+    </Box>
   );
 };

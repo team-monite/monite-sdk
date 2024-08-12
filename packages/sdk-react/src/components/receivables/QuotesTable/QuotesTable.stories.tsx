@@ -16,7 +16,7 @@ export const FullPermissions: Story = {
     onChangeSort: action('onChangeSort'),
   },
   render: (args) => (
-    <div style={{ height: 500 }}>
+    <div style={{ height: 500, padding: 20 }}>
       <QuotesTable {...args} />
     </div>
   ),
