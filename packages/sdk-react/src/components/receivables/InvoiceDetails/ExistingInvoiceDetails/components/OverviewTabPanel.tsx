@@ -306,8 +306,10 @@ const RemindersCard = ({
 
 const LinkedDocumentsCard = ({
   creditNotes,
+  internalNavigation = false,
 }: {
   creditNotes: components['schemas']['InvoiceResponsePayload'][];
+  internalNavigation?: boolean;
 }) => {
   const { i18n } = useLingui();
 
@@ -375,14 +377,21 @@ const LinkedDocumentsCard = ({
               </Typography>
               <Typography variant="body2">
                 {item.description}{' '}
-                <Link
-                  href="#" // Placeholder link as we don't have interlinking in the SDK yet
-                  underline="hover"
-                  color="primary"
-                  variant="body2"
-                >
-                  {item.authorTitle}
-                </Link>
+                {item.authorTitle ? (
+                  // Only render as a link if internal navigation is available
+                  internalNavigation ? (
+                    <Link
+                      href="#" // Placeholder link, should be replaced when interlinking is available
+                      underline="hover"
+                      color="primary"
+                      variant="body2"
+                    >
+                      {item.authorTitle}
+                    </Link>
+                  ) : (
+                    item.authorTitle
+                  )
+                ) : null}
               </Typography>
             </Grid>
             <Grid item>
