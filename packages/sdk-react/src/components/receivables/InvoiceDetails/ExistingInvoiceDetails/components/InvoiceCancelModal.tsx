@@ -61,7 +61,8 @@ export const InvoiceCancelModal = ({
           variant="outlined"
           color="error"
           disabled={cancelMutation.isPending || isReceivableLoading}
-          onClick={() => {
+          onClick={(event) => {
+            event.preventDefault();
             cancelMutation.mutate(undefined, {
               onSuccess: onClose,
             });

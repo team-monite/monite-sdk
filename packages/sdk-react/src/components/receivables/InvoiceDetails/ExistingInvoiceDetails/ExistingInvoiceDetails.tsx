@@ -233,7 +233,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           setCancelModalOpened(false);
         }}
       />
-        
+
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
@@ -275,7 +275,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                   <Button
                     variant="text"
                     color="error"
-                    onClick={() => setCancelModalOpened(true)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setCancelModalOpened(true);
+                    }}
                     disabled={buttons.isCancelButtonDisabled}
                   >{t(i18n)`Cancel`}</Button>
                 )}

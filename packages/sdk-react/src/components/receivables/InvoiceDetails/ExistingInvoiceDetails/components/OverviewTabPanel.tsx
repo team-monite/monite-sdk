@@ -92,15 +92,10 @@ export const OverviewTabPanel = ({
 
   const { data: receivable } = useReceivableById(invoice.id);
 
-  const isInvoiceResponsePayload = (
-    receivable: components['schemas']['ReceivableResponse'] | undefined
-  ): receivable is components['schemas']['InvoiceResponsePayload'] =>
-    (receivable as components['schemas']['InvoiceResponsePayload'])
-      .related_documents !== undefined;
-
-  const creditNoteIds = isInvoiceResponsePayload(receivable)
-    ? receivable.related_documents.credit_note_ids
-    : [];
+  const creditNoteIds =
+    receivable?.type === 'invoice'
+      ? receivable.related_documents.credit_note_ids
+      : [];
 
   const {
     data: creditNoteQuery,
@@ -125,12 +120,7 @@ export const OverviewTabPanel = ({
         ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
         : t(i18n)`Unknown date`;
 
-      const authorName =
-        creditNote.entity.type !== 'individual' && creditNote.entity.name
-          ? creditNote.entity.name
-          : creditNote.entity.type !== 'organization'
-          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
-          : null;
+      const authorName = getCounterpartName(creditNote.entity);
 
       return {
         title: creditNote.document_id,
@@ -362,7 +352,10 @@ const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
                 : {}),
               cursor: 'pointer',
             }}
-            onClick={item.onClick}
+            onClick={(event) => {
+              event.preventDefault();
+              item.onClick();
+            }}
           >
             <Grid item container direction="column" xs>
               <Typography
@@ -375,7 +368,7 @@ const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
               <Typography variant="body2">
                 {item.description}{' '}
                 <Link
-                  href={item.authorTitle}
+                  href="#" // Placeholder link as we don't have interlinking in the SDK yet
                   underline="hover"
                   color="primary"
                   variant="body2"
