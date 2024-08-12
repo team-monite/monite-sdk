@@ -43,7 +43,6 @@ export const DefaultLayout = ({
           display: 'flex',
           m: 0,
           height: '100vh',
-          overflow: 'hidden',
         }}
       >
         <Drawer
@@ -92,14 +91,9 @@ export const DefaultLayout = ({
         <Box
           sx={{
             display: 'flex',
-            flex: '1 1 auto',
+            flex: 1,
             flexDirection: 'column',
-            minWidth: 0,
-            height: '100vh',
-
-            // '& .MuiDataGrid-root': {
-            //   height: 'calc(100vh - 272px)',
-            // },
+            height: 'inherit',
           }}
         >
           {children}

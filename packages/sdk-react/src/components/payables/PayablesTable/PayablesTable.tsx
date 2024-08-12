@@ -199,11 +199,7 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box
-        sx={{
-          marginBottom: 2,
-        }}
-      >
+      <Box sx={{ mb: 2 }}>
         <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
       <DataGrid
