@@ -16,26 +16,26 @@ import {
 } from '@mui/material';
 
 interface InvoiceCancelModalProps {
-  id: string;
+  invoiceId: string;
   open: boolean;
   onClose: () => void;
 }
 
 export const InvoiceCancelModal = ({
-  id,
+  invoiceId,
   open,
   onClose,
 }: InvoiceCancelModalProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { data: receivable, isLoading: isReceivableLoading } =
-    useReceivableById(id);
+    useReceivableById(invoiceId);
 
-  const cancelMutation = useCancelReceivableById(id);
+  const cancelMutation = useCancelReceivableById(invoiceId);
 
   return (
     <Dialog
-      open={open && Boolean(id)}
+      open={open && Boolean(invoiceId)}
       container={root}
       onClose={onClose}
       aria-label={t(i18n)`Invoice cancel confirmation`}
