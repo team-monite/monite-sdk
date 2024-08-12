@@ -195,6 +195,7 @@ const PayablesTableBase = ({
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        height: 'inherit',
         pt: 2,
       }}
     >
@@ -212,7 +213,6 @@ const PayablesTableBase = ({
           },
         }}
         apiRef={gridApiRef}
-        // autoHeight
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
