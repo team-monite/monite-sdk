@@ -217,9 +217,6 @@ const PayablesTableBase = ({
           onRowClick?.(params.row.id);
         }}
         sx={{
-          display: 'flex',
-          flex: '1 1 auto',
-          minHeight: 0,
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
