@@ -179,10 +179,16 @@ const ApprovalRequestsTableBase = ({
 
   return (
     <Box
-      sx={{ padding: 2, width: '100%', height: '100%' }}
       className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
     >
-      <Box sx={{ marginBottom: 2 }}>
+      <Box sx={{ mb: 2 }}>
         <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
       </Box>
       <DataGrid
