@@ -302,7 +302,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
                       </MenuItem>
-                      {buttons.isCancelButtonVisible && (
+                      {!buttons.isCancelButtonVisible && (
                         <MenuItem
                           onClick={(event) => {
                             event.preventDefault();

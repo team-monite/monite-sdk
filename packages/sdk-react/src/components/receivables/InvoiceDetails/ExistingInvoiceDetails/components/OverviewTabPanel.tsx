@@ -18,6 +18,7 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
+import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
@@ -151,23 +152,17 @@ export const OverviewTabPanel = ({
       />
 
       {Boolean(
-        creditNoteIds &&
-          creditNoteIds?.length > 0 &&
-          (creditNoteQuery?.data || isCreditNoteLoading || creditNoteError)
+        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
       ) && (
-        <Box
-          sx={{
-            '& > * + *': {
-              mt: 2,
-            },
-          }}
-        >
-          <Typography variant="subtitle2" sx={{ mb: 2 }}>{t(
-            i18n
-          )`Linked documents`}</Typography>
+        <Box sx={{ '& > * + *': { mt: 2 } }}>
+          {creditNoteQuery?.data && creditNoteQuery.data.length > 0 && (
+            <Typography variant="subtitle2" sx={{ mb: 2 }}>
+              {t(i18n)`Linked documents`}
+            </Typography>
+          )}
           {isCreditNoteLoading && <Skeleton variant="text" />}
           {creditNoteQuery?.data && (
-            <LinkedDocumentsCard creditNotes={creditNoteQuery?.data} />
+            <LinkedDocumentsCard creditNotes={creditNoteQuery.data} />
           )}
         </Box>
       )}
@@ -322,7 +317,7 @@ const LinkedDocumentsCard = ({
         : null;
 
       const formattedDate = issueDate
-        ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
+        ? i18n.date(issueDate, DateTimeFormatOptions.EightDigitDate)
         : t(i18n)`Unknown date`;
 
       const authorName =
