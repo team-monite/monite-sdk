@@ -1,9 +1,4 @@
 import { prepareCounterpartOrganization } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
-import {
-  CounterpartContactView,
-  useMakeCounterpartContactDefault,
-} from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView';
-import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,
