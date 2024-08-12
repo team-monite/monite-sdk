@@ -157,10 +157,10 @@ export function useExistingInvoiceDetails({
   });
 
   const isCancelButtonDisabled =
-    receivable?.status !== 'draft' ||
+    receivable?.status === 'draft' ||
     entity?.receivable_edit_flow !== 'compliant' ||
     isCancelAllowedLoading ||
-    !isCancelAllowed ||
+    isCancelAllowed ||
     mutationInProgress;
 
   return {

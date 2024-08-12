@@ -20,6 +20,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -271,17 +272,6 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     disabled={buttons.isDeleteButtonDisabled}
                   >{t(i18n)`Delete`}</Button>
                 )}
-                {buttons.isCancelButtonVisible && (
-                  <Button
-                    variant="text"
-                    color="error"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setCancelModalOpened(true);
-                    }}
-                    disabled={buttons.isCancelButtonDisabled}
-                  >{t(i18n)`Cancel`}</Button>
-                )}
                 {buttons.isEditButtonVisible && (
                   <Button
                     variant="outlined"
@@ -311,6 +301,15 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                       >
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          setCancelModalOpened(true);
+                        }}
+                        disabled={buttons.isCancelButtonDisabled}
+                      >
+                        <CancelIcon fontSize="small" />
+                        {t(i18n)`Cancel`}
                       </MenuItem>
                     </StyledMenu>
                   </>

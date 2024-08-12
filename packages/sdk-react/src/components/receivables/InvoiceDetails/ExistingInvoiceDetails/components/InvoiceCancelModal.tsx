@@ -56,7 +56,7 @@ export const InvoiceCancelModal = ({
       <DialogActions>
         <Button variant="outlined" onClick={onClose} color="inherit">{t(
           i18n
-        )`Cancel`}</Button>
+        )`Close`}</Button>
         <Button
           variant="outlined"
           color="error"
