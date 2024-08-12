@@ -36,7 +36,6 @@ import {
 } from '@mui/material';
 
 interface TransformCreditNotes {
-  onClick: () => void;
   description: string;
   title: string | undefined;
   authorTitle: string;
@@ -106,37 +105,6 @@ export const OverviewTabPanel = ({
     type: 'credit_note',
   });
 
-  const transformCreditNotes = (
-    creditNotes: components['schemas']['InvoiceResponsePayload'][]
-  ): TransformCreditNotes[] => {
-    if (!creditNotes) return [];
-
-    return creditNotes.map((creditNote) => {
-      const issueDate = creditNote.issue_date
-        ? new Date(creditNote.issue_date)
-        : null;
-
-      const formattedDate = issueDate
-        ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
-        : t(i18n)`Unknown date`;
-
-      const authorName =
-        creditNote.entity.type !== 'individual' && creditNote.entity.name
-          ? creditNote.entity.name
-          : creditNote.entity.type !== 'organization'
-          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
-          : null;
-
-      return {
-        title: creditNote.document_id,
-        description: `${t(i18n)`Issued on`} ${formattedDate} ${t(i18n)`by`}`,
-        authorTitle: authorName || '',
-        onClick: () =>
-          console.log(`Clicked on Credit note #${creditNote.document_id}`),
-      };
-    });
-  };
-
   return (
     <Box
       sx={{
@@ -196,11 +164,13 @@ export const OverviewTabPanel = ({
             i18n
           )`Linked documents`}</Typography>
           {isCreditNoteLoading && <Skeleton variant="text" />}
-          <LinkedDocumentsCard
-            data={transformCreditNotes(
-              creditNoteQuery?.data as components['schemas']['InvoiceResponsePayload'][]
-            )}
-          />
+          {creditNoteQuery?.data && (
+            <LinkedDocumentsCard
+              creditNotes={
+                creditNoteQuery?.data as components['schemas']['InvoiceResponsePayload'][]
+              }
+            />
+          )}
         </Box>
       )}
 
@@ -334,7 +304,44 @@ const RemindersCard = ({
   );
 };
 
-const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
+const LinkedDocumentsCard = ({
+  creditNotes,
+}: {
+  creditNotes: components['schemas']['InvoiceResponsePayload'][];
+}) => {
+  const { i18n } = useLingui();
+
+  const transformCreditNotes = (
+    creditNotes: components['schemas']['InvoiceResponsePayload'][]
+  ): TransformCreditNotes[] => {
+    if (!creditNotes) return [];
+
+    return creditNotes.map((creditNote) => {
+      const issueDate = creditNote.issue_date
+        ? new Date(creditNote.issue_date)
+        : null;
+
+      const formattedDate = issueDate
+        ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
+        : t(i18n)`Unknown date`;
+
+      const authorName =
+        creditNote.entity.type !== 'individual' && creditNote.entity.name
+          ? creditNote.entity.name
+          : creditNote.entity.type !== 'organization'
+          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
+          : null;
+
+      return {
+        title: creditNote.document_id,
+        description: `${t(i18n)`Issued on`} ${formattedDate} ${t(i18n)`by`}`,
+        authorTitle: authorName || '',
+      };
+    });
+  };
+
+  const data = transformCreditNotes(creditNotes);
+
   if (!data || data.length === 0) return null;
 
   return (
@@ -356,10 +363,6 @@ const LinkedDocumentsCard = ({ data }: { data: TransformCreditNotes[] }) => {
                 ? { borderTop: '1px solid', borderTopColor: 'divider' }
                 : {}),
               cursor: 'pointer',
-            }}
-            onClick={(event) => {
-              event.preventDefault();
-              item.onClick();
             }}
           >
             <Grid item container direction="column" xs>
