@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { type MouseEvent, useCallback, useState } from 'react';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMakeCounterpartContactDefault } from '@/core/queries';
@@ -47,13 +47,15 @@ export const CounterpartContactView = (props: CounterpartContactViewProps) => {
   const { deleteContact, onEdit, isLoading } = useCounterpartContactView(props);
   const { mutate } = useMakeCounterpartContactDefault();
 
-  const makeDefault = () =>
-    mutate({
+  const makeDefault = (event: MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    return mutate({
       path: {
         counterpart_id: props.contact.counterpart_id,
         contact_id: props.contact.id,
       },
     });
+  };
 
   const { isUpdateAllowed, isDeleteAllowed } = props.permissions;
 
