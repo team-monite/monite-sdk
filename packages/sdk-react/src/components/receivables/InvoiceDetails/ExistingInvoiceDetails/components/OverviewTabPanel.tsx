@@ -95,16 +95,19 @@ export const OverviewTabPanel = ({
   const creditNoteIds =
     receivable?.type === 'invoice'
       ? receivable.related_documents.credit_note_ids
-      : [];
+      : undefined;
 
   const {
     data: creditNoteQuery,
     isLoading: isCreditNoteLoading,
     error: creditNoteError,
-  } = useReceivables({
-    id__in: creditNoteIds,
-    type: 'credit_note',
-  });
+  } = useReceivables(
+    {
+      id__in: creditNoteIds,
+      type: 'credit_note',
+    },
+    Boolean(creditNoteIds?.length)
+  );
 
   return (
     <Box
