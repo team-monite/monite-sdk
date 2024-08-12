@@ -140,7 +140,6 @@ const TagsTableBase = ({
             sortModel: [sortModel],
           },
         }}
-        autoHeight
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

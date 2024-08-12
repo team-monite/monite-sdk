@@ -192,7 +192,6 @@ const ApprovalRequestsTableBase = ({
         <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
       </Box>
       <DataGrid
-        autoHeight
         rowSelection={false}
         disableColumnFilter={true}
         initialState={{
