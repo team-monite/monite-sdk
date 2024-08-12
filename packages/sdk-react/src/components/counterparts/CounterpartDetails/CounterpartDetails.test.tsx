@@ -654,38 +654,26 @@ describe('CounterpartDetails', () => {
   });
 
   describe('# Make default contact for counterpart', () => {
+    const setupTest = (organizationEmail: string, contactEmail: string) => {
+      const contacts = [{ email: contactEmail, is_default: true }];
+      const organization = {
+        email: organizationEmail,
+        is_customer: true,
+        is_vendor: false,
+        legal_name: 'Test Corp',
+        phone: '123-456-7890',
+      };
+      return prepareCounterpartOrganization(organization, {}, contacts);
+    };
+
     describe('prepareCounterpartOrganization', () => {
       it('should return isEmailDefault as true when contact email matches organization email', () => {
-        const contacts = [{ email: 'test@org.com', is_default: true }];
-        const organization = {
-          email: 'test@org.com',
-          is_customer: true,
-          is_vendor: false,
-          legal_name: 'Test Corp',
-          phone: '123-456-7890',
-        };
-        const result = prepareCounterpartOrganization(
-          organization,
-          {},
-          contacts
-        );
+        const result = setupTest('test@org.com', 'test@org.com');
         expect(result.isEmailDefault).toBe(true);
       });
 
       it('should return isEmailDefault as false when no matching email is found', () => {
-        const contacts = [{ email: 'nomatch@org.com', is_default: true }];
-        const organization = {
-          email: 'test@org.com',
-          is_customer: true,
-          is_vendor: false,
-          legal_name: 'Test Corp',
-          phone: '123-456-7890',
-        };
-        const result = prepareCounterpartOrganization(
-          organization,
-          {},
-          contacts
-        );
+        const result = setupTest('test@org.com', 'nomatch@org.com');
         expect(result.isEmailDefault).toBe(false);
       });
     });
