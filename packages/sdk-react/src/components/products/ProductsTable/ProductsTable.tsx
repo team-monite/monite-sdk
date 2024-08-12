@@ -182,10 +182,14 @@ const ProductsTableBase = ({
       <Box
         className={ScopedCssBaselineContainerClassName}
         sx={{
-          padding: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          height: 'inherit',
+          pt: 2,
         }}
       >
-        <Box sx={{ marginBottom: 2 }}>
+        <Box sx={{ mb: 2 }}>
           <FiltersComponent onChangeFilter={onChangeFilter} />
         </Box>
         <DataGrid
