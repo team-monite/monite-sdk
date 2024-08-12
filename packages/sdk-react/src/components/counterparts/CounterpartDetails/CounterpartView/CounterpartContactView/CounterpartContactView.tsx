@@ -21,7 +21,7 @@ import {
   CounterpartContactViewProps,
 } from './useCounterpartContactView';
 
-export const useMakeCounterpartContactDefault = () => {
+const useMakeCounterpartContactDefault = () => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
