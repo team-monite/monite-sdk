@@ -214,6 +214,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
+  const className = 'Monite-ExistingInvoiceDetails';
+
   return (
     <>
       <InvoiceDeleteModal
@@ -231,8 +233,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           setCancelModalOpened(false);
         }}
       />
-
-      <DialogTitle>
+        
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
             <Grid item xs={6}>
@@ -340,7 +342,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
+      <DialogContent
+        className={className + '-Content'}
+        sx={{ display: 'flex', flexDirection: 'column' }}
+      >
         <Grid container columnSpacing={4} height="100%">
           <Grid item container xs={6} height="100%">
             {isPdfLoading ? (

@@ -143,6 +143,7 @@ const ApprovalPoliciesTableBase = ({
         </Box>
         <DataGrid
           autoHeight
+          disableColumnFilter={true}
           rowSelection={false}
           sx={{
             '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {

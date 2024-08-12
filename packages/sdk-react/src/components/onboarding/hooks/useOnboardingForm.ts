@@ -1,10 +1,4 @@
-import {
-  FormEvent,
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { FormEvent, useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   FieldValues,
   Path,
@@ -12,7 +6,6 @@ import {
   UseFormReturn,
   DefaultValues,
 } from 'react-hook-form';
-import { useEffectOnce } from 'react-use';
 
 import { components } from '@/api';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -65,43 +58,37 @@ export function useOnboardingForm<
   V extends FieldValues,
   R extends FieldValues | undefined | void
 >(
-  nextFields: OnboardingOutputFieldsType | undefined,
+  _incomingFields: OnboardingOutputFieldsType | undefined,
   type: ValidationSchemasType
 ): OnboardingFormType<V, R> {
-  const [prevFields, setFields] = useState<
-    OnboardingOutputFieldsType | undefined
-  >(nextFields);
-
-  const fieldsErrors = useMemo(
-    () => generateErrorsByFields(prevFields),
-    [prevFields]
-  );
-
-  const getDefaultValues = useCallback(() => {
-    if (!prevFields) return undefined;
-    return generateValuesByFields<DefaultValues<V>>(prevFields);
-  }, [prevFields]);
+  const _incomingFieldsRef = useRef(_incomingFields);
+  const incomingFields = useMemo(() => {
+    if (deepEqual(_incomingFieldsRef.current, _incomingFields))
+      return _incomingFieldsRef.current;
+    return (_incomingFieldsRef.current = _incomingFields);
+  }, [_incomingFields]);
 
   const validationSchema = useOnboardingValidationSchema({
-    fields: prevFields,
+    fields: incomingFields,
     type,
   });
 
   const methods = useForm<V>({
     resolver: validationSchema && yupResolver(validationSchema),
     mode: 'onChange',
-    defaultValues: useMemo(getDefaultValues, [getDefaultValues]),
+    defaultValues: incomingFields
+      ? generateValuesByFields<DefaultValues<V>>(incomingFields)
+      : undefined,
   });
 
   const {
     setError,
     getValues,
     reset,
-    formState: { errors, defaultValues: prevValues },
+    watch,
+    formState: { errors },
     handleSubmit: handleFormSubmit,
   } = methods;
-
-  const nextValues = getValues() as DefaultValues<V>;
 
   const scrollToError = useScrollToError(errors);
 
@@ -114,40 +101,42 @@ export function useOnboardingForm<
     [setError]
   );
 
-  useEffectOnce(() => {
-    setErrors(fieldsErrors);
-  });
+  const storedFieldsRef = useRef(incomingFields);
 
-  useLayoutEffect(() => {
-    if (!prevFields) return;
-    if (!nextFields) return;
-    if (!nextValues) return;
+  const formValues = watch();
 
-    const restoredFields = restoreFields(
-      prevFields,
-      enrichFieldsByValues(nextFields, nextValues)
+  useEffect(() => {
+    if (!incomingFields) return;
+    storedFieldsRef.current = restoreFields(
+      storedFieldsRef.current ?? incomingFields,
+      enrichFieldsByValues(incomingFields, formValues)
+    );
+  }, [formValues, incomingFields]);
+
+  useEffect(() => {
+    if (!incomingFields) return;
+
+    reset(
+      generateValuesByFields<DefaultValues<V>>(
+        storedFieldsRef.current ?? incomingFields
+      ),
+      {
+        keepErrors: true,
+        keepIsValid: true,
+      }
     );
 
-    if (deepEqual(restoredFields, prevFields)) return;
+    setErrors(generateErrorsByFields(incomingFields));
+  }, [incomingFields, reset, setErrors]);
 
-    setFields(restoredFields);
-  }, [prevFields, nextFields, nextValues]);
-
-  useLayoutEffect(() => {
-    const values = getDefaultValues();
-
-    if (deepEqual(values, prevValues)) return;
-
-    reset(values, {
-      keepErrors: true,
-      keepIsValid: true,
-    });
-
-    setErrors(fieldsErrors);
-  }, [getDefaultValues, prevValues, reset, setErrors, fieldsErrors]);
-
-  const checkValue = (key: keyof DefaultValues<V>) =>
-    !!nextValues && key in nextValues && nextValues[key] !== undefined;
+  const checkValue = (key: keyof DefaultValues<V>) => {
+    const currentFormValues = getValues() as DefaultValues<V>;
+    return (
+      !!currentFormValues &&
+      key in currentFormValues &&
+      currentFormValues[key] !== undefined
+    );
+  };
 
   const handleSubmit = useCallback(
     (apiContract: ApiContractType<V, R>): FormType =>
@@ -176,7 +165,12 @@ export function useOnboardingForm<
     [handleFormSubmit, scrollToError, setErrors]
   );
 
-  return { methods, checkValue, defaultValues: nextValues, handleSubmit };
+  return {
+    methods,
+    checkValue,
+    defaultValues: getValues() as DefaultValues<V>,
+    handleSubmit,
+  };
 }
 
 type ErrorSchema = components['schemas']['ErrorSchemaResponse'];
