@@ -120,7 +120,12 @@ export const OverviewTabPanel = ({
         ? issueDate.toLocaleDateString('en-GB').replace(/\//g, '.')
         : t(i18n)`Unknown date`;
 
-      const authorName = getCounterpartName(creditNote.entity);
+      const authorName =
+        creditNote.entity.type !== 'individual' && creditNote.entity.name
+          ? creditNote.entity.name
+          : creditNote.entity.type !== 'organization'
+          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
+          : null;
 
       return {
         title: creditNote.document_id,
