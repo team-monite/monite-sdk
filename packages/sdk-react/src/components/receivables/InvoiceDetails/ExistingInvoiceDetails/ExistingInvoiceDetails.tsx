@@ -303,7 +303,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         {t(i18n)`Send invoice`}
                       </MenuItem>
                       <MenuItem
-                        onClick={() => {
+                        onClick={(event) => {
+                          event.preventDefault();
                           setCancelModalOpened(true);
                         }}
                         disabled={buttons.isCancelButtonDisabled}
