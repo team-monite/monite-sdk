@@ -26,8 +26,18 @@ export const DefaultEmail = ({
         {email}
       </Typography>
       {isDefault && (
-        <Box ml="auto" mr={1}>
-          <Chip label={t(i18n)`default`} variant="filled" color="default" />
+        <Box ml="auto" mr={1} display="inline">
+          <Chip
+            label={t(i18n)`default`}
+            variant="filled"
+            color="default"
+            sx={{
+              // workaround to prevent the layout from shifting when the "Make Default" button is pressed
+              display: 'inline',
+              verticalAlign: 'inherit',
+              py: 0.84,
+            }}
+          />
         </Box>
       )}
     </Box>
