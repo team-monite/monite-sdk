@@ -1,7 +1,9 @@
 import { type MouseEvent, useCallback, useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
-import { useMakeCounterpartContactDefault } from '@/core/queries';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -18,6 +20,84 @@ import {
   useCounterpartContactView,
   CounterpartContactViewProps,
 } from './useCounterpartContactView';
+
+export const useMakeCounterpartContactDefault = () => {
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
+
+  return api.counterparts.postCounterpartsIdContactsIdMakeDefault.useMutation(
+    undefined,
+    {
+      onMutate: async (variables) => {
+        const previousContacts =
+          api.counterparts.getCounterpartsIdContacts.getQueryData(
+            {
+              path: { counterpart_id: variables.path.counterpart_id },
+            },
+            queryClient
+          );
+
+        if (previousContacts)
+          api.counterparts.getCounterpartsIdContacts.setQueryData(
+            {
+              path: { counterpart_id: variables.path.counterpart_id },
+            },
+            {
+              ...previousContacts,
+              data: previousContacts?.data.map((contact) => ({
+                ...contact,
+                is_default: contact.id === variables.path.contact_id,
+              })),
+            },
+            queryClient
+          );
+
+        return previousContacts;
+      },
+      onError: (error, variables, previousContacts) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+
+        if (previousContacts)
+          api.counterparts.getCounterpartsIdContacts.setQueryData(
+            {
+              path: { counterpart_id: variables.path.counterpart_id },
+            },
+            previousContacts,
+            queryClient
+          );
+      },
+      onSuccess: async (_, variables) => {
+        await Promise.all([
+          api.counterparts.getCounterpartsId.invalidateQueries(
+            {
+              parameters: {
+                path: { counterpart_id: variables.path.counterpart_id },
+              },
+            },
+            queryClient
+          ),
+          api.counterparts.getCounterpartsIdContacts.invalidateQueries(
+            queryClient
+          ),
+        ]);
+
+        toast.success(t(i18n)`Contact Person has been made default.`);
+
+        api.counterparts.getCounterpartsIdContactsId.invalidateQueries(
+          {
+            parameters: {
+              path: {
+                counterpart_id: variables.path.counterpart_id,
+                contact_id: variables.path.contact_id,
+              },
+            },
+          },
+          queryClient
+        );
+      },
+    }
+  );
+};
 
 export const CounterpartContactView = (props: CounterpartContactViewProps) => {
   const { i18n } = useLingui();
