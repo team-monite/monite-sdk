@@ -44,7 +44,7 @@ export const prepareCounterpartOrganization = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     country: '',
-    isEmailDefault, // Include this in the returned object
+    isEmailDefault,
   };
 };
 
