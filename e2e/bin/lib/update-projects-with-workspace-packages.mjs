@@ -15,7 +15,7 @@ function getWorkspacesPublishingPackages() {
   const prefixSalt = '[package]:';
 
   const result = execSync(
-    `(cd "${findMonorepoRoot()}" && yarn workspaces foreach --no-private --recursive --from '@team-monite/*' --from '@monite/*' \
+    `(cd "${findMonorepoRoot()}" && yarn workspaces foreach --no-private --recursive --topological --from '@team-monite/*' --from '@monite/*' \
     exec node -p "'${prefixSalt}' + require('./package.json').name + '@' + require('./package.json').version")`
   );
 
