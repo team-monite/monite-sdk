@@ -175,66 +175,70 @@ const InvoicesTableBase = ({
   const className = 'Monite-InvoicesTable';
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%' }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <ReceivableFilters
-            onChange={(field, value) => {
-              setPaginationToken(undefined);
-              onChangeFilter(field, value);
-            }}
-            filters={[
-              'document_id__contains',
-              'status',
-              'counterpart_id',
-              'due_date__lte',
-            ]}
-          />
-        </Box>
-
-        <DataGrid<components['schemas']['ReceivableResponse']>
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
-            },
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters
+          onChange={(field, value) => {
+            setPaginationToken(undefined);
+            onChangeFilter(field, value);
           }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={invoices?.next_pagination_token}
-                prevPage={invoices?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: paginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setPaginationToken(page ?? undefined);
-                }}
-              />
-            ),
-          }}
-          columns={columns}
-          rows={invoices?.data ?? []}
+          filters={[
+            'document_id__contains',
+            'status',
+            'counterpart_id',
+            'due_date__lte',
+          ]}
         />
       </Box>
-    </>
+
+      <DataGrid<components['schemas']['ReceivableResponse']>
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={invoices?.next_pagination_token}
+              prevPage={invoices?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: paginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setPaginationToken(page ?? undefined);
+              }}
+            />
+          ),
+        }}
+        columns={columns}
+        rows={invoices?.data ?? []}
+      />
+    </Box>
   );
 };

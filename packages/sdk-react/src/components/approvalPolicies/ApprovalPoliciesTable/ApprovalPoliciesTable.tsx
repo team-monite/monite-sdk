@@ -179,59 +179,62 @@ const ApprovalPoliciesTableBase = ({
   };
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%', height: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          autoHeight
-          disableColumnFilter={true}
-          rowSelection={false}
-          sx={{
-            '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
-              py: '8px',
-            },
-            '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
-              py: '15px',
-            },
-            '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
-              py: '22px',
-            },
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          loading={isLoading}
-          getRowHeight={() => 'auto'}
-          columns={columns}
-          rows={approvalPolicies?.data || []}
-          onRowClick={(params) => onRowClick?.(params.row)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={approvalPolicies?.next_pagination_token}
-                prevPage={approvalPolicies?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-        />
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        disableColumnFilter={true}
+        rowSelection={false}
+        sx={{
+          '&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell': {
+            py: '8px',
+          },
+          '&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell': {
+            py: '15px',
+          },
+          '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
+            py: '22px',
+          },
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        loading={isLoading}
+        getRowHeight={() => 'auto'}
+        columns={columns}
+        rows={approvalPolicies?.data || []}
+        onRowClick={(params) => onRowClick?.(params.row)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={approvalPolicies?.next_pagination_token}
+              prevPage={approvalPolicies?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+      />
+    </Box>
   );
 };
 

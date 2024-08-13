@@ -188,62 +188,65 @@ const TagsTableBase = ({
   }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%', height: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
-      >
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          autoHeight
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={tags?.prev_pagination_token}
-                nextPage={tags?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-          columns={columns}
-          rows={tags?.data ?? []}
-        />
-        <TagFormModal
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={tags?.prev_pagination_token}
+              nextPage={tags?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={columns}
+        rows={tags?.data ?? []}
+      />
+      <TagFormModal
+        tag={selectedTag}
+        open={editModalOpened}
+        onClose={closeEditModal}
+      />
+      {selectedTag && (
+        <ConfirmDeleteModal
           tag={selectedTag}
-          open={editModalOpened}
-          onClose={closeEditModal}
+          modalOpened={deleteModalOpened}
+          onClose={closeDeleteModal}
         />
-        {selectedTag && (
-          <ConfirmDeleteModal
-            tag={selectedTag}
-            modalOpened={deleteModalOpened}
-            onClose={closeDeleteModal}
-          />
-        )}
-      </Box>
-    </>
+      )}
+    </Box>
   );
 };

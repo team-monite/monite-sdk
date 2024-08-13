@@ -152,57 +152,61 @@ const QuotesTableBase = ({
   const className = 'Monite-QuotesTable';
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%' }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <ReceivableFilters
-            onChange={onChangeFilter}
-            filters={['document_id__contains', 'status', 'counterpart_id']}
-          />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={quotes?.next_pagination_token}
-                prevPage={quotes?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: paginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setPaginationToken(page ?? undefined);
-                }}
-              />
-            ),
-          }}
-          columns={columns}
-          rows={quotes?.data || []}
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters
+          onChange={onChangeFilter}
+          filters={['document_id__contains', 'status', 'counterpart_id']}
         />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={quotes?.next_pagination_token}
+              prevPage={quotes?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: paginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setPaginationToken(page ?? undefined);
+              }}
+            />
+          ),
+        }}
+        columns={columns}
+        rows={quotes?.data || []}
+      />
+    </Box>
   );
 };

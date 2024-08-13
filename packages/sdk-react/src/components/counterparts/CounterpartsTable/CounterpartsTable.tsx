@@ -357,120 +357,118 @@ const CounterpartsTableBase = ({
   const className = 'Monite-CounterpartsTable';
 
   return (
-    <>
-      <Box
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ marginBottom: 2 }} className={className + '-FiltersContainer'}>
+        <FiltersComponent
+          onChangeFilter={onChangeFilter}
+          showCategories={showCategories}
+        />
+      </Box>
+      <DataGrid
+        rowSelection={false}
+        disableColumnFilter={true}
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+          columns: {
+            columnVisibilityModel: {
+              category: showCategories,
+            },
+          },
+        }}
+        onSortModelChange={onChangeSort}
+        loading={isLoading}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        columnVisibilityModel={{
+          category: showCategories,
+        }}
         sx={{
-          padding: 2,
-          width: '100%',
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={counterparts?.prev_pagination_token}
+              nextPage={counterparts?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={columns}
+        rows={counterparts?.data || []}
+      />
+      <Dialog
+        className={className + 'Dialog-DeleteCounterpart'}
+        open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
+        container={root}
+        onClose={closeDeleteCounterpartModal}
+        aria-label={t(i18n)`Delete confirmation`}
+        maxWidth="sm"
+        fullWidth
+        TransitionProps={{
+          onExited: closedDeleteCounterpartModal,
         }}
       >
-        <Box
-          sx={{ marginBottom: 2 }}
-          className={className + '-FiltersContainer'}
+        <DialogTitle
+          variant="h3"
+          className={className + 'Dialog-DeleteCounterpart-Title'}
         >
-          <FiltersComponent
-            onChangeFilter={onChangeFilter}
-            showCategories={showCategories}
-          />
-        </Box>
-        <DataGrid
-          rowSelection={false}
-          disableColumnFilter={true}
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
-            },
-            columns: {
-              columnVisibilityModel: {
-                category: showCategories,
-              },
-            },
-          }}
-          onSortModelChange={onChangeSort}
-          loading={isLoading}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          columnVisibilityModel={{
-            category: showCategories,
-          }}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={counterparts?.prev_pagination_token}
-                nextPage={counterparts?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-          columns={columns}
-          rows={counterparts?.data || []}
-        />
-        <Dialog
-          className={className + 'Dialog-DeleteCounterpart'}
-          open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
-          container={root}
-          onClose={closeDeleteCounterpartModal}
-          aria-label={t(i18n)`Delete confirmation`}
-          maxWidth="sm"
-          fullWidth
-          TransitionProps={{
-            onExited: closedDeleteCounterpartModal,
-          }}
+          {t(i18n)`Delete Counterpart "${getCounterpartName(
+            selectedCounterpart!
+          )}"?`}
+        </DialogTitle>
+        <DialogContent
+          className={className + 'Dialog-DeleteCounterpart-Content'}
         >
-          <DialogTitle
-            variant="h3"
-            className={className + 'Dialog-DeleteCounterpart-Title'}
+          <DialogContentText>
+            {t(i18n)`This action can't be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
+        <DialogActions
+          className={className + 'Dialog-DeleteCounterpart-Actions'}
+        >
+          <Button
+            variant="outlined"
+            onClick={closeDeleteCounterpartModal}
+            color="inherit"
+            className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
           >
-            {t(i18n)`Delete Counterpart "${getCounterpartName(
-              selectedCounterpart!
-            )}"?`}
-          </DialogTitle>
-          <DialogContent
-            className={className + 'Dialog-DeleteCounterpart-Content'}
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={deleteCounterpart}
+            autoFocus
+            className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
           >
-            <DialogContentText>
-              {t(i18n)`This action can't be undone.`}
-            </DialogContentText>
-          </DialogContent>
-          <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
-          <DialogActions
-            className={className + 'Dialog-DeleteCounterpart-Actions'}
-          >
-            <Button
-              variant="outlined"
-              onClick={closeDeleteCounterpartModal}
-              color="inherit"
-              className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={deleteCounterpart}
-              autoFocus
-              className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
-            >
-              {t(i18n)`Delete`}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </>
+            {t(i18n)`Delete`}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };

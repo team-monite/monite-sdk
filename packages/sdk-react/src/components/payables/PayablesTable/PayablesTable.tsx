@@ -313,62 +313,60 @@ const PayablesTableBase = ({
 
   const className = 'Monite-PayablesTable';
   return (
-    <>
-      <Box
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box
-          sx={{
-            marginBottom: 2,
-          }}
-        >
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => {
-            onRowClick?.(params.row.id);
-          }}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={payables?.next_pagination_token}
-                prevPage={payables?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-          columns={columns}
-          rows={payables?.data || []}
-        />
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => {
+          onRowClick?.(params.row.id);
+        }}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={payables?.next_pagination_token}
+              prevPage={payables?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={columns}
+        rows={payables?.data || []}
+      />
+    </Box>
   );
 };

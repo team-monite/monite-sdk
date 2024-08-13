@@ -263,71 +263,73 @@ const ProductsTableBase = ({
   }
 
   return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
-            },
-          }}
-          rowSelection={false}
-          disableColumnFilter={true}
-          rows={products?.data || []}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => {
-            onRowClick?.(params.row);
-          }}
-          columns={columns}
-          loading={isLoading}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={products?.prev_pagination_token}
-                nextPage={products?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-        />
-        {isDeleteDialogOpen.id && (
-          <ProductDeleteModal
-            id={isDeleteDialogOpen.id}
-            open={isDeleteDialogOpen.open}
-            onDeleted={onDeleted}
-            onClose={() =>
-              setIsDeleteDialogOpen((prev) => ({
-                ...prev,
-                open: false,
-              }))
-            }
-          />
-        )}
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        rows={products?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => {
+          onRowClick?.(params.row);
+        }}
+        columns={columns}
+        loading={isLoading}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={products?.prev_pagination_token}
+              nextPage={products?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+      />
+      {isDeleteDialogOpen.id && (
+        <ProductDeleteModal
+          id={isDeleteDialogOpen.id}
+          open={isDeleteDialogOpen.open}
+          onDeleted={onDeleted}
+          onClose={() =>
+            setIsDeleteDialogOpen((prev) => ({
+              ...prev,
+              open: false,
+            }))
+          }
+        />
+      )}
+    </Box>
   );
 };
 

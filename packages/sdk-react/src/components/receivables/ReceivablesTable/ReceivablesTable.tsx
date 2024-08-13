@@ -60,7 +60,7 @@ const ReceivablesTableBase = ({
   return (
     <>
       <Box
-        sx={{ paddingLeft: 2, paddingRight: 2 }}
+        sx={{ pl: 2, pr: 2 }}
         className={classNames(ScopedCssBaselineContainerClassName, className)}
       >
         <Tabs
@@ -97,6 +97,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <QuotesTable onRowClick={onRowClick} />
         </Box>
@@ -107,6 +113,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <InvoicesTable onRowClick={onRowClick} />
         </Box>
@@ -117,6 +129,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <CreditNotesTable onRowClick={onRowClick} />
         </Box>

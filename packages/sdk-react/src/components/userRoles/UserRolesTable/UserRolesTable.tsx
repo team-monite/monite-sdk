@@ -176,54 +176,55 @@ const UserRolesTableBase = ({
   }
 
   return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          autoHeight
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          columns={columns}
-          rows={roles?.data || []}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          getRowHeight={() => 'auto'}
-          sx={{
-            [`& .${gridClasses.cell}`]: {
-              py: 1,
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={roles?.prev_pagination_token}
-                nextPage={roles?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setCurrentPaginationToken(page);
-                  setPageSize(pageSize);
-                }}
-              />
-            ),
-          }}
-        />
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        columns={columns}
+        rows={roles?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        getRowHeight={() => 'auto'}
+        sx={{
+          [`& .${gridClasses.cell}`]: {
+            py: 1,
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={roles?.prev_pagination_token}
+              nextPage={roles?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setCurrentPaginationToken(page);
+                setPageSize(pageSize);
+              }}
+            />
+          ),
+        }}
+      />
+    </Box>
   );
 };
