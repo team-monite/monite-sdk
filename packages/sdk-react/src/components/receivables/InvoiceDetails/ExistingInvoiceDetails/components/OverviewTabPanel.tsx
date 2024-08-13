@@ -9,23 +9,38 @@ import {
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useCounterpartById, useEntityUserByAuthToken } from '@/core/queries';
+import {
+  useCounterpartById,
+  useEntityUserByAuthToken,
+  useReceivableById,
+  useReceivables,
+} from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
+import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import {
   Alert,
   Box,
   BoxProps,
   Card,
   Grid,
+  IconButton,
+  Link,
   Skeleton,
   Tooltip,
   Typography,
 } from '@mui/material';
+
+interface TransformCreditNotes {
+  description: string;
+  title: string | undefined;
+  authorTitle: string;
+}
 
 export const OverviewTabPanel = ({
   invoice,
@@ -75,6 +90,25 @@ export const OverviewTabPanel = ({
       }
     );
 
+  const { data: receivable } = useReceivableById(invoice.id);
+
+  const creditNoteIds =
+    receivable?.type === 'invoice'
+      ? receivable.related_documents.credit_note_ids
+      : undefined;
+
+  const {
+    data: creditNoteQuery,
+    isLoading: isCreditNoteLoading,
+    error: creditNoteError,
+  } = useReceivables(
+    {
+      id__in: creditNoteIds,
+      type: 'credit_note',
+    },
+    Boolean(creditNoteIds?.length)
+  );
+
   return (
     <Box
       sx={{
@@ -119,6 +153,22 @@ export const OverviewTabPanel = ({
           },
         ]}
       />
+
+      {Boolean(
+        creditNoteQuery?.data || isCreditNoteLoading || creditNoteError
+      ) && (
+        <Box sx={{ '& > * + *': { mt: 2 } }}>
+          {creditNoteQuery?.data && creditNoteQuery.data.length > 0 && (
+            <Typography variant="subtitle2" sx={{ mb: 2 }}>
+              {t(i18n)`Linked documents`}
+            </Typography>
+          )}
+          {isCreditNoteLoading && <Skeleton variant="text" />}
+          {creditNoteQuery?.data && (
+            <LinkedDocumentsCard creditNotes={creditNoteQuery.data} />
+          )}
+        </Box>
+      )}
 
       {Boolean(
         paymentReminderQuery.data ||
@@ -246,6 +296,109 @@ const RemindersCard = ({
           </Grid>
         </Grid>
       ))}
+    </Card>
+  );
+};
+
+const LinkedDocumentsCard = ({
+  creditNotes,
+  internalNavigation = false,
+}: {
+  creditNotes: components['schemas']['ReceivableResponse'][];
+  internalNavigation?: boolean;
+}) => {
+  const { i18n } = useLingui();
+
+  const transformCreditNotes = (
+    creditNotes: components['schemas']['ReceivableResponse'][]
+  ): TransformCreditNotes[] => {
+    if (!creditNotes) return [];
+
+    return creditNotes.map((creditNote) => {
+      const issueDate = creditNote.issue_date
+        ? new Date(creditNote.issue_date)
+        : null;
+
+      const formattedDate = issueDate
+        ? i18n.date(issueDate, DateTimeFormatOptions.EightDigitDate)
+        : t(i18n)`Unknown date`;
+
+      const authorName =
+        creditNote.entity.type !== 'individual' && creditNote.entity.name
+          ? creditNote.entity.name
+          : creditNote.entity.type !== 'organization'
+          ? `${creditNote.entity.first_name} ${creditNote.entity.last_name}`
+          : null;
+
+      return {
+        title: creditNote.document_id,
+        description: `${t(i18n)`Issued on`} ${formattedDate} ${t(i18n)`by`}`,
+        authorTitle: authorName || '',
+      };
+    });
+  };
+
+  const data = transformCreditNotes(creditNotes);
+
+  if (!data || data.length === 0) return null;
+
+  return (
+    <Card
+      sx={{ borderRadius: 3, bgcolor: 'background.paper', px: 2 }}
+      variant="outlined"
+    >
+      <Grid container direction="column">
+        {data?.map((item, index) => (
+          <Grid
+            key={item.title}
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              py: 1.5,
+              ...(index
+                ? { borderTop: '1px solid', borderTopColor: 'divider' }
+                : {}),
+              cursor: internalNavigation ? 'pointer' : 'default',
+            }}
+          >
+            <Grid item container direction="column" xs>
+              <Typography
+                variant="body1"
+                fontWeight="bold"
+                sx={{ textTransform: 'capitalize' }}
+              >
+                {item.title}
+              </Typography>
+              <Typography variant="body2">
+                {item.description}{' '}
+                {item.authorTitle ? (
+                  internalNavigation ? (
+                    <>
+                      <Link
+                        href="#" // Todo: Placeholder link, should be replaced when interlinking is available
+                        underline="hover"
+                        color="primary"
+                        variant="body2"
+                      >
+                        {item.authorTitle}
+                      </Link>
+                      <Grid item>
+                        <IconButton edge="end" size="small">
+                          <ArrowForwardIcon fontSize="small" />
+                        </IconButton>
+                      </Grid>
+                    </>
+                  ) : (
+                    item.authorTitle
+                  )
+                ) : null}
+              </Typography>
+            </Grid>
+          </Grid>
+        ))}
+      </Grid>
     </Card>
   );
 };
