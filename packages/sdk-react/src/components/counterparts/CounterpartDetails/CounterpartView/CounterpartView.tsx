@@ -104,6 +104,13 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     deleteCounterpart(handleCloseDeleteCounterpartDialog);
   }, [deleteCounterpart, handleCloseDeleteCounterpartDialog]);
 
+  const defaultOrganizationContact =
+    counterpart && isOrganizationCounterpart(counterpart)
+      ? contacts?.find(
+          (contact) => contact.email === counterpart.organization?.email
+        )?.is_default
+      : false;
+
   const actions = useMemo(() => {
     return (
       (isUpdateAllowed || isDeleteAllowed) && (
@@ -204,7 +211,11 @@ export const CounterpartView = (props: CounterpartViewProps) => {
               showCategories={props.showCategories ?? true}
               counterpart={{
                 taxId: counterpart.tax_id,
-                ...prepareCounterpartOrganization(counterpart.organization),
+                ...prepareCounterpartOrganization(
+                  counterpart.organization,
+                  undefined,
+                  contacts
+                ),
               }}
             />
           )}
