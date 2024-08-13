@@ -228,6 +228,7 @@ program
         ] satisfies Array<components['schemas']['CurrencyEnum']>);
 
         const entitiesService = new EntityService(serviceConstructorProps);
+        await entitiesService.updateDefaultCurrency(currency);
         const entityVats = await entitiesService.createVatIds();
         await entitiesService.createBankAccounts();
 

@@ -123,6 +123,44 @@ export class EntityService extends GeneralService {
     return bankAccounts;
   }
 
+  public async updateDefaultCurrency(
+    currency: components['schemas']['CurrencyEnum']
+  ) {
+    const { error, response } = await this.request.PATCH(
+      '/entities/{entity_id}/settings',
+      {
+        params: {
+          path: {
+            entity_id: this.entityId,
+          },
+          header: {
+            'x-monite-version': getMoniteApiVersion(),
+          },
+        },
+        body: {
+          // There is a bug in openapi-qraft that improperly generates schema.ts
+          // Provide default values to payment_priority, allow_purchase_order_autolinking,
+          // receivable_edit_flow properties to make the compiler happy
+          payment_priority: 'working_capital',
+          allow_purchase_order_autolinking: true,
+          receivable_edit_flow: 'compliant',
+          currency: {
+            default: currency,
+          },
+        },
+      }
+    );
+
+    if (error) {
+      console.error(
+        `❌ Failed to set entity "${this.entityId}" currency to: "${currency}"`,
+        `x-request-id: ${response.headers.get('x-request-id')}`
+      );
+
+      throw new Error(`Currency update error: ${JSON.stringify(error)}`);
+    }
+  }
+
   private async createVatId() {
     const country = getRandomItemFromArray(['DE'] satisfies Array<
       components['schemas']['AllowedCountries']
