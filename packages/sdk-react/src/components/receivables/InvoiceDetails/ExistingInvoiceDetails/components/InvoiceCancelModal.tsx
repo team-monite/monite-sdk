@@ -50,7 +50,7 @@ export const InvoiceCancelModal = ({
   const modalDescription = hasNoCreditNotes
     ? t(
         i18n
-      )`The Credit note to this invoice was created earlier. Following that you can’t cancel invoice.`
+      )`The Credit note to this invoice ${receivable?.document_id} was created earlier. Following that you can’t cancel invoice.`
     : t(i18n)`This action can't be undone.`;
 
   return (
