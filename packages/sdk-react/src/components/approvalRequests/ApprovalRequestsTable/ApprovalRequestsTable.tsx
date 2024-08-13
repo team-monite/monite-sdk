@@ -235,7 +235,7 @@ const ApprovalRequestsTableBase = ({
       ...(actionsCell ? [actionsCell] : []),
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionsCell]);
+  }, []);
 
   if (
     isApprovalReadSupportedLoading ||

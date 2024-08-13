@@ -186,7 +186,8 @@ const TagsTableBase = ({
         ],
       },
     ]);
-  }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n]);
 
   return (
     <>

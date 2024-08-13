@@ -247,13 +247,8 @@ const ProductsTableBase = ({
         ),
       },
     ]);
-  }, [
-    formatCurrencyToDisplay,
-    i18n,
-    isDeleteSupported,
-    isUpdateSupported,
-    onEdit,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formatCurrencyToDisplay, i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

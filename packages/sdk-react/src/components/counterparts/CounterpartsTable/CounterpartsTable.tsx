@@ -345,7 +345,8 @@ const CounterpartsTableBase = ({
         ),
       },
     ]);
-  }, [i18n, isDeleteSupported, isUpdateSupported, onEdit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

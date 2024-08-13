@@ -169,7 +169,8 @@ const InvoicesTableBase = ({
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ]);
-  }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);
 
