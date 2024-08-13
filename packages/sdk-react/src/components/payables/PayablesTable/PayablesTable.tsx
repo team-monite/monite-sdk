@@ -276,6 +276,7 @@ const PayablesTableBase = ({
         headerName: '',
         sortable: false,
         display: 'flex',
+        minWidth: 64,
         renderCell: (params) => {
           const payable = params.row;
 
