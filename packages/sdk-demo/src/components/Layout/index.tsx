@@ -36,6 +36,8 @@ export const DefaultLayout = ({
     window.scrollTo(0, 0);
   }, [location]);
 
+  const drawerWidth = '240px';
+
   return (
     <>
       <Box
@@ -43,14 +45,15 @@ export const DefaultLayout = ({
           display: 'flex',
           m: 0,
           height: '100vh',
+          width: '100vw',
         }}
       >
         <Drawer
           sx={{
-            width: '240px',
+            width: drawerWidth,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: '240px',
+              width: drawerWidth,
               boxSizing: 'border-box',
             },
           }}
@@ -94,6 +97,7 @@ export const DefaultLayout = ({
             flex: 1,
             flexDirection: 'column',
             height: 'inherit',
+            width: `calc(100vw - ${drawerWidth})`,
           }}
         >
           {children}
