@@ -1016,7 +1016,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:450
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:155
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:88
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:62
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:314
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:277
@@ -1038,11 +1038,11 @@ msgstr "Cancel"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:46
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:45
 msgid "Cancel receivable \"{0}\"?"
 msgstr "Cancel receivable \"{0}\"?"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:48
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:47
 msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
@@ -1211,7 +1211,7 @@ msgid "Cleaning and Maintenance"
 msgstr "Cleaning and Maintenance"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:206
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:73
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:74
 msgid "Close"
 msgstr "Close"
 
@@ -2969,7 +2969,7 @@ msgstr "Invoice {documentId}"
 msgid "Invoice #"
 msgstr "Invoice #"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:62
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:61
 msgid "Invoice cancel confirmation"
 msgstr "Invoice cancel confirmation"
 
@@ -5421,9 +5421,13 @@ msgstr "Thailand"
 msgid "Thank you for completing onboarding for payments services. We will now review the information submitted."
 msgstr "Thank you for completing onboarding for payments services. We will now review the information submitted."
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:51
+msgid "The Credit note to this invoice {0} was created earlier. Following that you can’t cancel invoice."
+msgstr "The Credit note to this invoice {0} was created earlier. Following that you can’t cancel invoice."
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:52
-msgid "The Credit note to this invoice was created earlier. Following that you can’t cancel invoice."
-msgstr "The Credit note to this invoice was created earlier. Following that you can’t cancel invoice."
+#~ msgid "The Credit note to this invoice was created earlier. Following that you can’t cancel invoice."
+#~ msgstr "The Credit note to this invoice was created earlier. Following that you can’t cancel invoice."
 
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingPersonView/OnboardingPersonView.tsx:39
 msgid "The following fields are required:"
@@ -5493,7 +5497,7 @@ msgstr "There was an issue reading the file."
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:48
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:55
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.tsx:98
 msgid "This action can't be undone."
@@ -5724,7 +5728,7 @@ msgstr "Ukrainian Hryvnia"
 msgid "Uncollectible"
 msgstr "Uncollectible"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:67
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:68
 msgid "Unfortunately, you can't cancel"
 msgstr "Unfortunately, you can't cancel"
 
