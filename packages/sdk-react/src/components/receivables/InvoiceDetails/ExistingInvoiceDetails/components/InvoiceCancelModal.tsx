@@ -30,17 +30,16 @@ export const InvoiceCancelModal = ({
   const { root } = useRootElements();
   const { data: receivable, isLoading: isReceivableLoading } =
     useReceivableById(invoiceId);
-
-  const cancelMutation = useCancelReceivableById(invoiceId);
+  const cancelReceivableMutation = useCancelReceivableById(invoiceId);
 
   const creditNoteIds =
     receivable?.type === 'invoice'
       ? receivable.related_documents.credit_note_ids
       : undefined;
 
-  const existCreditNotes = Boolean(!creditNoteIds?.length);
+  const hasNoCreditNotes = !creditNoteIds?.length;
 
-  const title = !receivable ? (
+  const modalTitle = !receivable ? (
     <Skeleton />
   ) : receivable.document_id ? (
     t(i18n)`Cancel receivable "${receivable.document_id}"?`
@@ -48,11 +47,11 @@ export const InvoiceCancelModal = ({
     t(i18n)`Cancel receivable?`
   );
 
-  const description = existCreditNotes
-    ? t(
+  const modalDescription = hasNoCreditNotes
+    ? t(i18n)`This action can't be undone.`
+    : t(
         i18n
-      )`The Credit note to this invoice was created earlier. Following that you can’t cancel invoice.`
-    : t(i18n)`This action can't be undone.`;
+      )`A Credit note has been issued for this invoice, so it cannot be canceled.`;
 
   return (
     <Dialog
@@ -64,22 +63,22 @@ export const InvoiceCancelModal = ({
       fullWidth
     >
       <DialogTitle variant="h3">
-        {existCreditNotes ? title : t(i18n)`Unfortunately, you can't cancel`}
+        {hasNoCreditNotes ? modalTitle : t(i18n)`Unable to Cancel`}
       </DialogTitle>
-      <DialogContent>{description}</DialogContent>
+      <DialogContent>{modalDescription}</DialogContent>
       <Divider />
       <DialogActions>
         <Button variant="outlined" onClick={onClose} color="inherit">
           {t(i18n)`Close`}
         </Button>
-        {existCreditNotes && (
+        {hasNoCreditNotes && (
           <Button
             variant="outlined"
             color="error"
-            disabled={cancelMutation.isPending || isReceivableLoading}
+            disabled={cancelReceivableMutation.isPending || isReceivableLoading}
             onClick={(event) => {
               event.preventDefault();
-              cancelMutation.mutate(undefined, {
+              cancelReceivableMutation.mutate(undefined, {
                 onSuccess: onClose,
               });
             }}
