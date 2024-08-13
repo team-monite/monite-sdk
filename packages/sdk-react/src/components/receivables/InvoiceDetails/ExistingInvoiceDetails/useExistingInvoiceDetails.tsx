@@ -48,12 +48,11 @@ export function useExistingInvoiceDetails({
     entityUserId: receivable?.entity_user_id,
   });
 
-  const { data: isCancelAllowed, isLoading: isCancelAllowedLoading } =
-    useIsActionAllowed({
-      method: 'receivable',
-      action: 'cancel',
-      entityUserId: receivable?.entity_user_id,
-    });
+  const { data: isCancelAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: 'cancel',
+    entityUserId: receivable?.entity_user_id,
+  });
 
   const deleteMutation = useDeleteReceivableById(receivableId);
   const cancelMutation = useCancelReceivableById(receivableId);
@@ -149,19 +148,16 @@ export function useExistingInvoiceDetails({
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
 
-  const isCancelButtonVisible =
-    receivable?.status === 'draft' && isCancelAllowed;
-
   const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: monite.entityId },
   });
 
-  const isCancelButtonDisabled =
-    receivable?.status === 'draft' ||
-    entity?.receivable_edit_flow === 'compliant' ||
-    isCancelAllowedLoading ||
-    isCancelAllowed ||
-    mutationInProgress;
+  const isCancelButtonVisible =
+    (receivable?.status === 'issued' || receivable?.status === 'overdue') &&
+    isCancelAllowed &&
+    entity?.receivable_edit_flow === 'compliant';
+
+  const isCancelButtonDisabled = mutationInProgress;
 
   return {
     view,
