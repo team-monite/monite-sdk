@@ -48,10 +48,10 @@ export const InvoiceCancelModal = ({
   );
 
   const modalDescription = hasNoCreditNotes
-    ? t(i18n)`This action can't be undone.`
-    : t(
+    ? t(
         i18n
-      )`A Credit note has been issued for this invoice, so it cannot be canceled.`;
+      )`The Credit note to this invoice was created earlier. Following that you can’t cancel invoice.`
+    : t(i18n)`This action can't be undone.`;
 
   return (
     <Dialog
@@ -63,7 +63,9 @@ export const InvoiceCancelModal = ({
       fullWidth
     >
       <DialogTitle variant="h3">
-        {hasNoCreditNotes ? modalTitle : t(i18n)`Unable to Cancel`}
+        {hasNoCreditNotes
+          ? modalTitle
+          : t(i18n)`Unfortunately, you can't cancel`}
       </DialogTitle>
       <DialogContent>{modalDescription}</DialogContent>
       <Divider />
