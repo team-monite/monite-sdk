@@ -360,7 +360,7 @@ const LinkedDocumentsCard = ({
               ...(index
                 ? { borderTop: '1px solid', borderTopColor: 'divider' }
                 : {}),
-              cursor: 'pointer',
+              cursor: internalNavigation ? 'pointer' : 'default',
             }}
           >
             <Grid item container direction="column" xs>
@@ -374,26 +374,27 @@ const LinkedDocumentsCard = ({
               <Typography variant="body2">
                 {item.description}{' '}
                 {item.authorTitle ? (
-                  // Only render as a link if internal navigation is available
                   internalNavigation ? (
-                    <Link
-                      href="#" // Placeholder link, should be replaced when interlinking is available
-                      underline="hover"
-                      color="primary"
-                      variant="body2"
-                    >
-                      {item.authorTitle}
-                    </Link>
+                    <>
+                      <Link
+                        href="#" // Todo: Placeholder link, should be replaced when interlinking is available
+                        underline="hover"
+                        color="primary"
+                        variant="body2"
+                      >
+                        {item.authorTitle}
+                      </Link>
+                      <Grid item>
+                        <IconButton edge="end" size="small">
+                          <ArrowForwardIcon fontSize="small" />
+                        </IconButton>
+                      </Grid>
+                    </>
                   ) : (
                     item.authorTitle
                   )
                 ) : null}
               </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton edge="end" size="small">
-                <ArrowForwardIcon fontSize="small" />
-              </IconButton>
             </Grid>
           </Grid>
         ))}
