@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import { components } from '@/api';
 import { isActionAllowed, usePermissions } from '@/core/queries/usePermissions';
 import { I18n } from '@lingui/core';
@@ -13,7 +15,7 @@ export interface UseInvoiceRowActionMenuCellProps {
    * @param props.id - The identifier of the clicked row, a string.
    * @param props.action - The action to be performed, an `InvoicesTableRowAction`.
    */
-  onRowActionClick: (props: {
+  onRowActionClick?: (props: {
     id: string;
     action?: InvoicesTableRowAction;
   }) => void;
@@ -45,7 +47,7 @@ export interface UseInvoiceRowActionMenuCellProps {
 }
 
 export const useInvoiceRowActionMenuCell = (
-  props: UseInvoiceRowActionMenuCellProps | {}
+  props: UseInvoiceRowActionMenuCellProps
 ):
   | GridActionsColDef<components['schemas']['ReceivableResponse']>
   | undefined => {
@@ -53,38 +55,47 @@ export const useInvoiceRowActionMenuCell = (
     usePermissions('receivable');
   const { i18n } = useLingui();
 
+  const [menuCell, setMenuCell] = useState<
+    GridActionsColDef<components['schemas']['ReceivableResponse']> | undefined
+  >(undefined);
+  useEffect(() => {
+    setMenuCell({
+      field: 'action_menu',
+      type: 'actions',
+      headerName: t(i18n)({
+        message: 'Action menu',
+        context: 'InvoicesTableRowActionMenu',
+      }),
+      renderHeader: () => null,
+      getActions: (params) => {
+        const menuItems = getInvoiceActionMenuItems({
+          // casts, because it is not possible to resolve `type` based on multiple different enum
+          invoice:
+            params.row as components['schemas']['InvoiceResponsePayload'],
+          actions: props.rowActions,
+          receivableActionSchema,
+          userIdFromAuthToken,
+          i18n,
+        });
+
+        return menuItems.map(({ label, action }) => (
+          <GridActionsCellItem
+            showInMenu
+            label={label}
+            onClick={(event) => {
+              event.preventDefault();
+              if (props.onRowActionClick)
+                props.onRowActionClick({ id: params.row.id, action });
+            }}
+          />
+        ));
+      },
+    });
+  }, [i18n, props, receivableActionSchema, setMenuCell, userIdFromAuthToken]);
+
   if (!('onRowActionClick' in props && props.onRowActionClick)) return;
 
-  return {
-    field: 'action_menu',
-    type: 'actions',
-    headerName: t(i18n)({
-      message: 'Action menu',
-      context: 'InvoicesTableRowActionMenu',
-    }),
-    renderHeader: () => null,
-    getActions: (params) => {
-      const menuItems = getInvoiceActionMenuItems({
-        // casts, because it is not possible to resolve `type` based on multiple different enum
-        invoice: params.row as components['schemas']['InvoiceResponsePayload'],
-        actions: props.rowActions,
-        receivableActionSchema,
-        userIdFromAuthToken,
-        i18n,
-      });
-
-      return menuItems.map(({ label, action }) => (
-        <GridActionsCellItem
-          showInMenu
-          label={label}
-          onClick={(event) => {
-            event.preventDefault();
-            props.onRowActionClick({ id: params.row.id, action });
-          }}
-        />
-      ));
-    },
-  };
+  return menuCell;
 };
 
 const getInvoiceActionMenuItems = ({

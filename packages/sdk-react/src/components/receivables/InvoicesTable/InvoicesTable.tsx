@@ -94,9 +94,9 @@ const InvoicesTableBase = ({
   };
 
   const invoiceActionCell = useInvoiceRowActionMenuCell({
-    rowActions: 'rowActions' in restProps && restProps.rowActions,
+    rowActions: 'rowActions' in restProps ? restProps.rowActions : undefined,
     onRowActionClick:
-      'onRowActionClick' in restProps && restProps.onRowActionClick,
+      'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
   const [columns, setColumns] = useState<GridColDef[]>([]);
