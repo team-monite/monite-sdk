@@ -150,7 +150,7 @@ export function useExistingInvoiceDetails({
     receivable?.status === 'draft' && isDeleteAllowed;
 
   const isCancelButtonVisible =
-    receivable?.status === 'draft' && isUpdateAllowed;
+    receivable?.status === 'draft' && isCancelAllowed;
 
   const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
     path: { entity_id: monite.entityId },
