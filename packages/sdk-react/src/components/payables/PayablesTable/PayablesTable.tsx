@@ -284,8 +284,7 @@ const PayablesTableBase = ({
         },
       },
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formatCurrencyToDisplay, i18n]);
+  }, [formatCurrencyToDisplay, i18n, onPay]);
 
   const gridApiRef = useAutosizeGridColumns(payables?.data, columns);
 

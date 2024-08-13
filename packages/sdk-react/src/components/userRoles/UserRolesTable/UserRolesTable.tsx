@@ -166,8 +166,7 @@ const UserRolesTableBase = ({
         ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
       },
     ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18n]);
+  }, [i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
