@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -169,9 +169,8 @@ const ProductsTableBase = ({
     onChangeSortCallback?.(model[0] as ProductsTableSortModel);
   };
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'name',
         headerName: t(i18n)`Name, description`,
@@ -246,7 +245,7 @@ const ProductsTableBase = ({
           />
         ),
       },
-    ]);
+    ];
   }, [
     formatCurrencyToDisplay,
     i18n,

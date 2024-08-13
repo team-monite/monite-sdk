@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -128,9 +128,8 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'name',
         headerName: t(i18n)`Name`,
@@ -185,7 +184,7 @@ const TagsTableBase = ({
           />,
         ],
       },
-    ]);
+    ];
   }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
 
   return (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -23,17 +23,17 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { addDays, formatISO } from 'date-fns';
 
 import {
-  FILTER_TYPE_STATUS,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_ADDED_BY,
+  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
+  FILTER_TYPE_STATUS,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestsFilter } from './ApprovalRequestsFilter/ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import {
-  UseApprovalRequestActionsCellProps,
   useApprovalRequestActionsCell,
+  UseApprovalRequestActionsCellProps,
 } from './useApprovalRequestActionsCell';
 import { UserCell } from './UserCell/UserCell';
 
@@ -165,9 +165,8 @@ const ApprovalRequestsTableBase = ({
     }));
   };
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'number',
         headerName: t(i18n)`Invoice #`,
@@ -233,9 +232,8 @@ const ApprovalRequestsTableBase = ({
         renderCell: ({ value }) => <UserCell entityUserId={value} />,
       },
       ...(actionsCell ? [actionsCell] : []),
-    ]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [actionsCell]);
+    ];
+  }, [actionsCell, formatCurrencyToDisplay, i18n]);
 
   if (
     isApprovalReadSupportedLoading ||

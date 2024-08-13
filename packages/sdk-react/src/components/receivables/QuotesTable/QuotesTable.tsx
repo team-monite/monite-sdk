@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -91,9 +91,8 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
@@ -145,7 +144,7 @@ const QuotesTableBase = ({
           return value ? formatCurrencyToDisplay(value, row.currency) : '';
         },
       },
-    ]);
+    ];
   }, [formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(quotes?.data, columns);

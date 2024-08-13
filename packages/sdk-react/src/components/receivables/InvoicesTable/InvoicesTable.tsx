@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -99,9 +99,8 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
@@ -168,7 +167,7 @@ const InvoicesTableBase = ({
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
-    ]);
+    ];
   }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
 
   const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);

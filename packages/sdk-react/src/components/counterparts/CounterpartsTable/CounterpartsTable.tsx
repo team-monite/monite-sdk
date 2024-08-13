@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
@@ -24,18 +24,18 @@ import { useLingui } from '@lingui/react';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
 import MuiPhoneIcon from '@mui/icons-material/LocalPhone';
 import {
-  Box,
   Avatar,
-  Typography,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
-  DialogActions,
+  Box,
   Button,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Stack,
+  Typography,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
@@ -228,9 +228,8 @@ const CounterpartsTableBase = ({
 
   const { root } = useRootElements();
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'counterpart_name',
         sortable: true,
@@ -344,7 +343,7 @@ const CounterpartsTableBase = ({
           />
         ),
       },
-    ]);
+    ];
   }, [i18n, isDeleteSupported, isUpdateSupported, onEdit]);
 
   if (isReadSupportedLoading) {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -166,9 +166,8 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'document_id',
         sortable: false,
@@ -283,7 +282,7 @@ const PayablesTableBase = ({
           return <PayablesTableAction payable={payable} onPay={onPay} />;
         },
       },
-    ]);
+    ];
   }, [formatCurrencyToDisplay, i18n, onPay]);
 
   const gridApiRef = useAutosizeGridColumns(payables?.data, columns);

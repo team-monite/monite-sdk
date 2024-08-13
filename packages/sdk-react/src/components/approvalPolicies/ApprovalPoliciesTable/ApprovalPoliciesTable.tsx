@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
@@ -18,9 +18,9 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { addDays, formatISO } from 'date-fns';
 
 import {
+  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CREATED_BY,
   FILTER_TYPE_SEARCH,
-  FILTER_TYPE_CREATED_AT,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalPoliciesTriggers } from './components/ApprovalPoliciesTriggers';
@@ -122,9 +122,8 @@ const ApprovalPoliciesTableBase = ({
     }
   }, [currentPaginationToken, approvalPolicies]);
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'name',
         headerName: t(i18n)`Policy name`,
@@ -166,7 +165,7 @@ const ApprovalPoliciesTableBase = ({
           <ApprovalPoliciesUser entityUserId={value} />
         ),
       },
-    ]);
+    ];
   }, [i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {

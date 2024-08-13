@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
@@ -134,9 +134,8 @@ const UserRolesTableBase = ({
     onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
 
-  const [columns, setColumns] = useState<GridColDef[]>([]);
-  useEffect(() => {
-    setColumns([
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
       {
         field: 'name',
         headerName: t(i18n)`Name`,
@@ -165,7 +164,7 @@ const UserRolesTableBase = ({
           value: components['schemas']['PayableResponseSchema']['created_at']
         ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
       },
-    ]);
+    ];
   }, [i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
