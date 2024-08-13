@@ -33,6 +33,27 @@ export const InvoiceCancelModal = ({
 
   const cancelMutation = useCancelReceivableById(invoiceId);
 
+  const creditNoteIds =
+    receivable?.type === 'invoice'
+      ? receivable.related_documents.credit_note_ids
+      : undefined;
+
+  const existCreditNotes = Boolean(!creditNoteIds?.length);
+
+  const title = !receivable ? (
+    <Skeleton />
+  ) : receivable.document_id ? (
+    t(i18n)`Cancel receivable "${receivable.document_id}"?`
+  ) : (
+    t(i18n)`Cancel receivable?`
+  );
+
+  const description = existCreditNotes
+    ? t(
+        i18n
+      )`The Credit note to this invoice was created earlier. Following that you can’t cancel invoice.`
+    : t(i18n)`This action can't be undone.`;
+
   return (
     <Dialog
       open={open && Boolean(invoiceId)}
@@ -43,32 +64,30 @@ export const InvoiceCancelModal = ({
       fullWidth
     >
       <DialogTitle variant="h3">
-        {!receivable ? (
-          <Skeleton />
-        ) : receivable.document_id ? (
-          t(i18n)`Cancel receivable "${receivable.document_id}"?`
-        ) : (
-          t(i18n)`Cancel receivable?`
-        )}
+        {existCreditNotes ? title : t(i18n)`Unfortunately, you can't cancel`}
       </DialogTitle>
-      <DialogContent>{t(i18n)`This action can't be undone.`}</DialogContent>
+      <DialogContent>{description}</DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit">{t(
-          i18n
-        )`Close`}</Button>
-        <Button
-          variant="outlined"
-          color="error"
-          disabled={cancelMutation.isPending || isReceivableLoading}
-          onClick={(event) => {
-            event.preventDefault();
-            cancelMutation.mutate(undefined, {
-              onSuccess: onClose,
-            });
-          }}
-          autoFocus
-        >{t(i18n)`Cancel`}</Button>
+        <Button variant="outlined" onClick={onClose} color="inherit">
+          {t(i18n)`Close`}
+        </Button>
+        {existCreditNotes && (
+          <Button
+            variant="outlined"
+            color="error"
+            disabled={cancelMutation.isPending || isReceivableLoading}
+            onClick={(event) => {
+              event.preventDefault();
+              cancelMutation.mutate(undefined, {
+                onSuccess: onClose,
+              });
+            }}
+            autoFocus
+          >
+            {t(i18n)`Cancel`}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
