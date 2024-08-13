@@ -2,6 +2,7 @@ import { useCallback, useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
@@ -19,6 +20,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -126,8 +128,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     entityUserId: receivable?.entity_user_id,
   });
 
-  /** Is the deleting modal opened? */
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
+  const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
 
   const {
     data: pdf,
@@ -225,6 +227,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         }}
       />
 
+      <InvoiceCancelModal
+        invoiceId={props.id}
+        open={cancelModalOpened}
+        onClose={() => {
+          setCancelModalOpened(false);
+        }}
+      />
+
       <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
@@ -292,6 +302,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
                       </MenuItem>
+                      {!buttons.isCancelButtonVisible && (
+                        <MenuItem
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCancelModalOpened(true);
+                          }}
+                          disabled={buttons.isCancelButtonDisabled}
+                        >
+                          <CancelIcon fontSize="small" />
+                          {t(i18n)`Cancel`}
+                        </MenuItem>
+                      )}
                     </StyledMenu>
                   </>
                 )}
