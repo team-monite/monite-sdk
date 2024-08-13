@@ -15,7 +15,11 @@ export const Default: Story = {
     onChangeFilter: action('onChangeFilter'),
     onChangeSort: action('onChangeSort'),
   },
-  render: (args) => <ApprovalPoliciesTable {...args} />,
+  render: (args) => (
+    <div style={{ height: 600, padding: 20 }}>
+      <ApprovalPoliciesTable {...args} />
+    </div>
+  ),
 };
 
 export default meta;

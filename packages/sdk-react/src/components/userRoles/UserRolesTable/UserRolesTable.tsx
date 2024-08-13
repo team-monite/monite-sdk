@@ -138,83 +138,84 @@ const UserRolesTableBase = ({
   }
 
   return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
+      </Box>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
         }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          autoHeight
-          rowSelection={false}
-          disableColumnFilter={true}
-          loading={isLoading}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'permissions',
-              headerName: t(i18n)`Permissions`,
-              sortable: false,
-              flex: 2,
-              renderCell: (params) => (
-                <PermissionsCell
-                  permissions={params.value}
-                  onCLickSeeAll={() => onRowClick?.(params.row.id)}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: true,
-              type: 'date',
-              flex: 1,
-              valueFormatter: (
-                value: components['schemas']['PayableResponseSchema']['created_at']
-              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-          ]}
-          rows={roles?.data || []}
-          onSortModelChange={onChangeSort}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          getRowHeight={() => 'auto'}
-          sx={{
-            [`& .${gridClasses.cell}`]: {
-              py: 1,
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={roles?.prev_pagination_token}
-                nextPage={roles?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setCurrentPaginationToken(page);
-                  setPageSize(pageSize);
-                }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        columns={[
+          {
+            field: 'name',
+            headerName: t(i18n)`Name`,
+            sortable: false,
+            flex: 1,
+          },
+          {
+            field: 'permissions',
+            headerName: t(i18n)`Permissions`,
+            sortable: false,
+            flex: 2,
+            renderCell: (params) => (
+              <PermissionsCell
+                permissions={params.value}
+                onCLickSeeAll={() => onRowClick?.(params.row.id)}
               />
             ),
-          }}
-        />
-      </Box>
-    </>
+          },
+          {
+            field: 'created_at',
+            headerName: t(i18n)`Created on`,
+            sortable: true,
+            type: 'date',
+            flex: 1,
+            valueFormatter: (
+              value: components['schemas']['PayableResponseSchema']['created_at']
+            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+        ]}
+        rows={roles?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        getRowHeight={() => 'auto'}
+        sx={{
+          [`& .${gridClasses.cell}`]: {
+            py: 1,
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={roles?.prev_pagination_token}
+              nextPage={roles?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setCurrentPaginationToken(page);
+                setPageSize(pageSize);
+              }}
+            />
+          ),
+        }}
+      />
+    </Box>
   );
 };
