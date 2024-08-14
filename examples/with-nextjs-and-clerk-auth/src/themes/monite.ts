@@ -417,6 +417,9 @@ const components: Components<Omit<Theme, 'components'>> = {
           fontSize: '16px',
         },
       }),
+      main: {
+        paddingLeft: '12px',
+      },
       cell: {
         fontWeight: 400,
         fontSize: '16px',
