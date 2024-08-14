@@ -95,68 +95,6 @@ html {
   }
 }
 
-/* Default button style */
-.Monite-ContainerCssBaseline .MuiButton-containedPrimary {
-  background-color: var(--demo-button-blue);
-  color: #ffffff;
-  padding: 6px 18px;
-  border-radius: 8px;
-  box-shadow: none;
-  min-width: 120px;
-}
-
-/* Outlined button style */
-.Monite-ContainerCssBaseline .MuiButton-outlined {
-  border-radius: 8px;
-  box-shadow: none;
-
-  &.MuiButton-outlinedPrimary {
-    /*min-width: 120px;*/
-  }
-}
-
-.Monite-Purchases {
-  > .MuiBox-root {
-    /* prevent labels from being clipped */
-    margin-top: calc(var(--demo-padding) * -1);
-    padding-top: var(--demo-padding);
-
-    /* occupy whole available space */
-    flex-basis: 0;
-    flex-grow: 2;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    max-height: 100%;
-
-    /* Filter pane styles */
-
-    > div:first-child {
-      > .MuiGrid-root:first-child {
-        > .MuiGrid-item:nth-child(2) {
-          flex-basis: 16%;
-        }
-      }
-    }
-
-    /* DataGrid */
-
-    > .MuiDataGrid-root {
-      margin-left: 5px;
-
-      /* Align avatar with column header */
-
-      .MuiDataGrid-cell--withRenderer .MuiChip-root {
-        .MuiAvatar-root.MuiChip-avatar {
-          margin-left: calc(var(--demo-padding) * -1);
-          margin-right: var(--demo-padding);
-        }
-      }
-    }
-  }
-}
 
 /* Payable details */
 .MuiDialog-container .Monite-ContainerCssBaseline {

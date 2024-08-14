@@ -323,6 +323,7 @@ const components: Components<Omit<Theme, 'components'>> = {
         const primary = theme.palette.primary as MonitePaletteColorOptions;
         const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
         return {
+          minWidth: '120px',
           backgroundColor: primary.main,
           borderRadius: '8px',
           boxShadow: 'none',
