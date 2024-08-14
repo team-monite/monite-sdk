@@ -70,12 +70,16 @@ export const InvoiceRecurrenceDetails = ({
           value={
             <>
               {t(i18n)`${current_iteration}/${iterations.length} issued`}
-              <br />
-              {currentIteration &&
-                t(i18n)`next on ${i18n.date(
-                  new Date(currentIteration.issue_at),
-                  { month: 'long', year: 'numeric' }
-                )}`}
+              {status === 'active' && (
+                <>
+                  <br />
+                  {currentIteration &&
+                    t(i18n)`next on ${i18n.date(
+                      new Date(currentIteration.issue_at),
+                      { month: 'long', year: 'numeric' }
+                    )}`}
+                </>
+              )}
             </>
           }
         />
