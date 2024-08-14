@@ -214,6 +214,17 @@ const components: Components<Omit<Theme, 'components'>> = {
           left: 0,
           top: 0,
         },
+        '&.Monite-FilterControl .MuiIconButton-root': {
+          marginRight: '-6px',
+        },
+        '&.Monite-FilterControl .MuiInputAdornment-positionEnd': {
+          marginRight: '6px',
+        },
+        '&.Monite-FilterControl .MuiInputAdornment-positionEnd .MuiSvgIcon-root, &.Monite-FilterControl .MuiIconButton-root .MuiSvgIcon-root':
+          {
+            width: '20px',
+            height: '20px',
+          },
       },
     },
   },
@@ -251,7 +262,13 @@ const components: Components<Omit<Theme, 'components'>> = {
           },
 
           '.MuiListItemIcon-root': {
-            minWidth: 35,
+            minWidth: 25,
+          },
+
+          '.MuiListItemIcon-root .MuiSvgIcon-root': {
+            width: '20px',
+            height: '20px',
+            marginRight: '5px',
           },
 
           '.MuiCollapse-root': {
