@@ -59,16 +59,14 @@ export function useExistingInvoiceDetails({
     path: { receivable_id: receivableId },
   });
 
+  const recurrence_id =
+    receivable?.type === 'invoice' && receivable.recurrence_id
+      ? receivable.recurrence_id
+      : '';
+
   const cancelRecurrenceMutation =
     api.recurrences.postRecurrencesIdCancel.useMutation(
-      {
-        path: {
-          recurrence_id:
-            receivable?.type === 'invoice' && receivable.recurrence_id
-              ? receivable.recurrence_id
-              : '',
-        },
-      },
+      { path: { recurrence_id } },
       {
         onError: (error) => {
           toast.error(getAPIErrorMessage(i18n, error));
@@ -78,6 +76,10 @@ export function useExistingInvoiceDetails({
             api.receivables.getReceivables.invalidateQueries(queryClient),
             api.receivables.getReceivablesId.invalidateQueries(
               { parameters: { path: { receivable_id: receivableId } } },
+              queryClient
+            ),
+            api.recurrences.getRecurrencesId.invalidateQueries(
+              { parameters: { path: { recurrence_id } } },
               queryClient
             ),
           ]),
