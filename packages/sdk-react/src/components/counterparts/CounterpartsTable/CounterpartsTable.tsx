@@ -239,233 +239,232 @@ const CounterpartsTableBase = ({
   const className = 'Monite-CounterpartsTable';
 
   return (
-    <>
-      <Box
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-        sx={{
-          padding: 2,
-          width: '100%',
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ marginBottom: 2 }} className={className + '-FiltersContainer'}>
+        <FiltersComponent
+          onChangeFilter={onChangeFilter}
+          showCategories={showCategories}
+        />
+      </Box>
+      <DataGrid
+        rowSelection={false}
+        disableColumnFilter={true}
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+          columns: {
+            columnVisibilityModel: {
+              category: showCategories,
+            },
+          },
         }}
-      >
-        <Box
-          sx={{ marginBottom: 2 }}
-          className={className + '-FiltersContainer'}
-        >
-          <FiltersComponent
-            onChangeFilter={onChangeFilter}
-            showCategories={showCategories}
-          />
-        </Box>
-        <DataGrid
-          rowSelection={false}
-          initialState={{
-            sorting: {
-              sortModel: sortModel && [sortModel],
+        onSortModelChange={onChangeSort}
+        loading={isLoading}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        columnVisibilityModel={{
+          category: showCategories,
+        }}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={counterparts?.prev_pagination_token}
+              nextPage={counterparts?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'counterpart_name',
+            sortable: true,
+            headerName: t(i18n)`Name, country, city`,
+            display: 'flex',
+            flex: 1,
+            renderCell: (params) => {
+              const counterpart = params.row;
+
+              const name =
+                'organization' in counterpart
+                  ? counterpart.organization.legal_name
+                  : getIndividualName(counterpart.individual);
+
+              return (
+                <>
+                  <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
+                  <Typography variant="caption">{name}</Typography>
+                </>
+              );
             },
-            columns: {
-              columnVisibilityModel: {
-                category: showCategories,
-              },
+          },
+          {
+            field: 'category',
+            sortable: false,
+            headerName: t(i18n)`Category`,
+            display: 'flex',
+            flex: 0.6,
+            renderCell: (params) => {
+              const counterpart = params.row;
+
+              const { is_customer, is_vendor } =
+                'organization' in counterpart
+                  ? counterpart.organization
+                  : counterpart.individual;
+
+              const items = [
+                {
+                  label: t(i18n)`Customer`,
+                  value: is_customer,
+                },
+                { label: t(i18n)`Vendor`, value: is_vendor },
+              ].map(
+                ({ label, value }) =>
+                  value && (
+                    <Chip
+                      key={label}
+                      label={label}
+                      variant="outlined"
+                      color="default"
+                    />
+                  )
+              );
+
+              return (
+                <Stack direction="row" spacing={1}>
+                  {items}
+                </Stack>
+              );
             },
-          }}
-          onSortModelChange={onChangeSort}
-          loading={isLoading}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          columnVisibilityModel={{
-            category: showCategories,
-          }}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
+          },
+          {
+            field: 'contacts',
+            sortable: false,
+            flex: 1,
+            headerName: t(i18n)`Contact information`,
+            renderCell: (params) => {
+              const counterpart = params.row;
+
+              const { email, phone } =
+                'organization' in counterpart
+                  ? counterpart.organization
+                  : counterpart.individual;
+
+              return (
+                <Stack spacing={1} direction="column">
+                  {email && (
+                    <Styled.MuiColContacts>
+                      <MuiEnvelopeIcon fontSize="small" color="disabled" />
+                      <Typography variant="body2">{email}</Typography>
+                    </Styled.MuiColContacts>
+                  )}
+                  {phone && (
+                    <Styled.MuiColContacts>
+                      <MuiPhoneIcon fontSize="small" color="disabled" />
+                      <Typography variant="body2">{phone}</Typography>
+                    </Styled.MuiColContacts>
+                  )}
+                </Stack>
+              );
             },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={counterparts?.prev_pagination_token}
-                nextPage={counterparts?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
+          },
+          {
+            field: 'actions',
+            sortable: false,
+            headerName: '',
+            width: 70,
+            renderCell: (params) => (
+              <TableActions
+                permissions={{
+                  isUpdateAllowed: isUpdateSupported,
+                  isDeleteAllowed: isDeleteSupported,
                 }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
+                onEdit={() => {
+                  onEdit?.(params.row.id);
+                }}
+                onDelete={() => {
+                  setSelectedCounterpart(params.row);
+                  setIsDeleteDialogOpen(true);
                 }}
               />
             ),
-          }}
-          columns={[
-            {
-              field: 'counterpart_name',
-              sortable: true,
-              headerName: t(i18n)`Name, country, city`,
-              display: 'flex',
-              flex: 1,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const name =
-                  'organization' in counterpart
-                    ? counterpart.organization.legal_name
-                    : getIndividualName(counterpart.individual);
-
-                return (
-                  <>
-                    <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
-                    <Typography variant="caption">{name}</Typography>
-                  </>
-                );
-              },
-            },
-            {
-              field: 'category',
-              sortable: false,
-              headerName: t(i18n)`Category`,
-              display: 'flex',
-              flex: 0.6,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const { is_customer, is_vendor } =
-                  'organization' in counterpart
-                    ? counterpart.organization
-                    : counterpart.individual;
-
-                const items = [
-                  {
-                    label: t(i18n)`Customer`,
-                    value: is_customer,
-                  },
-                  { label: t(i18n)`Vendor`, value: is_vendor },
-                ].map(
-                  ({ label, value }) =>
-                    value && (
-                      <Chip
-                        key={label}
-                        label={label}
-                        variant="outlined"
-                        color="default"
-                      />
-                    )
-                );
-
-                return (
-                  <Stack direction="row" spacing={1}>
-                    {items}
-                  </Stack>
-                );
-              },
-            },
-            {
-              field: 'contacts',
-              sortable: false,
-              flex: 1,
-              headerName: t(i18n)`Contact information`,
-              renderCell: (params) => {
-                const counterpart = params.row;
-
-                const { email, phone } =
-                  'organization' in counterpart
-                    ? counterpart.organization
-                    : counterpart.individual;
-
-                return (
-                  <Stack spacing={1} direction="column">
-                    {email && (
-                      <Styled.MuiColContacts>
-                        <MuiEnvelopeIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{email}</Typography>
-                      </Styled.MuiColContacts>
-                    )}
-                    {phone && (
-                      <Styled.MuiColContacts>
-                        <MuiPhoneIcon fontSize="small" color="disabled" />
-                        <Typography variant="body2">{phone}</Typography>
-                      </Styled.MuiColContacts>
-                    )}
-                  </Stack>
-                );
-              },
-            },
-            {
-              field: 'actions',
-              sortable: false,
-              headerName: '',
-              width: 70,
-              renderCell: (params) => (
-                <TableActions
-                  permissions={{
-                    isUpdateAllowed: isUpdateSupported,
-                    isDeleteAllowed: isDeleteSupported,
-                  }}
-                  onEdit={() => {
-                    onEdit?.(params.row.id);
-                  }}
-                  onDelete={() => {
-                    setSelectedCounterpart(params.row);
-                    setIsDeleteDialogOpen(true);
-                  }}
-                />
-              ),
-            },
-          ]}
-          rows={counterparts?.data || []}
-        />
-        <Dialog
-          className={className + 'Dialog-DeleteCounterpart'}
-          open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
-          container={root}
-          onClose={closeDeleteCounterpartModal}
-          aria-label={t(i18n)`Delete confirmation`}
-          maxWidth="sm"
-          fullWidth
-          TransitionProps={{
-            onExited: closedDeleteCounterpartModal,
-          }}
+          },
+        ]}
+        rows={counterparts?.data || []}
+      />
+      <Dialog
+        className={className + 'Dialog-DeleteCounterpart'}
+        open={isDeleteDialogOpen && Boolean(selectedCounterpart)}
+        container={root}
+        onClose={closeDeleteCounterpartModal}
+        aria-label={t(i18n)`Delete confirmation`}
+        maxWidth="sm"
+        fullWidth
+        TransitionProps={{
+          onExited: closedDeleteCounterpartModal,
+        }}
+      >
+        <DialogTitle
+          variant="h3"
+          className={className + 'Dialog-DeleteCounterpart-Title'}
         >
-          <DialogTitle
-            variant="h3"
-            className={className + 'Dialog-DeleteCounterpart-Title'}
+          {t(i18n)`Delete Counterpart "${getCounterpartName(
+            selectedCounterpart!
+          )}"?`}
+        </DialogTitle>
+        <DialogContent
+          className={className + 'Dialog-DeleteCounterpart-Content'}
+        >
+          <DialogContentText>
+            {t(i18n)`This action can't be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
+        <DialogActions
+          className={className + 'Dialog-DeleteCounterpart-Actions'}
+        >
+          <Button
+            variant="outlined"
+            onClick={closeDeleteCounterpartModal}
+            color="inherit"
+            className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
           >
-            {t(i18n)`Delete Counterpart "${getCounterpartName(
-              selectedCounterpart!
-            )}"?`}
-          </DialogTitle>
-          <DialogContent
-            className={className + 'Dialog-DeleteCounterpart-Content'}
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={deleteCounterpart}
+            autoFocus
+            className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
           >
-            <DialogContentText>
-              {t(i18n)`This action can't be undone.`}
-            </DialogContentText>
-          </DialogContent>
-          <Divider className={className + 'Dialog-DeleteCounterpart-Divider'} />
-          <DialogActions
-            className={className + 'Dialog-DeleteCounterpart-Actions'}
-          >
-            <Button
-              variant="outlined"
-              onClick={closeDeleteCounterpartModal}
-              color="inherit"
-              className={className + 'Dialog-DeleteCounterpart-Actions-Cancel'}
-            >
-              {t(i18n)`Cancel`}
-            </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={deleteCounterpart}
-              autoFocus
-              className={className + 'Dialog-DeleteCounterpart-Actions-Delete'}
-            >
-              {t(i18n)`Delete`}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </>
+            {t(i18n)`Delete`}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };

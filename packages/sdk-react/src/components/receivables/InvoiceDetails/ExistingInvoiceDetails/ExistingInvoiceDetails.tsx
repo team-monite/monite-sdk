@@ -2,6 +2,7 @@ import { useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { InvoicePDFViewer } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
@@ -17,6 +18,7 @@ import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import EmailIcon from '@mui/icons-material/MailOutline';
@@ -125,8 +127,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     entityUserId: receivable?.entity_user_id,
   });
 
-  /** Is the deleting modal opened? */
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
+  const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
@@ -184,6 +186,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
+  const className = 'Monite-ExistingInvoiceDetails';
+
   return (
     <>
       <InvoiceDeleteModal
@@ -194,7 +198,15 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         }}
       />
 
-      <DialogTitle>
+      <InvoiceCancelModal
+        invoiceId={props.id}
+        open={cancelModalOpened}
+        onClose={() => {
+          setCancelModalOpened(false);
+        }}
+      />
+
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Grid container>
             <Grid item xs={6}>
@@ -261,6 +273,18 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                         <EmailIcon fontSize="small" />
                         {t(i18n)`Send invoice`}
                       </MenuItem>
+                      {!buttons.isCancelButtonVisible && (
+                        <MenuItem
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCancelModalOpened(true);
+                          }}
+                          disabled={buttons.isCancelButtonDisabled}
+                        >
+                          <CancelIcon fontSize="small" />
+                          {t(i18n)`Cancel`}
+                        </MenuItem>
+                      )}
                     </StyledMenu>
                   </>
                 )}
@@ -309,7 +333,10 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>
+      <DialogContent
+        className={className + '-Content'}
+        sx={{ display: 'flex', flexDirection: 'column' }}
+      >
         <Grid container columnSpacing={4} height="100%">
           <Grid item container xs={6} height="100%">
             <InvoicePDFViewer receivable_id={props.id} />

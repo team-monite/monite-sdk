@@ -84,10 +84,16 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   return (
     <>
       <Box
-        sx={{ padding: 2, width: '100%' }}
         className={classNames(ScopedCssBaselineContainerClassName, className)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          height: 'inherit',
+          pt: 2,
+        }}
       >
-        <Box sx={{ marginBottom: 2 }}>
+        <Box sx={{ mb: 2 }}>
           <ReceivableFilters
             onChange={onChangeFilter}
             filters={['document_id__contains', 'status', 'counterpart_id']}
@@ -101,6 +107,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
           }}
           apiRef={gridApiRef}
           rowSelection={false}
+          disableColumnFilter={true}
           loading={isLoading}
           sx={{
             '& .MuiDataGrid-withBorderColor': {

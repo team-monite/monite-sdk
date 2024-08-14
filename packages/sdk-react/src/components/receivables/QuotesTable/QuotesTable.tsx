@@ -96,122 +96,125 @@ const QuotesTableBase = ({
   const className = 'Monite-QuotesTable';
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%' }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <ReceivableFilters
-            onChange={onChangeFilter}
-            filters={['document_id__contains', 'status', 'counterpart_id']}
-          />
-        </Box>
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          apiRef={gridApiRef}
-          rowSelection={false}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                nextPage={quotes?.next_pagination_token}
-                prevPage={quotes?.prev_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: paginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setPaginationToken(page ?? undefined);
-                }}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-              flex: 1.2,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 1,
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue Date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
-            },
-            {
-              field: 'counterpart_name',
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              headerName: t(i18n)`Customer`,
-              display: 'flex',
-              flex: 1,
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'expiry_date',
-              sortable: false,
-              headerName: t(i18n)`Due date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 1,
-            },
-            {
-              field: 'status',
-              sortable: ReceivableCursorFields.includes('status'),
-              headerName: t(i18n)`Status`,
-              renderCell: (params) => {
-                const status = params.value;
-
-                return <InvoiceStatusChip status={status} />;
-              },
-              flex: 1,
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value
-                  ? formatCurrencyToDisplay(value, row.currency)
-                  : '';
-              },
-              flex: 0.8,
-            },
-          ]}
-          rows={quotes?.data || []}
+    <Box
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <ReceivableFilters
+          onChange={onChangeFilter}
+          filters={['document_id__contains', 'status', 'counterpart_id']}
         />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        apiRef={gridApiRef}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              nextPage={quotes?.next_pagination_token}
+              prevPage={quotes?.prev_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: paginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setPaginationToken(page ?? undefined);
+              }}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'document_id',
+            headerName: t(i18n)`Number`,
+            flex: 1.2,
+          },
+          {
+            field: 'created_at',
+            headerName: t(i18n)`Created on`,
+            valueFormatter: (value) =>
+              value
+                ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
+                : '—',
+            flex: 1,
+          },
+          {
+            field: 'issue_date',
+            headerName: t(i18n)`Issue Date`,
+            valueFormatter: (value) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+            flex: 1,
+          },
+          {
+            field: 'counterpart_name',
+            sortable: ReceivableCursorFields.includes('counterpart_name'),
+            headerName: t(i18n)`Customer`,
+            display: 'flex',
+            flex: 1,
+            renderCell: (params) => (
+              <InvoiceCounterpartName
+                counterpartId={params.row.counterpart_id}
+              />
+            ),
+          },
+          {
+            field: 'expiry_date',
+            sortable: false,
+            headerName: t(i18n)`Due date`,
+            valueFormatter: (value) =>
+              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+            flex: 1,
+          },
+          {
+            field: 'status',
+            sortable: ReceivableCursorFields.includes('status'),
+            headerName: t(i18n)`Status`,
+            renderCell: (params) => {
+              const status = params.value;
+
+              return <InvoiceStatusChip status={status} />;
+            },
+            flex: 1,
+          },
+          {
+            field: 'amount',
+            headerName: t(i18n)`Amount`,
+            sortable: ReceivableCursorFields.includes('amount'),
+            valueGetter: (_, row) => {
+              const value = row.total_amount;
+
+              return value ? formatCurrencyToDisplay(value, row.currency) : '';
+            },
+            flex: 0.8,
+          },
+        ]}
+        rows={quotes?.data || []}
+      />
+    </Box>
   );
 };

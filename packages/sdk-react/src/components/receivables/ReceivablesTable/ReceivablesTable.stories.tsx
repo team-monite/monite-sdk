@@ -15,7 +15,7 @@ export const FullPermissions: Story = {
     onRowClick: action('onRowClick'),
   },
   render: (args) => (
-    <div style={{ height: 500 }}>
+    <div style={{ height: 500, padding: 20 }}>
       <ReceivablesTable {...args} />
     </div>
   ),

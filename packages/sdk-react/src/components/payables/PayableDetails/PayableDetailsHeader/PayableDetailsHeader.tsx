@@ -85,7 +85,7 @@ export const PayableDetailsHeader = ({
       children: t(i18n)`Approve`,
     },
     cancel: {
-      variant: 'contained',
+      variant: 'text',
       color: 'error',
       onClick: cancelInvoice,
       children: t(i18n)`Cancel`,

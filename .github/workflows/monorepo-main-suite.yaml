@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Build
         run: yarn build
@@ -35,7 +35,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Lint
         run: yarn lint
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Type Check
         run: yarn typecheck
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Build Storybook
         run: yarn storybook:build
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Unit Test
         run: yarn test
@@ -85,7 +85,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Install Playwright Browsers
         run: yarn workspace @monite/sdk-drop-in exec playwright install
@@ -102,7 +102,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Translations Validator
         run: ./lingui-translations-validator.sh
@@ -138,7 +138,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Monorepo
-        uses: team-monite/setup-yarn-project-action@b4b4161e23724bfce41a9a66cb46be87cdd39e36
+        uses: team-monite/setup-yarn-project-action@c098d54db6f34eb2103eb9cceda484984e8b9bbe
 
       - name: Build
         run: yarn build

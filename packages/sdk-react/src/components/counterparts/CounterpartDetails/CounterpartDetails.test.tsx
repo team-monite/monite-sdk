@@ -1,3 +1,4 @@
+import { prepareCounterpartOrganization } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,
@@ -18,7 +19,15 @@ import {
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CounterpartDataTestId } from '../Counterpart.types';
@@ -635,6 +644,32 @@ describe('CounterpartDetails', () => {
           false,
           false,
         ]);
+      });
+    });
+  });
+
+  describe('# Make default contact for counterpart', () => {
+    const setupTest = (organizationEmail: string, contactEmail: string) => {
+      const contacts = [{ email: contactEmail, is_default: true }];
+      const organization = {
+        email: organizationEmail,
+        is_customer: true,
+        is_vendor: false,
+        legal_name: 'Test Corp',
+        phone: '123-456-7890',
+      };
+      return prepareCounterpartOrganization(organization, {}, contacts);
+    };
+
+    describe('prepareCounterpartOrganization', () => {
+      it('should return isEmailDefault as true when contact email matches organization email', () => {
+        const result = setupTest('test@org.com', 'test@org.com');
+        expect(result.isEmailDefault).toBe(true);
+      });
+
+      it('should return isEmailDefault as false when no matching email is found', () => {
+        const result = setupTest('test@org.com', 'nomatch@org.com');
+        expect(result.isEmailDefault).toBe(false);
       });
     });
   });

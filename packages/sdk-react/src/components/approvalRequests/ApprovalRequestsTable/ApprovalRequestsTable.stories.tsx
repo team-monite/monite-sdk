@@ -21,7 +21,7 @@ export const FullPermissions: Story = {
     onRowClick: action('onRowClick'),
   },
   render: (args) => (
-    <div style={{ height: 600 }}>
+    <div style={{ height: 600, padding: 20 }}>
       <ApprovalRequestsTable {...args} />
     </div>
   ),
@@ -47,7 +47,7 @@ export const ReadOnlyPermissions: Story = {
     }),
   ],
   render: (args) => (
-    <div style={{ height: 600 }}>
+    <div style={{ height: 600, padding: 20 }}>
       <ApprovalRequestsTable {...args} />
     </div>
   ),
@@ -74,7 +74,7 @@ export const LowPermissions: Story = {
   ],
   render: (args) => {
     return (
-      <div style={{ height: 600 }}>
+      <div style={{ height: 600, padding: 20 }}>
         <ApprovalRequestsTable {...args} />
       </div>
     );

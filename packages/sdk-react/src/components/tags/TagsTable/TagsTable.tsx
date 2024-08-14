@@ -124,116 +124,120 @@ const TagsTableBase = ({
   });
 
   return (
-    <>
-      <Box
-        sx={{ padding: 2, width: '100%', height: '100%' }}
-        className={ScopedCssBaselineContainerClassName}
-      >
-        <DataGrid
-          initialState={{
-            sorting: {
-              sortModel: [sortModel],
-            },
-          }}
-          autoHeight
-          rowSelection={false}
-          loading={isLoading}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={tags?.prev_pagination_token}
-                nextPage={tags?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        onSortModelChange={onChangeSort}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={tags?.prev_pagination_token}
+              nextPage={tags?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+        columns={[
+          {
+            field: 'name',
+            headerName: t(i18n)`Name`,
+            sortable: false,
+            flex: 1,
+          },
+          {
+            field: 'created_at',
+            headerName: t(i18n)`Created at`,
+            flex: 0.5,
+            valueFormatter: (
+              value: components['schemas']['TagReadSchema']['created_at']
+            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'updated_at',
+            headerName: t(i18n)`Updated at`,
+            flex: 0.5,
+            valueFormatter: (
+              value: components['schemas']['TagReadSchema']['updated_at']
+            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          },
+          {
+            field: 'created_by_entity_user_id',
+            headerName: t(i18n)`Created by`,
+            flex: 0.6,
+            sortable: false,
+            renderCell: (params) =>
+              params.value ? <UserCell id={params.value} /> : null,
+          },
+          {
+            field: 'actions',
+            type: 'actions',
+            getActions: (params) => [
+              <GridActionsCellItem
+                onClick={() => {
+                  setSelectedTag(params.row);
+                  openEditModal();
                 }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
+                icon={<EditIcon />}
+                disabled={!isUpdateAllowed}
+                label={t(i18n)`Edit`}
+              />,
+              <GridActionsCellItem
+                onClick={() => {
+                  setSelectedTag(params.row);
+                  openDeleteModal();
                 }}
-              />
-            ),
-          }}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created at`,
-              flex: 0.5,
-              valueFormatter: (
-                value: components['schemas']['TagReadSchema']['created_at']
-              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'updated_at',
-              headerName: t(i18n)`Updated at`,
-              flex: 0.5,
-              valueFormatter: (
-                value: components['schemas']['TagReadSchema']['updated_at']
-              ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-            {
-              field: 'created_by_entity_user_id',
-              headerName: t(i18n)`Created by`,
-              flex: 0.6,
-              sortable: false,
-              renderCell: (params) =>
-                params.value ? <UserCell id={params.value} /> : null,
-            },
-            {
-              field: 'actions',
-              type: 'actions',
-              getActions: (params) => [
-                <GridActionsCellItem
-                  onClick={() => {
-                    setSelectedTag(params.row);
-                    openEditModal();
-                  }}
-                  icon={<EditIcon />}
-                  disabled={!isUpdateAllowed}
-                  label={t(i18n)`Edit`}
-                />,
-                <GridActionsCellItem
-                  onClick={() => {
-                    setSelectedTag(params.row);
-                    openDeleteModal();
-                  }}
-                  disabled={!isDeleteAllowed}
-                  icon={<DeleteIcon />}
-                  label={t(i18n)`Delete`}
-                />,
-              ],
-            },
-          ]}
-          rows={tags?.data ?? []}
-        />
-        <TagFormModal
+                disabled={!isDeleteAllowed}
+                icon={<DeleteIcon />}
+                label={t(i18n)`Delete`}
+              />,
+            ],
+          },
+        ]}
+        rows={tags?.data ?? []}
+      />
+      <TagFormModal
+        tag={selectedTag}
+        open={editModalOpened}
+        onClose={closeEditModal}
+      />
+      {selectedTag && (
+        <ConfirmDeleteModal
           tag={selectedTag}
-          open={editModalOpened}
-          onClose={closeEditModal}
+          modalOpened={deleteModalOpened}
+          onClose={closeDeleteModal}
         />
-        {selectedTag && (
-          <ConfirmDeleteModal
-            tag={selectedTag}
-            modalOpened={deleteModalOpened}
-            onClose={closeDeleteModal}
-          />
-        )}
-      </Box>
-    </>
+      )}
+    </Box>
   );
 };
