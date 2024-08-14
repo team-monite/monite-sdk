@@ -1,24 +1,34 @@
 import '@monite/sdk-react/mui-styles.d.ts';
 import { createTheme } from '@mui/material';
 import type { Components } from '@mui/material/styles/components';
-import type {
+import {
   Palette,
   PaletteOptions,
+  SimplePaletteColorOptions,
 } from '@mui/material/styles/createPalette';
 import type { Theme } from '@mui/material/styles/createTheme';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 import { deepmerge } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
 import {
-  moniteLight as baseMoniteLight,
   moniteDark as baseMoniteDark,
+  moniteLight as baseMoniteLight,
 } from '@team-monite/sdk-themes';
 
-const paletteLight: PaletteOptions = {
+interface MoniteSimplePaletteColorOptions extends SimplePaletteColorOptions {
+  lighter?: string;
+}
+
+interface MonitePaletteOptions extends PaletteOptions {
+  primary: MoniteSimplePaletteColorOptions;
+}
+
+const paletteLight: MonitePaletteOptions = {
   primary: {
     dark: '#1D59CC',
     main: '#3737FF',
     light: '#F4F8FF',
+    lighter: '#ebebff',
   },
   background: {
     menu: '#F1F2F5',
@@ -32,11 +42,12 @@ const paletteLight: PaletteOptions = {
   divider: '#DDDDDD',
 };
 
-const paletteDark: PaletteOptions = {
+const paletteDark: MonitePaletteOptions = {
   primary: {
     dark: '#1D59CC',
     main: '#3737FF',
     light: '#F4F8FF',
+    lighter: '#ebebff',
   },
   background: {
     menu: '#F1F2F5',
@@ -254,6 +265,20 @@ const components: Components<Omit<Theme, 'components'>> = {
           backgroundColor: theme.palette.primary.main,
         },
       }),
+      outlinedPrimary: ({ theme }) => {
+        const palette = theme.palette as MonitePaletteOptions;
+        return {
+          backgroundColor: palette.primary.lighter,
+          borderColor: palette.primary.lighter,
+          '&:hover': {
+            backgroundColor: palette.primary.light,
+            borderColor: palette.primary.light,
+          },
+          '&:disabled': {
+            borderColor: palette.primary.lighter,
+          },
+        };
+      },
     },
   },
   MuiPopover: {
