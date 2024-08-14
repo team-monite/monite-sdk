@@ -375,11 +375,10 @@ const components: Components<Omit<Theme, 'components'>> = {
         const primary = theme.palette.primary as MonitePaletteColorOptions;
 
         return {
-          '& .MuiButtonBase-root': {
-            paddingTop: 10,
-            paddingBottom: 10,
+          '& .MuiTab-root': {
+            padding: '16px',
           },
-          '& .MuiButtonBase-root.Mui-selected': {
+          '& .MuiTab-root.Mui-selected': {
             backgroundColor: primary.lightest,
             borderRadius: 10,
           },
