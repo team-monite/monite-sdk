@@ -327,6 +327,11 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MoniteTablePagination: {
+    defaultProps: {
+      pageSizeOptions: [15],
+    },
+  },
   MuiDataGrid: {
     defaultProps: {
       columnHeaderHeight: 40,
@@ -349,6 +354,11 @@ const components: Components<Omit<Theme, 'components'>> = {
       cell: {
         fontWeight: 400,
         fontSize: '16px',
+      },
+      footerContainer: {
+        '& .Monite-RowsPerPageSelector div[role="combobox"]': {
+          lineHeight: '40px',
+        },
       },
     },
   },

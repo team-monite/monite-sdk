@@ -148,6 +148,7 @@ export const TablePagination = <T,>({
             <StyledSelect
               {...slotProps?.pageSizeSelect}
               aria-label={t(i18n)`Rows per page`}
+              className="Monite-RowsPerPageSelector"
               MenuProps={{
                 ...slotProps?.pageSizeSelect?.MenuProps,
                 container: root,
