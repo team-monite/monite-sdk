@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo } from 'react';
+import { Component, createContext, ReactNode, useMemo } from 'react';
 
 import { type APISchema, createAPIClient } from '@monite/sdk-react';
 import { type QraftContextValue } from '@openapi-qraft/react';
@@ -21,7 +21,9 @@ export const EntityIdLoader = ({
 }) => {
   return (
     <EntityIdLoaderProvider fetchToken={fetchToken} apiUrl={apiUrl}>
-      <EntityIdLoaderRenderCallback>{children}</EntityIdLoaderRenderCallback>
+      <ErrorBoundary>
+        <EntityIdLoaderRenderCallback>{children}</EntityIdLoaderRenderCallback>
+      </ErrorBoundary>
     </EntityIdLoaderProvider>
   );
 };
@@ -87,5 +89,30 @@ export const createEntityUsersMyEntityRequestFn = (
     new QueryClient()
   );
 };
+
+type ErrorBoundaryProps = {
+  children: ReactNode;
+};
+
+class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  {
+    isError: boolean;
+  }
+> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { isError: false };
+  }
+
+  static getDerivedStateFromError(error: unknown) {
+    return { isError: true, error: error };
+  }
+
+  render() {
+    if (this.state.isError) return null;
+    return this.props.children;
+  }
+}
 
 const EntityIdContext = createContext<QraftContextValue>(undefined);
