@@ -385,6 +385,11 @@ const components: Components<Omit<Theme, 'components'>> = {
           },
         };
       },
+      indicator: ({ theme }) => ({
+        borderRadius: 10,
+        backgroundColor: theme.palette.primary.main,
+        height: '4px',
+      }),
     },
   },
   MoniteInvoiceStatusChip: {
