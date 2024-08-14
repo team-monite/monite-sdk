@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import {
+  useCancelReceivableById,
   useDeleteReceivableById,
   useIssueReceivableById,
   useSendReceivableById,
@@ -30,6 +31,8 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: UseExistingInvoiceDetailsProps) {
+  const { monite } = useMoniteContext();
+
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
@@ -45,7 +48,14 @@ export function useExistingInvoiceDetails({
     entityUserId: receivable?.entity_user_id,
   });
 
+  const { data: isCancelAllowed } = useIsActionAllowed({
+    method: 'receivable',
+    action: 'cancel',
+    entityUserId: receivable?.entity_user_id,
+  });
+
   const deleteMutation = useDeleteReceivableById(receivableId);
+  const cancelMutation = useCancelReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
   const issueMutation = useIssueReceivableById(receivableId);
   const { api } = useMoniteContext();
@@ -57,6 +67,7 @@ export function useExistingInvoiceDetails({
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
+    cancelMutation.isPending ||
     pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
@@ -74,6 +85,10 @@ export function useExistingInvoiceDetails({
       setView(ExistingInvoiceDetailsView.Edit);
     }
   }, [view]);
+
+  const handleCancelInvoice = useCallback(() => {
+    cancelMutation.mutate();
+  }, [cancelMutation]);
 
   const handleDownloadPDF = useCallback(async () => {
     await pdfQuery.refetch();
@@ -133,11 +148,23 @@ export function useExistingInvoiceDetails({
   const isDeleteButtonVisible =
     receivable?.status === 'draft' && isDeleteAllowed;
 
+  const { data: entity } = api.entities.getEntitiesIdSettings.useQuery({
+    path: { entity_id: monite.entityId },
+  });
+
+  const isCancelButtonVisible =
+    (receivable?.status === 'issued' || receivable?.status === 'overdue') &&
+    isCancelAllowed &&
+    entity?.receivable_edit_flow === 'compliant';
+
+  const isCancelButtonDisabled = mutationInProgress;
+
   return {
     view,
     callbacks: {
       handleIssueOnly,
       handleDownloadPDF,
+      handleCancelInvoice,
       handleChangeViewInvoice: handleChangeInvoiceView,
     },
     loading: mutationInProgress,
@@ -149,6 +176,8 @@ export function useExistingInvoiceDetails({
       isEditButtonVisible,
       isComposeEmailButtonVisible,
       isIssueButtonVisible,
+      isCancelButtonVisible,
+      isCancelButtonDisabled,
     },
   };
 }

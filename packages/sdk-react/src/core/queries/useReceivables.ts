@@ -9,13 +9,17 @@ import { t, select } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 export const useReceivables = (
-  query: Services['receivables']['getReceivables']['types']['parameters']['query']
+  query: Services['receivables']['getReceivables']['types']['parameters']['query'],
+  enabled = true
 ) => {
   const { api } = useMoniteContext();
 
-  return api.receivables.getReceivables.useQuery({
-    query,
-  });
+  return api.receivables.getReceivables.useQuery(
+    {
+      query,
+    },
+    { enabled }
+  );
 };
 
 export const useCreateReceivable = () => {
