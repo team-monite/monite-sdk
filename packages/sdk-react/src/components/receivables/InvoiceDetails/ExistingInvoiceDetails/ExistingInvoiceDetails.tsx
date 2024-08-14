@@ -6,6 +6,7 @@ import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/Exis
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { InvoicePDFViewer } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer';
+import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal';
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
@@ -130,6 +131,8 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
 
   const [deleteModalOpened, setDeleteModalOpened] = useState<boolean>(false);
   const [cancelModalOpened, setCancelModalOpened] = useState<boolean>(false);
+  const [cancelRecurrenceModalOpened, setCancelRecurrenceModalOpened] =
+    useState(false);
 
   const { loading, buttons, callbacks, view } = useExistingInvoiceDetails({
     receivableId: props.id,
@@ -203,6 +206,14 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
         open={cancelModalOpened}
         onClose={() => {
           setCancelModalOpened(false);
+        }}
+      />
+
+      <InvoiceRecurrenceCancelModal
+        receivableId={props.id}
+        open={cancelRecurrenceModalOpened}
+        onClose={() => {
+          setCancelRecurrenceModalOpened(false);
         }}
       />
 
@@ -324,7 +335,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                       disabled={buttons.isCancelRecurrenceButtonDisabled}
                       onClick={(event) => {
                         event.preventDefault();
-                        return callbacks.handleCancelRecurrence();
+                        setCancelRecurrenceModalOpened(true);
                       }}
                     >{t(i18n)`Cancel recurrence`}</Button>
                   )}

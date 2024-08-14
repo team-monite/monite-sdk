@@ -64,34 +64,18 @@ export function useExistingInvoiceDetails({
       ? receivable.recurrence_id
       : '';
 
-  const cancelRecurrenceMutation =
-    api.recurrences.postRecurrencesIdCancel.useMutation(
-      { path: { recurrence_id } },
-      {
-        onError: (error) => {
-          toast.error(getAPIErrorMessage(i18n, error));
-        },
-        onSuccess: () =>
-          Promise.all([
-            api.receivables.getReceivables.invalidateQueries(queryClient),
-            api.receivables.getReceivablesId.invalidateQueries(
-              { parameters: { path: { receivable_id: receivableId } } },
-              queryClient
-            ),
-            api.recurrences.getRecurrencesId.invalidateQueries(
-              { parameters: { path: { recurrence_id } } },
-              queryClient
-            ),
-          ]),
-      }
-    );
+  const isCancelRecurrenceMutating = Boolean(
+    api.recurrences.postRecurrencesIdCancel.useIsMutating({
+      parameters: { path: { recurrence_id } },
+    })
+  );
 
   const mutationInProgress =
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
     cancelMutation.isPending ||
-    cancelRecurrenceMutation.isPending ||
+    isCancelRecurrenceMutating ||
     pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
@@ -194,7 +178,6 @@ export function useExistingInvoiceDetails({
       handleDownloadPDF,
       handleCancelInvoice,
       handleChangeViewInvoice: handleChangeInvoiceView,
-      handleCancelRecurrence: cancelRecurrenceMutation.mutate,
     },
     loading: mutationInProgress,
     buttons: {
