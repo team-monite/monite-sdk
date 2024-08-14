@@ -183,7 +183,7 @@ export function useExistingInvoiceDetails({
   const isCancelButtonDisabled = mutationInProgress;
 
   const isCancelRecurrenceButtonDisabled =
-    !isCancelAllowed || mutationInProgress;
+    !isUpdateAllowed || mutationInProgress;
 
   return {
     view,
