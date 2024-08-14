@@ -330,6 +330,8 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiDataGrid: {
     defaultProps: {
       columnHeaderHeight: 40,
+      rowHeight: 56,
+      density: 'standard',
       showCellVerticalBorder: false,
       showColumnVerticalBorder: false,
     },
@@ -339,10 +341,15 @@ const components: Components<Omit<Theme, 'components'>> = {
         borderColor: 'transparent',
         '--DataGrid-rowBorderColor': theme.palette.divider,
         '& .MuiDataGrid-columnHeaderTitle': {
-          color: theme.palette.neutral['50'],
-          fontWeight: 700,
+          color: theme.palette.neutral['10'],
+          fontWeight: 500,
+          fontSize: '16px',
         },
       }),
+      cell: {
+        fontWeight: 400,
+        fontSize: '16px',
+      },
     },
   },
   MuiTableHead: {
