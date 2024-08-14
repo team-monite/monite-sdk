@@ -149,7 +149,7 @@ export function useExistingInvoiceDetails({
   const isCancelButtonVisible =
     (receivable?.status === 'issued' || receivable?.status === 'overdue') &&
     isUpdateAllowed &&
-    entity?.receivable_edit_flow === 'compliant';
+    entity?.receivable_edit_flow !== 'compliant';
 
   const isCancelButtonDisabled = mutationInProgress;
 
