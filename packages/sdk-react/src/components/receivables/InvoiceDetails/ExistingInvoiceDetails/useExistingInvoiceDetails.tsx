@@ -50,12 +50,6 @@ export function useExistingInvoiceDetails({
     entityUserId: receivable?.entity_user_id,
   });
 
-  const { data: isCancelAllowed } = useIsActionAllowed({
-    method: 'receivable',
-    action: 'cancel',
-    entityUserId: receivable?.entity_user_id,
-  });
-
   const deleteMutation = useDeleteReceivableById(receivableId);
   const cancelMutation = useCancelReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
@@ -183,7 +177,7 @@ export function useExistingInvoiceDetails({
 
   const isCancelButtonVisible =
     (receivable?.status === 'issued' || receivable?.status === 'overdue') &&
-    isCancelAllowed &&
+    isUpdateAllowed &&
     entity?.receivable_edit_flow === 'compliant';
 
   const isCancelButtonDisabled = mutationInProgress;
