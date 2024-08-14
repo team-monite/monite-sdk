@@ -53,49 +53,6 @@ html {
   }
 }
 
-/* Filters styling */
-.Monite-Filters {
-  .Monite-FilterControl {
-    height: 40px;
-    min-height: 40px;
-    max-height: 40px;
-
-    .MuiInputBase-root {
-      margin-top: 0;
-      height: 40px;
-      min-height: 40px;
-      max-height: 40px;
-      border-radius: 20px;
-      background-color: var(--demo-light-gray);
-      padding: 0 6px;
-
-      .MuiOutlinedInput-notchedOutline {
-        border-style: none;
-      }
-    }
-
-    .MuiFormLabel-root {
-      position: absolute;
-      left: 20px;
-      top: 10px;
-      font-size: 14px;
-      max-width: calc(100% - 52px);
-      text-overflow: ellipsis;
-
-      &.MuiFormLabel-filled {
-        opacity: 0;
-      }
-    }
-  }
-
-  .Monite-PayableDateFilter, .Monite-PayableDueDateFilter, .Monite-ReceivableDueDateFilter {
-    input::placeholder {
-      opacity: 0;
-    }
-  }
-}
-
-
 /* Payable details */
 .MuiDialog-container .Monite-ContainerCssBaseline {
   > .MuiDialogTitle-root.MuiTypography-h6 {

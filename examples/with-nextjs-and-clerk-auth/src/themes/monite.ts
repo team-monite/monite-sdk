@@ -27,6 +27,7 @@ interface MoniteNeutralColorOptions {
   '70': string;
   '80': string;
   '90': string;
+  '95': string;
 }
 
 interface MonitePaletteOptions extends PaletteOptions {
@@ -53,6 +54,7 @@ const paletteLight: MonitePaletteOptions = {
     '70': 'rgb(184, 184, 184)',
     '80': '#DDDDDD',
     '90': 'rgb(242, 242, 242)',
+    '95': '#f9f9f9',
   },
   divider: '#DDDDDD',
 };
@@ -75,6 +77,7 @@ const paletteDark: MonitePaletteOptions = {
     '50': '#F3F3F3',
     '10': '#FFFFFF',
     '90': 'rgb(242, 242, 242)',
+    '95': '#f9f9f9',
   },
 };
 
@@ -214,33 +217,76 @@ const components: Components<Omit<Theme, 'components'>> = {
   },
   MuiFormControl: {
     styleOverrides: {
-      root: {
-        '& .MuiInputBase-root': {
-          minHeight: '48px',
-          borderRadius: '8px',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          top: 0,
-        },
-        // Hide border cutout
-        '& .MuiOutlinedInput-notchedOutline legend': {
-          display: 'none',
-        },
-        '& .MuiOutlinedInput-root': {
-          left: 0,
-          top: 0,
-        },
-        '&.Monite-FilterControl .MuiIconButton-root': {
-          marginRight: '-6px',
-        },
-        '&.Monite-FilterControl .MuiInputAdornment-positionEnd': {
-          marginRight: '6px',
-        },
-        '&.Monite-FilterControl .MuiInputAdornment-positionEnd .MuiSvgIcon-root, &.Monite-FilterControl .MuiIconButton-root .MuiSvgIcon-root':
-          {
-            width: '20px',
-            height: '20px',
+      root: ({ theme }) => {
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
+        return {
+          '& .MuiInputBase-root': {
+            minHeight: '48px',
+            borderRadius: '8px',
           },
+          '& .MuiOutlinedInput-notchedOutline': {
+            top: 0,
+          },
+          // Hide border cutout
+          '& .MuiOutlinedInput-notchedOutline legend': {
+            display: 'none',
+          },
+          '& .MuiOutlinedInput-root': {
+            left: 0,
+            top: 0,
+          },
+          '&.Monite-FilterControl': {
+            height: '40px',
+            minHeight: '40px',
+            maxHeight: '40px',
+
+            '.MuiInputBase-root': {
+              marginTop: 0,
+              height: '40px',
+              minHeight: '40px',
+              maxHeight: '40px',
+              borderRadius: '20px',
+              backgroundColor: neutral['95'],
+              padding: '0 6px',
+
+              '.MuiOutlinedInput-notchedOutline': {
+                borderStyle: 'none',
+              },
+            },
+
+            '.MuiFormLabel-root': {
+              position: 'absolute',
+              left: '20px',
+              top: '10px',
+              fontSize: '14px',
+              maxWidth: 'calc(100% - 52px)',
+              textOverflow: 'ellipsis',
+
+              '&.MuiFormLabel-filled': {
+                opacity: 0,
+              },
+            },
+
+            '.MuiInputAdornment-positionEnd': {
+              marginRight: '6px',
+            },
+            '.MuiIconButton-root': {
+              marginRight: '-6px',
+            },
+            '.MuiInputAdornment-positionEnd .MuiSvgIcon-root, .MuiIconButton-root .MuiSvgIcon-root':
+              {
+                width: '20px',
+                height: '20px',
+              },
+
+            '&.Monite-PayableDateFilter, &.Monite-PayableDueDateFilter, &.Monite-ReceivableDueDateFilter':
+              {
+                'input::placeholder': {
+                  opacity: 0,
+                },
+              },
+          },
+        };
       },
     },
   },
