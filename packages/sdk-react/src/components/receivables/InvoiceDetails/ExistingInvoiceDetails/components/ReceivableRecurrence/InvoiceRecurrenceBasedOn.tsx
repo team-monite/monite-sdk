@@ -1,3 +1,4 @@
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -32,8 +33,7 @@ export const InvoiceRecurrenceBasedOn = ({
 
       <Grid item xs={12}>
         <Card sx={{ p: 2 }} variant="outlined">
-          {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-          {invoice?.document_id ?? 'INV-auto'}
+          {invoice?.document_id ?? INVOICE_DOCUMENT_AUTO_ID}
 
           {error && (
             <Alert severity="error">{getAPIErrorMessage(i18n, error)}</Alert>

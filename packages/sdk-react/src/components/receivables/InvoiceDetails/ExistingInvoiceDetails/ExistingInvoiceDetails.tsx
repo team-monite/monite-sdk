@@ -1,6 +1,7 @@
 import { useState, useTransition } from 'react';
 
 import { useDialog } from '@/components';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
@@ -172,8 +173,7 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
     );
   }
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const documentId = receivable.document_id ?? 'INV-auto';
+  const documentId = receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID;
 
   if (presentation === InvoiceDetailsPresentation.Email) {
     return (
