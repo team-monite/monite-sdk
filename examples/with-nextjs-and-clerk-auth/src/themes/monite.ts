@@ -137,6 +137,20 @@ const typographyDark = deepmerge(typography, {
 });
 
 const components: Components<Omit<Theme, 'components'>> = {
+  MuiTypography: {
+    styleOverrides: {
+      body1: {
+        fontWeight: 500,
+        fontSize: '16px',
+        lineHeight: '24px',
+      },
+      body2: {
+        fontWeight: 400,
+        fontSize: '14px',
+        lineHeight: '20px',
+      },
+    },
+  },
   MuiFormLabel: {
     styleOverrides: {
       root: {
@@ -346,10 +360,10 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiTableRow: {
     styleOverrides: {
       root: ({ theme }) => ({
-        '& .MuiTableCell-root': {
+        '& .MuiTableCell-body': {
           borderColor: theme.palette.neutral['80'],
         },
-        '&:last-child .MuiTableCell-root': {
+        '&:last-child .MuiTableCell-body': {
           borderStyle: 'none',
         },
       }),
