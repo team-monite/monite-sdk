@@ -15,12 +15,13 @@ import {
   moniteLight as baseMoniteLight,
 } from '@team-monite/sdk-themes';
 
-interface MoniteSimplePaletteColorOptions extends SimplePaletteColorOptions {
-  lighter?: string;
+interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
+  lighter: string;
+  lightest: string;
 }
 
 interface MonitePaletteOptions extends PaletteOptions {
-  primary: MoniteSimplePaletteColorOptions;
+  primary: MonitePaletteColorOptions;
 }
 
 const paletteLight: MonitePaletteOptions = {
@@ -29,6 +30,7 @@ const paletteLight: MonitePaletteOptions = {
     main: '#3737FF',
     light: '#F4F8FF',
     lighter: '#ebebff',
+    lightest: '#f4f4ff',
   },
   background: {
     menu: '#F1F2F5',
@@ -48,6 +50,7 @@ const paletteDark: MonitePaletteOptions = {
     main: '#3737FF',
     light: '#F4F8FF',
     lighter: '#ebebff',
+    lightest: '#f4f4ff',
   },
   background: {
     menu: '#F1F2F5',
@@ -159,7 +162,7 @@ const components: Components<Omit<Theme, 'components'>> = {
         },
       },
       asterisk: {
-        color: '#ff0000',
+        color: statusColors.red.color,
         transform: 'scale(2) translate(6px, 2px)',
         display: 'inline-block',
         width: '20px',
@@ -266,16 +269,16 @@ const components: Components<Omit<Theme, 'components'>> = {
         },
       }),
       outlinedPrimary: ({ theme }) => {
-        const palette = theme.palette as MonitePaletteOptions;
+        const primary = theme.palette.primary as MonitePaletteColorOptions;
         return {
-          backgroundColor: palette.primary.lighter,
-          borderColor: palette.primary.lighter,
+          backgroundColor: primary.lighter,
+          borderColor: primary.lighter,
           '&:hover': {
-            backgroundColor: palette.primary.light,
-            borderColor: palette.primary.light,
+            backgroundColor: primary.light,
+            borderColor: primary.light,
           },
           '&:disabled': {
-            borderColor: palette.primary.lighter,
+            borderColor: primary.lighter,
           },
         };
       },
@@ -292,14 +295,18 @@ const components: Components<Omit<Theme, 'components'>> = {
   },
   MuiChip: {
     styleOverrides: {
-      root: {
-        backgroundColor: '#F4F4FE',
-        borderRadius: '4px',
-        color: '#3737FF',
-        fontSize: '14px',
-        lineHeight: '16px',
-        fontWeight: 500,
-        padding: '7px 8px',
+      root: ({ theme }) => {
+        const primary = theme.palette.primary as MonitePaletteColorOptions;
+
+        return {
+          backgroundColor: primary.lightest,
+          borderRadius: '4px',
+          color: primary.main,
+          fontSize: '14px',
+          lineHeight: '16px',
+          fontWeight: 500,
+          padding: '7px 8px',
+        };
       },
       label: {
         padding: '0',
@@ -318,23 +325,51 @@ const components: Components<Omit<Theme, 'components'>> = {
         borderColor: 'transparent',
         '--DataGrid-rowBorderColor': theme.palette.divider,
         '& .MuiDataGrid-columnHeaderTitle': {
-          color: '#707070',
+          color: theme.palette.neutral['50'],
           fontWeight: 700,
+        },
+      }),
+    },
+  },
+  MuiTableHead: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '& .MuiTableCell-head': {
+          fontWeight: 500,
+          color: theme.palette.neutral['50'],
+          verticalAlign: 'bottom',
+          borderColor: theme.palette.neutral['80'],
+        },
+      }),
+    },
+  },
+  MuiTableRow: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '& .MuiTableCell-root': {
+          borderColor: theme.palette.neutral['80'],
+        },
+        '&:last-child .MuiTableCell-root': {
+          borderStyle: 'none',
         },
       }),
     },
   },
   MuiTabs: {
     styleOverrides: {
-      root: {
-        '& .MuiButtonBase-root': {
-          paddingTop: 10,
-          paddingBottom: 10,
-        },
-        '& .MuiButtonBase-root.Mui-selected': {
-          backgroundColor: '#F4F4FE',
-          borderRadius: 10,
-        },
+      root: ({ theme }) => {
+        const primary = theme.palette.primary as MonitePaletteColorOptions;
+
+        return {
+          '& .MuiButtonBase-root': {
+            paddingTop: 10,
+            paddingBottom: 10,
+          },
+          '& .MuiButtonBase-root.Mui-selected': {
+            backgroundColor: primary.lightest,
+            borderRadius: 10,
+          },
+        };
       },
     },
   },
