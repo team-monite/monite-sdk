@@ -16,21 +16,32 @@ import {
 } from '@team-monite/sdk-themes';
 
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
-  lighter: string;
-  lightest: string;
+  '90': string;
+  '60': string;
+  '80': string;
+}
+
+interface MoniteNeutralColorOptions {
+  '10': string;
+  '50': string;
+  '70': string;
+  '80': string;
+  '90': string;
 }
 
 interface MonitePaletteOptions extends PaletteOptions {
   primary: MonitePaletteColorOptions;
+  neutral: MoniteNeutralColorOptions;
 }
 
 const paletteLight: MonitePaletteOptions = {
   primary: {
-    dark: '#1D59CC',
+    dark: 'rgb(46, 46, 229)',
     main: '#3737FF',
     light: '#F4F8FF',
-    lighter: '#ebebff',
-    lightest: '#f4f4ff',
+    '60': '#9999ff',
+    '80': 'rgb(203, 203, 254)',
+    '90': 'rgb(235, 235, 255)',
   },
   background: {
     menu: '#F1F2F5',
@@ -39,26 +50,31 @@ const paletteLight: MonitePaletteOptions = {
   neutral: {
     '10': '#111111',
     '50': '#707070',
+    '70': 'rgb(184, 184, 184)',
     '80': '#DDDDDD',
+    '90': 'rgb(242, 242, 242)',
   },
   divider: '#DDDDDD',
 };
 
 const paletteDark: MonitePaletteOptions = {
   primary: {
-    dark: '#1D59CC',
+    dark: 'rgb(46, 46, 229)',
     main: '#3737FF',
     light: '#F4F8FF',
-    lighter: '#ebebff',
-    lightest: '#f4f4ff',
+    '60': '#9999ff',
+    '80': 'rgb(203, 203, 254)',
+    '90': 'rgb(235, 235, 255)',
   },
   background: {
     menu: '#F1F2F5',
   },
   neutral: {
     '80': '#B8B8B8',
+    '70': 'rgb(184, 184, 184)',
     '50': '#F3F3F3',
     '10': '#FFFFFF',
+    '90': 'rgb(242, 242, 242)',
   },
 };
 
@@ -228,6 +244,16 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiAutocomplete: {
+    styleOverrides: {
+      root: {
+        '& > .MuiFormControl-root > .MuiInputBase-root': {
+          paddingTop: 0,
+          paddingBottom: 0,
+        },
+      },
+    },
+  },
   MuiTextField: {
     defaultProps: {
       InputLabelProps: {
@@ -293,23 +319,48 @@ const components: Components<Omit<Theme, 'components'>> = {
           display: 'flex',
         },
       },
-      containedPrimary: ({ theme }) => ({
-        backgroundColor: theme.palette.primary.main,
-        '&:hover': {
-          backgroundColor: theme.palette.primary.main,
-        },
-      }),
-      outlinedPrimary: ({ theme }) => {
+      containedPrimary: ({ theme }) => {
         const primary = theme.palette.primary as MonitePaletteColorOptions;
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
         return {
-          backgroundColor: primary.lighter,
-          borderColor: primary.lighter,
+          backgroundColor: primary.main,
+          borderRadius: '8px',
+          boxShadow: 'none',
           '&:hover': {
-            backgroundColor: primary.light,
-            borderColor: primary.light,
+            backgroundColor: primary['60'],
+            borderRadius: '8px',
+            boxShadow: 'none',
+          },
+          '&:active': {
+            backgroundColor: primary.dark,
+            borderRadius: '8px',
+            boxShadow: 'none',
           },
           '&:disabled': {
-            borderColor: primary.lighter,
+            color: neutral['70'],
+            backgroundColor: neutral['90'],
+            borderColor: neutral['90'],
+          },
+        };
+      },
+      outlinedPrimary: ({ theme }) => {
+        const primary = theme.palette.primary as MonitePaletteColorOptions;
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
+        return {
+          backgroundColor: primary['90'],
+          borderColor: primary['90'],
+          '&:hover': {
+            backgroundColor: primary['80'],
+            borderColor: primary['80'],
+          },
+          '&:active': {
+            backgroundColor: primary['60'],
+            borderColor: primary['60'],
+          },
+          '&:disabled': {
+            color: neutral['70'],
+            backgroundColor: neutral['90'],
+            borderColor: neutral['90'],
           },
         };
       },
@@ -327,12 +378,10 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiChip: {
     styleOverrides: {
       root: ({ theme }) => {
-        const primary = theme.palette.primary as MonitePaletteColorOptions;
-
         return {
-          backgroundColor: primary.lightest,
+          backgroundColor: theme.palette.primary.light,
           borderRadius: '4px',
-          color: primary.main,
+          color: theme.palette.primary.main,
           fontSize: '14px',
           lineHeight: '16px',
           fontWeight: 500,
@@ -405,19 +454,15 @@ const components: Components<Omit<Theme, 'components'>> = {
   },
   MuiTabs: {
     styleOverrides: {
-      root: ({ theme }) => {
-        const primary = theme.palette.primary as MonitePaletteColorOptions;
-
-        return {
-          '& .MuiTab-root': {
-            padding: '16px',
-          },
-          '& .MuiTab-root.Mui-selected': {
-            backgroundColor: primary.lightest,
-            borderRadius: 10,
-          },
-        };
-      },
+      root: ({ theme }) => ({
+        '& .MuiTab-root': {
+          padding: '16px',
+        },
+        '& .MuiTab-root.Mui-selected': {
+          backgroundColor: theme.palette.primary.light,
+          borderRadius: 10,
+        },
+      }),
       indicator: ({ theme }) => ({
         borderRadius: 10,
         backgroundColor: theme.palette.primary.main,

@@ -118,6 +118,7 @@ const PayablesBase = ({
           <Box>
             <Button
               {...buttonProps}
+              variant="contained"
               disabled={!isCreateAllowed}
               endIcon={
                 open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
