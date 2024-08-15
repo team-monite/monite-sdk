@@ -470,6 +470,15 @@ const components: Components<Omit<Theme, 'components'>> = {
       cell: {
         fontWeight: 400,
         fontSize: '16px',
+        // Align counterpart avatar with the cell header
+        '&[data-field="counterpart_id"]': {
+          '.MuiChip-root': {
+            paddingLeft: 0,
+            '.MuiAvatar-root': {
+              margin: 0,
+            },
+          },
+        },
       },
       footerContainer: {
         '& .Monite-RowsPerPageSelector div[role="combobox"]': {
