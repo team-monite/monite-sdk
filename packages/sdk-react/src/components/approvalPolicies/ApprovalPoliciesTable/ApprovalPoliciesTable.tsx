@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
@@ -13,14 +13,14 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
 import {
+  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CREATED_BY,
   FILTER_TYPE_SEARCH,
-  FILTER_TYPE_CREATED_AT,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalPoliciesTriggers } from './components/ApprovalPoliciesTriggers';
@@ -122,6 +122,52 @@ const ApprovalPoliciesTableBase = ({
     }
   }, [currentPaginationToken, approvalPolicies]);
 
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'name',
+        headerName: t(i18n)`Policy name`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'triggers',
+        headerName: t(i18n)`Triggers`,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => (
+          <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+        ),
+      },
+      {
+        field: 'rule',
+        headerName: t(i18n)`Rule`,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => (
+          <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+        ),
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created at`,
+        sortable: false,
+        flex: 0.7,
+        valueFormatter: (value) =>
+          i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'created_by',
+        headerName: t(i18n)`Created by`,
+        sortable: false,
+        flex: 0.8,
+        renderCell: ({ value }) => (
+          <ApprovalPoliciesUser entityUserId={value} />
+        ),
+      },
+    ];
+  }, [i18n]);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilters((prevFilters) => ({
@@ -168,49 +214,7 @@ const ApprovalPoliciesTableBase = ({
         }}
         loading={isLoading}
         getRowHeight={() => 'auto'}
-        columns={[
-          {
-            field: 'name',
-            headerName: t(i18n)`Policy name`,
-            sortable: false,
-            flex: 1,
-          },
-          {
-            field: 'triggers',
-            headerName: t(i18n)`Triggers`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
-            ),
-          },
-          {
-            field: 'rule',
-            headerName: t(i18n)`Rule`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
-            ),
-          },
-          {
-            field: 'created_at',
-            headerName: t(i18n)`Created at`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: (value) =>
-              i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'created_by',
-            headerName: t(i18n)`Created by`,
-            sortable: false,
-            flex: 0.8,
-            renderCell: ({ value }) => (
-              <ApprovalPoliciesUser entityUserId={value} />
-            ),
-          },
-        ]}
+        columns={columns}
         rows={approvalPolicies?.data || []}
         onRowClick={(params) => onRowClick?.(params.row)}
         slots={{
