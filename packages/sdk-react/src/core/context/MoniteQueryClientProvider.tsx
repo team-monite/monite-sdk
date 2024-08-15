@@ -29,41 +29,10 @@ export const MoniteQueryClientProvider = ({
   children: ReactNode;
 }) => {
   const { queryClient } = useMoniteContext();
-  const queryClientInstanceKey = useInstanceKey(queryClient);
 
   return (
-    <QueryClientProvider
-      /**
-       * We need to provide a unique key for each `QueryClient` instance,
-       * otherwise, `QueryClientProvider` will not trigger re-rendering
-       * on `queryClient` change.
-       */
-      key={queryClientInstanceKey}
-      client={queryClient}
-    >
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
-};
-
-/**
- * A custom hook that generates a unique key for a given instance.
- * The key is based on the current timestamp when the instance is first passed to the hook.
- * If the instance is not in the map, it will be added with the current timestamp as its key.
- *
- * @param {object} instance - The instance for which to generate a unique key.
- * @returns {number} The unique key associated with the given instance.
- * @throws {Error} If the instance key is not defined.
- */
-export const useInstanceKey = (instance: object) => {
-  const [instancesMap] = useState(() => new WeakMap([[instance, Date.now()]]));
-
-  if (!instancesMap.has(instance)) instancesMap.set(instance, Date.now());
-
-  const instanceKey = instancesMap.get(instance);
-  if (!instanceKey) throw new Error('Instance key is not defined.');
-
-  return instanceKey;
 };
 
 export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>

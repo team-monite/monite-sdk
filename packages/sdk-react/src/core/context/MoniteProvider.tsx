@@ -2,6 +2,10 @@ import { ReactNode, useMemo } from 'react';
 
 import { ContainerCssBaseline } from '@/components/ContainerCssBaseline';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
+import {
+  MoniteAPIProvider,
+  MoniteQraftContext,
+} from '@/core/context/MoniteAPIProvider';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { MoniteSDK } from '@monite/sdk-api';
@@ -50,7 +54,9 @@ export const MoniteProvider = ({
           <GlobalToast />
         </MuiThemeProvider>
       </EmotionCacheProvider>
-      {children}
+      <MoniteAPIProvider APIContext={MoniteQraftContext}>
+        {children}
+      </MoniteAPIProvider>
     </MoniteContextProvider>
   );
 };
