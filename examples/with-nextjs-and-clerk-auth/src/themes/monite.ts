@@ -113,6 +113,11 @@ const statusColors: {
 const typography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
+  h1: {
+    fontWeight: 600,
+    fontSize: '48px',
+    lineHeight: '68px',
+  },
   h2: {
     fontWeight: 600,
     fontSize: '32px',
@@ -615,6 +620,33 @@ const components: Components<Omit<Theme, 'components'>> = {
       elevation: {
         '&.MuiTableContainer-root': {
           boxShadow: 'none',
+        },
+      },
+    },
+  },
+  MuiDialogTitle: {
+    styleOverrides: {
+      root: {
+        '&.MuiTypography-h6': {
+          padding: '12px 24px',
+          '.MuiToolbar-root': {
+            padding: '0 8px 0 24px',
+          },
+        },
+        '& + .MuiDivider-root': {
+          display: 'none',
+        },
+      },
+    },
+  },
+  MuiDialogContent: {
+    styleOverrides: {
+      root: {
+        margin: 0,
+        padding: '40px 32px',
+        '> form': {
+          maxWidth: '940px',
+          margin: '0 auto',
         },
       },
     },

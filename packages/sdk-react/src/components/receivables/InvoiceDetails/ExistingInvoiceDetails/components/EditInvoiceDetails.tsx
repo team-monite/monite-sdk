@@ -233,7 +233,7 @@ const EditInvoiceDetailsContent = ({
               <Typography variant="h2" sx={{ mb: 2 }}>
                 {t(i18n)`Edit invoice ${invoice.id}`}
               </Typography>
-              <Stack direction="column" spacing={4}>
+              <Stack direction="column" spacing={4} sx={{ pb: 7 }}>
                 <CustomerSection disabled={isLoading} />
                 <EntitySection
                   disabled={isLoading}
