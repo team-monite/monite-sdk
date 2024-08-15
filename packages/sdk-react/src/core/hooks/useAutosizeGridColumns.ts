@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { flushSync } from 'react-dom';
+import { useWindowSize } from 'react-use';
 
 import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
@@ -8,35 +9,56 @@ import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 // Docs say:
 // The Data Grid can only autosize based on the currently rendered cells.
 // DOM access is required to accurately calculate dimensions
-export function useAutosizeGridColumns(rows: any, columns: GridColDef[]) {
+export function useAutosizeGridColumns(
+  rows: any,
+  columns: GridColDef[],
+  isCounterpartsLoading: boolean = false
+) {
   const gridApiRef = useGridApiRef();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const grid = gridApiRef.current;
     if (!grid || !grid.autosizeColumns || !rows || !rows.length) return;
-    const gridColumns = grid.getAllColumns();
-    let columnsToAutoSize: string[] | undefined;
-    for (const gridColumn of gridColumns) {
-      // Skip columns that were already resized
-      if (!gridColumn.hasBeenResized) {
-        if (!columnsToAutoSize) columnsToAutoSize = [];
-        columnsToAutoSize.push(gridColumn.field);
-      }
-    }
-    if (!columnsToAutoSize) return;
-    setTimeout(() => {
-      flushSync(() => {
-        setTimeout(async () => {
-          await grid.autosizeColumns({
-            columns: columnsToAutoSize,
-            includeHeaders: true,
-            includeOutliers: true,
-            expand: true,
-          });
-        }, 1);
-      });
-    }, 1);
-  }, [gridApiRef, rows, columns]);
+
+    const columnsToAutoSize = Array.from(gridApiRef.current.getAllColumns())
+      .filter(
+        ({ hasBeenResized, field, width }) =>
+          !hasBeenResized || field === 'counterpart_name'
+      )
+      .map(({ field }) => field);
+
+    if (!columnsToAutoSize.length) return;
+
+    if (typeof window === 'undefined') return;
+    if (typeof document === 'undefined') return;
+    const animationFrames = [
+      setTimeout(() => {
+        flushSync(() => {
+          animationFrames.push(
+            setTimeout(async () => {
+              await grid
+                .autosizeColumns({
+                  columns: columnsToAutoSize,
+                  includeHeaders: true,
+                  includeOutliers: true,
+                  expand: true,
+                })
+                .then(
+                  () => void grid.scrollToIndexes({ rowIndex: 0, colIndex: 0 })
+                );
+            }, 1)
+          );
+        });
+      }, 1),
+    ];
+
+    return () => void animationFrames.forEach(clearTimeout);
+  }, [gridApiRef, rows, columns, isCounterpartsLoading]);
+
+  // useEffect(() => {
+  //   todo::add in future??
+  //   document.addEventListener('resize', handleResizeDebounced);
+  // }, []);
 
   return gridApiRef;
 }

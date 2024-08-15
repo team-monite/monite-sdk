@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -88,6 +89,20 @@ const InvoicesTableBase = ({
     type: 'invoice',
   });
 
+  const { api } = useMoniteContext();
+
+  const isCounterpartsLoading =
+    !!api.counterparts.getCounterpartsId.useIsFetching({
+      infinite: false,
+      exact: false,
+      predicate: (query) =>
+        !!invoices?.data?.some(
+          ({ counterpart_id }) =>
+            !query.state.isInvalidated &&
+            counterpart_id === query.queryKey[1].path.counterpart_id
+        ),
+    });
+
   const onChangeSort = (model: GridSortModel) => {
     setSortModel(model[0] as ReceivableGridSortModel);
     setPaginationToken(undefined);
@@ -170,7 +185,11 @@ const InvoicesTableBase = ({
     ];
   }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
 
-  const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);
+  const gridApiRef = useAutosizeGridColumns(
+    invoices?.data,
+    columns,
+    isCounterpartsLoading
+  );
 
   const className = 'Monite-InvoicesTable';
 
