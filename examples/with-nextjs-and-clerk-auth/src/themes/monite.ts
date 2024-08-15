@@ -618,6 +618,24 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
       rounded: {
         borderRadius: '16px',
+        '&.Monite-PayableDetailsForm-Items': {
+          // Align delete button with the editor
+          'button[aria-label="delete"]': {
+            width: '40px',
+            height: '40px',
+            marginTop: '24px',
+
+            svg: {
+              width: '20px',
+              height: 'auto',
+            },
+          },
+          // Align total with the editor right side
+          '.Monite-PayableDetailsForm-Item .Monite-PayableDetailsForm-Item-Total':
+            {
+              marginRight: '10.8%',
+            },
+        },
       },
     },
   },

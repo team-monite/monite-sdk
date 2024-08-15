@@ -34,23 +34,6 @@ html {
 }
 
 
-/* Payable details */
-.MuiDialog-container .Monite-ContainerCssBaseline {
-  > .MuiDialogTitle-root.MuiTypography-h6 {
-    .MuiToolbar-root {
-      /* Fixes gap between invoice # and status indicator */
-
-      > .MuiIconButton-root + .MuiBox-root {
-        gap: var(--demo-padding-3);
-
-        > .MuiTypography-h3 {
-          margin-left: var(--demo-padding-3);
-        }
-      }
-    }
-  }
-}
-
 .Monite-Dashboard {
   overflow-y: auto !important;
   background-color: var(--demo-light-gray) !important;
@@ -66,30 +49,10 @@ html {
   }
 }
 
-.Monite-PayableDetailsForm-Items {
-  button[aria-label="delete"] {
-    width: 40px;
-    height: 40px;
-    margin-top: 24px;
-
-    svg {
-      width: 20px;
-      height: auto;
-    }
-  }
-}
-
-.Monite-PayableDetailsForm-Item {
-  .Monite-PayableDetailsForm-Item-Total {
-    margin-right: 10.8%;
-  }
-}
-
 .Monite-EmailInvoiceDetails-Title {
   height: 88px;
 }
 .Monite-EmailInvoiceDetails-Content {
-
   > form {
     padding: var(--demo-padding-4);
     max-width: 1006px;
