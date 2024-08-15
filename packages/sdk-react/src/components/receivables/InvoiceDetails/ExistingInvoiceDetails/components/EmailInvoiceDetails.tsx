@@ -186,7 +186,7 @@ const EmailInvoiceDetailsBase = ({
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent className={className + '-Content'}>
+      <DialogContent className={className + '-Content'} sx={{ mt: 4 }}>
         <form id={formName} noValidate onSubmit={handleIssueAndSend}>
           <Stack spacing={3}>
             <Stack spacing={2}>
