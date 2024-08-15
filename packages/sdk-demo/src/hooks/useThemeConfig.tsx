@@ -12,7 +12,33 @@ export const getThemeOptions = (themeConfig: ThemeConfig) => {
   const { variant, mode } = themeConfig;
 
   if (variant === 'material') {
-    return mode === 'light' ? themeMaterialLight : themeMaterialDark;
+    return Object.assign(
+      {
+        components: {
+          MoniteInvoiceStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MonitePayableStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MoniteApprovalRequestStatusChip: {
+            defaultProps: {
+              icon: false,
+            },
+          },
+          MoniteTablePagination: {
+            defaultProps: {
+              pageSizeOptions: [10, 15, 20],
+            },
+          },
+        },
+      },
+      mode === 'light' ? themeMaterialLight : themeMaterialDark
+    );
   }
 
   return mode === 'light' ? themeMoniteLight : themeMoniteDark;

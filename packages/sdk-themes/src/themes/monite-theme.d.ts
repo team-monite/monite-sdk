@@ -3,7 +3,7 @@ import { CSSProperties } from 'react';
 import '@mui/material/styles';
 import '@mui/x-data-grid/themeAugmentation';
 
-declare module '@mui/material/styles/createPalette' {
+declare module '@mui/material/styles/createPalette.js' {
   interface TypeBackground {
     default: string;
     paper: string;
@@ -54,7 +54,7 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-declare module '@mui/material/styles/createTypography' {
+declare module '@mui/material/styles/createTypography.js' {
   interface TypographyVariants {
     label2: CSSProperties;
     label3: CSSProperties;
@@ -71,7 +71,7 @@ declare module '@mui/material/styles/createTypography' {
   }
 }
 
-declare module '@mui/material/Typography' {
+declare module '@mui/material/Typography.js' {
   interface TypographyPropsVariantOverrides {
     label2: true;
     label3: true;

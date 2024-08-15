@@ -53,30 +53,7 @@ const SDKDemoComponent = ({
   const { api_url } = useConfig();
   const { themeConfig, setThemeConfig } = useThemeConfig();
   const apiUrl = `${api_url}/v1`;
-  const sdkDemoTheme = createTheme(getThemeOptions(themeConfig), {
-    components: {
-      MoniteInvoiceStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MonitePayableStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteApprovalRequestStatusChip: {
-        defaultProps: {
-          icon: false,
-        },
-      },
-      MoniteTablePagination: {
-        defaultProps: {
-          pageSizeOptions: [10, 15, 20],
-        },
-      },
-    },
-  });
+  const sdkDemoTheme = createTheme(getThemeOptions(themeConfig));
 
   const fetchToken = () =>
     authData
