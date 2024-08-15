@@ -171,19 +171,6 @@ html {
 
   .Monite-CreateReceivable-ItemsSection-Totals {
     margin-top: var(--demo-padding-3);
-
-    .Monite-CreateReceivable-ItemsSection-Totals-Total {
-      padding: 12px 32px 16px 32px;
-
-      .MuiTypography-root {
-        font-size: 20px;
-        font-weight: 600;
-      }
-    }
-
-    hr {
-      margin: 0 32px;
-    }
   }
 }
 

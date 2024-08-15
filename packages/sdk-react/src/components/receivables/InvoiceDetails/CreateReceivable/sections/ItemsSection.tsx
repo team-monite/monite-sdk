@@ -83,13 +83,7 @@ const CardTableItem = ({
   sx,
   className,
 }: CardTableItemProps) => (
-  <Grid
-    container
-    direction="row"
-    alignItems="center"
-    sx={{ px: 4, py: 2 }}
-    className={className}
-  >
+  <Grid container direction="row" alignItems="center" className={className}>
     <Grid item xs={4}>
       {typeof label === 'string' ? (
         <Typography variant="body1">{label}</Typography>
@@ -365,22 +359,19 @@ export const ItemsSection = ({
       <Card
         className={className + '-Totals'}
         variant="outlined"
-        sx={{ borderRadius: 2 }}
+        sx={{ borderRadius: 2, py: 3, px: 4 }}
       >
         <Stack>
           <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
-          <Divider />
+          <Divider sx={{ my: 1.5 }} />
           <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
-          <Divider />
+          <Divider sx={{ my: 1.5 }} />
           <CardTableItem
             label={
-              <Typography variant="body1" sx={{ fontWeight: 500 }}>{t(
-                i18n
-              )`Total`}</Typography>
+              <Typography variant="subtitle1">{t(i18n)`Total`}</Typography>
             }
             value={totalPrice}
             variant="subtitle1"
-            sx={{ fontWeight: 600 }}
           />
         </Stack>
       </Card>

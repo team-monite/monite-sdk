@@ -123,6 +123,11 @@ const typography:
     fontSize: '24px',
     lineHeight: '32px',
   },
+  subtitle1: {
+    fontWeight: 600,
+    fontSize: '20px',
+    lineHeight: '24px',
+  },
   subtitle2: {
     fontWeight: 600,
     fontSize: '18px',
