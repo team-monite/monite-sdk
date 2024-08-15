@@ -5,7 +5,6 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -96,16 +95,19 @@ const QuotesTableBase = ({
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
+        width: 100,
       },
       {
         field: 'created_at',
         headerName: t(i18n)`Created on`,
+        width: 120,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
       {
         field: 'issue_date',
-        headerName: t(i18n)`Issue Date`,
+        headerName: t(i18n)`Issue date`,
+        width: 120,
         valueFormatter: (value) =>
           value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
       },
@@ -113,6 +115,7 @@ const QuotesTableBase = ({
         field: 'counterpart_name',
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         headerName: t(i18n)`Customer`,
+        width: 250,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -121,6 +124,7 @@ const QuotesTableBase = ({
         field: 'expiry_date',
         sortable: false,
         headerName: t(i18n)`Due date`,
+        width: 120,
         valueFormatter: (value) =>
           value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
       },
@@ -128,6 +132,7 @@ const QuotesTableBase = ({
         field: 'status',
         sortable: ReceivableCursorFields.includes('status'),
         headerName: t(i18n)`Status`,
+        width: 80,
         renderCell: (params) => {
           const status = params.value;
 
@@ -138,6 +143,7 @@ const QuotesTableBase = ({
         field: 'amount',
         headerName: t(i18n)`Amount`,
         sortable: ReceivableCursorFields.includes('amount'),
+        width: 120,
         valueGetter: (_, row) => {
           const value = row.total_amount;
 
@@ -146,8 +152,6 @@ const QuotesTableBase = ({
       },
     ];
   }, [formatCurrencyToDisplay, i18n]);
-
-  const gridApiRef = useAutosizeGridColumns(quotes?.data, columns);
 
   const className = 'Monite-QuotesTable';
 
@@ -174,7 +178,6 @@ const QuotesTableBase = ({
             sortModel: [sortModel],
           },
         }}
-        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

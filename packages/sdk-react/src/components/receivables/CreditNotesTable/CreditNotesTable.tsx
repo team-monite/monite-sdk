@@ -5,7 +5,6 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -82,16 +81,19 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
+        width: 100,
       },
       {
         field: 'created_at',
         headerName: t(i18n)`Created on`,
+        width: 120,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
+        width: 120,
         valueFormatter: (value) =>
           value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
       },
@@ -99,6 +101,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'counterpart_name',
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
+        width: 250,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -107,6 +110,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'status',
         headerName: t(i18n)`Status`,
         sortable: ReceivableCursorFields.includes('status'),
+        width: 80,
         renderCell: (params) => {
           const status = params.value;
           return <InvoiceStatusChip status={status} />;
@@ -116,6 +120,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'amount',
         headerName: t(i18n)`Amount`,
         sortable: ReceivableCursorFields.includes('amount'),
+        width: 120,
         valueGetter: (_, row) => {
           const value = row.total_amount;
 
@@ -124,8 +129,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
       },
     ];
   }, [formatCurrencyToDisplay, i18n]);
-
-  const gridApiRef = useAutosizeGridColumns(creditNotes?.data, columns);
 
   const className = 'Monite-CreditNotesTable';
 
@@ -153,7 +156,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               sortModel: [sortModel],
             },
           }}
-          apiRef={gridApiRef}
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}

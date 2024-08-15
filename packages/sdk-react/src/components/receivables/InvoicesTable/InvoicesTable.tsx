@@ -4,7 +4,6 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -105,6 +104,7 @@ const InvoicesTableBase = ({
         field: 'document_id',
         headerName: t(i18n)`Number`,
         sortable: false,
+        width: 100,
         renderCell: ({ value }) => {
           if (!value) {
             return t(i18n)`INV-auto`;
@@ -118,6 +118,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         display: 'flex',
+        width: 250,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -126,6 +127,7 @@ const InvoicesTableBase = ({
         field: 'created_at',
         headerName: t(i18n)`Created on`,
         sortable: false,
+        width: 120,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
@@ -133,6 +135,7 @@ const InvoicesTableBase = ({
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
+        width: 120,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
@@ -140,6 +143,7 @@ const InvoicesTableBase = ({
         field: 'status',
         headerName: t(i18n)`Status`,
         sortable: ReceivableCursorFields.includes('status'),
+        width: 80,
         renderCell: (
           params: GridRenderCellParams<
             components['schemas']['ReceivableResponse']
@@ -153,6 +157,7 @@ const InvoicesTableBase = ({
         field: 'total_amount',
         headerName: t(i18n)`Amount`,
         sortable: ReceivableCursorFields.includes('amount'),
+        width: 120,
         valueGetter: (_, row) => {
           const value = row.total_amount;
 
@@ -163,14 +168,13 @@ const InvoicesTableBase = ({
         field: 'due_date',
         headerName: t(i18n)`Due date`,
         sortable: false,
+        width: 90,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
   }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
-
-  const gridApiRef = useAutosizeGridColumns(invoices?.data, columns);
 
   const className = 'Monite-InvoicesTable';
 
@@ -206,7 +210,6 @@ const InvoicesTableBase = ({
             sortModel: sortModel && [sortModel],
           },
         }}
-        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

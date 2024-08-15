@@ -6,7 +6,6 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -172,6 +171,7 @@ const PayablesTableBase = ({
         field: 'document_id',
         sortable: false,
         headerName: t(i18n)`Invoice #`,
+        width: 100,
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
         renderCell: (params) => {
           const payable = params.row;
@@ -193,6 +193,7 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Counterpart`,
         display: 'flex',
+        width: 250,
         renderCell: (params) => (
           <CounterpartCell counterpartId={params.value} />
         ),
@@ -201,6 +202,7 @@ const PayablesTableBase = ({
         field: 'created_at',
         type: 'date',
         headerName: t(i18n)`Invoice date`,
+        width: 140,
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
         renderCell: ({ row, formattedValue }) => {
           if (isPayableInOCRProcessing(row)) {
@@ -227,6 +229,7 @@ const PayablesTableBase = ({
           message: 'Issue date',
           comment: 'Payables Table "Issue date" heading title',
         }),
+        width: 100,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
         ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
@@ -240,6 +243,7 @@ const PayablesTableBase = ({
           message: 'Due date',
           comment: 'Payables Table "Due date" heading title',
         }),
+        width: 100,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
         ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
@@ -253,6 +257,7 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Status" heading title',
         }),
         display: 'flex',
+        width: 160,
         renderCell: (params) => <PayableStatusChip status={params.value} />,
       },
       {
@@ -263,6 +268,7 @@ const PayablesTableBase = ({
           message: 'Amount',
           comment: 'Payables Table "Amount" heading title',
         }),
+        width: 120,
         valueGetter: (_, row) => {
           const payable = row;
 
@@ -276,7 +282,8 @@ const PayablesTableBase = ({
         headerName: '',
         sortable: false,
         display: 'flex',
-        minWidth: 64,
+        minWidth: 80,
+        width: 80,
         renderCell: (params) => {
           const payable = params.row;
 
@@ -285,8 +292,6 @@ const PayablesTableBase = ({
       },
     ];
   }, [formatCurrencyToDisplay, i18n, onPay]);
-
-  const gridApiRef = useAutosizeGridColumns(payables?.data, columns);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
@@ -333,7 +338,6 @@ const PayablesTableBase = ({
             sortModel: [sortModel],
           },
         }}
-        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
