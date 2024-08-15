@@ -528,6 +528,19 @@ const components: Components<Omit<Theme, 'components'>> = {
       }),
     },
   },
+  MuiFormControlLabel: {
+    styleOverrides: {
+      root: {
+        // Align checkbox with the label next to if the label occupies multiple lines
+        '&.MuiFormControlLabel-labelPlacementEnd': {
+          alignItems: 'flex-start',
+          '.MuiFormControlLabel-label': {
+            padding: '9px 0',
+          },
+        },
+      },
+    },
+  },
   MoniteInvoiceStatusChip: {
     styleOverrides: {
       root: {
