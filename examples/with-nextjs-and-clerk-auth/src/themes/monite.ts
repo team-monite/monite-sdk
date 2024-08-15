@@ -569,18 +569,12 @@ const components: Components<Omit<Theme, 'components'>> = {
           },
         '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
           borderBottom: 'none',
+          padding: '8px 12px',
         },
         '&:last-child .MuiTableCell-body': {
           borderBottom: 'none',
         },
       }),
-    },
-  },
-  MuiTableCell: {
-    styleOverrides: {
-      root: {
-        padding: '8px 12px',
-      },
     },
   },
   MuiTabs: {
@@ -621,6 +615,9 @@ const components: Components<Omit<Theme, 'components'>> = {
         '&.MuiTableContainer-root': {
           boxShadow: 'none',
         },
+      },
+      rounded: {
+        borderRadius: '16px',
       },
     },
   },

@@ -66,13 +66,6 @@ html {
   }
 }
 
-.Monite-PayableDetailsForm {
-  > form > div > div:not(.Monite-PayableDetailsForm-Totals) > .MuiPaper-root {
-    padding: var(--demo-padding-3);
-    border-radius: var(--demo-padding-2);
-  }
-}
-
 .Monite-PayableDetailsForm-Items {
   button[aria-label="delete"] {
     width: 40px;
@@ -82,32 +75,6 @@ html {
     svg {
       width: 20px;
       height: auto;
-    }
-  }
-}
-
-.Monite-PayableDetailsForm-Items,
-.Monite-PayableDetailsForm-Details,
-.Monite-PayableDetailsForm-Totals {
-  padding-right: 18px;
-}
-
-.Monite-PayableDetailsForm-Totals {
-  .MuiPaper-root {
-    padding: 0;
-    border-radius: var(--demo-padding-2);
-
-    table {
-      tr td {
-        border-bottom: 1px solid var(--demo-divider);
-        font-size: 16px;
-        font-weight: 400;
-        padding: 12px 16px;
-      }
-
-      tr:last-child td {
-        font-weight: 700;
-      }
     }
   }
 }
