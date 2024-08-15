@@ -208,19 +208,17 @@ const AuthErrorsBackdrop = ({
             Error: <code>{error.message}</code>
           </Alert>
         ))}
-        {Boolean(errors.length) && (
-          <Button
-            startIcon={<Logout />}
-            sx={{ ml: 1, alignSelf: 'center' }}
-            variant="contained"
-            onClick={(event) => {
-              event.preventDefault();
-              logout();
-            }}
-          >
-            Logout
-          </Button>
-        )}
+        <Button
+          startIcon={<Logout />}
+          sx={{ ml: 1, alignSelf: 'center' }}
+          variant="contained"
+          onClick={(event) => {
+            event.preventDefault();
+            logout();
+          }}
+        >
+          Logout
+        </Button>
       </Stack>
     </Backdrop>
   );
