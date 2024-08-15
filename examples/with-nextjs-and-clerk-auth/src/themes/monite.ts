@@ -410,7 +410,6 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiButton: {
     styleOverrides: {
       root: {
-        height: '48px',
         // Button shouldn't grow inside containers that force it to grow
         maxHeight: '48px',
 
