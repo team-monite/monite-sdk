@@ -168,7 +168,7 @@ const InvoicesTableBase = ({
         field: 'due_date',
         headerName: t(i18n)`Due date`,
         sortable: false,
-        width: 90,
+        width: 120,
         valueFormatter: (value) =>
           value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
       },
