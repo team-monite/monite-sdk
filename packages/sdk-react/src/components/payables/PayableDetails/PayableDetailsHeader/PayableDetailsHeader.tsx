@@ -74,7 +74,7 @@ export const PayableDetailsHeader = ({
       children: t(i18n)`Submit`,
     },
     reject: {
-      variant: 'contained',
+      variant: 'text',
       color: 'error',
       onClick: rejectInvoice,
       children: t(i18n)`Reject`,
