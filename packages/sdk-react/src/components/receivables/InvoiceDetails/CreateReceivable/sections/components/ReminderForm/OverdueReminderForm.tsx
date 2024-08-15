@@ -274,9 +274,9 @@ const CreateOverdueReminderComponent = ({
               </>
             )}
           </Stack>
-          {formState.errors.terms && (
+          {formState.errors.terms?.message && (
             <Alert severity="error" sx={{ mt: 2 }}>
-              {formState.errors.terms?.message}
+              {formState.errors.terms.message}
             </Alert>
           )}
         </form>
