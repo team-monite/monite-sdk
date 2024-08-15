@@ -116,64 +116,6 @@ html {
   }
 }
 
-.Monite-CreateReceivable-CustomerSection,
-.Monite-CreateReceivable-EntitySection,
-.Monite-CreateReceivable-ItemsSection,
-.Monite-CreateReceivable-PaymentSection,
-.Monite-CreateReceivable-ReminderSection,
-.Monite-CreateReceivable-ReminderSection {
-  > h6 {
-    font-size: 24px;
-    height: 56px;
-    margin: 0;
-    padding: var(--demo-padding) var(--demo-padding) var(--demo-padding-2) var(--demo-padding);
-
-    & + .MuiCard-root {
-      margin-top: 0;
-    }
-  }
-
-  .MuiCardContent-root {
-    padding: var(--demo-padding-4);
-  }
-}
-
-.Monite-CreateReceivable-ReminderSection {
-  .MuiButton-root {
-    height: 48px;
-    margin-top: 28px;
-  }
-}
-
-.Monite-CreateReceivable-ItemsSection {
-  > .MuiCollapse-root.MuiCollapse-hidden, > .MuiPaper-root {
-    margin-top: 0;
-  }
-
-  .MuiTable-root {
-    margin: var(--demo-padding-2) 36px;
-    width: calc(100% - 72px);
-
-    th {
-      border-bottom-style: none;
-      padding: 8px 12px;
-    }
-
-    .Monite-CreateReceivable-ItemsSection-TableBody-AddItem {
-      padding: 0;
-
-      button {
-        padding: 14px 18px 14px 12px;
-        font-size: 16px;
-      }
-    }
-  }
-
-  .Monite-CreateReceivable-ItemsSection-Totals {
-    margin-top: var(--demo-padding-3);
-  }
-}
-
 .MuiDialog-container .Monite-CreateReceivable-Content,
 .MuiDialog-container .Monite-EditInvoiceDetails-Content {
   margin: 0;

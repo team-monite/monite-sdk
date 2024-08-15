@@ -377,9 +377,18 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiButtonBase: {
+    defaultProps: {
+      disableRipple: true,
+    },
+  },
   MuiButton: {
     styleOverrides: {
       root: {
+        height: '48px',
+        // Button shouldn't grow inside containers that force it to grow
+        maxHeight: '48px',
+
         '&.ThemeSelect': {
           borderRadius: 8,
         },
@@ -409,6 +418,7 @@ const components: Components<Omit<Theme, 'components'>> = {
             color: neutral['70'],
             backgroundColor: neutral['90'],
             borderColor: neutral['90'],
+            boxShadow: 'none',
           },
         };
       },
@@ -418,18 +428,23 @@ const components: Components<Omit<Theme, 'components'>> = {
         return {
           backgroundColor: primary['90'],
           borderColor: primary['90'],
+          borderRadius: '8px',
+          boxShadow: 'none',
           '&:hover': {
             backgroundColor: primary['80'],
             borderColor: primary['80'],
+            boxShadow: 'none',
           },
           '&:active': {
             backgroundColor: primary['60'],
             borderColor: primary['60'],
+            boxShadow: 'none',
           },
           '&:disabled': {
             color: neutral['70'],
             backgroundColor: neutral['90'],
             borderColor: neutral['90'],
+            boxShadow: 'none',
           },
         };
       },
@@ -516,7 +531,6 @@ const components: Components<Omit<Theme, 'components'>> = {
           fontWeight: 500,
           color: theme.palette.neutral['50'],
           verticalAlign: 'bottom',
-          borderColor: theme.palette.neutral['80'],
         },
       }),
     },
@@ -524,13 +538,24 @@ const components: Components<Omit<Theme, 'components'>> = {
   MuiTableRow: {
     styleOverrides: {
       root: ({ theme }) => ({
-        '& .MuiTableCell-body': {
-          borderColor: theme.palette.neutral['80'],
+        '&:not(.Monite-CreateReceivable-ItemsSection-Table) .MuiTableCell-root':
+          {
+            borderColor: theme.palette.neutral['80'],
+          },
+        '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
+          borderBottom: 'none',
         },
         '&:last-child .MuiTableCell-body': {
-          borderStyle: 'none',
+          borderBottom: 'none',
         },
       }),
+    },
+  },
+  MuiTableCell: {
+    styleOverrides: {
+      root: {
+        padding: '8px 12px',
+      },
     },
   },
   MuiTabs: {
@@ -549,6 +574,13 @@ const components: Components<Omit<Theme, 'components'>> = {
         backgroundColor: theme.palette.primary.main,
         height: '4px',
       }),
+    },
+  },
+  MuiCardContent: {
+    styleOverrides: {
+      root: {
+        padding: '24px 32px',
+      },
     },
   },
   MoniteInvoiceStatusChip: {

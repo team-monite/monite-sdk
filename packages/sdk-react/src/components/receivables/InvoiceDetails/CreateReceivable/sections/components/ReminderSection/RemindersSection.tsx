@@ -329,12 +329,13 @@ const SelectReminderLayout = ({
   const { i18n } = useLingui();
 
   return (
-    <Grid container alignItems="stretch" spacing={1}>
+    // Use bottom alignment to correctly align editors with buttons
+    <Grid container alignItems="bottom" spacing={1}>
       <Grid item xs={onUpdate ? 10 : 12}>
         {children}
       </Grid>
       {onUpdate && (
-        <Grid item xs={2} sx={{ display: 'flex' }}>
+        <Grid item xs={2} sx={{ display: 'flex', alignItems: 'flex-end' }}>
           <Button
             variant="outlined"
             disabled={updateDisabled}
@@ -374,7 +375,7 @@ export const ReminderSection = (props: ReminderSectionProps) => {
 
   return (
     <Stack spacing={1} className={className}>
-      <Typography variant="subtitle2">{t(i18n)`Reminders`}</Typography>
+      <Typography variant="h3">{t(i18n)`Reminders`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <ReminderSectionContent {...props} />
