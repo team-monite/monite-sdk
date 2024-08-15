@@ -106,7 +106,7 @@ const QuotesTableBase = ({
       },
       {
         field: 'issue_date',
-        headerName: t(i18n)`Issue date`,
+        headerName: t(i18n)`Issue Date`,
         width: 120,
         valueFormatter: (value) =>
           value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
