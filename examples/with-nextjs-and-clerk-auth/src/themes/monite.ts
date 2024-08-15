@@ -113,17 +113,30 @@ const statusColors: {
 const typography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
-  subtitle2: {
-    fontSize: '1.125rem',
+  h2: {
     fontWeight: 600,
+    fontSize: '32px',
+    lineHeight: '40px',
+  },
+  h3: {
+    fontWeight: 600,
+    fontSize: '24px',
+    lineHeight: '32px',
+  },
+  subtitle2: {
+    fontWeight: 600,
+    fontSize: '18px',
+    lineHeight: '24px',
   },
   body1: {
-    fontSize: '1rem',
-    fontWeight: 400,
+    fontWeight: 500,
+    fontSize: '16px',
+    lineHeight: '24px',
   },
   body2: {
-    fontSize: '0.875rem',
-    fontWeight: 500,
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '20px',
   },
   label2: {
     fontSize: '0.875rem',
@@ -156,20 +169,6 @@ const typographyDark = deepmerge(typography, {
 });
 
 const components: Components<Omit<Theme, 'components'>> = {
-  MuiTypography: {
-    styleOverrides: {
-      body1: {
-        fontWeight: 500,
-        fontSize: '16px',
-        lineHeight: '24px',
-      },
-      body2: {
-        fontWeight: 400,
-        fontSize: '14px',
-        lineHeight: '20px',
-      },
-    },
-  },
   MuiFormLabel: {
     styleOverrides: {
       root: {

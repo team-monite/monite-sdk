@@ -6,6 +6,7 @@ import type {
 } from '@mui/material/styles/createPalette.js';
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
+// noinspection ES6UnusedImports
 import type {} from '@mui/x-data-grid/themeAugmentation';
 
 export const paletteLight: PaletteOptions = {
@@ -71,13 +72,6 @@ export const defaultMoniteTypography:
 };
 
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
-  MuiTypography: {
-    styleOverrides: {
-      subtitle2: {
-        fontWeight: 500,
-      },
-    },
-  },
   MuiPaper: {
     styleOverrides: {
       root: {
