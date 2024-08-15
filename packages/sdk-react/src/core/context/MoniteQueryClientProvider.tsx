@@ -29,20 +29,9 @@ export const MoniteQueryClientProvider = ({
   children: ReactNode;
 }) => {
   const { queryClient } = useMoniteContext();
-  const queryClientInstanceKey = useInstanceKey(queryClient);
 
   return (
-    <QueryClientProvider
-      /**
-       * We need to provide a unique key for each `QueryClient` instance,
-       * otherwise, `QueryClientProvider` will not trigger re-rendering
-       * on `queryClient` change.
-       */
-      key={queryClientInstanceKey}
-      client={queryClient}
-    >
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 };
 

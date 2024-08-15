@@ -118,6 +118,15 @@ const ContextProvider = ({
     [i18n, sentryHub]
   );
 
+  const { api, version, requestFn } = useMemo(
+    () =>
+      createAPIClient({
+        entityId: monite.entityId,
+        context: MoniteQraftContext,
+      }),
+    [monite.entityId]
+  );
+
   return (
     <MoniteContext.Provider
       value={{
@@ -130,10 +139,9 @@ const ContextProvider = ({
         dateFnsLocale,
         apiUrl: monite.baseUrl,
         fetchToken: monite.fetchToken,
-        ...createAPIClient({
-          entityId: monite.entityId,
-          context: MoniteQraftContext,
-        }),
+        api,
+        version,
+        requestFn,
       }}
     >
       {children}
