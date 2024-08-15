@@ -294,6 +294,24 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiFormControlLabel: {
+    styleOverrides: {
+      root: {
+        // Align checkbox with the label next to if the label occupies multiple lines
+        '&.MuiFormControlLabel-labelPlacementEnd': {
+          alignItems: 'flex-start',
+          '.MuiFormControlLabel-label': {
+            padding: '9px 0',
+          },
+        },
+      },
+      label: {
+        fontWeight: 400,
+        fontSize: '16px',
+        lineHeight: '24px',
+      },
+    },
+  },
   MuiAutocomplete: {
     styleOverrides: {
       root: {
@@ -531,19 +549,6 @@ const components: Components<Omit<Theme, 'components'>> = {
         backgroundColor: theme.palette.primary.main,
         height: '4px',
       }),
-    },
-  },
-  MuiFormControlLabel: {
-    styleOverrides: {
-      root: {
-        // Align checkbox with the label next to if the label occupies multiple lines
-        '&.MuiFormControlLabel-labelPlacementEnd': {
-          alignItems: 'flex-start',
-          '.MuiFormControlLabel-label': {
-            padding: '9px 0',
-          },
-        },
-      },
     },
   },
   MoniteInvoiceStatusChip: {
