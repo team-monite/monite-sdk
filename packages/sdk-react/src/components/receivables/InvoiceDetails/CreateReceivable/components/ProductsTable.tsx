@@ -384,13 +384,12 @@ export const ProductsTable = ({
               </Box>
               <Paper
                 variant="outlined"
-                style={{ height: '100%', overflow: 'scroll' }}
+                style={{ height: '100%' }}
                 sx={{
                   '& .MuiListItem-root': {
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                   },
-                  borderRadius: 3,
                 }}
               >
                 <TableVirtuoso

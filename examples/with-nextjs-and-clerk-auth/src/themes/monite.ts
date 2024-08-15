@@ -219,6 +219,26 @@ const components: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      // Editor borders
+      notchedOutline: ({ theme }) => {
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
+        return {
+          borderColor: neutral['80'],
+        };
+      },
+      root: ({ theme }) => {
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
+        return {
+          '&.Mui-disabled .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline':
+            {
+              borderColor: neutral['80'],
+            },
+        };
+      },
+    },
+  },
   MuiFormControl: {
     styleOverrides: {
       root: ({ theme }) => {
@@ -580,6 +600,22 @@ const components: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         padding: '24px 32px',
+      },
+    },
+  },
+  MuiPaper: {
+    styleOverrides: {
+      root: ({ theme }) => {
+        const neutral = theme.palette.neutral as MoniteNeutralColorOptions;
+        return {
+          borderRadius: '8px',
+          borderColor: neutral['80'],
+        };
+      },
+      elevation: {
+        '&.MuiTableContainer-root': {
+          boxShadow: 'none',
+        },
       },
     },
   },
