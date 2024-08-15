@@ -229,7 +229,7 @@ const PayablesTableBase = ({
           message: 'Issue date',
           comment: 'Payables Table "Issue date" heading title',
         }),
-        width: 100,
+        width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
         ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
@@ -243,7 +243,7 @@ const PayablesTableBase = ({
           message: 'Due date',
           comment: 'Payables Table "Due date" heading title',
         }),
-        width: 100,
+        width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
         ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
