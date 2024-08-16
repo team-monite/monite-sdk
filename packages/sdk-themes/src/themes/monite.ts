@@ -50,13 +50,13 @@ export const paletteDark: PaletteOptions = {
     main: '#707070',
   },
   background: {
-    menu: '#F1F2F5',
+    menu: '#202020',
   },
   neutral: {
-    '80': '#B8B8B8',
-    '70': 'rgb(184, 184, 184)',
-    '50': '#F3F3F3',
     '10': '#FFFFFF',
+    '50': '#F3F3F3',
+    '70': 'rgb(184, 184, 184)',
+    '80': '#B8B8B8',
     '90': 'rgb(242, 242, 242)',
     '95': '#f9f9f9',
   },
@@ -269,6 +269,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             minHeight: '40px',
             maxHeight: '40px',
             borderRadius: '20px',
+            color: 'black',
             backgroundColor: theme.palette.neutral['95'],
             padding: '0 6px',
 
@@ -300,6 +301,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             {
               width: '20px',
               height: '20px',
+              '> *': {
+                color: 'black',
+              },
             },
 
           '&.Monite-DateFilterControl': {
