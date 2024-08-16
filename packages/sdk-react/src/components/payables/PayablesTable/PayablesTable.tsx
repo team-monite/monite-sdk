@@ -172,6 +172,7 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Invoice #`,
         width: 100,
+        display: 'flex',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
         renderCell: (params) => {
           const payable = params.row;
@@ -203,6 +204,7 @@ const PayablesTableBase = ({
         type: 'date',
         headerName: t(i18n)`Invoice date`,
         width: 140,
+        display: 'flex',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
         renderCell: ({ row, formattedValue }) => {
           if (isPayableInOCRProcessing(row)) {
