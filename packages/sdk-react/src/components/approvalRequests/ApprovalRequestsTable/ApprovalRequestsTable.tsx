@@ -216,9 +216,7 @@ const ApprovalRequestsTableBase = ({
         headerName: t(i18n)`Amount`,
         sortable: false,
         flex: 0.5,
-        valueGetter: (_, row) => {
-          const payable = row;
-
+        valueGetter: (_, payable) => {
           return payable.amount_to_pay && payable.currency
             ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
             : '';
