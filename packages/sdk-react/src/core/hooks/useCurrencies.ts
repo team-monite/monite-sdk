@@ -114,31 +114,39 @@ export const useCurrencies = () => {
    * const price2 = formatCurrencyToDisplay(100, 'unavailable');
    * ```
    */
-  const formatCurrencyToDisplay = (
-    amountInMinorUnits: string | number,
-    currency: CurrencyEnum | string
-  ): string | null => {
-    const currencyData = currencyList && currencyList[currency];
-    const amountFromMinorUnits = formatFromMinorUnits(
-      Number(amountInMinorUnits),
-      currency
-    );
-
-    if (currencyData && amountFromMinorUnits !== null) {
-      const formatter = new Intl.NumberFormat(
-        locale.currencyNumberFormat.localeCode,
-        {
-          style: 'currency',
-          currencyDisplay: locale.currencyNumberFormat.display,
-          currency,
-        }
+  const formatCurrencyToDisplay = useCallback(
+    (
+      amountInMinorUnits: string | number,
+      currency: CurrencyEnum | string
+    ): string | null => {
+      const currencyData = currencyList && currencyList[currency];
+      const amountFromMinorUnits = formatFromMinorUnits(
+        Number(amountInMinorUnits),
+        currency
       );
 
-      return formatter.format(amountFromMinorUnits);
-    }
+      if (currencyData && amountFromMinorUnits !== null) {
+        const formatter = new Intl.NumberFormat(
+          locale.currencyNumberFormat.localeCode,
+          {
+            style: 'currency',
+            currencyDisplay: locale.currencyNumberFormat.display,
+            currency,
+          }
+        );
 
-    return null;
-  };
+        return formatter.format(amountFromMinorUnits);
+      }
+
+      return null;
+    },
+    [
+      currencyList,
+      formatFromMinorUnits,
+      locale.currencyNumberFormat.display,
+      locale.currencyNumberFormat.localeCode,
+    ]
+  );
 
   return {
     currencyList,

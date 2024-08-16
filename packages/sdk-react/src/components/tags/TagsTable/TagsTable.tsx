@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -19,7 +19,12 @@ import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box } from '@mui/material';
-import { DataGrid, GridActionsCellItem, GridSortModel } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridColDef,
+  GridSortModel,
+} from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal';
@@ -123,6 +128,65 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'name',
+        headerName: t(i18n)`Name`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created at`,
+        flex: 0.5,
+        valueFormatter: (
+          value: components['schemas']['TagReadSchema']['created_at']
+        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'updated_at',
+        headerName: t(i18n)`Updated at`,
+        flex: 0.5,
+        valueFormatter: (
+          value: components['schemas']['TagReadSchema']['updated_at']
+        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'created_by_entity_user_id',
+        headerName: t(i18n)`Created by`,
+        flex: 0.6,
+        sortable: false,
+        renderCell: (params) =>
+          params.value ? <UserCell id={params.value} /> : null,
+      },
+      {
+        field: 'actions',
+        type: 'actions',
+        getActions: (params) => [
+          <GridActionsCellItem
+            onClick={() => {
+              setSelectedTag(params.row);
+              openEditModal();
+            }}
+            icon={<EditIcon />}
+            disabled={!isUpdateAllowed}
+            label={t(i18n)`Edit`}
+          />,
+          <GridActionsCellItem
+            onClick={() => {
+              setSelectedTag(params.row);
+              openDeleteModal();
+            }}
+            disabled={!isDeleteAllowed}
+            icon={<DeleteIcon />}
+            label={t(i18n)`Delete`}
+          />,
+        ],
+      },
+    ];
+  }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
+
   return (
     <Box
       className={ScopedCssBaselineContainerClassName}
@@ -168,62 +232,7 @@ const TagsTableBase = ({
             />
           ),
         }}
-        columns={[
-          {
-            field: 'name',
-            headerName: t(i18n)`Name`,
-            sortable: false,
-            flex: 1,
-          },
-          {
-            field: 'created_at',
-            headerName: t(i18n)`Created at`,
-            flex: 0.5,
-            valueFormatter: (
-              value: components['schemas']['TagReadSchema']['created_at']
-            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'updated_at',
-            headerName: t(i18n)`Updated at`,
-            flex: 0.5,
-            valueFormatter: (
-              value: components['schemas']['TagReadSchema']['updated_at']
-            ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'created_by_entity_user_id',
-            headerName: t(i18n)`Created by`,
-            flex: 0.6,
-            sortable: false,
-            renderCell: (params) =>
-              params.value ? <UserCell id={params.value} /> : null,
-          },
-          {
-            field: 'actions',
-            type: 'actions',
-            getActions: (params) => [
-              <GridActionsCellItem
-                onClick={() => {
-                  setSelectedTag(params.row);
-                  openEditModal();
-                }}
-                icon={<EditIcon />}
-                disabled={!isUpdateAllowed}
-                label={t(i18n)`Edit`}
-              />,
-              <GridActionsCellItem
-                onClick={() => {
-                  setSelectedTag(params.row);
-                  openDeleteModal();
-                }}
-                disabled={!isDeleteAllowed}
-                icon={<DeleteIcon />}
-                label={t(i18n)`Delete`}
-              />,
-            ],
-          },
-        ]}
+        columns={columns}
         rows={tags?.data ?? []}
       />
       <TagFormModal
