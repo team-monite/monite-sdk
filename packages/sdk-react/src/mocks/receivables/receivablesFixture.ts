@@ -165,14 +165,14 @@ function createRandomInvoice(
   }
 
   const status: components['schemas']['ReceivablesStatusEnum'] =
-    index === 0 ? 'recurring' : getRandomItemFromArray(ReceivablesStatusEnum);
+    index === 0 ? 'draft' : getRandomItemFromArray(ReceivablesStatusEnum);
 
   const counterpart_type = getRandomItemFromArray<
     components['schemas']['CounterpartType']
   >(['individual', 'organization']);
 
   const lineItems = new Array(getRandomNumber(1, 15))
-    .fill('')
+    .fill('_')
     .map(createRandomLineItem);
 
   const subtotal = lineItems.reduce((acc, item) => {
@@ -226,10 +226,6 @@ function createRandomInvoice(
       status !== 'draft' ? `INV-${faker.string.nanoid(20)}` : undefined,
     issue_date: status !== 'draft' ? faker.date.past().toString() : undefined,
     recurrence_id: status === 'recurring' ? faker.string.uuid() : undefined,
-    // based_on:
-    //   status !== 'draft' && faker.datatype.boolean()
-    //     ? faker.string.uuid()
-    //     : undefined,
     based_on: id,
     fulfillment_date: faker.date.future().toString(),
     payment_terms: getRandomItemFromArray(paymentTermsFixtures.data!),
