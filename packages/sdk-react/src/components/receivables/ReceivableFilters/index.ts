@@ -1,1 +1,1 @@
-export { ReceivableFilters } from './ReceivableFilters';
+export { ReceivableFilter } from './ReceivableFilters';

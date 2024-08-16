@@ -4,6 +4,11 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/ReceivableFilters/ReceivableFilters';
+import {
+  ReceivableFilterType,
+  ReceivablesTabFilter,
+} from '@/components/receivables/ReceivablesTable/types';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
@@ -20,7 +25,6 @@ import { Box } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 
 type CreditNotesTableProps = {
@@ -30,6 +34,14 @@ type CreditNotesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The query to be used for the Table
+   */
+  query?: ReceivablesTabFilter;
+
+  /** Filters to be applied to the table */
+  filters?: Array<keyof ReceivableFilterType>;
 };
 
 export interface CreditNotesTableSortModel {
@@ -43,7 +55,11 @@ export const CreditNotesTable = (props: CreditNotesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
+const CreditNotesTableBase = ({
+  onRowClick,
+  query,
+  filters: filtersProp,
+}: CreditNotesTableProps) => {
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -55,15 +71,20 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   );
 
   const [sortModel, setSortModel] = useState<CreditNotesTableSortModel>({
-    field: 'created_at',
-    sort: 'desc',
+    field: query?.sort ?? 'created_at',
+    sort: query?.order ?? 'desc',
   });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { onChangeFilter, filters } = useReceivablesFilters();
+  const { onChangeFilter, filters, filtersQuery } = useReceivablesFilters(
+    (['document_id__contains', 'status', 'counterpart_id'] as const).filter(
+      (filter) => filtersProp?.includes(filter) ?? true
+    ),
+    query
+  );
 
   const { data: creditNotes, isLoading } = useReceivables({
-    ...filters,
+    ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
     limit: pageSize,
@@ -145,10 +166,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <ReceivableFilters
-            onChange={onChangeFilter}
-            filters={['document_id__contains', 'status', 'counterpart_id']}
-          />
+          <ReceivableFilters onChange={onChangeFilter} filters={filters} />
         </Box>
         <DataGrid
           initialState={{

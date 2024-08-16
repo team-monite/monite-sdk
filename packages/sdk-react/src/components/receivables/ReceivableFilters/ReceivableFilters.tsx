@@ -3,10 +3,7 @@ import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLa
 import { ReceivableFilterType } from '@/components/receivables/ReceivablesTable/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import {
-  type ReadableReceivablesStatus,
-  ReadableReceivableStatuses,
-} from '@/enums/ReadableReceivablesStatusEnum';
+import { type ReadableReceivablesStatus } from '@/enums/ReadableReceivablesStatusEnum';
 import { SearchField } from '@/ui/SearchField';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -22,17 +19,27 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import { formatISO } from 'date-fns';
 
-import { type ReceivablesFilterHandler } from './useReceivablesFilters';
+export type ReceivableFilter<T extends keyof ReceivableFilterType> =
+  | {
+      field: T;
+      value: ReceivableFilterType[T];
+      options?: never;
+    }
+  | {
+      field: 'status';
+      value: ReceivableFilterType[T];
+      options: Array<ReadableReceivablesStatus>;
+    };
 
-type ReceivableFiltersProps = {
-  onChange: ReceivablesFilterHandler;
-  filters: Array<keyof ReceivableFilterType>;
+type ReceivableFiltersProps<T extends keyof ReceivableFilterType> = {
+  onChange: (field: T, value: ReceivableFilterType[T]) => void;
+  filters: ReceivableFilter<T>[];
 };
 
-export const ReceivableFilters = ({
+export const ReceivableFilters = <T extends keyof ReceivableFilterType>({
   onChange,
   filters,
-}: ReceivableFiltersProps) => {
+}: ReceivableFiltersProps<T>) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { api } = useMoniteContext();
@@ -40,58 +47,72 @@ export const ReceivableFilters = ({
   const { data: counterparts } = api.counterparts.getCounterparts.useQuery();
   const className = 'Monite-ReceivableFilters';
 
+  const statusFilterOptions = filters.find(
+    (filter) => filter.field === 'status'
+  )?.options;
+
   return (
     <Grid
       container
       spacing={2}
       className={classNames(className, 'Monite-Filters')}
     >
-      {filters.includes('document_id__contains') && (
+      {filters.some((filter) => filter.field === 'document_id__contains') && (
         <Grid item sm={6} md={4}>
           <SearchField
             label={t(i18n)`Search`}
+            value={
+              filters.find((filter) => filter.field === 'document_id__contains')
+                ?.value ?? ''
+            }
             onChange={(search) => {
-              onChange('document_id__contains', search ?? undefined);
+              onChange(
+                'document_id__contains' as T,
+                (search ?? undefined) as ReceivableFilterType[T]
+              );
             }}
           />
         </Grid>
       )}
 
-      {filters.includes('status') && (
-        <Grid item sm={3} md={2}>
-          <MuiFormControl
-            variant="outlined"
-            fullWidth
-            className="Monite-ReceivableStatusFilter Monite-FilterControl"
-          >
-            <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
-            <Select<ReadableReceivablesStatus>
-              labelId="status"
-              label={t(i18n)`Status`}
-              defaultValue={undefined}
-              MenuProps={{ container: root }}
-              onChange={(event) => {
-                console.log(event.target.value);
-
-                onChange(
-                  'status',
-                  event.target.value as ReadableReceivablesStatus
-                );
-              }}
+      {statusFilterOptions &&
+        statusFilterOptions.length > 1 &&
+        filters.some((filter) => filter.field === 'status') && (
+          <Grid item sm={3} md={2}>
+            <MuiFormControl
+              variant="outlined"
+              fullWidth
+              className="Monite-ReceivableStatusFilter Monite-FilterControl"
             >
-              <MenuItem value={undefined}>{t(i18n)`All statuses`}</MenuItem>
+              <MuiInputLabel id="status">{t(i18n)`Status`}</MuiInputLabel>
+              <Select
+                labelId="status"
+                label={t(i18n)`Status`}
+                value={
+                  filters.find((filter) => filter.field === 'status')?.value ??
+                  ''
+                }
+                MenuProps={{ container: root }}
+                onChange={(event) => {
+                  onChange(
+                    'status' as T,
+                    (event.target.value || undefined) as ReceivableFilterType[T]
+                  );
+                }}
+              >
+                <MenuItem value={undefined}>{t(i18n)`All statuses`}</MenuItem>
 
-              {ReadableReceivableStatuses.map((status) => (
-                <MenuItem key={status} value={status}>
-                  {getCommonStatusLabel(i18n, status)}
-                </MenuItem>
-              ))}
-            </Select>
-          </MuiFormControl>
-        </Grid>
-      )}
+                {statusFilterOptions.map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {getCommonStatusLabel(i18n, status)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </MuiFormControl>
+          </Grid>
+        )}
 
-      {filters.includes('counterpart_id') && (
+      {filters.some((filter) => filter.field === 'counterpart_id') && (
         <Grid item sm={3} md={2}>
           <MuiFormControl
             variant="outlined"
@@ -104,10 +125,16 @@ export const ReceivableFilters = ({
             <Select
               labelId="counterpart_id"
               label={t(i18n)`Customer`}
-              defaultValue={undefined}
+              value={
+                filters.find((filter) => filter.field === 'counterpart_id')
+                  ?.value ?? ''
+              }
               MenuProps={{ container: root }}
               onChange={(event) => {
-                onChange('counterpart_id', event.target.value);
+                onChange(
+                  'counterpart_id' as T,
+                  (event.target.value || undefined) as ReceivableFilterType[T]
+                );
               }}
             >
               <MenuItem value={undefined}>{t(i18n)`All customers`}</MenuItem>
@@ -124,22 +151,25 @@ export const ReceivableFilters = ({
         </Grid>
       )}
 
-      {filters.includes('due_date__lte') && (
+      {filters.some((filter) => filter.field === 'due_date__lte') && (
         <Grid item xs={6} sm={3} md={2} lg={2}>
-          <DatePicker<Date>
+          <DatePicker
             className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
             label={t(i18n)`Due date`}
             views={['year', 'month', 'day']}
+            value={
+              filters.find((filter) => filter.field === 'due_date__lte')?.value
+            }
             onChange={(value, error) => {
-              if (error.validationError || value === null) {
-                return;
-              }
+              if (error.validationError) return;
+              if (value === null || value === undefined)
+                return void onChange('due_date__lte' as T, undefined);
 
               onChange(
-                'due_date__lte',
-                formatISO(value, {
+                'due_date__lte' as T,
+                formatISO(new Date(value), {
                   representation: 'date',
-                })
+                }) as ReceivableFilterType[T]
               );
             }}
             slotProps={{

@@ -4,6 +4,11 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { ReceivableFilters } from '@/components/receivables/ReceivableFilters/ReceivableFilters';
+import {
+  ReceivableFilterType,
+  ReceivablesTabFilter,
+} from '@/components/receivables/ReceivablesTable/types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
@@ -26,7 +31,6 @@ import {
 } from '@mui/x-data-grid';
 
 import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
-import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
   useInvoiceRowActionMenuCell,
@@ -40,6 +44,14 @@ interface InvoicesTableBaseProps {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The query to be used for the Table
+   */
+  query?: ReceivablesTabFilter;
+
+  /** Filters to be applied to the table */
+  filters?: Array<keyof ReceivableFilterType>;
 }
 
 export type InvoicesTableProps =
@@ -59,6 +71,8 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
 
 const InvoicesTableBase = ({
   onRowClick,
+  query,
+  filters: filtersProp,
   ...restProps
 }: InvoicesTableProps) => {
   const { i18n } = useLingui();
@@ -72,15 +86,25 @@ const InvoicesTableBase = ({
   );
 
   const [sortModel, setSortModel] = useState<ReceivableGridSortModel>({
-    field: 'created_at',
-    sort: 'desc',
+    field: query?.sort ?? 'created_at',
+    sort: query?.order ?? 'desc',
   });
 
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { filters, onChangeFilter } = useReceivablesFilters();
+  const { filtersQuery, filters, onChangeFilter } = useReceivablesFilters(
+    (
+      [
+        'document_id__contains',
+        'status',
+        'counterpart_id',
+        'due_date__lte',
+      ] as const
+    ).filter((filter) => filtersProp?.includes(filter) ?? true),
+    query
+  );
 
   const { data: invoices, isLoading } = useReceivables({
-    ...filters,
+    ...filtersQuery,
     sort: sortModel?.field,
     order: sortModel?.sort,
     limit: pageSize,
@@ -205,20 +229,15 @@ const InvoicesTableBase = ({
     >
       <Box sx={{ mb: 2 }}>
         <ReceivableFilters
+          filters={filters}
           onChange={(field, value) => {
             setPaginationToken(undefined);
             onChangeFilter(field, value);
           }}
-          filters={[
-            'document_id__contains',
-            'status',
-            'counterpart_id',
-            'due_date__lte',
-          ]}
         />
       </Box>
 
-      <DataGrid<components['schemas']['ReceivableResponse']>
+      <DataGrid
         initialState={{
           sorting: {
             sortModel: sortModel && [sortModel],
