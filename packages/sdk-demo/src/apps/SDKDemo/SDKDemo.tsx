@@ -16,7 +16,7 @@ import { SDKDemoI18nProvider } from '@/context/SDKDemoI18nProvider.tsx';
 import { fetchToken as fetchTokenBase } from '@/core/fetchToken';
 import { getThemeOptions, useThemeConfig } from '@/hooks/useThemeConfig.tsx';
 import { Global } from '@emotion/react';
-import { t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { createAPIClient, useMoniteContext } from '@monite/sdk-react';
 import { Logout } from '@mui/icons-material';
@@ -192,6 +192,8 @@ const AuthErrorsBackdrop = ({
   errors: Array<Error>;
   logout: () => void;
 }) => {
+  const { i18n } = useLingui();
+
   if (!errors.length) return null;
 
   return (
@@ -205,7 +207,9 @@ const AuthErrorsBackdrop = ({
       >
         {errors.map((error) => (
           <Alert severity="error" key={error.message}>
-            Error: <code>{error.message}</code>
+            <Trans>
+              Error: <code>{error.message}</code>
+            </Trans>
           </Alert>
         ))}
         <Button
@@ -217,7 +221,7 @@ const AuthErrorsBackdrop = ({
             logout();
           }}
         >
-          Logout
+          {t(i18n)`Logout`}
         </Button>
       </Stack>
     </Backdrop>

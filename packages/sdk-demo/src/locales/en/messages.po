@@ -31,11 +31,16 @@ msgstr "Dark Mode"
 msgid "Entity User ID"
 msgstr "Entity User ID"
 
+#: src/apps/SDKDemo/SDKDemo.tsx:210
+msgid "Error: <0>{0}</0>"
+msgstr "Error: <0>{0}</0>"
+
 #: src/components/LoginForm/LoginForm.tsx:128
 msgid "Login"
 msgstr "Login"
 
 #: src/apps/SDKDemo/SDKDemo.tsx:178
+#: src/apps/SDKDemo/SDKDemo.tsx:224
 msgid "Logout"
 msgstr "Logout"
 
