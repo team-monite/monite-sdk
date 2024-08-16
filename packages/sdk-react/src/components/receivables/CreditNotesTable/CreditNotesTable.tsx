@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useAutosizeGridColumns } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -18,7 +17,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ReceivableFilters } from '../ReceivableFilters';
@@ -77,7 +76,59 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
-  const gridApiRef = useAutosizeGridColumns(creditNotes);
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'document_id',
+        headerName: t(i18n)`Number`,
+        width: 100,
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created on`,
+        width: 140,
+        valueFormatter: (value) =>
+          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+      },
+      {
+        field: 'issue_date',
+        headerName: t(i18n)`Issue date`,
+        width: 120,
+        valueFormatter: (value) =>
+          value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'counterpart_name',
+        headerName: t(i18n)`Customer`,
+        sortable: ReceivableCursorFields.includes('counterpart_name'),
+        width: 250,
+        renderCell: (params) => (
+          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+        ),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: ReceivableCursorFields.includes('status'),
+        width: 80,
+        renderCell: (params) => {
+          const status = params.value;
+          return <InvoiceStatusChip status={status} />;
+        },
+      },
+      {
+        field: 'amount',
+        headerName: t(i18n)`Amount`,
+        sortable: ReceivableCursorFields.includes('amount'),
+        width: 120,
+        valueGetter: (_, row) => {
+          const value = row.total_amount;
+
+          return value && formatCurrencyToDisplay(value, row.currency);
+        },
+      },
+    ];
+  }, [formatCurrencyToDisplay, i18n]);
 
   const className = 'Monite-CreditNotesTable';
 
@@ -105,7 +156,6 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               sortModel: [sortModel],
             },
           }}
-          apiRef={gridApiRef}
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
@@ -135,62 +185,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               />
             ),
           }}
-          columns={[
-            {
-              field: 'document_id',
-              headerName: t(i18n)`Number`,
-              flex: 1.3,
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              valueFormatter: (value) =>
-                value
-                  ? i18n.date(value, DateTimeFormatOptions.EightDigitDate)
-                  : '—',
-              flex: 0.7,
-            },
-            {
-              field: 'issue_date',
-              headerName: t(i18n)`Issue date`,
-              valueFormatter: (value) =>
-                value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-              flex: 0.7,
-            },
-            {
-              field: 'counterpart_name',
-              headerName: t(i18n)`Customer`,
-              sortable: ReceivableCursorFields.includes('counterpart_name'),
-              display: 'flex',
-              flex: 1,
-              renderCell: (params) => (
-                <InvoiceCounterpartName
-                  counterpartId={params.row.counterpart_id}
-                />
-              ),
-            },
-            {
-              field: 'status',
-              headerName: t(i18n)`Status`,
-              sortable: ReceivableCursorFields.includes('status'),
-              flex: 1,
-              renderCell: (params) => {
-                const status = params.value;
-                return <InvoiceStatusChip status={status} />;
-              },
-            },
-            {
-              field: 'amount',
-              headerName: t(i18n)`Amount`,
-              sortable: ReceivableCursorFields.includes('amount'),
-              valueGetter: (_, row) => {
-                const value = row.total_amount;
-
-                return value && formatCurrencyToDisplay(value, row.currency);
-              },
-              flex: 0.5,
-            },
-          ]}
+          columns={columns}
           rows={creditNotes?.data ?? []}
         />
       </Box>
