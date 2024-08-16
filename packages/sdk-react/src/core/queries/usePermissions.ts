@@ -66,7 +66,7 @@ export type payablePermissionsObjectType = 'payable';
 
 type CommonOperator = {
   method: components['schemas']['CommonSchema']['object_type'];
-  action: components['schemas']['PayableActionEnum'];
+  action: components['schemas']['ActionEnum'];
 };
 
 type PayableOperator = {
