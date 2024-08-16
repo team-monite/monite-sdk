@@ -690,7 +690,15 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MoniteApprovalRequestStatusChip: {
+    defaultProps: {
+      icon: false,
+    },
+  },
   MoniteInvoiceStatusChip: {
+    defaultProps: {
+      icon: false,
+    },
     styleOverrides: {
       root: {
         fontSize: '13px',
@@ -748,6 +756,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     ],
   },
   MonitePayableStatusChip: {
+    defaultProps: {
+      icon: false,
+    },
     styleOverrides: {
       root: {
         fontSize: '13px',
