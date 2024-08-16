@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { InvoiceRecurrenceIterationStatusChip } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
@@ -43,15 +44,15 @@ export const InvoiceRecurrenceIterations = ({
           ({ status, iteration, issue_at, issued_invoice_id }) => {
             const documentId = receivables?.data.find(
               (receivable) => receivable.id === issued_invoice_id
-              // eslint-disable-next-line lingui/no-unlocalized-strings
             )?.document_id;
 
             return (
               <TableRow key={iteration}>
                 <TableCell>
                   {documentId ?? (
-                    // eslint-disable-next-line lingui/no-unlocalized-strings
-                    <Typography color="text.secondary">INV-auto</Typography>
+                    <Typography color="text.secondary">
+                      {INVOICE_DOCUMENT_AUTO_ID}
+                    </Typography>
                   )}
                 </TableCell>
                 <TableCell>{i18n.date(new Date(issue_at))}</TableCell>
