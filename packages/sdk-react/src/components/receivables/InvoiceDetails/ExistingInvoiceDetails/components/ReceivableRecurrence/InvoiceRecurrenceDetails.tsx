@@ -26,6 +26,9 @@ export const InvoiceRecurrenceDetails = ({
   const { i18n } = useLingui();
 
   const currentIteration = iterations[current_iteration - 1];
+  const invoicesSent = iterations.filter(
+    ({ status }) => status === 'completed'
+  );
 
   return (
     <>
@@ -69,7 +72,7 @@ export const InvoiceRecurrenceDetails = ({
           label={t(i18n)`Issued documents`}
           value={
             <>
-              {t(i18n)`${current_iteration}/${iterations.length} issued`}
+              {t(i18n)`${invoicesSent.length}/${iterations.length} issued`}
               {status === 'active' && (
                 <>
                   <br />
