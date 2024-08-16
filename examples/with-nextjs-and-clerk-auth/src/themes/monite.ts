@@ -308,12 +308,11 @@ const components: Components<Omit<Theme, 'components'>> = {
                 height: '20px',
               },
 
-            '&.Monite-PayableDateFilter, &.Monite-PayableDueDateFilter, &.Monite-ReceivableDueDateFilter':
-              {
-                'input::placeholder': {
-                  opacity: 0,
-                },
+            '&.Monite-DateFilterControl': {
+              'input::placeholder': {
+                opacity: 0,
               },
+            },
           },
         };
       },
