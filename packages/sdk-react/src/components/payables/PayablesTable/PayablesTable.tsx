@@ -271,9 +271,7 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Amount" heading title',
         }),
         width: 120,
-        valueGetter: (_, row) => {
-          const payable = row;
-
+        valueGetter: (_, payable) => {
           return payable.amount_to_pay && payable.currency
             ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
             : '';
