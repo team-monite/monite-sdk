@@ -249,7 +249,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before due date`}
                     </Typography>
                   </>
                 }
@@ -301,7 +301,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before discount date 1`}
                     </Typography>
                   </>
                 }
@@ -353,7 +353,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before discount date 2`}
                     </Typography>
                   </>
                 }
