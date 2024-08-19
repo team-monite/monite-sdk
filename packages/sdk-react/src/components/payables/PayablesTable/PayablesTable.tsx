@@ -6,6 +6,11 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -165,6 +170,8 @@ const PayablesTableBase = ({
     }
   }, [isError, error, i18n]);
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -198,7 +205,7 @@ const PayablesTableBase = ({
         sortable: false,
         headerName: t(i18n)`Counterpart`,
         display: 'flex',
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
           <CounterpartCell counterpartId={params.value} />
         ),
@@ -297,6 +304,12 @@ const PayablesTableBase = ({
     ];
   }, [formatCurrencyToDisplay, i18n, onPay]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    payables?.data,
+    columns,
+    areCounterpartsLoading
+  );
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -342,6 +355,7 @@ const PayablesTableBase = ({
             sortModel: [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

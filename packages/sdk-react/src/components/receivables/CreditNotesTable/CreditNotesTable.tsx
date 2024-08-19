@@ -2,12 +2,17 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCell } from '@/ui/CounterpartCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -76,6 +81,8 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(creditNotes?.data);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -101,9 +108,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'counterpart_name',
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCell counterpartId={params.row.counterpart_id} />
         ),
       },
       {
@@ -129,6 +136,12 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
       },
     ];
   }, [formatCurrencyToDisplay, i18n]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    creditNotes?.data,
+    columns,
+    areCounterpartsLoading
+  );
 
   const className = 'Monite-CreditNotesTable';
 
@@ -156,6 +169,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               sortModel: [sortModel],
             },
           }}
+          apiRef={gridApiRef}
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
