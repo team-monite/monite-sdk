@@ -40,7 +40,7 @@ import {
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
-import { getCounterpartName, getIndividualName } from '../helpers';
+import { getCounterpartName } from '../helpers';
 import {
   FILTER_TYPE_IS_CUSTOMER,
   FILTER_TYPE_SEARCH,
@@ -239,10 +239,7 @@ const CounterpartsTableBase = ({
         renderCell: (params) => {
           const counterpart = params.row;
 
-          const name =
-            'organization' in counterpart
-              ? counterpart.organization.legal_name
-              : getIndividualName(counterpart.individual);
+          const name = getCounterpartName(counterpart);
 
           return (
             <>

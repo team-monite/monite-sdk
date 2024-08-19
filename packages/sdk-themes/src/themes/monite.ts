@@ -499,6 +499,26 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           marginLeft: 0,
           marginRight: '4px',
         },
+        '&.Monite-CounterpartCell .MuiChip-avatar': {
+          margin: 0,
+          color: 'white',
+          fontSize: '10px',
+          lineHeight: '24px',
+          width: '24px',
+          height: '24px',
+          '&.MuiAvatar-letterB': {
+            backgroundColor: '#000000',
+          },
+          '&.MuiAvatar-letterC': {
+            backgroundColor: statusColors.blue.color,
+          },
+          '&.MuiAvatar-letterH': {
+            backgroundColor: statusColors.green.color,
+          },
+          '&.MuiAvatar-letterM': {
+            backgroundColor: statusColors.violet.color,
+          },
+        },
       },
       label: {
         padding: '0',
@@ -536,12 +556,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         fontWeight: 400,
         fontSize: '14px',
         // Align counterpart avatar with the cell header
-        '&[data-field="counterpart_id"]': {
+        '&[data-field="counterpart_id"], &[data-field="counterpart_name"]': {
           '.MuiChip-root': {
             paddingLeft: 0,
-            '.MuiAvatar-root': {
-              margin: 0,
-            },
           },
         },
         '& .Monite-TextOverflowContainer': {
