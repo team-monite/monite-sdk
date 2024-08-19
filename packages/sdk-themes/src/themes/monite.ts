@@ -4,13 +4,36 @@ import type { Components } from '@mui/material/styles/components.js';
 import type {
   Palette,
   PaletteOptions,
+  SimplePaletteColorOptions,
 } from '@mui/material/styles/createPalette.js';
 import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
-import { deepmerge } from '@mui/utils';
 import '@mui/x-data-grid/themeAugmentation';
 
-export const paletteLight: PaletteOptions = {
+interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
+  '90': string;
+  '60': string;
+  '80': string;
+}
+
+interface MoniteNeutralColorOptions {
+  '10': string;
+  '50': string;
+  '70': string;
+  '80': string;
+  '90': string;
+  '95': string;
+}
+
+interface MonitePaletteOptions extends PaletteOptions {
+  primary: MonitePaletteColorOptions;
+  neutral: MoniteNeutralColorOptions;
+  menu: {
+    background: string;
+  };
+}
+
+export const paletteLight: MonitePaletteOptions = {
   primary: {
     dark: 'rgb(46, 46, 229)',
     main: '#3737FF',
@@ -22,9 +45,8 @@ export const paletteLight: PaletteOptions = {
   secondary: {
     main: '#707070',
   },
-  background: {
-    menu: '#F1F2F5',
-    highlight: '#EBEBFF',
+  menu: {
+    background: '#F1F2F5',
   },
   neutral: {
     '10': '#111111',
@@ -37,7 +59,7 @@ export const paletteLight: PaletteOptions = {
   divider: '#DDDDDD',
 };
 
-export const paletteDark: PaletteOptions = {
+export const paletteDark: MonitePaletteOptions = {
   primary: {
     dark: 'rgb(46, 46, 229)',
     main: '#3737FF',
@@ -49,8 +71,8 @@ export const paletteDark: PaletteOptions = {
   secondary: {
     main: '#707070',
   },
-  background: {
-    menu: '#202020',
+  menu: {
+    background: '#202020',
   },
   neutral: {
     '10': '#FFFFFF',
@@ -146,33 +168,20 @@ export const defaultMoniteTypography:
     textTransform: 'none',
     fontWeight: 500,
   },
-  label2: {
-    fontSize: '0.875rem',
-    fontStyle: 'normal',
-    fontWeight: 500,
-  },
-  label3: {
-    fontSize: '0.75rem',
-    fontStyle: 'normal',
-    fontWeight: 600,
-  },
 };
 
-const typographyLight = deepmerge(defaultMoniteTypography, {
-  body2: {
-    color: paletteLight.neutral && paletteLight.neutral['10'],
-  },
-  label3: {
-    color: paletteLight.neutral && paletteLight.neutral['50'],
-  },
-});
+const typographyLight = Object.assign(
+  structuredClone(defaultMoniteTypography),
+  {
+    body2: {
+      color: paletteLight.neutral && paletteLight.neutral['10'],
+    },
+  }
+);
 
-const typographyDark = deepmerge(defaultMoniteTypography, {
+const typographyDark = Object.assign(structuredClone(defaultMoniteTypography), {
   body2: {
     color: paletteDark.neutral && paletteDark.neutral['10'],
-  },
-  label3: {
-    color: paletteDark.neutral && paletteDark.neutral['80'],
   },
 });
 
@@ -229,20 +238,20 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiOutlinedInput: {
     styleOverrides: {
       // Editor borders
-      notchedOutline: ({ theme }) => ({
-        borderColor: theme.palette.neutral['80'],
-      }),
-      root: ({ theme }) => ({
+      notchedOutline: {
+        borderColor: 'neutral.80',
+      },
+      root: {
         '&.Mui-disabled .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline':
           {
-            borderColor: theme.palette.neutral['80'],
+            borderColor: 'neutral.80',
           },
-      }),
+      },
     },
   },
   MuiFormControl: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         '& .MuiInputBase-root': {
           minHeight: '48px',
           borderRadius: '8px',
@@ -270,7 +279,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             maxHeight: '40px',
             borderRadius: '20px',
             color: 'black',
-            backgroundColor: theme.palette.neutral['95'],
+            backgroundColor: 'neutral.95',
             padding: '0 6px',
 
             '.MuiOutlinedInput-notchedOutline': {
@@ -312,7 +321,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
         },
-      }),
+      },
     },
   },
   MuiFormControlLabel: {
@@ -351,15 +360,18 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
   },
   MuiDrawer: {
-    styleOverrides: {
-      root: ({ theme }) => ({
-        backgroundColor: theme.palette.background.menu,
-      }),
-      paper: ({ theme }) => ({
-        backgroundColor: theme.palette.background.menu,
-        borderRight: 0,
-      }),
-    },
+    variants: [
+      {
+        props: { variant: 'permanent' },
+        style: {
+          backgroundColor: 'menu.background',
+          '& .MuiPaper-root': {
+            backgroundColor: 'menu.background',
+            borderRight: 0,
+          },
+        },
+      },
+    ],
   },
   MuiList: {
     styleOverrides: {
@@ -416,57 +428,49 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           display: 'flex',
         },
       },
-      containedPrimary: ({ theme }) => {
-        const primary = theme.palette.primary;
-        const neutral = theme.palette.neutral;
-        return {
-          minWidth: '120px',
-          backgroundColor: primary.main,
+      containedPrimary: {
+        minWidth: '120px',
+        backgroundColor: 'primary.main',
+        borderRadius: '8px',
+        boxShadow: 'none',
+        '&:hover': {
+          backgroundColor: 'primary.60',
           borderRadius: '8px',
           boxShadow: 'none',
-          '&:hover': {
-            backgroundColor: primary['60'],
-            borderRadius: '8px',
-            boxShadow: 'none',
-          },
-          '&:active': {
-            backgroundColor: primary.dark,
-            borderRadius: '8px',
-            boxShadow: 'none',
-          },
-          '&:disabled': {
-            color: neutral['70'],
-            backgroundColor: neutral['90'],
-            borderColor: neutral['90'],
-            boxShadow: 'none',
-          },
-        };
+        },
+        '&:active': {
+          backgroundColor: 'primary.dark',
+          borderRadius: '8px',
+          boxShadow: 'none',
+        },
+        '&:disabled': {
+          color: 'neutral.70',
+          backgroundColor: 'neutral.90',
+          borderColor: 'neutral.90',
+          boxShadow: 'none',
+        },
       },
-      outlinedPrimary: ({ theme }) => {
-        const primary = theme.palette.primary;
-        const neutral = theme.palette.neutral;
-        return {
-          backgroundColor: primary['90'],
-          borderColor: primary['90'],
-          borderRadius: '8px',
+      outlinedPrimary: {
+        backgroundColor: 'primary.90',
+        borderColor: 'primary.90',
+        borderRadius: '8px',
+        boxShadow: 'none',
+        '&:hover': {
+          backgroundColor: 'primary.80',
+          borderColor: 'primary.80',
           boxShadow: 'none',
-          '&:hover': {
-            backgroundColor: primary['80'],
-            borderColor: primary['80'],
-            boxShadow: 'none',
-          },
-          '&:active': {
-            backgroundColor: primary['60'],
-            borderColor: primary['60'],
-            boxShadow: 'none',
-          },
-          '&:disabled': {
-            color: neutral['70'],
-            backgroundColor: neutral['90'],
-            borderColor: neutral['90'],
-            boxShadow: 'none',
-          },
-        };
+        },
+        '&:active': {
+          backgroundColor: 'primary.60',
+          borderColor: 'primary.60',
+          boxShadow: 'none',
+        },
+        '&:disabled': {
+          color: 'neutral.70',
+          backgroundColor: 'neutral.90',
+          borderColor: 'neutral.90',
+          boxShadow: 'none',
+        },
       },
     },
   },
@@ -481,16 +485,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiChip: {
     styleOverrides: {
-      root: ({ theme }) => {
-        return {
-          backgroundColor: theme.palette.primary.light,
-          borderRadius: '4px',
-          color: theme.palette.primary.main,
-          fontSize: '14px',
-          lineHeight: '16px',
-          fontWeight: 500,
-          padding: '7px 8px',
-        };
+      root: {
+        backgroundColor: 'primary.light',
+        borderRadius: '4px',
+        color: 'primary.main',
+        fontSize: '14px',
+        lineHeight: '16px',
+        fontWeight: 500,
+        padding: '7px 8px',
       },
       label: {
         padding: '0',
@@ -511,16 +513,16 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       showColumnVerticalBorder: false,
     },
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         border: 0,
         borderColor: 'transparent',
-        '--DataGrid-rowBorderColor': theme.palette.divider,
+        '--DataGrid-rowBorderColor': 'divider',
         '& .MuiDataGrid-columnHeaderTitle': {
-          color: theme.palette.neutral['10'],
+          color: 'neutral.10',
           fontWeight: 500,
           fontSize: '16px',
         },
-      }),
+      },
       main: {
         paddingLeft: '12px',
       },
@@ -546,21 +548,21 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiTableHead: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         '& .MuiTableCell-head': {
           fontWeight: 500,
-          color: theme.palette.neutral['50'],
+          color: 'neutral.50',
           verticalAlign: 'bottom',
         },
-      }),
+      },
     },
   },
   MuiTableRow: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         '&:not(.Monite-CreateReceivable-ItemsSection-Table) .MuiTableCell-root':
           {
-            borderColor: theme.palette.neutral['80'],
+            borderColor: 'neutral.80',
           },
         '&.Monite-CreateReceivable-ItemsSection-Table .MuiTableCell-root': {
           borderBottom: 'none',
@@ -569,25 +571,25 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&:last-child .MuiTableCell-body': {
           borderBottom: 'none',
         },
-      }),
+      },
     },
   },
   MuiTabs: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         '& .MuiTab-root': {
           padding: '16px',
         },
         '& .MuiTab-root.Mui-selected': {
-          backgroundColor: theme.palette.primary.light,
+          backgroundColor: 'primary.light',
           borderRadius: 10,
         },
-      }),
-      indicator: ({ theme }) => ({
+      },
+      indicator: {
         borderRadius: 10,
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: 'primary.main',
         height: '4px',
-      }),
+      },
     },
   },
   MuiCard: {
@@ -595,9 +597,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       variant: 'outlined',
     },
     // styleOverrides: {
-    //   root: ({ theme }) => ({
-    //     backgroundColor: theme.palette.neutral['90'],
-    //   }),
+    //   root: {
+    //     backgroundColor: 'neutral.90',
+    //   },
     // },
   },
   MuiCardContent: {
@@ -609,11 +611,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiPaper: {
     styleOverrides: {
-      root: ({ theme }) => ({
+      root: {
         backgroundImage: 'none',
         borderRadius: '8px',
-        borderColor: theme.palette.neutral['80'],
-      }),
+        borderColor: 'neutral.80',
+      },
       elevation: {
         '&.MuiTableContainer-root': {
           boxShadow: 'none',
@@ -801,20 +803,73 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
 };
 
+function renderColor(strVal: string, palette: PaletteOptions): string {
+  if (strVal.includes('.')) {
+    let temporaryValue: { [key: string]: any } = palette;
+    strVal.split('.').forEach((key) => {
+      temporaryValue = temporaryValue && temporaryValue[key];
+    });
+    // noinspection SuspiciousTypeOfGuard
+    if (temporaryValue && typeof temporaryValue === 'string')
+      return temporaryValue;
+  } else if (typeof palette[strVal as keyof PaletteOptions] === 'string')
+    return palette[strVal as keyof PaletteOptions] as string;
+  return strVal;
+}
+
+function isPlainObject(item: unknown) {
+  if (typeof item !== 'object' || item === null) {
+    return false;
+  }
+  const prototype = Object.getPrototypeOf(item);
+  return (
+    (prototype === null ||
+      prototype === Object.prototype ||
+      Object.getPrototypeOf(prototype) === null) &&
+    !(Symbol.toStringTag in item) &&
+    !(Symbol.iterator in item)
+  );
+}
+
+function renderColors<T extends { [key: string]: any }>(
+  components: T,
+  palette: PaletteOptions
+): T {
+  const output: T = Array.isArray(components) ? ([] as any as T) : ({} as T);
+
+  Object.keys(components).forEach((_key) => {
+    const prop = _key as keyof T;
+    if (!components.hasOwnProperty(prop)) return;
+    const propValue = components[prop];
+    // noinspection SuspiciousTypeOfGuard
+    if (typeof propValue === 'string') {
+      output[prop] = renderColor(propValue, palette) as typeof propValue;
+    } else if (isPlainObject(propValue) || Array.isArray(propValue)) {
+      output[prop] = renderColors(propValue, palette);
+    } else {
+      output[prop] = propValue;
+    }
+  });
+
+  return output;
+}
+
+const lightComponents = renderColors(defaultMoniteComponents, paletteLight);
 export const moniteLight: ThemeOptions = {
   palette: {
     mode: 'light',
     ...paletteLight,
   },
   typography: typographyLight,
-  components: defaultMoniteComponents,
+  components: lightComponents,
 };
 
+const darkComponents = renderColors(defaultMoniteComponents, paletteDark);
 export const moniteDark: ThemeOptions = {
   palette: {
     mode: 'dark',
     ...paletteDark,
   },
   typography: typographyDark,
-  components: defaultMoniteComponents,
+  components: darkComponents,
 };
