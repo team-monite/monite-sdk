@@ -15,6 +15,8 @@ interface InvoiceStatusChipRootProps {
   status: components['schemas']['ReceivablesStatusEnum'];
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
+  /** The size of the Chip. */
+  size?: ChipProps['size'];
 }
 
 export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
@@ -33,6 +35,7 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
  *     MoniteInvoiceStatusChip: {
  *       defaultProps: {
  *         icon: true, // Display status icon?
+ *         size: 'small', // The size of the chip
  *         variant: 'outlined', // The variant of the chip
  *       },
  *       variants: [
@@ -58,7 +61,7 @@ export const InvoiceStatusChip = forwardRef<
   HTMLDivElement,
   InvoiceStatusChipProps
 >((inProps, ref) => {
-  const { status, variant, icon } = useThemeProps({
+  const { status, variant, icon, size } = useThemeProps({
     props: inProps,
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
@@ -75,6 +78,7 @@ export const InvoiceStatusChip = forwardRef<
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getCommonStatusLabel(i18n, status)}
       status={status}
+      size={size}
       variant={variant ?? 'filled'}
     />
   );
@@ -94,6 +98,7 @@ const StyledChip = styled(
         case 'label':
         case 'color':
         case 'icon':
+        case 'size':
           return true;
         default:
           return false;
