@@ -233,6 +233,9 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(termFinalReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Due date`}
+                subTitle={t(
+                  i18n
+                )`For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount`}
                 daysBefore={
                   <>
                     <InputLabel htmlFor="term_final_reminder.days_before">
@@ -249,7 +252,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before due date`}
                     </Typography>
                   </>
                 }
@@ -285,6 +288,9 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(term1ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 1`}
+                subTitle={t(
+                  i18n
+                )`For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount`}
                 daysBefore={
                   <>
                     <InputLabel htmlFor="term_1_reminder.days_before">
@@ -301,7 +307,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before discount date 1`}
                     </Typography>
                   </>
                 }
@@ -337,6 +343,9 @@ const CreateBeforeDueDateReminderComponent = ({
             {Boolean(term2ReminderFieldValue) && (
               <ReminderFormLayout
                 title={t(i18n)`Discount date 2`}
+                subTitle={t(
+                  i18n
+                )`For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount`}
                 daysBefore={
                   <>
                     <InputLabel htmlFor="term_2_reminder.days_before">
@@ -353,7 +362,7 @@ const CreateBeforeDueDateReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days before`}
+                      {t(i18n)`days before discount date 2`}
                     </Typography>
                   </>
                 }
