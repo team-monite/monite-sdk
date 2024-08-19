@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -13,6 +12,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCell } from '@/ui/CounterpartCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -131,7 +131,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Customer`,
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCell counterpartId={params.row.counterpart_id} />
         ),
       },
       {
