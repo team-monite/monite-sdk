@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc",
+    "dev": "yarn clean && tsc --watch",
+    "build": "yarn clean && tsc",
     "clean": "rimraf dist"
   },
   "type": "module",
