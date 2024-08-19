@@ -119,13 +119,7 @@ export const Provider = ({
         }}
       >
         <MoniteI18nProvider>
-          <MoniteAPIProvider
-            apiUrl={monite.baseUrl}
-            fetchToken={monite.fetchToken}
-            requestFn={apiClient.requestFn}
-            queryClient={queryClient}
-            APIContext={MoniteQraftContext}
-          >
+          <MoniteAPIProvider APIContext={MoniteQraftContext}>
             {children}
           </MoniteAPIProvider>
         </MoniteI18nProvider>
