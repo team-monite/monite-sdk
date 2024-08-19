@@ -16,7 +16,18 @@
   ],
   "rules": {
     "import/no-unresolved": "error",
-    "@team-monite/mui-require-container-property": "error"
+    "@team-monite/mui-require-container-property": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "@tanstack/react-query",
+            "importNames": ["useQueryClient", "QueryClientProvider"]
+          }
+        ]
+      }
+    ]
   },
   "settings": {
     "import/resolver": {
