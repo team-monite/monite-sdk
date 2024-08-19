@@ -88,6 +88,11 @@ const SDKDemoComponent = ({
           pageSizeOptions: [10, 15, 20],
         },
       },
+      MoniteInvoiceRecurrenceStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
     },
   });
 
