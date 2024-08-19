@@ -23,8 +23,6 @@ interface ThemeSelectorProps {
   onThemeChange: (themeConfig: ThemeConfig) => void;
 }
 
-const variants: ThemeConfig['variant'][] = ['material', 'monite'];
-
 export const ThemeSelect = (props: ThemeSelectorProps) => {
   const {
     onThemeChange,
@@ -78,7 +76,6 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
             <Typography
               className="ThemeSelect-modeLabel"
               hidden
-              variant="label3"
               component="span"
               textAlign="left"
             >
@@ -99,7 +96,7 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
       >
         <MenuList>
           <ListSubheader>
-            <Typography variant="label2">{t(i18n)`Theme`}</Typography>
+            <Typography>{t(i18n)`Theme`}</Typography>
           </ListSubheader>
           {Object.entries(variants).map(([variantName, label]) => (
             <ThemeSelectMenuItem
@@ -118,7 +115,7 @@ export const ThemeSelect = (props: ThemeSelectorProps) => {
           ))}
           <Divider />
           <ListSubheader>
-            <Typography variant="label2">{t(i18n)`Language`}</Typography>
+            <Typography>{t(i18n)`Language`}</Typography>
           </ListSubheader>
           <ThemeSelectMenuItem checked>
             <Typography variant="body1">{t(i18n)`English`}</Typography>
