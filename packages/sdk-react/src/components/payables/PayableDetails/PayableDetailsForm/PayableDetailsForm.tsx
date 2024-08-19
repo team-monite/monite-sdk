@@ -42,6 +42,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 import * as yup from 'yup';
@@ -169,6 +170,8 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
+    const theme = useTheme();
+
     const {
       formatFromMinorUnits,
       formatToMinorUnits,
@@ -325,14 +328,9 @@ const PayableDetailsFormBase = forwardRef<
                             InputLabelProps={{
                               style: {
                                 color: isFieldRequired('invoiceNumber')
-                                  ? 'red'
+                                  ? theme.palette.error.main
                                   : undefined,
                               },
-                            }}
-                            InputProps={{
-                              endAdornment: isFieldRequired('invoiceNumber')
-                                ? '*'
-                                : undefined,
                             }}
                           />
                         )}
@@ -351,7 +349,7 @@ const PayableDetailsFormBase = forwardRef<
                               htmlFor={field.name}
                               style={{
                                 color: isFieldRequired('counterpart')
-                                  ? 'red'
+                                  ? theme.palette.error.main
                                   : undefined,
                               }}
                             >
@@ -401,7 +399,7 @@ const PayableDetailsFormBase = forwardRef<
                               htmlFor={field.name}
                               style={{
                                 color: isFieldRequired('counterpartBankAccount')
-                                  ? 'red'
+                                  ? theme.palette.error.main
                                   : undefined,
                               }}
                             >
@@ -461,14 +459,9 @@ const PayableDetailsFormBase = forwardRef<
                                   InputLabelProps: {
                                     style: {
                                       color: isFieldRequired('invoiceDate')
-                                        ? 'red'
+                                        ? theme.palette.error.main
                                         : undefined,
                                     },
-                                  },
-                                  InputProps: {
-                                    endAdornment: isFieldRequired('invoiceDate')
-                                      ? '*'
-                                      : undefined,
                                   },
                                 },
                               }}
@@ -501,14 +494,9 @@ const PayableDetailsFormBase = forwardRef<
                                 InputLabelProps: {
                                   style: {
                                     color: isFieldRequired('dueDate')
-                                      ? 'red'
+                                      ? theme.palette.error.main
                                       : undefined,
                                   },
-                                },
-                                InputProps: {
-                                  endAdornment: isFieldRequired('dueDate')
-                                    ? '*'
-                                    : undefined,
                                 },
                               },
                             }}
@@ -562,14 +550,9 @@ const PayableDetailsFormBase = forwardRef<
                                     InputLabelProps={{
                                       style: {
                                         color: isFieldRequired('tags')
-                                          ? 'red'
+                                          ? theme.palette.error.main
                                           : undefined,
                                       },
-                                    }}
-                                    InputProps={{
-                                      endAdornment: isFieldRequired('tags')
-                                        ? '*'
-                                        : undefined,
                                     }}
                                   />
                                 )}
