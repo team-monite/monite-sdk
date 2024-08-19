@@ -7,6 +7,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCell } from '@/ui/CounterpartCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -24,7 +25,6 @@ import {
   GridSortModel,
 } from '@mui/x-data-grid';
 
-import { InvoiceCounterpartName } from '../InvoiceCounterpartName';
 import { ReceivableFilters } from '../ReceivableFilters';
 import { useReceivablesFilters } from '../ReceivableFilters/useReceivablesFilters';
 import {
@@ -120,7 +120,7 @@ const InvoicesTableBase = ({
         display: 'flex',
         width: 250,
         renderCell: (params) => (
-          <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
+          <CounterpartCell counterpartId={params.row.counterpart_id} />
         ),
       },
       {
