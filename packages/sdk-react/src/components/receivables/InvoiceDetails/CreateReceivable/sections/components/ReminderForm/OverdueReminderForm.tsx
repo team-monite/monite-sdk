@@ -229,7 +229,7 @@ const CreateOverdueReminderComponent = ({
                       sx={{ width: 60 }}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {t(i18n)`days after`}
+                      {t(i18n)`days after due date`}
                     </Typography>
                   </>
                 }

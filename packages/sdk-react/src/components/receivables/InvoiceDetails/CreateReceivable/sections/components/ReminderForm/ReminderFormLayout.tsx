@@ -7,6 +7,7 @@ import { Box, Button, Card, Stack, Typography } from '@mui/material';
 
 interface ReminderFormLayoutProps {
   title: string;
+  subTitle?: string;
   daysBefore: ReactNode;
   subject: ReactNode;
   body: ReactNode;
@@ -15,6 +16,7 @@ interface ReminderFormLayoutProps {
 
 export const ReminderFormLayout = ({
   title,
+  subTitle,
   daysBefore,
   subject,
   body,
@@ -36,6 +38,11 @@ export const ReminderFormLayout = ({
             {t(i18n)`Delete`}
           </Button>
         </Box>
+        {subTitle && (
+          <Typography variant="subtitle1" color="text.secondary">
+            {subTitle}
+          </Typography>
+        )}
         <Box display="flex" alignItems="center" gap={1}>
           {daysBefore}
         </Box>

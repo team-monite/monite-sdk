@@ -23,6 +23,7 @@ module.exports = {
           'toastOptions',
           'data-testid',
           'rel',
+          'accept'
         ],
         ignoreProperty: [
           'style',
