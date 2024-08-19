@@ -259,6 +259,10 @@ const PayableDetailsFormBase = forwardRef<
       return isDefaultRequired || isOcrRequired;
     };
 
+    useEffect(() => {
+      handleSubmit(methods.getValues)();
+    }, [handleSubmit, methods.getValues]);
+
     return (
       <>
         <Box
@@ -338,14 +342,7 @@ const PayableDetailsFormBase = forwardRef<
                             error={Boolean(error)}
                             required={isFieldRequired('counterpart')}
                           >
-                            <InputLabel
-                              htmlFor={field.name}
-                              style={{
-                                color: isFieldRequired('counterpart')
-                                  ? theme.palette.error.main
-                                  : undefined,
-                              }}
-                            >
+                            <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
                             </InputLabel>
                             <Select
