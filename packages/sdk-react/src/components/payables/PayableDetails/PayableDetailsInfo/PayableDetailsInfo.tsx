@@ -168,12 +168,14 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
-                <TableRow
-                  style={{
-                    color: isFieldRequired('invoiceNumber') ? 'red' : '',
-                  }}
-                >
-                  <StyledLabelTableCell>
+                <TableRow>
+                  <StyledLabelTableCell
+                    style={{
+                      color: isFieldRequired('invoiceNumber')
+                        ? theme.palette.error.main
+                        : '',
+                    }}
+                  >
                     {t(i18n)`Invoice number`}:
                   </StyledLabelTableCell>
                   <TableCell>{payable.document_id ?? '—'}</TableCell>
@@ -198,18 +200,16 @@ const PayableDetailsInfoBase = ({
                 )}
                 {counterpartBankAccount && (
                   <TableRow>
-                    <StyledLabelTableCell>
-                      {t(i18n)`Bank account`}:
-                    </StyledLabelTableCell>
-                    <TableCell
+                    <StyledLabelTableCell
                       style={{
                         color: isFieldRequired('counterpartBankAccount')
-                          ? 'red'
+                          ? theme.palette.error.main
                           : '',
                       }}
                     >
-                      {counterpartBankAccount.name}
-                    </TableCell>
+                      {t(i18n)`Bank account`}:
+                    </StyledLabelTableCell>
+                    <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
                 )}
                 {showInvoiceDate && (
@@ -280,10 +280,14 @@ const PayableDetailsInfoBase = ({
                   </TableCell>
                 </TableRow>
                 {showTags && payable.tags && payable.tags.length > 0 && (
-                  <TableRow
-                    style={{ color: isFieldRequired('tags') ? 'red' : '' }}
-                  >
-                    <StyledLabelTableCell>
+                  <TableRow>
+                    <StyledLabelTableCell
+                      style={{
+                        color: isFieldRequired('tags')
+                          ? theme.palette.error.main
+                          : '',
+                      }}
+                    >
                       {t(i18n)`Tags`}:
                     </StyledLabelTableCell>
                     <TableCell>
