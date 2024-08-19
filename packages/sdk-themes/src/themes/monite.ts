@@ -804,20 +804,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
 };
 
-function renderColor(strVal: string, palette: PaletteOptions): string {
-  if (strVal.includes('.')) {
-    let temporaryValue: { [key: string]: any } = palette;
-    strVal.split('.').forEach((key) => {
-      temporaryValue = temporaryValue && temporaryValue[key];
-    });
-    // noinspection SuspiciousTypeOfGuard
-    if (temporaryValue && typeof temporaryValue === 'string')
-      return temporaryValue;
-  } else if (typeof palette[strVal as keyof PaletteOptions] === 'string')
-    return palette[strVal as keyof PaletteOptions] as string;
-  return strVal;
-}
-
+// Copied from mui/utils sourcecode since we cannot import external libraries in this file
 function isPlainObject(item: unknown) {
   if (typeof item !== 'object' || item === null) {
     return false;
@@ -832,6 +819,22 @@ function isPlainObject(item: unknown) {
   );
 }
 
+// Replaces color constant like 'divider', 'primary.main', 'neutral.80' with actual color value
+function renderColor(strVal: string, palette: PaletteOptions): string {
+  if (strVal.includes('.')) {
+    let temporaryValue: { [key: string]: any } = palette;
+    strVal.split('.').forEach((key) => {
+      temporaryValue = temporaryValue && temporaryValue[key];
+    });
+    // noinspection SuspiciousTypeOfGuard
+    if (temporaryValue && typeof temporaryValue === 'string')
+      return temporaryValue;
+  } else if (typeof palette[strVal as keyof PaletteOptions] === 'string')
+    return palette[strVal as keyof PaletteOptions] as string;
+  return strVal;
+}
+
+// Replaces color constants like 'divider', 'primary.main', 'neutral.80' with actual color values
 function renderColors<T extends { [key: string]: any }>(
   components: T,
   palette: PaletteOptions
