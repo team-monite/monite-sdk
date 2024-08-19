@@ -10,6 +10,7 @@ import { InvoiceRecurrenceCancelModal } from '@/components/receivables/InvoiceDe
 import { Overview } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview';
 import { SubmitInvoice } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -233,10 +234,27 @@ const ExistingInvoiceDetailsBase = (props: ExistingReceivableDetailsProps) => {
                     <CloseIcon />
                   </IconButton>
                 )}
-                <Typography variant="h3">{t(
-                  i18n
-                )`Invoice ${documentId}`}</Typography>
-                <InvoiceStatusChip status={receivable.status} />
+
+                {receivable.status === 'recurring' ? (
+                  <>
+                    <Typography variant="h3">{t(
+                      i18n
+                    )`Recurring invoice`}</Typography>
+                    {recurrence && (
+                      <InvoiceRecurrenceStatusChip
+                        status={recurrence.status}
+                        icon={false}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Typography variant="h3">{t(
+                      i18n
+                    )`Invoice ${documentId}`}</Typography>
+                    <InvoiceStatusChip status={receivable.status} />
+                  </>
+                )}
               </Stack>
             </Grid>
             <Grid item xs={6}>
