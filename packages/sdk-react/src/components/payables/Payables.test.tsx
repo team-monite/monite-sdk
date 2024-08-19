@@ -48,6 +48,96 @@ describe('Payables', () => {
     );
   });
 
+  test('should display toast message when PNG file upload is successful', async () => {
+    const user = userEvent.setup();
+
+    renderWithClient(
+      <BrowserRouter>
+        <Payables />
+      </BrowserRouter>
+    );
+
+    const file = new File(['hello'], 'hello.png', { type: 'image/png' });
+    const input = screen.getByLabelText(t`Upload payable file`);
+
+    expect(input).toBeInTheDocument();
+
+    await user.upload(input, file);
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('Payable uploaded successfully')
+      ).toBeInTheDocument()
+    );
+  });
+
+  test('should display toast message when JPEG file upload is successful', async () => {
+    const user = userEvent.setup();
+
+    renderWithClient(
+      <BrowserRouter>
+        <Payables />
+      </BrowserRouter>
+    );
+
+    const file = new File(['hello'], 'hello.jpeg', { type: 'image/jpeg' });
+    const input = screen.getByLabelText(t`Upload payable file`);
+
+    expect(input).toBeInTheDocument();
+
+    await user.upload(input, file);
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('Payable uploaded successfully')
+      ).toBeInTheDocument()
+    );
+  });
+
+  test('should display toast message when TIFF file upload is successful', async () => {
+    const user = userEvent.setup();
+
+    renderWithClient(
+      <BrowserRouter>
+        <Payables />
+      </BrowserRouter>
+    );
+
+    const file = new File(['hello'], 'hello.tiff', { type: 'image/tiff' });
+    const input = screen.getByLabelText(t`Upload payable file`);
+
+    expect(input).toBeInTheDocument();
+
+    await user.upload(input, file);
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('Payable uploaded successfully')
+      ).toBeInTheDocument()
+    );
+  });
+
+  test('should display error message when unsupported file type is uploaded', async () => {
+    const user = userEvent.setup();
+
+    renderWithClient(
+      <BrowserRouter>
+        <Payables />
+      </BrowserRouter>
+    );
+
+    const file = new File(['hello'], 'hello.txt', { type: 'text/plain' });
+    const input = screen.getByLabelText(t`Upload payable file`);
+
+    expect(input).toBeInTheDocument();
+
+    await user.upload(input, file);
+
+    await waitFor(() =>
+      expect(screen.getByText('Unsupported file format')).toBeInTheDocument()
+    );
+  });
+
   describe('# Permissions', () => {
     test('support "read" and "create" permissions', async () => {
       const queryClient = new QueryClient({

@@ -159,6 +159,7 @@ const PayablesBase = ({
       )}
 
       <FileInput
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable file`}
         onChange={(event) => {
