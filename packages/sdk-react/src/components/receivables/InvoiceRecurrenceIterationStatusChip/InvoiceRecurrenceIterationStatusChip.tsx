@@ -8,7 +8,7 @@ import {
   CancelOutlined,
   CheckCircleOutline,
   ErrorOutline,
-  PendingOutlined,
+  AccessTimeOutlined,
 } from '@mui/icons-material';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
@@ -104,7 +104,7 @@ const ITERATION_STATUS_TO_MUI_ICON_MAP: Record<
   components['schemas']['IterationStatus'],
   ElementType<any>
 > = {
-  pending: PendingOutlined,
+  pending: AccessTimeOutlined,
   completed: CheckCircleOutline,
   canceled: CancelOutlined,
   issue_failed: ErrorOutline,
@@ -115,7 +115,7 @@ const ITERATION_STATUS_TO_MUI_COLOR_MAP: Record<
   components['schemas']['IterationStatus'],
   ChipProps['color']
 > = {
-  pending: 'warning',
+  pending: 'default',
   completed: 'info',
   canceled: 'error',
   issue_failed: 'error',
@@ -128,7 +128,7 @@ const getIterationStatusLabel = (
 ) => {
   switch (status) {
     case 'pending':
-      return t(i18n)`Pending`;
+      return t(i18n)`Scheduled`;
     case 'completed':
       return t(i18n)`Completed`;
     case 'canceled':
