@@ -170,16 +170,13 @@ export const defaultMoniteTypography:
   },
 };
 
-const typographyLight = Object.assign(
-  structuredClone(defaultMoniteTypography),
-  {
-    body2: {
-      color: paletteLight.neutral && paletteLight.neutral['10'],
-    },
-  }
-);
+const typographyLight = Object.assign({}, defaultMoniteTypography, {
+  body2: {
+    color: paletteLight.neutral && paletteLight.neutral['10'],
+  },
+});
 
-const typographyDark = Object.assign(structuredClone(defaultMoniteTypography), {
+const typographyDark = Object.assign({}, defaultMoniteTypography, {
   body2: {
     color: paletteDark.neutral && paletteDark.neutral['10'],
   },
