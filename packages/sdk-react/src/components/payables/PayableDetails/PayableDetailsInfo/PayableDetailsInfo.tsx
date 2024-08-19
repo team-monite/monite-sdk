@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 
 import { components } from '@/api';
+import { PayablesDetailsProps } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
+import { defaultRequiredFields } from '@/components/payables/PayableDetails/PayableDetailsForm';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -38,7 +40,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
@@ -47,6 +49,10 @@ import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 export type PayablesDetailsInfoProps = {
   payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
+  ocrRequiredFields?: Pick<
+    PayablesDetailsProps,
+    'ocrRequiredFields'
+  >['ocrRequiredFields'];
 };
 
 const DetailsWrapper = styled(Box)(() => ({
@@ -73,6 +79,7 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 const PayableDetailsInfoBase = ({
   payable,
   optionalFields,
+  ocrRequiredFields,
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
@@ -112,6 +119,14 @@ const PayableDetailsInfoBase = ({
       ),
     [counterpartBankAccountQuery, payable]
   );
+
+  const theme = useTheme();
+
+  const isFieldRequired = (fieldName: keyof typeof defaultRequiredFields) => {
+    const isDefaultRequired = defaultRequiredFields[fieldName] || false;
+    const isOcrRequired = ocrRequiredFields?.[fieldName] || false;
+    return isDefaultRequired || isOcrRequired;
+  };
 
   const className = 'Monite-PayableDetailsInfo';
 
@@ -153,7 +168,11 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
-                <TableRow>
+                <TableRow
+                  style={{
+                    color: isFieldRequired('invoiceNumber') ? 'red' : '',
+                  }}
+                >
                   <StyledLabelTableCell>
                     {t(i18n)`Invoice number`}:
                   </StyledLabelTableCell>
@@ -182,7 +201,15 @@ const PayableDetailsInfoBase = ({
                     <StyledLabelTableCell>
                       {t(i18n)`Bank account`}:
                     </StyledLabelTableCell>
-                    <TableCell>{counterpartBankAccount.name}</TableCell>
+                    <TableCell
+                      style={{
+                        color: isFieldRequired('counterpartBankAccount')
+                          ? 'red'
+                          : '',
+                      }}
+                    >
+                      {counterpartBankAccount.name}
+                    </TableCell>
                   </TableRow>
                 )}
                 {showInvoiceDate && (
@@ -201,7 +228,13 @@ const PayableDetailsInfoBase = ({
                   </TableRow>
                 )}
                 <TableRow>
-                  <StyledLabelTableCell>
+                  <StyledLabelTableCell
+                    style={{
+                      color: isFieldRequired('dueDate')
+                        ? theme.palette.error.main
+                        : '',
+                    }}
+                  >
                     {t(i18n)`Due date`}:
                   </StyledLabelTableCell>
                   <TableCell>
@@ -247,7 +280,9 @@ const PayableDetailsInfoBase = ({
                   </TableCell>
                 </TableRow>
                 {showTags && payable.tags && payable.tags.length > 0 && (
-                  <TableRow>
+                  <TableRow
+                    style={{ color: isFieldRequired('tags') ? 'red' : '' }}
+                  >
                     <StyledLabelTableCell>
                       {t(i18n)`Tags`}:
                     </StyledLabelTableCell>

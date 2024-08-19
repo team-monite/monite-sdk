@@ -205,6 +205,7 @@ const PayableDetailsBase = ({
                   <PayableDetailsInfo
                     payable={payable}
                     optionalFields={optionalFields}
+                    ocrRequiredFields={ocrRequiredFields}
                   />
                 )
               )}

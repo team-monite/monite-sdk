@@ -42,7 +42,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 import * as yup from 'yup';
@@ -143,7 +142,7 @@ export const PayableDetailsForm = forwardRef<
   </MoniteScopedProviders>
 ));
 
-const defaultRequiredFields = {
+export const defaultRequiredFields = {
   invoiceNumber: true,
   dueDate: true,
   tags: true,
@@ -170,7 +169,6 @@ const PayableDetailsFormBase = forwardRef<
     ref
   ) => {
     const { i18n } = useLingui();
-    const theme = useTheme();
 
     const {
       formatFromMinorUnits,
