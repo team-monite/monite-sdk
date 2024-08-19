@@ -8,7 +8,7 @@ import {
   createOverdueReminderCardTerms,
   createPaymentReminderCardTerms,
 } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import {
@@ -31,6 +31,7 @@ import {
   BoxProps,
   Button,
   Card,
+  Chip,
   Grid,
   IconButton,
   Link,
@@ -117,6 +118,11 @@ export const OverviewTabPanel = ({
     Boolean(creditNoteIds?.length)
   );
 
+  const { data: recurrence } = api.recurrences.getRecurrencesId.useQuery(
+    { path: { recurrence_id: invoice?.recurrence_id ?? '' } },
+    { enabled: Boolean(invoice?.recurrence_id) }
+  );
+
   return (
     <Box
       sx={{
@@ -140,6 +146,16 @@ export const OverviewTabPanel = ({
               </Typography>
             ),
           },
+          invoice.recurrence_id
+            ? {
+                label: t(i18n)`Current status`,
+                value: recurrence ? (
+                  <InvoiceRecurrenceStatusChip status={recurrence?.status} />
+                ) : (
+                  <Skeleton variant="text" width="50%" />
+                ),
+              }
+            : undefined,
           {
             label: t(i18n)`Invoice total`,
             value: (
@@ -151,7 +167,7 @@ export const OverviewTabPanel = ({
               </Typography>
             ),
           },
-        ]}
+        ].filter((item) => !!item)}
       />
 
       {Boolean(

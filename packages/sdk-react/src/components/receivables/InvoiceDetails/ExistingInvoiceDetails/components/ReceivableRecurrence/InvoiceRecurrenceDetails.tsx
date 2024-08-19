@@ -34,12 +34,6 @@ export const InvoiceRecurrenceDetails = ({
     <>
       <MoniteCardItem
         divider
-        label={t(i18n)`Status`}
-        value={<InvoiceRecurrenceStatusChip status={status} />}
-      />
-
-      <MoniteCardItem
-        divider
         label={t(i18n)`Start date`}
         value={t(i18n)`${i18n.date(new Date(start_year, start_month - 1, 1), {
           month: 'long',
