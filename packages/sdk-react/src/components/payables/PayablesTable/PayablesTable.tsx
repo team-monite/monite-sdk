@@ -186,7 +186,11 @@ const PayablesTableBase = ({
             );
           }
 
-          return payable.document_id;
+          return (
+            <span className="Monite-TextOverflowContainer">
+              {payable.document_id}
+            </span>
+          );
         },
       },
       {

@@ -556,6 +556,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             paddingLeft: 0,
           },
         },
+        '& .Monite-TextOverflowContainer': {
+          display: 'block',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        },
       },
       footerContainer: {
         '& .Monite-RowsPerPageSelector div[role="combobox"]': {
