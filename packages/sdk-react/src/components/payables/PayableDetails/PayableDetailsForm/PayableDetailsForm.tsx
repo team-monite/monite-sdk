@@ -8,6 +8,7 @@ import {
 } from 'react-hook-form';
 
 import { components } from '@/api';
+import { PayablesDetailsProps } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -73,6 +74,10 @@ interface PayableDetailsFormProps {
   optionalFields?: OptionalFields;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
+  ocrRequiredFields?: Pick<
+    PayablesDetailsProps,
+    'ocrRequiredFields'
+  >['ocrRequiredFields'];
 }
 
 const getValidationSchema = (i18n: I18n) =>
@@ -147,6 +152,7 @@ const PayableDetailsFormBase = forwardRef<
       savePayable,
       createPayable,
       optionalFields,
+      ocrRequiredFields,
       lineItems,
       payableDetailsFormId,
     },
@@ -234,6 +240,10 @@ const PayableDetailsFormBase = forwardRef<
 
     const className = 'Monite-PayableDetailsForm';
 
+    const isFieldRequired = (fieldName: string) => {
+      return ocrRequiredFields && ocrRequiredFields[fieldName];
+    };
+
     return (
       <>
         <Box
@@ -299,7 +309,19 @@ const PayableDetailsFormBase = forwardRef<
                             fullWidth
                             error={Boolean(error)}
                             helperText={error?.message}
-                            required
+                            required={isFieldRequired('invoiceNumber')}
+                            InputLabelProps={{
+                              style: {
+                                color: isFieldRequired('invoiceNumber')
+                                  ? 'red'
+                                  : undefined,
+                              },
+                            }}
+                            InputProps={{
+                              endAdornment: isFieldRequired('invoiceNumber')
+                                ? '*'
+                                : undefined,
+                            }}
                           />
                         )}
                       />
@@ -311,9 +333,18 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
+                            required={isFieldRequired('counterpart')}
                           >
-                            <InputLabel htmlFor={field.name}>
+                            <InputLabel
+                              htmlFor={field.name}
+                              style={{
+                                color: isFieldRequired('counterpart')
+                                  ? 'red'
+                                  : undefined,
+                              }}
+                            >
                               {t(i18n)`Counterpart`}
+                              {isFieldRequired('counterpart') && ' *'}
                             </InputLabel>
                             <Select
                               {...field}
@@ -352,9 +383,19 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
+                            required={isFieldRequired('counterpartBankAccount')}
                           >
-                            <InputLabel htmlFor={field.name}>
+                            <InputLabel
+                              htmlFor={field.name}
+                              style={{
+                                color: isFieldRequired('counterpartBankAccount')
+                                  ? 'red'
+                                  : undefined,
+                              }}
+                            >
                               {t(i18n)`Bank Account`}
+                              {isFieldRequired('counterpartBankAccount') &&
+                                ' *'}
                             </InputLabel>
                             <Select
                               {...field}
@@ -404,6 +445,19 @@ const PayableDetailsFormBase = forwardRef<
                                   fullWidth: true,
                                   error: Boolean(error),
                                   helperText: error?.message,
+                                  required: isFieldRequired('invoiceDate'),
+                                  InputLabelProps: {
+                                    style: {
+                                      color: isFieldRequired('invoiceDate')
+                                        ? 'red'
+                                        : undefined,
+                                    },
+                                  },
+                                  InputProps: {
+                                    endAdornment: isFieldRequired('invoiceDate')
+                                      ? '*'
+                                      : undefined,
+                                  },
                                 },
                               }}
                               {...field}
@@ -431,7 +485,19 @@ const PayableDetailsFormBase = forwardRef<
                                 fullWidth: true,
                                 error: Boolean(error),
                                 helperText: error?.message,
-                                required: true,
+                                required: isFieldRequired('dueDate'),
+                                InputLabelProps: {
+                                  style: {
+                                    color: isFieldRequired('dueDate')
+                                      ? 'red'
+                                      : undefined,
+                                  },
+                                },
+                                InputProps: {
+                                  endAdornment: isFieldRequired('dueDate')
+                                    ? '*'
+                                    : undefined,
+                                },
                               },
                             }}
                             {...field}
@@ -443,7 +509,7 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required
+                        required={isFieldRequired('currency')}
                       />
                       {showTags && (
                         <Controller
@@ -453,7 +519,7 @@ const PayableDetailsFormBase = forwardRef<
                             <FormControl
                               variant="outlined"
                               fullWidth
-                              required
+                              required={isFieldRequired('tags')}
                               error={Boolean(error)}
                             >
                               <Autocomplete
@@ -481,6 +547,18 @@ const PayableDetailsFormBase = forwardRef<
                                     fullWidth
                                     error={Boolean(error)}
                                     helperText={error?.message}
+                                    InputLabelProps={{
+                                      style: {
+                                        color: isFieldRequired('tags')
+                                          ? 'red'
+                                          : undefined,
+                                      },
+                                    }}
+                                    InputProps={{
+                                      endAdornment: isFieldRequired('tags')
+                                        ? '*'
+                                        : undefined,
+                                    }}
                                   />
                                 )}
                               />

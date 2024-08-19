@@ -30,6 +30,7 @@ import { usePayableDetails, UsePayableDetailsProps } from './usePayableDetails';
 export interface PayablesDetailsProps extends UsePayableDetailsProps {
   onClose?: () => void;
   optionalFields?: OptionalFields;
+  ocrRequiredFields?: { [key: string]: boolean };
 }
 
 export const PayableDetails = (props: PayablesDetailsProps) => (
@@ -53,6 +54,7 @@ const PayableDetailsBase = ({
   onRejected,
   onApproved,
   onPay,
+  ocrRequiredFields,
 }: PayablesDetailsProps) => {
   const {
     payable,
@@ -196,6 +198,7 @@ const PayableDetailsBase = ({
                   optionalFields={optionalFields}
                   lineItems={lineItems}
                   payableDetailsFormId={payableDetailsFormId}
+                  ocrRequiredFields={ocrRequiredFields}
                 />
               ) : (
                 payable && (
