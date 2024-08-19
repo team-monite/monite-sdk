@@ -93,6 +93,11 @@ const SDKDemoComponent = ({
           icon: true,
         },
       },
+      MoniteInvoiceRecurrenceIterationStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
     },
   });
 

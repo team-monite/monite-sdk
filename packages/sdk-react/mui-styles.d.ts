@@ -1,5 +1,6 @@
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
@@ -33,6 +34,7 @@ declare module '@mui/material/styles' {
     MoniteApprovalRequestStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
     MoniteInvoiceRecurrenceStatusChip: 'root';
+    MoniteInvoiceRecurrenceIterationStatusChip: 'root';
   }
 
   /**
@@ -44,6 +46,7 @@ declare module '@mui/material/styles' {
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<InvoiceRecurrenceStatusChipProps>;
+    MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
   }
 
   /**
@@ -55,5 +58,6 @@ declare module '@mui/material/styles' {
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
+    MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
   }
 }
