@@ -493,6 +493,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         lineHeight: '16px',
         fontWeight: 500,
         padding: '7px 8px',
+        '& .MuiChip-avatar': {
+          marginLeft: 0,
+          marginRight: '4px',
+        },
       },
       label: {
         padding: '0',
