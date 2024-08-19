@@ -183,7 +183,8 @@ const PayableDetailsFormBase = forwardRef<
       resolver: yupResolver(getValidationSchema(i18n)),
       defaultValues,
     });
-    const { control, handleSubmit, watch, reset, resetField } = methods;
+    const { control, handleSubmit, watch, reset, resetField, trigger } =
+      methods;
     const { dirtyFields } = useFormState({ control });
     const currentCounterpart = watch('counterpart');
     const currentInvoiceDate = watch('invoiceDate');
@@ -258,8 +259,8 @@ const PayableDetailsFormBase = forwardRef<
     };
 
     useEffect(() => {
-      handleSubmit(methods.getValues)();
-    }, [handleSubmit, methods.getValues]);
+      trigger();
+    }, [trigger]);
 
     return (
       <>

@@ -295,7 +295,7 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <StyledLabelTableCell
                       style={{
-                        color: isFieldRequired('tags', payable.tags[0].id)
+                        color: isFieldRequired('tags', payable.tags?.[0].id)
                           ? theme.palette.error.main
                           : '',
                       }}
