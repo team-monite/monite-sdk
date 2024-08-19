@@ -325,13 +325,6 @@ const PayableDetailsFormBase = forwardRef<
                             error={Boolean(error)}
                             helperText={error?.message}
                             required={isFieldRequired('invoiceNumber')}
-                            InputLabelProps={{
-                              style: {
-                                color: isFieldRequired('invoiceNumber')
-                                  ? theme.palette.error.main
-                                  : undefined,
-                              },
-                            }}
                           />
                         )}
                       />
@@ -354,7 +347,6 @@ const PayableDetailsFormBase = forwardRef<
                               }}
                             >
                               {t(i18n)`Counterpart`}
-                              {isFieldRequired('counterpart') && ' *'}
                             </InputLabel>
                             <Select
                               {...field}
@@ -395,17 +387,8 @@ const PayableDetailsFormBase = forwardRef<
                             error={Boolean(error)}
                             required={isFieldRequired('counterpartBankAccount')}
                           >
-                            <InputLabel
-                              htmlFor={field.name}
-                              style={{
-                                color: isFieldRequired('counterpartBankAccount')
-                                  ? theme.palette.error.main
-                                  : undefined,
-                              }}
-                            >
+                            <InputLabel htmlFor={field.name}>
                               {t(i18n)`Bank Account`}
-                              {isFieldRequired('counterpartBankAccount') &&
-                                ' *'}
                             </InputLabel>
                             <Select
                               {...field}
@@ -456,13 +439,6 @@ const PayableDetailsFormBase = forwardRef<
                                   error: Boolean(error),
                                   helperText: error?.message,
                                   required: isFieldRequired('invoiceDate'),
-                                  InputLabelProps: {
-                                    style: {
-                                      color: isFieldRequired('invoiceDate')
-                                        ? theme.palette.error.main
-                                        : undefined,
-                                    },
-                                  },
                                 },
                               }}
                               {...field}
@@ -491,13 +467,6 @@ const PayableDetailsFormBase = forwardRef<
                                 error: Boolean(error),
                                 helperText: error?.message,
                                 required: isFieldRequired('dueDate'),
-                                InputLabelProps: {
-                                  style: {
-                                    color: isFieldRequired('dueDate')
-                                      ? theme.palette.error.main
-                                      : undefined,
-                                  },
-                                },
                               },
                             }}
                             {...field}
@@ -547,13 +516,6 @@ const PayableDetailsFormBase = forwardRef<
                                     fullWidth
                                     error={Boolean(error)}
                                     helperText={error?.message}
-                                    InputLabelProps={{
-                                      style: {
-                                        color: isFieldRequired('tags')
-                                          ? theme.palette.error.main
-                                          : undefined,
-                                      },
-                                    }}
                                   />
                                 )}
                               />
