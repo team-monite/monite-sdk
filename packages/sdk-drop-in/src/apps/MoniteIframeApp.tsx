@@ -80,26 +80,22 @@ const MoniteIframeAppComponent = ({
         <CssBaseline enableColorScheme />
         <Global
           styles={css`
-            html,
             body,
+            :root,
+            :host,
             #root {
               width: 100%;
               height: 100%;
+              -webkit-font-smoothing: antialiased;
+              isolation: isolate;
             }
 
             #root {
-              padding: 32px 32px 0 32px;
+              padding: 0;
               display: flex;
               flex-direction: column;
               overflow: hidden;
               justify-content: stretch;
-            }
-
-            :root,
-            :host {
-              line-height: 1.5;
-              -webkit-font-smoothing: antialiased;
-              isolation: isolate;
             }
 
             *,

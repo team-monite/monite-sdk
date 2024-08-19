@@ -165,7 +165,12 @@ const MoniteIframe = ({
       key={component}
       ref={setIframeElement}
       src={iframeUrl}
-      style={{ border: 'none', width: '100%', height: '100%' }}
+      style={{
+        border: 'none',
+        width: 'calc(100% - 64px)',
+        height: 'calc(100% - 32px)',
+        margin: '32px 32px 0 32px',
+      }}
     ></iframe>
   );
 };
