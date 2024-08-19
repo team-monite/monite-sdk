@@ -9,7 +9,6 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
@@ -21,8 +20,7 @@ export const ApprovalRequests = () => (
 
 const ApprovalRequestsBase = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   const { data: user } = useEntityUserByAuthToken();
 
