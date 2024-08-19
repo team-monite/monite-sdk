@@ -122,10 +122,16 @@ const PayableDetailsInfoBase = ({
 
   const theme = useTheme();
 
-  const isFieldRequired = (fieldName: keyof typeof defaultRequiredFields) => {
-    const isDefaultRequired = defaultRequiredFields[fieldName] || false;
-    const isOcrRequired = ocrRequiredFields?.[fieldName] || false;
-    return isDefaultRequired || isOcrRequired;
+  const isFieldRequired = (
+    fieldName: keyof typeof defaultRequiredFields,
+    value: string | null | undefined
+  ) => {
+    if (!value) {
+      const isDefaultRequired = defaultRequiredFields[fieldName] || false;
+      const isOcrRequired = ocrRequiredFields?.[fieldName] || false;
+      return isDefaultRequired || isOcrRequired;
+    }
+    return false;
   };
 
   const className = 'Monite-PayableDetailsInfo';
@@ -171,7 +177,10 @@ const PayableDetailsInfoBase = ({
                 <TableRow>
                   <StyledLabelTableCell
                     style={{
-                      color: isFieldRequired('invoiceNumber')
+                      color: isFieldRequired(
+                        'invoiceNumber',
+                        payable.document_id
+                      )
                         ? theme.palette.error.main
                         : '',
                     }}
@@ -202,7 +211,10 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <StyledLabelTableCell
                       style={{
-                        color: isFieldRequired('counterpartBankAccount')
+                        color: isFieldRequired(
+                          'counterpartBankAccount',
+                          counterpartBankAccount?.name
+                        )
                           ? theme.palette.error.main
                           : '',
                       }}
@@ -230,7 +242,7 @@ const PayableDetailsInfoBase = ({
                 <TableRow>
                   <StyledLabelTableCell
                     style={{
-                      color: isFieldRequired('dueDate')
+                      color: isFieldRequired('dueDate', payable.due_date)
                         ? theme.palette.error.main
                         : '',
                     }}
@@ -283,7 +295,7 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <StyledLabelTableCell
                       style={{
-                        color: isFieldRequired('tags')
+                        color: isFieldRequired('tags', payable.tags[0].id)
                           ? theme.palette.error.main
                           : '',
                       }}
