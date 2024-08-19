@@ -3,7 +3,6 @@ import { createContext, ReactNode, useContext } from 'react';
 import { EmotionCacheProvider } from '@/core/context/EmotionCacheProvider';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteI18nProvider } from '@/core/context/MoniteI18nProvider';
-import { MoniteQueryClientProvider } from '@/core/context/MoniteQueryClientProvider';
 import { SentryProvider } from '@/core/context/SentryProvider';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
@@ -29,9 +28,7 @@ export const MoniteScopedProviders = ({
       <EmotionCacheProvider cacheKey="monite-css">
         <MoniteI18nProvider>
           <MuiThemeProvider theme={theme}>
-            <SentryProvider>
-              <MoniteQueryClientProvider>{children}</MoniteQueryClientProvider>
-            </SentryProvider>
+            <SentryProvider>{children}</SentryProvider>
           </MuiThemeProvider>
         </MoniteI18nProvider>
       </EmotionCacheProvider>
