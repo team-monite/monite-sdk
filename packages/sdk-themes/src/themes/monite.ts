@@ -505,7 +505,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MoniteTablePagination: {
     defaultProps: {
-      pageSizeOptions: [15],
+      pageSizeOptions: [15, 30, 100],
     },
   },
   MuiDataGrid: {
