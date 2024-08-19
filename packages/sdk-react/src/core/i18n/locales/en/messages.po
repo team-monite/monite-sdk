@@ -42,8 +42,8 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:81
 #: src/components/onboarding/OnboardingPersonsReview/OnboardingAddressView/OnboardingAddressView.tsx:20
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:89
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:44
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:53
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:38
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:47
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:73
 msgid "{0}"
 msgstr "{0}"
@@ -64,7 +64,7 @@ msgstr "{0} has been issued"
 msgid "{0} has been updated"
 msgstr "{0} has been updated"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:75
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:69
 msgid "{0}/{1} issued"
 msgstr "{0}/{1} issued"
 
@@ -173,7 +173,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Action menu"
 msgstr "Action menu"
 
-#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:14
+#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:139
 msgid "Active"
 msgstr "Active"
 
@@ -990,7 +990,7 @@ msgstr "Business/Secretarial Schools"
 msgid "Buying/Shopping Services"
 msgstr "Buying/Shopping Services"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:358
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:374
 msgid "by"
 msgstr "by"
 
@@ -1072,7 +1072,7 @@ msgstr "Cancel"
 msgid "Cancel invoice"
 msgstr "Cancel invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:296
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:314
 msgid "Cancel Invoice"
 msgstr "Cancel Invoice"
 
@@ -1085,7 +1085,7 @@ msgid "Cancel receivable?"
 msgstr "Cancel receivable?"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:151
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:340
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:358
 msgid "Cancel recurrence"
 msgstr "Cancel recurrence"
 
@@ -1101,8 +1101,8 @@ msgstr "Cancel without saving?"
 #: src/components/payables/consts.ts:38
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:165
 #: src/components/receivables/getCommonStatusLabel.ts:31
-#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:21
-#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:19
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:135
+#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:143
 msgid "Canceled"
 msgstr "Canceled"
 
@@ -1356,13 +1356,13 @@ msgstr "Company name"
 msgid "Company name is required"
 msgstr "Company name is required"
 
-#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:18
-#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:17
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:133
+#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:141
 msgid "Completed"
 msgstr "Completed"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:167
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:320
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:338
 msgid "Compose email"
 msgstr "Compose email"
 
@@ -1791,9 +1791,9 @@ msgstr "Cuba"
 msgid "Currency"
 msgstr "Currency"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:136
-#~ msgid "Current status"
-#~ msgstr "Current status"
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:151
+msgid "Current status"
+msgstr "Current status"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:271
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:274
@@ -1804,7 +1804,7 @@ msgstr "Currency"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:271
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:102
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:143
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:132
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:138
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:118
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:117
@@ -1845,7 +1845,7 @@ msgstr "Dance Hall, Studios, Schools"
 msgid "Danish Krone"
 msgstr "Danish Krone"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:38
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:58
 msgid "Date"
 msgstr "Date"
 
@@ -1903,7 +1903,7 @@ msgstr "default"
 #: src/components/products/ProductsTable/ProductsTable.test.tsx:271
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/ReminderFormLayout.tsx:36
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:75
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:255
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:273
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:288
 #: src/components/TableActions/TableActions.tsx:59
 #: src/components/tags/ConfirmDeleteModal/ConfirmDeleteModal.test.tsx:51
@@ -2115,7 +2115,7 @@ msgstr "Done, continue"
 msgid "Door-To-Door Sales"
 msgstr "Door-To-Door Sales"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:308
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:326
 msgid "Download PDF"
 msgstr "Download PDF"
 
@@ -2261,7 +2261,7 @@ msgstr "Edit documents for person"
 msgid "Edit individual"
 msgstr "Edit individual"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:266
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:284
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
@@ -2372,7 +2372,7 @@ msgstr "Employer Identification Number (USA)"
 msgid "Employment/Temp Agencies"
 msgstr "Employment/Temp Agencies"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:52
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:46
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:364
 msgid "End date"
 msgstr "End date"
@@ -2433,11 +2433,11 @@ msgstr "Ethiopian Birr"
 msgid "Euro"
 msgstr "Euro"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:64
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:58
 msgid "Every first day of the month"
 msgstr "Every first day of the month"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:65
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:59
 msgid "Every last day of the month"
 msgstr "Every last day of the month"
 
@@ -2648,7 +2648,7 @@ msgstr "French Polynesia"
 msgid "French Southern Territories"
 msgstr "French Southern Territories"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:61
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:55
 msgid "Frequency"
 msgstr "Frequency"
 
@@ -3062,7 +3062,7 @@ msgstr "Invalid IBAN"
 msgid "Invoice {0}"
 msgstr "Invoice {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:236
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:252
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -3089,13 +3089,13 @@ msgstr "Invoice delete confirmation"
 #~ msgid "Invoice details"
 #~ msgstr "Invoice details"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:152
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:153
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:145
 msgid "Invoice not found"
 msgstr "Invoice not found"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:158
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:37
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:56
 msgid "Invoice number"
 msgstr "Invoice number"
 
@@ -3121,7 +3121,7 @@ msgstr "Invoice Reminder type is not provided"
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:144
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:160
 msgid "Invoice total"
 msgstr "Invoice total"
 
@@ -3158,7 +3158,7 @@ msgstr "Israeli New Shekel"
 msgid "Issuance"
 msgstr "Issuance"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:328
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:346
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:293
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:298
 msgid "Issue"
@@ -3191,7 +3191,7 @@ msgstr "Issue date"
 msgid "Issue Date"
 msgstr "Issue Date"
 
-#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:24
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:137
 msgid "Issue failed"
 msgstr "Issue failed"
 
@@ -3208,11 +3208,11 @@ msgid "Issued"
 msgstr "Issued"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:50
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:72
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:66
 msgid "Issued documents"
 msgstr "Issued documents"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:358
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:374
 msgid "Issued on"
 msgstr "Issued on"
 
@@ -3471,7 +3471,7 @@ msgstr "Line 1"
 msgid "Line 2"
 msgstr "Line 2"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:163
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:179
 msgid "Linked documents"
 msgstr "Linked documents"
 
@@ -3744,7 +3744,7 @@ msgstr "Monthly recurrence"
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:277
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:295
 msgid "More"
 msgstr "More"
 
@@ -3904,7 +3904,7 @@ msgstr "New Zealand Dollar"
 msgid "News Dealers and Newsstands"
 msgstr "News Dealers and Newsstands"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:80
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:74
 msgid "next on {0}"
 msgstr "next on {0}"
 
@@ -4307,7 +4307,6 @@ msgstr "Payment terms"
 
 #: src/components/payables/consts.ts:34
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:181
-#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:15
 msgid "Pending"
 msgstr "Pending"
 
@@ -4712,11 +4711,11 @@ msgstr "Reason for Payment Code (Russia)"
 msgid "Receivable"
 msgstr "Receivable"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:162
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:163
 msgid "Receivable type {0} is not supported. Only invoice is supported."
 msgstr "Receivable type {0} is not supported. Only invoice is supported."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:161
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:162
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
@@ -4760,6 +4759,10 @@ msgstr "Recurring"
 msgctxt "InvoicesTableRowActionMenu"
 msgid "Recurring"
 msgstr "Recurring"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:240
+msgid "Recurring invoice"
+msgstr "Recurring invoice"
 
 #: src/components/onboarding/OnboardingEntity/OnboardingEntity.tsx:33
 msgid "Registered business address"
@@ -4811,7 +4814,7 @@ msgstr "Remind"
 msgid "Reminder {0}"
 msgstr "Reminder {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:213
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:229
 msgid "Reminder emails"
 msgstr "Reminder emails"
 
@@ -4820,7 +4823,7 @@ msgstr "Reminder emails"
 msgid "Reminder has been created"
 msgstr "Reminder has been created"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:281
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:297
 msgid "Reminder has been deleted"
 msgstr "Reminder has been deleted"
 
@@ -5029,6 +5032,10 @@ msgstr "Save changes"
 msgid "Save for later"
 msgstr "Save for later"
 
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:131
+msgid "Scheduled"
+msgstr "Scheduled"
+
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:49
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:237
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:255
@@ -5083,11 +5090,11 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Send"
 msgstr "Send"
 
-#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:26
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:139
 msgid "Send failed"
 msgstr "Send failed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:285
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:303
 msgid "Send invoice"
 msgstr "Send invoice"
 
@@ -5296,7 +5303,7 @@ msgstr "Sri Lankan Rupee"
 msgid "Stamp and Coin Stores"
 msgstr "Stamp and Coin Stores"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:43
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:37
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:359
 msgid "Start date"
 msgstr "Start date"
@@ -5331,8 +5338,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:48
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:51
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:111
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceDetails.tsx:37
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:39
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:57
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:144
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:134
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:67
@@ -5644,7 +5650,7 @@ msgstr "There are unsaved changes. If you leave, they will be lost."
 msgid "There is no counterpart by provided id: {0}"
 msgstr "There is no counterpart by provided id: {0}"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:153
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:154
 msgid "There is no invoice by provided id: {0}"
 msgstr "There is no invoice by provided id: {0}"
 
@@ -5769,6 +5775,10 @@ msgstr "Tongan Paʻanga"
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:55
 msgid "Total"
 msgstr "Total"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:59
+msgid "Total Amount"
+msgstr "Total Amount"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceRecurrenceCancelModal.tsx:120
 msgid "Total amount for <0>{totalPendingInvoices}</0> canceled {invoicesPluralForm}: <1>{pendingInvoicesTotalAmountWithCreditNotes}</1>"
@@ -5974,6 +5984,8 @@ msgstr "United States Outlying Islands"
 msgid "Units"
 msgstr "Units"
 
+#: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:141
+#: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:145
 #: src/core/utils/getAPIErrorMessage.ts:16
 #: src/core/utils/useVatTypes.ts:16
 #: src/core/utils/useVatTypes.ts:18
@@ -5981,7 +5993,7 @@ msgstr "Units"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:347
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:363
 msgid "Unknown date"
 msgstr "Unknown date"
 
@@ -6302,7 +6314,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "View"
 msgstr "View"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:186
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:202
 msgid "View all"
 msgstr "View all"
 
@@ -6404,7 +6416,7 @@ msgstr "You can not create receivable with a type other than \"{invoice}\""
 msgid "You can set a different period length and the date of issuance. The starting date cannot be updated."
 msgstr "You can set a different period length and the date of issuance. The starting date cannot be updated."
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:364
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:382
 msgid "You don't have permission to issue this document. Please, contact your system administrator for details."
 msgstr "You don't have permission to issue this document. Please, contact your system administrator for details."
 
