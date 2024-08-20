@@ -46,7 +46,7 @@
 
         "no-prototype-builtins": "off",
 
-        "prefer-const": "off",
+        "prefer-const": "warn",
 
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-empty-function": "off",
