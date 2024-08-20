@@ -57,7 +57,7 @@ export type PayablesDetailsInfoProps = {
 
 interface RequiredFieldLabelProps {
   fieldName: string;
-  ocrRequiredFields?: Record<string, any>;
+  ocrRequiredFields?: Record<string, boolean>;
   fieldValue?: string | null | undefined;
   children: ReactNode;
 }
