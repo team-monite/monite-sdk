@@ -320,7 +320,7 @@ const LinkedDocumentsCard = ({
         : null;
 
       const formattedDate = issueDate
-        ? i18n.date(issueDate, DateTimeFormatOptions.EightDigitDate)
+        ? i18n.date(issueDate, DateTimeFormatOptions.ShortMonthDateFormat)
         : t(i18n)`Unknown date`;
 
       const authorName =

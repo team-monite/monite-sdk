@@ -136,7 +136,9 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 140,
         valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+          value
+            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
+            : '—',
       },
       {
         field: 'issue_date',
@@ -144,7 +146,9 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+          value
+            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
+            : '—',
       },
       {
         field: 'status',
@@ -177,7 +181,9 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+          value
+            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
+            : '—',
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];

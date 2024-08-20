@@ -30,7 +30,7 @@ export const PreviewDetailsSection = ({
             value: fulfillment_date
               ? i18n.date(
                   fulfillment_date,
-                  DateTimeFormatOptions.EightDigitDate
+                  DateTimeFormatOptions.ShortMonthDateFormat
                 )
               : '—',
             withEmptyStateFiller: true,

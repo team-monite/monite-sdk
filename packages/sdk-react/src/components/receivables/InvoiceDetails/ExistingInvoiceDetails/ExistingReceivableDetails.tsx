@@ -201,7 +201,7 @@ const ExistingReceivableDetailsBase = (
                       {fulfillmentDate
                         ? i18n.date(
                             fulfillmentDate,
-                            DateTimeFormatOptions.EightDigitDate
+                            DateTimeFormatOptions.ShortMonthDateFormat
                           )
                         : '—'}
                     </Typography>
@@ -216,7 +216,7 @@ const ExistingReceivableDetailsBase = (
                       {dueDate
                         ? i18n.date(
                             dueDate,
-                            DateTimeFormatOptions.EightDigitDate
+                            DateTimeFormatOptions.ShortMonthDateFormat
                           )
                         : '—'}
                     </Typography>
