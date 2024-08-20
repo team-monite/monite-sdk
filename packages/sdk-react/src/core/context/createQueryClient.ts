@@ -1,39 +1,10 @@
-import { ReactNode, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import type { Hub } from '@sentry/react';
-import {
-  MutationCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-
-/**
- * `MoniteQueryClientProvider` is a React component that provides a QueryClient instance to its children.
- * It uses the `useMemo` hook to create the QueryClient instance.
- * This component is used internally by the `MoniteProvider` component to invalidate the QueryClient instance
- * when the `MoniteSDK` instance changes.
- *
- * @param props - The properties passed to the component.
- * @param props.children - The child components to which the QueryClient instance should be provided.
- *
- * @returns A QueryClientProvider component with the QueryClient instance and the child components.
- */
-export const MoniteQueryClientProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
-  const { queryClient } = useMoniteContext();
-
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
+import { MutationCache, QueryClient } from '@tanstack/react-query';
 
 export const createQueryClient = (i18n: I18n, sentryHub: Hub | undefined) =>
   new QueryClient({

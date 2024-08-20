@@ -20,12 +20,8 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       display="flex"
       className={`Monite-Page-${currentPath}`}
       sx={{
-        position: 'absolute',
-        left: '0',
-        right: '0',
-        top: '0',
-        bottom: '0',
-        overflow: 'hidden',
+        width: '100vw',
+        height: '100vh',
       }}
     >
       <Drawer
@@ -56,9 +52,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         component="main"
         className="Monite-ContentContainer"
         flexGrow={1}
-        mx={4}
-        mt={4}
-        mb={0}
         minWidth={0}
       >
         {children}

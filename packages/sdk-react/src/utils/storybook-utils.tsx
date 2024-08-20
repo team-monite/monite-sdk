@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -164,8 +164,6 @@ function FallbackProviders({
     });
   }, []);
 
-  const fallbackQueryClient = useMemo(() => new QueryClient(), []);
-
   return (
     <ThemeProvider theme={theme}>
       <I18nProvider
@@ -178,9 +176,7 @@ function FallbackProviders({
           dateAdapter={AdapterDateFns}
           adapterLocale={dateFnsEnUsLocale}
         >
-          <QueryClientProvider client={fallbackQueryClient}>
-            {children}
-          </QueryClientProvider>
+          {children}
         </LocalizationProvider>
       </I18nProvider>
     </ThemeProvider>

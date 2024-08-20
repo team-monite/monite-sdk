@@ -32,6 +32,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -142,6 +143,8 @@ const EditInvoiceDetailsContent = ({
 
   const className = 'Monite-EditInvoiceDetails';
 
+  const theme = useTheme();
+
   return (
     <>
       <DialogTitle className={className + '-Title'}>
@@ -228,29 +231,25 @@ const EditInvoiceDetailsContent = ({
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <Typography variant="h2" sx={{ mb: 2 }}>
-                {t(i18n)`Edit invoice ${invoice.id}`}
-              </Typography>
-              <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={isLoading} />
-                <EntitySection
-                  disabled={isLoading}
-                  hidden={['purchase_order']}
-                />
-                <ItemsSection
-                  actualCurrency={actualCurrency}
-                  onCurrencyChanged={setActualCurrency}
-                />
-                <PaymentSection disabled={isLoading} />
-                <ReminderSection
-                  disabled={isLoading}
-                  onUpdateOverdueReminder={onEditOverdueReminder}
-                  onUpdatePaymentReminder={onEditPaymentReminder}
-                  onCreateReminder={onCreateReminder}
-                />
-              </Stack>
+            <Typography variant="h1" sx={{ mb: 7 }}>
+              {t(i18n)`Edit invoice ${invoice.document_id ?? 'INV-auto'}`}
+            </Typography>
+            <Stack direction="column" spacing={4}>
+              <CustomerSection disabled={isLoading} />
+              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              <ItemsSection
+                actualCurrency={actualCurrency}
+                onCurrencyChanged={setActualCurrency}
+              />
+              <PaymentSection disabled={isLoading} />
+              <ReminderSection
+                disabled={isLoading}
+                onUpdateOverdueReminder={onEditOverdueReminder}
+                onUpdatePaymentReminder={onEditPaymentReminder}
+                onCreateReminder={onCreateReminder}
+              />
             </Stack>
             <Dialog
               className={className + '-Dialog-CancelWithoutSaving'}

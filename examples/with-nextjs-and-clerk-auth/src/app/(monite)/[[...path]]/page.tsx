@@ -12,7 +12,7 @@ import dashboardHeader from './header.svg';
 
 export default function DefaultPage() {
   return (
-    <Box className="Monite-AbsoluteContainer Monite-Dashboard">
+    <Box className="Monite-PageContainer Monite-Dashboard">
       <DashboardMockup />
     </Box>
   );

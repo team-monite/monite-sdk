@@ -29,6 +29,11 @@ export const moniteIframeAppComponents = {
       default: module.ApprovalPolicies,
     }))
   ),
+  'approval-requests': lazy(() =>
+    import('@monite/sdk-react').then((module) => ({
+      default: module.ApprovalRequests,
+    }))
+  ),
   roles: lazy(() =>
     import('@monite/sdk-react').then((module) => ({
       default: module.UserRoles,

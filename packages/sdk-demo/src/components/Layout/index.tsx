@@ -97,6 +97,7 @@ export const DefaultLayout = ({
             flex: 1,
             flexDirection: 'column',
             height: 'inherit',
+            position: 'relative',
             width: `calc(100vw - ${drawerWidth})`,
           }}
         >

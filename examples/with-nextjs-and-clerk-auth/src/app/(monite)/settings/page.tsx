@@ -10,7 +10,7 @@ import stubSvg from './stub.svg';
 
 export default function ProjectsPage() {
   return (
-    <Box className="Monite-AbsoluteContainer Monite-Settings">
+    <Box className="Monite-PageContainer Monite-Settings">
       <Stack direction="column" justifyContent="flex-start" alignItems="center">
         <Box className="Monite-Projects-Header">
           <Typography variant="h2">Settings</Typography>
