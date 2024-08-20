@@ -3,9 +3,6 @@ import { useState } from 'react';
 import { useApprovalPolicyById } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';
 
-import { ApprovalPolicyDetailsForm } from './ApprovalPolicyDetailsForm';
-import { ExistingApprovalPolicyDetails } from './ExistingApprovalPolicyDetails';
-
 export interface ApprovalPolicyDetailsProps {
   /** Approval policy ID */
   id?: string;
@@ -45,30 +42,14 @@ export const ApprovalPolicyDetails = ({
 
   if (!isEdit && approvalPolicy) {
     // READ
-    return (
-      <ExistingApprovalPolicyDetails
-        approvalPolicy={approvalPolicy}
-        onChangeEditMode={setIsEdit}
-      />
-    );
+    return <div>READ</div>;
   }
 
   if (isEdit && id) {
     // UPDATE
-    return (
-      <ApprovalPolicyDetailsForm
-        approvalPolicy={approvalPolicy}
-        onUpdated={onUpdated}
-        onChangeEditMode={setIsEdit}
-      />
-    );
+    return <div>UPDATE</div>;
   }
 
   // CREATE by default
-  return (
-    <ApprovalPolicyDetailsForm
-      onCreated={onCreated}
-      onChangeEditMode={setIsEdit}
-    />
-  );
+  return <div>CREATE</div>;
 };

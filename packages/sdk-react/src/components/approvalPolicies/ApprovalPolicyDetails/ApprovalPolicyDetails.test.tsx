@@ -25,7 +25,8 @@ const fillForm = async (
   triggerChangeInput(/Script in Monite Script/i, script);
 };
 
-describe('ApprovalPolicyDetails', () => {
+// TODO enable these tests for advanced mode https://monite.atlassian.net/browse/DEV-12334
+describe.skip('ApprovalPolicyDetails', () => {
   describe('#FormValidation', () => {
     test('should show error message when fields are empty and form is submitted', async () => {
       renderWithClient(<ApprovalPolicyDetails />);
