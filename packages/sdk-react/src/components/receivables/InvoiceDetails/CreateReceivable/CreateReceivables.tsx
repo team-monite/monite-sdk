@@ -27,6 +27,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -104,6 +105,8 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     closeCreateReminderDialog,
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
+
+  const theme = useTheme();
 
   if (isSettingsLoading) {
     return <LoadingPage />;
@@ -208,11 +211,12 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
             <Typography variant="h1" sx={{ mb: 7 }}>
               {t(i18n)`Create Invoice`}
             </Typography>
-            <Stack direction="column" spacing={4} sx={{ mb: 7 }}>
+            <Stack direction="column" spacing={4}>
               <CustomerSection disabled={createReceivable.isPending} />
               <EntitySection disabled={createReceivable.isPending} />
               <ItemsSection
