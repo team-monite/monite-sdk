@@ -5,9 +5,10 @@ import {
 import { FilterType, FilterValue } from '@/components/userRoles/types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 interface FiltersProps {
@@ -17,18 +18,28 @@ interface FiltersProps {
 export const Filters = ({ onChangeFilter }: FiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const className = 'Monite-UserRolesFilters';
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={6} sm={3}>
-        <SearchField
-          label={t(i18n)`Search`}
-          onChange={(search) => {
-            onChangeFilter(FILTER_TYPE_SEARCH, search);
-          }}
-        />
-      </Grid>
-      <Grid item xs={6} sm={3}>
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      className={classNames(className, 'Monite-Filters')}
+    >
+      <SearchField
+        label={t(i18n)`Search`}
+        onChange={(search) => {
+          onChangeFilter(FILTER_TYPE_SEARCH, search);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
         <DatePicker
           className="Monite-UserRoleCreateAtFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Created on`}
@@ -54,7 +65,7 @@ export const Filters = ({ onChangeFilter }: FiltersProps) => {
           }}
           views={['year', 'month', 'day']}
         />
-      </Grid>
-    </Grid>
+      </Stack>
+    </Stack>
   );
 };

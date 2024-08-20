@@ -182,6 +182,8 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
   },
 });
 
+const filterControlWidth = '160px';
+
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiFormLabel: {
     styleOverrides: {
@@ -268,6 +270,8 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           height: '40px',
           minHeight: '40px',
           maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
 
           '.MuiInputBase-root': {
             marginTop: 0,
@@ -322,6 +326,26 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
         },
+        '&.Monite-SearchField': {
+          maxWidth: '400px',
+          width: '100%',
+        },
+      },
+    },
+  },
+  MuiStack: {
+    styleOverrides: {
+      root: {
+        '&.Monite-Filters': {
+          '& > *': {
+            flexBasis: 'fit-content',
+            flexGrow: 1,
+          },
+
+          '& .Monite-Filters-Group': {
+            marginLeft: '16px',
+          },
+        },
       },
     },
   },
@@ -333,6 +357,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           alignItems: 'flex-start',
           '.MuiFormControlLabel-label': {
             padding: '9px 0',
+          },
+        },
+
+        '&.Monite-FilterControl': {
+          marginLeft: 0,
+          marginRight: 0,
+          alignItems: 'center',
+          width: 'auto',
+          '& .MuiTypography-root': {
+            fontSize: '14px',
+            lineHeight: '20px',
           },
         },
       },
@@ -349,6 +384,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '& > .MuiFormControl-root > .MuiInputBase-root': {
           paddingTop: 0,
           paddingBottom: 0,
+        },
+        '&.Monite-FilterControl': {
+          height: '40px',
+          minHeight: '40px',
+          maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
         },
       },
     },

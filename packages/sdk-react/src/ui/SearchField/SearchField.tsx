@@ -58,7 +58,6 @@ export const SearchField = ({ label, onChange }: Props) => {
   return (
     <FormControl
       variant="outlined"
-      fullWidth
       aria-label="search-by-name"
       className="Monite-SearchField Monite-FilterControl"
     >

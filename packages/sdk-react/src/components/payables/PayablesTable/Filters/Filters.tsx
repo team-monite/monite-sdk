@@ -4,7 +4,13 @@ import { SearchField } from '@/ui/SearchField';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { getRowToStatusTextMap } from '../../consts';
@@ -26,23 +32,27 @@ export const Filters = ({ onChangeFilter }: Props) => {
   const className = 'Monite-PayableFilters';
 
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
       className={classNames(className, 'Monite-Filters')}
     >
-      <Grid item xs={6} sm={3} md={4} lg={3}>
-        <SearchField
-          label={t(i18n)`Search`}
-          onChange={(search) => {
-            onChangeFilter(FILTER_TYPE_SEARCH, search);
-          }}
-        />
-      </Grid>
-      <Grid item xs={6} sm={3} md={4} lg={3}>
+      <SearchField
+        label={t(i18n)`Search`}
+        onChange={(search) => {
+          onChangeFilter(FILTER_TYPE_SEARCH, search);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
         <FormControl
           variant="outlined"
-          fullWidth
           className="Monite-PayableStatusFilter Monite-FilterControl"
         >
           <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
@@ -71,8 +81,6 @@ export const Filters = ({ onChangeFilter }: Props) => {
             ))}
           </Select>
         </FormControl>
-      </Grid>
-      <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
           className="Monite-PayableDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Invoice date`}
@@ -96,8 +104,6 @@ export const Filters = ({ onChangeFilter }: Props) => {
           }}
           views={['year', 'month', 'day']}
         />
-      </Grid>
-      <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
           className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Due date`}
@@ -121,7 +127,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
           }}
           views={['year', 'month', 'day']}
         />
-      </Grid>
-    </Grid>
+      </Stack>
+    </Stack>
   );
 };

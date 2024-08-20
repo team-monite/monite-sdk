@@ -3,7 +3,7 @@ import { SearchField } from '@/ui/SearchField';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { FILTER_TYPE_SEARCH, FILTER_TYPE_CREATED_AT } from '../../consts';
@@ -20,20 +20,25 @@ export const Filters = (props: Props) => {
   const className = 'Monite-ApprovalPoliciesFilters';
 
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
       className={classNames(className, 'Monite-Filters')}
     >
-      <Grid item xs={8} sm={5} md={4}>
-        <SearchField
-          label={t(i18n)`Search`}
-          onChange={(search) => {
-            onChangeFilter(FILTER_TYPE_SEARCH, search);
-          }}
-        />
-      </Grid>
-      <Grid item xs={4} sm={3} md={2}>
+      <SearchField
+        label={t(i18n)`Search`}
+        onChange={(search) => {
+          onChangeFilter(FILTER_TYPE_SEARCH, search);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
         <DatePicker
           className="Monite-ApprovalPolicyCreateAtFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Created at`}
@@ -57,7 +62,7 @@ export const Filters = (props: Props) => {
           }}
           views={['year', 'month', 'day']}
         />
-      </Grid>
-    </Grid>
+      </Stack>
+    </Stack>
   );
 };
