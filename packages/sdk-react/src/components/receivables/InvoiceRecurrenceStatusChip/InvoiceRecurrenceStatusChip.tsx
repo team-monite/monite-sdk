@@ -125,8 +125,8 @@ const INVOICE_RECURRENCE_STATUS_TO_MUI_COLOR_MAP: Record<
   components['schemas']['RecurrenceStatus'],
   ChipProps['color']
 > = {
-  active: 'success',
-  completed: 'info',
+  active: 'info',
+  completed: 'success',
   canceled: 'warning',
 };
 
