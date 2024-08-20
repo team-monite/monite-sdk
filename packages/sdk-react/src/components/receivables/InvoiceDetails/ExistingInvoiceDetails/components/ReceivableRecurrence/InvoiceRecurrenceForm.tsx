@@ -25,8 +25,9 @@ import {
   Typography,
 } from '@mui/material';
 
-import { addMonths, format, getMonth, getYear } from 'date-fns';
+import { addMonths, getMonth, getYear, startOfMonth } from 'date-fns';
 import * as yup from 'yup';
+import type { SchemaOf } from 'yup';
 
 import { useRecurrenceByInvoiceId } from './useInvoiceRecurrence';
 
@@ -39,7 +40,8 @@ export const InvoiceRecurrenceForm = ({
 }) => {
   const { api, queryClient, i18n } = useMoniteContext();
 
-  const { data: recurrence } = useRecurrenceByInvoiceId(invoiceId);
+  const { data: recurrence, isLoading: isRecurrenceLoading } =
+    useRecurrenceByInvoiceId(invoiceId);
 
   const createRecurrenceMutation = api.recurrences.postRecurrences.useMutation(
     undefined,
@@ -121,9 +123,7 @@ export const InvoiceRecurrenceForm = ({
 
   const getDefaultValues = useCallback(
     () => ({
-      day_of_month: recurrence?.day_of_month
-        ? recurrence.day_of_month
-        : 'first_day',
+      day_of_month: recurrence?.day_of_month ? recurrence.day_of_month : null,
       startDate: recurrence
         ? new Date(recurrence.start_year, recurrence.start_month - 1, 1)
         : null,
@@ -134,14 +134,11 @@ export const InvoiceRecurrenceForm = ({
     [recurrence]
   );
 
-  const { control, handleSubmit, watch, setValue, reset } = useForm<{
-    startDate: Date | null;
-    endDate: Date | null;
-    day_of_month: 'first_day' | 'last_day';
-  }>({
-    resolver: yupResolver(useValidationSchema()),
-    defaultValues: getDefaultValues(),
-  });
+  const { control, handleSubmit, watch, setValue, reset, formState, trigger } =
+    useForm({
+      resolver: yupResolver(useValidationSchema()),
+      defaultValues: getDefaultValues(),
+    });
 
   useEffect(() => void reset(getDefaultValues()), [reset, getDefaultValues]);
 
@@ -150,6 +147,12 @@ export const InvoiceRecurrenceForm = ({
   const startDate = watch('startDate');
   const endDate = watch('endDate');
   const dayOfMonth = watch('day_of_month');
+
+  useEffect(() => {
+    if (isRecurrenceLoading) return;
+    // Trigger validation of the "Issue at" field when "Period starts on" is changed
+    if (dayOfMonth && startDate) trigger('day_of_month');
+  }, [dayOfMonth, isRecurrenceLoading, startDate, trigger]);
 
   const getMinEndDate = () => {
     if (!startDate) return currentDate;
@@ -169,15 +172,6 @@ export const InvoiceRecurrenceForm = ({
     setValue('endDate', null);
   }, [startDate, endDate, setValue]);
 
-  const isIssuanceStartDateOptionDisabled = Boolean(
-    startDate &&
-      format(startDate, 'yyyy-MM-dd') === format(currentDate, 'yyyy-MM-dd')
-  );
-
-  useEffect(() => {
-    if (isIssuanceStartDateOptionDisabled) setValue('day_of_month', 'last_day');
-  }, [isIssuanceStartDateOptionDisabled, setValue]);
-
   const formId = `Monite-Form-recurrence-${useId()}`;
 
   return (
@@ -187,7 +181,7 @@ export const InvoiceRecurrenceForm = ({
           <Typography variant="h6">
             {recurrence
               ? t(i18n)`Edit recurring settings`
-              : t(i18n)`Set up recurrence`}
+              : t(i18n)`Convert invoice into recurring template`}
           </Typography>
 
           <IconButton
@@ -212,7 +206,7 @@ export const InvoiceRecurrenceForm = ({
           id={formId}
           onSubmit={handleSubmit(
             async ({ startDate, endDate, day_of_month }) => {
-              if (!startDate || !endDate)
+              if (!startDate || !endDate || !day_of_month)
                 throw new Error('Invalid incoming data');
 
               const start_month = getMonth(startDate) + 1;
@@ -302,13 +296,13 @@ export const InvoiceRecurrenceForm = ({
             fullWidth
             name="day_of_month"
             control={control}
-            label={t(i18n)`Issuance`}
+            label={t(i18n)`Issue at`}
             select
             disabled={isLoading}
           >
             <MenuItem
               value="first_day"
-              disabled={isIssuanceStartDateOptionDisabled}
+              // disabled={isIssuanceStartDateOptionDisabled}
             >{t(i18n)`First day of the month`}</MenuItem>
 
             <MenuItem value="last_day">{t(
@@ -356,20 +350,44 @@ export const InvoiceRecurrenceForm = ({
 const useValidationSchema = () => {
   const { i18n } = useLingui();
 
-  return yup.object().shape({
+  const shape: SchemaOf<{
+    startDate: Date | null;
+    endDate: Date | null;
+    day_of_month: 'first_day' | 'last_day' | null;
+  }> = yup.object({
     startDate: yup
       .date()
       .nullable()
-      .required()
+      .required(t(i18n)`Required`)
       .label(t(i18n)`Start date`),
     endDate: yup
       .date()
       .nullable()
-      .required()
+      .required(t(i18n)`Required`)
       .label(t(i18n)`End date`),
     day_of_month: yup
-      .string()
-      .required()
-      .label(t(i18n)`Issuance`),
+      .mixed()
+      .nullable()
+      .oneOf(['first_day', 'last_day'], t(i18n)`Invalid issuance`)
+      .required(t(i18n)`Required`)
+      .when('startDate', {
+        is: (startDate: Date | null) =>
+          startDate
+            ? new Date(startDate) < addMonths(startOfMonth(new Date()), 1)
+            : false,
+        then: () =>
+          yup
+            .mixed()
+            .oneOf(
+              ['last_day', null],
+              t(
+                i18n
+              )`The start date for the recurrence shouldn't be in the past`
+            )
+            .required(t(i18n)`Required`),
+      })
+      .label(t(i18n)`Issue at`),
   });
+
+  return shape;
 };
