@@ -27,6 +27,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -104,6 +105,8 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
     closeCreateReminderDialog,
     closeUpdateReminderDialog,
   } = useInvoiceReminderDialogs({ getValues });
+
+  const theme = useTheme();
 
   if (isSettingsLoading) {
     return <LoadingPage />;
@@ -208,27 +211,26 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <Typography variant="h2" sx={{ mb: 2 }}>
-                {t(i18n)`Create Invoice`}
-              </Typography>
-              <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={createReceivable.isPending} />
-                <EntitySection disabled={createReceivable.isPending} />
-                <ItemsSection
-                  defaultCurrency={settings?.currency?.default}
-                  actualCurrency={actualCurrency}
-                  onCurrencyChanged={setActualCurrency}
-                />
-                <PaymentSection disabled={createReceivable.isPending} />
-                <ReminderSection
-                  disabled={createReceivable.isPending}
-                  onUpdateOverdueReminder={onEditOverdueReminder}
-                  onUpdatePaymentReminder={onEditPaymentReminder}
-                  onCreateReminder={onCreateReminder}
-                />
-              </Stack>
+            <Typography variant="h1" sx={{ mb: 7 }}>
+              {t(i18n)`Create Invoice`}
+            </Typography>
+            <Stack direction="column" spacing={4}>
+              <CustomerSection disabled={createReceivable.isPending} />
+              <EntitySection disabled={createReceivable.isPending} />
+              <ItemsSection
+                defaultCurrency={settings?.currency?.default}
+                actualCurrency={actualCurrency}
+                onCurrencyChanged={setActualCurrency}
+              />
+              <PaymentSection disabled={createReceivable.isPending} />
+              <ReminderSection
+                disabled={createReceivable.isPending}
+                onUpdateOverdueReminder={onEditOverdueReminder}
+                onUpdatePaymentReminder={onEditPaymentReminder}
+                onCreateReminder={onCreateReminder}
+              />
             </Stack>
           </form>
         </FormProvider>

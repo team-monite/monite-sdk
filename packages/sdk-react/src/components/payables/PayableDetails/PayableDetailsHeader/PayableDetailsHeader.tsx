@@ -74,7 +74,7 @@ export const PayableDetailsHeader = ({
       children: t(i18n)`Submit`,
     },
     reject: {
-      variant: 'contained',
+      variant: 'text',
       color: 'error',
       onClick: rejectInvoice,
       children: t(i18n)`Reject`,
@@ -113,8 +113,8 @@ export const PayableDetailsHeader = ({
           </IconButton>
         )}
 
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <Typography variant="h3" sx={{ ml: 2, flex: 1 }} component="div">
+        <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+          <Typography variant="h3" sx={{ ml: 3, flex: 1 }} component="div">
             {payable?.document_id ?? t(i18n)`New incoming invoice`}
           </Typography>
           <PayableStatusChip status={payable?.status ?? 'draft'} />

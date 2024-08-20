@@ -35,7 +35,7 @@ export const Filters = (props: Props) => {
       </Grid>
       <Grid item xs={4} sm={3} md={2}>
         <DatePicker
-          className="Monite-ApprovalPolicyCreateAtFilter Monite-FilterControl"
+          className="Monite-ApprovalPolicyCreateAtFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Created at`}
           onChange={(value, error) => {
             if (error.validationError) {

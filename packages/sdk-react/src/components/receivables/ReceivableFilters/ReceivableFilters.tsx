@@ -127,7 +127,7 @@ export const ReceivableFilters = ({
       {filters.includes('due_date__lte') && (
         <Grid item xs={6} sm={3} md={2} lg={2}>
           <DatePicker<Date>
-            className="Monite-ReceivableDueDateFilter Monite-FilterControl"
+            className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
             label={t(i18n)`Due date`}
             views={['year', 'month', 'day']}
             onChange={(value, error) => {

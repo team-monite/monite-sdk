@@ -50,7 +50,7 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
 
   return (
     <Stack spacing={1} className={className}>
-      <Typography variant="subtitle2">{t(i18n)`Payment`}</Typography>
+      <Typography variant="h3">{t(i18n)`Payment`}</Typography>
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <Grid container spacing={3}>

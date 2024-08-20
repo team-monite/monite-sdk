@@ -60,8 +60,10 @@ const ReceivablesTableBase = ({
   return (
     <>
       <Box
-        sx={{ pl: 2, pr: 2 }}
-        className={classNames(ScopedCssBaselineContainerClassName, className)}
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className + '-Tabs'
+        )}
       >
         <Tabs
           value={activeTab}
