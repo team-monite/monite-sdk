@@ -31,7 +31,7 @@ msgstr "Dark Mode"
 msgid "Entity User ID"
 msgstr "Entity User ID"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:220
+#: src/apps/SDKDemo/SDKDemo.tsx:187
 msgid "Error: <0>{0}</0>"
 msgstr "Error: <0>{0}</0>"
 
@@ -39,8 +39,8 @@ msgstr "Error: <0>{0}</0>"
 msgid "Login"
 msgstr "Login"
 
-#: src/apps/SDKDemo/SDKDemo.tsx:188
-#: src/apps/SDKDemo/SDKDemo.tsx:234
+#: src/apps/SDKDemo/SDKDemo.tsx:155
+#: src/apps/SDKDemo/SDKDemo.tsx:201
 msgid "Logout"
 msgstr "Logout"
 
