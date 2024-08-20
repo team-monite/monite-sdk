@@ -56,10 +56,18 @@ export const InvoiceRecurrence = ({
                     <Typography variant="body2" color="text.secondary">
                       {isLoading ? (
                         <Skeleton animation="wave" />
-                      ) : recurrence ? (
+                      ) : recurrence?.status === 'active' ? (
                         t(
                           i18n
                         )`All future invoices will be issued based on this invoice`
+                      ) : recurrence?.status === 'completed' ? (
+                        t(
+                          i18n
+                        )`Recurrence was completed, all invoices were issued`
+                      ) : recurrence?.status === 'canceled' ? (
+                        t(
+                          i18n
+                        )`Recurrence was cancelled, no new invoices will be issued`
                       ) : (
                         t(
                           i18n
@@ -76,14 +84,16 @@ export const InvoiceRecurrence = ({
                     {isLoading ? (
                       <Skeleton variant="rounded" width="50%" />
                     ) : (
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => setOpen(true)}
-                      >
-                        {!recurrence && t(i18n)`Set up`}
-                        {recurrence && t(i18n)`Edit`}
-                      </Button>
+                      (!recurrence || recurrence?.status === 'active') && (
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => setOpen(true)}
+                        >
+                          {!recurrence && t(i18n)`Set up`}
+                          {recurrence && t(i18n)`Edit`}
+                        </Button>
+                      )
                     )}
                   </Grid>
                 </Grid>
