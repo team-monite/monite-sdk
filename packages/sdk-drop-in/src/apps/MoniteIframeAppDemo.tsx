@@ -167,9 +167,9 @@ const MoniteIframe = ({
       src={iframeUrl}
       style={{
         border: 'none',
-        width: 'calc(100% - 64px)',
-        height: 'calc(100% - 32px)',
-        margin: '32px 32px 0 32px',
+        width: '100%',
+        height: '100%',
+        margin: '0',
       }}
     ></iframe>
   );

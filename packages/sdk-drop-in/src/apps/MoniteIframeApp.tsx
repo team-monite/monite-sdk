@@ -91,7 +91,7 @@ const MoniteIframeAppComponent = ({
             }
 
             #root {
-              padding: 0;
+              padding: 32px 32px 0 32px;
               display: flex;
               flex-direction: column;
               overflow: hidden;
