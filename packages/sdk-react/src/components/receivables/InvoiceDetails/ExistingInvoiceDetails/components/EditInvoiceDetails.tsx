@@ -32,6 +32,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
@@ -142,6 +143,8 @@ const EditInvoiceDetailsContent = ({
 
   const className = 'Monite-EditInvoiceDetails';
 
+  const theme = useTheme();
+
   return (
     <>
       <DialogTitle className={className + '-Title'}>
@@ -228,11 +231,12 @@ const EditInvoiceDetailsContent = ({
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
             <Typography variant="h1" sx={{ mb: 7 }}>
               {t(i18n)`Edit invoice ${invoice.document_id ?? 'INV-auto'}`}
             </Typography>
-            <Stack direction="column" spacing={4} sx={{ pb: 7 }}>
+            <Stack direction="column" spacing={4}>
               <CustomerSection disabled={isLoading} />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
