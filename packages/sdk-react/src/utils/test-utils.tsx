@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { createAPIClient } from '@/api/client';
 import {
@@ -21,11 +21,7 @@ import {
   Hub,
   makeFetchTransport,
 } from '@sentry/react';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
   fireEvent,
@@ -102,35 +98,32 @@ export const Provider = ({
     context: MoniteQraftContext,
   });
 
+  useEffect(() => {
+    client.mount();
+    return () => client.unmount();
+  }, [client]);
+
   return (
-    <QueryClientProvider client={client}>
-      <MoniteContext.Provider
-        value={{
-          locale: getLocaleWithDefaults(moniteProviderProps?.locale),
-          monite,
-          i18n,
-          sentryHub,
-          queryClient: client,
-          theme: createThemeWithDefaults(moniteProviderProps?.theme),
-          dateFnsLocale,
-          apiUrl: monite.baseUrl,
-          fetchToken: monite.fetchToken,
-          ...apiClient,
-        }}
-      >
-        <MoniteI18nProvider>
-          <MoniteAPIProvider
-            apiUrl={monite.baseUrl}
-            fetchToken={monite.fetchToken}
-            requestFn={apiClient.requestFn}
-            queryClient={queryClient}
-            APIContext={MoniteQraftContext}
-          >
-            {children}
-          </MoniteAPIProvider>
-        </MoniteI18nProvider>
-      </MoniteContext.Provider>
-    </QueryClientProvider>
+    <MoniteContext.Provider
+      value={{
+        locale: getLocaleWithDefaults(moniteProviderProps?.locale),
+        monite,
+        i18n,
+        sentryHub,
+        queryClient: client,
+        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        dateFnsLocale,
+        apiUrl: monite.baseUrl,
+        fetchToken: monite.fetchToken,
+        ...apiClient,
+      }}
+    >
+      <MoniteI18nProvider>
+        <MoniteAPIProvider APIContext={MoniteQraftContext}>
+          {children}
+        </MoniteAPIProvider>
+      </MoniteI18nProvider>
+    </MoniteContext.Provider>
   );
 };
 

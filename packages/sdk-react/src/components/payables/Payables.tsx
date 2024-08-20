@@ -160,12 +160,24 @@ const PayablesBase = ({
       )}
 
       <FileInput
-        accept="application/pdf"
+        accept="application/pdf, image/png, image/jpeg, image/tiff"
         aria-label={t(i18n)`Upload payable file`}
         onChange={(event) => {
           const file = event.target.files?.item(0);
 
           if (!file) {
+            return;
+          }
+
+          if (
+            ![
+              'application/pdf',
+              'image/png',
+              'image/jpeg',
+              'image/tiff',
+            ].includes(file.type)
+          ) {
+            toast.error(t(i18n)`Unsupported file format`);
             return;
           }
 
