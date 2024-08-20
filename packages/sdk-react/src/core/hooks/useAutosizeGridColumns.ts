@@ -5,6 +5,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
 export const defaultCounterpartColumnWidth = 250;
+const maximumDocumentIdColumnWidth = 200;
 
 export function useAreCounterpartsLoading(
   rows?: { counterpart_id?: string }[]
@@ -72,6 +73,15 @@ export function useAutosizeGridColumns(
               );
             }
           });
+
+          // Some scanned documents may have a very long document ids.
+          // Limit width of the document_id column
+          const documentColumn = grid.getColumn('document_id');
+          if (
+            documentColumn &&
+            (documentColumn?.width || 0) > maximumDocumentIdColumnWidth
+          )
+            grid.setColumnWidth('document_id', maximumDocumentIdColumnWidth);
         }, 1);
       });
     }, 1);
