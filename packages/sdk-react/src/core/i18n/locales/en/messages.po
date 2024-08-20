@@ -353,7 +353,7 @@ msgstr "Algerian Dinar"
 msgid "All"
 msgstr "All"
 
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:113
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:140
 msgid "All customers"
 msgstr "All customers"
 
@@ -374,7 +374,7 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:82
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:103
 msgid "All statuses"
 msgstr "All statuses"
 
@@ -398,11 +398,11 @@ msgstr "American Samoa"
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:80
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:216
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:218
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:121
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:142
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:242
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:35
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:173
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:144
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:197
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:163
 msgid "Amount"
 msgstr "Amount"
 
@@ -1672,7 +1672,7 @@ msgstr "Create from mail"
 #: src/components/receivables/Receivables.test.tsx:35
 #: src/components/receivables/Receivables.test.tsx:72
 #: src/components/receivables/Receivables.test.tsx:110
-#: src/components/receivables/Receivables.tsx:99
+#: src/components/receivables/Receivables.tsx:98
 msgid "Create Invoice"
 msgstr "Create Invoice"
 
@@ -1746,15 +1746,15 @@ msgstr "Created by"
 msgid "Created by user"
 msgstr "Created by user"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:88
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:140
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:102
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:109
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:164
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:121
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:34
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:159
 msgid "Created on"
 msgstr "Created on"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:91
+#: src/core/utils/createThemeWithDefaults.ts:33
 msgid "Credit notes"
 msgstr "Credit notes"
 
@@ -1802,14 +1802,14 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:271
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:102
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:123
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:138
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:130
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:117
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:101
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:106
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:154
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:136
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:122
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:127
 msgid "Customer"
 msgstr "Customer"
 
@@ -2178,9 +2178,9 @@ msgstr "Dry Cleaners"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:184
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:126
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:131
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:208
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:145
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:158
 msgid "Due date"
 msgstr "Due date"
 
@@ -3067,7 +3067,7 @@ msgstr "Insurance Underwriting, Premiums"
 msgid "Intra-Company Purchases"
 msgstr "Intra-Company Purchases"
 
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:121
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:145
 msgid "INV-auto"
 msgstr "INV-auto"
 
@@ -3151,7 +3151,7 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:77
+#: src/core/utils/createThemeWithDefaults.ts:25
 msgid "Invoices"
 msgstr "Invoices"
 
@@ -3202,8 +3202,8 @@ msgstr "Issue at"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:188
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:191
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:95
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:148
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:116
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:172
 msgid "Issue date"
 msgstr "Issue date"
 
@@ -3213,7 +3213,7 @@ msgstr "Issue date"
 msgid "Issue date Name"
 msgstr "Issue date"
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:109
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:128
 msgid "Issue Date"
 msgstr "Issue Date"
 
@@ -4053,9 +4053,9 @@ msgstr "Norwegian Krone"
 msgid "NOT allowed"
 msgstr "NOT allowed"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:83
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:109
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:97
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:104
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:133
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:116
 msgid "Number"
 msgstr "Number"
 
@@ -4712,7 +4712,7 @@ msgstr "Quebec Sales Tax (Canada)"
 msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:84
+#: src/core/utils/createThemeWithDefaults.ts:29
 msgid "Quotes"
 msgstr "Quotes"
 
@@ -4745,7 +4745,7 @@ msgstr "Receivable type {0} is not supported. Only invoice is supported."
 msgid "Receivable type not supported"
 msgstr "Receivable type not supported"
 
-#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:71
+#: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:147
 msgid "Receivables tabs"
 msgstr "Receivables tabs"
 
@@ -4786,7 +4786,7 @@ msgid "Recurrence was completed, all invoices were issued"
 msgstr "Recurrence was completed, all invoices were issued"
 
 #: src/components/receivables/getCommonStatusLabel.ts:21
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:113
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:137
 msgid "Recurring"
 msgstr "Recurring"
 
@@ -5019,7 +5019,7 @@ msgstr "Saint Pierre And Miquelon"
 msgid "Saint Vincent And Grenadines"
 msgstr "Saint Vincent And Grenadines"
 
-#: src/components/receivables/Receivables.tsx:84
+#: src/components/receivables/Receivables.tsx:83
 msgid "Sales"
 msgstr "Sales"
 
@@ -5094,7 +5094,7 @@ msgstr "Script in Monite Script"
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:38
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:41
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:52
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:63
 #: src/components/userRoles/UserRolesTable/Filters/Filters.tsx:25
 msgid "Search"
 msgstr "Search"
@@ -5379,12 +5379,12 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:207
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:48
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:51
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:111
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:132
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceIterations.tsx:57
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:156
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:134
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:67
-#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:70
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:180
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:153
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:87
+#: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:90
 msgid "Status"
 msgstr "Status"
 
