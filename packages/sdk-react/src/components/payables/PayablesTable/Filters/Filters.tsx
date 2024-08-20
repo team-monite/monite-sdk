@@ -74,7 +74,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
-          className="Monite-PayableDateFilter Monite-FilterControl"
+          className="Monite-PayableDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Invoice date`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -99,7 +99,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
-          className="Monite-PayableDueDateFilter Monite-FilterControl"
+          className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Due date`}
           onChange={(value, error) => {
             if (error.validationError) {

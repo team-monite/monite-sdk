@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import {
-  Box,
   ListItem,
   ListItemButton,
   ListItemButtonProps,
@@ -42,7 +41,6 @@ export const NavigationListItem = ({
         <ListItemText>
           <Typography
             component="span"
-            variant="label2"
             color={selected ? 'primary.main' : undefined}
           >
             {children}

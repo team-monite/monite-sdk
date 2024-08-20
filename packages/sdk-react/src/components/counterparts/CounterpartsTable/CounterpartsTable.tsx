@@ -295,6 +295,7 @@ const CounterpartsTableBase = ({
         field: 'contacts',
         sortable: false,
         flex: 1,
+        display: 'flex',
         headerName: t(i18n)`Contact information`,
         renderCell: (params) => {
           const counterpart = params.row;

@@ -309,8 +309,12 @@ const PayableDetailsFormBase = forwardRef<
               })}
             >
               <Grid container spacing={3}>
-                <Grid item xs={12} className={className + '-Details'}>
-                  <Paper variant="outlined" sx={{ p: 2 }}>
+                <Grid item xs={12}>
+                  <Paper
+                    variant="outlined"
+                    sx={{ p: 3 }}
+                    className={className + '-Details'}
+                  >
                     <Typography variant="subtitle2" mb={2}>
                       {t(i18n)`Details`}
                     </Typography>
@@ -525,8 +529,12 @@ const PayableDetailsFormBase = forwardRef<
                     </Stack>
                   </Paper>
                 </Grid>
-                <Grid item xs={12} className={className + '-Items'}>
-                  <Paper variant="outlined" sx={{ p: 2 }}>
+                <Grid item xs={12}>
+                  <Paper
+                    variant="outlined"
+                    sx={{ p: 3 }}
+                    className={className + '-Items'}
+                  >
                     <Typography variant="subtitle2" mb={2}>
                       {t(i18n)`Items`}
                     </Typography>
@@ -565,21 +573,24 @@ const PayableDetailsFormBase = forwardRef<
                               : '—'}
                           </TableCell>
                         </TableRow>
-                        <TableRow
-                          className={className + '-Totals-Total'}
-                          sx={{ '& td': { fontWeight: 500 } }}
-                        >
-                          <TableCell>{t(i18n)`Total`}</TableCell>
+                        <TableRow className={className + '-Totals-Total'}>
+                          <TableCell>
+                            <Typography variant="subtitle1">{t(
+                              i18n
+                            )`Total`}</Typography>
+                          </TableCell>
                           <TableCell align="right">
-                            {totals.total && currentCurrency
-                              ? formatCurrencyToDisplay(
-                                  formatToMinorUnits(
-                                    totals.total,
+                            <Typography variant="subtitle1">
+                              {totals.total && currentCurrency
+                                ? formatCurrencyToDisplay(
+                                    formatToMinorUnits(
+                                      totals.total,
+                                      currentCurrency
+                                    ) || 0,
                                     currentCurrency
-                                  ) || 0,
-                                  currentCurrency
-                                )
-                              : '—'}
+                                  )
+                                : '—'}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                       </TableBody>

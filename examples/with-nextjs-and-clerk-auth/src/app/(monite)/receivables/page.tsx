@@ -4,7 +4,7 @@ import { Receivables } from '@/components/MoniteComponents';
 
 export default async function PayablesPage() {
   return (
-    <Box className="Monite-AbsoluteContainer Monite-Receivables">
+    <Box className="Monite-PageContainer Monite-Receivables">
       <Receivables />
     </Box>
   );

@@ -4,7 +4,7 @@ import { Counterparts } from '@/components/MoniteComponents';
 
 export default async function CounterpartsPage() {
   return (
-    <Box className="Monite-AbsoluteContainer Monite-Counterparts">
+    <Box className="Monite-PageContainer Monite-Counterparts">
       <Counterparts />
     </Box>
   );

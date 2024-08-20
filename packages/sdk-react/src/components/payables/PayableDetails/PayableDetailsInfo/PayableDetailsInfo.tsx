@@ -411,15 +411,21 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow sx={{ '& td': { fontWeight: 500 } }}>
-                  <TableCell>{t(i18n)`Total`}</TableCell>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="subtitle1">{t(
+                      i18n
+                    )`Total`}</Typography>
+                  </TableCell>
                   <TableCell align="right">
-                    {payable.total_amount && payable.currency
-                      ? formatCurrencyToDisplay(
-                          payable.total_amount,
-                          payable.currency
-                        )
-                      : '—'}
+                    <Typography variant="subtitle1">
+                      {payable.total_amount && payable.currency
+                        ? formatCurrencyToDisplay(
+                            payable.total_amount,
+                            payable.currency
+                          )
+                        : '—'}
+                    </Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
