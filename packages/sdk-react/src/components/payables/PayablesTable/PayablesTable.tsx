@@ -220,7 +220,7 @@ const PayablesTableBase = ({
         },
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'issued_at',
@@ -234,7 +234,8 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) =>
+          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'due_date',
@@ -248,7 +249,8 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) =>
+          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'status',

@@ -154,7 +154,7 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 0.7,
         valueFormatter: (value) =>
-          i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'created_by',

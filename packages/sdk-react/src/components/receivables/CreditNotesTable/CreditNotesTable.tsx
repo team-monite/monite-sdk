@@ -88,14 +88,16 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         headerName: t(i18n)`Created on`,
         width: 140,
         valueFormatter: (value) =>
-          value ? i18n.date(value, DateTimeFormatOptions.EightDigitDate) : '—',
+          value
+            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
+            : '—',
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         width: 120,
         valueFormatter: (value) =>
-          value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'counterpart_name',

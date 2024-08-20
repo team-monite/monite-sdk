@@ -162,7 +162,7 @@ const UserRolesTableBase = ({
         flex: 1,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
     ];
   }, [i18n, onRowClick]);

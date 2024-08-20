@@ -190,7 +190,8 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) =>
+          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'due_date',
@@ -200,7 +201,8 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) =>
+          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'status',

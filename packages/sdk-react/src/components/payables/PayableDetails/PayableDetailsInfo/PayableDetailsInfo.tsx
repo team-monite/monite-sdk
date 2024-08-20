@@ -194,7 +194,7 @@ const PayableDetailsInfoBase = ({
                       {payable.issued_at
                         ? i18n.date(
                             payable.issued_at,
-                            DateTimeFormatOptions.EightDigitDate
+                            DateTimeFormatOptions.ShortMonthDateFormat
                           )
                         : '—'}
                     </TableCell>
@@ -208,7 +208,7 @@ const PayableDetailsInfoBase = ({
                     {payable.due_date
                       ? i18n.date(
                           payable.due_date,
-                          DateTimeFormatOptions.EightDigitDate
+                          DateTimeFormatOptions.ShortMonthDateFormat
                         )
                       : '—'}
                   </TableCell>

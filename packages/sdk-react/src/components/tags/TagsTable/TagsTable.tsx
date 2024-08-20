@@ -142,7 +142,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'updated_at',
@@ -150,7 +150,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['updated_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
       },
       {
         field: 'created_by_entity_user_id',
