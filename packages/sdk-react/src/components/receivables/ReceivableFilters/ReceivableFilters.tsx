@@ -12,11 +12,11 @@ import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
-  Grid,
   FormControl as MuiFormControl,
   InputLabel as MuiInputLabel,
-  Select,
   MenuItem,
+  Select,
+  Stack,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -41,24 +41,26 @@ export const ReceivableFilters = ({
   const className = 'Monite-ReceivableFilters';
 
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
       className={classNames(className, 'Monite-Filters')}
     >
-      {filters.includes('document_id__contains') && (
-        <Grid item sm={6} md={4}>
-          <SearchField
-            label={t(i18n)`Search`}
-            onChange={(search) => {
-              onChange('document_id__contains', search ?? undefined);
-            }}
-          />
-        </Grid>
-      )}
-
-      {filters.includes('status') && (
-        <Grid item sm={3} md={2}>
+      <SearchField
+        label={t(i18n)`Search`}
+        onChange={(search) => {
+          onChange('document_id__contains', search ?? undefined);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
+        {filters.includes('status') && (
           <MuiFormControl
             variant="outlined"
             fullWidth
@@ -88,11 +90,9 @@ export const ReceivableFilters = ({
               ))}
             </Select>
           </MuiFormControl>
-        </Grid>
-      )}
+        )}
 
-      {filters.includes('counterpart_id') && (
-        <Grid item sm={3} md={2}>
+        {filters.includes('counterpart_id') && (
           <MuiFormControl
             variant="outlined"
             fullWidth
@@ -121,11 +121,9 @@ export const ReceivableFilters = ({
               )}
             </Select>
           </MuiFormControl>
-        </Grid>
-      )}
+        )}
 
-      {filters.includes('due_date__lte') && (
-        <Grid item xs={6} sm={3} md={2} lg={2}>
+        {filters.includes('due_date__lte') && (
           <DatePicker<Date>
             className="Monite-ReceivableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
             label={t(i18n)`Due date`}
@@ -154,8 +152,8 @@ export const ReceivableFilters = ({
               },
             }}
           />
-        </Grid>
-      )}
-    </Grid>
+        )}
+      </Stack>
+    </Stack>
   );
 };

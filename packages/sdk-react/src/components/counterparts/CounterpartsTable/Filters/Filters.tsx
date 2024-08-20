@@ -12,7 +12,7 @@ import {
   FormControl,
   InputLabel,
   Box,
-  Grid,
+  Stack,
 } from '@mui/material';
 
 import {
@@ -32,20 +32,25 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
   const className = 'Monite-CounterpartFilters';
 
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
       className={classNames(className, 'Monite-Filters')}
     >
-      <Grid item xs={4} sm={5} md={5} lg={4}>
-        <SearchField
-          label={t(i18n)`Search by name`}
-          onChange={(search) => {
-            onChangeFilter(FILTER_TYPE_SEARCH, search);
-          }}
-        />
-      </Grid>
-      <Grid item xs={4} sm={3} md={3}>
+      <SearchField
+        label={t(i18n)`Search by name`}
+        onChange={(search) => {
+          onChangeFilter(FILTER_TYPE_SEARCH, search);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
         <FormControl
           variant="outlined"
           fullWidth
@@ -81,9 +86,7 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
             ))}
           </Select>
         </FormControl>
-      </Grid>
-      {showCategories && (
-        <Grid item xs={4} sm={4} md={3}>
+        {showCategories && (
           <FormControl
             variant="outlined"
             fullWidth
@@ -119,8 +122,8 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
               ))}
             </Select>
           </FormControl>
-        </Grid>
-      )}
-    </Grid>
+        )}
+      </Stack>
+    </Stack>
   );
 };

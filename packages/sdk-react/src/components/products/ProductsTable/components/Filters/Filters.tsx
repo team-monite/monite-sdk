@@ -6,7 +6,13 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from '@mui/material';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -28,20 +34,25 @@ export const Filters = ({ onChangeFilter }: Props) => {
   const className = 'Monite-ProductFilters';
 
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
       className={classNames(className, 'Monite-Filters')}
     >
-      <Grid item xs={4} sm={4} md={4} lg={4}>
-        <SearchField
-          label={t(i18n)`Search`}
-          onChange={(search) => {
-            onChangeFilter(FILTER_TYPE_SEARCH, search);
-          }}
-        />
-      </Grid>
-      <Grid item xs={4} sm={3} md={2}>
+      <SearchField
+        label={t(i18n)`Search`}
+        onChange={(search) => {
+          onChangeFilter(FILTER_TYPE_SEARCH, search);
+        }}
+      />
+      <Stack
+        gap={1}
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        className="Monite-Filters-Group"
+      >
         <FormControl
           variant="outlined"
           fullWidth
@@ -77,9 +88,6 @@ export const Filters = ({ onChangeFilter }: Props) => {
             ))}
           </Select>
         </FormControl>
-      </Grid>
-
-      <Grid item xs={4} sm={3} md={2}>
         <FormControl
           variant="outlined"
           fullWidth
@@ -106,7 +114,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
             ))}
           </Select>
         </FormControl>
-      </Grid>
-    </Grid>
+      </Stack>
+    </Stack>
   );
 };
