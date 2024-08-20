@@ -212,7 +212,7 @@ const CreateReceivablesBase = (props: InvoiceDetailsCreateProps) => {
             <Typography variant="h1" sx={{ mb: 7 }}>
               {t(i18n)`Create Invoice`}
             </Typography>
-            <Stack direction="column" spacing={4} sx={{ pb: 7 }}>
+            <Stack direction="column" spacing={4} sx={{ mb: 7 }}>
               <CustomerSection disabled={createReceivable.isPending} />
               <EntitySection disabled={createReceivable.isPending} />
               <ItemsSection
