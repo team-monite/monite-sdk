@@ -834,6 +834,8 @@ function renderColor(strVal: string, palette: PaletteOptions): string {
   return strVal;
 }
 
+const colorProps = ['color', 'backgroundColor', 'bgcolor', 'borderColor'];
+
 // Replaces color constants like 'divider', 'primary.main', 'neutral.80' with actual color values
 function renderColors<T extends { [key: string]: any }>(
   components: T,
@@ -841,12 +843,12 @@ function renderColors<T extends { [key: string]: any }>(
 ): T {
   const output: T = Array.isArray(components) ? ([] as any as T) : ({} as T);
 
-  Object.keys(components).forEach((_key) => {
-    const prop = _key as keyof T;
+  Object.keys(components).forEach((key) => {
+    const prop = key as keyof T;
     if (!components.hasOwnProperty(prop)) return;
     const propValue = components[prop];
     // noinspection SuspiciousTypeOfGuard
-    if (typeof propValue === 'string') {
+    if (typeof propValue === 'string' && colorProps.includes(key)) {
       output[prop] = renderColor(propValue, palette) as typeof propValue;
     } else if (isPlainObject(propValue) || Array.isArray(propValue)) {
       output[prop] = renderColors(propValue, palette);
