@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
@@ -15,7 +17,7 @@ import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -98,16 +100,26 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
-  const columns = useMemo<GridColDef[]>(() => {
+  const columns = useMemo<
+    GridColDef<components['schemas']['ReceivableResponse']>[]
+  >(() => {
     return [
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
         sortable: false,
         width: 100,
-        renderCell: ({ value }) => {
+        renderCell: ({ value, row }) => {
+          if (row.status === 'recurring') return t(i18n)`Recurring`;
+
           if (!value) {
-            return t(i18n)`INV-auto`;
+            return (
+              <Typography
+                color="text.secondary"
+                component="span"
+                fontSize="inherit"
+              >{t(i18n)`INV-auto`}</Typography>
+            );
           }
 
           return value;
@@ -144,12 +156,15 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Status`,
         sortable: ReceivableCursorFields.includes('status'),
         width: 80,
-        renderCell: (
-          params: GridRenderCellParams<
-            components['schemas']['ReceivableResponse']
-          >
-        ) => {
-          const status = params.value;
+        renderCell: ({ value: status, row }) => {
+          if (row.type === 'invoice' && row.recurrence_id) {
+            return (
+              <InvoiceRecurrenceStatusChipLoader
+                recurrenceId={row.recurrence_id}
+              />
+            );
+          }
+
           return <InvoiceStatusChip status={status} />;
         },
       },
@@ -244,4 +259,31 @@ const InvoicesTableBase = ({
       />
     </Box>
   );
+};
+
+const InvoiceRecurrenceStatusChipLoader = ({
+  recurrenceId,
+}: {
+  recurrenceId: string;
+}) => {
+  const { api } = useMoniteContext();
+
+  const { data: recurrence, isLoading } =
+    api.recurrences.getRecurrencesId.useQuery({
+      path: { recurrence_id: recurrenceId },
+    });
+
+  if (isLoading) {
+    return (
+      <Skeleton
+        variant="rounded"
+        width="100%"
+        sx={{ display: 'inline-block' }}
+      />
+    );
+  }
+
+  if (!recurrence?.status) return null;
+
+  return <InvoiceRecurrenceStatusChip status={recurrence.status} />;
 };
