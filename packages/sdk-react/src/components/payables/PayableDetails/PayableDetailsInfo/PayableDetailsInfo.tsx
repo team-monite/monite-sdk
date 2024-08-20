@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import { components } from '@/api';
 import { PayablesDetailsProps } from '@/components';
@@ -55,6 +55,13 @@ export type PayablesDetailsInfoProps = {
   >['ocrRequiredFields'];
 };
 
+interface RequiredFieldLabelProps {
+  fieldName: string;
+  ocrRequiredFields?: Record<string, any>;
+  fieldValue?: string | null | undefined;
+  children: ReactNode;
+}
+
 const DetailsWrapper = styled(Box)(() => ({
   pb: 6,
   display: 'flex',
@@ -69,6 +76,26 @@ const StyledLabelTableCell = styled(TableCell)(({ theme }) => ({
   minWidth: 120,
   width: '35%',
 }));
+
+const RequiredFieldLabel = ({
+  fieldName,
+  ocrRequiredFields,
+  fieldValue,
+  children,
+}: RequiredFieldLabelProps) => {
+  const theme = useTheme();
+  const isRequired = isFieldRequired(fieldName, ocrRequiredFields, fieldValue);
+
+  return (
+    <StyledLabelTableCell
+      style={{
+        color: isRequired ? theme.palette.error.main : '',
+      }}
+    >
+      {children}
+    </StyledLabelTableCell>
+  );
+};
 
 export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
   <MoniteScopedProviders>
@@ -163,19 +190,13 @@ const PayableDetailsInfoBase = ({
             <Table>
               <TableBody>
                 <TableRow>
-                  <StyledLabelTableCell
-                    style={{
-                      color: isFieldRequired(
-                        'invoiceNumber',
-                        ocrRequiredFields,
-                        payable.document_id
-                      )
-                        ? theme.palette.error.main
-                        : '',
-                    }}
+                  <RequiredFieldLabel
+                    fieldName="invoiceNumber"
+                    ocrRequiredFields={ocrRequiredFields}
+                    fieldValue={payable.document_id}
                   >
                     {t(i18n)`Invoice number`}:
-                  </StyledLabelTableCell>
+                  </RequiredFieldLabel>
                   <TableCell>{payable.document_id ?? '—'}</TableCell>
                 </TableRow>
                 <TableRow>
@@ -198,19 +219,13 @@ const PayableDetailsInfoBase = ({
                 )}
                 {counterpartBankAccount && (
                   <TableRow>
-                    <StyledLabelTableCell
-                      style={{
-                        color: isFieldRequired(
-                          'counterpartBankAccount',
-                          ocrRequiredFields,
-                          counterpartBankAccount?.name
-                        )
-                          ? theme.palette.error.main
-                          : '',
-                      }}
+                    <RequiredFieldLabel
+                      fieldName="counterpartBankAccount"
+                      ocrRequiredFields={ocrRequiredFields}
+                      fieldValue={counterpartBankAccount?.name}
                     >
                       {t(i18n)`Bank account`}:
-                    </StyledLabelTableCell>
+                    </RequiredFieldLabel>
                     <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
                 )}
@@ -230,19 +245,13 @@ const PayableDetailsInfoBase = ({
                   </TableRow>
                 )}
                 <TableRow>
-                  <StyledLabelTableCell
-                    style={{
-                      color: isFieldRequired(
-                        'dueDate',
-                        ocrRequiredFields,
-                        payable.due_date
-                      )
-                        ? theme.palette.error.main
-                        : '',
-                    }}
+                  <RequiredFieldLabel
+                    fieldName="dueDate"
+                    ocrRequiredFields={ocrRequiredFields}
+                    fieldValue={payable.due_date}
                   >
                     {t(i18n)`Due date`}:
-                  </StyledLabelTableCell>
+                  </RequiredFieldLabel>
                   <TableCell>
                     {payable.due_date
                       ? i18n.date(
@@ -287,19 +296,13 @@ const PayableDetailsInfoBase = ({
                 </TableRow>
                 {showTags && payable.tags && payable.tags.length > 0 && (
                   <TableRow>
-                    <StyledLabelTableCell
-                      style={{
-                        color: isFieldRequired(
-                          'tags',
-                          ocrRequiredFields,
-                          payable.tags?.[0].id
-                        )
-                          ? theme.palette.error.main
-                          : '',
-                      }}
+                    <RequiredFieldLabel
+                      fieldName="tags"
+                      ocrRequiredFields={ocrRequiredFields}
+                      fieldValue={payable.tags?.[0].id}
                     >
                       {t(i18n)`Tags`}:
-                    </StyledLabelTableCell>
+                    </RequiredFieldLabel>
                     <TableCell>
                       <Stack
                         spacing={1}
