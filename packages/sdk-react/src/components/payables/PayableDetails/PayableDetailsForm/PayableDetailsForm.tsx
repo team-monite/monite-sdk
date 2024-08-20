@@ -142,14 +142,11 @@ export const PayableDetailsForm = forwardRef<
   </MoniteScopedProviders>
 ));
 
-export const defaultRequiredFields = {
+const defaultRequiredFields: { [key: string]: boolean } = {
   invoiceNumber: true,
   dueDate: true,
   tags: true,
   currency: true,
-  invoiceDate: false,
-  counterpart: false,
-  counterpartBankAccount: false,
 };
 
 const PayableDetailsFormBase = forwardRef<
@@ -252,7 +249,7 @@ const PayableDetailsFormBase = forwardRef<
 
     const className = 'Monite-PayableDetailsForm';
 
-    const isFieldRequired = (fieldName: keyof typeof defaultRequiredFields) => {
+    const isFieldRequired = (fieldName: string) => {
       const isDefaultRequired = defaultRequiredFields[fieldName] || false;
       const isOcrRequired = ocrRequiredFields?.[fieldName] || false;
       return isDefaultRequired || isOcrRequired;
