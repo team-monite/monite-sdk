@@ -176,22 +176,25 @@ const ReminderSectionContent = ({
 
   return (
     <>
-      {!hasValidReminderEmailLoading &&
-        Boolean(counterpartId) &&
-        settings?.reminder?.enabled && (
-          <>
-            {!counterpart?.reminders_enabled && (
-              <Alert severity="warning" sx={{ mb: 2 }}>{t(
-                i18n
-              )`Reminders are disabled for this Counterpart.`}</Alert>
-            )}
-            {!hasValidReminderEmail && (
-              <Alert severity="warning" sx={{ mb: 2 }}>{t(
-                i18n
-              )`No default email for selected Counterpart. Reminders will not be sent.`}</Alert>
-            )}
-          </>
-        )}
+      {!hasValidReminderEmailLoading && Boolean(counterpartId) && (
+        <>
+          {!counterpart?.reminders_enabled && (
+            <Alert severity="warning" sx={{ mb: 2 }}>{t(
+              i18n
+            )`Reminders are disabled for this Counterpart.`}</Alert>
+          )}
+          {!hasValidReminderEmail && (
+            <Alert severity="warning" sx={{ mb: 2 }}>{t(
+              i18n
+            )`No default email for selected Counterpart. Reminders will not be sent.`}</Alert>
+          )}
+          {!settings?.reminder?.enabled && (
+            <Alert severity="warning" sx={{ mb: 2 }}>{t(
+              i18n
+            )`Reminders are disabled for this Entity.`}</Alert>
+          )}
+        </>
+      )}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <SelectReminderLayout
