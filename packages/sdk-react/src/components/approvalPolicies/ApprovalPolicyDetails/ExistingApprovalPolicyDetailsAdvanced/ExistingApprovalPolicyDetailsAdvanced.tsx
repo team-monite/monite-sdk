@@ -32,15 +32,15 @@ export interface ExistingApprovalPolicyDetailsProps {
   onChangeEditMode: (isEdit: boolean) => void;
 }
 
-export const ExistingApprovalPolicyDetails = (
+export const ExistingApprovalPolicyDetailsAdvanced = (
   props: ExistingApprovalPolicyDetailsProps
 ) => (
   <MoniteScopedProviders>
-    <ExistingApprovalPolicyDetailsBase {...props} />
+    <ExistingApprovalPolicyDetailsAdvancedBase {...props} />
   </MoniteScopedProviders>
 );
 
-const ExistingApprovalPolicyDetailsBase = ({
+const ExistingApprovalPolicyDetailsAdvancedBase = ({
   approvalPolicy,
   onChangeEditMode,
 }: ExistingApprovalPolicyDetailsProps) => {
