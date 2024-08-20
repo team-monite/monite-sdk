@@ -176,23 +176,19 @@ const ReminderSectionContent = ({
 
   return (
     <>
-      {!hasValidReminderEmailLoading && Boolean(counterpartId) && (
-        <>
-          {!counterpart?.reminders_enabled && (
-            <Alert severity="warning" sx={{ mb: 2 }}>
-              {t(i18n)`Reminders are disabled for this Counterpart.`}
-            </Alert>
-          )}
-          {!hasValidReminderEmail && (
-            <Alert severity="warning" sx={{ mb: 2 }}>
-              {t(
-                i18n
-              )`No default email for selected Counterpart. Reminders will not be sent.`}
-            </Alert>
-          )}
-        </>
+      {!isCounterpartLoading && !counterpart?.reminders_enabled && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(i18n)`Reminders are disabled for this Counterpart.`}
+        </Alert>
       )}
-      {!settings?.reminder?.enabled && (
+      {!hasValidReminderEmailLoading && !hasValidReminderEmail && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(
+            i18n
+          )`No default email for selected Counterpart. Reminders will not be sent.`}
+        </Alert>
+      )}
+      {!isSettingsLoading && !settings?.reminder?.enabled && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           {t(i18n)`Reminders are disabled for this Entity.`}
         </Alert>
