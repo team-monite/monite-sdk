@@ -25,7 +25,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { addMonths, getMonth, getYear } from 'date-fns';
+import { addMonths, format, getMonth, getYear } from 'date-fns';
 import * as yup from 'yup';
 
 import { useRecurrenceByInvoiceId } from './useInvoiceRecurrence';
@@ -151,13 +151,8 @@ export const InvoiceRecurrenceForm = ({
   const endDate = watch('endDate');
   const dayOfMonth = watch('day_of_month');
 
-  const minStartDate = addMonths(
-    currentDate,
-    dayOfMonth === 'last_day' ? 0 : 1
-  );
-
   const getMinEndDate = () => {
-    if (!startDate) return minStartDate;
+    if (!startDate) return currentDate;
     if (startDate < currentDate) return currentDate;
     return startDate;
   };
@@ -173,6 +168,15 @@ export const InvoiceRecurrenceForm = ({
 
     setValue('endDate', null);
   }, [startDate, endDate, setValue]);
+
+  const isIssuanceStartDateOptionDisabled = Boolean(
+    startDate &&
+      format(startDate, 'yyyy-MM-dd') === format(currentDate, 'yyyy-MM-dd')
+  );
+
+  useEffect(() => {
+    if (isIssuanceStartDateOptionDisabled) setValue('day_of_month', 'last_day');
+  }, [isIssuanceStartDateOptionDisabled, setValue]);
 
   const formId = `Monite-Form-recurrence-${useId()}`;
 
@@ -265,7 +269,7 @@ export const InvoiceRecurrenceForm = ({
                 label={t(i18n)`Period starts on`}
                 views={['year', 'month']}
                 name="startDate"
-                minDate={minStartDate}
+                minDate={currentDate}
                 view="year"
                 disabled={!!recurrence || isLoading}
                 slotProps={{
@@ -302,9 +306,10 @@ export const InvoiceRecurrenceForm = ({
             select
             disabled={isLoading}
           >
-            <MenuItem value="first_day">{t(
-              i18n
-            )`First day of the month`}</MenuItem>
+            <MenuItem
+              value="first_day"
+              disabled={isIssuanceStartDateOptionDisabled}
+            >{t(i18n)`First day of the month`}</MenuItem>
 
             <MenuItem value="last_day">{t(
               i18n
