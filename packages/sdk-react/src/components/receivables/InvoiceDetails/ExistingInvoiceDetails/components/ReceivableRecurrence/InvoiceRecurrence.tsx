@@ -73,14 +73,18 @@ export const InvoiceRecurrence = ({
               {(recurrence?.status === 'active' || !recurrence) && (
                 <Grid item xs={3}>
                   <Grid container justifyContent="flex-end">
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => setOpen(true)}
-                    >
-                      {!recurrence && t(i18n)`Set up`}
-                      {recurrence && t(i18n)`Edit`}
-                    </Button>
+                    {isLoading ? (
+                      <Skeleton variant="rounded" width="50%" />
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => setOpen(true)}
+                      >
+                        {!recurrence && t(i18n)`Set up`}
+                        {recurrence && t(i18n)`Edit`}
+                      </Button>
+                    )}
                   </Grid>
                 </Grid>
               )}
