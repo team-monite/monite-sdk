@@ -15,6 +15,8 @@ interface PayableStatusChipRootProps {
   status: components['schemas']['PayableStateEnum'];
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
+  /** The size of the Chip. */
+  size?: ChipProps['size'];
 }
 
 export interface PayableStatusChipProps extends PayableStatusChipRootProps {
@@ -33,6 +35,7 @@ export interface PayableStatusChipProps extends PayableStatusChipRootProps {
  *     MonitePayableStatusChip: {
  *       defaultProps: {
  *         icon: true, // Display status icon?
+ *         size: 'small', // The size of the chip
  *         variant: 'outlined', // The variant of the chip
  *       },
  *       variants: [
@@ -53,7 +56,6 @@ export const PayableStatusChip = forwardRef<
 >((inProps, ref) => {
   const props = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MonitePayableStatusChip',
   });
 
@@ -69,6 +71,7 @@ export const PayableStatusChip = forwardRef<
       icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getRowToStatusTextMap(i18n)[props.status]}
       status={props.status}
+      size={props.size ?? 'small'}
       variant={props.variant ?? 'filled'}
     />
   );
@@ -79,7 +82,6 @@ const StyledChip = styled(
     (props, ref) => <Chip ref={ref} {...props} />
   ),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MonitePayableStatusChip',
     slot: 'root',
     shouldForwardProp: (prop) => {
@@ -88,6 +90,7 @@ const StyledChip = styled(
         case 'label':
         case 'color':
         case 'icon':
+        case 'size':
           return true;
         default:
           return false;

@@ -63,7 +63,6 @@ export const InvoiceStatusChip = forwardRef<
 >((inProps, ref) => {
   const { status, variant, icon, size } = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
   });
 
@@ -78,7 +77,7 @@ export const InvoiceStatusChip = forwardRef<
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getCommonStatusLabel(i18n, status)}
       status={status}
-      size={size}
+      size={size ?? 'small'}
       variant={variant ?? 'filled'}
     />
   );
@@ -89,7 +88,6 @@ const StyledChip = styled(
     (props, ref) => <Chip ref={ref} {...props} />
   ),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
     slot: 'root',
     shouldForwardProp: (prop) => {
