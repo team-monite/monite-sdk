@@ -225,3 +225,25 @@ function formatTaxToMinorUnits(tax: number): number {
 function formatTaxFromMinorUnits(tax: number): number {
   return tax / 100;
 }
+
+export const isFieldRequired = (
+  fieldName: string,
+  ocrRequiredFields: Record<string, boolean> | undefined,
+  value?: string | null
+): boolean => {
+  const defaultRequiredFields: Record<string, boolean> = {
+    invoiceNumber: true,
+    dueDate: true,
+    tags: true,
+    currency: true,
+  };
+
+  if (value) {
+    return false;
+  }
+
+  const isDefaultRequired = defaultRequiredFields[fieldName] ?? false;
+  const isOcrRequired = ocrRequiredFields?.[fieldName] ?? false;
+
+  return isDefaultRequired || isOcrRequired;
+};

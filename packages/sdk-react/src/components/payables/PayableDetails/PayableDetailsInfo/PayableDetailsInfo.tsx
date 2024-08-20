@@ -7,7 +7,7 @@ import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
-import { defaultRequiredFields } from '@/components/payables/PayableDetails/PayableDetailsForm';
+import { isFieldRequired } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -122,18 +122,6 @@ const PayableDetailsInfoBase = ({
 
   const theme = useTheme();
 
-  const isFieldRequired = (
-    fieldName: keyof typeof defaultRequiredFields,
-    value: string | null | undefined
-  ) => {
-    if (!value) {
-      const isDefaultRequired = defaultRequiredFields[fieldName] || false;
-      const isOcrRequired = ocrRequiredFields?.[fieldName] || false;
-      return isDefaultRequired || isOcrRequired;
-    }
-    return false;
-  };
-
   const className = 'Monite-PayableDetailsInfo';
 
   if (isPayableInOCRProcessing(payable)) {
@@ -179,6 +167,7 @@ const PayableDetailsInfoBase = ({
                     style={{
                       color: isFieldRequired(
                         'invoiceNumber',
+                        ocrRequiredFields,
                         payable.document_id
                       )
                         ? theme.palette.error.main
@@ -213,6 +202,7 @@ const PayableDetailsInfoBase = ({
                       style={{
                         color: isFieldRequired(
                           'counterpartBankAccount',
+                          ocrRequiredFields,
                           counterpartBankAccount?.name
                         )
                           ? theme.palette.error.main
@@ -242,7 +232,11 @@ const PayableDetailsInfoBase = ({
                 <TableRow>
                   <StyledLabelTableCell
                     style={{
-                      color: isFieldRequired('dueDate', payable.due_date)
+                      color: isFieldRequired(
+                        'dueDate',
+                        ocrRequiredFields,
+                        payable.due_date
+                      )
                         ? theme.palette.error.main
                         : '',
                     }}
@@ -295,7 +289,11 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <StyledLabelTableCell
                       style={{
-                        color: isFieldRequired('tags', payable.tags?.[0].id)
+                        color: isFieldRequired(
+                          'tags',
+                          ocrRequiredFields,
+                          payable.tags?.[0].id
+                        )
                           ? theme.palette.error.main
                           : '',
                       }}
