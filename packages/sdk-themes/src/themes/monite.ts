@@ -284,6 +284,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
+          '.MuiSelect-select': {
+            fontSize: '14px',
+          },
+
           '.MuiFormLabel-root': {
             position: 'absolute',
             left: '20px',
