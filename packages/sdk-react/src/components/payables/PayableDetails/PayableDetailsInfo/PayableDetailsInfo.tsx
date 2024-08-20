@@ -90,7 +90,7 @@ const PayableDetailsInfoBase = ({
     }
   );
 
-  const { data: lineItemsData } = lineItemsQuery;
+  const { data: lineItemsData, isLoading: isLineItemsLoading } = lineItemsQuery;
 
   const lineItems = lineItemsData?.data;
 
@@ -298,38 +298,39 @@ const PayableDetailsInfoBase = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {lineItems?.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>
-                      {item.subtotal &&
-                        item.quantity &&
-                        formatFromMinorUnits(
-                          item.subtotal / item.quantity ?? 0,
-                          payable.currency ?? 'EUR'
-                        )?.toFixed(2)}
-                    </TableCell>
-                    <TableCell align="right">
-                      {item.subtotal && payable.currency ? (
-                        <>
-                          <Box>
-                            {formatCurrencyToDisplay(
-                              item.subtotal ?? 0,
-                              payable.currency
-                            )}
-                          </Box>
-                          <Box sx={{ color: 'secondary.main' }}>
-                            {t(i18n)`excl. VAT`}{' '}
-                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
-                          </Box>
-                        </>
-                      ) : (
-                        '—'
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {!isLineItemsLoading &&
+                  lineItems?.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                      <TableCell>
+                        {item.subtotal &&
+                          item.quantity &&
+                          formatFromMinorUnits(
+                            item.subtotal / item.quantity ?? 0,
+                            payable.currency ?? 'EUR'
+                          )?.toFixed(2)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {item.subtotal && payable.currency ? (
+                          <>
+                            <Box>
+                              {formatCurrencyToDisplay(
+                                item.subtotal ?? 0,
+                                payable.currency
+                              )}
+                            </Box>
+                            <Box sx={{ color: 'secondary.main' }}>
+                              {t(i18n)`excl. VAT`}{' '}
+                              {`${item.tax ? (item.tax / 100).toFixed(2) : 0}%`}
+                            </Box>
+                          </>
+                        ) : (
+                          '—'
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </Paper>
