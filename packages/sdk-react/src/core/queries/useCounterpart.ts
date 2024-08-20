@@ -8,7 +8,6 @@ import {
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
@@ -121,9 +120,8 @@ export const useCounterpartBankById = (
 };
 
 export const useUpdateCounterpartBank = () => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
 
   return api.counterparts.patchCounterpartsIdBankAccountsId.useMutation(
     undefined,
@@ -162,8 +160,7 @@ export const useUpdateCounterpartBank = () => {
 
 export const useDeleteCounterpartBank = (counterpartId: string) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsIdBankAccountsId.useMutation(
     undefined,
@@ -278,9 +275,8 @@ export const useUpdateCounterpartVat = () => {
 };
 
 export const useDeleteCounterpartVat = (counterpartId: string) => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { i18n } = useLingui();
-  const queryClient = useQueryClient();
 
   return api.counterparts.deleteCounterpartsIdVatIdsId.useMutation(undefined, {
     onSuccess: async () => {
@@ -324,8 +320,7 @@ export const useCounterpartContactList = (
 
 export const useCreateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterpartsIdContacts.useMutation(undefined, {
     onSuccess: async (contact) => {
@@ -372,8 +367,7 @@ export const useCounterpartContactById = (
 
 export const useUpdateCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsIdContactsId.useMutation(undefined, {
     onSuccess: async (contact) => {
@@ -415,8 +409,7 @@ export const useUpdateCounterpartContact = () => {
 
 export const useDeleteCounterpartContact = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsIdContactsId.useMutation(
     undefined,
@@ -450,8 +443,7 @@ export const useCounterpartList = (
 
 export const useCreateCounterpart = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.postCounterparts.useMutation(
     {},
@@ -489,8 +481,7 @@ export const useCounterpartById = (id?: string) => {
 
 export const useUpdateCounterpart = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.patchCounterpartsId.useMutation(undefined, {
     onSuccess: async (counterpart) => {
@@ -521,9 +512,8 @@ export const useUpdateCounterpart = () => {
 };
 
 export const useDeleteCounterpart = () => {
-  const queryClient = useQueryClient();
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
 
   return api.counterparts.deleteCounterpartsId.useMutation(undefined, {
     onSuccess: async () => {

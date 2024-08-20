@@ -4143,7 +4143,7 @@ msgstr "Payable \"{0}\" has been updated"
 msgid "Payable not found"
 msgstr "Payable not found"
 
-#: src/components/payables/Payables.tsx:178
+#: src/components/payables/Payables.tsx:191
 msgid "Payable uploaded successfully"
 msgstr "Payable uploaded successfully"
 
@@ -5822,6 +5822,10 @@ msgstr "Unknown date"
 msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
 
+#: src/components/payables/Payables.tsx:180
+msgid "Unsupported file format"
+msgstr "Unsupported file format"
+
 #: src/components/payables/PayableDetails/PayableDetailsAttachFile/PayableDetailsAttachFile.tsx:115
 msgid "Unsupported file type"
 msgstr "Unsupported file type"
@@ -5891,11 +5895,15 @@ msgid "Upload File"
 msgstr "Upload File"
 
 #: src/components/payables/Payables.test.tsx:38
-#: src/components/payables/Payables.tsx:163
+#: src/components/payables/Payables.test.tsx:61
+#: src/components/payables/Payables.test.tsx:84
+#: src/components/payables/Payables.test.tsx:107
+#: src/components/payables/Payables.test.tsx:130
+#: src/components/payables/Payables.tsx:164
 msgid "Upload payable file"
 msgstr "Upload payable file"
 
-#: src/components/payables/Payables.tsx:177
+#: src/components/payables/Payables.tsx:190
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
