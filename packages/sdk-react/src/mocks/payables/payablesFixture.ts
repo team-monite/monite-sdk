@@ -1,8 +1,7 @@
 import { components } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
-import { counterpartListFixture } from '@/mocks';
-import { approvalPolicyByIdFixtures } from '@/mocks/approvalPolicies';
+import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   getRandomItemFromArray,
@@ -28,7 +27,8 @@ function generatePayable(
     amount_due: Number(faker.finance.amount()),
     amount_paid: Number(faker.finance.amount()),
     amount_to_pay: Number(faker.finance.amount()),
-    approval_policy_id: getRandomItemFromArray(approvalPolicyByIdFixtures).id,
+    approval_policy_id: getRandomItemFromArray(approvalPoliciesListFixture.data)
+      .id,
     description: faker.commerce.productDescription(),
     due_date: faker.date.soon().toString(),
     payment_terms: undefined,

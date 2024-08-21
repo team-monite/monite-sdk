@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useApprovalPolicyById } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';
 
+import { ApprovalPolicyView } from './ApprovalPolicyView';
+
 export interface ApprovalPolicyDetailsProps {
   /** Approval policy ID */
   id?: string;
@@ -42,7 +44,7 @@ export const ApprovalPolicyDetails = ({
 
   if (!isEdit && approvalPolicy) {
     // READ
-    return <div>READ</div>;
+    return <ApprovalPolicyView approvalPolicy={approvalPolicy} />;
   }
 
   if (isEdit && id) {
