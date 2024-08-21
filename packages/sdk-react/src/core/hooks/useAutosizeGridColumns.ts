@@ -39,7 +39,6 @@ export function useAutosizeGridColumns(
 
   const autoSizePerformed = useRef(false); // useRef instead of useState to avoid re-renders on value changes
   const columnsRestored = useRef<GridColDef[] | null>(null);
-  const serializationKey = 'Monite-DataGridColumns-' + columnSerializationKey;
 
   // Autosize columns
   // use useEffect since we need this code to be executed after isFirstRender / useEffect in useGridColumns.js
@@ -56,7 +55,7 @@ export function useAutosizeGridColumns(
       columns.length > 0 && // Subscribe to column count since we need to execute this code on every column set change
       !areCounterpartsLoading && // Skip autosize until counterparts are loaded
       !autoSizePerformed.current && // Do not perform autosize twice
-      !localStorage.getItem(serializationKey) // Do not perform autosize on next page loads - we preserve column state, set by user
+      !columnsRestored.current // Do not perform autosize after columns were deserialized
     ) {
       timeouts.push(
         window.setTimeout(() => {
@@ -109,12 +108,13 @@ export function useAutosizeGridColumns(
     return () => {
       timeouts.forEach(window.clearTimeout); // Cancel pending timeouts on unmount
     };
-  }, [gridApiRef, rows, columns, areCounterpartsLoading, serializationKey]);
+  }, [gridApiRef, rows, columns, areCounterpartsLoading]);
 
   // Save columns width when switching between pages
   // use useEffect since we need this code to be executed after isFirstRender / useEffect in useGridColumns.js
   useEffect(() => {
     const grid = gridApiRef.current;
+    const serializationKey = 'Monite-DataGridColumns-' + columnSerializationKey;
     const serializedColumnsStr = localStorage.getItem(serializationKey);
     if (
       serializedColumnsStr &&
@@ -140,7 +140,7 @@ export function useAutosizeGridColumns(
         localStorage.setItem(serializationKey, JSON.stringify(columnsState));
       }
     };
-  }, [gridApiRef, serializationKey, columns]);
+  }, [gridApiRef, columnSerializationKey, columns]);
 
   return gridApiRef;
 }
