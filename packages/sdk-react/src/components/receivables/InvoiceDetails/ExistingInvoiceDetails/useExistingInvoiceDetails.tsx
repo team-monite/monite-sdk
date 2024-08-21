@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -10,7 +9,6 @@ import {
   useIssueReceivableById,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
-import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 
 export enum DeliveryMethod {
   Email = 'email',
@@ -33,7 +31,7 @@ export function useExistingInvoiceDetails({
   receivable,
   deliveryMethod,
 }: UseExistingInvoiceDetailsProps) {
-  const { monite, queryClient } = useMoniteContext();
+  const { monite } = useMoniteContext();
 
   const [view, setView] = useState(ExistingInvoiceDetailsView.View);
 
@@ -54,7 +52,7 @@ export function useExistingInvoiceDetails({
   const cancelMutation = useCancelReceivableById(receivableId);
   const sendMutation = useSendReceivableById(receivableId);
   const issueMutation = useIssueReceivableById(receivableId);
-  const { api, i18n } = useMoniteContext();
+  const { api } = useMoniteContext();
   const pdfQuery = api.receivables.getReceivablesIdPdfLink.useQuery({
     path: { receivable_id: receivableId },
   });

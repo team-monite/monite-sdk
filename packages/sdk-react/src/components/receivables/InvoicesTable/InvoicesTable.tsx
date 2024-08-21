@@ -21,7 +21,6 @@ import { Box, Skeleton, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
-  GridRenderCellParams,
   GridSortDirection,
   GridSortModel,
 } from '@mui/x-data-grid';

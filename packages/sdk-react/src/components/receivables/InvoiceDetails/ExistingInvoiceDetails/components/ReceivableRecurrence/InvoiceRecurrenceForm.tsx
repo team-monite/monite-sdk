@@ -134,11 +134,10 @@ export const InvoiceRecurrenceForm = ({
     [recurrence]
   );
 
-  const { control, handleSubmit, watch, setValue, reset, formState, trigger } =
-    useForm({
-      resolver: yupResolver(useValidationSchema()),
-      defaultValues: getDefaultValues(),
-    });
+  const { control, handleSubmit, watch, setValue, reset, trigger } = useForm({
+    resolver: yupResolver(useValidationSchema()),
+    defaultValues: getDefaultValues(),
+  });
 
   useEffect(() => void reset(getDefaultValues()), [reset, getDefaultValues]);
 

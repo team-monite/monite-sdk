@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 
 import { components } from '@/api';
-import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { MoniteCardItem } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
