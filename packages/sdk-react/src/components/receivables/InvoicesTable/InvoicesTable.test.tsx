@@ -1,4 +1,5 @@
 import { InvoicesTable } from '@/components';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
 import { renderWithClient } from '@/utils/test-utils';
 import { findByLabelText, fireEvent, screen } from '@testing-library/react';
@@ -18,7 +19,7 @@ describe('InvoicesTable', () => {
     renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: 'INV-auto',
+      name: INVOICE_DOCUMENT_AUTO_ID,
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -55,7 +56,7 @@ describe('InvoicesTable', () => {
     );
 
     const draftCellNodes = screen.findAllByRole('gridcell', {
-      name: 'INV-auto',
+      name: INVOICE_DOCUMENT_AUTO_ID,
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);

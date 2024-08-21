@@ -91,7 +91,7 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   return (
     <Stack spacing={1} className={className}>
       <Typography variant="h3">{t(i18n)`Details`}</Typography>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <Card variant="outlined">
         <CardContent>
           <Grid container spacing={3}>
             <Grid item {...gridItemProps}>
