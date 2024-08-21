@@ -1,7 +1,7 @@
 {
   "name": "@monite/sdk-react",
-  "version": "3.15.0",
-  "apiVersion": "2024-05-25",
+  "version": "3.16.0-beta.1",
+  "apiVersion": "2024-01-31",
   "publishConfig": {
     "access": "public"
   },
@@ -39,10 +39,10 @@
     "@lingui/react": "~4.7.0",
     "@monite/sdk-api": "workspace:~",
     "@mui/icons-material": "~5.14.3",
-    "@mui/material": "~5.14.2",
-    "@mui/x-data-grid": "~6.10.2",
+    "@mui/material": "~5.15.14",
+    "@mui/x-data-grid": "~7.11.1",
     "@mui/x-date-pickers": "~6.18.3",
-    "@openapi-qraft/react": "~1.11.0-beta.2",
+    "@openapi-qraft/react": "1.14.0",
     "@sentry/react": "~7.75.1",
     "@tanstack/react-query": "~5.28.6",
     "date-fns": "^2.28.0",
@@ -70,7 +70,7 @@
     "@fontsource/roboto": "~5.0.8",
     "@hookform/devtools": "~4.3.1",
     "@lingui/cli": "~4.7.0",
-    "@openapi-qraft/cli": "~1.11.0-beta.2",
+    "@openapi-qraft/cli": "1.14.0",
     "@storybook/addon-actions": "~7.6.17",
     "@storybook/addon-essentials": "~7.6.17",
     "@storybook/addon-storysource": "~7.6.17",
@@ -90,7 +90,7 @@
     "@types/pdfobject": "~2.2.5",
     "babel-plugin-macros": "~3.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "~8.38.0",
+    "eslint": "~8.57.0",
     "i18next": "~21.8.10",
     "jest": "~29.7.0",
     "jest-environment-jsdom": "~29.7.0",
@@ -106,7 +106,7 @@
     "rimraf": "~5.0.0",
     "rollup": "~3.29.4",
     "storybook": "~7.6.7",
-    "typescript": "~5.0.4"
+    "typescript": "~5.5.4"
   },
   "peerDependencies": {
     "@emotion/cache": "~11.11.0",

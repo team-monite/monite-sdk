@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 import {
   Card as MuiCard,
@@ -11,7 +11,7 @@ import {
 
 interface ICardItem {
   label: string;
-  value?: string | false | React.ReactNode;
+  value?: string | false | ReactNode;
 
   /**
    * If `true`, then the card item will be rendered
@@ -27,7 +27,7 @@ interface ICardItemProps extends ICardItem {
   divider: boolean;
 }
 
-const MoniteCardItem = (props: ICardItemProps) => {
+export const MoniteCardItem = (props: ICardItemProps) => {
   const value = useMemo(() => {
     if (!props.value && props.withEmptyStateFiller) {
       return '—';
@@ -42,15 +42,15 @@ const MoniteCardItem = (props: ICardItemProps) => {
 
   return (
     <>
-      {props.divider && <Divider />}
-      <Grid container direction="row" alignItems="center" sx={{ p: 1.5 }}>
+      {props.divider && <Divider sx={{ mx: 2 }} />}
+      <Grid container direction="row" alignItems="center" sx={{ px: 2, py: 1 }}>
         <Grid item xs={4}>
           <Typography variant="body2" color="text.secondary">
             {props.label}:
           </Typography>
         </Grid>
         <Grid item xs={8}>
-          <Typography>{value}</Typography>
+          {value}
         </Grid>
       </Grid>
     </>
@@ -65,7 +65,7 @@ export interface ICardProps extends MuiCardProps {
   items: Array<ICardItem>;
 
   /** Children to be rendered after the items */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface ICardProps extends MuiCardProps {
  *  styles for all cards in the app
  */
 export const MoniteCard = ({ items, children, ...cardProps }: ICardProps) => (
-  <MuiCard sx={{ borderRadius: 3 }} variant="outlined" {...cardProps}>
+  <MuiCard sx={{ width: '100%' }} variant="outlined" {...cardProps}>
     <Stack direction="column">
       {items.map((item, index) => {
         /**

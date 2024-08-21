@@ -1,19 +1,24 @@
-import React from 'react';
-import { UseControllerProps, FieldValues } from 'react-hook-form';
+import { UseControllerProps, FieldValues, FieldPath } from 'react-hook-form';
 
 import {
-  IRHFAutocomplete,
+  RHFAutocompleteProps,
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { useCurrencies } from '@/core/hooks';
-import { getCurrenciesArray } from '@/core/utils';
+import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MenuItem, TextFieldProps } from '@mui/material';
 
-export interface IMoniteCurrencyProps<T extends FieldValues>
-  extends UseControllerProps<T> {
-  onChange?: IRHFAutocomplete<T, unknown>['onChange'];
+export interface MoniteCurrencyProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> extends UseControllerProps<TFieldValues, TName> {
+  onChange?: RHFAutocompleteProps<
+    TFieldValues,
+    TName,
+    CurrencyType
+  >['onChange'];
   size?: TextFieldProps['size'];
   required?: TextFieldProps['required'];
 }
@@ -23,8 +28,11 @@ export interface IMoniteCurrencyProps<T extends FieldValues>
  * Renders a currency with its symbol and value
  *  based on the Material UI Autocomplete component
  */
-export const MoniteCurrency = <F extends FieldValues>(
-  props: IMoniteCurrencyProps<F>
+export const MoniteCurrency = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+>(
+  props: MoniteCurrencyProps<TFieldValues, TName>
 ) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency } = useCurrencies();
@@ -32,12 +40,13 @@ export const MoniteCurrency = <F extends FieldValues>(
   return (
     <RHFAutocomplete
       {...props}
+      className="Monite-Currency"
       label={t(i18n)`Currency`}
       options={getCurrenciesArray(i18n)}
       optionKey="code"
       labelKey="label"
       renderOption={(props, option) => (
-        <MenuItem key={option.code} value={option.label} {...props}>
+        <MenuItem {...props} key={option.code} value={option.label}>
           {option.label}, {getSymbolFromCurrency(option.code)}
         </MenuItem>
       )}

@@ -1,24 +1,25 @@
 import { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
 import type { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useCounterpartAddresses,
-  useCounterpartBankList,
   useCounterpartById,
   useCounterpartContactList,
   useCounterpartVatList,
   useDeleteCounterpart,
 } from '@/core/queries/useCounterpart';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
 
 import { getCounterpartName } from '../../helpers';
 
 export type CounterpartViewProps = {
   id: string;
   showBankAccounts?: boolean;
-  onEdit?: (id: string, type: CounterpartType) => void;
+  onEdit?: (id: string, type: components['schemas']['CounterpartType']) => void;
   onDelete?: (id: string) => void;
 
   onAddressEdit?: (id: string) => void;
@@ -52,19 +53,23 @@ export function useCounterpartView({
     useCounterpartAddresses(counterpart?.id);
 
   const { data: contacts, isLoading: isContactsLoading } =
-    useCounterpartContactList(
-      counterpart?.type === CounterpartType.ORGANIZATION
-        ? counterpart?.id
-        : undefined
-    );
+    useCounterpartContactList(counterpart?.id);
 
   const { data: vats, isLoading: isVatsLoading } = useCounterpartVatList(
     counterpart?.id
   );
 
-  const { data: banks, isLoading: isBanksLoading } = useCounterpartBankList(
-    counterpart?.id
-  );
+  const { api } = useMoniteContext();
+
+  const { data: banks, isLoading: isBanksLoading } =
+    api.counterparts.getCounterpartsIdBankAccounts.useQuery(
+      {
+        path: {
+          counterpart_id: counterpart?.id ?? '',
+        },
+      },
+      { enabled: Boolean(counterpart?.id) }
+    );
 
   const { mutate: deleteMutate, isPending: isCounterpartDeleteLoading } =
     useDeleteCounterpart();
@@ -73,12 +78,19 @@ export function useCounterpartView({
     (cb?: () => void) => {
       if (!counterpart) return;
 
-      return deleteMutate(counterpart, {
-        onSuccess: () => {
-          onDelete && onDelete(counterpart.id);
-          cb?.();
+      return deleteMutate(
+        {
+          path: {
+            counterpart_id: counterpart.id,
+          },
         },
-      });
+        {
+          onSuccess: () => {
+            onDelete?.(counterpart.id);
+            cb?.();
+          },
+        }
+      );
     },
     [deleteMutate, counterpart, onDelete]
   );
@@ -99,16 +111,16 @@ export function useCounterpartView({
 
   const title = useMemo((): string => {
     if (isLoading) return t(i18n)`Loading...`;
-    if (counterpartError) return counterpartError.message;
+    if (counterpartError) return getAPIErrorMessage(i18n, counterpartError);
     if (counterpart) return getCounterpartName(counterpart);
     return '';
   }, [isLoading, i18n, counterpartError, counterpart]);
 
   return {
-    addresses: addresses || [],
-    contacts: contacts || [],
-    banks: banks || [],
-    vats: vats || [],
+    addresses: addresses?.data || [],
+    contacts: contacts?.data || [],
+    banks: banks?.data || [],
+    vats: vats?.data || [],
     counterpart,
     deleteCounterpart,
     onEdit,

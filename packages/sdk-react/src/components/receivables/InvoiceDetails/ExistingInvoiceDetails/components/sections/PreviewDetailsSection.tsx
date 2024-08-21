@@ -1,19 +1,16 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { MoniteCard } from '@/ui/Card/Card';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Typography } from '@mui/material';
 
-interface PreviewDetailsSectionProps {
-  invoice: InvoiceResponsePayload;
-}
-
 export const PreviewDetailsSection = ({
-  invoice,
-}: PreviewDetailsSectionProps) => {
+  entity_vat_id,
+  fulfillment_date,
+  purchase_order,
+  memo,
+}: components['schemas']['InvoiceResponsePayload']) => {
   const { i18n } = useLingui();
 
   return (
@@ -25,16 +22,14 @@ export const PreviewDetailsSection = ({
         items={[
           {
             label: t(i18n)`Your tax information`,
-            value:
-              invoice.entity_vat_id &&
-              t(i18n)`VAT ID ${invoice.entity_vat_id.value}`,
+            value: entity_vat_id && t(i18n)`VAT ID ${entity_vat_id.value}`,
             withEmptyStateFiller: true,
           },
           {
             label: t(i18n)`Fulfillment date`,
-            value: invoice.fulfillment_date
+            value: fulfillment_date
               ? i18n.date(
-                  invoice.fulfillment_date,
+                  fulfillment_date,
                   DateTimeFormatOptions.EightDigitDate
                 )
               : '—',
@@ -42,12 +37,12 @@ export const PreviewDetailsSection = ({
           },
           {
             label: t(i18n)`Purchase order`,
-            value: invoice.purchase_order,
+            value: purchase_order,
             withEmptyStateFiller: true,
           },
           {
             label: t(i18n)`Message`,
-            value: invoice.memo,
+            value: memo,
             withEmptyStateFiller: true,
           },
         ]}

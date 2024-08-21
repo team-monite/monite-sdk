@@ -1,6 +1,7 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { Dialog } from '@/components';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductsTable } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable';
@@ -9,17 +10,12 @@ import {
   CreateReceivablesFormBeforeValidationProps,
   CreateReceivablesFormBeforeValidationLineItemProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
-import { useVatRates } from '@/core/queries';
 import { Price } from '@/core/utils/price';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CurrencyEnum,
-  ProductServiceResponse,
-  VatRateListResponse,
-} from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import {
@@ -44,13 +40,15 @@ import {
   TableContainer,
   Box,
   Collapse,
+  CardContent,
 } from '@mui/material';
 
 interface CardTableItemProps {
-  label: string | React.ReactNode;
+  label: string | ReactNode;
   value?: string | Price;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: TypographyTypeMap['props']['sx'];
+  className?: string;
 }
 
 /**
@@ -61,7 +59,7 @@ interface CardTableItemProps {
  */
 function prepareLineItem(
   product: ProductServiceResponse,
-  vatRates?: VatRateListResponse
+  vatRates: VatRateListResponse | undefined
 ): CreateReceivablesFormBeforeValidationLineItemProps {
   return {
     product_id: product.id,
@@ -84,8 +82,9 @@ const CardTableItem = ({
   value,
   variant = 'body1',
   sx,
+  className,
 }: CardTableItemProps) => (
-  <Grid container direction="row" alignItems="center" sx={{ px: 4, py: 2 }}>
+  <Grid container direction="row" alignItems="center" className={className}>
     <Grid item xs={4}>
       {typeof label === 'string' ? (
         <Typography variant="body1">{label}</Typography>
@@ -150,7 +149,8 @@ export const ItemsSection = ({
     name: 'line_items',
   });
   const watchedLineItems = watch('line_items');
-  const { data: vatRates } = useVatRates();
+  const { api } = useMoniteContext();
+  const { data: vatRates } = api.vatRates.getVatRates.useQuery();
   const { formatCurrencyToDisplay } = useCurrencies();
   const [productsTableOpen, setProductsTableOpen] = useState<boolean>(false);
   const handleSetActualCurrency = useCallback(
@@ -201,175 +201,200 @@ export const ItemsSection = ({
     return quantityErr.quantity.message;
   }, [error]);
 
+  const className = 'Monite-CreateReceivable-ItemsSection';
+  const tableRowClassName = 'Monite-CreateReceivable-ItemsSection-Table';
+
   return (
-    <Stack spacing={1}>
-      <Typography variant="subtitle2">{t(i18n)`Items`}</Typography>
-      <Collapse in={Boolean(generalError)}>
+    <Stack spacing={0} className={className}>
+      <Typography variant="h3" sx={{ marginBottom: 1 }}>{t(
+        i18n
+      )`Items`}</Typography>
+      <Collapse
+        in={Boolean(generalError)}
+        sx={{
+          ':not(.MuiCollapse-hidden)': {
+            marginBottom: 1,
+          },
+        }}
+      >
         <Alert severity="error">{generalError}</Alert>
       </Collapse>
-      <Collapse in={Boolean(quantityError)}>
+      <Collapse
+        in={Boolean(quantityError)}
+        sx={{
+          ':not(.MuiCollapse-hidden)': {
+            marginBottom: 1,
+          },
+        }}
+      >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <TableContainer sx={{ maxHeight: 400 }}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>{t(i18n)`Item`}</TableCell>
-                <TableCell>{t(i18n)`Quantity`}</TableCell>
-                <TableCell>{t(i18n)`Units`}</TableCell>
-                <TableCell align="right">{t(i18n)`Price`}</TableCell>
-                <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                <TableCell>{t(i18n)`VAT`}</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {fields.map((field, index) => (
-                <TableRow key={field.id}>
-                  <TableCell>{field.name}</TableCell>
-                  <TableCell>
-                    <Controller
-                      name={`line_items.${index}.quantity`}
-                      control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl>
-                          <TextField
-                            {...field}
-                            type="number"
-                            inputProps={{ min: 1 }}
-                            size="small"
-                            fullWidth={false}
+      <Card variant="outlined" sx={{ marginBottom: 2 }}>
+        <CardContent>
+          <TableContainer sx={{ maxHeight: 400 }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow className={tableRowClassName}>
+                  <TableCell>{t(i18n)`Item`}</TableCell>
+                  <TableCell>{t(i18n)`Quantity`}</TableCell>
+                  <TableCell>{t(i18n)`Units`}</TableCell>
+                  <TableCell align="right">{t(i18n)`Price`}</TableCell>
+                  <TableCell align="right">{t(i18n)`Amount`}</TableCell>
+                  <TableCell>{t(i18n)`VAT`}</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fields.map((field, index) => (
+                  <TableRow className={tableRowClassName} key={field.id}>
+                    <TableCell>{field.name}</TableCell>
+                    <TableCell>
+                      <Controller
+                        name={`line_items.${index}.quantity`}
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                          <FormControl>
+                            <TextField
+                              {...field}
+                              type="number"
+                              inputProps={{ min: 1 }}
+                              size="small"
+                              fullWidth={false}
+                              error={Boolean(error)}
+                            />
+                          </FormControl>
+                        )}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {field.measure_unit_id ? (
+                        <MeasureUnit unitId={field.measure_unit_id} />
+                      ) : (
+                        '—'
+                      )}
+                    </TableCell>
+                    <TableCell align="right">
+                      {field.price &&
+                        formatCurrencyToDisplay(
+                          field.price.value,
+                          field.price.currency
+                        )}
+                    </TableCell>
+                    <TableCell align="right">
+                      <TotalCell
+                        item={watchedLineItems[index]}
+                        formatCurrencyToDisplay={formatCurrencyToDisplay}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Controller
+                        name={`line_items.${index}.vat_rate_id`}
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                          <FormControl
+                            variant="outlined"
+                            fullWidth
+                            required
                             error={Boolean(error)}
-                          />
-                        </FormControl>
-                      )}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <MeasureUnit unitId={field.measure_unit_id} />
-                  </TableCell>
-                  <TableCell align="right">
-                    {field.price &&
-                      formatCurrencyToDisplay(
-                        field.price.value,
-                        field.price.currency
-                      )}
-                  </TableCell>
-                  <TableCell align="right">
-                    <TotalCell
-                      item={watchedLineItems[index]}
-                      formatCurrencyToDisplay={formatCurrencyToDisplay}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Controller
-                      name={`line_items.${index}.vat_rate_id`}
-                      control={control}
-                      render={({ field, fieldState: { error } }) => (
-                        <FormControl
-                          variant="outlined"
-                          fullWidth
-                          required
-                          error={Boolean(error)}
-                        >
-                          <Select
-                            {...field}
-                            id={field.name}
-                            labelId={field.name}
-                            size="small"
-                            defaultValue=""
-                            MenuProps={{ container: root }}
-                            onChange={(e) => {
-                              const vatRateId = e.target.value;
-                              const vatRate = vatRates?.data.find(
-                                (vatRate) => vatRate.id === vatRateId
-                              );
-
-                              if (!vatRate) {
-                                throw new Error('Vat rate not found');
-                              }
-
-                              setValue(
-                                `line_items.${index}.vat_rate_value`,
-                                vatRate.value
-                              );
-
-                              field.onChange(e);
-                            }}
                           >
-                            {vatRates?.data.map((vatRate) => (
-                              <MenuItem key={vatRate.id} value={vatRate.id}>
-                                {vatRate.value / 100}%
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      )}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <IconButton
-                      onClick={() => {
-                        remove(index);
-                      }}
+                            <Select
+                              {...field}
+                              id={field.name}
+                              labelId={field.name}
+                              size="small"
+                              defaultValue=""
+                              MenuProps={{ container: root }}
+                              onChange={(e) => {
+                                const vatRateId = e.target.value;
+                                const vatRate = vatRates?.data.find(
+                                  (vatRate) => vatRate.id === vatRateId
+                                );
+
+                                if (!vatRate) {
+                                  throw new Error('Vat rate not found');
+                                }
+
+                                setValue(
+                                  `line_items.${index}.vat_rate_value`,
+                                  vatRate.value
+                                );
+
+                                field.onChange(e);
+                              }}
+                            >
+                              {vatRates?.data.map((vatRate) => (
+                                <MenuItem key={vatRate.id} value={vatRate.id}>
+                                  {vatRate.value / 100}%
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        )}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => {
+                          remove(index);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <TableCell colSpan={7}>
+                    <Button
+                      startIcon={<AddIcon />}
+                      onClick={handleOpenProductsTable}
                     >
-                      <DeleteIcon />
-                    </IconButton>
+                      {t(i18n)`Add item`}
+                    </Button>
                   </TableCell>
                 </TableRow>
-              ))}
-              <TableRow>
-                <TableCell colSpan={7}>
-                  <Button
-                    startIcon={<AddIcon />}
-                    onClick={handleOpenProductsTable}
-                  >
-                    {t(i18n)`Add item`}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Collapse in={shouldShowVatExemptRationale}>
-          <Box sx={{ m: 2 }}>
-            <Controller
-              name="vat_exemption_rationale"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  label={t(i18n)`VAT Exempt Rationale`}
-                  multiline
-                  rows={4}
-                  fullWidth
-                  error={Boolean(error)}
-                />
-              )}
-            />
-          </Box>
-        </Collapse>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Collapse in={shouldShowVatExemptRationale}>
+            <Box sx={{ m: 2 }}>
+              <Controller
+                name="vat_exemption_rationale"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    label={t(i18n)`VAT Exempt Rationale`}
+                    multiline
+                    rows={4}
+                    fullWidth
+                    error={Boolean(error)}
+                  />
+                )}
+              />
+            </Box>
+          </Collapse>
+        </CardContent>
       </Card>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
-        <Stack>
-          <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
-          <Divider />
-          <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
-          <Divider />
-          <CardTableItem
-            label={
-              <Typography variant="body1" sx={{ fontWeight: 500 }}>{t(
-                i18n
-              )`Total`}</Typography>
-            }
-            value={totalPrice}
-            variant="subtitle1"
-            sx={{ fontWeight: 600 }}
-          />
-        </Stack>
+      <Card className={className + '-Totals'} variant="outlined">
+        <CardContent>
+          <Stack>
+            <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
+            <Divider sx={{ my: 1.5 }} />
+            <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
+            <Divider sx={{ my: 1.5 }} />
+            <CardTableItem
+              label={
+                <Typography variant="subtitle1">{t(i18n)`Total`}</Typography>
+              }
+              value={totalPrice}
+              variant="subtitle1"
+            />
+          </Stack>
+        </CardContent>
       </Card>
       <Dialog
+        className={className + '-Dialog-ProductsTable'}
         open={productsTableOpen}
         onClose={handleCloseProductsTable}
         alignDialog="right"
@@ -382,16 +407,18 @@ export const ItemsSection = ({
             handleCloseProductsTable();
             if (actualCurrency !== currency) {
               replace(
-                items.map((product) => prepareLineItem(product, vatRates))
+                items.map((product) => {
+                  return prepareLineItem(product, vatRates);
+                })
               );
               handleSetActualCurrency(currency);
 
               return;
             }
 
-            const productItemsMapped = items.map((product) =>
-              prepareLineItem(product, vatRates)
-            );
+            const productItemsMapped = items.map((product) => {
+              return prepareLineItem(product, vatRates);
+            });
             append(productItemsMapped);
             handleSetActualCurrency(currency);
           }}
@@ -400,3 +427,7 @@ export const ItemsSection = ({
     </Stack>
   );
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type VatRateListResponse = components['schemas']['VatRateListResponse'];

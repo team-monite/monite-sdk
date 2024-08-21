@@ -7,7 +7,7 @@ import { components } from '@/lib/monite-api/schema';
 
 import { GeneralService, getRandomItemFromArray } from './general.service';
 
-interface IReceivablesServiceOptions {
+interface ReceivablesServiceOptions {
   /**
    * Describes, how many receivables should be created.
    * By default, 15
@@ -63,10 +63,24 @@ interface IReceivablesServiceOptions {
    * No default value, this option must be set explicitly
    */
   paymentTerms: Array<components['schemas']['PaymentTermsResponse']>;
+
+  /**
+   * Describes, which payment reminders should be used for receivables.
+   *
+   * No default value, this option must be set explicitly
+   */
+  paymentReminders: Array<string | undefined>;
+
+  /**
+   * Describes, which payment reminders should be used for receivables.
+   *
+   * No default value, this option must be set explicitly
+   */
+  overdueReminders: Array<string | undefined>;
 }
 
 export class ReceivablesService extends GeneralService {
-  private options: IReceivablesServiceOptions = {
+  private options: ReceivablesServiceOptions = {
     count: 15,
     type: 'invoice',
     products: [],
@@ -75,13 +89,22 @@ export class ReceivablesService extends GeneralService {
     entityVats: [],
     paymentTerms: [],
     currency: 'EUR',
+    paymentReminders: [],
+    overdueReminders: [],
   };
 
-  public withOptions(options: Partial<IReceivablesServiceOptions>): this {
+  public withOptions(options: Partial<ReceivablesServiceOptions>): this {
     this.options = {
       ...this.options,
       ...options,
     };
+
+    // Add 'undefined' into the reminders list to randomly generate invoices without any reminder assigned
+    if (!this.options.paymentReminders.includes(undefined))
+      this.options.paymentReminders.push(undefined);
+
+    if (!this.options.overdueReminders.includes(undefined))
+      this.options.overdueReminders.push(undefined);
 
     return this;
   }
@@ -126,7 +149,7 @@ export class ReceivablesService extends GeneralService {
   ) {
     this.logger?.({ message: 'Issuing receivables...' });
 
-    const receivablesToIssue = receivables.filter((receivable, index) => {
+    const receivablesToIssue = receivables.filter((_, index) => {
       /**
        * Issue half of the receivables
        * We don't want to issue all of them
@@ -161,8 +184,45 @@ export class ReceivablesService extends GeneralService {
         `Counterpart ${counterpart.id} does not have default billing address`
       );
 
+    const paymentReminderId = getRandomItemFromArray(
+      this.options.paymentReminders
+    );
+    const overdueReminderId = getRandomItemFromArray(
+      this.options.overdueReminders
+    );
+
     switch (this.options.type) {
       case 'invoice': {
+        const payload: components['schemas']['ReceivableFacadeCreateInvoicePayload'] =
+          {
+            type: this.options.type,
+            currency: this.options.currency,
+            counterpart_id: counterpart.id,
+            counterpart_billing_address_id:
+              counterpart.default_billing_address_id,
+            line_items: this.options.products
+              /**
+               * Randomly take an item from `products`
+               *  (approximately products.length / 2 items)
+               */
+              .sort(() => 0.5 - Math.random())
+              .map((product) => {
+                const result = {
+                  product_id: product.id,
+                  quantity: faker.number.int({ min: 1, max: 20 }),
+                } as components['schemas']['LineItem'];
+                result.vat_rate_id = getRandomItemFromArray(
+                  this.options.vatRates
+                ).id;
+                return result;
+              }),
+            entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
+              .id,
+            payment_terms_id: getRandomItemFromArray(this.options.paymentTerms)
+              .id,
+            payment_reminder_id: paymentReminderId,
+            overdue_reminder_id: overdueReminderId,
+          };
         const { data, error, response } = await this.request.POST(
           `/receivables`,
           {
@@ -172,39 +232,15 @@ export class ReceivablesService extends GeneralService {
                 'x-monite-version': getMoniteApiVersion(),
               },
             },
-            body: {
-              type: this.options.type,
-              currency: this.options.currency,
-              counterpart_id: counterpart.id,
-              counterpart_billing_address_id:
-                counterpart.default_billing_address_id,
-              line_items: this.options.products
-                /**
-                 * Randomly take an item from `products`
-                 *  (approximately products.length / 2 items)
-                 */
-                .sort(() => 0.5 - Math.random())
-                .map((product) => {
-                  return {
-                    product_id: product.id,
-                    quantity: faker.number.int({ min: 1, max: 20 }),
-                    vat_rate_id: getRandomItemFromArray(this.options.vatRates)
-                      .id,
-                  };
-                }),
-              entity_vat_id_id: getRandomItemFromArray(this.options.entityVats)
-                .id,
-              payment_terms_id: getRandomItemFromArray(
-                this.options.paymentTerms
-              ).id,
-            },
+            body: payload,
           }
         );
 
         if (error) {
           console.error(
             `❌ Failed to create receivable for the entity_id: "${this.entityId}"`,
-            `x-request-id: ${response.headers.get('x-request-id')}`
+            `x-request-id: ${response.headers.get('x-request-id')}`,
+            `payload: ${JSON.stringify(payload)}`
           );
 
           throw new Error(`Receivable create failed: ${JSON.stringify(error)}`);

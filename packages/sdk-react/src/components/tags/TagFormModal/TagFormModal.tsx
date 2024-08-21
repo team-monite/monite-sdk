@@ -1,7 +1,8 @@
-import React, { useEffect, useId } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useEffect, useId } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+import { components } from '@/api';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -10,17 +11,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TagReadSchema } from '@monite/sdk-api';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
   TextField,
-  Button,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import * as yup from 'yup';
 
@@ -42,8 +41,8 @@ interface ITag {
 
 interface TagFormModalProps {
   tag?: ITag;
-  onCreate?: (tag: TagReadSchema) => void;
-  onUpdate?: (tag: TagReadSchema) => void;
+  onCreate?: (tag: components['schemas']['TagReadSchema']) => void;
+  onUpdate?: (tag: components['schemas']['TagReadSchema']) => void;
   onClose?: () => void;
 
   /** Whether the modal is open or not */
@@ -74,8 +73,7 @@ const TagFormModalBase = ({
   open,
 }: TagFormModalProps) => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
   const tagCreateMutation = api.tags.postTags.useMutation(
     {},
     {

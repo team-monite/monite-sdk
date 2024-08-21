@@ -1,28 +1,20 @@
+import { components, paths } from '@/api';
 import { generateValuesByFields } from '@/components/onboarding/transformers';
 import {
   mapPersonToOnboarding,
   personsList as personsListFixture,
 } from '@/mocks/onboarding';
-import {
-  ErrorSchemaResponse,
-  OptionalPersonRequest,
-  PERSONS_ENDPOINT,
-  PersonResponse,
-  PersonsResponse,
-  PersonRequest,
-  ApiError,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
 import { personFixture } from './personsFixtures';
 
-const personsPath = `*${PERSONS_ENDPOINT}`;
+const personsPath: `*${Extract<keyof paths, '/persons'>}` = `*/persons`;
 
 let onboardingPersonsList = personsListFixture;
 
 export const personsHandlers = [
-  http.get<{}, undefined, PersonsResponse | ApiError>(personsPath, async () => {
+  http.get<{}, undefined, PersonsResponse>(personsPath, async () => {
     await delay();
 
     return HttpResponse.json(
@@ -37,7 +29,7 @@ export const personsHandlers = [
     );
   }),
 
-  http.post<{}, PersonRequest, PersonResponse | ApiError>(
+  http.post<{}, PersonRequest, PersonResponse>(
     personsPath,
     async ({ request }) => {
       const person = await request.json();
@@ -83,3 +75,9 @@ export const personsHandlers = [
     );
   }),
 ];
+
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type OptionalPersonRequest = components['schemas']['OptionalPersonRequest'];
+type PersonResponse = components['schemas']['PersonResponse'];
+type PersonsResponse = components['schemas']['PersonsResponse'];
+type PersonRequest = components['schemas']['PersonRequest'];

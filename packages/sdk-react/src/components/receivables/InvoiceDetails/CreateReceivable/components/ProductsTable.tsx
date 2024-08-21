@@ -1,7 +1,15 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import {
+  BaseSyntheticEvent,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TableComponents, TableVirtuoso } from 'react-virtuoso';
 
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { Dialog } from '@/components/Dialog';
 import { ProductDetails } from '@/components/products';
@@ -19,15 +27,14 @@ import {
   getCreateInvoiceProductsValidationSchema,
   CreateReceivablesProductsFormProps,
 } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
-import { useInfiniteProducts } from '@/core/queries';
 import { CenteredContentBox } from '@/ui/box';
 import { MoniteCurrency } from '@/ui/Currency';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, ProductServiceResponse } from '@monite/sdk-api';
 import AddIcon from '@mui/icons-material/Add';
 import FileIcon from '@mui/icons-material/InsertDriveFile';
 import {
@@ -84,7 +91,7 @@ export interface ProductsTableProps {
 }
 
 const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
-  Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+  Scroller: forwardRef<HTMLDivElement>((props, ref) => (
     <TableContainer component={Paper} {...props} ref={ref} />
   )),
   Table: (props) => (
@@ -95,14 +102,14 @@ const VirtuosoTableComponents: TableComponents<ProductServiceResponse> = {
       sx={{ borderCollapse: 'separate' }}
     />
   ),
-  TableHead: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableHead: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableHead {...props} ref={ref} />
   )),
-  TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+  TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
     <TableBody {...props} ref={ref} />
   )),
   TableFoot: ({ children }) => {
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
   },
 };
 
@@ -159,41 +166,40 @@ export const ProductsTable = ({
   });
   const currency = watch('currency');
   const dialogContent = useDialog();
+  const { api } = useMoniteContext();
+
   const {
     data: productsInfinity,
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteProducts(
+  } = api.products.getProducts.useInfiniteQuery(
     {
-      limit: 20,
-      currency,
-      type: currentFilter[FILTER_TYPE_TYPE] || undefined,
-      nameIcontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      query: {
+        limit: 20,
+        currency,
+        type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+        name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      },
     },
     {
-      enabled: Boolean(currency),
+      initialPageParam: {
+        query: {
+          pagination_token: undefined,
+        },
+      },
+      getNextPageParam: (lastPage) => {
+        if (!lastPage.next_pagination_token) return;
+        return {
+          query: {
+            pagination_token: lastPage.next_pagination_token,
+          },
+        };
+      },
+      enabled: !!currency,
     }
   );
 
-  /**
-   * We need to flatten the product array because we use `useInfiniteQuery`
-   *  and it returns an array of pages.
-   * ### Example
-   * ```ts
-   * {
-   *  pages: [
-   *    {
-   *      data: [First page data]
-   *    },
-   *    {
-   *      data: [Second page data]
-   *    }
-   *  ]
-   * }
-   * ```
-   * @see {@link https://react-query.tanstack.com/guides/infinite-queries#using-infinite-queries-with-react-table}
-   */
   const flattenProducts = useMemo(
     () =>
       productsInfinity
@@ -204,7 +210,6 @@ export const ProductsTable = ({
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-productsTable-${useId()}`;
 
   /**
@@ -221,10 +226,10 @@ export const ProductsTable = ({
    *  -> `ProductsTable` (form)
    *
    * To prevent this, we need to stop the propagation of the event.
-   * @see {@link https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals}
+   * [See](https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
    */
   const handleSubmitWithoutPropagation = useCallback(
-    (e: React.BaseSyntheticEvent) => {
+    (e: BaseSyntheticEvent) => {
       e.preventDefault();
       e.stopPropagation();
       handleSubmit((values) => {
@@ -379,13 +384,12 @@ export const ProductsTable = ({
               </Box>
               <Paper
                 variant="outlined"
-                style={{ height: '100%', overflow: 'scroll' }}
+                style={{ height: '100%' }}
                 sx={{
                   '& .MuiListItem-root': {
                     borderBottom: '1px solid',
                     borderColor: 'divider',
                   },
-                  borderRadius: 3,
                 }}
               >
                 <TableVirtuoso
@@ -455,7 +459,7 @@ export const ProductsTable = ({
                     }
 
                     return (
-                      <React.Fragment>
+                      <>
                         <TableRow>
                           {tableHeadCells.map((headCell) => (
                             <TableCell
@@ -477,7 +481,7 @@ export const ProductsTable = ({
                             </TableCell>
                           ))}
                         </TableRow>
-                      </React.Fragment>
+                      </>
                     );
                   }}
                   fixedFooterContent={() => {
@@ -508,7 +512,7 @@ export const ProductsTable = ({
                     );
                   }}
                   itemContent={(_index, row) => (
-                    <React.Fragment>
+                    <>
                       <TableCell>
                         <Checkbox checked={isSelected(row).selected} />
                       </TableCell>
@@ -521,7 +525,7 @@ export const ProductsTable = ({
                             )
                           : ''}
                       </TableCell>
-                    </React.Fragment>
+                    </>
                   )}
                   endReached={() => hasNextPage && fetchNextPage()}
                 />
@@ -542,3 +546,6 @@ export const ProductsTable = ({
     </>
   );
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

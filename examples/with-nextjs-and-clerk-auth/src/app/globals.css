@@ -1,5 +1,60 @@
+:root {
+  --demo-padding: 8px;
+  --demo-padding-2: calc(var(--demo-padding) * 2);
+  --demo-padding-3: calc(var(--demo-padding) * 3);
+  --demo-padding-4: calc(var(--demo-padding) * 4);
+  --demo-padding-5: calc(var(--demo-padding) * 5);
+  --demo-padding-6: calc(var(--demo-padding) * 6);
+  --demo-button-blue: #3737FF;
+  --demo-light-gray: #f9f9f9;
+  --demo-divider: #DDDDDD;
+  --demo-form-header: 88px;
+}
+
 body,
 html {
   margin: 0;
   padding: 0;
+}
+
+.Monite-ContentContainer {
+  width: inherit;
+  height: inherit;
+
+  > .Monite-PageContainer {
+    padding: var(--demo-padding-4) var(--demo-padding-4) 0 var(--demo-padding-4);
+    height: inherit;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+  }
+}
+
+
+.Monite-Dashboard {
+  overflow-y: auto !important;
+  background-color: var(--demo-light-gray) !important;
+
+
+  img {
+    max-width: 100%;
+    height: auto;
+
+    &:last-child {
+      margin-bottom: var(--demo-padding-3);
+    }
+  }
+}
+
+.Monite-Projects-Header {
+  width: 100%;
+  margin-bottom: 80px;
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+  }
 }

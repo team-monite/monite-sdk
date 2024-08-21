@@ -1,9 +1,8 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
-import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartAddress } from '@monite/sdk-api';
 import {
   Card,
   Table,
@@ -15,12 +14,12 @@ import {
 } from '@mui/material';
 
 type InvoiceToProps = {
-  counterpartId?: string;
-  counterpartAddress: CounterpartAddress;
+  counterpartName: ReactNode;
+  counterpartAddress: components['schemas']['CounterpartAddress'];
 };
 
 export const InvoiceTo = ({
-  counterpartId,
+  counterpartName,
   counterpartAddress,
 }: InvoiceToProps) => {
   const { i18n } = useLingui();
@@ -32,9 +31,7 @@ export const InvoiceTo = ({
         <Table>
           <TableBody>
             <TableRow>
-              <TableCell>
-                <InvoiceCounterpartName counterpartId={counterpartId} />
-              </TableCell>
+              <TableCell>{counterpartName}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>

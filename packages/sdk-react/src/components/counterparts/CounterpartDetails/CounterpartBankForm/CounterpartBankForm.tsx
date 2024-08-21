@@ -1,4 +1,4 @@
-import React, { useEffect, useId } from 'react';
+import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -36,16 +36,12 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
     methods: { control, handleSubmit, watch, clearErrors, resetField },
     counterpart,
     bank,
-    formRef,
-    submitForm,
+    formId,
     saveBank,
     isLoading,
   } = useCounterpartBankForm(props);
   const { root } = useRootElements();
   const country = watch('country');
-
-  // eslint-disable-next-line lingui/no-unlocalized-strings
-  const formName = `Monite-Form-counterpartBank-${useId()}`;
 
   useEffect(() => {
     if (country) {
@@ -88,12 +84,12 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption" data-testid="bankName">
-          {Boolean(bank) ? watch('name') : t(i18n)`Add bank account`}
+          {bank ? watch('name') : t(i18n)`Add bank account`}
         </Typography>
       </Stack>
       <Divider />
       <DialogContent>
-        <form id={formName} ref={formRef} onSubmit={handleSubmit(saveBank)}>
+        <form id={formId} onSubmit={handleSubmit(saveBank)} noValidate>
           <Stack spacing={3}>
             <Controller
               name="name"
@@ -222,14 +218,13 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           {t(i18n)`Cancel`}
         </Button>
         <Button
+          type="submit"
+          form={formId}
           variant="outlined"
           color="primary"
-          onClick={submitForm}
           disabled={isLoading}
         >
-          {Boolean(bank)
-            ? t(i18n)`Update bank account`
-            : t(i18n)`Add bank account`}
+          {bank ? t(i18n)`Update bank account` : t(i18n)`Add bank account`}
         </Button>
       </DialogActions>
     </>

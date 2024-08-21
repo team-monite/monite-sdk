@@ -1,7 +1,7 @@
 {
   "name": "@team-monite/eslint-plugin",
   "packageManager": "yarn@3.5.0",
-  "version": "2.0.2",
+  "version": "2.0.3-beta.0",
   "private": true,
   "scripts": {
     "test": "jest --runInBand --coverage",
@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "@tanstack/eslint-plugin-query": "~5.28.11",
-    "@types/eslint": "~8.37.0",
-    "@typescript-eslint/eslint-plugin": "~6.11.0",
-    "@typescript-eslint/parser": "~6.11.0",
+    "@typescript-eslint/eslint-plugin": "~7.18.0",
+    "@typescript-eslint/parser": "~7.18.0",
+    "@typescript-eslint/utils": "5.62.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "~3.5.5",
-    "eslint-plugin-import": "~2.27.5",
+    "eslint-import-resolver-typescript": "~3.6.1",
+    "eslint-plugin-import": "~2.29.1",
     "eslint-plugin-lingui": "~0.2.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react-hooks": "~4.6.0",
@@ -26,11 +26,12 @@
   },
   "devDependencies": {
     "@swc/jest": "~0.2.26",
+    "@types/eslint": "~8.56.10",
     "@types/jest": "~29.5.11",
     "@typescript-eslint/utils": "5.62.0",
     "jest": "~29.7.0",
     "rimraf": "~5.0.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.5.4"
   },
   "keywords": [
     "eslint",
@@ -39,7 +40,7 @@
   "peerDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "eslint": "~8.38.0",
+    "eslint": "~8.57.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

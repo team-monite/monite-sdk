@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -56,7 +56,12 @@ export const SearchField = ({ label, onChange }: Props) => {
   }, [debouncedOnChange]);
 
   return (
-    <FormControl variant="outlined" fullWidth aria-label="search-by-name">
+    <FormControl
+      variant="outlined"
+      fullWidth
+      aria-label="search-by-name"
+      className="Monite-SearchField Monite-FilterControl"
+    >
       <InputLabel htmlFor="search-by-name">{label}</InputLabel>
       <OutlinedInput
         id="search-by-name"

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Controller, FieldPath } from 'react-hook-form';
 import type {
   FieldValues,
   FieldError,
@@ -20,37 +19,44 @@ import type {
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-interface RHFAutocompleteProps<T extends FieldValues>
-  extends UseControllerProps<T> {
+interface RHFAutocompleteBaseProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> extends UseControllerProps<TFieldValues, TName> {
   label: string;
 }
 
-export type IRHFAutocomplete<
-  F extends FieldValues,
-  A
-> = RHFAutocompleteProps<F> &
-  Optional<CustomAutocompleteProps<A>, 'renderInput'> &
+export type RHFAutocompleteProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TOption
+> = RHFAutocompleteBaseProps<TFieldValues, TName> &
+  Optional<CustomAutocompleteProps<TOption>, 'renderInput'> &
   TextFieldProps;
 
-interface CustomAutocompleteProps<A>
+interface CustomAutocompleteProps<TOption>
   extends AutocompleteProps<
-    A,
+    TOption,
     boolean | undefined,
     boolean | undefined,
     boolean | undefined
   > {
-  optionKey?: keyof A;
-  labelKey?: keyof A;
+  optionKey?: keyof TOption;
+  labelKey?: keyof TOption;
 }
 
-type CustomAutocompleteValue<A> = AutocompleteValue<
-  A,
+type CustomAutocompleteValue<TOption> = AutocompleteValue<
+  TOption,
   boolean | undefined,
   boolean | undefined,
   boolean | undefined
 >;
 
-export const RHFAutocomplete = <F extends FieldValues, A>({
+export const RHFAutocomplete = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+  TOption
+>({
   control,
   name,
   label,
@@ -60,8 +66,13 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
   options,
   required,
   slotProps,
+  rules,
+  shouldUnregister,
+  disabled,
+  defaultValue,
+  onChange,
   ...other
-}: IRHFAutocomplete<F, A>) => {
+}: RHFAutocompleteProps<TFieldValues, TName, TOption>) => {
   const getRenderInput = (error?: FieldError) => {
     if (renderInput) return renderInput;
 
@@ -74,14 +85,15 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
         helperText={error?.message}
         inputProps={{
           ...params.inputProps,
+          autoComplete: 'new-password',
         }}
       />
     );
   };
 
   const getChangedValue = (
-    value: CustomAutocompleteValue<A>
-  ): CustomAutocompleteValue<A> => {
+    value: CustomAutocompleteValue<TOption>
+  ): CustomAutocompleteValue<TOption> => {
     if (!value) return '';
     if (typeof value === 'string') return value;
     if (Array.isArray(value)) return value;
@@ -93,7 +105,9 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
    * getValue is used to get value from options
    * !!! Note !!! now we support only single value, but we should support multiple values
    */
-  const getValue = (value: CustomAutocompleteValue<A>): A | A[] | null => {
+  const getValue = (
+    value: CustomAutocompleteValue<TOption>
+  ): TOption | TOption[] | null => {
     if (!value) return null;
 
     if (optionKey)
@@ -105,7 +119,7 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
     return options.find((option) => String(option) === String(value)) ?? null;
   };
 
-  const getOptionLabel = (option: string | A): string => {
+  const getOptionLabel = (option: TOption | string): string => {
     if (typeof option === 'string') return option;
     if (!labelKey) return '';
     return `${option[labelKey]}`;
@@ -117,6 +131,10 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
     <Controller
       control={control}
       name={name}
+      rules={rules}
+      shouldUnregister={shouldUnregister}
+      disabled={disabled}
+      defaultValue={defaultValue}
       render={({
         field,
         fieldState: { error, isTouched },
@@ -136,10 +154,11 @@ export const RHFAutocomplete = <F extends FieldValues, A>({
           blurOnSelect
           onChange={(event, value, reason, details) => {
             field.onChange(getChangedValue(value));
-            other.onChange?.(event, value, reason, details);
+            onChange?.(event, value, reason, details);
           }}
           value={getValue(field.value)}
           id={name}
+          getOptionLabel={getOptionLabel}
           renderInput={getRenderInput(
             isTouched || !isValid ? error : undefined
           )}

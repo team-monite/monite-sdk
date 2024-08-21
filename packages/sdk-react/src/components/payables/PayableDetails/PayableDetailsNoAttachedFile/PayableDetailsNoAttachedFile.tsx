@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -9,6 +7,7 @@ export const PayableDetailsNoAttachedFile = () => {
   const { i18n } = useLingui();
   return (
     <Box
+      className="Monite-PayableDetailsNoAttachedFile"
       sx={{
         width: '100%',
         height: '100%',

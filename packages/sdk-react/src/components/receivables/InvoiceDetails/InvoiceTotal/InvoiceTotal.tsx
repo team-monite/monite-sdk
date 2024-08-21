@@ -1,9 +1,7 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ReceivableResponse } from '@monite/sdk-api';
 import {
   Box,
   Card,
@@ -14,14 +12,13 @@ import {
   Typography,
 } from '@mui/material';
 
-export type PayablesDetailsInfoProps = {
-  invoice: ReceivableResponse;
-};
-
-export const InvoiceTotal = ({ invoice }: PayablesDetailsInfoProps) => {
+export const InvoiceTotal = ({
+  currency,
+  total_amount,
+  total_vat_amount,
+}: components['schemas']['ReceivableResponse']) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay } = useCurrencies();
-  const { currency, total_amount, total_vat_amount } = invoice;
 
   return (
     <Box mt={2}>

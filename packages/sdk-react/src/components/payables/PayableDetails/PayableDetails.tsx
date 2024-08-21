@@ -1,4 +1,4 @@
-import React from 'react';
+import { useId } from 'react';
 
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableDetailsAttachFile } from '@/components/payables/PayableDetails/PayableDetailsAttachFile';
@@ -11,9 +11,9 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { FileViewer } from '@/ui/FileViewer';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OcrStatusEnum, PayableActionEnum } from '@monite/sdk-api';
 import {
   Alert,
   Backdrop,
@@ -90,16 +90,18 @@ const PayableDetailsBase = ({
   const { data: isUpdateAllowed, isLoading: isUpdateAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.UPDATE,
+      action: 'update',
       entityUserId: payable?.was_created_by_user_id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'payable',
-      action: PayableActionEnum.READ,
+      action: 'read',
       entityUserId: payable?.was_created_by_user_id,
     });
+
+  const payableDetailsFormId = `Monite-PayableDetailsForm-${useId()}`;
 
   if (isReadAllowedLoading || isUpdateAllowedLoading) {
     return <LoadingPage />;
@@ -118,10 +120,11 @@ const PayableDetailsBase = ({
     );
   }
 
+  const className = 'Monite-PayableDetails';
   return (
     <>
       <Box
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(ScopedCssBaselineContainerClassName, className)}
         sx={{
           width: '100%',
           height: '100%',
@@ -145,6 +148,7 @@ const PayableDetailsBase = ({
           approveInvoice={approveInvoice}
           cancelInvoice={cancelInvoice}
           payInvoice={payInvoice}
+          payableDetailsFormId={payableDetailsFormId}
           onClose={onClose}
         />
         <Divider />
@@ -175,7 +179,7 @@ const PayableDetailsBase = ({
             >
               {payable &&
                 (payable.status === 'new' || payable.status === 'draft') &&
-                payable.ocr_status === OcrStatusEnum.ERROR && (
+                payable.ocr_status === 'error' && (
                   <Box mb={2}>
                     <Alert severity="error">
                       {t(
@@ -186,12 +190,12 @@ const PayableDetailsBase = ({
                 )}
               {isEdit ? (
                 <PayableDetailsForm
-                  setEdit={setEdit}
                   savePayable={saveInvoice}
                   createPayable={createInvoice}
                   payable={payable}
                   optionalFields={optionalFields}
                   lineItems={lineItems}
+                  payableDetailsFormId={payableDetailsFormId}
                 />
               ) : (
                 payable && (

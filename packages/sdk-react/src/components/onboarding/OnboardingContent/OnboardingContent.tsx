@@ -1,10 +1,9 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { useOnboardingRequirementsData } from '@/core/queries/useOnboarding';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OnboardingRequirement } from '@monite/sdk-api';
 import { Alert, LinearProgress } from '@mui/material';
 
 import { useOnboardingRequirementsContext } from '../context';
@@ -64,9 +63,9 @@ export function OnboardingContent() {
         />
       }
       content={
-        !!error ? (
+        error ? (
           <Alert icon={false} severity="error">
-            {error.message}
+            {getAPIErrorMessage(i18n, error)}
           </Alert>
         ) : (
           <Step />
@@ -217,3 +216,5 @@ const getComponent = (
 
   throw new Error(`Unknown step component ${JSON.stringify(requirement)}`);
 };
+
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

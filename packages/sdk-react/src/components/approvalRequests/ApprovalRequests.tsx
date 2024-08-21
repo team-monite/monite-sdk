@@ -1,4 +1,3 @@
-import React from 'react';
 import { toast } from 'react-hot-toast';
 
 import { PageHeader } from '@/components';
@@ -7,11 +6,9 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CircularProgress } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { ApprovalRequestsTable } from './ApprovalRequestsTable';
 
@@ -23,15 +20,14 @@ export const ApprovalRequests = () => (
 
 const ApprovalRequestsBase = () => {
   const { i18n } = useLingui();
-  const { api } = useMoniteContext();
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   const { data: user } = useEntityUserByAuthToken();
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'approval_request',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
@@ -43,7 +39,6 @@ const ApprovalRequestsBase = () => {
   const onApprove = (approvalRequestId: string) =>
     approveRequestMutation.mutateAsync(
       {
-        body: undefined,
         path: {
           approval_request_id: approvalRequestId,
         },

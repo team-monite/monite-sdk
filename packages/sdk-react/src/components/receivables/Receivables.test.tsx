@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
@@ -121,13 +119,3 @@ describe('Receivables', () => {
     });
   });
 });
-
-function checkReceivableQueriesLoaded(queryClient: QueryClient) {
-  const data = queryClient.getQueriesData({
-    exact: false,
-    queryKey: ['receivable'],
-    predicate: (query) => query.state.status === 'success',
-  });
-
-  if (!data.length) throw new Error('Receivables query is not executed');
-}

@@ -4,14 +4,19 @@ import { CounterpartsService } from '@/lib/monite-api/demo-data-generator/counte
 import { EntityService } from '@/lib/monite-api/demo-data-generator/entity.service';
 import {
   getRandomItemFromArray,
-  ILogger,
+  Logger,
 } from '@/lib/monite-api/demo-data-generator/general.service';
 import { MeasureUnitsService } from '@/lib/monite-api/demo-data-generator/measure-units.service';
+import {
+  createOverdueReminder,
+  createPaymentReminder,
+} from '@/lib/monite-api/demo-data-generator/payment-reminders';
 import { PaymentTermsService } from '@/lib/monite-api/demo-data-generator/paymentTerms.service';
 import { ProductsService } from '@/lib/monite-api/demo-data-generator/products.service';
 import { ReceivablesService } from '@/lib/monite-api/demo-data-generator/receivables.service';
 import { VatRatesService } from '@/lib/monite-api/demo-data-generator/vatRates.service';
 import type { AccessToken } from '@/lib/monite-api/fetch-token';
+import { createMoniteClient } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
 import { generateBankAccount } from './generate-bank-account';
@@ -23,7 +28,7 @@ import { generateCounterpartsWithPayables } from './generate-payables';
  */
 export const generateEntity = async (
   { entity_id }: Record<'entity_id', string>,
-  { logger, token }: { token: AccessToken; logger: ILogger }
+  { logger, token }: { token: AccessToken; logger: Logger }
 ) => {
   const serviceConstructorProps = {
     token,
@@ -102,6 +107,16 @@ export const generateEntity = async (
     /** Merge products & services */
     const lineItems = [...products, ...services];
 
+    const moniteClient = createMoniteClient(token);
+    const paymentReminder = await createPaymentReminder({
+      moniteClient,
+      entity_id,
+    });
+    const overdueReminder = await createOverdueReminder({
+      moniteClient,
+      entity_id,
+    });
+
     const receivablesService = new ReceivablesService(serviceConstructorProps);
 
     const invoices = await receivablesService
@@ -114,6 +129,8 @@ export const generateEntity = async (
         paymentTerms,
         type: 'invoice',
         count: 20,
+        paymentReminders: [paymentReminder.id],
+        overdueReminders: [overdueReminder.id],
       })
       .create();
 

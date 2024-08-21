@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Paper, styled, useMediaQuery, useScrollTrigger } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 

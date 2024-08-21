@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
@@ -12,7 +12,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, InvoiceResponsePayload } from '@monite/sdk-api';
 import { Box, Button, CircularProgress } from '@mui/material';
 
 export const Receivables = () => (
@@ -63,20 +62,23 @@ const ReceivablesBase = () => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
+
+  const className = 'Monite-Receivables';
 
   return (
     <>
       <PageHeader
+        className={className + '-Header'}
         title={
           <>
             {t(i18n)`Sales`}
@@ -107,6 +109,7 @@ const ReceivablesBase = () => {
         />
       )}
       <Dialog
+        className={className + '-Dialog-ReceivableDetails'}
         open={openDetails}
         fullScreen
         container={root}
@@ -116,6 +119,7 @@ const ReceivablesBase = () => {
         <InvoiceDetails id={invoiceId} />
       </Dialog>
       <Dialog
+        className={className + '-Dialog-CreateReceivable'}
         open={isCreateInvoiceDialogOpen}
         container={root}
         fullScreen
@@ -124,7 +128,7 @@ const ReceivablesBase = () => {
         }}
       >
         <InvoiceDetails
-          type={InvoiceResponsePayload.type.INVOICE}
+          type={'invoice'}
           onCreate={() => {
             setIsCreateInvoiceDialogOpen(false);
             setActiveTab(ReceivablesTableTabEnum.Invoices);

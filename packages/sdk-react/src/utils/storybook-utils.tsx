@@ -1,5 +1,6 @@
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
+import { apiVersion } from '@/api/api-version';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import { messages as enLocaleMessages } from '@/core/i18n/locales/en/messages';
@@ -7,20 +8,19 @@ import { entityIds } from '@/mocks/entities';
 import { css, Global } from '@emotion/react';
 import { setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { apiVersion, GrantType, MoniteSDK } from '@monite/sdk-api';
+import { MoniteSDK } from '@monite/sdk-api';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material';
 import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
-  moniteDark as themeMoniteDark,
-  moniteLight as themeMoniteLight,
+  materialDark as themeMoniteDark,
+  materialLight as themeMoniteLight,
 } from '@team-monite/sdk-themes';
 
 import dateFnsEnUsLocale from 'date-fns/locale/en-US';
@@ -58,16 +58,15 @@ export const withGlobalStorybookDecorator = (
 ): any => {
   const { monite } = cb?.() ?? { monite: undefined };
 
-  const customStyles = {
-    components: {},
-  };
-
   return withThemeFromJSXProvider({
     themes: {
       light: themeMoniteLight,
       dark: themeMoniteDark,
     },
-    defaultTheme: 'light',
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    defaultTheme: window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light',
     Provider: (...args: any[]) => {
       const updatedArgs = monite ? { ...args[0], monite } : args[0];
 
@@ -77,7 +76,7 @@ export const withGlobalStorybookDecorator = (
 };
 
 export const GlobalStorybookDecorator = (props: {
-  children: React.ReactNode;
+  children: ReactNode;
   theme?: ThemeOptions;
   monite?: MoniteSDK;
 }) => {
@@ -90,7 +89,7 @@ export const GlobalStorybookDecorator = (props: {
         apiUrl,
         fetchToken: async () => {
           const request = {
-            grant_type: GrantType.ENTITY_USER,
+            grant_type: 'entity_user',
             client_id: 'c59964ce-d1c5-4cf3-8e22-9ab0c5e2ffc4',
             client_secret: '49b55da0-f917-4c90-a2be-e45693600bf7',
             entity_user_id: '8ee9e41c-cb3c-4f85-84c8-58aa54b09f44',
@@ -164,8 +163,6 @@ function FallbackProviders({
     });
   }, []);
 
-  const fallbackQueryClient = useMemo(() => new QueryClient(), []);
-
   return (
     <ThemeProvider theme={theme}>
       <I18nProvider
@@ -178,9 +175,7 @@ function FallbackProviders({
           dateAdapter={AdapterDateFns}
           adapterLocale={dateFnsEnUsLocale}
         >
-          <QueryClientProvider client={fallbackQueryClient}>
-            {children}
-          </QueryClientProvider>
+          {children}
         </LocalizationProvider>
       </I18nProvider>
     </ThemeProvider>

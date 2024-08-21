@@ -1,18 +1,9 @@
-import React, {
-  ComponentProps,
-  ContextType,
-  createContext,
-  ReactNode,
-  useContext,
-  useMemo,
-} from 'react';
+import { createContext, ReactNode, useContext, useMemo } from 'react';
 
-import { createAPIClient, MoniteAPIProvider } from '@monite/sdk-react';
+import { createAPIClient } from '@monite/sdk-react';
+import { QraftContextValue } from '@openapi-qraft/react';
+import { QraftSecureRequestFn } from '@openapi-qraft/react/Unstable_QraftSecureRequestFn';
 import { useQueryClient } from '@tanstack/react-query';
-
-type APIContext = ContextType<
-  ComponentProps<typeof MoniteAPIProvider>['APIContext']
->;
 
 export const SDKDemoAPIProvider = ({
   children,
@@ -31,27 +22,48 @@ export const SDKDemoAPIProvider = ({
 }) => {
   const queryClient = useQueryClient();
 
-  const client = useMemo(
+  const { requestFn, api, version } = useMemo(
     () => createAPIClient({ context: SDKDemoQraftContext, entityId }),
     [entityId]
   );
 
   return (
-    <MoniteAPIProvider
-      apiUrl={apiUrl}
-      requestFn={client.requestFn}
-      fetchToken={fetchToken}
-      queryClient={queryClient}
-      APIContext={SDKDemoQraftContext}
+    <QraftSecureRequestFn
+      requestFn={requestFn}
+      securitySchemes={{
+        HTTPBearer: async () => {
+          const { access_token } = await fetchToken();
+          return {
+            token: access_token,
+            refreshInterval: 10 * 60_000,
+          };
+        },
+      }}
     >
-      <SDKDemoAPIContext.Provider value={client}>
-        {children}
-      </SDKDemoAPIContext.Provider>
-    </MoniteAPIProvider>
+      {(securedRequestFn) => (
+        <SDKDemoQraftContext.Provider
+          value={{
+            requestFn: securedRequestFn,
+            baseUrl: apiUrl,
+            queryClient: queryClient,
+          }}
+        >
+          <SDKDemoAPIContext.Provider
+            value={{
+              api,
+              version,
+              requestFn: securedRequestFn,
+            }}
+          >
+            {children}
+          </SDKDemoAPIContext.Provider>
+        </SDKDemoQraftContext.Provider>
+      )}
+    </QraftSecureRequestFn>
   );
 };
 
-const SDKDemoQraftContext = createContext<APIContext>(undefined);
+const SDKDemoQraftContext = createContext<QraftContextValue>(undefined);
 const SDKDemoAPIContext = createContext<ReturnType<typeof createAPIClient>>(
   undefined!
 );

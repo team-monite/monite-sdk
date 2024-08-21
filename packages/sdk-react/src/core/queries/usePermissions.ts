@@ -1,10 +1,4 @@
-import {
-  ActionEnum,
-  ActionSchema,
-  PayableActionEnum,
-  PayableActionSchema,
-  PermissionEnum,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import {
   useEntityUserByAuthToken,
@@ -71,13 +65,13 @@ export type commonPermissionsObjectType =
 export type payablePermissionsObjectType = 'payable';
 
 type CommonOperator = {
-  method: commonPermissionsObjectType;
-  action: ActionEnum;
+  method: components['schemas']['CommonSchema']['object_type'];
+  action: components['schemas']['ActionEnum'];
 };
 
 type PayableOperator = {
-  method: payablePermissionsObjectType;
-  action: PayableActionEnum;
+  method: components['schemas']['PayableSchema']['object_type'];
+  action: components['schemas']['PayableActionEnum'];
 };
 
 type IsActionAllowedType = { entityUserId?: string } & (
@@ -86,16 +80,19 @@ type IsActionAllowedType = { entityUserId?: string } & (
 );
 
 interface PermissionMap
-  extends Record<CommonOperator['method'], Array<ActionSchema>> {
-  payable: Array<PayableActionSchema>;
+  extends Record<
+    CommonOperator['method'],
+    Array<components['schemas']['ActionSchema']>
+  > {
+  payable: Array<components['schemas']['PayableActionSchema']>;
 }
 
 /**
  * ## Example
  * ```tsx
- * useIsActionAllowed('workflow', ActionEnum.CREATE);
- * useIsActionAllowed('payable', PayableActionEnum.CREATE);
- * useIsActionAllowed('payable', PayableActionEnum.CREATE, '5b4daced-6b9a-4707-83c6-08193d999fab');
+ * useIsActionAllowed('workflow', 'create');
+ * useIsActionAllowed('payable', Payable'create');
+ * useIsActionAllowed('payable', Payable'create', '5b4daced-6b9a-4707-83c6-08193d999fab');
  * ```
  * @param method What method we would like to check permissions for (payable, counterpart, etc.)
  * @param action What action we would like to check (create, update, delete, etc.)
@@ -143,7 +140,12 @@ export function isActionAllowed({
   entityUserIdFromAuthToken,
 }: {
   action: PayableOperator['action'] | CommonOperator['action'];
-  actions: Array<ActionSchema | PayableActionSchema> | undefined;
+  actions:
+    | Array<
+        | components['schemas']['ActionSchema']
+        | components['schemas']['PayableActionSchema']
+      >
+    | undefined;
   entityUserId?: string;
   entityUserIdFromAuthToken: string | undefined;
 }) {
@@ -154,11 +156,11 @@ export function isActionAllowed({
   if (!actionSchema) return false;
 
   /** We have to handle `ALLOWED_FOR_OWN` with the user identifier */
-  if (actionSchema.permission === PermissionEnum.ALLOWED_FOR_OWN) {
+  if (actionSchema.permission === 'allowed_for_own') {
     return entityUserIdFromAuthToken === entityUserId;
   }
 
-  return actionSchema.permission === PermissionEnum.ALLOWED;
+  return actionSchema.permission === 'allowed';
 }
 
 /**

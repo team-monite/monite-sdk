@@ -24,6 +24,8 @@ import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
 import { productsHandlers } from './products';
 import { receivableHandlers } from './receivables';
+import { recurrencesHandlers } from './recurrences';
+import { remindersHandlers } from './reminders';
 import { rolesHandlers } from './roles';
 import { tagsHandlers } from './tags';
 import { vatRatesHandlers } from './vatRates';
@@ -33,6 +35,7 @@ export const handlers = [
   ...entitiesHandlers,
   ...entityOnboardingDataHandlers,
   ...paymentHandlers,
+  ...remindersHandlers,
   ...productsHandlers,
   ...vatRatesHandlers,
   ...counterpartBankHandlers,
@@ -43,6 +46,7 @@ export const handlers = [
   ...onboardingDocumentsHandlers,
   ...currenciesHandlers,
   ...filesHandlers,
+  ...recurrencesHandlers,
   ...payableHandlers,
   ...paymentTermsHandlers,
   ...personsHandlers,

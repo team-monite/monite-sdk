@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useOnboardingBankAccount } from '@/components/onboarding/hooks/useOnboardingBankAccount';
 import { getRegionName } from '@/components/onboarding/utils';
@@ -26,9 +26,15 @@ export const OnboardingBankAccount = () => {
     onboardingForm: {
       checkValue,
       handleSubmit,
-      methods: { control, getValues, resetField },
+      methods: { control, getValues, resetField, watch },
     },
   } = useOnboardingBankAccount();
+
+  const country = watch('country');
+
+  useEffect(() => {
+    resetField('iban');
+  }, [country, resetField]);
 
   useEffect(() => {
     const country = getValues('country');

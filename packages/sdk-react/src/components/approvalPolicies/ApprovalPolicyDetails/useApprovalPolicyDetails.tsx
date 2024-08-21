@@ -1,8 +1,9 @@
-import {
-  useCreateApprovalPolicy,
-  useUpdateApprovalPolicy,
-} from '@/core/queries/useApprovalPolicies';
-import { ApprovalPolicyCreate, ApprovalPolicyUpdate } from '@monite/sdk-api';
+import { toast } from 'react-hot-toast';
+
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
 interface Props {
   /** Callback is fired when the user clicks on `Edit` button */
@@ -26,10 +27,54 @@ export const useApprovalPolicyDetails = ({
   onCreated,
   onUpdated,
 }: Props) => {
-  const createMutation = useCreateApprovalPolicy();
-  const updateMutation = useUpdateApprovalPolicy();
+  const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
 
-  const createApprovalPolicy = async (values: ApprovalPolicyCreate) => {
+  const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
+    {},
+    {
+      onSuccess: async () => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+        ]);
+        toast.success(t(i18n)`Approval policy created`);
+      },
+
+      onError: async () => {
+        toast.error(t(i18n)`Error creating approval policy`);
+      },
+    }
+  );
+
+  const updateMutation =
+    api.approvalPolicies.patchApprovalPoliciesId.useMutation(undefined, {
+      onSuccess: async (updatedAppprovalPolicy) => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+            {
+              parameters: {
+                path: { approval_policy_id: updatedAppprovalPolicy.id },
+              },
+            },
+            queryClient
+          ),
+        ]);
+        toast.success(t(i18n)`Approval policy updated`);
+      },
+
+      onError: async () => {
+        toast.error(t(i18n)`Error updating approval policy`);
+      },
+    });
+
+  const createApprovalPolicy = async (
+    values: components['schemas']['ApprovalPolicyCreate']
+  ) => {
     const response = await createMutation.mutateAsync(values);
 
     if (response) {
@@ -40,10 +85,12 @@ export const useApprovalPolicyDetails = ({
 
   const updateApprovalPolicy = async (
     id: string,
-    values: ApprovalPolicyUpdate
+    values: components['schemas']['ApprovalPolicyUpdate']
   ) => {
     const response = await updateMutation.mutateAsync({
-      approvalPolicyId: id,
+      path: {
+        approval_policy_id: id,
+      },
       body: values,
     });
 

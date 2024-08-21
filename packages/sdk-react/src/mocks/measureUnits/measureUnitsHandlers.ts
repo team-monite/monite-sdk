@@ -1,16 +1,11 @@
-import {
-  ErrorSchemaResponse,
-  MEASURE_UNITS_ENDPOINT,
-  UnitListResponse,
-  UnitResponse,
-} from '@monite/sdk-api';
+import { components } from '@/api';
 
 import { http, HttpResponse, delay } from 'msw';
 
 import { measureUnitsListFixture } from './measureUnitsFixture';
 
-const measureUnitsPath = `*/${MEASURE_UNITS_ENDPOINT}`;
-const measureUnitsDetailPath = `*/${MEASURE_UNITS_ENDPOINT}/:unitId`;
+const measureUnitsPath = `*/measure_units`;
+const measureUnitsDetailPath = `*/measure_units/:unitId`;
 
 export const measureUnitsHandlers = [
   http.get<{}, undefined, UnitListResponse>(measureUnitsPath, async () => {
@@ -53,3 +48,7 @@ export const measureUnitsHandlers = [
     }
   ),
 ];
+
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type UnitListResponse = components['schemas']['UnitListResponse'];
+type UnitResponse = components['schemas']['UnitResponse'];

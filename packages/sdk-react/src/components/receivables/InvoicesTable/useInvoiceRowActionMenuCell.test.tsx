@@ -1,10 +1,6 @@
+import { components } from '@/api';
 import { receivableListFixture } from '@/mocks/receivables';
 import { createRenderWithClient } from '@/utils/test-utils';
-import {
-  ActionEnum,
-  PermissionEnum,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
 import { renderHook, waitFor } from '@testing-library/react';
 
 import {
@@ -53,7 +49,7 @@ describe('useInvoiceRowActionMenuCell', () => {
       () =>
         useInvoiceRowActionMenuCell({
           rowActions: {
-            [ReceivablesStatusEnum.DRAFT]: ['view'],
+            ['draft']: ['view'],
           },
           onRowActionClick: jest.fn(),
         }),
@@ -101,22 +97,22 @@ describe('useInvoiceRowActionMenuCell', () => {
       [key in InvoicesTableRowAction]: true;
     }) as InvoicesTableRowAction[];
 
-    const fullPermissions = [
+    const fullPermissions: components['schemas']['ActionSchema'][] = [
       {
-        action_name: ActionEnum.CREATE,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'create',
+        permission: 'allowed',
       },
       {
-        action_name: ActionEnum.READ,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'read',
+        permission: 'allowed',
       },
       {
-        action_name: ActionEnum.UPDATE,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'update',
+        permission: 'allowed',
       },
       {
-        action_name: ActionEnum.DELETE,
-        permission: PermissionEnum.ALLOWED,
+        action_name: 'delete',
+        permission: 'allowed',
       },
     ];
 
@@ -127,7 +123,7 @@ describe('useInvoiceRowActionMenuCell', () => {
           menuItems,
           {
             ...receivableListFixture.invoice[0],
-            status: ReceivablesStatusEnum.DRAFT,
+            status: 'draft',
             entity_user_id: 'user_id_1',
           },
           'user_id_1'
@@ -140,26 +136,26 @@ describe('useInvoiceRowActionMenuCell', () => {
         filterInvoiceActionMenuAllowedItems(
           [
             {
-              action_name: ActionEnum.CREATE,
-              permission: PermissionEnum.NOT_ALLOWED,
+              action_name: 'create',
+              permission: 'not_allowed',
             },
             {
-              action_name: ActionEnum.READ,
-              permission: PermissionEnum.NOT_ALLOWED,
+              action_name: 'read',
+              permission: 'not_allowed',
             },
             {
-              action_name: ActionEnum.UPDATE,
-              permission: PermissionEnum.NOT_ALLOWED,
+              action_name: 'update',
+              permission: 'not_allowed',
             },
             {
-              action_name: ActionEnum.DELETE,
-              permission: PermissionEnum.NOT_ALLOWED,
+              action_name: 'delete',
+              permission: 'not_allowed',
             },
           ],
           menuItems,
           {
             ...receivableListFixture.invoice[0],
-            status: ReceivablesStatusEnum.DRAFT,
+            status: 'draft',
             entity_user_id: 'user_id_1',
           },
           'user_id_1'
@@ -172,26 +168,26 @@ describe('useInvoiceRowActionMenuCell', () => {
         filterInvoiceActionMenuAllowedItems(
           [
             {
-              action_name: ActionEnum.CREATE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'create',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.READ,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'read',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.UPDATE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'update',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.DELETE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'delete',
+              permission: 'allowed_for_own',
             },
           ],
           menuItems,
           {
             ...receivableListFixture.invoice[0],
-            status: ReceivablesStatusEnum.DRAFT,
+            status: 'draft',
             entity_user_id: 'user_id_1',
           },
           'user_id_1'
@@ -204,26 +200,26 @@ describe('useInvoiceRowActionMenuCell', () => {
         filterInvoiceActionMenuAllowedItems(
           [
             {
-              action_name: ActionEnum.CREATE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'create',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.READ,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'read',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.UPDATE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'update',
+              permission: 'allowed_for_own',
             },
             {
-              action_name: ActionEnum.DELETE,
-              permission: PermissionEnum.ALLOWED_FOR_OWN,
+              action_name: 'delete',
+              permission: 'allowed_for_own',
             },
           ],
           menuItems,
           {
             ...receivableListFixture.invoice[0],
-            status: ReceivablesStatusEnum.DRAFT,
+            status: 'draft',
             entity_user_id: 'user_id_1',
           },
           'user_id_2'
@@ -239,7 +235,7 @@ describe('useInvoiceRowActionMenuCell', () => {
           [...menuItems, 'customAction'],
           {
             ...receivableListFixture.invoice[0],
-            status: ReceivablesStatusEnum.DRAFT,
+            status: 'draft',
             entity_user_id: 'user_id_1',
           },
           'user_id_1'

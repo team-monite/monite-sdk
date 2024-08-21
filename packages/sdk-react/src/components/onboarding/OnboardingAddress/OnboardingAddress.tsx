@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -6,9 +5,9 @@ import {
   RHFAutocomplete,
 } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries } from '@monite/sdk-api';
 
 import { OnboardingStepContent, OnboardingSubTitle } from '../OnboardingLayout';
 import { OnboardingAddressType } from '../types';
@@ -45,9 +44,9 @@ export const OnboardingAddress = ({
           label={t(i18n)`Country`}
           optionKey="code"
           labelKey="label"
-          options={Object.values(AllowedCountries).map((code) => ({
+          options={AllowedCountries.map((code) => ({
             code,
-            label: t(i18n)`${getRegionName(code)}`,
+            label: t(i18n)`${getRegionName(code)} (${code})`,
           }))}
           renderOption={(props, option, state) => (
             <CountryOption

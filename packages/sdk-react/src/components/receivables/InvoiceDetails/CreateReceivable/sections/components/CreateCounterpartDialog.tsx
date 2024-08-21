@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
+import { components } from '@/api';
 import { CounterpartDetails } from '@/components';
 import { Dialog } from '@/components/Dialog';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
 import {
   Box,
   Button,
@@ -46,8 +46,8 @@ const CardItem = ({
 }: {
   title: string;
   description: string;
-  type: CounterpartType;
-  onClick: (type: CounterpartType) => void;
+  type: components['schemas']['CounterpartType'];
+  onClick: (type: components['schemas']['CounterpartType']) => void;
 }) => {
   const handleClick = useCallback(() => {
     onClick(type);
@@ -58,7 +58,6 @@ const CardItem = ({
       variant="outlined"
       sx={{
         cursor: 'pointer',
-        borderRadius: 2,
       }}
       onClick={handleClick}
     >
@@ -83,13 +82,16 @@ export const CreateCounterpartDialog = ({
   const { i18n } = useLingui();
   const [viewMode, setViewMode] = useState<View>(View.ChooseMode);
   const [counterpartType, setCounterpartType] = useState<
-    CounterpartType | undefined
+    components['schemas']['CounterpartType'] | undefined
   >(undefined);
 
-  const handleCreateCounterpart = useCallback((type: CounterpartType) => {
-    setCounterpartType(type);
-    setViewMode(View.CounterpartCreationMode);
-  }, []);
+  const handleCreateCounterpart = useCallback(
+    (type: components['schemas']['CounterpartType']) => {
+      setCounterpartType(type);
+      setViewMode(View.CounterpartCreationMode);
+    },
+    []
+  );
 
   if (viewMode === View.CounterpartCreationMode && counterpartType) {
     return (
@@ -142,7 +144,7 @@ export const CreateCounterpartDialog = ({
               i18n
             )`It is an entity having legal status as an individual.`}
             onClick={handleCreateCounterpart}
-            type={CounterpartType.INDIVIDUAL}
+            type={'individual'}
           />
           <CardItem
             title={t(i18n)`Organization`}
@@ -150,7 +152,7 @@ export const CreateCounterpartDialog = ({
               i18n
             )`It is a non-human legal entity, i.e. an organisation recognised by law as a legal person.`}
             onClick={handleCreateCounterpart}
-            type={CounterpartType.ORGANIZATION}
+            type={'organization'}
           />
         </Box>
       </DialogContent>

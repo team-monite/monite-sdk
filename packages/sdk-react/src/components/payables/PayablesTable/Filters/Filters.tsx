@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableStateEnum } from '@monite/sdk-api';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -24,9 +23,14 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const className = 'Monite-PayableFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={6} sm={3} md={4} lg={3}>
         <SearchField
           label={t(i18n)`Search`}
@@ -36,7 +40,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
         />
       </Grid>
       <Grid item xs={6} sm={3} md={4} lg={3}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className="Monite-PayableStatusFilter Monite-FilterControl"
+        >
           <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
           <Select
             labelId="status"
@@ -66,6 +74,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
+          className="Monite-PayableDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Invoice date`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -78,6 +87,9 @@ export const Filters = ({ onChangeFilter }: Props) => {
             popper: {
               container: root,
             },
+            dialog: {
+              container: root,
+            },
             actionBar: {
               actions: ['clear', 'today'],
             },
@@ -87,6 +99,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
       </Grid>
       <Grid item xs={6} sm={3} md={2} lg={2}>
         <DatePicker
+          className="Monite-PayableDueDateFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Due date`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -97,6 +110,9 @@ export const Filters = ({ onChangeFilter }: Props) => {
           }}
           slotProps={{
             popper: {
+              container: root,
+            },
+            dialog: {
               container: root,
             },
             actionBar: {

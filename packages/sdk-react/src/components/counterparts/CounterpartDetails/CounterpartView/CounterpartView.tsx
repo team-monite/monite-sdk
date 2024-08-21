@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { CounterpartActionsPermissions } from '@/components/counterparts/CounterpartDetails/Counterpart.types';
 import { CounterpartVatView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartVatView';
@@ -7,7 +7,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -61,27 +60,27 @@ export const CounterpartView = (props: CounterpartViewProps) => {
   const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'counterpart',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: counterpart?.created_by_entity_user_id,
   });
 
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
   const { data: isDeleteAllowed, isLoading: isDeleteAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.DELETE,
+      action: 'delete',
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
@@ -205,7 +204,11 @@ export const CounterpartView = (props: CounterpartViewProps) => {
               showCategories={props.showCategories ?? true}
               counterpart={{
                 taxId: counterpart.tax_id,
-                ...prepareCounterpartOrganization(counterpart.organization),
+                ...prepareCounterpartOrganization(
+                  counterpart.organization,
+                  undefined,
+                  contacts
+                ),
               }}
             />
           )}

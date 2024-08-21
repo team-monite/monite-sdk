@@ -1,26 +1,32 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
+  getCounterpartName,
   getIndividualName,
-  isIndividualCounterpart,
-  isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useOptionalFields } from '@/core/hooks/useOptionalFields';
-import { useApprovalPolicyById, useEntityUserById } from '@/core/queries';
+import {
+  useApprovalPolicyById,
+  useCounterpartById,
+  useEntityUserById,
+} from '@/core/queries';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
+import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum, PayableResponseSchema } from '@monite/sdk-api';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
+import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
 import {
   Box,
   Chip,
+  CircularProgress,
   Grid,
   Paper,
   Stack,
@@ -29,6 +35,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -38,7 +45,7 @@ import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 
 export type PayablesDetailsInfoProps = {
-  payable: PayableResponseSchema;
+  payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
 };
 
@@ -76,39 +83,26 @@ const PayableDetailsInfoBase = ({
       showTags: true,
     }
   );
-  const { counterpartQuery, counterpartBankAccountQuery, lineItemsQuery } =
-    usePayableDetailsInfo({
+  const { counterpartBankAccountQuery, lineItemsQuery } = usePayableDetailsInfo(
+    {
       currentCounterpartId: payable.counterpart_id,
       payableId: payable.id,
-    });
+    }
+  );
 
-  const { data: counterpart } = counterpartQuery;
   const { data: lineItemsData } = lineItemsQuery;
 
   const lineItems = lineItemsData?.data;
 
-  const { data: contacts } = useCounterpartContactList(
-    payable.counterpart_id,
-    counterpart && isOrganizationCounterpart(counterpart)
-  );
+  const { data: contacts } = useCounterpartContactList(payable.counterpart_id);
   const { data: addedByUser } = useEntityUserById(
-    payable.was_created_by_user_id ?? ''
+    payable.was_created_by_user_id
   );
   const { data: approvalPolicy, isLoading: isApprovalPolicyLoading } =
     useApprovalPolicyById(payable.approval_policy_id);
 
-  const counterpartName =
-    counterpart &&
-    (isIndividualCounterpart(counterpart)
-      ? getIndividualName(
-          counterpart.individual.first_name,
-          counterpart.individual.last_name
-        )
-      : isOrganizationCounterpart(counterpart)
-      ? counterpart.organization.legal_name
-      : '—');
   const defaultContact = useMemo(
-    () => contacts?.find((contact) => contact.is_default),
+    () => contacts?.data.find((contact) => contact.is_default),
     [contacts]
   );
   const counterpartBankAccount = useMemo(
@@ -119,12 +113,20 @@ const PayableDetailsInfoBase = ({
     [counterpartBankAccountQuery, payable]
   );
 
+  const className = 'Monite-PayableDetailsInfo';
+
   if (isPayableInOCRProcessing(payable)) {
     return (
-      <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+      <DetailsWrapper
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className,
+          className + '--ocr-processing'
+        )}
+      >
         <CenteredContentBox>
           <Box textAlign="center">
-            <CachedOutlinedIcon color="primary" fontSize="large" />
+            <CachedOutlined color="primary" fontSize="large" />
             <Typography variant="h3" mb={2}>
               {t(i18n)`File is being processed...`}
             </Typography>
@@ -132,18 +134,19 @@ const PayableDetailsInfoBase = ({
               {t(i18n)`Hold on, we’re processing the file you’ve uploaded.`}
             </Typography>
             <Typography variant="body1">
-              {t(i18n)`Usually it takes no more than 1–2 mins.`}
+              {t(i18n)`Usually it takes no more than 1–2 minutes.`}
             </Typography>
           </Box>
         </CenteredContentBox>
       </DetailsWrapper>
     );
   }
-
   return (
-    <DetailsWrapper className={ScopedCssBaselineContainerClassName}>
+    <DetailsWrapper
+      className={classNames(ScopedCssBaselineContainerClassName, className)}
+    >
       <Grid container spacing={3}>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Details'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Details`}
           </Typography>
@@ -160,7 +163,9 @@ const PayableDetailsInfoBase = ({
                   <StyledLabelTableCell>
                     {t(i18n)`Supplier`}:
                   </StyledLabelTableCell>
-                  <TableCell>{counterpartName}</TableCell>
+                  <TableCell>
+                    <PayableCounterpartName payable={payable} />
+                  </TableCell>
                 </TableRow>
                 {defaultContact && (
                   <TableRow>
@@ -220,9 +225,9 @@ const PayableDetailsInfoBase = ({
                       }}
                     >
                       <Box>
-                        {payable.amount_to_pay && payable.currency
+                        {payable.total_amount && payable.currency
                           ? formatCurrencyToDisplay(
-                              payable.amount_to_pay,
+                              payable.total_amount,
                               payable.currency
                             )
                           : '—'}
@@ -278,7 +283,7 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Items'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`Items`}
           </Typography>
@@ -302,29 +307,21 @@ const PayableDetailsInfoBase = ({
                         item.quantity &&
                         formatFromMinorUnits(
                           item.subtotal / item.quantity ?? 0,
-                          payable.currency ?? CurrencyEnum.EUR
+                          payable.currency ?? 'EUR'
                         )?.toFixed(2)}
                     </TableCell>
                     <TableCell align="right">
-                      {item.total && payable.currency ? (
+                      {item.subtotal && payable.currency ? (
                         <>
                           <Box>
                             {formatCurrencyToDisplay(
-                              item.total,
+                              item.subtotal ?? 0,
                               payable.currency
                             )}
                           </Box>
                           <Box sx={{ color: 'secondary.main' }}>
                             {t(i18n)`excl. VAT`}{' '}
-                            {`${
-                              item.subtotal
-                                ? (
-                                    ((item.total - item.subtotal) /
-                                      item.subtotal) *
-                                    100
-                                  ).toFixed(2)
-                                : 0
-                            }%`}
+                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
                           </Box>
                         </>
                       ) : (
@@ -337,7 +334,7 @@ const PayableDetailsInfoBase = ({
             </Table>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-Totals'}>
           <Paper variant="outlined">
             <Table>
               <TableBody>
@@ -363,15 +360,21 @@ const PayableDetailsInfoBase = ({
                       : '—'}
                   </TableCell>
                 </TableRow>
-                <TableRow sx={{ '& td': { fontWeight: 500 } }}>
-                  <TableCell>{t(i18n)`Total`}</TableCell>
+                <TableRow>
+                  <TableCell>
+                    <Typography variant="subtitle1">{t(
+                      i18n
+                    )`Total`}</Typography>
+                  </TableCell>
                   <TableCell align="right">
-                    {payable.amount_to_pay && payable.currency
-                      ? formatCurrencyToDisplay(
-                          payable.amount_to_pay,
-                          payable.currency
-                        )
-                      : '—'}
+                    <Typography variant="subtitle1">
+                      {payable.total_amount && payable.currency
+                        ? formatCurrencyToDisplay(
+                            payable.total_amount,
+                            payable.currency
+                          )
+                        : '—'}
+                    </Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -379,7 +382,7 @@ const PayableDetailsInfoBase = ({
           </Paper>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={className + '-History'}>
           <Typography variant="subtitle2" mb={2}>
             {t(i18n)`History`}
           </Typography>
@@ -445,5 +448,75 @@ const PayableDetailsInfoBase = ({
         </Grid>
       </Grid>
     </DetailsWrapper>
+  );
+};
+
+const PayableCounterpartName = ({
+  payable,
+}: {
+  payable: components['schemas']['PayableResponseSchema'];
+}) => {
+  const { i18n } = useLingui();
+  const { data: counterpart } = useCounterpartById(payable.counterpart_id);
+
+  const { api } = useMoniteContext();
+  const {
+    data: isCounterpartMatchingToOCRFound,
+    isLoading: isCounterpartMatchingToOCRLoading,
+  } = api.counterparts.getCounterparts.useQuery(
+    {
+      query: {
+        counterpart_name__icontains: payable.counterpart_raw_data?.name,
+        limit: 1,
+      },
+    },
+    {
+      enabled: Boolean(
+        !payable.counterpart_id && payable.counterpart_raw_data?.name
+      ),
+      select: (data) => Boolean(data.data.at(0)),
+    }
+  );
+
+  const counterpartName = getCounterpartName(counterpart);
+
+  if (counterpartName) {
+    return <>{counterpartName}</>;
+  }
+
+  if (!payable.counterpart_raw_data?.name) {
+    return <>—</>;
+  }
+
+  return (
+    <Stack component="span" gap={2} direction="row">
+      {payable.counterpart_raw_data.name}
+      {isCounterpartMatchingToOCRLoading && (
+        <CircularProgress
+          size={14}
+          color="secondary"
+          sx={{ alignSelf: 'center' }}
+        />
+      )}
+      {!isCounterpartMatchingToOCRLoading && (
+        <Tooltip
+          title={
+            isCounterpartMatchingToOCRFound
+              ? t(
+                  i18n
+                )`A counterpart with this name exists but has not been specified in the document.`
+              : t(
+                  i18n
+                )`There is no such counterpart yet, you can create it in respective section.`
+          }
+        >
+          <InfoOutlined
+            color={isCounterpartMatchingToOCRFound ? 'disabled' : 'info'}
+            fontSize="small"
+            sx={{ alignSelf: 'center' }}
+          />
+        </Tooltip>
+      )}
+    </Stack>
   );
 };

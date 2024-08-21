@@ -1,14 +1,16 @@
-import React, { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
 
 import { createAPIClient } from '@/api/client';
-import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import {
+  MoniteAPIProvider,
+  MoniteQraftContext,
+} from '@/core/context/MoniteAPIProvider';
 import { MoniteContext } from '@/core/context/MoniteContext';
 import {
   getLocaleWithDefaults,
   MoniteI18nProvider,
 } from '@/core/context/MoniteI18nProvider';
 import { MoniteProviderProps } from '@/core/context/MoniteProvider';
-import { ENTITY_USERS_QUERY_ID } from '@/core/queries';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { entityIds } from '@/mocks/entities';
 import { setupI18n } from '@lingui/core';
@@ -19,11 +21,7 @@ import {
   Hub,
   makeFetchTransport,
 } from '@sentry/react';
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
   fireEvent,
@@ -95,29 +93,37 @@ export const Provider = ({
     integrations: [],
   });
   const sentryHub = new Hub(sentryClient);
+  const apiClient = createAPIClient({
+    entityId: monite.entityId,
+    context: MoniteQraftContext,
+  });
+
+  useEffect(() => {
+    client.mount();
+    return () => client.unmount();
+  }, [client]);
 
   return (
-    <QueryClientProvider client={client}>
-      <MoniteContext.Provider
-        value={{
-          locale: getLocaleWithDefaults(moniteProviderProps?.locale),
-          monite,
-          i18n,
-          sentryHub,
-          queryClient: client,
-          theme: createThemeWithDefaults(moniteProviderProps?.theme),
-          dateFnsLocale,
-          apiUrl: monite.baseUrl,
-          fetchToken: monite.fetchToken,
-          ...createAPIClient({
-            entityId: monite.entityId,
-            context: MoniteQraftContext,
-          }),
-        }}
-      >
-        <MoniteI18nProvider>{children}</MoniteI18nProvider>
-      </MoniteContext.Provider>
-    </QueryClientProvider>
+    <MoniteContext.Provider
+      value={{
+        locale: getLocaleWithDefaults(moniteProviderProps?.locale),
+        monite,
+        i18n,
+        sentryHub,
+        queryClient: client,
+        theme: createThemeWithDefaults(moniteProviderProps?.theme),
+        dateFnsLocale,
+        apiUrl: monite.baseUrl,
+        fetchToken: monite.fetchToken,
+        ...apiClient,
+      }}
+    >
+      <MoniteI18nProvider>
+        <MoniteAPIProvider APIContext={MoniteQraftContext}>
+          {children}
+        </MoniteAPIProvider>
+      </MoniteI18nProvider>
+    </MoniteContext.Provider>
   );
 };
 
@@ -216,7 +222,7 @@ export function triggerClickOnSelectOption(
   selectOption: string | RegExp
 ) {
   fireEvent.mouseDown(
-    screen.getByRole('button', {
+    screen.getByRole('combobox', {
       name: selectName,
     })
   );
@@ -264,8 +270,6 @@ export function triggerChangeInput(
   });
 }
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 /**
  * Selects an option in the async dropdown field.
  * @param dropdownName The name of the dropdown field.
@@ -275,7 +279,7 @@ export async function selectAsyncDropdownOption(
   dropdownName: string | RegExp,
   optionText: string | RegExp
 ) {
-  const dropdownButton = await screen.findByRole('button', {
+  const dropdownButton = await screen.findByRole('combobox', {
     name: dropdownName,
   });
 
@@ -345,12 +349,17 @@ export async function selectAutoCompleteOption(
  * @throws Error if the permissions are not loaded
  */
 export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
-  const roleQuery = queryClient.getQueryState([
-    ENTITY_USERS_QUERY_ID,
-    'my_role',
-  ]);
+  const { api } = createAPIClient();
 
-  const meQuery = queryClient.getQueryState([ENTITY_USERS_QUERY_ID, 'me']);
+  const roleQuery = api.entityUsers.getEntityUsersMyRole.getQueryState(
+    {},
+    queryClient
+  );
+
+  const meQuery = api.entityUsers.getEntityUsersMe.getQueryState(
+    {},
+    queryClient
+  );
 
   if (!roleQuery || !meQuery) throw new Error('Permissions query not exists');
 

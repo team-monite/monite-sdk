@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller, FieldError } from 'react-hook-form';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
@@ -42,6 +41,10 @@ export const RHFDatePicker = <T extends FieldValues>({
                 ...slotProps,
                 popper: {
                   ...slotProps?.popper,
+                  container: root,
+                },
+                dialog: {
+                  ...slotProps?.dialog,
                   container: root,
                 },
                 textField: {

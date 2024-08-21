@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   counterpartBankFixture,
@@ -13,12 +14,7 @@ import {
   triggerClickOnSelectOption,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
-import {
-  AllowedCountries,
-  CreateCounterpartBankAccount,
-  CurrencyEnum,
-  UpdateCounterpartBankAccount,
-} from '@monite/sdk-api';
+import { requestFn } from '@openapi-qraft/react';
 import { waitFor, screen, fireEvent, act } from '@testing-library/react';
 
 import { CounterpartBankForm } from './CounterpartBankForm';
@@ -139,15 +135,10 @@ describe('CounterpartBankForm', () => {
 
   describe('# Public API', () => {
     test('should send correct request when we are choose not UK and not US country', async () => {
-      const getCreateSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'createBankAccount'
-      );
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartBankForm counterpartId={individualId} />
-        </MoniteScopedProviders>,
+        <CounterpartBankForm counterpartId={individualId} />,
         cachedMoniteSDK
       );
 
@@ -159,7 +150,7 @@ describe('CounterpartBankForm', () => {
       await waitFor(
         () =>
           expect(
-            screen.findByRole('button', { name: countrySelectName })
+            screen.findByRole('combobox', { name: countrySelectName })
           ).resolves.not.toBeDisabled(),
         { timeout: 5_000 }
       );
@@ -176,27 +167,22 @@ describe('CounterpartBankForm', () => {
 
       await act(() => fireEvent.click(submitBtn));
 
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getCreateSpy.mock.lastCall;
-      expect(getCreateSpy.mock.lastCall).toBeDefined();
+      const lastCallArguments = requestFnMock.mock.lastCall;
 
-      const parameters = lastCallArguments![1];
+      const body = lastCallArguments?.[1]
+        .body as components['schemas']['CreateCounterpartBankAccount'];
 
-      expect(parameters.name).toBe(accountName);
-      expect(parameters.iban).toBe(iban);
-      expect(parameters.bic).toBe(bic);
+      expect(lastCallArguments).toBeDefined();
+      expect(body?.name).toBe(accountName);
+      expect(body?.iban).toBe(iban);
+      expect(body?.bic).toBe(bic);
     }, 10_000);
 
-    test('should send correct request when we are choose any country', async () => {
-      const getCreateSpy = jest.spyOn(
-        cachedMoniteSDK.api.counterparts,
-        'createBankAccount'
-      );
+    test('should send correct request when we choose any country', async () => {
+      const requestFnMock = requestFn as jest.MockedFunction<typeof requestFn>;
 
       renderWithClient(
-        <MoniteScopedProviders>
-          <CounterpartBankForm counterpartId={individualId} />
-        </MoniteScopedProviders>,
+        <CounterpartBankForm counterpartId={individualId} />,
         cachedMoniteSDK
       );
 
@@ -207,16 +193,15 @@ describe('CounterpartBankForm', () => {
       const sortCode = '[create] Sort code';
       const countrySelectName = /country/i;
 
-      await waitFor(
-        () =>
-          expect(
-            screen.findByRole('button', { name: countrySelectName })
-          ).resolves.not.toBeDisabled(),
-        { timeout: 5_000 }
+      await waitFor(() =>
+        expect(
+          screen.getByRole('combobox', { name: countrySelectName })
+        ).not.toBeDisabled()
       );
 
       triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
       triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
+
       triggerChangeInput(/account name/i, accountName);
       triggerChangeInput(/iban/i, iban);
       triggerChangeInput(/bic/i, bic);
@@ -226,37 +211,31 @@ describe('CounterpartBankForm', () => {
       const submitBtn = screen.getByRole('button', {
         name: t`Add bank account`,
       });
-
-      await act(() => fireEvent.click(submitBtn));
-
-      /** Get all provided parameters into the last call */
-      const lastCallArguments = getCreateSpy.mock.lastCall;
+      await act(async () => fireEvent.click(submitBtn));
 
       await waitFor(() => {
-        expect(getCreateSpy).toHaveBeenCalled();
+        expect(requestFnMock).toHaveBeenCalled();
       });
 
-      if (!lastCallArguments) {
-        throw new Error(
-          'monite.api.counterparts.createBankAccount never has been called'
-        );
-      }
+      const lastCallArguments = requestFnMock.mock.lastCall;
 
-      const parameters = lastCallArguments[1];
+      const body = lastCallArguments?.[1]
+        .body as components['schemas']['CreateCounterpartBankAccount'];
 
-      expect(parameters.name).toBe(accountName);
-      expect(parameters.iban).toBe(iban);
-      expect(parameters.bic).toBe(bic);
-      expect(parameters.account_number).toBe(accountNumber);
-      expect(parameters.sort_code).toBe(sortCode);
+      await waitFor(() => {
+        expect(body?.name).toBe(accountName);
+        expect(body?.iban).toBe(iban);
+        expect(body?.bic).toBe(bic);
+        expect(body?.account_number).toBe(accountNumber);
+        expect(body?.sort_code).toBe(sortCode);
+      });
     }, 10_000);
 
     describe('# Backend Requests', () => {
       test('[CREATE] should send correct request (based on server model) when perform a POST request (trying to create a new entity)', async () => {
-        const getCreateSpy = jest.spyOn(
-          cachedMoniteSDK.api.counterparts,
-          'createBankAccount'
-        );
+        const requestFnMock = requestFn as jest.MockedFunction<
+          typeof requestFn
+        >;
 
         renderWithClient(
           <MoniteScopedProviders>
@@ -267,13 +246,12 @@ describe('CounterpartBankForm', () => {
 
         const countrySelectName = /country/i;
 
-        await waitFor(() =>
-          expect(
-            screen.findByRole('button', { name: countrySelectName })
-          ).resolves.not.toBeDisabled()
-        );
+        const countryButton = await screen.findByRole('combobox', {
+          name: countrySelectName,
+        });
 
-        /** Fill all required fields */
+        await waitFor(() => expect(countryButton).not.toBeDisabled());
+
         triggerClickOnSelectOption(countrySelectName, 'United Kingdom');
         triggerClickOnAutocompleteOption(/currency/i, /Armenian/i);
 
@@ -281,10 +259,10 @@ describe('CounterpartBankForm', () => {
           name: t`Add bank account`,
         });
 
-        await act(() => fireEvent.click(submitBtn));
+        await act(async () => fireEvent.click(submitBtn));
 
-        const [requestCounterpartId, requestBody] = await waitFor(() => {
-          const request = getCreateSpy.mock.lastCall;
+        const lastCallArguments = await waitFor(() => {
+          const request = requestFnMock.mock.lastCall;
 
           if (!request) {
             throw new Error(
@@ -295,27 +273,36 @@ describe('CounterpartBankForm', () => {
           return request;
         });
 
-        const serverRequestBody: CreateCounterpartBankAccount = {
-          account_holder_name: '',
-          account_number: '',
-          bic: '',
-          country: AllowedCountries.GB,
-          currency: CurrencyEnum.AMD,
-          iban: '',
-          name: '',
-          routing_number: '',
-          sort_code: '',
-        };
+        const [requestConfig, requestBody] = lastCallArguments;
 
-        expect(requestCounterpartId).toBe(individualId);
-        expect(requestBody).toEqual(serverRequestBody);
+        const serverRequestBody: components['schemas']['CreateCounterpartBankAccount'] =
+          {
+            account_holder_name: '',
+            account_number: '',
+            bic: '',
+            country: 'GB',
+            currency: 'AMD',
+            iban: '',
+            name: '',
+            routing_number: '',
+            sort_code: '',
+            is_default_for_currency: false,
+          };
+
+        const actualRequestBody = requestBody.body;
+
+        expect(requestConfig.url).toBe(
+          '/counterparts/{counterpart_id}/bank_accounts'
+        );
+
+        expect(actualRequestBody).toEqual(serverRequestBody);
       }, 10_000);
 
       test('[UPDATE] should send correct request (based on server model) when perform a PATCH request (trying to update a new entity)', async () => {
-        const getUpdateSpy = jest.spyOn(
-          cachedMoniteSDK.api.counterparts,
-          'updateBankAccount'
-        );
+        const requestFnMock = requestFn as jest.MockedFunction<
+          typeof requestFn
+        >;
+
         const firstBankListFixture = counterpartBankListFixture[0];
 
         renderWithClient(
@@ -336,33 +323,48 @@ describe('CounterpartBankForm', () => {
 
         fireEvent.click(submitBtn);
 
-        const [requestCounterpartId, requestBankId, requestBody] =
-          await waitFor(() => {
-            const request = getUpdateSpy.mock.lastCall;
+        const lastCallArguments = await waitFor(() => {
+          const request = requestFnMock.mock.calls.find(
+            (call) => call[0].method === 'patch'
+          );
 
-            if (!request) {
-              throw new Error(
-                'monite.api.counterparts.updateBankAccount never has been called'
-              );
-            }
+          if (!request) {
+            throw new Error(
+              'monite.api.counterparts.updateBankAccount never has been called'
+            );
+          }
 
-            return request;
-          });
+          return request;
+        });
 
-        const serverRequestBody: UpdateCounterpartBankAccount = {
-          account_holder_name: firstBankListFixture.account_holder_name,
-          account_number: firstBankListFixture.account_number,
-          bic: firstBankListFixture.bic,
-          country: firstBankListFixture.country,
-          currency: firstBankListFixture.currency,
-          iban: firstBankListFixture.iban,
-          name: firstBankListFixture.name,
-          routing_number: firstBankListFixture.routing_number,
-          sort_code: firstBankListFixture.sort_code,
-        };
+        const [requestConfig, requestOptions] = lastCallArguments;
 
-        expect(requestCounterpartId).toBe(individualId);
-        expect(requestBody).toEqual(serverRequestBody);
+        const serverRequestBody: components['schemas']['UpdateCounterpartBankAccount'] =
+          {
+            account_holder_name: firstBankListFixture.account_holder_name,
+            account_number: firstBankListFixture.account_number,
+            bic: firstBankListFixture.bic,
+            country:
+              firstBankListFixture.country as components['schemas']['AllowedCountries'],
+            currency: firstBankListFixture.currency,
+            iban: firstBankListFixture.iban,
+            name: firstBankListFixture.name,
+            routing_number: firstBankListFixture.routing_number,
+            sort_code: firstBankListFixture.sort_code,
+          };
+
+        const actualRequestBody = requestOptions.body;
+
+        expect(requestConfig.method).toBe('patch');
+
+        expect(actualRequestBody).toEqual(serverRequestBody);
+
+        expect(requestOptions?.parameters?.path?.counterpart_id).toBe(
+          individualId
+        );
+        expect(requestOptions?.parameters?.path?.bank_account_id).toBe(
+          firstBankListFixture.id
+        );
       }, 10_000);
     });
   });

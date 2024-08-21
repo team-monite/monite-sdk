@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { CounterpartVatForm } from '@/components/counterparts/CounterpartDetails/CounterpartVatForm';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -166,7 +166,7 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     vatId,
   ]);
 
-  const renderComponent = useMemo(() => {
+  return useMemo(() => {
     switch (counterpartView) {
       case COUNTERPART_VIEW.individualForm:
         return (
@@ -205,6 +205,4 @@ const CounterpartDetailsBase = (props: CounterpartsDetailsProps) => {
     showCategories,
     showView,
   ]);
-
-  return renderComponent;
 };

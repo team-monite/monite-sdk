@@ -1,7 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
   "rules": {
-    "prettier/prettier": "warn"
+    "prettier/prettier": "error"
   },
   "ignorePatterns": [
     "src/lib/monite-api/schema.d.ts",

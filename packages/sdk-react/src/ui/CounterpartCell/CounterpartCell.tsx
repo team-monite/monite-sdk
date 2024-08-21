@@ -1,36 +1,36 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
+import { components } from '@/api';
 import { useCounterpartById } from '@/core/queries';
-import {
-  PayableResponseSchema,
-  CounterpartResponse,
-  CounterpartType,
-  CounterpartOrganizationRootResponse,
-  CounterpartIndividualRootResponse,
-} from '@monite/sdk-api';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PersonIcon from '@mui/icons-material/Person';
 import { Chip, Box, Avatar, Skeleton, Typography } from '@mui/material';
 
 interface Props {
-  counterpartId: PayableResponseSchema['counterpart_id'];
+  counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
 export const CounterpartCell = ({ counterpartId }: Props) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
 
-  const getCounterpartText = useCallback((counterpart: CounterpartResponse) => {
-    return counterpart.type === CounterpartType.ORGANIZATION
-      ? (counterpart as CounterpartOrganizationRootResponse).organization
-          .legal_name
-      : `${
-          (counterpart as CounterpartIndividualRootResponse).individual
-            .first_name
-        } ${
-          (counterpart as CounterpartIndividualRootResponse).individual
-            .last_name
-        }`;
-  }, []);
+  const getCounterpartText = useCallback(
+    (counterpart: components['schemas']['CounterpartResponse']) => {
+      return counterpart.type === 'organization'
+        ? (
+            counterpart as components['schemas']['CounterpartOrganizationRootResponse']
+          ).organization.legal_name
+        : `${
+            (
+              counterpart as components['schemas']['CounterpartIndividualRootResponse']
+            ).individual.first_name
+          } ${
+            (
+              counterpart as components['schemas']['CounterpartIndividualRootResponse']
+            ).individual.last_name
+          }`;
+    },
+    []
+  );
 
   if (!counterpartId || (!isLoading && !counterpart)) {
     return null;
@@ -50,7 +50,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
             />
           ) : (
             <Avatar sx={{ width: 24, height: 24 }}>
-              {counterpart?.type === CounterpartType.ORGANIZATION ? (
+              {counterpart?.type === 'organization' ? (
                 <CorporateFareIcon sx={{ fontSize: 16 }} />
               ) : (
                 <PersonIcon sx={{ fontSize: 20 }} />
@@ -68,6 +68,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
             />
           ) : (
             <Typography
+              variant="body2"
               sx={{ ml: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
               {getCounterpartText(counterpart)}

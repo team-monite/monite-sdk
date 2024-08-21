@@ -1,15 +1,17 @@
-import { OnboardingBankAccount } from '@monite/sdk-api';
+import { components } from '@/api';
+import { onboardingBankAccountMixedFixture } from '@/mocks/onboarding/bankAccountDataMapperFixture';
 import { waitFor } from '@testing-library/react';
 
 import { getOnboardingValidationSchema } from '../../../onboardingTestUtils';
 import { generateErrorsByFields, generateFieldsByValues } from '../../index';
-import { onboardingBankAccountMixedFixture } from './bankAccountDataMapperFixture';
 
 describe('Onboarding bank account', () => {
   test('should generate bank account with mixed fields', async () => {
     const { values, fields, errors } = onboardingBankAccountMixedFixture();
 
-    const generatedFields = generateFieldsByValues<OnboardingBankAccount>({
+    const generatedFields = generateFieldsByValues<
+      components['schemas']['OnboardingBankAccount']
+    >({
       values,
       optional: ['iban'],
       exclude: ['account_holder_name'],

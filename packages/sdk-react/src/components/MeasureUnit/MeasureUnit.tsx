@@ -1,10 +1,15 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 
-import { useMeasureUnitById } from '@/core/queries';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { Skeleton } from '@mui/material';
 
 export const MeasureUnit = memo(({ unitId }: { unitId: string }) => {
-  const { data: unit, isLoading } = useMeasureUnitById(unitId);
+  const { api } = useMoniteContext();
+  const { data: unit, isLoading } = api.measureUnits.getMeasureUnitsId.useQuery(
+    {
+      path: { unit_id: unitId },
+    }
+  );
 
   if (isLoading) {
     return (

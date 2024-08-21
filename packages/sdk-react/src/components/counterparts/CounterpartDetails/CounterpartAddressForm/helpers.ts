@@ -1,19 +1,18 @@
+import { components } from '@/api';
 import { getCountries } from '@/core/utils/countries';
 import type { I18n } from '@lingui/core';
-import { AllowedCountries, CounterpartAddress } from '@monite/sdk-api';
 
 export interface CounterpartAddressFormFields {
   line1: string;
   line2?: string;
   city: string;
   state: string;
-  country: AllowedCountries;
+  country: components['schemas']['AllowedCountries'];
   postalCode: string;
 }
 
 export const prepareCounterpartAddress = (
-  address: CounterpartAddress | undefined,
-  i18n: I18n
+  address: components['schemas']['CounterpartAddress'] | undefined
 ): CounterpartAddressFormFields => {
   return {
     city: address?.city ?? '',
@@ -24,7 +23,7 @@ export const prepareCounterpartAddress = (
      * @see {@link https://monite.atlassian.net/browse/DEV-7254}
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error - must be fixed in https://monite.atlassian.net/browse/DEV-7254
     country: address?.country ?? '',
     line1: address?.line1 ?? '',
     line2: address?.line2 ?? '',
@@ -39,7 +38,7 @@ export const prepareCounterpartAddressSubmit = ({
   line1,
   line2,
   postalCode: postal_code,
-}: CounterpartAddressFormFields): CounterpartAddress => {
+}: CounterpartAddressFormFields): components['schemas']['CounterpartAddress'] => {
   return {
     city,
     state,

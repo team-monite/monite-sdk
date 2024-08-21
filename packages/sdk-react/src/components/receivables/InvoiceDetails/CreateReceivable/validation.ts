@@ -1,14 +1,15 @@
+import { components } from '@/api';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { CurrencyEnum, Price } from '@monite/sdk-api';
 
 import * as yup from 'yup';
 
 export const getCreateInvoiceProductsValidationSchema = (i18n: I18n) =>
   yup.object({
     currency: yup
-      .mixed<CurrencyEnum>()
-      .oneOf(Object.values(CurrencyEnum))
+      .mixed<(typeof CurrencyEnum)[number]>()
+      .oneOf(CurrencyEnum)
       .label(t(i18n)`Currency`)
       .required(),
     items: yup
@@ -115,6 +116,16 @@ export const getCreateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Payment terms`)
       .required(),
     line_items: getLineItemsSchema(i18n),
+    overdue_reminder_id: yup
+      .string()
+      .optional()
+      .nullable()
+      .label(t(i18n)`Overdue reminder`),
+    payment_reminder_id: yup
+      .string()
+      .optional()
+      .nullable()
+      .label(t(i18n)`Payment reminder`),
   });
 
 export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
@@ -147,6 +158,16 @@ export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Payment terms`)
       .required(),
     line_items: getLineItemsSchema(i18n),
+    overdue_reminder_id: yup
+      .string()
+      .optional()
+      .nullable()
+      .label(t(i18n)`Overdue reminder`),
+    payment_reminder_id: yup
+      .string()
+      .optional()
+      .nullable()
+      .label(t(i18n)`Payment reminder`),
   });
 
 export interface CreateReceivablesFormBeforeValidationLineItemProps {
@@ -156,8 +177,8 @@ export interface CreateReceivablesFormBeforeValidationLineItemProps {
   vat_rate_value?: number;
   smallest_amount?: number;
   name: string;
-  price?: Price;
-  measure_unit_id: string;
+  price?: components['schemas']['Price'];
+  measure_unit_id?: string;
 }
 
 export interface CreateReceivablesFormBeforeValidationProps {

@@ -1,11 +1,10 @@
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { RHFDatePicker } from '@/components/RHF/RHFDatePicker';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { OptionalIndividualSchema } from '@monite/sdk-api';
 
 type IndividualType = { individual: OptionalIndividualSchema };
 
@@ -84,3 +83,6 @@ export const OnboardingEntityIndividual = ({
     </>
   );
 };
+
+type OptionalIndividualSchema =
+  components['schemas']['OptionalIndividualSchema'];

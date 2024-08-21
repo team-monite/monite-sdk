@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MeasureUnit } from '@/components/MeasureUnit/MeasureUnit';
 import { ProductDeleteModal } from '@/components/products/ProductDeleteModal';
 import { TableActions } from '@/components/TableActions';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
-import { useEntityUserByAuthToken, useProducts } from '@/core/queries';
+import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -14,16 +16,10 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ProductCursorFields,
-  OrderEnum,
-  ProductServiceResponse,
-} from '@monite/sdk-api';
 import { Box, Stack, Typography } from '@mui/material';
-import { DataGrid, GridSortModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
 
 import { ProductType } from '../ProductDetails/components/ProductType';
@@ -89,7 +85,7 @@ export interface ProductTableProps {
 
 interface ProductsTableSortModel {
   field: ProductCursorFields;
-  sort: GridSortDirection;
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const ProductsTable = (props: ProductTableProps) => (
@@ -113,46 +109,47 @@ const ProductsTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
-  const [sortModel, setSortModel] = useState<Array<ProductsTableSortModel>>([]);
-  const sortModelItem = sortModel[0];
+  const [sortModel, setSortModel] = useState<
+    ProductsTableSortModel | undefined
+  >();
   const { formatCurrencyToDisplay } = useCurrencies();
 
   /** Controls the visibility of the deleting dialog */
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [selectedProduct, setSelectedProduct] = useState<
-    ProductServiceResponse | undefined
-  >(undefined);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<{
+    open: boolean;
+    id: string | null;
+  }>({ open: false, id: null });
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'product',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
   const { data: isUpdateSupported } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
   const { data: isDeleteSupported } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id,
   });
 
-  const { data: products, isLoading } = useProducts({
-    order: sortModelItem
-      ? (sortModelItem.sort as unknown as OrderEnum)
-      : undefined,
-    limit: pageSize,
-    type: currentFilter[FILTER_TYPE_TYPE] || undefined,
-    paginationToken: currentPaginationToken || undefined,
-    sort: sortModelItem
-      ? (sortModelItem.field as ProductCursorFields)
-      : undefined,
-    nameIcontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    measureUnitId: currentFilter[FILTER_TYPE_UNITS] || undefined,
+  const { api } = useMoniteContext();
+
+  const { data: products, isLoading } = api.products.getProducts.useQuery({
+    query: {
+      sort: sortModel?.field,
+      order: sortModel?.sort,
+      limit: pageSize,
+      type: currentFilter[FILTER_TYPE_TYPE] || undefined,
+      pagination_token: currentPaginationToken || undefined,
+      name__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      measure_unit_id: currentFilter[FILTER_TYPE_UNITS] || undefined,
+    },
   });
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
@@ -165,13 +162,97 @@ const ProductsTableBase = ({
     onChangeFilterCallback?.({ field, value });
   };
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<ProductsTableSortModel>;
-    setSortModel(model);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as ProductsTableSortModel);
     setCurrentPaginationToken(null);
 
-    onChangeSortCallback?.(model[0]);
+    onChangeSortCallback?.(model[0] as ProductsTableSortModel);
   };
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'name',
+        headerName: t(i18n)`Name, description`,
+        display: 'flex',
+        flex: 3,
+        renderCell: (params) => (
+          <Stack spacing={1} width="100%">
+            <Typography variant="caption">{params.row.name}</Typography>
+            <Typography
+              color="secondary"
+              sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+            >
+              {params.row.description}
+            </Typography>
+          </Stack>
+        ),
+      },
+      {
+        field: 'type',
+        headerName: t(i18n)`Type`,
+        display: 'flex',
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return params.row.type ? (
+            <ProductType type={params.row.type} />
+          ) : null;
+        },
+      },
+      {
+        field: 'price',
+        headerName: t(i18n)`Price per unit`,
+        flex: 1,
+        sortable: false,
+        align: 'right',
+        headerAlign: 'right',
+        valueGetter: (value: ProductServiceResponse['price']) => {
+          const price = value;
+
+          return price
+            ? formatCurrencyToDisplay(price.value, price.currency)
+            : '';
+        },
+      },
+      {
+        field: 'measure_unit_id',
+        headerName: t(i18n)`Units`,
+        flex: 1,
+        sortable: false,
+        renderCell: (params) => {
+          return <MeasureUnit unitId={params.value} />;
+        },
+      },
+      {
+        field: 'actions',
+        sortable: false,
+        headerName: '',
+        width: 70,
+        renderCell: (params) => (
+          <TableActions
+            permissions={{
+              isUpdateAllowed: isUpdateSupported,
+              isDeleteAllowed: isDeleteSupported,
+            }}
+            onEdit={() => onEdit?.(params.row)}
+            onDelete={() => {
+              setIsDeleteDialogOpen({
+                id: params.row.id,
+                open: true,
+              });
+            }}
+          />
+        ),
+      },
+    ];
+  }, [
+    formatCurrencyToDisplay,
+    i18n,
+    isDeleteSupported,
+    isUpdateSupported,
+    onEdit,
+  ]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
@@ -182,130 +263,75 @@ const ProductsTableBase = ({
   }
 
   return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <FiltersComponent onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          autoHeight
-          rowSelection={false}
-          rows={products?.data || []}
-          onRowClick={(params) => {
-            onRowClick?.(params.row);
-          }}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name, description`,
-              flex: 3,
-              renderCell: (params) => (
-                <Stack spacing={1} width="100%">
-                  <Typography variant="caption">{params.row.name}</Typography>
-                  <Typography
-                    color="secondary"
-                    sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
-                  >
-                    {params.row.description}
-                  </Typography>
-                </Stack>
-              ),
-            },
-            {
-              field: 'type',
-              headerName: t(i18n)`Type`,
-              flex: 1,
-              sortable: false,
-              renderCell: (params) => {
-                return params.row.type ? (
-                  <ProductType type={params.row.type} />
-                ) : null;
-              },
-            },
-            {
-              field: 'price',
-              headerName: t(i18n)`Price per unit`,
-              flex: 1,
-              sortable: false,
-              align: 'right',
-              headerAlign: 'right',
-              valueGetter: (params) => {
-                const price = params.value as ProductServiceResponse['price'];
-
-                return price
-                  ? formatCurrencyToDisplay(price.value, price.currency)
-                  : '';
-              },
-            },
-            {
-              field: 'measure_unit_id',
-              headerName: t(i18n)`Units`,
-              flex: 1,
-              sortable: false,
-              renderCell: (params) => {
-                return <MeasureUnit unitId={params.value} />;
-              },
-            },
-            {
-              field: 'actions',
-              sortable: false,
-              headerName: '',
-              width: 70,
-              renderCell: (params) => (
-                <TableActions
-                  permissions={{
-                    isUpdateAllowed: isUpdateSupported,
-                    isDeleteAllowed: isDeleteSupported,
-                  }}
-                  onEdit={() => onEdit?.(params.row)}
-                  onDelete={() => {
-                    setSelectedProduct(params.row);
-                    setIsDeleteDialogOpen(true);
-                  }}
-                />
-              ),
-            },
-          ]}
-          loading={isLoading}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
-          sx={{
-            '& .MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-            '&.MuiDataGrid-withBorderColor': {
-              borderColor: 'divider',
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={products?.prev_pagination_token}
-                nextPage={products?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setPageSize(pageSize);
-                  setCurrentPaginationToken(page);
-                }}
-              />
-            ),
-          }}
-        />
-        <ProductDeleteModal
-          id={selectedProduct?.id}
-          open={isDeleteDialogOpen}
-          onDeleted={onDeleted}
-          onClose={() => setIsDeleteDialogOpen(false)}
-        />
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: sortModel && [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        rows={products?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => {
+          onRowClick?.(params.row);
+        }}
+        columns={columns}
+        loading={isLoading}
+        sx={{
+          '& .MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+          '&.MuiDataGrid-withBorderColor': {
+            borderColor: 'divider',
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={products?.prev_pagination_token}
+              nextPage={products?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPageSize(pageSize);
+                setCurrentPaginationToken(page);
+              }}
+            />
+          ),
+        }}
+      />
+      {isDeleteDialogOpen.id && (
+        <ProductDeleteModal
+          id={isDeleteDialogOpen.id}
+          open={isDeleteDialogOpen.open}
+          onDeleted={onDeleted}
+          onClose={() =>
+            setIsDeleteDialogOpen((prev) => ({
+              ...prev,
+              open: false,
+            }))
+          }
+        />
+      )}
+    </Box>
   );
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
+type ProductCursorFields = components['schemas']['ProductCursorFields'];

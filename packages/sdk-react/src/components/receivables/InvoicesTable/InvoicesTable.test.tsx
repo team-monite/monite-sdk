@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { InvoicesTable } from '@/components';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { receivableListFixture } from '@/mocks/receivables';
 import { renderWithClient } from '@/utils/test-utils';
 import { findByLabelText, fireEvent, screen } from '@testing-library/react';
@@ -14,15 +13,13 @@ describe('InvoicesTable', () => {
     await expect(
       screen.findByRole('columnheader', { name: 'Action menu' })
     ).resolves.toBeInTheDocument();
-
-    screen.debug(undefined, 90_000);
   });
 
   test('renders action menu default items', async () => {
     renderWithClient(<InvoicesTable onRowActionClick={jest.fn()} />);
 
-    const draftCellNodes = screen.findAllByRole('cell', {
-      name: 'INV-auto',
+    const draftCellNodes = screen.findAllByRole('gridcell', {
+      name: INVOICE_DOCUMENT_AUTO_ID,
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -58,8 +55,8 @@ describe('InvoicesTable', () => {
       />
     );
 
-    const draftCellNodes = screen.findAllByRole('cell', {
-      name: 'INV-auto',
+    const draftCellNodes = screen.findAllByRole('gridcell', {
+      name: INVOICE_DOCUMENT_AUTO_ID,
     });
 
     await expect(draftCellNodes).resolves.toBeInstanceOf(Array);
@@ -86,9 +83,7 @@ describe('InvoicesTable', () => {
 
     fireEvent.click(await screen.findByRole('menuitem', { name: 'Recurring' }));
 
-    const firstDraftInvoiceId = receivableListFixture.invoice.find(
-      ({ status }) => status === 'draft'
-    )?.id;
+    const firstDraftInvoiceId = invoiceRowNode?.getAttribute('data-id');
 
     expect(onRowActionClick.mock.calls).toEqual([
       [{ id: firstDraftInvoiceId, action: 'recurrent' }],
@@ -96,8 +91,6 @@ describe('InvoicesTable', () => {
   }, 10_000);
 
   test('not renders action menu if onRowAction property is not specified', async () => {
-    const onClick = jest.fn();
-
     renderWithClient(<InvoicesTable />);
 
     const firstInvoiceNotEmptyDocumentId = receivableListFixture.invoice.find(
@@ -107,11 +100,11 @@ describe('InvoicesTable', () => {
     expect(firstInvoiceNotEmptyDocumentId).toBeDefined();
 
     await expect(
-      screen.findAllByRole('cell', {
+      screen.findAllByRole('gridcell', {
         name: String(firstInvoiceNotEmptyDocumentId),
       })
     ).resolves.toBeInstanceOf(Array);
-    screen.debug(undefined, 90_000);
+
     expect(
       screen.queryByRole('columnheader', { name: 'Action menu' })
     ).not.toBeInTheDocument();

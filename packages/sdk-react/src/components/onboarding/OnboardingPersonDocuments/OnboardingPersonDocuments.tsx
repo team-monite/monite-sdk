@@ -1,17 +1,14 @@
 import { useMemo } from 'react';
 
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  useCreatePersonDocumentsById,
-  useDocumentDescriptions,
-} from '@/core/queries/useOnboardingDocuments';
-import { usePersonList } from '@/core/queries/usePerson';
+import { useDocumentDescriptions } from '@/core/queries/useOnboardingDocuments';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries, AllowedFileTypes } from '@monite/sdk-api';
 
 import { useOnboardingRequirementsContext } from '../context';
 import { useOnboardingForm } from '../hooks';
@@ -31,15 +28,19 @@ export const OnboardingPersonDocuments = () => {
 
   const { personId, disableEditMode } = useOnboardingRequirementsContext();
 
-  const { mutateAsync, isPending } = useCreatePersonDocumentsById();
+  const { api } = useMoniteContext();
+  const { mutateAsync, isPending } =
+    api.persons.postPersonsIdOnboardingDocuments.useMutation();
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const { data: personsList } = usePersonList();
-
-  const person = useMemo(
-    () => personsList?.data?.find(({ id }) => id === personId),
-    [personsList?.data, personId]
+  const { data: person } = api.persons.getPersonsId.useQuery(
+    {
+      path: { person_id: personId ?? '' },
+    },
+    {
+      enabled: Boolean(personId),
+    }
   );
 
   const { data: descriptions } = useDocumentDescriptions(
@@ -56,20 +57,15 @@ export const OnboardingPersonDocuments = () => {
 
     if (!fields) return undefined;
 
-    const { id, ...documents } = fields;
+    const { ...documents } = fields;
 
     return documents;
   }, [personDocuments, personId]);
 
   const { defaultValues, methods, checkValue, handleSubmit } =
-    useOnboardingForm<PersonDocumentsSchema, PersonDocumentsSchema>(
-      fields,
-      'personDocuments'
-    );
+    useOnboardingForm<PersonDocumentsSchema, void>(fields, 'personDocuments');
 
   const { control } = methods;
-
-  console.log(descriptions);
 
   if (!personId || !person || !defaultValues || !fields) return null;
 
@@ -81,26 +77,30 @@ export const OnboardingPersonDocuments = () => {
           onSecondaryAction={disableEditMode}
         />
       }
-      onSubmit={handleSubmit(async (payload) => {
-        const response = await mutateAsync({
-          personId,
-          payload,
-        });
+      onSubmit={handleSubmit(
+        async ({
+          // @ts-expect-error - id received from onboarding_requirements doesn't need in PersonDocumentsSchema
+          id,
+          ...payload
+        }) => {
+          await mutateAsync({
+            path: { person_id: personId },
+            body: payload,
+          });
 
-        patchOnboardingRequirements({
-          data: {
-            persons_documents: personDocuments.map((person) =>
-              person.id === personId
-                ? enrichFieldsByValues(person, payload)
-                : person
-            ),
-          },
-        });
+          patchOnboardingRequirements({
+            data: {
+              persons_documents: personDocuments.map((person) =>
+                person.id === personId
+                  ? enrichFieldsByValues(person, { id, ...payload })
+                  : person
+              ),
+            },
+          });
 
-        disableEditMode();
-
-        return response;
-      })}
+          disableEditMode();
+        }
+      )}
     >
       <OnboardingStepContent>
         <OnboardingSubTitle>
@@ -114,7 +114,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="verification_document_front"
             label={t(i18n)`Front of your identity document`}
-            fileType={AllowedFileTypes.IDENTITY_DOCUMENTS}
+            fileType={'identity_documents'}
             description={descriptions?.verification}
           />
         </OnboardingStepContent>
@@ -126,7 +126,7 @@ export const OnboardingPersonDocuments = () => {
             name="verification_document_back"
             control={control}
             label={t(i18n)`Back of your identity document`}
-            fileType={AllowedFileTypes.IDENTITY_DOCUMENTS}
+            fileType={'identity_documents'}
             description={descriptions?.verification}
           />
         </OnboardingStepContent>
@@ -138,7 +138,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="additional_verification_document_back"
             label={t(i18n)`Front of your additional identity document`}
-            fileType={AllowedFileTypes.ADDITIONAL_IDENTITY_DOCUMENTS}
+            fileType={'additional_identity_documents'}
             description={descriptions?.additional_verification}
           />
         </OnboardingStepContent>
@@ -150,7 +150,7 @@ export const OnboardingPersonDocuments = () => {
             control={control}
             name="additional_verification_document_back"
             label={t(i18n)`Back of your additional identity document`}
-            fileType={AllowedFileTypes.ADDITIONAL_IDENTITY_DOCUMENTS}
+            fileType={'additional_identity_documents'}
             description={descriptions?.additional_verification}
           />
         </OnboardingStepContent>
@@ -158,3 +158,5 @@ export const OnboardingPersonDocuments = () => {
     </OnboardingForm>
   );
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];

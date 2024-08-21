@@ -1,8 +1,8 @@
+import { components } from '@/api';
 import { getCurrencies } from '@/core/utils';
 import { currenciesToStringArray } from '@/core/utils/selectHelpers';
 import { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { CurrencyEnum, ProductServiceTypeEnum } from '@monite/sdk-api';
 
 import * as yup from 'yup';
 
@@ -24,10 +24,8 @@ export const getValidationSchema = (i18n: I18n) =>
       .required(),
     type: yup
       .mixed<ProductServiceTypeEnum>()
-      .oneOf(
-        [ProductServiceTypeEnum.PRODUCT, ProductServiceTypeEnum.SERVICE],
-        t(i18n)`Product type is required`
-      ),
+      .oneOf(['product', 'service'], t(i18n)`Product type is required`)
+      .required(),
     units: yup
       .string()
       .label(t(i18n)`Units`)
@@ -53,3 +51,6 @@ export const getValidationSchema = (i18n: I18n) =>
 export type IProductFormSubmitValues = yup.InferType<
   ReturnType<typeof getValidationSchema>
 >;
+
+type ProductServiceTypeEnum = components['schemas']['ProductServiceTypeEnum'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

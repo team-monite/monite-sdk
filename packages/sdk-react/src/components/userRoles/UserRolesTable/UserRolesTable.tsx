@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { components } from '@/api';
 import { FILTER_TYPE_CREATED_AT } from '@/components/approvalPolicies/consts';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { FILTER_TYPE_SEARCH } from '@/components/userRoles/consts';
 import { FilterType, FilterValue } from '@/components/userRoles/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useRoles } from '@/core/queries/useRoles';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -15,19 +16,13 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OrderEnum,
-  PayableResponseSchema,
-  type RoleCursorFields,
-} from '@monite/sdk-api';
 import { Box } from '@mui/material';
 import {
   DataGrid,
-  GridValueFormatterParams,
   gridClasses,
+  GridColDef,
   GridSortModel,
 } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
@@ -69,8 +64,8 @@ interface UserRolesTableProps {
 }
 
 interface UserRolesTableSortModel {
-  field: RoleCursorFields;
-  sort: GridSortDirection;
+  field: components['schemas']['RoleCursorFields'];
+  sort: NonNullable<GridSortDirection>;
 }
 
 export const UserRolesTable = (props: UserRolesTableProps) => (
@@ -85,6 +80,7 @@ const UserRolesTableBase = ({
   onRowClick,
 }: UserRolesTableProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -92,33 +88,33 @@ const UserRolesTableBase = ({
     useTablePaginationThemeDefaultPageSize()
   );
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
-  const [sortModel, setSortModel] = useState<Array<UserRolesTableSortModel>>(
-    []
-  );
-  const sortModelItem = sortModel[0];
+  const [sortModel, setSortModel] = useState<UserRolesTableSortModel>({
+    field: 'created_at',
+    sort: 'desc',
+  });
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadSupported, isLoading: isReadSupportedLoading } =
     useIsActionAllowed({
       method: 'role',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
-  const { data: roles, isLoading } = useRoles({
-    order: sortModelItem
-      ? (sortModelItem.sort as unknown as OrderEnum)
-      : undefined,
-    limit: pageSize,
-    paginationToken: currentPaginationToken || undefined,
-    sort: sortModelItem ? (sortModelItem.field as RoleCursorFields) : undefined,
-    name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-    createdAtGte: currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-      : undefined,
-    createdAtLte: currentFilter[FILTER_TYPE_CREATED_AT]
-      ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-      : undefined,
+  const { data: roles, isLoading } = api.roles.getRoles.useQuery({
+    query: {
+      sort: sortModel?.field,
+      order: sortModel?.sort,
+      limit: pageSize,
+      pagination_token: currentPaginationToken || undefined,
+      name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_at__lte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+    },
   });
 
   const onChangeFilter = (field: keyof FilterType, value: FilterValue) => {
@@ -131,13 +127,45 @@ const UserRolesTableBase = ({
     onFilterChanged?.({ field, value });
   };
 
-  const onChangeSort = (m: GridSortModel) => {
-    const model = m as Array<UserRolesTableSortModel>;
-    setSortModel(model);
+  const onChangeSort = (model: GridSortModel) => {
+    setSortModel(model[0] as UserRolesTableSortModel);
     setCurrentPaginationToken(null);
 
-    onSortChanged?.(model[0]);
+    onSortChanged?.(model[0] as UserRolesTableSortModel);
   };
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'name',
+        headerName: t(i18n)`Name`,
+        sortable: false,
+        flex: 1,
+      },
+      {
+        field: 'permissions',
+        headerName: t(i18n)`Permissions`,
+        sortable: false,
+        flex: 2,
+        renderCell: (params) => (
+          <PermissionsCell
+            permissions={params.value}
+            onCLickSeeAll={() => onRowClick?.(params.row.id)}
+          />
+        ),
+      },
+      {
+        field: 'created_at',
+        headerName: t(i18n)`Created on`,
+        sortable: true,
+        type: 'date',
+        flex: 1,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['created_at']
+        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+    ];
+  }, [i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;
@@ -148,80 +176,55 @@ const UserRolesTableBase = ({
   }
 
   return (
-    <>
-      <Box
-        className={ScopedCssBaselineContainerClassName}
-        sx={{
-          padding: 2,
-        }}
-      >
-        <Box sx={{ marginBottom: 2 }}>
-          <Filters onChangeFilter={onChangeFilter} />
-        </Box>
-        <DataGrid
-          autoHeight
-          rowSelection={false}
-          loading={isLoading}
-          columns={[
-            {
-              field: 'name',
-              headerName: t(i18n)`Name`,
-              sortable: false,
-              flex: 1,
-            },
-            {
-              field: 'permissions',
-              headerName: t(i18n)`Permissions`,
-              sortable: false,
-              flex: 2,
-              renderCell: (params) => (
-                <PermissionsCell
-                  permissions={params.value}
-                  onCLickSeeAll={() => onRowClick?.(params.row.id)}
-                />
-              ),
-            },
-            {
-              field: 'created_at',
-              headerName: t(i18n)`Created on`,
-              sortable: true,
-              type: 'date',
-              flex: 1,
-              valueFormatter: ({
-                value,
-              }: GridValueFormatterParams<
-                PayableResponseSchema['created_at']
-              >) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-            },
-          ]}
-          rows={roles?.data || []}
-          onRowClick={(params) => onRowClick?.(params.row.id)}
-          getRowHeight={() => 'auto'}
-          sortModel={sortModel}
-          onSortModelChange={onChangeSort}
-          sx={{
-            [`& .${gridClasses.cell}`]: {
-              py: 1,
-            },
-          }}
-          slots={{
-            pagination: () => (
-              <TablePagination
-                prevPage={roles?.prev_pagination_token}
-                nextPage={roles?.next_pagination_token}
-                paginationModel={{
-                  pageSize,
-                  page: currentPaginationToken,
-                }}
-                onPaginationModelChange={({ page, pageSize }) => {
-                  setCurrentPaginationToken(page);
-                  setPageSize(pageSize);
-                }}
-              />
-            ),
-          }}
-        />
+    <Box
+      className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
+    >
+      <Box sx={{ mb: 2 }}>
+        <Filters onChangeFilter={onChangeFilter} />
       </Box>
-    </>
+      <DataGrid
+        initialState={{
+          sorting: {
+            sortModel: [sortModel],
+          },
+        }}
+        rowSelection={false}
+        disableColumnFilter={true}
+        loading={isLoading}
+        columns={columns}
+        rows={roles?.data || []}
+        onSortModelChange={onChangeSort}
+        onRowClick={(params) => onRowClick?.(params.row.id)}
+        getRowHeight={() => 'auto'}
+        sx={{
+          [`& .${gridClasses.cell}`]: {
+            py: 1,
+          },
+        }}
+        slots={{
+          pagination: () => (
+            <TablePagination
+              prevPage={roles?.prev_pagination_token}
+              nextPage={roles?.next_pagination_token}
+              paginationModel={{
+                pageSize,
+                page: currentPaginationToken,
+              }}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setCurrentPaginationToken(page);
+                setPageSize(pageSize);
+              }}
+            />
+          ),
+        }}
+      />
+    </Box>
   );
 };

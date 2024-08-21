@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartContactById,
@@ -9,11 +10,6 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartOrganizationRootResponse,
-  CreateCounterpartContactPayload,
-  UpdateCounterpartContactPayload,
-} from '@monite/sdk-api';
 
 import {
   CounterpartContactFields,
@@ -45,22 +41,18 @@ export function useCounterpartContactForm({
     contactId
   );
 
-  const contactCreateMutation = useCreateCounterpartContact(counterpartId);
-  const contactUpdateMutation = useUpdateCounterpartContact(counterpartId);
+  const contactCreateMutation = useCreateCounterpartContact();
+  const contactUpdateMutation = useUpdateCounterpartContact();
 
-  const counterpart =
-    counterpartResponse as CounterpartOrganizationRootResponse;
+  const counterpart = counterpartResponse;
 
   const methods = useForm<CounterpartContactFields>({
     resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => prepareCounterpartContact(contact, i18n),
-      [i18n, contact]
-    ),
+    defaultValues: useMemo(() => prepareCounterpartContact(contact), [contact]),
   });
 
   useEffect(() => {
-    methods.reset(prepareCounterpartContact(contact, i18n));
+    methods.reset(prepareCounterpartContact(contact));
   }, [i18n, methods, contact]);
 
   const submitForm = useCallback(() => {
@@ -72,28 +64,41 @@ export function useCounterpartContactForm({
   }, [formRef]);
 
   const createContact = useCallback(
-    async (req: CreateCounterpartContactPayload) => {
-      return await contactCreateMutation.mutateAsync(req, {
-        onSuccess: ({ id }) => {
-          onCreate && onCreate(id);
+    async (req: components['schemas']['CreateCounterpartContactPayload']) => {
+      return await contactCreateMutation.mutateAsync(
+        {
+          path: {
+            counterpart_id: counterpartId,
+          },
+          body: req,
         },
-      });
+        {
+          onSuccess: ({ id }) => {
+            onCreate && onCreate(id);
+          },
+        }
+      );
     },
-    [contactCreateMutation, onCreate]
+    [contactCreateMutation, counterpartId, onCreate]
   );
 
   const updateContact = useCallback(
-    async (payload: UpdateCounterpartContactPayload) => {
+    async (
+      payload: components['schemas']['UpdateCounterpartContactPayload']
+    ) => {
       if (!contact) return;
 
       return await contactUpdateMutation.mutateAsync(
         {
-          contactId: contact.id,
-          payload,
+          path: {
+            counterpart_id: contact.counterpart_id,
+            contact_id: contact.id,
+          },
+          body: payload,
         },
         {
-          onSuccess: () => {
-            onUpdate && onUpdate(contact.id);
+          onSuccess: (updatedContact) => {
+            onUpdate && onUpdate(updatedContact.id);
           },
         }
       );
@@ -105,9 +110,7 @@ export function useCounterpartContactForm({
     (values: CounterpartContactFields) => {
       const payload = prepareCounterpartContactSubmit(values);
 
-      return !!contact
-        ? updateContact(payload as UpdateCounterpartContactPayload)
-        : createContact(payload as CreateCounterpartContactPayload);
+      return contact ? updateContact(payload) : createContact(payload);
     },
     [contact, updateContact, createContact]
   );

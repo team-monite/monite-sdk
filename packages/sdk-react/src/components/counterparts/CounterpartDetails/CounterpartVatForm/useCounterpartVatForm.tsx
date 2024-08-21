@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { components } from '@/api';
 import {
   useCounterpartById,
   useCounterpartVatById,
@@ -9,7 +10,6 @@ import {
 } from '@/core/queries/useCounterpart';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries, CounterpartVatID } from '@monite/sdk-api';
 
 import { getValidationSchema } from './validation';
 
@@ -34,20 +34,19 @@ export function useCounterpartVatForm({
     vatId
   );
 
-  const createVatMutation = useCreateCounterpartVat(counterpartId);
-  const updateVatMutation = useUpdateCounterpartVat(counterpartId);
+  const createVatMutation = useCreateCounterpartVat();
+  const updateVatMutation = useUpdateCounterpartVat();
 
   const { i18n } = useLingui();
-  const methods = useForm<CounterpartVatID>({
+  const methods = useForm<components['schemas']['CounterpartVatID']>({
     resolver: yupResolver(getValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        country: vat?.country ?? ('' as AllowedCountries),
+    defaultValues: useMemo(() => {
+      return {
+        country: vat?.country,
         type: vat?.type,
         value: vat?.value ?? '',
-      }),
-      [vat]
-    ),
+      };
+    }, [vat]),
   });
 
   useEffect(() => {
@@ -56,44 +55,55 @@ export function useCounterpartVatForm({
   }, [methods.reset, vat, i18n]);
 
   const createVat = useCallback(
-    (payload: CounterpartVatID) => {
-      return createVatMutation.mutate(payload, {
-        onSuccess: ({ id }) => {
-          onCreate && onCreate(id);
-        },
-      });
-    },
-    [createVatMutation, onCreate]
-  );
-
-  const updateVat = useCallback(
-    (payload: CounterpartVatID) => {
-      if (!vat) return;
-
-      return updateVatMutation.mutate(
+    (payload: components['schemas']['CounterpartVatID']) => {
+      return createVatMutation.mutateAsync(
         {
-          vatId: vat.id,
-          payload,
+          path: {
+            counterpart_id: counterpartId,
+          },
+          body: payload,
         },
         {
-          onSuccess: () => {
-            onUpdate && onUpdate(vat.id);
+          onSuccess: ({ id }) => {
+            onCreate && onCreate(id);
           },
         }
       );
     },
-    [updateVatMutation, vat, onUpdate]
+    [counterpartId, createVatMutation, onCreate]
+  );
+
+  const updateVat = useCallback(
+    (payload: components['schemas']['CounterpartVatID']) => {
+      if (!vat) return;
+
+      return updateVatMutation.mutate(
+        {
+          path: {
+            counterpart_id: counterpartId,
+            vat_id: vat.id,
+          },
+          body: payload,
+        },
+        {
+          onSuccess: ({ id }) => {
+            onUpdate && onUpdate(id);
+          },
+        }
+      );
+    },
+    [vat, updateVatMutation, counterpartId, onUpdate]
   );
 
   const saveVat = useCallback(
-    ({ country, type, value }: CounterpartVatID) => {
-      const payload: CounterpartVatID = {
+    ({ country, type, value }: components['schemas']['CounterpartVatID']) => {
+      const payload: components['schemas']['CounterpartVatID'] = {
         country,
         type,
         value,
       };
 
-      return !!vat ? updateVat(payload) : createVat(payload);
+      return vat ? updateVat(payload) : createVat(payload);
     },
     [vat, updateVat, createVat]
   );

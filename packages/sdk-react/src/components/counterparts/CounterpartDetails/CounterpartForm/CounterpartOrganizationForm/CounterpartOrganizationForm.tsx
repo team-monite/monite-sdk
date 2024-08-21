@@ -1,20 +1,16 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { useForm, Controller, FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
+import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
-import { ActionEnum } from '@/utils/types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartOrganizationRootCreatePayload,
-  CounterpartOrganizationRootUpdatePayload,
-  CounterpartOrganizationRootResponse,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   DialogActions,
@@ -60,14 +56,14 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: counterpart?.created_by_entity_user_id,
     });
 
   const { showCategories, defaultValues } = props;
 
   const organizationCounterpart = counterpart as
-    | CounterpartOrganizationRootResponse
+    | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
 
   const methods = useForm<{
@@ -94,35 +90,52 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { control, handleSubmit, reset, watch } = methods;
 
   const handleSubmitWithoutPropagation = useCallback(
-    (e: React.BaseSyntheticEvent) => {
+    (e: BaseSyntheticEvent) => {
       e.preventDefault();
       e.stopPropagation();
 
       handleSubmit((values) => {
-        if (!!counterpart) {
-          const payload: CounterpartOrganizationRootUpdatePayload = {
-            type: CounterpartOrganizationRootUpdatePayload.type.ORGANIZATION,
-            tax_id: values.tax_id ?? '',
-            organization: prepareCounterpartOrganizationUpdate(
-              values.organization
-            ),
-          };
+        if (counterpart) {
+          const payload: components['schemas']['CounterpartOrganizationRootUpdatePayload'] =
+            {
+              tax_id: values.tax_id ?? '',
+              language:
+                LanguageCodeEnum.find(
+                  (code) => code === i18n.locale.split('-')[0]
+                ) ?? 'en',
+              reminders_enabled: false,
+              organization: prepareCounterpartOrganizationUpdate(
+                values.organization
+              ),
+            };
 
           return updateCounterpart(payload);
         }
 
-        const payload: CounterpartOrganizationRootCreatePayload = {
-          type: CounterpartOrganizationRootCreatePayload.type.ORGANIZATION,
-          tax_id: values.tax_id ?? '',
-          organization: prepareCounterpartOrganizationCreate(
-            values.organization
-          ),
-        };
+        const payload: components['schemas']['CounterpartOrganizationRootCreatePayload'] =
+          {
+            type: 'organization',
+            tax_id: values.tax_id ?? '',
+            language:
+              LanguageCodeEnum.find(
+                (code) => code === i18n.locale.split('-')[0]
+              ) ?? 'en',
+            reminders_enabled: false,
+            organization: prepareCounterpartOrganizationCreate(
+              values.organization
+            ),
+          };
 
         return createCounterpart(payload);
       })(e);
     },
-    [counterpart, createCounterpart, handleSubmit, updateCounterpart]
+    [
+      counterpart,
+      createCounterpart,
+      handleSubmit,
+      i18n.locale,
+      updateCounterpart,
+    ]
   );
 
   /** Returns `true` if the form works for `update` but not `create` flow */

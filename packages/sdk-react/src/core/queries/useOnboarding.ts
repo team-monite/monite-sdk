@@ -1,91 +1,74 @@
 import { useCallback } from 'react';
 
-import {
-  AllowedCountries,
-  ApiError,
-  InternalOnboardingRequirementsResponse,
-  OnboardingBankAccountMaskResponse,
-  OnboardingPersonMask,
-  Relationship,
-} from '@monite/sdk-api';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { components } from '@/api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
-const onboardingQueryKeys = {
-  all: () => ['onboarding'],
-  requirements: () => [...onboardingQueryKeys.all(), 'requirements'],
-  personMasks: () => [...onboardingQueryKeys.all(), 'personMasks'],
-  bankAccountMasks: () => [...onboardingQueryKeys.all(), 'bankAccountMasks'],
-  currenciesToCountries: () => [
-    ...onboardingQueryKeys.all(),
-    'currenciesToCountries',
-  ],
-};
-
 export const useOnboardingRequirementsData = () => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<InternalOnboardingRequirementsResponse, ApiError>({
-    queryKey: onboardingQueryKeys.requirements(),
-
-    queryFn: () => monite.api.onboarding.getRequirements(),
-
-    retry: false,
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  return api.frontend.getFrontendOnboardingRequirements.useQuery(
+    {},
+    {
+      retry: false,
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    }
+  );
 };
 
 export const useOnboardingPersonMask = (
-  relationship: Relationship[],
+  relationships: components['schemas']['Relationship'][],
   country?: AllowedCountries
 ) => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
   const onlyDirector =
-    relationship.includes(Relationship.DIRECTOR) && relationship.length === 1;
+    relationships.includes('director') && relationships.length === 1;
 
   const enabled = !!(
-    !!relationship.length &&
+    !!relationships.length &&
     (onlyDirector || (!onlyDirector && country))
   );
 
-  return useQuery<OnboardingPersonMask | undefined, ApiError>({
-    queryKey: [...onboardingQueryKeys.personMasks(), { country, relationship }],
-
-    queryFn: () => monite.api.onboarding.getPersonMask(relationship, country),
-
-    enabled,
-    retry: false,
-    staleTime: Infinity,
-  });
+  return api.frontend.getFrontendPersonMask.useQuery(
+    {
+      query: {
+        relationships,
+        country,
+      },
+    },
+    {
+      enabled,
+      retry: false,
+      staleTime: Infinity,
+    }
+  );
 };
 
 export const useOnboardingBankAccountMask = () => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<OnboardingBankAccountMaskResponse | undefined, ApiError>({
-    queryKey: onboardingQueryKeys.bankAccountMasks(),
-
-    queryFn: () => monite.api.onboarding.getBankAccountMasks(),
-
-    retry: false,
-    staleTime: Infinity,
-  });
+  return api.frontend.getFrontendBankAccountMasks.useQuery(
+    {},
+    {
+      retry: false,
+      staleTime: Infinity,
+    }
+  );
 };
 
 export const usePatchOnboardingRequirementsData = () => {
-  const queryClient = useQueryClient();
+  const { api, queryClient } = useMoniteContext();
 
   return useCallback(
     ({
       data,
       requirements = [],
     }: Partial<InternalOnboardingRequirementsResponse>) => {
-      return queryClient.setQueryData<InternalOnboardingRequirementsResponse>(
-        onboardingQueryKeys.requirements(),
+      api.frontend.getFrontendOnboardingRequirements.setQueryData(
+        {},
         (onboarding) => {
           if (!onboarding) return;
 
@@ -99,23 +82,26 @@ export const usePatchOnboardingRequirementsData = () => {
               (item) => !requirements?.includes(item)
             ),
           };
-        }
+        },
+        queryClient
       );
     },
-    [queryClient]
+    [api, queryClient]
   );
 };
 
 export const useOnboardingCurrencyToCountries = () => {
-  const { monite } = useMoniteContext();
+  const { api } = useMoniteContext();
 
-  return useQuery<Record<string, AllowedCountries[]>, ApiError>({
-    queryKey: onboardingQueryKeys.currenciesToCountries(),
-
-    queryFn: () =>
-      monite.api.onboarding.getBankAccountCurrencyToSupportedCountries(),
-
-    retry: false,
-    staleTime: Infinity,
-  });
+  return api.frontend.getFrontendBankAccountsCurrencyToSupportedCountries.useQuery(
+    {},
+    {
+      retry: false,
+      staleTime: Infinity,
+    }
+  );
 };
+
+type AllowedCountries = components['schemas']['AllowedCountries'];
+type InternalOnboardingRequirementsResponse =
+  components['schemas']['InternalOnboardingRequirementsResponse'];

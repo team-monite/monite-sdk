@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   counterpartOrganizationFixture,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -9,7 +7,7 @@ import { Provider, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { QueryClient } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { Counterparts } from './Counterparts';
 

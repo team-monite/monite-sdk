@@ -1,10 +1,9 @@
-import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { components } from '@/api';
 import { RHFCheckbox } from '@/components/RHF/RHFCheckbox';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, PayableActionEnum } from '@monite/sdk-api';
 import {
   CheckRounded as CheckRoundedIcon,
   CloseRounded as CloseRoundedIcon,
@@ -20,7 +19,12 @@ interface UserRoleRowProps {
   /** The row index */
   index: number;
   /** The columns of the table for role details */
-  columns: { id: 'name' | ActionEnum | PayableActionEnum }[];
+  columns: {
+    id:
+      | 'name'
+      | components['schemas']['ActionEnum']
+      | components['schemas']['PayableActionEnum'];
+  }[];
   /** The view of the user role details */
   view: UserRoleDetailsView;
 }
@@ -69,7 +73,9 @@ export const UserRoleRow = ({
   const actionPermissionsColumns = columns.filter(
     (column) => column.id !== 'name'
   ) as {
-    id: ActionEnum | PayableActionEnum;
+    id:
+      | components['schemas']['ActionEnum']
+      | components['schemas']['PayableActionEnum'];
   }[];
 
   return (

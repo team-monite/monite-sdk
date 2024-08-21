@@ -25,11 +25,7 @@ export const createApprovalPolicy = async (
 ) => {
   if (!entity_id) throw new Error('entity_id is empty');
 
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
+  const { POST } = createMoniteClient(token);
 
   const { data, error, response } = await POST('/approval_policies', {
     params: {

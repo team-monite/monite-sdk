@@ -1,32 +1,28 @@
+import { components } from '@/api';
 import { getRandomNumber, getRandomProperty } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CounterpartBankAccountResponse,
-  CurrencyEnum,
-} from '@monite/sdk-api';
 
 import { individualId } from '../counterpart.mocks.types';
 
 export const genCounterpartBankFixture = (
   id: string = 'id-0'
-): CounterpartBankAccountResponse => {
-  const country = getRandomProperty({
-    DE: AllowedCountries.DE,
-    US: AllowedCountries.US,
-    GB: AllowedCountries.GB,
+): components['schemas']['CounterpartBankAccountResponse'] => {
+  const country: components['schemas']['AllowedCountries'] = getRandomProperty({
+    DE: 'DE',
+    US: 'US',
+    GB: 'GB',
   });
 
   const currency = (() => {
     switch (country) {
-      case AllowedCountries.DE:
-        return CurrencyEnum.EUR;
-      case AllowedCountries.US:
-        return CurrencyEnum.USD;
-      case AllowedCountries.GB:
-        return CurrencyEnum.GBP;
+      case 'DE':
+        return 'EUR';
+      case 'US':
+        return 'USD';
+      case 'GB':
+        return 'GBP';
       default:
-        return CurrencyEnum.EUR;
+        return 'EUR';
     }
   })();
 
@@ -35,9 +31,9 @@ export const genCounterpartBankFixture = (
       id: id,
       account_holder_name: 'account_holder_name',
       account_number: 'account_number',
-      country: AllowedCountries.DE,
-      currency: CurrencyEnum.EUR,
-      is_default: false,
+      country: 'DE',
+      currency: 'EUR',
+      is_default_for_currency: false,
       routing_number: 'routing_number',
       sort_code: 'sort_code',
       counterpart_id: individualId,
@@ -53,7 +49,7 @@ export const genCounterpartBankFixture = (
     account_number: faker.finance.accountNumber(),
     country: country,
     currency: currency,
-    is_default: false,
+    is_default_for_currency: false,
     routing_number: faker.finance.routingNumber(),
     sort_code: faker.finance.routingNumber().slice(0, 6),
     counterpart_id: individualId,
@@ -63,10 +59,10 @@ export const genCounterpartBankFixture = (
   };
 };
 
-export const counterpartBankFixture: CounterpartBankAccountResponse =
+export const counterpartBankFixture: components['schemas']['CounterpartBankAccountResponse'] =
   genCounterpartBankFixture();
 
-export const counterpartBankListFixture: CounterpartBankAccountResponse[] =
+export const counterpartBankListFixture: components['schemas']['CounterpartBankAccountResponse'][] =
   new Array(getRandomNumber(1, 4))
     .fill('test')
     .map((_, id) => genCounterpartBankFixture(`id-${id}`));

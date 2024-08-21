@@ -1,20 +1,22 @@
 import { forwardRef } from 'react';
 
+import { components } from '@/api';
 import {
   INVOICE_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_TAG_STATUS_MUI_MAP,
 } from '@/components/receivables/consts';
 import { getCommonStatusLabel } from '@/components/receivables/getCommonStatusLabel';
 import { useLingui } from '@lingui/react';
-import { ReceivablesStatusEnum } from '@monite/sdk-api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 interface InvoiceStatusChipRootProps {
   /** The status of the invoice. */
-  status: ReceivablesStatusEnum;
+  status: components['schemas']['ReceivablesStatusEnum'];
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
+  /** The size of the Chip. */
+  size?: ChipProps['size'];
 }
 
 export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
@@ -33,6 +35,7 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
  *     MoniteInvoiceStatusChip: {
  *       defaultProps: {
  *         icon: true, // Display status icon?
+ *         size: 'small', // The size of the chip
  *         variant: 'outlined', // The variant of the chip
  *       },
  *       variants: [
@@ -53,28 +56,29 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
  *   },
  * });
  */
+
 export const InvoiceStatusChip = forwardRef<
   HTMLDivElement,
   InvoiceStatusChipProps
 >((inProps, ref) => {
-  const props = useThemeProps({
+  const { status, variant, icon, size } = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
   });
 
   const { i18n } = useLingui();
 
-  const Icon = INVOICE_STATUS_TO_MUI_ICON_MAP[props.status];
+  const Icon = INVOICE_STATUS_TO_MUI_ICON_MAP[status];
 
   return (
     <StyledChip
       ref={ref}
-      color={ROW_TO_TAG_STATUS_MUI_MAP[props.status]}
-      icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
-      label={getCommonStatusLabel(props.status, i18n)}
-      status={props.status}
-      variant={props.variant ?? 'filled'}
+      color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
+      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      label={getCommonStatusLabel(i18n, status)}
+      status={status}
+      size={size ?? 'small'}
+      variant={variant ?? 'filled'}
     />
   );
 });
@@ -84,7 +88,6 @@ const StyledChip = styled(
     (props, ref) => <Chip ref={ref} {...props} />
   ),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceStatusChip',
     slot: 'root',
     shouldForwardProp: (prop) => {
@@ -93,6 +96,7 @@ const StyledChip = styled(
         case 'label':
         case 'color':
         case 'icon':
+        case 'size':
           return true;
         default:
           return false;

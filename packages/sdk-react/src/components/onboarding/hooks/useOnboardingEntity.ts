@@ -1,16 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { ErrorType } from '@/core/queries/types';
-import { useUpdateMyEntity } from '@/core/queries/useEntities';
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import {
-  EntityResponse,
-  OnboardingEntity,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 
 import { companyRoleToRequirement } from '../helpers';
 import { generateValuesByFields, prepareValuesToSubmit } from '../transformers';
@@ -18,12 +13,17 @@ import type {
   EntityOrganizationRelationshipCode,
   OrganizationRequirements,
 } from '../types';
+import { showErrorToast } from '../utils';
 
 export type OnboardingEntityReturnType = {
   /**  isLoading a boolean flag indicating whether the form data is being loaded. */
   isPending: boolean;
 
-  error: ErrorType;
+  error:
+    | Error
+    | components['schemas']['ErrorSchemaResponse']
+    | components['schemas']['HTTPValidationError']
+    | null;
 
   entity: OnboardingEntity | undefined;
 
@@ -42,11 +42,26 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
+  const { api, queryClient } = useMoniteContext();
   const {
     mutateAsync: updateEntityMutation,
     isPending,
     error,
-  } = useUpdateMyEntity();
+  } = api.entityUsers.patchEntityUsersMyEntity.useMutation(undefined, {
+    onSuccess: (updatedEntity) => {
+      api.entityUsers.getEntityUsersMyEntity.setQueryData(
+        {},
+        (prevEntity) => ({
+          ...prevEntity,
+          ...updatedEntity,
+        }),
+        queryClient
+      );
+    },
+    onError: (error) => {
+      showErrorToast(error);
+    },
+  });
 
   const entity = useMemo(
     () => onboarding?.data?.entity,
@@ -58,9 +73,9 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
       fields: OnboardingEntity,
       requirements: OnboardingRequirement[] = []
     ) => {
-      const response = await updateEntityMutation(
-        prepareValuesToSubmit(generateValuesByFields(fields))
-      );
+      const response = await updateEntityMutation({
+        body: prepareValuesToSubmit(generateValuesByFields(fields)),
+      });
 
       patchOnboardingRequirements({
         requirements,
@@ -99,3 +114,7 @@ export function useOnboardingEntity(): OnboardingEntityReturnType {
     entity,
   };
 }
+
+type EntityResponse = components['schemas']['EntityResponse'];
+type OnboardingEntity = components['schemas']['OnboardingEntity'];
+type OnboardingRequirement = components['schemas']['OnboardingRequirement'];

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Controller, FieldError } from 'react-hook-form';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
 
@@ -19,7 +18,7 @@ export const RHFTextFieldPhone = <T extends FieldValues>({
       control={control}
       name={name}
       render={({
-        field: { ref, value, onChange, ...otherField },
+        field: { value, onChange, ...otherField },
         fieldState: { error, isTouched },
         formState: { isValid },
       }) => {

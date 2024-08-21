@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
 import { AppCircularProgress } from '@/lib/AppCircularProgress.tsx';
 import { ConfigLoader } from '@/lib/ConfigLoader';
-import { EntityIdLoader } from '@/lib/EntityIdLoader';
 import { fetchTokenDev } from '@/lib/fetchTokenDev';
 import { MoniteIframeAppCommunicator } from '@/lib/MoniteIframeAppCommunicator';
 import { type APISchema } from '@monite/sdk-react';
@@ -11,6 +10,7 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   DefaultLayout,
+  EntityIdLoader,
   getThemeOptions,
   SDKDemoAPIProvider,
   SDKDemoI18nProvider,
@@ -165,7 +165,12 @@ const MoniteIframe = ({
       key={component}
       ref={setIframeElement}
       src={iframeUrl}
-      style={{ border: 'none', width: '100%', height: '100%' }}
+      style={{
+        border: 'none',
+        width: '100%',
+        height: '100%',
+        margin: '0',
+      }}
     ></iframe>
   );
 };

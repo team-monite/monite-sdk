@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useApprovalPolicyById } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';

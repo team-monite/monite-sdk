@@ -1,9 +1,7 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { getPermissionToLabelMap } from '@/components/userRoles/consts';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { BizObjectsSchema } from '@monite/sdk-api';
 import { Grid, Link } from '@mui/material';
 
 import { Permission } from './Permission';
@@ -13,7 +11,7 @@ interface PermissionsCellProps {
    *
    * @param permissions - The permissions data for the role to be displayed.
    */
-  permissions: BizObjectsSchema;
+  permissions: components['schemas']['BizObjectsSchema'];
   onCLickSeeAll: () => void;
 }
 

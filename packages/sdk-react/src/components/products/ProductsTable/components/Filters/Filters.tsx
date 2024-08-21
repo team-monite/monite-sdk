@@ -1,11 +1,9 @@
-import React from 'react';
-
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMeasureUnits } from '@/core/queries';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ProductServiceTypeEnum } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
 import { MenuItem, Select, FormControl, InputLabel, Grid } from '@mui/material';
@@ -24,11 +22,17 @@ interface Props {
 export const Filters = ({ onChangeFilter }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const { api } = useMoniteContext();
   const { data: measureUnits, isLoading: isMeasureUnitsLoading } =
-    useMeasureUnits();
+    api.measureUnits.getMeasureUnits.useQuery();
+  const className = 'Monite-ProductFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={4} sm={4} md={4} lg={4}>
         <SearchField
           label={t(i18n)`Search`}
@@ -38,7 +42,11 @@ export const Filters = ({ onChangeFilter }: Props) => {
         />
       </Grid>
       <Grid item xs={4} sm={3} md={2}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className="Monite-ProductTypeFilter Monite-FilterControl"
+        >
           <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
           <Select
             labelId="type"
@@ -53,15 +61,15 @@ export const Filters = ({ onChangeFilter }: Props) => {
               { label: t(i18n)`All`, value: 'all' },
               {
                 label: t(i18n)`Products`,
-                value: ProductServiceTypeEnum.PRODUCT,
+                value: 'product',
                 icons: <PersonIcon color="primary" fontSize="small" />,
               },
               {
                 label: t(i18n)`Services`,
-                value: ProductServiceTypeEnum.SERVICE,
+                value: 'service',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
-            ].map(({ label, value, icons }) => (
+            ].map(({ label, value }) => (
               <MenuItem value={value} key={value}>
                 {/* We should use `ListItemIcon` component to be able to show `icons` */}
                 {label}
@@ -76,6 +84,7 @@ export const Filters = ({ onChangeFilter }: Props) => {
           variant="outlined"
           fullWidth
           disabled={isMeasureUnitsLoading}
+          className="Monite-ProductUnitFilter Monite-FilterControl"
         >
           <InputLabel id="units">{t(i18n)`Units`}</InputLabel>
           <Select

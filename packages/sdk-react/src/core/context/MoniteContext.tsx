@@ -1,6 +1,13 @@
-import { createContext, ReactNode, useContext, useMemo } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
+import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
 import {
   getLocaleWithDefaults,
@@ -8,7 +15,6 @@ import {
   MoniteLocaleWithRequired,
   type MoniteLocale,
 } from '@/core/context/MoniteI18nProvider';
-import { createQueryClient } from '@/core/context/MoniteQueryClientProvider';
 import { SentryFactory } from '@/core/services';
 import type { I18n } from '@lingui/core';
 import type { MoniteSDK } from '@monite/sdk-api';
@@ -118,6 +124,20 @@ const ContextProvider = ({
     [i18n, sentryHub]
   );
 
+  const { api, version, requestFn } = useMemo(
+    () =>
+      createAPIClient({
+        entityId: monite.entityId,
+        context: MoniteQraftContext,
+      }),
+    [monite.entityId]
+  );
+
+  useEffect(() => {
+    queryClient.mount();
+    return () => queryClient.unmount();
+  }, [queryClient]);
+
   return (
     <MoniteContext.Provider
       value={{
@@ -130,10 +150,9 @@ const ContextProvider = ({
         dateFnsLocale,
         apiUrl: monite.baseUrl,
         fetchToken: monite.fetchToken,
-        ...createAPIClient({
-          entityId: monite.entityId,
-          context: MoniteQraftContext,
-        }),
+        api,
+        version,
+        requestFn,
       }}
     >
       {children}

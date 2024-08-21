@@ -1,12 +1,10 @@
-import React from 'react';
-
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useRoleById } from '@/core/queries/useRoles';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { RoleResponse } from '@monite/sdk-api';
 
 import { UserRoleDetailsDialog } from './UserRoleDetailsDialog';
 
@@ -19,14 +17,14 @@ export interface UserRoleDetailsProps {
    *
    * @param role
    */
-  onCreated?: (role: RoleResponse) => void;
+  onCreated?: (role: components['schemas']['RoleResponse']) => void;
 
   /**
    * Callback is fired when a role is updated and sync with server is successful
    *
    * @param role
    */
-  onUpdated?: (role: RoleResponse) => void;
+  onUpdated?: (role: components['schemas']['RoleResponse']) => void;
 }
 
 export const UserRoleDetails = (props: UserRoleDetailsProps) => (
@@ -41,12 +39,16 @@ const UserRoleDetailsBase = ({
   onCreated,
 }: UserRoleDetailsProps) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
   const {
     isLoading,
     isPending,
     data: role,
     error: roleQueryError,
-  } = useRoleById(id);
+  } = api.roles.getRolesId.useQuery(
+    { path: { role_id: id ?? '' } },
+    { enabled: !!id }
+  );
 
   if (id && (isLoading || isPending)) {
     return <LoadingPage />;

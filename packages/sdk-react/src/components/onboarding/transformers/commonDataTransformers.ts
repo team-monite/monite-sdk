@@ -14,16 +14,11 @@ import {
 export function isOnboardingField(
   field: OnboardingFieldsType
 ): field is OnboardingField {
-  return (
-    typeof field !== 'boolean' &&
-    typeof field !== 'string' &&
-    typeof field !== 'number' &&
-    'required' in field
-  );
+  return !!field && typeof field === 'object' && 'required' in field;
 }
 
 export const mapValueToForm = (
-  key: string,
+  _key: string,
   value: OnboardingValueType | undefined
 ): OnboardingValueType => {
   if (value === undefined) return null;
@@ -40,7 +35,7 @@ export const mapValueToField = (
   if (
     (typeof value === 'string' || value instanceof Date) &&
     key === 'date_of_birth' &&
-    isValid(value)
+    isValid(new Date(value))
   ) {
     return formatDate(new Date(value), 'yyyy-MM-dd');
   }

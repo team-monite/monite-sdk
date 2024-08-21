@@ -9,12 +9,25 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
-  plugins: ['import', 'testing-library', '@team-monite'],
+  plugins: ['testing-library', '@team-monite'],
   rules: {
-    'prettier/prettier': 'warn',
+    'prettier/prettier': 'error',
     'import/no-default-export': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: false }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        args: 'all',
+        argsIgnorePattern: '^_',
+        caughtErrors: 'all',
+        caughtErrorsIgnorePattern: '^_',
+        destructuredArrayIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true,
+      },
+    ],
   },
   overrides: [
     {
@@ -28,8 +41,13 @@ module.exports = {
     },
   ],
   settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
     'import/resolver': {
-      typescript: {}, // this will set the default path for tsconfig.json to ./tsconfig.json
+      typescript: {
+        project: 'tsconfig.json',
+      },
     },
   },
 };

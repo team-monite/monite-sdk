@@ -1,7 +1,5 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { ProductFormValues } from '@/components/products/ProductDetails/validation';
-import { ProductServiceResponse } from '@monite/sdk-api';
 
 import { ExistingProductDetails } from './ExistingProductDetails';
 import { CreateProduct } from './ProductCreate';
@@ -79,3 +77,5 @@ export const ProductDetails = (props: ProductDetailsProps) => {
 
   return <CreateProduct {...props} />;
 };
+
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];

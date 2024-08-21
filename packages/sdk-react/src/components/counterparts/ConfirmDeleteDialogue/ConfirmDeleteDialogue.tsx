@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,7 +9,6 @@ import {
   Button,
   DialogContentText,
   Divider,
-  Typography,
 } from '@mui/material';
 
 type ConfirmDeleteDialogueProps = {

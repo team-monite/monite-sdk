@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { fireEvent, screen } from '@testing-library/react';
 
@@ -23,8 +21,6 @@ describe('ReceivablesTable', () => {
         onTabChange={jest.fn()}
       />
     );
-
-    await waitUntilTableIsLoaded();
 
     const documents = await screen.findAllByText(/quote-/);
 

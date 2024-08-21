@@ -1,7 +1,8 @@
-import React, { useState, useMemo, DragEvent } from 'react';
+import { useState, useMemo, DragEvent, ChangeEvent } from 'react';
 import { toast } from 'react-hot-toast';
 
-import { useAttachFileToPayable } from '@/core/queries/usePayable';
+import { useMoniteContext } from '@/core/context/MoniteContext';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { CenteredContentBox } from '@/ui/box';
 import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { t } from '@lingui/macro';
@@ -39,10 +40,30 @@ export const PayableDetailsAttachFile = ({
   payableId,
 }: PayableDetailsAttachFileProps) => {
   const { i18n } = useLingui();
+  const { api, queryClient } = useMoniteContext();
   const theme = useTheme();
+
   const [dragIsOver, setDragIsOver] = useState(false);
-  const { mutate: attachFileToPayable, isPending } =
-    useAttachFileToPayable(payableId);
+
+  const attachFileMutation = api.payables.postPayablesIdAttachFile.useMutation(
+    {
+      path: { payable_id: payableId },
+    },
+    {
+      onSuccess: () =>
+        Promise.all([
+          api.payables.getPayables.invalidateQueries(queryClient),
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payableId } } },
+            queryClient
+          ),
+        ]),
+      onError: (error) => {
+        toast.error(getAPIErrorMessage(i18n, error));
+      },
+    }
+  );
+
   const dragOverStyle = useMemo(
     () => ({
       border: 2,
@@ -73,7 +94,7 @@ export const PayableDetailsAttachFile = ({
     processFile(droppedFiles[0]);
   };
 
-  const handleButtonUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleButtonUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const uploadedFiles = Array.from(event.target.files);
 
@@ -101,7 +122,7 @@ export const PayableDetailsAttachFile = ({
       }
 
       payableId &&
-        attachFileToPayable(
+        attachFileMutation.mutate(
           {
             file,
           },
@@ -120,12 +141,13 @@ export const PayableDetailsAttachFile = ({
     reader.readAsDataURL(file);
   };
 
-  return isPending ? (
+  return attachFileMutation.isPending ? (
     <CenteredContentBox>
       <CircularProgress />
     </CenteredContentBox>
   ) : (
     <Box
+      className="Monite-PayableDetailsAttachFile"
       sx={{
         width: '100%',
         height: '100%',

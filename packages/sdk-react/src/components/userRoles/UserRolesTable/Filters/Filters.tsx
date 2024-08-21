@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_CREATED_AT,
@@ -32,6 +30,7 @@ export const Filters = ({ onChangeFilter }: FiltersProps) => {
       </Grid>
       <Grid item xs={6} sm={3}>
         <DatePicker
+          className="Monite-UserRoleCreateAtFilter Monite-FilterControl Monite-DateFilterControl"
           label={t(i18n)`Created on`}
           onChange={(value, error) => {
             if (error.validationError) {
@@ -44,6 +43,9 @@ export const Filters = ({ onChangeFilter }: FiltersProps) => {
           }}
           slotProps={{
             popper: {
+              container: root,
+            },
+            dialog: {
               container: root,
             },
             actionBar: {

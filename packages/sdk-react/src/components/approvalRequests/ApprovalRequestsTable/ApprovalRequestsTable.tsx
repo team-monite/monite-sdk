@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import {
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -15,27 +19,25 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { PayableActionEnum } from '@monite/sdk-api';
 import { Box } from '@mui/material';
-import { DataGrid, GridValueFormatterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { addDays, formatISO } from 'date-fns';
 
 import {
-  FILTER_TYPE_STATUS,
-  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_ADDED_BY,
+  FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CURRENT_USER,
+  FILTER_TYPE_STATUS,
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalRequestsFilter } from './ApprovalRequestsFilter/ApprovalRequestsFilter';
 import { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
 import {
-  UseApprovalRequestActionsCellProps,
   useApprovalRequestActionsCell,
+  UseApprovalRequestActionsCellProps,
 } from './useApprovalRequestActionsCell';
 import { UserCell } from './UserCell/UserCell';
 
@@ -72,7 +74,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
@@ -80,7 +82,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isPayableReadSupportedLoading,
   } = useIsActionAllowed({
     method: 'payable',
-    action: PayableActionEnum.READ,
+    action: 'read',
     entityUserId: user?.id,
   });
   const {
@@ -88,7 +90,7 @@ const ApprovalRequestsTableBase = ({
     isLoading: isApprovalUpdateSupportedLoading,
   } = useIsActionAllowed({
     method: 'approval_request',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 
@@ -167,6 +169,84 @@ const ApprovalRequestsTableBase = ({
     }));
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(rows);
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return [
+      {
+        field: 'number',
+        headerName: t(i18n)`Invoice #`,
+        sortable: false,
+        flex: 0.7,
+      },
+      {
+        field: 'counterpart_id',
+        headerName: t(i18n)`Counterpart`,
+        sortable: false,
+        flex: 1,
+        renderCell: (params) => (
+          <CounterpartCell counterpartId={params.value} />
+        ),
+      },
+      {
+        field: 'issued_at',
+        type: 'date',
+        headerName: t(i18n)`Issue date`,
+        sortable: false,
+        flex: 0.7,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['issued_at']
+        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'due_date',
+        type: 'date',
+        headerName: t(i18n)`Due date`,
+        sortable: false,
+        flex: 0.7,
+        valueFormatter: (
+          value: components['schemas']['PayableResponseSchema']['due_date']
+        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+      },
+      {
+        field: 'status',
+        headerName: t(i18n)`Status`,
+        sortable: false,
+        flex: 0.7,
+        renderCell: (params) => (
+          <ApprovalRequestStatusChip status={params.value} />
+        ),
+      },
+      {
+        field: 'amount',
+        headerName: t(i18n)`Amount`,
+        sortable: false,
+        flex: 0.5,
+        valueGetter: (_, payable) => {
+          return payable.amount_to_pay && payable.currency
+            ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
+            : '';
+        },
+      },
+      {
+        field: 'created_by',
+        headerName: t(i18n)`Added by`,
+        sortable: false,
+        flex: 1,
+        renderCell: ({ value }) => <UserCell entityUserId={value} />,
+      },
+      ...(actionsCell ? [actionsCell] : []),
+    ];
+  }, [actionsCell, formatCurrencyToDisplay, i18n]);
+
+  const gridApiRef = useAutosizeGridColumns(
+    payables?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'ApprovalRequestsTable'
+  );
+
   if (
     isApprovalReadSupportedLoading ||
     isPayableReadSupportedLoading ||
@@ -181,15 +261,30 @@ const ApprovalRequestsTableBase = ({
 
   return (
     <Box
-      sx={{ padding: 2, width: '100%', height: '100%' }}
       className={ScopedCssBaselineContainerClassName}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        height: 'inherit',
+        pt: 2,
+      }}
     >
-      <Box sx={{ marginBottom: 2 }}>
+      <Box sx={{ mb: 2 }}>
         <ApprovalRequestsFilter onChangeFilter={onChangeFilter} />
       </Box>
       <DataGrid
-        autoHeight
         rowSelection={false}
+        disableColumnFilter={true}
+        initialState={{
+          columns: {
+            columnVisibilityModel: {
+              actions:
+                isApprovalUpdateSupported && 'onRowActionClick' in restProps,
+            },
+          },
+        }}
+        apiRef={gridApiRef}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         sx={{
@@ -216,85 +311,7 @@ const ApprovalRequestsTableBase = ({
             />
           ),
         }}
-        columns={[
-          {
-            field: 'number',
-            headerName: t(i18n)`Invoice #`,
-            sortable: false,
-            flex: 0.7,
-          },
-          {
-            field: 'counterpart_id',
-            headerName: t(i18n)`Counterpart`,
-            sortable: false,
-            flex: 1,
-            renderCell: (params) => (
-              <CounterpartCell counterpartId={params.value} />
-            ),
-          },
-          {
-            field: 'issued_at',
-            type: 'date',
-            headerName: t(i18n)`Issue date`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: ({
-              value,
-            }: GridValueFormatterParams<
-              components['schemas']['PayableResponseSchema']['issued_at']
-            >) =>
-              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'due_date',
-            type: 'date',
-            headerName: t(i18n)`Due date`,
-            sortable: false,
-            flex: 0.7,
-            valueFormatter: ({
-              value,
-            }: GridValueFormatterParams<
-              components['schemas']['PayableResponseSchema']['due_date']
-            >) =>
-              value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
-          },
-          {
-            field: 'status',
-            headerName: t(i18n)`Status`,
-            sortable: false,
-            flex: 0.7,
-            renderCell: (params) => (
-              <ApprovalRequestStatusChip status={params.value} />
-            ),
-          },
-          {
-            field: 'amount',
-            headerName: t(i18n)`Amount`,
-            sortable: false,
-            flex: 0.5,
-            valueGetter: (params) => {
-              const payable = params.row;
-
-              return payable.amount_to_pay && payable.currency
-                ? formatCurrencyToDisplay(
-                    payable.amount_to_pay,
-                    payable.currency
-                  )
-                : '';
-            },
-          },
-          {
-            field: 'created_by',
-            headerName: t(i18n)`Added by`,
-            sortable: false,
-            flex: 1,
-            renderCell: ({ value }) => <UserCell entityUserId={value} />,
-          },
-          ...(actionsCell ? [actionsCell] : []),
-        ]}
-        columnVisibilityModel={{
-          actions: isApprovalUpdateSupported && 'onRowActionClick' in restProps,
-        }}
+        columns={columns}
         rows={rows ?? []}
       />
     </Box>

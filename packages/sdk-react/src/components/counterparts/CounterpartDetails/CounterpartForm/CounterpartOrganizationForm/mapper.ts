@@ -1,9 +1,5 @@
+import { components } from '@/api';
 import type { CounterpartDefaultValues } from '@/components/counterparts/Counterpart.types';
-import {
-  CounterpartOrganizationResponse,
-  CounterpartOrganizationCreatePayload,
-  CounterpartOrganizationUpdatePayload,
-} from '@monite/sdk-api';
 
 import { CounterpartAddressFormFields } from '../../CounterpartAddressForm';
 
@@ -17,12 +13,17 @@ export interface CounterpartOrganizationFields
 }
 
 export const prepareCounterpartOrganization = (
-  organization?: CounterpartOrganizationResponse,
-  defaultValues?: CounterpartDefaultValues
-): CounterpartOrganizationFields => {
+  organization?: components['schemas']['CounterpartOrganizationResponse'],
+  defaultValues?: CounterpartDefaultValues,
+  contacts?: Array<{ email?: string; is_default: boolean }>
+): CounterpartOrganizationFields & { isEmailDefault: boolean } => {
   const isCustomer = !!(defaultValues?.isCustomer ?? organization?.is_customer);
-
   const isVendor = !!(defaultValues?.isVendor ?? organization?.is_vendor);
+
+  const isEmailDefault = contacts
+    ? !!contacts.find((contact) => contact.email === organization?.email)
+        ?.is_default
+    : false; // Determine if the email is the default one
 
   return {
     companyName: organization?.legal_name ?? '',
@@ -43,6 +44,7 @@ export const prepareCounterpartOrganization = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     country: '',
+    isEmailDefault,
   };
 };
 
@@ -53,7 +55,7 @@ export const prepareCounterpartOrganizationCreate = ({
   isCustomer,
   isVendor,
   ...address
-}: CounterpartOrganizationFields): CounterpartOrganizationCreatePayload => {
+}: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationCreatePayload'] => {
   const { postalCode, ...restAddress } = address;
   return {
     legal_name: companyName,
@@ -61,7 +63,7 @@ export const prepareCounterpartOrganizationCreate = ({
     is_vendor: isVendor,
     phone,
     email,
-    registered_address: {
+    address: {
       ...restAddress,
       postal_code: postalCode,
     },
@@ -74,7 +76,7 @@ export const prepareCounterpartOrganizationUpdate = ({
   phone,
   isCustomer,
   isVendor,
-}: CounterpartOrganizationFields): CounterpartOrganizationUpdatePayload => {
+}: CounterpartOrganizationFields): components['schemas']['CounterpartOrganizationUpdatePayload'] => {
   return {
     legal_name: companyName,
     is_customer: isCustomer,

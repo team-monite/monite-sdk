@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { useApprovalPolicyById } from '@/core/queries';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -27,21 +25,36 @@ export const ApprovalPoliciesTriggers = ({
   approvalPolicyId,
 }: ApprovalPoliciesTriggersProps) => {
   const { i18n } = useLingui();
-  const { data: approvalPolicy } = useApprovalPolicyById(approvalPolicyId);
+  const { api } = useMoniteContext();
+  const { data: approvalPolicy } =
+    api.approvalPolicies.getApprovalPoliciesId.useQuery({
+      path: { approval_policy_id: approvalPolicyId },
+    });
 
   if (!approvalPolicy) {
     return null;
   }
 
-  if (
-    typeof approvalPolicy.trigger === 'object' &&
-    approvalPolicy.trigger['all'] &&
-    Array.isArray(approvalPolicy.trigger['all'])
-  ) {
+  function isApprovalPolicyTrigger(policyTrigger: unknown): policyTrigger is {
+    all: Array<{
+      operator?: string;
+      left_operand?: { name: string };
+      right_operand?: { name: string };
+    }>;
+  } {
+    return Boolean(
+      policyTrigger &&
+        typeof policyTrigger === 'object' &&
+        'all' in policyTrigger &&
+        Array.isArray(policyTrigger['all'])
+    );
+  }
+
+  if (isApprovalPolicyTrigger(approvalPolicy.trigger)) {
     const uniqueTriggerNames: Array<IApprovalPoliciesTriggerName> =
-      approvalPolicy.trigger['all'].reduce((acc, trigger) => {
+      approvalPolicy.trigger['all'].reduce<string[]>((acc, trigger) => {
         if (
-          trigger.hasOwnProperty('left_operand') &&
+          trigger.left_operand &&
           trigger.hasOwnProperty('operator') &&
           trigger.hasOwnProperty('right_operand')
         ) {

@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { getCountries } from '@/core/utils/countries';
-import { getCurrencies } from '@/core/utils/currenices';
+import { getCurrencies } from '@/core/utils/currencies';
 import { MoniteCard } from '@/ui/Card/Card';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';

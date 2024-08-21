@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
+import { components } from '@/api';
 import { CounterpartDetails } from '@/components/counterparts/CounterpartDetails';
 import { CounterpartsTable } from '@/components/counterparts/CounterpartsTable';
 import { Dialog } from '@/components/Dialog';
@@ -12,7 +13,6 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ActionEnum, CounterpartType } from '@monite/sdk-api';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
@@ -29,9 +29,9 @@ const CounterpartsBase = () => {
   const { open, menuProps, buttonProps } = useMenuButton();
 
   const [counterpartId, setId] = useState<string | undefined>(undefined);
-  const [counterpartType, setType] = useState<CounterpartType | undefined>(
-    undefined
-  );
+  const [counterpartType, setType] = useState<
+    components['schemas']['CounterpartType'] | undefined
+  >(undefined);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
 
   useEffect(() => {
@@ -60,18 +60,20 @@ const CounterpartsBase = () => {
   const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.CREATE,
+      action: 'create',
       entityUserId: user?.id,
     });
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'counterpart',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
   const { root } = useRootElements();
+
+  const className = 'Monite-Counterparts';
 
   const counterpartDetails = (() => {
     if (counterpartId) {
@@ -106,6 +108,7 @@ const CounterpartsBase = () => {
   return (
     <>
       <PageHeader
+        className={className + '-Title'}
         title={
           <>
             {t(i18n)`Counterparts`}
@@ -115,9 +118,10 @@ const CounterpartsBase = () => {
           </>
         }
         extra={
-          <Box>
+          <Box className={className + '-Actions'}>
             <Button
               {...buttonProps}
+              className={className + '-Actions-CreateNew'}
               variant="contained"
               disabled={!isCreateAllowed}
               endIcon={
@@ -128,21 +132,24 @@ const CounterpartsBase = () => {
             </Button>
             <Menu
               {...menuProps}
+              className={className + '-Actions-Menu'}
               container={root}
               MenuListProps={{
                 'aria-labelledby': 'actions',
               }}
             >
               <MenuItem
+                className={className + '-Actions-CreateNew-Organization'}
                 onClick={() => {
-                  setType(CounterpartType.ORGANIZATION);
+                  setType('organization');
                 }}
               >
                 {t(i18n)`Organization`}
               </MenuItem>
               <MenuItem
+                className={className + '-Actions-CreateNew-Individual'}
                 onClick={() => {
-                  setType(CounterpartType.INDIVIDUAL);
+                  setType('individual');
                 }}
               >
                 {t(i18n)`Individual`}

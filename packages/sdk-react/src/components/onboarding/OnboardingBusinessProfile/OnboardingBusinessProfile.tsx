@@ -1,3 +1,4 @@
+import { components } from '@/api';
 import { RHFAutocomplete } from '@/components/RHF/RHFAutocomplete';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useUpdateEntityOnboardingData } from '@/core/queries/useEntitiyOnboardingData';
@@ -7,11 +8,6 @@ import {
 } from '@/core/queries/useOnboarding';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  BusinessProfile,
-  EntityOnboardingDataResponse,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 
 import { getMccCodes } from '../dicts/mccCodes';
 import { useOnboardingForm } from '../hooks';
@@ -27,7 +23,11 @@ export const OnboardingBusinessProfile = () => {
 
   const patchOnboardingRequirements = usePatchOnboardingRequirementsData();
 
-  const fields = onboarding?.data?.business_profile;
+  const {
+    // operating_countries: is not used in the form
+    operating_countries: _,
+    ...fields
+  } = onboarding?.data?.business_profile ?? {};
 
   const { defaultValues, methods, checkValue, handleSubmit } =
     useOnboardingForm<
@@ -42,13 +42,13 @@ export const OnboardingBusinessProfile = () => {
   return (
     <OnboardingForm
       actions={<OnboardingFormActions isLoading={isPending} />}
-      onSubmit={handleSubmit(async (values) => {
+      onSubmit={handleSubmit(async ({ operating_countries: _, ...values }) => {
         const response = await mutateAsync({
           business_profile: values,
         });
 
         patchOnboardingRequirements({
-          requirements: [OnboardingRequirement.BUSINESS_PROFILE],
+          requirements: ['business_profile'],
           data: {
             business_profile: enrichFieldsByValues(fields, values),
           },
@@ -83,3 +83,7 @@ export const OnboardingBusinessProfile = () => {
     </OnboardingForm>
   );
 };
+
+type BusinessProfile = components['schemas']['BusinessProfile'];
+type EntityOnboardingDataResponse =
+  components['schemas']['EntityOnboardingDataResponse'];

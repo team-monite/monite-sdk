@@ -1,14 +1,14 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 
+import { CreditNotesTable } from '@/components';
+import { InvoicesTable } from '@/components';
+import { QuotesTable } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Tabs, Tab, Box } from '@mui/material';
-
-import { CreditNotesTable } from '../CreditNotesTable';
-import { InvoicesTable } from '../InvoicesTable';
-import { QuotesTable } from '../QuotesTable';
+import { Box, Tab, Tabs } from '@mui/material';
 
 interface ReceivablesTableUncontrolledProps {
   tab?: undefined;
@@ -55,12 +55,15 @@ const ReceivablesTableBase = ({
   const tabIdPrefix = `ReceivablesTable-Tab-${useId()}-`;
   // eslint-disable-next-line lingui/no-unlocalized-strings
   const tabPanelIdPrefix = `ReceivablesTable-TabPanel-${useId()}-`;
+  const className = 'Monite-ReceivablesTable';
 
   return (
     <>
       <Box
-        sx={{ paddingLeft: 2, paddingRight: 2 }}
-        className={ScopedCssBaselineContainerClassName}
+        className={classNames(
+          ScopedCssBaselineContainerClassName,
+          className + '-Tabs'
+        )}
       >
         <Tabs
           value={activeTab}
@@ -96,6 +99,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Quotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <QuotesTable onRowClick={onRowClick} />
         </Box>
@@ -106,6 +115,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.Invoices}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <InvoicesTable onRowClick={onRowClick} />
         </Box>
@@ -116,6 +131,12 @@ const ReceivablesTableBase = ({
           role="tabpanel"
           id={`${tabPanelIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
           aria-labelledby={`${tabIdPrefix}-${ReceivablesTableTabEnum.CreditNotes}`}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'inherit',
+            minHeight: '0',
+          }}
         >
           <CreditNotesTable onRowClick={onRowClick} />
         </Box>

@@ -1,11 +1,5 @@
+import { components } from '@/api';
 import { faker } from '@faker-js/faker';
-import {
-  EntityBankAccountPaginationResponse,
-  ErrorSchemaResponse,
-  BANK_ACCOUNTS_ENDPOINT,
-  CreateEntityBankAccountRequest,
-  EntityBankAccountResponse,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -16,7 +10,7 @@ export const bankAccountsHandlers = [
     {},
     undefined,
     EntityBankAccountPaginationResponse | ErrorSchemaResponse
-  >(`*${BANK_ACCOUNTS_ENDPOINT}`, async () => {
+  >(`*/bank_accounts`, async () => {
     await delay();
 
     return HttpResponse.json(bankAccountsFixture, {
@@ -24,7 +18,7 @@ export const bankAccountsHandlers = [
     });
   }),
 
-  http.delete(`*${BANK_ACCOUNTS_ENDPOINT}/*`, async () => {
+  http.delete(`*/bank_accounts/*`, async () => {
     await delay();
 
     return new HttpResponse(null, {
@@ -36,7 +30,7 @@ export const bankAccountsHandlers = [
     {},
     CreateEntityBankAccountRequest,
     EntityBankAccountResponse | ErrorSchemaResponse
-  >(`*${BANK_ACCOUNTS_ENDPOINT}`, async ({ request }) => {
+  >(`*/bank_accounts`, async ({ request }) => {
     const payload = await request.json();
 
     await delay();
@@ -52,3 +46,11 @@ export const bankAccountsHandlers = [
     );
   }),
 ];
+
+type EntityBankAccountPaginationResponse =
+  components['schemas']['EntityBankAccountPaginationResponse'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type CreateEntityBankAccountRequest =
+  components['schemas']['CreateEntityBankAccountRequest'];
+type EntityBankAccountResponse =
+  components['schemas']['EntityBankAccountResponse'];

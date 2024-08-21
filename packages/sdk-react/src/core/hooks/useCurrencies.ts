@@ -1,11 +1,9 @@
 import { useCallback, useEffect } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 
-import { useCurrencyList } from '@/core/queries/useCurrency';
-import { getLegacyAPIErrorMessage } from '@/core/utils/getLegacyAPIErrorMessage';
-import { t } from '@lingui/macro';
+import { components } from '@/api';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { useLingui } from '@lingui/react';
-import { CurrencyEnum } from '@monite/sdk-api';
 
 import { useMoniteContext } from '../context/MoniteContext';
 
@@ -15,17 +13,19 @@ import { useMoniteContext } from '../context/MoniteContext';
  *  - Convert minor units into main currency and vise-versa
  */
 export const useCurrencies = () => {
-  const { data: currencyList, isSuccess, isError, error } = useCurrencyList();
-  const { locale } = useMoniteContext();
+  const { locale, api } = useMoniteContext();
+  const {
+    data: currencyList,
+    isSuccess,
+    isError,
+    error,
+  } = api.internal.getInternalCurrencies.useQuery();
   const { i18n } = useLingui();
 
   //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
-      toast.error(
-        getLegacyAPIErrorMessage(error) ||
-          t(i18n)`Error occurred in currencies fetching`
-      );
+      toast.error(getAPIErrorMessage(i18n, error));
     }
   }, [isError, error, i18n]);
 
@@ -42,7 +42,7 @@ export const useCurrencies = () => {
    */
   const getSymbolFromCurrency = (currency: CurrencyEnum | string) => {
     if (!currencyList || !currencyList[currency]) return currency;
-    return currencyList[currency].symbol;
+    return currencyList[currency]?.symbol;
   };
 
   /**
@@ -114,31 +114,39 @@ export const useCurrencies = () => {
    * const price2 = formatCurrencyToDisplay(100, 'unavailable');
    * ```
    */
-  const formatCurrencyToDisplay = (
-    amountInMinorUnits: string | number,
-    currency: CurrencyEnum | string
-  ): string | null => {
-    const currencyData = currencyList && currencyList[currency];
-    const amountFromMinorUnits = formatFromMinorUnits(
-      Number(amountInMinorUnits),
-      currency
-    );
-
-    if (currencyData && amountFromMinorUnits !== null) {
-      const formatter = new Intl.NumberFormat(
-        locale.currencyNumberFormat.localeCode,
-        {
-          style: 'currency',
-          currencyDisplay: locale.currencyNumberFormat.display,
-          currency,
-        }
+  const formatCurrencyToDisplay = useCallback(
+    (
+      amountInMinorUnits: string | number,
+      currency: CurrencyEnum | string
+    ): string | null => {
+      const currencyData = currencyList && currencyList[currency];
+      const amountFromMinorUnits = formatFromMinorUnits(
+        Number(amountInMinorUnits),
+        currency
       );
 
-      return formatter.format(amountFromMinorUnits);
-    }
+      if (currencyData && amountFromMinorUnits !== null) {
+        const formatter = new Intl.NumberFormat(
+          locale.currencyNumberFormat.localeCode,
+          {
+            style: 'currency',
+            currencyDisplay: locale.currencyNumberFormat.display,
+            currency,
+          }
+        );
 
-    return null;
-  };
+        return formatter.format(amountFromMinorUnits);
+      }
+
+      return null;
+    },
+    [
+      currencyList,
+      formatFromMinorUnits,
+      locale.currencyNumberFormat.display,
+      locale.currencyNumberFormat.localeCode,
+    ]
+  );
 
   return {
     currencyList,
@@ -149,3 +157,5 @@ export const useCurrencies = () => {
     isSuccess,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];

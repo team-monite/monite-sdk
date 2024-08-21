@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 import { useDialog } from '@/components/Dialog';
 import { CenteredContentBox } from '@/ui/box';
@@ -7,8 +7,8 @@ import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Grid, IconButton, Stack, Typography } from '@mui/material';
 
 interface NotFoundProps {
-  title: React.ReactNode;
-  description: React.ReactNode;
+  title: ReactNode;
+  description: ReactNode;
 }
 
 export const NotFound = ({ title, description }: NotFoundProps) => {

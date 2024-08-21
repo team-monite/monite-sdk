@@ -2,10 +2,9 @@ import chalk from 'chalk';
 
 import { faker } from '@faker-js/faker';
 
-import { AccessToken } from '@/lib/monite-api/fetch-token';
 import {
-  createMoniteClient,
   getMoniteApiVersion,
+  MoniteClient,
 } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
@@ -19,21 +18,15 @@ export type PayableCounterpart = {
 };
 
 export const createPayable = async ({
+  moniteClient,
   counterpart: { counterpart_bank, ...counterpart },
   entity_id,
-  token,
 }: {
+  moniteClient: MoniteClient;
   counterpart: PayableCounterpart;
   entity_id: string;
-  token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
-
-  const { data, error, response } = await POST('/payables', {
+  const { data, error, response } = await moniteClient.POST('/payables', {
     params: {
       header: {
         'x-monite-version': getMoniteApiVersion(),
@@ -64,20 +57,14 @@ export const createPayable = async ({
 };
 
 export const createPayableLineItems = async ({
+  moniteClient,
   payable_id,
   entity_id,
-  token,
 }: {
+  moniteClient: MoniteClient;
   payable_id: string;
   entity_id: string;
-  token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
-
   const quantity = faker.number.int({ min: 1, max: 10 });
   const unit_price = 100 * faker.number.int({ min: 150, max: 80000 });
   const tax = 100 * faker.number.int({ min: 1, max: 35 });
@@ -88,7 +75,7 @@ export const createPayableLineItems = async ({
     )
   );
 
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/payables/{payable_id}/line_items',
     {
       params: {
@@ -125,21 +112,15 @@ export const createPayableLineItems = async ({
 };
 
 export const approvePayablePaymentOperation = async ({
+  moniteClient,
   payable_id,
   entity_id,
-  token,
 }: {
+  moniteClient: MoniteClient;
   payable_id: string;
   entity_id: string;
-  token: AccessToken;
 }) => {
-  const { POST } = createMoniteClient({
-    headers: {
-      Authorization: `${token.token_type} ${token.access_token}`,
-    },
-  });
-
-  const { data, error, response } = await POST(
+  const { data, error, response } = await moniteClient.POST(
     '/payables/{payable_id}/approve_payment_operation',
     {
       params: {

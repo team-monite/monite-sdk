@@ -1,11 +1,9 @@
-import React from 'react';
-
 import { CounterpartShowCategories } from '@/components/counterparts/Counterpart.types';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { SearchField } from '@/ui/SearchField';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { CounterpartType } from '@monite/sdk-api';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
 import {
@@ -31,9 +29,14 @@ interface Props extends CounterpartShowCategories {
 export const Filters = ({ onChangeFilter, showCategories }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
+  const className = 'Monite-CounterpartFilters';
 
   return (
-    <Grid container spacing={2}>
+    <Grid
+      container
+      spacing={2}
+      className={classNames(className, 'Monite-Filters')}
+    >
       <Grid item xs={4} sm={5} md={5} lg={4}>
         <SearchField
           label={t(i18n)`Search by name`}
@@ -43,7 +46,11 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
         />
       </Grid>
       <Grid item xs={4} sm={3} md={3}>
-        <FormControl variant="outlined" fullWidth>
+        <FormControl
+          variant="outlined"
+          fullWidth
+          className="Monite-CounterpartTypeFilter Monite-FilterControl"
+        >
           <InputLabel id="type">{t(i18n)`Type`}</InputLabel>
           <Select
             labelId="type"
@@ -58,15 +65,15 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
               { label: t(i18n)`All`, value: 'all' },
               {
                 label: t(i18n)`Individuals`,
-                value: CounterpartType.INDIVIDUAL,
+                value: 'individual',
                 icons: <PersonIcon color="primary" fontSize="small" />,
               },
               {
                 label: t(i18n)`Companies`,
-                value: CounterpartType.ORGANIZATION,
+                value: 'organization',
                 icons: <BusinessIcon color="success" fontSize="small" />,
               },
-            ].map(({ label, value, icons }) => (
+            ].map(({ label, value }) => (
               <MenuItem value={value} key={value}>
                 {/* We should use `ListItemIcon` component to be able to show `icons` */}
                 <Box sx={{ marginLeft: 1 }}>{label}</Box>
@@ -77,7 +84,11 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
       </Grid>
       {showCategories && (
         <Grid item xs={4} sm={4} md={3}>
-          <FormControl variant="outlined" fullWidth>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className="Monite-CounterpartCategoryFilter Monite-FilterControl"
+          >
             <InputLabel id="category">{t(i18n)`Category`}</InputLabel>
             <Select
               labelId="category"

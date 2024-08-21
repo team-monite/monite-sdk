@@ -1,20 +1,22 @@
 import { forwardRef } from 'react';
 
+import { components } from '@/api';
 import {
   getRowToStatusTextMap,
   PAYABLE_STATUS_TO_MUI_ICON_MAP,
   ROW_TO_STATUS_MUI_MAP,
 } from '@/components/payables/consts';
 import { useLingui } from '@lingui/react';
-import { PayableStateEnum } from '@monite/sdk-api';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
 interface PayableStatusChipRootProps {
   /** The status of the payable. */
-  status: PayableStateEnum;
+  status: components['schemas']['PayableStateEnum'];
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
+  /** The size of the Chip. */
+  size?: ChipProps['size'];
 }
 
 export interface PayableStatusChipProps extends PayableStatusChipRootProps {
@@ -33,6 +35,7 @@ export interface PayableStatusChipProps extends PayableStatusChipRootProps {
  *     MonitePayableStatusChip: {
  *       defaultProps: {
  *         icon: true, // Display status icon?
+ *         size: 'small', // The size of the chip
  *         variant: 'outlined', // The variant of the chip
  *       },
  *       variants: [
@@ -53,7 +56,6 @@ export const PayableStatusChip = forwardRef<
 >((inProps, ref) => {
   const props = useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MonitePayableStatusChip',
   });
 
@@ -63,11 +65,13 @@ export const PayableStatusChip = forwardRef<
 
   return (
     <StyledChip
+      className="Monite-PayableStatusChip"
       ref={ref}
       color={ROW_TO_STATUS_MUI_MAP[props.status]}
       icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getRowToStatusTextMap(i18n)[props.status]}
       status={props.status}
+      size={props.size ?? 'small'}
       variant={props.variant ?? 'filled'}
     />
   );
@@ -78,7 +82,6 @@ const StyledChip = styled(
     (props, ref) => <Chip ref={ref} {...props} />
   ),
   {
-    // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MonitePayableStatusChip',
     slot: 'root',
     shouldForwardProp: (prop) => {
@@ -87,6 +90,7 @@ const StyledChip = styled(
         case 'label':
         case 'color':
         case 'icon':
+        case 'size':
           return true;
         default:
           return false;

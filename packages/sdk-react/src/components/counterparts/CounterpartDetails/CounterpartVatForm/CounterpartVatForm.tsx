@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import { useId } from 'react';
 
 import {
   CountryOption,
@@ -55,7 +55,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption" data-testid="vatId">
-          {Boolean(vat) ? watch('value') : t(i18n)`Add VAT ID`}
+          {vat ? watch('value') : t(i18n)`Add VAT ID`}
         </Typography>
       </Stack>
       <Divider />
@@ -111,7 +111,7 @@ export const CounterpartVatForm = (props: CounterpartVatFormProps) => {
           type="submit"
           disabled={isLoading}
         >
-          {Boolean(vat) ? t(i18n)`Update Vat Id` : t(i18n)`Create Vat Id`}
+          {vat ? t(i18n)`Update Vat Id` : t(i18n)`Create Vat Id`}
         </Button>
       </DialogActions>
     </>

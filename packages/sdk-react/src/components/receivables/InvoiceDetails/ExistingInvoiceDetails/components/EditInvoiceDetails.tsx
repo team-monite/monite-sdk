@@ -1,31 +1,25 @@
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { components } from '@/api';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
+import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
+import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
 import { EntitySection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection';
 import { ItemsSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection';
 import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection';
-import {
-  getUpdateInvoiceValidationSchema,
-  CreateReceivablesFormProps,
-} from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
+import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
+import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
-  useCounterpartAddresses,
   useUpdateReceivable,
   useUpdateReceivableLineItems,
-} from '@/core/queries';
-import { LoadingPage } from '@/ui/loadingPage';
+} from '@/core/queries/useReceivables';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  CounterpartAddressResponseWithCounterpartID,
-  InvoiceResponsePayload,
-  ReceivableResponse,
-  ReceivableUpdatePayload,
-  UpdateLineItems,
-} from '@monite/sdk-api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,
@@ -39,91 +33,73 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import { format } from 'date-fns';
+import * as yup from 'yup';
 
 interface EditInvoiceDetailsProps {
-  invoice: InvoiceResponsePayload;
+  invoice: components['schemas']['InvoiceResponsePayload'];
 
   /** Callback that is called when the invoice is updated */
-  onUpdated: (updatedReceivable: ReceivableResponse) => void;
+  onUpdated: (
+    updatedReceivable: components['schemas']['InvoiceResponsePayload']
+  ) => void;
 
   /** Callback that is called when the user cancels the editing */
   onCancel: () => void;
 }
 
-interface EditInvoiceDetailsContentProps extends EditInvoiceDetailsProps {
-  counterpartAddresses:
-    | Array<CounterpartAddressResponseWithCounterpartID>
-    | undefined;
-}
+type UpdateReceivablesFormProps = yup.InferType<
+  ReturnType<typeof getUpdateInvoiceValidationSchema>
+>;
 
 const EditInvoiceDetailsContent = ({
   invoice,
   onCancel,
   onUpdated,
-  counterpartAddresses,
-}: EditInvoiceDetailsContentProps) => {
+}: EditInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
-  const counterpartShippingAddress = counterpartAddresses?.find((address) => {
-    return (
-      address.city === invoice.counterpart_shipping_address?.city &&
-      address.country === invoice.counterpart_shipping_address.country &&
-      address.line1 === invoice.counterpart_shipping_address.line1
-    );
-  });
-
-  const methods = useForm<CreateReceivablesFormProps>({
+  const methods = useForm<UpdateReceivablesFormProps>({
     resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
-    defaultValues: useMemo(
-      () => ({
-        /** Customer section */
-        counterpart_id: invoice.counterpart_id,
-        counterpart_contact: invoice.counterpart_contact,
-        counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
-        default_shipping_address_id: counterpartShippingAddress?.id ?? '',
-        default_billing_address_id: '',
+    defaultValues: {
+      /** Customer section */
+      counterpart_id: invoice.counterpart_id,
+      counterpart_vat_id_id: invoice.counterpart_vat_id?.id ?? '',
 
-        /** Entity section */
-        entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
-        fulfillment_date: invoice.fulfillment_date
-          ? new Date(invoice.fulfillment_date)
-          : null,
-        purchase_order: invoice.purchase_order ?? '',
+      default_shipping_address_id:
+        invoice.counterpart_shipping_address?.id ?? '',
+      default_billing_address_id: invoice.counterpart_billing_address?.id ?? '',
 
-        /** Items section */
-        line_items: invoice.line_items.map((lineItem) => ({
-          quantity: lineItem.quantity,
-          product_id: lineItem.product.id,
-          vat_rate_id: lineItem.product.vat_rate.id,
-          vat_rate_value: lineItem.product.vat_rate.value,
-          name: lineItem.product.name,
-          price: lineItem.product.price,
-          measure_unit_id: lineItem.product.measure_unit_id,
-        })),
-        vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+      /** Entity section */
+      entity_vat_id_id: invoice.entity_vat_id?.id ?? '',
+      fulfillment_date: invoice.fulfillment_date
+        ? new Date(invoice.fulfillment_date)
+        : null,
+      purchase_order: invoice.purchase_order ?? '',
 
-        /** Items section */
-        entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
-        payment_terms_id: invoice.payment_terms?.id ?? '',
-      }),
-      [
-        counterpartShippingAddress?.id,
-        invoice.counterpart_contact,
-        invoice.counterpart_id,
-        invoice.counterpart_vat_id?.id,
-        invoice.entity_bank_account?.id,
-        invoice.entity_vat_id?.id,
-        invoice.fulfillment_date,
-        invoice.line_items,
-        invoice.payment_terms?.id,
-        invoice.purchase_order,
-        invoice.vat_exemption_rationale,
-      ]
-    ),
+      /** Items section */
+      line_items: invoice.line_items.map((lineItem) => ({
+        quantity: lineItem.quantity,
+        product_id: lineItem.product.id,
+        vat_rate_id: lineItem.product.vat_rate.id,
+        vat_rate_value: lineItem.product.vat_rate.value,
+        name: lineItem.product.name,
+        price: lineItem.product.price,
+        measure_unit_id: lineItem.product.measure_unit_id,
+      })),
+      vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+
+      /** Items section */
+      entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
+      payment_terms_id: invoice.payment_terms?.id ?? '',
+
+      payment_reminder_id: invoice.payment_reminder_id ?? '',
+      overdue_reminder_id: invoice.overdue_reminder_id ?? '',
+    },
   });
 
   const [actualCurrency, setActualCurrency] = useState(invoice.currency);
@@ -131,6 +107,8 @@ const EditInvoiceDetailsContent = ({
   const {
     handleSubmit,
     formState: { isDirty },
+    getValues,
+    setValue,
   } = methods;
 
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -152,12 +130,25 @@ const EditInvoiceDetailsContent = ({
   const isLoading =
     updateReceivableLineItems.isPending || updateReceivable.isPending;
 
-  // eslint-disable-next-line lingui/no-unlocalized-strings
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
+
+  const {
+    createReminderDialog,
+    editReminderDialog,
+    onCreateReminder,
+    onEditOverdueReminder,
+    onEditPaymentReminder,
+    closeCreateReminderDialog,
+    closeUpdateReminderDialog,
+  } = useInvoiceReminderDialogs({ getValues });
+
+  const className = 'Monite-EditInvoiceDetails';
+
+  const theme = useTheme();
 
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Toolbar>
           <Button
             variant="text"
@@ -178,14 +169,14 @@ const EditInvoiceDetailsContent = ({
           </Box>
         </Toolbar>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <FormProvider {...methods}>
           <form
             id={formName}
             noValidate
             onSubmit={handleSubmit((values) => {
-              const lineItems: UpdateLineItems = {
+              const lineItems: components['schemas']['UpdateLineItems'] = {
                 data: values.line_items.map((lineItem) => ({
                   quantity: lineItem.quantity,
                   product_id: lineItem.product_id,
@@ -193,75 +184,78 @@ const EditInvoiceDetailsContent = ({
                 })),
               };
 
-              const invoicePayload: ReceivableUpdatePayload = {
-                invoice: {
-                  /** Customer section */
-                  counterpart_id: values.counterpart_id,
-                  counterpart_vat_id_id:
-                    values.counterpart_vat_id_id || undefined,
-                  currency: actualCurrency,
-                  vat_exemption_rationale: values.vat_exemption_rationale,
-                  /**
-                   * Note: We shouldn't send `counterpart_billing_address`
-                   *  because it's auto-selected from UI.
-                   * There is no way to change it (at least right now)
-                   */
-                  counterpart_shipping_address: counterpartShippingAddress
-                    ? {
-                        country: counterpartShippingAddress.country,
-                        city: counterpartShippingAddress.city,
-                        postal_code: counterpartShippingAddress.postal_code,
-                        state: counterpartShippingAddress.state,
-                        line1: counterpartShippingAddress.line1,
-                        line2: counterpartShippingAddress.line2,
-                      }
-                    : undefined,
-                  /** We shouldn't send an empty string to the server if the value is not set */
-                  entity_bank_account_id:
-                    values.entity_bank_account_id || undefined,
-                  payment_terms_id: values.payment_terms_id,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
-                  fulfillment_date: values.fulfillment_date
-                    ? /**
-                       * We have to change the date as Backend accepts it.
-                       * There is no `time` in request, only year, month and date
-                       */
-                      format(values.fulfillment_date, 'yyyy-MM-dd')
-                    : undefined,
-                  /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
-                  // purchase_order: values.purchase_order || undefined,
-                },
-              };
+              const invoicePayload: components['schemas']['ReceivableUpdatePayload'] =
+                {
+                  invoice: {
+                    /** Customer section */
+                    counterpart_id: values.counterpart_id,
+                    counterpart_vat_id_id:
+                      values.counterpart_vat_id_id || undefined,
+                    currency: actualCurrency,
+                    vat_exemption_rationale: values.vat_exemption_rationale,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    counterpart_shipping_address_id:
+                      values?.default_shipping_address_id || null,
+                    counterpart_billing_address_id:
+                      values?.default_billing_address_id,
+                    /** We shouldn't send an empty string to the server if the value is not set */
+                    entity_bank_account_id:
+                      values.entity_bank_account_id || undefined,
+                    payment_terms_id: values.payment_terms_id,
+                    entity_vat_id_id: values.entity_vat_id_id || undefined,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    fulfillment_date: values.fulfillment_date
+                      ? /**
+                         * We have to change the date as Backend accepts it.
+                         * There is no `time` in request, only year, month and date
+                         */
+                        format(values.fulfillment_date, 'yyyy-MM-dd')
+                      : null,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    payment_reminder_id: values.payment_reminder_id || null,
+                    // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
+                    overdue_reminder_id: values.overdue_reminder_id || null,
+                    /** !!! Note !!! Backend is not supported to edit `purchase_order` so we have to remove it */
+                    // purchase_order: values.purchase_order || undefined,
+                  },
+                };
 
               updateReceivableLineItems.mutate(lineItems, {
                 onSuccess: () => {
                   updateReceivable.mutate(invoicePayload, {
-                    onSuccess: (updatedReceivable) => {
-                      onUpdated(updatedReceivable);
+                    onSuccess: (receivable) => {
+                      onUpdated(
+                        receivable as components['schemas']['InvoiceResponsePayload']
+                      );
                     },
                   });
                 },
               });
             })}
+            style={{ marginBottom: theme.spacing(7) }}
           >
-            <Stack spacing={2} sx={{ mt: 2 }}>
-              <Typography variant="h2" sx={{ mb: 2 }}>
-                {t(i18n)`Edit invoice ${invoice.id}`}
-              </Typography>
-              <Stack direction="column" spacing={4}>
-                <CustomerSection disabled={isLoading} />
-                <EntitySection
-                  disabled={isLoading}
-                  hidden={['purchase_order']}
-                />
-                <ItemsSection
-                  actualCurrency={actualCurrency}
-                  onCurrencyChanged={setActualCurrency}
-                />
-                <PaymentSection disabled={isLoading} />
-              </Stack>
+            <Typography variant="h1" sx={{ mb: 7 }}>
+              {t(i18n)`Edit invoice ${
+                invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+              }`}
+            </Typography>
+            <Stack direction="column" spacing={4}>
+              <CustomerSection disabled={isLoading} />
+              <EntitySection disabled={isLoading} hidden={['purchase_order']} />
+              <ItemsSection
+                actualCurrency={actualCurrency}
+                onCurrencyChanged={setActualCurrency}
+              />
+              <PaymentSection disabled={isLoading} />
+              <ReminderSection
+                disabled={isLoading}
+                onUpdateOverdueReminder={onEditOverdueReminder}
+                onUpdatePaymentReminder={onEditPaymentReminder}
+                onCreateReminder={onCreateReminder}
+              />
             </Stack>
             <Dialog
+              className={className + '-Dialog-CancelWithoutSaving'}
               open={isAlertOpen}
               onClose={() => setIsAlertOpen(false)}
               container={root}
@@ -286,23 +280,32 @@ const EditInvoiceDetailsContent = ({
           </form>
         </FormProvider>
       </DialogContent>
+
+      <CreateInvoiceReminderDialog
+        open={createReminderDialog.open}
+        reminderType={createReminderDialog.reminderType}
+        onClose={closeCreateReminderDialog}
+        onCreate={({ reminderId, reminderType }) => {
+          if (reminderType === 'payment') {
+            setValue('payment_reminder_id', reminderId);
+          } else if (reminderType === 'overdue') {
+            setValue('overdue_reminder_id', reminderId);
+          }
+        }}
+      />
+
+      {editReminderDialog.reminderId && (
+        <EditInvoiceReminderDialog
+          open={editReminderDialog.open}
+          reminderId={editReminderDialog.reminderId}
+          reminderType={editReminderDialog.reminderType}
+          onClose={closeUpdateReminderDialog}
+        />
+      )}
     </>
   );
 };
 
 export const EditInvoiceDetails = (props: EditInvoiceDetailsProps) => {
-  const { data: counterpartAddresses, isLoading } = useCounterpartAddresses(
-    props.invoice.counterpart_id
-  );
-
-  if (isLoading) {
-    return <LoadingPage />;
-  }
-
-  return (
-    <EditInvoiceDetailsContent
-      {...props}
-      counterpartAddresses={counterpartAddresses}
-    />
-  );
+  return <EditInvoiceDetailsContent {...props} />;
 };

@@ -1,4 +1,3 @@
-import type { OrganizationMembershipRole } from '@clerk/backend/dist/types/api/resources/Enums';
 import type { Organization } from '@clerk/clerk-sdk-node';
 
 import { OrganizationDomainEnrollmentMode } from '@/lib/clerk-api/types';

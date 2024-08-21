@@ -1,16 +1,13 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import {
   useOnboardingRequirementsData,
   usePatchOnboardingRequirementsData,
 } from '@/core/queries/useOnboarding';
-import { usePersonList } from '@/core/queries/usePerson';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  OnboardingPersonDocuments,
-  OnboardingRequirement,
-} from '@monite/sdk-api';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Button } from '@mui/material';
 
@@ -37,9 +34,9 @@ export const OnboardingPersonDocumentList = () => {
 
   const { enablePersonEditMode } = useOnboardingRequirementsContext();
 
-  const { data: personsList } = usePersonList();
-
-  const persons = useMemo(() => personsList?.data ?? [], [personsList?.data]);
+  const { api } = useMoniteContext();
+  const personsQuery = api.persons.getPersons.useQuery();
+  const persons = personsQuery.data?.data;
 
   const personDocuments = useMemo(
     () => onboarding?.data?.persons_documents ?? [],
@@ -82,7 +79,7 @@ export const OnboardingPersonDocumentList = () => {
         if (filteredPersonDocuments.length > 0) return;
 
         patchOnboardingRequirements({
-          requirements: [OnboardingRequirement.PERSONS_DOCUMENTS],
+          requirements: ['persons_documents'],
         });
       }}
     >
@@ -106,7 +103,7 @@ export const OnboardingPersonDocumentList = () => {
           additional_verification_document_front,
           additional_verification_document_back,
         }) => {
-          const person = persons.find((person) => person.id === id);
+          const person = persons?.find((person) => person.id === id);
 
           const descriptions = [
             {
@@ -156,3 +153,6 @@ export const OnboardingPersonDocumentList = () => {
     </OnboardingForm>
   );
 };
+
+type OnboardingPersonDocuments =
+  components['schemas']['OnboardingPersonDocuments'];

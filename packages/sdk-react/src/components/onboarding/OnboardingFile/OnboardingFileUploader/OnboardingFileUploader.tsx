@@ -1,9 +1,9 @@
-import React, { ChangeEvent, ReactNode, useCallback } from 'react';
+import { ChangeEvent, ReactNode, useCallback } from 'react';
 
-import { useCreateFile } from '@/core/queries';
+import { components } from '@/api';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedFileTypes } from '@monite/sdk-api';
 import { CloudUpload } from '@mui/icons-material';
 import {
   Alert,
@@ -19,7 +19,7 @@ import { OnboardingFileDescription } from '../OnboardingFileDescription';
 type OnboardingFileUploaderProps = {
   label: string;
   name: string;
-  fileType: AllowedFileTypes;
+  fileType: components['schemas']['AllowedFileTypes'];
   onChange: (fileId: string) => void;
   error?: ReactNode;
   description?: string[];
@@ -35,7 +35,15 @@ export const OnboardingFileUploader = ({
 }: OnboardingFileUploaderProps) => {
   const { i18n } = useLingui();
 
-  const { mutateAsync, isPending } = useCreateFile();
+  const { api, queryClient } = useMoniteContext();
+  const { mutateAsync, isPending } = api.files.postFiles.useMutation(
+    undefined,
+    {
+      onSuccess: async () => {
+        await api.files.getFiles.invalidateQueries(queryClient);
+      },
+    }
+  );
 
   const handleSubmit = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +54,10 @@ export const OnboardingFileUploader = ({
       if (!selectedFile) return;
 
       const file = await mutateAsync({
-        file: selectedFile,
-        file_type: fileType,
+        body: {
+          file: selectedFile,
+          file_type: fileType,
+        },
       });
 
       onChange(file.id);

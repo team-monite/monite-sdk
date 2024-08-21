@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import { useLocalStorage } from 'react-use';
 
 import { MONITE_AUTH_CREDENTIALS_LOCAL_STORAGE_KEY } from '@/core/consts';
@@ -18,14 +18,14 @@ const useAuth = (): AuthCredentialsProviderForwardProps => {
   );
 
   const authData = useMemo(() => {
-    return authDataRaw &&
-      typeof authDataRaw === 'object' &&
-      authDataRaw.entity_id &&
+    if (!authDataRaw) return undefined;
+
+    return typeof authDataRaw === 'object' &&
       authDataRaw.entity_user_id &&
       authDataRaw.client_id &&
       authDataRaw.client_secret
       ? authDataRaw
-      : undefined;
+      : new Error('Invalid auth data');
   }, [authDataRaw]);
 
   const login = useCallback(
@@ -33,15 +33,11 @@ const useAuth = (): AuthCredentialsProviderForwardProps => {
     [setAuthData]
   );
 
-  useEffect(() => {
-    if (authDataRaw && !authData) logout();
-  }, [authData, authDataRaw, logout]);
-
   return { login, logout, authData };
 };
 
 export type AuthCredentialsProviderForwardProps = {
   login: (auth: AuthCredentials) => void;
   logout: () => void;
-  authData: AuthCredentials | undefined;
+  authData: AuthCredentials | Error | undefined;
 };

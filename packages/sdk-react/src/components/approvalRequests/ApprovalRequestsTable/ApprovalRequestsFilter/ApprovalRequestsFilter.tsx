@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { t } from '@lingui/macro';
@@ -38,7 +36,11 @@ export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
     <Grid container justifyContent="space-between">
       <Grid item container spacing={2} xs={9}>
         <Grid item xs={6} sm={3}>
-          <FormControl variant="outlined" fullWidth>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            className="Monite-ApprovalStatusFilter Monite-FilterControl"
+          >
             <InputLabel id="status">{t(i18n)`Status`}</InputLabel>
             <Select
               labelId="status"
@@ -77,6 +79,7 @@ export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
         <Grid item xs={6} sm={3}>
           <DatePicker
             label={t(i18n)`Requested on`}
+            className="Monite-ApprovalRequestedOnFilter Monite-FilterControl Monite-DateFilterControl"
             onChange={(value, error) => {
               if (error.validationError) {
                 return;
@@ -86,6 +89,9 @@ export const ApprovalRequestsFilter = ({ onChangeFilter }: FilterProps) => {
             }}
             slotProps={{
               popper: {
+                container: root,
+              },
+              dialog: {
                 container: root,
               },
               actionBar: {

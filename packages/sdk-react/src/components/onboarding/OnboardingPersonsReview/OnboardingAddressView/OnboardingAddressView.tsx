@@ -1,8 +1,6 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { AllowedCountries, OnboardingAddress } from '@monite/sdk-api';
 
 import { getRegionName } from '../../utils';
 import { OnboardingViewRow } from '../OnboardingReviewStyles';
@@ -19,7 +17,7 @@ export function OnboardingAddressView({
 
   const countryField = {
     required: !!country?.required,
-    value: t(i18n)`${getRegionName(country?.value as AllowedCountries)}`,
+    value: country?.value ? t(i18n)`${getRegionName(country?.value)}` : '',
     error: country?.error,
   };
 
@@ -34,3 +32,5 @@ export function OnboardingAddressView({
     </>
   );
 }
+
+type OnboardingAddress = components['schemas']['OnboardingAddress'];

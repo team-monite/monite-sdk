@@ -1,5 +1,21 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-beta.1
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.1
+
+## 1.8.0-beta.0
+
+### Minor Changes
+
+- ab0a1842: feat(DEV-11689): migrated API from version `2023-09-01` to `2024-01-31`
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.0
+
 ## 1.7.0
 
 ### Minor Changes

@@ -9,7 +9,7 @@ import {
 import { getMoniteApiVersion } from '@/lib/monite-api/monite-client';
 import { components } from '@/lib/monite-api/schema';
 
-interface IEntityServiceOptions {
+interface EntityServiceOptions {
   /**
    * Describes, how many vat ids should be created.
    * By default, 5
@@ -58,7 +58,7 @@ export class EntityService extends GeneralService {
     },
   ];
 
-  private options: IEntityServiceOptions = {
+  private options: EntityServiceOptions = {
     vatIds: {
       count: 2,
     },

@@ -8,16 +8,15 @@ import {
   ProductDetailsView,
 } from '@/components/products/ProductDetails/ProductDetails';
 import { ProductEditForm } from '@/components/products/ProductDetails/ProductEditForm';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { useProductById } from '@/core/queries/useProducts';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -63,30 +62,33 @@ const ExistingProductDetailsBase = ({
 
   const dialogContext = useDialog();
   const { formatCurrencyToDisplay } = useCurrencies();
+  const { api } = useMoniteContext();
   const {
     data: product,
     error: productQueryError,
     isLoading,
-  } = useProductById(id);
+  } = api.products.getProductsId.useQuery({
+    path: { product_id: id },
+  });
 
   const { data: user } = useEntityUserByAuthToken();
 
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'product',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: user?.id,
     });
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: user?.id,
   });
 
   const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'product',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: user?.id,
   });
 
@@ -172,7 +174,13 @@ const ExistingProductDetailsBase = ({
                 />
                 <ProductDetailsTableCell
                   label={t(i18n)`Unit:`}
-                  value={<MeasureUnit unitId={product.measure_unit_id} />}
+                  value={
+                    product.measure_unit_id ? (
+                      <MeasureUnit unitId={product.measure_unit_id} />
+                    ) : (
+                      '—'
+                    )
+                  }
                 />
                 <ProductDetailsTableCell
                   label={t(i18n)`Price:`}

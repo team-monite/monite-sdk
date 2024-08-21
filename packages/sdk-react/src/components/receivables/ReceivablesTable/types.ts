@@ -1,23 +1,18 @@
-import { SortOrderEnum } from '@/utils/types';
-import { ReceivableCursorFields, ReceivablesStatusEnum } from '@monite/sdk-api';
+import { components, Services } from '@/api';
 
-import {
-  FILTER_TYPE_SEARCH,
-  FILTER_TYPE_STATUS,
-  FILTER_TYPE_CUSTOMER,
-  FILTER_TYPE_DUE_DATE_LTE,
-} from '../consts';
-
-export type FilterTypes = {
-  [FILTER_TYPE_SEARCH]?: string | null;
-  [FILTER_TYPE_STATUS]?: ReceivablesStatusEnum | null;
-  [FILTER_TYPE_CUSTOMER]?: string | null;
-  [FILTER_TYPE_DUE_DATE_LTE]?: Date | null;
-};
+export type ReceivableFilterType = Pick<
+  NonNullable<
+    Services['receivables']['getReceivables']['types']['parameters']['query']
+  >,
+  'document_id__contains' | 'status' | 'counterpart_id' | 'due_date__lte'
+>;
 
 export type Sort = {
-  sort: ReceivableCursorFields;
-  order: SortOrderEnum;
+  sort: components['schemas']['ReceivableCursorFields'];
+  order: components['schemas']['OrderEnum'];
 };
 
-export type FilterValue = ReceivablesStatusEnum | string | null;
+export type FilterValue =
+  | components['schemas']['ReceivablesStatusEnum']
+  | string
+  | null;

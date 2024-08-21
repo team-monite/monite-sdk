@@ -1,15 +1,10 @@
+import { components } from '@/api';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   generateRandomDate,
   generateRandomId,
   getRandomProperty,
 } from '@/utils/storybook-utils';
-import {
-  TAGS_ENDPOINT,
-  TagsPaginationResponse,
-  TagCreateOrUpdateSchema,
-  TagReadSchema,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -17,7 +12,7 @@ import { tagListFixture } from './tagsFixture';
 
 let tagsList = tagListFixture;
 
-const tagsPath = `*/${TAGS_ENDPOINT}`;
+const tagsPath = `*/tags`;
 
 interface TagDeleteRequest {
   /** Tag identifier. But if it's `true` then the response should be with error */
@@ -114,41 +109,42 @@ export const tagsHandlers = [
    *
    * @returns A default fixtures with provided `name`
    */
-  http.post<{}, TagCreateOrUpdateSchema, TagReadSchema | ErrorResponse>(
-    tagsPath,
-    async ({ request }) => {
-      const json = await request.json();
+  http.post<
+    {},
+    components['schemas']['TagCreateSchema'],
+    TagReadSchema | ErrorResponse
+  >(tagsPath, async ({ request }) => {
+    const json = await request.json();
 
-      if (json.name.includes('error')) {
-        await delay();
-
-        return HttpResponse.json(
-          {
-            error: {
-              message: json.name,
-            },
-          },
-          {
-            status: 403,
-          }
-        );
-      }
-
-      const newTag: TagReadSchema = {
-        id: generateRandomId(),
-        name: json.name,
-        updated_at: generateRandomDate(),
-        created_at: generateRandomDate(),
-        created_by_entity_user_id: getRandomProperty(entityUsers).id,
-      };
-
-      tagsList.push(newTag);
-
+    if (json.name.includes('error')) {
       await delay();
 
-      return HttpResponse.json(newTag);
+      return HttpResponse.json(
+        {
+          error: {
+            message: json.name,
+          },
+        },
+        {
+          status: 403,
+        }
+      );
     }
-  ),
+
+    const newTag: TagReadSchema = {
+      id: generateRandomId(),
+      name: json.name,
+      updated_at: generateRandomDate(),
+      created_at: generateRandomDate(),
+      created_by_entity_user_id: getRandomProperty(entityUsers).id,
+    };
+
+    tagsList.push(newTag);
+
+    await delay();
+
+    return HttpResponse.json(newTag);
+  }),
 
   /**
    * The mock for Update a Tag.
@@ -158,13 +154,13 @@ export const tagsHandlers = [
    */
   http.patch<
     { id: string },
-    TagCreateOrUpdateSchema,
+    components['schemas']['TagUpdateSchema'],
     TagReadSchema | ErrorResponse
   >(`${tagsPath}/:id`, async ({ request, params }) => {
     const json = await request.json();
     const tagId = params.id;
 
-    if (json.name.includes('error')) {
+    if (json.name?.includes('error')) {
       await delay();
 
       return HttpResponse.json(
@@ -183,7 +179,7 @@ export const tagsHandlers = [
       if (tag.id === tagId) {
         return {
           ...tag,
-          name: json.name,
+          name: json.name!,
         };
       }
 
@@ -198,7 +194,7 @@ export const tagsHandlers = [
       return HttpResponse.json(
         {
           error: {
-            message: json.name,
+            message: json.name!,
           },
         },
         {
@@ -218,28 +214,28 @@ export const tagsHandlers = [
    *
    * @returns Nothing with 204 status code or error message
    */
-  http.delete<TagDeleteRequest, TagCreateOrUpdateSchema>(
-    `${tagsPath}/:id`,
-    async ({ params }) => {
-      /** If tag is `0` then we should trigger an error */
-      if (params.id === '0') {
-        await delay();
+  http.delete<TagDeleteRequest, {}>(`${tagsPath}/:id`, async ({ params }) => {
+    /** If tag is `0` then we should trigger an error */
+    if (params.id === '0') {
+      await delay();
 
-        return HttpResponse.json(
-          {
-            error: {
-              message: 'Custom error message',
-            },
+      return HttpResponse.json(
+        {
+          error: {
+            message: 'Custom error message',
           },
-          {
-            status: 400,
-          }
-        );
-      }
-
-      tagsList = tagsList.filter((tag) => tag.id !== params.id);
-
-      return new HttpResponse(undefined, { status: 204 });
+        },
+        {
+          status: 400,
+        }
+      );
     }
-  ),
+
+    tagsList = tagsList.filter((tag) => tag.id !== params.id);
+
+    return new HttpResponse(undefined, { status: 204 });
+  }),
 ];
+
+type TagsPaginationResponse = components['schemas']['TagsPaginationResponse'];
+type TagReadSchema = components['schemas']['TagReadSchema'];

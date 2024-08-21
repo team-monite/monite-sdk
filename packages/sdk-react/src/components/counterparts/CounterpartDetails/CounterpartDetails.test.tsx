@@ -1,5 +1,4 @@
-import React from 'react';
-
+import { prepareCounterpartOrganization } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,
@@ -19,7 +18,7 @@ import {
 } from '@/utils/test-utils';
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { CounterpartType, MoniteSDK } from '@monite/sdk-api';
+import { MoniteSDK } from '@monite/sdk-api';
 import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -560,7 +559,7 @@ describe('CounterpartDetails', () => {
         test('should mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is provided', async () => {
           renderWithClient(
             <CounterpartDetails
-              type={CounterpartType.ORGANIZATION}
+              type={'organization'}
               defaultValues={{
                 isCustomer: true,
                 isVendor: true,
@@ -584,10 +583,7 @@ describe('CounterpartDetails', () => {
         const onCreateMock = jest.fn();
 
         renderWithClient(
-          <CounterpartDetails
-            type={CounterpartType.ORGANIZATION}
-            onCreate={onCreateMock}
-          />
+          <CounterpartDetails type={'organization'} onCreate={onCreateMock} />
         );
 
         await waitUntilTableIsLoaded();
@@ -609,7 +605,7 @@ describe('CounterpartDetails', () => {
       test('should mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is provided', async () => {
         renderWithClient(
           <CounterpartDetails
-            type={CounterpartType.INDIVIDUAL}
+            type={'individual'}
             defaultValues={{
               isCustomer: true,
               isVendor: true,
@@ -629,9 +625,7 @@ describe('CounterpartDetails', () => {
       });
 
       test('should NOT mark `isCustomer` as `true` and `isVendor` as `true` when we provided `defaultValues` is NOT provided', async () => {
-        renderWithClient(
-          <CounterpartDetails type={CounterpartType.INDIVIDUAL} />
-        );
+        renderWithClient(<CounterpartDetails type={'individual'} />);
 
         await waitUntilTableIsLoaded();
 
@@ -642,6 +636,32 @@ describe('CounterpartDetails', () => {
           false,
           false,
         ]);
+      });
+    });
+  });
+
+  describe('# Make default contact for counterpart', () => {
+    const setupTest = (organizationEmail: string, contactEmail: string) => {
+      const contacts = [{ email: contactEmail, is_default: true }];
+      const organization = {
+        email: organizationEmail,
+        is_customer: true,
+        is_vendor: false,
+        legal_name: 'Test Corp',
+        phone: '123-456-7890',
+      };
+      return prepareCounterpartOrganization(organization, {}, contacts);
+    };
+
+    describe('prepareCounterpartOrganization', () => {
+      it('should return isEmailDefault as true when contact email matches organization email', () => {
+        const result = setupTest('test@org.com', 'test@org.com');
+        expect(result.isEmailDefault).toBe(true);
+      });
+
+      it('should return isEmailDefault as false when no matching email is found', () => {
+        const result = setupTest('test@org.com', 'nomatch@org.com');
+        expect(result.isEmailDefault).toBe(false);
       });
     });
   });

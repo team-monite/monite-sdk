@@ -1,25 +1,18 @@
-import React from 'react';
-
 import { useDialog } from '@/components/Dialog';
+import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { ExistingInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import {
-  useInvoiceDetails,
-  InvoiceDetailsPermissions,
-} from '@/core/queries/useReceivables';
+import { useInvoiceDetails } from '@/core/queries/useReceivables';
+import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  ActionEnum,
-  InvoiceResponsePayload,
-  ReceivablesStatusEnum,
-} from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {
@@ -48,14 +41,6 @@ import { InvoicePaymentDetails } from '../InvoicePaymentDetails';
 import { InvoiceTo } from '../InvoiceTo';
 import { InvoiceTotal } from '../InvoiceTotal';
 
-import type = InvoiceResponsePayload.type;
-
-type GetComponentProps<T> = T extends
-  | React.ComponentType<infer P>
-  | React.Component<infer P>
-  ? P
-  : never;
-
 /**
  * General component for all Receivables (Invoices, Credit Notes, Quotes)
  *
@@ -78,6 +63,7 @@ const ExistingReceivableDetailsBase = (
   props: ExistingReceivableDetailsProps
 ) => {
   const { i18n } = useLingui();
+  const { api } = useMoniteContext();
 
   const {
     receivable: invoice,
@@ -89,27 +75,34 @@ const ExistingReceivableDetailsBase = (
   } = useInvoiceDetails(props);
 
   const dialogContext = useDialog();
+
   const { data: isDeleteAllowed } = useIsActionAllowed({
     method: 'receivable',
-    action: ActionEnum.DELETE,
+    action: 'delete',
     entityUserId: invoice?.entity_user_id,
   });
+
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'receivable',
-      action: ActionEnum.READ,
+      action: 'read',
       entityUserId: invoice?.entity_user_id,
     });
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'receivable',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: invoice?.entity_user_id,
   });
 
-  const fulfillmentDate = (invoice as InvoiceResponsePayload)?.fulfillment_date;
-  const issueDate = (invoice as InvoiceResponsePayload)?.issue_date;
-  const numberOfDueDays = (invoice as InvoiceResponsePayload)?.payment_terms
-    ?.term_final.number_of_days;
+  const fulfillmentDate =
+    invoice?.type === 'invoice' ? invoice?.fulfillment_date : undefined;
+  const issueDate =
+    invoice?.type === 'invoice' ? invoice?.issue_date : undefined;
+  const numberOfDueDays =
+    invoice?.type === 'invoice'
+      ? invoice?.payment_terms?.term_final.number_of_days
+      : undefined;
+
   const dueDate =
     invoice &&
     issueDate &&
@@ -120,6 +113,21 @@ const ExistingReceivableDetailsBase = (
     invoice?.counterpart_name?.[0] ||
     invoice?.counterpart_contact?.first_name?.[0] ||
     '/';
+
+  const { data: counterpartAddress } =
+    api.counterparts.getCounterpartsIdAddressesId.useQuery(
+      {
+        path: {
+          counterpart_id: invoice?.counterpart_id ?? '',
+          address_id: invoice?.counterpart_billing_address?.id ?? '',
+        },
+      },
+      {
+        enabled: Boolean(
+          invoice?.counterpart_billing_address?.id && invoice?.counterpart_id
+        ),
+      }
+    );
 
   if (!props.id) return null;
 
@@ -146,27 +154,27 @@ const ExistingReceivableDetailsBase = (
     return (
       <InvoiceError
         onClose={dialogContext?.onClose}
-        errorMessage={error?.body?.error?.message}
+        errorMessage={getAPIErrorMessage(i18n, error)}
       />
     );
   }
 
-  if (invoice.type === type.INVOICE) {
+  if (invoice.type === 'invoice') {
     return <ExistingInvoiceDetails {...props} />;
   }
 
+  const className = 'Monite-ExistingReceivable';
+
   return (
     <>
-      <DialogTitle>
+      <DialogTitle className={className + '-Title'}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={3}>
             <Avatar sx={{ width: 44, height: 44 }}>{avatarSymbol}</Avatar>
             <Typography variant="h3">
               {t(i18n)`Invoice ${invoice.document_id || ''}`}
             </Typography>
-            <InvoiceStatusChip
-              status={invoice.status as unknown as ReceivablesStatusEnum}
-            />
+            <InvoiceStatusChip status={invoice.status} />
           </Box>
           {dialogContext?.isDialogContent && (
             <IconButton
@@ -178,8 +186,8 @@ const ExistingReceivableDetailsBase = (
           )}
         </Box>
       </DialogTitle>
-      <Divider />
-      <DialogContent>
+      <Divider className={className + '-Divider'} />
+      <DialogContent className={className + '-Content'}>
         <Box mt={2}>
           <Card variant="outlined">
             <Table>
@@ -219,15 +227,17 @@ const ExistingReceivableDetailsBase = (
           </Card>
         </Box>
 
-        <InvoiceTo
-          counterpartId={invoice.counterpart_id}
-          counterpartAddress={invoice.counterpart_address}
-        />
+        {counterpartAddress && (
+          <InvoiceTo
+            counterpartAddress={counterpartAddress}
+            counterpartName={
+              <InvoiceCounterpartName counterpartId={invoice.counterpart_id} />
+            }
+          />
+        )}
 
         {invoice.entity_bank_account && (
-          <InvoicePaymentDetails
-            entityBankAccount={invoice.entity_bank_account}
-          />
+          <InvoicePaymentDetails {...invoice.entity_bank_account} />
         )}
 
         {invoice?.line_items?.length === 0 ? (
@@ -249,14 +259,14 @@ const ExistingReceivableDetailsBase = (
           </Box>
         ) : (
           <>
-            <InvoiceItems invoice={invoice} />
-            <InvoiceTotal invoice={invoice} />
+            <InvoiceItems {...invoice} />
+            <InvoiceTotal {...invoice} />
           </>
         )}
       </DialogContent>
-      <Divider />
+      <Divider className={className + '-Divider'} />
       <DialogActions data-testid="InvoiceDetailsFooter">
-        {permissions.includes(InvoiceDetailsPermissions.Cancel) && (
+        {permissions.includes('cancel') && (
           <Button
             aria-label={t(i18n)`Cancel invoice`}
             variant="outlined"
@@ -267,7 +277,7 @@ const ExistingReceivableDetailsBase = (
             {t(i18n)`Cancel`}
           </Button>
         )}
-        {permissions.includes(InvoiceDetailsPermissions.Delete) && (
+        {permissions.includes('delete') && (
           <Button
             aria-label={t(i18n)`Delete invoice`}
             variant="outlined"
@@ -278,7 +288,7 @@ const ExistingReceivableDetailsBase = (
             {t(i18n)`Delete`}
           </Button>
         )}
-        {permissions.includes(InvoiceDetailsPermissions.Issue) && (
+        {permissions.includes('issue') && (
           <Button
             aria-label={t(i18n)`Issue`}
             onClick={queryActions.issueInvoice}
@@ -288,9 +298,7 @@ const ExistingReceivableDetailsBase = (
             {t(i18n)`Issue`}
           </Button>
         )}
-        {permissions.includes(
-          InvoiceDetailsPermissions.MarkAsUncollectible
-        ) && (
+        {permissions.includes('mark_as_uncollectible') && (
           <Button
             aria-label={t(i18n)`Mark as uncollectible invoice`}
             onClick={queryActions.markAsUncollectibleInvoice}

@@ -1,12 +1,9 @@
-import React from 'react';
-
+import { components } from '@/api';
 import { useDialog } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
-import { ActionEnum } from '@/utils/types';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { ApprovalPolicyResource } from '@monite/sdk-api';
 import CloseIcon from '@mui/icons-material/Close';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -26,7 +23,7 @@ import {
 
 export interface ExistingApprovalPolicyDetailsProps {
   /** Approval policy to be displayed */
-  approvalPolicy: ApprovalPolicyResource;
+  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
 
   /** Set the edit mode
    *
@@ -53,7 +50,7 @@ const ExistingApprovalPolicyDetailsBase = ({
 
   const { data: isUpdateAllowed } = useIsActionAllowed({
     method: 'approval_policy',
-    action: ActionEnum.UPDATE,
+    action: 'update',
     entityUserId: approvalPolicy?.created_by,
   });
 
@@ -125,11 +122,13 @@ const ExistingApprovalPolicyDetailsBase = ({
             overflow: 'auto',
           }}
         >
-          <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
-            <pre>
-              {approvalPolicy?.trigger &&
-                JSON.stringify(approvalPolicy.trigger, null, 2)}
-            </pre>
+          <Typography
+            variant="body1"
+            sx={{ fontFamily: 'monospace' }}
+            component="pre"
+          >
+            {approvalPolicy?.trigger &&
+              JSON.stringify(approvalPolicy.trigger, null, 2)}
           </Typography>
         </Paper>
         <Typography
@@ -168,11 +167,13 @@ const ExistingApprovalPolicyDetailsBase = ({
             overflow: 'auto',
           }}
         >
-          <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
-            <pre>
-              {approvalPolicy?.script &&
-                JSON.stringify(approvalPolicy.script, null, 2)}
-            </pre>
+          <Typography
+            variant="body1"
+            sx={{ fontFamily: 'monospace' }}
+            component="pre"
+          >
+            {approvalPolicy?.script &&
+              JSON.stringify(approvalPolicy.script, null, 2)}
           </Typography>
         </Paper>
       </DialogContent>

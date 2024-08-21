@@ -1,19 +1,18 @@
 import createClient from 'openapi-fetch';
+import apiPackage from 'sdk-demo-with-nextjs-and-clerk-auth/package.json' assert { type: 'json' };
 
-import apiPackage from '@monite/sdk-react/package.json' assert { type: 'json' };
-
+import { AccessToken } from '@/lib/monite-api/fetch-token';
 import { paths } from '@/lib/monite-api/schema';
 
 const apiVersion = apiPackage.apiVersion;
 
-export const createMoniteClient = (
-  clientOptions?: Parameters<typeof createClient>[0]
-) => {
+export type MoniteClient = ReturnType<typeof createMoniteClient>;
+
+export const createMoniteClient = (token: AccessToken) => {
   return createClient<paths>({
-    ...clientOptions,
     headers: {
       'x-monite-version': getMoniteApiVersion(),
-      ...clientOptions?.headers,
+      Authorization: `${token.token_type} ${token.access_token}`,
     },
     baseUrl: getMoniteApiUrl(),
   });

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
@@ -13,7 +11,6 @@ import {
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import { QueryClient } from '@tanstack/react-query';
 import {
   act,
   fireEvent,

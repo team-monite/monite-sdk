@@ -1,6 +1,5 @@
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { ProductsTableDataTestId } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.types';
 import { CreateCounterpartDialogTestEnum } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.types';
 import { counterpartListFixture } from '@/mocks';
 import { entityIds, entityVatIdList } from '@/mocks/entities';
@@ -12,16 +11,13 @@ import {
   triggerClickOnSelectOption,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
-import { InvoiceResponsePayload } from '@monite/sdk-api';
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 
 import { CreateReceivables } from './CreateReceivables';
 
 describe('CreateReceivables', () => {
   test('should show errors when user submit an empty form', async () => {
-    renderWithClient(
-      <CreateReceivables type={InvoiceResponsePayload.type.INVOICE} />
-    );
+    renderWithClient(<CreateReceivables type={'invoice'} />);
 
     await waitUntilTableIsLoaded();
 
@@ -35,9 +31,7 @@ describe('CreateReceivables', () => {
   });
 
   test('should show "items is empty" error when user submit an empty form', async () => {
-    renderWithClient(
-      <CreateReceivables type={InvoiceResponsePayload.type.INVOICE} />
-    );
+    renderWithClient(<CreateReceivables type={'invoice'} />);
 
     await waitUntilTableIsLoaded();
 
@@ -54,10 +48,7 @@ describe('CreateReceivables', () => {
     const onCreateMock = jest.fn();
 
     renderWithClient(
-      <CreateReceivables
-        type={InvoiceResponsePayload.type.INVOICE}
-        onCreate={onCreateMock}
-      />
+      <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
     );
 
     await waitUntilTableIsLoaded();
@@ -90,10 +81,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -111,10 +99,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -131,10 +116,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -158,10 +140,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -175,10 +154,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -192,10 +168,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -212,10 +185,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -245,10 +215,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();
@@ -275,10 +242,7 @@ describe('CreateReceivables', () => {
       const onCreateMock = jest.fn();
 
       renderWithClient(
-        <CreateReceivables
-          type={InvoiceResponsePayload.type.INVOICE}
-          onCreate={onCreateMock}
-        />
+        <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
       );
 
       await waitUntilTableIsLoaded();

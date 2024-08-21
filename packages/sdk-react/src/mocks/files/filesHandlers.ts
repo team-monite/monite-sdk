@@ -1,7 +1,7 @@
+import { components } from '@/api';
 import { SUPPORTED_MIME_TYPES } from '@/ui/FileViewer';
 import { getRandomItemFromArray } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import { ApiError, type FileResponse, type UploadFile } from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 
@@ -14,36 +14,6 @@ export enum FileNames {
   file_avatar = 'file_avatar',
   file_avatar2 = 'file_avatar2',
   file_avatar3 = 'file_avatar3',
-}
-
-const file_bird =
-  'https://upload.wikimedia.org/wikipedia/commons/6/63/Icon_Bird_512x512.png';
-const file_snake = 'https://cdn-icons-png.flaticon.com/512/1303/1303472.png';
-const file_dog = 'https://cdn-icons-png.flaticon.com/512/616/616554.png';
-const file_avatar =
-  'https://spng.pngfind.com/pngs/s/114-1146554_girl-avatar-png-pic-female-avatar-icon-transparent.png';
-const file_avatar2 =
-  'https://p7.hiclipart.com/preview/980/304/8/computer-icons-user-profile-avatar.jpg';
-const file_avatar3 =
-  'https://www.pngkit.com/png/detail/115-1150342_user-avatar-icon-iconos-de-mujeres-a-color.png';
-
-function getFileUrl(fileId: string): string {
-  switch (fileId) {
-    case FileNames.file_bird:
-      return file_bird;
-    case FileNames.file_snake:
-      return file_snake;
-    case FileNames.file_dog:
-      return file_dog;
-    case FileNames.file_avatar:
-      return file_avatar;
-    case FileNames.file_avatar2:
-      return file_avatar2;
-    case FileNames.file_avatar3:
-      return file_avatar3;
-    default:
-      return '';
-  }
 }
 
 const filePath = `*/files`;
@@ -72,7 +42,7 @@ const fileFixture = (): FileResponse => {
 };
 
 export const filesHandlers = [
-  http.post<{}, UploadFile, FileResponse | ApiError>(filePath, async () => {
+  http.post<{}, UploadFile, FileResponse>(filePath, async () => {
     await delay();
 
     return HttpResponse.json(fileFixture());
@@ -92,3 +62,11 @@ export const filesHandlers = [
     });
   }),
 ];
+
+type UploadFile = {
+  file: Blob;
+  file_type: AllowedFileTypes;
+};
+
+type AllowedFileTypes = components['schemas']['AllowedFileTypes'];
+type FileResponse = components['schemas']['FileResponse'];

@@ -1,17 +1,10 @@
+import type { components, paths } from '@/api';
+import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
 } from '@/mocks';
 import { filterByPageAndLimit } from '@/mocks/utils';
-import {
-  OrderEnum,
-  CurrencyEnum,
-  ErrorSchemaResponse,
-  ProductServiceResponse,
-  ProductServicePaginationResponse,
-  PRODUCTS_ENDPOINT,
-  ProductServiceRequest,
-} from '@monite/sdk-api';
 
 import { http, HttpResponse, delay } from 'msw';
 import * as yup from 'yup';
@@ -20,7 +13,7 @@ import { createProduct, productsListFixture } from './productsFixtures';
 
 type ProductParams = { productId: string };
 
-const productsPath = `*/${PRODUCTS_ENDPOINT}`;
+const productsPath: `*${Extract<keyof paths, '/products'>}` = `*/products`;
 const productByIdPath = `${productsPath}/:productId`;
 
 let productsList = productsListFixture;
@@ -181,7 +174,7 @@ export const productsHandlers = [
 
     try {
       await createProductValidationSchema.validate(jsonBody);
-    } catch (e) {
+    } catch (_error) {
       await delay();
 
       return HttpResponse.json(
@@ -285,7 +278,7 @@ const filterByCurrency = (
 ) => {
   if (!currency) return fixtures;
 
-  if (!Object.values(CurrencyEnum).includes(currency as CurrencyEnum))
+  if (!CurrencyEnum.includes(currency as CurrencyEnum))
     throw new Error('Invalid currency');
 
   return fixtures.filter((product) => product.price?.currency === currency);
@@ -298,11 +291,19 @@ function sortByName<T extends { name: string }>(
 ) {
   const compareResult = a.name.localeCompare(b.name);
 
-  if (order === OrderEnum.ASC) {
+  if (order === 'asc') {
     return compareResult;
-  } else if (order === OrderEnum.DESC) {
+  } else if (order === 'desc') {
     return -compareResult;
   }
 
   return 0;
 }
+
+type OrderEnum = components['schemas']['OrderEnum'];
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
+type ErrorSchemaResponse = components['schemas']['ErrorSchemaResponse'];
+type ProductServiceResponse = components['schemas']['ProductServiceResponse'];
+type ProductServicePaginationResponse =
+  components['schemas']['ProductServicePaginationResponse'];
+type ProductServiceRequest = components['schemas']['ProductServiceRequest'];

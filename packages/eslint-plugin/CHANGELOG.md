@@ -1,5 +1,11 @@
 # @team-monite/eslint-plugin
 
+## 2.0.3-beta.0
+
+### Patch Changes
+
+- 40616848: feat(rules): add new rule for slotProps
+
 ## 2.0.2
 
 ### Patch Changes

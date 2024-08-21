@@ -1,16 +1,11 @@
-import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
+import { components } from '@/api';
 import { useOnboardingEntity } from '@/components/onboarding/hooks/useOnboardingEntity';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { RHFTextFieldPhone } from '@/components/RHF/RHFTextFieldPhone';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  EntityResponse,
-  OnboardingRequirement,
-  UpdateEntityRequest,
-} from '@monite/sdk-api';
 
 import { useOnboardingForm } from '../hooks';
 import { OnboardingAddress } from '../OnboardingAddress';
@@ -49,9 +44,7 @@ export const OnboardingEntity = () => {
       <OnboardingForm
         actions={<OnboardingFormActions isLoading={isPending} />}
         onSubmit={handleSubmit((values) =>
-          updateEntity(enrichFieldsByValues(entity, values), [
-            OnboardingRequirement.ENTITY,
-          ])
+          updateEntity(enrichFieldsByValues(entity, values), ['entity'])
         )}
       >
         <OnboardingStepContent>
@@ -109,3 +102,6 @@ export const OnboardingEntity = () => {
     </FormProvider>
   );
 };
+
+type EntityResponse = components['schemas']['EntityResponse'];
+type UpdateEntityRequest = components['schemas']['UpdateEntityRequest'];

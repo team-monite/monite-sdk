@@ -1,3 +1,5 @@
+import { components } from '@/api';
+import { AllowedCountries } from '@/enums/AllowedCountries';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   getRandomItemFromArray,
@@ -5,12 +7,6 @@ import {
   getRandomProperty,
 } from '@/utils/storybook-utils';
 import { faker } from '@faker-js/faker';
-import {
-  AllowedCountries,
-  CurrencyEnum,
-  EntityBankAccountPaginationResponse,
-  EntityBankAccountResponse,
-} from '@monite/sdk-api';
 
 export const bankAccountsFixture: EntityBankAccountPaginationResponse = {
   prev_pagination_token: undefined,
@@ -31,17 +27,18 @@ export const bankAccountsFixture: EntityBankAccountPaginationResponse = {
       routing_number: faker.finance.routingNumber(),
       sort_code: faker.finance.routingNumber().slice(0, 6),
       currency: faker.datatype.boolean()
-        ? getRandomItemFromArray([
-            CurrencyEnum.EUR,
-            CurrencyEnum.GBP,
-            CurrencyEnum.USD,
-          ])
+        ? getRandomItemFromArray(['EUR', 'GBP', 'USD'])
         : undefined,
       country: faker.datatype.boolean()
-        ? getRandomProperty(AllowedCountries)
+        ? getRandomItemFromArray(AllowedCountries)
         : undefined,
     };
 
     return bankAccount;
   }),
 };
+
+type EntityBankAccountPaginationResponse =
+  components['schemas']['EntityBankAccountPaginationResponse'];
+type EntityBankAccountResponse =
+  components['schemas']['EntityBankAccountResponse'];

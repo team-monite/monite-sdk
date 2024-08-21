@@ -1,13 +1,15 @@
+import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { TaxIDTypeEnum } from '@monite/sdk-api';
 
 type VatType = {
-  code: TaxIDTypeEnum;
+  code: components['schemas']['VatIDTypeEnum'];
   label: string;
 };
 
-export const useVatTypeLabelByCode = (code?: TaxIDTypeEnum): string => {
+export const useVatTypeLabelByCode = (
+  code?: components['schemas']['VatIDTypeEnum']
+): string => {
   const { i18n } = useLingui();
   const vatType = useVatTypes();
 
@@ -21,191 +23,191 @@ export const useVatTypes = (): VatType[] => {
 
   return [
     {
-      code: TaxIDTypeEnum.AE_TRN,
+      code: 'ae_trn',
       label: t(i18n)`Tax Registration Number (UAE)`,
     },
     {
-      code: TaxIDTypeEnum.AU_ABN,
+      code: 'au_abn',
       label: t(i18n)`Australian Business Number (Australia)`,
     },
     {
-      code: TaxIDTypeEnum.AU_ARN,
+      code: 'au_arn',
       label: t(i18n)`Australian Registered Body Number (Australia)`,
     },
     {
-      code: TaxIDTypeEnum.BG_UIC,
+      code: 'bg_uic',
       label: t(i18n)`Unified Identification Code (Bulgaria)`,
     },
     {
-      code: TaxIDTypeEnum.BR_CNPJ,
+      code: 'br_cnpj',
       label: t(i18n)`National Registry of Legal Entities (Brazil)`,
     },
     {
-      code: TaxIDTypeEnum.BR_CPF,
+      code: 'br_cpf',
       label: t(i18n)`Natural Persons Register (Brazil)`,
     },
     {
-      code: TaxIDTypeEnum.CA_BN,
+      code: 'ca_bn',
       label: t(i18n)`Business Number (Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CA_GST_HST,
+      code: 'ca_gst_hst',
       label: t(i18n)`Goods and Services Tax/Harmonized Sales Tax (Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CA_PST_BC,
+      code: 'ca_pst_bc',
       label: t(i18n)`Provincial Sales Tax (British Columbia, Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CA_PST_MB,
+      code: 'ca_pst_mb',
       label: t(i18n)`Provincial Sales Tax (Manitoba, Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CA_PST_SK,
+      code: 'ca_pst_sk',
       label: t(i18n)`Provincial Sales Tax (Saskatchewan, Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CA_QST,
+      code: 'ca_qst',
       label: t(i18n)`Quebec Sales Tax (Canada)`,
     },
     {
-      code: TaxIDTypeEnum.CH_VAT,
+      code: 'ch_vat',
       label: t(i18n)`Value Added Tax (Switzerland)`,
     },
     {
-      code: TaxIDTypeEnum.CL_TIN,
+      code: 'cl_tin',
       label: t(i18n)`Tax Identification Number (Chile)`,
     },
     {
-      code: TaxIDTypeEnum.ES_CIF,
+      code: 'es_cif',
       label: t(i18n)`Tax Identification Code (Spain)`,
     },
     {
-      code: TaxIDTypeEnum.EU_OSS_VAT,
+      code: 'eu_oss_vat',
       label: t(i18n)`One Stop Shop Value Added Tax (EU)`,
     },
     {
-      code: TaxIDTypeEnum.EU_VAT,
+      code: 'eu_vat',
       label: t(i18n)`Value Added Tax (EU)`,
     },
     {
-      code: TaxIDTypeEnum.GB_VAT,
+      code: 'gb_vat',
       label: t(i18n)`Value Added Tax (United Kingdom)`,
     },
     {
-      code: TaxIDTypeEnum.GE_VAT,
+      code: 'ge_vat',
       label: t(i18n)`Value Added Tax (Georgia)`,
     },
     {
-      code: TaxIDTypeEnum.HK_BR,
+      code: 'hk_br',
       label: t(i18n)`Business Registration (Hong Kong)`,
     },
     {
-      code: TaxIDTypeEnum.HU_TIN,
+      code: 'hu_tin',
       label: t(i18n)`Tax Identification Number (Hungary)`,
     },
     {
-      code: TaxIDTypeEnum.ID_NPWP,
+      code: 'id_npwp',
       label: t(i18n)`Taxpayer Identification Number (Indonesia)`,
     },
     {
-      code: TaxIDTypeEnum.IL_VAT,
+      code: 'il_vat',
       label: t(i18n)`Value Added Tax (Israel)`,
     },
     {
-      code: TaxIDTypeEnum.IN_GST,
+      code: 'in_gst',
       label: t(i18n)`Goods and Services Tax (India)`,
     },
     {
-      code: TaxIDTypeEnum.IS_VAT,
+      code: 'is_vat',
       label: t(i18n)`Value Added Tax (Iceland)`,
     },
     {
-      code: TaxIDTypeEnum.JP_CN,
+      code: 'jp_cn',
       label: t(i18n)`Corporate Number (Japan)`,
     },
     {
-      code: TaxIDTypeEnum.JP_RN,
+      code: 'jp_rn',
       label: t(i18n)`Registered Number (Japan)`,
     },
     {
-      code: TaxIDTypeEnum.KR_BRN,
+      code: 'kr_brn',
       label: t(i18n)`Business Registration Number (South Korea)`,
     },
     {
-      code: TaxIDTypeEnum.LI_UID,
+      code: 'li_uid',
       label: t(i18n)`Business Identification Number (Liechtenstein)`,
     },
     {
-      code: TaxIDTypeEnum.MX_RFC,
+      code: 'mx_rfc',
       label: t(i18n)`Federal Taxpayers Registry (Mexico)`,
     },
     {
-      code: TaxIDTypeEnum.MY_FRP,
+      code: 'my_frp',
       label: t(i18n)`Federal Retailers Permit (Malaysia)`,
     },
     {
-      code: TaxIDTypeEnum.MY_ITN,
+      code: 'my_itn',
       label: t(i18n)`Income Tax Number (Malaysia)`,
     },
     {
-      code: TaxIDTypeEnum.MY_SST,
+      code: 'my_sst',
       label: t(i18n)`Sales and Service Tax (Malaysia)`,
     },
     {
-      code: TaxIDTypeEnum.NO_VAT,
+      code: 'no_vat',
       label: t(i18n)`Value Added Tax (Norway)`,
     },
     {
-      code: TaxIDTypeEnum.NZ_GST,
+      code: 'nz_gst',
       label: t(i18n)`Goods and Services Tax (New Zealand)`,
     },
     {
-      code: TaxIDTypeEnum.RU_INN,
+      code: 'ru_inn',
       label: t(i18n)`Taxpayer Identification Number (Russia)`,
     },
     {
-      code: TaxIDTypeEnum.RU_KPP,
+      code: 'ru_kpp',
       label: t(i18n)`Reason for Payment Code (Russia)`,
     },
     {
-      code: TaxIDTypeEnum.SA_VAT,
+      code: 'sa_vat',
       label: t(i18n)`Value Added Tax (Saudi Arabia)`,
     },
     {
-      code: TaxIDTypeEnum.SG_GST,
+      code: 'sg_gst',
       label: t(i18n)`Goods and Services Tax (Singapore)`,
     },
     {
-      code: TaxIDTypeEnum.SG_UEN,
+      code: 'sg_uen',
       label: t(i18n)`Unique Entity Number (Singapore)`,
     },
     {
-      code: TaxIDTypeEnum.SI_TIN,
+      code: 'si_tin',
       label: t(i18n)`Tax Identification Number (Slovenia)`,
     },
     {
-      code: TaxIDTypeEnum.TH_VAT,
+      code: 'th_vat',
       label: t(i18n)`Value Added Tax (Thailand)`,
     },
     {
-      code: TaxIDTypeEnum.TW_VAT,
+      code: 'tw_vat',
       label: t(i18n)`Value Added Tax (Taiwan)`,
     },
     {
-      code: TaxIDTypeEnum.UA_VAT,
+      code: 'ua_vat',
       label: t(i18n)`Value Added Tax (Ukraine)`,
     },
     {
-      code: TaxIDTypeEnum.US_EIN,
+      code: 'us_ein',
       label: t(i18n)`Employer Identification Number (USA)`,
     },
     {
-      code: TaxIDTypeEnum.ZA_VAT,
+      code: 'za_vat',
       label: t(i18n)`Value Added Tax (South Africa)`,
     },
     {
-      code: TaxIDTypeEnum.UNKNOWN,
+      code: 'unknown',
       label: t(i18n)`Unknown`,
     },
   ];
