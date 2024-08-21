@@ -56,6 +56,7 @@ export const CounterpartCell = ({ counterpartId }: Props) => {
             />
           ) : (
             <Typography
+              variant="body2"
               sx={{ ml: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
               {name}
