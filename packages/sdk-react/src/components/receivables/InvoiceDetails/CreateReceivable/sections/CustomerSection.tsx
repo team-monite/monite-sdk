@@ -272,7 +272,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
               </Collapse>
               <Collapse
                 in={
-                  !Boolean(contactPersonError) &&
+                  !contactPersonError &&
                   !isContactPersonsLoading &&
                   counterpartContacts?.data.length === 0
                 }
