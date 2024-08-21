@@ -15,7 +15,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import { QueryClient } from '@tanstack/react-query';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 // eslint-disable-next-line import/no-extraneous-dependencies

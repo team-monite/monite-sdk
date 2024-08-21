@@ -169,7 +169,7 @@ export function useCounterpartDetails(props: CounterpartsDetailsProps) {
   );
 
   const onEdit = useCallback(
-    (id: string, type: components['schemas']['CounterpartType']) => {
+    (_id: string, type: components['schemas']['CounterpartType']) => {
       if (type === 'organization') {
         actions.showOrganizationForm();
       }
