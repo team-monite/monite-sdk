@@ -229,7 +229,7 @@ export const ItemsSection = ({
       >
         <Alert severity="error">{quantityError}</Alert>
       </Collapse>
-      <Card variant="outlined" sx={{ borderRadius: 2, marginBottom: 2 }}>
+      <Card variant="outlined" sx={{ marginBottom: 2 }}>
         <CardContent>
           <TableContainer sx={{ maxHeight: 400 }}>
             <Table stickyHeader>
