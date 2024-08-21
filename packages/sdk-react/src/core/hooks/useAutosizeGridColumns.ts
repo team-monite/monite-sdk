@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { flushSync } from 'react-dom';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -36,7 +36,7 @@ export function useAutosizeGridColumns(
 ) {
   const gridApiRef = useGridApiRef();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const grid = gridApiRef.current;
     if (
       !rows ||
