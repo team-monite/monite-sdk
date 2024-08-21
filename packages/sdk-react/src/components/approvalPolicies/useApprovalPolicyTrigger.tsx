@@ -2,10 +2,6 @@ import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-interface UseApprovalPolicyTriggerProps {
-  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
-}
-
 type ApprovalPoliciesTriggerKey =
   | 'amount'
   | 'counterpart_id'
@@ -24,6 +20,10 @@ interface ApprovalPoliciesTrigger {
 
 interface Triggers {
   [key: ApprovalPoliciesTriggerKey]: string | string[];
+}
+
+interface UseApprovalPolicyTriggerProps {
+  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
 }
 
 export const useApprovalPolicyTrigger = ({
