@@ -138,7 +138,7 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesTriggers approvalPolicy={params.row} />
         ),
       },
       {
