@@ -4,6 +4,11 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -98,6 +103,8 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -118,7 +125,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         display: 'flex',
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -176,6 +183,14 @@ const InvoicesTableBase = ({
     ];
   }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    invoices?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'InvoicesTable'
+  );
+
   const className = 'Monite-InvoicesTable';
 
   return (
@@ -210,6 +225,7 @@ const InvoicesTableBase = ({
             sortModel: sortModel && [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

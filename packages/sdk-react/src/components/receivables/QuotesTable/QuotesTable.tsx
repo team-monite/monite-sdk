@@ -5,6 +5,11 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -90,6 +95,8 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(quotes?.data);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -115,7 +122,7 @@ const QuotesTableBase = ({
         field: 'counterpart_name',
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         headerName: t(i18n)`Customer`,
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -153,6 +160,14 @@ const QuotesTableBase = ({
     ];
   }, [formatCurrencyToDisplay, i18n]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    quotes?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'QuotesTable'
+  );
+
   const className = 'Monite-QuotesTable';
 
   return (
@@ -178,6 +193,7 @@ const QuotesTableBase = ({
             sortModel: [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
