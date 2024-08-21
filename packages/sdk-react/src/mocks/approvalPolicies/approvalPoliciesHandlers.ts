@@ -3,10 +3,7 @@ import { entityUser2 } from '@/mocks/entityUsers/entityUserByIdFixture';
 
 import { http, HttpResponse, delay } from 'msw';
 
-import {
-  approvalPoliciesSearchFixture,
-  approvalPolicyByIdFixtures,
-} from './approvalPoliciesFixture';
+import { approvalPoliciesListFixture } from './approvalPoliciesFixture';
 
 const approvalPoliciesPath: `*${Extract<
   keyof paths,
@@ -14,7 +11,7 @@ const approvalPoliciesPath: `*${Extract<
 >}` = `*/approval_policies`;
 const approvalPolicyPathById = `${approvalPoliciesPath}/:approvalPolicyId`;
 
-let approvalPoliciesList = approvalPoliciesSearchFixture.data;
+let approvalPoliciesList = approvalPoliciesListFixture.data;
 
 export const approvalPoliciesHandlers = [
   /**
@@ -77,7 +74,7 @@ export const approvalPoliciesHandlers = [
   >(approvalPolicyPathById, async ({ params }) => {
     const { approvalPolicyId } = params;
 
-    const fixture = approvalPolicyByIdFixtures.find(
+    const fixture = approvalPoliciesListFixture.data.find(
       (policy) => policy.id === approvalPolicyId
     );
 
