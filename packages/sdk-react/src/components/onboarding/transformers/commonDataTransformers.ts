@@ -18,7 +18,7 @@ export function isOnboardingField(
 }
 
 export const mapValueToForm = (
-  key: string,
+  _key: string,
   value: OnboardingValueType | undefined
 ): OnboardingValueType => {
   if (value === undefined) return null;
