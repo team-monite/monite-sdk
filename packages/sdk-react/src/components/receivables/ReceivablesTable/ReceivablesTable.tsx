@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 import { CreditNotesTable } from '@/components';
 import { InvoicesTable } from '@/components';
@@ -15,33 +15,46 @@ import { useLingui } from '@lingui/react';
 import { Box, Tab, Tabs } from '@mui/material';
 import { useThemeProps } from '@mui/material/styles';
 
-interface ReceivablesTableUncontrolledProps {
-  tab?: undefined;
-  onTabChange?: undefined;
-}
-
 interface ReceivablesTableControlledProps {
-  /** Active-selected tab */
-  tab: number;
-
   /** Event handler for tab change */
   onTabChange: (tab: number) => void;
+
+  /** Active-selected tab */
+  tab: number;
 }
 
-export type ReceivablesTableProps = {
-  /**
-   * The event handler for a row click.
-   *
-   * @param id - The identifier of the clicked row, a string.
-   */
-  onRowClick?: (id: string) => void;
+interface ReceivablesTableUncontrolledProps {
+  /** Active-selected tab */
+  tab?: number;
+  onTabChange?: never;
+}
+
+/**
+ * Receivables Table props for MUI theming
+ */
+export interface MoniteReceivablesTableProps {
+  /** Active-selected tab */
+  tab?: number;
 
   /**
    * The tabs to display in the ReceivablesTable.
    * By default, the component will display tabs for Invoices, Quotes, and Credit Notes.
    */
   tabs?: Array<MoniteReceivablesTab>;
-} & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
+}
+
+interface ReceivablesTableBaseProps {
+  /**
+   * The event handler for a row click.
+   *
+   * @param id - The identifier of the clicked row, a string.
+   */
+  onRowClick?: (id: string) => void;
+}
+
+export type ReceivablesTableProps =
+  | (ReceivablesTableControlledProps & ReceivablesTableBaseProps)
+  | (ReceivablesTableUncontrolledProps & ReceivablesTableBaseProps);
 
 /**
  * ReceivablesTable component
@@ -119,9 +132,12 @@ type MoniteReceivablesTab = {
   filters?: Array<keyof ReceivableFilterType>;
 };
 
-const ReceivablesTableBase = (inProps: ReceivablesTableProps) => {
-  const { tab, onTabChange, onRowClick, tabs } =
-    useReceivablesTableProps(inProps);
+const ReceivablesTableBase = ({
+  onRowClick,
+  onTabChange,
+  ...inProps
+}: ReceivablesTableProps) => {
+  const { tab, tabs } = useReceivablesTableProps(inProps);
 
   const { i18n } = useLingui();
   const [activeTabIndex, setActiveTabIndex] = useControlledTab({

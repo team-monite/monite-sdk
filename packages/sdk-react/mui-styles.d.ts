@@ -1,9 +1,9 @@
-import { ReceivablesTableProps } from '@/components';
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
+import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
@@ -49,7 +49,7 @@ declare module '@mui/material/styles' {
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<InvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
-    MoniteReceivablesTable: Partial<ReceivablesTableProps>;
+    MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
   }
 
   /**
