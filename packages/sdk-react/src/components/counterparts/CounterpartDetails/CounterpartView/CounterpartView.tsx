@@ -104,13 +104,6 @@ export const CounterpartView = (props: CounterpartViewProps) => {
     deleteCounterpart(handleCloseDeleteCounterpartDialog);
   }, [deleteCounterpart, handleCloseDeleteCounterpartDialog]);
 
-  const defaultOrganizationContact =
-    counterpart && isOrganizationCounterpart(counterpart)
-      ? contacts?.find(
-          (contact) => contact.email === counterpart.organization?.email
-        )?.is_default
-      : false;
-
   const actions = useMemo(() => {
     return (
       (isUpdateAllowed || isDeleteAllowed) && (

@@ -84,7 +84,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
         </Typography>
         <ArrowForwardIcon fontSize="small" color="disabled" />
         <Typography variant="caption" data-testid="bankName">
-          {Boolean(bank) ? watch('name') : t(i18n)`Add bank account`}
+          {bank ? watch('name') : t(i18n)`Add bank account`}
         </Typography>
       </Stack>
       <Divider />
@@ -224,9 +224,7 @@ export const CounterpartBankForm = (props: CounterpartBankFormProps) => {
           color="primary"
           disabled={isLoading}
         >
-          {Boolean(bank)
-            ? t(i18n)`Update bank account`
-            : t(i18n)`Add bank account`}
+          {bank ? t(i18n)`Update bank account` : t(i18n)`Add bank account`}
         </Button>
       </DialogActions>
     </>
