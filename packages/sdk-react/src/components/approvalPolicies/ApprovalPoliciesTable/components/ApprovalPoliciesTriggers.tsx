@@ -18,7 +18,7 @@ export const ApprovalPoliciesTriggers = ({
   approvalPolicy,
 }: ApprovalPoliciesTriggersProps) => {
   const { i18n } = useLingui();
-  const { uniqueTriggerNames } = useApprovalPolicyTrigger({ approvalPolicy });
+  const { triggerNames } = useApprovalPolicyTrigger({ approvalPolicy });
 
   if (!approvalPolicy) {
     return null;
@@ -26,7 +26,7 @@ export const ApprovalPoliciesTriggers = ({
 
   return (
     <Styled.ColumnList>
-      {uniqueTriggerNames.map((triggerName, index) => {
+      {triggerNames.map((triggerName, index) => {
         switch (triggerName) {
           case 'invoice.amount': {
             return (
