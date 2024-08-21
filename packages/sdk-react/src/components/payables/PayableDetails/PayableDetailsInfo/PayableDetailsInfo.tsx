@@ -7,7 +7,10 @@ import {
   getCounterpartName,
   getIndividualName,
 } from '@/components/counterparts/helpers';
-import { isFieldRequired } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
+import {
+  isFieldRequired,
+  useOcrFields,
+} from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -49,10 +52,6 @@ import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 export type PayablesDetailsInfoProps = {
   payable: components['schemas']['PayableResponseSchema'];
   optionalFields?: OptionalFields;
-  ocrRequiredFields?: Pick<
-    PayablesDetailsProps,
-    'ocrRequiredFields'
-  >['ocrRequiredFields'];
 };
 
 interface RequiredFieldLabelProps {
@@ -106,7 +105,6 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 const PayableDetailsInfoBase = ({
   payable,
   optionalFields,
-  ocrRequiredFields,
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
@@ -147,7 +145,7 @@ const PayableDetailsInfoBase = ({
     [counterpartBankAccountQuery, payable]
   );
 
-  const theme = useTheme();
+  const ocrFields = useOcrFields();
 
   const className = 'Monite-PayableDetailsInfo';
 
@@ -192,7 +190,7 @@ const PayableDetailsInfoBase = ({
                 <TableRow>
                   <RequiredFieldLabel
                     fieldName="invoiceNumber"
-                    ocrRequiredFields={ocrRequiredFields}
+                    ocrRequiredFields={ocrFields}
                     fieldValue={payable.document_id}
                   >
                     {t(i18n)`Invoice number`}:
@@ -221,7 +219,7 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <RequiredFieldLabel
                       fieldName="counterpartBankAccount"
-                      ocrRequiredFields={ocrRequiredFields}
+                      ocrRequiredFields={ocrFields}
                       fieldValue={counterpartBankAccount?.name}
                     >
                       {t(i18n)`Bank account`}:
@@ -247,7 +245,7 @@ const PayableDetailsInfoBase = ({
                 <TableRow>
                   <RequiredFieldLabel
                     fieldName="dueDate"
-                    ocrRequiredFields={ocrRequiredFields}
+                    ocrRequiredFields={ocrFields}
                     fieldValue={payable.due_date}
                   >
                     {t(i18n)`Due date`}:
@@ -298,7 +296,7 @@ const PayableDetailsInfoBase = ({
                   <TableRow>
                     <RequiredFieldLabel
                       fieldName="tags"
-                      ocrRequiredFields={ocrRequiredFields}
+                      ocrRequiredFields={ocrFields}
                       fieldValue={payable.tags?.[0].id}
                     >
                       {t(i18n)`Tags`}:

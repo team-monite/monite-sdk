@@ -5,6 +5,7 @@ import {
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
 import { CounterpartResponse } from '@/core/queries';
+import { useTheme } from '@mui/material/styles';
 
 import { format } from 'date-fns';
 
@@ -246,4 +247,9 @@ export const isFieldRequired = (
   const isOcrRequired = ocrRequiredFields?.[fieldName] ?? false;
 
   return isDefaultRequired || isOcrRequired;
+};
+
+export const useOcrFields = () => {
+  const theme = useTheme();
+  return theme.components?.MonitePayableDetailsInfo?.defaultProps || {};
 };

@@ -31,6 +31,7 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip: 'root';
     MoniteApprovalRequestStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
+    MonitePayableDetailsInfo: 'root';
   }
 
   /**
@@ -41,6 +42,7 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
+    MonitePayableDetailsInfo: Partial<PayableDetailsInfoProps>;
   }
 
   /**
@@ -51,5 +53,6 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
+    MonitePayableDetailsInfo?: ComponentType<'MonitePayableDetailsInfo'>;
   }
 }

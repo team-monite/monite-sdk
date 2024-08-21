@@ -42,6 +42,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 import * as yup from 'yup';
@@ -57,6 +58,7 @@ import {
   LineItem,
   calculateTotalsForPayable,
   isFieldRequired,
+  useOcrFields,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 
@@ -75,10 +77,6 @@ interface PayableDetailsFormProps {
   optionalFields?: OptionalFields;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
-  ocrRequiredFields?: Pick<
-    PayablesDetailsProps,
-    'ocrRequiredFields'
-  >['ocrRequiredFields'];
 }
 
 const getValidationSchema = (i18n: I18n) =>
@@ -153,7 +151,6 @@ const PayableDetailsFormBase = forwardRef<
       savePayable,
       createPayable,
       optionalFields,
-      ocrRequiredFields,
       lineItems,
       payableDetailsFormId,
     },
@@ -243,6 +240,8 @@ const PayableDetailsFormBase = forwardRef<
 
     const className = 'Monite-PayableDetailsForm';
 
+    const ocrFields = useOcrFields();
+
     useEffect(() => {
       trigger();
     }, [trigger]);
@@ -318,7 +317,7 @@ const PayableDetailsFormBase = forwardRef<
                             helperText={error?.message}
                             required={isFieldRequired(
                               'invoiceNumber',
-                              ocrRequiredFields
+                              ocrFields
                             )}
                           />
                         )}
@@ -331,10 +330,7 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired(
-                              'counterpart',
-                              ocrRequiredFields
-                            )}
+                            required={isFieldRequired('counterpart', ocrFields)}
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
@@ -346,10 +342,7 @@ const PayableDetailsFormBase = forwardRef<
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
                               onChange={(event) => {
-                                resetField(
-                                  'counterpartBankAccount',
-                                  ocrRequiredFields
-                                );
+                                resetField('counterpartBankAccount', ocrFields);
 
                                 return field.onChange(event);
                               }}
@@ -381,7 +374,7 @@ const PayableDetailsFormBase = forwardRef<
                             error={Boolean(error)}
                             required={isFieldRequired(
                               'counterpartBankAccount',
-                              ocrRequiredFields
+                              ocrFields
                             )}
                           >
                             <InputLabel htmlFor={field.name}>
@@ -437,7 +430,7 @@ const PayableDetailsFormBase = forwardRef<
                                   helperText: error?.message,
                                   required: isFieldRequired(
                                     'invoiceDate',
-                                    ocrRequiredFields
+                                    ocrFields
                                   ),
                                 },
                               }}
@@ -466,10 +459,7 @@ const PayableDetailsFormBase = forwardRef<
                                 fullWidth: true,
                                 error: Boolean(error),
                                 helperText: error?.message,
-                                required: isFieldRequired(
-                                  'dueDate',
-                                  ocrRequiredFields
-                                ),
+                                required: isFieldRequired('dueDate', ocrFields),
                               },
                             }}
                             {...field}
@@ -481,10 +471,7 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required={isFieldRequired(
-                          'currency',
-                          ocrRequiredFields
-                        )}
+                        required={isFieldRequired('currency', ocrFields)}
                       />
                       {showTags && (
                         <Controller
@@ -494,10 +481,7 @@ const PayableDetailsFormBase = forwardRef<
                             <FormControl
                               variant="outlined"
                               fullWidth
-                              required={isFieldRequired(
-                                'tags',
-                                ocrRequiredFields
-                              )}
+                              required={isFieldRequired('tags', ocrFields)}
                               error={Boolean(error)}
                             >
                               <Autocomplete
