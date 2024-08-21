@@ -89,6 +89,13 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'document_id',
         headerName: t(i18n)`Number`,
         width: 100,
+        renderCell: ({ value }) => {
+          if (!value) {
+            return t(i18n)`INV-auto`;
+          }
+
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
+        },
       },
       {
         field: 'created_at',

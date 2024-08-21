@@ -117,7 +117,7 @@ const InvoicesTableBase = ({
             return t(i18n)`INV-auto`;
           }
 
-          return value;
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
         },
       },
       {
