@@ -1,7 +1,5 @@
 import type { components } from '@/api';
 import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import { t } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
 
 import * as Styled from '../styles';
 import { UBuilding } from './icons/UBuilding';
@@ -17,8 +15,9 @@ interface ApprovalPoliciesTriggersProps {
 export const ApprovalPoliciesTriggers = ({
   approvalPolicy,
 }: ApprovalPoliciesTriggersProps) => {
-  const { i18n } = useLingui();
-  const { triggerNames } = useApprovalPolicyTrigger({ approvalPolicy });
+  const { triggerKeys, getTriggerName } = useApprovalPolicyTrigger({
+    approvalPolicy,
+  });
 
   if (!approvalPolicy) {
     return null;
@@ -26,49 +25,49 @@ export const ApprovalPoliciesTriggers = ({
 
   return (
     <Styled.ColumnList>
-      {triggerNames.map((triggerName, index) => {
-        switch (triggerName) {
-          case 'invoice.amount': {
+      {triggerKeys.map((triggerKey) => {
+        switch (triggerKey) {
+          case 'amount': {
             return (
-              <li key={index}>
+              <li key={triggerKey}>
                 <UMoneyBill width={18} />
-                {t(i18n)`Amount`}
+                {getTriggerName(triggerKey)}
               </li>
             );
           }
 
-          case 'invoice.currency': {
+          case 'currency': {
             return (
-              <li key={index}>
+              <li key={triggerKey}>
                 <UMoneyStack width={18} />
-                {t(i18n)`Currency`}
+                {getTriggerName(triggerKey)}
               </li>
             );
           }
 
-          case 'invoice.was_created_by_user_id': {
+          case 'was_created_by_user_id': {
             return (
-              <li key={index}>
+              <li key={triggerKey}>
                 <UUserCircle width={18} />
-                {t(i18n)`Created by user`}
+                {getTriggerName(triggerKey)}
               </li>
             );
           }
 
-          case 'invoice.counterpart_id': {
+          case 'counterpart_id': {
             return (
-              <li key={index}>
+              <li key={triggerKey}>
                 <UBuilding width={18} />
-                {t(i18n)`Counterparts`}
+                {getTriggerName(triggerKey)}
               </li>
             );
           }
 
-          case 'invoice.tags': {
+          case 'tags': {
             return (
-              <li key={index}>
+              <li key={triggerKey}>
                 <ULabel width={18} />
-                {t(i18n)`Tags`}
+                {getTriggerName(triggerKey)}
               </li>
             );
           }
