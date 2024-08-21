@@ -839,7 +839,13 @@ function renderColor(strVal: string, palette: PaletteOptions): string {
   return strVal;
 }
 
-const colorProps = ['color', 'backgroundColor', 'bgcolor', 'borderColor'];
+const colorProps = [
+  'color',
+  'backgroundColor',
+  'bgcolor',
+  'borderColor',
+  '--DataGrid-rowBorderColor',
+];
 
 // Replaces color constants like 'divider', 'primary.main', 'neutral.80' with actual color values
 function renderColors<T extends { [key: string]: any }>(
