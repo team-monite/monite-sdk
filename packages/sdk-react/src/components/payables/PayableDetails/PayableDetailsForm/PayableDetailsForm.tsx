@@ -8,7 +8,6 @@ import {
 } from 'react-hook-form';
 
 import { components } from '@/api';
-import { PayablesDetailsProps } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -42,7 +41,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 
 import * as yup from 'yup';

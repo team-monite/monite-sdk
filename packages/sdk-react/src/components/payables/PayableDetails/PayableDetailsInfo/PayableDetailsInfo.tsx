@@ -1,7 +1,6 @@
 import { ReactNode, useMemo } from 'react';
 
 import { components } from '@/api';
-import { PayablesDetailsProps } from '@/components';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import {
   getCounterpartName,
