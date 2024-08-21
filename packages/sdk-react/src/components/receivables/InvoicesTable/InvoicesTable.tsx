@@ -6,6 +6,11 @@ import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRec
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -99,6 +104,8 @@ const InvoicesTableBase = ({
       'onRowActionClick' in restProps ? restProps.onRowActionClick : undefined,
   });
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
+
   const columns = useMemo<
     GridColDef<components['schemas']['ReceivableResponse']>[]
   >(() => {
@@ -109,19 +116,26 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 100,
         renderCell: ({ value, row }) => {
-          if (row.status === 'recurring') return t(i18n)`Recurring`;
+          if (row.status === 'recurring')
+            return (
+              <span className="Monite-TextOverflowContainer">
+                {t(i18n)`Recurring`}
+              </span>
+            );
 
           if (!value) {
             return (
-              <Typography
-                color="text.secondary"
-                component="span"
-                fontSize="inherit"
-              >{t(i18n)`INV-auto`}</Typography>
+              <span className="Monite-TextOverflowContainer">
+                <Typography
+                  color="text.secondary"
+                  component="span"
+                  fontSize="inherit"
+                >{t(i18n)`INV-auto`}</Typography>
+              </span>
             );
           }
 
-          return value;
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
         },
       },
       {
@@ -129,7 +143,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         display: 'flex',
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -190,6 +204,14 @@ const InvoicesTableBase = ({
     ];
   }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    invoices?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'InvoicesTable'
+  );
+
   const className = 'Monite-InvoicesTable';
 
   return (
@@ -224,6 +246,7 @@ const InvoicesTableBase = ({
             sortModel: sortModel && [sortModel],
           },
         }}
+        apiRef={gridApiRef}
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}

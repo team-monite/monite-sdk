@@ -5,6 +5,10 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
+import {
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
@@ -165,6 +169,8 @@ const ApprovalRequestsTableBase = ({
     }));
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(rows);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -233,6 +239,14 @@ const ApprovalRequestsTableBase = ({
     ];
   }, [actionsCell, formatCurrencyToDisplay, i18n]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    payables?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'ApprovalRequestsTable'
+  );
+
   if (
     isApprovalReadSupportedLoading ||
     isPayableReadSupportedLoading ||
@@ -270,6 +284,7 @@ const ApprovalRequestsTableBase = ({
             },
           },
         }}
+        apiRef={gridApiRef}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         sx={{

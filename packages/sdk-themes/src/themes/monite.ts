@@ -185,6 +185,11 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
 const filterControlWidth = '160px';
 
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
+  MuiTypography: {
+    styleOverrides: {
+      body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
+    },
+  },
   MuiFormLabel: {
     styleOverrides: {
       root: {
@@ -575,7 +580,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
       cell: {
         fontWeight: 400,
-        fontSize: '16px',
+        fontSize: '14px',
         // Align counterpart avatar with the cell header
         '&[data-field="counterpart_id"]': {
           '.MuiChip-root': {
@@ -584,6 +589,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               margin: 0,
             },
           },
+        },
+        '& .Monite-TextOverflowContainer': {
+          display: 'block',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         },
       },
       footerContainer: {
