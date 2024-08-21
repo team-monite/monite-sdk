@@ -1,5 +1,24 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.2
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- dc11374d: feat(DEV-12084): make default option for counterparts contacts
+- d0fd99c0: 1. Improves DataGrid autosizing algorithm (reduces amount of layout jumps), 2. Preserves column widths between page reloads
+- 037e81f7: feat(DEV-12296): fix DataGrid borders broken during PR approve
+- 47f48538: feat(DEV-11857): cancel invoice
+- 09960120: refactor(DEV-12059): make label for reminders more clear, add warning for overdue reminders
+- 4a69935d: feat(DEV-12283): payable upload file support pdf | png | jpeg | tiff
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+- 603a4659: feat(DEV-12154): align sorting in all table components with available API sort options
+
+### Patch Changes
+
+- 369ba2c9: add Recurrence Invoice support
+  - @monite/sdk-api@3.16.0-beta.2
+
 ## 3.16.0-beta.1
 
 ### Minor Changes
