@@ -19,15 +19,7 @@ import {
 import { i18n as i18nCore } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
-import {
-  act,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CounterpartDataTestId } from '../Counterpart.types';

@@ -445,7 +445,7 @@ export function usePayableDetails({
 
     switch (status) {
       case 'draft': {
-        let permissions: PayableDetailsPermissions[] = [];
+        const permissions: PayableDetailsPermissions[] = [];
 
         if (isEdit) {
           if (isUpdatesAvailable) {
@@ -464,7 +464,7 @@ export function usePayableDetails({
       }
 
       case 'new': {
-        let permissions: PayableDetailsPermissions[] = [];
+        const permissions: PayableDetailsPermissions[] = [];
 
         if (isEdit) {
           if (isUpdatesAvailable) {
@@ -491,7 +491,7 @@ export function usePayableDetails({
       }
 
       case 'approve_in_progress': {
-        let permissions: PayableDetailsPermissions[] = [];
+        const permissions: PayableDetailsPermissions[] = [];
 
         if (isApproveAvailable) {
           permissions.push('reject', 'approve');

@@ -44,12 +44,10 @@
       "rules": {
         "import/no-duplicates": "off",
 
-        "no-extra-boolean-cast": "off",
         "no-prototype-builtins": "off",
 
-        "prefer-const": "off",
+        "prefer-const": "warn",
 
-        "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-explicit-any": "off",

@@ -12,6 +12,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
 import {
+  Alert,
   Button,
   Card,
   CardContent,
@@ -82,6 +83,13 @@ const ReminderSectionContent = ({
     method: 'overdue_reminder',
     action: 'create',
   });
+
+  const { monite } = useMoniteContext();
+
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.entities.getEntitiesIdSettings.useQuery({
+      path: { entity_id: monite.entityId },
+    });
 
   const { control, watch, resetField } =
     useFormContext<CreateReceivablesFormProps>();
@@ -168,6 +176,23 @@ const ReminderSectionContent = ({
 
   return (
     <>
+      {!isCounterpartLoading && !counterpart?.reminders_enabled && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(i18n)`Reminders are disabled for this Counterpart.`}
+        </Alert>
+      )}
+      {!hasValidReminderEmailLoading && !hasValidReminderEmail && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(
+            i18n
+          )`No default email for selected Counterpart. Reminders will not be sent.`}
+        </Alert>
+      )}
+      {!isSettingsLoading && !settings?.reminder?.enabled && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {t(i18n)`Reminders are disabled for this Entity.`}
+        </Alert>
+      )}
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <SelectReminderLayout
