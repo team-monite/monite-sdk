@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
@@ -13,8 +12,10 @@ import {
   FormHelperText,
   Grid,
   MenuItem,
+  Skeleton,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 
 import type { SectionGeneralProps } from './Section.types';
@@ -29,19 +30,6 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
     api.bankAccounts.getBankAccounts.useQuery();
   const { data: paymentTerms, isLoading: isPaymentTermsLoading } =
     api.paymentTerms.getPaymentTerms.useQuery();
-
-  const noPaymentTerms = useMemo(() => {
-    if (!paymentTerms) {
-      return true;
-    }
-
-    return !(
-      paymentTerms.data &&
-      paymentTerms.data.length > 0 &&
-      !isPaymentTermsLoading
-    );
-  }, [isPaymentTermsLoading, paymentTerms]);
-
   const className = 'Monite-CreateReceivable-PaymentSection';
 
   return (
@@ -51,24 +39,27 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
         <CardContent>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <RHFTextField
-                fullWidth
-                select
-                name="entity_bank_account_id"
-                control={control}
-                label={t(i18n)`Bank account`}
-                disabled={
-                  isBankAccountsLoading || bankAccounts?.data.length === 0
-                }
-              >
-                {bankAccounts?.data.map((bankAccount) => (
-                  <MenuItem key={bankAccount.id} value={bankAccount.id}>
-                    {getBankAccountName(i18n, bankAccount)}
-                  </MenuItem>
-                ))}
-              </RHFTextField>
+              {isBankAccountsLoading ? (
+                <SelectSkeleton />
+              ) : (
+                <RHFTextField
+                  fullWidth
+                  select
+                  name="entity_bank_account_id"
+                  control={control}
+                  label={t(i18n)`Bank account`}
+                  disabled={disabled || !bankAccounts?.data.length}
+                >
+                  {!bankAccounts?.data.length && <MenuItem value="" />}
+                  {bankAccounts?.data.map((bankAccount) => (
+                    <MenuItem key={bankAccount.id} value={bankAccount.id}>
+                      {getBankAccountName(i18n, bankAccount)}
+                    </MenuItem>
+                  ))}
+                </RHFTextField>
+              )}
 
-              {!isBankAccountsLoading && bankAccounts?.data.length === 0 && (
+              {!isBankAccountsLoading && !bankAccounts?.data.length && (
                 <FormHelperText>{t(
                   i18n
                 )`No bank accounts available`}</FormHelperText>
@@ -76,23 +67,28 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <RHFTextField
-                fullWidth
-                select
-                name="payment_terms_id"
-                control={control}
-                label={t(i18n)`Payment terms`}
-                disabled={disabled}
-              >
-                {paymentTerms?.data?.map(({ id, name, description }) => (
-                  <MenuItem key={id} value={id}>
-                    {name}
-                    {description && ` (${description})`}
-                  </MenuItem>
-                ))}
-              </RHFTextField>
+              {isPaymentTermsLoading ? (
+                <SelectSkeleton />
+              ) : (
+                <RHFTextField
+                  fullWidth
+                  select
+                  name="payment_terms_id"
+                  control={control}
+                  label={t(i18n)`Payment terms`}
+                  disabled={disabled || !paymentTerms?.data?.length}
+                >
+                  {!paymentTerms?.data?.length && <MenuItem value="" />}
+                  {paymentTerms?.data?.map(({ id, name, description }) => (
+                    <MenuItem key={id} value={id}>
+                      {name}
+                      {description && ` (${description})`}
+                    </MenuItem>
+                  ))}
+                </RHFTextField>
+              )}
 
-              {noPaymentTerms && (
+              {!isPaymentTermsLoading && !paymentTerms?.data?.length && (
                 <FormHelperText>
                   {t(
                     i18n
@@ -104,5 +100,21 @@ export const PaymentSection = ({ disabled }: SectionGeneralProps) => {
         </CardContent>
       </Card>
     </Stack>
+  );
+};
+
+const SelectSkeleton = () => {
+  const theme = useTheme();
+  return (
+    <Skeleton
+      variant="rounded"
+      width="100%"
+      height="100%"
+      sx={{
+        minHeight: `calc(${theme.spacing(5)} + ${
+          theme.typography.body1.fontSize
+        })`,
+      }}
+    />
   );
 };
