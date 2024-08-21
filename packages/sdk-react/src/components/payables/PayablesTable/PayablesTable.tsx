@@ -309,7 +309,9 @@ const PayablesTableBase = ({
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
     columns,
-    areCounterpartsLoading
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'PayablesTable'
   );
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {

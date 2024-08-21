@@ -244,7 +244,9 @@ const ApprovalRequestsTableBase = ({
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
     columns,
-    areCounterpartsLoading
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'ApprovalRequestsTable'
   );
 
   if (

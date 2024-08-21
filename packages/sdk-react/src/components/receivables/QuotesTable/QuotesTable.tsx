@@ -165,7 +165,9 @@ const QuotesTableBase = ({
   const gridApiRef = useAutosizeGridColumns(
     quotes?.data,
     columns,
-    areCounterpartsLoading
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'QuotesTable'
   );
 
   const className = 'Monite-QuotesTable';

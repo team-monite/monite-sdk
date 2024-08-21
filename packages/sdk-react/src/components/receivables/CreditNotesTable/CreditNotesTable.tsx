@@ -142,7 +142,9 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const gridApiRef = useAutosizeGridColumns(
     creditNotes?.data,
     columns,
-    areCounterpartsLoading
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'CreditNotesTable'
   );
 
   const className = 'Monite-CreditNotesTable';

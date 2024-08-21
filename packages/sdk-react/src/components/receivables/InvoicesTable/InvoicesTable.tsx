@@ -192,7 +192,9 @@ const InvoicesTableBase = ({
   const gridApiRef = useAutosizeGridColumns(
     invoices?.data,
     columns,
-    areCounterpartsLoading
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'InvoicesTable'
   );
 
   const className = 'Monite-InvoicesTable';
