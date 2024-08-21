@@ -57,11 +57,23 @@ export function useExistingInvoiceDetails({
     path: { receivable_id: receivableId },
   });
 
+  const recurrence_id =
+    receivable?.type === 'invoice' && receivable.recurrence_id
+      ? receivable.recurrence_id
+      : '';
+
+  const isCancelRecurrenceMutating = Boolean(
+    api.recurrences.postRecurrencesIdCancel.useIsMutating({
+      parameters: { path: { recurrence_id } },
+    })
+  );
+
   const mutationInProgress =
     deleteMutation.isPending ||
     sendMutation.isPending ||
     issueMutation.isPending ||
     cancelMutation.isPending ||
+    isCancelRecurrenceMutating ||
     pdfQuery.isPending;
 
   const handleIssueOnly = useCallback(() => {
@@ -99,6 +111,7 @@ export function useExistingInvoiceDetails({
       case 'paid':
       case 'overdue':
       case 'canceled':
+      case 'recurring':
       case 'uncollectible': {
         return true;
       }
@@ -153,6 +166,9 @@ export function useExistingInvoiceDetails({
 
   const isCancelButtonDisabled = mutationInProgress;
 
+  const isCancelRecurrenceButtonDisabled =
+    !isUpdateAllowed || mutationInProgress;
+
   return {
     view,
     callbacks: {
@@ -172,6 +188,7 @@ export function useExistingInvoiceDetails({
       isIssueButtonVisible,
       isCancelButtonVisible,
       isCancelButtonDisabled,
+      isCancelRecurrenceButtonDisabled,
     },
   };
 }
