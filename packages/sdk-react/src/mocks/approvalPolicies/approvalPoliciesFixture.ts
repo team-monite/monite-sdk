@@ -30,18 +30,20 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
             },
           ],
         },
+
         script: [
-          // {
-          //   call: 'ApprovalRequests.request_approval_by_users',
-          //   params: {
-          //     user_ids: [
-          //       '91bff192-1a13-4a13-a4da-a2945ed0537d',
-          //       'ae6e88a8-c088-428c-ace2-d657bf407805',
-          //       'c2daca46-c0cb-45a3-a3a2-bfb1e768104c',
-          //     ],
-          //     required_approval_count: 1,
-          //   },
-          // },
+          // @ts-expect-error - `script` is not covered by the schema
+          {
+            call: 'ApprovalRequests.request_approval_by_users',
+            params: {
+              user_ids: [
+                '91bff192-1a13-4a13-a4da-a2945ed0537d',
+                'ae6e88a8-c088-428c-ace2-d657bf407805',
+                'c2daca46-c0cb-45a3-a3a2-bfb1e768104c',
+              ],
+              required_approval_count: 2,
+            },
+          },
         ],
         id: 'approval-policy-id-created-by-approve-anyone',
         status: 'active',
