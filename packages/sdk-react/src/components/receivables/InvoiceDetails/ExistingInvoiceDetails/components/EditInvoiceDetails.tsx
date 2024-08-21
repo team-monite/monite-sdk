@@ -2,6 +2,7 @@ import { useCallback, useId, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { components } from '@/api';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { CreateInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/CreateInvoiceReminderDialog';
 import { ReminderSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection';
 import { CustomerSection } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection';
@@ -234,7 +235,9 @@ const EditInvoiceDetailsContent = ({
             style={{ marginBottom: theme.spacing(7) }}
           >
             <Typography variant="h1" sx={{ mb: 7 }}>
-              {t(i18n)`Edit invoice ${invoice.document_id ?? 'INV-auto'}`}
+              {t(i18n)`Edit invoice ${
+                invoice.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+              }`}
             </Typography>
             <Stack direction="column" spacing={4}>
               <CustomerSection disabled={isLoading} />
