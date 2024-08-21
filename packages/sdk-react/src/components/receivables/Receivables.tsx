@@ -4,7 +4,10 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
-import { useReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
+import {
+  useControlledTab,
+  useReceivablesTableProps,
+} from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -27,8 +30,13 @@ const ReceivablesBase = () => {
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
-  const { tabs: receivablesTable } = useReceivablesTableProps({});
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const { tabs: receivablesTabs, tab: inReceivablesTab } =
+    useReceivablesTableProps();
+
+  const [activeTabIndex, setActiveTabIndex] = useControlledTab({
+    tab: inReceivablesTab ?? 0,
+  });
 
   useEffect(() => {
     if (!invoiceId) {
@@ -133,7 +141,7 @@ const ReceivablesBase = () => {
             setActiveTabIndex(
               Math.max(
                 0,
-                receivablesTable?.findIndex(
+                receivablesTabs?.findIndex(
                   (tab) => tab.query?.type === 'invoice'
                 ) ?? 0
               )

@@ -67,6 +67,7 @@ export type ReceivablesTableProps =
  *   components: {
  *     MoniteReceivablesTable: {
  *       defaultProps: {
+ *         tab: 0,                      // The default tab index to display
  *         tabs: [
  *           {
  *             label: 'Draft Invoices', // The label of the Tab
@@ -241,19 +242,33 @@ const ReceivablesTableBase = ({
 
 /**
  * Manages the active tab state for controlled mode and uncontrolled modes.
- * If the `tab` or `onTabChange` prop is provided (not `undefined`), the hook is not controlled.
+ *
+ * - If the `tab === undefined || onTabChange === undefined`, the hook behaves uncontrolled hook;
+ *   that means it handles the internal state.
+ *   - Whenever `tab` is updated, the hook updates the internal state.
+ * - If the `tab !== undefined` and `onTabChange !== undefined`, the hook behaves controlled hook;
+ *   that means it just returns the original state.
  */
-const useControlledTab = ({
-  tab,
-  onTabChange,
+export const useControlledTab = ({
+  tab: controlledTab,
+  onTabChange: setControlledTab,
 }: Pick<ReceivablesTableProps, 'tab' | 'onTabChange'>) => {
-  const [tabControlled, onTabChangeControlled] = useState(0);
+  const [uncontrolledTab, setUncontrolledTab] = useState(controlledTab ?? 0);
 
-  return [tab ?? tabControlled, onTabChange ?? onTabChangeControlled] as const;
+  useEffect(() => {
+    if (controlledTab === undefined) return;
+    if (setControlledTab === undefined) setUncontrolledTab(controlledTab);
+  }, [setControlledTab, controlledTab]);
+
+  if (controlledTab !== undefined && setControlledTab !== undefined) {
+    return [controlledTab, setControlledTab] as const;
+  }
+
+  return [uncontrolledTab, setUncontrolledTab] as const;
 };
 
 export const useReceivablesTableProps = (
-  inProps: Partial<ReceivablesTableProps>
+  inProps?: Partial<MoniteReceivablesTableProps>
 ) => {
   return useThemeProps({
     props: inProps,
