@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
 
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -38,10 +38,12 @@ export function useAutosizeGridColumns(
   const gridApiRef = useGridApiRef();
 
   const autoSizePerformed = useRef(false); // useRef instead of useState to avoid re-renders on value changes
+  const columnsRestored = useRef<GridColDef[] | null>(null);
   const serializationKey = 'Monite-DataGridColumns-' + columnSerializationKey;
 
   // Autosize columns
-  useLayoutEffect(() => {
+  // use useEffect since we need this code to be executed after isFirstRender / useEffect in useGridColumns.js
+  useEffect(() => {
     const grid = gridApiRef.current;
     const timeouts: number[] = [];
     if (
@@ -51,6 +53,7 @@ export function useAutosizeGridColumns(
       grid.autosizeColumns && // Will be undefined in test environment
       grid.getRowsCount() && // Make sure the grid was already rendered so that autosizeColumns function will work
       grid.getCellElement(rows[0].id, grid.getAllColumns()[0].field) && // Make sure the grid was already rendered so that autosizeColumns function will work
+      columns.length > 0 && // Subscribe to column count since we need to execute this code on every column set change
       !areCounterpartsLoading && // Skip autosize until counterparts are loaded
       !autoSizePerformed.current && // Do not perform autosize twice
       !localStorage.getItem(serializationKey) // Do not perform autosize on next page loads - we preserve column state, set by user
@@ -109,10 +112,15 @@ export function useAutosizeGridColumns(
   }, [gridApiRef, rows, columns, areCounterpartsLoading, serializationKey]);
 
   // Save columns width when switching between pages
-  useLayoutEffect(() => {
+  // use useEffect since we need this code to be executed after isFirstRender / useEffect in useGridColumns.js
+  useEffect(() => {
     const grid = gridApiRef.current;
     const serializedColumnsStr = localStorage.getItem(serializationKey);
-    if (serializedColumnsStr && grid && !autoSizePerformed.current) {
+    if (
+      serializedColumnsStr &&
+      grid &&
+      columnsRestored.current != columns // Do not restore column widths twice
+    ) {
       const serializedColumns: {
         width: number;
         field: string;
@@ -120,18 +128,19 @@ export function useAutosizeGridColumns(
       for (const serializedColumn of serializedColumns) {
         grid.setColumnWidth(serializedColumn.field, serializedColumn.width);
       }
+      columnsRestored.current = columns; // Allow serialization of updated column widths
     }
 
     return () => {
-      // Save columns only after performing autosize
-      if (grid && autoSizePerformed.current) {
+      // Save columns only after restoring them or performing autosize
+      if (grid && (columnsRestored.current || autoSizePerformed.current)) {
         const columnsState = grid
           .getAllColumns()
           .map(({ field, width }) => ({ field, width }));
         localStorage.setItem(serializationKey, JSON.stringify(columnsState));
       }
     };
-  }, [gridApiRef, serializationKey]);
+  }, [gridApiRef, serializationKey, columns]);
 
   return gridApiRef;
 }
