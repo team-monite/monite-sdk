@@ -18,8 +18,7 @@ export const MoniteScopedProviders = ({
   children: ReactNode;
 }) => {
   const hasStylesContext = useContext(SingleInstanceScopedStyleProviderContext);
-  const { theme, apiUrl, fetchToken, queryClient, requestFn } =
-    useMoniteContext();
+  const { theme } = useMoniteContext();
 
   return hasStylesContext ? (
     <>{children}</>

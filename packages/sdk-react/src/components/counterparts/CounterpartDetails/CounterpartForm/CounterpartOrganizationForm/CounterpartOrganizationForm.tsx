@@ -95,7 +95,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       e.stopPropagation();
 
       handleSubmit((values) => {
-        if (!!counterpart) {
+        if (counterpart) {
           const payload: components['schemas']['CounterpartOrganizationRootUpdatePayload'] =
             {
               tax_id: values.tax_id ?? '',
