@@ -90,7 +90,7 @@ export const InvoiceRecurrence = ({
                           size="small"
                           onClick={() => setOpen(true)}
                         >
-                          {!recurrence && t(i18n)`Set up`}
+                          {!recurrence && t(i18n)`Convert`}
                           {recurrence && t(i18n)`Edit`}
                         </Button>
                       )
