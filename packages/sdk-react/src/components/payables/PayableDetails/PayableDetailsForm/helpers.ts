@@ -233,9 +233,7 @@ export const isFieldRequired = (
   ocrRequiredFields: Record<string, boolean> | undefined,
   value?: string | null
 ) => {
-  if (value) {
-    return false;
-  }
+  if (value) return false;
 
   return (
     ['invoiceNumber', 'dueDate', 'tags', 'currency'].includes(fieldName) ||
