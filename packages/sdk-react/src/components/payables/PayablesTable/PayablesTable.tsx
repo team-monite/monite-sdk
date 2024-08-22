@@ -45,6 +45,7 @@ import {
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
+  FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
@@ -148,6 +149,9 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
+        ? currentFilter[FILTER_TYPE_OVERDUE]
+        : undefined,
     },
   });
 
