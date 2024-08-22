@@ -1,5 +1,19 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-beta.2
+
+### Minor Changes
+
+- 504f60af: fix(DEV-12158): fix tables styles and improve height calculations
+- 1f30c113: feat(DEV-12074): migrate MUI Data-Grid to v7
+
+### Patch Changes
+
+- Updated dependencies [d0fd99c0]
+- Updated dependencies [1f30c113]
+  - @team-monite/sdk-themes@0.2.0-beta.0
+  - @monite/sdk-api@3.16.0-beta.2
+
 ## 1.8.0-beta.1
 
 ### Patch Changes

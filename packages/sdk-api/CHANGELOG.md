@@ -1,5 +1,7 @@
 # @monite/sdk-api
 
+## 3.16.0-beta.2
+
 ## 3.16.0-beta.1
 
 ## 3.16.0-beta.0

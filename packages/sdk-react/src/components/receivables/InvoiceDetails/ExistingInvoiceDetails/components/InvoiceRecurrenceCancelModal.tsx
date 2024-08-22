@@ -106,7 +106,7 @@ export const InvoiceRecurrenceCancelModal = ({
     >
       <DialogTitle variant="h3">{t(
         i18n
-      )`Confirm Cancellation of Recurring Invoice`}</DialogTitle>
+      )`Cancel Recurring Invoice`}</DialogTitle>
       <DialogContent>
         <Typography>
           {t(i18n)`Are you sure you want to cancel this recurring invoice?`}
@@ -129,11 +129,10 @@ export const InvoiceRecurrenceCancelModal = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button variant="outlined" onClick={onClose} color="inherit">
+        <Button variant="outlined" onClick={onClose} color="inherit" autoFocus>
           {t(i18n)`Close`}
         </Button>
         <Button
-          autoFocus
           variant="outlined"
           color="error"
           disabled={
