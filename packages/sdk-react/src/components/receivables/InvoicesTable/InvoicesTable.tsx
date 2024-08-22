@@ -200,7 +200,7 @@ const InvoicesTableBase = ({
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];
-  }, [formatCurrencyToDisplay, i18n, invoiceActionCell]);
+  }, [formatCurrencyToDisplay, i18n, invoiceActionCell, dateFormat]);
 
   const gridApiRef = useAutosizeGridColumns(
     invoices?.data,
