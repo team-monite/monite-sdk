@@ -230,21 +230,26 @@ function formatTaxFromMinorUnits(tax: number): number {
   return tax / 100;
 }
 
-export const isFieldRequired = <
-  TFieldNames extends string,
-  TOcrRequiredFields extends Record<TFieldNames, boolean>,
-  TFieldValues extends FieldValues
->(
-  fieldName: TFieldNames,
-  ocrRequiredFields: TOcrRequiredFields | undefined,
-  value?: FieldValue<TFieldValues>
+export const isFieldRequired = (
+  fieldName: string,
+  ocrRequiredFields: Record<string, boolean> | undefined,
+  value?: string | null
 ) => {
-  if (value) return false;
+  const defaultRequiredFields: Record<string, boolean> = {
+    invoiceNumber: true,
+    dueDate: true,
+    tags: true,
+    currency: true,
+  };
 
-  return (
-    ['invoiceNumber', 'dueDate', 'tags', 'currency'].includes(fieldName) ||
-    (ocrRequiredFields?.[fieldName] ?? false)
-  );
+  if (value) {
+    return false;
+  }
+
+  const isDefaultRequired = defaultRequiredFields[fieldName] ?? false;
+  const isOcrRequired = ocrRequiredFields?.[fieldName] ?? false;
+
+  return isDefaultRequired || isOcrRequired;
 };
 
 export const useOcrFields = (
