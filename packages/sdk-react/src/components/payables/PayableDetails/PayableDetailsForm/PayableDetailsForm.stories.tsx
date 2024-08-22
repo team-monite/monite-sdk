@@ -16,6 +16,8 @@ const meta: Meta<typeof PayableDetailsForm> = {
   component: PayableDetailsForm,
 };
 
+const payableId = '9a3b97a5-a1ba-4d8c-bade-ad3c47ae61e0';
+
 type Story = StoryObj<typeof PayableDetailsForm>;
 
 const actions = {
@@ -42,31 +44,13 @@ const WithDialogComponent: React.FC<PayableDetailsFormProps> = (args) => {
   );
 };
 
-export const Default: Story = {
-  args: {
-    payableDetailsFormId: 'payable-form-1',
-    optionalFields: { invoiceDate: true, tags: true },
-    lineItems: [
-      {
-        payable_id: 'payable-1',
-        id: 'item-1',
-        name: 'Service A',
-        quantity: 1,
-        tax: 10,
-      },
-    ],
-    ...actions,
-  },
-  render: (args) => <PayableDetailsForm {...args} />,
-};
-
-export const WithDialog: Story = {
+export const DialogDetailsForm: Story = {
   args: {
     payableDetailsFormId: 'payable-form-2',
     optionalFields: { invoiceDate: true, tags: true },
     lineItems: [
       {
-        payable_id: 'payable-2',
+        payable_id: payableId,
         id: 'item-2',
         name: 'Service B',
         quantity: 2,
@@ -76,90 +60,6 @@ export const WithDialog: Story = {
     ...actions,
   },
   render: (args) => <WithDialogComponent {...args} />,
-};
-
-export const FullPermissions: Story = {
-  args: {
-    payableDetailsFormId: 'payable-form-3',
-    optionalFields: { invoiceDate: true, tags: true },
-    lineItems: [
-      {
-        payable_id: 'payable-3',
-        id: 'item-3',
-        name: 'Service C',
-        quantity: 3,
-        tax: 30,
-      },
-    ],
-    ...actions,
-  },
-  render: (args) => <PayableDetailsForm {...args} />,
-};
-
-export const LowPermissions: Story = {
-  args: {
-    payableDetailsFormId: 'payable-form-4',
-    optionalFields: { invoiceDate: false, tags: false },
-    lineItems: [
-      {
-        payable_id: 'payable-4',
-        id: 'item-4',
-        name: 'Service D',
-        quantity: 4,
-        tax: 40,
-      },
-    ],
-    ...actions,
-  },
-  decorators: [
-    withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
-        fetchToken: () =>
-          Promise.resolve({
-            access_token: 'access_token_value',
-            token_type: 'Bearer',
-            expires_in: 3600,
-          }),
-        entityId: 'low-permissions-entity',
-      });
-
-      return { monite };
-    }),
-  ],
-  render: (args) => <PayableDetailsForm {...args} />,
-};
-
-export const EmptyPermissions: Story = {
-  args: {
-    payableDetailsFormId: 'payable-form-5',
-    optionalFields: { invoiceDate: true, tags: true },
-    lineItems: [
-      {
-        payable_id: 'payable-5',
-        id: 'item-5',
-        name: 'Service E',
-        quantity: 5,
-        tax: 50,
-      },
-    ],
-    ...actions,
-  },
-  decorators: [
-    withGlobalStorybookDecorator(() => {
-      const monite = new MoniteSDK({
-        fetchToken: () =>
-          Promise.resolve({
-            access_token: 'access_token_value',
-            token_type: 'Bearer',
-            expires_in: 3600,
-          }),
-        entityId: 'empty-permissions-entity',
-      });
-
-      return { monite };
-    }),
-  ],
-  render: (args) => <PayableDetailsForm {...args} />,
 };
 
 export default meta;
