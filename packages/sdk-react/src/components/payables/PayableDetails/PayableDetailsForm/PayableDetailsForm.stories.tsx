@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
 import { action } from '@storybook/addon-actions';
@@ -23,7 +23,7 @@ const actions = {
   onCreatePayable: action('onCreatePayable'),
 };
 
-const WithDialogComponent: React.FC<PayableDetailsFormProps> = (args) => {
+const WithDialogComponent: FC<PayableDetailsFormProps> = (args) => {
   const [open, setOpen] = useState(true);
 
   return (

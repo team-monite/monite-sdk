@@ -144,7 +144,7 @@ const getValidationSchema = (i18n: I18n) =>
  *   payable={payableData}
  *   savePayable={handleSavePayable}
  *   createPayable={handleCreatePayable}
- *   optionalFields={{ showInvoiceDate: true, showTags: true }}
+ *   optionalFields={{ invoiceDate: true, tags: true }}
  *   lineItems={lineItemsData}
  *   payableDetailsFormId="payable-form-id"
  * />
