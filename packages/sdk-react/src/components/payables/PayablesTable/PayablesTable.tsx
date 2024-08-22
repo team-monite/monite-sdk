@@ -280,7 +280,7 @@ const PayablesTableBase = ({
               <PayableStatusChip status={params.value} />
               {isOverdue && (
                 <span style={{ color: 'red', fontWeight: 'bold' }}>
-                  Overdue
+                  {t(i18n)`Overdue`}
                 </span>
               )}
             </div>
