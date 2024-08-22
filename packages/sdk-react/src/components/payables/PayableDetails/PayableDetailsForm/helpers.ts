@@ -4,8 +4,9 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
+import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { CounterpartResponse } from '@/core/queries';
-import { useTheme } from '@mui/material/styles';
+import { useThemeProps } from '@mui/material/styles';
 
 import { format } from 'date-fns';
 
@@ -249,7 +250,12 @@ export const isFieldRequired = (
   return isDefaultRequired || isOcrRequired;
 };
 
-export const useOcrFields = () => {
-  const theme = useTheme();
-  return theme.components?.MonitePayableDetailsInfo?.defaultProps || {};
+export const useOcrFields = (
+  inProps?: Partial<MonitePayableDetailsInfoProps>
+) => {
+  return useThemeProps({
+    props: inProps,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    name: 'MonitePayableDetailsInfo',
+  });
 };

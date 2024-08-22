@@ -42,7 +42,7 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip: Partial<PayableStatusChipProps>;
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
-    MonitePayableDetailsInfo: Partial<PayableDetailsInfoProps>;
+    MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
   }
 
   /**

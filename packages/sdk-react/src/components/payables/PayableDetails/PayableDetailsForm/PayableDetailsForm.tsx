@@ -151,6 +151,7 @@ const PayableDetailsFormBase = forwardRef<
       optionalFields,
       lineItems,
       payableDetailsFormId,
+      ...inProps
     },
     ref
   ) => {
@@ -238,7 +239,7 @@ const PayableDetailsFormBase = forwardRef<
 
     const className = 'Monite-PayableDetailsForm';
 
-    const ocrFields = useOcrFields();
+    const { ocrRequiredFields } = useOcrFields(inProps);
 
     useEffect(() => {
       trigger();
@@ -315,7 +316,7 @@ const PayableDetailsFormBase = forwardRef<
                             helperText={error?.message}
                             required={isFieldRequired(
                               'invoiceNumber',
-                              ocrFields
+                              ocrRequiredFields
                             )}
                           />
                         )}
@@ -328,7 +329,10 @@ const PayableDetailsFormBase = forwardRef<
                             variant="outlined"
                             fullWidth
                             error={Boolean(error)}
-                            required={isFieldRequired('counterpart', ocrFields)}
+                            required={isFieldRequired(
+                              'counterpart',
+                              ocrRequiredFields
+                            )}
                           >
                             <InputLabel htmlFor={field.name}>
                               {t(i18n)`Counterpart`}
@@ -340,7 +344,10 @@ const PayableDetailsFormBase = forwardRef<
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
                               onChange={(event) => {
-                                resetField('counterpartBankAccount', ocrFields);
+                                resetField(
+                                  'counterpartBankAccount',
+                                  ocrRequiredFields
+                                );
 
                                 return field.onChange(event);
                               }}
@@ -372,7 +379,7 @@ const PayableDetailsFormBase = forwardRef<
                             error={Boolean(error)}
                             required={isFieldRequired(
                               'counterpartBankAccount',
-                              ocrFields
+                              ocrRequiredFields
                             )}
                           >
                             <InputLabel htmlFor={field.name}>
@@ -428,7 +435,7 @@ const PayableDetailsFormBase = forwardRef<
                                   helperText: error?.message,
                                   required: isFieldRequired(
                                     'invoiceDate',
-                                    ocrFields
+                                    ocrRequiredFields
                                   ),
                                 },
                               }}
@@ -457,7 +464,10 @@ const PayableDetailsFormBase = forwardRef<
                                 fullWidth: true,
                                 error: Boolean(error),
                                 helperText: error?.message,
-                                required: isFieldRequired('dueDate', ocrFields),
+                                required: isFieldRequired(
+                                  'dueDate',
+                                  ocrRequiredFields
+                                ),
                               },
                             }}
                             {...field}
@@ -469,7 +479,10 @@ const PayableDetailsFormBase = forwardRef<
                       <MoniteCurrency
                         name="currency"
                         control={control}
-                        required={isFieldRequired('currency', ocrFields)}
+                        required={isFieldRequired(
+                          'currency',
+                          ocrRequiredFields
+                        )}
                       />
                       {showTags && (
                         <Controller
@@ -479,7 +492,10 @@ const PayableDetailsFormBase = forwardRef<
                             <FormControl
                               variant="outlined"
                               fullWidth
-                              required={isFieldRequired('tags', ocrFields)}
+                              required={isFieldRequired(
+                                'tags',
+                                ocrRequiredFields
+                              )}
                               error={Boolean(error)}
                             >
                               <Autocomplete
