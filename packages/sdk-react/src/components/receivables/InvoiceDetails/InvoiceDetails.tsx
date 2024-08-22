@@ -5,7 +5,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 import { CreateReceivables } from './CreateReceivable';
-import { ExistingReceivableDetails } from './ExistingInvoiceDetails/ExistingReceivableDetails';
+import { ExistingReceivableDetails } from './ExistingInvoiceDetails';
 
 export const InvoiceDetails = (props: InvoiceDetailsProps) => (
   <MoniteScopedProviders>

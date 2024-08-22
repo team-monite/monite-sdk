@@ -24,6 +24,7 @@ import { paymentTermsHandlers } from './paymentTerms';
 import { personsHandlers } from './persons';
 import { productsHandlers } from './products';
 import { receivableHandlers } from './receivables';
+import { recurrencesHandlers } from './recurrences';
 import { remindersHandlers } from './reminders';
 import { rolesHandlers } from './roles';
 import { tagsHandlers } from './tags';
@@ -45,6 +46,7 @@ export const handlers = [
   ...onboardingDocumentsHandlers,
   ...currenciesHandlers,
   ...filesHandlers,
+  ...recurrencesHandlers,
   ...payableHandlers,
   ...paymentTermsHandlers,
   ...personsHandlers,

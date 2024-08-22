@@ -1,6 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../../../sdk-react/mui-styles.d.ts" />
 import { useLocalStorage } from 'react-use';
 
 import { ThemeConfig } from '@/types';
+import { ThemeOptions } from '@mui/material';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { deepmerge } from '@mui/utils';
 import {
   materialDark as themeMaterialDark,
   materialLight as themeMaterialLight,
@@ -11,37 +16,53 @@ import {
 export const getThemeOptions = (themeConfig: ThemeConfig) => {
   const { variant, mode } = themeConfig;
 
-  if (variant === 'material') {
-    return Object.assign(
-      {
-        components: {
-          MoniteInvoiceStatusChip: {
-            defaultProps: {
-              icon: true,
-            },
-          },
-          MonitePayableStatusChip: {
-            defaultProps: {
-              icon: true,
-            },
-          },
-          MoniteApprovalRequestStatusChip: {
-            defaultProps: {
-              icon: false,
-            },
-          },
-          MoniteTablePagination: {
-            defaultProps: {
-              pageSizeOptions: [10, 15, 20],
-            },
-          },
+  const defaultThemeOptions: ThemeOptions = {
+    components: {
+      MoniteInvoiceStatusChip: {
+        defaultProps: {
+          icon: true,
+          size: 'small',
         },
       },
-      mode === 'light' ? themeMaterialLight : themeMaterialDark
+      MonitePayableStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+      MoniteApprovalRequestStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+      MoniteInvoiceRecurrenceStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+      MoniteInvoiceRecurrenceIterationStatusChip: {
+        defaultProps: {
+          icon: true,
+        },
+      },
+      MoniteTablePagination: {
+        defaultProps: {
+          pageSizeOptions: [10, 15, 20],
+        },
+      },
+    },
+  };
+
+  if (variant === 'material') {
+    return deepmerge(
+      mode === 'light' ? themeMaterialLight : themeMaterialDark,
+      defaultThemeOptions
     );
   }
 
-  return mode === 'light' ? themeMoniteLight : themeMoniteDark;
+  return deepmerge(
+    mode === 'light' ? themeMoniteLight : themeMoniteDark,
+    defaultThemeOptions
+  );
 };
 
 export const useThemeConfig = () => {

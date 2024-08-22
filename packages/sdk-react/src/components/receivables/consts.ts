@@ -25,7 +25,7 @@ export const ROW_TO_TAG_STATUS_MUI_MAP: Record<
   expired: 'warning',
   uncollectible: 'warning',
   canceled: 'error',
-  recurring: 'warning',
+  recurring: 'info',
   declined: 'error',
   overdue: 'warning',
   deleted: 'error',
@@ -48,5 +48,8 @@ export const INVOICE_STATUS_TO_MUI_ICON_MAP: Record<
   overdue: ErrorOutlineOutlinedIcon,
   deleted: DeleteIcon,
 };
+
+// eslint-disable-next-line lingui/no-unlocalized-strings
+export const INVOICE_DOCUMENT_AUTO_ID = 'INV-auto';
 
 export const FILTER_TYPE_SEARCH = 'search' as const;
