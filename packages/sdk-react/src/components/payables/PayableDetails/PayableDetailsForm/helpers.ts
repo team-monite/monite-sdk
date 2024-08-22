@@ -1,3 +1,5 @@
+import { FieldValue, FieldValues } from 'react-hook-form';
+
 import { components } from '@/api';
 import {
   getIndividualName,
@@ -230,11 +232,12 @@ function formatTaxFromMinorUnits(tax: number): number {
 
 export const isFieldRequired = <
   TFieldNames extends string,
-  TOcrRequiredFields extends Record<TFieldNames, boolean>
+  TOcrRequiredFields extends Record<TFieldNames, boolean>,
+  TFieldValues extends FieldValues
 >(
   fieldName: TFieldNames,
   ocrRequiredFields: TOcrRequiredFields | undefined,
-  value?: string | null
+  value?: FieldValue<TFieldValues>
 ) => {
   if (value) return false;
 
