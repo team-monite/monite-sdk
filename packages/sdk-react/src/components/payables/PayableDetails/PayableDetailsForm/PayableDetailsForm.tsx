@@ -60,7 +60,7 @@ import {
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 
-interface PayableDetailsFormProps {
+export interface PayableDetailsFormProps {
   payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,
