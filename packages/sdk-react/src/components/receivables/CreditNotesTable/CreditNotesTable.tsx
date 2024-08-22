@@ -141,7 +141,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     creditNotes?.data,

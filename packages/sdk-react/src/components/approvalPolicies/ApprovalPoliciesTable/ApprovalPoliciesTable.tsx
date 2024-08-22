@@ -167,7 +167,7 @@ const ApprovalPoliciesTableBase = ({
         ),
       },
     ];
-  }, [i18n]);
+  }, [dateFormat, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);

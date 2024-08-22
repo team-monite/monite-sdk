@@ -167,7 +167,7 @@ const UserRolesTableBase = ({
         ) => i18n.date(value, dateFormat),
       },
     ];
-  }, [i18n, onRowClick]);
+  }, [dateFormat, i18n, onRowClick]);
 
   if (isReadSupportedLoading) {
     return <LoadingPage />;

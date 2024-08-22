@@ -239,7 +239,7 @@ const ApprovalRequestsTableBase = ({
       },
       ...(actionsCell ? [actionsCell] : []),
     ];
-  }, [actionsCell, formatCurrencyToDisplay, i18n]);
+  }, [actionsCell, dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,

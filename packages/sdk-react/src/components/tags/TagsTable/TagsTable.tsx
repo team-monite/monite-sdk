@@ -187,7 +187,14 @@ const TagsTableBase = ({
         ],
       },
     ];
-  }, [i18n, isDeleteAllowed, isUpdateAllowed, openDeleteModal, openEditModal]);
+  }, [
+    dateFormat,
+    i18n,
+    isDeleteAllowed,
+    isUpdateAllowed,
+    openDeleteModal,
+    openEditModal,
+  ]);
 
   return (
     <Box

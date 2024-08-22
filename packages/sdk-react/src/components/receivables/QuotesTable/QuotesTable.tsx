@@ -163,7 +163,7 @@ const QuotesTableBase = ({
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     quotes?.data,

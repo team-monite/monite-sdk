@@ -303,7 +303,7 @@ const PayablesTableBase = ({
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n, onPay]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
