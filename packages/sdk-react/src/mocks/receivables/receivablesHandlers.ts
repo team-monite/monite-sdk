@@ -54,9 +54,22 @@ export const receivableHandlers = [
       url.searchParams.get('pagination_token')
     );
 
-    if (!type || !receivableListFixture[type]) {
+    const idIn = url.searchParams.getAll('id__in');
+
+    await delay();
+
+    if (idIn?.length) {
       await delay();
 
+      return HttpResponse.json({
+        data: Object.values(receivableListFixture)
+          .flat()
+          .filter(({ id }) => idIn.includes(id)),
+        prev_pagination_token: prevPage,
+        next_pagination_token: nextPage,
+      });
+    }
+    if (!type || !receivableListFixture[type]) {
       return HttpResponse.json(
         {
           error: {
@@ -68,8 +81,6 @@ export const receivableHandlers = [
         }
       );
     }
-
-    await delay();
 
     return HttpResponse.json({
       data: receivableListFixture[type],

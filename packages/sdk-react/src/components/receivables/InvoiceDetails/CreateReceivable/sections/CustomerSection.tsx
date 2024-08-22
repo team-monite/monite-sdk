@@ -141,7 +141,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
       />
 
       <Typography variant="h3">{t(i18n)`Customer`}</Typography>
-      <Card variant="outlined" sx={{ borderRadius: 2 }}>
+      <Card variant="outlined">
         <CardContent>
           <Grid container spacing={3}>
             <Grid item {...customerGridItemProps}>

@@ -5,6 +5,11 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { InvoiceCounterpartName } from '@/components/receivables/InvoiceCounterpartName';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import {
+  defaultCounterpartColumnWidth,
+  useAutosizeGridColumns,
+  useAreCounterpartsLoading,
+} from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
@@ -76,12 +81,21 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     setPaginationToken(undefined);
   };
 
+  const areCounterpartsLoading = useAreCounterpartsLoading(creditNotes?.data);
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'document_id',
         headerName: t(i18n)`Number`,
         width: 100,
+        renderCell: ({ value }) => {
+          if (!value) {
+            return t(i18n)`INV-auto`;
+          }
+
+          return <span className="Monite-TextOverflowContainer">{value}</span>;
+        },
       },
       {
         field: 'created_at',
@@ -101,7 +115,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         field: 'counterpart_name',
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
-        width: 250,
+        width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
           <InvoiceCounterpartName counterpartId={params.row.counterpart_id} />
         ),
@@ -130,6 +144,14 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     ];
   }, [formatCurrencyToDisplay, i18n]);
 
+  const gridApiRef = useAutosizeGridColumns(
+    creditNotes?.data,
+    columns,
+    areCounterpartsLoading,
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    'CreditNotesTable'
+  );
+
   const className = 'Monite-CreditNotesTable';
 
   return (
@@ -156,6 +178,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
               sortModel: [sortModel],
             },
           }}
+          apiRef={gridApiRef}
           rowSelection={false}
           disableColumnFilter={true}
           loading={isLoading}
