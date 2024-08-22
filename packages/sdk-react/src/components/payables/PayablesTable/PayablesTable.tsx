@@ -28,7 +28,8 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, Chip, CircularProgress, Stack, Typography } from '@mui/material';
+import { Box, Chip, CircularProgress, Stack } from '@mui/material';
+import { lighten, useTheme } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -175,6 +176,7 @@ const PayablesTableBase = ({
   }, [isError, error, i18n]);
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
+  const theme = useTheme();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -323,22 +325,8 @@ const PayablesTableBase = ({
         width: 80,
         renderCell: (params) => {
           const payable = params.row;
-          const isOverdue = isInvoiceOverdue(payable);
 
-          return (
-            <div
-              style={{
-                backgroundColor: isOverdue
-                  ? 'rgba(255, 0, 0, 0.1)'
-                  : 'transparent',
-                width: '100%',
-                height: '100%',
-                padding: '8px',
-              }}
-            >
-              <PayablesTableAction payable={payable} onPay={onPay} />
-            </div>
-          );
+          return <PayablesTableAction payable={payable} onPay={onPay} />;
         },
       },
     ];
@@ -376,6 +364,13 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
+  const getRowStyle = (
+    payable: components['schemas']['InvoiceResponsePayload']
+  ) =>
+    isInvoiceOverdue(payable)
+      ? { backgroundColor: lighten(theme.palette.error.main, 0.95) }
+      : {};
+
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -405,7 +400,14 @@ const PayablesTableBase = ({
         onRowClick={(params) => {
           onRowClick?.(params.row.id);
         }}
+        getRowClassName={(params) => {
+          const rowStyle = getRowStyle(params.row);
+          return rowStyle.backgroundColor ? 'custom-row-style' : '';
+        }}
         sx={{
+          '& .custom-row-style': {
+            backgroundColor: lighten(theme.palette.error.main, 0.1),
+          },
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
