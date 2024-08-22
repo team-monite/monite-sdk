@@ -243,7 +243,7 @@ export const InvoiceRecurrenceForm = ({
         >
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body1" color="text.primary">
                 {!recurrence &&
                   t(
                     i18n
@@ -337,7 +337,7 @@ export const InvoiceRecurrenceForm = ({
               disabled={isLoading}
               form={formId}
             >
-              {recurrence ? t(i18n)`Save` : t(i18n)`Convert to recurring`}
+              {recurrence ? t(i18n)`Save` : t(i18n)`Convert and activate`}
             </Button>
           </Grid>
         </Grid>
