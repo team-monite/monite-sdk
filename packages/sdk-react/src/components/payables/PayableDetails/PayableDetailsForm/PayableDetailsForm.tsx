@@ -130,6 +130,35 @@ const getValidationSchema = (i18n: I18n) =>
     })
     .required();
 
+/**
+ * PayableDetailsForm component.
+ *
+ * This component is responsible for rendering a form that allows users to create or edit payable details, including invoice number, counterpart, due date, line items, and tags. It uses various hooks and utilities to manage form state, validation, and submission.
+ *
+ * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <PayableDetailsForm
+ *   payable={payableData}
+ *   savePayable={handleSavePayable}
+ *   createPayable={handleCreatePayable}
+ *   optionalFields={{ showInvoiceDate: true, showTags: true }}
+ *   lineItems={lineItemsData}
+ *   payableDetailsFormId="payable-form-id"
+ * />
+ * ```
+ *
+ * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
+ * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
+ * @param {(payable: components['schemas']['PayableUploadWithDataSchema'], createdLineItems?: Array<LineItem>) => void} [createPayable] - Callback function to create a new payable.
+ * @param {OptionalFields} [optionalFields] - Configuration object to show or hide optional fields.
+ * @param {components['schemas']['LineItemResponse'][]} [lineItems] - Array of line items associated with the payable.
+ * @param {string} payableDetailsFormId - Unique identifier for the form.
+ *
+ * @returns {JSX.Element} The PayableDetailsForm component.
+ */
 export const PayableDetailsForm = forwardRef<
   HTMLFormElement,
   PayableDetailsFormProps
