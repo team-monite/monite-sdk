@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 
 import { Dialog } from '@/components/Dialog';
-import { withGlobalStorybookDecorator } from '@/utils/storybook-utils';
-import { MoniteSDK } from '@monite/sdk-api';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -47,7 +45,6 @@ const WithDialogComponent: React.FC<PayableDetailsFormProps> = (args) => {
 export const DialogDetailsForm: Story = {
   args: {
     payableDetailsFormId: 'payable-form-2',
-    optionalFields: { invoiceDate: true, tags: true },
     lineItems: [
       {
         payable_id: payableId,
