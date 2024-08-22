@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -163,7 +164,6 @@ const PayablesTableBase = ({
       : undefined,
   });
 
-  //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
       toast.error(getAPIErrorMessage(i18n, error));
@@ -271,7 +271,21 @@ const PayablesTableBase = ({
         }),
         display: 'flex',
         width: 160,
-        renderCell: (params) => <PayableStatusChip status={params.value} />,
+        renderCell: (params) => {
+          const payable = params.row;
+          const isOverdue = isInvoiceOverdue(payable);
+
+          return (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <PayableStatusChip status={params.value} />
+              {isOverdue && (
+                <span style={{ color: 'red', fontWeight: 'bold' }}>
+                  Overdue
+                </span>
+              )}
+            </div>
+          );
+        },
       },
       {
         field: 'amount',
@@ -297,8 +311,22 @@ const PayablesTableBase = ({
         width: 80,
         renderCell: (params) => {
           const payable = params.row;
+          const isOverdue = isInvoiceOverdue(payable);
 
-          return <PayablesTableAction payable={payable} onPay={onPay} />;
+          return (
+            <div
+              style={{
+                backgroundColor: isOverdue
+                  ? 'rgba(255, 0, 0, 0.1)'
+                  : 'transparent',
+                width: '100%',
+                height: '100%',
+                padding: '8px',
+              }}
+            >
+              <PayablesTableAction payable={payable} onPay={onPay} />
+            </div>
+          );
         },
       },
     ];
