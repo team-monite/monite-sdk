@@ -6,7 +6,7 @@ export const isInvoiceOverdue = (
   const today = new Date();
   return (
     ['new', 'pending', 'waiting to be paid'].includes(invoice.status) &&
-    invoice.dueDate &&
-    new Date(invoice.dueDate) < today
+    invoice.due_date &&
+    new Date(invoice.due_date).getTime() < today.getTime()
   );
 };
