@@ -9,7 +9,6 @@ import {
   ReadableReceivableStatuses,
 } from '@/enums/ReadableReceivablesStatusEnum';
 import { SearchField } from '@/ui/SearchField';
-import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -17,7 +16,6 @@ import {
   InputLabel as MuiInputLabel,
   MenuItem,
   Select,
-  Stack,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 
