@@ -2,11 +2,13 @@ import { ReactNode } from 'react';
 
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
+import { InvoiceRecurrence } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence';
+import { InvoiceRecurrenceBasedOn } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceBasedOn';
 import {
   createOverdueReminderCardTerms,
   createPaymentReminderCardTerms,
 } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers';
-import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
+import { InvoiceRecurrenceStatusChip } from '@/components/receivables/InvoiceRecurrenceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
 import {
@@ -27,6 +29,7 @@ import {
   Alert,
   Box,
   BoxProps,
+  Button,
   Card,
   Grid,
   IconButton,
@@ -36,6 +39,12 @@ import {
   Typography,
 } from '@mui/material';
 
+interface OverviewTabPanelProps
+  extends Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'> {
+  onSetView: (view: 'recurrence') => void;
+  invoice: components['schemas']['InvoiceResponsePayload'];
+}
+
 interface TransformCreditNotes {
   description: string;
   title: string | undefined;
@@ -44,10 +53,9 @@ interface TransformCreditNotes {
 
 export const OverviewTabPanel = ({
   invoice,
+  onSetView,
   ...restProps
-}: {
-  invoice: components['schemas']['InvoiceResponsePayload'];
-} & Pick<BoxProps, 'id' | 'role' | 'aria-labelledby'>) => {
+}: OverviewTabPanelProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
@@ -109,6 +117,11 @@ export const OverviewTabPanel = ({
     Boolean(creditNoteIds?.length)
   );
 
+  const { data: recurrence } = api.recurrences.getRecurrencesId.useQuery(
+    { path: { recurrence_id: invoice?.recurrence_id ?? '' } },
+    { enabled: Boolean(invoice?.recurrence_id) }
+  );
+
   return (
     <Box
       sx={{
@@ -132,14 +145,16 @@ export const OverviewTabPanel = ({
               </Typography>
             ),
           },
-          {
-            label: t(i18n)`Current status`,
-            value: (
-              <Box component="span" fontWeight={500} fontSize="0.9rem">
-                <InvoiceStatusChip status={invoice.status} icon={false} />
-              </Box>
-            ),
-          },
+          invoice.recurrence_id
+            ? {
+                label: t(i18n)`Current status`,
+                value: recurrence ? (
+                  <InvoiceRecurrenceStatusChip status={recurrence?.status} />
+                ) : (
+                  <Skeleton variant="text" width="50%" />
+                ),
+              }
+            : undefined,
           {
             label: t(i18n)`Invoice total`,
             value: (
@@ -151,7 +166,7 @@ export const OverviewTabPanel = ({
               </Typography>
             ),
           },
-        ]}
+        ].filter((item) => !!item)}
       />
 
       {Boolean(
@@ -167,6 +182,31 @@ export const OverviewTabPanel = ({
           {creditNoteQuery?.data && (
             <LinkedDocumentsCard creditNotes={creditNoteQuery.data} />
           )}
+        </Box>
+      )}
+
+      {(invoice.status === 'draft' || Boolean(invoice.recurrence_id)) && (
+        <Box>
+          <InvoiceRecurrence
+            invoiceId={invoice.id}
+            viewAll={
+              <Button
+                size="small"
+                variant="text"
+                onClick={(event) => {
+                  event.preventDefault();
+                  onSetView('recurrence');
+                }}
+              >
+                {t(i18n)`View all`}
+              </Button>
+            }
+          />
+        </Box>
+      )}
+      {!!invoice.based_on && (
+        <Box>
+          <InvoiceRecurrenceBasedOn receivableId={invoice.based_on} />
         </Box>
       )}
 
@@ -232,7 +272,6 @@ const RemindersCard = ({
   cardTitle,
   reminderTerms,
   status,
-  sx,
 }: {
   status: 'active' | 'deleted' | undefined;
   cardTitle: ReactNode;
@@ -240,11 +279,10 @@ const RemindersCard = ({
     termPeriodName: ReactNode;
     termPeriods: ReactNode[];
   }>;
-  sx?: BoxProps;
 }) => {
   const { i18n } = useLingui();
   return (
-    <Card sx={{ borderRadius: 3, ...sx }} variant="outlined">
+    <Card variant="outlined">
       <Grid container direction="row" gap={1} sx={{ p: 1.5, pb: 0 }}>
         <Typography
           variant="body1"
