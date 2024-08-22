@@ -228,9 +228,12 @@ function formatTaxFromMinorUnits(tax: number): number {
   return tax / 100;
 }
 
-export const isFieldRequired = (
-  fieldName: string,
-  ocrRequiredFields: Record<string, boolean> | undefined,
+export const isFieldRequired = <
+  TFieldNames extends string,
+  TOcrRequiredFields extends Record<TFieldNames, boolean>
+>(
+  fieldName: TFieldNames,
+  ocrRequiredFields: TOcrRequiredFields | undefined,
   value?: string | null
 ) => {
   if (value) return false;
