@@ -28,7 +28,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, Chip, CircularProgress, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -280,14 +280,22 @@ const PayablesTableBase = ({
           const isOverdue = isInvoiceOverdue(payable);
 
           return (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Box display="flex" alignItems="center" gap={1}>
               <PayableStatusChip status={params.value} />
               {isOverdue && (
-                <span style={{ color: 'red', fontWeight: 'bold' }}>
-                  {t(i18n)`Overdue`}
-                </span>
+                <Chip
+                  label={t(i18n)`Overdue`}
+                  variant="filled"
+                  color="error"
+                  sx={{
+                    // workaround to prevent the layout from shifting when the "Make Default" button is pressed
+                    display: 'inline',
+                    verticalAlign: 'inherit',
+                    py: 0.84,
+                  }}
+                />
               )}
-            </div>
+            </Box>
           );
         },
       },
