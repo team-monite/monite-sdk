@@ -16,53 +16,47 @@ import {
 export const getThemeOptions = (themeConfig: ThemeConfig) => {
   const { variant, mode } = themeConfig;
 
-  const defaultThemeOptions: ThemeOptions = {
-    components: {
-      MoniteInvoiceStatusChip: {
-        defaultProps: {
-          icon: true,
-          size: 'small',
-        },
-      },
-      MonitePayableStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteApprovalRequestStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteInvoiceRecurrenceStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteInvoiceRecurrenceIterationStatusChip: {
-        defaultProps: {
-          icon: true,
-        },
-      },
-      MoniteTablePagination: {
-        defaultProps: {
-          pageSizeOptions: [10, 15, 20],
-        },
-      },
-    },
-  };
-
   if (variant === 'material') {
     return deepmerge(
       mode === 'light' ? themeMaterialLight : themeMaterialDark,
-      defaultThemeOptions
+      {
+        components: {
+          MoniteInvoiceStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MonitePayableStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MoniteApprovalRequestStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MoniteInvoiceRecurrenceStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MoniteInvoiceRecurrenceIterationStatusChip: {
+            defaultProps: {
+              icon: true,
+            },
+          },
+          MoniteTablePagination: {
+            defaultProps: {
+              pageSizeOptions: [10, 15, 20],
+            },
+          },
+        },
+      } satisfies ThemeOptions
     );
   }
 
-  return deepmerge(
-    mode === 'light' ? themeMoniteLight : themeMoniteDark,
-    defaultThemeOptions
-  );
+  return mode === 'light' ? themeMoniteLight : themeMoniteDark;
 };
 
 export const useThemeConfig = () => {
