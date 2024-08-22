@@ -22,6 +22,7 @@ import { classNames } from '@/utils/css-utils';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Sync } from '@mui/icons-material';
 import { Box, Skeleton, Typography } from '@mui/material';
 import {
   DataGrid,
@@ -118,9 +119,22 @@ const InvoicesTableBase = ({
         renderCell: ({ value, row }) => {
           if (row.status === 'recurring')
             return (
-              <span className="Monite-TextOverflowContainer">
+              <Typography
+                className="Monite-TextOverflowContainer"
+                color="text.primary"
+                component="span"
+                variant="body2"
+                sx={{
+                  alignItems: 'center',
+                  display: 'inline-flex',
+                  verticalAlign: 'middle',
+                  fontSize: 'inherit',
+                  gap: 0.5,
+                }}
+              >
+                <Sync fontSize="small" color="inherit" />
                 {t(i18n)`Recurring`}
-              </span>
+              </Typography>
             );
 
           if (!value) {
