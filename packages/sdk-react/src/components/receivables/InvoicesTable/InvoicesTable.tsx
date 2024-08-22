@@ -8,8 +8,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
-  useAutosizeGridColumns,
   useAreCounterpartsLoading,
+  useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
@@ -19,7 +19,7 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Skeleton, Typography } from '@mui/material';
@@ -105,6 +105,7 @@ const InvoicesTableBase = ({
   });
 
   const areCounterpartsLoading = useAreCounterpartsLoading(invoices?.data);
+  const dateFormat = useDateFormat();
 
   const columns = useMemo<
     GridColDef<components['schemas']['ReceivableResponse']>[]
@@ -153,20 +154,14 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Created on`,
         sortable: false,
         width: 140,
-        valueFormatter: (value) =>
-          value
-            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
-            : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       {
         field: 'issue_date',
         headerName: t(i18n)`Issue date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) =>
-          value
-            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
-            : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       {
         field: 'status',
@@ -201,10 +196,7 @@ const InvoicesTableBase = ({
         headerName: t(i18n)`Due date`,
         sortable: false,
         width: 120,
-        valueFormatter: (value) =>
-          value
-            ? i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat)
-            : '—',
+        valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];

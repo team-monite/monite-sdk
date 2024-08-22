@@ -13,7 +13,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
@@ -128,6 +128,8 @@ const TagsTableBase = ({
     entityUserId: user?.id, // todo::Find a workaround to utilize `allowed_for_own`, or let it go.
   });
 
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -142,7 +144,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'updated_at',
@@ -150,7 +152,7 @@ const TagsTableBase = ({
         flex: 0.5,
         valueFormatter: (
           value: components['schemas']['TagReadSchema']['updated_at']
-        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'created_by_entity_user_id',

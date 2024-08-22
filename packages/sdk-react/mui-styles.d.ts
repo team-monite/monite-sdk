@@ -49,10 +49,15 @@ declare module '@mui/material/styles' {
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
   }
 
+  interface MoniteOptions {
+    dateFormat?: Intl.DateTimeFormatOptions;
+  }
+
   /**
    * Extends theme `components`
    */
   interface Components {
+    MoniteOptions?: { defaultProps: MoniteOptions };
     MoniteInvoiceStatusChip?: ComponentType<'MoniteInvoiceStatusChip'>;
     MonitePayableStatusChip?: ComponentType<'MonitePayableStatusChip'>;
     MoniteApprovalRequestStatusChip?: ComponentType<'MoniteApprovalRequestStatusChip'>;

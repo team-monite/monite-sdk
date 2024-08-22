@@ -19,7 +19,7 @@ import {
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { CenteredContentBox } from '@/ui/box';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CachedOutlined, InfoOutlined } from '@mui/icons-material';
@@ -114,6 +114,7 @@ const PayableDetailsInfoBase = ({
   );
 
   const className = 'Monite-PayableDetailsInfo';
+  const dateFormat = useDateFormat();
 
   if (isPayableInOCRProcessing(payable)) {
     return (
@@ -192,10 +193,7 @@ const PayableDetailsInfoBase = ({
                     </StyledLabelTableCell>
                     <TableCell>
                       {payable.issued_at
-                        ? i18n.date(
-                            payable.issued_at,
-                            DateTimeFormatOptions.ShortMonthDateFormat
-                          )
+                        ? i18n.date(payable.issued_at, dateFormat)
                         : '—'}
                     </TableCell>
                   </TableRow>
@@ -206,10 +204,7 @@ const PayableDetailsInfoBase = ({
                   </StyledLabelTableCell>
                   <TableCell>
                     {payable.due_date
-                      ? i18n.date(
-                          payable.due_date,
-                          DateTimeFormatOptions.ShortMonthDateFormat
-                        )
+                      ? i18n.date(payable.due_date, dateFormat)
                       : '—'}
                   </TableCell>
                 </TableRow>

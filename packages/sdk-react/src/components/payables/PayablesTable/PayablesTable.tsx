@@ -8,8 +8,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
-  useAutosizeGridColumns,
   useAreCounterpartsLoading,
+  useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -23,7 +23,7 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
@@ -171,6 +171,7 @@ const PayablesTableBase = ({
   }, [isError, error, i18n]);
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
+  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -231,7 +232,7 @@ const PayablesTableBase = ({
         },
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'issued_at',
@@ -245,8 +246,7 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) =>
-          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'due_date',
@@ -260,8 +260,7 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) =>
-          value && i18n.date(value, DateTimeFormatOptions.ShortMonthDateFormat),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'status',

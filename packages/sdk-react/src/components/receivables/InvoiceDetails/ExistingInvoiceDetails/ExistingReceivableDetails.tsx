@@ -10,7 +10,7 @@ import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -129,6 +129,8 @@ const ExistingReceivableDetailsBase = (
       }
     );
 
+  const dateFormat = useDateFormat();
+
   if (!props.id) return null;
 
   if (isLoading || isReadAllowedLoading) {
@@ -199,10 +201,7 @@ const ExistingReceivableDetailsBase = (
                   <TableCell>
                     <Typography>
                       {fulfillmentDate
-                        ? i18n.date(
-                            fulfillmentDate,
-                            DateTimeFormatOptions.ShortMonthDateFormat
-                          )
+                        ? i18n.date(fulfillmentDate, dateFormat)
                         : '—'}
                     </Typography>
                   </TableCell>
@@ -213,12 +212,7 @@ const ExistingReceivableDetailsBase = (
                   </TableCell>
                   <TableCell>
                     <Typography>
-                      {dueDate
-                        ? i18n.date(
-                            dueDate,
-                            DateTimeFormatOptions.ShortMonthDateFormat
-                          )
-                        : '—'}
+                      {dueDate ? i18n.date(dueDate, dateFormat) : '—'}
                     </Typography>
                   </TableCell>
                 </TableRow>
