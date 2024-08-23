@@ -1,18 +1,17 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  type FieldValues,
+  type UseControllerProps,
+} from 'react-hook-form';
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, Switch, FormControlLabel } from '@mui/material';
+import { Box, FormControlLabel, Switch, Typography } from '@mui/material';
 
-interface CounterpartReminderToggleProps {
-  name: string;
-}
-
-export const CounterpartReminderToggle = ({
-  name,
-}: CounterpartReminderToggleProps) => {
-  const { control } = useFormContext();
+export const CounterpartReminderToggle = <T extends FieldValues>(
+  props: UseControllerProps<T>
+) => {
   const { i18n } = useLingui();
 
   return (
@@ -38,8 +37,7 @@ export const CounterpartReminderToggle = ({
         </Typography>
       </Box>
       <Controller
-        name={name}
-        control={control}
+        {...props}
         render={({ field }) => (
           <FormControlLabel
             control={
