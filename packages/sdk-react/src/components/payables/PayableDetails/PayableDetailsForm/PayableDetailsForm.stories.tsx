@@ -1,13 +1,8 @@
-import { FC, useState } from 'react';
-
 import { Dialog } from '@/components/Dialog';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import {
-  PayableDetailsForm,
-  PayableDetailsFormProps,
-} from './PayableDetailsForm';
+import { PayableDetailsForm } from './PayableDetailsForm';
 
 const meta: Meta<typeof PayableDetailsForm> = {
   title: 'Payables/Payables — Details Form',
