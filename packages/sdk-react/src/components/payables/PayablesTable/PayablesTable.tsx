@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -28,7 +29,7 @@ import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, Chip, CircularProgress, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -168,6 +169,7 @@ const PayablesTableBase = ({
       : undefined,
   });
 
+  //TODO: Remove this error handling and replace with proper error handling
   useEffect(() => {
     if (isError) {
       toast.error(getAPIErrorMessage(i18n, error));
@@ -283,15 +285,12 @@ const PayablesTableBase = ({
             <Box display="flex" alignItems="center" gap={1}>
               <PayableStatusChip status={params.value} />
               {isOverdue && (
-                <Chip
-                  label={t(i18n)`Overdue`}
-                  variant="filled"
+                <StyledChip
+                  className="Monite-PayableStatusChip"
                   color="error"
-                  sx={{
-                    display: 'inline',
-                    verticalAlign: 'inherit',
-                    py: 0.84,
-                  }}
+                  label={t(i18n)`Overdue`}
+                  status={params.value}
+                  size={'small'}
                 />
               )}
             </Box>
