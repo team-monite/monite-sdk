@@ -177,11 +177,13 @@ const PayableDetailsInfoBase = ({
               <TableBody>
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired(
-                      'invoiceNumber',
-                      ocrRequiredFields,
-                      payable.document_id
-                    )}
+                    isRequired={
+                      isFieldRequired(
+                        'invoiceNumber',
+                        ocrRequiredFields,
+                        payable?.document_id
+                      ) && payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Invoice number`}:
                   </StyledLabelTableCell>
@@ -189,10 +191,10 @@ const PayableDetailsInfoBase = ({
                 </TableRow>
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired(
-                      'counterpartName',
-                      ocrRequiredFields
-                    )}
+                    isRequired={
+                      isFieldRequired('counterpartName', ocrRequiredFields) &&
+                      payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Supplier`}:
                   </StyledLabelTableCell>
@@ -203,10 +205,10 @@ const PayableDetailsInfoBase = ({
                 {defaultContact && (
                   <TableRow>
                     <StyledLabelTableCell
-                      isRequired={isFieldRequired(
-                        'contactPerson',
-                        ocrRequiredFields
-                      )}
+                      isRequired={
+                        isFieldRequired('contactPerson', ocrRequiredFields) &&
+                        payable?.ocr_status === null
+                      }
                     >
                       {t(i18n)`Contact person`}:
                     </StyledLabelTableCell>
@@ -218,11 +220,13 @@ const PayableDetailsInfoBase = ({
                 {counterpartBankAccount && (
                   <TableRow>
                     <StyledLabelTableCell
-                      isRequired={isFieldRequired(
-                        'counterpartBankAccount',
-                        ocrRequiredFields,
-                        counterpartBankAccount?.name
-                      )}
+                      isRequired={
+                        isFieldRequired(
+                          'counterpartBankAccount',
+                          ocrRequiredFields,
+                          counterpartBankAccount?.name
+                        ) && payable?.ocr_status === null
+                      }
                     />
                     <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
@@ -230,10 +234,10 @@ const PayableDetailsInfoBase = ({
                 {showInvoiceDate && (
                   <TableRow>
                     <StyledLabelTableCell
-                      isRequired={isFieldRequired(
-                        'issueDate',
-                        ocrRequiredFields
-                      )}
+                      isRequired={
+                        isFieldRequired('issueDate', ocrRequiredFields) &&
+                        payable?.ocr_status === null
+                      }
                     >
                       {t(i18n)`Issue date`}:
                     </StyledLabelTableCell>
@@ -249,11 +253,13 @@ const PayableDetailsInfoBase = ({
                 )}
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired(
-                      'dueDate',
-                      ocrRequiredFields,
-                      payable.due_date
-                    )}
+                    isRequired={
+                      isFieldRequired(
+                        'dueDate',
+                        ocrRequiredFields,
+                        payable.due_date
+                      ) && payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Due date`}
                   </StyledLabelTableCell>
@@ -268,7 +274,10 @@ const PayableDetailsInfoBase = ({
                 </TableRow>
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired('amount', ocrRequiredFields)}
+                    isRequired={
+                      isFieldRequired('amount', ocrRequiredFields) &&
+                      payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Amount`}:
                   </StyledLabelTableCell>
@@ -304,11 +313,13 @@ const PayableDetailsInfoBase = ({
                 {showTags && payable.tags && payable.tags.length > 0 && (
                   <TableRow>
                     <StyledLabelTableCell
-                      isRequired={isFieldRequired(
-                        'tags',
-                        ocrRequiredFields,
-                        payable.tags?.[0].id
-                      )}
+                      isRequired={
+                        isFieldRequired(
+                          'tags',
+                          ocrRequiredFields,
+                          payable.tags?.[0].id
+                        ) && payable?.ocr_status === null
+                      }
                     />
                     <TableCell>
                       <Stack
@@ -331,10 +342,10 @@ const PayableDetailsInfoBase = ({
                 )}
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired(
-                      'appliedPolicy',
-                      ocrRequiredFields
-                    )}
+                    isRequired={
+                      isFieldRequired('appliedPolicy', ocrRequiredFields) &&
+                      payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Applied policy`}:
                   </StyledLabelTableCell>
@@ -456,10 +467,10 @@ const PayableDetailsInfoBase = ({
                 {addedByUser && (
                   <TableRow>
                     <StyledLabelTableCell
-                      isRequired={isFieldRequired(
-                        'addedByUser',
-                        ocrRequiredFields
-                      )}
+                      isRequired={
+                        isFieldRequired('addedByUser', ocrRequiredFields) &&
+                        payable?.ocr_status === null
+                      }
                     >
                       {t(i18n)`Added by`}:
                     </StyledLabelTableCell>
@@ -487,7 +498,10 @@ const PayableDetailsInfoBase = ({
                 )}
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired('addedOn', ocrRequiredFields)}
+                    isRequired={
+                      isFieldRequired('addedOn', ocrRequiredFields) &&
+                      payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Added on`}:
                   </StyledLabelTableCell>
@@ -502,7 +516,10 @@ const PayableDetailsInfoBase = ({
                 </TableRow>
                 <TableRow>
                   <StyledLabelTableCell
-                    isRequired={isFieldRequired('updatedOn', ocrRequiredFields)}
+                    isRequired={
+                      isFieldRequired('updatedOn', ocrRequiredFields) &&
+                      payable?.ocr_status === null
+                    }
                   >
                     {t(i18n)`Updated on`}:
                   </StyledLabelTableCell>
