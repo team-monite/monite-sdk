@@ -47,8 +47,6 @@ export const ApprovalPolicyDetails = ({
     return <LoadingPage />;
   }
 
-  console.log({ isEdit, approvalPolicy });
-
   if (!isEdit && approvalPolicy) {
     // READ
     return (
