@@ -7,7 +7,7 @@ import {
 
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, FormControlLabel, Switch, Typography } from '@mui/material';
+import { Box, Switch, Typography } from '@mui/material';
 
 export const CounterpartReminderToggle = <T extends FieldValues>(
   props: UseControllerProps<T>
@@ -39,16 +39,11 @@ export const CounterpartReminderToggle = <T extends FieldValues>(
       <Controller
         {...props}
         render={({ field }) => (
-          <FormControlLabel
-            control={
-              <Switch
-                checked={field.value}
-                onChange={(event) => field.onChange(event.target.checked)}
-                color="primary"
-              />
-            }
-            label=""
-            labelPlacement="start"
+          <Switch
+            checked={field.value}
+            onChange={(event) => field.onChange(event.target.checked)}
+            color="primary"
+            aria-label={t(i18n)`Enable email reminders`}
           />
         )}
       />
