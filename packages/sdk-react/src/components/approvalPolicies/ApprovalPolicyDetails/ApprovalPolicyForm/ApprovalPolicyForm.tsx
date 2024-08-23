@@ -230,7 +230,7 @@ export const ApprovalPolicyForm = ({
     let approvalFlowLabel: string;
     let approvalFlowValue: ReactNode;
 
-    switch (getValues('scriptType')) {
+    switch (isEdit ? script.type : getValues('scriptType')) {
       case 'ApprovalRequests.request_approval_by_users':
         approvalFlowLabel =
           getValues('script.params.requiredApprovalCount') === '1'
@@ -561,7 +561,10 @@ export const ApprovalPolicyForm = ({
                                 '&.MuiTableRow-root': { cursor: 'pointer' },
                               }}
                               onClick={() =>
-                                setScriptInEdit(approvalFlow.key || null)
+                                setScriptInEdit(
+                                  approvalFlow.key ||
+                                    'ApprovalRequests.request_approval_by_users'
+                                )
                               }
                             >
                               <TableCell>{approvalFlow.label}</TableCell>
@@ -636,7 +639,7 @@ export const ApprovalPolicyForm = ({
                   );
                   setValue(
                     'script.params.requiredApprovalCount',
-                    script.params.required_approval_count || 0
+                    script.params.required_approval_count || 1
                   );
                   setScriptInEdit(null);
                 }
