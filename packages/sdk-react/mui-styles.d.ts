@@ -1,4 +1,5 @@
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
+import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
@@ -33,7 +34,7 @@ declare module '@mui/material/styles' {
     MonitePayableStatusChip: 'root';
     MoniteApprovalRequestStatusChip: 'root';
     MoniteTablePagination: 'root' | 'menu';
-    MonitePayableDetailsInfo: 'root';
+    MonitePayableDetailsInfo: 'never';
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
   }
