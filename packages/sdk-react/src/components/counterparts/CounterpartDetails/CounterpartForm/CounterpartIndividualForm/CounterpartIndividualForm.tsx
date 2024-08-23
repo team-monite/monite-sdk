@@ -3,6 +3,7 @@ import { useForm, Controller, FormProvider } from 'react-hook-form';
 
 import { components } from '@/api';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
+import { CounterpartReminderToggle } from '@/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartReminderToggle';
 import { useDialog } from '@/components/Dialog';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { LanguageCodeEnum } from '@/enums/LanguageCodeEnum';
@@ -319,6 +320,11 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                       {...field}
                     />
                   )}
+                />
+              </Grid>
+              <Grid item>
+                <CounterpartReminderToggle
+                  name={`individual.reminders_enabled`}
                 />
               </Grid>
               <Grid item>
