@@ -1,6 +1,5 @@
 import { components } from '@/api';
 import { CounterpartContactView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView';
-import { CounterpartOrganizationView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,
@@ -642,76 +641,58 @@ describe('CounterpartDetails', () => {
     });
   });
 
-  test('should display "default" label next to the matching email when contact is marked as default', async () => {
-    const matchingEmail = 'test@example.com';
-    const contact = {
-      id: 'contact-uuid-1',
-      counterpart_id: 'counterpart-uuid-1',
-      email: matchingEmail,
-      first_name: 'Mary',
-      last_name: "O'Brien",
-      is_default: true,
-      phone: '5551235476',
-      title: 'Ms.',
-      address: {
-        country: 'DE' as components['schemas']['AllowedCountries'],
-        city: 'Berlin',
-        postal_code: '10115',
-        state: 'string',
-        line1: 'Flughafenstrasse 52',
-        line2: 'string',
-      },
+  describe('CounterpartContactView', () => {
+    const renderContactView = (email: string, isDefault: boolean) => {
+      const contact = {
+        id: 'contact-uuid-1',
+        counterpart_id: 'counterpart-uuid-1',
+        email,
+        first_name: 'Mary',
+        last_name: "O'Brien",
+        is_default: isDefault,
+        phone: '5551235476',
+        title: 'Ms.',
+        address: {
+          country: 'DE' as components['schemas']['AllowedCountries'],
+          city: 'Berlin',
+          postal_code: '10115',
+          state: 'string',
+          line1: 'Flughafenstrasse 52',
+          line2: 'string',
+        },
+      };
+
+      renderWithClient(
+        <CounterpartContactView
+          contact={contact}
+          permissions={{ isUpdateAllowed: true, isDeleteAllowed: true }}
+        />
+      );
+
+      return screen.getByText(email);
     };
 
-    renderWithClient(
-      <CounterpartContactView
-        contact={contact}
-        permissions={{ isUpdateAllowed: true, isDeleteAllowed: true }}
-      />
-    );
+    test('should display "default" label next to the matching email when contact is marked as default', async () => {
+      const matchingEmail = 'test@example.com';
 
-    const emailElement = screen.getByText(matchingEmail);
-    const defaultLabel = within(emailElement.parentElement!).queryByText(
-      /default/i
-    );
+      const emailElement = renderContactView(matchingEmail, true);
+      const defaultLabel = within(emailElement.parentElement!).queryByText(
+        /default/i
+      );
 
-    expect(defaultLabel).toBeInTheDocument();
-    expect(defaultLabel).toBeVisible();
-  });
+      expect(defaultLabel).toBeInTheDocument();
+      expect(defaultLabel).toBeVisible();
+    });
 
-  test('should NOT display "default" label when email does not match or contact is not marked as default', async () => {
-    const nonMatchingEmail = 'different@example.com';
-    const contact = {
-      id: 'contact-uuid-1',
-      counterpart_id: 'counterpart-uuid-1',
-      email: nonMatchingEmail,
-      first_name: 'Mary',
-      last_name: "O'Brien",
-      is_default: false,
-      phone: '5551235476',
-      title: 'Ms.',
-      address: {
-        country: 'DE' as components['schemas']['AllowedCountries'],
-        city: 'Berlin',
-        postal_code: '10115',
-        state: 'string',
-        line1: 'Flughafenstrasse 52',
-        line2: 'string',
-      },
-    };
+    test('should NOT display "default" label when email does not match or contact is not marked as default', async () => {
+      const nonMatchingEmail = 'different@example.com';
 
-    renderWithClient(
-      <CounterpartContactView
-        contact={contact}
-        permissions={{ isUpdateAllowed: true, isDeleteAllowed: true }}
-      />
-    );
+      const emailElement = renderContactView(nonMatchingEmail, false);
+      const defaultLabel = within(emailElement.parentElement!).queryByText(
+        /default/i
+      );
 
-    const emailElement = screen.getByText(nonMatchingEmail);
-    const defaultLabel = within(emailElement.parentElement!).queryByText(
-      /default/i
-    );
-
-    expect(defaultLabel).not.toBeInTheDocument();
+      expect(defaultLabel).not.toBeInTheDocument();
+    });
   });
 });
