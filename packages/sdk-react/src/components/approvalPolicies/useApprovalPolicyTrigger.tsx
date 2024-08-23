@@ -23,13 +23,47 @@ export interface Triggers {
 }
 
 interface UseApprovalPolicyTriggerProps {
-  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
+  approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
 }
 
 export const useApprovalPolicyTrigger = ({
   approvalPolicy,
 }: UseApprovalPolicyTriggerProps) => {
   const { i18n } = useLingui();
+
+  const getTriggerName = (triggerKey: ApprovalPoliciesTriggerKey) => {
+    switch (triggerKey) {
+      case 'amount':
+        return t(i18n)`Amount`;
+      case 'currency':
+        return t(i18n)`Currency`;
+      case 'was_created_by_user_id':
+        return t(i18n)`Created by user`;
+      case 'counterpart_id':
+        return t(i18n)`Counterpart`;
+      case 'tags':
+        return t(i18n)`Tags`;
+      default:
+        return triggerKey;
+    }
+  };
+
+  const getTriggerLabel = (triggerKey: ApprovalPoliciesTriggerKey) => {
+    switch (triggerKey) {
+      case 'amount':
+        return t(i18n)`Amount`;
+      case 'currency':
+        return t(i18n)`Currency`;
+      case 'was_created_by_user_id':
+        return t(i18n)`Created by`;
+      case 'counterpart_id':
+        return t(i18n)`Counterparts`;
+      case 'tags':
+        return t(i18n)`Has tags`;
+      default:
+        return triggerKey;
+    }
+  };
 
   const isApprovalPolicyTrigger = (
     policyTrigger: unknown
@@ -42,9 +76,14 @@ export const useApprovalPolicyTrigger = ({
     );
   };
 
-  if (!isApprovalPolicyTrigger(approvalPolicy.trigger)) {
+  if (!isApprovalPolicyTrigger(approvalPolicy?.trigger)) {
     // TODO: display error message
-    throw new Error('Approval policy trigger is not valid');
+    return {
+      triggerKeys: [],
+      triggers: {},
+      getTriggerName,
+      getTriggerLabel,
+    };
   }
 
   const triggerKeys: ApprovalPoliciesTriggerKey[] =
@@ -86,40 +125,6 @@ export const useApprovalPolicyTrigger = ({
     },
     {}
   );
-
-  const getTriggerName = (triggerKey: ApprovalPoliciesTriggerKey) => {
-    switch (triggerKey) {
-      case 'amount':
-        return t(i18n)`Amount`;
-      case 'currency':
-        return t(i18n)`Currency`;
-      case 'was_created_by_user_id':
-        return t(i18n)`Created by user`;
-      case 'counterpart_id':
-        return t(i18n)`Counterpart`;
-      case 'tags':
-        return t(i18n)`Tags`;
-      default:
-        return triggerKey;
-    }
-  };
-
-  const getTriggerLabel = (triggerKey: ApprovalPoliciesTriggerKey) => {
-    switch (triggerKey) {
-      case 'amount':
-        return t(i18n)`Amount`;
-      case 'currency':
-        return t(i18n)`Currency`;
-      case 'was_created_by_user_id':
-        return t(i18n)`Created by`;
-      case 'counterpart_id':
-        return t(i18n)`Counterparts`;
-      case 'tags':
-        return t(i18n)`Has tags`;
-      default:
-        return triggerKey;
-    }
-  };
 
   return {
     triggerKeys,

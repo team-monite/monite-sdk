@@ -13,17 +13,17 @@ export const User = ({ userId }: UserProps) => {
     return null;
   }
 
-  if (isLoading) {
-    return <Skeleton height="50%" width={100} animation="wave" />;
-  }
-
   return (
     <Stack direction="row" alignItems="center" gap={1}>
       <UserAvatar
         fileId={entityUser.userpic_file_id}
         sx={{ width: 24, height: 24 }}
       />
-      {`${entityUser.first_name ?? ''} ${entityUser.last_name ?? ''}`.trim()}
+      {isLoading ? (
+        <Skeleton height="50%" width={100} animation="wave" />
+      ) : (
+        `${entityUser.first_name ?? ''} ${entityUser.last_name ?? ''}`.trim()
+      )}
     </Stack>
   );
 };
