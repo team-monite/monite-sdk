@@ -1,4 +1,6 @@
-import { prepareCounterpartOrganization } from '@/components/counterparts/CounterpartDetails/CounterpartForm';
+import { components } from '@/api';
+import { CounterpartContactView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartContactView';
+import { CounterpartOrganizationView } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { ENTITY_ID_FOR_LOW_PERMISSIONS } from '@/mocks';
 import {
   counterpartsContactsFixtures,
@@ -640,29 +642,76 @@ describe('CounterpartDetails', () => {
     });
   });
 
-  describe('# Make default contact for counterpart', () => {
-    const setupTest = (organizationEmail: string, contactEmail: string) => {
-      const contacts = [{ email: contactEmail, is_default: true }];
-      const organization = {
-        email: organizationEmail,
-        is_customer: true,
-        is_vendor: false,
-        legal_name: 'Test Corp',
-        phone: '123-456-7890',
-      };
-      return prepareCounterpartOrganization(organization, {}, contacts);
+  test('should display "default" label next to the matching email when contact is marked as default', async () => {
+    const matchingEmail = 'test@example.com';
+    const contact = {
+      id: 'contact-uuid-1',
+      counterpart_id: 'counterpart-uuid-1',
+      email: matchingEmail,
+      first_name: 'Mary',
+      last_name: "O'Brien",
+      is_default: true,
+      phone: '5551235476',
+      title: 'Ms.',
+      address: {
+        country: 'DE' as components['schemas']['AllowedCountries'],
+        city: 'Berlin',
+        postal_code: '10115',
+        state: 'string',
+        line1: 'Flughafenstrasse 52',
+        line2: 'string',
+      },
     };
 
-    describe('prepareCounterpartOrganization', () => {
-      it('should return isEmailDefault as true when contact email matches organization email', () => {
-        const result = setupTest('test@org.com', 'test@org.com');
-        expect(result.isEmailDefault).toBe(true);
-      });
+    renderWithClient(
+      <CounterpartContactView
+        contact={contact}
+        permissions={{ isUpdateAllowed: true, isDeleteAllowed: true }}
+      />
+    );
 
-      it('should return isEmailDefault as false when no matching email is found', () => {
-        const result = setupTest('test@org.com', 'nomatch@org.com');
-        expect(result.isEmailDefault).toBe(false);
-      });
-    });
+    const emailElement = screen.getByText(matchingEmail);
+    const defaultLabel = within(emailElement.parentElement!).queryByText(
+      /default/i
+    );
+
+    expect(defaultLabel).toBeInTheDocument();
+    expect(defaultLabel).toBeVisible();
+  });
+
+  test('should NOT display "default" label when email does not match or contact is not marked as default', async () => {
+    const nonMatchingEmail = 'different@example.com';
+    const contact = {
+      id: 'contact-uuid-1',
+      counterpart_id: 'counterpart-uuid-1',
+      email: nonMatchingEmail,
+      first_name: 'Mary',
+      last_name: "O'Brien",
+      is_default: false,
+      phone: '5551235476',
+      title: 'Ms.',
+      address: {
+        country: 'DE' as components['schemas']['AllowedCountries'],
+        city: 'Berlin',
+        postal_code: '10115',
+        state: 'string',
+        line1: 'Flughafenstrasse 52',
+        line2: 'string',
+      },
+    };
+
+    renderWithClient(
+      <CounterpartContactView
+        contact={contact}
+        permissions={{ isUpdateAllowed: true, isDeleteAllowed: true }}
+      />
+    );
+
+    const emailElement = screen.getByText(nonMatchingEmail);
+    const defaultLabel = within(emailElement.parentElement!).queryByText(
+      /default/i
+    );
+
+    expect(defaultLabel).not.toBeInTheDocument();
   });
 });

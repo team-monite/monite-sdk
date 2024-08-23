@@ -57,6 +57,15 @@ export const CounterpartView = (props: CounterpartViewProps) => {
   } = useCounterpartView(props);
   const dialogContext = useDialog();
 
+  const isEmailDefault =
+    counterpart && contacts && isOrganizationCounterpart(counterpart)
+      ? contacts.some(
+          (contact) =>
+            contact.is_default &&
+            contact.email === counterpart.organization?.email
+        )
+      : false;
+
   const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
     useIsActionAllowed({
       method: 'counterpart',
@@ -206,10 +215,10 @@ export const CounterpartView = (props: CounterpartViewProps) => {
                 taxId: counterpart.tax_id,
                 ...prepareCounterpartOrganization(
                   counterpart.organization,
-                  undefined,
-                  contacts
+                  undefined
                 ),
               }}
+              isEmailDefault={isEmailDefault}
             />
           )}
 
