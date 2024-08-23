@@ -37,11 +37,17 @@ export const ApprovalPolicyDetails = ({
 }: ApprovalPolicyDetailsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false); // TODO: remove this after demo
 
-  const { isLoading, data: approvalPolicy } = useApprovalPolicyById(id);
+  const {
+    data: approvalPolicy,
+    isLoading,
+    isFetching,
+  } = useApprovalPolicyById(id);
 
   if (id && isLoading) {
     return <LoadingPage />;
   }
+
+  console.log({ isEdit, approvalPolicy });
 
   if (!isEdit && approvalPolicy) {
     // READ
@@ -64,5 +70,5 @@ export const ApprovalPolicyDetails = ({
   }
 
   // CREATE by default
-  return <div>CREATE</div>;
+  return <ApprovalPolicyForm setIsEdit={setIsEdit} onCreated={onCreated} />;
 };

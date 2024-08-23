@@ -43,10 +43,13 @@ import {
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
-  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
+  approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
 
   /** Callback is fired when Edit button is clicked */
   setIsEdit: (isEdit: boolean) => void;
+
+  /** Callback is fired when a policy is created and sync with server is successful */
+  onCreated?: (id: string) => void;
 }
 
 export interface FormValues {
@@ -68,16 +71,21 @@ export interface FormValues {
 export const ApprovalPolicyForm = ({
   approvalPolicy,
   setIsEdit,
+  onCreated,
 }: ApprovalPolicyFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
+  const isEdit = !!approvalPolicy;
+
   const formId = `Monite-Form-approvalPolicyBuilder-${useId()}`;
+
   const { triggers, getTriggerName, getTriggerLabel } =
     useApprovalPolicyTrigger({
       approvalPolicy,
     });
   const { script } = useApprovalPolicyScript({ approvalPolicy });
+
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
   const [scriptInEdit, setScriptInEdit] =
@@ -85,19 +93,44 @@ export const ApprovalPolicyForm = ({
 
   const { data: usersForTriggers } = api.entityUsers.getEntityUsers.useQuery({
     query: {
-      id__in: Array.isArray(triggers.was_created_by_user_id)
+      id__in: Array.isArray(triggers?.was_created_by_user_id)
         ? triggers.was_created_by_user_id
         : [],
     },
   });
   const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery({
     query: {
-      id__in: Array.isArray(script.params.user_ids)
+      id__in: Array.isArray(script?.params.user_ids)
         ? script.params.user_ids
         : [],
     },
   });
 
+  const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
+    {},
+    {
+      onSuccess: async (createdApprovalPolicy) => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+            {
+              parameters: {
+                path: { approval_policy_id: createdApprovalPolicy.id },
+              },
+            },
+            queryClient
+          ),
+        ]);
+        toast.success(t(i18n)`Approval policy created`);
+      },
+
+      onError: async () => {
+        toast.error(t(i18n)`Error creating approval policy`);
+      },
+    }
+  );
   const updateMutation =
     api.approvalPolicies.patchApprovalPoliciesId.useMutation(undefined, {
       onSuccess: async (updatedApprovalPolicy) => {
@@ -122,6 +155,18 @@ export const ApprovalPolicyForm = ({
       },
     });
 
+  const createApprovalPolicy = async (
+    values: components['schemas']['ApprovalPolicyCreate']
+  ) => {
+    const response = await createMutation.mutateAsync(values);
+
+    if (response) {
+      setIsEdit(false);
+      onCreated?.(response.id);
+
+      return response;
+    }
+  };
   const updateApprovalPolicy = async (
     id: string,
     values: components['schemas']['ApprovalPolicyUpdate']
@@ -136,7 +181,6 @@ export const ApprovalPolicyForm = ({
     if (response) {
       setIsEdit(false);
       // onUpdated?.(response.id);
-      // onChangeEditMode(false);
     }
 
     return response;
@@ -146,15 +190,8 @@ export const ApprovalPolicyForm = ({
     defaultValues: {
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
-      triggers: {
-        was_created_by_user_id: [],
-      },
-      script: {
-        params: {
-          users: [],
-          requiredApprovalCount: 0,
-        },
-      },
+      triggers: {},
+      script: {},
     },
   });
   const { control, handleSubmit, setValue, getValues, reset } = methods;
@@ -188,19 +225,19 @@ export const ApprovalPolicyForm = ({
   const approvalFlow = (() => {
     const currentUsers = getValues('script.params.users');
 
-    if (!script) return null;
+    if (!script.params) return null;
 
     let approvalFlowLabel: string;
     let approvalFlowValue: ReactNode;
 
-    switch (script.type) {
-      case 'ApprovalRequests.request_approval_by_users': {
+    switch (getValues('scriptType')) {
+      case 'ApprovalRequests.request_approval_by_users':
         approvalFlowLabel =
-          currentUsers?.length > 1
-            ? t(i18n)`Any ${getValues(
+          getValues('script.params.requiredApprovalCount') === '1'
+            ? t(i18n)`Any user from the list`
+            : t(i18n)`Any ${getValues(
                 'script.params.requiredApprovalCount'
-              )} users from the list`
-            : t(i18n)`Any user from the list`;
+              )} users from the list`;
         approvalFlowValue = (
           <Stack gap={1}>
             {currentUsers?.map((user) => (
@@ -208,25 +245,18 @@ export const ApprovalPolicyForm = ({
             ))}
           </Stack>
         );
+        return {
+          key: getValues('scriptType'),
+          label: approvalFlowLabel,
+          value: approvalFlowValue,
+        };
+      default:
         break;
-      }
-
-      default: {
-        approvalFlowLabel = t(i18n)`Unknown`;
-        approvalFlowValue = t(i18n)`Unknown`;
-        break;
-      }
     }
-
-    return {
-      key: script.type,
-      label: approvalFlowLabel,
-      value: approvalFlowValue,
-    };
   })();
 
   useEffect(() => {
-    if (!usersForTriggers?.data || !usersForScript?.data) return;
+    if (!isEdit || !usersForTriggers?.data || !usersForScript?.data) return;
 
     reset({
       triggers: {
@@ -238,7 +268,7 @@ export const ApprovalPolicyForm = ({
       script: {
         params: {
           users: usersForScript?.data.filter((user) =>
-            script.params.user_ids.includes(user.id)
+            script.params.user_ids?.includes(user.id)
           ),
           requiredApprovalCount: script.params.required_approval_count,
         },
@@ -252,6 +282,7 @@ export const ApprovalPolicyForm = ({
     script.params.required_approval_count,
     script.params.user_ids,
     getValues,
+    isEdit,
   ]);
 
   useEffect(() => {
@@ -352,9 +383,11 @@ export const ApprovalPolicyForm = ({
                   },
                 ],
               };
-
-              // @ts-expect-error - `trigger` is not covered by the schema
-              updateApprovalPolicy(approvalPolicy.id, body);
+              isEdit
+                ? // @ts-expect-error - `trigger` is not covered by the schema
+                  updateApprovalPolicy(approvalPolicy.id, body)
+                : // @ts-expect-error - `trigger` is not covered by the schema
+                  createApprovalPolicy(body);
             })}
           >
             <Stack gap={3}>
@@ -367,7 +400,7 @@ export const ApprovalPolicyForm = ({
                   required
                   select
                   value={triggerInEdit}
-                  disabled={Boolean(triggerInEdit)}
+                  disabled={Boolean(isEdit && triggerInEdit)}
                 >
                   <MenuItem value="amount">{getTriggerName('amount')}</MenuItem>
                   <MenuItem value="counterpart_id">
@@ -391,7 +424,7 @@ export const ApprovalPolicyForm = ({
                   required
                   select
                   value={scriptInEdit}
-                  disabled={Boolean(scriptInEdit)}
+                  disabled={Boolean(isEdit && scriptInEdit)}
                 >
                   {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
                   <MenuItem value="ApprovalRequests.request_approval_by_users">
@@ -494,7 +527,12 @@ export const ApprovalPolicyForm = ({
                           )}
                           <TableRow>
                             <TableCell colSpan={3}>
-                              <Button startIcon={<AddCircleOutlineIcon />}>
+                              <Button
+                                startIcon={<AddCircleOutlineIcon />}
+                                onClick={() =>
+                                  setTriggerInEdit('was_created_by_user_id')
+                                }
+                              >
                                 {t(i18n)`Add new condition`}
                               </Button>
                             </TableCell>
@@ -522,7 +560,9 @@ export const ApprovalPolicyForm = ({
                               sx={{
                                 '&.MuiTableRow-root': { cursor: 'pointer' },
                               }}
-                              onClick={() => setScriptInEdit(approvalFlow.key)}
+                              onClick={() =>
+                                setScriptInEdit(approvalFlow.key || null)
+                              }
                             >
                               <TableCell>{approvalFlow.label}</TableCell>
                               <TableCell>{approvalFlow.value}</TableCell>
@@ -547,7 +587,15 @@ export const ApprovalPolicyForm = ({
                           )}
                           <TableRow>
                             <TableCell colSpan={3}>
-                              <Button startIcon={<AddCircleOutlineIcon />}>
+                              <Button
+                                startIcon={<AddCircleOutlineIcon />}
+                                onClick={() =>
+                                  setScriptInEdit(
+                                    // eslint-disable-next-line lingui/no-unlocalized-strings
+                                    'ApprovalRequests.request_approval_by_users'
+                                  )
+                                }
+                              >
                                 {t(i18n)`Add new rule`}
                               </Button>
                             </TableCell>
@@ -583,12 +631,12 @@ export const ApprovalPolicyForm = ({
                   setValue(
                     'script.params.users',
                     usersForScript?.data.filter((user) =>
-                      script.params.user_ids.includes(user.id)
+                      script.params.user_ids?.includes(user.id)
                     ) || []
                   );
                   setValue(
                     'script.params.requiredApprovalCount',
-                    script.params.required_approval_count
+                    script.params.required_approval_count || 0
                   );
                   setScriptInEdit(null);
                 }
