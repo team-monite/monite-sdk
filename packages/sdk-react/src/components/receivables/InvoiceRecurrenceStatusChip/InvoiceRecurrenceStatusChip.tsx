@@ -12,7 +12,7 @@ import {
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface InvoiceRecurrenceStatusChipProps {
+export interface MoniteInvoiceRecurrenceStatusChipProps {
   /** The status of the recurrence. */
   status: components['schemas']['RecurrenceStatus'];
   /** The variant of the Chip. */
@@ -63,7 +63,7 @@ export interface InvoiceRecurrenceStatusChipProps {
  */
 export const InvoiceRecurrenceStatusChip = forwardRef<
   HTMLDivElement,
-  InvoiceRecurrenceStatusChipProps
+  MoniteInvoiceRecurrenceStatusChipProps
 >((inProps, ref) => {
   const { status, variant, icon, size } = useThemeProps({
     props: inProps,
@@ -81,34 +81,21 @@ export const InvoiceRecurrenceStatusChip = forwardRef<
       color={INVOICE_RECURRENCE_STATUS_TO_MUI_COLOR_MAP[status]}
       icon={icon && Icon ? <Icon /> : undefined}
       label={getInvoiceRecurrenceStatusLabel(i18n, status)}
-      status={status}
-      size={size ?? 'small'}
+      size={size}
       variant={variant ?? 'filled'}
     />
   );
 });
 
 const StyledChip = styled(
-  forwardRef<
-    HTMLDivElement,
-    ChipProps & Omit<InvoiceRecurrenceStatusChipProps, 'icon'>
-  >((props, ref) => <Chip ref={ref} {...props} />),
+  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
+    <Chip ref={ref} {...props} />
+  )),
   {
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceRecurrenceStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-        case 'size':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});
 

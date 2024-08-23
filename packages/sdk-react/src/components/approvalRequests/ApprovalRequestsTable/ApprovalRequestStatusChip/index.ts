@@ -1,4 +1,1 @@
-export {
-  ApprovalRequestStatusChip,
-  type ApprovalRequestStatusChipProps,
-} from './ApprovalRequestStatusChip';
+export { ApprovalRequestStatusChip } from './ApprovalRequestStatusChip';
