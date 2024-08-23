@@ -47,7 +47,7 @@ export const DefaultEmail = ({
 type CounterpartOrganizationViewProps = {
   actions: ReactNode;
   counterpart: CounterpartOrganizationFields & { taxId: string | undefined };
-  isEmailDefault?: boolean;
+  isEmailDefault: boolean;
 } & CounterpartShowCategories;
 
 export const CounterpartOrganizationView = ({
