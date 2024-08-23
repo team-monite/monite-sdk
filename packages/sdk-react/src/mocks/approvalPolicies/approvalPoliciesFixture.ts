@@ -24,8 +24,8 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               },
               right_operand: [
                 '5b4daced-6b9a-4707-83c6-08193d999fab',
-                'b403a614-45a4-421e-9eb1-79fe7efaf50e',
-                '6d85a8d1-4b71-4823-93d0-c0fc263f0485',
+                'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
+                'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
               ],
             },
           ],
@@ -38,8 +38,8 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
             params: {
               user_ids: [
                 '91bff192-1a13-4a13-a4da-a2945ed0537d',
-                'ae6e88a8-c088-428c-ace2-d657bf407805',
-                'c2daca46-c0cb-45a3-a3a2-bfb1e768104c',
+                'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
+                'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
               ],
               required_approval_count: 2,
             },

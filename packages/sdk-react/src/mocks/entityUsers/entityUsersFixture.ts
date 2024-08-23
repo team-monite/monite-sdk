@@ -22,7 +22,7 @@ export const entityUsersFixture = {
       updated_at: '2023-01-11T18:11:12.340654+00:00',
     },
     {
-      id: 'b403a614-45a4-421e-9eb1-79fe7efaf50e',
+      id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
       role: null,
       userpic_file_id: FileNames.file_snake,
       info: {
@@ -30,14 +30,14 @@ export const entityUsersFixture = {
         phone: '+79091111111',
       },
       login: 'monite_entity_user_login_112320220151258832',
-      first_name: 'Test',
-      last_name: '',
+      first_name: 'John',
+      last_name: 'Doe',
       status: 'active',
       created_at: '2022-11-22T21:51:26.154787+00:00',
       updated_at: '2022-11-22T21:51:26.154804+00:00',
     },
     {
-      id: '6d85a8d1-4b71-4823-93d0-c0fc263f0485',
+      id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
       role: null,
       userpic_file_id: FileNames.file_dog,
       info: {
@@ -45,8 +45,8 @@ export const entityUsersFixture = {
         phone: '+79091111111',
       },
       login: 'monite_entity_user_login_112320220154153339',
-      first_name: 'Test',
-      last_name: '',
+      first_name: 'Jane',
+      last_name: 'Smith',
       status: 'active',
       created_at: '2022-11-22T21:54:15.913683+00:00',
       updated_at: '2022-11-22T21:54:15.913695+00:00',
