@@ -2,7 +2,7 @@ import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-type ApprovalPoliciesTriggerKey =
+export type ApprovalPoliciesTriggerKey =
   | 'amount'
   | 'counterpart_id'
   | 'currency'
@@ -18,7 +18,7 @@ interface ApprovalPoliciesTrigger {
   }>;
 }
 
-interface Triggers {
+export interface Triggers {
   [key: ApprovalPoliciesTriggerKey]: string | string[];
 }
 
