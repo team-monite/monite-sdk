@@ -11,11 +11,13 @@ import type { FormValues } from '../ApprovalPolicyForm';
 
 interface AutocompleteCreatedByProps {
   control: Control<FormValues>;
+  name: 'triggers.was_created_by_user_id' | 'script.params.users';
   label: string;
 }
 
 export const AutocompleteUsers = ({
   control,
+  name,
   label,
 }: AutocompleteCreatedByProps) => {
   const { i18n } = useLingui();
@@ -37,7 +39,7 @@ export const AutocompleteUsers = ({
   return (
     <Controller
       control={control}
-      name="triggers.was_created_by_user_id"
+      name={name}
       render={({
         field,
         //TODO add validation
@@ -67,7 +69,7 @@ export const AutocompleteUsers = ({
             setInputValue(newInputValue);
           }}
           onChange={(_, value) => {
-            setValue('triggers.was_created_by_user_id', value);
+            setValue(name, value);
             refetch();
           }}
           renderInput={(params) => (

@@ -7,6 +7,10 @@ import { useDialog } from '@/components';
 import { AutocompleteUsers } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUsers';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import {
+  useApprovalPolicyScript,
+  ApprovalPoliciesScriptTypes,
+} from '@/components/approvalPolicies/useApprovalPolicyScript';
+import {
   useApprovalPolicyTrigger,
   ApprovalPoliciesTriggerKey,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
@@ -52,6 +56,13 @@ export interface FormValues {
   triggers: {
     was_created_by_user_id: components['schemas']['EntityUserResponse'][];
   };
+  scriptType: ApprovalPoliciesScriptTypes;
+  script: {
+    params: {
+      users: components['schemas']['EntityUserResponse'][];
+      requiredApprovalCount: number | string;
+    };
+  };
 }
 
 export const ApprovalPolicyForm = ({
@@ -66,13 +77,23 @@ export const ApprovalPolicyForm = ({
     useApprovalPolicyTrigger({
       approvalPolicy,
     });
+  const { script } = useApprovalPolicyScript({ approvalPolicy });
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
+  const [scriptInEdit, setScriptInEdit] =
+    useState<ApprovalPoliciesScriptTypes | null>(null);
 
-  const { data: users } = api.entityUsers.getEntityUsers.useQuery({
+  const { data: usersForTriggers } = api.entityUsers.getEntityUsers.useQuery({
     query: {
       id__in: Array.isArray(triggers.was_created_by_user_id)
         ? triggers.was_created_by_user_id
+        : [],
+    },
+  });
+  const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery({
+    query: {
+      id__in: Array.isArray(script.params.user_ids)
+        ? script.params.user_ids
         : [],
     },
   });
@@ -128,6 +149,12 @@ export const ApprovalPolicyForm = ({
       triggers: {
         was_created_by_user_id: [],
       },
+      script: {
+        params: {
+          users: [],
+          requiredApprovalCount: 0,
+        },
+      },
     },
   });
   const { control, handleSubmit, setValue, getValues, reset } = methods;
@@ -140,7 +167,7 @@ export const ApprovalPolicyForm = ({
       case 'was_created_by_user_id':
         triggerValue = (
           <Stack gap={1}>
-            {getValues('triggers')['was_created_by_user_id'].map((user) => (
+            {getValues('triggers.was_created_by_user_id').map((user) => (
               <User key={user.id} userId={user.id} />
             ))}
           </Stack>
@@ -158,24 +185,86 @@ export const ApprovalPolicyForm = ({
     };
   });
 
-  useEffect(() => {
-    if (users?.data) {
-      reset({
-        triggers: {
-          was_created_by_user_id:
-            users?.data.filter((user) =>
-              triggers.was_created_by_user_id?.includes(user.id)
-            ) || [],
-        },
-      });
+  const approvalFlow = (() => {
+    const currentUsers = getValues('script.params.users');
+
+    if (!script) return null;
+
+    let approvalFlowLabel: string;
+    let approvalFlowValue: ReactNode;
+
+    switch (script.type) {
+      case 'ApprovalRequests.request_approval_by_users': {
+        approvalFlowLabel =
+          currentUsers?.length > 1
+            ? t(i18n)`Any ${getValues(
+                'script.params.requiredApprovalCount'
+              )} users from the list`
+            : t(i18n)`Any user from the list`;
+        approvalFlowValue = (
+          <Stack gap={1}>
+            {currentUsers?.map((user) => (
+              <User key={user.id} userId={user.id} />
+            ))}
+          </Stack>
+        );
+        break;
+      }
+
+      default: {
+        approvalFlowLabel = t(i18n)`Unknown`;
+        approvalFlowValue = t(i18n)`Unknown`;
+        break;
+      }
     }
-  }, [users?.data, reset, triggers.was_created_by_user_id]);
+
+    return {
+      key: script.type,
+      label: approvalFlowLabel,
+      value: approvalFlowValue,
+    };
+  })();
+
+  useEffect(() => {
+    if (!usersForTriggers?.data || !usersForScript?.data) return;
+
+    reset({
+      triggers: {
+        was_created_by_user_id:
+          usersForTriggers?.data.filter((user) =>
+            triggers.was_created_by_user_id?.includes(user.id)
+          ) || [],
+      },
+      script: {
+        params: {
+          users: usersForScript?.data.filter((user) =>
+            script.params.user_ids.includes(user.id)
+          ),
+          requiredApprovalCount: script.params.required_approval_count,
+        },
+      },
+    });
+  }, [
+    usersForTriggers?.data,
+    usersForScript?.data,
+    reset,
+    triggers.was_created_by_user_id,
+    script.params.required_approval_count,
+    script.params.user_ids,
+    getValues,
+  ]);
 
   useEffect(() => {
     if (triggerInEdit) {
       setValue('triggerType', triggerInEdit);
     }
   }, [setValue, triggerInEdit]);
+
+  useEffect(() => {
+    if (scriptInEdit) {
+      setValue('scriptType', scriptInEdit);
+    }
+  }, [setValue, scriptInEdit]);
 
   return (
     <>
@@ -195,7 +284,7 @@ export const ApprovalPolicyForm = ({
                 onClick={() => {
                   setValue(
                     'triggers.was_created_by_user_id',
-                    users?.data.filter((user) =>
+                    usersForTriggers?.data.filter((user) =>
                       triggers.was_created_by_user_id?.includes(user.id)
                     ) || []
                   );
@@ -254,8 +343,11 @@ export const ApprovalPolicyForm = ({
                   {
                     call: 'ApprovalRequests.request_approval_by_users',
                     params: {
-                      user_ids: ['84cd3950-417b-4018-811e-6f19064b44e8'],
-                      required_approval_count: 1,
+                      user_ids: values.script.params.users.map(
+                        (user) => user.id
+                      ),
+                      required_approval_count:
+                        values.script.params.requiredApprovalCount,
                     },
                   },
                 ],
@@ -267,37 +359,70 @@ export const ApprovalPolicyForm = ({
           >
             <Stack gap={3}>
               {triggerInEdit && (
-                <>
-                  <RHFTextField
-                    label={t(i18n)`Condition type`}
-                    name="triggerType"
-                    control={control}
-                    fullWidth
-                    required
-                    select
-                    value={triggerInEdit}
-                    disabled={Boolean(triggerInEdit)}
-                  >
-                    <MenuItem value="amount">
-                      {getTriggerName('amount')}
-                    </MenuItem>
-                    <MenuItem value="counterpart_id">
-                      {getTriggerName('counterpart_id')}
-                    </MenuItem>
-                    <MenuItem value="currency">
-                      {getTriggerName('currency')}
-                    </MenuItem>
-                    <MenuItem value="was_created_by_user_id">
-                      {getTriggerName('was_created_by_user_id')}
-                    </MenuItem>
-                    <MenuItem value="tags">{getTriggerName('tags')}</MenuItem>
-                  </RHFTextField>
-                </>
+                <RHFTextField
+                  label={t(i18n)`Condition type`}
+                  name="triggerType"
+                  control={control}
+                  fullWidth
+                  required
+                  select
+                  value={triggerInEdit}
+                  disabled={Boolean(triggerInEdit)}
+                >
+                  <MenuItem value="amount">{getTriggerName('amount')}</MenuItem>
+                  <MenuItem value="counterpart_id">
+                    {getTriggerName('counterpart_id')}
+                  </MenuItem>
+                  <MenuItem value="currency">
+                    {getTriggerName('currency')}
+                  </MenuItem>
+                  <MenuItem value="was_created_by_user_id">
+                    {getTriggerName('was_created_by_user_id')}
+                  </MenuItem>
+                  <MenuItem value="tags">{getTriggerName('tags')}</MenuItem>
+                </RHFTextField>
+              )}
+              {scriptInEdit && (
+                <RHFTextField
+                  label={t(i18n)`Approval flow`}
+                  name="scriptType"
+                  control={control}
+                  fullWidth
+                  required
+                  select
+                  value={scriptInEdit}
+                  disabled={Boolean(scriptInEdit)}
+                >
+                  {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
+                  <MenuItem value="ApprovalRequests.request_approval_by_users">
+                    {t(i18n)`User from the list - Any`}
+                  </MenuItem>
+                </RHFTextField>
               )}
               {triggerInEdit === 'was_created_by_user_id' && (
-                <AutocompleteUsers control={control} label={t(i18n)`Users`} />
+                <AutocompleteUsers
+                  control={control}
+                  name="triggers.was_created_by_user_id"
+                  label={t(i18n)`Users`}
+                />
               )}
-              {!triggerInEdit && (
+              {scriptInEdit ===
+                'ApprovalRequests.request_approval_by_users' && (
+                <>
+                  <AutocompleteUsers
+                    control={control}
+                    name="script.params.users"
+                    label={t(i18n)`Users allowed to approve`}
+                  />
+                  <RHFTextField
+                    control={control}
+                    label={t(i18n)`Minimum number of approvals required`}
+                    name="script.params.requiredApprovalCount"
+                    type="number"
+                  />
+                </>
+              )}
+              {!triggerInEdit && !scriptInEdit && (
                 <>
                   <RHFTextField
                     label={t(i18n)`Policy Name`}
@@ -377,6 +502,59 @@ export const ApprovalPolicyForm = ({
                         </TableBody>
                       </Table>
                     </Paper>
+                    <Typography variant="h5" mt={4} mb={1}>
+                      {t(i18n)`Approval flow`}
+                    </Typography>
+                    <Paper variant="outlined">
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>{t(i18n)`Approval type`}</TableCell>
+                            <TableCell>{t(i18n)`Users or Roles`}</TableCell>
+                            <TableCell />
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {approvalFlow ? (
+                            <TableRow
+                              key={approvalFlow.label}
+                              hover
+                              sx={{
+                                '&.MuiTableRow-root': { cursor: 'pointer' },
+                              }}
+                              onClick={() => setScriptInEdit(approvalFlow.key)}
+                            >
+                              <TableCell>{approvalFlow.label}</TableCell>
+                              <TableCell>{approvalFlow.value}</TableCell>
+                              <TableCell>
+                                <IconButton
+                                  aria-label={t(i18n)`Delete rule`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    console.log('delete trigger');
+                                  }}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            <TableRow>
+                              <TableCell colSpan={3}>
+                                {t(i18n)`No rules`}
+                              </TableCell>
+                            </TableRow>
+                          )}
+                          <TableRow>
+                            <TableCell colSpan={3}>
+                              <Button startIcon={<AddCircleOutlineIcon />}>
+                                {t(i18n)`Add new rule`}
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </Paper>
                   </Box>
                 </>
               )}
@@ -386,18 +564,34 @@ export const ApprovalPolicyForm = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        {triggerInEdit ? (
+        {triggerInEdit || scriptInEdit ? (
           <>
             <Button
               variant="outlined"
               onClick={() => {
-                setValue(
-                  'triggers.was_created_by_user_id',
-                  users?.data.filter((user) =>
-                    triggers.was_created_by_user_id?.includes(user.id)
-                  ) || []
-                );
-                setTriggerInEdit(null);
+                if (triggerInEdit) {
+                  setValue(
+                    'triggers.was_created_by_user_id',
+                    usersForTriggers?.data.filter((user) =>
+                      triggers.was_created_by_user_id?.includes(user.id)
+                    ) || []
+                  );
+                  setTriggerInEdit(null);
+                }
+
+                if (scriptInEdit) {
+                  setValue(
+                    'script.params.users',
+                    usersForScript?.data.filter((user) =>
+                      script.params.user_ids.includes(user.id)
+                    ) || []
+                  );
+                  setValue(
+                    'script.params.requiredApprovalCount',
+                    script.params.required_approval_count
+                  );
+                  setScriptInEdit(null);
+                }
               }}
             >{t(i18n)`Cancel`}</Button>
             <Button
@@ -405,6 +599,7 @@ export const ApprovalPolicyForm = ({
               onClick={(e) => {
                 e.preventDefault();
                 setTriggerInEdit(null);
+                setScriptInEdit(null);
               }}
             >{t(i18n)`Update`}</Button>
           </>

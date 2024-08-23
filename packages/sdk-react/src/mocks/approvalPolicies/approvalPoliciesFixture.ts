@@ -1,9 +1,8 @@
 import { components } from '@/api';
 import {
+  entityUserByIdFixture,
   entityUser2,
   entityUser3,
-  entityUser4,
-  entityUser5,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
 
 export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyResourceList'] =
@@ -22,11 +21,7 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               left_operand: {
                 name: 'invoice.was_created_by_user_id',
               },
-              right_operand: [
-                '5b4daced-6b9a-4707-83c6-08193d999fab',
-                'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
-                'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
-              ],
+              right_operand: [entityUserByIdFixture.id, entityUser2.id],
             },
           ],
         },
@@ -37,9 +32,9 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
             call: 'ApprovalRequests.request_approval_by_users',
             params: {
               user_ids: [
-                '91bff192-1a13-4a13-a4da-a2945ed0537d',
-                'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
-                'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
+                entityUserByIdFixture.id,
+                entityUser2.id,
+                entityUser3.id,
               ],
               required_approval_count: 2,
             },
