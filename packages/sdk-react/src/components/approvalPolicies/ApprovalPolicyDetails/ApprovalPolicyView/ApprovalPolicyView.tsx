@@ -4,7 +4,6 @@ import { components } from '@/api';
 import { useDialog } from '@/components';
 import { useApprovalPolicyScript } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
-import { MoniteCard } from '@/ui/Card/Card';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,6 +17,12 @@ import {
   IconButton,
   Typography,
   Stack,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Paper,
 } from '@mui/material';
 
 import { User } from './User';
@@ -70,7 +75,7 @@ export const ApprovalPolicyView = ({
     };
   });
 
-  const approvalFlow = (() => {
+  const approvalFlows = (() => {
     if (!script) return null;
 
     let approvalFlowLabel: string;
@@ -79,14 +84,17 @@ export const ApprovalPolicyView = ({
     switch (script.type) {
       case 'ApprovalRequests.request_approval_by_users': {
         approvalFlowLabel =
-          script.params.required_approval_count > 1
+          script.params.required_approval_count &&
+          (typeof script.params.required_approval_count === 'string'
+            ? parseInt(script.params.required_approval_count)
+            : script.params.required_approval_count) > 1
             ? t(
                 i18n
               )`Any ${script.params.required_approval_count} users from the list`
             : t(i18n)`Any user from the list`;
         approvalFlowValue = (
           <Stack gap={1}>
-            {script.params.user_ids.map((userId) => (
+            {script.params.user_ids?.map((userId) => (
               <User key={userId} userId={userId} />
             ))}
           </Stack>
@@ -101,10 +109,12 @@ export const ApprovalPolicyView = ({
       }
     }
 
-    return {
-      label: approvalFlowLabel,
-      value: approvalFlowValue,
-    };
+    return [
+      {
+        label: approvalFlowLabel,
+        value: approvalFlowValue,
+      },
+    ];
   })();
 
   return (
@@ -148,22 +158,60 @@ export const ApprovalPolicyView = ({
             the following conditions:
           </Trans>
         </Typography>
-        {triggersList.length > 0 ? (
-          <MoniteCard items={triggersList} />
-        ) : (
-          t(i18n)`No conditions`
-        )}
+        <Paper variant="outlined">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t(i18n)`Condition`}</TableCell>
+                <TableCell>{t(i18n)`Criteria`}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {triggersList.length > 0 ? (
+                triggersList.map((trigger) => (
+                  <TableRow key={trigger.label}>
+                    <TableCell>{trigger.label}</TableCell>
+                    <TableCell>{trigger.value}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2}>{t(i18n)`No conditions`}</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
         <Typography variant="h5" mt={4} mb={1}>
           {t(i18n)`Approval flow`}
         </Typography>
         <Typography variant="body1" mb={1}>
           {t(i18n)`Who needs to approve the document and how:`}
         </Typography>
-        {approvalFlow ? (
-          <MoniteCard items={[approvalFlow]} />
-        ) : (
-          t(i18n)`No approval flow`
-        )}
+        <Paper variant="outlined">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{t(i18n)`Approval type`}</TableCell>
+                <TableCell>{t(i18n)`Users or Roles`}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {approvalFlows && approvalFlows.length > 0 ? (
+                approvalFlows.map((approvalFlow) => (
+                  <TableRow key={approvalFlow.label}>
+                    <TableCell>{approvalFlow.label}</TableCell>
+                    <TableCell>{approvalFlow.value}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2}>{t(i18n)`No rules`}</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
       </DialogContent>
       <Divider />
       <DialogActions>

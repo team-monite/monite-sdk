@@ -94,7 +94,7 @@ const ApprovalPoliciesBase = () => {
       >
         <ApprovalPolicyDetails
           id={selectedApprovalPolicyId}
-          onCreated={() => setIsCreateDialogOpened(false)}
+          onCreated={(id) => setSelectedApprovalPolicyId(id)}
         />
       </Dialog>
     </>
