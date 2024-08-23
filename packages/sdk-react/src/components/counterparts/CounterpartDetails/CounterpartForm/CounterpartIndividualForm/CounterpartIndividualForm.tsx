@@ -323,9 +323,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
                 />
               </Grid>
               <Grid item>
-                <CounterpartReminderToggle
-                  name={`individual.reminders_enabled`}
-                />
+                <CounterpartReminderToggle name="individual.reminders_enabled" />
               </Grid>
               <Grid item>
                 <Controller
