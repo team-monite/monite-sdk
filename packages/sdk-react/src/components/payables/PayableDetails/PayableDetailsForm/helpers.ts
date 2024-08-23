@@ -256,6 +256,6 @@ export const useOcrFields = (
   return useThemeProps({
     props: inProps,
     // eslint-disable-next-line lingui/no-unlocalized-strings
-    name: 'MonitePayableDetailsInfo',
+    name: 'MonitePayableDetails',
   });
 };

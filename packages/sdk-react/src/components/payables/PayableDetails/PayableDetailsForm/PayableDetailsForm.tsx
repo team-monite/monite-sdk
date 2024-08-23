@@ -271,12 +271,8 @@ const PayableDetailsFormBase = forwardRef<
     const { ocrRequiredFields } = useOcrFields(inProps);
 
     useEffect(() => {
-      const isRequiredFieldMissed = ocrRequiredFields
-        ? Object.values(ocrRequiredFields).some((required) => required)
-        : false;
-
-      if (isRequiredFieldMissed) trigger();
-    }, [ocrRequiredFields, trigger]);
+      trigger();
+    }, [trigger]);
 
     return (
       <>

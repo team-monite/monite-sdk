@@ -23,25 +23,6 @@ const actions = {
   onCreatePayable: action('onCreatePayable'),
 };
 
-const WithDialogComponent: FC<PayableDetailsFormProps> = (args) => {
-  const [open, setOpen] = useState(true);
-
-  return (
-    <Dialog
-      open={open}
-      fullScreen
-      onClose={() => {
-        action('onClose')();
-        setOpen(false);
-      }}
-      onSubmit={() => {}}
-      onClosed={action('onClosed')}
-    >
-      <PayableDetailsForm {...args} />
-    </Dialog>
-  );
-};
-
 export const DialogDetailsForm: Story = {
   args: {
     payableDetailsFormId: 'payable-form-2',
@@ -56,7 +37,21 @@ export const DialogDetailsForm: Story = {
     ],
     ...actions,
   },
-  render: (args) => <WithDialogComponent {...args} />,
+  render: (args) => {
+    return (
+      <Dialog
+        open={true}
+        fullScreen
+        onClose={() => {
+          action('onClose')();
+        }}
+        onSubmit={() => {}}
+        onClosed={action('onClosed')}
+      >
+        <PayableDetailsForm {...args} />
+      </Dialog>
+    );
+  },
 };
 
 export default meta;
