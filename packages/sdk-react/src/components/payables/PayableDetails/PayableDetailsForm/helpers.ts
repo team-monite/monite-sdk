@@ -1,5 +1,3 @@
-import { FieldValue, FieldValues } from 'react-hook-form';
-
 import { components } from '@/api';
 import {
   getIndividualName,
