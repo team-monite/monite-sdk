@@ -16,7 +16,7 @@ export const prepareCounterpartOrganization = (
   organization?: components['schemas']['CounterpartOrganizationResponse'],
   defaultValues?: CounterpartDefaultValues,
   contacts?: Array<{ email?: string; is_default: boolean }>
-): CounterpartOrganizationFields & { isEmailDefault: boolean } => {
+): CounterpartOrganizationFields & Partial<{ isEmailDefault: boolean }> => {
   const isCustomer = !!(defaultValues?.isCustomer ?? organization?.is_customer);
   const isVendor = !!(defaultValues?.isVendor ?? organization?.is_vendor);
 
@@ -25,7 +25,8 @@ export const prepareCounterpartOrganization = (
         ?.is_default
     : false; // Determine if the email is the default one
 
-  return {
+  const result: CounterpartOrganizationFields &
+    Partial<{ isEmailDefault: boolean }> = {
     companyName: organization?.legal_name ?? '',
     email: organization?.email ?? '',
     phone: organization?.phone ?? '',
@@ -44,8 +45,13 @@ export const prepareCounterpartOrganization = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     country: '',
-    isEmailDefault,
   };
+
+  if (isEmailDefault) {
+    result.isEmailDefault = true;
+  }
+
+  return result;
 };
 
 export const prepareCounterpartOrganizationCreate = ({
