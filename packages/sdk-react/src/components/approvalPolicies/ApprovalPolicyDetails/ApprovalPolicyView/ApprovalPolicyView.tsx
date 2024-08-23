@@ -25,10 +25,14 @@ import { User } from './User';
 interface ApprovalPolicyViewProps {
   /** Approval policy to be displayed */
   approvalPolicy: components['schemas']['ApprovalPolicyResource'];
+
+  /** Callback is fired when Edit button is clicked */
+  setIsEdit: (isEdit: boolean) => void;
 }
 
 export const ApprovalPolicyView = ({
   approvalPolicy,
+  setIsEdit,
 }: ApprovalPolicyViewProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -164,7 +168,9 @@ export const ApprovalPolicyView = ({
       <Divider />
       <DialogActions>
         <Button variant="outlined" color="error">{t(i18n)`Delete`}</Button>
-        <Button variant="outlined">{t(i18n)`Edit`}</Button>
+        <Button variant="outlined" onClick={() => setIsEdit(true)}>{t(
+          i18n
+        )`Edit`}</Button>
       </DialogActions>
     </>
   );

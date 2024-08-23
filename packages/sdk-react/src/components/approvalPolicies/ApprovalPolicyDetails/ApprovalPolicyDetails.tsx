@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useApprovalPolicyById } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';
 
+import { ApprovalPolicyForm } from './ApprovalPolicyForm';
 import { ApprovalPolicyView } from './ApprovalPolicyView';
 
 export interface ApprovalPolicyDetailsProps {
@@ -44,12 +45,22 @@ export const ApprovalPolicyDetails = ({
 
   if (!isEdit && approvalPolicy) {
     // READ
-    return <ApprovalPolicyView approvalPolicy={approvalPolicy} />;
+    return (
+      <ApprovalPolicyView
+        approvalPolicy={approvalPolicy}
+        setIsEdit={setIsEdit}
+      />
+    );
   }
 
-  if (isEdit && id) {
+  if (isEdit && approvalPolicy) {
     // UPDATE
-    return <div>UPDATE</div>;
+    return (
+      <ApprovalPolicyForm
+        approvalPolicy={approvalPolicy}
+        setIsEdit={setIsEdit}
+      />
+    );
   }
 
   // CREATE by default
