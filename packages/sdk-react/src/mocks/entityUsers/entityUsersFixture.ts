@@ -1,3 +1,9 @@
+import {
+  entityUser2,
+  entityUser3,
+  entityUserByIdFixture,
+} from '@/mocks/entityUsers/entityUserByIdFixture';
+
 import { FileNames } from '../files';
 import {
   ALLOWED_FOR_OWN_ROLE_ID,
@@ -6,51 +12,9 @@ import {
 
 export const entityUsersFixture = {
   data: [
-    {
-      id: '5b4daced-6b9a-4707-83c6-08193d999fab',
-      role_id: FULL_PERMISSION_ROLE_ID,
-      userpic_file_id: FileNames.file_bird,
-      info: {
-        email: null,
-        phone: null,
-      },
-      login: 'monite_entity_user_login_083020221631434735',
-      first_name: 'Ivan',
-      last_name: 'Ivanov',
-      status: 'active',
-      created_at: '2022-08-30T13:31:43.971531+00:00',
-      updated_at: '2023-01-11T18:11:12.340654+00:00',
-    },
-    {
-      id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f3',
-      role: null,
-      userpic_file_id: FileNames.file_snake,
-      info: {
-        email: 'qa-team@monite.com',
-        phone: '+79091111111',
-      },
-      login: 'monite_entity_user_login_112320220151258832',
-      first_name: 'John',
-      last_name: 'Doe',
-      status: 'active',
-      created_at: '2022-11-22T21:51:26.154787+00:00',
-      updated_at: '2022-11-22T21:51:26.154804+00:00',
-    },
-    {
-      id: 'ea837e28-509b-4b6a-a600-d54b6aa0b1f4',
-      role: null,
-      userpic_file_id: FileNames.file_dog,
-      info: {
-        email: 'qa-team@monite.com',
-        phone: '+79091111111',
-      },
-      login: 'monite_entity_user_login_112320220154153339',
-      first_name: 'Jane',
-      last_name: 'Smith',
-      status: 'active',
-      created_at: '2022-11-22T21:54:15.913683+00:00',
-      updated_at: '2022-11-22T21:54:15.913695+00:00',
-    },
+    entityUserByIdFixture,
+    entityUser2,
+    entityUser3,
     {
       id: 'e7646f0e-b5d6-4dc1-a4b0-ceea3b3add68',
       role: null,

@@ -1,19 +1,13 @@
 import { components } from '@/api';
 
-type ApprovalPoliciesScriptTypes = 'ApprovalRequests.request_approval_by_users';
+export type ApprovalPoliciesScriptTypes =
+  'ApprovalRequests.request_approval_by_users';
 
-interface ApprovalPolicyScript {
+export interface ApprovalPolicyScript {
   call: ApprovalPoliciesScriptTypes;
   params: {
     user_ids: string[];
-    required_approval_count: number;
-  };
-}
-
-interface Script {
-  [key: string]: {
-    user_ids: string[];
-    required_approval_count: number;
+    required_approval_count: number | string;
   };
 }
 
@@ -58,7 +52,8 @@ export const useApprovalPolicyScript = ({
 
     return (
       Array.isArray(params.user_ids) &&
-      typeof params.required_approval_count === 'number'
+      (typeof params.required_approval_count === 'number' ||
+        typeof params.required_approval_count === 'string')
     );
   };
 
