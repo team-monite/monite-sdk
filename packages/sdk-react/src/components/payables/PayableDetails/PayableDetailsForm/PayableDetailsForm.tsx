@@ -138,17 +138,34 @@ const getValidationSchema = (i18n: I18n) =>
  * The component supports both controlled and uncontrolled modes, allowing for either external control or internal state management.
  *
  * @component
- * @example
- * ```tsx
- * <PayableDetailsForm
- *   payable={payableData}
- *   savePayable={handleSavePayable}
- *   createPayable={handleCreatePayable}
- *   optionalFields={{ invoiceDate: true, tags: true }}
- *   lineItems={lineItemsData}
- *   payableDetailsFormId="payable-form-id"
- * />
- * ```
+ * @example MUI theming
+ * const theme = createTheme({
+ *   components: {
+ *     MonitePayableDetailsForm: {
+ *       defaultProps: {
+ *         optionalFields: {
+ *           invoiceDate: true,         // Show the invoice date field
+ *           tags: true,                // Show the tags field
+ *         },
+ *         ocrRequiredFields: {
+ *           invoiceNumber: true,       // The invoice number is required based on OCR data
+ *           counterpart: true,         // The counterpart is required based on OCR data
+ *           dueDate: true,             // The due date is required based on OCR data
+ *           currency: true,            // The currency is required based on OCR data
+ *         },
+ *       },
+ *       styleOverrides: {
+ *         root: {
+ *           backgroundColor: '#f9f9f9', // Customize the background color
+ *           padding: '20px',            // Add padding around the form
+ *         },
+ *         formControl: {
+ *           marginBottom: '15px',       // Add spacing between form controls
+ *         },
+ *       },
+ *     },
+ *   },
+ * });
  *
  * @param {components['schemas']['PayableResponseSchema']} [payable] - Optional payable data to pre-fill the form for editing.
  * @param {(id: string, payable: components['schemas']['PayableUpdateSchema'], lineItems?: Array<LineItem>, dirtyFields?: FieldNamesMarkedBoolean<PayableDetailsFormFields>) => void} [savePayable] - Callback function to save changes to an existing payable.
