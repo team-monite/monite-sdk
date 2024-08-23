@@ -121,6 +121,8 @@ export const approvalPoliciesHandlers = [
       status: 'active',
     };
 
+    approvalPoliciesListFixture.data.push(newApprovalPolicy);
+
     await delay();
     return HttpResponse.json(newApprovalPolicy);
   }),

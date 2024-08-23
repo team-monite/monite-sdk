@@ -4,15 +4,16 @@ export type ApprovalPoliciesScriptTypes =
   'ApprovalRequests.request_approval_by_users';
 
 export interface ApprovalPolicyScript {
-  call: ApprovalPoliciesScriptTypes;
+  call: ApprovalPoliciesScriptTypes | undefined;
   params: {
-    user_ids: string[];
-    required_approval_count: number | string;
+    user_ids?: string[];
+    role_ids?: string[];
+    required_approval_count?: number | string;
   };
 }
 
 interface UseApprovalPolicyScriptProps {
-  approvalPolicy: components['schemas']['ApprovalPolicyResource'];
+  approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
 }
 
 export const useApprovalPolicyScript = ({
@@ -57,9 +58,18 @@ export const useApprovalPolicyScript = ({
     );
   };
 
-  if (!isApprovalPolicyScript(approvalPolicy.script[0])) {
+  if (!isApprovalPolicyScript(approvalPolicy?.script[0])) {
     // TODO: display error message
-    throw new Error('Approval policy script is not valid');
+    return {
+      script: {
+        type: undefined,
+        params: {
+          user_ids: undefined,
+          role_ids: undefined,
+          required_approval_count: undefined,
+        },
+      },
+    };
   }
 
   const script = {
