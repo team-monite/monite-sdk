@@ -29,7 +29,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, Chip, CircularProgress, Stack } from '@mui/material';
-import { lighten, useTheme } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -176,7 +175,6 @@ const PayablesTableBase = ({
   }, [isError, error, i18n]);
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
-  const theme = useTheme();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -290,7 +288,6 @@ const PayablesTableBase = ({
                   variant="filled"
                   color="error"
                   sx={{
-                    // workaround to prevent the layout from shifting when the "Make Default" button is pressed
                     display: 'inline',
                     verticalAlign: 'inherit',
                     py: 0.84,
@@ -364,13 +361,6 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
-  const getRowStyle = (
-    payable: components['schemas']['InvoiceResponsePayload']
-  ) =>
-    isInvoiceOverdue(payable)
-      ? { backgroundColor: lighten(theme.palette.error.main, 0.95) }
-      : {};
-
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -400,14 +390,7 @@ const PayablesTableBase = ({
         onRowClick={(params) => {
           onRowClick?.(params.row.id);
         }}
-        getRowClassName={(params) => {
-          const rowStyle = getRowStyle(params.row);
-          return rowStyle.backgroundColor ? 'custom-row-style' : '';
-        }}
         sx={{
-          '& .custom-row-style': {
-            backgroundColor: lighten(theme.palette.error.main, 0.1),
-          },
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
           },
