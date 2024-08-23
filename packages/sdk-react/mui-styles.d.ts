@@ -53,8 +53,6 @@ declare module '@mui/material/styles' {
     MoniteApprovalRequestStatusChip: Partial<MoniteApprovalRequestStatusChipProps>;
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
     MonitePayableDetailsInfo: Partial<MonitePayableDetailsInfoProps>;
-    MoniteInvoiceRecurrenceStatusChip: Partial<InvoiceRecurrenceStatusChipProps>;
-    MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<MoniteInvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<MoniteInvoiceRecurrenceIterationStatusChipProps>;
   }
