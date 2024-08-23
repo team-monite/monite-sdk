@@ -36,12 +36,14 @@ import {
   CounterpartsFormProps,
 } from '../useCounterpartForm';
 import {
-  CounterpartIndividualFields,
   prepareCounterpartIndividual,
   prepareCounterpartIndividualCreate,
   prepareCounterpartIndividualUpdate,
 } from './mapper';
-import { getValidationSchema } from './validation';
+import {
+  getUpdateIndividualValidationSchema,
+  getCreateIndividualValidationSchema,
+} from './validation';
 
 /**
  * Counterpart Individual Form may be used to create or update counterpart
@@ -78,25 +80,20 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
 
   const { showCategories, defaultValues } = props;
 
-  const methods = useForm<{
-    individual: CounterpartIndividualFields;
-    tax_id: string;
-  }>({
-    resolver: yupResolver(getValidationSchema(!!individualCounterpart, i18n)),
-    defaultValues: useMemo(
-      () => ({
-        tax_id: individualCounterpart?.tax_id ?? '',
-        individual: prepareCounterpartIndividual(
-          individualCounterpart?.individual,
-          defaultValues
-        ),
-      }),
-      [
-        individualCounterpart?.tax_id,
-        individualCounterpart?.individual,
-        defaultValues,
-      ]
+  const methods = useForm({
+    resolver: yupResolver(
+      props.id || individualCounterpart
+        ? getUpdateIndividualValidationSchema(i18n)
+        : getCreateIndividualValidationSchema(i18n)
     ),
+    defaultValues: {
+      tax_id: individualCounterpart?.tax_id ?? '',
+      remindersEnabled: individualCounterpart?.reminders_enabled ?? true,
+      individual: prepareCounterpartIndividual(
+        individualCounterpart?.individual,
+        defaultValues
+      ),
+    },
   });
 
   const { control, handleSubmit, reset, watch } = methods;
@@ -111,6 +108,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
           const payload: components['schemas']['CounterpartIndividualRootUpdatePayload'] =
             {
               tax_id: values.tax_id ?? '',
+              reminders_enabled: values.remindersEnabled,
               individual: prepareCounterpartIndividualUpdate(values.individual),
             };
 
@@ -126,7 +124,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
               LanguageCodeEnum.find(
                 (code) => code === i18n.locale.split('-')[0]
               ) ?? 'en',
-            reminders_enabled: false,
+            reminders_enabled: values.remindersEnabled,
           };
 
         return createCounterpart(payload);
@@ -138,6 +136,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   useEffect(() => {
     reset({
       tax_id: individualCounterpart?.tax_id ?? '',
+      remindersEnabled: individualCounterpart?.reminders_enabled ?? false,
       individual: prepareCounterpartIndividual(
         individualCounterpart?.individual,
         defaultValues
@@ -146,6 +145,7 @@ export const CounterpartIndividualForm = (props: CounterpartsFormProps) => {
   }, [
     defaultValues,
     individualCounterpart?.individual,
+    individualCounterpart?.reminders_enabled,
     individualCounterpart?.tax_id,
     reset,
   ]);

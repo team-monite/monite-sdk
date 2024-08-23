@@ -35,12 +35,14 @@ import {
   CounterpartsFormProps,
 } from '../useCounterpartForm';
 import {
-  CounterpartOrganizationFields,
   prepareCounterpartOrganization,
   prepareCounterpartOrganizationUpdate,
   prepareCounterpartOrganizationCreate,
 } from './mapper';
-import { getValidationSchema } from './validation';
+import {
+  getUpdateCounterpartValidationSchema,
+  getCreateCounterpartValidationSchema,
+} from './validation';
 
 export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
   const { i18n } = useLingui();
@@ -67,14 +69,16 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
     | components['schemas']['CounterpartOrganizationRootResponse']
     | undefined;
 
-  const methods = useForm<{
-    organization: CounterpartOrganizationFields;
-    tax_id: string;
-  }>({
-    resolver: yupResolver(getValidationSchema(!!organizationCounterpart, i18n)),
+  const methods = useForm({
+    resolver: yupResolver(
+      props.id || counterpart
+        ? getUpdateCounterpartValidationSchema(i18n)
+        : getCreateCounterpartValidationSchema(i18n)
+    ),
     defaultValues: useMemo(
       () => ({
         tax_id: organizationCounterpart?.tax_id ?? '',
+        remindersEnabled: organizationCounterpart?.reminders_enabled ?? true,
         organization: prepareCounterpartOrganization(
           organizationCounterpart?.organization,
           defaultValues
@@ -82,6 +86,7 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       }),
       [
         organizationCounterpart?.tax_id,
+        organizationCounterpart?.reminders_enabled,
         organizationCounterpart?.organization,
         defaultValues,
       ]
@@ -96,15 +101,16 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
       e.stopPropagation();
 
       handleSubmit((values) => {
+        const language =
+          LanguageCodeEnum.find((code) => code === i18n.locale.split('-')[0]) ??
+          'en';
+
         if (counterpart) {
           const payload: components['schemas']['CounterpartOrganizationRootUpdatePayload'] =
             {
               tax_id: values.tax_id ?? '',
-              language:
-                LanguageCodeEnum.find(
-                  (code) => code === i18n.locale.split('-')[0]
-                ) ?? 'en',
-              reminders_enabled: false,
+              reminders_enabled: values.remindersEnabled,
+              language: counterpart.language ?? language,
               organization: prepareCounterpartOrganizationUpdate(
                 values.organization
               ),
@@ -117,11 +123,8 @@ export const CounterpartOrganizationForm = (props: CounterpartsFormProps) => {
           {
             type: 'organization',
             tax_id: values.tax_id ?? '',
-            language:
-              LanguageCodeEnum.find(
-                (code) => code === i18n.locale.split('-')[0]
-              ) ?? 'en',
-            reminders_enabled: false,
+            language,
+            reminders_enabled: values.remindersEnabled,
             organization: prepareCounterpartOrganizationCreate(
               values.organization
             ),
