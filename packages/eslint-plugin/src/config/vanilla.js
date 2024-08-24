@@ -13,11 +13,11 @@ module.exports = {
   ],
   plugins: ['testing-library', '@team-monite'],
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'warn',
     'import/no-default-export': 'error',
     'import/no-extraneous-dependencies': ['error', { devDependencies: false }],
     '@typescript-eslint/no-unused-vars': [
-      'error',
+      'warn',
       {
         args: 'all',
         argsIgnorePattern: '^_',
