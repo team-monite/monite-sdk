@@ -143,7 +143,7 @@ export const ProductsTable = ({
     useState<boolean>(false);
   const [currentFilter, setCurrentFilter] = useState<FilterType>({});
 
-  const { control, handleSubmit, watch } =
+  const { control, handleSubmit, watch, setValue } =
     useForm<CreateReceivablesProductsFormProps>({
       resolver: yupResolver(getCreateInvoiceProductsValidationSchema(i18n)),
       defaultValues: useMemo(
@@ -346,7 +346,19 @@ export const ProductsTable = ({
               size="small"
               name="currency"
               control={control}
-              onChange={() => {
+              onChange={(_, value) => {
+                if (
+                  !(
+                    value &&
+                    typeof value === 'object' &&
+                    !Array.isArray(value) &&
+                    value?.code
+                  )
+                )
+                  throw new Error(`Invalid input currency (${value})`);
+
+                setValue('currency', value.code);
+
                 if (fields.length > 0 || hasProducts) {
                   setOpenChangeCurrencyInfo(true);
                   replace([]);
