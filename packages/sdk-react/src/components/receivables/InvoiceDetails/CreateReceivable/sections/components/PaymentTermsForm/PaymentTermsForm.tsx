@@ -439,19 +439,24 @@ export const PaymentTermsFormLayout = ({
 export const getPaymentTermsCreatePayloadSchema = (
   i18n: I18n
 ): SchemaOf<PaymentTermsCreatePayloadSchema> => {
-  const createTermDiscountSchema = (): SchemaOf<
-    components['schemas']['PaymentTermDiscount']
-  > =>
-    yup.object({
+  const createTermDiscountSchema = (max?: {
+    maxDays: number;
+    errorMessage: string;
+  }): SchemaOf<components['schemas']['PaymentTermDiscount']> => {
+    return yup.object({
       discount: yup
         .number()
         .required()
         .label(t(i18n)`Discount`),
       number_of_days: yup
         .number()
+        .integer()
         .required()
-        .label(t(i18n)`Pay in`),
+        .label(t(i18n)`Pay in`)
+        .min(1, t(i18n)`The number of days must be greater than 0`)
+        .max(max?.maxDays ?? Infinity, max?.errorMessage),
     });
+  };
 
   return yup.object({
     name: yup
@@ -463,12 +468,44 @@ export const getPaymentTermsCreatePayloadSchema = (
       .nullable()
       .required()
       .label(t(i18n)`Description`),
-    term_1: createTermDiscountSchema().nullable().required(),
-    term_2: createTermDiscountSchema().nullable().required(),
+    term_1: createTermDiscountSchema()
+      .when(
+        'term_final',
+        (termFinal: { number_of_days?: number } | undefined, schema) => {
+          if (!termFinal?.number_of_days) return schema;
+
+          return createTermDiscountSchema({
+            maxDays: termFinal.number_of_days,
+            errorMessage: t(
+              i18n
+            )`The number of Discount days must be less than of Due days`,
+          }) satisfies SchemaOf<components['schemas']['PaymentTermDiscount']>;
+        }
+      )
+      .nullable()
+      .required(),
+
+    term_2: createTermDiscountSchema()
+      .when(
+        'term_1',
+        (term1: { number_of_days?: number } | undefined, schema) => {
+          if (!term1?.number_of_days) return schema;
+
+          return createTermDiscountSchema({
+            maxDays: term1.number_of_days,
+            errorMessage: t(
+              i18n
+            )`The number of Discount 2 days must be more than the number of Discount 1 days`,
+          }) satisfies SchemaOf<components['schemas']['PaymentTermDiscount']>;
+        }
+      )
+      .nullable()
+      .required(),
     term_final: yup
       .object({
         number_of_days: yup
           .number()
+          .integer()
           .required()
           .label(t(i18n)`Payment due`),
       })
