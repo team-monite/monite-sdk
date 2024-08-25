@@ -32,7 +32,7 @@ export type RHFAutocompleteProps<
   TOption
 > = RHFAutocompleteBaseProps<TFieldValues, TName> &
   Optional<CustomAutocompleteProps<TOption>, 'renderInput'> &
-  TextFieldProps;
+  Pick<TextFieldProps, 'size' | 'required'>;
 
 interface CustomAutocompleteProps<TOption>
   extends AutocompleteProps<
