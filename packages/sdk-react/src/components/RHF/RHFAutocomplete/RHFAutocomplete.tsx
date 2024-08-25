@@ -83,10 +83,6 @@ export const RHFAutocomplete = <
         label={label}
         error={!!error?.message}
         helperText={error?.message}
-        inputProps={{
-          ...params.inputProps,
-          autoComplete: 'new-password',
-        }}
       />
     );
   };
