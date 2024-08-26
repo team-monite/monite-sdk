@@ -59,11 +59,7 @@ export const CounterpartView = (props: CounterpartViewProps) => {
 
   const isEmailDefault =
     counterpart && contacts && isOrganizationCounterpart(counterpart)
-      ? contacts.some(
-          (contact) =>
-            contact.is_default &&
-            contact.email === counterpart.organization?.email
-        )
+      ? contacts.some((contact) => contact.is_default)
       : false;
 
   const { data: isReadAvailable, isLoading: isReadAvailableLoading } =
