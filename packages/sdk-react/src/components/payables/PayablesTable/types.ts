@@ -5,6 +5,7 @@ import {
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
+  FILTER_TYPE_OVERDUE,
 } from './consts';
 
 export type Sort = {
@@ -17,6 +18,7 @@ export type FilterTypes = {
   [FILTER_TYPE_STATUS]?: components['schemas']['PayableStateEnum'] | null;
   [FILTER_TYPE_DUE_DATE]?: Date | null;
   [FILTER_TYPE_CREATED_AT]?: Date | null;
+  [FILTER_TYPE_OVERDUE]?: boolean | null;
 };
 
 export type FilterValue =
