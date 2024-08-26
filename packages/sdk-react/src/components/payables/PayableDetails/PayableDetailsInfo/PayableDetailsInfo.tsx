@@ -8,7 +8,8 @@ import {
 } from '@/components/counterparts/helpers';
 import {
   isFieldRequired,
-  useOcrFields,
+  MonitePayableDetailsInfoProps,
+  usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -49,18 +50,10 @@ import { OptionalFields } from '../../types';
 import { isPayableInOCRProcessing } from '../../utils/isPayableInOcr';
 import { usePayableDetailsInfo } from './usePayableDetailsInfo';
 
-/**
- * Payable Details props for MUI theming
- */
-export interface MonitePayableDetailsInfoProps {
-  /** The Required OCR Fields */
-  ocrRequiredFields?: Record<string, boolean> | undefined;
-}
-
-export type PayablesDetailsInfoProps = {
+export interface PayablesDetailsInfoProps
+  extends MonitePayableDetailsInfoProps {
   payable: components['schemas']['PayableResponseSchema'];
-  optionalFields?: OptionalFields;
-};
+}
 
 const DetailsWrapper = styled(Box)(() => ({
   pb: 6,
@@ -91,11 +84,12 @@ export const PayableDetailsInfo = (props: PayablesDetailsInfoProps) => (
 
 const PayableDetailsInfoBase = ({
   payable,
-  optionalFields,
   ...inProps
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
+  const { ocrRequiredFields, optionalFields } =
+    usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
     {
@@ -132,8 +126,6 @@ const PayableDetailsInfoBase = ({
       ),
     [counterpartBankAccountQuery, payable]
   );
-
-  const { ocrRequiredFields } = useOcrFields(inProps);
 
   const className = 'Monite-PayableDetailsInfo';
 

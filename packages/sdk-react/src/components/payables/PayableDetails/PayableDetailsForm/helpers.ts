@@ -6,9 +6,9 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsInfo';
+import { OptionalFields } from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
-import { useThemeProps } from '@mui/material/styles';
+import { useThemeProps } from '@mui/material';
 
 import { format } from 'date-fns';
 
@@ -256,12 +256,16 @@ export const isFieldRequired = <
   return isDefaultRequired || isOcrRequired;
 };
 
-export const useOcrFields = (
+export interface MonitePayableDetailsInfoProps {
+  optionalFields?: OptionalFields;
+  ocrRequiredFields?: Record<string, boolean> | undefined;
+}
+
+export const usePayableDetailsThemeProps = (
   inProps?: Partial<MonitePayableDetailsInfoProps>
 ) => {
   return useThemeProps({
     props: inProps,
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    name: 'MonitePayableDetails',
+    name: 'MonitePayableDetailsInfo',
   });
 };

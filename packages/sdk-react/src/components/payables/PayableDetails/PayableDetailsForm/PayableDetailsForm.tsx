@@ -1,10 +1,10 @@
 import { forwardRef, useEffect, useMemo, useRef } from 'react';
 import {
   Controller,
-  useForm,
-  useFormState,
   FieldNamesMarkedBoolean,
   FormProvider,
+  useForm,
+  useFormState,
 } from 'react-hook-form';
 
 import { components } from '@/api';
@@ -48,19 +48,20 @@ import * as yup from 'yup';
 import { OptionalFields } from '../../types';
 import { PayableLineItemsForm } from '../PayableLineItemsForm';
 import {
+  calculateTotalsForPayable,
   counterpartsToSelect,
-  tagsToSelect,
+  isFieldRequired,
+  LineItem,
+  MonitePayableDetailsInfoProps,
+  PayableDetailsFormFields,
   prepareDefaultValues,
   prepareSubmit,
-  PayableDetailsFormFields,
-  LineItem,
-  calculateTotalsForPayable,
-  isFieldRequired,
-  useOcrFields,
+  tagsToSelect,
+  usePayableDetailsThemeProps,
 } from './helpers';
 import { usePayableDetailsForm } from './usePayableDetailsForm';
 
-export interface PayableDetailsFormProps {
+export interface PayableDetailsFormProps extends MonitePayableDetailsInfoProps {
   payable?: components['schemas']['PayableResponseSchema'];
   savePayable?: (
     id: string,
@@ -72,7 +73,6 @@ export interface PayableDetailsFormProps {
     payable: components['schemas']['PayableUploadWithDataSchema'],
     createdLineItems?: Array<LineItem>
   ) => void;
-  optionalFields?: OptionalFields;
   lineItems: components['schemas']['LineItemResponse'][] | undefined;
   payableDetailsFormId: string;
 }
@@ -154,15 +154,6 @@ const getValidationSchema = (i18n: I18n) =>
  *           currency: true,            // The currency is required based on OCR data
  *         },
  *       },
- *       styleOverrides: {
- *         root: {
- *           backgroundColor: '#f9f9f9', // Customize the background color
- *           padding: '20px',            // Add padding around the form
- *         },
- *         formControl: {
- *           marginBottom: '15px',       // Add spacing between form controls
- *         },
- *       },
  *     },
  *   },
  * });
@@ -172,6 +163,7 @@ const getValidationSchema = (i18n: I18n) =>
  * @param {(payable: components['schemas']['PayableUploadWithDataSchema'], createdLineItems?: Array<LineItem>) => void} [createPayable] - Callback function to create a new payable.
  * @param {OptionalFields} [optionalFields] - Configuration object to show or hide optional fields.
  * @param {components['schemas']['LineItemResponse'][]} [lineItems] - Array of line items associated with the payable.
+ * @param {Record<string, boolean> | undefined} [ocrRequiredFields] - Array of required fields that should be provided by OCR.
  * @param {string} payableDetailsFormId - Unique identifier for the form.
  *
  * @returns {JSX.Element} The PayableDetailsForm component.
@@ -194,7 +186,6 @@ const PayableDetailsFormBase = forwardRef<
       payable,
       savePayable,
       createPayable,
-      optionalFields,
       lineItems,
       payableDetailsFormId,
       ...inProps
@@ -265,6 +256,8 @@ const PayableDetailsFormBase = forwardRef<
       usePayableDetailsForm({
         currentCounterpartId: currentCounterpart,
       });
+    const { ocrRequiredFields, optionalFields } =
+      usePayableDetailsThemeProps(inProps);
     const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
       optionalFields,
       {
@@ -284,8 +277,6 @@ const PayableDetailsFormBase = forwardRef<
     const { root } = useRootElements();
 
     const className = 'Monite-PayableDetailsForm';
-
-    const { ocrRequiredFields } = useOcrFields(inProps);
 
     useEffect(() => {
       trigger();
