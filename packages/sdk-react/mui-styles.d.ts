@@ -1,15 +1,10 @@
 import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip';
-import { MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsInfo';
-import { type PayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
-import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
-import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
-import { type MoniteApprovalRequestStatusChipProps } from '@/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestStatusChip/ApprovalRequestStatusChip';
+import { type MonitePayableDetailsInfoProps } from '@/components/payables/PayableDetails/PayableDetailsInfo';
 import { type MonitePayableStatusChipProps } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { type MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { type MoniteInvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type MoniteInvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip/InvoiceStatusChip';
-import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
+import { type MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
   ComponentsPropsList,
