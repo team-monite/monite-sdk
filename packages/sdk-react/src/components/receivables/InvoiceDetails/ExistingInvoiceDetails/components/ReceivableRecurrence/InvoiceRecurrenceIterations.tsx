@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { InvoiceRecurrenceIterationStatusChip } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip';
-import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
+import { MoniteInvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { InvoiceStatusChip } from '@/components/receivables/InvoiceStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCurrencies } from '@/core/hooks';
@@ -41,7 +41,7 @@ export const InvoiceRecurrenceIterations = ({
     );
 
   const { size: unifiedChipSize = 'small' } = useThemeProps({
-    props: {} as Pick<InvoiceRecurrenceIterationStatusChipProps, 'size'>,
+    props: {} as Pick<MoniteInvoiceRecurrenceIterationStatusChipProps, 'size'>,
     name: 'MoniteInvoiceRecurrenceIterationStatusChip',
   });
 

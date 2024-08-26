@@ -10,18 +10,16 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-interface InvoiceStatusChipRootProps {
-  /** The status of the invoice. */
-  status: components['schemas']['ReceivablesStatusEnum'];
+export interface MoniteInvoiceStatusChipProps {
+  icon?: boolean;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
-}
-
-export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
   /** Display status icon? */
-  icon?: boolean;
+  /** The status of the invoice. */
+  status: components['schemas']['ReceivablesStatusEnum'];
+  /** The variant of the Chip. */
 }
 
 /**
@@ -59,7 +57,7 @@ export interface InvoiceStatusChipProps extends InvoiceStatusChipRootProps {
 
 export const InvoiceStatusChip = forwardRef<
   HTMLDivElement,
-  InvoiceStatusChipProps
+  MoniteInvoiceStatusChipProps
 >((inProps, ref) => {
   const { status, variant, icon, size } = useThemeProps({
     props: inProps,
@@ -76,31 +74,19 @@ export const InvoiceStatusChip = forwardRef<
       color={ROW_TO_TAG_STATUS_MUI_MAP[status]}
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getCommonStatusLabel(i18n, status)}
-      status={status}
-      size={size ?? 'small'}
+      size={size}
       variant={variant ?? 'filled'}
     />
   );
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & InvoiceStatusChipRootProps>(
-    (props, ref) => <Chip ref={ref} {...props} />
-  ),
+  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
+    <Chip ref={ref} {...props} />
+  )),
   {
     name: 'MoniteInvoiceStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-        case 'size':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});
