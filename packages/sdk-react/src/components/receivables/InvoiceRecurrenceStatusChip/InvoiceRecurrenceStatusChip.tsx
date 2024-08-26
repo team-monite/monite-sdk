@@ -82,15 +82,17 @@ export const InvoiceRecurrenceStatusChip = forwardRef<
       icon={icon && Icon ? <Icon /> : undefined}
       label={getInvoiceRecurrenceStatusLabel(i18n, status)}
       size={size}
+      status={status}
       variant={variant ?? 'filled'}
     />
   );
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
-    <Chip ref={ref} {...props} />
-  )),
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MoniteInvoiceRecurrenceStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
     // eslint-disable-next-line lingui/no-unlocalized-strings
     name: 'MoniteInvoiceRecurrenceStatusChip',
