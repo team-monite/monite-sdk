@@ -289,7 +289,6 @@ const PayablesTableBase = ({
                   className="Monite-PayableStatusChip"
                   color="error"
                   label={t(i18n)`Overdue`}
-                  status={params.value}
                   size={'small'}
                 />
               )}

@@ -73,7 +73,6 @@ export const PayableStatusChip = forwardRef<
   );
 });
 
-
 export const StyledChip = styled(
   forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
     <Chip ref={ref} {...props} />
