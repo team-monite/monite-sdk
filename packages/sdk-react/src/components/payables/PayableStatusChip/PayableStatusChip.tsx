@@ -74,7 +74,7 @@ export const PayableStatusChip = forwardRef<
   );
 });
 
-const StyledChip = styled(
+export const StyledChip = styled(
   forwardRef<
     HTMLDivElement,
     ChipProps & Omit<MonitePayableStatusChipProps, 'icon'>
