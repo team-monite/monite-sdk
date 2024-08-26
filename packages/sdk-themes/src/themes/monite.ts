@@ -57,6 +57,11 @@ export const paletteLight: MonitePaletteOptions = {
     '95': '#f9f9f9',
   },
   divider: '#DDDDDD',
+  text: {
+    primary: 'rgba(0,0,0,0.84)',
+    secondary: 'rgba(0,0,0,0.68)',
+    disabled: 'rgba(0,0,0,0.52)',
+  },
 };
 
 export const paletteDark: MonitePaletteOptions = {
@@ -913,6 +918,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         style: statusColors.red,
       },
     ],
+  },
+  MoniteCounterpartStatusChip: {
+    styleOverrides: {
+      root: {
+        height: '24px',
+        padding: '7px 8px',
+        backgroundColor: 'transparent',
+        color: 'text.primary',
+        borderColor: 'neutral.80',
+      },
+    },
   },
 };
 
