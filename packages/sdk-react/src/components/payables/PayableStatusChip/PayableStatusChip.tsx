@@ -51,32 +51,34 @@ export const PayableStatusChip = forwardRef<
   HTMLDivElement,
   MonitePayableStatusChipProps
 >((inProps, ref) => {
-  const props = useThemeProps({
+  const { status, icon, size, variant } = useThemeProps({
     props: inProps,
     name: 'MonitePayableStatusChip',
   });
 
   const { i18n } = useLingui();
 
-  const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[props.status];
+  const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[status];
 
   return (
     <StyledChip
       className="Monite-PayableStatusChip"
       ref={ref}
-      color={ROW_TO_STATUS_MUI_MAP[props.status]}
-      icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
-      label={getRowToStatusTextMap(i18n)[props.status]}
-      size={props.size}
-      variant={props.variant ?? 'filled'}
+      color={ROW_TO_STATUS_MUI_MAP[status]}
+      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      label={getRowToStatusTextMap(i18n)[status]}
+      size={size}
+      status={status}
+      variant={variant ?? 'filled'}
     />
   );
 });
 
 export const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
-    <Chip ref={ref} {...props} />
-  )),
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MonitePayableStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
     name: 'MonitePayableStatusChip',
     slot: 'root',
