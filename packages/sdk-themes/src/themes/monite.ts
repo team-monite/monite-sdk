@@ -310,9 +310,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiInputAdornment-positionEnd': {
-            marginRight: '6px',
-          },
           '.MuiIconButton-root': {
             marginRight: '-6px',
           },
@@ -328,6 +325,16 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           '&.Monite-DateFilterControl': {
             'input::placeholder': {
               opacity: 0,
+            },
+          },
+
+          '& .MuiInputBase-input:not(.MuiSelect-select)': {
+            padding: '0 0 0 8px',
+            fontSize: '14px',
+            textOverflow: 'ellipsis',
+
+            '& + .MuiInputAdornment-root': {
+              marginLeft: 0,
             },
           },
         },
