@@ -1,3 +1,4 @@
+// TODO: validate if these constants can be removed. Currently, it's not being used anywhere except tests
 /**
  * A class providing pre-defined date and time format options for use with Intl.DateTimeFormat.
  */
