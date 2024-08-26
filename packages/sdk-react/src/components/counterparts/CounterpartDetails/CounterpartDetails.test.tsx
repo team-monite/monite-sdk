@@ -576,6 +576,7 @@ describe('CounterpartDetails', () => {
           expect(checkboxes.map((checkbox) => checkbox.checked)).toEqual([
             true,
             true,
+            false,
           ]);
         });
       });
@@ -622,6 +623,7 @@ describe('CounterpartDetails', () => {
         expect(checkboxes.map((checkbox) => checkbox.checked)).toEqual([
           true,
           true,
+          false,
         ]);
       });
 
@@ -634,6 +636,7 @@ describe('CounterpartDetails', () => {
           screen.getAllByRole('checkbox');
 
         expect(checkboxes.map((checkbox) => checkbox.checked)).toEqual([
+          false,
           false,
           false,
         ]);

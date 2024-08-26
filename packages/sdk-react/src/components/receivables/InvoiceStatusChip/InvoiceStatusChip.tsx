@@ -75,15 +75,17 @@ export const InvoiceStatusChip = forwardRef<
       icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getCommonStatusLabel(i18n, status)}
       size={size}
+      status={status}
       variant={variant ?? 'filled'}
     />
   );
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
-    <Chip ref={ref} {...props} />
-  )),
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MoniteInvoiceStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
     name: 'MoniteInvoiceStatusChip',
     slot: 'root',
