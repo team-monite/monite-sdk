@@ -559,6 +559,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           overflow: 'hidden',
           textOverflow: 'ellipsis',
         },
+        '&:focus': {
+          outline: 'none',
+        },
       },
       footerContainer: {
         '& .Monite-RowsPerPageSelector div[role="combobox"]': {

@@ -1,4 +1,1 @@
-export {
-  InvoiceStatusChip,
-  type InvoiceStatusChipProps,
-} from './InvoiceStatusChip';
+export { InvoiceStatusChip } from './InvoiceStatusChip';
