@@ -1,10 +1,13 @@
 import { ReactNode, useId } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import { usePreviousDistinct } from 'react-use';
 
 import { components } from '@/api';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { useRootElements } from '@/core/context/RootElementsProvider';
+import { createDayPluralForm } from '@/core/i18n/plural/createDayPluralForm';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { LoadingPage } from '@/ui/loadingPage';
 import { NotFound } from '@/ui/notFound';
@@ -16,6 +19,7 @@ import { Add } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -26,6 +30,7 @@ import {
   IconButton,
   InputLabel,
   Stack,
+  TextField,
   Typography,
 } from '@mui/material';
 
@@ -120,14 +125,18 @@ const PaymentTermsFormComponent = ({
       term_1: paymentTerms?.term_1 ?? null,
       term_2: paymentTerms?.term_2 ?? null,
       term_final: {
-        number_of_days: paymentTerms?.term_final?.number_of_days ?? 1,
+        number_of_days: paymentTerms?.term_final?.number_of_days ?? 45,
       },
     },
   });
 
   const { control, handleSubmit, setValue, watch } = methods;
 
-  const [term1FieldValue, term2FieldValue] = watch(['term_1', 'term_2']);
+  const [term1FieldValue, term2FieldValue, termFinalFieldValue] = watch([
+    'term_1',
+    'term_2',
+    'term_final',
+  ]);
 
   const formName = `Monite-PaymentTermsForm-${useId()}`;
 
@@ -178,6 +187,34 @@ const PaymentTermsFormComponent = ({
         },
       }
     );
+
+  const { root } = useRootElements();
+
+  const previousTermFinalNumberOfDaysFieldValue = usePreviousDistinct(
+    termFinalFieldValue.number_of_days
+  );
+
+  const optionList: { value: number; label: string }[] = [
+    termFinalFieldValue.number_of_days ||
+      previousTermFinalNumberOfDaysFieldValue,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+  ]
+    .filter((item, index, array) => array.lastIndexOf(item) === index)
+    .filter((item) => typeof item === 'number')
+    .map((number_of_days) => {
+      const number_of_days_plural = createDayPluralForm(i18n, number_of_days);
+
+      return {
+        value: number_of_days,
+        label: t(i18n)`${number_of_days} ${number_of_days_plural}`,
+      };
+    });
 
   return (
     <>
@@ -239,16 +276,63 @@ const PaymentTermsFormComponent = ({
                   required
                 />
 
-                <RHFTextField
-                  label={t(i18n)`Payment due`}
-                  name="term_final.number_of_days"
-                  type="number"
-                  InputProps={{
-                    inputProps: { min: 1, inputMode: 'numeric' },
-                  }}
+                <Controller
                   control={control}
-                  size="small"
-                  sx={{ width: 100 }}
+                  name="term_final.number_of_days"
+                  render={({
+                    field,
+                    fieldState: { error, isTouched },
+                    formState: { isValid },
+                  }) => (
+                    <Autocomplete
+                      {...field}
+                      freeSolo
+                      slotProps={{
+                        popper: {
+                          container: root,
+                        },
+                      }}
+                      options={optionList}
+                      onChange={(_, value) => {
+                        if (typeof value === 'string')
+                          return void field.onChange(parseInt(value));
+                        field.onChange(value?.value ?? null);
+                      }}
+                      value={{
+                        value: field.value,
+                        label: String(field.value),
+                      }}
+                      getOptionLabel={(option) =>
+                        String(
+                          typeof option === 'string' ? option : option.label
+                        )
+                      }
+                      getOptionKey={(option) =>
+                        typeof option === 'string' ? option : option.value
+                      }
+                      renderInput={(params) => {
+                        const inputError =
+                          isTouched || !isValid ? error : undefined;
+
+                        return (
+                          <TextField
+                            {...params}
+                            required
+                            label={t(i18n)`Payment due`}
+                            error={!!inputError?.message}
+                            type="number"
+                            helperText={inputError?.message}
+                            InputProps={{
+                              ...params.InputProps,
+                              slotProps: {
+                                input: { min: 1, inputMode: 'numeric' },
+                              },
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  )}
                 />
               </Stack>
             </Card>
@@ -355,14 +439,27 @@ const PaymentTermsFormComponent = ({
 
                 if (!term1FieldValue)
                   return void setValue('term_1', {
-                    number_of_days: 1,
-                    discount: 100,
+                    number_of_days: Math.max(
+                      1,
+                      Math.floor(
+                        (termFinalFieldValue?.number_of_days ?? 45) * 0.8
+                      )
+                    ),
+                    discount: 5,
                   });
 
                 if (!term2FieldValue)
                   return void setValue('term_2', {
-                    number_of_days: 1,
-                    discount: 100,
+                    number_of_days: Math.max(
+                      1,
+                      Math.floor((term1FieldValue.number_of_days ?? 45) * 0.6)
+                    ),
+                    discount: Math.max(
+                      1,
+                      parseFloat(
+                        ((term1FieldValue.discount ?? 2) * 0.5).toFixed(2)
+                      )
+                    ),
                   });
               }}
             >{t(i18n)`Add discount`}</Button>
