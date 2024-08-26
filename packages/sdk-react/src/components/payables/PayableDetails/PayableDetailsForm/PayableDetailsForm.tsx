@@ -381,10 +381,9 @@ const PayableDetailsFormBase = forwardRef<
                               label={t(i18n)`Counterpart`}
                               MenuProps={{ container: root }}
                               onChange={(event) => {
-                                resetField(
-                                  'counterpartBankAccount',
-                                  ocrRequiredFields
-                                );
+                                resetField('counterpartBankAccount', {
+                                  keepTouched: true,
+                                });
 
                                 return field.onChange(event);
                               }}

@@ -6,7 +6,11 @@ import {
   isIndividualCounterpart,
   isOrganizationCounterpart,
 } from '@/components/counterparts/helpers';
-import { OptionalFields } from '@/components/payables/types';
+import {
+  OcrRequiredField,
+  OcrRequiredFields,
+  OptionalFields,
+} from '@/components/payables/types';
 import { CounterpartResponse } from '@/core/queries';
 import { useThemeProps } from '@mui/material';
 
@@ -230,13 +234,9 @@ function formatTaxFromMinorUnits(tax: number): number {
   return tax / 100;
 }
 
-export const isFieldRequired = <
-  TFieldNames extends string,
-  TOcrRequiredFields extends Record<TFieldNames, boolean>,
-  TFieldValues extends FieldValues
->(
-  fieldName: TFieldNames,
-  ocrRequiredFields: TOcrRequiredFields | undefined,
+export const isFieldRequired = <TFieldValues extends FieldValues>(
+  fieldName: OcrRequiredField,
+  ocrRequiredFields: OcrRequiredFields,
   value?: FieldValue<TFieldValues>
 ) => {
   const defaultRequiredFields: Record<string, boolean> = {
@@ -256,19 +256,9 @@ export const isFieldRequired = <
   return isDefaultRequired || isOcrRequired;
 };
 
-type OcrRequiredField =
-  | keyof components['schemas']['OCRResponseInvoiceReceiptData']
-  | keyof components['schemas']['OcrRecognitionResponse']
-  | 'document_id'
-  | 'counterpart_name'
-  | 'document_due_date'
-  | 'document_issued_at_date'
-  | 'currency'
-  | 'total';
-
 export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
-  ocrRequiredFields?: Record<OcrRequiredField, boolean> | undefined;
+  ocrRequiredFields?: OcrRequiredFields;
 }
 
 export const usePayableDetailsThemeProps = (
