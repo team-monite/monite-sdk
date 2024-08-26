@@ -2,4 +2,4 @@
 '@monite/sdk-react': patch
 ---
 
-fix ships by forwarding custom prop status
+fix chips by forwarding custom prop status
