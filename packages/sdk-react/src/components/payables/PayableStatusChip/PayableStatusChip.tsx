@@ -10,18 +10,15 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-interface PayableStatusChipRootProps {
+export interface MonitePayableStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
+  /** Display status icon? */
+  icon?: boolean;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
-}
-
-export interface PayableStatusChipProps extends PayableStatusChipRootProps {
-  /** Display status icon? */
-  icon?: boolean;
 }
 
 /**
@@ -52,7 +49,7 @@ export interface PayableStatusChipProps extends PayableStatusChipRootProps {
  */
 export const PayableStatusChip = forwardRef<
   HTMLDivElement,
-  PayableStatusChipProps
+  MonitePayableStatusChipProps
 >((inProps, ref) => {
   const props = useThemeProps({
     props: inProps,
@@ -70,31 +67,20 @@ export const PayableStatusChip = forwardRef<
       color={ROW_TO_STATUS_MUI_MAP[props.status]}
       icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
       label={getRowToStatusTextMap(i18n)[props.status]}
-      status={props.status}
-      size={props.size ?? 'small'}
+      size={props.size}
       variant={props.variant ?? 'filled'}
     />
   );
 });
 
+
 export const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & PayableStatusChipRootProps>(
-    (props, ref) => <Chip ref={ref} {...props} />
-  ),
+  forwardRef<HTMLDivElement, ChipProps>((props, ref) => (
+    <Chip ref={ref} {...props} />
+  )),
   {
     name: 'MonitePayableStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-        case 'size':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});

@@ -149,7 +149,10 @@ export const OverviewTabPanel = ({
             ? {
                 label: t(i18n)`Current status`,
                 value: recurrence ? (
-                  <InvoiceRecurrenceStatusChip status={recurrence?.status} />
+                  <InvoiceRecurrenceStatusChip
+                    status={recurrence?.status}
+                    size="small"
+                  />
                 ) : (
                   <Skeleton variant="text" width="50%" />
                 ),
