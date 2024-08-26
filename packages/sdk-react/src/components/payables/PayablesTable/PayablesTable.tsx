@@ -286,7 +286,8 @@ const PayablesTableBase = ({
               <PayableStatusChip status={params.value} />
               {isOverdue && (
                 <StyledChip
-                  className="Monite-PayableStatusChip"
+                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
+                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
                   color="error"
                   label={t(i18n)`Overdue`}
                   size={'small'}
