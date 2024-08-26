@@ -256,9 +256,19 @@ export const isFieldRequired = <
   return isDefaultRequired || isOcrRequired;
 };
 
+type OcrRequiredField =
+  | keyof components['schemas']['OCRResponseInvoiceReceiptData']
+  | keyof components['schemas']['OcrRecognitionResponse']
+  | 'document_id'
+  | 'counterpart_name'
+  | 'document_due_date'
+  | 'document_issued_at_date'
+  | 'currency'
+  | 'total';
+
 export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
-  ocrRequiredFields?: Record<string, boolean> | undefined;
+  ocrRequiredFields?: Record<OcrRequiredField, boolean> | undefined;
 }
 
 export const usePayableDetailsThemeProps = (
