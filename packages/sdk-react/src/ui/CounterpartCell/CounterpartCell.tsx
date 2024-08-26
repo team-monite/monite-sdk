@@ -1,26 +1,28 @@
-import { useCallback } from 'react';
-
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
-import { CounterpartResponse, useCounterpartById } from '@/core/queries';
+import { useCounterpartById } from '@/core/queries';
 import { Avatar, Box, Chip, Skeleton, Typography } from '@mui/material';
 
 interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
-export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
-  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-
-  const getCounterpartText = useCallback((counterpart: CounterpartResponse) => {
-    return getCounterpartName(counterpart);
-  }, []);
-
-  if (!counterpartId || (!isLoading && !counterpart)) {
-    return null;
+const calculateColorIndex = (name: string) => {
+  let sum = 0;
+  for (let i = name.length - 1; i >= 0; i--) {
+    sum += name.charCodeAt(i);
   }
+  return sum % 5;
+};
 
-  const name = counterpart ? getCounterpartText(counterpart) : '';
+export const CounterPartCellByName = ({
+  name,
+  isLoading,
+}: {
+  name: string;
+  isLoading?: boolean;
+}) => {
+  if (!name) return null;
   const nameParts = name.split(' ');
   const avatarLetters = (
     nameParts.length >= 2
@@ -36,28 +38,30 @@ export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
             <Skeleton
               animation="wave"
               variant="circular"
-              width={24}
-              height={24}
+              width={40}
+              height={40}
               sx={{ flexShrink: 0 }}
             />
           ) : (
-            <Avatar className={'MuiAvatar-letter' + avatarLetters[0]}>
+            <Avatar
+              className={'MuiAvatar-' + calculateColorIndex(avatarLetters)}
+            >
               {avatarLetters}
             </Avatar>
           )
         }
         label={
-          isLoading || !counterpart ? (
+          isLoading || !name ? (
             <Skeleton
               animation="wave"
               height={10}
               width="100%"
-              sx={{ flexShrink: 0, ml: 1, minWidth: '4em' }}
+              sx={{ flexShrink: 0, ml: 1.5, minWidth: '4em' }}
             />
           ) : (
             <Typography
               variant="body2"
-              sx={{ ml: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}
+              sx={{ ml: 1.5, overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
               {name}
             </Typography>
@@ -67,4 +71,14 @@ export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
       />
     </Box>
   );
+};
+
+export const CounterpartCellById = ({ counterpartId }: Props) => {
+  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
+  if (!counterpartId || (!isLoading && !counterpart)) {
+    return null;
+  }
+
+  const name = counterpart ? getCounterpartName(counterpart) : '';
+  return <CounterPartCellByName name={name} isLoading={isLoading} />;
 };

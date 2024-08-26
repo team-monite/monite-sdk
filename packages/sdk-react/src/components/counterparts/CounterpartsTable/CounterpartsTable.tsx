@@ -13,6 +13,7 @@ import {
 } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -24,7 +25,6 @@ import { useLingui } from '@lingui/react';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
 import MuiPhoneIcon from '@mui/icons-material/LocalPhone';
 import {
-  Avatar,
   Box,
   Button,
   Chip,
@@ -238,14 +238,8 @@ const CounterpartsTableBase = ({
         flex: 1,
         renderCell: (params) => {
           const counterpart = params.row;
-
-          const name = getCounterpartName(counterpart);
-
           return (
-            <>
-              <Avatar sx={{ marginRight: 2 }}>{name[0]}</Avatar>
-              <Typography variant="caption">{name}</Typography>
-            </>
+            <CounterPartCellByName name={getCounterpartName(counterpart)} />
           );
         },
       },

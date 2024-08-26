@@ -12,7 +12,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -116,7 +116,7 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {

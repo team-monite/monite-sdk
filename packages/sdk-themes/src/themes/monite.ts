@@ -113,6 +113,14 @@ const statusColors: {
   },
 };
 
+const counterpartColors: string[] = [
+  'rgba(0,0,255,0.05)',
+  'rgba(255,0,32,0.05)',
+  'rgba(0,255,220,0.05)',
+  'rgba(225,1,251,0.05)',
+  'rgba(255,123,0,0.05)',
+];
+
 export const defaultMoniteTypography:
   | TypographyOptions
   | ((palette: Palette) => TypographyOptions) = {
@@ -570,22 +578,26 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
         '&.Monite-CounterpartCell .MuiChip-avatar': {
           margin: 0,
-          color: 'white',
-          fontSize: '10px',
-          lineHeight: '24px',
-          width: '24px',
-          height: '24px',
-          '&.MuiAvatar-letterB': {
-            backgroundColor: '#000000',
+          color: 'text.primary',
+          fontSize: '16px',
+          fontWeight: 600,
+          lineHeight: '40px',
+          width: '40px',
+          height: '40px',
+          '&.MuiAvatar-0': {
+            backgroundColor: counterpartColors[0],
           },
-          '&.MuiAvatar-letterC': {
-            backgroundColor: statusColors.blue.color,
+          '&.MuiAvatar-1': {
+            backgroundColor: counterpartColors[1],
           },
-          '&.MuiAvatar-letterH': {
-            backgroundColor: statusColors.green.color,
+          '&.MuiAvatar-2': {
+            backgroundColor: counterpartColors[2],
           },
-          '&.MuiAvatar-letterM': {
-            backgroundColor: statusColors.violet.color,
+          '&.MuiAvatar-3': {
+            backgroundColor: counterpartColors[3],
+          },
+          '&.MuiAvatar-4': {
+            backgroundColor: counterpartColors[4],
           },
         },
       },

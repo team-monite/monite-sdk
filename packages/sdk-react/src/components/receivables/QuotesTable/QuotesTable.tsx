@@ -12,7 +12,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -130,7 +130,7 @@ const QuotesTableBase = ({
         headerName: t(i18n)`Customer`,
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.row.counterpart_id} />
+          <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
       },
       {
