@@ -10,3 +10,11 @@ export function useDateFormat() {
   });
   return dateFormat || DateTimeFormatOptions.EightDigitDate; // Legacy default value
 }
+
+export function useDateTimeFormat() {
+  const { dateTimeFormat } = useThemeProps({
+    props: {} as MoniteOptions,
+    name: optionsName,
+  });
+  return dateTimeFormat || DateTimeFormatOptions.EightDigitDateWithTime; // Legacy default value
+}

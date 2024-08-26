@@ -54,6 +54,7 @@ declare module '@mui/material/styles' {
 
   interface MoniteOptions {
     dateFormat?: Intl.DateTimeFormatOptions;
+    dateTimeFormat?: Intl.DateTimeFormatOptions;
   }
 
   /**
