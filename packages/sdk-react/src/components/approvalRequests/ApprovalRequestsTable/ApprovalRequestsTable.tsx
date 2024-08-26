@@ -6,8 +6,8 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCurrencies } from '@/core/hooks';
 import {
-  useAutosizeGridColumns,
   useAreCounterpartsLoading,
+  useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -18,7 +18,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -171,6 +171,8 @@ const ApprovalRequestsTableBase = ({
 
   const areCounterpartsLoading = useAreCounterpartsLoading(rows);
 
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -196,7 +198,7 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'due_date',
@@ -206,7 +208,7 @@ const ApprovalRequestsTableBase = ({
         flex: 0.7,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'status',
@@ -237,7 +239,7 @@ const ApprovalRequestsTableBase = ({
       },
       ...(actionsCell ? [actionsCell] : []),
     ];
-  }, [actionsCell, formatCurrencyToDisplay, i18n]);
+  }, [actionsCell, dateFormat, formatCurrencyToDisplay, i18n]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,

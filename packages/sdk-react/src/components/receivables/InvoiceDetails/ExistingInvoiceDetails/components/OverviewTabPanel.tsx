@@ -20,7 +20,7 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { MoniteCard } from '@/ui/Card/Card';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { CancelScheduleSend } from '@mui/icons-material';
@@ -349,6 +349,7 @@ const LinkedDocumentsCard = ({
   internalNavigation?: boolean;
 }) => {
   const { i18n } = useLingui();
+  const dateFormat = useDateFormat();
 
   const transformCreditNotes = (
     creditNotes: components['schemas']['ReceivableResponse'][]
@@ -361,7 +362,7 @@ const LinkedDocumentsCard = ({
         : null;
 
       const formattedDate = issueDate
-        ? i18n.date(issueDate, DateTimeFormatOptions.EightDigitDate)
+        ? i18n.date(issueDate, dateFormat)
         : t(i18n)`Unknown date`;
 
       const authorName =
