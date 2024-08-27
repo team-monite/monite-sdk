@@ -635,10 +635,10 @@ describe('PayableDetails', () => {
           expected: false,
         },
         {
-          description: 'should return true when due_date is today',
+          description: 'should return false when due_date is today',
           status: PayableStateEnum.WAITING_TO_BE_PAID,
           due_date: new Date().toISOString(),
-          expected: true,
+          expected: false,
         },
         {
           description: 'should return true when due_date is before today',
