@@ -1,4 +1,1 @@
-export {
-  PayableStatusChip,
-  type PayableStatusChipProps,
-} from './PayableStatusChip';
+export { PayableStatusChip } from './PayableStatusChip';

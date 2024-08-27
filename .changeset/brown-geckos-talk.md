@@ -3,4 +3,5 @@
 '@monite/sdk-react': minor
 ---
 
-1. Improves DataGrid autosizing algorithm (reduces amount of layout jumps), 2. Preserves column widths between page reloads
+feat(DEV-12191): improve `DataGrid` auto-sizing algorithm to reduce layout jumps and preserve column widths
+between page reloads

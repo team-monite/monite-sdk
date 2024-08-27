@@ -10,18 +10,15 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-interface PayableStatusChipRootProps {
+export interface MonitePayableStatusChipProps {
   /** The status of the payable. */
   status: components['schemas']['PayableStateEnum'];
+  /** Display status icon? */
+  icon?: boolean;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
   size?: ChipProps['size'];
-}
-
-export interface PayableStatusChipProps extends PayableStatusChipRootProps {
-  /** Display status icon? */
-  icon?: boolean;
 }
 
 /**
@@ -52,49 +49,39 @@ export interface PayableStatusChipProps extends PayableStatusChipRootProps {
  */
 export const PayableStatusChip = forwardRef<
   HTMLDivElement,
-  PayableStatusChipProps
+  MonitePayableStatusChipProps
 >((inProps, ref) => {
-  const props = useThemeProps({
+  const { status, icon, size, variant } = useThemeProps({
     props: inProps,
     name: 'MonitePayableStatusChip',
   });
 
   const { i18n } = useLingui();
 
-  const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[props.status];
+  const Icon = PAYABLE_STATUS_TO_MUI_ICON_MAP[status];
 
   return (
     <StyledChip
       className="Monite-PayableStatusChip"
       ref={ref}
-      color={ROW_TO_STATUS_MUI_MAP[props.status]}
-      icon={props.icon && Icon ? <Icon fontSize="small" /> : undefined}
-      label={getRowToStatusTextMap(i18n)[props.status]}
-      status={props.status}
-      size={props.size ?? 'small'}
-      variant={props.variant ?? 'filled'}
+      color={ROW_TO_STATUS_MUI_MAP[status]}
+      icon={icon && Icon ? <Icon fontSize="small" /> : undefined}
+      label={getRowToStatusTextMap(i18n)[status]}
+      size={size}
+      status={status}
+      variant={variant ?? 'filled'}
     />
   );
 });
 
-const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & PayableStatusChipRootProps>(
-    (props, ref) => <Chip ref={ref} {...props} />
-  ),
+export const StyledChip = styled(
+  forwardRef<
+    HTMLDivElement,
+    ChipProps & Omit<MonitePayableStatusChipProps, 'icon'>
+  >((props, ref) => <Chip ref={ref} {...props} />),
   {
     name: 'MonitePayableStatusChip',
     slot: 'root',
-    shouldForwardProp: (prop) => {
-      switch (prop) {
-        case 'variant':
-        case 'label':
-        case 'color':
-        case 'icon':
-        case 'size':
-          return true;
-        default:
-          return false;
-      }
-    },
+    shouldForwardProp: () => true,
   }
 )({});

@@ -4,12 +4,14 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
+import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
+import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
   defaultCounterpartColumnWidth,
-  useAutosizeGridColumns,
   useAreCounterpartsLoading,
+  useAutosizeGridColumns,
 } from '@/core/hooks/useAutosizeGridColumns';
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -23,7 +25,7 @@ import {
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
 import { classNames } from '@/utils/css-utils';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
@@ -44,6 +46,7 @@ import {
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
+  FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
@@ -147,6 +150,9 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
+        ? currentFilter[FILTER_TYPE_OVERDUE]
+        : undefined,
     },
   });
 
@@ -171,6 +177,7 @@ const PayablesTableBase = ({
   }, [isError, error, i18n]);
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
+  const dateFormat = useDateFormat();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -231,7 +238,7 @@ const PayablesTableBase = ({
         },
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => i18n.date(value, dateFormat),
       },
       {
         field: 'issued_at',
@@ -245,7 +252,7 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'due_date',
@@ -259,7 +266,7 @@ const PayablesTableBase = ({
         width: 120,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        ) => value && i18n.date(value, dateFormat),
       },
       {
         field: 'status',
@@ -271,7 +278,26 @@ const PayablesTableBase = ({
         }),
         display: 'flex',
         width: 160,
-        renderCell: (params) => <PayableStatusChip status={params.value} />,
+        renderCell: (params) => {
+          const payable = params.row;
+          const isOverdue = isInvoiceOverdue(payable);
+
+          return (
+            <Box display="flex" alignItems="center" gap={1}>
+              <PayableStatusChip status={params.value} />
+              {isOverdue && (
+                <StyledChip
+                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
+                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
+                  status={params.value}
+                  color="error"
+                  label={t(i18n)`Overdue`}
+                  size={'small'}
+                />
+              )}
+            </Box>
+          );
+        },
       },
       {
         field: 'amount',
@@ -302,7 +328,7 @@ const PayablesTableBase = ({
         },
       },
     ];
-  }, [formatCurrencyToDisplay, i18n, onPay]);
+  }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,

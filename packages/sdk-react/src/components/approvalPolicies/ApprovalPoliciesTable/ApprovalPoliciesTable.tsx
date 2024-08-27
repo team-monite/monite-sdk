@@ -9,7 +9,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
-import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
+import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box } from '@mui/material';
@@ -122,6 +122,8 @@ const ApprovalPoliciesTableBase = ({
     }
   }, [currentPaginationToken, approvalPolicies]);
 
+  const dateFormat = useDateFormat();
+
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
@@ -153,8 +155,7 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Created at`,
         sortable: false,
         flex: 0.7,
-        valueFormatter: (value) =>
-          i18n.date(value, DateTimeFormatOptions.EightDigitDate),
+        valueFormatter: (value) => i18n.date(value, dateFormat),
       },
       {
         field: 'created_by',
@@ -166,7 +167,7 @@ const ApprovalPoliciesTableBase = ({
         ),
       },
     ];
-  }, [i18n]);
+  }, [dateFormat, i18n]);
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);

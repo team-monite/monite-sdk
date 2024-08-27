@@ -183,6 +183,22 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
 });
 
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
+  MoniteOptions: {
+    defaultProps: {
+      dateFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      },
+      dateTimeFormat: {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      },
+    },
+  },
   MuiTypography: {
     styleOverrides: {
       body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
@@ -549,6 +565,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+        },
+        '&:focus': {
+          outline: 'none',
         },
       },
       footerContainer: {
