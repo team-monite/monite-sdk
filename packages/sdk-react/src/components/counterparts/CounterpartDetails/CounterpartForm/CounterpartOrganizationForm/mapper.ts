@@ -14,16 +14,11 @@ export interface CounterpartOrganizationFields
 
 export const prepareCounterpartOrganization = (
   organization?: components['schemas']['CounterpartOrganizationResponse'],
-  defaultValues?: CounterpartDefaultValues,
-  contacts?: Array<{ email?: string; is_default: boolean }>
-): CounterpartOrganizationFields & { isEmailDefault: boolean } => {
+  defaultValues?: CounterpartDefaultValues
+): CounterpartOrganizationFields => {
   const isCustomer = !!(defaultValues?.isCustomer ?? organization?.is_customer);
-  const isVendor = !!(defaultValues?.isVendor ?? organization?.is_vendor);
 
-  const isEmailDefault = contacts
-    ? !!contacts.find((contact) => contact.email === organization?.email)
-        ?.is_default
-    : false; // Determine if the email is the default one
+  const isVendor = !!(defaultValues?.isVendor ?? organization?.is_vendor);
 
   return {
     companyName: organization?.legal_name ?? '',
@@ -44,7 +39,6 @@ export const prepareCounterpartOrganization = (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     country: '',
-    isEmailDefault,
   };
 };
 
