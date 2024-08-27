@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { classNames } from '@/utils/css-utils';
 import { Stack } from '@mui/material';
 
-interface Props {
+interface FilterContainerProps {
   className?: string;
   searchField?: ReactNode;
   children: ReactNode;
@@ -13,7 +13,7 @@ export const FilterContainer = ({
   className,
   searchField,
   children,
-}: Props) => {
+}: FilterContainerProps) => {
   return (
     <Stack
       direction="row"
