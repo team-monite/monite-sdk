@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
@@ -43,7 +44,7 @@ export const ApprovalPolicyView = ({
 }: ApprovalPolicyViewProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
   const { triggers, getTriggerLabel } = useApprovalPolicyTrigger({
     approvalPolicy,
   });
@@ -58,6 +59,21 @@ export const ApprovalPolicyView = ({
       enabled: Boolean(triggers?.tags?.length),
     }
   );
+  const deleteMutation =
+    api.approvalPolicies.deleteApprovalPoliciesId.useMutation(undefined, {
+      onSuccess: async () => {
+        await Promise.all([
+          api.approvalPolicies.getApprovalPolicies.invalidateQueries(
+            queryClient
+          ),
+          api.approvalPolicies.getApprovalPoliciesId.invalidateQueries(
+            { parameters: { path: { approval_policy_id: approvalPolicy.id } } },
+            queryClient
+          ),
+        ]);
+        toast.success(t(i18n)`Approval policy has been deleted`);
+      },
+    });
 
   const triggersList = Object.keys(triggers).map((triggerKey) => {
     const triggerLabel = getTriggerLabel(triggerKey);
@@ -234,11 +250,29 @@ export const ApprovalPolicyView = ({
         </Paper>
       </DialogContent>
       <Divider />
-      <DialogActions>
-        <Button variant="outlined" color="error">{t(i18n)`Delete`}</Button>
-        <Button variant="outlined" onClick={() => setIsEdit(true)}>{t(
-          i18n
-        )`Edit`}</Button>
+      <DialogActions sx={{ justifyContent: 'space-between' }}>
+        <Button
+          variant="outlined"
+          color="error"
+          disabled={deleteMutation.isPending}
+          onClick={(e) => {
+            e.preventDefault();
+
+            deleteMutation.mutate(
+              { path: { approval_policy_id: approvalPolicy.id } },
+              {
+                onSuccess: () => {
+                  dialogContext?.onClose?.();
+                },
+              }
+            );
+          }}
+        >
+          {t(i18n)`Delete`}
+        </Button>
+        <Button variant="outlined" onClick={() => setIsEdit(true)}>
+          {t(i18n)`Edit`}
+        </Button>
       </DialogActions>
     </>
   );
