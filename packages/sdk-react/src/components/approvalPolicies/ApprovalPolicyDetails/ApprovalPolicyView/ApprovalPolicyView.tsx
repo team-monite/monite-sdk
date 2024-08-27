@@ -4,12 +4,14 @@ import { components } from '@/api';
 import { useDialog } from '@/components';
 import { useApprovalPolicyScript } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Button,
+  Chip,
   DialogTitle,
   DialogActions,
   DialogContent,
@@ -41,10 +43,21 @@ export const ApprovalPolicyView = ({
 }: ApprovalPolicyViewProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { api } = useMoniteContext();
   const { triggers, getTriggerLabel } = useApprovalPolicyTrigger({
     approvalPolicy,
   });
   const { script } = useApprovalPolicyScript({ approvalPolicy });
+  const { data: tagsForTriggers } = api.tags.getTags.useQuery(
+    {
+      query: {
+        id__in: Array.isArray(triggers?.tags) ? triggers.tags : [],
+      },
+    },
+    {
+      enabled: Boolean(triggers?.tags?.length),
+    }
+  );
 
   const triggersList = Object.keys(triggers).map((triggerKey) => {
     const triggerLabel = getTriggerLabel(triggerKey);
@@ -54,15 +67,22 @@ export const ApprovalPolicyView = ({
       case 'was_created_by_user_id':
         if (Array.isArray(triggers[triggerKey])) {
           triggerValue = (
-            <Stack gap={1}>
+            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
               {triggers[triggerKey].map((userId) => (
                 <User key={userId} userId={userId} />
               ))}
             </Stack>
           );
-        } else {
-          triggerValue = triggerKey;
         }
+        break;
+      case 'tags':
+        triggerValue = (
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+            {tagsForTriggers?.data.map((tag) => (
+              <Chip key={tag.id} label={tag.name} />
+            ))}
+          </Stack>
+        );
         break;
       default:
         triggerValue = triggerKey;

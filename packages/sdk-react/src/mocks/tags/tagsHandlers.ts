@@ -55,10 +55,14 @@ export const tagsHandlers = [
           'pagination_token'
         ) as GetRequest['pagination_token']) || null;
 
+      const idIn = url.searchParams.getAll('id__in');
+
       let next_pagination_token = undefined;
       let prev_pagination_token = undefined;
 
-      const filteredData = (() => {
+      const tagsByIdIn = tagsList.filter((tag) => idIn.includes(tag.id));
+
+      const pagedData = (() => {
         const parsedLimit = Number(limit);
 
         /** We should return next elements */
@@ -76,7 +80,7 @@ export const tagsHandlers = [
         return tagsList.slice(0, parsedLimit);
       })();
 
-      const sortedData = filteredData.sort((a, b) => {
+      const sortedData = pagedData.sort((a, b) => {
         if (sort === null) {
           return 0;
         }
@@ -95,8 +99,27 @@ export const tagsHandlers = [
 
       await delay();
 
+      const returnedData = (() => {
+        console.log({ idIn, sort, limit });
+        if (idIn.length > 0) {
+          return tagsByIdIn;
+        }
+
+        if (sort) {
+          return sortedData;
+        }
+
+        if (limit) {
+          return pagedData;
+        }
+
+        return tagsList;
+      })();
+
+      console.log({ returnedData });
+
       return HttpResponse.json({
-        data: sortedData,
+        data: returnedData,
         next_pagination_token,
         prev_pagination_token,
       });
