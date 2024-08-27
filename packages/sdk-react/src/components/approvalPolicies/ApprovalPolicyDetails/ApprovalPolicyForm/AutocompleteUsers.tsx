@@ -46,7 +46,7 @@ export const AutocompleteUsers = ({
       }) => (
         <Autocomplete
           {...field}
-          id="triggers.was_created_by_user_id"
+          id={field.name}
           multiple
           autoComplete
           includeInputInList

@@ -1,10 +1,9 @@
-import { ReactNode, useId, useState, useEffect } from 'react';
+import { ReactNode, useId, useState, useEffect, useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
-import { AutocompleteUsers } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUsers';
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import {
   useApprovalPolicyScript,
@@ -24,6 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Breadcrumbs,
+  Chip,
   DialogTitle,
   DialogContent,
   Divider,
@@ -40,6 +40,9 @@ import {
   Button,
   DialogActions,
 } from '@mui/material';
+
+import { AutocompleteTags } from './AutocompleteTags';
+import { AutocompleteUsers } from './AutocompleteUsers';
 
 interface ApprovalPolicyFormProps {
   /** Approval policy to be updated */
@@ -58,11 +61,12 @@ export interface FormValues {
   triggerType: ApprovalPoliciesTriggerKey;
   triggers: {
     was_created_by_user_id: components['schemas']['EntityUserResponse'][];
+    tags: components['schemas']['TagReadSchema'][];
   };
   scriptType: ApprovalPoliciesScriptTypes;
   script: {
-    params: {
-      users: components['schemas']['EntityUserResponse'][];
+    params?: {
+      users?: components['schemas']['EntityUserResponse'][];
       requiredApprovalCount: number | string;
     };
   };
@@ -86,25 +90,46 @@ export const ApprovalPolicyForm = ({
     });
   const { script } = useApprovalPolicyScript({ approvalPolicy });
 
+  const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
   const [scriptInEdit, setScriptInEdit] =
     useState<ApprovalPoliciesScriptTypes | null>(null);
 
-  const { data: usersForTriggers } = api.entityUsers.getEntityUsers.useQuery({
-    query: {
-      id__in: Array.isArray(triggers?.was_created_by_user_id)
-        ? triggers.was_created_by_user_id
-        : [],
+  const { data: usersForTriggers } = api.entityUsers.getEntityUsers.useQuery(
+    {
+      query: {
+        id__in: Array.isArray(triggers?.was_created_by_user_id)
+          ? triggers.was_created_by_user_id
+          : [],
+      },
     },
-  });
-  const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery({
-    query: {
-      id__in: Array.isArray(script?.params.user_ids)
-        ? script.params.user_ids
-        : [],
+    {
+      enabled: Boolean(triggers?.was_created_by_user_id?.length),
+    }
+  );
+  const { data: tagsForTriggers } = api.tags.getTags.useQuery(
+    {
+      query: {
+        id__in: Array.isArray(triggers?.tags) ? triggers.tags : [],
+      },
     },
-  });
+    {
+      enabled: Boolean(triggers?.tags?.length),
+    }
+  );
+  const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery(
+    {
+      query: {
+        id__in: Array.isArray(script?.params.user_ids)
+          ? script.params.user_ids
+          : [],
+      },
+    },
+    {
+      enabled: Boolean(script?.params?.user_ids?.length),
+    }
+  );
 
   const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
     {},
@@ -194,50 +219,75 @@ export const ApprovalPolicyForm = ({
       script: {},
     },
   });
-  const { control, handleSubmit, setValue, getValues, reset } = methods;
+  const { control, handleSubmit, setValue, getValues, reset, watch } = methods;
+  const currentTriggers = watch('triggers');
+  const currentTriggerType = watch('triggerType');
+  const currentTriggerWasCreatedByUserId = watch(
+    'triggers.was_created_by_user_id'
+  );
+  const currentTriggerTags = watch('triggers.tags');
+  const currentScript = watch('script');
+  const currentScriptType = watch('scriptType');
+  const currentRequiredApprovalCount = watch(
+    'script.params.requiredApprovalCount'
+  );
 
-  const triggersList = Object.keys(getValues('triggers')).map((triggerKey) => {
-    const triggerLabel = getTriggerLabel(triggerKey);
-    let triggerValue: ReactNode;
+  const triggersList = useMemo(() => {
+    return Object.keys(currentTriggers).map((triggerKey) => {
+      const triggerLabel = getTriggerLabel(triggerKey);
+      let triggerValue: ReactNode;
 
-    switch (triggerKey) {
-      case 'was_created_by_user_id':
-        triggerValue = (
-          <Stack gap={1}>
-            {getValues('triggers.was_created_by_user_id').map((user) => (
-              <User key={user.id} userId={user.id} />
-            ))}
-          </Stack>
-        );
-        break;
-      default:
-        triggerValue = triggerKey;
-        break;
-    }
+      switch (triggerKey) {
+        case 'was_created_by_user_id':
+          triggerValue = (
+            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              {currentTriggerWasCreatedByUserId.map((user) => (
+                <User key={user.id} userId={user.id} />
+              ))}
+            </Stack>
+          );
+          break;
+        case 'tags':
+          triggerValue = (
+            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              {currentTriggerTags.map((tag) => (
+                <Chip key={tag.id} label={tag.name} />
+              ))}
+            </Stack>
+          );
+          break;
+        default:
+          triggerValue = triggerKey;
+          break;
+      }
 
-    return {
-      key: triggerKey,
-      label: triggerLabel,
-      value: triggerValue,
-    };
-  });
+      return {
+        key: triggerKey,
+        label: triggerLabel,
+        value: triggerValue,
+      };
+    });
+  }, [
+    currentTriggers,
+    getTriggerLabel,
+    currentTriggerWasCreatedByUserId,
+    currentTriggerTags,
+  ]);
 
-  const approvalFlow = (() => {
-    const currentUsers = getValues('script.params.users');
+  const approvalFlow = useMemo(() => {
+    const currentUsers = currentScript.params?.users;
 
     if (!script.params) return null;
 
     let approvalFlowLabel: string;
     let approvalFlowValue: ReactNode;
 
-    switch (isEdit ? script.type : getValues('scriptType')) {
+    switch (isEdit ? script.type : currentScriptType) {
       case 'ApprovalRequests.request_approval_by_users':
         approvalFlowLabel =
-          getValues('script.params.requiredApprovalCount') === '1'
+          currentRequiredApprovalCount === '1'
             ? t(i18n)`Any user from the list`
-            : t(i18n)`Any ${getValues(
-                'script.params.requiredApprovalCount'
-              )} users from the list`;
+            : t(i18n)`Any ${currentRequiredApprovalCount} users from the list`;
         approvalFlowValue = (
           <Stack gap={1}>
             {currentUsers?.map((user) => (
@@ -246,36 +296,55 @@ export const ApprovalPolicyForm = ({
           </Stack>
         );
         return {
-          key: getValues('scriptType'),
+          key: currentScriptType,
           label: approvalFlowLabel,
           value: approvalFlowValue,
         };
       default:
         break;
     }
-  })();
+  }, [
+    currentScript,
+    currentScriptType,
+    currentRequiredApprovalCount,
+    i18n,
+    isEdit,
+    script.params,
+    script.type,
+  ]);
 
   useEffect(() => {
-    if (!isEdit || !usersForTriggers?.data || !usersForScript?.data) return;
+    if (!isEdit) return;
 
-    reset({
-      triggers: {
-        was_created_by_user_id:
-          usersForTriggers?.data.filter((user) =>
-            triggers.was_created_by_user_id?.includes(user.id)
-          ) || [],
-      },
-      script: {
-        params: {
-          users: usersForScript?.data.filter((user) =>
-            script.params.user_ids?.includes(user.id)
-          ),
-          requiredApprovalCount: script.params.required_approval_count,
-        },
-      },
-    });
+    if (usersForTriggers?.data && usersForTriggers?.data.length > 0) {
+      setValue(
+        'triggers.was_created_by_user_id',
+        usersForTriggers?.data.filter((user) =>
+          triggers.was_created_by_user_id?.includes(user.id)
+        ) || []
+      );
+    }
+
+    if (tagsForTriggers?.data && tagsForTriggers?.data.length > 0) {
+      setValue(
+        'triggers.tags',
+        tagsForTriggers?.data.filter((tag) =>
+          triggers.tags?.includes(tag.id)
+        ) || []
+      );
+    }
+
+    if (usersForScript?.data && usersForScript?.data.length > 0) {
+      setValue('script.params', {
+        users: usersForScript?.data.filter((user) =>
+          script.params.user_ids?.includes(user.id)
+        ),
+        requiredApprovalCount: script.params.required_approval_count || '1',
+      });
+    }
   }, [
     usersForTriggers?.data,
+    tagsForTriggers?.data,
     usersForScript?.data,
     reset,
     triggers.was_created_by_user_id,
@@ -283,6 +352,9 @@ export const ApprovalPolicyForm = ({
     script.params.user_ids,
     getValues,
     isEdit,
+    tagsForTriggers,
+    triggers.tags,
+    setValue,
   ]);
 
   useEffect(() => {
@@ -306,19 +378,30 @@ export const ApprovalPolicyForm = ({
           alignItems="center"
           gap={2}
         >
-          {triggerInEdit ? (
+          {triggerInEdit || isAddingTrigger ? (
             <Breadcrumbs separator="›" aria-label="breadcrumb">
               <Typography
                 variant="subtitle1"
                 color="text.secondary"
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
-                  setValue(
-                    'triggers.was_created_by_user_id',
-                    usersForTriggers?.data.filter((user) =>
-                      triggers.was_created_by_user_id?.includes(user.id)
-                    ) || []
-                  );
+                  if (triggerInEdit === 'was_created_by_user_id') {
+                    setValue(
+                      'triggers.was_created_by_user_id',
+                      usersForTriggers?.data.filter((user) =>
+                        triggers.was_created_by_user_id?.includes(user.id)
+                      ) || []
+                    );
+                  }
+
+                  if (triggerInEdit === 'tags') {
+                    setValue(
+                      'triggers.tags',
+                      tagsForTriggers?.data.filter((tag) =>
+                        triggers.tags?.includes(tag.id)
+                      ) || []
+                    );
+                  }
                   setTriggerInEdit(null);
                 }}
               >
@@ -358,7 +441,7 @@ export const ApprovalPolicyForm = ({
                 trigger: {
                   all: [
                     "{event_name == 'submitted_for_approval'}",
-                    {
+                    values.triggers.was_created_by_user_id.length > 0 && {
                       operator: 'in',
                       left_operand: {
                         name: 'invoice.was_created_by_user_id',
@@ -367,6 +450,13 @@ export const ApprovalPolicyForm = ({
                         (user) => user.id
                       ),
                     },
+                    values.triggers.tags.length > 0 && {
+                      operator: 'in',
+                      left_operand: {
+                        name: 'invoice.tags',
+                      },
+                      right_operand: values.triggers.tags.map((tag) => tag.id),
+                    },
                   ],
                 },
                 // TODO: remove this script after demo
@@ -374,11 +464,11 @@ export const ApprovalPolicyForm = ({
                   {
                     call: 'ApprovalRequests.request_approval_by_users',
                     params: {
-                      user_ids: values.script.params.users.map(
-                        (user) => user.id
-                      ),
+                      user_ids:
+                        values.script.params?.users?.map((user) => user.id) ||
+                        [],
                       required_approval_count:
-                        values.script.params.requiredApprovalCount,
+                        values.script?.params?.requiredApprovalCount || '1',
                     },
                   },
                 ],
@@ -391,7 +481,7 @@ export const ApprovalPolicyForm = ({
             })}
           >
             <Stack gap={3}>
-              {triggerInEdit && (
+              {(triggerInEdit || isAddingTrigger) && (
                 <RHFTextField
                   label={t(i18n)`Condition type`}
                   name="triggerType"
@@ -399,8 +489,8 @@ export const ApprovalPolicyForm = ({
                   fullWidth
                   required
                   select
-                  value={triggerInEdit}
-                  disabled={Boolean(isEdit && triggerInEdit)}
+                  value={triggerInEdit || undefined}
+                  disabled={Boolean(triggerInEdit)}
                 >
                   <MenuItem value="amount">{getTriggerName('amount')}</MenuItem>
                   <MenuItem value="counterpart_id">
@@ -432,11 +522,21 @@ export const ApprovalPolicyForm = ({
                   </MenuItem>
                 </RHFTextField>
               )}
-              {triggerInEdit === 'was_created_by_user_id' && (
+              {(triggerInEdit === 'was_created_by_user_id' ||
+                (isAddingTrigger &&
+                  currentTriggerType === 'was_created_by_user_id')) && (
                 <AutocompleteUsers
                   control={control}
                   name="triggers.was_created_by_user_id"
                   label={t(i18n)`Users`}
+                />
+              )}
+              {(triggerInEdit === 'tags' ||
+                (isAddingTrigger && currentTriggerType === 'tags')) && (
+                <AutocompleteTags
+                  control={control}
+                  name="triggers.tags"
+                  label={t(i18n)`Tags`}
                 />
               )}
               {scriptInEdit ===
@@ -455,7 +555,7 @@ export const ApprovalPolicyForm = ({
                   />
                 </>
               )}
-              {!triggerInEdit && !scriptInEdit && (
+              {!triggerInEdit && !scriptInEdit && !isAddingTrigger && (
                 <>
                   <RHFTextField
                     label={t(i18n)`Policy Name`}
@@ -529,9 +629,7 @@ export const ApprovalPolicyForm = ({
                             <TableCell colSpan={3}>
                               <Button
                                 startIcon={<AddCircleOutlineIcon />}
-                                onClick={() =>
-                                  setTriggerInEdit('was_created_by_user_id')
-                                }
+                                onClick={() => setIsAddingTrigger(true)}
                               >
                                 {t(i18n)`Add new condition`}
                               </Button>
@@ -615,19 +713,29 @@ export const ApprovalPolicyForm = ({
       </DialogContent>
       <Divider />
       <DialogActions>
-        {triggerInEdit || scriptInEdit ? (
+        {triggerInEdit || scriptInEdit || isAddingTrigger ? (
           <>
             <Button
               variant="outlined"
               onClick={() => {
                 if (triggerInEdit) {
-                  setValue(
-                    'triggers.was_created_by_user_id',
-                    usersForTriggers?.data.filter((user) =>
-                      triggers.was_created_by_user_id?.includes(user.id)
-                    ) || []
-                  );
-                  setTriggerInEdit(null);
+                  if (triggerInEdit === 'was_created_by_user_id') {
+                    setValue(
+                      'triggers.was_created_by_user_id',
+                      usersForTriggers?.data.filter((user) =>
+                        triggers.was_created_by_user_id?.includes(user.id)
+                      ) || []
+                    );
+                  }
+
+                  if (triggerInEdit === 'tags') {
+                    setValue(
+                      'triggers.tags',
+                      tagsForTriggers?.data.filter((tag) =>
+                        triggers.tags?.includes(tag.id)
+                      ) || []
+                    );
+                  }
                 }
 
                 if (scriptInEdit) {
@@ -641,8 +749,10 @@ export const ApprovalPolicyForm = ({
                     'script.params.requiredApprovalCount',
                     script.params.required_approval_count || 1
                   );
-                  setScriptInEdit(null);
                 }
+
+                setTriggerInEdit(null);
+                setScriptInEdit(null);
               }}
             >{t(i18n)`Cancel`}</Button>
             <Button
@@ -651,8 +761,12 @@ export const ApprovalPolicyForm = ({
                 e.preventDefault();
                 setTriggerInEdit(null);
                 setScriptInEdit(null);
+                setIsAddingTrigger(false);
+                setValue('triggerType', '');
               }}
-            >{t(i18n)`Update`}</Button>
+            >
+              {triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`}
+            </Button>
           </>
         ) : (
           <>
