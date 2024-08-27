@@ -16,11 +16,11 @@ import {
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 
-interface Props {
+interface PayablesTableFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
 }
 
-export const Filters = ({ onChangeFilter }: Props) => {
+export const Filters = ({ onChangeFilter }: PayablesTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const className = 'Monite-PayableFilters';

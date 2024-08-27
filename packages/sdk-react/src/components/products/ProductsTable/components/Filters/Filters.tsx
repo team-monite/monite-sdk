@@ -15,11 +15,11 @@ import {
 } from '../../consts';
 import { Filters as FilterType, FilterValue } from '../../types';
 
-interface Props {
+interface ProductsTableFiltersProps {
   onChangeFilter: (field: keyof FilterType, value: FilterValue) => void;
 }
 
-export const Filters = ({ onChangeFilter }: Props) => {
+export const Filters = ({ onChangeFilter }: ProductsTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { api } = useMoniteContext();

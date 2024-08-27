@@ -16,13 +16,13 @@ import { debounce } from '@mui/material/utils';
 export const DEBOUNCE_SEARCH_TIMEOUT: number = 500;
 
 /**
- * `Props` is an interface that defines the properties for the `SearchField` component.
+ * `SearchFieldProps` is an interface that defines the properties for the `SearchField` component.
  *
  * @interface
  * @property {string} label - The label for the search field.
  * @property {(value: string | null) => void} onChange - The function to be called when the input value changes.
  */
-interface Props {
+interface SearchFieldProps {
   label: string;
   onChange: (value: string | null) => void;
 }
@@ -43,7 +43,7 @@ interface Props {
  * @returns {React.ReactElement} Returns a `FormControl` element that contains the search field.
  */
 
-export const SearchField = ({ label, onChange }: Props) => {
+export const SearchField = ({ label, onChange }: SearchFieldProps) => {
   const debouncedOnChange = useMemo(
     () => debounce(onChange, DEBOUNCE_SEARCH_TIMEOUT),
     [onChange]
