@@ -57,13 +57,14 @@ const EmailInvoiceDetailsBase = ({
 }: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite, api } = useMoniteContext();
-  const { control, handleSubmit, formState, getValues, setValue } = useForm({
-    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
-    defaultValues: {
-      subject: '',
-      body: '',
-    },
-  });
+  const { control, handleSubmit, formState, getValues, setValue, trigger } =
+    useForm({
+      resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
+      defaultValues: {
+        subject: '',
+        body: '',
+      },
+    });
   useFormPersist(`Monite-InvoiceEmail-${invoiceId}`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
@@ -219,7 +220,10 @@ const EmailInvoiceDetailsBase = ({
                     type="button"
                     form={formName}
                     disabled={isDisabled}
-                    onClick={() => setPresentation(FormPresentation.Preview)}
+                    onClick={async () => {
+                      const isValid = await trigger();
+                      if (isValid) setPresentation(FormPresentation.Preview);
+                    }}
                   >{t(i18n)`Preview email`}</Button>
                 )}
                 <Button
