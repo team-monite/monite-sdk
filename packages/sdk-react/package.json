@@ -1,6 +1,6 @@
 {
   "name": "@monite/sdk-react",
-  "version": "3.16.0-beta.2",
+  "version": "3.16.0-beta.3",
   "apiVersion": "2024-01-31",
   "publishConfig": {
     "access": "public"

@@ -1,5 +1,24 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.3
+
+### Minor Changes
+
+- 04524bf6: feat(DEV-12368): Implement toggle to turn reminders on/off on counterpart level
+- 01e91e0d: feat(DEV-12181): configure custom fields that need to be mandatory after OCR for user to check
+- c8450cc8: feat(DEV-12180): mark overdue date for payables
+- 70ffd3bb: Change date format from '08/20/2024' to US format 'Aug 21, 2024'
+
+### Patch Changes
+
+- c962003e: chore(DEV-11417): unify custom status chip interfaces
+
+  Removed forced small size for status chips, allowing backward compatibility.
+
+- 8302fb12: fix chips by forwarding custom prop status
+- 3519c12f: feat(DEV-11417): display recurring icon in the Invoices Table
+  - @monite/sdk-api@3.16.0-beta.3
+
 ## 3.16.0-beta.2
 
 ### Minor Changes
