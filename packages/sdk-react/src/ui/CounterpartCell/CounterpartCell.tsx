@@ -73,7 +73,9 @@ export const CounterPartCellByName = ({
   );
 };
 
-export const CounterpartCellById = ({ counterpartId }: Props) => {
+export const CounterpartCellById = ({
+  counterpartId,
+}: CounterpartCellProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
   if (!counterpartId || (!isLoading && !counterpart)) {
     return null;
