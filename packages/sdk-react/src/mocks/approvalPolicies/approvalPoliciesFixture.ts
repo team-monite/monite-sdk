@@ -4,6 +4,7 @@ import {
   entityUser2,
   entityUser3,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
+import { tagListFixture } from '@/mocks/tags';
 
 export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyResourceList'] =
   {
@@ -22,6 +23,17 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
                 name: 'invoice.was_created_by_user_id',
               },
               right_operand: [entityUserByIdFixture.id, entityUser2.id],
+            },
+            {
+              operator: 'in',
+              left_operand: {
+                name: 'invoice.tags',
+              },
+              right_operand: [
+                tagListFixture[0].id,
+                tagListFixture[2].id,
+                tagListFixture[3].id,
+              ],
             },
           ],
         },
