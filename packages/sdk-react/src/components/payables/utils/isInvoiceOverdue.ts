@@ -3,7 +3,16 @@ import { components } from '@/api';
 export const isInvoiceOverdue = (
   invoice: components['schemas']['PayableResponseSchema']
 ) => {
+  if (!invoice.due_date) return false;
+
   const today = new Date();
+  today.setUTCHours(0, 0, 0, 0); // Normalize today to UTC midnight
+
+  const dueDate = new Date(invoice.due_date);
+  dueDate.setUTCHours(0, 0, 0, 0); // Normalize dueDate to UTC midnight
+
+  if (dueDate.getTime() === today.getTime()) return false;
+
   const statuses: components['schemas']['PayableStateEnum'][] = [
     'draft',
     'new',
@@ -11,9 +20,8 @@ export const isInvoiceOverdue = (
     'approve_in_progress',
   ];
 
-  return (
-    statuses.includes(invoice.status) &&
-    invoice.due_date &&
-    new Date(invoice.due_date).getTime() < today.getTime()
-  );
+  const isStatusOverdue = statuses.includes(invoice.status);
+  const isDateOverdue = dueDate.getTime() < today.getTime();
+
+  return isStatusOverdue && isDateOverdue;
 };
