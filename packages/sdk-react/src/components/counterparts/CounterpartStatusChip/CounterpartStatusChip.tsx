@@ -6,7 +6,7 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
-export interface CounterpartStatusChipProps {
+export interface MoniteCounterpartStatusChipProps {
   /** The status of the invoice. */
   status: 'customer' | 'vendor';
   /** The variant of the Chip. */
@@ -49,7 +49,7 @@ export interface CounterpartStatusChipProps {
 
 export const CounterpartStatusChip = forwardRef<
   HTMLDivElement,
-  CounterpartStatusChipProps
+  MoniteCounterpartStatusChipProps
 >((inProps, ref) => {
   const { status, variant, size } = useThemeProps({
     props: inProps,
@@ -71,7 +71,7 @@ export const CounterpartStatusChip = forwardRef<
 });
 
 const StyledChip = styled(
-  forwardRef<HTMLDivElement, ChipProps & CounterpartStatusChipProps>(
+  forwardRef<HTMLDivElement, ChipProps & MoniteCounterpartStatusChipProps>(
     (props, ref) => <Chip ref={ref} {...props} />
   ),
   {

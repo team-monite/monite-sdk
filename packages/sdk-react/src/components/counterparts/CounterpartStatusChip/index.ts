@@ -1,4 +1,4 @@
 export {
   CounterpartStatusChip,
-  type CounterpartStatusChipProps,
+  type MoniteCounterpartStatusChipProps,
 } from './CounterpartStatusChip';
