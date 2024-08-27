@@ -129,9 +129,10 @@ const ReceivablesBase = () => {
       >
         <InvoiceDetails
           type={'invoice'}
-          onCreate={() => {
+          onCreate={(receivableId: string) => {
             setIsCreateInvoiceDialogOpen(false);
             setActiveTab(ReceivablesTableTabEnum.Invoices);
+            setInvoiceId(receivableId);
           }}
         />
       </Dialog>
