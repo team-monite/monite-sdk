@@ -258,6 +258,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         minHeight: '40px',
         '& .MuiInputBase-input': {
           height: '40px',
+          lineHeight: '40px',
           padding: '0 14px', // Adjust padding if needed
           boxSizing: 'border-box',
         },
