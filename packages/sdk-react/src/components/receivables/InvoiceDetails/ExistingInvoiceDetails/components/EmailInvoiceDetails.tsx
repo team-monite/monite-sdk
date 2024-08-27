@@ -8,6 +8,7 @@ import {
   useIssueReceivableById,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
+import { useFormPersist } from '@/utils/form/useFormPersist';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -42,13 +43,14 @@ const EmailInvoiceDetailsBase = ({
 }: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite, api } = useMoniteContext();
-  const { control, handleSubmit, formState } = useForm({
+  const { control, handleSubmit, formState, getValues, setValue } = useForm({
     resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
     defaultValues: {
       subject: '',
       body: '',
     },
   });
+  useFormPersist(`Monite-InvoiceEmail-${invoiceId}`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
 
