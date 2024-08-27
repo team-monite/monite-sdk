@@ -170,6 +170,23 @@ export const approvalPoliciesHandlers = [
     await delay();
     return HttpResponse.json(updatedApprovalPolicy);
   }),
+
+  http.delete<{ approvalPolicyId: string }>(
+    approvalPolicyPathById,
+    async ({ params }) => {
+      const approvalPolicyId = params.approvalPolicyId;
+
+      approvalPoliciesList = approvalPoliciesList.filter(
+        (approvalPolicy) => approvalPolicy.id !== approvalPolicyId
+      );
+
+      await delay();
+
+      return new HttpResponse(null, {
+        status: 204,
+      });
+    }
+  ),
 ];
 
 type ApprovalPolicyCreate = components['schemas']['ApprovalPolicyCreate'];
