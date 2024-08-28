@@ -5,7 +5,6 @@ import * as Styled from '../styles';
 import { UBuilding } from './icons/UBuilding';
 import { ULabel } from './icons/ULabel';
 import { UMoneyBill } from './icons/UMoneyBill';
-import { UMoneyStack } from './icons/UMoneyStack';
 import { UUserCircle } from './icons/UUserCircle';
 
 interface ApprovalPoliciesTriggersProps {
@@ -27,23 +26,14 @@ export const ApprovalPoliciesTriggers = ({
     <Styled.ColumnList>
       {triggerKeys.map((triggerKey) => {
         switch (triggerKey) {
-          // case 'amount': {
-          //   return (
-          //     <li key={triggerKey}>
-          //       <UMoneyBill width={18} />
-          //       {getTriggerName(triggerKey)}
-          //     </li>
-          //   );
-          // }
-
-          // case 'currency': {
-          //   return (
-          //     <li key={triggerKey}>
-          //       <UMoneyStack width={18} />
-          //       {getTriggerName(triggerKey)}
-          //     </li>
-          //   );
-          // }
+          case 'amount': {
+            return (
+              <li key={triggerKey}>
+                <UMoneyBill width={18} />
+                {getTriggerName(triggerKey)}
+              </li>
+            );
+          }
 
           case 'was_created_by_user_id': {
             return (
