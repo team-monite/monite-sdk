@@ -35,7 +35,7 @@ export const ApprovalPolicyDetails = ({
   onCreated,
   onUpdated,
 }: ApprovalPolicyDetailsProps) => {
-  const [isEdit, setIsEdit] = useState<boolean>(false); // TODO: remove this after demo
+  const [isEdit, setIsEdit] = useState<boolean>(true); // TODO: remove this after demo
 
   const {
     data: approvalPolicy,
