@@ -11,6 +11,12 @@ interface DataGridEmptyStateProps {
   onAction?: () => void;
 }
 
+interface ActionButtonProps {
+  onAction: () => void;
+  type: 'no-data' | 'error';
+  getActionButtonLabel: () => string;
+}
+
 export const DataGridEmptyState = ({
   type,
   table,
@@ -167,23 +173,6 @@ export const DataGridEmptyState = ({
     }
   };
 
-  const renderActionButton = () => {
-    if (type === 'no-data' || type === 'error') {
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onAction}
-          sx={{ mt: 2 }}
-          startIcon={type === 'error' ? <RefreshIcon /> : undefined}
-        >
-          {getActionButtonLabel()}
-        </Button>
-      );
-    }
-    return null;
-  };
-
   return (
     <Box
       sx={{
@@ -223,7 +212,11 @@ export const DataGridEmptyState = ({
       >
         {getDescriptionLine2()}
       </Typography>
-      {renderActionButton()}
+      <ActionButton
+        onAction={onAction}
+        type={type}
+        getActionButtonLabel={getActionButtonLabel}
+      />
       {type === 'error' && (
         <Link
           href="#"
@@ -242,4 +235,25 @@ export const DataGridEmptyState = ({
       )}
     </Box>
   );
+};
+
+const ActionButton = ({
+  onAction,
+  type,
+  getActionButtonLabel,
+}: ActionButtonProps) => {
+  if (type === 'no-data' || type === 'error') {
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onAction}
+        sx={{ mt: 2 }}
+        startIcon={type === 'error' ? <RefreshIcon /> : undefined}
+      >
+        {getActionButtonLabel()}
+      </Button>
+    );
+  }
+  return null;
 };
