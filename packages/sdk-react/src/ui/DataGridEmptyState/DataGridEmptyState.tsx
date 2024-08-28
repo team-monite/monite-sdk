@@ -11,11 +11,11 @@ interface DataGridEmptyStateProps {
   onAction?: () => void;
 }
 
-export const DataGridEmptyState: React.FC<DataGridEmptyStateProps> = ({
+export const DataGridEmptyState = ({
   type,
   table,
   onAction,
-}) => {
+}: DataGridEmptyStateProps) => {
   const getIcon = () => {
     switch (type) {
       case 'no-data':
@@ -43,26 +43,106 @@ export const DataGridEmptyState: React.FC<DataGridEmptyStateProps> = ({
     }
   };
 
-  const getMessage = () => {
+  const getTitle = () => {
     switch (type) {
       case 'no-data':
         switch (table) {
           case 'Sales':
-            return 'No sales yet. You can create your first quote or invoice.';
-          // Add specific messages for other tables here if needed
+            return 'No sales yet.';
+          case 'Payables':
+            return 'No payables yet.';
+          case 'ApprovalRequest':
+            return 'No approval requests yet.';
+          case 'Counterparts':
+            return 'No counterparts yet.';
+          case 'Products':
+            return 'No products yet.';
         }
         break;
       case 'error':
         switch (table) {
           case 'Sales':
-            return 'Failed to load sales documents. Please try to reload. If the error recurs, contact support.';
-          // Add specific messages for other tables here if needed
+            return 'Failed to load sales documents';
+          case 'Payables':
+            return 'Failed to load payables';
+          case 'ApprovalRequest':
+            return 'Failed to load approval requests';
+          case 'Counterparts':
+            return 'Failed to load counterparts';
+          case 'Products':
+            return 'Failed to load products';
         }
         break;
       case 'access-restricted':
-        return 'Access Restricted. You don’t have permissions to view this page. Contact your system administrator for details.';
+        return 'Access Restricted';
       case 'unsupported-country':
-        return 'We don’t support invoicing in your country yet. Tax rates and regulations are currently not supported for your country. Unfortunately, you can’t issue documents.';
+        switch (table) {
+          case 'Sales':
+            return 'We don’t support invoicing in your country yet';
+          case 'Payables':
+            return 'We don’t support payables in your country yet';
+          case 'ApprovalRequest':
+            return 'Approval requests are not supported in your country yet';
+          case 'Counterparts':
+            return 'Counterparts are not supported in your country yet';
+          case 'Products':
+            return 'Products are not supported in your country yet';
+        }
+        break;
+      default:
+        return '';
+    }
+  };
+
+  const getDescriptionLine1 = () => {
+    switch (type) {
+      case 'no-data':
+        switch (table) {
+          case 'Sales':
+            return 'You don’t have any sales documents added yet.';
+          case 'Payables':
+            return 'You don’t have any payables added yet.';
+          case 'ApprovalRequest':
+            return 'You don’t have any approval requests added yet.';
+          case 'Counterparts':
+            return 'You don’t have any counterparts added yet.';
+          case 'Products':
+            return 'You don’t have any products added yet.';
+        }
+        break;
+      case 'error':
+        return 'Please try to reload.';
+      case 'access-restricted':
+        return 'You don’t have permissions to view this page.';
+      case 'unsupported-country':
+        return 'Tax rates and regulations are currently not supported for your country.';
+      default:
+        return '';
+    }
+  };
+
+  const getDescriptionLine2 = () => {
+    switch (type) {
+      case 'no-data':
+        switch (table) {
+          case 'Sales':
+            return 'You can create your first quote or invoice.';
+          case 'Payables':
+            return 'You can add a new payable.';
+          case 'ApprovalRequest':
+            return 'You can create a new approval request.';
+          case 'Counterparts':
+            return 'You can add a new counterpart.';
+          case 'Products':
+            return 'You can add a new product.';
+        }
+        break;
+      case 'error':
+        return 'If the error recurs, contact support.';
+      case 'access-restricted':
+        return 'Contact your system administrator for details.';
+      case 'unsupported-country':
+        return 'Unfortunately, you can’t issue documents.';
       default:
         return '';
     }
@@ -71,7 +151,15 @@ export const DataGridEmptyState: React.FC<DataGridEmptyStateProps> = ({
   const getActionButtonLabel = () => {
     switch (type) {
       case 'no-data':
-        return 'Create Document';
+        switch (table) {
+          case 'Sales':
+          case 'Payables':
+          case 'ApprovalRequest':
+          case 'Counterparts':
+          case 'Products':
+            return 'Create New';
+        }
+        break;
       case 'error':
         return 'Reload page';
       default:
@@ -112,12 +200,28 @@ export const DataGridEmptyState: React.FC<DataGridEmptyStateProps> = ({
       {getIcon()}
       <Typography
         sx={{
-          fontSize: '1.25rem',
+          fontSize: '1.5rem',
           fontWeight: 'bold',
           mb: 1,
         }}
       >
-        {getMessage()}
+        {getTitle()}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: '1rem',
+          mb: 1,
+        }}
+      >
+        {getDescriptionLine1()}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: '1rem',
+          mb: 2,
+        }}
+      >
+        {getDescriptionLine2()}
       </Typography>
       {renderActionButton()}
       {type === 'error' && (
