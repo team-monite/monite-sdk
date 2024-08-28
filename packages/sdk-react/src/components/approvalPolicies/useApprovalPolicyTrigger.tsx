@@ -3,9 +3,8 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
 export type ApprovalPoliciesTriggerKey =
-  // | 'amount'
+  | 'amount'
   | 'counterpart_id'
-  // | 'currency'
   | 'was_created_by_user_id'
   | 'tags';
 
@@ -13,13 +12,20 @@ interface ApprovalPoliciesTrigger {
   all: Array<{
     operator?: string;
     left_operand?: { name: ApprovalPoliciesTriggerKey };
-    right_operand?: string | string[];
+    right_operand?: string | string[] | number;
   }>;
 }
 
+export type AmountTuple = [ApprovalPoliciesOperator, string | number];
+
 export type Triggers = {
-  [key in ApprovalPoliciesTriggerKey]?: string | string[];
+  counterpart_id?: string[];
+  was_created_by_user_id?: string[];
+  tags?: string[];
+  amount?: AmountTuple[];
 };
+
+export type ApprovalPoliciesOperator = '>' | '<' | '>=' | '<=' | '==' | 'range';
 
 interface UseApprovalPolicyTriggerProps {
   approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
@@ -29,11 +35,15 @@ const isValidTriggerKey = (key: string): key is ApprovalPoliciesTriggerKey => {
   return [
     'amount',
     'counterpart_id',
-    'currency',
     'was_created_by_user_id',
     'tags',
   ].includes(key);
 };
+
+const isValidOperator = (
+  operator: string
+): operator is ApprovalPoliciesOperator =>
+  ['>', '<', '>=', '<=', '==', 'range'].includes(operator);
 
 export const useApprovalPolicyTrigger = ({
   approvalPolicy,
@@ -42,10 +52,8 @@ export const useApprovalPolicyTrigger = ({
 
   const getTriggerName = (triggerKey: ApprovalPoliciesTriggerKey) => {
     switch (triggerKey) {
-      // case 'amount':
-      //   return t(i18n)`Amount`;
-      // case 'currency':
-      //   return t(i18n)`Currency`;
+      case 'amount':
+        return t(i18n)`Amount`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by user`;
       case 'counterpart_id':
@@ -59,10 +67,8 @@ export const useApprovalPolicyTrigger = ({
 
   const getTriggerLabel = (triggerKey: ApprovalPoliciesTriggerKey) => {
     switch (triggerKey) {
-      // case 'amount':
-      //   return t(i18n)`Amount`;
-      // case 'currency':
-      //   return t(i18n)`Currency`;
+      case 'amount':
+        return t(i18n)`Amount`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by`;
       case 'counterpart_id':
@@ -72,6 +78,36 @@ export const useApprovalPolicyTrigger = ({
       default:
         return triggerKey;
     }
+  };
+
+  const getAmountLabel = (amountValue: AmountTuple[]) => {
+    if (amountValue.length === 1) {
+      switch (amountValue[0][0]) {
+        case '>':
+          return t(i18n)`Greater than ${amountValue[0][1]}`;
+        case '>=':
+          return t(i18n)`Greater than or equal to ${amountValue[0][1]}`;
+        case '<':
+          return t(i18n)`Less than ${amountValue[0][1]}`;
+        case '<=':
+          return t(i18n)`Less than or equal to ${amountValue[0][1]}`;
+        case '==':
+          return t(i18n)`Equal to ${amountValue[0][1]}`;
+        default:
+          return amountValue[0][1];
+      }
+    }
+
+    if (amountValue.length === 2) {
+      const leftRange = amountValue.find((value) => value[0] === '>=');
+      const rightRange = amountValue.find((value) => value[0] === '<=');
+
+      if (leftRange && rightRange) {
+        return t(i18n)`${leftRange[1]} - ${rightRange[1]}`;
+      }
+    }
+
+    return amountValue[0][1];
   };
 
   const isApprovalPolicyTrigger = (
@@ -89,9 +125,10 @@ export const useApprovalPolicyTrigger = ({
     // TODO: display error message
     return {
       triggerKeys: [],
-      triggers: {},
+      triggers: {} as Triggers,
       getTriggerName,
       getTriggerLabel,
+      getAmountLabel,
     };
   }
 
@@ -132,8 +169,25 @@ export const useApprovalPolicyTrigger = ({
       ) {
         const rawTriggerKey = trigger.left_operand.name.replace('invoice.', '');
 
-        if (isValidTriggerKey(rawTriggerKey) && trigger.right_operand) {
-          acc[rawTriggerKey] = trigger.right_operand;
+        if (
+          isValidTriggerKey(rawTriggerKey) &&
+          trigger.operator &&
+          trigger.right_operand
+        ) {
+          if (rawTriggerKey === 'amount') {
+            if (
+              (typeof trigger.right_operand === 'string' ||
+                typeof trigger.right_operand === 'number') &&
+              isValidOperator(trigger.operator)
+            ) {
+              acc['amount'] = [
+                ...(acc['amount'] ?? []),
+                [trigger.operator, trigger.right_operand],
+              ];
+            }
+          } else if (Array.isArray(trigger.right_operand)) {
+            acc[rawTriggerKey] = trigger.right_operand;
+          }
         }
       }
 
@@ -147,5 +201,6 @@ export const useApprovalPolicyTrigger = ({
     triggers,
     getTriggerName,
     getTriggerLabel,
+    getAmountLabel,
   };
 };
