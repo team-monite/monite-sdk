@@ -94,7 +94,7 @@ interface PayablesTableProps {
    * The event handler for the file input when no data is present.
    * This triggers the file upload process when the user selects a file.
    */
-  openFileInput: () => void;
+  openFileInput?: () => void;
 
   /**
    * The event handler for opening the "New Invoice" dialog when no data is present.
@@ -396,7 +396,7 @@ const PayablesTableBase = ({
           if (action === t(i18n)`New Invoice`) {
             setIsCreateInvoiceDialogOpen(true);
           } else if (action === t(i18n)`Upload File`) {
-            openFileInput();
+            openFileInput?.();
           }
         }}
         type="no-data"
