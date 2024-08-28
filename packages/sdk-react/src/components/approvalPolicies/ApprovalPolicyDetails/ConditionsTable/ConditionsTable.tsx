@@ -39,7 +39,7 @@ export const ConditionsTable = ({
   onDeleteTrigger,
 }: ConditionsTableProps) => {
   const { i18n } = useLingui();
-  const { getTriggerLabel } = useApprovalPolicyTrigger({});
+  const { getTriggerLabel, getAmountLabel } = useApprovalPolicyTrigger({});
 
   const triggersList = useMemo(() => {
     return (Object.keys(triggers) as Array<keyof Triggers>).map(
@@ -78,6 +78,9 @@ export const ConditionsTable = ({
               </Stack>
             );
             break;
+          case 'amount':
+            triggerValue = <p>{getAmountLabel(triggers.amount ?? [])}</p>;
+            break;
           default:
             triggerValue = triggerKey;
             break;
@@ -90,7 +93,7 @@ export const ConditionsTable = ({
         };
       }
     );
-  }, [triggers, getTriggerLabel]);
+  }, [triggers, getTriggerLabel, getAmountLabel]);
 
   return (
     <Paper variant="outlined">
@@ -142,7 +145,8 @@ export const ConditionsTable = ({
                 disabled={Boolean(
                   triggers?.was_created_by_user_id?.length &&
                     triggers?.tags?.length &&
-                    triggers?.counterpart_id?.length
+                    triggers?.counterpart_id?.length &&
+                    triggers?.amount?.length
                 )}
               >
                 {t(i18n)`Add new condition`}
