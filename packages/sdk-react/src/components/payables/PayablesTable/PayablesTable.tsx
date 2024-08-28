@@ -390,7 +390,7 @@ const PayablesTableBase = ({
         title={t(i18n)`No Payables`}
         descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
         descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create New`}
+        actionButtonLabel={t(i18n)`Create new`}
         actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
         onAction={(action) => {
           if (action === t(i18n)`New Invoice`) {
