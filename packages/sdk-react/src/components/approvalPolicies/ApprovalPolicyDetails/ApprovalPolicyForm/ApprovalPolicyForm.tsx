@@ -23,7 +23,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Breadcrumbs,
-  Chip,
   DialogTitle,
   DialogContent,
   Divider,
@@ -41,6 +40,7 @@ import {
   DialogActions,
 } from '@mui/material';
 
+import { ConditionsTable } from '../ConditionsTable';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 
@@ -58,7 +58,7 @@ interface ApprovalPolicyFormProps {
 export interface FormValues {
   name: string;
   description: string;
-  triggerType: ApprovalPoliciesTriggerKey;
+  triggerType: ApprovalPoliciesTriggerKey | null;
   triggers: {
     was_created_by_user_id: components['schemas']['EntityUserResponse'][];
     tags: components['schemas']['TagReadSchema'][];
@@ -84,10 +84,9 @@ export const ApprovalPolicyForm = ({
 
   const formId = `Monite-Form-approvalPolicyBuilder-${useId()}`;
 
-  const { triggers, getTriggerName, getTriggerLabel } =
-    useApprovalPolicyTrigger({
-      approvalPolicy,
-    });
+  const { triggers, getTriggerName } = useApprovalPolicyTrigger({
+    approvalPolicy,
+  });
   const { script } = useApprovalPolicyScript({ approvalPolicy });
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
@@ -224,59 +223,11 @@ export const ApprovalPolicyForm = ({
   const { control, handleSubmit, setValue, getValues, watch } = methods;
   const currentTriggers = watch('triggers');
   const currentTriggerType = watch('triggerType');
-  const currentTriggerWasCreatedByUserId = watch(
-    'triggers.was_created_by_user_id'
-  );
-  const currentTriggerTags = watch('triggers.tags');
   const currentScript = watch('script');
   const currentScriptType = watch('scriptType');
   const currentRequiredApprovalCount = watch(
     'script.params.requiredApprovalCount'
   );
-
-  const triggersList = useMemo(() => {
-    return (
-      Object.keys(currentTriggers) as Array<keyof typeof currentTriggers>
-    ).map((triggerKey) => {
-      const triggerLabel = getTriggerLabel(triggerKey);
-      let triggerValue: ReactNode;
-
-      switch (triggerKey) {
-        case 'was_created_by_user_id':
-          triggerValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {currentTriggerWasCreatedByUserId.map((user) => (
-                <User key={user.id} userId={user.id} />
-              ))}
-            </Stack>
-          );
-          break;
-        case 'tags':
-          triggerValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {currentTriggerTags?.map((tag) => (
-                <Chip key={tag.id} label={tag.name} />
-              ))}
-            </Stack>
-          );
-          break;
-        default:
-          triggerValue = triggerKey;
-          break;
-      }
-
-      return {
-        key: triggerKey,
-        label: triggerLabel,
-        value: triggerValue,
-      };
-    });
-  }, [
-    currentTriggers,
-    getTriggerLabel,
-    currentTriggerWasCreatedByUserId,
-    currentTriggerTags,
-  ]);
 
   const approvalFlow = useMemo(() => {
     const currentUsers = currentScript.params?.users;
@@ -406,6 +357,7 @@ export const ApprovalPolicyForm = ({
     setScriptInEdit(null);
     setIsAddingTrigger(false);
     setPrevTriggerValues(null);
+    setValue('triggerType', null);
   };
 
   return (
@@ -463,22 +415,33 @@ export const ApprovalPolicyForm = ({
                 trigger: {
                   all: [
                     "{event_name == 'submitted_for_approval'}",
-                    values.triggers.was_created_by_user_id.length > 0 && {
-                      operator: 'in',
-                      left_operand: {
-                        name: 'invoice.was_created_by_user_id',
-                      },
-                      right_operand: values.triggers.was_created_by_user_id.map(
-                        (user) => user.id
-                      ),
-                    },
-                    values.triggers.tags.length > 0 && {
-                      operator: 'in',
-                      left_operand: {
-                        name: 'invoice.tags',
-                      },
-                      right_operand: values.triggers.tags.map((tag) => tag.id),
-                    },
+                    ...(values.triggers.was_created_by_user_id?.length > 0
+                      ? [
+                          {
+                            operator: 'in',
+                            left_operand: {
+                              name: 'invoice.was_created_by_user_id',
+                            },
+                            right_operand:
+                              values.triggers.was_created_by_user_id.map(
+                                (user) => user.id
+                              ),
+                          },
+                        ]
+                      : []),
+                    ...(values.triggers.tags?.length > 0
+                      ? [
+                          {
+                            operator: 'in',
+                            left_operand: {
+                              name: 'invoice.tags',
+                            },
+                            right_operand: values.triggers.tags.map(
+                              (tag) => tag.id
+                            ),
+                          },
+                        ]
+                      : []),
                   ],
                 },
                 // TODO: remove this script after demo
@@ -610,82 +573,30 @@ export const ApprovalPolicyForm = ({
                         <strong>ALL</strong> of the following conditions:
                       </Trans>
                     </Typography>
-                    <Paper variant="outlined">
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>{t(i18n)`Condition`}</TableCell>
-                            <TableCell>{t(i18n)`Criteria`}</TableCell>
-                            <TableCell />
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {triggersList.length > 0 ? (
-                            triggersList.map((trigger) => (
-                              <TableRow
-                                key={trigger.label}
-                                hover
-                                sx={{
-                                  '&.MuiTableRow-root': { cursor: 'pointer' },
-                                }}
-                                onClick={() => {
-                                  setTriggerInEdit(trigger.key);
-                                  setPrevTriggerValues({
-                                    ...getValues('triggers'),
-                                  });
-                                }}
-                              >
-                                <TableCell>{trigger.label}</TableCell>
-                                <TableCell>{trigger.value}</TableCell>
-                                <TableCell>
-                                  <IconButton
-                                    aria-label={t(i18n)`Delete trigger`}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
+                    <ConditionsTable
+                      triggers={currentTriggers}
+                      onAddTrigger={() => {
+                        setIsAddingTrigger(true);
+                        setPrevTriggerValues({
+                          ...getValues('triggers'),
+                        });
+                      }}
+                      onEditTrigger={(triggerKey) => {
+                        setTriggerInEdit(triggerKey);
+                        setPrevTriggerValues({
+                          ...getValues('triggers'),
+                        });
+                      }}
+                      onDeleteTrigger={(triggerKey) => {
+                        const updatedTriggers = {
+                          ...currentTriggers,
+                        };
 
-                                      const updatedTriggers = {
-                                        ...currentTriggers,
-                                      };
+                        delete updatedTriggers[triggerKey];
 
-                                      delete updatedTriggers[trigger.key];
-
-                                      setValue('triggers', updatedTriggers);
-                                    }}
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                </TableCell>
-                              </TableRow>
-                            ))
-                          ) : (
-                            <TableRow>
-                              <TableCell colSpan={3}>
-                                {t(i18n)`No conditions`}
-                              </TableCell>
-                            </TableRow>
-                          )}
-                          <TableRow>
-                            <TableCell colSpan={3}>
-                              <Button
-                                startIcon={<AddCircleOutlineIcon />}
-                                onClick={() => {
-                                  setIsAddingTrigger(true);
-                                  setPrevTriggerValues({
-                                    ...getValues('triggers'),
-                                  });
-                                }}
-                                disabled={Boolean(
-                                  currentTriggers?.was_created_by_user_id
-                                    ?.length && currentTriggers?.tags?.length
-                                )}
-                              >
-                                {t(i18n)`Add new condition`}
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </Paper>
+                        setValue('triggers', updatedTriggers);
+                      }}
+                    />
                     <Typography variant="h5" mt={4} mb={1}>
                       {t(i18n)`Approval flow`}
                     </Typography>
@@ -773,7 +684,7 @@ export const ApprovalPolicyForm = ({
                 setTriggerInEdit(null);
                 setScriptInEdit(null);
                 setIsAddingTrigger(false);
-                setValue('triggerType', '');
+                setValue('triggerType', null);
               }}
             >
               {triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`}
