@@ -38,7 +38,7 @@ export const AutocompleteTags = ({
     refetch,
   } = api.tags.getTags.useQuery({
     query: {
-      name__in: [inputValue] || undefined,
+      ...(inputValue && { name__in: [inputValue] }),
     },
   });
 
