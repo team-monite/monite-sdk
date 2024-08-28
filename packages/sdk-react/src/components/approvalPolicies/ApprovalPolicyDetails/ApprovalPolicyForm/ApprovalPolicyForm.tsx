@@ -93,6 +93,9 @@ export const ApprovalPolicyForm = ({
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
+  const [prevTriggerValues, setPrevTriggerValues] = useState<
+    FormValues['triggers'] | null
+  >(null);
   const [scriptInEdit, setScriptInEdit] =
     useState<ApprovalPoliciesScriptTypes | null>(null);
 
@@ -205,7 +208,6 @@ export const ApprovalPolicyForm = ({
 
     if (response) {
       setIsEdit(false);
-      // onUpdated?.(response.id);
     }
 
     return response;
@@ -219,7 +221,7 @@ export const ApprovalPolicyForm = ({
       script: {},
     },
   });
-  const { control, handleSubmit, setValue, getValues, reset, watch } = methods;
+  const { control, handleSubmit, setValue, getValues, watch } = methods;
   const currentTriggers = watch('triggers');
   const currentTriggerType = watch('triggerType');
   const currentTriggerWasCreatedByUserId = watch(
@@ -233,7 +235,9 @@ export const ApprovalPolicyForm = ({
   );
 
   const triggersList = useMemo(() => {
-    return Object.keys(currentTriggers).map((triggerKey) => {
+    return (
+      Object.keys(currentTriggers) as Array<keyof typeof currentTriggers>
+    ).map((triggerKey) => {
       const triggerLabel = getTriggerLabel(triggerKey);
       let triggerValue: ReactNode;
 
@@ -250,7 +254,7 @@ export const ApprovalPolicyForm = ({
         case 'tags':
           triggerValue = (
             <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {currentTriggerTags.map((tag) => (
+              {currentTriggerTags?.map((tag) => (
                 <Chip key={tag.id} label={tag.name} />
               ))}
             </Stack>
@@ -346,7 +350,6 @@ export const ApprovalPolicyForm = ({
     usersForTriggers?.data,
     tagsForTriggers?.data,
     usersForScript?.data,
-    reset,
     triggers.was_created_by_user_id,
     script.params.required_approval_count,
     script.params.user_ids,
@@ -369,6 +372,42 @@ export const ApprovalPolicyForm = ({
     }
   }, [setValue, scriptInEdit]);
 
+  const resetFormTriggerOrScript = () => {
+    if (!isAddingTrigger && triggerInEdit === 'was_created_by_user_id') {
+      setValue(
+        'triggers.was_created_by_user_id',
+        prevTriggerValues?.was_created_by_user_id || []
+      );
+    }
+
+    if (!isAddingTrigger && triggerInEdit === 'tags') {
+      setValue('triggers.tags', prevTriggerValues?.tags || []);
+    }
+
+    if (isAddingTrigger && prevTriggerValues) {
+      setValue('triggers', prevTriggerValues);
+    }
+
+    // TODO add reset for scripts with prev values
+    if (scriptInEdit) {
+      setValue(
+        'script.params.users',
+        usersForScript?.data.filter((user) =>
+          script.params.user_ids?.includes(user.id)
+        ) || []
+      );
+      setValue(
+        'script.params.requiredApprovalCount',
+        script.params.required_approval_count || 1
+      );
+    }
+
+    setTriggerInEdit(null);
+    setScriptInEdit(null);
+    setIsAddingTrigger(false);
+    setPrevTriggerValues(null);
+  };
+
   return (
     <>
       <DialogTitle>
@@ -384,31 +423,14 @@ export const ApprovalPolicyForm = ({
                 variant="subtitle1"
                 color="text.secondary"
                 sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  if (triggerInEdit === 'was_created_by_user_id') {
-                    setValue(
-                      'triggers.was_created_by_user_id',
-                      usersForTriggers?.data.filter((user) =>
-                        triggers.was_created_by_user_id?.includes(user.id)
-                      ) || []
-                    );
-                  }
-
-                  if (triggerInEdit === 'tags') {
-                    setValue(
-                      'triggers.tags',
-                      tagsForTriggers?.data.filter((tag) =>
-                        triggers.tags?.includes(tag.id)
-                      ) || []
-                    );
-                  }
-                  setTriggerInEdit(null);
-                }}
+                onClick={resetFormTriggerOrScript}
               >
                 {t(i18n)`Edit Approval Policy`}
               </Typography>
               <Typography variant="subtitle1" color="text.primary">
-                {t(i18n)`Edit Condition`}
+                {isAddingTrigger
+                  ? t(i18n)`Add Condition`
+                  : t(i18n)`Edit Condition`}
               </Typography>
             </Breadcrumbs>
           ) : (
@@ -492,17 +514,22 @@ export const ApprovalPolicyForm = ({
                   value={triggerInEdit || undefined}
                   disabled={Boolean(triggerInEdit)}
                 >
-                  <MenuItem value="amount">{getTriggerName('amount')}</MenuItem>
-                  <MenuItem value="counterpart_id">
-                    {getTriggerName('counterpart_id')}
-                  </MenuItem>
-                  <MenuItem value="currency">
-                    {getTriggerName('currency')}
-                  </MenuItem>
-                  <MenuItem value="was_created_by_user_id">
-                    {getTriggerName('was_created_by_user_id')}
-                  </MenuItem>
-                  <MenuItem value="tags">{getTriggerName('tags')}</MenuItem>
+                  {/*<MenuItem value="amount">{getTriggerName('amount')}</MenuItem>*/}
+                  {/*<MenuItem value="counterpart_id">*/}
+                  {/*  {getTriggerName('counterpart_id')}*/}
+                  {/*</MenuItem>*/}
+                  {/*<MenuItem value="currency">*/}
+                  {/*  {getTriggerName('currency')}*/}
+                  {/*</MenuItem>*/}
+                  {(!prevTriggerValues?.was_created_by_user_id ||
+                    triggerInEdit === 'was_created_by_user_id') && (
+                    <MenuItem value="was_created_by_user_id">
+                      {getTriggerName('was_created_by_user_id')}
+                    </MenuItem>
+                  )}
+                  {(!prevTriggerValues?.tags || triggerInEdit === 'tags') && (
+                    <MenuItem value="tags">{getTriggerName('tags')}</MenuItem>
+                  )}
                 </RHFTextField>
               )}
               {scriptInEdit && (
@@ -601,7 +628,12 @@ export const ApprovalPolicyForm = ({
                                 sx={{
                                   '&.MuiTableRow-root': { cursor: 'pointer' },
                                 }}
-                                onClick={() => setTriggerInEdit(trigger.key)}
+                                onClick={() => {
+                                  setTriggerInEdit(trigger.key);
+                                  setPrevTriggerValues({
+                                    ...getValues('triggers'),
+                                  });
+                                }}
                               >
                                 <TableCell>{trigger.label}</TableCell>
                                 <TableCell>{trigger.value}</TableCell>
@@ -610,7 +642,14 @@ export const ApprovalPolicyForm = ({
                                     aria-label={t(i18n)`Delete trigger`}
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      console.log('delete trigger');
+
+                                      const updatedTriggers = {
+                                        ...currentTriggers,
+                                      };
+
+                                      delete updatedTriggers[trigger.key];
+
+                                      setValue('triggers', updatedTriggers);
                                     }}
                                   >
                                     <DeleteIcon />
@@ -629,7 +668,16 @@ export const ApprovalPolicyForm = ({
                             <TableCell colSpan={3}>
                               <Button
                                 startIcon={<AddCircleOutlineIcon />}
-                                onClick={() => setIsAddingTrigger(true)}
+                                onClick={() => {
+                                  setIsAddingTrigger(true);
+                                  setPrevTriggerValues({
+                                    ...getValues('triggers'),
+                                  });
+                                }}
+                                disabled={Boolean(
+                                  currentTriggers?.was_created_by_user_id
+                                    ?.length && currentTriggers?.tags?.length
+                                )}
                               >
                                 {t(i18n)`Add new condition`}
                               </Button>
@@ -715,46 +763,9 @@ export const ApprovalPolicyForm = ({
       <DialogActions>
         {triggerInEdit || scriptInEdit || isAddingTrigger ? (
           <>
-            <Button
-              variant="outlined"
-              onClick={() => {
-                if (triggerInEdit) {
-                  if (triggerInEdit === 'was_created_by_user_id') {
-                    setValue(
-                      'triggers.was_created_by_user_id',
-                      usersForTriggers?.data.filter((user) =>
-                        triggers.was_created_by_user_id?.includes(user.id)
-                      ) || []
-                    );
-                  }
-
-                  if (triggerInEdit === 'tags') {
-                    setValue(
-                      'triggers.tags',
-                      tagsForTriggers?.data.filter((tag) =>
-                        triggers.tags?.includes(tag.id)
-                      ) || []
-                    );
-                  }
-                }
-
-                if (scriptInEdit) {
-                  setValue(
-                    'script.params.users',
-                    usersForScript?.data.filter((user) =>
-                      script.params.user_ids?.includes(user.id)
-                    ) || []
-                  );
-                  setValue(
-                    'script.params.requiredApprovalCount',
-                    script.params.required_approval_count || 1
-                  );
-                }
-
-                setTriggerInEdit(null);
-                setScriptInEdit(null);
-              }}
-            >{t(i18n)`Cancel`}</Button>
+            <Button variant="outlined" onClick={resetFormTriggerOrScript}>{t(
+              i18n
+            )`Cancel`}</Button>
             <Button
               variant="contained"
               onClick={(e) => {

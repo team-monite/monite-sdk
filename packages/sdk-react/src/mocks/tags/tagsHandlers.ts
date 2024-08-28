@@ -100,7 +100,6 @@ export const tagsHandlers = [
       await delay();
 
       const returnedData = (() => {
-        console.log({ idIn, sort, limit });
         if (idIn.length > 0) {
           return tagsByIdIn;
         }
@@ -115,8 +114,6 @@ export const tagsHandlers = [
 
         return tagsList;
       })();
-
-      console.log({ returnedData });
 
       return HttpResponse.json({
         data: returnedData,
