@@ -174,6 +174,16 @@ const ReminderSectionContent = ({
           : []),
       ];
 
+  const isReminderDisabledForEntity =
+    !isSettingsLoading && settings?.reminder?.enabled === false;
+
+  const isCounterpartWarningRequired =
+    !hasValidReminderEmailLoading &&
+    (!hasValidReminderEmail || !counterpart?.reminders_enabled);
+
+  const shouldShowError =
+    isReminderDisabledForEntity && isCounterpartWarningRequired;
+
   return (
     <>
       {!isCounterpartLoading && !counterpart?.reminders_enabled && (
@@ -188,7 +198,7 @@ const ReminderSectionContent = ({
           )`No default email for selected Counterpart. Reminders will not be sent.`}
         </Alert>
       )}
-      {!isSettingsLoading && settings?.reminder?.enabled === false && (
+      {shouldShowError && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           {t(i18n)`Reminders are disabled for this Entity.`}
         </Alert>
