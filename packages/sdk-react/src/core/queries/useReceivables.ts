@@ -562,12 +562,19 @@ export const useReceivableEmailPreview = (
     setAttemptNumber(attemptNumber + 1);
   };
 
+  const language = () => {
+    let locale = i18n.locale;
+    const dashIndex = locale.indexOf('-');
+    if (dashIndex >= 0) locale = locale.substring(0, dashIndex);
+    return locale;
+  };
+
   useEffect(() => {
     mutation
       .mutateAsync({
         body_text,
         subject_text,
-        language: i18n.locale,
+        language: language(),
         type: 'receivable',
       })
       .then(

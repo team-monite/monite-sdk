@@ -344,7 +344,12 @@ const Preview = ({
           <CircularProgress />
         </CenteredContentBox>
       )}
-      {!isLoading && preview && <iframe src={preview}></iframe>}
+      {!isLoading && preview && (
+        <iframe
+          srcDoc={preview}
+          style={{ width: '100%', height: '100%', border: 0 }}
+        ></iframe>
+      )}
       {!isLoading && error && (
         <CenteredContentBox className="Monite-LoadingPage">
           <Stack alignItems="center" gap={2}>
