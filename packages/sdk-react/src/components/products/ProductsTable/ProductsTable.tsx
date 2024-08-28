@@ -11,6 +11,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -18,6 +19,8 @@ import {
 } from '@/ui/table/TablePagination';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import NoDataIcon from '@mui/icons-material/Block';
+import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';
@@ -81,6 +84,12 @@ export interface ProductTableProps {
    * @param productId - Removed product ID.
    */
   onDeleted?: (productId: ProductServiceResponse['id']) => void;
+
+  /**
+   * The event handler open create modal
+   * Triggers when the user click on the create new button for no data state
+   */
+  openCreateModal?: () => void;
 }
 
 interface ProductsTableSortModel {
@@ -100,6 +109,7 @@ const ProductsTableBase = ({
   onRowClick,
   onEdit,
   onDeleted,
+  openCreateModal,
 }: ProductTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -140,7 +150,11 @@ const ProductsTableBase = ({
 
   const { api } = useMoniteContext();
 
-  const { data: products, isLoading } = api.products.getProducts.useQuery({
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = api.products.getProducts.useQuery({
     query: {
       sort: sortModel?.field,
       order: sortModel?.sort,
@@ -260,6 +274,43 @@ const ProductsTableBase = ({
 
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isLoading && products?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        icon={
+          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
+        }
+        title={t(i18n)`No Products`}
+        descriptionLine1={t(i18n)`You don’t have any products yet.`}
+        descriptionLine2={t(i18n)`You can create your first product.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`Product`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Product`) {
+            openCreateModal?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        icon={
+          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
+        }
+        title={t(i18n)`Failed to Load Products`}
+        descriptionLine1={t(i18n)`There was an error loading products.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => window.location.reload()}
+        type="error"
+      />
+    );
   }
 
   return (
