@@ -13,7 +13,7 @@ export interface DataGridEmptyStateProps {
   descriptionLine1: string;
   descriptionLine2?: string;
   onAction?: (option?: string) => void;
-  actionButtonLabel: string;
+  actionButtonLabel?: string;
   actionOptions?: string[];
   type: 'no-data' | 'error' | 'access-restricted' | 'unsupported-country';
   className?: string;
@@ -59,7 +59,7 @@ export const DataGridEmptyState = ({
 
 interface ActionButtonProps {
   onAction?: (option?: string) => void;
-  actionButtonLabel: string;
+  actionButtonLabel?: string;
   actionOptions?: string[];
   type: 'no-data' | 'error' | 'access-restricted' | 'unsupported-country';
   className?: string;
