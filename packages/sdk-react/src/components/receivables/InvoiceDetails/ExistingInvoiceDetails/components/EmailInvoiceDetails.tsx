@@ -63,6 +63,12 @@ const EmailInvoiceDetailsBase = ({
     defaultValues: {
       subject: '',
       body: '',
+      recipients: {
+        // TODO: add support for cc and bcc fields
+        // bcc?: string[];
+        // cc?: string[];
+        to: [] as string[],
+      },
     },
   });
   useFormPersist(`Monite-InvoiceEmail-${invoiceId}`, getValues, setValue);
@@ -136,6 +142,9 @@ const EmailInvoiceDetailsBase = ({
           });
         }
 
+        // TODO: provide support for cc and bcc fields
+        const to: string[] =
+          values.recipients?.to?.filter((t) => t?.trim()?.length > 0) || [];
         /**
          * If `payment methods` available, we should create a payment link.
          * If not, we should send the email without a payment link.
@@ -144,6 +153,12 @@ const EmailInvoiceDetailsBase = ({
           {
             body_text: values.body,
             subject_text: values.subject,
+            recipients:
+              to?.length > 0
+                ? {
+                    to: to,
+                  }
+                : undefined,
           },
           {
             onSuccess: onClose,
@@ -260,6 +275,12 @@ const EmailInvoiceDetailsBase = ({
   );
 };
 
+interface FormProps {
+  subject: string;
+  body: string;
+  recipients: { to: string[] };
+}
+
 const Form = ({
   formName,
   handleIssueAndSend,
@@ -268,7 +289,7 @@ const Form = ({
 }: {
   formName: string;
   handleIssueAndSend: (e: BaseSyntheticEvent) => void;
-  control: Control<{ subject: string; body: string }>;
+  control: Control<FormProps>;
   isDisabled: boolean;
 }) => {
   return (
@@ -335,7 +356,7 @@ const Preview = ({
   getValues,
 }: {
   invoiceId: string;
-  getValues: UseFormGetValues<{ subject: string; body: string }>;
+  getValues: UseFormGetValues<FormProps>;
 }) => {
   const { subject, body } = getValues();
   const { isLoading, preview, error, refresh } = useReceivableEmailPreview(
