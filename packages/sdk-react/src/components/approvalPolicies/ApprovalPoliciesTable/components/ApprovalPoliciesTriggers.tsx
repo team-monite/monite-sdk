@@ -27,23 +27,23 @@ export const ApprovalPoliciesTriggers = ({
     <Styled.ColumnList>
       {triggerKeys.map((triggerKey) => {
         switch (triggerKey) {
-          case 'amount': {
-            return (
-              <li key={triggerKey}>
-                <UMoneyBill width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+          // case 'amount': {
+          //   return (
+          //     <li key={triggerKey}>
+          //       <UMoneyBill width={18} />
+          //       {getTriggerName(triggerKey)}
+          //     </li>
+          //   );
+          // }
 
-          case 'currency': {
-            return (
-              <li key={triggerKey}>
-                <UMoneyStack width={18} />
-                {getTriggerName(triggerKey)}
-              </li>
-            );
-          }
+          // case 'currency': {
+          //   return (
+          //     <li key={triggerKey}>
+          //       <UMoneyStack width={18} />
+          //       {getTriggerName(triggerKey)}
+          //     </li>
+          //   );
+          // }
 
           case 'was_created_by_user_id': {
             return (

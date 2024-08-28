@@ -35,13 +35,9 @@ export const ApprovalPolicyDetails = ({
   onCreated,
   onUpdated,
 }: ApprovalPolicyDetailsProps) => {
-  const [isEdit, setIsEdit] = useState<boolean>(true); // TODO: remove this after demo
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const {
-    data: approvalPolicy,
-    isLoading,
-    isFetching,
-  } = useApprovalPolicyById(id);
+  const { data: approvalPolicy, isLoading } = useApprovalPolicyById(id);
 
   if (id && isLoading) {
     return <LoadingPage />;
