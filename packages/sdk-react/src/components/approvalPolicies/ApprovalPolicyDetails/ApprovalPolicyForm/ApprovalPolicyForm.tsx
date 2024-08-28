@@ -41,6 +41,7 @@ import {
 } from '@mui/material';
 
 import { ConditionsTable } from '../ConditionsTable';
+import { AutocompleteCounterparts } from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 
@@ -62,6 +63,7 @@ export interface FormValues {
   triggers: {
     was_created_by_user_id: components['schemas']['EntityUserResponse'][];
     tags: components['schemas']['TagReadSchema'][];
+    counterpart_id: components['schemas']['CounterpartResponse'][];
   };
   scriptType: ApprovalPoliciesScriptTypes;
   script: {
@@ -120,6 +122,19 @@ export const ApprovalPolicyForm = ({
       enabled: Boolean(triggers?.tags?.length),
     }
   );
+  const { data: counterpartsForTriggers } =
+    api.counterparts.getCounterparts.useQuery(
+      {
+        query: {
+          id__in: Array.isArray(triggers?.counterpart_id)
+            ? triggers.counterpart_id
+            : [],
+        },
+      },
+      {
+        enabled: Boolean(triggers?.counterpart_id?.length),
+      }
+    );
   const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery(
     {
       query: {
@@ -289,6 +304,18 @@ export const ApprovalPolicyForm = ({
       );
     }
 
+    if (
+      counterpartsForTriggers?.data &&
+      counterpartsForTriggers?.data.length > 0
+    ) {
+      setValue(
+        'triggers.counterpart_id',
+        counterpartsForTriggers?.data.filter((counterpart) =>
+          triggers.counterpart_id?.includes(counterpart.id)
+        ) || []
+      );
+    }
+
     if (usersForScript?.data && usersForScript?.data.length > 0) {
       setValue('script.params', {
         users: usersForScript?.data.filter((user) =>
@@ -304,11 +331,11 @@ export const ApprovalPolicyForm = ({
     triggers.was_created_by_user_id,
     script.params.required_approval_count,
     script.params.user_ids,
-    getValues,
     isEdit,
-    tagsForTriggers,
     triggers.tags,
     setValue,
+    counterpartsForTriggers?.data,
+    triggers.counterpart_id,
   ]);
 
   useEffect(() => {
@@ -333,6 +360,13 @@ export const ApprovalPolicyForm = ({
 
     if (!isAddingTrigger && triggerInEdit === 'tags') {
       setValue('triggers.tags', prevTriggerValues?.tags || []);
+    }
+
+    if (!isAddingTrigger && triggerInEdit === 'counterpart_id') {
+      setValue(
+        'triggers.counterpart_id',
+        prevTriggerValues?.counterpart_id || []
+      );
     }
 
     if (isAddingTrigger && prevTriggerValues) {
@@ -442,6 +476,19 @@ export const ApprovalPolicyForm = ({
                           },
                         ]
                       : []),
+                    ...(values.triggers.counterpart_id?.length > 0
+                      ? [
+                          {
+                            operator: 'in',
+                            left_operand: {
+                              name: 'invoice.counterpart_id',
+                            },
+                            right_operand: values.triggers.counterpart_id.map(
+                              (counterpart) => counterpart.id
+                            ),
+                          },
+                        ]
+                      : []),
                   ],
                 },
                 // TODO: remove this script after demo
@@ -478,12 +525,15 @@ export const ApprovalPolicyForm = ({
                   disabled={Boolean(triggerInEdit)}
                 >
                   {/*<MenuItem value="amount">{getTriggerName('amount')}</MenuItem>*/}
-                  {/*<MenuItem value="counterpart_id">*/}
-                  {/*  {getTriggerName('counterpart_id')}*/}
-                  {/*</MenuItem>*/}
                   {/*<MenuItem value="currency">*/}
                   {/*  {getTriggerName('currency')}*/}
                   {/*</MenuItem>*/}
+                  {(!prevTriggerValues?.counterpart_id ||
+                    triggerInEdit === 'counterpart_id') && (
+                    <MenuItem value="counterpart_id">
+                      {getTriggerName('counterpart_id')}
+                    </MenuItem>
+                  )}
                   {(!prevTriggerValues?.was_created_by_user_id ||
                     triggerInEdit === 'was_created_by_user_id') && (
                     <MenuItem value="was_created_by_user_id">
@@ -527,6 +577,15 @@ export const ApprovalPolicyForm = ({
                   control={control}
                   name="triggers.tags"
                   label={t(i18n)`Tags`}
+                />
+              )}
+              {(triggerInEdit === 'counterpart_id' ||
+                (isAddingTrigger &&
+                  currentTriggerType === 'counterpart_id')) && (
+                <AutocompleteCounterparts
+                  control={control}
+                  name="triggers.counterpart_id"
+                  label={t(i18n)`Counterparts`}
                 />
               )}
               {scriptInEdit ===
