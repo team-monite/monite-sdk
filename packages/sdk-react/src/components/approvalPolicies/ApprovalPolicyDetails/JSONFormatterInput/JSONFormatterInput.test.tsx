@@ -4,10 +4,13 @@ import { renderWithClient } from '@/utils/test-utils';
 import { screen } from '@testing-library/dom';
 import { fireEvent } from '@testing-library/react';
 
-import { JSONFormatterInput, Props } from './JSONFormatterInput';
+import {
+  JSONFormatterInput,
+  JSONFormatterInputProps,
+} from './JSONFormatterInput';
 
 describe('JSONFormatterInput', () => {
-  const FormComponent = (props: Props) => {
+  const FormComponent = (props: JSONFormatterInputProps) => {
     const methods = useForm();
 
     return (

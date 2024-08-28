@@ -6,11 +6,11 @@ import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import PersonIcon from '@mui/icons-material/Person';
 import { Chip, Box, Avatar, Skeleton, Typography } from '@mui/material';
 
-interface Props {
+interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
-export const CounterpartCell = ({ counterpartId }: Props) => {
+export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
 
   const getCounterpartText = useCallback(
