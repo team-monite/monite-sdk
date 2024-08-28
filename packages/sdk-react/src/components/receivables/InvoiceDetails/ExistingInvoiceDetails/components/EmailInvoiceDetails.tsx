@@ -2,7 +2,6 @@ import { BaseSyntheticEvent, useCallback, useId, useState } from 'react';
 import {
   Control,
   Controller,
-  FormState,
   useForm,
   UseFormGetValues,
 } from 'react-hook-form';
@@ -27,6 +26,8 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Button,
+  Card,
+  CardContent,
   CircularProgress,
   DialogContent,
   DialogTitle,
@@ -57,14 +58,13 @@ const EmailInvoiceDetailsBase = ({
 }: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite, api } = useMoniteContext();
-  const { control, handleSubmit, formState, getValues, setValue, trigger } =
-    useForm({
-      resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
-      defaultValues: {
-        subject: '',
-        body: '',
-      },
-    });
+  const { control, handleSubmit, getValues, setValue, trigger } = useForm({
+    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
+    defaultValues: {
+      subject: '',
+      body: '',
+    },
+  });
   useFormPersist(`Monite-InvoiceEmail-${invoiceId}`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
@@ -171,6 +171,7 @@ const EmailInvoiceDetailsBase = ({
 
   const className = 'Monite-EmailInvoiceDetails';
 
+  const isPreview = presentation == FormPresentation.Preview;
   return (
     <>
       <DialogTitle className={className + '-Title'}>
@@ -192,7 +193,7 @@ const EmailInvoiceDetailsBase = ({
                     )`Compose email`}</Typography>
                   </>
                 )}
-                {presentation == FormPresentation.Preview && (
+                {isPreview && (
                   <IconButton
                     edge="start"
                     color="inherit"
@@ -238,19 +239,22 @@ const EmailInvoiceDetailsBase = ({
           </Grid>
         </Toolbar>
       </DialogTitle>
-      <DialogContent className={className + '-Content'} sx={{ mt: 4 }}>
+      <DialogContent
+        className={className + '-Content'}
+        sx={{
+          mt: isPreview ? 0 : 4,
+          p: isPreview ? 0 : '0 32px 32px 32px',
+        }}
+      >
         {presentation == FormPresentation.Edit && (
           <Form
             formName={formName}
             handleIssueAndSend={handleIssueAndSend}
-            formState={formState}
             control={control}
             isDisabled={isDisabled}
           />
         )}
-        {presentation == FormPresentation.Preview && (
-          <Preview invoiceId={invoiceId} getValues={getValues} />
-        )}
+        {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
       </DialogContent>
     </>
   );
@@ -259,46 +263,48 @@ const EmailInvoiceDetailsBase = ({
 const Form = ({
   formName,
   handleIssueAndSend,
-  formState,
   control,
   isDisabled,
 }: {
   formName: string;
   handleIssueAndSend: (e: BaseSyntheticEvent) => void;
-  formState: FormState<{ subject: string; body: string }>;
   control: Control<{ subject: string; body: string }>;
   isDisabled: boolean;
 }) => {
   return (
     <form id={formName} noValidate onSubmit={handleIssueAndSend}>
-      <Stack spacing={3}>
-        <Stack spacing={2}>
-          <Typography
-            variant="subtitle2"
-            color={formState.errors.subject ? 'error' : 'text.primary'}
-          >{t(i18n)`Subject`}</Typography>
-          <Controller
-            name="subject"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                id={field.name}
-                variant="outlined"
-                fullWidth
-                error={Boolean(error)}
-                helperText={error?.message}
-                required
-                {...field}
-                disabled={isDisabled}
-              />
-            )}
-          />
-        </Stack>
-        <Stack>
-          <Typography
-            variant="subtitle2"
-            color={formState.errors.body ? 'error' : 'text.primary'}
-          >{t(i18n)`Body`}</Typography>
+      <Card>
+        <CardContent
+          sx={{
+            px: 3,
+            py: 1,
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: 'divider',
+          }}
+        >
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Typography variant="body2">{t(i18n)`Subject`}</Typography>
+            <Controller
+              name="subject"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  id={field.name}
+                  variant="outlined"
+                  className="Monite-NakedField"
+                  fullWidth
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                  required
+                  {...field}
+                  disabled={isDisabled}
+                />
+              )}
+            />
+          </Stack>
+        </CardContent>
+        <CardContent sx={{ pl: 3, pr: 3, pb: 3, pt: 1 }}>
           <Controller
             name="body"
             control={control}
@@ -306,6 +312,7 @@ const Form = ({
               <TextField
                 id={field.name}
                 variant="outlined"
+                className="Monite-NakedField"
                 fullWidth
                 error={Boolean(error)}
                 helperText={error?.message}
@@ -317,8 +324,8 @@ const Form = ({
               />
             )}
           />
-        </Stack>
-      </Stack>
+        </CardContent>
+      </Card>
     </form>
   );
 };

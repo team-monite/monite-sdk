@@ -165,9 +165,10 @@ export const defaultMoniteTypography:
     lineHeight: '24px',
   },
   body2: {
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: '14px',
     lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.56)',
   },
   caption: {
     fontSize: '1rem',
@@ -254,6 +255,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiInputBase: {
     styleOverrides: {
       root: {
+        fontWeight: 400,
         borderRadius: `8px`,
         minHeight: '40px',
         '& .MuiInputBase-input': {
@@ -441,6 +443,28 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       InputLabelProps: {
         shrink: true,
+      },
+    },
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiInputBase-root': {
+            minHeight: '32px',
+            padding: 0,
+
+            '& .MuiInputBase-input': {
+              height: '32px',
+              lineHeight: '32px',
+              padding: 0,
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderStyle: 'none',
+            },
+          },
+          '& .MuiFormHelperText-root.Mui-error': {
+            marginLeft: 0,
+          },
+        },
       },
     },
   },
