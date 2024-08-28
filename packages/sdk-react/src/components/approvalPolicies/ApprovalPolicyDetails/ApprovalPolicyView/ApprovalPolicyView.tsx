@@ -4,7 +4,10 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { useDialog } from '@/components';
 import { useApprovalPolicyScript } from '@/components/approvalPolicies/useApprovalPolicyScript';
-import { useApprovalPolicyTrigger } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import {
+  Triggers,
+  useApprovalPolicyTrigger,
+} from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -75,41 +78,43 @@ export const ApprovalPolicyView = ({
       },
     });
 
-  const triggersList = Object.keys(triggers).map((triggerKey) => {
-    const triggerLabel = getTriggerLabel(triggerKey);
-    let triggerValue: ReactNode;
+  const triggersList = (Object.keys(triggers) as Array<keyof Triggers>).map(
+    (triggerKey) => {
+      const triggerLabel = getTriggerLabel(triggerKey);
+      let triggerValue: ReactNode;
 
-    switch (triggerKey) {
-      case 'was_created_by_user_id':
-        if (Array.isArray(triggers[triggerKey])) {
+      switch (triggerKey) {
+        case 'was_created_by_user_id':
+          if (Array.isArray(triggers[triggerKey])) {
+            triggerValue = (
+              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+                {triggers[triggerKey].map((userId) => (
+                  <User key={userId} userId={userId} />
+                ))}
+              </Stack>
+            );
+          }
+          break;
+        case 'tags':
           triggerValue = (
             <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {triggers[triggerKey].map((userId) => (
-                <User key={userId} userId={userId} />
+              {tagsForTriggers?.data.map((tag) => (
+                <Chip key={tag.id} label={tag.name} />
               ))}
             </Stack>
           );
-        }
-        break;
-      case 'tags':
-        triggerValue = (
-          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-            {tagsForTriggers?.data.map((tag) => (
-              <Chip key={tag.id} label={tag.name} />
-            ))}
-          </Stack>
-        );
-        break;
-      default:
-        triggerValue = triggerKey;
-        break;
-    }
+          break;
+        default:
+          triggerValue = triggerKey;
+          break;
+      }
 
-    return {
-      label: triggerLabel,
-      value: triggerValue,
-    };
-  });
+      return {
+        label: triggerLabel,
+        value: triggerValue,
+      };
+    }
+  );
 
   const approvalFlows = (() => {
     if (!script) return null;
