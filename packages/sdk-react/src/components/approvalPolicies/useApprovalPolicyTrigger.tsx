@@ -4,9 +4,10 @@ import { useLingui } from '@lingui/react';
 
 export type ApprovalPoliciesTriggerKey =
   // | 'amount'
-  // | 'counterpart_id'
+  | 'counterpart_id'
   // | 'currency'
-  'was_created_by_user_id' | 'tags';
+  | 'was_created_by_user_id'
+  | 'tags';
 
 interface ApprovalPoliciesTrigger {
   all: Array<{
@@ -47,8 +48,8 @@ export const useApprovalPolicyTrigger = ({
       //   return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by user`;
-      // case 'counterpart_id':
-      //   return t(i18n)`Counterpart`;
+      case 'counterpart_id':
+        return t(i18n)`Counterpart`;
       case 'tags':
         return t(i18n)`Tags`;
       default:
@@ -64,8 +65,8 @@ export const useApprovalPolicyTrigger = ({
       //   return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by`;
-      // case 'counterpart_id':
-      //   return t(i18n)`Counterparts`;
+      case 'counterpart_id':
+        return t(i18n)`Counterparts`;
       case 'tags':
         return t(i18n)`Has tags`;
       default:

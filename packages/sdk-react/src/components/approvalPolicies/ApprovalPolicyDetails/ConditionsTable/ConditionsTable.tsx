@@ -1,6 +1,7 @@
 import React, { ReactNode, useMemo } from 'react';
 
 import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -61,6 +62,18 @@ export const ConditionsTable = ({
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
                 {triggers.tags?.map((tag) => (
                   <Chip key={tag.id} label={tag.name} />
+                ))}
+              </Stack>
+            );
+            break;
+          case 'counterpart_id':
+            triggerValue = (
+              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+                {triggers.counterpart_id?.map((counterpart) => (
+                  <Chip
+                    key={counterpart.id}
+                    label={getCounterpartName(counterpart)}
+                  />
                 ))}
               </Stack>
             );
@@ -128,7 +141,8 @@ export const ConditionsTable = ({
                 onClick={onAddTrigger}
                 disabled={Boolean(
                   triggers?.was_created_by_user_id?.length &&
-                    triggers?.tags?.length
+                    triggers?.tags?.length &&
+                    triggers?.counterpart_id?.length
                 )}
               >
                 {t(i18n)`Add new condition`}
