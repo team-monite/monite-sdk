@@ -1,5 +1,6 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
+import { useMenuButton } from '@/core/hooks';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 
@@ -88,19 +89,11 @@ const ActionButton = ({
   actionOptions = [],
   type,
 }: ActionButtonProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const { buttonProps, menuProps } = useMenuButton();
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (actionOptions.length > 0) {
-      setAnchorEl(event.currentTarget);
-    } else if (onAction) {
-      onAction();
-    }
-  };
+  if (!actionButtonLabel) return null;
 
-  const handleClose = (option?: string) => {
-    setAnchorEl(null);
+  const handleMenuItemClick = (option?: string) => {
     if (option && onAction) {
       onAction(option);
     }
@@ -109,18 +102,18 @@ const ActionButton = ({
   return (
     <>
       <Button
+        {...buttonProps}
         variant="contained"
         color="primary"
-        onClick={handleClick}
         sx={{ mt: 2 }}
         startIcon={type === 'error' ? <RefreshIcon /> : undefined}
       >
         {actionButtonLabel}
       </Button>
       {actionOptions.length > 0 && (
-        <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose()}>
+        <Menu {...menuProps}>
           {actionOptions.map((option) => (
-            <MenuItem key={option} onClick={() => handleClose(option)}>
+            <MenuItem key={option} onClick={() => handleMenuItemClick(option)}>
               {option}
             </MenuItem>
           ))}
