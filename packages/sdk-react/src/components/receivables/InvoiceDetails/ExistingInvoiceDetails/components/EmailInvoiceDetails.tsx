@@ -347,7 +347,12 @@ const Preview = ({
       {!isLoading && preview && (
         <iframe
           srcDoc={preview}
-          style={{ width: '100%', height: '100%', border: 0 }}
+          style={{
+            width: '100%',
+            height: '100%',
+            marginBottom: '-16px', // Margin is necessary to avoid vertical scrollbar on the iframe container element. It's not clear why, but it helps.
+            border: 0,
+          }}
         ></iframe>
       )}
       {!isLoading && error && (
