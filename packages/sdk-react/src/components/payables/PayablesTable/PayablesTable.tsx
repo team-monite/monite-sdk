@@ -91,16 +91,16 @@ interface PayablesTableProps {
   }) => void;
 
   /**
-   * The event handler for a file input
-   *
-   * @param {File} file - The file selected by the user.
+   * The event handler for the file input when no data is present.
+   * This triggers the file upload process when the user selects a file.
    */
   openFileInput: () => void;
 
   /**
-   * The event handler for a row click.
+   * The event handler for opening the "New Invoice" dialog when no data is present.
+   * This function controls the visibility of the dialog for invoice creation.
    *
-   * @param {string} id - The identifier of the clicked row, a string.
+   * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen: (isOpen: boolean) => void;
 }
