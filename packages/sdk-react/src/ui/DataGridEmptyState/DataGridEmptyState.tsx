@@ -12,8 +12,8 @@ interface DataGridEmptyStateProps {
 }
 
 interface ActionButtonProps {
-  onAction: () => void;
-  type: 'no-data' | 'error';
+  onAction: (() => void) | undefined;
+  type: 'no-data' | 'error' | 'access-restricted' | 'unsupported-country';
   getActionButtonLabel: () => string;
 }
 
@@ -217,22 +217,6 @@ export const DataGridEmptyState = ({
         type={type}
         getActionButtonLabel={getActionButtonLabel}
       />
-      {type === 'error' && (
-        <Link
-          href="#"
-          onClick={onAction}
-          sx={{
-            mt: 1,
-            textDecoration: 'none',
-            color: 'primary.main',
-            display: 'inline-flex',
-            alignItems: 'center',
-          }}
-        >
-          <RefreshIcon fontSize="small" sx={{ mr: 0.5 }} />
-          Reload page
-        </Link>
-      )}
     </Box>
   );
 };
