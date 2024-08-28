@@ -1,5 +1,9 @@
 import { components } from '@/api';
 import {
+  individualId,
+  organizationId,
+} from '@/mocks/counterparts/counterpart.mocks.types';
+import {
   entityUserByIdFixture,
   entityUser2,
   entityUser3,
@@ -34,6 +38,13 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
                 tagListFixture[2].id,
                 tagListFixture[3].id,
               ],
+            },
+            {
+              operator: 'in',
+              left_operand: {
+                name: 'invoice.counterpart_id',
+              },
+              right_operand: [organizationId, individualId],
             },
           ],
         },

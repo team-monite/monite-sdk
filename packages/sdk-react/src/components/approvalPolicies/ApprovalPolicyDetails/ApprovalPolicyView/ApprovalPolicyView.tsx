@@ -8,6 +8,7 @@ import {
   Triggers,
   useApprovalPolicyTrigger,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -62,6 +63,19 @@ export const ApprovalPolicyView = ({
       enabled: Boolean(triggers?.tags?.length),
     }
   );
+  const { data: counterpartsForTriggers } =
+    api.counterparts.getCounterparts.useQuery(
+      {
+        query: {
+          id__in: Array.isArray(triggers?.counterpart_id)
+            ? triggers.counterpart_id
+            : [],
+        },
+      },
+      {
+        enabled: Boolean(triggers?.counterpart_id?.length),
+      }
+    );
   const deleteMutation =
     api.approvalPolicies.deleteApprovalPoliciesId.useMutation(undefined, {
       onSuccess: async () => {
@@ -100,6 +114,18 @@ export const ApprovalPolicyView = ({
             <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
               {tagsForTriggers?.data.map((tag) => (
                 <Chip key={tag.id} label={tag.name} />
+              ))}
+            </Stack>
+          );
+          break;
+        case 'counterpart_id':
+          triggerValue = (
+            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              {counterpartsForTriggers?.data.map((counterpart) => (
+                <Chip
+                  key={counterpart.id}
+                  label={getCounterpartName(counterpart)}
+                />
               ))}
             </Stack>
           );
