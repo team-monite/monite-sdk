@@ -30,7 +30,6 @@ import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import NoDataIcon from '@mui/icons-material/Block';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
@@ -90,6 +89,20 @@ interface PayablesTableProps {
     sort: 'created_at';
     order: 'asc' | 'desc' | null;
   }) => void;
+
+  /**
+   * The event handler for a file input
+   *
+   * @param {File} file - The file selected by the user.
+   */
+  openFileInput: () => void;
+
+  /**
+   * The event handler for a row click.
+   *
+   * @param {string} id - The identifier of the clicked row, a string.
+   */
+  setIsCreateInvoiceDialogOpen: (isOpen: boolean) => void;
 }
 
 export interface PayableGridSortModel {
@@ -107,6 +120,8 @@ const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
+  openFileInput,
+  setIsCreateInvoiceDialogOpen,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -377,8 +392,12 @@ const PayablesTableBase = ({
         descriptionLine2={t(i18n)`You can add a new payable.`}
         actionButtonLabel={t(i18n)`Create New`}
         actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-        onAction={() => {
-          // Handle the action to create a new payable
+        onAction={(action) => {
+          if (action === t(i18n)`New Invoice`) {
+            setIsCreateInvoiceDialogOpen(true);
+          } else if (action === t(i18n)`Upload File`) {
+            openFileInput();
+          }
         }}
         type="no-data"
       />
@@ -395,9 +414,7 @@ const PayablesTableBase = ({
         descriptionLine1={t(i18n)`There was an error loading the payables.`}
         descriptionLine2={t(i18n)`Please try again later.`}
         actionButtonLabel={t(i18n)`Reload page`}
-        onAction={() => {
-          // Handle the action to reload the data
-        }}
+        onAction={() => window.location.reload()}
         type="error"
       />
     );
