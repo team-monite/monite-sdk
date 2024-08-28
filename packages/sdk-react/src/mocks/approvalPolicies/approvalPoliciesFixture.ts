@@ -46,6 +46,20 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               },
               right_operand: [organizationId, individualId],
             },
+            {
+              operator: '>=',
+              left_operand: {
+                name: 'invoice.amount',
+              },
+              right_operand: 300,
+            },
+            // {
+            //   operator: '<=',
+            //   left_operand: {
+            //     name: 'invoice.amount',
+            //   },
+            //   right_operand: '500',
+            // },
           ],
         },
 

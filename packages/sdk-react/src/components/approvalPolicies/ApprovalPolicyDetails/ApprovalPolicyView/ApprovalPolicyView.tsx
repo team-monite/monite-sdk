@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
@@ -49,9 +49,10 @@ export const ApprovalPolicyView = ({
   const { i18n } = useLingui();
   const dialogContext = useDialog();
   const { api, queryClient } = useMoniteContext();
-  const { triggers, getTriggerLabel } = useApprovalPolicyTrigger({
-    approvalPolicy,
-  });
+  const { triggers, getTriggerLabel, getAmountLabel } =
+    useApprovalPolicyTrigger({
+      approvalPolicy,
+    });
   const { script } = useApprovalPolicyScript({ approvalPolicy });
   const { data: tagsForTriggers } = api.tags.getTags.useQuery(
     {
@@ -129,6 +130,9 @@ export const ApprovalPolicyView = ({
               ))}
             </Stack>
           );
+          break;
+        case 'amount':
+          triggerValue = <p>{getAmountLabel(triggers.amount ?? [])}</p>;
           break;
         default:
           triggerValue = triggerKey;

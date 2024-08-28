@@ -12,6 +12,8 @@ import {
 import {
   useApprovalPolicyTrigger,
   ApprovalPoliciesTriggerKey,
+  ApprovalPoliciesOperator,
+  AmountTuple,
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -26,6 +28,7 @@ import {
   DialogTitle,
   DialogContent,
   Divider,
+  Grid,
   IconButton,
   MenuItem,
   Paper,
@@ -64,7 +67,10 @@ export interface FormValues {
     was_created_by_user_id: components['schemas']['EntityUserResponse'][];
     tags: components['schemas']['TagReadSchema'][];
     counterpart_id: components['schemas']['CounterpartResponse'][];
+    amount: AmountTuple[];
   };
+  amountOperator?: ApprovalPoliciesOperator;
+  amountValue?: string | number;
   scriptType: ApprovalPoliciesScriptTypes;
   script: {
     params?: {
@@ -233,10 +239,14 @@ export const ApprovalPolicyForm = ({
       description: approvalPolicy?.description || '',
       triggers: {},
       script: {},
+      amountOperator: undefined,
+      amountValue: undefined,
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
   const currentTriggers = watch('triggers');
+  const currentAmountOperator = watch('amountOperator');
+  const currentAmountValue = watch('amountValue');
   const currentTriggerType = watch('triggerType');
   const currentScript = watch('script');
   const currentScriptType = watch('scriptType');
@@ -283,60 +293,66 @@ export const ApprovalPolicyForm = ({
     script.type,
   ]);
 
-  useEffect(() => {
-    if (!isEdit) return;
+  useEffect(
+    () => {
+      if (!isEdit) return;
 
-    if (usersForTriggers?.data && usersForTriggers?.data.length > 0) {
-      setValue(
-        'triggers.was_created_by_user_id',
-        usersForTriggers?.data.filter((user) =>
-          triggers.was_created_by_user_id?.includes(user.id)
-        ) || []
-      );
-    }
+      if (usersForTriggers?.data && usersForTriggers?.data.length > 0) {
+        setValue(
+          'triggers.was_created_by_user_id',
+          usersForTriggers?.data.filter((user) =>
+            triggers.was_created_by_user_id?.includes(user.id)
+          ) || []
+        );
+      }
 
-    if (tagsForTriggers?.data && tagsForTriggers?.data.length > 0) {
-      setValue(
-        'triggers.tags',
-        tagsForTriggers?.data.filter((tag) =>
-          triggers.tags?.includes(tag.id)
-        ) || []
-      );
-    }
+      if (tagsForTriggers?.data && tagsForTriggers?.data.length > 0) {
+        setValue(
+          'triggers.tags',
+          tagsForTriggers?.data.filter((tag) =>
+            triggers.tags?.includes(tag.id)
+          ) || []
+        );
+      }
 
-    if (
-      counterpartsForTriggers?.data &&
-      counterpartsForTriggers?.data.length > 0
-    ) {
-      setValue(
-        'triggers.counterpart_id',
-        counterpartsForTriggers?.data.filter((counterpart) =>
-          triggers.counterpart_id?.includes(counterpart.id)
-        ) || []
-      );
-    }
+      if (
+        counterpartsForTriggers?.data &&
+        counterpartsForTriggers?.data.length > 0
+      ) {
+        setValue(
+          'triggers.counterpart_id',
+          counterpartsForTriggers?.data.filter((counterpart) =>
+            triggers.counterpart_id?.includes(counterpart.id)
+          ) || []
+        );
+      }
 
-    if (usersForScript?.data && usersForScript?.data.length > 0) {
-      setValue('script.params', {
-        users: usersForScript?.data.filter((user) =>
-          script.params.user_ids?.includes(user.id)
-        ),
-        requiredApprovalCount: script.params.required_approval_count || '1',
-      });
-    }
-  }, [
-    usersForTriggers?.data,
-    tagsForTriggers?.data,
-    usersForScript?.data,
-    triggers.was_created_by_user_id,
-    script.params.required_approval_count,
-    script.params.user_ids,
-    isEdit,
-    triggers.tags,
-    setValue,
-    counterpartsForTriggers?.data,
-    triggers.counterpart_id,
-  ]);
+      if (triggers.amount && triggers.amount?.length > 0) {
+        setValue('triggers.amount', triggers.amount);
+
+        setValue('amountOperator', triggers.amount[0][0]);
+        setValue('amountValue', triggers.amount[0][1]);
+      }
+
+      if (usersForScript?.data && usersForScript?.data.length > 0) {
+        setValue('script.params', {
+          users: usersForScript?.data.filter((user) =>
+            script.params.user_ids?.includes(user.id)
+          ),
+          requiredApprovalCount: script.params.required_approval_count || '1',
+        });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      usersForTriggers?.data,
+      tagsForTriggers?.data,
+      counterpartsForTriggers?.data,
+      usersForScript?.data,
+      isEdit,
+      setValue,
+    ]
+  );
 
   useEffect(() => {
     if (triggerInEdit) {
@@ -349,6 +365,14 @@ export const ApprovalPolicyForm = ({
       setValue('scriptType', scriptInEdit);
     }
   }, [setValue, scriptInEdit]);
+
+  useEffect(() => {
+    if (currentAmountOperator && currentAmountValue) {
+      setValue('triggers.amount', [
+        [currentAmountOperator, currentAmountValue],
+      ]);
+    }
+  }, [currentAmountOperator, currentAmountValue, setValue]);
 
   const resetFormTriggerOrScript = () => {
     if (!isAddingTrigger && triggerInEdit === 'was_created_by_user_id') {
@@ -367,6 +391,17 @@ export const ApprovalPolicyForm = ({
         'triggers.counterpart_id',
         prevTriggerValues?.counterpart_id || []
       );
+    }
+
+    if (!isAddingTrigger && triggerInEdit === 'amount') {
+      setValue('triggers.amount', prevTriggerValues?.amount || []);
+    }
+
+    if (!isAddingTrigger && triggerInEdit === 'amount') {
+      setValue('triggers.amount', prevTriggerValues?.amount || []);
+
+      setValue('amountOperator', undefined);
+      setValue('amountValue', undefined);
     }
 
     if (isAddingTrigger && prevTriggerValues) {
@@ -489,6 +524,20 @@ export const ApprovalPolicyForm = ({
                           },
                         ]
                       : []),
+                    ...(values.triggers.amount?.length
+                      ? [
+                          ...values.triggers.amount.map((value) => ({
+                            operator: value[0],
+                            left_operand: {
+                              name: 'invoice.amount',
+                            },
+                            right_operand:
+                              typeof value[1] === 'number'
+                                ? value[1]
+                                : parseInt(value[1]),
+                          })),
+                        ]
+                      : []),
                   ],
                 },
                 // TODO: remove this script after demo
@@ -524,10 +573,12 @@ export const ApprovalPolicyForm = ({
                   value={triggerInEdit || undefined}
                   disabled={Boolean(triggerInEdit)}
                 >
-                  {/*<MenuItem value="amount">{getTriggerName('amount')}</MenuItem>*/}
-                  {/*<MenuItem value="currency">*/}
-                  {/*  {getTriggerName('currency')}*/}
-                  {/*</MenuItem>*/}
+                  {(!prevTriggerValues?.amount ||
+                    triggerInEdit === 'amount') && (
+                    <MenuItem value="amount">
+                      {getTriggerName('amount')}
+                    </MenuItem>
+                  )}
                   {(!prevTriggerValues?.counterpart_id ||
                     triggerInEdit === 'counterpart_id') && (
                     <MenuItem value="counterpart_id">
@@ -587,6 +638,40 @@ export const ApprovalPolicyForm = ({
                   name="triggers.counterpart_id"
                   label={t(i18n)`Counterparts`}
                 />
+              )}
+              {(triggerInEdit === 'amount' ||
+                (isAddingTrigger && currentTriggerType === 'amount')) && (
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <RHFTextField
+                      label={t(i18n)`If amount is`}
+                      name="amountOperator"
+                      control={control}
+                      select
+                      fullWidth
+                    >
+                      <MenuItem value=">">{t(i18n)`Greater than`}</MenuItem>
+                      <MenuItem value="<">{t(i18n)`Less than`}</MenuItem>
+                      <MenuItem value=">=">{t(
+                        i18n
+                      )`Greater than or equal to`}</MenuItem>
+                      <MenuItem value="<=">{t(
+                        i18n
+                      )`Less than or equal to`}</MenuItem>
+                      <MenuItem value="==">{t(i18n)`Equal to`}</MenuItem>
+                      <MenuItem value="range">{t(i18n)`In range`}</MenuItem>
+                    </RHFTextField>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <RHFTextField
+                      label={t(i18n)`Amount`}
+                      name="amountValue"
+                      control={control}
+                      type="number"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
               )}
               {scriptInEdit ===
                 'ApprovalRequests.request_approval_by_users' && (
@@ -690,7 +775,7 @@ export const ApprovalPolicyForm = ({
                                   aria-label={t(i18n)`Delete rule`}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    console.log('delete trigger');
+                                    console.log('delete rule');
                                   }}
                                 >
                                   <DeleteIcon />
