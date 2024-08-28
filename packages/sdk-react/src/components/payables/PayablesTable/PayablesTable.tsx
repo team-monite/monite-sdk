@@ -102,7 +102,7 @@ interface PayablesTableProps {
    *
    * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
-  setIsCreateInvoiceDialogOpen: (isOpen: boolean) => void;
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export interface PayableGridSortModel {
@@ -394,7 +394,7 @@ const PayablesTableBase = ({
         actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
         onAction={(action) => {
           if (action === t(i18n)`New Invoice`) {
-            setIsCreateInvoiceDialogOpen(true);
+            setIsCreateInvoiceDialogOpen?.(true);
           } else if (action === t(i18n)`Upload File`) {
             openFileInput?.();
           }
