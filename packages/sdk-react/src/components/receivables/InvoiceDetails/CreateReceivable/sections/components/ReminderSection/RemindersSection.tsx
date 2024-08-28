@@ -188,7 +188,7 @@ const ReminderSectionContent = ({
           )`No default email for selected Counterpart. Reminders will not be sent.`}
         </Alert>
       )}
-      {!isSettingsLoading && !settings?.reminder?.enabled && (
+      {!isSettingsLoading && settings?.reminder?.enabled === false && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           {t(i18n)`Reminders are disabled for this Entity.`}
         </Alert>
