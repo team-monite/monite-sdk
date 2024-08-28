@@ -19,6 +19,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCell } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -28,6 +29,9 @@ import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import NoDataIcon from '@mui/icons-material/Block';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
 import {
@@ -360,6 +364,43 @@ const PayablesTableBase = ({
   /** We have to wait until `usePayablesList` and `useIsActionAllowed` is finished */
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isLoading && payables?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        icon={
+          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
+        }
+        title={t(i18n)`No Payables`}
+        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
+        descriptionLine2={t(i18n)`You can add a new payable.`}
+        actionButtonLabel={t(i18n)`Create New`}
+        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+        onAction={() => {
+          // Handle the action to create a new payable
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        icon={
+          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
+        }
+        title={t(i18n)`Failed to Load Payables`}
+        descriptionLine1={t(i18n)`There was an error loading the payables.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload page`}
+        onAction={() => {
+          // Handle the action to reload the data
+        }}
+        type="error"
+      />
+    );
   }
 
   const className = 'Monite-PayablesTable';
