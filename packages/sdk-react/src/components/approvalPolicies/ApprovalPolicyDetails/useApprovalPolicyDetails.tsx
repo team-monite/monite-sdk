@@ -5,7 +5,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-interface Props {
+interface ApprovalPolicyDetailsProps {
   /** Callback is fired when the user clicks on `Edit` button */
   onChangeEditMode: (isEdit: boolean) => void;
 
@@ -26,7 +26,7 @@ export const useApprovalPolicyDetails = ({
   onChangeEditMode,
   onCreated,
   onUpdated,
-}: Props) => {
+}: ApprovalPolicyDetailsProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 

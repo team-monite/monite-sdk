@@ -182,6 +182,8 @@ const typographyDark = Object.assign({}, defaultMoniteTypography, {
   },
 });
 
+const filterControlWidth = '160px';
+
 export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteOptions: {
     defaultProps: {
@@ -289,6 +291,8 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           height: '40px',
           minHeight: '40px',
           maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
 
           '.MuiInputBase-root': {
             marginTop: 0,
@@ -305,6 +309,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
+          '.MuiSelect-select': {
+            fontSize: '14px',
+          },
+
           '.MuiFormLabel-root': {
             position: 'absolute',
             left: '20px',
@@ -318,9 +326,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiInputAdornment-positionEnd': {
-            marginRight: '6px',
-          },
           '.MuiIconButton-root': {
             marginRight: '-6px',
           },
@@ -338,6 +343,36 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               opacity: 0,
             },
           },
+
+          '& .MuiInputBase-input:not(.MuiSelect-select)': {
+            padding: '0 0 0 8px',
+            fontSize: '14px',
+            textOverflow: 'ellipsis',
+
+            '& + .MuiInputAdornment-root': {
+              marginLeft: 0,
+            },
+          },
+        },
+        '&.Monite-SearchField': {
+          maxWidth: '400px',
+          width: '100%',
+        },
+      },
+    },
+  },
+  MuiStack: {
+    styleOverrides: {
+      root: {
+        '&.Monite-Filters': {
+          '& > *': {
+            flexBasis: 'fit-content',
+            flexGrow: 1,
+          },
+
+          '& .Monite-Filters-Group': {
+            marginLeft: '16px',
+          },
         },
       },
     },
@@ -350,6 +385,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           alignItems: 'flex-start',
           '.MuiFormControlLabel-label': {
             padding: '9px 0',
+          },
+        },
+
+        '&.Monite-FilterControl': {
+          marginLeft: 0,
+          marginRight: 0,
+          alignItems: 'center',
+          width: 'auto',
+          '& .MuiTypography-root': {
+            fontSize: '14px',
+            lineHeight: '20px',
           },
         },
       },
@@ -366,6 +412,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '& > .MuiFormControl-root > .MuiInputBase-root': {
           paddingTop: 0,
           paddingBottom: 0,
+        },
+        '&.Monite-FilterControl': {
+          height: '40px',
+          minHeight: '40px',
+          maxHeight: '40px',
+          maxWidth: filterControlWidth,
+          width: '100%',
         },
       },
     },
