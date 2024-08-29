@@ -13,6 +13,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -35,6 +36,13 @@ type CreditNotesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 };
 
 export interface CreditNotesTableSortModel {
@@ -48,7 +56,10 @@ export const CreditNotesTable = (props: CreditNotesTableProps) => (
   </MoniteScopedProviders>
 );
 
-const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
+const CreditNotesTableBase = ({
+  onRowClick,
+  setIsCreateInvoiceDialogOpen,
+}: CreditNotesTableProps) => {
   const { i18n } = useLingui();
 
   const [paginationToken, setPaginationToken] = useState<string | undefined>(
@@ -67,7 +78,12 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: creditNotes, isLoading } = useReceivables({
+  const {
+    data: creditNotes,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -150,6 +166,37 @@ const CreditNotesTableBase = ({ onRowClick }: CreditNotesTableProps) => {
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'CreditNotesTable'
   );
+
+  if (!isLoading && !creditNotes?.data.length) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Credit Notes`}
+        descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
+        descriptionLine2={t(i18n)`You can create your first credit note.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Credit Notes`}
+        descriptionLine1={t(i18n)`There was an error loading credit notes.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
+  }
 
   const className = 'Monite-CreditNotesTable';
 
