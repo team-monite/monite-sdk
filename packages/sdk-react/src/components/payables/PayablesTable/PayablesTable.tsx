@@ -19,6 +19,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCell } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -86,6 +87,20 @@ interface PayablesTableProps {
     sort: 'created_at';
     order: 'asc' | 'desc' | null;
   }) => void;
+
+  /**
+   * The event handler for the file input when no data is present.
+   * This triggers the file upload process when the user selects a file.
+   */
+  openFileInput?: () => void;
+
+  /**
+   * The event handler for opening the "New Invoice" dialog when no data is present.
+   * This function controls the visibility of the dialog for invoice creation.
+   *
+   * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export interface PayableGridSortModel {
@@ -103,6 +118,8 @@ const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
+  openFileInput,
+  setIsCreateInvoiceDialogOpen,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -161,6 +178,7 @@ const PayablesTableBase = ({
     isLoading,
     isError,
     error,
+    refetch,
   } = api.payables.getPayables.useQuery(payablesQueryParameters, {
     refetchInterval: api.payables.getPayables
       .getQueryData(payablesQueryParameters, queryClient)
@@ -360,6 +378,39 @@ const PayablesTableBase = ({
   /** We have to wait until `usePayablesList` and `useIsActionAllowed` is finished */
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isLoading && payables?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Payables`}
+        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
+        descriptionLine2={t(i18n)`You can add a new payable.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+        onAction={(action) => {
+          if (action === t(i18n)`New Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          } else if (action === t(i18n)`Upload File`) {
+            openFileInput?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Payables`}
+        descriptionLine1={t(i18n)`There was an error loading the payables.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload page`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
   }
 
   const className = 'Monite-PayablesTable';

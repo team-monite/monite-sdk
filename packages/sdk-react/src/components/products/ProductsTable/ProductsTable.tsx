@@ -11,6 +11,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -81,6 +82,12 @@ export interface ProductTableProps {
    * @param productId - Removed product ID.
    */
   onDeleted?: (productId: ProductServiceResponse['id']) => void;
+
+  /**
+   * The event handler open create modal
+   * Triggers when the user click on the create new button for no data state
+   */
+  openCreateModal?: () => void;
 }
 
 interface ProductsTableSortModel {
@@ -100,6 +107,7 @@ const ProductsTableBase = ({
   onRowClick,
   onEdit,
   onDeleted,
+  openCreateModal,
 }: ProductTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -140,7 +148,12 @@ const ProductsTableBase = ({
 
   const { api } = useMoniteContext();
 
-  const { data: products, isLoading } = api.products.getProducts.useQuery({
+  const {
+    data: products,
+    isLoading,
+    isError,
+    refetch,
+  } = api.products.getProducts.useQuery({
     query: {
       sort: sortModel?.field,
       order: sortModel?.sort,
@@ -260,6 +273,37 @@ const ProductsTableBase = ({
 
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isLoading && products?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Products`}
+        descriptionLine1={t(i18n)`You don’t have any products yet.`}
+        descriptionLine2={t(i18n)`You can create your first product.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`Product`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Product`) {
+            openCreateModal?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Products`}
+        descriptionLine1={t(i18n)`There was an error loading products.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
   }
 
   return (
