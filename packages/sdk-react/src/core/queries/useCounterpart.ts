@@ -296,7 +296,9 @@ export const useDeleteCounterpartVat = (counterpartId: string) => {
   });
 };
 
-interface GenericCounterpartContact {
+export interface GenericCounterpartContact {
+  id: string;
+  counterpart_id: string;
   /**
    * @description Is default contact person
    */
@@ -367,6 +369,8 @@ export const useCounterpartContactList = (
       isLoading: false,
       data: [
         {
+          id: counterpart.id,
+          counterpart_id: counterpartId ?? '',
           is_default: true,
           email: individual.email,
           first_name: individual.first_name,
@@ -399,6 +403,8 @@ export const useCounterpartContactList = (
       const organization =
         counterpart as components['schemas']['CounterpartOrganizationRootResponse'];
       return {
+        id: contact.id,
+        counterpart_id: counterpartId ?? '',
         is_default: contact.is_default,
         address: contact.address,
         email: contact.email,
@@ -408,7 +414,7 @@ export const useCounterpartContactList = (
         last_name: contact.last_name,
         phone: contact.phone,
         title: contact.title,
-      } as GenericCounterpartContact;
+      };
     }),
   };
 };

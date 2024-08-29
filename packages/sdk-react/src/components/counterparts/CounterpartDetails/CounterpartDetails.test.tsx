@@ -655,6 +655,8 @@ describe('CounterpartDetails', () => {
         is_default: isDefault,
         phone: '5551235476',
         title: 'Ms.',
+        is_customer: true,
+        is_vendor: false,
         address: {
           country: 'DE' as components['schemas']['AllowedCountries'],
           city: 'Berlin',
