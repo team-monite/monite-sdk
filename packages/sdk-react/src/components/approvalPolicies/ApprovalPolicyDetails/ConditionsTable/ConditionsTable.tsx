@@ -79,15 +79,13 @@ export const ConditionsTable = ({
             );
             break;
           case 'amount':
-            triggerValue = <p>{getAmountLabel(triggers.amount ?? [])}</p>;
-            break;
-          case 'currency':
             triggerValue = (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {triggers.currency?.map((currency) => (
-                  <Chip key={currency.code} label={currency.code} />
-                ))}
-              </Stack>
+              <p>
+                {getAmountLabel(
+                  triggers.amount?.value ?? [],
+                  triggers.amount?.currency ?? 'EUR'
+                )}
+              </p>
             );
             break;
           default:
@@ -155,8 +153,7 @@ export const ConditionsTable = ({
                   triggers?.was_created_by_user_id?.length &&
                     triggers?.tags?.length &&
                     triggers?.counterpart_id?.length &&
-                    triggers?.amount?.length &&
-                    triggers?.currency?.length
+                    triggers?.amount?.value?.length
                 )}
               >
                 {t(i18n)`Add new condition`}

@@ -132,15 +132,13 @@ export const ApprovalPolicyView = ({
           );
           break;
         case 'amount':
-          triggerValue = <p>{getAmountLabel(triggers.amount ?? [])}</p>;
-          break;
-        case 'currency':
           triggerValue = (
-            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-              {triggers.currency?.map((currency) => (
-                <Chip key={currency} label={currency} />
-              ))}
-            </Stack>
+            <p>
+              {getAmountLabel(
+                triggers.amount?.value ?? [],
+                triggers.amount?.currency ?? 'EUR'
+              )}
+            </p>
           );
           break;
         default:
@@ -173,7 +171,7 @@ export const ApprovalPolicyView = ({
               )`Any ${script.params.required_approval_count} users from the list`
             : t(i18n)`Any user from the list`;
         approvalFlowValue = (
-          <Stack gap={1}>
+          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
             {script.params.user_ids?.map((userId) => (
               <User key={userId} userId={userId} />
             ))}

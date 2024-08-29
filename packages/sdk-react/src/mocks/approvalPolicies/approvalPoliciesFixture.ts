@@ -51,21 +51,21 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               left_operand: {
                 name: 'invoice.amount',
               },
-              right_operand: 300,
+              right_operand: 30000,
             },
             {
               operator: '<=',
               left_operand: {
                 name: 'invoice.amount',
               },
-              right_operand: '500',
+              right_operand: '50000',
             },
             {
               operator: 'in',
               left_operand: {
                 name: 'invoice.currency',
               },
-              right_operand: ['EUR', 'USD'],
+              right_operand: 'EUR',
             },
           ],
         },
@@ -83,6 +83,13 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               required_approval_count: 2,
             },
           },
+          // {
+          //   call: 'ApprovalRequests.request_approval_by_users',
+          //   params: {
+          //     user_ids: [entityUserByIdFixture.id],
+          //     required_approval_count: 1,
+          //   },
+          // },
         ],
         id: 'approval-policy-id-created-by-approve-anyone',
         status: 'active',

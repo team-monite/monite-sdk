@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { useCurrencies } from '@/core/hooks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
@@ -20,8 +21,10 @@ interface ApprovalPoliciesTrigger {
 export type AmountTuple = [ApprovalPoliciesOperator, string | number];
 
 export type Triggers = {
-  amount?: AmountTuple[];
-  currency?: string[];
+  amount?: {
+    currency: CurrencyEnum;
+    value: AmountTuple[];
+  };
   counterpart_id?: string[];
   was_created_by_user_id?: string[];
   tags?: string[];
@@ -52,13 +55,12 @@ export const useApprovalPolicyTrigger = ({
   approvalPolicy,
 }: UseApprovalPolicyTriggerProps) => {
   const { i18n } = useLingui();
+  const { formatCurrencyToDisplay } = useCurrencies();
 
   const getTriggerName = (triggerKey: ApprovalPoliciesTriggerKey) => {
     switch (triggerKey) {
       case 'amount':
         return t(i18n)`Amount`;
-      case 'currency':
-        return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by user`;
       case 'counterpart_id':
@@ -74,8 +76,6 @@ export const useApprovalPolicyTrigger = ({
     switch (triggerKey) {
       case 'amount':
         return t(i18n)`Amount`;
-      case 'currency':
-        return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by`;
       case 'counterpart_id':
@@ -87,21 +87,26 @@ export const useApprovalPolicyTrigger = ({
     }
   };
 
-  const getAmountLabel = (amountValue: AmountTuple[]) => {
+  const getAmountLabel = (
+    amountValue: AmountTuple[],
+    currency: CurrencyEnum
+  ) => {
+    const formattedValue = formatCurrencyToDisplay(amountValue[0][1], currency);
+
     if (amountValue.length === 1) {
       switch (amountValue[0][0]) {
         case '>':
-          return t(i18n)`Greater than ${amountValue[0][1]}`;
+          return t(i18n)`Greater than ${formattedValue}`;
         case '>=':
-          return t(i18n)`Greater than or equal to ${amountValue[0][1]}`;
+          return t(i18n)`Greater than or equal to ${formattedValue}`;
         case '<':
-          return t(i18n)`Less than ${amountValue[0][1]}`;
+          return t(i18n)`Less than ${formattedValue}`;
         case '<=':
-          return t(i18n)`Less than or equal to ${amountValue[0][1]}`;
+          return t(i18n)`Less than or equal to ${formattedValue}`;
         case '==':
-          return t(i18n)`Equal to ${amountValue[0][1]}`;
+          return t(i18n)`Equal to ${formattedValue}`;
         default:
-          return amountValue[0][1];
+          return formattedValue;
       }
     }
 
@@ -110,11 +115,14 @@ export const useApprovalPolicyTrigger = ({
       const rightRange = amountValue.find((value) => value[0] === '<=');
 
       if (leftRange && rightRange) {
-        return t(i18n)`${leftRange[1]} - ${rightRange[1]}`;
+        return t(i18n)`${formatCurrencyToDisplay(
+          leftRange[1],
+          currency
+        )} - ${formatCurrencyToDisplay(rightRange[1], currency)}`;
       }
     }
 
-    return amountValue[0][1];
+    return formattedValue;
   };
 
   const isApprovalPolicyTrigger = (
@@ -156,6 +164,11 @@ export const useApprovalPolicyTrigger = ({
             rawTriggerKey = 'tags';
           }
 
+          // skip `currency` trigger because it is a part of `amount` trigger
+          if (rawTriggerKey === 'currency') {
+            return acc;
+          }
+
           if (
             isValidTriggerKey(rawTriggerKey) &&
             !acc.includes(rawTriggerKey)
@@ -195,11 +208,19 @@ export const useApprovalPolicyTrigger = ({
                 typeof trigger.right_operand === 'number') &&
               isValidOperator(trigger.operator)
             ) {
-              acc['amount'] = [
-                ...(acc['amount'] ?? []),
-                [trigger.operator, trigger.right_operand],
-              ];
+              acc['amount'] = {
+                currency: 'EUR',
+                value: [
+                  ...(acc['amount']?.value ?? []),
+                  [trigger.operator, trigger.right_operand],
+                ],
+              };
             }
+          } else if (rawTriggerKey === 'currency') {
+            acc['amount'] = {
+              value: [...(acc['amount']?.value || [])],
+              currency: trigger.right_operand as CurrencyEnum,
+            };
           } else if (Array.isArray(trigger.right_operand)) {
             acc[rawTriggerKey] = trigger.right_operand;
           }
@@ -219,3 +240,5 @@ export const useApprovalPolicyTrigger = ({
     getAmountLabel,
   };
 };
+
+type CurrencyEnum = components['schemas']['CurrencyEnum'];
