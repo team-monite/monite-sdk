@@ -280,9 +280,6 @@ const ProductsTableBase = ({
   if (!isLoading && products?.data.length === 0) {
     return (
       <DataGridEmptyState
-        icon={
-          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
-        }
         title={t(i18n)`No Products`}
         descriptionLine1={t(i18n)`You don’t have any products yet.`}
         descriptionLine2={t(i18n)`You can create your first product.`}
@@ -301,9 +298,6 @@ const ProductsTableBase = ({
   if (isError) {
     return (
       <DataGridEmptyState
-        icon={
-          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
-        }
         title={t(i18n)`Failed to Load Products`}
         descriptionLine1={t(i18n)`There was an error loading products.`}
         descriptionLine2={t(i18n)`Please try again later.`}

@@ -385,9 +385,6 @@ const PayablesTableBase = ({
   if (!isLoading && payables?.data.length === 0) {
     return (
       <DataGridEmptyState
-        icon={
-          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
-        }
         title={t(i18n)`No Payables`}
         descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
         descriptionLine2={t(i18n)`You can add a new payable.`}
@@ -408,9 +405,6 @@ const PayablesTableBase = ({
   if (isError) {
     return (
       <DataGridEmptyState
-        icon={
-          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
-        }
         title={t(i18n)`Failed to Load Payables`}
         descriptionLine1={t(i18n)`There was an error loading the payables.`}
         descriptionLine2={t(i18n)`Please try again later.`}

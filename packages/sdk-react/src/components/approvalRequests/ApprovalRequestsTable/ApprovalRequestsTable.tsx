@@ -271,9 +271,6 @@ const ApprovalRequestsTableBase = ({
   if (!isApprovalRequestsLoading && approvalRequests?.data?.length === 0) {
     return (
       <DataGridEmptyState
-        icon={
-          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
-        }
         title={t(i18n)`No Approval Requests`}
         descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
         descriptionLine2={t(i18n)`You can create your first approval request.`}
@@ -285,9 +282,6 @@ const ApprovalRequestsTableBase = ({
   if (isError) {
     return (
       <DataGridEmptyState
-        icon={
-          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
-        }
         title={t(i18n)`Failed to Load Approval Requests`}
         descriptionLine1={t(
           i18n

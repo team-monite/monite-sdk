@@ -369,9 +369,6 @@ const CounterpartsTableBase = ({
   if (!isLoading && counterparts?.data.length === 0) {
     return (
       <DataGridEmptyState
-        icon={
-          <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
-        }
         title={t(i18n)`No Counterparts`}
         descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
         descriptionLine2={t(i18n)`You can create your first counterpart.`}
@@ -393,9 +390,6 @@ const CounterpartsTableBase = ({
   if (isError) {
     return (
       <DataGridEmptyState
-        icon={
-          <ErrorIcon sx={{ fontSize: '4rem', color: 'error.main', mb: 2 }} />
-        }
         title={t(i18n)`Failed to Load Counterparts`}
         descriptionLine1={t(i18n)`There was an error loading counterparts.`}
         descriptionLine2={t(i18n)`Please try again later.`}
