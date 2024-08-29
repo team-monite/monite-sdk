@@ -17,6 +17,7 @@ import {
 } from '@/components/approvalPolicies/useApprovalPolicyTrigger';
 import { RHFTextField } from '@/components/RHF/RHFTextField';
 import { useMoniteContext } from '@/core/context/MoniteContext';
+import { CurrencyType, getCurrenciesArray } from '@/core/utils';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -45,6 +46,7 @@ import {
 
 import { ConditionsTable } from '../ConditionsTable';
 import { AutocompleteCounterparts } from './AutocompleteCounterparts';
+import { AutocompleteCurrencies } from './AutocompleteCurrencies';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
 
@@ -68,6 +70,7 @@ export interface FormValues {
     tags: components['schemas']['TagReadSchema'][];
     counterpart_id: components['schemas']['CounterpartResponse'][];
     amount: AmountTuple[];
+    currency: CurrencyType[];
   };
   amountOperator?: ApprovalPoliciesOperator;
   amountValue?: string | number;
@@ -344,6 +347,15 @@ export const ApprovalPolicyForm = ({
         }
       }
 
+      if (triggers.currency && triggers.currency?.length > 0) {
+        setValue(
+          'triggers.currency',
+          getCurrenciesArray(i18n).filter((currency) =>
+            triggers.currency?.includes(currency.code)
+          )
+        );
+      }
+
       if (usersForScript?.data && usersForScript?.data.length > 0) {
         setValue('script.params', {
           users: usersForScript?.data.filter((user) =>
@@ -429,6 +441,10 @@ export const ApprovalPolicyForm = ({
 
       setValue('amountOperator', undefined);
       setValue('amountValue', undefined);
+    }
+
+    if (!isAddingTrigger && triggerInEdit === 'currency') {
+      setValue('triggers.currency', prevTriggerValues?.currency || []);
     }
 
     if (isAddingTrigger && prevTriggerValues) {
@@ -565,6 +581,19 @@ export const ApprovalPolicyForm = ({
                           })),
                         ]
                       : []),
+                    ...(values.triggers.currency?.length
+                      ? [
+                          {
+                            operator: 'in',
+                            left_operand: {
+                              name: 'invoice.currency',
+                            },
+                            right_operand: values.triggers.currency.map(
+                              (currency) => currency.code
+                            ),
+                          },
+                        ]
+                      : []),
                   ],
                 },
                 // TODO: remove this script after demo
@@ -604,6 +633,12 @@ export const ApprovalPolicyForm = ({
                     triggerInEdit === 'amount') && (
                     <MenuItem value="amount">
                       {getTriggerName('amount')}
+                    </MenuItem>
+                  )}
+                  {(!prevTriggerValues?.currency ||
+                    triggerInEdit === 'currency') && (
+                    <MenuItem value="currency">
+                      {getTriggerName('currency')}
                     </MenuItem>
                   )}
                   {(!prevTriggerValues?.counterpart_id ||
@@ -722,6 +757,14 @@ export const ApprovalPolicyForm = ({
                     </Grid>
                   )}
                 </Grid>
+              )}
+              {(triggerInEdit === 'currency' ||
+                (isAddingTrigger && currentTriggerType === 'currency')) && (
+                <AutocompleteCurrencies
+                  control={control}
+                  name="triggers.currency"
+                  label={t(i18n)`Currency`}
+                />
               )}
               {scriptInEdit ===
                 'ApprovalRequests.request_approval_by_users' && (

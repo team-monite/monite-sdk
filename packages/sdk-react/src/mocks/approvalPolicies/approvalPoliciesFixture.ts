@@ -60,6 +60,13 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
               },
               right_operand: '500',
             },
+            {
+              operator: 'in',
+              left_operand: {
+                name: 'invoice.currency',
+              },
+              right_operand: ['EUR', 'USD'],
+            },
           ],
         },
 

@@ -134,6 +134,15 @@ export const ApprovalPolicyView = ({
         case 'amount':
           triggerValue = <p>{getAmountLabel(triggers.amount ?? [])}</p>;
           break;
+        case 'currency':
+          triggerValue = (
+            <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+              {triggers.currency?.map((currency) => (
+                <Chip key={currency} label={currency} />
+              ))}
+            </Stack>
+          );
+          break;
         default:
           triggerValue = triggerKey;
           break;
