@@ -13,6 +13,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -111,26 +112,30 @@ const ApprovalRequestsTableBase = ({
   );
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
 
-  const { data: approvalRequests, isLoading: isApprovalRequestsLoading } =
-    api.approvalRequests.getApprovalRequests.useQuery({
-      query: {
-        sort: 'updated_at',
-        order: 'desc',
-        object_type: 'payable',
-        pagination_token: currentPaginationToken ?? undefined,
-        limit: pageSize,
-        status: currentFilter[FILTER_TYPE_STATUS] || undefined,
-        created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
-          : undefined,
-        created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
-          ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
-          : undefined,
-        created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
-          ? user?.id
-          : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
-      },
-    });
+  const {
+    data: approvalRequests,
+    isLoading: isApprovalRequestsLoading,
+    isError,
+    refetch,
+  } = api.approvalRequests.getApprovalRequests.useQuery({
+    query: {
+      sort: 'updated_at',
+      order: 'desc',
+      object_type: 'payable',
+      pagination_token: currentPaginationToken ?? undefined,
+      limit: pageSize,
+      status: currentFilter[FILTER_TYPE_STATUS] || undefined,
+      created_at__lt: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilter[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+      created_at__gte: currentFilter[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilter[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_by: currentFilter[FILTER_TYPE_CURRENT_USER]
+        ? user?.id
+        : currentFilter[FILTER_TYPE_ADDED_BY] || undefined,
+    },
+  });
 
   const { data: payables, isLoading: isPayablesLoading } =
     api.payables.getPayables.useQuery({
@@ -259,6 +264,32 @@ const ApprovalRequestsTableBase = ({
 
   if (!isApprovalReadSupported || !isPayableReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isApprovalRequestsLoading && approvalRequests?.data?.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Requests`}
+        descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval request.`}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Approval Requests`}
+        descriptionLine1={t(
+          i18n
+        )`There was an error loading approval requests.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
   }
 
   return (

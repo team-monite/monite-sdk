@@ -109,6 +109,7 @@ const ProductsBase = () => {
           onRowClick={onRowClick}
           onEdit={onEdit}
           onDeleted={onDelete}
+          openCreateModal={openCreateModal}
         />
       )}
       <Dialog

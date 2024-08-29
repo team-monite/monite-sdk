@@ -156,6 +156,8 @@ const PayablesBase = ({
         <PayablesTable
           onRowClick={(id) => setInvoiceIdDialog({ open: true, invoiceId: id })}
           onPay={onPay}
+          openFileInput={openFileInput}
+          setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
 

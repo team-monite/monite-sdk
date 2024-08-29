@@ -15,6 +15,7 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -94,6 +95,12 @@ export type CounterpartsTableProps = Partial<CounterpartShowCategories> & {
     field: keyof Filters;
     value: FilterValue;
   }) => void;
+
+  /**
+   * Callback function that is called when the type is changed for action button no data state.
+   * @param type - The type to filter with.
+   */
+  setType?: (type: components['schemas']['CounterpartType']) => void;
 };
 
 export const CounterpartsTable = (props: CounterpartsTableProps) => (
@@ -109,6 +116,7 @@ const CounterpartsTableBase = ({
   onChangeSort: onChangeSortCallback,
   onChangeFilter: onChangeFilterCallback,
   showCategories = true,
+  setType,
 }: CounterpartsTableProps) => {
   const { i18n } = useLingui();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
@@ -155,6 +163,7 @@ const CounterpartsTableBase = ({
     data: counterparts,
     isLoading,
     refetch,
+    isError,
   } = useCounterpartList({
     query: {
       sort: sortModel?.field,
@@ -326,6 +335,40 @@ const CounterpartsTableBase = ({
 
   if (!isReadSupported) {
     return <AccessRestriction />;
+  }
+
+  if (!isLoading && counterparts?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Counterparts`}
+        descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
+        descriptionLine2={t(i18n)`You can create your first counterpart.`}
+        actionOptions={[t(i18n)`Organization`, t(i18n)`Individual`]}
+        actionButtonLabel={t(i18n)`Create new`}
+        onAction={(action) => {
+          if (!setType) return;
+          if (action === t(i18n)`Organization`) {
+            setType('organization');
+          } else if (action === t(i18n)`Individual`) {
+            setType('individual');
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Counterparts`}
+        descriptionLine1={t(i18n)`There was an error loading counterparts.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
   }
 
   const className = 'Monite-CounterpartsTable';
