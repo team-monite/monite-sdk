@@ -4,6 +4,7 @@ import { useLingui } from '@lingui/react';
 
 export type ApprovalPoliciesTriggerKey =
   | 'amount'
+  | 'currency'
   | 'counterpart_id'
   | 'was_created_by_user_id'
   | 'tags';
@@ -19,10 +20,11 @@ interface ApprovalPoliciesTrigger {
 export type AmountTuple = [ApprovalPoliciesOperator, string | number];
 
 export type Triggers = {
+  amount?: AmountTuple[];
+  currency?: string[];
   counterpart_id?: string[];
   was_created_by_user_id?: string[];
   tags?: string[];
-  amount?: AmountTuple[];
 };
 
 export type ApprovalPoliciesOperator = '>' | '<' | '>=' | '<=' | '==' | 'range';
@@ -34,6 +36,7 @@ interface UseApprovalPolicyTriggerProps {
 const isValidTriggerKey = (key: string): key is ApprovalPoliciesTriggerKey => {
   return [
     'amount',
+    'currency',
     'counterpart_id',
     'was_created_by_user_id',
     'tags',
@@ -54,6 +57,8 @@ export const useApprovalPolicyTrigger = ({
     switch (triggerKey) {
       case 'amount':
         return t(i18n)`Amount`;
+      case 'currency':
+        return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by user`;
       case 'counterpart_id':
@@ -69,6 +74,8 @@ export const useApprovalPolicyTrigger = ({
     switch (triggerKey) {
       case 'amount':
         return t(i18n)`Amount`;
+      case 'currency':
+        return t(i18n)`Currency`;
       case 'was_created_by_user_id':
         return t(i18n)`Created by`;
       case 'counterpart_id':
