@@ -24,6 +24,9 @@ export const CounterPartCellByName = ({
 }) => {
   if (!name) return null;
   const nameParts = name.split(' ');
+  // Split name into parts by ' ' and take first letters from the first and last parts of the name
+  // For example, Mike Borough -> MB
+  // Ambercombie -> A
   const avatarLetters = (
     nameParts.length >= 2
       ? nameParts[0][0] + nameParts[nameParts.length - 1][0]
