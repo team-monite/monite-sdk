@@ -12,6 +12,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import {
   TablePagination,
