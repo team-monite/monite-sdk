@@ -31,7 +31,7 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
             {
               operator: 'in',
               left_operand: {
-                name: 'invoice.tags',
+                name: 'invoice.tags.id',
               },
               right_operand: [
                 tagListFixture[0].id,
