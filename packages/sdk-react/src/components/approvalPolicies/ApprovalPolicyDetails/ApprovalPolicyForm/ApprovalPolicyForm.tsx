@@ -546,7 +546,7 @@ export const ApprovalPolicyForm = ({
                           {
                             operator: 'in',
                             left_operand: {
-                              name: 'invoice.tags',
+                              name: 'invoice.tags.id',
                             },
                             right_operand: values.triggers.tags.map(
                               (tag) => tag.id
@@ -832,6 +832,10 @@ export const ApprovalPolicyForm = ({
                         delete updatedTriggers[triggerKey];
 
                         setValue('triggers', updatedTriggers);
+                        setValue('amountOperator', undefined);
+                        setValue('amountValue', undefined);
+                        setValue('amountRangeLeftValue', undefined);
+                        setValue('amountRangeRightValue', undefined);
                       }}
                     />
                     <Typography variant="h5" mt={4} mb={1}>
