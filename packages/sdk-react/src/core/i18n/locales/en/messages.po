@@ -1696,7 +1696,6 @@ msgstr "Create Invoice"
 #: src/components/payables/PayablesTable/PayablesTable.tsx:389
 #: src/components/products/ProductsTable/ProductsTable.tsx:284
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
-#: src/components/tags/TagsTable/TagsTable.tsx:209
 msgid "Create new"
 msgstr "Create new"
 
@@ -1727,6 +1726,7 @@ msgstr "Create New Product Close"
 #: src/components/tags/Tags.test.tsx:42
 #: src/components/tags/Tags.test.tsx:66
 #: src/components/tags/Tags.tsx:64
+#: src/components/tags/TagsTable/TagsTable.tsx:209
 msgid "Create new tag"
 msgstr "Create new tag"
 
@@ -4066,6 +4066,10 @@ msgstr "No contact persons available"
 msgid "No Counterparts"
 msgstr "No Counterparts"
 
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:173
+msgid "No Credit Notes"
+msgstr "No Credit Notes"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:196
 msgid "No default email for selected Counterpart. Reminders will not be sent."
 msgstr "No default email for selected Counterpart. Reminders will not be sent."
@@ -4106,7 +4110,6 @@ msgstr "No Products"
 msgid "No Quotes"
 msgstr "No Quotes"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:173
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:125
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:244
 msgid "No Receivables"
