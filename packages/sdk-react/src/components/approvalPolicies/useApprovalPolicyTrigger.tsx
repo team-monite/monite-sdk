@@ -147,10 +147,14 @@ export const useApprovalPolicyTrigger = ({
           trigger.hasOwnProperty('operator') &&
           trigger.hasOwnProperty('right_operand')
         ) {
-          const rawTriggerKey =
+          let rawTriggerKey =
             typeof trigger.left_operand === 'object'
               ? trigger.left_operand.name.replace('invoice.', '')
               : trigger.left_operand;
+
+          if (rawTriggerKey === 'tags.id') {
+            rawTriggerKey = 'tags';
+          }
 
           if (
             isValidTriggerKey(rawTriggerKey) &&
@@ -174,7 +178,11 @@ export const useApprovalPolicyTrigger = ({
         typeof trigger.left_operand === 'object' &&
         trigger.left_operand.hasOwnProperty('name')
       ) {
-        const rawTriggerKey = trigger.left_operand.name.replace('invoice.', '');
+        let rawTriggerKey = trigger.left_operand.name.replace('invoice.', '');
+
+        if (rawTriggerKey === 'tags.id') {
+          rawTriggerKey = 'tags';
+        }
 
         if (
           isValidTriggerKey(rawTriggerKey) &&
