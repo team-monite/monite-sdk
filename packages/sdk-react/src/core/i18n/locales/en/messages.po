@@ -1621,6 +1621,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:47
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:71
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:82
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:197
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsForm/ApprovalPolicyDetailsForm.tsx:283
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:594
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
@@ -1746,7 +1747,7 @@ msgstr "Create User Role"
 msgid "Create Vat Id"
 msgstr "Create Vat Id"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:155
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:164
 #: src/components/approvalPolicies/ApprovalPoliciesTable/Filters/Filters.tsx:35
 #: src/components/tags/TagsTable/TagsTable.tsx:147
 msgid "Created at"
@@ -1756,7 +1757,7 @@ msgstr "Created at"
 msgid "Created at:"
 msgstr "Created at:"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:162
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:171
 #: src/components/tags/TagsTable/TagsTable.tsx:163
 msgid "Created by"
 msgstr "Created by"
@@ -2545,6 +2546,10 @@ msgstr "Failed to delete product."
 #: src/core/queries/useCounterpart.ts:294
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
+
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:207
+msgid "Failed to Load Approval Policies"
+msgstr "Failed to Load Approval Policies"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:283
 msgid "Failed to Load Approval Requests"
@@ -4050,6 +4055,10 @@ msgstr "No"
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:194
+msgid "No Approval Policies"
+msgstr "No Approval Policies"
+
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:272
 msgid "No Approval Requests"
 msgstr "No Approval Requests"
@@ -4604,6 +4613,7 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:211
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:287
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:366
 #: src/components/payables/PayablesTable/PayablesTable.tsx:408
@@ -4638,7 +4648,7 @@ msgstr "Plumbing, Heating Equipment, and Supplies"
 msgid "Poland"
 msgstr "Poland"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:131
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:140
 msgid "Policy name"
 msgstr "Policy name"
 
@@ -4959,6 +4969,7 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:212
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:288
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:367
 #: src/components/products/ProductsTable/ProductsTable.tsx:302
@@ -5117,7 +5128,7 @@ msgstr "Routing Number"
 msgid "Rows per page"
 msgstr "Rows per page"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:146
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:155
 msgid "Rule"
 msgstr "Rule"
 
@@ -5868,6 +5879,10 @@ msgstr "There is no role by provided id: {id}"
 msgid "There is no such counterpart yet, you can create it in respective section."
 msgstr "There is no such counterpart yet, you can create it in respective section."
 
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:208
+msgid "There was an error loading approval policies."
+msgstr "There was an error loading approval policies."
+
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:284
 msgid "There was an error loading approval requests."
 msgstr "There was an error loading approval requests."
@@ -6040,7 +6055,7 @@ msgstr "Travel Agencies, Tour Operators"
 msgid "Trigger in Monite Script"
 msgstr "Trigger in Monite Script"
 
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:137
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:146
 msgid "Triggers"
 msgstr "Triggers"
 
@@ -6640,6 +6655,10 @@ msgstr "You can change this setting if you wish to forbid sending any payment re
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
 
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:196
+msgid "You can create your first approval policy."
+msgstr "You can create your first approval policy."
+
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:274
 msgid "You can create your first approval request."
 msgstr "You can create your first approval request."
@@ -6676,6 +6695,10 @@ msgstr "You can not create receivable with a type other than \"{invoice}\""
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:253
 msgid "You can set a different period length and the date of issuance. The starting date cannot be updated."
 msgstr "You can set a different period length and the date of issuance. The starting date cannot be updated."
+
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:195
+msgid "You don’t have any approval policies yet."
+msgstr "You don’t have any approval policies yet."
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:273
 msgid "You don’t have any approval requests yet."
