@@ -1,77 +1,72 @@
-import { useCallback } from 'react';
-
 import { components } from '@/api';
+import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
-import CorporateFareIcon from '@mui/icons-material/CorporateFare';
-import PersonIcon from '@mui/icons-material/Person';
-import { Chip, Box, Avatar, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Chip, Skeleton, Typography } from '@mui/material';
 
 interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
-export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
-  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-
-  const getCounterpartText = useCallback(
-    (counterpart: components['schemas']['CounterpartResponse']) => {
-      return counterpart.type === 'organization'
-        ? (
-            counterpart as components['schemas']['CounterpartOrganizationRootResponse']
-          ).organization.legal_name
-        : `${
-            (
-              counterpart as components['schemas']['CounterpartIndividualRootResponse']
-            ).individual.first_name
-          } ${
-            (
-              counterpart as components['schemas']['CounterpartIndividualRootResponse']
-            ).individual.last_name
-          }`;
-    },
-    []
-  );
-
-  if (!counterpartId || (!isLoading && !counterpart)) {
-    return null;
+const calculateColorIndex = (name: string) => {
+  let sum = 0;
+  for (let i = name.length - 1; i >= 0; i--) {
+    sum += name.charCodeAt(i);
   }
+  return sum % 5;
+};
 
+export const CounterPartCellByName = ({
+  name,
+  isLoading,
+}: {
+  name: string;
+  isLoading?: boolean;
+}) => {
+  if (!name) return null;
+  const nameParts = name.split(' ');
+  // Split name into parts by ' ' and take first letters from the first and last parts of the name
+  // For example, Mike Borough -> MB
+  // Ambercombie -> A
+  const avatarLetters = (
+    nameParts.length >= 2
+      ? nameParts[0][0] + nameParts[nameParts.length - 1][0]
+      : name[0] || ''
+  ).toUpperCase();
   return (
     <Box sx={{ width: '100%' }}>
       <Chip
+        className="Monite-CounterpartCell"
         avatar={
           isLoading ? (
             <Skeleton
               animation="wave"
               variant="circular"
-              width={24}
-              height={24}
+              width={40}
+              height={40}
               sx={{ flexShrink: 0 }}
             />
           ) : (
-            <Avatar sx={{ width: 24, height: 24 }}>
-              {counterpart?.type === 'organization' ? (
-                <CorporateFareIcon sx={{ fontSize: 16 }} />
-              ) : (
-                <PersonIcon sx={{ fontSize: 20 }} />
-              )}
+            <Avatar
+              className={'MuiAvatar-' + calculateColorIndex(avatarLetters)}
+            >
+              {avatarLetters}
             </Avatar>
           )
         }
         label={
-          isLoading || !counterpart ? (
+          isLoading || !name ? (
             <Skeleton
               animation="wave"
               height={10}
               width="100%"
-              sx={{ flexShrink: 0, ml: 1, minWidth: '4em' }}
+              sx={{ flexShrink: 0, ml: 1.5, minWidth: '4em' }}
             />
           ) : (
             <Typography
               variant="body2"
-              sx={{ ml: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}
+              sx={{ ml: 1.5, overflow: 'hidden', textOverflow: 'ellipsis' }}
             >
-              {getCounterpartText(counterpart)}
+              {name}
             </Typography>
           )
         }
@@ -79,4 +74,16 @@ export const CounterpartCell = ({ counterpartId }: CounterpartCellProps) => {
       />
     </Box>
   );
+};
+
+export const CounterpartCellById = ({
+  counterpartId,
+}: CounterpartCellProps) => {
+  const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
+  if (!counterpartId || (!isLoading && !counterpart)) {
+    return null;
+  }
+
+  const name = counterpart ? getCounterpartName(counterpart) : '';
+  return <CounterPartCellByName name={name} isLoading={isLoading} />;
 };

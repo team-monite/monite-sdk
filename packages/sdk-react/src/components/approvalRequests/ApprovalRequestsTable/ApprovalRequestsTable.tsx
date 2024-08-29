@@ -12,7 +12,7 @@ import {
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -192,7 +192,7 @@ const ApprovalRequestsTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.value} />
+          <CounterpartCellById counterpartId={params.value} />
         ),
       },
       {

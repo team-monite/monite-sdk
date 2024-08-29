@@ -57,6 +57,11 @@ export const paletteLight: MonitePaletteOptions = {
     '95': '#f9f9f9',
   },
   divider: '#DDDDDD',
+  text: {
+    primary: 'rgba(0,0,0,0.84)',
+    secondary: 'rgba(0,0,0,0.68)',
+    disabled: 'rgba(0,0,0,0.52)',
+  },
 };
 
 export const paletteDark: MonitePaletteOptions = {
@@ -112,6 +117,16 @@ const statusColors: {
     backgroundColor: '#FFE0E4',
   },
 };
+
+// Array of colours for counterpart 'logos'. A random color will be used
+// from the array. See: calculateColorIndex
+const counterpartColors: string[] = [
+  'rgba(0,0,255,0.05)',
+  'rgba(255,0,32,0.05)',
+  'rgba(0,255,220,0.05)',
+  'rgba(225,1,251,0.05)',
+  'rgba(255,123,0,0.05)',
+];
 
 export const defaultMoniteTypography:
   | TypographyOptions
@@ -245,6 +260,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         minHeight: '40px',
         '& .MuiInputBase-input': {
           height: '40px',
+          lineHeight: '40px',
           padding: '0 14px', // Adjust padding if needed
           boxSizing: 'border-box',
         },
@@ -568,6 +584,30 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           marginLeft: 0,
           marginRight: '4px',
         },
+        '&.Monite-CounterpartCell .MuiChip-avatar': {
+          margin: 0,
+          color: 'text.primary',
+          fontSize: '16px',
+          fontWeight: 600,
+          lineHeight: '40px',
+          width: '40px',
+          height: '40px',
+          '&.MuiAvatar-0': {
+            backgroundColor: counterpartColors[0],
+          },
+          '&.MuiAvatar-1': {
+            backgroundColor: counterpartColors[1],
+          },
+          '&.MuiAvatar-2': {
+            backgroundColor: counterpartColors[2],
+          },
+          '&.MuiAvatar-3': {
+            backgroundColor: counterpartColors[3],
+          },
+          '&.MuiAvatar-4': {
+            backgroundColor: counterpartColors[4],
+          },
+        },
       },
       label: {
         padding: '0',
@@ -605,12 +645,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         fontWeight: 400,
         fontSize: '14px',
         // Align counterpart avatar with the cell header
-        '&[data-field="counterpart_id"]': {
+        '&[data-field="counterpart_id"], &[data-field="counterpart_name"]': {
           '.MuiChip-root': {
             paddingLeft: 0,
-            '.MuiAvatar-root': {
-              margin: 0,
-            },
           },
         },
         '& .Monite-TextOverflowContainer': {
@@ -884,6 +921,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         style: statusColors.red,
       },
     ],
+  },
+  MoniteCounterpartStatusChip: {
+    styleOverrides: {
+      root: {
+        height: '24px',
+        padding: '7px 8px',
+        backgroundColor: 'transparent',
+        color: 'text.primary',
+        borderColor: 'neutral.80',
+      },
+    },
   },
 };
 

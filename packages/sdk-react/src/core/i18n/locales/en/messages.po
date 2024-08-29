@@ -259,7 +259,7 @@ msgstr "Add someone new"
 msgid "Add VAT ID"
 msgstr "Add VAT ID"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:241
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:240
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:76
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:462
 msgid "Added by"
@@ -396,7 +396,7 @@ msgstr "American Samoa"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
 #: src/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesTriggers.tsx:80
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:230
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:229
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:134
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:242
@@ -408,7 +408,7 @@ msgstr "Amount"
 
 #. Payables Table "Amount" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:324
+#: src/components/payables/PayablesTable/PayablesTable.tsx:323
 msgid "Amount Name"
 msgstr "Amount"
 
@@ -1028,7 +1028,7 @@ msgstr "Canadian Dollar"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:394
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:27
 #: src/components/counterparts/CounterpartDetails/CounterpartVatForm/CounterpartVatForm.tsx:105
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:511
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:476
 #: src/components/onboarding/hooks/useOnboardingActions.ts:130
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:87
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:108
@@ -1143,7 +1143,7 @@ msgstr "Carpet/Upholstery Cleaning"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:43
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:69
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:269
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:257
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:80
 #: src/components/counterparts/CounterpartsTable/Filters/Filters.tsx:83
 msgid "Category"
@@ -1414,7 +1414,7 @@ msgstr "Construction Materials (Not Elsewhere Classified)"
 msgid "Consulting, Public Relations"
 msgstr "Consulting, Public Relations"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:310
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:281
 msgid "Contact information"
 msgstr "Contact information"
 
@@ -1526,12 +1526,12 @@ msgstr "Cote D\"Ivoire"
 msgid "Counseling Services"
 msgstr "Counseling Services"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:192
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:191
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:203
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:375
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:381
-#: src/components/payables/PayablesTable/PayablesTable.tsx:232
+#: src/components/payables/PayablesTable/PayablesTable.tsx:231
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:93
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:135
 #: src/components/userRoles/consts.ts:28
@@ -1688,9 +1688,9 @@ msgstr "Create from mail"
 msgid "Create Invoice"
 msgstr "Create Invoice"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:379
-#: src/components/payables/PayablesTable/PayablesTable.tsx:393
-#: src/components/products/ProductsTable/ProductsTable.tsx:288
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:347
+#: src/components/payables/PayablesTable/PayablesTable.tsx:389
+#: src/components/products/ProductsTable/ProductsTable.tsx:284
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 msgid "Create new"
 msgstr "Create new"
@@ -1816,7 +1816,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:260
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:282
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:115
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
@@ -1925,7 +1925,7 @@ msgstr "default"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:309
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:339
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.test.tsx:371
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:520
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:485
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:97
 #: src/components/products/ProductDetails/ExistingProductDetails.tsx:237
 #: src/components/products/Products.test.tsx:160
@@ -1970,12 +1970,12 @@ msgstr "Delete {type} “{name}”?"
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:39
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:12
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:479
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:444
 #: src/core/context/MoniteI18nProvider.test.tsx:36
 msgid "Delete confirmation"
 msgstr "Delete confirmation"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:490
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:455
 msgid "Delete Counterpart \"{0}\"?"
 msgstr "Delete Counterpart \"{0}\"?"
 
@@ -2185,7 +2185,7 @@ msgstr "Drugs, Drug Proprietaries, and Druggist Sundries"
 msgid "Dry Cleaners"
 msgstr "Dry Cleaners"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:212
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:211
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:94
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:510
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:254
@@ -2201,7 +2201,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:280
+#: src/components/payables/PayablesTable/PayablesTable.tsx:279
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -2541,15 +2541,15 @@ msgstr "Failed to delete product."
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:290
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:283
 msgid "Failed to Load Approval Requests"
 msgstr "Failed to Load Approval Requests"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:399
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:364
 msgid "Failed to Load Counterparts"
 msgstr "Failed to Load Counterparts"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:413
+#: src/components/payables/PayablesTable/PayablesTable.tsx:406
 msgid "Failed to Load Payables"
 msgstr "Failed to Load Payables"
 
@@ -2557,7 +2557,7 @@ msgstr "Failed to Load Payables"
 msgid "Failed to load PDF Viewer"
 msgstr "Failed to load PDF Viewer"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:306
+#: src/components/products/ProductsTable/ProductsTable.tsx:299
 msgid "Failed to Load Products"
 msgstr "Failed to Load Products"
 
@@ -3060,8 +3060,8 @@ msgid "Indian Rupee"
 msgstr "Indian Rupee"
 
 #: src/components/counterparts/Counterparts.tsx:155
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:378
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:384
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:346
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:352
 msgid "Individual"
 msgstr "Individual"
 
@@ -3137,8 +3137,8 @@ msgstr "Invoice {0}"
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:186
-#: src/components/payables/PayablesTable/PayablesTable.tsx:206
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:185
+#: src/components/payables/PayablesTable/PayablesTable.tsx:205
 msgid "Invoice #"
 msgstr "Invoice #"
 
@@ -3148,7 +3148,7 @@ msgstr "Invoice cancel confirmation"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:479
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:72
-#: src/components/payables/PayablesTable/PayablesTable.tsx:242
+#: src/components/payables/PayablesTable/PayablesTable.tsx:241
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -3245,7 +3245,7 @@ msgstr "Issue and send"
 msgid "Issue at"
 msgstr "Issue at"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:202
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:201
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:235
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:109
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:175
@@ -3254,7 +3254,7 @@ msgstr "Issue date"
 
 #. Payables Table "Issue date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:266
+#: src/components/payables/PayablesTable/PayablesTable.tsx:265
 msgid "Issue date Name"
 msgstr "Issue date"
 
@@ -3888,11 +3888,11 @@ msgstr "Name"
 msgid "Name *"
 msgstr "Name *"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:247
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:244
 msgid "Name, country, city"
 msgstr "Name, country, city"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:190
+#: src/components/products/ProductsTable/ProductsTable.tsx:189
 msgid "Name, description"
 msgstr "Name, description"
 
@@ -3953,8 +3953,8 @@ msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
 #: src/components/payables/Payables.tsx:138
-#: src/components/payables/PayablesTable/PayablesTable.tsx:394
-#: src/components/payables/PayablesTable/PayablesTable.tsx:396
+#: src/components/payables/PayablesTable/PayablesTable.tsx:390
+#: src/components/payables/PayablesTable/PayablesTable.tsx:392
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4020,7 +4020,7 @@ msgstr "No"
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:276
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:272
 msgid "No Approval Requests"
 msgstr "No Approval Requests"
 
@@ -4032,7 +4032,7 @@ msgstr "No bank accounts available"
 msgid "No contact persons available"
 msgstr "No contact persons available"
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:375
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:343
 msgid "No Counterparts"
 msgstr "No Counterparts"
 
@@ -4056,7 +4056,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:390
+#: src/components/payables/PayablesTable/PayablesTable.tsx:386
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4068,7 +4068,7 @@ msgstr "No payment reminders available"
 msgid "no policy"
 msgstr "no policy"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:285
+#: src/components/products/ProductsTable/ProductsTable.tsx:281
 msgid "No Products"
 msgstr "No Products"
 
@@ -4168,8 +4168,8 @@ msgid "Optometrists, Ophthalmologist"
 msgstr "Optometrists, Ophthalmologist"
 
 #: src/components/counterparts/Counterparts.tsx:147
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:378
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:382
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:346
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:350
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:150
 msgid "Organization"
 msgstr "Organization"
@@ -4182,7 +4182,7 @@ msgstr "Orthopedic Goods - Prosthetic Devices"
 msgid "Osteopaths"
 msgstr "Osteopaths"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:313
+#: src/components/payables/PayablesTable/PayablesTable.tsx:312
 #: src/components/receivables/getCommonStatusLabel.ts:27
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:18
 msgid "Overdue"
@@ -4557,10 +4557,10 @@ msgstr "Please provide the following documents for the person"
 msgid "Please review the terms and conditions and accept them to continue."
 msgstr "Please review the terms and conditions and accept them to continue."
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:294
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:401
-#: src/components/payables/PayablesTable/PayablesTable.tsx:415
-#: src/components/products/ProductsTable/ProductsTable.tsx:308
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:287
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:366
+#: src/components/payables/PayablesTable/PayablesTable.tsx:408
+#: src/components/products/ProductsTable/ProductsTable.tsx:301
 msgid "Please try again later."
 msgstr "Please try again later."
 
@@ -4654,7 +4654,7 @@ msgstr "Price"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:149
 #: src/components/products/ProductDetails/validation.ts:41
-#: src/components/products/ProductsTable/ProductsTable.tsx:219
+#: src/components/products/ProductsTable/ProductsTable.tsx:218
 msgid "Price per unit"
 msgstr "Price per unit"
 
@@ -4666,7 +4666,7 @@ msgstr "Price:"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:251
+#: src/components/payables/PayablesTable/PayablesTable.tsx:250
 msgid "Processing file…"
 msgstr "Processing file…"
 
@@ -4676,8 +4676,8 @@ msgstr "Processing..."
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:89
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
-#: src/components/products/ProductsTable/ProductsTable.tsx:289
-#: src/components/products/ProductsTable/ProductsTable.tsx:291
+#: src/components/products/ProductsTable/ProductsTable.tsx:285
+#: src/components/products/ProductsTable/ProductsTable.tsx:287
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:67
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:49
 #: src/components/userRoles/consts.ts:38
@@ -4908,14 +4908,14 @@ msgstr "Religious Goods Stores"
 msgid "Religious Organizations"
 msgstr "Religious Organizations"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:295
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:402
-#: src/components/products/ProductsTable/ProductsTable.tsx:309
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:288
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:367
+#: src/components/products/ProductsTable/ProductsTable.tsx:302
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
 msgid "Reload"
 msgstr "Reload"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:416
+#: src/components/payables/PayablesTable/PayablesTable.tsx:409
 msgid "Reload page"
 msgstr "Reload page"
 
@@ -5459,7 +5459,7 @@ msgstr "Stationery Stores, Office, and School Supply Stores"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:43
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsFilter/ApprovalRequestsFilter.tsx:46
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:221
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:220
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:44
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:47
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:124
@@ -5473,7 +5473,7 @@ msgstr "Status"
 
 #. Payables Table "Status" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:293
+#: src/components/payables/PayablesTable/PayablesTable.tsx:292
 msgid "Status Name"
 msgstr "Status"
 
@@ -5811,19 +5811,19 @@ msgstr "There is no role by provided id: {id}"
 msgid "There is no such counterpart yet, you can create it in respective section."
 msgstr "There is no such counterpart yet, you can create it in respective section."
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:291
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:284
 msgid "There was an error loading approval requests."
 msgstr "There was an error loading approval requests."
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:400
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:365
 msgid "There was an error loading counterparts."
 msgstr "There was an error loading counterparts."
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:307
+#: src/components/products/ProductsTable/ProductsTable.tsx:300
 msgid "There was an error loading products."
 msgstr "There was an error loading products."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:414
+#: src/components/payables/PayablesTable/PayablesTable.tsx:407
 msgid "There was an error loading the payables."
 msgstr "There was an error loading the payables."
 
@@ -5832,7 +5832,7 @@ msgid "There was an issue reading the file."
 msgstr "There was an issue reading the file."
 
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:48
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:498
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:463
 #: src/components/products/ProductDeleteModal/ProductDeleteModal.tsx:75
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:54
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:59
@@ -6032,7 +6032,7 @@ msgstr "Tuvalu"
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:83
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:47
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:50
-#: src/components/products/ProductsTable/ProductsTable.tsx:207
+#: src/components/products/ProductsTable/ProductsTable.tsx:206
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:55
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:58
 msgid "Type"
@@ -6123,11 +6123,12 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:86
-#: src/components/products/ProductsTable/ProductsTable.tsx:234
+#: src/components/products/ProductsTable/ProductsTable.tsx:233
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:240
 msgid "Units"
 msgstr "Units"
 
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:105
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:130
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:134
 #: src/core/utils/getAPIErrorMessage.ts:16
@@ -6214,8 +6215,8 @@ msgid "Upload a document here."
 msgstr "Upload a document here."
 
 #: src/components/payables/Payables.tsx:148
+#: src/components/payables/PayablesTable/PayablesTable.tsx:390
 #: src/components/payables/PayablesTable/PayablesTable.tsx:394
-#: src/components/payables/PayablesTable/PayablesTable.tsx:398
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -6414,7 +6415,7 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:283
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:48
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:74
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:285
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:102
 msgid "Vendor"
 msgstr "Vendor"
 
@@ -6554,7 +6555,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:392
+#: src/components/payables/PayablesTable/PayablesTable.tsx:388
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -6566,15 +6567,15 @@ msgstr "You can change this setting if you wish to forbid sending any payment re
 msgid "You can continue to the next step"
 msgstr "You can continue to the next step"
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:278
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:274
 msgid "You can create your first approval request."
 msgstr "You can create your first approval request."
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:377
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:345
 msgid "You can create your first counterpart."
 msgstr "You can create your first counterpart."
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:287
+#: src/components/products/ProductsTable/ProductsTable.tsx:283
 msgid "You can create your first product."
 msgstr "You can create your first product."
 
@@ -6586,19 +6587,19 @@ msgstr "You can not create receivable with a type other than \"{invoice}\""
 msgid "You can set a different period length and the date of issuance. The starting date cannot be updated."
 msgstr "You can set a different period length and the date of issuance. The starting date cannot be updated."
 
-#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:277
+#: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:273
 msgid "You don’t have any approval requests yet."
 msgstr "You don’t have any approval requests yet."
 
-#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:376
+#: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:344
 msgid "You don’t have any counterparts yet."
 msgstr "You don’t have any counterparts yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:391
+#: src/components/payables/PayablesTable/PayablesTable.tsx:387
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:286
+#: src/components/products/ProductsTable/ProductsTable.tsx:282
 msgid "You don’t have any products yet."
 msgstr "You don’t have any products yet."
 

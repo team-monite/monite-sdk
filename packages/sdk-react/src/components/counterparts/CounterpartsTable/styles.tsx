@@ -2,9 +2,11 @@ import { Box, styled } from '@mui/material';
 
 export const MuiColContacts = styled(Box)`
   display: flex;
-  align-items: 'center';
+  align-items: center;
 
   > svg {
-    margin-right: ${({ theme }) => theme.spacing(1)};
+    width: auto;
+    height: ${({ theme }) => theme.spacing(2)};
+    margin-right: ${({ theme }) => theme.spacing(0.5)};
   }
 `;

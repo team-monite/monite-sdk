@@ -18,7 +18,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterpartCell } from '@/ui/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState/DataGridEmptyState';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -232,7 +232,7 @@ const PayablesTableBase = ({
         display: 'flex',
         width: defaultCounterpartColumnWidth,
         renderCell: (params) => (
-          <CounterpartCell counterpartId={params.value} />
+          <CounterpartCellById counterpartId={params.value} />
         ),
       },
       {

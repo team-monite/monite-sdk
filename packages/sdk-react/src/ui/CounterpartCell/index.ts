@@ -1,1 +1,1 @@
-export { CounterpartCell } from './CounterpartCell';
+export { CounterpartCellById } from './CounterpartCell';
