@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 
 import { UListUiAlt } from './icons/UListUiAlt';
+import { UUserCircle } from './icons/UUserCircle';
 import { UUsersAlt } from './icons/UUsersAlt';
 import { UUserSquare } from './icons/UUserSquare';
 
@@ -17,6 +18,7 @@ enum ScriptCallType {
 interface RuleValueProps {
   call: ScriptCallType;
   params?: {
+    user_ids?: string[];
     required_approval_count?: number;
   };
 }
@@ -31,18 +33,34 @@ interface RuleAnyProps {
 
 export type ScriptItemProps = RuleValueProps | RuleAllProps | RuleAnyProps;
 
-const ByUser = ({ approvalCount }: { approvalCount?: number }) => {
+const ByUser = ({
+  userIds,
+  approvalCount,
+}: {
+  userIds?: string[];
+  approvalCount?: number;
+}) => {
   return (
     <li>
-      <UUsersAlt width={18} />
-      <Trans>
-        Users from the list
-        {approvalCount && approvalCount > 1 ? (
-          <>&nbsp;(x{approvalCount})</>
-        ) : (
-          ''
-        )}
-      </Trans>
+      {approvalCount && approvalCount === 1 && userIds?.length === 1 && (
+        <>
+          <UUserCircle width={18} />
+          <Trans>Single user</Trans>
+        </>
+      )}
+      {approvalCount && approvalCount > 1 && (
+        <>
+          <UUsersAlt width={18} />
+          <Trans>
+            Users from the list
+            {approvalCount && approvalCount > 1 ? (
+              <>&nbsp;(x{approvalCount})</>
+            ) : (
+              ''
+            )}
+          </Trans>
+        </>
+      )}
     </li>
   );
 };
@@ -100,7 +118,9 @@ export const ApprovalPoliciesRulesItem = ({
 
   switch (callType) {
     case ScriptCallType.ByUsers: {
-      return <ByUser approvalCount={approvalCount} />;
+      return (
+        <ByUser userIds={rule.params?.user_ids} approvalCount={approvalCount} />
+      );
     }
 
     case ScriptCallType.ByRoles: {
