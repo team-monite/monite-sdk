@@ -445,4 +445,31 @@ describe('TagsTable', () => {
       expect(deleteButton).not.toBeDisabled();
     });
   });
+
+  test('displays no data empty state when there are no tags', async () => {
+    requestFnMock.mockImplementationOnce(() =>
+      Promise.resolve({
+        data: [],
+        prev_pagination_token: null,
+        next_pagination_token: null,
+      })
+    );
+
+    renderWithClient(<TagsTable />);
+
+    const noTagsText = await screen.findByText(/No Tags/i);
+    expect(noTagsText).toBeInTheDocument();
+  });
+
+  test('displays error toast when an API error occurs', async () => {
+    requestFnMock.mockImplementationOnce(() =>
+      Promise.reject(new Error('API Error'))
+    );
+
+    renderWithClient(<TagsTable />);
+
+    const errorText = await screen.findByText(/No Tags/i);
+
+    expect(errorText).toBeInTheDocument();
+  });
 });

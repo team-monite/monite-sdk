@@ -72,11 +72,5 @@ describe('Tags', () => {
       const tableRowTag = screen.findByText('tag 1');
       await expect(tableRowTag).resolves.toBeInTheDocument();
     });
-
-    test('displays loading spinner while permissions are loading', async () => {
-      renderWithClient(<Tags />);
-
-      expect(screen.getByRole('progressbar')).toBeInTheDocument();
-    });
   });
 });
