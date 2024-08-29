@@ -379,6 +379,20 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiSelect: {
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiSelect-select': {
+            paddingLeft: '0',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderStyle: 'none',
+          },
+        },
+      },
+    },
+  },
   MuiStack: {
     styleOverrides: {
       root: {

@@ -1,15 +1,25 @@
-import { BaseSyntheticEvent, useCallback, useId, useState } from 'react';
+import {
+  BaseSyntheticEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+} from 'react';
 import {
   Control,
   Controller,
+  SetFieldValue,
   useForm,
   UseFormGetValues,
 } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
+import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useFormPersist } from '@/core/hooks/useFormPersist';
+import { useReceivableContacts } from '@/core/queries';
 import {
   useIssueReceivableById,
   useReceivableEmailPreview,
@@ -31,8 +41,12 @@ import {
   CircularProgress,
   DialogContent,
   DialogTitle,
+  FormControl,
+  FormHelperText,
   Grid,
   IconButton,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Toolbar,
@@ -63,12 +77,8 @@ const EmailInvoiceDetailsBase = ({
     defaultValues: {
       subject: '',
       body: '',
-      recipients: {
-        // TODO: add support for cc and bcc fields
-        // bcc?: string[];
-        // cc?: string[];
-        to: [] as string[],
-      },
+      to: '',
+      // TODO: add support for multiple recipients, cc and bcc fields
     },
   });
   // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
@@ -143,9 +153,7 @@ const EmailInvoiceDetailsBase = ({
           });
         }
 
-        // TODO: provide support for cc and bcc fields
-        const to: string[] =
-          values.recipients?.to?.filter((t) => t?.trim()?.length > 0) || [];
+        // TODO: provide support for multiple recipients, cc and bcc fields
         /**
          * If `payment methods` available, we should create a payment link.
          * If not, we should send the email without a payment link.
@@ -154,12 +162,11 @@ const EmailInvoiceDetailsBase = ({
           {
             body_text: values.body,
             subject_text: values.subject,
-            recipients:
-              to?.length > 0
-                ? {
-                    to: to,
-                  }
-                : undefined,
+            recipients: values.to
+              ? {
+                  to: [values.to],
+                }
+              : undefined,
           },
           {
             onSuccess: onClose,
@@ -264,10 +271,13 @@ const EmailInvoiceDetailsBase = ({
       >
         {presentation == FormPresentation.Edit && (
           <Form
+            invoiceId={invoiceId}
             formName={formName}
             handleIssueAndSend={handleIssueAndSend}
             control={control}
             isDisabled={isDisabled}
+            getValues={getValues}
+            setValue={setValue}
           />
         )}
         {isPreview && <Preview invoiceId={invoiceId} getValues={getValues} />}
@@ -279,22 +289,112 @@ const EmailInvoiceDetailsBase = ({
 interface FormProps {
   subject: string;
   body: string;
-  recipients: { to: string[] };
+  to: string;
 }
 
+const RecipientEditor = ({
+  field,
+  invoiceId,
+  control,
+  getValues,
+  setValue,
+}: {
+  field: keyof FormProps;
+  invoiceId: string;
+  control: Control<FormProps>;
+  getValues: () => { [_: string]: any };
+  setValue: SetFieldValue<any>;
+}) => {
+  const { data: contacts, isLoading } = useReceivableContacts(invoiceId);
+
+  useEffect(() => {
+    const currentValue = getValues()[field];
+    if (!currentValue && contacts && contacts.length > 0) {
+      const defaultContact = contacts.find((c) => c.is_default) ?? contacts[0];
+      setValue(field, defaultContact.email, {
+        shouldValidate: false,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
+  }, [contacts, field, getValues, setValue]);
+
+  const { root } = useRootElements();
+
+  if (isLoading) return <CircularProgress />;
+
+  return (
+    <Controller
+      name={field}
+      control={control}
+      render={({ field, fieldState: { error } }) => (
+        <FormControl
+          variant="outlined"
+          required
+          error={Boolean(error)}
+          sx={{ maxWidth: '500px' }}
+        >
+          <Select
+            MenuProps={{ container: root }}
+            className="Monite-NakedField"
+            {...field}
+          >
+            {contacts?.map((contact) => (
+              <MenuItem key={contact.id} value={contact.email}>
+                <DefaultEmail
+                  email={contact.email ?? ''}
+                  isDefault={contact.is_default}
+                />
+              </MenuItem>
+            ))}
+          </Select>
+          {error && <FormHelperText>{error.message}</FormHelperText>}
+        </FormControl>
+      )}
+    />
+  );
+};
+
 const Form = ({
+  invoiceId,
   formName,
   handleIssueAndSend,
   control,
   isDisabled,
+  getValues,
+  setValue,
 }: {
+  invoiceId: string;
   formName: string;
   handleIssueAndSend: (e: BaseSyntheticEvent) => void;
   control: Control<FormProps>;
+  getValues: () => { [_: string]: any };
+  setValue: SetFieldValue<any>;
   isDisabled: boolean;
 }) => {
   return (
     <form id={formName} noValidate onSubmit={handleIssueAndSend}>
+      <Card sx={{ mb: 3 }}>
+        <CardContent
+          sx={{
+            px: 3,
+            pt: 1,
+            pb: 1,
+            '&:last-child': { pb: 1 }, // last-child is necessary to override default style of the MUI theme
+          }}
+        >
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Typography variant="body2">{t(i18n)`To`}</Typography>
+            <RecipientEditor
+              field="to"
+              invoiceId={invoiceId}
+              control={control}
+              getValues={getValues}
+              setValue={setValue}
+            />
+          </Stack>
+        </CardContent>
+      </Card>
       <Card>
         <CardContent
           sx={{
