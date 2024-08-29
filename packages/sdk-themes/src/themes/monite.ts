@@ -118,6 +118,8 @@ const statusColors: {
   },
 };
 
+// Array of colours for counterpart 'logos'. A random color will be used
+// from the array. See: calculateColorIndex
 const counterpartColors: string[] = [
   'rgba(0,0,255,0.05)',
   'rgba(255,0,32,0.05)',
