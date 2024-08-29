@@ -21,6 +21,11 @@ export interface MoniteCurrencyProps<
   >['onChange'];
   size?: TextFieldProps['size'];
   required?: TextFieldProps['required'];
+  multiple?: RHFAutocompleteProps<
+    TFieldValues,
+    TName,
+    CurrencyType
+  >['multiple'];
 }
 
 /**
