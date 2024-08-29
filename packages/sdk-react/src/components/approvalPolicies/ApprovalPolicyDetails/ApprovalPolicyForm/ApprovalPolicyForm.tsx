@@ -71,6 +71,8 @@ export interface FormValues {
   };
   amountOperator?: ApprovalPoliciesOperator;
   amountValue?: string | number;
+  amountRangeLeftValue?: string | number;
+  amountRangeRightValue?: string | number;
   scriptType: ApprovalPoliciesScriptTypes;
   script: {
     params?: {
@@ -247,6 +249,8 @@ export const ApprovalPolicyForm = ({
   const currentTriggers = watch('triggers');
   const currentAmountOperator = watch('amountOperator');
   const currentAmountValue = watch('amountValue');
+  const currentAmountRangeLeftValue = watch('amountRangeLeftValue');
+  const currentAmountRangeRightValue = watch('amountRangeRightValue');
   const currentTriggerType = watch('triggerType');
   const currentScript = watch('script');
   const currentScriptType = watch('scriptType');
@@ -330,8 +334,14 @@ export const ApprovalPolicyForm = ({
       if (triggers.amount && triggers.amount?.length > 0) {
         setValue('triggers.amount', triggers.amount);
 
-        setValue('amountOperator', triggers.amount[0][0]);
-        setValue('amountValue', triggers.amount[0][1]);
+        if (triggers.amount.length === 2) {
+          setValue('amountOperator', 'range');
+          setValue('amountRangeLeftValue', triggers.amount[0][1]);
+          setValue('amountRangeRightValue', triggers.amount[1][1]);
+        } else {
+          setValue('amountOperator', triggers.amount[0][0]);
+          setValue('amountValue', triggers.amount[0][1]);
+        }
       }
 
       if (usersForScript?.data && usersForScript?.data.length > 0) {
@@ -367,12 +377,29 @@ export const ApprovalPolicyForm = ({
   }, [setValue, scriptInEdit]);
 
   useEffect(() => {
-    if (currentAmountOperator && currentAmountValue) {
-      setValue('triggers.amount', [
-        [currentAmountOperator, currentAmountValue],
-      ]);
+    if (currentAmountOperator) {
+      if (
+        currentAmountOperator === 'range' &&
+        currentAmountRangeLeftValue &&
+        currentAmountRangeRightValue
+      ) {
+        setValue('triggers.amount', [
+          ['>=', currentAmountRangeLeftValue],
+          ['<=', currentAmountRangeRightValue],
+        ]);
+      } else if (currentAmountValue) {
+        setValue('triggers.amount', [
+          [currentAmountOperator, currentAmountValue],
+        ]);
+      }
     }
-  }, [currentAmountOperator, currentAmountValue, setValue]);
+  }, [
+    currentAmountOperator,
+    currentAmountRangeLeftValue,
+    currentAmountRangeRightValue,
+    currentAmountValue,
+    setValue,
+  ]);
 
   const resetFormTriggerOrScript = () => {
     if (!isAddingTrigger && triggerInEdit === 'was_created_by_user_id') {
@@ -662,15 +689,38 @@ export const ApprovalPolicyForm = ({
                       <MenuItem value="range">{t(i18n)`In range`}</MenuItem>
                     </RHFTextField>
                   </Grid>
-                  <Grid item xs={6}>
-                    <RHFTextField
-                      label={t(i18n)`Amount`}
-                      name="amountValue"
-                      control={control}
-                      type="number"
-                      fullWidth
-                    />
-                  </Grid>
+                  {currentAmountOperator === 'range' ? (
+                    <Grid item container spacing={2}>
+                      <Grid item xs={6}>
+                        <RHFTextField
+                          label={t(i18n)`From (including)`}
+                          name="amountRangeLeftValue"
+                          control={control}
+                          type="number"
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <RHFTextField
+                          label={t(i18n)`To (including)`}
+                          name="amountRangeRightValue"
+                          control={control}
+                          type="number"
+                          fullWidth
+                        />
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    <Grid item xs={6}>
+                      <RHFTextField
+                        label={t(i18n)`Amount`}
+                        name="amountValue"
+                        control={control}
+                        type="number"
+                        fullWidth
+                      />
+                    </Grid>
+                  )}
                 </Grid>
               )}
               {scriptInEdit ===
