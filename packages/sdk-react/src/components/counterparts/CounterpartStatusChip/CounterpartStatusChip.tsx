@@ -6,9 +6,11 @@ import { useLingui } from '@lingui/react';
 import { Chip, ChipProps } from '@mui/material';
 import { styled, useThemeProps } from '@mui/material/styles';
 
+export type MoniteCounterpartType = 'customer' | 'vendor';
+
 export interface MoniteCounterpartStatusChipProps {
   /** The status of the invoice. */
-  status: 'customer' | 'vendor';
+  status: MoniteCounterpartType;
   /** The variant of the Chip. */
   variant?: ChipProps['variant'];
   /** The size of the Chip. */
@@ -92,13 +94,14 @@ const StyledChip = styled(
   }
 )({});
 
-const getLabel = (i18n: I18n, status: 'customer' | 'vendor'): string => {
+const getLabel = (i18n: I18n, status: MoniteCounterpartType): string => {
   switch (status) {
     case 'customer':
       return t(i18n)`Customer`;
     case 'vendor':
       return t(i18n)`Vendor`;
     default:
-      throw new Error(`Unknown counterpart status: ${status}`);
+      console.error(`Unknown counterpart status: ${status}`);
+      return t(i18n)`Unknown`;
   }
 };

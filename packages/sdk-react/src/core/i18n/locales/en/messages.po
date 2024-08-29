@@ -1816,7 +1816,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:260
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:47
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
-#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:98
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:115
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
@@ -6128,6 +6128,7 @@ msgstr "United States Outlying Islands"
 msgid "Units"
 msgstr "Units"
 
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:105
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:130
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:134
 #: src/core/utils/getAPIErrorMessage.ts:16
@@ -6414,7 +6415,7 @@ msgstr "Vat Value"
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:283
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:48
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:74
-#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
+#: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:102
 msgid "Vendor"
 msgstr "Vendor"
 
