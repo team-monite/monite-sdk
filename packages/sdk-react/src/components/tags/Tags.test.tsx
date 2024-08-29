@@ -2,7 +2,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
+import { renderWithClient } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { screen, waitFor } from '@testing-library/react';
