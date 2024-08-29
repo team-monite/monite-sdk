@@ -206,7 +206,7 @@ const TagsTableBase = ({
         title={t(i18n)`No Tags`}
         descriptionLine1={t(i18n)`You don’t have any tags yet.`}
         descriptionLine2={t(i18n)`You can create your first tag.`}
-        actionButtonLabel={t(i18n)`Create new`}
+        actionButtonLabel={t(i18n)`Create new tag`}
         actionOptions={[t(i18n)`Tag`]}
         onAction={(action) => {
           if (action === t(i18n)`Tag`) {

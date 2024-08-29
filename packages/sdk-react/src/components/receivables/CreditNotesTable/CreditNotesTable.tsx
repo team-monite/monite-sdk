@@ -170,7 +170,7 @@ const CreditNotesTableBase = ({
   if (!isLoading && !creditNotes?.data.length) {
     return (
       <DataGridEmptyState
-        title={t(i18n)`No Receivables`}
+        title={t(i18n)`No Credit Notes`}
         descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
         descriptionLine2={t(i18n)`You can create your first credit note.`}
         actionButtonLabel={t(i18n)`Create Invoice`}
