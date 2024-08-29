@@ -72,6 +72,9 @@ export const DataGridEmptyState = ({
         />
       );
       break;
+    case 'custom':
+      defaultIcon = icon;
+      break;
     default:
       defaultIcon = null;
   }
@@ -79,10 +82,9 @@ export const DataGridEmptyState = ({
   return (
     <CenteredContentBox className={`${className}-Content`}>
       <Stack alignItems="center" spacing={2}>
-        {icon ||
-          (defaultIcon && (
-            <Box className={`${className}-Icon`}>{icon || defaultIcon}</Box>
-          ))}
+        {defaultIcon && (
+          <Box className={`${className}-Icon`}>{defaultIcon}</Box>
+        )}
         <Stack alignItems="center" spacing={1}>
           <Typography variant="h5" className={`${className}-Title`}>
             {title}
