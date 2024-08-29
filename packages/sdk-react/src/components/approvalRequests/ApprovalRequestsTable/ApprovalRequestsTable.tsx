@@ -118,6 +118,7 @@ const ApprovalRequestsTableBase = ({
     data: approvalRequests,
     isLoading: isApprovalRequestsLoading,
     isError,
+    refetch,
   } = api.approvalRequests.getApprovalRequests.useQuery({
     query: {
       sort: 'updated_at',
@@ -293,7 +294,7 @@ const ApprovalRequestsTableBase = ({
         )`There was an error loading approval requests.`}
         descriptionLine2={t(i18n)`Please try again later.`}
         actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => window.location.reload()}
+        onAction={() => refetch()}
         type="error"
       />
     );

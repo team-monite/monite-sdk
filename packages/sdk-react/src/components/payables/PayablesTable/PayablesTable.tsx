@@ -180,6 +180,7 @@ const PayablesTableBase = ({
     isLoading,
     isError,
     error,
+    refetch,
   } = api.payables.getPayables.useQuery(payablesQueryParameters, {
     refetchInterval: api.payables.getPayables
       .getQueryData(payablesQueryParameters, queryClient)
@@ -414,7 +415,7 @@ const PayablesTableBase = ({
         descriptionLine1={t(i18n)`There was an error loading the payables.`}
         descriptionLine2={t(i18n)`Please try again later.`}
         actionButtonLabel={t(i18n)`Reload page`}
-        onAction={() => window.location.reload()}
+        onAction={() => refetch()}
         type="error"
       />
     );

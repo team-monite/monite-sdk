@@ -400,7 +400,7 @@ const CounterpartsTableBase = ({
         descriptionLine1={t(i18n)`There was an error loading counterparts.`}
         descriptionLine2={t(i18n)`Please try again later.`}
         actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => window.location.reload()}
+        onAction={() => refetch()}
         type="error"
       />
     );

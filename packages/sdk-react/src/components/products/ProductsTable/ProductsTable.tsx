@@ -154,6 +154,7 @@ const ProductsTableBase = ({
     data: products,
     isLoading,
     isError,
+    refetch,
   } = api.products.getProducts.useQuery({
     query: {
       sort: sortModel?.field,
@@ -307,7 +308,7 @@ const ProductsTableBase = ({
         descriptionLine1={t(i18n)`There was an error loading products.`}
         descriptionLine2={t(i18n)`Please try again later.`}
         actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => window.location.reload()}
+        onAction={() => refetch()}
         type="error"
       />
     );
