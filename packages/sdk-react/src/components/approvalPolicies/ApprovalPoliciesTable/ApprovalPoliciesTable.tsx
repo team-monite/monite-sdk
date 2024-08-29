@@ -5,6 +5,7 @@ import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPol
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -71,6 +72,11 @@ interface ApprovalPoliciesTableProps {
    * @param approvalPolicy - The approval policy that was clicked.
    */
   onRowClick?: (approvalPolicy: ApprovalPolicyResource) => void;
+
+  /**
+   * Triggered when the create button is clicked for no data state.
+   */
+  onCreateClick?: () => void;
 }
 
 /**
@@ -87,6 +93,7 @@ export const ApprovalPoliciesTable = (props: ApprovalPoliciesTableProps) => (
 const ApprovalPoliciesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
   onRowClick,
+  onCreateClick,
 }: ApprovalPoliciesTableProps) => {
   const { i18n } = useLingui();
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -98,23 +105,25 @@ const ApprovalPoliciesTableBase = ({
   const [currentFilters, setCurrentFilters] = useState<FilterTypes>({});
   const { api } = useMoniteContext();
 
-  const { data: approvalPolicies, isLoading } =
-    api.approvalPolicies.getApprovalPolicies.useQuery({
-      query: {
-        limit: pageSize,
-        name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
-        created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
-        pagination_token: currentPaginationToken ?? undefined,
-        created_at__gte: currentFilters[FILTER_TYPE_CREATED_AT]
-          ? formatISO(currentFilters[FILTER_TYPE_CREATED_AT] as Date)
-          : undefined,
-        created_at__lte: currentFilters[FILTER_TYPE_CREATED_AT]
-          ? formatISO(
-              addDays(currentFilters[FILTER_TYPE_CREATED_AT] as Date, 1)
-            )
-          : undefined,
-      },
-    });
+  const {
+    data: approvalPolicies,
+    isLoading,
+    isError,
+    refetch,
+  } = api.approvalPolicies.getApprovalPolicies.useQuery({
+    query: {
+      limit: pageSize,
+      name__ncontains: currentFilters[FILTER_TYPE_SEARCH] ?? undefined,
+      created_by: currentFilters[FILTER_TYPE_CREATED_BY] ?? undefined,
+      pagination_token: currentPaginationToken ?? undefined,
+      created_at__gte: currentFilters[FILTER_TYPE_CREATED_AT]
+        ? formatISO(currentFilters[FILTER_TYPE_CREATED_AT] as Date)
+        : undefined,
+      created_at__lte: currentFilters[FILTER_TYPE_CREATED_AT]
+        ? formatISO(addDays(currentFilters[FILTER_TYPE_CREATED_AT] as Date, 1))
+        : undefined,
+    },
+  });
 
   useEffect(() => {
     if (currentPaginationToken && approvalPolicies?.data.length === 0) {
@@ -178,6 +187,34 @@ const ApprovalPoliciesTableBase = ({
 
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
+
+  if (!isLoading && approvalPolicies?.data?.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Policies`}
+        descriptionLine1={t(i18n)`You don’t have any approval policies yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval policy.`}
+        actionButtonLabel={t(i18n)`Create`}
+        onAction={() => onCreateClick?.()}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Approval Policies`}
+        descriptionLine1={t(
+          i18n
+        )`There was an error loading approval policies.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
+  }
 
   return (
     <Box
