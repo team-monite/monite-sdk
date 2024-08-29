@@ -48,7 +48,7 @@ msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has
 msgid "{0}"
 msgstr "{0}"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:106
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:113
 msgid "{0} - {1}"
 msgstr "{0} - {1}"
 
@@ -181,7 +181,7 @@ msgstr "Active"
 msgid "Activity"
 msgstr "Activity"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:884
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:927
 #: src/components/onboarding/hooks/useOnboardingActions.ts:136
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:543
 msgid "Add"
@@ -236,7 +236,7 @@ msgstr "Add another owner"
 msgid "Add bank account"
 msgstr "Add bank account"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:480
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:496
 msgid "Add Condition"
 msgstr "Add Condition"
 
@@ -255,11 +255,11 @@ msgstr "Add contact person"
 msgid "Add item"
 msgstr "Add item"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:152
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:161
 msgid "Add new condition"
 msgstr "Add new condition"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:853
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:896
 msgid "Add new rule"
 msgstr "Add new rule"
 
@@ -412,9 +412,9 @@ msgid "American Samoa"
 msgstr "American Samoa"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:14
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:716
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:56
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:71
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:751
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:59
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:76
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:224
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:134
@@ -479,16 +479,16 @@ msgstr "Antique Reproductions"
 msgid "Antique Shops"
 msgstr "Antique Shops"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:162
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:171
 msgid "Any {0} users from the list"
 msgstr "Any {0} users from the list"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:274
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:277
 msgid "Any {currentRequiredApprovalCount} users from the list"
 msgstr "Any {currentRequiredApprovalCount} users from the list"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:273
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:165
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:276
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:174
 msgid "Any user from the list"
 msgstr "Any user from the list"
 
@@ -501,9 +501,9 @@ msgstr "Applied policy"
 msgid "Approval chain"
 msgstr "Approval chain"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:628
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:795
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:257
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:663
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:838
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:266
 msgid "Approval flow"
 msgstr "Approval flow"
 
@@ -515,7 +515,7 @@ msgstr "Approval Policies"
 msgid "Approval policy"
 msgstr "Approval policy"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:176
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:179
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:42
 msgid "Approval policy created"
 msgstr "Approval policy created"
@@ -524,7 +524,7 @@ msgstr "Approval policy created"
 msgid "Approval policy has been deleted"
 msgstr "Approval policy has been deleted"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:200
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:203
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:67
 msgid "Approval policy updated"
 msgstr "Approval policy updated"
@@ -537,8 +537,8 @@ msgstr "Approval request"
 msgid "Approval Requests"
 msgstr "Approval Requests"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:801
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:266
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:844
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:275
 msgid "Approval type"
 msgstr "Approval type"
 
@@ -1067,8 +1067,8 @@ msgid "Canadian Dollar"
 msgstr "Canadian Dollar"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:270
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:871
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:895
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:914
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:938
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.test.tsx:53
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:54
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:176
@@ -1316,8 +1316,8 @@ msgid "Close"
 msgstr "Close"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:145
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:494
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:208
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:510
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:217
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:74
 msgid "Close approval policy details"
 msgstr "Close approval policy details"
@@ -1443,17 +1443,17 @@ msgstr "Computers, Peripherals, and Software"
 msgid "Concrete Work Services"
 msgstr "Concrete Work Services"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:236
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:103
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:245
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:112
 msgid "Condition"
 msgstr "Condition"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:594
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:623
 msgid "Condition type"
 msgstr "Condition type"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:762
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:224
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:805
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:233
 msgid "Conditions"
 msgstr "Conditions"
 
@@ -1593,7 +1593,7 @@ msgstr "Cote D\"Ivoire"
 msgid "Counseling Services"
 msgstr "Counseling Services"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:60
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:65
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:186
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartView.tsx:203
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
@@ -1640,8 +1640,8 @@ msgstr "Counterpart VAT ID"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:34
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:43
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:666
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:75
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:701
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:82
 #: src/components/counterparts/Counterparts.tsx:114
 msgid "Counterparts"
 msgstr "Counterparts"
@@ -1818,13 +1818,13 @@ msgid "Created at:"
 msgstr "Created at:"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:162
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:73
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:80
 #: src/components/tags/TagsTable/TagsTable.tsx:159
 msgid "Created by"
 msgstr "Created by"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:53
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:58
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:63
 msgid "Created by user"
 msgstr "Created by user"
 
@@ -1844,8 +1844,8 @@ msgstr "Credit notes"
 msgid "Credit Reporting Agencies"
 msgstr "Credit Reporting Agencies"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:237
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:104
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:246
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:113
 msgid "Criteria"
 msgstr "Criteria"
 
@@ -1866,6 +1866,9 @@ msgid "Cuba"
 msgstr "Cuba"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.test.tsx:24
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:766
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:61
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:78
 #: src/components/counterparts/CounterpartDetails/CounterpartBankForm/validation.tsx:20
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartBankView/CounterpartBankView.tsx:109
 #: src/components/onboarding/OnboardingBankAccount/OnboardingBankAccount.tsx:58
@@ -1873,7 +1876,7 @@ msgstr "Cuba"
 #: src/components/products/ProductDetails/validation.ts:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:67
-#: src/ui/Currency/MoniteCurrency.tsx:44
+#: src/ui/Currency/MoniteCurrency.tsx:49
 msgid "Currency"
 msgstr "Currency"
 
@@ -1981,7 +1984,7 @@ msgstr "Declined"
 msgid "default"
 msgstr "default"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:306
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:315
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.test.tsx:25
 #: src/components/counterparts/ConfirmDeleteDialogue/ConfirmDeleteDialogue.tsx:62
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:548
@@ -2067,7 +2070,7 @@ msgstr "Delete receivable \"{0}\"?"
 msgid "Delete receivable?"
 msgstr "Delete receivable?"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:825
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:868
 msgid "Delete rule"
 msgstr "Delete rule"
 
@@ -2075,7 +2078,7 @@ msgstr "Delete rule"
 msgid "Delete tag"
 msgstr "Delete tag"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:123
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:132
 msgid "Delete trigger"
 msgstr "Delete trigger"
 
@@ -2102,8 +2105,8 @@ msgstr "Department Stores"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:40
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:186
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:189
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:752
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:218
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:795
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:227
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:84
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:165
 #: src/components/products/ProductDetails/validation.ts:48
@@ -2323,7 +2326,7 @@ msgstr "Eating Places, Restaurants"
 msgid "Ecuador"
 msgstr "Ecuador"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:309
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:318
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ExistingApprovalPolicyDetailsAdvanced/ExistingApprovalPolicyDetailsAdvanced.tsx:187
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:43
 #: src/components/counterparts/CounterpartDetails/CounterpartTestHelpers.ts:63
@@ -2367,12 +2370,12 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Edit"
 msgstr "Edit"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:476
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:486
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:492
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:502
 msgid "Edit Approval Policy"
 msgstr "Edit Approval Policy"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:481
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:497
 msgid "Edit Condition"
 msgstr "Edit Condition"
 
@@ -2529,11 +2532,11 @@ msgstr "Entity user"
 msgid "Entity VAT IDs"
 msgstr "Entity VAT IDs"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:688
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:723
 msgid "Equal to"
 msgstr "Equal to"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:95
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:102
 msgid "Equal to {0}"
 msgstr "Equal to {0}"
 
@@ -2549,12 +2552,12 @@ msgstr "Equipment Rental"
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:180
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:183
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:46
 msgid "Error creating approval policy"
 msgstr "Error creating approval policy"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:204
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:207
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:71
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
@@ -2801,7 +2804,7 @@ msgstr "French Southern Territories"
 msgid "Frequency"
 msgstr "Frequency"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:696
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:731
 msgid "From (including)"
 msgstr "From (including)"
 
@@ -2947,19 +2950,19 @@ msgstr "Goods and Services Tax/Harmonized Sales Tax (Canada)"
 msgid "Government Services (Not Elsewhere Classified)"
 msgstr "Government Services (Not Elsewhere Classified)"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:680
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:715
 msgid "Greater than"
 msgstr "Greater than"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:87
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:94
 msgid "Greater than {0}"
 msgstr "Greater than {0}"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:682
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:717
 msgid "Greater than or equal to"
 msgstr "Greater than or equal to"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:89
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:96
 msgid "Greater than or equal to {0}"
 msgstr "Greater than or equal to {0}"
 
@@ -3035,7 +3038,7 @@ msgstr "Hardware Stores"
 msgid "Hardware, Equipment, and Supplies"
 msgstr "Hardware, Equipment, and Supplies"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:77
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:84
 msgid "Has tags"
 msgstr "Has tags"
 
@@ -3145,7 +3148,7 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:674
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:709
 msgid "If amount is"
 msgstr "If amount is"
 
@@ -3161,7 +3164,7 @@ msgstr "If you switch the invoice currency and add corresponding items, it will 
 msgid "In Approval"
 msgstr "In Approval"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:689
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:724
 msgid "In range"
 msgstr "In range"
 
@@ -3631,19 +3634,19 @@ msgstr "Lesotho"
 msgid "Lesotho Loti"
 msgstr "Lesotho Loti"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:681
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:716
 msgid "Less than"
 msgstr "Less than"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:91
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:98
 msgid "Less than {0}"
 msgstr "Less than {0}"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:685
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:720
 msgid "Less than or equal to"
 msgstr "Less than or equal to"
 
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:93
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:100
 msgid "Less than or equal to {0}"
 msgstr "Less than or equal to {0}"
 
@@ -3872,7 +3875,7 @@ msgstr "Mexico"
 msgid "Micronesia, Federated States Of"
 msgstr "Micronesia, Federated States Of"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:736
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:779
 msgid "Minimum number of approvals required"
 msgstr "Minimum number of approvals required"
 
@@ -4158,14 +4161,18 @@ msgstr "No active payment methods available. The email will be sent without a pa
 msgid "No bank accounts available"
 msgstr "No bank accounts available"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:250
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:137
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:259
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ConditionsTable/ConditionsTable.tsx:146
 msgid "No conditions"
 msgstr "No conditions"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:281
 msgid "No contact persons available"
 msgstr "No contact persons available"
+
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteCurrencies/AutocompleteCurrencies.tsx:53
+msgid "No currencies found"
+msgstr "No currencies found"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderSection/RemindersSection.tsx:186
 msgid "No default email for selected Counterpart. Reminders will not be sent."
@@ -4195,8 +4202,8 @@ msgstr "No payment reminders available"
 msgid "no policy"
 msgstr "no policy"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:838
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:280
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:881
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:289
 msgid "No rules"
 msgstr "No rules"
 
@@ -4719,12 +4726,12 @@ msgstr "Policy name"
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:35
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:176
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:179
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:745
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:788
 msgid "Policy Name"
 msgstr "Policy Name"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:765
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:227
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:808
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:236
 msgid "Policy will be applied if document matches <0>ALL</0> of the following conditions:"
 msgstr "Policy will be applied if document matches <0>ALL</0> of the following conditions:"
 
@@ -5260,7 +5267,7 @@ msgstr "Saudi Arabia"
 msgid "Saudi Riyal"
 msgstr "Saudi Riyal"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:902
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:945
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:87
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:108
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:279
@@ -5700,8 +5707,8 @@ msgstr "Tag “{0}” renamed to “{1}”"
 msgid "Tag “{0}” was deleted"
 msgstr "Tag “{0}” was deleted"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:657
-#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:62
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:692
+#: src/components/approvalPolicies/useApprovalPolicyTrigger.tsx:67
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:557
 #: src/components/tags/Tags.tsx:52
 msgid "Tags"
@@ -5990,7 +5997,7 @@ msgstr "Title"
 msgid "To"
 msgstr "To"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:705
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:740
 msgid "To (including)"
 msgstr "To (including)"
 
@@ -6240,8 +6247,8 @@ msgstr "United States Outlying Islands"
 msgid "Units"
 msgstr "Units"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:177
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:178
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:186
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:187
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:130
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:134
 #: src/core/utils/getAPIErrorMessage.ts:16
@@ -6268,7 +6275,7 @@ msgid "Unsupported file type"
 msgstr "Unsupported file type"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:283
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:884
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:927
 #: src/components/counterparts/CounterpartDetails/CounterpartAddressFormUpdate/CounterpartAddressFormUpdate.tsx:185
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:395
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:403
@@ -6353,7 +6360,7 @@ msgstr "Uruguayan Peso"
 msgid "Used Merchandise and Secondhand Stores"
 msgstr "Used Merchandise and Secondhand Stores"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:639
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:674
 msgid "User from the list - Any"
 msgstr "User from the list - Any"
 
@@ -6361,11 +6368,11 @@ msgstr "User from the list - Any"
 msgid "User Roles"
 msgstr "User Roles"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:649
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:684
 msgid "Users"
 msgstr "Users"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:732
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:775
 msgid "Users allowed to approve"
 msgstr "Users allowed to approve"
 
@@ -6380,8 +6387,8 @@ msgstr "Users from the list"
 msgid "Users from the list{0}"
 msgstr "Users from the list{0}"
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:802
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:267
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:845
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:276
 msgid "Users or Roles"
 msgstr "Users or Roles"
 
@@ -6643,7 +6650,7 @@ msgstr "Western Sahara"
 msgid "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 msgstr "When you set up the recurrence all future invoices will be issued based on this invoice template. After that you won’t be able to change the invoice template."
 
-#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:260
+#: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/ApprovalPolicyView.tsx:269
 msgid "Who needs to approve the document and how:"
 msgstr "Who needs to approve the document and how:"
 
