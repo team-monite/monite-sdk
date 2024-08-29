@@ -29,8 +29,6 @@ import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import NoDataIcon from '@mui/icons-material/Block';
-import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
 import {

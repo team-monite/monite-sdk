@@ -22,8 +22,6 @@ import {
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import NoDataIcon from '@mui/icons-material/Block';
-import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { Box } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 

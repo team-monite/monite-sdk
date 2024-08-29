@@ -19,8 +19,6 @@ import {
 } from '@/ui/table/TablePagination';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import NoDataIcon from '@mui/icons-material/Block';
-import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import { Box, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { GridSortDirection } from '@mui/x-data-grid/models/gridSortModel';

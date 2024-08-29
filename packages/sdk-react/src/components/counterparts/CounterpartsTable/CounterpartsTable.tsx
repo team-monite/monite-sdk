@@ -22,9 +22,7 @@ import {
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import NoDataIcon from '@mui/icons-material/Block';
 import MuiEnvelopeIcon from '@mui/icons-material/Email';
-import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import MuiPhoneIcon from '@mui/icons-material/LocalPhone';
 import {
   Avatar,
