@@ -354,10 +354,24 @@ export const useCounterpartContactList = (
 } => {
   const { api } = useMoniteContext();
 
-  const { data: counterpart } = api.counterparts.getCounterpartsId.useQuery(
-    { path: { counterpart_id: counterpartId ?? '' } },
+  const { data: counterpart, isLoading: isCounterpartLoading } =
+    api.counterparts.getCounterpartsId.useQuery(
+      { path: { counterpart_id: counterpartId ?? '' } },
+      {
+        enabled: !!counterpartId,
+      }
+    );
+
+  const {
+    data: contacts,
+    isLoading: areContactsLoading,
+    error,
+  } = api.counterparts.getCounterpartsIdContacts.useQuery(
     {
-      enabled: !!counterpartId,
+      path: { counterpart_id: counterpartId ?? '' },
+    },
+    {
+      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
     }
   );
 
@@ -384,20 +398,8 @@ export const useCounterpartContactList = (
     };
   }
 
-  const {
-    data: contacts,
-    isLoading,
-    error,
-  } = api.counterparts.getCounterpartsIdContacts.useQuery(
-    {
-      path: { counterpart_id: counterpartId ?? '' },
-    },
-    {
-      enabled: Boolean(counterpartId && counterpart?.type === 'organization'),
-    }
-  );
   return {
-    isLoading,
+    isLoading: !counterpartId || isCounterpartLoading || areContactsLoading,
     error,
     data: contacts?.data.map((contact) => {
       const organization =
