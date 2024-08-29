@@ -117,7 +117,7 @@ const ActionButton = ({
   type,
   className = 'Monite-DataGridEmptyState',
 }: ActionButtonProps) => {
-  const { buttonProps, menuProps, open } = useMenuButton();
+  const { buttonProps, menuProps } = useMenuButton();
 
   if (!actionButtonLabel) return null;
 
