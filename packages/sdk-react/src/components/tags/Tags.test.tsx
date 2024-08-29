@@ -2,7 +2,7 @@ import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
   ENTITY_ID_FOR_OWNER_PERMISSIONS,
 } from '@/mocks';
-import { renderWithClient } from '@/utils/test-utils';
+import { renderWithClient, waitUntilTableIsLoaded } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
 import { MoniteSDK } from '@monite/sdk-api';
 import { screen, waitFor } from '@testing-library/react';
@@ -71,6 +71,12 @@ describe('Tags', () => {
 
       const tableRowTag = screen.findByText('tag 1');
       await expect(tableRowTag).resolves.toBeInTheDocument();
+    });
+
+    test('displays loading spinner while permissions are loading', async () => {
+      renderWithClient(<Tags />);
+
+      expect(screen.getByRole('progressbar')).toBeInTheDocument();
     });
   });
 });
