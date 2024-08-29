@@ -13,6 +13,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -47,6 +48,13 @@ type QuotesTableProps = {
    * @param {QuotesTableSortModel} params - The sort model.
    */
   onChangeSort?: (params: QuotesTableSortModel) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 };
 
 export const QuotesTable = (props: QuotesTableProps) => (
@@ -58,6 +66,7 @@ export const QuotesTable = (props: QuotesTableProps) => (
 const QuotesTableBase = ({
   onRowClick,
   onChangeSort: onChangeSortCallback,
+  setIsCreateInvoiceDialogOpen,
 }: QuotesTableProps) => {
   const { i18n } = useLingui();
 
@@ -77,7 +86,12 @@ const QuotesTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { onChangeFilter, filters } = useReceivablesFilters();
 
-  const { data: quotes, isLoading } = useReceivables({
+  const {
+    data: quotes,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -172,6 +186,37 @@ const QuotesTableBase = ({
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'QuotesTable'
   );
+
+  if (!isLoading && !quotes?.data.length) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Quotes`}
+        descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
+        descriptionLine2={t(i18n)`You can create your first quote.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Quotes`}
+        descriptionLine1={t(i18n)`There was an error loading the quotes.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload page`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
+  }
 
   const className = 'Monite-QuotesTable';
 

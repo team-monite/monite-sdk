@@ -30,6 +30,13 @@ export type ReceivablesTableProps = {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+    @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 } & (ReceivablesTableUncontrolledProps | ReceivablesTableControlledProps);
 
 export enum ReceivablesTableTabEnum {
@@ -48,6 +55,7 @@ const ReceivablesTableBase = ({
   tab,
   onTabChange,
   onRowClick,
+  setIsCreateInvoiceDialogOpen,
 }: ReceivablesTableProps) => {
   const { i18n } = useLingui();
   const [activeTab, setActiveTab] = useSetActiveTab({ tab, onTabChange });
@@ -106,7 +114,10 @@ const ReceivablesTableBase = ({
             minHeight: '0',
           }}
         >
-          <QuotesTable onRowClick={onRowClick} />
+          <QuotesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
 
@@ -122,7 +133,10 @@ const ReceivablesTableBase = ({
             minHeight: '0',
           }}
         >
-          <InvoicesTable onRowClick={onRowClick} />
+          <InvoicesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
 
@@ -138,7 +152,10 @@ const ReceivablesTableBase = ({
             minHeight: '0',
           }}
         >
-          <CreditNotesTable onRowClick={onRowClick} />
+          <CreditNotesTable
+            onRowClick={onRowClick}
+            setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
+          />
         </Box>
       )}
     </>

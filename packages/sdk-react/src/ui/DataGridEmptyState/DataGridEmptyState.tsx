@@ -136,7 +136,7 @@ const ActionButton = ({
         sx={{ mt: 2 }}
         startIcon={type === 'error' ? <RefreshIcon /> : undefined}
         endIcon={
-          actionOptions.length > 0 ? (
+          actionOptions.length > 1 ? (
             menuProps.open ? (
               <ArrowDropUpIcon />
             ) : (
