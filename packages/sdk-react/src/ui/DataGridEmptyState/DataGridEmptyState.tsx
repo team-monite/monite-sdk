@@ -117,7 +117,7 @@ const ActionButton = ({
   type,
   className = 'Monite-DataGridEmptyState',
 }: ActionButtonProps) => {
-  const { buttonProps, menuProps } = useMenuButton();
+  const { buttonProps, menuProps, open } = useMenuButton();
 
   if (!actionButtonLabel) return null;
 
@@ -134,6 +134,14 @@ const ActionButton = ({
         variant="contained"
         color="primary"
         sx={{ mt: 2 }}
+        onClick={(event) => {
+          event.preventDefault();
+          if (actionOptions.length === 1) {
+            handleMenuItemClick(actionOptions[0]);
+          } else {
+            buttonProps.onClick?.(event);
+          }
+        }}
         startIcon={type === 'error' ? <RefreshIcon /> : undefined}
         endIcon={
           actionOptions.length > 1 ? (
@@ -148,7 +156,7 @@ const ActionButton = ({
       >
         {actionButtonLabel}
       </Button>
-      {actionOptions.length > 0 && (
+      {actionOptions.length > 1 && (
         <Menu {...menuProps} className={`${className}-Menu`}>
           {actionOptions.map((option) => (
             <MenuItem
