@@ -14,6 +14,7 @@ import {
 import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import {
   TablePagination,
@@ -46,6 +47,13 @@ interface InvoicesTableBaseProps {
    * @param id - The identifier of the clicked row, a string.
    */
   onRowClick?: (id: string) => void;
+
+  /**
+   * The event handler for the creation new invoice for no data state
+   *
+   @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
+   */
+  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
 }
 
 export type InvoicesTableProps =
@@ -65,6 +73,7 @@ export const InvoicesTable = (props: InvoicesTableProps) => (
 
 const InvoicesTableBase = ({
   onRowClick,
+  setIsCreateInvoiceDialogOpen,
   ...restProps
 }: InvoicesTableProps) => {
   const { i18n } = useLingui();
@@ -85,7 +94,12 @@ const InvoicesTableBase = ({
   const { formatCurrencyToDisplay } = useCurrencies();
   const { filters, onChangeFilter } = useReceivablesFilters();
 
-  const { data: invoices, isLoading } = useReceivables({
+  const {
+    data: invoices,
+    isLoading,
+    isError,
+    refetch,
+  } = useReceivables({
     ...filters,
     sort: sortModel?.field,
     order: sortModel?.sort,
@@ -223,6 +237,37 @@ const InvoicesTableBase = ({
     // eslint-disable-next-line lingui/no-unlocalized-strings
     'InvoicesTable'
   );
+
+  if (!isLoading && !invoices?.data.length) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Receivables`}
+        descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+        descriptionLine2={t(i18n)`You can create your first invoice.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
+
+  if (isError) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`Failed to Load Invoices`}
+        descriptionLine1={t(i18n)`There was an error loading invoices.`}
+        descriptionLine2={t(i18n)`Please try again later.`}
+        actionButtonLabel={t(i18n)`Reload`}
+        onAction={() => refetch()}
+        type="error"
+      />
+    );
+  }
 
   const className = 'Monite-InvoicesTable';
 

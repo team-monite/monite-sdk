@@ -106,6 +106,7 @@ const ReceivablesBase = () => {
           tab={activeTab}
           onTabChange={setActiveTab}
           onRowClick={onRowClick}
+          setIsCreateInvoiceDialogOpen={setIsCreateInvoiceDialogOpen}
         />
       )}
       <Dialog
