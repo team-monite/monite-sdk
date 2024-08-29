@@ -71,7 +71,8 @@ const EmailInvoiceDetailsBase = ({
       },
     },
   });
-  useFormPersist(`Monite-InvoiceEmail-${invoiceId}`, getValues, setValue);
+  // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
+  useFormPersist(`Monite-EmailInvoiceDetails-FormState`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
 
