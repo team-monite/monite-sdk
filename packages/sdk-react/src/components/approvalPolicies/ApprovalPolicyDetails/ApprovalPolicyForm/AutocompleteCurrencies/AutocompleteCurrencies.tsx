@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
 import { Control, Controller, useFormContext } from 'react-hook-form';
 
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { getCurrenciesArray } from '@/core/utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Autocomplete,
-  CircularProgress,
   FormControl,
   FormHelperText,
   TextField,
@@ -30,7 +27,6 @@ export const AutocompleteCurrencies = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { setValue } = useFormContext();
-  const [inputValue, setInputValue] = useState('');
 
   return (
     <Controller
@@ -47,9 +43,6 @@ export const AutocompleteCurrencies = ({
             {...field}
             id={field.name}
             multiple
-            autoComplete
-            includeInputInList
-            filterSelectedOptions
             noOptionsText={t(i18n)`No currencies found`}
             slotProps={{
               popper: { container: root },
@@ -57,11 +50,6 @@ export const AutocompleteCurrencies = ({
             options={getCurrenciesArray(i18n)}
             getOptionKey={(option) => option.code}
             getOptionLabel={(option) => option.label}
-            isOptionEqualToValue={(option, value) => option.code === value.code}
-            filterOptions={(_) => _}
-            onInputChange={(_, newInputValue) => {
-              setInputValue(newInputValue);
-            }}
             onChange={(_, value) => {
               setValue(name, value);
             }}

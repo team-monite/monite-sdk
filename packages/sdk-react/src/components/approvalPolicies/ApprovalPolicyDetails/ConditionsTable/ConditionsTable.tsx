@@ -155,7 +155,8 @@ export const ConditionsTable = ({
                   triggers?.was_created_by_user_id?.length &&
                     triggers?.tags?.length &&
                     triggers?.counterpart_id?.length &&
-                    triggers?.amount?.length
+                    triggers?.amount?.length &&
+                    triggers?.currency?.length
                 )}
               >
                 {t(i18n)`Add new condition`}
