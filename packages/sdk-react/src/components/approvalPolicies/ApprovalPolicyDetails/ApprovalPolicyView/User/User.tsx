@@ -1,6 +1,6 @@
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
 import { useEntityUserById } from '@/core/queries';
-import { Stack, Skeleton } from '@mui/material';
+import { Chip, Skeleton } from '@mui/material';
 
 interface UserProps {
   userId: string;
@@ -14,16 +14,24 @@ export const User = ({ userId }: UserProps) => {
   }
 
   return (
-    <Stack direction="row" alignItems="center" gap={1}>
-      <UserAvatar
-        fileId={entityUser.userpic_file_id}
-        sx={{ width: 24, height: 24 }}
+    <>
+      <Chip
+        avatar={
+          <UserAvatar
+            fileId={entityUser.userpic_file_id}
+            sx={{ width: 24, height: 24 }}
+          />
+        }
+        label={
+          isLoading ? (
+            <Skeleton height="50%" width={100} animation="wave" />
+          ) : (
+            `${entityUser.first_name ?? ''} ${
+              entityUser.last_name ?? ''
+            }`.trim()
+          )
+        }
       />
-      {isLoading ? (
-        <Skeleton height="50%" width={100} animation="wave" />
-      ) : (
-        `${entityUser.first_name ?? ''} ${entityUser.last_name ?? ''}`.trim()
-      )}
-    </Stack>
+    </>
   );
 };

@@ -26,6 +26,7 @@ export interface MoniteCurrencyProps<
     TName,
     CurrencyType
   >['multiple'];
+  displayCode?: boolean;
 }
 
 /**
@@ -36,9 +37,10 @@ export interface MoniteCurrencyProps<
 export const MoniteCurrency = <
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
->(
-  props: MoniteCurrencyProps<TFieldValues, TName>
-) => {
+>({
+  displayCode,
+  ...props
+}: MoniteCurrencyProps<TFieldValues, TName>) => {
   const { i18n } = useLingui();
   const { getSymbolFromCurrency } = useCurrencies();
 
@@ -49,10 +51,11 @@ export const MoniteCurrency = <
       label={t(i18n)`Currency`}
       options={getCurrenciesArray(i18n)}
       optionKey="code"
-      labelKey="label"
+      labelKey={displayCode ? 'code' : 'label'}
       renderOption={(props, option) => (
         <MenuItem {...props} key={option.code} value={option.label}>
-          {option.label}, {getSymbolFromCurrency(option.code)}
+          {displayCode ? option.code : option.label},{' '}
+          {getSymbolFromCurrency(option.code)}
         </MenuItem>
       )}
     />
