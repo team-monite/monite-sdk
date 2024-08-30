@@ -292,7 +292,7 @@ interface FormProps {
   to: string;
 }
 
-const RecipientEditor = ({
+const RecipientSelector = ({
   field,
   invoiceId,
   control,
@@ -331,12 +331,12 @@ const RecipientEditor = ({
         <FormControl
           variant="outlined"
           required
+          fullWidth
           error={Boolean(error)}
-          sx={{ maxWidth: '500px' }}
         >
           <Select
             MenuProps={{ container: root }}
-            className="Monite-NakedField"
+            className="Monite-NakedField Monite-RecipientSelector"
             {...field}
           >
             {contacts?.map((contact) => (
@@ -384,8 +384,10 @@ const Form = ({
           }}
         >
           <Stack spacing={2} direction="row" alignItems="center">
-            <Typography variant="body2">{t(i18n)`To`}</Typography>
-            <RecipientEditor
+            <Typography variant="body2" sx={{ minWidth: '52px' }}>{t(
+              i18n
+            )`To`}</Typography>
+            <RecipientSelector
               field="to"
               invoiceId={invoiceId}
               control={control}

@@ -390,6 +390,29 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             borderStyle: 'none',
           },
         },
+        '&.Monite-RecipientSelector': {
+          '& .MuiChip-root': {
+            backgroundColor: 'transparent',
+            borderColor: 'divider',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            padding: '7px 8px',
+            '& .MuiChip-label': {
+              color: 'text.primary',
+            },
+          },
+          '& .MuiSelect-icon': {
+            backgroundColor: 'primary.80',
+            borderRadius: '8px',
+            width: '32px',
+            height: '32px',
+            transform: 'translate(7px, -2px)',
+            path: {
+              fill: 'primary.main',
+              transform: 'scale(0.6) translate(8px, 8px)',
+            },
+          },
+        },
       },
     },
   },
@@ -1008,6 +1031,7 @@ const colorProps = [
   'backgroundColor',
   'bgcolor',
   'borderColor',
+  'fill',
   '--DataGrid-rowBorderColor',
 ];
 
