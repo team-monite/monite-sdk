@@ -6,7 +6,16 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SxProps,
+} from '@mui/material';
+
+import { Theme } from 'mui-styles';
 
 import {
   FILTER_TYPE_IS_CUSTOMER,
@@ -17,9 +26,10 @@ import { Filters as FiltersType, FilterValue } from '../types';
 
 interface Props extends CounterpartShowCategories {
   onChangeFilter: (field: keyof FiltersType, value: FilterValue) => void;
+  sx?: SxProps<Theme>;
 }
 
-export const Filters = ({ onChangeFilter, showCategories }: Props) => {
+export const Filters = ({ onChangeFilter, showCategories, sx }: Props) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const className = 'Monite-CounterpartFilters';
@@ -27,6 +37,7 @@ export const Filters = ({ onChangeFilter, showCategories }: Props) => {
   return (
     <FilterContainer
       className={className}
+      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search by name`}

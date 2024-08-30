@@ -384,12 +384,11 @@ const CounterpartsTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ marginBottom: 2 }} className={className + '-FiltersContainer'}>
-        <FiltersComponent
-          onChangeFilter={onChangeFilter}
-          showCategories={showCategories}
-        />
-      </Box>
+      <FiltersComponent
+        onChangeFilter={onChangeFilter}
+        showCategories={showCategories}
+        sx={{ mb: 2 }}
+      />
       <DataGrid
         rowSelection={false}
         disableColumnFilter={true}

@@ -425,9 +425,7 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
