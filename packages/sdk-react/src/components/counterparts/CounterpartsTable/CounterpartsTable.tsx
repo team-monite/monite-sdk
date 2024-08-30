@@ -14,7 +14,7 @@ import {
 } from '@/core/queries/useCounterpart';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
+import { CounterpartCellById } from '@/ui/CounterpartCell/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
@@ -247,9 +247,8 @@ const CounterpartsTableBase = ({
         flex: 1,
         renderCell: (params) => {
           const counterpart = params.row;
-          return (
-            <CounterPartCellByName name={getCounterpartName(counterpart)} />
-          );
+          // Use CounterpartCellById but not CounterpartCellByName to display counterpart address
+          return <CounterpartCellById counterpartId={counterpart.id} />;
         },
       },
       {
