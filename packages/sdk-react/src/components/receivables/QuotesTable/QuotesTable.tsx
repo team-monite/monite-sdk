@@ -226,12 +226,11 @@ const QuotesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ReceivableFilters
-          onChange={onChangeFilter}
-          filters={['document_id__contains', 'status', 'counterpart_id']}
-        />
-      </Box>
+      <ReceivableFilters
+        sx={{ mb: 2 }}
+        onChange={onChangeFilter}
+        filters={['document_id__contains', 'status', 'counterpart_id']}
+      />
       <DataGrid
         initialState={{
           sorting: {
