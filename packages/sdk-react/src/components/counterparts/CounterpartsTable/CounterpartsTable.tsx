@@ -412,9 +412,14 @@ const CounterpartsTableBase = ({
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
-              onCreate={(type) =>
-                setType?.(type as components['schemas']['CounterpartType'])
-              }
+              onCreate={(action) => {
+                if (!setType) return;
+                if (action === t(i18n)`Organization`) {
+                  setType('organization');
+                } else if (action === t(i18n)`Individual`) {
+                  setType('individual');
+                }
+              }}
               refetch={refetch}
               entityName={t(i18n)`Counterpart`}
               actionButtonLabel={t(i18n)`Create new`}
