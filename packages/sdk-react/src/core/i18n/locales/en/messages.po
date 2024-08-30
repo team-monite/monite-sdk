@@ -27,15 +27,15 @@ msgstr "Delete {type} “{name}”?"
 msgid "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 msgstr "{0, plural, one {invoice} two {invoices} few {invoices} many {invoices} zero {invoices} other {invoices}}"
 
-#: src/core/queries/useReceivables.ts:288
+#: src/core/queries/useReceivables.ts:290
 msgid "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice has been canceled} quote {Quote has been canceled} other {Receivable has been canceled}}"
 msgstr "{0, select, credit_note {Credit Note has been canceled} invoice {Invoice has been canceled} quote {Quote has been canceled} other {Receivable has been canceled}}"
 
-#: src/core/queries/useReceivables.ts:234
+#: src/core/queries/useReceivables.ts:236
 msgid "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 msgstr "{0, select, credit_note {Credit Note has been deleted} invoice {Invoice has been deleted} quote {Quote has been deleted} other {Receivable has been deleted}}"
 
-#: src/core/queries/useReceivables.ts:369
+#: src/core/queries/useReceivables.ts:371
 msgid "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 msgstr "{0, select, credit_note {Credit Note has been sent} invoice {Invoice has been sent} quote {Quote has been sent} other {Receivable has been sent}}"
 
@@ -52,15 +52,15 @@ msgstr "{0}"
 msgid "{0} ({code})"
 msgstr "{0} ({code})"
 
-#: src/core/queries/useReceivables.ts:41
+#: src/core/queries/useReceivables.ts:42
 msgid "{0} has been created"
 msgstr "{0} has been created"
 
-#: src/core/queries/useReceivables.ts:190
+#: src/core/queries/useReceivables.ts:191
 msgid "{0} has been issued"
 msgstr "{0} has been issued"
 
-#: src/core/queries/useReceivables.ts:124
+#: src/core/queries/useReceivables.ts:125
 msgid "{0} has been updated"
 msgstr "{0} has been updated"
 
@@ -638,7 +638,7 @@ msgstr "Azerbaijan"
 msgid "Azerbaijani Manat"
 msgstr "Azerbaijani Manat"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:166
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:213
 msgid "Back"
 msgstr "Back"
 
@@ -834,8 +834,7 @@ msgstr "Boat Rentals and Leases"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:247
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:21
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:68
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:218
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:18
 msgid "Body"
 msgstr "Body"
 
@@ -1361,7 +1360,7 @@ msgstr "Company name is required"
 msgid "Completed"
 msgstr "Completed"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:167
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:214
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingInvoiceDetails.tsx:338
 msgid "Compose email"
 msgstr "Compose email"
@@ -1428,15 +1427,15 @@ msgstr "Contact person"
 msgid "Contact Person"
 msgstr "Contact Person"
 
-#: src/core/queries/useCounterpart.ts:336
+#: src/core/queries/useCounterpart.ts:439
 msgid "Contact Person “{0}” has been created."
 msgstr "Contact Person “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:397
+#: src/core/queries/useCounterpart.ts:500
 msgid "Contact Person “{0}” has been updated."
 msgstr "Contact Person “{0}” has been updated."
 
-#: src/core/queries/useCounterpart.ts:429
+#: src/core/queries/useCounterpart.ts:532
 msgid "Contact Person has been deleted."
 msgstr "Contact Person has been deleted."
 
@@ -1538,11 +1537,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:454
+#: src/core/queries/useCounterpart.ts:557
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:502
+#: src/core/queries/useCounterpart.ts:605
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
 
@@ -1556,7 +1555,7 @@ msgstr "Counterpart bank account"
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
-#: src/core/queries/useCounterpart.ts:522
+#: src/core/queries/useCounterpart.ts:625
 msgid "Counterpart has been deleted."
 msgstr "Counterpart has been deleted."
 
@@ -2511,11 +2510,11 @@ msgstr "Exterminating Services"
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
 
-#: src/core/queries/useCounterpart.ts:344
+#: src/core/queries/useCounterpart.ts:447
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:461
+#: src/core/queries/useCounterpart.ts:564
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2523,7 +2522,7 @@ msgstr "Failed to create Counterpart."
 msgid "Failed to create product."
 msgstr "Failed to create product."
 
-#: src/core/queries/useReceivables.ts:45
+#: src/core/queries/useReceivables.ts:46
 msgid "Failed to create receivable: {errorMessage}"
 msgstr "Failed to create receivable: {errorMessage}"
 
@@ -2535,7 +2534,7 @@ msgstr "Failed to create VAT."
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:525
+#: src/core/queries/useCounterpart.ts:628
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2546,6 +2545,10 @@ msgstr "Failed to delete product."
 #: src/core/queries/useCounterpart.ts:294
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:494
+msgid "Failed to generate email preview"
+msgstr "Failed to generate email preview"
 
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:207
 msgid "Failed to Load Approval Policies"
@@ -2595,11 +2598,11 @@ msgstr "Failed to update Address."
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
 
-#: src/core/queries/useCounterpart.ts:405
+#: src/core/queries/useCounterpart.ts:508
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:509
+#: src/core/queries/useCounterpart.ts:612
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -2607,11 +2610,12 @@ msgstr "Failed to update Counterpart."
 msgid "Failed to update product."
 msgstr "Failed to update product."
 
-#: src/core/queries/useReceivables.ts:82
+#: src/core/queries/useReceivables.ts:83
+#: src/core/queries/useReceivables.ts:548
 msgid "Failed to update receivable line items: {errorMessage}"
 msgstr "Failed to update receivable line items: {errorMessage}"
 
-#: src/core/queries/useReceivables.ts:128
+#: src/core/queries/useReceivables.ts:129
 msgid "Failed to update receivable: {errorMessage}"
 msgstr "Failed to update receivable: {errorMessage}"
 
@@ -3061,6 +3065,10 @@ msgstr "Iceland"
 msgid "Icelandic Króna"
 msgstr "Icelandic Króna"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:501
+msgid "If the error recurs, contact support, please."
+msgstr "If the error recurs, contact support, please."
+
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:73
 msgid "If the error recurs, contact support."
 msgstr "If the error recurs, contact support."
@@ -3223,7 +3231,7 @@ msgstr "Invoice Number *"
 msgid "Invoice Reminder type is not provided"
 msgstr "Invoice Reminder type is not provided"
 
-#: src/core/queries/useReceivables.ts:37
+#: src/core/queries/useReceivables.ts:38
 msgid "Invoice to “{0}” was created"
 msgstr "Invoice to “{0}” was created"
 
@@ -3270,7 +3278,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Issue"
 msgstr "Issue"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:183
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:259
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/SubmitInvoice.tsx:119
 msgid "Issue and send"
 msgstr "Issue and send"
@@ -3691,7 +3699,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Mark uncollectible"
 msgstr "Mark uncollectible"
 
-#: src/core/queries/useReceivables.ts:331
+#: src/core/queries/useReceivables.ts:332
 msgid "Marked as uncollectible"
 msgstr "Marked as uncollectible"
 
@@ -4051,7 +4059,7 @@ msgstr "Niue"
 msgid "No"
 msgstr "No"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:86
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:124
 msgid "No active payment methods available. The email will be sent without a payment link"
 msgstr "No active payment methods available. The email will be sent without a payment link"
 
@@ -4625,6 +4633,7 @@ msgstr "Please review the terms and conditions and accept them to continue."
 msgid "Please try again later."
 msgstr "Please try again later."
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:498
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:70
 msgid "Please try to reload."
 msgstr "Please try to reload."
@@ -4697,6 +4706,10 @@ msgstr "Preset name"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:46
 msgid "Preset Name"
 msgstr "Preset Name"
+
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:251
+msgid "Preview email"
+msgstr "Preview email"
 
 #: src/ui/table/TablePagination.tsx:114
 msgid "Previous page"
@@ -4974,6 +4987,7 @@ msgstr "Religious Organizations"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:367
 #: src/components/products/ProductsTable/ProductsTable.tsx:302
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:194
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:509
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer.tsx:88
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:265
 #: src/components/tags/TagsTable/TagsTable.tsx:227
@@ -5549,8 +5563,8 @@ msgstr "Status"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:238
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:17
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/validation.ts:64
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:196
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:14
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:411
 msgid "Subject"
 msgstr "Subject"
 
@@ -5966,6 +5980,8 @@ msgstr "Tire Retreading and Repair"
 msgid "Title"
 msgstr "Title"
 
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.form.ts:10
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails.tsx:387
 #: src/components/receivables/InvoiceDetails/InvoiceTo/InvoiceTo.tsx:29
 msgid "To"
 msgstr "To"
