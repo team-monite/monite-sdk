@@ -317,7 +317,7 @@ const InvoicesTableBase = ({
               isError={isError}
               onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
               refetch={refetch}
-              entityName="Invoices"
+              entityName={t(i18n)`Invoices`}
               actionButtonLabel={t(i18n)`Create Invoice`}
               actionOptions={[t(i18n)`Invoice`]}
               type="no-data"
