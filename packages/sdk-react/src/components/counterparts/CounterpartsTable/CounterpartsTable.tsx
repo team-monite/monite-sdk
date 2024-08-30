@@ -15,7 +15,6 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
