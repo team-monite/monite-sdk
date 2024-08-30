@@ -7,7 +7,7 @@ interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
 }
 
-const calculateColorIndex = (name: string) => {
+export const calculateAvatarColorIndex = (name: string) => {
   let sum = 0;
   for (let i = name.length - 1; i >= 0; i--) {
     sum += name.charCodeAt(i);
@@ -47,7 +47,9 @@ export const CounterPartCellByName = ({
             />
           ) : (
             <Avatar
-              className={'MuiAvatar-' + calculateColorIndex(avatarLetters)}
+              className={
+                'MuiAvatar-' + calculateAvatarColorIndex(avatarLetters)
+              }
             >
               {avatarLetters}
             </Avatar>

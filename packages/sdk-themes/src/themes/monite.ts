@@ -584,33 +584,37 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           marginLeft: 0,
           marginRight: '4px',
         },
-        '&.Monite-CounterpartCell .MuiChip-avatar': {
-          margin: 0,
-          color: 'text.primary',
-          fontSize: '16px',
-          fontWeight: 600,
-          lineHeight: '40px',
-          width: '40px',
-          height: '40px',
-          '&.MuiAvatar-0': {
-            backgroundColor: counterpartColors[0],
-          },
-          '&.MuiAvatar-1': {
-            backgroundColor: counterpartColors[1],
-          },
-          '&.MuiAvatar-2': {
-            backgroundColor: counterpartColors[2],
-          },
-          '&.MuiAvatar-3': {
-            backgroundColor: counterpartColors[3],
-          },
-          '&.MuiAvatar-4': {
-            backgroundColor: counterpartColors[4],
+        '&.Monite-CounterpartCell, &.Monite-UserCell': {
+          '& .MuiChip-avatar': {
+            margin: 0,
+            color: 'text.primary',
+            fontSize: '16px',
+            fontWeight: 600,
+            lineHeight: '40px',
+            width: '40px',
+            height: '40px',
           },
         },
       },
       label: {
         padding: '0',
+      },
+      avatar: {
+        '&.MuiAvatar-0': {
+          backgroundColor: counterpartColors[0],
+        },
+        '&.MuiAvatar-1': {
+          backgroundColor: counterpartColors[1],
+        },
+        '&.MuiAvatar-2': {
+          backgroundColor: counterpartColors[2],
+        },
+        '&.MuiAvatar-3': {
+          backgroundColor: counterpartColors[3],
+        },
+        '&.MuiAvatar-4': {
+          backgroundColor: counterpartColors[4],
+        },
       },
     },
   },
@@ -645,11 +649,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         fontWeight: 400,
         fontSize: '14px',
         // Align counterpart avatar with the cell header
-        '&[data-field="counterpart_id"], &[data-field="counterpart_name"]': {
-          '.MuiChip-root': {
-            paddingLeft: 0,
+        '&[data-field="counterpart_id"], &[data-field="counterpart_name"], &[data-field="was_created_by_user_id"]':
+          {
+            '.MuiChip-root': {
+              paddingLeft: 0,
+            },
           },
-        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
