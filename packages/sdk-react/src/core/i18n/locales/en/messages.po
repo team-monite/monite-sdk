@@ -6234,6 +6234,11 @@ msgstr "Unknown date"
 msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
 
+#: src/ui/CounterpartCell/CounterpartCell.tsx:31
+#: src/ui/UserCell/UserCell.tsx:11
+msgid "Unspecified"
+msgstr "Unspecified"
+
 #: src/components/payables/Payables.tsx:182
 msgid "Unsupported file format"
 msgstr "Unsupported file format"
