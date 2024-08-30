@@ -72,7 +72,7 @@ export const GetNoRowsOverlay = ({
           noDataDescription2 ||
           t(i18n)`You can create your first ${entityName.toLowerCase()}.`
         }
-        actionOptions={actionOptions || [t(i18n)`Create ${entityName}`]}
+        actionOptions={actionOptions}
         actionButtonLabel={actionButtonLabel}
         onAction={(action) => {
           if (!action) return;
