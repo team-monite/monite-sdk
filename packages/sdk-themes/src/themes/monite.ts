@@ -824,11 +824,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteApprovalRequestStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
   },
   MoniteInvoiceStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -889,6 +891,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -931,6 +934,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     ],
   },
   MoniteCounterpartStatusChip: {
+    defaultProps: {
+      size: 'small',
+    },
     styleOverrides: {
       root: {
         height: '24px',
