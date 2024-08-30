@@ -6,7 +6,15 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import BusinessIcon from '@mui/icons-material/Business';
 import PersonIcon from '@mui/icons-material/Person';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SxProps,
+} from '@mui/material';
+
+import { Theme } from 'mui-styles';
 
 import {
   FILTER_TYPE_SEARCH,
@@ -17,9 +25,10 @@ import { Filters as FilterType, FilterValue } from '../../types';
 
 interface ProductsTableFiltersProps {
   onChangeFilter: (field: keyof FilterType, value: FilterValue) => void;
+  sx?: SxProps<Theme>;
 }
 
-export const Filters = ({ onChangeFilter }: ProductsTableFiltersProps) => {
+export const Filters = ({ onChangeFilter, sx }: ProductsTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const { api } = useMoniteContext();
@@ -30,6 +39,7 @@ export const Filters = ({ onChangeFilter }: ProductsTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
+      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search`}

@@ -230,7 +230,12 @@ const PayablesTableBase = ({
           }
 
           return (
-            <Stack direction="column" alignItems="flex-start" gap={0.5}>
+            <Stack
+              direction="column"
+              alignItems="flex-start"
+              gap={0.5}
+              sx={{ maxWidth: '100%', '& > *': { maxWidth: '100%' } }}
+            >
               <Typography
                 variant="body1"
                 className="Monite-TextOverflowContainer"
@@ -387,9 +392,7 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {

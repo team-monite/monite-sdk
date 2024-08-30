@@ -5,7 +5,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { GridColDef, useGridApiRef } from '@mui/x-data-grid';
 
 export const defaultCounterpartColumnWidth = 250;
-const maximumDocumentIdColumnWidth = 200;
+const maximumDocumentIdColumnWidth = 300;
 
 export function useAreCounterpartsLoading(
   rows?: { counterpart_id?: string }[]

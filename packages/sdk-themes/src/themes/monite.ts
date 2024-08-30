@@ -45,8 +45,12 @@ export const paletteLight: MonitePaletteOptions = {
   secondary: {
     main: '#707070',
   },
+  background: {
+    default: 'rgba(250, 250, 250, 1)',
+    paper: '#ffffff',
+  },
   menu: {
-    background: '#F1F2F5',
+    background: 'rgba(250, 250, 250, 1)',
   },
   neutral: {
     '10': '#111111',
@@ -424,6 +428,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         '&.Monite-Filters': {
+          backgroundColor: 'background.paper',
+          padding: '14px',
+          marginBottom: 0,
+          borderTopLeftRadius: '6px',
+          borderTopRightRadius: '6px',
+          borderBottomLeftRadius: '0',
+          borderBottomRightRadius: '0',
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderColor: 'divider',
+          borderBottomStyle: 'none',
           '& > *': {
             flexBasis: 'fit-content',
             flexGrow: 1,
@@ -531,8 +546,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.NavigationList': {
           margin: '0px 12px',
 
-          '.MuiListItem-root': {
+          '& .MuiListItem-root': {
             marginTop: 8,
+
+            '& .Mui-selected': {
+              '& span': {
+                color: 'rgba(39, 39, 44, 1)',
+              },
+            },
           },
 
           '.MuiListItemButton-root': {
@@ -555,8 +576,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             marginLeft: 12,
           },
 
-          '.Mui-selected': {
-            color: 'primary.main',
+          '& .MuiSvgIcon-root': {
+            color: 'rgba(39, 39, 44, 1)',
+
+            '& > path': {
+              color: 'rgba(39, 39, 44, 1)',
+            },
           },
         },
       },
@@ -574,7 +599,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         maxHeight: '48px',
 
         '&.ThemeSelect': {
-          borderRadius: 8,
+          borderRadius: '3px',
         },
         '&.ThemeSelect .ThemeSelect-modeLabel': {
           display: 'flex',
@@ -583,16 +608,16 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       containedPrimary: {
         minWidth: '120px',
         backgroundColor: 'primary.main',
-        borderRadius: '8px',
+        borderRadius: '3px',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: 'primary.60',
-          borderRadius: '8px',
+          borderRadius: '3px',
           boxShadow: 'none',
         },
         '&:active': {
           backgroundColor: 'primary.dark',
-          borderRadius: '8px',
+          borderRadius: '3px',
           boxShadow: 'none',
         },
         '&:disabled': {
@@ -605,7 +630,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       outlinedPrimary: {
         backgroundColor: 'primary.90',
         borderColor: 'primary.90',
-        borderRadius: '8px',
+        borderRadius: '3px',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: 'primary.80',
@@ -693,27 +718,36 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiDataGrid: {
     defaultProps: {
-      columnHeaderHeight: 40,
-      rowHeight: 56,
+      columnHeaderHeight: 55,
+      rowHeight: 72,
       density: 'standard',
-      showCellVerticalBorder: false,
-      showColumnVerticalBorder: false,
     },
     styleOverrides: {
       root: {
-        border: 0,
-        borderColor: 'transparent',
+        backgroundColor: 'background.paper',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: '6px',
+        borderBottomRightRadius: '6px',
         '--DataGrid-rowBorderColor': 'divider',
+      },
+      columnHeader: {
+        borderRightStyle: 'solid',
+        borderRightWidth: '1px',
+        padding: '0 15.5px',
         '& .MuiDataGrid-columnHeaderTitle': {
-          color: 'neutral.10',
-          fontWeight: 500,
-          fontSize: '16px',
+          color: 'rgba(0, 0, 0, 0.77)',
+          fontWeight: 600,
+          fontSize: '14px',
+          lineHeight: '17.57px',
         },
       },
-      main: {
-        paddingLeft: '12px',
-      },
       cell: {
+        backgroundColor: 'background.paper',
+        borderRightStyle: 'solid',
+        borderRightWidth: '1px',
+        borderRightColor: 'divider',
+        padding: '0 15.5px',
         fontWeight: 400,
         fontSize: '14px',
         '& span': {
@@ -1053,6 +1087,7 @@ const colorProps = [
   'backgroundColor',
   'bgcolor',
   'borderColor',
+  'borderRightColor',
   'fill',
   '--DataGrid-rowBorderColor',
 ];

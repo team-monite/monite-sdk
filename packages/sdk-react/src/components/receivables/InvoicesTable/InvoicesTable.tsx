@@ -282,20 +282,19 @@ const InvoicesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <ReceivableFilters
-          onChange={(field, value) => {
-            setPaginationToken(undefined);
-            onChangeFilter(field, value);
-          }}
-          filters={[
-            'document_id__contains',
-            'status',
-            'counterpart_id',
-            'due_date__lte',
-          ]}
-        />
-      </Box>
+      <ReceivableFilters
+        onChange={(field, value) => {
+          setPaginationToken(undefined);
+          onChangeFilter(field, value);
+        }}
+        filters={[
+          'document_id__contains',
+          'status',
+          'counterpart_id',
+          'due_date__lte',
+        ]}
+        sx={{ mb: 2 }}
+      />
 
       <DataGrid<components['schemas']['ReceivableResponse']>
         initialState={{

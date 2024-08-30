@@ -188,9 +188,7 @@ const UserRolesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <Filters onChangeFilter={onChangeFilter} />
-      </Box>
+      <Filters onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
