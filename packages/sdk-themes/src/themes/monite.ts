@@ -744,7 +744,6 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
       },
       cell: {
-        backgroundColor: 'background.paper',
         borderRightStyle: 'solid',
         borderRightWidth: '1px',
         borderRightColor: 'divider',
