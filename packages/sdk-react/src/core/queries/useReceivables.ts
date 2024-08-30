@@ -526,40 +526,20 @@ export const useReceivableEmailPreview = (
   receivable_id: string,
   subject_text: string,
   body_text: string
-): {
-  isLoading: boolean;
-  preview: string;
-  error: string;
-  refresh: () => void;
-} => {
+) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
 
-  const mutation = api.receivables.postReceivablesIdPreview.useMutation(
-    {
-      path: {
-        receivable_id,
-      },
+  const mutation = api.receivables.postReceivablesIdPreview.useMutation({
+    path: {
+      receivable_id,
     },
-    {
-      onError: (error) => {
-        const errorMessage = getAPIErrorMessage(i18n, error);
-        toast.error(
-          t(i18n)`Failed to update receivable line items: ${errorMessage}`
-        );
-      },
-    }
-  );
+  });
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [preview, setPreview] = useState<string>('');
-  const [error, setError] = useState<string>('');
   const [attemptNumber, setAttemptNumber] = useState(0);
 
   const refresh = () => {
-    setPreview('');
-    setError('');
-    setIsLoading(true);
     setAttemptNumber(attemptNumber + 1);
   };
 
@@ -578,20 +558,18 @@ export const useReceivableEmailPreview = (
         language: language(),
         type: 'receivable',
       })
-      .then(
-        (response) => {
-          setPreview(response.body_preview);
-          setIsLoading(false);
-        },
-        (error) => {
-          setError(error);
-          setIsLoading(false);
-        }
-      );
+      .then((response) => {
+        setPreview(response.body_preview);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attemptNumber]);
 
-  return { isLoading, preview, error, refresh };
+  return {
+    isLoading: mutation.isPending,
+    error: mutation.error,
+    preview,
+    refresh,
+  };
 };
 
 export const useReceivableContacts = (receivable_id: string) => {
