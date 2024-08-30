@@ -44,6 +44,7 @@ export const paletteLight: MonitePaletteOptions = {
   },
   secondary: {
     main: '#707070',
+    dark: 'rgb(39, 39, 44)',
   },
   background: {
     default: 'rgba(250, 250, 250, 1)',
@@ -552,7 +553,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
 
             '& .Mui-selected': {
               '& span': {
-                color: 'rgba(39, 39, 44, 1)',
+                color: 'secondary.dark',
               },
             },
           },
@@ -578,10 +579,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           },
 
           '& .MuiSvgIcon-root': {
-            color: 'rgba(39, 39, 44, 1)',
+            color: 'secondary.dark',
 
             '& > path': {
-              color: 'rgba(39, 39, 44, 1)',
+              color: 'secondary.dark',
             },
           },
         },
@@ -813,13 +814,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           padding: '16px',
         },
         '& .MuiTab-root.Mui-selected': {
-          backgroundColor: 'primary.light',
-          borderRadius: 10,
+          backgroundColor: 'transparent',
+          color: 'secondary.dark',
+          borderRadius: 0,
         },
       },
       indicator: {
-        borderRadius: 10,
-        backgroundColor: 'primary.main',
+        borderRadius: 0,
+        backgroundColor: 'secondary.dark',
         height: '4px',
       },
     },
