@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
-import { Avatar, Box, Chip, Skeleton, Typography } from '@mui/material';
+import { Avatar, Box, Chip, Skeleton } from '@mui/material';
 
 interface CounterpartCellProps {
   counterpartId: components['schemas']['CounterpartResponse']['id'];
@@ -62,12 +62,15 @@ export const CounterPartCellByName = ({
               sx={{ flexShrink: 0, ml: 1.5, minWidth: '4em' }}
             />
           ) : (
-            <Typography
-              variant="body2"
-              sx={{ ml: 1.5, overflow: 'hidden', textOverflow: 'ellipsis' }}
+            <span
+              style={{
+                marginLeft: '12px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
             >
               {name}
-            </Typography>
+            </span>
           )
         }
         sx={{ backgroundColor: 'transparent', color: 'text.primary' }}
