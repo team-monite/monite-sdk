@@ -344,6 +344,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
+          '.MuiInputLabel-root': {
+            fontWeight: 400,
+          },
+
           '.MuiIconButton-root': {
             marginRight: '-6px',
           },
