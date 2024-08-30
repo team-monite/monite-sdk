@@ -705,6 +705,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       cell: {
         fontWeight: 400,
         fontSize: '14px',
+        '& span': {
+          fontWeight: 400,
+          fontSize: '14px',
+        },
         // Align counterpart avatar with the cell header
         '&[data-field="counterpart_id"], &[data-field="counterpart_name"]': {
           '.MuiChip-root': {

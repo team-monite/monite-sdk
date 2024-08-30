@@ -4,7 +4,6 @@ import { toast } from 'react-hot-toast';
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -30,7 +29,8 @@ import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import HourglassEmpty from '@mui/icons-material/HourglassEmpty';
+import { Box, Stack } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -45,9 +45,9 @@ import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_OVERDUE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-  FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
@@ -200,9 +200,19 @@ const PayablesTableBase = ({
   const columns = useMemo<GridColDef[]>(() => {
     return [
       {
+        field: 'counterpart_id',
+        sortable: false,
+        headerName: t(i18n)`Supplier`,
+        display: 'flex',
+        width: defaultCounterpartColumnWidth,
+        renderCell: (params) => (
+          <CounterpartCellById counterpartId={params.value} />
+        ),
+      },
+      {
         field: 'document_id',
         sortable: false,
-        headerName: t(i18n)`Invoice #`,
+        headerName: t(i18n)`Number, status`,
         width: 100,
         display: 'flex',
         colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
@@ -219,101 +229,19 @@ const PayablesTableBase = ({
           }
 
           return (
-            <span className="Monite-TextOverflowContainer">
-              {payable.document_id}
-            </span>
-          );
-        },
-      },
-      {
-        field: 'counterpart_id',
-        sortable: false,
-        headerName: t(i18n)`Counterpart`,
-        display: 'flex',
-        width: defaultCounterpartColumnWidth,
-        renderCell: (params) => (
-          <CounterpartCellById counterpartId={params.value} />
-        ),
-      },
-      {
-        field: 'created_at',
-        type: 'date',
-        headerName: t(i18n)`Invoice date`,
-        width: 140,
-        display: 'flex',
-        colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 3 : 1),
-        renderCell: ({ row, formattedValue }) => {
-          if (isPayableInOCRProcessing(row)) {
-            return (
-              <Stack direction="row">
-                <CircularProgress size={22} sx={{ mr: 1 }} />
-                {t(i18n)`Processing file…`}
+            <Stack direction="column" alignItems="flex-start" gap={0.5}>
+              <span className="Monite-TextOverflowContainer">
+                {payable.document_id}
+              </span>
+              <Stack
+                direction="row"
+                alignItems="center"
+                gap={1}
+                flexWrap="wrap"
+              >
+                <PayableStatusChip status={payable.status} size="small" />
               </Stack>
-            );
-          }
-
-          return formattedValue;
-        },
-        valueFormatter: (
-          value: components['schemas']['PayableResponseSchema']['created_at']
-        ) => i18n.date(value, dateFormat),
-      },
-      {
-        field: 'issued_at',
-        sortable: false,
-        type: 'date',
-        headerName: t(i18n)({
-          id: 'Issue date Name',
-          message: 'Issue date',
-          comment: 'Payables Table "Issue date" heading title',
-        }),
-        width: 120,
-        valueFormatter: (
-          value: components['schemas']['PayableResponseSchema']['issued_at']
-        ) => value && i18n.date(value, dateFormat),
-      },
-      {
-        field: 'due_date',
-        sortable: false,
-        type: 'date',
-        headerName: t(i18n)({
-          id: 'Due date Name',
-          message: 'Due date',
-          comment: 'Payables Table "Due date" heading title',
-        }),
-        width: 120,
-        valueFormatter: (
-          value: components['schemas']['PayableResponseSchema']['due_date']
-        ) => value && i18n.date(value, dateFormat),
-      },
-      {
-        field: 'status',
-        sortable: false,
-        headerName: t(i18n)({
-          id: 'Status Name',
-          message: 'Status',
-          comment: 'Payables Table "Status" heading title',
-        }),
-        display: 'flex',
-        width: 160,
-        renderCell: (params) => {
-          const payable = params.row;
-          const isOverdue = isInvoiceOverdue(payable);
-
-          return (
-            <Box display="flex" alignItems="center" gap={1}>
-              <PayableStatusChip status={params.value} />
-              {isOverdue && (
-                <StyledChip
-                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
-                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
-                  status={params.value}
-                  color="error"
-                  label={t(i18n)`Overdue`}
-                  size={'small'}
-                />
-              )}
-            </Box>
+            </Stack>
           );
         },
       },
@@ -330,6 +258,33 @@ const PayablesTableBase = ({
           return payable.amount_to_pay && payable.currency
             ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
             : '';
+        },
+      },
+      {
+        field: 'due_date',
+        sortable: false,
+        headerName: t(i18n)({
+          id: 'Due date Name',
+          message: 'Due date',
+          comment: 'Payables Table "Due date" heading title',
+        }),
+        width: 120,
+        display: 'flex',
+        renderCell: (params) => {
+          const payable = params.row;
+          console.log(payable);
+          const isOverdue = isInvoiceOverdue(payable);
+          const dueDate = payable.due_date;
+          return (
+            <Stack direction="row" alignItems="center">
+              <span>{dueDate && i18n.date(dueDate, dateFormat)}</span>
+              {isOverdue && (
+                <HourglassEmpty
+                  sx={{ fontSize: '16px', color: 'error.main', ml: 1 }}
+                />
+              )}
+            </Stack>
+          );
         },
       },
       {
@@ -442,6 +397,7 @@ const PayablesTableBase = ({
         onRowClick={(params) => {
           onRowClick?.(params.row.id);
         }}
+        rowHeight={72}
         sx={{
           '& .MuiDataGrid-withBorderColor': {
             borderColor: 'divider',
