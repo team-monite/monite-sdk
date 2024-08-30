@@ -564,9 +564,9 @@ export const useReceivableEmailPreview = (
   };
 
   const language = () => {
-    let locale = i18n.locale;
+    const locale = i18n.locale;
     const dashIndex = locale.indexOf('-');
-    if (dashIndex >= 0) locale = locale.substring(0, dashIndex);
+    if (dashIndex >= 0) return locale.substring(0, dashIndex);
     return locale;
   };
 
