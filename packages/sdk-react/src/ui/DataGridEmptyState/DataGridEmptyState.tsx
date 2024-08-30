@@ -9,9 +9,10 @@ import ErrorIcon from '@mui/icons-material/ErrorOutline';
 import CountryUnsupportedIcon from '@mui/icons-material/HourglassEmpty';
 import AccessRestrictedIcon from '@mui/icons-material/Lock';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
 import { Box, Button, Menu, MenuItem, Stack, Typography } from '@mui/material';
 
-interface BaseProps {
+export interface BaseProps {
   onAction?: (option?: string) => void;
   actionButtonLabel?: string;
   actionOptions?: string[];
@@ -20,6 +21,7 @@ interface BaseProps {
     | 'error'
     | 'access-restricted'
     | 'unsupported-country'
+    | 'no-filter'
     | 'custom';
   className?: string;
 }
@@ -56,6 +58,13 @@ export const DataGridEmptyState = ({
     case 'no-data':
       defaultIcon = (
         <NoDataIcon sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }} />
+      );
+      break;
+    case 'no-filter':
+      defaultIcon = (
+        <SearchOffIcon
+          sx={{ fontSize: '4rem', color: 'primary.main', mb: 2 }}
+        />
       );
       break;
     case 'access-restricted':
