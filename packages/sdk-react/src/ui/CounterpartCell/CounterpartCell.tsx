@@ -1,6 +1,8 @@
 import { components } from '@/api';
 import { getCounterpartName } from '@/components/counterparts/helpers';
 import { useCounterpartById } from '@/core/queries';
+import { i18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 import { Avatar, Box, Chip, Skeleton } from '@mui/material';
 
 interface CounterpartCellProps {
@@ -22,7 +24,7 @@ export const CounterPartCellByName = ({
   name: string;
   isLoading?: boolean;
 }) => {
-  if (!name) return null;
+  if (!name && !isLoading) name = t(i18n)`Unspecified`;
   const nameParts = name.split(' ');
   // Split name into parts by ' ' and take first letters from the first and last parts of the name
   // For example, Mike Borough -> MB
@@ -85,10 +87,6 @@ export const CounterpartCellById = ({
   counterpartId,
 }: CounterpartCellProps) => {
   const { data: counterpart, isLoading } = useCounterpartById(counterpartId);
-  if (!counterpartId || (!isLoading && !counterpart)) {
-    return null;
-  }
-
   const name = counterpart ? getCounterpartName(counterpart) : '';
   return <CounterPartCellByName name={name} isLoading={isLoading} />;
 };

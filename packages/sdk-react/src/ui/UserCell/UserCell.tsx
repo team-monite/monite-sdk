@@ -8,7 +8,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
   const { data: entityUser, isLoading } = useEntityUserById(userId);
 
   const user = entityUser || {
-    first_name: t(i18n)`Unknown`,
+    first_name: t(i18n)`Unspecified`,
     last_name: '',
   };
 
