@@ -19,7 +19,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -380,38 +380,12 @@ const PayablesTableBase = ({
     return <AccessRestriction />;
   }
 
-  if (!isLoading && payables?.data.length === 0) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Payables`}
-        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
-        descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create new`}
-        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-        onAction={(action) => {
-          if (action === t(i18n)`New Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          } else if (action === t(i18n)`Upload File`) {
-            openFileInput?.();
-          }
-        }}
-        type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Payables`}
-        descriptionLine1={t(i18n)`There was an error loading the payables.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload page`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterTypes] !== null &&
+      currentFilter[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
 
   const className = 'Monite-PayablesTable';
   return (
@@ -463,6 +437,27 @@ const PayablesTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={payables?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={(type) => {
+                if (type === 'New Invoice') {
+                  setIsCreateInvoiceDialogOpen?.(true);
+                } else if (type === 'Upload File') {
+                  openFileInput?.();
+                }
+              }}
+              refetch={refetch}
+              entityName={t(i18n)`Payable`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+              type="no-data"
             />
           ),
         }}

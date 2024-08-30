@@ -11,7 +11,7 @@ import { useCurrencies } from '@/core/hooks';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -275,36 +275,12 @@ const ProductsTableBase = ({
     return <AccessRestriction />;
   }
 
-  if (!isLoading && products?.data.length === 0) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Products`}
-        descriptionLine1={t(i18n)`You don’t have any products yet.`}
-        descriptionLine2={t(i18n)`You can create your first product.`}
-        actionButtonLabel={t(i18n)`Create new`}
-        actionOptions={[t(i18n)`Product`]}
-        onAction={(action) => {
-          if (action === t(i18n)`Product`) {
-            openCreateModal?.();
-          }
-        }}
-        type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Products`}
-        descriptionLine1={t(i18n)`There was an error loading products.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterType] !== null &&
+      currentFilter[key as keyof FilterType] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
 
   return (
     <Box
@@ -356,6 +332,21 @@ const ProductsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={products?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={openCreateModal}
+              refetch={refetch}
+              entityName={t(i18n)`Products`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Product`]}
+              type="no-data"
             />
           ),
         }}

@@ -5,7 +5,7 @@ import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPol
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -188,33 +188,12 @@ const ApprovalPoliciesTableBase = ({
     onChangeFilterCallback && onChangeFilterCallback({ field, value });
   };
 
-  if (!isLoading && approvalPolicies?.data?.length === 0) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Approval Policies`}
-        descriptionLine1={t(i18n)`You don’t have any approval policies yet.`}
-        descriptionLine2={t(i18n)`You can create your first approval policy.`}
-        actionButtonLabel={t(i18n)`Create`}
-        onAction={() => onCreateClick?.()}
-        type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Approval Policies`}
-        descriptionLine1={t(
-          i18n
-        )`There was an error loading approval policies.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
+  const isFiltering = Object.keys(currentFilters).some(
+    (key) =>
+      currentFilters[key as keyof FilterTypes] !== null &&
+      currentFilters[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching = !!currentFilters[FILTER_TYPE_SEARCH];
 
   return (
     <Box
@@ -268,6 +247,20 @@ const ApprovalPoliciesTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={approvalPolicies?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={() => onCreateClick?.()}
+              refetch={refetch}
+              entityName={t(i18n)`Approval Policies`}
+              actionButtonLabel={t(i18n)`Create`}
+              type="no-data"
             />
           ),
         }}

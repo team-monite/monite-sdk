@@ -256,7 +256,7 @@ const QuotesTableBase = ({
               isSearching={isSearching}
               isError={isError}
               refetch={refetch}
-              entityName="Quotes"
+              entityName={t(i18n)`Quotes`}
               actionButtonLabel={t(i18n)`Create new`}
               actionOptions={[t(i18n)`Invoice`]}
               onCreate={(type) => {
