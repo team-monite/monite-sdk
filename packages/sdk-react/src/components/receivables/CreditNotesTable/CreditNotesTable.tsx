@@ -14,6 +14,7 @@ import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -167,7 +168,19 @@ const CreditNotesTableBase = ({
     'CreditNotesTable'
   );
 
-  if (!isLoading && !creditNotes?.data.length) {
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
+
+  if (
+    !isLoading &&
+    creditNotes?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
     return (
       <DataGridEmptyState
         title={t(i18n)`No Credit Notes`}
@@ -181,19 +194,6 @@ const CreditNotesTableBase = ({
           }
         }}
         type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Credit Notes`}
-        descriptionLine1={t(i18n)`There was an error loading credit notes.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => refetch()}
-        type="error"
       />
     );
   }
@@ -251,6 +251,21 @@ const CreditNotesTableBase = ({
                   setPageSize(pageSize);
                   setPaginationToken(page ?? undefined);
                 }}
+              />
+            ),
+            noRowsOverlay: () => (
+              <GetNoRowsOverlay
+                isLoading={isLoading}
+                dataLength={creditNotes?.data.length || 0}
+                isFiltering={isFiltering}
+                isSearching={isSearching}
+                isError={isError}
+                onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
+                refetch={refetch}
+                entityName={t(i18n)`Credit Notes`}
+                actionButtonLabel={t(i18n)`Create Invoice`}
+                actionOptions={[t(i18n)`Invoice`]}
+                type="no-data"
               />
             ),
           }}
