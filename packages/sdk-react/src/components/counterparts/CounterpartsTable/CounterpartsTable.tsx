@@ -16,6 +16,7 @@ import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -337,7 +338,21 @@ const CounterpartsTableBase = ({
     return <AccessRestriction />;
   }
 
-  if (!isLoading && counterparts?.data.length === 0) {
+  const className = 'Monite-CounterpartsTable';
+
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof Filters] !== null &&
+      currentFilter[key as keyof Filters] !== undefined
+  );
+  const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
+
+  if (
+    !isLoading &&
+    counterparts?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
     return (
       <DataGridEmptyState
         title={t(i18n)`No Counterparts`}
@@ -357,21 +372,6 @@ const CounterpartsTableBase = ({
       />
     );
   }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Counterparts`}
-        descriptionLine1={t(i18n)`There was an error loading counterparts.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
-
-  const className = 'Monite-CounterpartsTable';
 
   return (
     <Box
@@ -429,6 +429,28 @@ const CounterpartsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={counterparts?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              onCreate={(action) => {
+                if (!setType) return;
+                if (action === t(i18n)`Organization`) {
+                  setType('organization');
+                } else if (action === t(i18n)`Individual`) {
+                  setType('individual');
+                }
+              }}
+              refetch={refetch}
+              entityName={t(i18n)`Counterpart`}
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Organization`, t(i18n)`Individual`]}
+              type="no-data"
             />
           ),
         }}
