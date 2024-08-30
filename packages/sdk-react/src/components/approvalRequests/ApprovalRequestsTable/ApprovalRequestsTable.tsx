@@ -335,7 +335,6 @@ const ApprovalRequestsTableBase = ({
               isError={isError}
               refetch={refetch}
               entityName={t(i18n)`Approval Requests`}
-              actionButtonLabel={t(i18n)`Create new`}
               type="no-data"
             />
           ),

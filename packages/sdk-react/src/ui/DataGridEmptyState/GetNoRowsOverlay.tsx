@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { BaseProps, DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -75,7 +73,7 @@ export const GetNoRowsOverlay = ({
           t(i18n)`You can create your first ${entityName.toLowerCase()}.`
         }
         actionOptions={actionOptions || [t(i18n)`Create ${entityName}`]}
-        actionButtonLabel={actionButtonLabel || t(i18n)`Create new`}
+        actionButtonLabel={actionButtonLabel}
         onAction={(action) => {
           if (!action) return;
           if (onCreate) onCreate(action);
