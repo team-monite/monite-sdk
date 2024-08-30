@@ -167,7 +167,7 @@ export const defaultMoniteTypography:
     lineHeight: '24px',
   },
   body2: {
-    fontWeight: 500,
+    fontWeight: 400,
     fontSize: '14px',
     lineHeight: '20px',
     color: 'rgba(0, 0, 0, 0.56)',
@@ -893,11 +893,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteApprovalRequestStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
   },
   MoniteInvoiceStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -958,6 +960,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -1000,6 +1003,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     ],
   },
   MoniteCounterpartStatusChip: {
+    defaultProps: {
+      size: 'small',
+    },
     styleOverrides: {
       root: {
         height: '24px',
