@@ -31,7 +31,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import HourglassEmpty from '@mui/icons-material/HourglassEmpty';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -231,17 +231,13 @@ const PayablesTableBase = ({
 
           return (
             <Stack direction="column" alignItems="flex-start" gap={0.5}>
-              <span className="Monite-TextOverflowContainer">
-                {payable.document_id}
-              </span>
-              <Stack
-                direction="row"
-                alignItems="center"
-                gap={1}
-                flexWrap="wrap"
+              <Typography
+                variant="body1"
+                className="Monite-TextOverflowContainer"
               >
-                <PayableStatusChip status={payable.status} size="small" />
-              </Stack>
+                {payable.document_id}
+              </Typography>
+              <PayableStatusChip status={payable.status} size="small" />
             </Stack>
           );
         },
