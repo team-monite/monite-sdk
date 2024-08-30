@@ -1707,8 +1707,7 @@ msgstr "Create Invoice"
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:452
 #: src/components/payables/PayablesTable/PayablesTable.tsx:402
 #: src/components/payables/PayablesTable/PayablesTable.tsx:484
-#: src/components/products/ProductsTable/ProductsTable.tsx:297
-#: src/components/products/ProductsTable/ProductsTable.tsx:371
+#: src/components/products/ProductsTable/ProductsTable.tsx:347
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:279
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:206
@@ -3959,7 +3958,7 @@ msgstr "Name *"
 msgid "Name, country, city"
 msgstr "Name, country, city"
 
-#: src/components/products/ProductsTable/ProductsTable.tsx:190
+#: src/components/products/ProductsTable/ProductsTable.tsx:189
 msgid "Name, description"
 msgstr "Name, description"
 
@@ -4157,8 +4156,8 @@ msgid "no policy"
 msgstr "no policy"
 
 #: src/components/products/ProductsTable/ProductsTable.tsx:294
-msgid "No Products"
-msgstr "No Products"
+#~ msgid "No Products"
+#~ msgstr "No Products"
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:201
 msgid "No Quotes"
@@ -4759,7 +4758,7 @@ msgstr "Price"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:149
 #: src/components/products/ProductDetails/validation.ts:41
-#: src/components/products/ProductsTable/ProductsTable.tsx:219
+#: src/components/products/ProductsTable/ProductsTable.tsx:218
 msgid "Price per unit"
 msgstr "Price per unit"
 
@@ -4781,9 +4780,7 @@ msgstr "Processing..."
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:89
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
-#: src/components/products/ProductsTable/ProductsTable.tsx:298
-#: src/components/products/ProductsTable/ProductsTable.tsx:300
-#: src/components/products/ProductsTable/ProductsTable.tsx:372
+#: src/components/products/ProductsTable/ProductsTable.tsx:348
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:67
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:49
 #: src/components/userRoles/consts.ts:38
@@ -4820,7 +4817,7 @@ msgstr "Product was deleted."
 
 #: src/components/products/Products.tsx:89
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:60
-#: src/components/products/ProductsTable/ProductsTable.tsx:370
+#: src/components/products/ProductsTable/ProductsTable.tsx:346
 msgid "Products"
 msgstr "Products"
 
@@ -6177,7 +6174,7 @@ msgstr "Tuvalu"
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:83
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:47
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:50
-#: src/components/products/ProductsTable/ProductsTable.tsx:207
+#: src/components/products/ProductsTable/ProductsTable.tsx:206
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:55
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:58
 msgid "Type"
@@ -6268,7 +6265,7 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:83
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:86
-#: src/components/products/ProductsTable/ProductsTable.tsx:234
+#: src/components/products/ProductsTable/ProductsTable.tsx:233
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:240
 msgid "Units"
 msgstr "Units"
@@ -6739,8 +6736,8 @@ msgid "You can create your first invoice."
 msgstr "You can create your first invoice."
 
 #: src/components/products/ProductsTable/ProductsTable.tsx:296
-msgid "You can create your first product."
-msgstr "You can create your first product."
+#~ msgid "You can create your first product."
+#~ msgstr "You can create your first product."
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:203
 msgid "You can create your first quote."
@@ -6792,8 +6789,8 @@ msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
 #: src/components/products/ProductsTable/ProductsTable.tsx:295
-msgid "You don’t have any products yet."
-msgstr "You don’t have any products yet."
+#~ msgid "You don’t have any products yet."
+#~ msgstr "You don’t have any products yet."
 
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:202
 msgid "You don’t have any quotes yet."
