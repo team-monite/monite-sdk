@@ -321,13 +321,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             height: '40px',
             minHeight: '40px',
             maxHeight: '40px',
-            borderRadius: '20px',
+            borderRadius: '3px',
             color: 'black',
-            backgroundColor: 'neutral.95',
+            backgroundColor: 'transparent',
             padding: '0 6px',
 
             '.MuiOutlinedInput-notchedOutline': {
-              borderStyle: 'none',
+              // borderStyle: 'none',
             },
           },
 
@@ -342,6 +342,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             fontSize: '14px',
             maxWidth: 'calc(100% - 52px)',
             textOverflow: 'ellipsis',
+            pointerEvents: 'none',
 
             '&.MuiFormLabel-filled': {
               opacity: 0,
