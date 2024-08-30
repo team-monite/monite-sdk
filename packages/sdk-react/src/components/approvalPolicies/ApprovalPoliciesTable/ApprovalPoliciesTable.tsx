@@ -5,6 +5,7 @@ import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPol
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
@@ -194,6 +195,24 @@ const ApprovalPoliciesTableBase = ({
       currentFilters[key as keyof FilterTypes] !== undefined
   );
   const isSearching = !!currentFilters[FILTER_TYPE_SEARCH];
+
+  if (
+    !isLoading &&
+    approvalPolicies?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Policies`}
+        descriptionLine1={t(i18n)`You don’t have any approval policies yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval policy.`}
+        actionButtonLabel={t(i18n)`Create`}
+        onAction={() => onCreateClick?.()}
+        type="no-data"
+      />
+    );
+  }
 
   return (
     <Box

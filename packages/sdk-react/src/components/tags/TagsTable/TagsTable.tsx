@@ -9,6 +9,7 @@ import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
@@ -199,6 +200,24 @@ const TagsTableBase = ({
     openDeleteModal,
     openEditModal,
   ]);
+
+  if (!isLoading && tags?.data.length === 0) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Tags`}
+        descriptionLine1={t(i18n)`You don’t have any tags yet.`}
+        descriptionLine2={t(i18n)`You can create your first tag.`}
+        actionButtonLabel={t(i18n)`Create new tag`}
+        actionOptions={[t(i18n)`Tag`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Tag`) {
+            showCreationModal?.();
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   return (
     <Box

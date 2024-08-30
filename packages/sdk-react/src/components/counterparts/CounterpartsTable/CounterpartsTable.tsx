@@ -15,6 +15,7 @@ import {
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterPartCellByName } from '@/ui/CounterpartCell/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -345,6 +346,32 @@ const CounterpartsTableBase = ({
       currentFilter[key as keyof Filters] !== undefined
   );
   const isSearching = !!currentFilter[FILTER_TYPE_SEARCH];
+
+  if (
+    !isLoading &&
+    counterparts?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Counterparts`}
+        descriptionLine1={t(i18n)`You don’t have any counterparts yet.`}
+        descriptionLine2={t(i18n)`You can create your first counterpart.`}
+        actionOptions={[t(i18n)`Organization`, t(i18n)`Individual`]}
+        actionButtonLabel={t(i18n)`Create new`}
+        onAction={(action) => {
+          if (!setType) return;
+          if (action === t(i18n)`Organization`) {
+            setType('organization');
+          } else if (action === t(i18n)`Individual`) {
+            setType('individual');
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   return (
     <Box

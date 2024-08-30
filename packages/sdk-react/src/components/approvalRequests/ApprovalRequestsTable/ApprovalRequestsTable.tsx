@@ -13,6 +13,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
@@ -274,6 +275,22 @@ const ApprovalRequestsTableBase = ({
   const isSearching =
     !!currentFilter[FILTER_TYPE_CREATED_AT] ||
     !!currentFilter[FILTER_TYPE_ADDED_BY];
+
+  if (
+    !isApprovalRequestsLoading &&
+    approvalRequests?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Approval Requests`}
+        descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
+        descriptionLine2={t(i18n)`You can create your first approval request.`}
+        type="no-data"
+      />
+    );
+  }
 
   return (
     <Box

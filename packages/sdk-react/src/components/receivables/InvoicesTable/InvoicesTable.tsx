@@ -15,6 +15,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
+import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
@@ -244,6 +245,29 @@ const InvoicesTableBase = ({
       filters[key as keyof typeof filters] !== undefined
   );
   const isSearching = !!filters['document_id__contains'];
+
+  if (
+    !isLoading &&
+    invoices?.data.length === 0 &&
+    !isFiltering &&
+    !isSearching
+  ) {
+    return (
+      <DataGridEmptyState
+        title={t(i18n)`No Receivables`}
+        descriptionLine1={t(i18n)`You don’t have any invoices yet.`}
+        descriptionLine2={t(i18n)`You can create your first invoice.`}
+        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionOptions={[t(i18n)`Invoice`]}
+        onAction={(action) => {
+          if (action === t(i18n)`Invoice`) {
+            setIsCreateInvoiceDialogOpen?.(true);
+          }
+        }}
+        type="no-data"
+      />
+    );
+  }
 
   const className = 'Monite-InvoicesTable';
 
