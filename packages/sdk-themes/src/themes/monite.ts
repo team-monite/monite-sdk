@@ -635,6 +635,37 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiAvatar: {
+    styleOverrides: {
+      root: {
+        '&.MuiAvatar-colored': {
+          margin: 0,
+          color: 'text.primary',
+          fontSize: '16px',
+          fontWeight: 600,
+          lineHeight: '40px',
+          width: '40px',
+          height: '40px',
+
+          '&.MuiAvatar-0': {
+            backgroundColor: counterpartColors[0],
+          },
+          '&.MuiAvatar-1': {
+            backgroundColor: counterpartColors[1],
+          },
+          '&.MuiAvatar-2': {
+            backgroundColor: counterpartColors[2],
+          },
+          '&.MuiAvatar-3': {
+            backgroundColor: counterpartColors[3],
+          },
+          '&.MuiAvatar-4': {
+            backgroundColor: counterpartColors[4],
+          },
+        },
+      },
+    },
+  },
   MuiChip: {
     styleOverrides: {
       root: {
@@ -649,37 +680,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           marginLeft: 0,
           marginRight: '4px',
         },
-        '&.Monite-CounterpartCell, &.Monite-UserCell': {
-          '& .MuiChip-avatar': {
-            margin: 0,
-            color: 'text.primary',
-            fontSize: '16px',
-            fontWeight: 600,
-            lineHeight: '40px',
-            width: '40px',
-            height: '40px',
-          },
-        },
       },
       label: {
         padding: '0',
-      },
-      avatar: {
-        '&.MuiAvatar-0': {
-          backgroundColor: counterpartColors[0],
-        },
-        '&.MuiAvatar-1': {
-          backgroundColor: counterpartColors[1],
-        },
-        '&.MuiAvatar-2': {
-          backgroundColor: counterpartColors[2],
-        },
-        '&.MuiAvatar-3': {
-          backgroundColor: counterpartColors[3],
-        },
-        '&.MuiAvatar-4': {
-          backgroundColor: counterpartColors[4],
-        },
       },
     },
   },

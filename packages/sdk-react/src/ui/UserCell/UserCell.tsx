@@ -2,7 +2,7 @@ import { useEntityUserById } from '@/core/queries';
 import { calculateAvatarColorIndex } from '@/ui/CounterpartCell/CounterpartCell';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
-import { Avatar, Chip, Skeleton } from '@mui/material';
+import { Avatar, Skeleton, Stack } from '@mui/material';
 
 export const UserCell = ({ userId }: { userId: string }) => {
   const { data: entityUser, isLoading } = useEntityUserById(userId);
@@ -27,46 +27,48 @@ export const UserCell = ({ userId }: { userId: string }) => {
   ).toUpperCase();
 
   return (
-    <Chip
+    <Stack
       className="Monite-UserCell"
-      avatar={
-        isLoading ? (
-          <Skeleton
-            animation="wave"
-            variant="circular"
-            width={40}
-            height={40}
-            sx={{ flexShrink: 0 }}
-          />
-        ) : (
-          <Avatar
-            className={'MuiAvatar-' + calculateAvatarColorIndex(avatarLetters)}
-          >
-            {avatarLetters}
-          </Avatar>
-        )
-      }
-      label={
-        isLoading || !name ? (
-          <Skeleton
-            animation="wave"
-            height={10}
-            width="100%"
-            sx={{ flexShrink: 0, ml: 1.5, minWidth: '4em' }}
-          />
-        ) : (
-          <span
-            style={{
-              marginLeft: '12px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {name}
-          </span>
-        )
-      }
-      sx={{ backgroundColor: 'transparent', color: 'text.primary' }}
-    />
+      direction="row"
+      alignItems="center"
+      spacing={1.5}
+    >
+      {isLoading ? (
+        <Skeleton
+          animation="wave"
+          variant="circular"
+          width={40}
+          height={40}
+          sx={{ flexShrink: 0 }}
+        />
+      ) : (
+        <Avatar
+          className={
+            'MuiAvatar-colored MuiAvatar-' +
+            calculateAvatarColorIndex(avatarLetters)
+          }
+        >
+          {avatarLetters}
+        </Avatar>
+      )}
+
+      {isLoading || !name ? (
+        <Skeleton
+          animation="wave"
+          height={10}
+          width="100%"
+          sx={{ flexShrink: 0, minWidth: '4em' }}
+        />
+      ) : (
+        <span
+          style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {name}
+        </span>
+      )}
+    </Stack>
   );
 };
