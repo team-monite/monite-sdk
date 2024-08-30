@@ -66,6 +66,7 @@ export function useAutosizeGridColumns(
                 await grid.autosizeColumns({
                   includeHeaders: true,
                   includeOutliers: true,
+                  expand: true,
                 });
                 previousColumnsState.forEach((previousColumnState) => {
                   const currentColumnState = grid.getColumn(

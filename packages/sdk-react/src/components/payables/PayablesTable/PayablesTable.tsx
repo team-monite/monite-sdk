@@ -24,6 +24,7 @@ import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
 } from '@/ui/table/TablePagination';
+import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
@@ -248,6 +249,7 @@ const PayablesTableBase = ({
       {
         field: 'amount',
         sortable: false,
+        align: 'right',
         headerName: t(i18n)({
           id: 'Amount Name',
           message: 'Amount',
@@ -272,7 +274,6 @@ const PayablesTableBase = ({
         display: 'flex',
         renderCell: (params) => {
           const payable = params.row;
-          console.log(payable);
           const isOverdue = isInvoiceOverdue(payable);
           const dueDate = payable.due_date;
           return (
@@ -286,6 +287,16 @@ const PayablesTableBase = ({
             </Stack>
           );
         },
+      },
+      {
+        field: 'was_created_by_user_id',
+        sortable: false,
+        headerName: t(i18n)`Added by`,
+        display: 'flex',
+        width: 120,
+        renderCell: (params) => (
+          <UserCell userId={params.row.was_created_by_user_id} />
+        ),
       },
       {
         field: 'pay',
