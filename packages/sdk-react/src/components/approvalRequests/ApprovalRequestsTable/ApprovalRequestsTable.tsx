@@ -13,7 +13,7 @@ import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -266,31 +266,14 @@ const ApprovalRequestsTableBase = ({
     return <AccessRestriction />;
   }
 
-  if (!isApprovalRequestsLoading && approvalRequests?.data?.length === 0) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Approval Requests`}
-        descriptionLine1={t(i18n)`You don’t have any approval requests yet.`}
-        descriptionLine2={t(i18n)`You can create your first approval request.`}
-        type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Approval Requests`}
-        descriptionLine1={t(
-          i18n
-        )`There was an error loading approval requests.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
+  const isFiltering = Object.keys(currentFilter).some(
+    (key) =>
+      currentFilter[key as keyof FilterTypes] !== null &&
+      currentFilter[key as keyof FilterTypes] !== undefined
+  );
+  const isSearching =
+    !!currentFilter[FILTER_TYPE_CREATED_AT] ||
+    !!currentFilter[FILTER_TYPE_ADDED_BY];
 
   return (
     <Box
@@ -341,6 +324,19 @@ const ApprovalRequestsTableBase = ({
                 setPageSize(pageSize);
                 setCurrentPaginationToken(page);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isApprovalRequestsLoading}
+              dataLength={approvalRequests?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              refetch={refetch}
+              entityName="Approval Requests"
+              actionButtonLabel={t(i18n)`Create new`}
+              type="no-data"
             />
           ),
         }}
