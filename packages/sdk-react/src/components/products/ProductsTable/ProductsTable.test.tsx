@@ -1,4 +1,3 @@
-import { TagsTable } from '@/components';
 import { MoniteProvider } from '@/core/context/MoniteProvider';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
