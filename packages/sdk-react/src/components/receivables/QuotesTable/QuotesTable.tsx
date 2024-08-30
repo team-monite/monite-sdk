@@ -13,7 +13,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useReceivables } from '@/core/queries/useReceivables';
 import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
-import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
+import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -109,6 +109,13 @@ const QuotesTableBase = ({
     onChangeSortCallback?.(model);
   };
 
+  const isFiltering = Object.keys(filters).some(
+    (key) =>
+      filters[key as keyof typeof filters] !== null &&
+      filters[key as keyof typeof filters] !== undefined
+  );
+  const isSearching = !!filters['document_id__contains'];
+
   const areCounterpartsLoading = useAreCounterpartsLoading(quotes?.data);
   const dateFormat = useDateFormat();
 
@@ -187,37 +194,6 @@ const QuotesTableBase = ({
     'QuotesTable'
   );
 
-  if (!isLoading && !quotes?.data.length) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Quotes`}
-        descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
-        descriptionLine2={t(i18n)`You can create your first quote.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
-        actionOptions={[t(i18n)`Invoice`]}
-        onAction={(action) => {
-          if (action === t(i18n)`Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          }
-        }}
-        type="no-data"
-      />
-    );
-  }
-
-  if (isError) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`Failed to Load Quotes`}
-        descriptionLine1={t(i18n)`There was an error loading the quotes.`}
-        descriptionLine2={t(i18n)`Please try again later.`}
-        actionButtonLabel={t(i18n)`Reload page`}
-        onAction={() => refetch()}
-        type="error"
-      />
-    );
-  }
-
   const className = 'Monite-QuotesTable';
 
   return (
@@ -270,6 +246,25 @@ const QuotesTableBase = ({
                 setPageSize(pageSize);
                 setPaginationToken(page ?? undefined);
               }}
+            />
+          ),
+          noRowsOverlay: () => (
+            <GetNoRowsOverlay
+              isLoading={isLoading}
+              dataLength={quotes?.data.length || 0}
+              isFiltering={isFiltering}
+              isSearching={isSearching}
+              isError={isError}
+              refetch={refetch}
+              entityName="Quotes"
+              actionButtonLabel={t(i18n)`Create new`}
+              actionOptions={[t(i18n)`Invoice`]}
+              onCreate={(type) => {
+                if (type === t(i18n)`Invoice`) {
+                  setIsCreateInvoiceDialogOpen?.(true);
+                }
+              }}
+              type="no-data"
             />
           ),
         }}
