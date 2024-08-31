@@ -144,7 +144,7 @@ const ApprovalPoliciesTableBase = ({
       },
       {
         field: 'triggers',
-        headerName: t(i18n)`Triggers`,
+        headerName: t(i18n)`Conditions`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (
@@ -157,7 +157,7 @@ const ApprovalPoliciesTableBase = ({
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
         ),
       },
       {

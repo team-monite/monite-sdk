@@ -1,16 +1,50 @@
 import { components } from '@/api';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 
-export type ApprovalPoliciesScriptTypes =
-  'ApprovalRequests.request_approval_by_users';
+type ApprovalPolicyScriptType =
+  | 'ApprovalRequests.request_approval_by_users'
+  | 'ApprovalRequests.request_approval_by_roles';
 
-export interface ApprovalPolicyScript {
-  call: ApprovalPoliciesScriptTypes | undefined;
+interface ApprovalPolicyRule {
+  call: ApprovalPolicyScriptType;
   params: {
     user_ids?: string[];
     role_ids?: string[];
-    required_approval_count?: number | string;
+    required_approval_count: number;
   };
 }
+
+interface ApprovalPolicyNestedRule {
+  run_concurrently: boolean;
+  all: (ApprovalPolicyRule | ApprovalPolicyNestedRule)[];
+}
+
+type ApprovalPolicyScript = [
+  {
+    run_concurrently: boolean;
+    all: (ApprovalPolicyRule | ApprovalPolicyNestedRule)[];
+  }
+];
+type SingleUserRule = {
+  type: 'single_user';
+  userId: string;
+};
+
+type UsersFromListRule = {
+  type: 'users_from_list';
+  userIds: string[];
+};
+
+type RolesFromListRule = {
+  type: 'roles_from_list';
+  roleIds: string[];
+};
+
+type ApprovalChainRule = {
+  type: 'approval_chain';
+  chainUserIds: string[];
+};
 
 interface UseApprovalPolicyScriptProps {
   approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
@@ -19,65 +53,185 @@ interface UseApprovalPolicyScriptProps {
 export const useApprovalPolicyScript = ({
   approvalPolicy,
 }: UseApprovalPolicyScriptProps) => {
-  const isApprovalPolicyScript = (
-    policyScript: unknown
-  ): policyScript is ApprovalPolicyScript => {
+  const { i18n } = useLingui();
+
+  const isApprovalPolicyRule = (rule: unknown): rule is ApprovalPolicyRule => {
+    if (typeof rule !== 'object' || rule === null) return false;
+
+    // Check if 'call' property exists and is of the correct type
+    if (!('call' in rule) || typeof rule.call !== 'string') return false;
     if (
-      typeof policyScript !== 'object' ||
-      policyScript === null ||
-      !('call' in policyScript) ||
-      !('params' in policyScript)
+      ![
+        'ApprovalRequests.request_approval_by_users',
+        'ApprovalRequests.request_approval_by_roles',
+      ].includes(rule.call)
     ) {
       return false;
     }
 
-    const script = policyScript as { call: unknown; params: unknown };
-
-    if (script.call !== 'ApprovalRequests.request_approval_by_users') {
+    // Check if 'params' property exists and is an object
+    if (
+      !('params' in rule) ||
+      typeof rule.params !== 'object' ||
+      rule.params === null
+    )
       return false;
-    }
+
+    const params = rule.params;
+
+    // Check params properties
+    if ('user_ids' in params && !Array.isArray(params.user_ids)) return false;
+    if ('role_ids' in params && !Array.isArray(params.role_ids)) return false;
+    if (
+      !('required_approval_count' in params) ||
+      typeof params.required_approval_count !== 'number'
+    )
+      return false;
+
+    // If all checks pass, it's a valid ApprovalPolicyRule
+    return true;
+  };
+
+  const isApprovalPolicyNestedRule = (
+    rule: unknown
+  ): rule is ApprovalPolicyNestedRule => {
+    if (typeof rule !== 'object' || rule === null) return false;
 
     if (
-      typeof script.params !== 'object' ||
-      script.params === null ||
-      !('user_ids' in script.params) ||
-      !('required_approval_count' in script.params)
-    ) {
+      !('run_concurrently' in rule) ||
+      typeof rule.run_concurrently !== 'boolean'
+    )
       return false;
-    }
+    if (!('all' in rule) || !Array.isArray(rule.all)) return false;
 
-    const params = script.params as {
-      user_ids: unknown;
-      required_approval_count: unknown;
-    };
-
-    return (
-      Array.isArray(params.user_ids) &&
-      (typeof params.required_approval_count === 'number' ||
-        typeof params.required_approval_count === 'string')
+    return rule.all.every(
+      (item) => isApprovalPolicyRule(item) || isApprovalPolicyNestedRule(item)
     );
   };
 
-  if (!isApprovalPolicyScript(approvalPolicy?.script[0])) {
-    // TODO: display error message
+  const isApprovalPolicyScript = (
+    policyScript: unknown
+  ): policyScript is ApprovalPolicyScript => {
+    if (!Array.isArray(policyScript) || policyScript.length !== 1) return false;
+
+    const [scriptObject] = policyScript;
+
+    if (typeof scriptObject !== 'object' || scriptObject === null) return false;
+
+    // Check if 'run_concurrently' and 'all' properties exist
+    if (!('run_concurrently' in scriptObject) || !('all' in scriptObject))
+      return false;
+
+    const { run_concurrently, all } = scriptObject;
+
+    if (typeof run_concurrently !== 'boolean') return false;
+    if (!Array.isArray(all)) return false;
+
+    return all.every(
+      (item) => isApprovalPolicyRule(item) || isApprovalPolicyNestedRule(item)
+    );
+  };
+
+  const isSingleUserRule = (
+    rule: ApprovalPolicyRule
+  ): rule is ApprovalPolicyRule & { params: { user_ids: [string] } } => {
+    return (
+      rule.call === 'ApprovalRequests.request_approval_by_users' &&
+      Array.isArray(rule.params.user_ids) &&
+      rule.params.user_ids.length === 1
+    );
+  };
+
+  const isUsersFromListRule = (
+    rule: ApprovalPolicyRule
+  ): rule is ApprovalPolicyRule & { params: { user_ids: string[] } } => {
+    return (
+      rule.call === 'ApprovalRequests.request_approval_by_users' &&
+      Array.isArray(rule.params.user_ids) &&
+      rule.params.user_ids.length > 1 &&
+      rule.params.required_approval_count > 0
+    );
+  };
+
+  const isRolesFromListRule = (
+    rule: ApprovalPolicyRule
+  ): rule is ApprovalPolicyRule & { params: { role_ids: string[] } } => {
+    return (
+      rule.call === 'ApprovalRequests.request_approval_by_roles' &&
+      Array.isArray(rule.params.role_ids) &&
+      rule.params.role_ids.length > 1 &&
+      rule.params.required_approval_count > 0
+    );
+  };
+
+  const isApprovalChainRule = (
+    rule: ApprovalPolicyNestedRule
+  ): rule is ApprovalPolicyNestedRule & { all: ApprovalPolicyRule[] } => {
+    return (
+      !rule.run_concurrently &&
+      rule.all.length > 1 &&
+      rule.all.every(
+        (item) => isApprovalPolicyRule(item) && isSingleUserRule(item)
+      )
+    );
+  };
+
+  const getRuleLabel = (ruleType: string) => {
+    switch (ruleType) {
+      case 'single_user':
+        return t(i18n)`Single user`;
+      case 'users_from_list':
+        return t(i18n)`Users from the list`;
+      case 'roles_from_list':
+        return t(i18n)`Roles from the list`;
+      case 'approval_chain':
+        return t(i18n)`Approval chain`;
+    }
+  };
+
+  if (isApprovalPolicyScript(approvalPolicy?.script)) {
+    const rules = approvalPolicy?.script[0].all.map((rule) => {
+      if (isApprovalPolicyNestedRule(rule)) {
+        if (isApprovalChainRule(rule)) {
+          return {
+            type: 'approval_chain',
+            chainUserIds: rule.all.map((item) => {
+              if (isApprovalPolicyRule(item) && isSingleUserRule(item)) {
+                return item.params.user_ids[0];
+              }
+
+              return undefined;
+            }),
+          } as ApprovalChainRule;
+        }
+      } else if (isApprovalPolicyRule(rule)) {
+        if (isSingleUserRule(rule)) {
+          return {
+            type: 'single_user',
+            userId: rule.params.user_ids[0],
+          } as SingleUserRule;
+        } else if (isUsersFromListRule(rule)) {
+          return {
+            type: 'users_from_list',
+            userIds: rule.params.user_ids,
+          } as UsersFromListRule;
+        } else if (isRolesFromListRule(rule)) {
+          return {
+            type: 'roles_from_list',
+            roleIds: rule.params.role_ids,
+          } as RolesFromListRule;
+        }
+      }
+    });
+
     return {
-      script: {
-        type: undefined,
-        params: {
-          user_ids: undefined,
-          role_ids: undefined,
-          required_approval_count: undefined,
-        },
-      },
+      rules,
+      getRuleLabel,
     };
   }
 
-  const script = {
-    type: approvalPolicy.script[0].call,
-    params: approvalPolicy.script[0].params,
-  };
-
   return {
-    script,
+    rules: undefined,
+    getRuleLabel,
   };
 };
