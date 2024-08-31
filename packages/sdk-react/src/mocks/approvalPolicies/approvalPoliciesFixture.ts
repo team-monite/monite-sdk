@@ -8,6 +8,11 @@ import {
   entityUser2,
   entityUser3,
 } from '@/mocks/entityUsers/entityUserByIdFixture';
+import {
+  FULL_PERMISSION_ROLE_ID,
+  LOW_PERMISSION_ROLE_ID,
+  READ_ONLY_ROLE_ID,
+} from '@/mocks/roles/rolesFixtures';
 import { tagListFixture } from '@/mocks/tags';
 
 export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyResourceList'] =
@@ -73,23 +78,58 @@ export const approvalPoliciesListFixture: components['schemas']['ApprovalPolicyR
         script: [
           // @ts-expect-error - `script` is not covered by the schema
           {
-            call: 'ApprovalRequests.request_approval_by_users',
-            params: {
-              user_ids: [
-                entityUserByIdFixture.id,
-                entityUser2.id,
-                entityUser3.id,
-              ],
-              required_approval_count: 2,
-            },
+            run_concurrently: true,
+            all: [
+              {
+                call: 'ApprovalRequests.request_approval_by_users',
+                params: {
+                  user_ids: [entityUserByIdFixture.id],
+                  required_approval_count: 1,
+                },
+              },
+              {
+                call: 'ApprovalRequests.request_approval_by_users',
+                params: {
+                  user_ids: [
+                    entityUserByIdFixture.id,
+                    entityUser2.id,
+                    entityUser3.id,
+                  ],
+                  required_approval_count: 2,
+                },
+              },
+              {
+                run_concurrently: false,
+                all: [
+                  {
+                    call: 'ApprovalRequests.request_approval_by_users',
+                    params: {
+                      user_ids: [entityUser2.id],
+                      required_approval_count: 1,
+                    },
+                  },
+                  {
+                    call: 'ApprovalRequests.request_approval_by_users',
+                    params: {
+                      user_ids: [entityUser3.id],
+                      required_approval_count: 1,
+                    },
+                  },
+                ],
+              },
+              {
+                call: 'ApprovalRequests.request_approval_by_roles',
+                params: {
+                  role_ids: [
+                    FULL_PERMISSION_ROLE_ID,
+                    LOW_PERMISSION_ROLE_ID,
+                    READ_ONLY_ROLE_ID,
+                  ],
+                  required_approval_count: 2,
+                },
+              },
+            ],
           },
-          // {
-          //   call: 'ApprovalRequests.request_approval_by_users',
-          //   params: {
-          //     user_ids: [entityUserByIdFixture.id],
-          //     required_approval_count: 1,
-          //   },
-          // },
         ],
         id: 'approval-policy-id-created-by-approve-anyone',
         status: 'active',

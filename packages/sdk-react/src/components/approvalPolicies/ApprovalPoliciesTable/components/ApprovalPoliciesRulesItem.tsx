@@ -95,18 +95,23 @@ export const ApprovalPoliciesRulesItem = ({
 }: {
   rule: ScriptItemProps;
 }) => {
-  /**
-   * We have to handle only `&` operator. In Monite Script 2.0 terminology, it's `all`
-   * We also have `any` or `|` operator, but we don't support it yet.
-   */
+  // /**
+  //  * We have to handle only `&` operator. In Monite Script 2.0 terminology, it's `all`
+  //  * We also have `any` or `|` operator, but we don't support it yet.
+  //  */
+  // if ('all' in rule) {
+  //   console.log(rule);
+  //   return (
+  //     <>
+  //       {rule.all.map((r, index) => (
+  //         <ApprovalPoliciesRulesItem rule={r} key={index} />
+  //       ))}
+  //     </>
+  //   );
+  // }
+
   if ('all' in rule) {
-    return (
-      <>
-        {rule.all.map((r, index) => (
-          <ApprovalPoliciesRulesItem rule={r} key={index} />
-        ))}
-      </>
-    );
+    const ruleItems = rule.all.map((r, index) => {});
   }
 
   if (!('call' in rule)) {
