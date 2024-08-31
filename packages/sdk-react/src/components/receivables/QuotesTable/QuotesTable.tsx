@@ -201,13 +201,6 @@ const QuotesTableBase = ({
         title={t(i18n)`No Quotes`}
         descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
         descriptionLine2={t(i18n)`You can create your first quote.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
-        actionOptions={[t(i18n)`Invoice`]}
-        onAction={(action) => {
-          if (action === t(i18n)`Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          }
-        }}
         type="no-data"
       />
     );
@@ -276,13 +269,6 @@ const QuotesTableBase = ({
               isError={isError}
               refetch={refetch}
               entityName={t(i18n)`Quotes`}
-              actionButtonLabel={t(i18n)`Create new`}
-              actionOptions={[t(i18n)`Invoice`]}
-              onCreate={(type) => {
-                if (type === t(i18n)`Invoice`) {
-                  setIsCreateInvoiceDialogOpen?.(true);
-                }
-              }}
               type="no-data"
             />
           ),
