@@ -9,20 +9,17 @@ import { Autocomplete, CircularProgress, TextField } from '@mui/material';
 
 import type { FormValues } from '../ApprovalPolicyForm';
 
-interface AutocompleteCreatedByProps {
+interface AutocompleteRolesProps {
   control: Control<FormValues>;
-  name:
-    | 'triggers.was_created_by_user_id'
-    | 'rules.users_from_list'
-    | 'rules.approval_chain';
+  name: 'rules.roles_from_list';
   label: string;
 }
 
-export const AutocompleteUsers = ({
+export const AutocompleteRoles = ({
   control,
   name,
   label,
-}: AutocompleteCreatedByProps) => {
+}: AutocompleteRolesProps) => {
   const { i18n } = useLingui();
   const { api } = useMoniteContext();
   const { root } = useRootElements();
@@ -30,12 +27,12 @@ export const AutocompleteUsers = ({
   const [inputValue, setInputValue] = useState('');
 
   const {
-    data: users,
-    isLoading: isUsersLoading,
+    data: roles,
+    isLoading,
     refetch,
-  } = api.entityUsers.getEntityUsers.useQuery({
+  } = api.roles.getRoles.useQuery({
     query: {
-      first_name: inputValue || undefined,
+      name: inputValue || undefined,
     },
   });
 
@@ -54,18 +51,16 @@ export const AutocompleteUsers = ({
           autoComplete
           includeInputInList
           filterSelectedOptions
-          noOptionsText={t(i18n)`No users found`}
+          noOptionsText={t(i18n)`No roles found`}
           slotProps={{
             popper: {
               container: root,
             },
           }}
-          loading={isUsersLoading}
-          options={users?.data || []}
+          loading={isLoading}
+          options={roles?.data || []}
           getOptionKey={(option) => option.id}
-          getOptionLabel={(option) =>
-            `${option.first_name ?? ''} ${option.last_name ?? ''}`.trim()
-          }
+          getOptionLabel={(option) => option.name}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           filterOptions={(_) => _}
           onInputChange={(_, newInputValue) => {
@@ -83,7 +78,7 @@ export const AutocompleteUsers = ({
                 ...params.InputProps,
                 endAdornment: (
                   <>
-                    {isUsersLoading ? (
+                    {isLoading ? (
                       <CircularProgress color="inherit" size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}

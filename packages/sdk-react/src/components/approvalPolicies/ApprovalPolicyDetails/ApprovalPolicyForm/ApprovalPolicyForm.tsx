@@ -4,6 +4,8 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
+import { AutocompleteRoles } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteRoles';
+import { AutocompleteUser } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser';
 import {
   ApprovalPolicyScriptType,
   useApprovalPolicyScript,
@@ -57,6 +59,7 @@ export interface FormValues {
   name: string;
   description: string;
   triggerType: ApprovalPoliciesTriggerKey | null;
+  scriptType: ApprovalPolicyScriptType | null;
   triggers: {
     was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
     tags?: components['schemas']['TagReadSchema'][];
@@ -77,13 +80,8 @@ export interface FormValues {
   amountRangeLeftValue?: string | number;
   amountRangeRightValue?: string | number;
   amountCurrency?: components['schemas']['CurrencyEnum'];
-  scriptType: ApprovalPolicyScriptType;
-  script: {
-    params?: {
-      users?: components['schemas']['EntityUserResponse'][];
-      requiredApprovalCount: number | string;
-    };
-  };
+  usersFromListCount?: string | number;
+  rolesFromListCount?: string | number;
 }
 
 export const ApprovalPolicyForm = ({
@@ -105,10 +103,14 @@ export const ApprovalPolicyForm = ({
   const { rules } = useApprovalPolicyScript({ approvalPolicy });
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
+  const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
   const [prevTriggerValues, setPrevTriggerValues] = useState<
     FormValues['triggers'] | null
+  >(null);
+  const [prevRuleValues, setPrevRuleValues] = useState<
+    FormValues['rules'] | null
   >(null);
   const [scriptInEdit, setScriptInEdit] =
     useState<ApprovalPolicyScriptType | null>(null);
@@ -293,6 +295,7 @@ export const ApprovalPolicyForm = ({
   const currentAmountRangeRightValue = watch('amountRangeRightValue');
   const currentAmountCurrency = watch('amountCurrency');
   const currentTriggerType = watch('triggerType');
+  const currentScriptType = watch('scriptType');
 
   // setup default values for conditions and rules
   useEffect(
@@ -482,10 +485,6 @@ export const ApprovalPolicyForm = ({
 
     if (!isAddingTrigger && triggerInEdit === 'amount') {
       setValue('triggers.amount', prevTriggerValues?.amount || undefined);
-    }
-
-    if (!isAddingTrigger && triggerInEdit === 'amount') {
-      setValue('triggers.amount', prevTriggerValues?.amount || undefined);
 
       setValue('amountOperator', undefined);
       setValue('amountValue', undefined);
@@ -495,25 +494,45 @@ export const ApprovalPolicyForm = ({
       setValue('triggers', prevTriggerValues);
     }
 
-    // TODO add reset for scripts with prev values
-    // if (scriptInEdit) {
-    //   setValue(
-    //     'script.params.users',
-    //     usersForScript?.data.filter((user) =>
-    //       script.params.user_ids?.includes(user.id)
-    //     ) || []
-    //   );
-    //   setValue(
-    //     'script.params.requiredApprovalCount',
-    //     script.params.required_approval_count || 1
-    //   );
-    // }
+    if (!isAddingRule && scriptInEdit === 'single_user') {
+      setValue('rules.single_user', prevRuleValues?.single_user || undefined);
+    }
+
+    if (!isAddingRule && scriptInEdit === 'users_from_list') {
+      setValue(
+        'rules.users_from_list',
+        prevRuleValues?.users_from_list || undefined
+      );
+      setValue('usersFromListCount', undefined);
+    }
+
+    if (!isAddingRule && scriptInEdit === 'roles_from_list') {
+      setValue(
+        'rules.roles_from_list',
+        prevRuleValues?.roles_from_list || undefined
+      );
+      setValue('rolesFromListCount', undefined);
+    }
+
+    if (!isAddingRule && scriptInEdit === 'approval_chain') {
+      setValue(
+        'rules.approval_chain',
+        prevRuleValues?.approval_chain || undefined
+      );
+    }
+
+    if (isAddingRule && prevRuleValues) {
+      setValue('rules', prevRuleValues);
+    }
 
     setTriggerInEdit(null);
     setScriptInEdit(null);
     setIsAddingTrigger(false);
+    setIsAddingRule(false);
     setPrevTriggerValues(null);
+    setPrevRuleValues(null);
     setValue('triggerType', null);
+    setValue('scriptType', null);
   };
 
   return (
@@ -525,7 +544,7 @@ export const ApprovalPolicyForm = ({
           alignItems="center"
           gap={2}
         >
-          {triggerInEdit || isAddingTrigger ? (
+          {triggerInEdit || isAddingTrigger || scriptInEdit || isAddingRule ? (
             <Breadcrumbs separator="›" aria-label="breadcrumb">
               <Typography
                 variant="subtitle1"
@@ -535,11 +554,20 @@ export const ApprovalPolicyForm = ({
               >
                 {t(i18n)`Edit Approval Policy`}
               </Typography>
-              <Typography variant="subtitle1" color="text.primary">
-                {isAddingTrigger
-                  ? t(i18n)`Add Condition`
-                  : t(i18n)`Edit Condition`}
-              </Typography>
+              {triggerInEdit ||
+                (isAddingTrigger && (
+                  <Typography variant="subtitle1" color="text.primary">
+                    {isAddingTrigger
+                      ? t(i18n)`Add Condition`
+                      : t(i18n)`Edit Condition`}
+                  </Typography>
+                ))}
+              {scriptInEdit ||
+                (isAddingRule && (
+                  <Typography variant="subtitle1" color="text.primary">
+                    {isAddingRule ? t(i18n)`Add Rule` : t(i18n)`Edit Rule`}
+                  </Typography>
+                ))}
             </Breadcrumbs>
           ) : (
             <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
@@ -638,17 +666,81 @@ export const ApprovalPolicyForm = ({
                       : []),
                   ],
                 },
-                // TODO: remove this script after demo
                 script: [
                   {
-                    call: 'ApprovalRequests.request_approval_by_users',
-                    params: {
-                      user_ids:
-                        values.script.params?.users?.map((user) => user.id) ||
-                        [],
-                      required_approval_count:
-                        values.script?.params?.requiredApprovalCount || '1',
-                    },
+                    run_concurrently: true,
+                    all: [
+                      ...(values.rules.single_user
+                        ? [
+                            {
+                              call: 'ApprovalRequests.request_approval_by_users',
+                              params: {
+                                user_ids: [values.rules.single_user.id],
+                                required_approval_count: 1,
+                              },
+                            },
+                          ]
+                        : []),
+                      ...(values.rules.users_from_list &&
+                      values.rules.users_from_list?.length > 0
+                        ? [
+                            {
+                              call: 'ApprovalRequests.request_approval_by_users',
+                              params: {
+                                user_ids:
+                                  values.rules.users_from_list.map(
+                                    (user) => user.id
+                                  ) || [],
+                                required_approval_count:
+                                  values.usersFromListCount
+                                    ? typeof values.usersFromListCount ===
+                                      'number'
+                                      ? values.usersFromListCount
+                                      : parseInt(values.usersFromListCount)
+                                    : 0,
+                              },
+                            },
+                          ]
+                        : []),
+                      ...(values.rules.roles_from_list &&
+                      values.rules.roles_from_list?.length > 0
+                        ? [
+                            {
+                              call: 'ApprovalRequests.request_approval_by_roles',
+                              params: {
+                                role_ids:
+                                  values.rules.roles_from_list.map(
+                                    (role) => role.id
+                                  ) || [],
+                                required_approval_count:
+                                  values.rolesFromListCount
+                                    ? typeof values.rolesFromListCount ===
+                                      'number'
+                                      ? values.rolesFromListCount
+                                      : parseInt(values.rolesFromListCount)
+                                    : 0,
+                              },
+                            },
+                          ]
+                        : []),
+                      ...(values.rules.approval_chain &&
+                      values.rules.approval_chain?.length > 0
+                        ? [
+                            {
+                              run_concurrently: false,
+                              all: [
+                                ...(values.rules.approval_chain.map((user) => ({
+                                  call: 'ApprovalRequests.request_approval_by_users',
+                                  params: {
+                                    user_ids: [user.id],
+                                    required_approval_count: 1,
+                                  },
+                                })) || []),
+                              ],
+                            },
+                          ]
+                        : []),
+                    ],
                   },
                 ],
               };
@@ -694,7 +786,7 @@ export const ApprovalPolicyForm = ({
                   )}
                 </RHFTextField>
               )}
-              {scriptInEdit && (
+              {(scriptInEdit || isAddingRule) && (
                 <RHFTextField
                   label={t(i18n)`Approval flow`}
                   name="scriptType"
@@ -703,12 +795,32 @@ export const ApprovalPolicyForm = ({
                   required
                   select
                   value={scriptInEdit}
-                  disabled={Boolean(isEdit && scriptInEdit)}
+                  disabled={Boolean(scriptInEdit)}
                 >
-                  {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-                  <MenuItem value="ApprovalRequests.request_approval_by_users">
-                    {t(i18n)`User from the list - Any`}
-                  </MenuItem>
+                  {(!prevRuleValues?.single_user ||
+                    scriptInEdit === 'single_user') && (
+                    <MenuItem value="single_user">
+                      {t(i18n)`Single user`}
+                    </MenuItem>
+                  )}
+                  {(!prevRuleValues?.users_from_list ||
+                    scriptInEdit === 'users_from_list') && (
+                    <MenuItem value="users_from_list">
+                      {t(i18n)`Users from the list - Any`}
+                    </MenuItem>
+                  )}
+                  {(!prevRuleValues?.roles_from_list ||
+                    scriptInEdit === 'roles_from_list') && (
+                    <MenuItem value="roles_from_list">
+                      {t(i18n)`Any user that has user role`}
+                    </MenuItem>
+                  )}
+                  {(!prevRuleValues?.approval_chain ||
+                    scriptInEdit === 'approval_chain') && (
+                    <MenuItem value="approval_chain">
+                      {t(i18n)`Users from list - One by one`}
+                    </MenuItem>
+                  )}
                 </RHFTextField>
               )}
               {(triggerInEdit === 'was_created_by_user_id' ||
@@ -801,99 +913,155 @@ export const ApprovalPolicyForm = ({
                   </Grid>
                 </Grid>
               )}
-              {/*{scriptInEdit ===*/}
-              {/*  'ApprovalRequests.request_approval_by_users' && (*/}
-              {/*  <>*/}
-              {/*    <AutocompleteUsers*/}
-              {/*      control={control}*/}
-              {/*      name="script.params.users"*/}
-              {/*      label={t(i18n)`Users allowed to approve`}*/}
-              {/*    />*/}
-              {/*    <RHFTextField*/}
-              {/*      control={control}*/}
-              {/*      label={t(i18n)`Minimum number of approvals required`}*/}
-              {/*      name="script.params.requiredApprovalCount"*/}
-              {/*      type="number"*/}
-              {/*    />*/}
-              {/*  </>*/}
-              {/*)}*/}
-              {!triggerInEdit && !scriptInEdit && !isAddingTrigger && (
+              {(scriptInEdit === 'single_user' ||
+                (isAddingRule && currentScriptType === 'single_user')) && (
                 <>
-                  <RHFTextField
-                    label={t(i18n)`Policy Name`}
-                    name="name"
+                  <AutocompleteUser
                     control={control}
-                    fullWidth
-                    required
+                    name="rules.single_user"
+                    label={t(i18n)`User allowed to approve`}
                   />
-                  <RHFTextField
-                    label={t(i18n)`Description`}
-                    name="description"
-                    control={control}
-                    fullWidth
-                    required
-                    multiline
-                    rows={4}
-                  />
-                  <Box>
-                    <Typography variant="h5" mt={4} mb={1}>
-                      {t(i18n)`Conditions`}
-                    </Typography>
-                    <Typography variant="body1" mb={1}>
-                      <Trans>
-                        Policy will be applied if document matches{' '}
-                        <strong>ALL</strong> of the following conditions:
-                      </Trans>
-                    </Typography>
-                    <ConditionsTable
-                      triggers={currentTriggers}
-                      onAddTrigger={() => {
-                        setIsAddingTrigger(true);
-                        setPrevTriggerValues({
-                          ...getValues('triggers'),
-                        });
-                      }}
-                      onEditTrigger={(triggerKey) => {
-                        setTriggerInEdit(triggerKey);
-                        setPrevTriggerValues({
-                          ...getValues('triggers'),
-                        });
-                      }}
-                      onDeleteTrigger={(triggerKey) => {
-                        const updatedTriggers = {
-                          ...currentTriggers,
-                        };
-
-                        delete updatedTriggers[triggerKey];
-
-                        setValue('triggers', updatedTriggers);
-                        setValue('amountOperator', undefined);
-                        setValue('amountValue', undefined);
-                        setValue('amountRangeLeftValue', undefined);
-                        setValue('amountRangeRightValue', undefined);
-                        setValue('amountCurrency', undefined);
-                      }}
-                    />
-                    <Typography variant="h5" mt={4} mb={1}>
-                      {t(i18n)`Approval flow`}
-                    </Typography>
-                    <RulesTable
-                      rules={currentRules}
-                      // TODO setup callbacks
-                      onAddRule={() => console.log('add rule')}
-                      onEditRule={() => console.log('edit rule')}
-                      onDeleteRule={() => console.log('delete rule')}
-                    />
-                  </Box>
                 </>
               )}
+              {(scriptInEdit === 'users_from_list' ||
+                (isAddingRule && currentScriptType === 'users_from_list')) && (
+                <>
+                  <AutocompleteUsers
+                    control={control}
+                    name="rules.users_from_list"
+                    label={t(i18n)`Users allowed to approve`}
+                  />
+                  <RHFTextField
+                    control={control}
+                    label={t(i18n)`Minimum number of approvals required`}
+                    name="usersFromListCount"
+                    type="number"
+                  />
+                </>
+              )}
+              {(scriptInEdit === 'roles_from_list' ||
+                (isAddingRule && currentScriptType === 'roles_from_list')) && (
+                <>
+                  <AutocompleteRoles
+                    control={control}
+                    name="rules.roles_from_list"
+                    label={t(i18n)`Any user that has user role`}
+                  />
+                  <RHFTextField
+                    control={control}
+                    label={t(i18n)`Minimum number of approvals required`}
+                    name="rolesFromListCount"
+                    type="number"
+                  />
+                </>
+              )}
+              {(scriptInEdit === 'approval_chain' ||
+                (isAddingRule && currentScriptType === 'approval_chain')) && (
+                <AutocompleteUsers
+                  control={control}
+                  name="rules.approval_chain"
+                  label={t(i18n)`Users allowed to approve`}
+                />
+              )}
+              {!triggerInEdit &&
+                !scriptInEdit &&
+                !isAddingTrigger &&
+                !isAddingRule && (
+                  <>
+                    <RHFTextField
+                      label={t(i18n)`Policy Name`}
+                      name="name"
+                      control={control}
+                      fullWidth
+                      required
+                    />
+                    <RHFTextField
+                      label={t(i18n)`Description`}
+                      name="description"
+                      control={control}
+                      fullWidth
+                      required
+                      multiline
+                      rows={4}
+                    />
+                    <Box>
+                      <Typography variant="h5" mt={4} mb={1}>
+                        {t(i18n)`Conditions`}
+                      </Typography>
+                      <Typography variant="body1" mb={1}>
+                        <Trans>
+                          Policy will be applied if document matches{' '}
+                          <strong>ALL</strong> of the following conditions:
+                        </Trans>
+                      </Typography>
+                      <ConditionsTable
+                        triggers={currentTriggers}
+                        onAddTrigger={() => {
+                          setIsAddingTrigger(true);
+                          setPrevTriggerValues({
+                            ...getValues('triggers'),
+                          });
+                        }}
+                        onEditTrigger={(triggerKey) => {
+                          setTriggerInEdit(triggerKey);
+                          setPrevTriggerValues({
+                            ...getValues('triggers'),
+                          });
+                        }}
+                        onDeleteTrigger={(triggerKey) => {
+                          const updatedTriggers = {
+                            ...currentTriggers,
+                          };
+
+                          delete updatedTriggers[triggerKey];
+
+                          setValue('triggers', updatedTriggers);
+                          setValue('amountOperator', undefined);
+                          setValue('amountValue', undefined);
+                          setValue('amountRangeLeftValue', undefined);
+                          setValue('amountRangeRightValue', undefined);
+                          setValue('amountCurrency', undefined);
+                        }}
+                      />
+                      <Typography variant="h5" mt={4} mb={1}>
+                        {t(i18n)`Approval flow`}
+                      </Typography>
+                      <RulesTable
+                        rules={currentRules}
+                        onAddRule={() => {
+                          setIsAddingRule(true);
+                          setPrevRuleValues({
+                            ...getValues('rules'),
+                          });
+                        }}
+                        onEditRule={(ruleKey) => {
+                          setScriptInEdit(ruleKey);
+                          setPrevRuleValues({
+                            ...getValues('rules'),
+                          });
+                        }}
+                        onDeleteRule={(ruleKey) => {
+                          const updatedRules = {
+                            ...currentRules,
+                          };
+
+                          delete updatedRules[ruleKey];
+
+                          setValue('rules', updatedRules);
+                          setValue('usersFromListCount', undefined);
+                          setValue('rolesFromListCount', undefined);
+                        }}
+                      />
+                    </Box>
+                  </>
+                )}
             </Stack>
           </form>
         </FormProvider>
       </DialogContent>
       <Divider />
       <DialogActions>
-        {triggerInEdit || scriptInEdit || isAddingTrigger ? (
+        {triggerInEdit || scriptInEdit || isAddingTrigger || isAddingRule ? (
           <>
             <Button variant="outlined" onClick={resetFormTriggerOrScript}>{t(
               i18n
@@ -905,7 +1073,9 @@ export const ApprovalPolicyForm = ({
                 setTriggerInEdit(null);
                 setScriptInEdit(null);
                 setIsAddingTrigger(false);
+                setIsAddingRule(false);
                 setValue('triggerType', null);
+                setValue('scriptType', null);
               }}
             >
               {triggerInEdit ? t(i18n)`Update` : t(i18n)`Add`}

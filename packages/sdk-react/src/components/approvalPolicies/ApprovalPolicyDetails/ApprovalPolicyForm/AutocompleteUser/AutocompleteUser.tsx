@@ -11,14 +11,11 @@ import type { FormValues } from '../ApprovalPolicyForm';
 
 interface AutocompleteCreatedByProps {
   control: Control<FormValues>;
-  name:
-    | 'triggers.was_created_by_user_id'
-    | 'rules.users_from_list'
-    | 'rules.approval_chain';
+  name: 'rules.single_user';
   label: string;
 }
 
-export const AutocompleteUsers = ({
+export const AutocompleteUser = ({
   control,
   name,
   label,
@@ -50,7 +47,6 @@ export const AutocompleteUsers = ({
         <Autocomplete
           {...field}
           id={field.name}
-          multiple
           autoComplete
           includeInputInList
           filterSelectedOptions

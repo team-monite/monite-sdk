@@ -152,7 +152,7 @@ const ApprovalPoliciesTableBase = ({
       },
       {
         field: 'rule',
-        headerName: t(i18n)`Rule`,
+        headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (

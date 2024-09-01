@@ -86,9 +86,6 @@ export const RulesTable = ({
             </List>
           );
           break;
-        default:
-          ruleValue = ruleKey;
-          break;
       }
 
       return {
