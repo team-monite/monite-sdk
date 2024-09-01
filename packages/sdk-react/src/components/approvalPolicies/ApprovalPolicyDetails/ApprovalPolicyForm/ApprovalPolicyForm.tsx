@@ -1,13 +1,12 @@
-import { ReactNode, useId, useState, useEffect, useMemo } from 'react';
+import { useId, useState, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
-import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import {
+  ApprovalPolicyScriptType,
   useApprovalPolicyScript,
-  ApprovalPoliciesScriptTypes,
 } from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
   useApprovalPolicyTrigger,
@@ -21,11 +20,10 @@ import { useCurrencies } from '@/core/hooks';
 import { MoniteCurrency } from '@/ui/Currency';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
+  Button,
   Breadcrumbs,
   DialogTitle,
   DialogContent,
@@ -33,19 +31,13 @@ import {
   Grid,
   IconButton,
   MenuItem,
-  Paper,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
-  Button,
   DialogActions,
 } from '@mui/material';
 
 import { ConditionsTable } from '../ConditionsTable';
+import { RulesTable } from '../RulesTable';
 import { AutocompleteCounterparts } from './AutocompleteCounterparts';
 import { AutocompleteTags } from './AutocompleteTags';
 import { AutocompleteUsers } from './AutocompleteUsers';
@@ -74,12 +66,18 @@ export interface FormValues {
       value: AmountTuple[];
     };
   };
+  rules: {
+    single_user?: components['schemas']['EntityUserResponse'];
+    users_from_list?: components['schemas']['EntityUserResponse'][];
+    roles_from_list?: components['schemas']['RoleResponse'][];
+    approval_chain?: components['schemas']['EntityUserResponse'][];
+  };
   amountOperator?: ApprovalPoliciesOperator;
   amountValue?: string | number;
   amountRangeLeftValue?: string | number;
   amountRangeRightValue?: string | number;
   amountCurrency?: components['schemas']['CurrencyEnum'];
-  scriptType: ApprovalPoliciesScriptTypes;
+  scriptType: ApprovalPolicyScriptType;
   script: {
     params?: {
       users?: components['schemas']['EntityUserResponse'][];
@@ -104,7 +102,7 @@ export const ApprovalPolicyForm = ({
   const { triggers, getTriggerName } = useApprovalPolicyTrigger({
     approvalPolicy,
   });
-  const { script } = useApprovalPolicyScript({ approvalPolicy });
+  const { rules } = useApprovalPolicyScript({ approvalPolicy });
 
   const [isAddingTrigger, setIsAddingTrigger] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
@@ -113,7 +111,7 @@ export const ApprovalPolicyForm = ({
     FormValues['triggers'] | null
   >(null);
   const [scriptInEdit, setScriptInEdit] =
-    useState<ApprovalPoliciesScriptTypes | null>(null);
+    useState<ApprovalPolicyScriptType | null>(null);
 
   const { data: usersForTriggers } = api.entityUsers.getEntityUsers.useQuery(
     {
@@ -150,18 +148,49 @@ export const ApprovalPolicyForm = ({
         enabled: Boolean(triggers?.counterpart_id?.length),
       }
     );
-  const { data: usersForScript } = api.entityUsers.getEntityUsers.useQuery(
+  const { data: userForSingleUserRule } =
+    api.entityUsers.getEntityUsersId.useQuery(
+      {
+        path: {
+          entity_user_id: rules?.single_user?.userId ?? '',
+        },
+      },
+      {
+        enabled: Boolean(rules?.single_user?.userId),
+      }
+    );
+  const { data: usersForUsersFromListRule } =
+    api.entityUsers.getEntityUsers.useQuery(
+      {
+        query: {
+          id__in: Array.isArray(rules?.users_from_list?.userIds)
+            ? rules.users_from_list.userIds
+            : [],
+        },
+      },
+      { enabled: Boolean(rules?.users_from_list?.userIds?.length) }
+    );
+  const { data: rolesForRolesFromListRule } = api.roles.getRoles.useQuery(
     {
       query: {
-        id__in: Array.isArray(script?.params.user_ids)
-          ? script.params.user_ids
+        id__in: Array.isArray(rules?.roles_from_list?.roleIds)
+          ? rules.roles_from_list.roleIds
           : [],
       },
     },
-    {
-      enabled: Boolean(script?.params?.user_ids?.length),
-    }
+    { enabled: Boolean(rules?.roles_from_list?.roleIds?.length) }
   );
+  const { data: usersForApprovalChainRule } =
+    api.entityUsers.getEntityUsers.useQuery(
+      {
+        query: {
+          id__in: Array.isArray(rules?.approval_chain?.chainUserIds)
+            ? rules.approval_chain.chainUserIds
+            : [],
+        },
+      },
+      { enabled: Boolean(rules?.approval_chain?.chainUserIds?.length) }
+    );
 
   const createMutation = api.approvalPolicies.postApprovalPolicies.useMutation(
     {},
@@ -247,7 +276,7 @@ export const ApprovalPolicyForm = ({
       name: approvalPolicy?.name || '',
       description: approvalPolicy?.description || '',
       triggers: {},
-      script: {},
+      rules: {},
       amountOperator: undefined,
       amountValue: undefined,
       amountCurrency: undefined,
@@ -257,89 +286,32 @@ export const ApprovalPolicyForm = ({
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
   const currentTriggers = watch('triggers');
+  const currentRules = watch('rules');
   const currentAmountOperator = watch('amountOperator');
   const currentAmountValue = watch('amountValue');
   const currentAmountRangeLeftValue = watch('amountRangeLeftValue');
   const currentAmountRangeRightValue = watch('amountRangeRightValue');
   const currentAmountCurrency = watch('amountCurrency');
   const currentTriggerType = watch('triggerType');
-  const currentScript = watch('script');
-  const currentScriptType = watch('scriptType');
-  const currentRequiredApprovalCount = watch(
-    'script.params.requiredApprovalCount'
-  );
 
-  const approvalFlow = useMemo(() => {
-    const currentUsers = currentScript.params?.users;
-
-    if (!script.params) return null;
-
-    let approvalFlowLabel: string;
-    let approvalFlowValue: ReactNode;
-
-    switch (isEdit ? script.type : currentScriptType) {
-      case 'ApprovalRequests.request_approval_by_users':
-        approvalFlowLabel =
-          currentRequiredApprovalCount === '1'
-            ? t(i18n)`Any user from the list`
-            : t(i18n)`Any ${currentRequiredApprovalCount} users from the list`;
-        approvalFlowValue = (
-          <Stack gap={1}>
-            {currentUsers?.map((user) => (
-              <User key={user.id} userId={user.id} />
-            ))}
-          </Stack>
-        );
-        return {
-          key: currentScriptType,
-          label: approvalFlowLabel,
-          value: approvalFlowValue,
-        };
-      default:
-        break;
-    }
-  }, [
-    currentScript,
-    currentScriptType,
-    currentRequiredApprovalCount,
-    i18n,
-    isEdit,
-    script.params,
-    script.type,
-  ]);
-
+  // setup default values for conditions and rules
   useEffect(
     () => {
       if (!isEdit) return;
 
       if (usersForTriggers?.data && usersForTriggers?.data.length > 0) {
-        setValue(
-          'triggers.was_created_by_user_id',
-          usersForTriggers?.data.filter((user) =>
-            triggers.was_created_by_user_id?.includes(user.id)
-          ) || []
-        );
+        setValue('triggers.was_created_by_user_id', usersForTriggers?.data);
       }
 
       if (tagsForTriggers?.data && tagsForTriggers?.data.length > 0) {
-        setValue(
-          'triggers.tags',
-          tagsForTriggers?.data.filter((tag) =>
-            triggers.tags?.includes(tag.id)
-          ) || []
-        );
+        setValue('triggers.tags', tagsForTriggers?.data);
       }
 
       if (
         counterpartsForTriggers?.data &&
         counterpartsForTriggers?.data.length > 0
       ) {
-        setValue(
-          'triggers.counterpart_id',
-          counterpartsForTriggers?.data.filter((counterpart) =>
-            triggers.counterpart_id?.includes(counterpart.id)
-          ) || []
-        );
+        setValue('triggers.counterpart_id', counterpartsForTriggers?.data);
       }
 
       if (triggers.amount && triggers.amount?.value?.length > 0) {
@@ -381,13 +353,29 @@ export const ApprovalPolicyForm = ({
         }
       }
 
-      if (usersForScript?.data && usersForScript?.data.length > 0) {
-        setValue('script.params', {
-          users: usersForScript?.data.filter((user) =>
-            script.params.user_ids?.includes(user.id)
-          ),
-          requiredApprovalCount: script.params.required_approval_count || '1',
-        });
+      if (userForSingleUserRule) {
+        setValue('rules.single_user', userForSingleUserRule);
+      }
+
+      if (
+        usersForUsersFromListRule?.data &&
+        usersForUsersFromListRule?.data.length > 0
+      ) {
+        setValue('rules.users_from_list', usersForUsersFromListRule?.data);
+      }
+
+      if (
+        rolesForRolesFromListRule?.data &&
+        rolesForRolesFromListRule?.data.length > 0
+      ) {
+        setValue('rules.roles_from_list', rolesForRolesFromListRule?.data);
+      }
+
+      if (
+        usersForApprovalChainRule?.data &&
+        usersForApprovalChainRule?.data.length > 0
+      ) {
+        setValue('rules.approval_chain', usersForApprovalChainRule?.data);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -395,7 +383,10 @@ export const ApprovalPolicyForm = ({
       usersForTriggers?.data,
       tagsForTriggers?.data,
       counterpartsForTriggers?.data,
-      usersForScript?.data,
+      userForSingleUserRule,
+      usersForUsersFromListRule?.data,
+      rolesForRolesFromListRule?.data,
+      usersForApprovalChainRule?.data,
       isEdit,
       setValue,
     ]
@@ -505,18 +496,18 @@ export const ApprovalPolicyForm = ({
     }
 
     // TODO add reset for scripts with prev values
-    if (scriptInEdit) {
-      setValue(
-        'script.params.users',
-        usersForScript?.data.filter((user) =>
-          script.params.user_ids?.includes(user.id)
-        ) || []
-      );
-      setValue(
-        'script.params.requiredApprovalCount',
-        script.params.required_approval_count || 1
-      );
-    }
+    // if (scriptInEdit) {
+    //   setValue(
+    //     'script.params.users',
+    //     usersForScript?.data.filter((user) =>
+    //       script.params.user_ids?.includes(user.id)
+    //     ) || []
+    //   );
+    //   setValue(
+    //     'script.params.requiredApprovalCount',
+    //     script.params.required_approval_count || 1
+    //   );
+    // }
 
     setTriggerInEdit(null);
     setScriptInEdit(null);
@@ -810,22 +801,22 @@ export const ApprovalPolicyForm = ({
                   </Grid>
                 </Grid>
               )}
-              {scriptInEdit ===
-                'ApprovalRequests.request_approval_by_users' && (
-                <>
-                  <AutocompleteUsers
-                    control={control}
-                    name="script.params.users"
-                    label={t(i18n)`Users allowed to approve`}
-                  />
-                  <RHFTextField
-                    control={control}
-                    label={t(i18n)`Minimum number of approvals required`}
-                    name="script.params.requiredApprovalCount"
-                    type="number"
-                  />
-                </>
-              )}
+              {/*{scriptInEdit ===*/}
+              {/*  'ApprovalRequests.request_approval_by_users' && (*/}
+              {/*  <>*/}
+              {/*    <AutocompleteUsers*/}
+              {/*      control={control}*/}
+              {/*      name="script.params.users"*/}
+              {/*      label={t(i18n)`Users allowed to approve`}*/}
+              {/*    />*/}
+              {/*    <RHFTextField*/}
+              {/*      control={control}*/}
+              {/*      label={t(i18n)`Minimum number of approvals required`}*/}
+              {/*      name="script.params.requiredApprovalCount"*/}
+              {/*      type="number"*/}
+              {/*    />*/}
+              {/*  </>*/}
+              {/*)}*/}
               {!triggerInEdit && !scriptInEdit && !isAddingTrigger && (
                 <>
                   <RHFTextField
@@ -886,70 +877,13 @@ export const ApprovalPolicyForm = ({
                     <Typography variant="h5" mt={4} mb={1}>
                       {t(i18n)`Approval flow`}
                     </Typography>
-                    <Paper variant="outlined">
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>{t(i18n)`Approval type`}</TableCell>
-                            <TableCell>{t(i18n)`Users or Roles`}</TableCell>
-                            <TableCell />
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {approvalFlow ? (
-                            <TableRow
-                              key={approvalFlow.label}
-                              hover
-                              sx={{
-                                '&.MuiTableRow-root': { cursor: 'pointer' },
-                              }}
-                              onClick={() =>
-                                setScriptInEdit(
-                                  approvalFlow.key ||
-                                    // eslint-disable-next-line lingui/no-unlocalized-strings
-                                    'ApprovalRequests.request_approval_by_users'
-                                )
-                              }
-                            >
-                              <TableCell>{approvalFlow.label}</TableCell>
-                              <TableCell>{approvalFlow.value}</TableCell>
-                              <TableCell>
-                                <IconButton
-                                  aria-label={t(i18n)`Delete rule`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    console.log('delete rule');
-                                  }}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          ) : (
-                            <TableRow>
-                              <TableCell colSpan={3}>
-                                {t(i18n)`No rules`}
-                              </TableCell>
-                            </TableRow>
-                          )}
-                          <TableRow>
-                            <TableCell colSpan={3}>
-                              <Button
-                                startIcon={<AddCircleOutlineIcon />}
-                                onClick={() =>
-                                  setScriptInEdit(
-                                    // eslint-disable-next-line lingui/no-unlocalized-strings
-                                    'ApprovalRequests.request_approval_by_users'
-                                  )
-                                }
-                              >
-                                {t(i18n)`Add new rule`}
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </Paper>
+                    <RulesTable
+                      rules={currentRules}
+                      // TODO setup callbacks
+                      onAddRule={() => console.log('add rule')}
+                      onEditRule={() => console.log('edit rule')}
+                      onDeleteRule={() => console.log('delete rule')}
+                    />
                   </Box>
                 </>
               )}
