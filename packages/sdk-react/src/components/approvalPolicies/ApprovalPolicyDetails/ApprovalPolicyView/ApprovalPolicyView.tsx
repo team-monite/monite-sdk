@@ -3,7 +3,10 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { useDialog } from '@/components';
-import { useApprovalPolicyScript } from '@/components/approvalPolicies/useApprovalPolicyScript';
+import {
+  useApprovalPolicyScript,
+  Rules,
+} from '@/components/approvalPolicies/useApprovalPolicyScript';
 import {
   Triggers,
   useApprovalPolicyTrigger,
@@ -22,6 +25,8 @@ import {
   DialogContent,
   Divider,
   IconButton,
+  List,
+  ListItem,
   Typography,
   Stack,
   Table,
@@ -154,20 +159,23 @@ export const ApprovalPolicyView = ({
     }
   );
 
-  const approvalFlows = rules?.map((rule) => {
-    if (rule) {
-      switch (rule.type) {
+  const approvalFlows =
+    rules &&
+    (Object.keys(rules) as Array<keyof Rules>)?.map((ruleKey) => {
+      if (!rules[ruleKey]) return null;
+
+      switch (ruleKey) {
         case 'single_user':
           return {
-            label: getRuleLabel(rule),
-            value: <User userId={rule.userId} />,
+            label: getRuleLabel(ruleKey),
+            value: <User userId={rules[ruleKey].userId} />,
           };
         case 'users_from_list':
           return {
-            label: getRuleLabel(rule),
+            label: getRuleLabel(ruleKey, rules[ruleKey].count),
             value: (
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {rule.userIds.map((userId) => (
+                {rules[ruleKey].userIds?.map((userId) => (
                   <User key={userId} userId={userId} />
                 ))}
               </Stack>
@@ -175,29 +183,34 @@ export const ApprovalPolicyView = ({
           };
         case 'roles_from_list':
           return {
-            label: getRuleLabel(rule),
+            label: getRuleLabel(ruleKey),
             value: (
               <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {rule.roleIds.map((roleId) => (
-                  <Role key={roleId} userId={roleId} />
+                {rules[ruleKey].roleIds?.map((roleId) => (
+                  <Role key={roleId} roleId={roleId} />
                 ))}
               </Stack>
             ),
           };
         case 'approval_chain':
           return {
-            label: getRuleLabel(rule),
+            label: getRuleLabel(ruleKey),
             value: (
-              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-                {rule.chainUserIds.map((userId) => (
-                  <User key={userId} userId={userId} />
-                ))}
-              </Stack>
+              <List>
+                {rules[ruleKey].chainUserIds?.map((userId) => {
+                  if (!userId) return null;
+
+                  return (
+                    <ListItem>
+                      <User key={userId} userId={userId} />
+                    </ListItem>
+                  );
+                })}
+              </List>
             ),
           };
       }
-    }
-  });
+    });
 
   return (
     <>
