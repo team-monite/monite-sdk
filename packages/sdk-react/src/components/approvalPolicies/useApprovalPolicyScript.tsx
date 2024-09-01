@@ -2,12 +2,16 @@ import { components } from '@/api';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 
-type ApprovalPolicyScriptType =
-  | 'ApprovalRequests.request_approval_by_users'
-  | 'ApprovalRequests.request_approval_by_roles';
+export type ApprovalPolicyScriptType =
+  | 'single_user'
+  | 'users_from_list'
+  | 'roles_from_list'
+  | 'approval_chain';
 
 interface ApprovalPolicyRule {
-  call: ApprovalPolicyScriptType;
+  call:
+    | 'ApprovalRequests.request_approval_by_users'
+    | 'ApprovalRequests.request_approval_by_roles';
   params: {
     user_ids?: string[];
     role_ids?: string[];
@@ -26,33 +30,23 @@ type ApprovalPolicyScript = [
     all: (ApprovalPolicyRule | ApprovalPolicyNestedRule)[];
   }
 ];
-type SingleUserRule = {
-  type: 'single_user';
-  userId: string;
-};
 
-type UsersFromListRule = {
-  type: 'users_from_list';
-  userIds: string[];
-  count: number;
-};
-
-type RolesFromListRule = {
-  type: 'roles_from_list';
-  roleIds: string[];
-  count: number;
-};
-
-type ApprovalChainRule = {
-  type: 'approval_chain';
-  chainUserIds: string[];
-};
-
-type Rule =
-  | SingleUserRule
-  | UsersFromListRule
-  | RolesFromListRule
-  | ApprovalChainRule;
+export interface Rules {
+  single_user?: {
+    userId: string;
+  };
+  users_from_list?: {
+    userIds: string[];
+    count: number;
+  };
+  roles_from_list?: {
+    roleIds: string[];
+    count: number;
+  };
+  approval_chain?: {
+    chainUserIds: string[];
+  };
+}
 
 interface UseApprovalPolicyScriptProps {
   approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
@@ -197,15 +191,15 @@ export const useApprovalPolicyScript = ({
     }
   };
 
-  const getRuleLabel = (rule: Rule) => {
-    switch (rule.type) {
+  const getRuleLabel = (ruleKey: keyof Rules, value?: number) => {
+    switch (ruleKey) {
       case 'single_user':
         return t(i18n)`Single user`;
       case 'users_from_list':
-        if (rule.count === 1) {
+        if (value === 1) {
           return t(i18n)`Any user from the list`;
         }
-        return t(i18n)`Any ${rule.count} users from the list`;
+        return t(i18n)`Any ${value} users from the list`;
       case 'roles_from_list':
         return t(i18n)`Any user with role`;
       case 'approval_chain':
@@ -214,41 +208,62 @@ export const useApprovalPolicyScript = ({
   };
 
   if (isApprovalPolicyScript(approvalPolicy?.script)) {
-    const rules = approvalPolicy?.script[0].all.map((rule) => {
-      if (isApprovalPolicyNestedRule(rule)) {
-        if (isApprovalChainRule(rule)) {
-          return {
-            type: 'approval_chain',
-            chainUserIds: rule.all.map((item) => {
-              if (isApprovalPolicyRule(item) && isSingleUserRule(item)) {
-                return item.params.user_ids[0];
-              }
+    const rules = approvalPolicy?.script[0].all.reduce<Partial<Rules>>(
+      (acc, rule) => {
+        if (isApprovalPolicyNestedRule(rule)) {
+          if (isApprovalChainRule(rule)) {
+            return {
+              ...acc,
+              approval_chain: {
+                chainUserIds: rule.all.reduce<string[]>((acc, item) => {
+                  if (
+                    isApprovalPolicyRule(item) &&
+                    isSingleUserRule(item) &&
+                    item.params.user_ids[0]
+                  ) {
+                    const userId = item.params.user_ids[0];
 
-              return undefined;
-            }),
-          } as ApprovalChainRule;
+                    if (userId) return [...acc, item.params.user_ids[0]];
+
+                    return acc;
+                  }
+
+                  return acc;
+                }, []),
+              },
+            };
+          }
+        } else if (isApprovalPolicyRule(rule)) {
+          if (isSingleUserRule(rule)) {
+            return {
+              ...acc,
+              single_user: {
+                userId: rule.params.user_ids[0],
+              },
+            };
+          } else if (isUsersFromListRule(rule)) {
+            return {
+              ...acc,
+              users_from_list: {
+                userIds: rule.params.user_ids,
+                count: rule.params.required_approval_count,
+              },
+            };
+          } else if (isRolesFromListRule(rule)) {
+            return {
+              ...acc,
+              roles_from_list: {
+                roleIds: rule.params.role_ids,
+                count: rule.params.required_approval_count,
+              },
+            };
+          }
         }
-      } else if (isApprovalPolicyRule(rule)) {
-        if (isSingleUserRule(rule)) {
-          return {
-            type: 'single_user',
-            userId: rule.params.user_ids[0],
-          } as SingleUserRule;
-        } else if (isUsersFromListRule(rule)) {
-          return {
-            type: 'users_from_list',
-            userIds: rule.params.user_ids,
-            count: rule.params.required_approval_count,
-          } as UsersFromListRule;
-        } else if (isRolesFromListRule(rule)) {
-          return {
-            type: 'roles_from_list',
-            roleIds: rule.params.role_ids,
-            count: rule.params.required_approval_count,
-          } as RolesFromListRule;
-        }
-      }
-    });
+
+        return acc;
+      },
+      {} as Rules
+    );
 
     return {
       rules,

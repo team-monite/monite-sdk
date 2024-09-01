@@ -3,14 +3,14 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { Chip, Skeleton } from '@mui/material';
 
 interface UserProps {
-  userId: string;
+  roleId: string;
 }
 
-export const Role = ({ userId }: UserProps) => {
+export const Role = ({ roleId }: UserProps) => {
   const { api } = useMoniteContext();
 
   const { data: role, isLoading } = api.roles.getRolesId.useQuery({
-    path: { role_id: userId },
+    path: { role_id: roleId },
   });
 
   if (!role) {

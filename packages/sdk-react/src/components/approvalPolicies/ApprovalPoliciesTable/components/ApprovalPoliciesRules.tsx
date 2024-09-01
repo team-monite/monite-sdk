@@ -1,5 +1,8 @@
 import type { components } from '@/api';
-import { useApprovalPolicyScript } from '@/components/approvalPolicies/useApprovalPolicyScript';
+import {
+  useApprovalPolicyScript,
+  Rules,
+} from '@/components/approvalPolicies/useApprovalPolicyScript';
 
 import { UListUiAlt } from '../components/icons/UListUiAlt';
 import { UUserCircle } from '../components/icons/UUserCircle';
@@ -22,38 +25,39 @@ export const ApprovalPoliciesRules = ({
 
   return (
     <Styled.ColumnList>
-      {rules?.map((rule) => {
-        switch (rule?.type) {
-          case 'single_user':
-            return (
-              <li key={rule.type}>
-                <UUserCircle width={18} />
-                {getRuleName(rule.type)}
-              </li>
-            );
-          case 'users_from_list':
-            return (
-              <li key={rule.type}>
-                <UUsersAlt width={18} />
-                {getRuleName(rule.type)}
-              </li>
-            );
-          case 'roles_from_list':
-            return (
-              <li key={rule.type}>
-                <UUserSquare width={18} />
-                {getRuleName(rule.type)}
-              </li>
-            );
-          case 'approval_chain':
-            return (
-              <li key={rule.type}>
-                <UListUiAlt width={18} />
-                {getRuleName(rule.type)}
-              </li>
-            );
-        }
-      })}
+      {rules &&
+        (Object.keys(rules) as Array<keyof Rules>).map((ruleKey) => {
+          switch (ruleKey) {
+            case 'single_user':
+              return (
+                <li key={ruleKey}>
+                  <UUserCircle width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'users_from_list':
+              return (
+                <li key={ruleKey}>
+                  <UUsersAlt width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'roles_from_list':
+              return (
+                <li key={ruleKey}>
+                  <UUserSquare width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+            case 'approval_chain':
+              return (
+                <li key={ruleKey}>
+                  <UListUiAlt width={18} />
+                  {getRuleName(ruleKey)}
+                </li>
+              );
+          }
+        })}
     </Styled.ColumnList>
   );
 };

@@ -5,15 +5,33 @@ import { http, HttpResponse, delay } from 'msw';
 import { createRole, getAllRolesFixture } from './rolesFixtures';
 
 export const rolesHandlers = [
-  http.get<{}, undefined, RolePaginationResponse>(`*/roles`, async () => {
-    await delay();
+  http.get<{}, undefined, RolePaginationResponse>(
+    `*/roles`,
+    async ({ request }) => {
+      const url = new URL(request.url);
+      const searchParams = url.searchParams;
+      const id_in = searchParams.getAll('id__in');
 
-    return HttpResponse.json(getAllRolesFixture);
-  }),
+      if (id_in.length > 0) {
+        await delay();
+        return HttpResponse.json({
+          data: getAllRolesFixture.data.filter((role) =>
+            id_in.includes(role.id)
+          ),
+          prev_pagination_token: undefined,
+          next_pagination_token: undefined,
+        });
+      }
+
+      await delay();
+
+      return HttpResponse.json(getAllRolesFixture);
+    }
+  ),
 
   http.get<{ roleId: string }, string, RoleResponse | ErrorSchemaResponse>(
     `*/roles/:roleId`,
-    async ({ params }) => {
+    async ({ params, request }) => {
       const { roleId } = params;
       const role = getAllRolesFixture.data.find((item) => item.id === roleId);
 
