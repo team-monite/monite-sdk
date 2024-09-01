@@ -34,17 +34,25 @@ type SingleUserRule = {
 type UsersFromListRule = {
   type: 'users_from_list';
   userIds: string[];
+  count: number;
 };
 
 type RolesFromListRule = {
   type: 'roles_from_list';
   roleIds: string[];
+  count: number;
 };
 
 type ApprovalChainRule = {
   type: 'approval_chain';
   chainUserIds: string[];
 };
+
+type Rule =
+  | SingleUserRule
+  | UsersFromListRule
+  | RolesFromListRule
+  | ApprovalChainRule;
 
 interface UseApprovalPolicyScriptProps {
   approvalPolicy?: components['schemas']['ApprovalPolicyResource'];
@@ -176,7 +184,7 @@ export const useApprovalPolicyScript = ({
     );
   };
 
-  const getRuleLabel = (ruleType: string) => {
+  const getRuleName = (ruleType: string) => {
     switch (ruleType) {
       case 'single_user':
         return t(i18n)`Single user`;
@@ -186,6 +194,22 @@ export const useApprovalPolicyScript = ({
         return t(i18n)`Roles from the list`;
       case 'approval_chain':
         return t(i18n)`Approval chain`;
+    }
+  };
+
+  const getRuleLabel = (rule: Rule) => {
+    switch (rule.type) {
+      case 'single_user':
+        return t(i18n)`Single user`;
+      case 'users_from_list':
+        if (rule.count === 1) {
+          return t(i18n)`Any user from the list`;
+        }
+        return t(i18n)`Any ${rule.count} users from the list`;
+      case 'roles_from_list':
+        return t(i18n)`Any user with role`;
+      case 'approval_chain':
+        return t(i18n)`All users from list, one by one`;
     }
   };
 
@@ -214,11 +238,13 @@ export const useApprovalPolicyScript = ({
           return {
             type: 'users_from_list',
             userIds: rule.params.user_ids,
+            count: rule.params.required_approval_count,
           } as UsersFromListRule;
         } else if (isRolesFromListRule(rule)) {
           return {
             type: 'roles_from_list',
             roleIds: rule.params.role_ids,
+            count: rule.params.required_approval_count,
           } as RolesFromListRule;
         }
       }
@@ -226,12 +252,14 @@ export const useApprovalPolicyScript = ({
 
     return {
       rules,
+      getRuleName,
       getRuleLabel,
     };
   }
 
   return {
     rules: undefined,
+    getRuleName,
     getRuleLabel,
   };
 };
