@@ -32,6 +32,7 @@ import {
   Paper,
 } from '@mui/material';
 
+import { Role } from './Role';
 import { User } from './User';
 
 interface ApprovalPolicyViewProps {
@@ -53,7 +54,7 @@ export const ApprovalPolicyView = ({
     useApprovalPolicyTrigger({
       approvalPolicy,
     });
-  const { script } = useApprovalPolicyScript({ approvalPolicy });
+  const { rules, getRuleLabel } = useApprovalPolicyScript({ approvalPolicy });
   const { data: tagsForTriggers } = api.tags.getTags.useQuery(
     {
       query: {
@@ -153,47 +154,50 @@ export const ApprovalPolicyView = ({
     }
   );
 
-  const approvalFlows = (() => {
-    if (!script) return null;
-
-    let approvalFlowLabel: string;
-    let approvalFlowValue: ReactNode;
-
-    switch (script.type) {
-      case 'ApprovalRequests.request_approval_by_users': {
-        approvalFlowLabel =
-          script.params.required_approval_count &&
-          (typeof script.params.required_approval_count === 'string'
-            ? parseInt(script.params.required_approval_count)
-            : script.params.required_approval_count) > 1
-            ? t(
-                i18n
-              )`Any ${script.params.required_approval_count} users from the list`
-            : t(i18n)`Any user from the list`;
-        approvalFlowValue = (
-          <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
-            {script.params.user_ids?.map((userId) => (
-              <User key={userId} userId={userId} />
-            ))}
-          </Stack>
-        );
-        break;
-      }
-
-      default: {
-        approvalFlowLabel = t(i18n)`Unknown`;
-        approvalFlowValue = t(i18n)`Unknown`;
-        break;
+  const approvalFlows = rules?.map((rule) => {
+    if (rule) {
+      switch (rule.type) {
+        case 'single_user':
+          return {
+            label: getRuleLabel(rule),
+            value: <User userId={rule.userId} />,
+          };
+        case 'users_from_list':
+          return {
+            label: getRuleLabel(rule),
+            value: (
+              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+                {rule.userIds.map((userId) => (
+                  <User key={userId} userId={userId} />
+                ))}
+              </Stack>
+            ),
+          };
+        case 'roles_from_list':
+          return {
+            label: getRuleLabel(rule),
+            value: (
+              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+                {rule.roleIds.map((roleId) => (
+                  <Role key={roleId} userId={roleId} />
+                ))}
+              </Stack>
+            ),
+          };
+        case 'approval_chain':
+          return {
+            label: getRuleLabel(rule),
+            value: (
+              <Stack direction="row" gap={1} sx={{ flexWrap: 'wrap' }}>
+                {rule.chainUserIds.map((userId) => (
+                  <User key={userId} userId={userId} />
+                ))}
+              </Stack>
+            ),
+          };
       }
     }
-
-    return [
-      {
-        label: approvalFlowLabel,
-        value: approvalFlowValue,
-      },
-    ];
-  })();
+  });
 
   return (
     <>
@@ -277,9 +281,9 @@ export const ApprovalPolicyView = ({
             <TableBody>
               {approvalFlows && approvalFlows.length > 0 ? (
                 approvalFlows.map((approvalFlow) => (
-                  <TableRow key={approvalFlow.label}>
-                    <TableCell>{approvalFlow.label}</TableCell>
-                    <TableCell>{approvalFlow.value}</TableCell>
+                  <TableRow key={approvalFlow?.label}>
+                    <TableCell>{approvalFlow?.label}</TableCell>
+                    <TableCell>{approvalFlow?.value}</TableCell>
                   </TableRow>
                 ))
               ) : (

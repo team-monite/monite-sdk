@@ -14,7 +14,7 @@ interface ApprovalPoliciesRulesProps {
 export const ApprovalPoliciesRules = ({
   approvalPolicy,
 }: ApprovalPoliciesRulesProps) => {
-  const { rules, getRuleLabel } = useApprovalPolicyScript({ approvalPolicy });
+  const { rules, getRuleName } = useApprovalPolicyScript({ approvalPolicy });
 
   if (!approvalPolicy) {
     return null;
@@ -28,28 +28,28 @@ export const ApprovalPoliciesRules = ({
             return (
               <li key={rule.type}>
                 <UUserCircle width={18} />
-                {getRuleLabel(rule.type)}
+                {getRuleName(rule.type)}
               </li>
             );
           case 'users_from_list':
             return (
               <li key={rule.type}>
                 <UUsersAlt width={18} />
-                {getRuleLabel(rule.type)}
+                {getRuleName(rule.type)}
               </li>
             );
           case 'roles_from_list':
             return (
               <li key={rule.type}>
                 <UUserSquare width={18} />
-                {getRuleLabel(rule.type)}
+                {getRuleName(rule.type)}
               </li>
             );
           case 'approval_chain':
             return (
               <li key={rule.type}>
                 <UListUiAlt width={18} />
-                {getRuleLabel(rule.type)}
+                {getRuleName(rule.type)}
               </li>
             );
         }
