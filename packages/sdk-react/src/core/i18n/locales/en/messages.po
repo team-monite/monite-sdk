@@ -374,6 +374,13 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:49
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:165
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:177
+#: src/components/payables/PayablesTable/PayablesTable.tsx:442
+msgid "All items"
+msgstr "All items"
+
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:75
 msgid "All statuses"
 msgstr "All statuses"
@@ -408,7 +415,7 @@ msgstr "Amount"
 
 #. Payables Table "Amount" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:324
+#: src/components/payables/PayablesTable/PayablesTable.tsx:325
 msgid "Amount Name"
 msgstr "Amount"
 
@@ -1429,15 +1436,15 @@ msgstr "Contact person"
 msgid "Contact Person"
 msgstr "Contact Person"
 
-#: src/core/queries/useCounterpart.ts:440
+#: src/core/queries/useCounterpart.ts:438
 msgid "Contact Person “{0}” has been created."
 msgstr "Contact Person “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:501
+#: src/core/queries/useCounterpart.ts:499
 msgid "Contact Person “{0}” has been updated."
 msgstr "Contact Person “{0}” has been updated."
 
-#: src/core/queries/useCounterpart.ts:533
+#: src/core/queries/useCounterpart.ts:531
 msgid "Contact Person has been deleted."
 msgstr "Contact Person has been deleted."
 
@@ -1533,18 +1540,18 @@ msgstr "Counseling Services"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:375
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:381
-#: src/components/payables/PayablesTable/PayablesTable.tsx:232
+#: src/components/payables/PayablesTable/PayablesTable.tsx:233
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:93
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:135
 #: src/components/userRoles/consts.ts:28
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:558
+#: src/core/queries/useCounterpart.ts:556
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:606
+#: src/core/queries/useCounterpart.ts:604
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
 
@@ -1558,7 +1565,7 @@ msgstr "Counterpart bank account"
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
-#: src/core/queries/useCounterpart.ts:626
+#: src/core/queries/useCounterpart.ts:624
 msgid "Counterpart has been deleted."
 msgstr "Counterpart has been deleted."
 
@@ -1704,8 +1711,8 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:362
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:452
-#: src/components/payables/PayablesTable/PayablesTable.tsx:402
-#: src/components/payables/PayablesTable/PayablesTable.tsx:484
+#: src/components/payables/PayablesTable/PayablesTable.tsx:403
+#: src/components/payables/PayablesTable/PayablesTable.tsx:502
 #: src/components/products/ProductsTable/ProductsTable.tsx:347
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:279
@@ -2226,7 +2233,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:280
+#: src/components/payables/PayablesTable/PayablesTable.tsx:281
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -2530,11 +2537,11 @@ msgstr "Exterminating Services"
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
 
-#: src/core/queries/useCounterpart.ts:448
+#: src/core/queries/useCounterpart.ts:446
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:565
+#: src/core/queries/useCounterpart.ts:563
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2554,7 +2561,7 @@ msgstr "Failed to create VAT."
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:629
+#: src/core/queries/useCounterpart.ts:627
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2622,11 +2629,11 @@ msgstr "Failed to update Address."
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
 
-#: src/core/queries/useCounterpart.ts:509
+#: src/core/queries/useCounterpart.ts:507
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:613
+#: src/core/queries/useCounterpart.ts:611
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -2635,7 +2642,6 @@ msgid "Failed to update product."
 msgstr "Failed to update product."
 
 #: src/core/queries/useReceivables.ts:83
-#: src/core/queries/useReceivables.ts:548
 msgid "Failed to update receivable line items: {errorMessage}"
 msgstr "Failed to update receivable line items: {errorMessage}"
 
@@ -3211,7 +3217,7 @@ msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:186
-#: src/components/payables/PayablesTable/PayablesTable.tsx:206
+#: src/components/payables/PayablesTable/PayablesTable.tsx:207
 msgid "Invoice #"
 msgstr "Invoice #"
 
@@ -3221,7 +3227,7 @@ msgstr "Invoice cancel confirmation"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:479
 #: src/components/payables/PayablesTable/Filters/Filters.tsx:72
-#: src/components/payables/PayablesTable/PayablesTable.tsx:242
+#: src/components/payables/PayablesTable/PayablesTable.tsx:243
 msgid "Invoice date"
 msgstr "Invoice date"
 
@@ -3328,7 +3334,7 @@ msgstr "Issue date"
 
 #. Payables Table "Issue date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:266
+#: src/components/payables/PayablesTable/PayablesTable.tsx:267
 msgid "Issue date Name"
 msgstr "Issue date"
 
@@ -3416,6 +3422,10 @@ msgstr "Item tax"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:121
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
+
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:114
+msgid "items"
+msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:582
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:350
@@ -4027,9 +4037,9 @@ msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
 #: src/components/payables/Payables.tsx:138
-#: src/components/payables/PayablesTable/PayablesTable.tsx:403
-#: src/components/payables/PayablesTable/PayablesTable.tsx:405
-#: src/components/payables/PayablesTable/PayablesTable.tsx:485
+#: src/components/payables/PayablesTable/PayablesTable.tsx:404
+#: src/components/payables/PayablesTable/PayablesTable.tsx:406
+#: src/components/payables/PayablesTable/PayablesTable.tsx:503
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4151,7 +4161,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:399
+#: src/components/payables/PayablesTable/PayablesTable.tsx:400
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4296,7 +4306,7 @@ msgstr "Orthopedic Goods - Prosthetic Devices"
 msgid "Osteopaths"
 msgstr "Osteopaths"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:313
+#: src/components/payables/PayablesTable/PayablesTable.tsx:314
 #: src/components/receivables/getCommonStatusLabel.ts:27
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:18
 msgid "Overdue"
@@ -4426,7 +4436,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:483
+#: src/components/payables/PayablesTable/PayablesTable.tsx:501
 #: src/components/userRoles/consts.ts:50
 msgid "Payable"
 msgstr "Payable"
@@ -4783,7 +4793,7 @@ msgstr "Price:"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:251
+#: src/components/payables/PayablesTable/PayablesTable.tsx:252
 msgid "Processing file…"
 msgstr "Processing file…"
 
@@ -5597,7 +5607,7 @@ msgstr "Status"
 
 #. Payables Table "Status" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:293
+#: src/components/payables/PayablesTable/PayablesTable.tsx:294
 msgid "Status Name"
 msgstr "Status"
 
@@ -6378,9 +6388,9 @@ msgid "Upload a document here."
 msgstr "Upload a document here."
 
 #: src/components/payables/Payables.tsx:148
-#: src/components/payables/PayablesTable/PayablesTable.tsx:403
-#: src/components/payables/PayablesTable/PayablesTable.tsx:407
-#: src/components/payables/PayablesTable/PayablesTable.tsx:485
+#: src/components/payables/PayablesTable/PayablesTable.tsx:404
+#: src/components/payables/PayablesTable/PayablesTable.tsx:408
+#: src/components/payables/PayablesTable/PayablesTable.tsx:503
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -6719,7 +6729,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:401
+#: src/components/payables/PayablesTable/PayablesTable.tsx:402
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -6805,7 +6815,7 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:400
+#: src/components/payables/PayablesTable/PayablesTable.tsx:401
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
