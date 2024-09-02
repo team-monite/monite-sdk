@@ -335,8 +335,13 @@ const PayablesTableBase = ({
   };
 
   const onChangeSort = (model: GridSortModel) => {
-    setSortModel(model[0] as PayableGridSortModel);
-    setCurrentPaginationToken(null);
+    // Grid will fire onChangeSort event on setColumnWidth call if the sort field isn't in columns set
+    // Ignore empty model changes
+    // TODO: move it to dev
+    if (model && model.length > 0) {
+      setSortModel(model[0] as PayableGridSortModel);
+      setCurrentPaginationToken(null);
+    }
   };
 
   if (isReadSupportedLoading) {
