@@ -391,6 +391,7 @@ const PayablesTableBase = ({
     { status: 'New', count: 5, amount: 12500 },
     { status: 'In Approval', count: 10, amount: 30500 },
     { status: 'Paid', count: 20, amount: 79800 },
+    { status: 'Canceled', count: 10, amount: 30500 },
   ];
 
   const className = 'Monite-PayablesTable';
@@ -405,10 +406,10 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ mb: 2 }}>
         <SummaryCardsFilters
           data={mockSummaryData}
-          onChangeFilter={onChangeFilter}
+          onChangeFilter={() => {}}
           selectedStatus={null}
         />
       </Box>

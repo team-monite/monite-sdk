@@ -71,6 +71,7 @@ const SummaryCard = ({
         backgroundColor,
         height: 80,
         minWidth: isAllItems ? 118 : 220,
+        flexShrink: 0,
       }}
     >
       <CardContent
@@ -179,7 +180,19 @@ export const SummaryCardsFilters = ({
 
   return (
     <FilterContainer className={className}>
-      <Box display="flex" gap={2}>
+      <Box
+        display="flex"
+        gap={2}
+        sx={{
+          overflowX: 'scroll',
+          whiteSpace: 'nowrap',
+          paddingBottom: 1,
+          scrollbarWidth: 'thin',
+          width: '100%',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        }}
+      >
         {enhancedData.map((item) => (
           <SummaryCard
             key={item.status}
