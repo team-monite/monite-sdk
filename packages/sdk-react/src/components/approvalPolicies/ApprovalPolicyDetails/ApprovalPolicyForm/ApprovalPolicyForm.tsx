@@ -1127,7 +1127,7 @@ export const ApprovalPolicyForm = ({
             <Button
               variant="outlined"
               onClick={() => {
-                setIsEdit(false);
+                isEdit ? setIsEdit(false) : dialogContext?.onClose?.();
               }}
             >
               {t(i18n)`Cancel`}
