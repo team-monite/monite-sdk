@@ -438,7 +438,9 @@ const PayablesTableBase = ({
         <SummaryCardsFilters
           data={mockSummaryData}
           onChangeFilter={() => {}}
-          selectedStatus={null}
+          selectedStatus={
+            currentFilter[FILTER_TYPE_STATUS] || t(i18n)`All items`
+          }
         />
       </Box>
       <Box sx={{ mb: 2 }}>
