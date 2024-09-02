@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
-import { counterpartListFixture } from '@/mocks';
+import { AggregatedPayablesResponse, counterpartListFixture } from '@/mocks';
 import { approvalPolicyByIdFixtures } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
@@ -145,6 +145,30 @@ export const payableFixturePages: components['schemas']['PayableResponseSchema']
     }),
     ...new Array(15).fill('_').map(() => generatePayable()),
   ];
+
+export const generateAggregatedPayables = (): AggregatedPayablesResponse => {
+  const statuses: components['schemas']['PayableStateEnum'][] = [
+    'draft',
+    'new',
+    'approve_in_progress',
+    'paid',
+  ];
+
+  const data = statuses.map((status) => ({
+    status,
+    amount: faker.number.int({ min: 50, max: 200 }),
+    quantity: faker.number.int({ min: 1, max: 5 }),
+  }));
+
+  const total_amount = data.reduce((acc, item) => acc + item.amount, 0);
+  const total_quantity = data.reduce((acc, item) => acc + item.quantity, 0);
+
+  return {
+    data,
+    total_amount,
+    total_quantity,
+  };
+};
 
 export const payableFixtureWithoutFile: components['schemas']['PayableResponseSchema'] =
   generatePayable({
