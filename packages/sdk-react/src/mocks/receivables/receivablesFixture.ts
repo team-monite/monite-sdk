@@ -165,7 +165,11 @@ function createRandomInvoice(
   }
 
   const status: components['schemas']['ReceivablesStatusEnum'] =
-    index === 0 ? 'draft' : getRandomItemFromArray(ReceivablesStatusEnum);
+    index === 0
+      ? 'draft'
+      : index === 1
+      ? 'issued' // 'not renders action menu if onRowAction property is not specified' test depends there is an invoice with a non-draft status on the first screen
+      : getRandomItemFromArray(ReceivablesStatusEnum);
 
   const counterpart_type = getRandomItemFromArray<
     components['schemas']['CounterpartType']

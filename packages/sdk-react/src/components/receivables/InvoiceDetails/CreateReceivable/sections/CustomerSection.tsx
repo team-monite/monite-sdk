@@ -122,7 +122,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
     [counterparts]
   );
 
-  const defaultContactName = counterpartContacts?.data.find(
+  const defaultContactName = counterpartContacts?.find(
     (contact) => contact.is_default
   );
 
@@ -274,7 +274,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 in={
                   !contactPersonError &&
                   !isContactPersonsLoading &&
-                  counterpartContacts?.data.length === 0
+                  counterpartContacts?.length === 0
                 }
               >
                 <FormHelperText>
