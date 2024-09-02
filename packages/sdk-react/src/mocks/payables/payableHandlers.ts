@@ -4,6 +4,7 @@ import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import {
   ENTITY_ID_FOR_ABSENT_PERMISSIONS,
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
+  generateAggregatedPayables,
   PAYABLE_ID_WITHOUT_FILE,
 } from '@/mocks';
 import { entityIds } from '@/mocks/entities';
@@ -20,8 +21,22 @@ import {
 
 type PayableParams = { payableId: string };
 
+export interface PayableAggregatedItem {
+  status: components['schemas']['PayableStateEnum'];
+  amount: number;
+  quantity: number;
+}
+
+export interface AggregatedPayablesResponse {
+  data: PayableAggregatedItem[];
+  total_amount: number;
+  total_quantity: number;
+}
+
 export const PAYABLES_ENDPOINT = 'payables';
+export const INTERNAL_PAYABLES_ENDPOINT = 'internal/payables';
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
+const internalPayablePath = `*/${INTERNAL_PAYABLES_ENDPOINT}`;
 const payableIdPath = `${payablePath}/:payableId`;
 
 let payable: components['schemas']['PayableResponseSchema'] =
@@ -311,6 +326,19 @@ export const payableHandlers = [
       }
     }
   }),
+
+  http.get<{}, undefined, AggregatedPayablesResponse>(
+    `*${internalPayablePath}/aggregated`,
+    async () => {
+      await delay();
+
+      return HttpResponse.json({
+        data: generateAggregatedPayables().data,
+        total_amount: generateAggregatedPayables().total_amount,
+        total_quantity: generateAggregatedPayables().total_quantity,
+      });
+    }
+  ),
 
   // update (patch) payable by id
   http.patch<
