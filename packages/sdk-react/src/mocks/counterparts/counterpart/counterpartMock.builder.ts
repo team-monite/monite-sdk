@@ -150,6 +150,8 @@ export class CounterpartMockBuilder {
   }
 
   withIdIn(idIn: Array<string>): Pick<CounterpartMockBuilder, 'withOrder'> {
+    if (!idIn || idIn.length === 0) return this;
+
     this.page = 0;
     this.idIn = idIn;
 
