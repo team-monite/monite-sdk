@@ -64,7 +64,9 @@ export const useApprovalPolicyScript = ({
     if (!('call' in rule) || typeof rule.call !== 'string') return false;
     if (
       ![
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         'ApprovalRequests.request_approval_by_users',
+        // eslint-disable-next-line lingui/no-unlocalized-strings
         'ApprovalRequests.request_approval_by_roles',
       ].includes(rule.call)
     ) {

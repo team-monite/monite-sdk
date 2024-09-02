@@ -31,7 +31,7 @@ export const rolesHandlers = [
 
   http.get<{ roleId: string }, string, RoleResponse | ErrorSchemaResponse>(
     `*/roles/:roleId`,
-    async ({ params, request }) => {
+    async ({ params }) => {
       const { roleId } = params;
       const role = getAllRolesFixture.data.find((item) => item.id === roleId);
 
