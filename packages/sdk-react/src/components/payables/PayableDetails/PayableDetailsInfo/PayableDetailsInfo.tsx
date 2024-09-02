@@ -116,7 +116,7 @@ const PayableDetailsInfoBase = ({
     useApprovalPolicyById(payable.approval_policy_id);
 
   const defaultContact = useMemo(
-    () => contacts?.data.find((contact) => contact.is_default),
+    () => contacts?.find((contact) => contact.is_default),
     [contacts]
   );
   const counterpartBankAccount = useMemo(

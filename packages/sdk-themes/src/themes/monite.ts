@@ -167,9 +167,10 @@ export const defaultMoniteTypography:
     lineHeight: '24px',
   },
   body2: {
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: '14px',
     lineHeight: '20px',
+    color: 'rgba(0, 0, 0, 0.56)',
   },
   caption: {
     fontSize: '1rem',
@@ -256,6 +257,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MuiInputBase: {
     styleOverrides: {
       root: {
+        fontWeight: 400,
         borderRadius: `8px`,
         minHeight: '40px',
         '& .MuiInputBase-input': {
@@ -377,6 +379,43 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiSelect: {
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiSelect-select': {
+            paddingLeft: '0',
+          },
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderStyle: 'none',
+          },
+        },
+        '&.Monite-RecipientSelector': {
+          '& .MuiChip-root': {
+            backgroundColor: 'transparent',
+            borderColor: 'divider',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            padding: '7px 8px',
+            '& .MuiChip-label': {
+              color: 'text.primary',
+            },
+          },
+          '& .MuiSelect-icon': {
+            backgroundColor: 'primary.80',
+            borderRadius: '8px',
+            width: '32px',
+            height: '32px',
+            transform: 'translate(7px, -2px)',
+            path: {
+              fill: 'primary.main',
+              transform: 'scale(0.6) translate(8px, 8px)',
+            },
+          },
+        },
+      },
+    },
+  },
   MuiStack: {
     styleOverrides: {
       root: {
@@ -443,6 +482,28 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       InputLabelProps: {
         shrink: true,
+      },
+    },
+    styleOverrides: {
+      root: {
+        '&.Monite-NakedField': {
+          '& .MuiInputBase-root': {
+            minHeight: '32px',
+            padding: 0,
+
+            '& .MuiInputBase-input': {
+              height: '32px',
+              lineHeight: '32px',
+              padding: 0,
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderStyle: 'none',
+            },
+          },
+          '& .MuiFormHelperText-root.Mui-error': {
+            marginLeft: 0,
+          },
+        },
       },
     },
   },
@@ -984,6 +1045,7 @@ const colorProps = [
   'backgroundColor',
   'bgcolor',
   'borderColor',
+  'fill',
   '--DataGrid-rowBorderColor',
 ];
 

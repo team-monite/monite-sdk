@@ -5,6 +5,10 @@ import * as yup from 'yup';
 
 export const getEmailInvoiceDetailsSchema = (i18n: I18n) =>
   yup.object({
+    to: yup
+      .string()
+      .label(t(i18n)`To`)
+      .required(),
     subject: yup
       .string()
       .label(t(i18n)`Subject`)

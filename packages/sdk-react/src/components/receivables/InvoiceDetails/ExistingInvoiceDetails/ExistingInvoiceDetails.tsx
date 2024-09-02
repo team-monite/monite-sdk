@@ -3,6 +3,7 @@ import { useState, useTransition } from 'react';
 import { useDialog } from '@/components';
 import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { EditInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails';
+import { EmailInvoiceDetails } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EmailInvoiceDetails';
 import { InvoiceCancelModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal';
 import { InvoiceDeleteModal } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal';
 import { InvoicePDFViewer } from '@/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoicePDFViewer';
@@ -42,7 +43,6 @@ import {
 } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
-import { EmailInvoiceDetails } from './components/EmailInvoiceDetails';
 import { useRecurrenceByInvoiceId } from './components/ReceivableRecurrence/useInvoiceRecurrence';
 import {
   DeliveryMethod,
