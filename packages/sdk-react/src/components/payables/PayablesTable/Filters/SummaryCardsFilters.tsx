@@ -32,6 +32,13 @@ type FilterTypes = {
 
 type FilterValue = string | null;
 
+const statusBackgroundColors: Record<string, string> = {
+  Draft: '#FAFAFA',
+  New: '#F4F4FE',
+  'In Approval': '#FFF5EB',
+  Paid: '#EEFBF9',
+};
+
 const SummaryCard = ({
   status,
   count,
@@ -45,6 +52,8 @@ const SummaryCard = ({
     ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
     : ['', ''];
 
+  const backgroundColor = statusBackgroundColors[status] || '#fafafa';
+
   return (
     <Card
       onClick={onClick}
@@ -56,7 +65,7 @@ const SummaryCard = ({
         padding: '16px 18px',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: selected ? '#3737FF' : '#fafafa',
+        backgroundColor: selected ? '#3737FF' : backgroundColor,
         height: 80,
         minWidth: isAllItems ? 118 : 220,
       }}
