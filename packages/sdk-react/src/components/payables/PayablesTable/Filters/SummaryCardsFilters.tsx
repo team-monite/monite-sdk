@@ -32,29 +32,31 @@ type FilterTypes = {
 
 type FilterValue = string | null;
 
-const SummaryCard: React.FC<SummaryCardProps> = ({
+const SummaryCard = ({
   status,
   count,
   amount,
   onClick,
   selected,
-}) => {
-  // Check if the card is "All items" to apply specific styling
+}: SummaryCardProps) => {
   const isAllItems = status === t(i18n)`All items`;
+
+  const [integerPart, decimalPart] = amount
+    ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
+    : ['', ''];
 
   return (
     <Card
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        border: selected ? '2px solid #3737FF' : '2px solid gray',
+        border: selected ? '2px solid #3737FF' : '2px solid transparent',
         '&:hover': { border: '2px solid blue' },
         display: 'flex',
         padding: '16px 18px',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        flex: '1 0 0',
-        backgroundColor: selected ? '#f0f4ff' : '#fafafa',
+        backgroundColor: selected ? '#3737FF' : '#fafafa',
         height: 80,
         minWidth: isAllItems ? 118 : 220,
       }}
@@ -71,9 +73,12 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
         <Box
           display="flex"
           justifyContent={amount ? 'space-between' : 'flex-start'}
-          alignItems={isAllItems ? 'flex-start' : 'center'} // Align items to the left for "All items"
+          alignItems={isAllItems ? 'flex-start' : 'center'}
           flexDirection={amount ? 'row' : 'column'}
-          sx={{ textAlign: isAllItems ? 'left' : 'right', width: '100%' }} // Align text to the left for "All items"
+          sx={{
+            textAlign: isAllItems ? 'left' : 'right',
+            width: '100%',
+          }}
         >
           <Typography
             variant="h6"
@@ -93,7 +98,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
               fontSize: 13,
               fontWeight: 700,
               letterSpacing: 0.26,
-              mt: amount ? 0 : 1, // Adds margin-top when in column layout
+              mt: amount ? 0 : 1,
             }}
           >
             {count} {t(i18n)`items`}
@@ -112,9 +117,23 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
               sx={{
                 fontSize: 20,
                 fontWeight: 700,
+                display: 'flex',
+                alignItems: 'baseline',
               }}
             >
-              ${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              ${integerPart}.
+              <Typography
+                component="span"
+                sx={{
+                  color: 'gray',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  leadingTrim: 'both',
+                  textEdge: 'cap',
+                }}
+              >
+                {decimalPart}
+              </Typography>
             </Typography>
           </Box>
         )}
