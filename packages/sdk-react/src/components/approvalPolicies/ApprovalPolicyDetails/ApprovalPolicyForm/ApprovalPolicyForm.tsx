@@ -53,6 +53,9 @@ interface ApprovalPolicyFormProps {
 
   /** Callback is fired when a policy is created and sync with server is successful */
   onCreated?: (id: string) => void;
+
+  /** Callback is fired when a policy is updated and sync with server is successful */
+  onUpdated?: (id: string) => void;
 }
 
 export interface FormValues {
@@ -90,6 +93,7 @@ export const ApprovalPolicyForm = ({
   approvalPolicy,
   setIsEdit,
   onCreated,
+  onUpdated,
 }: ApprovalPolicyFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -268,6 +272,7 @@ export const ApprovalPolicyForm = ({
 
     if (response) {
       setIsEdit(false);
+      onUpdated?.(id);
     }
 
     return response;

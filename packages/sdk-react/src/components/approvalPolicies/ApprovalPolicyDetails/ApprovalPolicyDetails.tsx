@@ -59,6 +59,7 @@ export const ApprovalPolicyDetails = ({
       <ApprovalPolicyForm
         approvalPolicy={approvalPolicy}
         setIsEdit={setIsEdit}
+        onUpdated={onUpdated}
       />
     );
   }
