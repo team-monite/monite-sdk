@@ -11046,6 +11046,74 @@
         },
         "security": [{ "HTTPBearer": [] }]
       },
+      "delete": {
+        "tags": ["Entity users"],
+        "summary": "Delete an entity user",
+        "operationId": "delete_entity_users_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "entity_user_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful Response" },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      },
       "patch": {
         "tags": ["Entity users"],
         "summary": "Update an entity user",
@@ -37811,79 +37879,36 @@
       },
       "FileSchema": {
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of this file."
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
-          },
-          "file_type": {
-            "type": "string",
-            "description": "The type of the business object associated with this file.",
-            "example": "payables"
-          },
-          "md5": {
-            "type": "string",
-            "description": "The MD5 hash of the file.",
-            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).",
-            "example": "application/pdf"
-          },
-          "name": {
-            "type": "string",
-            "maxLength": 512,
-            "description": "The original file name (if available).",
-            "example": "invoice.pdf"
-          },
-          "pages": {
-            "items": { "$ref": "#/components/schemas/PageSchema" },
-            "type": "array",
-            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
-            "default": []
-          },
-          "previews": {
-            "items": { "$ref": "#/components/schemas/PreviewSchema" },
-            "type": "array",
-            "description": "Preview images generated for this file. There can be multiple images with different sizes.",
-            "default": []
-          },
-          "region": {
-            "type": "string",
-            "description": "Geographical region of the data center where the file is stored.",
-            "example": "eu-central-1"
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The file size in bytes.",
-            "example": 24381
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the file.",
-            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
-          }
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "entity_id": { "type": "string", "format": "uuid" },
+          "file_type": { "type": "string" },
+          "md5": { "type": "string" },
+          "mimetype": { "type": "string" },
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "s3_bucket": { "type": "string" },
+          "s3_file_path": { "type": "string" },
+          "size": { "type": "integer" },
+          "url": { "type": "string" }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "id",
           "created_at",
+          "updated_at",
           "file_type",
           "md5",
           "mimetype",
           "name",
           "region",
+          "s3_bucket",
+          "s3_file_path",
           "size",
           "url"
-        ],
-        "description": "Represents a file (such as a PDF invoice) that was uploaded to Monite."
+        ]
       },
       "FilesResponse": {
         "properties": {
@@ -39356,6 +39381,11 @@
             ],
             "description": "Settings for the e-invoicing module."
           },
+          "generate_paid_invoice_pdf": {
+            "type": "boolean",
+            "description": "If enabled, the paid invoice's pdf will be in a new layout set by the user",
+            "default": false
+          },
           "language": { "$ref": "#/components/schemas/LanguageCodeEnum" },
           "mail": {
             "allOf": [{ "$ref": "#/components/schemas/MailSettingsResponse" }],
@@ -39801,6 +39831,7 @@
           "partner_settings",
           "partner_token",
           "payable",
+          "project",
           "payable_line_item",
           "payables_purchase_order",
           "payment",
@@ -41148,40 +41179,6 @@
         "additionalProperties": false,
         "type": "object"
       },
-      "PageSchema": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "A unique ID of the image."
-          },
-          "mimetype": {
-            "type": "string",
-            "description": "The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.",
-            "example": "image/png"
-          },
-          "number": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "The page number in the PDF document, from 0.",
-            "example": 0
-          },
-          "size": {
-            "type": "integer",
-            "minimum": 0.0,
-            "description": "Image file size, in bytes.",
-            "example": 21972
-          },
-          "url": {
-            "type": "string",
-            "description": "The URL to download the image.",
-            "example": "https://bucket.s3.amazonaws.com/123/456.png"
-          }
-        },
-        "type": "object",
-        "required": ["id", "mimetype", "number", "size", "url"],
-        "description": "When a PDF document is uploaded to Monite, it extracts individual pages from the document\nand saves them as PNG images. This object contains the image and metadata of a single page."
-      },
       "PartiallyPaidPayload": {
         "properties": {
           "amount_paid": {
@@ -41201,7 +41198,6 @@
             "description": "Metadata for partner needs"
           }
         },
-        "additionalProperties": false,
         "type": "object",
         "required": ["metadata"]
       },
@@ -41212,7 +41208,6 @@
             "description": "Metadata for partner needs"
           }
         },
-        "additionalProperties": false,
         "type": "object"
       },
       "PartnerProjectSettingsPayload": {
@@ -41377,6 +41372,11 @@
           "quote_signature_required": {
             "type": "boolean",
             "description": "Sets the default behavior of whether a signature is required to accept quotes",
+            "default": false
+          },
+          "generate_paid_invoice_pdf": {
+            "type": "boolean",
+            "description": "If enabled, the paid invoice's pdf will be in a new layout set by the user",
             "default": false
           }
         },
@@ -43635,28 +43635,6 @@
         "type": "string",
         "enum": ["sent_confirmation", "active", "deleted", "archived"]
       },
-      "PreviewSchema": {
-        "properties": {
-          "height": {
-            "type": "integer",
-            "description": "The image height in pixels.",
-            "example": 400
-          },
-          "url": {
-            "type": "string",
-            "description": "The image URL.",
-            "example": "https://bucketname.s3.amazonaws.com/1/2/3.png"
-          },
-          "width": {
-            "type": "integer",
-            "description": "The image width in pixels.",
-            "example": 200
-          }
-        },
-        "type": "object",
-        "required": ["height", "url", "width"],
-        "description": "A preview image generated for a file."
-      },
       "PreviewTemplateRequest": {
         "properties": {
           "body": {
@@ -43940,17 +43918,63 @@
       },
       "ProjectUpdateRequest": {
         "properties": {
-          "description": { "type": "string", "minLength": 1 },
-          "environment": { "$ref": "#/components/schemas/EnvironmentEnum" },
-          "features": {
+          "code": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9]+$",
+            "description": "Project code",
+            "null": true
+          },
+          "color": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "Project color",
+            "null": true
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Description of project",
+            "null": true
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Project end date",
+            "null": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "The project name.",
+            "example": "Marketing"
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Parent project id",
+            "null": true
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Project metadata",
+            "null": true
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Project start date",
+            "null": true
+          },
+          "tag_ids": {
             "items": { "type": "string", "format": "uuid" },
-            "type": "array"
-          },
-          "name": { "type": "string", "maxLength": 100, "minLength": 1 },
-          "project_settings": {
-            "$ref": "#/components/schemas/ProjectsSettingsRequest"
-          },
-          "region": { "$ref": "#/components/schemas/AllowedCountriesNames" }
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this project.",
+            "default": [],
+            "null": false
+          }
         },
         "additionalProperties": false,
         "type": "object"
@@ -46190,6 +46214,18 @@
         "type": "object",
         "required": ["create_without_personal_info"]
       },
+      "ReceivableTagCategory": {
+        "type": "string",
+        "enum": [
+          "document_type",
+          "department",
+          "project",
+          "cost_center",
+          "vendor_type",
+          "payment_method",
+          "approval_status"
+        ]
+      },
       "ReceivableTemplatesVariable": {
         "properties": {
           "description": { "type": "string" },
@@ -47149,7 +47185,7 @@
             "example": "2022-09-07T16:35:18.484507+00:00"
           },
           "category": {
-            "allOf": [{ "$ref": "#/components/schemas/TagCategory" }],
+            "allOf": [{ "$ref": "#/components/schemas/ReceivableTagCategory" }],
             "description": "The tag category.",
             "example": "department"
           },
@@ -47174,7 +47210,7 @@
         },
         "type": "object",
         "required": ["id", "created_at", "updated_at", "name"],
-        "description": "Represents a user-defined tag that can be assigned to payables to filter them."
+        "description": "Represents a user-defined tag that can be assigned to receivable to filter them."
       },
       "TagUpdateSchema": {
         "properties": {

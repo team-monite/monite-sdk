@@ -32,8 +32,8 @@ export type ReceivablesListFixture = {
 };
 
 function createRandomEntity():
-  | components['schemas']['ReceivablesEntityOrganization']
-  | components['schemas']['ReceivablesEntityIndividual'] {
+  | components['schemas']['ReceivableEntityOrganization']
+  | components['schemas']['ReceivableEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
@@ -55,8 +55,8 @@ function createRandomEntity():
 }
 
 function createRandomInvoiceEntity():
-  | components['schemas']['ReceivablesEntityOrganization']
-  | components['schemas']['ReceivablesEntityIndividual'] {
+  | components['schemas']['ReceivableEntityOrganization']
+  | components['schemas']['ReceivableEntityIndividual'] {
   const isOrganization = faker.datatype.boolean();
 
   if (isOrganization) {
@@ -95,6 +95,10 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         value: faker.number.int({ min: 10, max: 30_000 }),
         currency: 'EUR',
       },
+      price_after_vat: {
+        value: faker.number.int({ min: 10, max: 30_000 }),
+        currency: 'EUR',
+      },
       measure_unit_id: faker.string.sample(),
       created_at: faker.date.past().toString(),
       entity_id: faker.string.uuid(),
@@ -110,6 +114,7 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         created_at: faker.date.past().toString(),
         updated_at: faker.date.past().toString(),
       },
+      is_inline: false,
     },
   };
 }
@@ -150,6 +155,8 @@ function createRandomQuote(): components['schemas']['QuoteResponsePayload'] {
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
     status: getRandomItemFromArray(QuoteStateEnum),
+    tags: [],
+    vat_mode: 'exclusive',
   };
 }
 
@@ -293,6 +300,8 @@ function createRandomInvoice(
     total_amount: Number(faker.commerce.price()),
     overdue_reminder_id: overdueReminderListFixture[0].id,
     payment_reminder_id: paymentReminderListFixture[0].id,
+    tags: [],
+    vat_mode: 'exclusive',
   };
 }
 
@@ -331,6 +340,8 @@ function createRandomCreditNote(): components['schemas']['CreditNoteResponsePayl
     total_amount: Number(faker.commerce.price()),
     entity: createRandomEntity(),
     status: getRandomItemFromArray(CreditNoteStateEnum),
+    tags: [],
+    vat_mode: 'exclusive',
   };
 }
 
