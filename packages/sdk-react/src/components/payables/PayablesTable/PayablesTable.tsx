@@ -408,14 +408,6 @@ const PayablesTableBase = ({
           onRowClick?.(params.row.id);
         }}
         rowHeight={72}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

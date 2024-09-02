@@ -240,14 +240,6 @@ const TagsTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

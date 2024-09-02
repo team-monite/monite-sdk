@@ -320,14 +320,6 @@ const ApprovalRequestsTableBase = ({
         apiRef={gridApiRef}
         loading={isApprovalRequestsLoading || isPayablesLoading}
         onRowClick={(params) => onRowClick?.(params.row.id)}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

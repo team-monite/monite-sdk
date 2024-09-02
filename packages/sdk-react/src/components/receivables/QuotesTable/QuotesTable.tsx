@@ -242,14 +242,6 @@ const QuotesTableBase = ({
         disableColumnFilter={true}
         loading={isLoading}
         onSortModelChange={onChangeSort}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         slots={{
           pagination: () => (

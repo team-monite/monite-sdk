@@ -309,14 +309,6 @@ const ProductsTableBase = ({
         }}
         columns={columns}
         loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

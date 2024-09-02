@@ -732,6 +732,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
         '--DataGrid-rowBorderColor': 'divider',
+        '& .MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
+        '&.MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
       },
       columnHeader: {
         borderRightStyle: 'solid',
