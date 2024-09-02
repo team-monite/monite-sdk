@@ -54,7 +54,7 @@ const SummaryCard = ({
   const [integerPart, decimalPart] = formattedAmount;
 
   const backgroundColor = selected
-    ? '#3737FF'
+    ? 'transparent'
     : statusBackgroundColors[status] || '#FAFAFA';
 
   return (
