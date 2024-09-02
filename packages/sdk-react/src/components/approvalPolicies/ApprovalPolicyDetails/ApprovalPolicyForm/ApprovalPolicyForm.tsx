@@ -58,8 +58,8 @@ interface ApprovalPolicyFormProps {
 export interface FormValues {
   name: string;
   description: string;
+
   triggerType: ApprovalPoliciesTriggerKey | null;
-  scriptType: ApprovalPolicyScriptType | null;
   triggers: {
     was_created_by_user_id?: components['schemas']['EntityUserResponse'][];
     tags?: components['schemas']['TagReadSchema'][];
@@ -69,17 +69,19 @@ export interface FormValues {
       value: AmountTuple[];
     };
   };
+  amountOperator?: ApprovalPoliciesOperator;
+  amountValue?: string | number;
+  amountRangeLeftValue?: string | number;
+  amountRangeRightValue?: string | number;
+  amountCurrency?: components['schemas']['CurrencyEnum'];
+
+  scriptType: ApprovalPolicyScriptType | null;
   rules: {
     single_user?: components['schemas']['EntityUserResponse'];
     users_from_list?: components['schemas']['EntityUserResponse'][];
     roles_from_list?: components['schemas']['RoleResponse'][];
     approval_chain?: components['schemas']['EntityUserResponse'][];
   };
-  amountOperator?: ApprovalPoliciesOperator;
-  amountValue?: string | number;
-  amountRangeLeftValue?: string | number;
-  amountRangeRightValue?: string | number;
-  amountCurrency?: components['schemas']['CurrencyEnum'];
   usersFromListCount?: string | number;
   rolesFromListCount?: string | number;
 }
@@ -106,12 +108,10 @@ export const ApprovalPolicyForm = ({
   const [isAddingRule, setIsAddingRule] = useState<boolean>(false);
   const [triggerInEdit, setTriggerInEdit] =
     useState<ApprovalPoliciesTriggerKey | null>(null);
-  const [prevTriggerValues, setPrevTriggerValues] = useState<
-    FormValues['triggers'] | null
-  >(null);
-  const [prevRuleValues, setPrevRuleValues] = useState<
-    FormValues['rules'] | null
-  >(null);
+
+  const [prevFormValues, setPrevFormValues] =
+    useState<Partial<FormValues> | null>(null);
+
   const [scriptInEdit, setScriptInEdit] =
     useState<ApprovalPolicyScriptType | null>(null);
 
@@ -284,6 +284,8 @@ export const ApprovalPolicyForm = ({
       amountCurrency: undefined,
       amountRangeLeftValue: undefined,
       amountRangeRightValue: undefined,
+      usersFromListCount: undefined,
+      rolesFromListCount: undefined,
     },
   });
   const { control, handleSubmit, setValue, getValues, watch } = methods;
@@ -365,6 +367,7 @@ export const ApprovalPolicyForm = ({
         usersForUsersFromListRule?.data.length > 0
       ) {
         setValue('rules.users_from_list', usersForUsersFromListRule?.data);
+        setValue('usersFromListCount', rules?.users_from_list?.count);
       }
 
       if (
@@ -372,6 +375,7 @@ export const ApprovalPolicyForm = ({
         rolesForRolesFromListRule?.data.length > 0
       ) {
         setValue('rules.roles_from_list', rolesForRolesFromListRule?.data);
+        setValue('rolesFromListCount', rules?.roles_from_list?.count);
       }
 
       if (
@@ -465,72 +469,88 @@ export const ApprovalPolicyForm = ({
   ]);
 
   const resetFormTriggerOrScript = () => {
+    // reset triggers from prev values
     if (!isAddingTrigger && triggerInEdit === 'was_created_by_user_id') {
       setValue(
         'triggers.was_created_by_user_id',
-        prevTriggerValues?.was_created_by_user_id || []
+        prevFormValues?.triggers?.was_created_by_user_id || []
       );
     }
 
     if (!isAddingTrigger && triggerInEdit === 'tags') {
-      setValue('triggers.tags', prevTriggerValues?.tags || []);
+      setValue('triggers.tags', prevFormValues?.triggers?.tags || []);
     }
 
     if (!isAddingTrigger && triggerInEdit === 'counterpart_id') {
       setValue(
         'triggers.counterpart_id',
-        prevTriggerValues?.counterpart_id || []
+        prevFormValues?.triggers?.counterpart_id || []
       );
     }
 
     if (!isAddingTrigger && triggerInEdit === 'amount') {
-      setValue('triggers.amount', prevTriggerValues?.amount || undefined);
+      setValue(
+        'triggers.amount',
+        prevFormValues?.triggers?.amount || undefined
+      );
 
-      setValue('amountOperator', undefined);
-      setValue('amountValue', undefined);
+      setValue('amountOperator', prevFormValues?.amountOperator || undefined);
+      setValue('amountValue', prevFormValues?.amountValue || undefined);
+      setValue(
+        'amountRangeLeftValue',
+        prevFormValues?.amountRangeLeftValue || undefined
+      );
+      setValue(
+        'amountRangeRightValue',
+        prevFormValues?.amountRangeRightValue || undefined
+      );
+      setValue('amountCurrency', prevFormValues?.amountCurrency || undefined);
     }
 
-    if (isAddingTrigger && prevTriggerValues) {
-      setValue('triggers', prevTriggerValues);
+    if (isAddingTrigger && prevFormValues?.triggers) {
+      setValue('triggers', prevFormValues?.triggers);
     }
 
+    // reset rules from prev values
     if (!isAddingRule && scriptInEdit === 'single_user') {
-      setValue('rules.single_user', prevRuleValues?.single_user || undefined);
+      setValue(
+        'rules.single_user',
+        prevFormValues?.rules?.single_user || undefined
+      );
     }
 
     if (!isAddingRule && scriptInEdit === 'users_from_list') {
       setValue(
         'rules.users_from_list',
-        prevRuleValues?.users_from_list || undefined
+        prevFormValues?.rules?.users_from_list || undefined
       );
-      setValue('usersFromListCount', undefined);
+      setValue('usersFromListCount', prevFormValues?.usersFromListCount || 0);
     }
 
     if (!isAddingRule && scriptInEdit === 'roles_from_list') {
       setValue(
         'rules.roles_from_list',
-        prevRuleValues?.roles_from_list || undefined
+        prevFormValues?.rules?.roles_from_list || undefined
       );
-      setValue('rolesFromListCount', undefined);
+      setValue('rolesFromListCount', prevFormValues?.rolesFromListCount || 0);
     }
 
     if (!isAddingRule && scriptInEdit === 'approval_chain') {
       setValue(
         'rules.approval_chain',
-        prevRuleValues?.approval_chain || undefined
+        prevFormValues?.rules?.approval_chain || undefined
       );
     }
 
-    if (isAddingRule && prevRuleValues) {
-      setValue('rules', prevRuleValues);
+    if (isAddingRule && prevFormValues?.rules) {
+      setValue('rules', prevFormValues?.rules);
     }
 
     setTriggerInEdit(null);
     setScriptInEdit(null);
     setIsAddingTrigger(false);
     setIsAddingRule(false);
-    setPrevTriggerValues(null);
-    setPrevRuleValues(null);
+    setPrevFormValues(null);
     setValue('triggerType', null);
     setValue('scriptType', null);
   };
@@ -554,20 +574,18 @@ export const ApprovalPolicyForm = ({
               >
                 {t(i18n)`Edit Approval Policy`}
               </Typography>
-              {triggerInEdit ||
-                (isAddingTrigger && (
-                  <Typography variant="subtitle1" color="text.primary">
-                    {isAddingTrigger
-                      ? t(i18n)`Add Condition`
-                      : t(i18n)`Edit Condition`}
-                  </Typography>
-                ))}
-              {scriptInEdit ||
-                (isAddingRule && (
-                  <Typography variant="subtitle1" color="text.primary">
-                    {isAddingRule ? t(i18n)`Add Rule` : t(i18n)`Edit Rule`}
-                  </Typography>
-                ))}
+              {(triggerInEdit || isAddingTrigger) && (
+                <Typography variant="subtitle1" color="text.primary">
+                  {isAddingTrigger
+                    ? t(i18n)`Add Condition`
+                    : t(i18n)`Edit Condition`}
+                </Typography>
+              )}
+              {(scriptInEdit || isAddingRule) && (
+                <Typography variant="subtitle1" color="text.primary">
+                  {isAddingRule ? t(i18n)`Add Rule` : t(i18n)`Edit Rule`}
+                </Typography>
+              )}
             </Breadcrumbs>
           ) : (
             <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
@@ -763,25 +781,26 @@ export const ApprovalPolicyForm = ({
                   value={triggerInEdit || undefined}
                   disabled={Boolean(triggerInEdit)}
                 >
-                  {(!prevTriggerValues?.amount ||
+                  {(!prevFormValues?.triggers?.amount ||
                     triggerInEdit === 'amount') && (
                     <MenuItem value="amount">
                       {getTriggerName('amount')}
                     </MenuItem>
                   )}
-                  {(!prevTriggerValues?.counterpart_id ||
+                  {(!prevFormValues?.triggers?.counterpart_id ||
                     triggerInEdit === 'counterpart_id') && (
                     <MenuItem value="counterpart_id">
                       {getTriggerName('counterpart_id')}
                     </MenuItem>
                   )}
-                  {(!prevTriggerValues?.was_created_by_user_id ||
+                  {(!prevFormValues?.triggers?.was_created_by_user_id ||
                     triggerInEdit === 'was_created_by_user_id') && (
                     <MenuItem value="was_created_by_user_id">
                       {getTriggerName('was_created_by_user_id')}
                     </MenuItem>
                   )}
-                  {(!prevTriggerValues?.tags || triggerInEdit === 'tags') && (
+                  {(!prevFormValues?.triggers?.tags ||
+                    triggerInEdit === 'tags') && (
                     <MenuItem value="tags">{getTriggerName('tags')}</MenuItem>
                   )}
                 </RHFTextField>
@@ -797,25 +816,25 @@ export const ApprovalPolicyForm = ({
                   value={scriptInEdit}
                   disabled={Boolean(scriptInEdit)}
                 >
-                  {(!prevRuleValues?.single_user ||
+                  {(!prevFormValues?.rules?.single_user ||
                     scriptInEdit === 'single_user') && (
                     <MenuItem value="single_user">
                       {t(i18n)`Single user`}
                     </MenuItem>
                   )}
-                  {(!prevRuleValues?.users_from_list ||
+                  {(!prevFormValues?.rules?.users_from_list ||
                     scriptInEdit === 'users_from_list') && (
                     <MenuItem value="users_from_list">
                       {t(i18n)`Users from the list - Any`}
                     </MenuItem>
                   )}
-                  {(!prevRuleValues?.roles_from_list ||
+                  {(!prevFormValues?.rules?.roles_from_list ||
                     scriptInEdit === 'roles_from_list') && (
                     <MenuItem value="roles_from_list">
                       {t(i18n)`Any user that has user role`}
                     </MenuItem>
                   )}
-                  {(!prevRuleValues?.approval_chain ||
+                  {(!prevFormValues?.rules?.approval_chain ||
                     scriptInEdit === 'approval_chain') && (
                     <MenuItem value="approval_chain">
                       {t(i18n)`Users from list - One by one`}
@@ -998,14 +1017,32 @@ export const ApprovalPolicyForm = ({
                         triggers={currentTriggers}
                         onAddTrigger={() => {
                           setIsAddingTrigger(true);
-                          setPrevTriggerValues({
-                            ...getValues('triggers'),
+                          setPrevFormValues({
+                            triggers: { ...getValues('triggers') },
+                            amountOperator: getValues('amountOperator'),
+                            amountValue: getValues('amountValue'),
+                            amountRangeLeftValue: getValues(
+                              'amountRangeLeftValue'
+                            ),
+                            amountRangeRightValue: getValues(
+                              'amountRangeRightValue'
+                            ),
+                            amountCurrency: getValues('amountCurrency'),
                           });
                         }}
                         onEditTrigger={(triggerKey) => {
                           setTriggerInEdit(triggerKey);
-                          setPrevTriggerValues({
-                            ...getValues('triggers'),
+                          setPrevFormValues({
+                            triggers: { ...getValues('triggers') },
+                            amountOperator: getValues('amountOperator'),
+                            amountValue: getValues('amountValue'),
+                            amountRangeLeftValue: getValues(
+                              'amountRangeLeftValue'
+                            ),
+                            amountRangeRightValue: getValues(
+                              'amountRangeRightValue'
+                            ),
+                            amountCurrency: getValues('amountCurrency'),
                           });
                         }}
                         onDeleteTrigger={(triggerKey) => {
@@ -1030,14 +1067,18 @@ export const ApprovalPolicyForm = ({
                         rules={currentRules}
                         onAddRule={() => {
                           setIsAddingRule(true);
-                          setPrevRuleValues({
-                            ...getValues('rules'),
+                          setPrevFormValues({
+                            rules: { ...getValues('rules') },
+                            usersFromListCount: getValues('usersFromListCount'),
+                            rolesFromListCount: getValues('rolesFromListCount'),
                           });
                         }}
                         onEditRule={(ruleKey) => {
                           setScriptInEdit(ruleKey);
-                          setPrevRuleValues({
-                            ...getValues('rules'),
+                          setPrevFormValues({
+                            rules: { ...getValues('rules') },
+                            usersFromListCount: getValues('usersFromListCount'),
+                            rolesFromListCount: getValues('rolesFromListCount'),
                           });
                         }}
                         onDeleteRule={(ruleKey) => {
