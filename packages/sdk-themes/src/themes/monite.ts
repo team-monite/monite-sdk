@@ -738,10 +738,16 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.MuiDataGrid-withBorderColor': {
           borderColor: 'divider',
         },
+        '& div[role="presentation"] + .MuiDataGrid-cell, & div[role="presentation"] + .MuiDataGrid-columnHeader':
+          {
+            borderLeftStyle: 'none',
+            borderLeftWidth: '0',
+          },
       },
       columnHeader: {
-        borderRightStyle: 'solid',
-        borderRightWidth: '1px',
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '1px',
+        borderLeftColor: 'divider',
         padding: '0 15.5px',
         '& .MuiDataGrid-columnHeaderTitle': {
           color: 'rgba(0, 0, 0, 0.77)',
@@ -751,9 +757,15 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
       },
       cell: {
-        borderRightStyle: 'solid',
-        borderRightWidth: '1px',
-        borderRightColor: 'divider',
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '1px',
+        borderLeftColor: 'divider',
+
+        '.MuiDataGrid-cellOffsetLeft + &': {
+          borderLeftStyle: 'none',
+          borderLeftWidth: '0',
+        },
+
         padding: '0 15.5px',
         fontWeight: 400,
         fontSize: '14px',
@@ -1099,6 +1111,9 @@ const colorProps = [
   'bgcolor',
   'borderColor',
   'borderRightColor',
+  'borderLeftColor',
+  'borderTopColor',
+  'borderBottomColor',
   'fill',
   '--DataGrid-rowBorderColor',
 ];
