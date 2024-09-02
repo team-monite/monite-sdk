@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
@@ -413,6 +414,13 @@ const PayablesTableBase = ({
     );
   }
 
+  const mockSummaryData = [
+    { status: 'Drafts', count: 14, amount: 39500 },
+    { status: 'New', count: 5, amount: 12500 },
+    { status: 'In Approval', count: 10, amount: 30500 },
+    { status: 'Paid', count: 20, amount: 79800 },
+  ];
+
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -425,6 +433,13 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
+      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+        <SummaryCardsFilters
+          data={mockSummaryData}
+          onChangeFilter={onChangeFilter}
+          selectedStatus={null}
+        />
+      </Box>
       <Box sx={{ mb: 2 }}>
         <FiltersComponent onChangeFilter={onChangeFilter} />
       </Box>
