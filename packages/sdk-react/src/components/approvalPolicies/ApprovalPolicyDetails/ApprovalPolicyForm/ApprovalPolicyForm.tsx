@@ -572,7 +572,9 @@ export const ApprovalPolicyForm = ({
                 sx={{ cursor: 'pointer' }}
                 onClick={resetFormTriggerOrScript}
               >
-                {t(i18n)`Edit Approval Policy`}
+                {isEdit
+                  ? t(i18n)`Edit Approval Policy`
+                  : t(i18n)`Create Approval Policy`}
               </Typography>
               {(triggerInEdit || isAddingTrigger) && (
                 <Typography variant="subtitle1" color="text.primary">
@@ -589,7 +591,9 @@ export const ApprovalPolicyForm = ({
             </Breadcrumbs>
           ) : (
             <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-              {t(i18n)`Edit Approval Policy`}
+              {isEdit
+                ? t(i18n)`Edit Approval Policy`
+                : t(i18n)`Create Approval Policy`}
             </Typography>
           )}
           {dialogContext?.isDialogContent && (
