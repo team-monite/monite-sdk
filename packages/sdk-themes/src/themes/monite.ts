@@ -612,6 +612,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       label: {
         padding: '0',
       },
+      deleteIcon: {
+        margin: '0 -2px 0 6px',
+      },
     },
   },
   MoniteTablePagination: {
