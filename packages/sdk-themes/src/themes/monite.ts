@@ -934,7 +934,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         margin: 0,
         padding: '40px 32px',
         '> form': {
-          maxWidth: '940px',
+          maxWidth: 'min(940px, 100%)',
           margin: '0 auto',
         },
       },
