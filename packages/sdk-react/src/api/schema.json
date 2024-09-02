@@ -4696,10 +4696,12 @@
             "in": "query"
           },
           {
+            "description": "A list of counterpart IDs to search through.",
             "required": false,
             "schema": {
               "items": { "type": "string", "format": "uuid" },
-              "type": "array"
+              "type": "array",
+              "description": "A list of counterpart IDs to search through."
             },
             "name": "id__in",
             "in": "query"
@@ -4868,6 +4870,15 @@
             "required": false,
             "schema": { "type": "string" },
             "name": "address.line2",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "tag_ids__in",
             "in": "query"
           },
           {
@@ -12968,7 +12979,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentPageThemeResponse"
+                  "$ref": "#/components/schemas/PaymentPageThemeWithFooterResponse"
                 }
               }
             }
@@ -12991,6 +13002,235 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/internal/quotes/{receivable_id}": {
+      "get": {
+        "tags": ["Quotes internal"],
+        "summary": "Get Quote By Id",
+        "operationId": "get_internal_quotes_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receivable_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteResponsePayloadExtended"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/internal/quotes/{receivable_id}/accept": {
+      "post": {
+        "tags": ["Quotes internal"],
+        "summary": "Accept Quote",
+        "operationId": "post_internal_quotes_id_accept",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receivable_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/QuoteAcceptRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResult" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/internal/quotes/{receivable_id}/decline": {
+      "post": {
+        "tags": ["Quotes internal"],
+        "summary": "Decline Quote",
+        "operationId": "post_internal_quotes_id_decline",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receivable_id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceivableDeclinePayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResult" }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Business logic error",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -17483,7 +17723,7 @@
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": { "$ref": "#/components/schemas/UploadFile" }
+              "schema": { "$ref": "#/components/schemas/PayableUploadFile" }
             }
           },
           "required": true
@@ -17533,6 +17773,14 @@
           },
           "403": {
             "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Error uploading the file. You can check the upload\n    [limitations in the documentation](https://docs.monite.com/docs/collect-payables#about-monite-ocr).",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -18265,7 +18513,7 @@
         "requestBody": {
           "content": {
             "multipart/form-data": {
-              "schema": { "$ref": "#/components/schemas/UploadFileAttach" }
+              "schema": { "$ref": "#/components/schemas/PayableAttachFile" }
             }
           },
           "required": true
@@ -19851,6 +20099,128 @@
           },
           "409": {
             "description": "Possible responses: `Action for {object_type} at permissions not found: {action}`, `Object type at permissions not found: {object_type}`, `Action {action} for {object_type} not allowed`, `Payable couldn't be updated due to current state`, `The file cannot be attached because another file is already attached. Please note that only one file attachment is allowed.`",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/payment_intents": {
+      "get": {
+        "tags": ["Payment intents"],
+        "summary": "Get payment intents",
+        "operationId": "get_payment_intents",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "description": "Order by",
+            "required": false,
+            "schema": {
+              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "description": "Order by",
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "Max is 100",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "description": "Max is 100",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A token, obtained from previous page. Prior over other filters",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "A token, obtained from previous page. Prior over other filters"
+            },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "Allowed sort fields",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/PaymentIntentCursorFields" }
+              ],
+              "description": "Allowed sort fields"
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "description": "ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "ID of a payable or receivable invoice. If provided, returns only payment intents associated with the specified invoice."
+            },
+            "name": "object_id",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentIntentsListResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -25985,7 +26355,11 @@
             "description": "Order by",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/monite_db__pagination__model__OrderEnum"
+                }
+              ],
               "description": "Order by",
               "default": "asc"
             },
@@ -26625,7 +26999,11 @@
             "description": "Order by",
             "required": false,
             "schema": {
-              "allOf": [{ "$ref": "#/components/schemas/OrderEnum" }],
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/monite__server__pagination__OrderEnum"
+                }
+              ],
               "description": "Order by",
               "default": "asc"
             },
@@ -26707,6 +27085,15 @@
               "description": "Allowed sort fields"
             },
             "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "tag_ids__in",
             "in": "query"
           },
           {
@@ -26890,6 +27277,12 @@
             "required": false,
             "schema": { "type": "string", "format": "date" },
             "name": "due_date__lte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "project_id",
             "in": "query"
           },
           {
@@ -27511,7 +27904,7 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": { "type": "object", "title": "Payload" }
+              "schema": { "$ref": "#/components/schemas/QuoteAcceptRequest" }
             }
           }
         },
@@ -28130,6 +28523,311 @@
           },
           "409": {
             "description": "Business logic error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receivables/{receivable_id}/mails": {
+      "get": {
+        "tags": ["Receivables"],
+        "summary": "Get a list of all mails sent by receivable",
+        "operationId": "get_receivables_id_mails",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receivable_id",
+            "in": "path"
+          },
+          {
+            "description": "Order by",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/monite__server__pagination__OrderEnum"
+                }
+              ],
+              "description": "Order by",
+              "default": "asc"
+            },
+            "name": "order",
+            "in": "query"
+          },
+          {
+            "description": "Max is 100",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100.0,
+              "minimum": 1.0,
+              "description": "Max is 100",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "description": "A token, obtained from previous page. Prior over other filters",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "A token, obtained from previous page. Prior over other filters"
+            },
+            "name": "pagination_token",
+            "in": "query"
+          },
+          {
+            "description": "Allowed sort fields",
+            "required": false,
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/ReceivableMailCursorFields" }
+              ],
+              "description": "Allowed sort fields"
+            },
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ReceivableMailStatusEnum"
+            },
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": {
+                "$ref": "#/components/schemas/ReceivableMailStatusEnum"
+              },
+              "type": "array"
+            },
+            "name": "status__in",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lt",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__gte",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" },
+            "name": "created_at__lte",
+            "in": "query"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceivableMailPaginationResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/receivables/{receivable_id}/mails/{mail_id}": {
+      "get": {
+        "tags": ["Receivables"],
+        "summary": "Get a mail sent by receivable",
+        "operationId": "get_receivables_id_mails_id",
+        "parameters": [
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+            "example": "2024-01-31",
+            "name": "x-monite-version",
+            "in": "header"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "receivable_id",
+            "in": "path"
+          },
+          {
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" },
+            "name": "mail_id",
+            "in": "path"
+          },
+          {
+            "description": "The ID of the entity that owns the requested resource.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "description": "The ID of the entity that owns the requested resource.",
+              "examples": ["9d2b4c8f-2087-4738-ba91-7359683c49a4"]
+            },
+            "name": "x-monite-entity-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReceivableMailResponse"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorSchemaResponse" }
@@ -29998,7 +30696,7 @@
     },
     "/settings": {
       "get": {
-        "tags": ["Project settings"],
+        "tags": ["Partner settings"],
         "summary": "Get partner settings",
         "description": "Retrieve all settings for this partner.",
         "operationId": "get_settings",
@@ -30058,7 +30756,7 @@
         "security": [{ "HTTPBearer": [] }]
       },
       "patch": {
-        "tags": ["Project settings"],
+        "tags": ["Partner settings"],
         "summary": "Update partner settings",
         "description": "Change the specified fields with the provided values.",
         "operationId": "patch_settings",
@@ -30130,7 +30828,7 @@
     },
     "/tags": {
       "get": {
-        "tags": ["Payable tags"],
+        "tags": ["Tags"],
         "summary": "Get tags",
         "description": "Get a list of all tags that can be assigned to payables.\n    Tags can be used, for example, as trigger conditions in payable approval policies.",
         "operationId": "get_tags",
@@ -30196,6 +30894,15 @@
             "required": false,
             "schema": { "items": { "type": "string" }, "type": "array" },
             "name": "name__in",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": {
+              "items": { "type": "string", "format": "uuid" },
+              "type": "array"
+            },
+            "name": "id__in",
             "in": "query"
           },
           {
@@ -30282,7 +30989,7 @@
         "security": [{ "HTTPBearer": [] }]
       },
       "post": {
-        "tags": ["Payable tags"],
+        "tags": ["Tags"],
         "summary": "Create a tag",
         "description": "Create a new tag for use in payables. The tag name must be unique.\n    Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.\n\n\nThe response returns an auto-generated ID assigned to this tag.\nTo assign this tag to a payable, send the tag ID in the `tag_ids` list when creating or updating a payable.",
         "operationId": "post_tags",
@@ -30394,7 +31101,7 @@
     },
     "/tags/{tag_id}": {
       "get": {
-        "tags": ["Payable tags"],
+        "tags": ["Tags"],
         "summary": "Get a tag by ID",
         "description": "Get information about a tag with the given ID.",
         "operationId": "get_tags_id",
@@ -30502,7 +31209,7 @@
         "security": [{ "HTTPBearer": [] }]
       },
       "delete": {
-        "tags": ["Payable tags"],
+        "tags": ["Tags"],
         "summary": "Delete a tag",
         "description": "Delete a tag with the given ID. This tag will be automatically deleted from all payables where it's used.",
         "operationId": "delete_tags_id",
@@ -30595,7 +31302,7 @@
         "security": [{ "HTTPBearer": [] }]
       },
       "patch": {
-        "tags": ["Payable tags"],
+        "tags": ["Tags"],
         "summary": "Update a tag",
         "description": "Change the tag name. The new name must be unique among existing tags.\n    Tag names are case-sensitive, that is `Marketing` and `marketing` are two different tags.",
         "operationId": "patch_tags_id",
@@ -32952,7 +33659,7 @@
               { "items": {}, "type": "array" },
               { "type": "object" }
             ],
-            "description": "A JSON object that represents the trigger for the approval policy.The trigger specifies the event that will trigger the policy to be evaluated.",
+            "description": "A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.",
             "example": "{amount >= 1000}"
           }
         },
@@ -32997,7 +33704,7 @@
               { "items": {}, "type": "array" },
               { "type": "object" }
             ],
-            "description": "A JSON object that represents the trigger for the approval policy.The trigger specifies the event that will trigger the policy to be evaluated.",
+            "description": "A JSON object that represents the trigger for the approval policy. The trigger specifies the event that will trigger the policy to be evaluated.",
             "example": "{amount >= 1000}"
           },
           "id": { "type": "string", "format": "uuid" },
@@ -33563,6 +34270,7 @@
               "payment_reminder",
               "overdue_reminder",
               "product",
+              "project",
               "receivable",
               "reconciliation",
               "role",
@@ -34022,6 +34730,11 @@
             "description": "The person's phone number.",
             "example": "5553211234"
           },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this counterpart."
+          },
           "title": {
             "type": "string",
             "description": "The person's title or honorific. Examples: Mr., Ms., Dr., Prof.",
@@ -34071,6 +34784,11 @@
             "type": "string",
             "description": "The person's phone number.",
             "example": "5553211234"
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/CounterpartTagSchema" },
+            "type": "array",
+            "description": "The list of tags for this counterpart."
           },
           "title": {
             "type": "string",
@@ -34233,6 +34951,11 @@
             "description": "The person's phone number.",
             "example": "5553211234"
           },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this counterpart."
+          },
           "title": {
             "type": "string",
             "description": "The person's title or honorific. Examples: Mr., Ms., Dr., Prof.",
@@ -34272,6 +34995,11 @@
             "type": "string",
             "description": "The phone number of the organization",
             "example": "5551231234"
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this counterpart."
           }
         },
         "type": "object",
@@ -34303,6 +35031,11 @@
             "type": "string",
             "description": "The phone number of the organization",
             "example": "5551231234"
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/CounterpartTagSchema" },
+            "type": "array",
+            "description": "The list of tags for this counterpart."
           }
         },
         "type": "object",
@@ -34453,6 +35186,11 @@
             "type": "string",
             "description": "The phone number of the organization.",
             "example": "5551231234"
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this counterpart."
           }
         },
         "additionalProperties": false,
@@ -34719,6 +35457,68 @@
           { "$ref": "#/components/schemas/CounterpartOrganizationRootResponse" }
         ],
         "description": "A Counterpart object contains information about an organization (juridical person) or\nindividual (natural person) that provides goods and services to or buys them from an\n[SME](https://docs.monite.com/docs/glossary#sme)."
+      },
+      "CounterpartTagCategory": {
+        "type": "string",
+        "enum": [
+          "document_type",
+          "department",
+          "project",
+          "cost_center",
+          "vendor_type",
+          "payment_method",
+          "approval_status"
+        ]
+      },
+      "CounterpartTagSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique ID of this tag.",
+            "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the tag was created. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.",
+            "example": "2022-09-07T16:35:18.484507+00:00"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the tag was last updated. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.",
+            "example": "2022-09-07T16:35:18.484507+00:00"
+          },
+          "category": {
+            "allOf": [
+              { "$ref": "#/components/schemas/CounterpartTagCategory" }
+            ],
+            "description": "The tag category.",
+            "example": "department"
+          },
+          "created_by_entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "ID of the user who created the tag",
+            "example": "ea837e28-509b-4b6a-a600-d54b6aa0b1f5"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "The tag description.",
+            "example": "Tag for the Marketing Department"
+          },
+          "name": {
+            "type": "string",
+            "description": "The tag name.",
+            "example": "Marketing"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "updated_at", "name"],
+        "description": "Represents a user-defined tag that can be assigned to counterparts to filter them."
       },
       "CounterpartType": {
         "type": "string",
@@ -35266,11 +36066,13 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
+            ],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
-            "$ref": "#/components/schemas/CounterpartVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableCounterpartVatIDResponse"
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
@@ -35306,12 +36108,12 @@
           },
           "entity": {
             "anyOf": [
-              { "$ref": "#/components/schemas/ReceivablesEntityOrganization" },
-              { "$ref": "#/components/schemas/ReceivablesEntityIndividual" }
+              { "$ref": "#/components/schemas/ReceivableEntityOrganization" },
+              { "$ref": "#/components/schemas/ReceivableEntityIndividual" }
             ]
           },
           "entity_address": {
-            "$ref": "#/components/schemas/EntityAddressSchema"
+            "$ref": "#/components/schemas/ReceivableEntityAddressSchema"
           },
           "entity_bank_account": {
             "$ref": "#/components/schemas/ReceivablesRepresentationOfEntityBankAccount"
@@ -35322,9 +36124,9 @@
             "description": "The entity user who created this document."
           },
           "entity_vat_id": {
-            "$ref": "#/components/schemas/EntityVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableEntityVatIDResponse"
           },
-          "file": { "$ref": "#/components/schemas/FileSchema" },
+          "file": { "$ref": "#/components/schemas/ReceivableFileSchema" },
           "file_language": {
             "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
             "description": "The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated."
@@ -35358,6 +36160,11 @@
             "type": "object",
             "description": "Metadata for partner needs"
           },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "purchase_order": {
             "type": "string",
             "maxLength": 100,
@@ -35371,6 +36178,12 @@
             "type": "integer",
             "maximum": 9007199254740991.0,
             "description": "The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/TagReadSchema" },
+            "type": "array",
+            "description": "The list of tags for this receivable.",
+            "default": []
           },
           "total_amount": {
             "type": "integer",
@@ -35409,6 +36222,11 @@
           "vat_exemption_rationale": {
             "type": "string",
             "description": "The reason for the VAT exemption, if applicable."
+          },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not.",
+            "default": "exclusive"
           },
           "withholding_tax_rate": {
             "type": "integer",
@@ -36095,38 +36913,43 @@
         "properties": {
           "city": {
             "type": "string",
-            "maxLength": 255,
+            "maxLength": 100,
+            "minLength": 1,
             "description": "A city (a full name) where the entity is registered"
           },
           "country": {
             "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
             "description": "A country name (as ISO code) where the entity is registered ",
-            "default": "DE",
             "example": "DE"
           },
           "line1": {
             "type": "string",
-            "maxLength": 255,
+            "maxLength": 200,
+            "minLength": 1,
             "description": "A street where the entity is registered"
           },
           "line2": {
             "type": "string",
             "maxLength": 100,
+            "minLength": 1,
             "description": "An alternative street used by the entity"
           },
           "postal_code": {
             "type": "string",
             "maxLength": 10,
+            "minLength": 1,
             "description": "A postal code of the address where the entity is registered"
           },
           "state": {
             "type": "string",
-            "description": "A state in a country where the entity is registered"
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "State, county, province, prefecture, region, or similar component of the entity's address. For US entities, `state` is required and must be a two-letter [USPS state abbreviation](https://pe.usps.com/text/pub28/28apb.htm), for example, NY or CA."
           }
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["city", "line1", "postal_code"],
+        "required": ["city", "country", "line1", "postal_code"],
         "description": "A schema represents address info of the entity"
       },
       "EntityBankAccountPaginationResponse": {
@@ -36223,36 +37046,6 @@
         "required": ["id"],
         "description": "Represents a bank account owned by an entity."
       },
-      "EntityBase": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "An email of the entity"
-          },
-          "logo": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A link to the entity logo"
-          },
-          "phone": {
-            "type": "string",
-            "description": "A phone number of the entity"
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A website of the entity"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "description": "A base schemas for an entity"
-      },
       "EntityBusinessStructure": {
         "type": "string",
         "enum": [
@@ -36271,54 +37064,6 @@
       "EntityCursorFields": {
         "type": "string",
         "enum": ["created_at", "updated_at"]
-      },
-      "EntityIndividualRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "An email of the entity"
-          },
-          "first_name": {
-            "type": "string",
-            "description": "The first name of the entity issuing the receivable"
-          },
-          "last_name": {
-            "type": "string",
-            "description": "The last name of the entity issuing the receivable"
-          },
-          "logo": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A link to the entity logo"
-          },
-          "phone": {
-            "type": "string",
-            "description": "A phone number of the entity"
-          },
-          "tax_id": {
-            "type": "string",
-            "description": "The Tax ID of the entity issuing the receivable"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["individual"],
-            "description": "The entity type"
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A website of the entity"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["first_name", "last_name", "type"],
-        "description": "A Request schema for an entity of individual type"
       },
       "EntityIndividualResponse": {
         "properties": {
@@ -36550,50 +37295,6 @@
         },
         "additionalProperties": false,
         "type": "object"
-      },
-      "EntityOrganizationRequest": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "An email of the entity"
-          },
-          "logo": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A link to the entity logo"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the entity issuing the receivable, when it is an organization."
-          },
-          "phone": {
-            "type": "string",
-            "description": "A phone number of the entity"
-          },
-          "tax_id": {
-            "type": "string",
-            "description": "The Tax ID of the entity issuing the receivable"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["organization"],
-            "description": "The entity type"
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A website of the entity"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": ["name", "type"],
-        "description": "A Request schema for an entity of organization type"
       },
       "EntityOrganizationResponse": {
         "properties": {
@@ -37498,11 +38199,13 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
+            ],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
-            "$ref": "#/components/schemas/CounterpartVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableCounterpartVatIDResponse"
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
@@ -37538,12 +38241,12 @@
           },
           "entity": {
             "anyOf": [
-              { "$ref": "#/components/schemas/ReceivablesEntityOrganization" },
-              { "$ref": "#/components/schemas/ReceivablesEntityIndividual" }
+              { "$ref": "#/components/schemas/ReceivableEntityOrganization" },
+              { "$ref": "#/components/schemas/ReceivableEntityIndividual" }
             ]
           },
           "entity_address": {
-            "$ref": "#/components/schemas/EntityAddressSchema"
+            "$ref": "#/components/schemas/ReceivableEntityAddressSchema"
           },
           "entity_bank_account": {
             "$ref": "#/components/schemas/ReceivablesRepresentationOfEntityBankAccount"
@@ -37554,9 +38257,9 @@
             "description": "The entity user who created this document."
           },
           "entity_vat_id": {
-            "$ref": "#/components/schemas/EntityVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableEntityVatIDResponse"
           },
-          "file": { "$ref": "#/components/schemas/FileSchema" },
+          "file": { "$ref": "#/components/schemas/ReceivableFileSchema" },
           "file_language": {
             "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
             "description": "The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated."
@@ -37592,6 +38295,11 @@
             "description": "The receivable's PDF URL in the entity's default language."
           },
           "overdue_reminder_id": { "type": "string", "format": "uuid" },
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the invoice was paid."
+          },
           "partner_metadata": {
             "type": "object",
             "description": "Metadata for partner needs"
@@ -37605,6 +38313,11 @@
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
           "payment_terms": { "$ref": "#/components/schemas/PaymentTerms" },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "purchase_order": {
             "type": "string",
             "maxLength": 100,
@@ -37627,6 +38340,12 @@
             "type": "integer",
             "maximum": 9007199254740991.0,
             "description": "The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/TagReadSchema" },
+            "type": "array",
+            "description": "The list of tags for this receivable.",
+            "default": []
           },
           "total_amount": {
             "type": "integer",
@@ -37670,6 +38389,11 @@
           "vat_exemption_rationale": {
             "type": "string",
             "description": "The reason for the VAT exemption, if applicable."
+          },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not.",
+            "default": "exclusive"
           },
           "withholding_tax_rate": {
             "type": "integer",
@@ -38012,7 +38736,15 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a product."
           },
-          "product_id": { "type": "string", "format": "uuid" },
+          "product": {
+            "allOf": [{ "$ref": "#/components/schemas/LineItemProductCreate" }],
+            "description": "Object of product. Can be used instead of product_id, created in product's catalog"
+          },
+          "product_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier of the product."
+          },
           "quantity": {
             "type": "number",
             "maximum": 2147483647.0,
@@ -38033,7 +38765,7 @@
         },
         "additionalProperties": false,
         "type": "object",
-        "required": ["product_id", "quantity"]
+        "required": ["quantity"]
       },
       "LineItemCursorFields": {
         "type": "string",
@@ -38139,8 +38871,15 @@
           },
           "entity_id": { "type": "string", "format": "uuid" },
           "entity_user_id": { "type": "string", "format": "uuid" },
+          "is_inline": {
+            "type": "boolean",
+            "description": "Indicates whether the product is inline",
+            "default": false
+          },
           "ledger_account_id": { "type": "string", "format": "uuid" },
-          "measure_unit": { "$ref": "#/components/schemas/UnitResponse" },
+          "measure_unit": {
+            "$ref": "#/components/schemas/LineItemProductMeasureUnit"
+          },
           "measure_unit_id": {
             "type": "string",
             "format": "uuid",
@@ -38148,6 +38887,7 @@
           },
           "name": { "type": "string", "description": "Name of the product." },
           "price": { "$ref": "#/components/schemas/Price" },
+          "price_after_vat": { "$ref": "#/components/schemas/Price" },
           "smallest_amount": {
             "type": "number",
             "maximum": 2147483647.0,
@@ -38170,8 +38910,55 @@
           "updated_at",
           "entity_id",
           "name",
+          "price",
+          "price_after_vat",
           "vat_rate"
         ]
+      },
+      "LineItemProductCreate": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Description of the product."
+          },
+          "ledger_account_id": { "type": "string", "format": "uuid" },
+          "measure_unit": { "$ref": "#/components/schemas/UnitRequest" },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "description": "Name of the product."
+          },
+          "price": { "$ref": "#/components/schemas/Price" },
+          "smallest_amount": {
+            "type": "number",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "description": "The smallest amount allowed for this product."
+          },
+          "type": {
+            "allOf": [
+              { "$ref": "#/components/schemas/ProductServiceTypeEnum" }
+            ],
+            "description": "Specifies whether this offering is a product or service. This may affect the applicable tax rates.",
+            "default": "product"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["name", "price"]
+      },
+      "LineItemProductMeasureUnit": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "description": { "type": "string", "maxLength": 200 },
+          "name": { "type": "string", "maxLength": 100, "minLength": 1 }
+        },
+        "type": "object",
+        "required": ["created_at", "updated_at", "name"]
       },
       "LineItemProductVatRate": {
         "properties": {
@@ -38598,6 +39385,11 @@
             ],
             "description": "Settings for the payments module."
           },
+          "quote_signature_required": {
+            "type": "boolean",
+            "description": "Sets the default behavior of whether a signature is required to accept quotes",
+            "default": false
+          },
           "receivable": {
             "allOf": [
               { "$ref": "#/components/schemas/ReceivableSettingsResponse" }
@@ -38613,6 +39405,11 @@
             "items": { "$ref": "#/components/schemas/Unit" },
             "type": "array",
             "description": "Measurement units."
+          },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
+            "default": "exclusive"
           },
           "website": { "type": "string" }
         },
@@ -39004,7 +39801,6 @@
           "partner_settings",
           "partner_token",
           "payable",
-          "project",
           "payable_line_item",
           "payables_purchase_order",
           "payment",
@@ -40405,6 +41201,7 @@
             "description": "Metadata for partner needs"
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": ["metadata"]
       },
@@ -40415,6 +41212,7 @@
             "description": "Metadata for partner needs"
           }
         },
+        "additionalProperties": false,
         "type": "object"
       },
       "PartnerProjectSettingsPayload": {
@@ -40547,6 +41345,11 @@
           "language": { "$ref": "#/components/schemas/LanguageCodeEnum" },
           "currency": { "$ref": "#/components/schemas/CurrencySettings" },
           "reminder": { "$ref": "#/components/schemas/RemindersSettings" },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivables will already include VAT or not.",
+            "default": "exclusive"
+          },
           "payment_priority": {
             "allOf": [{ "$ref": "#/components/schemas/PaymentPriorityEnum" }],
             "description": "Payment preferences for entity to automate calculating suggested payment date basing on payment terms and entity preferences",
@@ -40570,6 +41373,11 @@
             },
             "type": "array",
             "description": "Auto tagging settings for all incoming OCR payable documents."
+          },
+          "quote_signature_required": {
+            "type": "boolean",
+            "description": "Sets the default behavior of whether a signature is required to accept quotes",
+            "default": false
           }
         },
         "additionalProperties": false,
@@ -40605,6 +41413,11 @@
         },
         "additionalProperties": false,
         "type": "object"
+      },
+      "PayableAttachFile": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
       },
       "PayableCursorFields": { "type": "string", "enum": ["id", "created_at"] },
       "PayableEntityAddressSchema": {
@@ -41382,6 +42195,11 @@
         "type": "object",
         "description": "This schema is used to update the data of an existing payable."
       },
+      "PayableUploadFile": {
+        "properties": { "file": { "type": "string", "format": "binary" } },
+        "type": "object",
+        "required": ["file"]
+      },
       "PayableUploadWithDataSchema": {
         "properties": {
           "base64_encoded_file": {
@@ -41601,6 +42419,10 @@
         "required": ["id", "updated_at", "status"]
       },
       "PaymentIntentAccountType": { "type": "string", "enum": ["IBAN"] },
+      "PaymentIntentCursorFields": {
+        "type": "string",
+        "enum": ["id", "created_at"]
+      },
       "PaymentIntentHistory": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -41717,6 +42539,25 @@
           "status"
         ]
       },
+      "PaymentIntentsListResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/PaymentIntentResponse" },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
       "PaymentIntentsRecipient": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -41813,6 +42654,26 @@
         "type": "string",
         "enum": ["payable", "receivable"]
       },
+      "PaymentPageFooterResponse": {
+        "properties": {
+          "logo_url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "Url to partner logo image file. If missing, then monite logo will be used."
+          },
+          "website_url": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "Url to partner website.",
+            "example": "https://monite.com"
+          }
+        },
+        "type": "object"
+      },
       "PaymentPageThemePayload": {
         "properties": {
           "background_color": { "type": "string", "format": "color" },
@@ -41850,6 +42711,32 @@
             "maxLength": 2083,
             "minLength": 1,
             "format": "uri"
+          },
+          "logo_src": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri"
+          }
+        },
+        "type": "object"
+      },
+      "PaymentPageThemeWithFooterResponse": {
+        "properties": {
+          "background_color": { "type": "string", "format": "color" },
+          "border_radius": { "type": "string" },
+          "button": { "$ref": "#/components/schemas/ButtonThemeResponse" },
+          "card": { "$ref": "#/components/schemas/CardThemeResponse" },
+          "font_color": { "type": "string", "format": "color" },
+          "font_family": { "type": "string" },
+          "font_link_href": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri"
+          },
+          "footer": {
+            "$ref": "#/components/schemas/PaymentPageFooterResponse"
           },
           "logo_src": {
             "type": "string",
@@ -43655,6 +44542,16 @@
         "type": "object",
         "required": ["id", "country", "entity_id", "type", "value"]
       },
+      "QuoteAcceptRequest": {
+        "properties": {
+          "signature": {
+            "allOf": [{ "$ref": "#/components/schemas/Signature" }],
+            "description": "A digital signature, if required for quote acceptance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
       "QuoteResponsePayload": {
         "properties": {
           "id": { "type": "string", "format": "uuid" },
@@ -43726,11 +44623,13 @@
             "description": "The VAT/TAX ID of the counterpart."
           },
           "counterpart_type": {
-            "allOf": [{ "$ref": "#/components/schemas/CounterpartType" }],
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
+            ],
             "description": "The type of the counterpart."
           },
           "counterpart_vat_id": {
-            "$ref": "#/components/schemas/CounterpartVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableCounterpartVatIDResponse"
           },
           "currency": {
             "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
@@ -43766,12 +44665,12 @@
           },
           "entity": {
             "anyOf": [
-              { "$ref": "#/components/schemas/ReceivablesEntityOrganization" },
-              { "$ref": "#/components/schemas/ReceivablesEntityIndividual" }
+              { "$ref": "#/components/schemas/ReceivableEntityOrganization" },
+              { "$ref": "#/components/schemas/ReceivableEntityIndividual" }
             ]
           },
           "entity_address": {
-            "$ref": "#/components/schemas/EntityAddressSchema"
+            "$ref": "#/components/schemas/ReceivableEntityAddressSchema"
           },
           "entity_bank_account": {
             "$ref": "#/components/schemas/ReceivablesRepresentationOfEntityBankAccount"
@@ -43782,14 +44681,14 @@
             "description": "The entity user who created this document."
           },
           "entity_vat_id": {
-            "$ref": "#/components/schemas/EntityVatIDResponse"
+            "$ref": "#/components/schemas/ReceivableEntityVatIDResponse"
           },
           "expiry_date": {
             "type": "string",
             "format": "date",
             "description": "The date (in ISO 8601 format) until which the quote is valid."
           },
-          "file": { "$ref": "#/components/schemas/FileSchema" },
+          "file": { "$ref": "#/components/schemas/ReceivableFileSchema" },
           "file_language": {
             "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
             "description": "The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated."
@@ -43823,12 +44722,21 @@
             "type": "object",
             "description": "Metadata for partner needs"
           },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "quote_accept_page_url": {
             "type": "string",
             "maxLength": 65536,
             "minLength": 1,
             "format": "uri",
             "description": "Link for custom quote accept page"
+          },
+          "signature_required": {
+            "type": "boolean",
+            "description": "Whether acceptance a quote requires a signature."
           },
           "status": {
             "allOf": [{ "$ref": "#/components/schemas/QuoteStateEnum" }],
@@ -43838,6 +44746,12 @@
             "type": "integer",
             "maximum": 9007199254740991.0,
             "description": "The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/TagReadSchema" },
+            "type": "array",
+            "description": "The list of tags for this receivable.",
+            "default": []
           },
           "total_amount": {
             "type": "integer",
@@ -43877,6 +44791,11 @@
             "type": "string",
             "description": "The reason for the VAT exemption, if applicable."
           },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not.",
+            "default": "exclusive"
+          },
           "withholding_tax_rate": {
             "type": "integer",
             "maximum": 10000.0,
@@ -43891,6 +44810,299 @@
           "updated_at",
           "counterpart_id",
           "counterpart_type",
+          "currency",
+          "entity",
+          "entity_address",
+          "file_language",
+          "line_items",
+          "original_file_language",
+          "status",
+          "total_vat_amount",
+          "type"
+        ]
+      },
+      "QuoteResponsePayloadExtended": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the receivable was created. Timestamps follow the ISO 8601 standard."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the receivable was last updated. Timestamps follow the ISO 8601 standard."
+          },
+          "based_on": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique ID of a previous document related to the receivable if applicable."
+          },
+          "based_on_document_id": {
+            "type": "string",
+            "description": "The unique document ID of a previous document related to the receivable if applicable."
+          },
+          "comment": {
+            "type": "string",
+            "description": "Field with a comment on why the client declined this Quote"
+          },
+          "commercial_condition_description": {
+            "type": "string",
+            "description": "The commercial terms of the receivable (e.g. The products must be delivered in X days)."
+          },
+          "counterpart_billing_address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
+              }
+            ],
+            "description": "Address of invoicing, need to state as a separate fields for some countries if it differs from address of a company."
+          },
+          "counterpart_business_type": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Different types of companies for different countries, ex. GmbH, SAS, SNC, etc."
+          },
+          "counterpart_contact": {
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableCounterpartContact" }
+            ],
+            "description": "Additional information about counterpart contacts."
+          },
+          "counterpart_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique ID of the counterpart."
+          },
+          "counterpart_name": {
+            "type": "string",
+            "description": "A legal name of a counterpart it is an organization or first and last name if it is an individual"
+          },
+          "counterpart_shipping_address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
+              }
+            ],
+            "description": "Address where goods were shipped / where services were provided."
+          },
+          "counterpart_tax_id": {
+            "type": "string",
+            "description": "The VAT/TAX ID of the counterpart."
+          },
+          "counterpart_type": {
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableCounterpartType" }
+            ],
+            "description": "The type of the counterpart."
+          },
+          "counterpart_universal_address": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ReceivablesRepresentationOfCounterpartAddress"
+              }
+            ],
+            "description": "Address of the counterpart, if we need to only one address"
+          },
+          "counterpart_vat_id": {
+            "$ref": "#/components/schemas/ReceivableCounterpartVatIDResponse"
+          },
+          "currency": {
+            "allOf": [{ "$ref": "#/components/schemas/CurrencyEnum" }],
+            "description": "The currency used in the receivable."
+          },
+          "deduction_amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "description": "The amount of tax deducted in minor units"
+          },
+          "deduction_memo": {
+            "type": "string",
+            "description": "A note with additional information about a tax deduction"
+          },
+          "deduction_title": {
+            "type": "string",
+            "description": "Partner level customizable deduction title"
+          },
+          "discount": {
+            "allOf": [{ "$ref": "#/components/schemas/Discount" }],
+            "description": "The discount for a receivable."
+          },
+          "discounted_subtotal": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "description": "Total price of the receivable with discounts before taxes [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "document_id": {
+            "type": "string",
+            "description": "The sequential code systematically assigned to invoices."
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Optional field representing date until which invoice should be paid"
+          },
+          "entity": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ReceivableEntityOrganization" },
+              { "$ref": "#/components/schemas/ReceivableEntityIndividual" }
+            ]
+          },
+          "entity_address": {
+            "$ref": "#/components/schemas/ReceivableEntityAddressSchema"
+          },
+          "entity_bank_account": {
+            "$ref": "#/components/schemas/ReceivablesRepresentationOfEntityBankAccount"
+          },
+          "entity_user_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The entity user who created this document."
+          },
+          "entity_vat_id": {
+            "$ref": "#/components/schemas/ReceivableEntityVatIDResponse"
+          },
+          "expiry_date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date (in ISO 8601 format) until which the quote is valid."
+          },
+          "external_qr_code_link": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "description": "External link redirecting user from qr code"
+          },
+          "file": { "$ref": "#/components/schemas/ReceivableFileSchema" },
+          "file_language": {
+            "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
+            "description": "The language of the customer-facing PDF file (`file_url`). The value matches the counterpart's `language` at the time when this PDF file was generated."
+          },
+          "file_url": {
+            "type": "string",
+            "description": "The receivable's PDF URL in the counterpart's default language."
+          },
+          "issue_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Optional field for the issue of the entry."
+          },
+          "line_items": {
+            "items": { "$ref": "#/components/schemas/ResponseItem" },
+            "type": "array"
+          },
+          "memo": {
+            "type": "string",
+            "description": "A note with additional information for a receivable."
+          },
+          "original_file_language": {
+            "allOf": [{ "$ref": "#/components/schemas/LanguageCodeEnum" }],
+            "description": "The language of the entity's copy of the PDF file (`original_file_url`). The value matches the entity's `language` at the time when this PDF file was generated."
+          },
+          "original_file_url": {
+            "type": "string",
+            "description": "The receivable's PDF URL in the entity's default language."
+          },
+          "partner_metadata": {
+            "type": "object",
+            "description": "Metadata for partner needs"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
+          "quote_accept_page_url": {
+            "type": "string",
+            "maxLength": 65536,
+            "minLength": 1,
+            "format": "uri",
+            "description": "Link for custom quote accept page"
+          },
+          "signature": {
+            "allOf": [{ "$ref": "#/components/schemas/SignatureResponse" }],
+            "description": "Quote's digital signature"
+          },
+          "signature_required": {
+            "type": "boolean",
+            "description": "Whether acceptance a quote requires a signature."
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/QuoteStateEnum" }],
+            "description": "The status of the Quote inside the receivable workflow."
+          },
+          "subtotal": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "description": "The subtotal (excluding VAT), in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/TagReadSchema" },
+            "type": "array",
+            "description": "The list of tags for this receivable.",
+            "default": []
+          },
+          "total_amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "description": "Total price of the receivable in [minor units](https://docs.monite.com/docs/currencies#minor-units). Calculated as a subtotal + total_vat_amount.",
+            "default": 0
+          },
+          "total_vat_amount": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "description": "The total VAT of all line items, in [minor units](https://docs.monite.com/docs/currencies#minor-units)."
+          },
+          "total_vat_amounts": {
+            "items": { "$ref": "#/components/schemas/TotalVatAmountItem" },
+            "type": "array",
+            "description": "List of total vat amount for each VAT, presented in receivable"
+          },
+          "total_withholding_tax": {
+            "type": "integer",
+            "description": "Total price of the receivable with tax withheld in minor units"
+          },
+          "trade_name": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "Trade name of the entity"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["quote"],
+            "description": "The type of the document uploaded."
+          },
+          "vat_exempt": {
+            "type": "boolean",
+            "description": "Indicates whether the goods, materials, or services listed in the receivable are exempt from VAT or not."
+          },
+          "vat_exemption_rationale": {
+            "type": "string",
+            "description": "The reason for the VAT exemption, if applicable."
+          },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not.",
+            "default": "exclusive"
+          },
+          "withholding_tax_rate": {
+            "type": "integer",
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "description": "The amount of tax withheld in percent minor units"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "counterpart_id",
+          "counterpart_type",
+          "counterpart_universal_address",
           "currency",
           "entity",
           "entity_address",
@@ -43954,12 +45166,38 @@
         "type": "object",
         "required": ["address", "first_name", "last_name"]
       },
+      "ReceivableCounterpartType": {
+        "type": "string",
+        "enum": ["individual", "organization"]
+      },
+      "ReceivableCounterpartVatIDResponse": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "counterpart_id": { "type": "string", "format": "uuid" },
+          "country": { "$ref": "#/components/schemas/AllowedCountries" },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/VatIDTypeEnum" }],
+            "default": "unknown",
+            "example": "eu_vat"
+          },
+          "value": { "type": "string", "maxLength": 32, "example": "123456789" }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "counterpart_id", "value"]
+      },
       "ReceivableCreateBasedOnPayload": {
         "properties": {
           "based_on": {
             "type": "string",
             "format": "uuid",
             "description": "The unique ID of a previous document related to the receivable if applicable."
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
           },
           "type": {
             "allOf": [{ "$ref": "#/components/schemas/BasedOnTransitionType" }],
@@ -43980,7 +45218,8 @@
           "due_date",
           "issue_date",
           "document_id",
-          "created_at"
+          "created_at",
+          "project_id"
         ]
       },
       "ReceivableDeclinePayload": {
@@ -43998,6 +45237,275 @@
       "ReceivableEditFlow": {
         "type": "string",
         "enum": ["compliant", "partially_compliant", "non_compliant"]
+      },
+      "ReceivableEntityAddressSchema": {
+        "properties": {
+          "city": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "A city (a full name) where the entity is registered"
+          },
+          "country": {
+            "allOf": [{ "$ref": "#/components/schemas/AllowedCountries" }],
+            "description": "A country name (as ISO code) where the entity is registered ",
+            "default": "DE",
+            "example": "DE"
+          },
+          "line1": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "A street where the entity is registered"
+          },
+          "line2": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "An alternative street used by the entity"
+          },
+          "postal_code": {
+            "type": "string",
+            "maxLength": 10,
+            "description": "A postal code of the address where the entity is registered"
+          },
+          "state": {
+            "type": "string",
+            "description": "A state in a country where the entity is registered"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["city", "line1", "postal_code"],
+        "description": "A schema represents address info of the entity"
+      },
+      "ReceivableEntityBase": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "description": "A base schemas for an entity"
+      },
+      "ReceivableEntityIndividual": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the entity issuing the receivable"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the entity issuing the receivable"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "tax_id": {
+            "type": "string",
+            "description": "The Tax ID of the entity issuing the receivable"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["individual"],
+            "description": "The entity type"
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "type": "object",
+        "required": ["first_name", "last_name", "type"],
+        "description": "A Response schema for an entity of individual type"
+      },
+      "ReceivableEntityIndividualRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "The first name of the entity issuing the receivable"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "The last name of the entity issuing the receivable"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "tax_id": {
+            "type": "string",
+            "description": "The Tax ID of the entity issuing the receivable"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["individual"],
+            "description": "The entity type"
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["first_name", "last_name", "type"],
+        "description": "A Request schema for an entity of individual type"
+      },
+      "ReceivableEntityOrganization": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the entity issuing the receivable, when it is an organization."
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "tax_id": {
+            "type": "string",
+            "description": "The Tax ID of the entity issuing the receivable"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["organization"],
+            "description": "The entity type"
+          },
+          "vat_id": {
+            "type": "string",
+            "description": "The VAT ID of the entity issuing the receivable, when it is an organization."
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "type": "object",
+        "required": ["name", "type"],
+        "description": "A Response schema for an entity of organization type"
+      },
+      "ReceivableEntityOrganizationRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email of the entity"
+          },
+          "logo": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A link to the entity logo"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the entity issuing the receivable, when it is an organization."
+          },
+          "phone": {
+            "type": "string",
+            "description": "A phone number of the entity"
+          },
+          "tax_id": {
+            "type": "string",
+            "description": "The Tax ID of the entity issuing the receivable"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["organization"],
+            "description": "The entity type"
+          },
+          "website": {
+            "type": "string",
+            "maxLength": 2083,
+            "minLength": 1,
+            "format": "uri",
+            "description": "A website of the entity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["name", "type"],
+        "description": "A Request schema for an entity of organization type"
+      },
+      "ReceivableEntityVatIDResponse": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "country": { "$ref": "#/components/schemas/AllowedCountries" },
+          "entity_id": { "type": "string", "format": "uuid" },
+          "type": {
+            "allOf": [{ "$ref": "#/components/schemas/VatIDTypeEnum" }],
+            "default": "unknown",
+            "example": "eu_vat"
+          },
+          "value": { "type": "string", "maxLength": 32, "example": "123456789" }
+        },
+        "type": "object",
+        "required": ["id", "country", "entity_id", "value"]
       },
       "ReceivableFacadeCreateInvoicePayload": {
         "properties": {
@@ -44038,6 +45546,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
+          "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
             "format": "uuid",
@@ -44075,10 +45584,21 @@
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
           "payment_terms_id": { "type": "string", "format": "uuid" },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "purchase_order": {
             "type": "string",
             "maxLength": 100,
             "description": "Contain purchase order number."
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
           },
           "trade_name": {
             "type": "string",
@@ -44097,6 +45617,10 @@
           "vat_exemption_rationale": {
             "type": "string",
             "description": "The reason for the VAT exemption, if applicable."
+          },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not."
           },
           "withholding_tax_rate": {
             "type": "integer",
@@ -44164,6 +45688,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
+          "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
             "format": "uuid",
@@ -44191,12 +45716,27 @@
             "type": "object",
             "description": "Metadata for partner needs"
           },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "quote_accept_page_url": {
             "type": "string",
             "maxLength": 65536,
             "minLength": 1,
             "format": "uri",
             "description": "Link for custom quote accept page"
+          },
+          "signature_required": {
+            "type": "boolean",
+            "description": "Whether acceptance a quote requires a signature."
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
           },
           "trade_name": {
             "type": "string",
@@ -44216,6 +45756,10 @@
             "type": "string",
             "description": "The reason for the VAT exemption, if applicable."
           },
+          "vat_mode": {
+            "allOf": [{ "$ref": "#/components/schemas/VatModeEnum" }],
+            "description": "Defines whether the prices of products in receivable will already include VAT or not."
+          },
           "withholding_tax_rate": {
             "type": "integer",
             "maximum": 10000.0,
@@ -44233,6 +45777,82 @@
           "type"
         ]
       },
+      "ReceivableFileSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique ID of this file."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+          },
+          "file_type": {
+            "type": "string",
+            "description": "The type of the business object associated with this file.",
+            "example": "payables"
+          },
+          "md5": {
+            "type": "string",
+            "description": "The MD5 hash of the file.",
+            "example": "31d1a2dd1ad3dfc39be849d70a68dac0"
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "The file's [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types).",
+            "example": "application/pdf"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "The original file name (if available).",
+            "example": "invoice.pdf"
+          },
+          "pages": {
+            "items": { "$ref": "#/components/schemas/ReceivablePageSchema" },
+            "type": "array",
+            "description": "If the file is a PDF document, this property contains individual pages extracted from the file. Otherwise, an empty array.",
+            "default": []
+          },
+          "previews": {
+            "items": { "$ref": "#/components/schemas/ReceivablePreviewSchema" },
+            "type": "array",
+            "description": "Preview images generated for this file. There can be multiple images with different sizes.",
+            "default": []
+          },
+          "region": {
+            "type": "string",
+            "description": "Geographical region of the data center where the file is stored.",
+            "example": "eu-central-1"
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "The file size in bytes.",
+            "example": 24381
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to download the file.",
+            "example": "https://bucketname.s3.amazonaws.com/12345/67890.pdf"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "file_type",
+          "md5",
+          "mimetype",
+          "name",
+          "region",
+          "size",
+          "url"
+        ],
+        "description": "Represents a file (such as a PDF invoice) that was uploaded to Monite."
+      },
       "ReceivableFileUrl": {
         "properties": {
           "file_url": {
@@ -44245,6 +45865,138 @@
           }
         },
         "type": "object"
+      },
+      "ReceivableMailCursorFields": {
+        "type": "string",
+        "enum": ["status", "created_at", "updated_at"]
+      },
+      "ReceivableMailPaginationResponse": {
+        "properties": {
+          "data": {
+            "items": { "$ref": "#/components/schemas/ReceivableMailResponse" },
+            "type": "array"
+          },
+          "next_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the next page of results, or `null` if there is no next page (i.e. you've reached the last page)."
+          },
+          "prev_pagination_token": {
+            "type": "string",
+            "description": "A token that can be sent in the `pagination_token` query parameter to get the previous page of results, or `null` if there is no previous page (i.e. you've reached the first page)."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["data"]
+      },
+      "ReceivableMailRecipientState": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "An email address of the recipient."
+          },
+          "error": {
+            "type": "string",
+            "description": "An error message in case the mailing was unsuccessful."
+          },
+          "is_success": {
+            "type": "boolean",
+            "description": "Whether mail was sent successfully."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["email", "is_success"]
+      },
+      "ReceivableMailRecipients": {
+        "properties": {
+          "bcc": {
+            "items": {
+              "$ref": "#/components/schemas/ReceivableMailRecipientState"
+            },
+            "type": "array"
+          },
+          "cc": {
+            "items": {
+              "$ref": "#/components/schemas/ReceivableMailRecipientState"
+            },
+            "type": "array"
+          },
+          "to": {
+            "items": {
+              "$ref": "#/components/schemas/ReceivableMailRecipientState"
+            },
+            "type": "array"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "ReceivableMailResponse": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time the mail task was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time the mail task was updated"
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/ReceivableMailRecipients"
+          },
+          "status": {
+            "allOf": [
+              { "$ref": "#/components/schemas/ReceivableMailStatusEnum" }
+            ],
+            "description": "The status of the mail sent by receivable"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["id", "created_at", "updated_at", "status"]
+      },
+      "ReceivableMailStatusEnum": {
+        "type": "string",
+        "enum": ["pending", "processing", "sent", "partially_sent", "failed"]
+      },
+      "ReceivablePageSchema": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique ID of the image."
+          },
+          "mimetype": {
+            "type": "string",
+            "description": "The [media type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) of the image.",
+            "example": "image/png"
+          },
+          "number": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "The page number in the PDF document, from 0.",
+            "example": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 0.0,
+            "description": "Image file size, in bytes.",
+            "example": 21972
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL to download the image.",
+            "example": "https://bucket.s3.amazonaws.com/123/456.png"
+          }
+        },
+        "type": "object",
+        "required": ["id", "mimetype", "number", "size", "url"],
+        "description": "When a PDF document is uploaded to Monite, it extracts individual pages from the document\nand saves them as PNG images. This object contains the image and metadata of a single page."
       },
       "ReceivablePaginationResponse": {
         "properties": {
@@ -44271,6 +46023,11 @@
           "comment": {
             "type": "string",
             "description": "Optional comment explaining how the payment was made."
+          },
+          "paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the invoice was paid."
           }
         },
         "additionalProperties": false,
@@ -44333,6 +46090,28 @@
         "type": "object",
         "required": ["body_preview", "subject_preview"],
         "description": "A schema for receiving a request for previewing an email with a receivable document"
+      },
+      "ReceivablePreviewSchema": {
+        "properties": {
+          "height": {
+            "type": "integer",
+            "description": "The image height in pixels.",
+            "example": 400
+          },
+          "url": {
+            "type": "string",
+            "description": "The image URL.",
+            "example": "https://bucketname.s3.amazonaws.com/1/2/3.png"
+          },
+          "width": {
+            "type": "integer",
+            "description": "The image width in pixels.",
+            "example": 200
+          }
+        },
+        "type": "object",
+        "required": ["height", "url", "width"],
+        "description": "A preview image generated for a file."
       },
       "ReceivableResponse": {
         "anyOf": [
@@ -44470,100 +46249,6 @@
           { "$ref": "#/components/schemas/UpdateIssuedInvoicePayload" }
         ],
         "additionalProperties": false
-      },
-      "ReceivablesEntityIndividual": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "An email of the entity"
-          },
-          "first_name": {
-            "type": "string",
-            "description": "The first name of the entity issuing the receivable"
-          },
-          "last_name": {
-            "type": "string",
-            "description": "The last name of the entity issuing the receivable"
-          },
-          "logo": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A link to the entity logo"
-          },
-          "phone": {
-            "type": "string",
-            "description": "A phone number of the entity"
-          },
-          "tax_id": {
-            "type": "string",
-            "description": "The Tax ID of the entity issuing the receivable"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["individual"],
-            "description": "The entity type"
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A website of the entity"
-          }
-        },
-        "type": "object",
-        "required": ["first_name", "last_name", "type"],
-        "description": "A Response schema for an entity of individual type"
-      },
-      "ReceivablesEntityOrganization": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "An email of the entity"
-          },
-          "logo": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A link to the entity logo"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the entity issuing the receivable, when it is an organization."
-          },
-          "phone": {
-            "type": "string",
-            "description": "A phone number of the entity"
-          },
-          "tax_id": {
-            "type": "string",
-            "description": "The Tax ID of the entity issuing the receivable"
-          },
-          "type": {
-            "type": "string",
-            "enum": ["organization"],
-            "description": "The entity type"
-          },
-          "vat_id": {
-            "type": "string",
-            "description": "The VAT ID of the entity issuing the receivable, when it is an organization."
-          },
-          "website": {
-            "type": "string",
-            "maxLength": 2083,
-            "minLength": 1,
-            "format": "uri",
-            "description": "A website of the entity"
-          }
-        },
-        "type": "object",
-        "required": ["name", "type"],
-        "description": "A Response schema for an entity of organization type"
       },
       "ReceivablesPreviewTypeEnum": {
         "type": "string",
@@ -45069,6 +46754,7 @@
             "payment_reminder": "#/components/schemas/CommonSchema",
             "overdue_reminder": "#/components/schemas/CommonSchema",
             "product": "#/components/schemas/CommonSchema",
+            "project": "#/components/schemas/CommonSchema",
             "receivable": "#/components/schemas/CommonSchema",
             "reconciliation": "#/components/schemas/CommonSchema",
             "role": "#/components/schemas/CommonSchema",
@@ -45116,6 +46802,59 @@
         "additionalProperties": false,
         "type": "object",
         "required": ["new_password", "token"]
+      },
+      "Signature": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of a person who signed a quote"
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "The full name of a person who signed a quote"
+          },
+          "signature_image": {
+            "type": "string",
+            "maxLength": 524288,
+            "minLength": 32,
+            "contentEncoding": "base64",
+            "contentMediaType": "image/png",
+            "description": "Base64 encoded PNG image of a signature"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["email", "full_name", "signature_image"]
+      },
+      "SignatureResponse": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of a person who signed a quote"
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "description": "The full name of a person who signed a quote"
+          },
+          "signature_image_url": {
+            "type": "string",
+            "description": "URL of the signature image"
+          },
+          "signed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the receivable was signed"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": ["email", "full_name", "signature_image_url", "signed_at"]
       },
       "SingleOnboardingRequirementsResponse": {
         "properties": {
@@ -45811,6 +47550,7 @@
             "format": "uuid",
             "description": "Address where goods were shipped / where services were provided."
           },
+          "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "line_items": {
             "$ref": "#/components/schemas/UpdateLineItemForCreditNote"
           },
@@ -45821,6 +47561,17 @@
           "partner_metadata": {
             "type": "object",
             "description": "Metadata for partner needs"
+          },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
           }
         },
         "additionalProperties": false,
@@ -46052,7 +47803,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
-          "entity": { "$ref": "#/components/schemas/EntityBase" },
+          "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
             "format": "uuid",
@@ -46090,6 +47841,17 @@
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
           "payment_terms_id": { "type": "string", "format": "uuid" },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
+          },
           "trade_name": {
             "type": "string",
             "maxLength": 255,
@@ -46142,12 +47904,16 @@
           },
           "entity": {
             "anyOf": [
-              { "$ref": "#/components/schemas/EntityOrganizationRequest" },
-              { "$ref": "#/components/schemas/EntityIndividualRequest" }
+              {
+                "$ref": "#/components/schemas/ReceivableEntityOrganizationRequest"
+              },
+              {
+                "$ref": "#/components/schemas/ReceivableEntityIndividualRequest"
+              }
             ]
           },
           "entity_address": {
-            "$ref": "#/components/schemas/EntityAddressSchema"
+            "$ref": "#/components/schemas/ReceivableEntityAddressSchema"
           },
           "entity_vat_id_id": {
             "type": "string",
@@ -46169,7 +47935,18 @@
             "description": "Metadata for partner needs"
           },
           "payment_reminder_id": { "type": "string", "format": "uuid" },
-          "payment_terms_id": { "type": "string", "format": "uuid" }
+          "payment_terms_id": { "type": "string", "format": "uuid" },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
+          }
         },
         "additionalProperties": false,
         "type": "object",
@@ -46362,6 +48139,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Discount" }],
             "description": "The discount for a receivable."
           },
+          "entity": { "$ref": "#/components/schemas/ReceivableEntityBase" },
           "entity_bank_account_id": {
             "type": "string",
             "format": "uuid",
@@ -46394,12 +48172,27 @@
             "format": "uuid",
             "description": "Unique ID of the payment terms."
           },
+          "project_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A project related to current receivable"
+          },
           "quote_accept_page_url": {
             "type": "string",
             "maxLength": 65536,
             "minLength": 1,
             "format": "uri",
             "description": "Link for custom quote accept page"
+          },
+          "signature_required": {
+            "type": "boolean",
+            "description": "Whether acceptance a quote requires a signature."
+          },
+          "tag_ids": {
+            "items": { "type": "string", "format": "uuid" },
+            "type": "array",
+            "description": "A list of IDs of user-defined tags (labels) assigned to this receivable.",
+            "default": []
           },
           "trade_name": {
             "type": "string",
@@ -46496,11 +48289,6 @@
         },
         "type": "object",
         "required": ["file", "file_type"]
-      },
-      "UploadFileAttach": {
-        "properties": { "file": { "type": "string", "format": "binary" } },
-        "type": "object",
-        "required": ["file"]
       },
       "UserAvatarFileUpload": {
         "properties": { "file": { "type": "string", "format": "binary" } },
@@ -46633,6 +48421,7 @@
           "unknown"
         ]
       },
+      "VatModeEnum": { "type": "string", "enum": ["exclusive", "inclusive"] },
       "VatRateCreator": { "type": "string", "enum": ["monite", "accounting"] },
       "VatRateListResponse": {
         "properties": {
@@ -46926,7 +48715,8 @@
           "workflow_pipeline",
           "overdue_reminder",
           "payment_reminder",
-          "accounting_connection"
+          "accounting_connection",
+          "project"
         ]
       },
       "WebhookSubscriptionCursorFields": {
@@ -47153,7 +48943,7 @@
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC date and time when this workflow was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
+            "description": "UTC date and time when this file was uploaded to Monite. Timestamps follow the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format."
           },
           "file_type": {
             "type": "string",
@@ -47278,6 +49068,11 @@
         "type": "object",
         "required": ["url", "width", "height"],
         "description": "A preview image generated for a file."
+      },
+      "monite__server__pagination__OrderEnum": { "enum": ["asc", "desc"] },
+      "monite_db__pagination__model__OrderEnum": {
+        "type": "string",
+        "enum": ["asc", "desc"]
       },
       "package__entities__unversioned__schemas__file_saver__FileSchema": {
         "properties": {
@@ -47459,8 +49254,8 @@
     { "name": "Onboarding requirements" },
     { "name": "Overdue reminders" },
     { "name": "PDF templates" },
+    { "name": "Partner settings" },
     { "name": "Payable line items" },
-    { "name": "Payable tags" },
     { "name": "Payables" },
     { "name": "Payment intents" },
     { "name": "Payment intents internal" },
@@ -47472,15 +49267,16 @@
     { "name": "Products" },
     { "name": "Profile" },
     { "name": "Project dictionaries" },
-    { "name": "Project settings" },
     { "name": "Projects" },
     { "name": "Projects settings" },
     { "name": "Purchase orders" },
+    { "name": "Quotes internal" },
     { "name": "Receivables" },
     { "name": "Recurrences" },
     { "name": "Register" },
     { "name": "Roles" },
     { "name": "Secrets" },
+    { "name": "Tags" },
     { "name": "Text templates" },
     { "name": "Users" },
     { "name": "VAT rates" },
