@@ -237,12 +237,6 @@ const ApprovalPoliciesTableBase = ({
           '&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell': {
             py: '22px',
           },
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
         }}
         loading={isLoading}
         getRowHeight={() => 'auto'}

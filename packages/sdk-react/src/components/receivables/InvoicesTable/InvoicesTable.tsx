@@ -306,14 +306,6 @@ const InvoicesTableBase = ({
         rowSelection={false}
         disableColumnFilter={true}
         loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         onSortModelChange={onChangeSort}
         onRowClick={(params) => onRowClick?.(params.row.id)}
         slots={{

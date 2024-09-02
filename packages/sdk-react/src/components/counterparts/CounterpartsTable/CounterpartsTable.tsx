@@ -407,14 +407,6 @@ const CounterpartsTableBase = ({
         columnVisibilityModel={{
           category: showCategories,
         }}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

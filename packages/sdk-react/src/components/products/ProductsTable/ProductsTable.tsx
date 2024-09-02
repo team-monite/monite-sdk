@@ -190,11 +190,11 @@ const ProductsTableBase = ({
         display: 'flex',
         flex: 3,
         renderCell: (params) => (
-          <Stack spacing={1} width="100%">
-            <Typography variant="caption">{params.row.name}</Typography>
+          <Stack spacing={0} width="100%">
+            <Typography variant="body1">{params.row.name}</Typography>
             <Typography
-              color="secondary"
-              sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+              variant="body2"
+              className="Monite-TextOverflowContainer"
             >
               {params.row.description}
             </Typography>
@@ -309,14 +309,6 @@ const ProductsTableBase = ({
         }}
         columns={columns}
         loading={isLoading}
-        sx={{
-          '& .MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-          '&.MuiDataGrid-withBorderColor': {
-            borderColor: 'divider',
-          },
-        }}
         slots={{
           pagination: () => (
             <TablePagination

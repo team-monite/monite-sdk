@@ -735,10 +735,22 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
         '--DataGrid-rowBorderColor': 'divider',
+        '& .MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
+        '&.MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
+        '& div[role="presentation"] + .MuiDataGrid-cell, & div[role="presentation"] + .MuiDataGrid-columnHeader':
+          {
+            borderLeftStyle: 'none',
+            borderLeftWidth: '0',
+          },
       },
       columnHeader: {
-        borderRightStyle: 'solid',
-        borderRightWidth: '1px',
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '1px',
+        borderLeftColor: 'divider',
         padding: '0 15.5px',
         '& .MuiDataGrid-columnHeaderTitle': {
           color: 'rgba(0, 0, 0, 0.77)',
@@ -748,9 +760,15 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
       },
       cell: {
-        borderRightStyle: 'solid',
-        borderRightWidth: '1px',
-        borderRightColor: 'divider',
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '1px',
+        borderLeftColor: 'divider',
+
+        '.MuiDataGrid-cellOffsetLeft + &': {
+          borderLeftStyle: 'none',
+          borderLeftWidth: '0',
+        },
+
         padding: '0 15.5px',
         fontWeight: 400,
         fontSize: '14px',
@@ -765,6 +783,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               paddingLeft: 0,
             },
           },
+        '&[data-field="actions"]': {
+          textOverflow: 'clip', // Hide ... after action buttons
+        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
@@ -1093,6 +1114,9 @@ const colorProps = [
   'bgcolor',
   'borderColor',
   'borderRightColor',
+  'borderLeftColor',
+  'borderTopColor',
+  'borderBottomColor',
   'fill',
   '--DataGrid-rowBorderColor',
 ];
