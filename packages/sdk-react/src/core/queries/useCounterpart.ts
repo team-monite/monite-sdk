@@ -377,9 +377,7 @@ export const useCounterpartContactList = (
   );
 
   if (counterpart && isIndividualCounterpart(counterpart)) {
-    const individual = (
-      counterpart as components['schemas']['CounterpartIndividualRootResponse']
-    ).individual;
+    const individual = counterpart.individual;
     return {
       isLoading: false,
       data: [
