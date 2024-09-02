@@ -32,91 +32,96 @@ type FilterTypes = {
 
 type FilterValue = string | null;
 
-export const SummaryCard = ({
+const SummaryCard: React.FC<SummaryCardProps> = ({
   status,
   count,
   amount,
   onClick,
   selected,
-}: SummaryCardProps) => (
-  <Card
-    onClick={onClick}
-    sx={{
-      cursor: 'pointer',
-      border: selected ? '2px solid #3737FF' : '2px solid gray',
-      '&:hover': { border: '2px solid blue' },
-      display: 'flex',
-      padding: '18px 16px',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      gap: '8px',
-      flex: '1 0 0',
-      backgroundColor: selected ? '#f0f4ff' : '#fafafa',
-      height: 80,
-      minWidth: 220,
-    }}
-  >
-    <CardContent
+}) => {
+  // Check if the card is "All items" to apply specific styling
+  const isAllItems = status === t(i18n)`All items`;
+
+  return (
+    <Card
+      onClick={onClick}
       sx={{
-        padding: 0,
+        cursor: 'pointer',
+        border: selected ? '2px solid #3737FF' : '2px solid gray',
+        '&:hover': { border: '2px solid blue' },
         display: 'flex',
+        padding: '16px 18px',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: '100%',
+        flex: '1 0 0',
+        backgroundColor: selected ? '#f0f4ff' : '#fafafa',
+        height: 80,
+        minWidth: isAllItems ? 118 : 220,
       }}
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{
-            leadingTrim: 'both',
-            textEdge: 'cap',
-            fontSize: 16,
-            fontWeight: 700,
-            letterSpacing: 0.32,
-          }}
-        >
-          {status}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            leadingTrim: 'both',
-            textEdge: 'cap',
-            fontSize: 13,
-            fontWeight: 700,
-            letterSpacing: 0.26,
-          }}
-        >
-          {count} {t(i18n)`items`}
-        </Typography>
-      </Box>
-      {amount && (
+      <CardContent
+        sx={{
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+        }}
+      >
         <Box
           display="flex"
-          justifyContent="flex-end"
-          alignItems="flex-end"
-          mt="auto"
+          justifyContent={amount ? 'space-between' : 'flex-start'}
+          alignItems={isAllItems ? 'flex-start' : 'center'} // Align items to the left for "All items"
+          flexDirection={amount ? 'row' : 'column'}
+          sx={{ textAlign: isAllItems ? 'left' : 'right', width: '100%' }} // Align text to the left for "All items"
         >
           <Typography
-            variant="h5"
+            variant="h6"
             fontWeight="bold"
             sx={{
-              leadingTrim: 'both',
-              textEdge: 'cap',
-              fontSize: 20,
+              fontSize: 16,
               fontWeight: 700,
+              letterSpacing: 0.32,
             }}
           >
-            ${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            {status}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: 0.26,
+              mt: amount ? 0 : 1, // Adds margin-top when in column layout
+            }}
+          >
+            {count} {t(i18n)`items`}
           </Typography>
         </Box>
-      )}
-    </CardContent>
-  </Card>
-);
+        {amount && (
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            alignItems="flex-end"
+            mt="auto"
+          >
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{
+                fontSize: 20,
+                fontWeight: 700,
+              }}
+            >
+              ${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+            </Typography>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
 
 export const SummaryCardsFilters = ({
   data,
