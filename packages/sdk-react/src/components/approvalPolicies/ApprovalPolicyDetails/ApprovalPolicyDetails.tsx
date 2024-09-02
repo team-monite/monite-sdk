@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useApprovalPolicyById } from '@/core/queries';
 import { LoadingPage } from '@/ui/loadingPage';
 
-import { ApprovalPolicyDetailsForm } from './ApprovalPolicyDetailsForm';
-import { ExistingApprovalPolicyDetails } from './ExistingApprovalPolicyDetails';
+import { ApprovalPolicyForm } from './ApprovalPolicyForm';
+import { ApprovalPolicyView } from './ApprovalPolicyView';
 
 export interface ApprovalPolicyDetailsProps {
   /** Approval policy ID */
@@ -37,7 +37,7 @@ export const ApprovalPolicyDetails = ({
 }: ApprovalPolicyDetailsProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const { isLoading, data: approvalPolicy } = useApprovalPolicyById(id);
+  const { data: approvalPolicy, isLoading } = useApprovalPolicyById(id);
 
   if (id && isLoading) {
     return <LoadingPage />;
@@ -46,29 +46,23 @@ export const ApprovalPolicyDetails = ({
   if (!isEdit && approvalPolicy) {
     // READ
     return (
-      <ExistingApprovalPolicyDetails
+      <ApprovalPolicyView
         approvalPolicy={approvalPolicy}
-        onChangeEditMode={setIsEdit}
+        setIsEdit={setIsEdit}
       />
     );
   }
 
-  if (isEdit && id) {
+  if (isEdit && approvalPolicy) {
     // UPDATE
     return (
-      <ApprovalPolicyDetailsForm
+      <ApprovalPolicyForm
         approvalPolicy={approvalPolicy}
-        onUpdated={onUpdated}
-        onChangeEditMode={setIsEdit}
+        setIsEdit={setIsEdit}
       />
     );
   }
 
   // CREATE by default
-  return (
-    <ApprovalPolicyDetailsForm
-      onCreated={onCreated}
-      onChangeEditMode={setIsEdit}
-    />
-  );
+  return <ApprovalPolicyForm setIsEdit={setIsEdit} onCreated={onCreated} />;
 };

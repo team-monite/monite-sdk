@@ -144,20 +144,20 @@ const ApprovalPoliciesTableBase = ({
       },
       {
         field: 'triggers',
-        headerName: t(i18n)`Triggers`,
+        headerName: t(i18n)`Conditions`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesTriggers approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesTriggers approvalPolicy={params.row} />
         ),
       },
       {
         field: 'rule',
-        headerName: t(i18n)`Rule`,
+        headerName: t(i18n)`Flow`,
         sortable: false,
         flex: 1,
         renderCell: (params) => (
-          <ApprovalPoliciesRules approvalPolicyId={params.row.id} />
+          <ApprovalPoliciesRules approvalPolicy={params.row} />
         ),
       },
       {
