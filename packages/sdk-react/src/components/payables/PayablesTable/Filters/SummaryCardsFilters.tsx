@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { components } from '@/api';
 import { FilterContainer } from '@/components/misc/FilterContainer';
 import { AggregatedPayablesResponse } from '@/mocks';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
@@ -14,8 +13,12 @@ type FilterTypes = {
 
 type FilterValue = string | null;
 
+type ExtendedPayableStateEnum =
+  | components['schemas']['PayableStateEnum']
+  | 'all_items';
+
 interface SummaryCardProps {
-  status: components['schemas']['PayableStateEnum'];
+  status: ExtendedPayableStateEnum;
   count: number;
   amount?: number;
   onClick: () => void;
@@ -28,10 +31,7 @@ interface SummaryCardsFiltersProps {
   selectedStatus: string | null;
 }
 
-const statusBackgroundColors: Record<
-  components['schemas']['PayableStateEnum'],
-  string
-> = {
+const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   draft: '#FAFAFA',
   new: '#F4F4FE',
   approve_in_progress: '#FFF5EB',
@@ -40,6 +40,7 @@ const statusBackgroundColors: Record<
   rejected: '#FFF5EB',
   partially_paid: '#EEFBF9',
   canceled: '#FFF5EB',
+  all_items: '#FAFAFA',
 };
 
 const SummaryCard = ({
@@ -49,21 +50,20 @@ const SummaryCard = ({
   onClick,
   selected,
 }: SummaryCardProps) => {
-  const isAllItems = status === t(i18n)`All items`;
+  const { i18n } = useLingui();
+  const isAllItems = status === 'all_items';
 
   const formattedAmount = amount
     ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
     : ['', ''];
+
   const [integerPart, decimalPart] = formattedAmount;
 
   const backgroundColor = selected
     ? 'transparent'
     : statusBackgroundColors[status] || '#FAFAFA';
 
-  const statusTitleNames: Record<
-    components['schemas']['PayableStateEnum'],
-    string
-  > = {
+  const statusTitleNames: Record<ExtendedPayableStateEnum, string> = {
     draft: t(i18n)`Draft`,
     new: t(i18n)`New`,
     approve_in_progress: t(i18n)`In Approval`,
@@ -72,6 +72,7 @@ const SummaryCard = ({
     rejected: t(i18n)`Rejected`,
     partially_paid: t(i18n)`Partially Paid`,
     canceled: t(i18n)`Canceled`,
+    all_items: t(i18n)`All items`,
   };
 
   return (
@@ -111,27 +112,60 @@ const SummaryCard = ({
             letterSpacing: 0.32,
           }}
         >
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
-          >
-            {statusTitleNames[status]}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: 0.26,
-              mt: amount ? 0 : 1,
-            }}
-          >
-            {count} {t(i18n)`items`}
-          </Typography>
+          {/* Adjust layout specifically for "All items" */}
+          {isAllItems ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              sx={{ width: '100%' }}
+            >
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
+              >
+                {statusTitleNames[status]}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: 0.26,
+                  mt: 0.5,
+                }}
+              >
+                {count} {t(i18n)`items`}
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
+              >
+                {statusTitleNames[status]}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: 0.26,
+                  mt: amount ? 0 : 1,
+                }}
+              >
+                {count} {t(i18n)`items`}
+              </Typography>
+            </>
+          )}
         </Box>
-        {amount && (
+        {status !== 'all_items' && amount && (
           <Box
             display="flex"
             justifyContent="flex-end"
@@ -174,29 +208,28 @@ export const SummaryCardsFilters = ({
   onChangeFilter,
   selectedStatus,
 }: SummaryCardsFiltersProps) => {
-  const { i18n } = useLingui();
   const className = 'Monite-SummaryCardsFilters';
 
-  const enhancedData: AggregatedPayablesResponse['data'] = [
+  const enhancedData: (AggregatedPayablesResponse['data'][0] & {
+    status: ExtendedPayableStateEnum;
+  })[] = [
     {
-      status: t(
-        i18n
-      )`All items` as AggregatedPayablesResponse['data'][0]['status'],
+      status: 'all_items' as AggregatedPayablesResponse['data'][0]['status'],
       quantity: data.reduce((acc, item) => acc + item.quantity, 0),
       amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
     },
     ...data,
   ];
 
-  const handleSelectStatus = (status: string) => {
-    onChangeFilter('status', status);
+  const handleSelectStatus = (status: ExtendedPayableStateEnum) => {
+    onChangeFilter('status', status === 'all_items' ? null : status);
   };
 
   useEffect(() => {
     if (!selectedStatus) {
-      onChangeFilter('status', t(i18n)`All items`);
+      onChangeFilter('status', 'all_items');
     }
-  }, [selectedStatus, onChangeFilter, i18n]);
+  }, [selectedStatus, onChangeFilter]);
 
   return (
     <FilterContainer className={className}>
