@@ -631,21 +631,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
-  MuiChip: {
+  MuiAvatar: {
     styleOverrides: {
       root: {
-        backgroundColor: 'primary.light',
-        borderRadius: '4px',
-        color: 'primary.main',
-        fontSize: '14px',
-        lineHeight: '16px',
-        fontWeight: 500,
-        padding: '7px 8px',
-        '& .MuiChip-avatar': {
-          marginLeft: 0,
-          marginRight: '4px',
-        },
-        '&.Monite-CounterpartCell .MuiChip-avatar': {
+        '&.MuiAvatar-colored': {
           margin: 0,
           color: 'text.primary',
           fontSize: '16px',
@@ -653,6 +642,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           lineHeight: '40px',
           width: '40px',
           height: '40px',
+
           '&.MuiAvatar-0': {
             backgroundColor: counterpartColors[0],
           },
@@ -668,6 +658,23 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           '&.MuiAvatar-4': {
             backgroundColor: counterpartColors[4],
           },
+        },
+      },
+    },
+  },
+  MuiChip: {
+    styleOverrides: {
+      root: {
+        backgroundColor: 'primary.light',
+        borderRadius: '4px',
+        color: 'primary.main',
+        fontSize: '14px',
+        lineHeight: '16px',
+        fontWeight: 500,
+        padding: '7px 8px',
+        '& .MuiChip-avatar': {
+          marginLeft: 0,
+          marginRight: '4px',
         },
       },
       label: {
@@ -706,11 +713,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         fontWeight: 400,
         fontSize: '14px',
         // Align counterpart avatar with the cell header
-        '&[data-field="counterpart_id"], &[data-field="counterpart_name"]': {
-          '.MuiChip-root': {
-            paddingLeft: 0,
+        '&[data-field="counterpart_id"], &[data-field="counterpart_name"], &[data-field="was_created_by_user_id"]':
+          {
+            '.MuiChip-root': {
+              paddingLeft: 0,
+            },
           },
-        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
@@ -877,11 +885,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MoniteApprovalRequestStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
   },
   MoniteInvoiceStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -942,6 +952,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableStatusChip: {
     defaultProps: {
       icon: false,
+      size: 'small',
     },
     styleOverrides: {
       root: {
@@ -984,6 +995,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     ],
   },
   MoniteCounterpartStatusChip: {
+    defaultProps: {
+      size: 'small',
+    },
     styleOverrides: {
       root: {
         height: '24px',
