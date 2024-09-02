@@ -328,7 +328,7 @@ export const payableHandlers = [
   }),
 
   http.get<{}, undefined, AggregatedPayablesResponse>(
-    `*${internalPayablePath}/aggregated`,
+    `${internalPayablePath}/aggregated`,
     async () => {
       await delay();
 

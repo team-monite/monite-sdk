@@ -18,10 +18,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import {
-  AggregatedPayablesResponse,
-  INTERNAL_PAYABLES_ENDPOINT,
-} from '@/mocks';
+import { AggregatedPayablesResponse } from '@/mocks';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -141,9 +138,6 @@ const PayablesTableBase = ({
     sort: 'desc',
   });
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
-  const [mockSummaryData, setMockSummaryData] = useState<
-    AggregatedPayablesResponse['data']
-  >([]);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -365,12 +359,6 @@ const PayablesTableBase = ({
     'PayablesTable'
   );
 
-  useEffect(() => {
-    fetchMockSummaryData().then((response) => {
-      setMockSummaryData(response.data);
-    });
-  }, []);
-
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -427,15 +415,12 @@ const PayablesTableBase = ({
     );
   }
 
-  const fetchMockSummaryData = async () => {
-    const response = await fetch(INTERNAL_PAYABLES_ENDPOINT + '/aggregated', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await response.json();
-  };
+  const mockSummaryData: AggregatedPayablesResponse['data'] = [
+    { status: 'draft', quantity: 14, amount: 39500 },
+    { status: 'new', quantity: 5, amount: 12500 },
+    { status: 'approve_in_progress', quantity: 10, amount: 30500 },
+    { status: 'paid', quantity: 20, amount: 79800 },
+  ];
 
   const className = 'Monite-PayablesTable';
   return (
