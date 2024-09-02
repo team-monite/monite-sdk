@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { components } from '@/api';
 import { ApprovalPoliciesRules } from '@/components/approvalPolicies/ApprovalPoliciesTable/components/ApprovalPoliciesRules';
+import { User } from '@/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyView/User';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
@@ -26,7 +27,6 @@ import {
 } from '../consts';
 import { FilterTypes, FilterValue } from '../types';
 import { ApprovalPoliciesTriggers } from './components/ApprovalPoliciesTriggers';
-import { ApprovalPoliciesUser } from './components/ApprovalPoliciesUser';
 import { Filters } from './Filters';
 
 interface onChangeSortParams {
@@ -172,9 +172,7 @@ const ApprovalPoliciesTableBase = ({
         headerName: t(i18n)`Created by`,
         sortable: false,
         flex: 0.8,
-        renderCell: ({ value }) => (
-          <ApprovalPoliciesUser entityUserId={value} />
-        ),
+        renderCell: ({ value }) => <User userId={value} />,
       },
     ];
   }, [dateFormat, i18n]);
