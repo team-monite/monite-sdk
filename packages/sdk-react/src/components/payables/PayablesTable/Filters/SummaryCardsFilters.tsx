@@ -48,24 +48,27 @@ const SummaryCard = ({
 }: SummaryCardProps) => {
   const isAllItems = status === t(i18n)`All items`;
 
-  const [integerPart, decimalPart] = amount
+  const formattedAmount = amount
     ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
     : ['', ''];
+  const [integerPart, decimalPart] = formattedAmount;
 
-  const backgroundColor = statusBackgroundColors[status] || '#fafafa';
+  const backgroundColor = selected
+    ? '#3737FF'
+    : statusBackgroundColors[status] || '#FAFAFA';
 
   return (
     <Card
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        border: selected ? '2px solid #3737FF' : '2px solid transparent',
+        border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
         '&:hover': { border: '2px solid blue' },
         display: 'flex',
         padding: '16px 18px',
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        backgroundColor: selected ? '#3737FF' : backgroundColor,
+        justifyContent: 'center',
+        backgroundColor,
         height: 80,
         minWidth: isAllItems ? 118 : 220,
       }}
@@ -87,16 +90,13 @@ const SummaryCard = ({
           sx={{
             textAlign: isAllItems ? 'left' : 'right',
             width: '100%',
+            letterSpacing: 0.32,
           }}
         >
           <Typography
             variant="h6"
             fontWeight="bold"
-            sx={{
-              fontSize: 16,
-              fontWeight: 700,
-              letterSpacing: 0.32,
-            }}
+            sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
           >
             {status}
           </Typography>
@@ -185,7 +185,7 @@ export const SummaryCardsFilters = ({
             key={item.status}
             status={item.status}
             count={item.count}
-            amount={item?.amount}
+            amount={item.amount}
             onClick={() => handleSelectStatus(item.status)}
             selected={selectedStatus === item.status}
           />
