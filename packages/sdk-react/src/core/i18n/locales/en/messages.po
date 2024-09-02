@@ -292,7 +292,7 @@ msgstr "Added on"
 msgid "Address"
 msgstr "Address"
 
-#: src/core/queries/useCounterpart.ts:68
+#: src/core/queries/useCounterpart.ts:69
 msgid "Address “{0}” has been updated."
 msgstr "Address “{0}” has been updated."
 
@@ -732,15 +732,15 @@ msgstr "Bank account"
 msgid "Bank Account"
 msgstr "Bank Account"
 
-#: src/core/queries/useCounterpart.ts:93
+#: src/core/queries/useCounterpart.ts:94
 msgid "Bank Account “{0}” has been created."
 msgstr "Bank Account “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:130
+#: src/core/queries/useCounterpart.ts:131
 msgid "Bank Account “{0}” has been updated."
 msgstr "Bank Account “{0}” has been updated."
 
-#: src/core/queries/useCounterpart.ts:176
+#: src/core/queries/useCounterpart.ts:177
 msgid "Bank Account has been deleted."
 msgstr "Bank Account has been deleted."
 
@@ -1442,15 +1442,15 @@ msgstr "Contact person"
 msgid "Contact Person"
 msgstr "Contact Person"
 
-#: src/core/queries/useCounterpart.ts:439
+#: src/core/queries/useCounterpart.ts:440
 msgid "Contact Person “{0}” has been created."
 msgstr "Contact Person “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:500
+#: src/core/queries/useCounterpart.ts:501
 msgid "Contact Person “{0}” has been updated."
 msgstr "Contact Person “{0}” has been updated."
 
-#: src/core/queries/useCounterpart.ts:532
+#: src/core/queries/useCounterpart.ts:533
 msgid "Contact Person has been deleted."
 msgstr "Contact Person has been deleted."
 
@@ -1552,11 +1552,11 @@ msgstr "Counseling Services"
 msgid "Counterpart"
 msgstr "Counterpart"
 
-#: src/core/queries/useCounterpart.ts:557
+#: src/core/queries/useCounterpart.ts:558
 msgid "Counterpart “{0}” has been created."
 msgstr "Counterpart “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:605
+#: src/core/queries/useCounterpart.ts:606
 msgid "Counterpart “{0}” has been updated."
 msgstr "Counterpart “{0}” has been updated."
 
@@ -1570,7 +1570,7 @@ msgstr "Counterpart bank account"
 msgid "Counterpart Close"
 msgstr "Counterpart Close"
 
-#: src/core/queries/useCounterpart.ts:625
+#: src/core/queries/useCounterpart.ts:626
 msgid "Counterpart has been deleted."
 msgstr "Counterpart has been deleted."
 
@@ -2538,15 +2538,15 @@ msgstr "Export"
 msgid "Exterminating Services"
 msgstr "Exterminating Services"
 
-#: src/core/queries/useCounterpart.ts:97
+#: src/core/queries/useCounterpart.ts:98
 msgid "Failed to create Bank Account."
 msgstr "Failed to create Bank Account."
 
-#: src/core/queries/useCounterpart.ts:447
+#: src/core/queries/useCounterpart.ts:448
 msgid "Failed to create Contact Person."
 msgstr "Failed to create Contact Person."
 
-#: src/core/queries/useCounterpart.ts:564
+#: src/core/queries/useCounterpart.ts:565
 msgid "Failed to create Counterpart."
 msgstr "Failed to create Counterpart."
 
@@ -2558,15 +2558,15 @@ msgstr "Failed to create product."
 msgid "Failed to create receivable: {errorMessage}"
 msgstr "Failed to create receivable: {errorMessage}"
 
-#: src/core/queries/useCounterpart.ts:217
+#: src/core/queries/useCounterpart.ts:218
 msgid "Failed to create VAT."
 msgstr "Failed to create VAT."
 
-#: src/core/queries/useCounterpart.ts:180
+#: src/core/queries/useCounterpart.ts:181
 msgid "Failed to delete Bank Account."
 msgstr "Failed to delete Bank Account."
 
-#: src/core/queries/useCounterpart.ts:628
+#: src/core/queries/useCounterpart.ts:629
 msgid "Failed to delete Counterpart."
 msgstr "Failed to delete Counterpart."
 
@@ -2574,7 +2574,7 @@ msgstr "Failed to delete Counterpart."
 msgid "Failed to delete product."
 msgstr "Failed to delete product."
 
-#: src/core/queries/useCounterpart.ts:294
+#: src/core/queries/useCounterpart.ts:295
 msgid "Failed to delete VAT."
 msgstr "Failed to delete VAT."
 
@@ -2626,19 +2626,19 @@ msgstr "Failed to load PDF Viewer"
 #~ msgid "Failed to Load Tags"
 #~ msgstr "Failed to Load Tags"
 
-#: src/core/queries/useCounterpart.ts:73
+#: src/core/queries/useCounterpart.ts:74
 msgid "Failed to update Address."
 msgstr "Failed to update Address."
 
-#: src/core/queries/useCounterpart.ts:155
+#: src/core/queries/useCounterpart.ts:156
 msgid "Failed to update Bank Account."
 msgstr "Failed to update Bank Account."
 
-#: src/core/queries/useCounterpart.ts:508
+#: src/core/queries/useCounterpart.ts:509
 msgid "Failed to update Contact Person."
 msgstr "Failed to update Contact Person."
 
-#: src/core/queries/useCounterpart.ts:612
+#: src/core/queries/useCounterpart.ts:613
 msgid "Failed to update Counterpart."
 msgstr "Failed to update Counterpart."
 
@@ -2655,7 +2655,7 @@ msgstr "Failed to update receivable line items: {errorMessage}"
 msgid "Failed to update receivable: {errorMessage}"
 msgstr "Failed to update receivable: {errorMessage}"
 
-#: src/core/queries/useCounterpart.ts:272
+#: src/core/queries/useCounterpart.ts:273
 msgid "Failed to update VAT."
 msgstr "Failed to update VAT."
 
@@ -6509,11 +6509,11 @@ msgstr "Variety Stores"
 msgid "VAT"
 msgstr "VAT"
 
-#: src/core/queries/useCounterpart.ts:213
+#: src/core/queries/useCounterpart.ts:214
 msgid "Vat “{0}” has been created."
 msgstr "Vat “{0}” has been created."
 
-#: src/core/queries/useCounterpart.ts:268
+#: src/core/queries/useCounterpart.ts:269
 msgid "Vat “{0}” has been updated."
 msgstr "Vat “{0}” has been updated."
 
@@ -6530,7 +6530,7 @@ msgstr "VAT Exempt Rationale"
 msgid "VAT exemption rationale"
 msgstr "VAT exemption rationale"
 
-#: src/core/queries/useCounterpart.ts:290
+#: src/core/queries/useCounterpart.ts:291
 msgid "VAT has been deleted."
 msgstr "VAT has been deleted."
 

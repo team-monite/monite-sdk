@@ -4,6 +4,7 @@ import { components, Services } from '@/api';
 import {
   getCounterpartName,
   getIndividualName,
+  isIndividualCounterpart,
 } from '@/components/counterparts/helpers';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { t } from '@lingui/macro';
@@ -375,10 +376,8 @@ export const useCounterpartContactList = (
     }
   );
 
-  if (counterpart?.type === 'individual') {
-    const individual = (
-      counterpart as components['schemas']['CounterpartIndividualRootResponse']
-    ).individual;
+  if (counterpart && isIndividualCounterpart(counterpart)) {
+    const individual = counterpart.individual;
     return {
       isLoading: false,
       data: [
