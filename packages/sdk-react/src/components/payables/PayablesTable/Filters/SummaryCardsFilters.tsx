@@ -6,6 +6,18 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 
+interface SummaryCardData {
+  status: string;
+  quantity: number;
+  amount?: number;
+}
+
+type FilterTypes = {
+  status: string;
+};
+
+type FilterValue = string | null;
+
 interface SummaryCardProps {
   status: string;
   count: number;
@@ -19,18 +31,6 @@ interface SummaryCardsFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedStatus: string | null;
 }
-
-interface SummaryCardData {
-  status: string;
-  count: number;
-  amount?: number;
-}
-
-type FilterTypes = {
-  status: string;
-};
-
-type FilterValue = string | null;
 
 const statusBackgroundColors: Record<string, string> = {
   Draft: '#FAFAFA',
@@ -163,7 +163,8 @@ export const SummaryCardsFilters = ({
   const enhancedData: SummaryCardData[] = [
     {
       status: t(i18n)`All items`,
-      count: data.reduce((acc, item) => acc + item.count, 0),
+      quantity: data.reduce((acc, item) => acc + item.quantity, 0),
+      amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
     },
     ...data,
   ];
@@ -201,7 +202,7 @@ export const SummaryCardsFilters = ({
           <SummaryCard
             key={item.status}
             status={item.status}
-            count={item.count}
+            count={item.quantity}
             amount={item.amount}
             onClick={() => handleSelectStatus(item.status)}
             selected={selectedStatus === item.status}

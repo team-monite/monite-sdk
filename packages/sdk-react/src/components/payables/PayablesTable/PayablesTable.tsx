@@ -17,6 +17,10 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import {
+  AggregatedPayablesResponse,
+  INTERNAL_PAYABLES_ENDPOINT,
+} from '@/mocks';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -138,6 +142,9 @@ const PayablesTableBase = ({
     sort: 'desc',
   });
   const [currentFilter, setCurrentFilter] = useState<FilterTypes>({});
+  const [mockSummaryData, setMockSummaryData] = useState<
+    AggregatedPayablesResponse['data']
+  >([]);
 
   const { formatCurrencyToDisplay } = useCurrencies();
 
@@ -325,6 +332,12 @@ const PayablesTableBase = ({
     'PayablesTable'
   );
 
+  useEffect(() => {
+    fetchMockSummaryData().then((response) => {
+      setMockSummaryData(response.data);
+    });
+  }, []);
+
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
@@ -386,13 +399,15 @@ const PayablesTableBase = ({
     );
   }
 
-  const mockSummaryData = [
-    { status: 'Drafts', count: 14, amount: 39500 },
-    { status: 'New', count: 5, amount: 12500 },
-    { status: 'In Approval', count: 10, amount: 30500 },
-    { status: 'Paid', count: 20, amount: 79800 },
-    { status: 'Canceled', count: 10, amount: 30500 },
-  ];
+  const fetchMockSummaryData = async () => {
+    const response = await fetch(INTERNAL_PAYABLES_ENDPOINT + '/aggregated', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  };
 
   const className = 'Monite-PayablesTable';
   return (
@@ -409,7 +424,7 @@ const PayablesTableBase = ({
       <Box sx={{ mb: 2 }}>
         <SummaryCardsFilters
           data={mockSummaryData}
-          onChangeFilter={() => {}}
+          onChangeFilter={onChangeFilter}
           selectedStatus={
             currentFilter[FILTER_TYPE_STATUS] || t(i18n)`All items`
           }
