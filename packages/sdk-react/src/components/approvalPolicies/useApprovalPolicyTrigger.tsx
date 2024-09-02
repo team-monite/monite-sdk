@@ -64,7 +64,7 @@ export const useApprovalPolicyTrigger = ({
       case 'was_created_by_user_id':
         return t(i18n)`Created by user`;
       case 'counterpart_id':
-        return t(i18n)`Counterpart`;
+        return t(i18n)`Counterparts`;
       case 'tags':
         return t(i18n)`Tags`;
       default:
