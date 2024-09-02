@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 
+import { components } from '@/api';
 import { FilterContainer } from '@/components/misc/FilterContainer';
+import { AggregatedPayablesResponse } from '@/mocks';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
-
-interface SummaryCardData {
-  status: string;
-  quantity: number;
-  amount?: number;
-}
 
 type FilterTypes = {
   status: string;
@@ -19,7 +15,7 @@ type FilterTypes = {
 type FilterValue = string | null;
 
 interface SummaryCardProps {
-  status: string;
+  status: components['schemas']['PayableStateEnum'];
   count: number;
   amount?: number;
   onClick: () => void;
@@ -27,16 +23,23 @@ interface SummaryCardProps {
 }
 
 interface SummaryCardsFiltersProps {
-  data: SummaryCardData[];
+  data: AggregatedPayablesResponse['data'];
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedStatus: string | null;
 }
 
-const statusBackgroundColors: Record<string, string> = {
-  Draft: '#FAFAFA',
-  New: '#F4F4FE',
-  'In Approval': '#FFF5EB',
-  Paid: '#EEFBF9',
+const statusBackgroundColors: Record<
+  components['schemas']['PayableStateEnum'],
+  string
+> = {
+  draft: '#FAFAFA',
+  new: '#F4F4FE',
+  approve_in_progress: '#FFF5EB',
+  paid: '#EEFBF9',
+  waiting_to_be_paid: '#F4F4FE',
+  rejected: '#FFF5EB',
+  partially_paid: '#EEFBF9',
+  canceled: '#FFF5EB',
 };
 
 const SummaryCard = ({
@@ -56,6 +59,20 @@ const SummaryCard = ({
   const backgroundColor = selected
     ? 'transparent'
     : statusBackgroundColors[status] || '#FAFAFA';
+
+  const statusTitleNames: Record<
+    components['schemas']['PayableStateEnum'],
+    string
+  > = {
+    draft: t(i18n)`Draft`,
+    new: t(i18n)`New`,
+    approve_in_progress: t(i18n)`In Approval`,
+    paid: t(i18n)`Paid`,
+    waiting_to_be_paid: t(i18n)`Waiting to be paid`,
+    rejected: t(i18n)`Rejected`,
+    partially_paid: t(i18n)`Partially Paid`,
+    canceled: t(i18n)`Canceled`,
+  };
 
   return (
     <Card
@@ -99,7 +116,7 @@ const SummaryCard = ({
             fontWeight="bold"
             sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
           >
-            {status}
+            {statusTitleNames[status]}
           </Typography>
           <Typography
             variant="body2"
@@ -160,9 +177,11 @@ export const SummaryCardsFilters = ({
   const { i18n } = useLingui();
   const className = 'Monite-SummaryCardsFilters';
 
-  const enhancedData: SummaryCardData[] = [
+  const enhancedData: AggregatedPayablesResponse['data'] = [
     {
-      status: t(i18n)`All items`,
+      status: t(
+        i18n
+      )`All items` as AggregatedPayablesResponse['data'][0]['status'],
       quantity: data.reduce((acc, item) => acc + item.quantity, 0),
       amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
     },
