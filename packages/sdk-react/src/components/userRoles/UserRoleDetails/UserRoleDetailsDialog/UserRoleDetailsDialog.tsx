@@ -451,11 +451,11 @@ export const UserRoleDetailsDialog = ({
         )}
         {view === UserRoleDetailsView.Mutate && (
           <>
-            <Button variant="outlined" color="inherit" onClick={handleCancel}>
+            <Button variant="outlined" onClick={handleCancel}>
               {t(i18n)`Cancel`}
             </Button>
             <Button
-              variant="outlined"
+              variant="contained"
               type="submit"
               form={formName}
               disabled={
