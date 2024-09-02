@@ -186,7 +186,8 @@ const PayablesBase = ({
           toast.promise(
             payableUploadFromFileMutation.mutateAsync({
               file,
-              file_type: 'payables',
+              // TODO why is this file_type was removed in 2024-01-31?
+              // file_type: 'payables',
             }),
             {
               loading: t(i18n)`Uploading payable file`,

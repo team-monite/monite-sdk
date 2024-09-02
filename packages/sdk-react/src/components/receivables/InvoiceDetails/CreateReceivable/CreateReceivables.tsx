@@ -206,6 +206,8 @@ const CreateReceivablesBase = ({
                   currency: actualCurrency,
                   payment_reminder_id: values.payment_reminder_id || undefined,
                   overdue_reminder_id: values.overdue_reminder_id || undefined,
+                  //TODO implement the feature to add tags
+                  tag_ids: [],
                 };
 
               createReceivable.mutate(invoicePayload, {
