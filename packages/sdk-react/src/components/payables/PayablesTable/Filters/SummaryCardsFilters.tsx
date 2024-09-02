@@ -184,13 +184,17 @@ export const SummaryCardsFilters = ({
         display="flex"
         gap={2}
         sx={{
-          overflowX: 'scroll',
+          overflowX: 'auto',
           whiteSpace: 'nowrap',
           paddingBottom: 1,
-          scrollbarWidth: 'thin',
           width: '100%',
           justifyContent: 'flex-start',
           alignItems: 'center',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
         }}
       >
         {enhancedData.map((item) => (
