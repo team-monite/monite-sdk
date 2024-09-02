@@ -15,7 +15,7 @@ type FilterValue = string | null;
 
 type ExtendedPayableStateEnum =
   | components['schemas']['PayableStateEnum']
-  | 'all_items';
+  | 'all';
 
 interface SummaryCardProps {
   status: ExtendedPayableStateEnum;
@@ -37,10 +37,10 @@ const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   approve_in_progress: '#FFF5EB',
   paid: '#EEFBF9',
   waiting_to_be_paid: '#F4F4FE',
-  rejected: '#FFF5EB',
+  rejected: '#d32f2f6b',
   partially_paid: '#EEFBF9',
-  canceled: '#FFF5EB',
-  all_items: '#FAFAFA',
+  canceled: '#E27E46',
+  all: '#FAFAFA',
 };
 
 const SummaryCard = ({
@@ -51,7 +51,7 @@ const SummaryCard = ({
   selected,
 }: SummaryCardProps) => {
   const { i18n } = useLingui();
-  const isAllItems = status === 'all_items';
+  const isAllItems = status === 'all';
 
   const formattedAmount = amount
     ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
@@ -68,11 +68,11 @@ const SummaryCard = ({
     new: t(i18n)`New`,
     approve_in_progress: t(i18n)`In Approval`,
     paid: t(i18n)`Paid`,
-    waiting_to_be_paid: t(i18n)`Waiting to be paid`,
+    waiting_to_be_paid: t(i18n)`Waiting paid`,
     rejected: t(i18n)`Rejected`,
     partially_paid: t(i18n)`Partially Paid`,
     canceled: t(i18n)`Canceled`,
-    all_items: t(i18n)`All items`,
+    all: t(i18n)`All items`,
   };
 
   return (
@@ -165,7 +165,7 @@ const SummaryCard = ({
             </>
           )}
         </Box>
-        {status !== 'all_items' && amount && (
+        {status !== 'all' && (
           <Box
             display="flex"
             justifyContent="flex-end"
@@ -214,7 +214,7 @@ export const SummaryCardsFilters = ({
     status: ExtendedPayableStateEnum;
   })[] = [
     {
-      status: 'all_items' as AggregatedPayablesResponse['data'][0]['status'],
+      status: 'all' as AggregatedPayablesResponse['data'][0]['status'],
       quantity: data.reduce((acc, item) => acc + item.quantity, 0),
       amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
     },
@@ -222,12 +222,12 @@ export const SummaryCardsFilters = ({
   ];
 
   const handleSelectStatus = (status: ExtendedPayableStateEnum) => {
-    onChangeFilter('status', status === 'all_items' ? null : status);
+    onChangeFilter('status', status === 'all' ? null : status);
   };
 
   useEffect(() => {
     if (!selectedStatus) {
-      onChangeFilter('status', 'all_items');
+      onChangeFilter('status', 'all');
     }
   }, [selectedStatus, onChangeFilter]);
 
