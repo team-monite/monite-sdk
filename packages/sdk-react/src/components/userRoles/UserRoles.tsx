@@ -1,11 +1,6 @@
 import { useState } from 'react';
 
-import {
-  Dialog,
-  PageHeader,
-  UserRoleDetails,
-  UserRolesTable,
-} from '@/components';
+import { Dialog, PageHeader, UserRoleDetails } from '@/components';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
@@ -13,6 +8,8 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Button } from '@mui/material';
+
+import { UserRolesTable } from './UserRolesTable';
 
 export const UserRoles = () => (
   <MoniteScopedProviders>
@@ -22,33 +19,32 @@ export const UserRoles = () => (
 
 const UserRolesBase = () => {
   const { i18n } = useLingui();
-  const [isRoleDetailsDialogOpened, setIsRoleDetailsDialogOpened] =
-    useState(false);
+  const [isDetailsDialogOpened, setIsDetailsDialogOpened] = useState(false);
   const [selectedUserRoleId, setSelectedUserRoleID] = useState<
     string | undefined
   >(undefined);
   const { data: user } = useEntityUserByAuthToken();
-  const { data: isReadRoleAllowed, isLoading: isReadRoleAllowedLoading } =
+  const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
     useIsActionAllowed({
       method: 'role',
       action: 'read',
       entityUserId: user?.id,
     });
-  const { data: isCreateRoleAllowed, isLoading: isCreateRoleAllowedLoading } =
+  const { data: isCreateAllowed, isLoading: isCreateAllowedLoading } =
     useIsActionAllowed({
       method: 'role',
       action: 'create',
       entityUserId: user?.id,
     });
 
-  const onRoleRowClick = (id: string) => {
-    setIsRoleDetailsDialogOpened(true);
+  const onRowClick = (id: string) => {
+    setIsDetailsDialogOpened(true);
     setSelectedUserRoleID(id);
   };
 
-  const handleCreateNewRole = () => {
+  const handleCreateNew = () => {
     setSelectedUserRoleID(undefined);
-    setIsRoleDetailsDialogOpened(true);
+    setIsDetailsDialogOpened(true);
   };
 
   return (
@@ -59,26 +55,26 @@ const UserRolesBase = () => {
           <Button
             variant="contained"
             color="primary"
-            disabled={isCreateRoleAllowedLoading || !isCreateRoleAllowed}
-            onClick={handleCreateNewRole}
+            disabled={isCreateAllowedLoading || !isCreateAllowed}
+            onClick={handleCreateNew}
           >
             {t(i18n)`Create New`}
           </Button>
         }
       />
 
-      {!isReadRoleAllowed && !isReadRoleAllowedLoading && <AccessRestriction />}
-      {isReadRoleAllowed && (
+      {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
+      {isReadAllowed && (
         <UserRolesTable
-          onRowClick={onRoleRowClick}
-          handleCreateNew={handleCreateNewRole}
+          onRowClick={onRowClick}
+          handleCreateNew={handleCreateNew}
         />
       )}
 
       <Dialog
-        open={isRoleDetailsDialogOpened}
+        open={isDetailsDialogOpened}
         alignDialog="right"
-        onClose={() => setIsRoleDetailsDialogOpened(false)}
+        onClose={() => setIsDetailsDialogOpened(false)}
       >
         <UserRoleDetails
           id={selectedUserRoleId}
