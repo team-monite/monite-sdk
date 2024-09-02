@@ -420,6 +420,9 @@ const PayablesTableBase = ({
     { status: 'new', quantity: 5, amount: 12500 },
     { status: 'approve_in_progress', quantity: 10, amount: 30500 },
     { status: 'paid', quantity: 20, amount: 79800 },
+    { status: 'waiting_to_be_paid', quantity: 10, amount: 30500 },
+    { status: 'rejected', quantity: 10, amount: 30500 },
+    { status: 'canceled', quantity: 10, amount: 30500 },
   ];
 
   const className = 'Monite-PayablesTable';
@@ -438,9 +441,7 @@ const PayablesTableBase = ({
         <SummaryCardsFilters
           data={mockSummaryData}
           onChangeFilter={onChangeFilter}
-          selectedStatus={
-            currentFilter[FILTER_TYPE_STATUS] || t(i18n)`All items`
-          }
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
         />
       </Box>
       <Box sx={{ mb: 2 }}>
