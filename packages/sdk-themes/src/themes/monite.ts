@@ -762,6 +762,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               paddingLeft: 0,
             },
           },
+        '&[data-field="actions"]': {
+          textOverflow: 'clip', // Hide ... after action buttons
+        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
