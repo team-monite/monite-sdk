@@ -77,6 +77,9 @@ export const NavigationList = () => {
           <NavigationListItem icon={<IconEnvelopeHeart />}>
             {t(i18n)`Email Templates`}
           </NavigationListItem>
+          <NavigationListItem href="/tags" icon={<IconFilesLandscapes />}>
+            {t(i18n)`Tags`}
+          </NavigationListItem>
         </NavigationListCollapse>
       </List>
       <Box
