@@ -68,7 +68,7 @@ const SummaryCard = ({
     new: t(i18n)`New`,
     approve_in_progress: t(i18n)`In Approval`,
     paid: t(i18n)`Paid`,
-    waiting_to_be_paid: t(i18n)`Waiting paid`,
+    waiting_to_be_paid: t(i18n)`Approved`,
     rejected: t(i18n)`Rejected`,
     partially_paid: t(i18n)`Partially Paid`,
     canceled: t(i18n)`Canceled`,
