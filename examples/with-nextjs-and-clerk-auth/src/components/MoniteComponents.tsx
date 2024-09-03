@@ -13,6 +13,7 @@ import {
   Receivables as ReceivablesBase,
   Tags as TagsBase,
   UserRoles as UserRolesBase,
+  RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
 } from '@monite/sdk-react';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
@@ -102,4 +103,8 @@ export const Tags = () => {
 
 export const UserRoles = () => {
   return <UserRolesBase />;
+};
+
+export const RolesAndPolicies = () => {
+  return <RolesAndApprovalPoliciesBase />;
 };
