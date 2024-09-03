@@ -409,16 +409,13 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <SummaryCardsFilters
-          data={mockSummaryData}
-          onChangeFilter={onChangeFilter}
-          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
-        />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      <SummaryCardsFilters
+        data={mockSummaryData}
+        onChangeFilter={onChangeFilter}
+        selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+        sx={{ mb: 2 }}
+      />
+      <FiltersComponent sx={{ mb: 2 }} onChangeFilter={onChangeFilter} />
       <DataGrid
         initialState={{
           sorting: {

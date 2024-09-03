@@ -5,7 +5,9 @@ import { FilterContainer } from '@/components/misc/FilterContainer';
 import { AggregatedPayablesResponse } from '@/mocks';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, Card, CardContent } from '@mui/material';
+import { Box, Typography, Card, CardContent, SxProps } from '@mui/material';
+
+import { Theme } from 'mui-styles';
 
 type FilterTypes = {
   status: string;
@@ -29,6 +31,7 @@ interface SummaryCardsFiltersProps {
   data: AggregatedPayablesResponse['data'];
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedStatus: string | null;
+  sx?: SxProps<Theme>;
 }
 
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
@@ -207,6 +210,7 @@ export const SummaryCardsFilters = ({
   data,
   onChangeFilter,
   selectedStatus,
+  sx,
 }: SummaryCardsFiltersProps) => {
   const className = 'Monite-SummaryCardsFilters';
 
@@ -232,7 +236,7 @@ export const SummaryCardsFilters = ({
   }, [selectedStatus, onChangeFilter]);
 
   return (
-    <FilterContainer className={className}>
+    <FilterContainer className={className} sx={sx}>
       <Box
         display="flex"
         gap={2}
