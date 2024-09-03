@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
 import { components } from '@/api';
-import { FilterContainer } from '@/components/misc/FilterContainer';
 import { AggregatedPayablesResponse } from '@/mocks';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Typography, Card, CardContent, SxProps } from '@mui/material';
+import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
 
 import { Theme } from 'mui-styles';
 
@@ -78,9 +78,15 @@ const SummaryCard = ({
     all: t(i18n)`All items`,
   };
 
+  const className = 'Monite-SummaryCard';
+
   return (
     <Card
       onClick={onClick}
+      className={classNames(
+        `${className}-${status}`,
+        selected && `${className}-selected`
+      )}
       sx={{
         cursor: 'pointer',
         border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
@@ -236,11 +242,12 @@ export const SummaryCardsFilters = ({
   }, [selectedStatus, onChangeFilter]);
 
   return (
-    <FilterContainer className={className} sx={sx}>
-      <Box
-        display="flex"
-        gap={2}
-        sx={{
+    <Box
+      display="flex"
+      gap={2}
+      className={className}
+      sx={Object.assign(
+        {
           overflowX: 'auto',
           whiteSpace: 'nowrap',
           paddingBottom: 1,
@@ -252,19 +259,20 @@ export const SummaryCardsFilters = ({
           },
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
-        }}
-      >
-        {enhancedData.map((item) => (
-          <SummaryCard
-            key={item.status}
-            status={item.status}
-            count={item.quantity}
-            amount={item.amount}
-            onClick={() => handleSelectStatus(item.status)}
-            selected={selectedStatus === item.status}
-          />
-        ))}
-      </Box>
-    </FilterContainer>
+        },
+        sx || {}
+      )}
+    >
+      {enhancedData.map((item) => (
+        <SummaryCard
+          key={item.status}
+          status={item.status}
+          count={item.quantity}
+          amount={item.amount}
+          onClick={() => handleSelectStatus(item.status)}
+          selected={selectedStatus === item.status}
+        />
+      ))}
+    </Box>
   );
 };
