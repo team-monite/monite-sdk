@@ -41,8 +41,6 @@ export const webhookEventHandler = async (
 ) => {
   if (event.type === 'organizationMembership.created') {
     await handleOrganizationMembershipCreatedEvent(event);
-  } else if (event.type === 'organization.created') {
-    await handleOrganizationCreatedEvent(event);
   } else if (event.type === 'organization.updated') {
     await handleOrganizationUpdateEvent(event);
   } else if (event.type === 'user.created') {
@@ -145,10 +143,10 @@ const handleOrganizationMembershipCreatedEvent = async (
   }
 };
 
-const handleOrganizationCreatedEvent = async (
+const handleOrganizationUpdateEvent = async (
   event: OrganizationWebhookEvent
 ) => {
-  if (event.type !== 'organization.created')
+  if (event.type !== 'organization.updated')
     throw new Error('Invalid event type');
 
   const [organization, owner] = await Promise.all([
@@ -207,22 +205,6 @@ const handleOrganizationCreatedEvent = async (
       }
     ).finally(() => void closeMqttConnection());
   }
-};
-
-const handleOrganizationUpdateEvent = async (
-  event: OrganizationWebhookEvent
-) => {
-  if (event.type !== 'organization.updated')
-    throw new Error('Invalid event type');
-
-  const organization = await clerkClient.organizations.getOrganization({
-    organizationId: event.data.id,
-  });
-
-  const { entity_id } = getOrganizationEntityData(organization);
-
-  if (!entity_id)
-    throw new Error(`Organization ${event.data.id} does not have an entity_id`);
 
   await updateEntity({
     entity_id,
