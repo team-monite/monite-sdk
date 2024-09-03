@@ -142,7 +142,8 @@ export const useApprovalPolicyScript = ({
     return (
       rule.call === 'ApprovalRequests.request_approval_by_users' &&
       Array.isArray(rule.params.user_ids) &&
-      rule.params.user_ids.length === 1
+      rule.params.user_ids.length === 1 &&
+      rule.params.required_approval_count === 1
     );
   };
 
@@ -163,7 +164,7 @@ export const useApprovalPolicyScript = ({
     return (
       rule.call === 'ApprovalRequests.request_approval_by_roles' &&
       Array.isArray(rule.params.role_ids) &&
-      rule.params.role_ids.length > 1 &&
+      rule.params.role_ids.length >= 1 &&
       rule.params.required_approval_count > 0
     );
   };
