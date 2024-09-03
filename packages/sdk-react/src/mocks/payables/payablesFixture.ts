@@ -1,7 +1,6 @@
-import { components } from '@/api';
+import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
-import { AggregatedPayablesResponse, counterpartListFixture } from '@/mocks';
 import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
@@ -147,29 +146,37 @@ export const payableFixturePages: components['schemas']['PayableResponseSchema']
     ...new Array(15).fill('_').map(() => generatePayable()),
   ];
 
-export const generateAggregatedPayables = (): AggregatedPayablesResponse => {
-  const statuses: components['schemas']['PayableStateEnum'][] = [
-    'draft',
-    'new',
-    'approve_in_progress',
-    'paid',
-  ];
+export const generateAggregatedPayables =
+  (): paths['/payables/analytics']['get']['responses']['200']['content']['application/json'] => {
+    const statuses: components['schemas']['PayableStateEnum'][] = [
+      'draft',
+      'new',
+      'approve_in_progress',
+      'waiting_to_be_paid', // Added missing statuses
+      'partially_paid',
+      'paid',
+      'canceled',
+      'rejected',
+    ];
 
-  const data = statuses.map((status) => ({
-    status,
-    amount: faker.number.int({ min: 50, max: 200 }),
-    quantity: faker.number.int({ min: 1, max: 5 }),
-  }));
+    const data = statuses.map((status) => ({
+      status,
+      count: faker.number.int({ min: 1, max: 5 }),
+      sum_total_amount: faker.number.int({ min: 50, max: 200 }),
+    }));
 
-  const total_amount = data.reduce((acc, item) => acc + item.amount, 0);
-  const total_quantity = data.reduce((acc, item) => acc + item.quantity, 0);
+    const sum_total_amount = data.reduce(
+      (acc, item) => acc + item.sum_total_amount,
+      0
+    );
+    const count = data.length;
 
-  return {
-    data,
-    total_amount,
-    total_quantity,
+    return {
+      data,
+      count,
+      sum_total_amount,
+    };
   };
-};
 
 export const payableFixtureWithoutFile: components['schemas']['PayableResponseSchema'] =
   generatePayable({

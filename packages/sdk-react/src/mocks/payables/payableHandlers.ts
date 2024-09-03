@@ -1,4 +1,4 @@
-import { components } from '@/api';
+import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import {
@@ -21,22 +21,20 @@ import {
 
 type PayableParams = { payableId: string };
 
-export interface PayableAggregatedItem {
-  status: components['schemas']['PayableStateEnum'];
-  amount: number;
-  quantity: number;
-}
-
-export interface AggregatedPayablesResponse {
-  data: PayableAggregatedItem[];
-  total_amount: number;
-  total_quantity: number;
-}
+// export interface PayableAggregatedItem {
+//   status: components['schemas']['PayableStateEnum'];
+//   amount: number;
+//   quantity: number;
+// }
+//
+// export interface AggregatedPayablesResponse {
+//   data: PayableAggregatedItem[];
+//   total_amount: number;
+//   total_quantity: number;
+// }
 
 export const PAYABLES_ENDPOINT = 'payables';
-export const INTERNAL_PAYABLES_ENDPOINT = 'internal/payables';
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
-const internalPayablePath = `*/${INTERNAL_PAYABLES_ENDPOINT}`;
 const payableIdPath = `${payablePath}/:payableId`;
 
 let payable: components['schemas']['PayableResponseSchema'] =
@@ -327,18 +325,19 @@ export const payableHandlers = [
     }
   }),
 
-  http.get<{}, undefined, AggregatedPayablesResponse>(
-    `${internalPayablePath}/aggregated`,
-    async () => {
-      await delay();
+  http.get<
+    {},
+    undefined,
+    paths['/payables/analytics']['get']['responses']['200']['content']['application/json']
+  >(`${payablePath}/analytics`, async () => {
+    await delay();
 
-      return HttpResponse.json({
-        data: generateAggregatedPayables().data,
-        total_amount: generateAggregatedPayables().total_amount,
-        total_quantity: generateAggregatedPayables().total_quantity,
-      });
-    }
-  ),
+    return HttpResponse.json({
+      data: generateAggregatedPayables().data,
+      sum_total_amount: generateAggregatedPayables().sum_total_amount,
+      count: generateAggregatedPayables().count,
+    });
+  }),
 
   // update (patch) payable by id
   http.patch<

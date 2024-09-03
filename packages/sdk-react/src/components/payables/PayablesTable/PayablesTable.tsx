@@ -17,7 +17,6 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
-import { AggregatedPayablesResponse } from '@/mocks';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -118,6 +117,12 @@ export const PayablesTable = (props: PayablesTableProps) => (
   </MoniteScopedProviders>
 );
 
+const usePayablesTableSummaryData = () => {
+  const { api } = useMoniteContext();
+
+  return api.payables.getPayablesAnalytics.useQuery();
+};
+
 const PayablesTableBase = ({
   onRowClick,
   onPay,
@@ -200,6 +205,8 @@ const PayablesTableBase = ({
 
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
   const dateFormat = useDateFormat();
+
+  const { data: summaryData } = usePayablesTableSummaryData();
 
   const columns = useMemo<GridColDef[]>(() => {
     return [
@@ -387,16 +394,6 @@ const PayablesTableBase = ({
     );
   }
 
-  const mockSummaryData: AggregatedPayablesResponse['data'] = [
-    { status: 'draft', quantity: 14, amount: 39500 },
-    { status: 'new', quantity: 5, amount: 12500 },
-    { status: 'approve_in_progress', quantity: 10, amount: 30500 },
-    { status: 'paid', quantity: 20, amount: 79800 },
-    { status: 'waiting_to_be_paid', quantity: 10, amount: 30500 },
-    { status: 'rejected', quantity: 10, amount: 30500 },
-    { status: 'canceled', quantity: 10, amount: 30500 },
-  ];
-
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -410,7 +407,7 @@ const PayablesTableBase = ({
       }}
     >
       <SummaryCardsFilters
-        data={mockSummaryData}
+        data={summaryData?.data ?? []}
         onChangeFilter={onChangeFilter}
         selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
         sx={{ mb: 2 }}

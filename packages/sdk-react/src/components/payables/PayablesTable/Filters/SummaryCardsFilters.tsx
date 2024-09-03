@@ -1,7 +1,6 @@
 import { components } from '@/api';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
-import { AggregatedPayablesResponse } from '@/mocks';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -26,7 +25,7 @@ interface SummaryCardProps {
 }
 
 interface SummaryCardsFiltersProps {
-  data: AggregatedPayablesResponse['data'];
+  data: components['schemas']['PayableAggregatedDataResponse']['data'];
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedStatus: string | null;
   sx?: SxProps<Theme>;
@@ -227,8 +226,11 @@ export const SummaryCardsFilters = ({
   const enhancedData = [
     {
       status: 'all' as ExtendedPayableStateEnum,
-      quantity: data.reduce((acc, item) => acc + item.quantity, 0),
-      amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
+      count: data.reduce((acc, item) => acc + item.count, 0),
+      sum_total_amount: data.reduce(
+        (acc, item) => acc + (item.sum_total_amount || 0),
+        0
+      ),
     },
     ...data,
   ];
@@ -267,8 +269,8 @@ export const SummaryCardsFilters = ({
         <SummaryCard
           key={item.status}
           status={item.status}
-          count={item.quantity}
-          amount={item.amount}
+          count={item.count}
+          amount={item.sum_total_amount}
           onClick={() => handleSelectStatus(item.status)}
           selected={selectedStatus === item.status}
         />
