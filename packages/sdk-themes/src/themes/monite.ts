@@ -760,9 +760,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
       },
       cell: {
-        borderLeftStyle: 'solid',
-        borderLeftWidth: '1px',
-        borderLeftColor: 'divider',
+        '&[role="gridcell"]': {
+          borderLeftStyle: 'solid',
+          borderLeftWidth: '1px',
+          borderLeftColor: 'divider',
+        },
 
         '.MuiDataGrid-cellOffsetLeft + &': {
           borderLeftStyle: 'none',
