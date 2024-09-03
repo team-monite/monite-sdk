@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-
 import { components } from '@/api';
+import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
+import { FilterValue } from '@/components/userRoles/types';
 import { AggregatedPayablesResponse } from '@/mocks';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -10,10 +10,8 @@ import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
 import { Theme } from 'mui-styles';
 
 type FilterTypes = {
-  status: string;
+  status: components['schemas']['PayableStateEnum'] | 'all';
 };
-
-type FilterValue = string | null;
 
 type ExtendedPayableStateEnum =
   | components['schemas']['PayableStateEnum']
@@ -40,9 +38,9 @@ const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   approve_in_progress: '#FFF5EB',
   paid: '#EEFBF9',
   waiting_to_be_paid: '#F4F4FE',
-  rejected: '#d32f2f6b',
+  rejected: '#d32f2f2b',
   partially_paid: '#EEFBF9',
-  canceled: '#E27E46',
+  canceled: '#e27e46ad',
   all: '#FAFAFA',
 };
 
@@ -218,13 +216,17 @@ export const SummaryCardsFilters = ({
   selectedStatus,
   sx,
 }: SummaryCardsFiltersProps) => {
-  const className = 'Monite-SummaryCardsFilters';
+  const {
+    containerRef,
+    handleMouseDown,
+    handleMouseLeave,
+    handleMouseUp,
+    handleMouseMove,
+  } = useDragScroll();
 
-  const enhancedData: (AggregatedPayablesResponse['data'][0] & {
-    status: ExtendedPayableStateEnum;
-  })[] = [
+  const enhancedData = [
     {
-      status: 'all' as AggregatedPayablesResponse['data'][0]['status'],
+      status: 'all' as ExtendedPayableStateEnum,
       quantity: data.reduce((acc, item) => acc + item.quantity, 0),
       amount: data.reduce((acc, item) => acc + (item.amount || 0), 0),
     },
@@ -235,33 +237,31 @@ export const SummaryCardsFilters = ({
     onChangeFilter('status', status === 'all' ? null : status);
   };
 
-  useEffect(() => {
-    if (!selectedStatus) {
-      onChangeFilter('status', 'all');
-    }
-  }, [selectedStatus, onChangeFilter]);
-
   return (
     <Box
+      ref={containerRef}
       display="flex"
       gap={2}
-      className={className}
-      sx={Object.assign(
-        {
-          overflowX: 'auto',
-          whiteSpace: 'nowrap',
-          paddingBottom: 1,
-          width: '100%',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          '&::-webkit-scrollbar': {
-            display: 'none',
-          },
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      sx={{
+        overflowX: 'auto',
+        whiteSpace: 'nowrap',
+        paddingBottom: 1,
+        width: '100%',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        userSelect: 'none',
+        cursor: 'grab',
+        '&::-webkit-scrollbar': {
+          display: 'none',
         },
-        sx || {}
-      )}
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+        ...sx,
+      }}
     >
       {enhancedData.map((item) => (
         <SummaryCard
