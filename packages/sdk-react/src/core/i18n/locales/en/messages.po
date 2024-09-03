@@ -292,7 +292,7 @@ msgstr "Add VAT ID"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:242
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:76
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:462
-#: src/components/payables/PayablesTable/PayablesTable.tsx:296
+#: src/components/payables/PayablesTable/PayablesTable.tsx:298
 msgid "Added by"
 msgstr "Added by"
 
@@ -405,6 +405,10 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:75
+msgid "All items"
+msgstr "All items"
+
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:80
 msgid "All statuses"
 msgstr "All statuses"
@@ -445,7 +449,7 @@ msgstr "Amount"
 
 #. Payables Table "Amount" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:255
+#: src/components/payables/PayablesTable/PayablesTable.tsx:257
 msgid "Amount Name"
 msgstr "Amount"
 
@@ -1176,6 +1180,7 @@ msgstr "Cancel without saving?"
 #: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:38
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:167
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:74
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:124
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:132
@@ -1802,8 +1807,8 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:361
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
-#: src/components/payables/PayablesTable/PayablesTable.tsx:374
-#: src/components/payables/PayablesTable/PayablesTable.tsx:447
+#: src/components/payables/PayablesTable/PayablesTable.tsx:376
+#: src/components/payables/PayablesTable/PayablesTable.tsx:468
 #: src/components/products/ProductsTable/ProductsTable.tsx:337
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:270
@@ -2289,6 +2294,7 @@ msgstr "Download PDF"
 #: src/components/payables/consts.ts:32
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:84
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:121
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:67
 #: src/components/receivables/getCommonStatusLabel.ts:11
 msgid "Draft"
 msgstr "Draft"
@@ -2337,7 +2343,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:270
+#: src/components/payables/PayablesTable/PayablesTable.tsx:272
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -3268,6 +3274,7 @@ msgid "If you switch the invoice currency and add corresponding items, it will a
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
 #: src/components/approvalRequests/helpers.ts:15
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:69
 msgid "In Approval"
 msgstr "In Approval"
 
@@ -3578,6 +3585,11 @@ msgstr "Item tax"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:121
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
+
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:141
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:163
+msgid "items"
+msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:582
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:350
@@ -4198,6 +4210,7 @@ msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
 #: src/components/payables/consts.ts:33
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:68
 msgid "New"
 msgstr "New"
 
@@ -4210,9 +4223,9 @@ msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
 #: src/components/payables/Payables.tsx:138
-#: src/components/payables/PayablesTable/PayablesTable.tsx:375
 #: src/components/payables/PayablesTable/PayablesTable.tsx:377
-#: src/components/payables/PayablesTable/PayablesTable.tsx:448
+#: src/components/payables/PayablesTable/PayablesTable.tsx:379
+#: src/components/payables/PayablesTable/PayablesTable.tsx:469
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4339,7 +4352,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:371
+#: src/components/payables/PayablesTable/PayablesTable.tsx:373
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4439,7 +4452,7 @@ msgstr "NOT allowed"
 msgid "Number"
 msgstr "Number"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:217
+#: src/components/payables/PayablesTable/PayablesTable.tsx:219
 msgid "Number, status"
 msgstr "Number, status"
 
@@ -4546,6 +4559,7 @@ msgstr "Package Stores-Beer, Wine, and Liquor"
 
 #: src/components/payables/consts.ts:37
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:243
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:70
 #: src/components/receivables/getCommonStatusLabel.ts:25
 msgid "Paid"
 msgstr "Paid"
@@ -4602,6 +4616,7 @@ msgstr "Parking Lots, Garages"
 msgid "Partially paid"
 msgstr "Partially paid"
 
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:73
 #: src/components/receivables/getCommonStatusLabel.ts:23
 msgid "Partially Paid"
 msgstr "Partially Paid"
@@ -4633,7 +4648,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:446
+#: src/components/payables/PayablesTable/PayablesTable.tsx:467
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -5233,6 +5248,7 @@ msgstr "Reject request"
 #: src/components/approvalRequests/helpers.ts:14
 #: src/components/payables/consts.ts:39
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:207
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:72
 msgid "Rejected"
 msgstr "Rejected"
 
@@ -5867,7 +5883,7 @@ msgid "Sudan"
 msgstr "Sudan"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:192
-#: src/components/payables/PayablesTable/PayablesTable.tsx:207
+#: src/components/payables/PayablesTable/PayablesTable.tsx:209
 msgid "Supplier"
 msgstr "Supplier"
 
@@ -6614,9 +6630,9 @@ msgid "Upload a document here."
 msgstr "Upload a document here."
 
 #: src/components/payables/Payables.tsx:148
-#: src/components/payables/PayablesTable/PayablesTable.tsx:375
-#: src/components/payables/PayablesTable/PayablesTable.tsx:379
-#: src/components/payables/PayablesTable/PayablesTable.tsx:448
+#: src/components/payables/PayablesTable/PayablesTable.tsx:377
+#: src/components/payables/PayablesTable/PayablesTable.tsx:381
+#: src/components/payables/PayablesTable/PayablesTable.tsx:469
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -6910,6 +6926,10 @@ msgstr "Virgin Islands, U.S."
 msgid "Vocational/Trade Schools"
 msgstr "Vocational/Trade Schools"
 
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:71
+msgid "Waiting paid"
+msgstr "Waiting paid"
+
 #: src/components/payables/consts.ts:35
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:223
 msgid "Waiting to be paid"
@@ -6988,7 +7008,7 @@ msgstr "Yemeni Rial"
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:373
+#: src/components/payables/PayablesTable/PayablesTable.tsx:375
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -7074,7 +7094,7 @@ msgstr "You don’t have any credit notes yet."
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:372
+#: src/components/payables/PayablesTable/PayablesTable.tsx:374
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
