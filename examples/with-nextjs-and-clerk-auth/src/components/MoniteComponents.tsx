@@ -2,6 +2,8 @@
 
 import React, { ReactNode, useCallback, useMemo } from 'react';
 
+import { i18n } from '@lingui/core';
+import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
@@ -14,6 +16,8 @@ import {
   Tags as TagsBase,
   UserRoles as UserRolesBase,
   RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
+  useMoniteContext,
+  toast,
 } from '@monite/sdk-react';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
@@ -78,7 +82,50 @@ export const MoniteProvider = ({
 };
 
 export const Payables = () => {
-  return <PayablesBase />;
+  const { api, queryClient } = useMoniteContext();
+  const submitMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
+    undefined,
+    {
+      onSuccess: (payable) =>
+        Promise.all([
+          api.payables.getPayablesId.invalidateQueries(
+            { parameters: { path: { payable_id: payable.id } } },
+            queryClient
+          ),
+          api.payables.getPayables.invalidateQueries(queryClient),
+        ]),
+      onError: (error) => {
+        toast.error(error.toString());
+      },
+    }
+  );
+
+  const markInvoiceAsPaid = async (payableId: string) => {
+    if (payableId) {
+      await submitMutation.mutateAsync(
+        {
+          path: { payable_id: payableId },
+        },
+        {
+          onSuccess: (payable) => {
+            toast.success(
+              t(i18n)`Payable "${payable.document_id}" has been paid`
+            );
+          },
+        }
+      );
+    }
+  };
+
+  return (
+    <PayablesBase
+      onPay={(payableId: string) => {
+        debugger;
+        // noinspection JSIgnoredPromiseFromCall
+        markInvoiceAsPaid(payableId);
+      }}
+    />
+  );
 };
 
 export const Receivables = () => {
