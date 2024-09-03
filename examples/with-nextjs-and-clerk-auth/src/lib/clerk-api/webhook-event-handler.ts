@@ -163,7 +163,10 @@ const handleOrganizationUpdateEvent = async (
   const entity_id = await new Promise<string>(async (resolve) => {
     // Webhook may be called multiple times, so we need to check if the `entity_id` already exists
     const existingEntityId = getOrganizationEntityData(organization).entity_id;
-    if (existingEntityId) return existingEntityId;
+    if (existingEntityId) {
+      resolve(existingEntityId);
+      return;
+    }
     resolve(
       createOrganizationEntity(
         {
