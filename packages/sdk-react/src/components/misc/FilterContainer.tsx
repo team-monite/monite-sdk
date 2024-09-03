@@ -34,6 +34,9 @@ export const FilterContainer = ({
             maxWidth: '400px',
             width: '100%',
           },
+          '& > .Monite-Filters-Group': {
+            overflow: 'auto',
+          },
         },
         sx || {}
       )}

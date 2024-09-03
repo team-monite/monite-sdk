@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -16,6 +17,7 @@ import { useCurrencies } from '@/core/hooks/useCurrencies';
 import { useEntityUserByAuthToken } from '@/core/queries';
 import { useIsActionAllowed } from '@/core/queries/usePermissions';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
+import { AggregatedPayablesResponse } from '@/mocks';
 import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
@@ -385,6 +387,16 @@ const PayablesTableBase = ({
     );
   }
 
+  const mockSummaryData: AggregatedPayablesResponse['data'] = [
+    { status: 'draft', quantity: 14, amount: 39500 },
+    { status: 'new', quantity: 5, amount: 12500 },
+    { status: 'approve_in_progress', quantity: 10, amount: 30500 },
+    { status: 'paid', quantity: 20, amount: 79800 },
+    { status: 'waiting_to_be_paid', quantity: 10, amount: 30500 },
+    { status: 'rejected', quantity: 10, amount: 30500 },
+    { status: 'canceled', quantity: 10, amount: 30500 },
+  ];
+
   const className = 'Monite-PayablesTable';
   return (
     <Box
@@ -397,7 +409,16 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
+      <Box sx={{ mb: 2 }}>
+        <SummaryCardsFilters
+          data={mockSummaryData}
+          onChangeFilter={onChangeFilter}
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+        />
+      </Box>
+      <Box sx={{ mb: 2 }}>
+        <FiltersComponent onChangeFilter={onChangeFilter} />
+      </Box>
       <DataGrid
         initialState={{
           sorting: {
