@@ -99,10 +99,6 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
         value: faker.number.int({ min: 10, max: 30_000 }),
         currency: 'EUR',
       },
-      measure_unit_id: faker.string.sample(),
-      created_at: faker.date.past().toString(),
-      entity_id: faker.string.uuid(),
-      updated_at: faker.date.past().toString(),
       vat_rate: {
         id: productVatId.id,
         value: productVatId.value,
@@ -110,9 +106,8 @@ function createRandomLineItem(): components['schemas']['ResponseItem'] {
       },
       measure_unit: {
         id: faker.string.nanoid(),
+        description: faker.commerce.productName(),
         name: faker.commerce.productName(),
-        created_at: faker.date.past().toString(),
-        updated_at: faker.date.past().toString(),
       },
       is_inline: false,
     },

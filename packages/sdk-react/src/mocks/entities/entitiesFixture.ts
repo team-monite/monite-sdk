@@ -135,7 +135,7 @@ type EntityOrganizationResponse =
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
-type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type MoniteAllPaymentMethods = components['schemas']['MoniteAllPaymentMethods'];
 type MoniteAllPaymentMethodsTypes =
   components['schemas']['MoniteAllPaymentMethodsTypes'];

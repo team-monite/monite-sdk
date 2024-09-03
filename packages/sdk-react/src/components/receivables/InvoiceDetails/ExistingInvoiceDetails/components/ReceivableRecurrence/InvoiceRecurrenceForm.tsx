@@ -228,6 +228,8 @@ export const InvoiceRecurrenceForm = ({
                       end_year,
                       start_month,
                       start_year,
+                      body_text: '', // TODO: add support for body_text
+                      subject_text: '', // TODO: add support for subject_text
                     },
                   });
 
