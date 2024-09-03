@@ -53,6 +53,9 @@ interface ApprovalPolicyFormProps {
 
   /** Callback is fired when a policy is created and sync with server is successful */
   onCreated?: (id: string) => void;
+
+  /** Callback is fired when a policy is updated and sync with server is successful */
+  onUpdated?: (id: string) => void;
 }
 
 export interface FormValues {
@@ -90,6 +93,7 @@ export const ApprovalPolicyForm = ({
   approvalPolicy,
   setIsEdit,
   onCreated,
+  onUpdated,
 }: ApprovalPolicyFormProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
@@ -268,6 +272,7 @@ export const ApprovalPolicyForm = ({
 
     if (response) {
       setIsEdit(false);
+      onUpdated?.(id);
     }
 
     return response;
@@ -572,7 +577,9 @@ export const ApprovalPolicyForm = ({
                 sx={{ cursor: 'pointer' }}
                 onClick={resetFormTriggerOrScript}
               >
-                {t(i18n)`Edit Approval Policy`}
+                {isEdit
+                  ? t(i18n)`Edit Approval Policy`
+                  : t(i18n)`Create Approval Policy`}
               </Typography>
               {(triggerInEdit || isAddingTrigger) && (
                 <Typography variant="subtitle1" color="text.primary">
@@ -589,7 +596,9 @@ export const ApprovalPolicyForm = ({
             </Breadcrumbs>
           ) : (
             <Typography variant="h3" sx={{ wordBreak: 'break-word' }}>
-              {t(i18n)`Edit Approval Policy`}
+              {isEdit
+                ? t(i18n)`Edit Approval Policy`
+                : t(i18n)`Create Approval Policy`}
             </Typography>
           )}
           {dialogContext?.isDialogContent && (
