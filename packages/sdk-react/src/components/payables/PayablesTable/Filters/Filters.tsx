@@ -29,7 +29,7 @@ interface PayablesTableFiltersProps {
   sx?: SxProps<Theme>;
 }
 
-export const Filters = ({ onChangeFilter }: PayablesTableFiltersProps) => {
+export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const className = 'Monite-PayableFilters';
@@ -37,6 +37,7 @@ export const Filters = ({ onChangeFilter }: PayablesTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
+      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search`}

@@ -415,7 +415,7 @@ const PayablesTableBase = ({
         selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
         sx={{ mb: 2 }}
       />
-      <FiltersComponent sx={{ mb: 2 }} onChangeFilter={onChangeFilter} />
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
