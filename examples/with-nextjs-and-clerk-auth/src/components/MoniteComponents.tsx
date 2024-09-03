@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useCallback, useMemo } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -18,7 +18,17 @@ import {
   RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
   useMoniteContext,
   toast,
+  useRootElements,
+  Dialog,
 } from '@monite/sdk-react';
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+} from '@mui/material';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
@@ -83,7 +93,7 @@ export const MoniteProvider = ({
 
 export const Payables = () => {
   const { api, queryClient } = useMoniteContext();
-  const submitMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
+  const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
     undefined,
     {
       onSuccess: (payable) =>
@@ -99,10 +109,13 @@ export const Payables = () => {
       },
     }
   );
+  const { root } = useRootElements();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
 
   const markInvoiceAsPaid = async (payableId: string) => {
     if (payableId) {
-      await submitMutation.mutateAsync(
+      await payMutation.mutateAsync(
         {
           path: { payable_id: payableId },
         },
@@ -117,14 +130,54 @@ export const Payables = () => {
     }
   };
 
+  const onCloseDialogClick = () => {
+    setModalOpen(false);
+  };
+  const onPayInvoiceClick = () => {
+    // noinspection JSIgnoredPromiseFromCall
+    if (currentPayableId) markInvoiceAsPaid(currentPayableId);
+    setModalOpen(false);
+  };
+
   return (
-    <PayablesBase
-      onPay={(payableId: string) => {
-        debugger;
-        // noinspection JSIgnoredPromiseFromCall
-        markInvoiceAsPaid(payableId);
-      }}
-    />
+    <>
+      <PayablesBase
+        onPay={(payableId: string) => {
+          setCurrentPayableId(payableId);
+          setModalOpen(true);
+          // debugger;
+          // noinspection JSIgnoredPromiseFromCall
+          // markInvoiceAsPaid(payableId);
+        }}
+      />
+      <Dialog
+        open={modalOpen}
+        container={root}
+        aria-label={t(i18n)`Pay invoice`}
+        fullWidth={true}
+        maxWidth="sm"
+      >
+        <DialogTitle variant="h3">{t(i18n)`Pay Invoice`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {t(i18n)`This action can't be undone.`}
+          </DialogContentText>
+        </DialogContent>
+        <Divider />
+        <DialogActions>
+          <Button variant="outlined" onClick={onCloseDialogClick}>
+            {t(i18n)`Cancel`}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onPayInvoiceClick}
+          >
+            {t(i18n)`Pay`}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
