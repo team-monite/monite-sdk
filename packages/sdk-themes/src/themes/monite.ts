@@ -856,11 +856,41 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       variant: 'outlined',
     },
-    // styleOverrides: {
-    //   root: {
-    //     backgroundColor: 'neutral.90',
-    //   },
-    // },
+    styleOverrides: {
+      root: {
+        '&.Monite-SummaryCard-all': {
+          backgroundColor: '#FAFAFA',
+        },
+        '&.Monite-SummaryCard-draft': {
+          backgroundColor: '#FAFAFA',
+        },
+        '&.Monite-SummaryCard-new': {
+          backgroundColor: '#F4F4FE',
+        },
+        '&.Monite-SummaryCard-approve_in_progress': {
+          backgroundColor: '#FFF5EB',
+        },
+        '&.Monite-SummaryCard-paid': {
+          backgroundColor: '#EEFBF9',
+        },
+        '&.Monite-SummaryCard-waiting_to_be_paid': {
+          backgroundColor: '#F4F4FE',
+        },
+        '&.Monite-SummaryCard-rejected': {
+          backgroundColor: '#d32f2f6b',
+        },
+        '&.Monite-SummaryCard-partially_paid': {
+          backgroundColor: '#EEFBF9',
+        },
+        '&.Monite-SummaryCard-partially_canceled': {
+          backgroundColor: '#E27E46',
+        },
+        '&.Monite-SummaryCard-selected': {
+          backgroundColor: 'transparent',
+          borderColor: '#3737FF',
+        },
+      },
+    },
   },
   MuiCardContent: {
     styleOverrides: {
