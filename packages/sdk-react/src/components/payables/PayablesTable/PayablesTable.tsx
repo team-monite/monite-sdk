@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { useUploadPayable } from '@/components/payables/CreatePayable';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
@@ -46,9 +47,9 @@ import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_DUE_DATE,
+  FILTER_TYPE_OVERDUE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-  FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue } from './types';
@@ -90,18 +91,10 @@ interface PayablesTableProps {
   }) => void;
 
   /**
-   * The event handler for the file input when no data is present.
-   * This triggers the file upload process when the user selects a file.
-   */
-  openFileInput?: () => void;
-
-  /**
    * The event handler for opening the "New Invoice" dialog when no data is present.
    * This function controls the visibility of the dialog for invoice creation.
-   *
-   * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
-  setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
+  onOpenDetailForm?: () => void;
 }
 
 export interface PayableGridSortModel {
@@ -115,12 +108,87 @@ export const PayablesTable = (props: PayablesTableProps) => (
   </MoniteScopedProviders>
 );
 
+const PayableTableEmptyState = ({
+  onOpenDetailForm,
+}: {
+  onOpenDetailForm?: () => void;
+}) => {
+  const { i18n } = useLingui();
+  const { FileInput, openFileInput } = useUploadPayable();
+
+  return (
+    <>
+      <DataGridEmptyState
+        title={t(i18n)`No Payables`}
+        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
+        descriptionLine2={t(i18n)`You can add a new payable.`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+        onAction={(action) => {
+          if (action === t(i18n)`New Invoice`) {
+            onOpenDetailForm?.();
+          } else if (action === t(i18n)`Upload File`) {
+            openFileInput();
+          }
+        }}
+        type="no-data"
+      />
+      <FileInput />
+    </>
+  );
+};
+
+const PayableNoRowsOverlay = ({
+  isLoading,
+  dataLength,
+  isFiltering,
+  isSearching,
+  isError,
+  onOpenDetailForm,
+  refetch,
+}: {
+  isLoading: boolean;
+  dataLength: number;
+  isFiltering: boolean;
+  isSearching: boolean;
+  isError: boolean;
+  onOpenDetailForm?: () => void;
+  refetch: () => void;
+}) => {
+  const { i18n } = useLingui();
+  const { FileInput, openFileInput } = useUploadPayable();
+
+  return (
+    <>
+      <GetNoRowsOverlay
+        isLoading={isLoading}
+        dataLength={dataLength}
+        isFiltering={isFiltering}
+        isSearching={isSearching}
+        isError={isError}
+        onCreate={(type) => {
+          if (type === 'New Invoice') {
+            onOpenDetailForm?.();
+          } else if (type === 'Upload File') {
+            openFileInput?.();
+          }
+        }}
+        refetch={refetch}
+        entityName={t(i18n)`Payable`}
+        actionButtonLabel={t(i18n)`Create new`}
+        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
+        type="no-data"
+      />
+      <FileInput />
+    </>
+  );
+};
+
 const PayablesTableBase = ({
   onRowClick,
   onPay,
   onChangeFilter: onChangeFilterCallback,
-  openFileInput,
-  setIsCreateInvoiceDialogOpen,
+  onOpenDetailForm,
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
@@ -394,23 +462,7 @@ const PayablesTableBase = ({
     !isFiltering &&
     !isSearching
   ) {
-    return (
-      <DataGridEmptyState
-        title={t(i18n)`No Payables`}
-        descriptionLine1={t(i18n)`You don’t have any payables added yet.`}
-        descriptionLine2={t(i18n)`You can add a new payable.`}
-        actionButtonLabel={t(i18n)`Create new`}
-        actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-        onAction={(action) => {
-          if (action === t(i18n)`New Invoice`) {
-            setIsCreateInvoiceDialogOpen?.(true);
-          } else if (action === t(i18n)`Upload File`) {
-            openFileInput?.();
-          }
-        }}
-        type="no-data"
-      />
-    );
+    return <PayableTableEmptyState onOpenDetailForm={onOpenDetailForm} />;
   }
 
   const className = 'Monite-PayablesTable';
@@ -466,24 +518,13 @@ const PayablesTableBase = ({
             />
           ),
           noRowsOverlay: () => (
-            <GetNoRowsOverlay
+            <PayableNoRowsOverlay
               isLoading={isLoading}
               dataLength={payables?.data.length || 0}
               isFiltering={isFiltering}
               isSearching={isSearching}
               isError={isError}
-              onCreate={(type) => {
-                if (type === 'New Invoice') {
-                  setIsCreateInvoiceDialogOpen?.(true);
-                } else if (type === 'Upload File') {
-                  openFileInput?.();
-                }
-              }}
               refetch={refetch}
-              entityName={t(i18n)`Payable`}
-              actionButtonLabel={t(i18n)`Create new`}
-              actionOptions={[t(i18n)`New Invoice`, t(i18n)`Upload File`]}
-              type="no-data"
             />
           ),
         }}
