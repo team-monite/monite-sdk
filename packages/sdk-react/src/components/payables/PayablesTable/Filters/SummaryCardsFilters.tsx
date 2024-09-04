@@ -46,14 +46,12 @@ const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
 const SummaryCard = ({
   status,
   count,
-  // amount,
+  amount,
   onClick,
   selected,
 }: SummaryCardProps) => {
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
-
-  const amount = 0;
 
   const formatAmount = (amount: number) => {
     const dividedAmount = amount / 100;
