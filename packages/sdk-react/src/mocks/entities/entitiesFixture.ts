@@ -38,7 +38,8 @@ function generateEntityVatIdResourceList(
 function generateEntityData(entityId: string): EntityResponse {
   const type = faker.datatype.boolean() ? 'individual' : 'organization';
   const address: components['schemas']['EntityAddressSchema'] = {
-    country: getRandomItemFromArray(['DE', 'US', 'KZ']),
+    // country: getRandomItemFromArray(['DE', 'US', 'KZ']),
+    country: 'US',
     city: faker.location.city(),
     line1: faker.location.streetAddress(),
     postal_code: faker.location.zipCode(),

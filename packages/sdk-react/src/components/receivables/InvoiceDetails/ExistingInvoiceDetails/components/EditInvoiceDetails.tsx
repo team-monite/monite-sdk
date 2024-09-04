@@ -253,7 +253,7 @@ const EditInvoiceDetailsContent = ({
               }`}
             </Typography>
             <Stack direction="column" spacing={4}>
-              <CustomerSection disabled={isLoading} />
+              <CustomerSection disabled={isLoading} isUSEntity={isUSEntity} />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
                 isUSEntity={isUSEntity}

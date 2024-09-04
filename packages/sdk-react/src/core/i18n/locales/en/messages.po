@@ -190,7 +190,6 @@ msgid "Action menu"
 msgstr "Action menu"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:93
-#: src/components/payables/PayablesTable/PayablesTable.tsx:313
 msgid "Actions"
 msgstr "Actions"
 
@@ -276,7 +275,7 @@ msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:311
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:352
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:387
 msgid "Add item"
 msgstr "Add item"
 
@@ -305,7 +304,7 @@ msgstr "Add VAT ID"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:242
 #: src/components/approvalRequests/ApprovalRequestsTable/AutocompleteCreatedBy/AutocompleteCreatedBy.tsx:76
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:462
-#: src/components/payables/PayablesTable/PayablesTable.tsx:304
+#: src/components/payables/PayablesTable/PayablesTable.tsx:306
 msgid "Added by"
 msgstr "Added by"
 
@@ -351,7 +350,7 @@ msgstr "Advertising Services"
 msgid "Afghan Afghani"
 msgstr "Afghan Afghani"
 
-#: src/core/utils/countries.ts:19
+#: src/core/utils/countries.ts:21
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
@@ -371,11 +370,11 @@ msgstr "Airlines, Air Carriers"
 msgid "Airports, Flying Fields"
 msgstr "Airports, Flying Fields"
 
-#: src/core/utils/countries.ts:20
+#: src/core/utils/countries.ts:22
 msgid "Aland Islands"
 msgstr "Aland Islands"
 
-#: src/core/utils/countries.ts:21
+#: src/core/utils/countries.ts:23
 msgid "Albania"
 msgstr "Albania"
 
@@ -383,7 +382,7 @@ msgstr "Albania"
 msgid "Albanian Lek"
 msgstr "Albanian Lek"
 
-#: src/core/utils/countries.ts:22
+#: src/core/utils/countries.ts:24
 msgid "Algeria"
 msgstr "Algeria"
 
@@ -446,7 +445,7 @@ msgstr "Allowed"
 msgid "Ambulance Services"
 msgstr "Ambulance Services"
 
-#: src/core/utils/countries.ts:23
+#: src/core/utils/countries.ts:25
 msgid "American Samoa"
 msgstr "American Samoa"
 
@@ -457,7 +456,7 @@ msgstr "American Samoa"
 #: src/components/approvalRequests/ApprovalRequestsTable/ApprovalRequestsTable.tsx:231
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:269
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:152
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:242
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:246
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:35
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:214
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:179
@@ -466,7 +465,7 @@ msgstr "Amount"
 
 #. Payables Table "Amount" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:263
+#: src/components/payables/PayablesTable/PayablesTable.tsx:265
 msgid "Amount Name"
 msgstr "Amount"
 
@@ -486,11 +485,11 @@ msgstr "An invoice can only contain items in the selected currency."
 msgid "And add items created with it."
 msgstr "And add items created with it."
 
-#: src/core/utils/countries.ts:24
+#: src/core/utils/countries.ts:26
 msgid "Andorra"
 msgstr "Andorra"
 
-#: src/core/utils/countries.ts:25
+#: src/core/utils/countries.ts:27
 msgid "Angola"
 msgstr "Angola"
 
@@ -498,15 +497,15 @@ msgstr "Angola"
 msgid "Angolan Kwanza"
 msgstr "Angolan Kwanza"
 
-#: src/core/utils/countries.ts:26
+#: src/core/utils/countries.ts:28
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: src/core/utils/countries.ts:27
+#: src/core/utils/countries.ts:29
 msgid "Antarctica"
 msgstr "Antarctica"
 
-#: src/core/utils/countries.ts:28
+#: src/core/utils/countries.ts:30
 msgid "Antigua And Barbuda"
 msgstr "Antigua And Barbuda"
 
@@ -555,13 +554,17 @@ msgid "Approval policies"
 msgstr "Approval policies"
 
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:69
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:270
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:273
 msgid "Approval Policies"
 msgstr "Approval Policies"
 
 #: src/components/userRoles/consts.ts:49
 msgid "Approval policy"
 msgstr "Approval policy"
+
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:209
+msgid "Approval Policy"
+msgstr "Approval Policy"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/ApprovalPolicyForm.tsx:218
 #: src/components/approvalPolicies/ApprovalPolicyDetails/useApprovalPolicyDetails.tsx:42
@@ -629,7 +632,7 @@ msgstr "Are you the only person on the governing board of the company?"
 msgid "Are you the only person who owns 25% or more of the company?"
 msgstr "Are you the only person who owns 25% or more of the company?"
 
-#: src/core/utils/countries.ts:29
+#: src/core/utils/countries.ts:31
 msgid "Argentina"
 msgstr "Argentina"
 
@@ -637,7 +640,7 @@ msgstr "Argentina"
 msgid "Argentine Peso"
 msgstr "Argentine Peso"
 
-#: src/core/utils/countries.ts:30
+#: src/core/utils/countries.ts:32
 msgid "Armenia"
 msgstr "Armenia"
 
@@ -653,7 +656,7 @@ msgstr "Art Dealers and Galleries"
 msgid "Artists Supply and Craft Shops"
 msgstr "Artists Supply and Craft Shops"
 
-#: src/core/utils/countries.ts:31
+#: src/core/utils/countries.ts:33
 msgid "Aruba"
 msgstr "Aruba"
 
@@ -669,7 +672,7 @@ msgstr "At least 1 reminder is required"
 msgid "Attach a file"
 msgstr "Attach a file"
 
-#: src/core/utils/countries.ts:32
+#: src/core/utils/countries.ts:34
 msgid "Australia"
 msgstr "Australia"
 
@@ -685,7 +688,7 @@ msgstr "Australian Dollar"
 msgid "Australian Registered Body Number (Australia)"
 msgstr "Australian Registered Body Number (Australia)"
 
-#: src/core/utils/countries.ts:33
+#: src/core/utils/countries.ts:35
 msgid "Austria"
 msgstr "Austria"
 
@@ -729,7 +732,7 @@ msgstr "Automotive Tire Stores"
 msgid "Available items"
 msgstr "Available items"
 
-#: src/core/utils/countries.ts:34
+#: src/core/utils/countries.ts:36
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
 
@@ -766,7 +769,7 @@ msgstr "Back of your identify document"
 msgid "Back of your identity document"
 msgstr "Back of your identity document"
 
-#: src/core/utils/countries.ts:35
+#: src/core/utils/countries.ts:37
 msgid "Bahamas"
 msgstr "Bahamas"
 
@@ -774,7 +777,7 @@ msgstr "Bahamas"
 msgid "Bahamian Dollar"
 msgstr "Bahamian Dollar"
 
-#: src/core/utils/countries.ts:36
+#: src/core/utils/countries.ts:38
 msgid "Bahrain"
 msgstr "Bahrain"
 
@@ -794,7 +797,7 @@ msgstr "Bakeries"
 msgid "Bands, Orchestras"
 msgstr "Bands, Orchestras"
 
-#: src/core/utils/countries.ts:37
+#: src/core/utils/countries.ts:39
 msgid "Bangladesh"
 msgstr "Bangladesh"
 
@@ -804,8 +807,8 @@ msgstr "Bangladeshi Taka"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:101
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:50
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:95
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:137
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:99
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:138
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:26
 msgid "Bank account"
 msgstr "Bank account"
@@ -840,7 +843,7 @@ msgstr "Bank Name"
 msgid "Barbadian Dollar"
 msgstr "Barbadian Dollar"
 
-#: src/core/utils/countries.ts:38
+#: src/core/utils/countries.ts:40
 msgid "Barbados"
 msgstr "Barbados"
 
@@ -856,7 +859,7 @@ msgstr "Based on"
 msgid "Before due date"
 msgstr "Before due date"
 
-#: src/core/utils/countries.ts:39
+#: src/core/utils/countries.ts:41
 msgid "Belarus"
 msgstr "Belarus"
 
@@ -864,11 +867,11 @@ msgstr "Belarus"
 msgid "Belarusian Ruble"
 msgstr "Belarusian Ruble"
 
-#: src/core/utils/countries.ts:40
+#: src/core/utils/countries.ts:42
 msgid "Belgium"
 msgstr "Belgium"
 
-#: src/core/utils/countries.ts:41
+#: src/core/utils/countries.ts:43
 msgid "Belize"
 msgstr "Belize"
 
@@ -876,11 +879,11 @@ msgstr "Belize"
 msgid "Belize Dollar"
 msgstr "Belize Dollar"
 
-#: src/core/utils/countries.ts:42
+#: src/core/utils/countries.ts:44
 msgid "Benin"
 msgstr "Benin"
 
-#: src/core/utils/countries.ts:43
+#: src/core/utils/countries.ts:45
 msgid "Bermuda"
 msgstr "Bermuda"
 
@@ -888,7 +891,7 @@ msgstr "Bermuda"
 msgid "Betting/Casino Gambling"
 msgstr "Betting/Casino Gambling"
 
-#: src/core/utils/countries.ts:44
+#: src/core/utils/countries.ts:46
 msgid "Bhutan"
 msgstr "Bhutan"
 
@@ -902,7 +905,7 @@ msgstr "BIC"
 msgid "Bicycle Shops"
 msgstr "Bicycle Shops"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:219
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:226
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:61
 msgid "Bill to"
 msgstr "Bill to"
@@ -911,10 +914,10 @@ msgstr "Bill to"
 msgid "Billiard/Pool Establishments"
 msgstr "Billiard/Pool Establishments"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:396
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:402
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:108
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:150
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:417
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:423
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:109
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:148
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:83
 msgid "Billing address"
 msgstr "Billing address"
@@ -937,7 +940,7 @@ msgstr "Boat Rentals and Leases"
 msgid "Body"
 msgstr "Body"
 
-#: src/core/utils/countries.ts:45
+#: src/core/utils/countries.ts:47
 msgid "Bolivia"
 msgstr "Bolivia"
 
@@ -953,7 +956,7 @@ msgstr "Book Stores"
 msgid "Books, Periodicals, and Newspapers"
 msgstr "Books, Periodicals, and Newspapers"
 
-#: src/core/utils/countries.ts:46
+#: src/core/utils/countries.ts:48
 msgid "Bosnia And Herzegovina"
 msgstr "Bosnia And Herzegovina"
 
@@ -961,7 +964,7 @@ msgstr "Bosnia And Herzegovina"
 msgid "Bosnia and Herzegovina Convertible Mark"
 msgstr "Bosnia and Herzegovina Convertible Mark"
 
-#: src/core/utils/countries.ts:47
+#: src/core/utils/countries.ts:49
 msgid "Botswana"
 msgstr "Botswana"
 
@@ -969,7 +972,7 @@ msgstr "Botswana"
 msgid "Botswana Pula"
 msgstr "Botswana Pula"
 
-#: src/core/utils/countries.ts:48
+#: src/core/utils/countries.ts:50
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
@@ -977,7 +980,7 @@ msgstr "Bouvet Island"
 msgid "Bowling Alleys"
 msgstr "Bowling Alleys"
 
-#: src/core/utils/countries.ts:49
+#: src/core/utils/countries.ts:51
 msgid "Brazil"
 msgstr "Brazil"
 
@@ -985,7 +988,7 @@ msgstr "Brazil"
 msgid "Brazilian Real"
 msgstr "Brazilian Real"
 
-#: src/core/utils/countries.ts:50
+#: src/core/utils/countries.ts:52
 msgid "British Indian Ocean Territory"
 msgstr "British Indian Ocean Territory"
 
@@ -993,7 +996,7 @@ msgstr "British Indian Ocean Territory"
 msgid "British Pound Sterling"
 msgstr "British Pound Sterling"
 
-#: src/core/utils/countries.ts:51
+#: src/core/utils/countries.ts:53
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
@@ -1001,7 +1004,7 @@ msgstr "Brunei Darussalam"
 msgid "Brunei Dollar"
 msgstr "Brunei Dollar"
 
-#: src/core/utils/countries.ts:52
+#: src/core/utils/countries.ts:54
 msgid "Bulgaria"
 msgstr "Bulgaria"
 
@@ -1009,7 +1012,7 @@ msgstr "Bulgaria"
 msgid "Bulgarian Lev"
 msgstr "Bulgarian Lev"
 
-#: src/core/utils/countries.ts:53
+#: src/core/utils/countries.ts:55
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
@@ -1017,7 +1020,7 @@ msgstr "Burkina Faso"
 msgid "Burmese Kyat"
 msgstr "Burmese Kyat"
 
-#: src/core/utils/countries.ts:54
+#: src/core/utils/countries.ts:56
 msgid "Burundi"
 msgstr "Burundi"
 
@@ -1091,7 +1094,7 @@ msgstr "by"
 msgid "Cable, Satellite, and Other Pay Television and Radio"
 msgstr "Cable, Satellite, and Other Pay Television and Radio"
 
-#: src/core/utils/countries.ts:55
+#: src/core/utils/countries.ts:57
 msgid "Cambodia"
 msgstr "Cambodia"
 
@@ -1103,11 +1106,11 @@ msgstr "Cambodian Riel"
 msgid "Camera and Photographic Supply Stores"
 msgstr "Camera and Photographic Supply Stores"
 
-#: src/core/utils/countries.ts:56
+#: src/core/utils/countries.ts:58
 msgid "Cameroon"
 msgstr "Cameroon"
 
-#: src/core/utils/countries.ts:57
+#: src/core/utils/countries.ts:59
 msgid "Canada"
 msgstr "Canada"
 
@@ -1144,7 +1147,7 @@ msgstr "Canadian Dollar"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.tsx:162
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:459
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:295
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:159
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:172
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceCancelModal.tsx:89
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/InvoiceDeleteModal.tsx:62
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/ReceivableRecurrence/InvoiceRecurrenceForm.tsx:330
@@ -1192,7 +1195,7 @@ msgstr "Cancel recurrence confirmation"
 msgid "Cancel Recurring Invoice"
 msgstr "Cancel Recurring Invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:264
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:278
 msgid "Cancel without saving?"
 msgstr "Cancel without saving?"
 
@@ -1210,7 +1213,7 @@ msgstr "Canceled"
 msgid "Candy, Nut, and Confectionery Stores"
 msgstr "Candy, Nut, and Confectionery Stores"
 
-#: src/core/utils/countries.ts:58
+#: src/core/utils/countries.ts:60
 msgid "Cape Verde"
 msgstr "Cape Verde"
 
@@ -1254,7 +1257,7 @@ msgstr "Category"
 msgid "Caterers"
 msgstr "Caterers"
 
-#: src/core/utils/countries.ts:59
+#: src/core/utils/countries.ts:61
 msgid "Cayman Islands"
 msgstr "Cayman Islands"
 
@@ -1266,7 +1269,7 @@ msgstr "Cayman Islands Dollar"
 msgid "Central African CFA Franc"
 msgstr "Central African CFA Franc"
 
-#: src/core/utils/countries.ts:60
+#: src/core/utils/countries.ts:62
 msgid "Central African Republic"
 msgstr "Central African Republic"
 
@@ -1274,7 +1277,7 @@ msgstr "Central African Republic"
 msgid "CFP Franc"
 msgstr "CFP Franc"
 
-#: src/core/utils/countries.ts:61
+#: src/core/utils/countries.ts:63
 msgid "Chad"
 msgstr "Chad"
 
@@ -1294,7 +1297,7 @@ msgstr "Child Care Services"
 msgid "Childrens and Infants Wear Stores"
 msgstr "Childrens and Infants Wear Stores"
 
-#: src/core/utils/countries.ts:62
+#: src/core/utils/countries.ts:64
 msgid "Chile"
 msgstr "Chile"
 
@@ -1302,7 +1305,7 @@ msgstr "Chile"
 msgid "Chilean Peso"
 msgstr "Chilean Peso"
 
-#: src/core/utils/countries.ts:63
+#: src/core/utils/countries.ts:65
 msgid "China"
 msgstr "China"
 
@@ -1330,7 +1333,7 @@ msgstr "Choose document"
 msgid "Choose from device"
 msgstr "Choose from device"
 
-#: src/core/utils/countries.ts:64
+#: src/core/utils/countries.ts:66
 msgid "Christmas Island"
 msgstr "Christmas Island"
 
@@ -1397,7 +1400,7 @@ msgstr "Close role details"
 msgid "Clothing Rental"
 msgstr "Clothing Rental"
 
-#: src/core/utils/countries.ts:65
+#: src/core/utils/countries.ts:67
 msgid "Cocos (Keeling) Islands"
 msgstr "Cocos (Keeling) Islands"
 
@@ -1405,7 +1408,7 @@ msgstr "Cocos (Keeling) Islands"
 msgid "Colleges, Universities"
 msgstr "Colleges, Universities"
 
-#: src/core/utils/countries.ts:66
+#: src/core/utils/countries.ts:68
 msgid "Colombia"
 msgstr "Colombia"
 
@@ -1437,7 +1440,7 @@ msgstr "Commuter Transport, Ferries"
 msgid "Comorian Franc"
 msgstr "Comorian Franc"
 
-#: src/core/utils/countries.ts:67
+#: src/core/utils/countries.ts:69
 msgid "Comoros"
 msgstr "Comoros"
 
@@ -1513,11 +1516,11 @@ msgstr "Conditions"
 #~ msgid "Confirm Cancellation of Recurring Invoice"
 #~ msgstr "Confirm Cancellation of Recurring Invoice"
 
-#: src/core/utils/countries.ts:68
+#: src/core/utils/countries.ts:70
 msgid "Congo"
 msgstr "Congo"
 
-#: src/core/utils/countries.ts:69
+#: src/core/utils/countries.ts:71
 msgid "Congo, Democratic Republic"
 msgstr "Congo, Democratic Republic"
 
@@ -1538,7 +1541,7 @@ msgid "Contact information"
 msgstr "Contact information"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:206
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:275
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:282
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:65
 msgid "Contact person"
 msgstr "Contact person"
@@ -1608,7 +1611,7 @@ msgstr "Convert this invoice into recurring template"
 #~ msgid "Convert to recurring"
 #~ msgstr "Convert to recurring"
 
-#: src/core/utils/countries.ts:70
+#: src/core/utils/countries.ts:72
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
@@ -1637,7 +1640,7 @@ msgstr "Correspondence Schools"
 msgid "Cosmetic Stores"
 msgstr "Cosmetic Stores"
 
-#: src/core/utils/countries.ts:71
+#: src/core/utils/countries.ts:73
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
@@ -1645,7 +1648,7 @@ msgstr "Costa Rica"
 msgid "Costa Rican Colón"
 msgstr "Costa Rican Colón"
 
-#: src/core/utils/countries.ts:72
+#: src/core/utils/countries.ts:74
 msgid "Cote D\"Ivoire"
 msgstr "Cote D\"Ivoire"
 
@@ -1659,8 +1662,8 @@ msgstr "Counseling Services"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:375
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:381
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:93
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:135
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:97
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:136
 #: src/components/userRoles/consts.ts:28
 msgid "Counterpart"
 msgstr "Counterpart"
@@ -1691,8 +1694,8 @@ msgstr "Counterpart has been deleted."
 msgid "Counterpart not found"
 msgstr "Counterpart not found"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:142
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:101
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:140
 #: src/components/userRoles/consts.ts:32
 msgid "Counterpart VAT ID"
 msgstr "Counterpart VAT ID"
@@ -1751,7 +1754,7 @@ msgstr "Court Costs, Including Alimony and Child Support - Courts of Law"
 #: src/components/approvalPolicies/ApprovalPolicies.test.tsx:71
 #: src/components/approvalPolicies/ApprovalPolicies.tsx:82
 #: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:208
-#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:271
+#: src/components/approvalPolicies/ApprovalPoliciesTable/ApprovalPoliciesTable.tsx:274
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyDetailsFormAdvanced/ApprovalPolicyDetailsFormAdvanced.tsx:283
 #: src/components/approvalPolicies/RolesAndPolicies.tsx:145
 #: src/components/counterparts/CounterpartDetails/CounterpartDetails.test.tsx:594
@@ -1821,13 +1824,13 @@ msgstr "Create Counterpart – Company"
 msgid "Create from mail"
 msgstr "Create from mail"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:190
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:258
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:222
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:192
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:260
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:235
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:128
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:260
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:336
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:205
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:262
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:338
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:207
 #: src/components/receivables/Receivables.test.tsx:35
 #: src/components/receivables/Receivables.test.tsx:72
 #: src/components/receivables/Receivables.test.tsx:110
@@ -1837,11 +1840,11 @@ msgstr "Create Invoice"
 
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:361
 #: src/components/counterparts/CounterpartsTable/CounterpartsTable.tsx:442
-#: src/components/payables/PayablesTable/PayablesTable.tsx:382
-#: src/components/payables/PayablesTable/PayablesTable.tsx:461
-#: src/components/products/ProductsTable/ProductsTable.tsx:335
+#: src/components/payables/PayablesTable/PayablesTable.tsx:384
+#: src/components/payables/PayablesTable/PayablesTable.tsx:463
+#: src/components/products/ProductsTable/ProductsTable.tsx:337
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:320
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:271
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:273
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:206
 #: src/components/userRoles/UserRolesTable/UserRolesTable.tsx:272
 msgid "Create new"
@@ -1857,7 +1860,7 @@ msgstr "Create new"
 msgid "Create New"
 msgstr "Create New"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:211
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:218
 msgid "Create new counterpart"
 msgstr "Create new counterpart"
 
@@ -1927,7 +1930,7 @@ msgstr "Created on"
 msgid "Credit notes"
 msgstr "Credit notes"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:257
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:259
 msgid "Credit Notes"
 msgstr "Credit Notes"
 
@@ -1941,7 +1944,7 @@ msgstr "Credit Reporting Agencies"
 msgid "Criteria"
 msgstr "Criteria"
 
-#: src/core/utils/countries.ts:73
+#: src/core/utils/countries.ts:75
 msgid "Croatia"
 msgstr "Croatia"
 
@@ -1953,7 +1956,7 @@ msgstr "Croatian Kuna"
 msgid "Cruise Lines"
 msgstr "Cruise Lines"
 
-#: src/core/utils/countries.ts:74
+#: src/core/utils/countries.ts:76
 msgid "Cuba"
 msgstr "Cuba"
 
@@ -1963,7 +1966,7 @@ msgstr "Cuba"
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/products/ProductDetails/validation.ts:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:67
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:71
 #: src/ui/Currency/MoniteCurrency.tsx:51
 msgid "Currency"
 msgstr "Currency"
@@ -1980,7 +1983,7 @@ msgstr "Current status"
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:73
 #: src/components/counterparts/CounterpartStatusChip/CounterpartStatusChip.tsx:100
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:132
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:163
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:170
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/OverviewTabPanel.tsx:137
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:56
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:173
@@ -2002,7 +2005,7 @@ msgstr "Customers & Vendors"
 msgid "Customise"
 msgstr "Customise"
 
-#: src/core/utils/countries.ts:75
+#: src/core/utils/countries.ts:77
 msgid "Cyprus"
 msgstr "Cyprus"
 
@@ -2010,7 +2013,7 @@ msgstr "Cyprus"
 msgid "Czech Koruna"
 msgstr "Czech Koruna"
 
-#: src/core/utils/countries.ts:76
+#: src/core/utils/countries.ts:78
 msgid "Czech Republic"
 msgstr "Czech Republic"
 
@@ -2179,7 +2182,7 @@ msgstr "Deleted"
 msgid "Deliver invoice later or download PDF"
 msgstr "Deliver invoice later or download PDF"
 
-#: src/core/utils/countries.ts:77
+#: src/core/utils/countries.ts:79
 msgid "Denmark"
 msgstr "Denmark"
 
@@ -2208,7 +2211,7 @@ msgstr "Description:"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:339
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:166
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:93
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:98
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/Overview.tsx:42
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:19
 msgid "Details"
@@ -2288,7 +2291,7 @@ msgstr "Discount Stores"
 msgid "Discounted subtotal"
 msgstr "Discounted subtotal"
 
-#: src/core/utils/countries.ts:78
+#: src/core/utils/countries.ts:80
 msgid "Djibouti"
 msgstr "Djibouti"
 
@@ -2300,7 +2303,7 @@ msgstr "Djiboutian Franc"
 msgid "Doctors"
 msgstr "Doctors"
 
-#: src/core/utils/countries.ts:79
+#: src/core/utils/countries.ts:81
 msgid "Dominica"
 msgstr "Dominica"
 
@@ -2308,7 +2311,7 @@ msgstr "Dominica"
 msgid "Dominican Peso"
 msgstr "Dominican Peso"
 
-#: src/core/utils/countries.ts:80
+#: src/core/utils/countries.ts:82
 msgid "Dominican Republic"
 msgstr "Dominican Republic"
 
@@ -2376,7 +2379,7 @@ msgstr "Dry Cleaners"
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:235
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:420
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/reminderCardTermsHelpers.tsx:45
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:225
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:227
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:162
 #: src/components/receivables/ReceivableFilters/ReceivableFilters.tsx:123
 msgid "Due date"
@@ -2384,7 +2387,7 @@ msgstr "Due date"
 
 #. Payables Table "Due date" heading title
 #. js-lingui-explicit-id
-#: src/components/payables/PayablesTable/PayablesTable.tsx:278
+#: src/components/payables/PayablesTable/PayablesTable.tsx:280
 msgid "Due date Name"
 msgstr "Due date"
 
@@ -2420,7 +2423,7 @@ msgstr "East Caribbean Dollar"
 msgid "Eating Places, Restaurants"
 msgstr "Eating Places, Restaurants"
 
-#: src/core/utils/countries.ts:81
+#: src/core/utils/countries.ts:83
 msgid "Ecuador"
 msgstr "Ecuador"
 
@@ -2489,7 +2492,7 @@ msgstr "Edit individual"
 msgid "Edit invoice"
 msgstr "Edit invoice"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:238
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:251
 msgid "Edit invoice {0}"
 msgstr "Edit invoice {0}"
 
@@ -2527,7 +2530,7 @@ msgstr "Edit User Role"
 msgid "Educational Services"
 msgstr "Educational Services"
 
-#: src/core/utils/countries.ts:82
+#: src/core/utils/countries.ts:84
 msgid "Egypt"
 msgstr "Egypt"
 
@@ -2535,7 +2538,7 @@ msgstr "Egypt"
 msgid "Egyptian Pound"
 msgstr "Egyptian Pound"
 
-#: src/core/utils/countries.ts:83
+#: src/core/utils/countries.ts:85
 msgid "El Salvador"
 msgstr "El Salvador"
 
@@ -2642,7 +2645,7 @@ msgstr "Equal to"
 msgid "Equal to {formattedValue}"
 msgstr "Equal to {formattedValue}"
 
-#: src/core/utils/countries.ts:84
+#: src/core/utils/countries.ts:86
 msgid "Equatorial Guinea"
 msgstr "Equatorial Guinea"
 
@@ -2650,7 +2653,7 @@ msgstr "Equatorial Guinea"
 msgid "Equipment Rental"
 msgstr "Equipment Rental"
 
-#: src/core/utils/countries.ts:85
+#: src/core/utils/countries.ts:87
 msgid "Eritrea"
 msgstr "Eritrea"
 
@@ -2664,11 +2667,11 @@ msgstr "Error creating approval policy"
 msgid "Error updating approval policy"
 msgstr "Error updating approval policy"
 
-#: src/core/utils/countries.ts:86
+#: src/core/utils/countries.ts:88
 msgid "Estonia"
 msgstr "Estonia"
 
-#: src/core/utils/countries.ts:87
+#: src/core/utils/countries.ts:89
 msgid "Ethiopia"
 msgstr "Ethiopia"
 
@@ -2828,7 +2831,7 @@ msgstr "Failed to update receivable: {errorMessage}"
 msgid "Failed to update VAT."
 msgstr "Failed to update VAT."
 
-#: src/core/utils/countries.ts:88
+#: src/core/utils/countries.ts:90
 msgid "Falkland Islands (Malvinas)"
 msgstr "Falkland Islands (Malvinas)"
 
@@ -2836,7 +2839,7 @@ msgstr "Falkland Islands (Malvinas)"
 msgid "Family Clothing Stores"
 msgstr "Family Clothing Stores"
 
-#: src/core/utils/countries.ts:89
+#: src/core/utils/countries.ts:91
 msgid "Faroe Islands"
 msgstr "Faroe Islands"
 
@@ -2852,7 +2855,7 @@ msgstr "Federal Retailers Permit (Malaysia)"
 msgid "Federal Taxpayers Registry (Mexico)"
 msgstr "Federal Taxpayers Registry (Mexico)"
 
-#: src/core/utils/countries.ts:90
+#: src/core/utils/countries.ts:92
 msgid "Fiji"
 msgstr "Fiji"
 
@@ -2880,7 +2883,7 @@ msgstr "Financial Institutions"
 msgid "Fines - Government Administrative Entities"
 msgstr "Fines - Government Administrative Entities"
 
-#: src/core/utils/countries.ts:91
+#: src/core/utils/countries.ts:93
 msgid "Finland"
 msgstr "Finland"
 
@@ -2934,7 +2937,7 @@ msgstr "For this reminder to be sent for your invoice, please make sure to set p
 msgid "Forward to email"
 msgstr "Forward to email"
 
-#: src/core/utils/countries.ts:92
+#: src/core/utils/countries.ts:94
 msgid "France"
 msgstr "France"
 
@@ -2942,15 +2945,15 @@ msgstr "France"
 msgid "Freezer and Locker Meat Provisioners"
 msgstr "Freezer and Locker Meat Provisioners"
 
-#: src/core/utils/countries.ts:93
+#: src/core/utils/countries.ts:95
 msgid "French Guiana"
 msgstr "French Guiana"
 
-#: src/core/utils/countries.ts:94
+#: src/core/utils/countries.ts:96
 msgid "French Polynesia"
 msgstr "French Polynesia"
 
-#: src/core/utils/countries.ts:95
+#: src/core/utils/countries.ts:97
 msgid "French Southern Territories"
 msgstr "French Southern Territories"
 
@@ -2991,9 +2994,9 @@ msgstr "Front of your identity document"
 msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:176
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:103
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:145
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:187
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:104
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:143
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:199
 msgid "Fulfillment date"
@@ -3020,11 +3023,11 @@ msgstr "Furniture, Home Furnishings, and Equipment Stores, Except Appliances"
 msgid "Furriers and Fur Shops"
 msgstr "Furriers and Fur Shops"
 
-#: src/core/utils/countries.ts:96
+#: src/core/utils/countries.ts:98
 msgid "Gabon"
 msgstr "Gabon"
 
-#: src/core/utils/countries.ts:97
+#: src/core/utils/countries.ts:99
 msgid "Gambia"
 msgstr "Gambia"
 
@@ -3036,7 +3039,7 @@ msgstr "Gambian Dalasi"
 msgid "General Services"
 msgstr "General Services"
 
-#: src/core/utils/countries.ts:98
+#: src/core/utils/countries.ts:100
 msgid "Georgia"
 msgstr "Georgia"
 
@@ -3044,15 +3047,15 @@ msgstr "Georgia"
 msgid "Georgian Lari"
 msgstr "Georgian Lari"
 
-#: src/core/utils/countries.ts:99
+#: src/core/utils/countries.ts:101
 msgid "Germany"
 msgstr "Germany"
 
-#: src/core/utils/countries.ts:100
+#: src/core/utils/countries.ts:102
 msgid "Ghana"
 msgstr "Ghana"
 
-#: src/core/utils/countries.ts:101
+#: src/core/utils/countries.ts:103
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
@@ -3120,15 +3123,15 @@ msgstr "Greater than or equal to"
 msgid "Greater than or equal to {formattedValue}"
 msgstr "Greater than or equal to {formattedValue}"
 
-#: src/core/utils/countries.ts:102
+#: src/core/utils/countries.ts:104
 msgid "Greece"
 msgstr "Greece"
 
-#: src/core/utils/countries.ts:103
+#: src/core/utils/countries.ts:105
 msgid "Greenland"
 msgstr "Greenland"
 
-#: src/core/utils/countries.ts:104
+#: src/core/utils/countries.ts:106
 msgid "Grenada"
 msgstr "Grenada"
 
@@ -3136,15 +3139,15 @@ msgstr "Grenada"
 msgid "Grocery Stores, Supermarkets"
 msgstr "Grocery Stores, Supermarkets"
 
-#: src/core/utils/countries.ts:105
+#: src/core/utils/countries.ts:107
 msgid "Guadeloupe"
 msgstr "Guadeloupe"
 
-#: src/core/utils/countries.ts:106
+#: src/core/utils/countries.ts:108
 msgid "Guam"
 msgstr "Guam"
 
-#: src/core/utils/countries.ts:107
+#: src/core/utils/countries.ts:109
 msgid "Guatemala"
 msgstr "Guatemala"
 
@@ -3152,15 +3155,15 @@ msgstr "Guatemala"
 msgid "Guatemalan Quetzal"
 msgstr "Guatemalan Quetzal"
 
-#: src/core/utils/countries.ts:108
+#: src/core/utils/countries.ts:110
 msgid "Guernsey"
 msgstr "Guernsey"
 
-#: src/core/utils/countries.ts:109
+#: src/core/utils/countries.ts:111
 msgid "Guinea"
 msgstr "Guinea"
 
-#: src/core/utils/countries.ts:110
+#: src/core/utils/countries.ts:112
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
 
@@ -3168,7 +3171,7 @@ msgstr "Guinea-Bissau"
 msgid "Guinean Franc"
 msgstr "Guinean Franc"
 
-#: src/core/utils/countries.ts:111
+#: src/core/utils/countries.ts:113
 msgid "Guyana"
 msgstr "Guyana"
 
@@ -3176,7 +3179,7 @@ msgstr "Guyana"
 msgid "Guyanese Dollar"
 msgstr "Guyanese Dollar"
 
-#: src/core/utils/countries.ts:112
+#: src/core/utils/countries.ts:114
 msgid "Haiti"
 msgstr "Haiti"
 
@@ -3200,7 +3203,7 @@ msgstr "Has tags"
 msgid "Health and Beauty Spas"
 msgstr "Health and Beauty Spas"
 
-#: src/core/utils/countries.ts:113
+#: src/core/utils/countries.ts:115
 msgid "Heard Island & Mcdonald Islands"
 msgstr "Heard Island & Mcdonald Islands"
 
@@ -3224,7 +3227,7 @@ msgstr "Hobby, Toy, and Game Shops"
 msgid "Hold on, we’re processing the file you’ve uploaded."
 msgstr "Hold on, we’re processing the file you’ve uploaded."
 
-#: src/core/utils/countries.ts:114
+#: src/core/utils/countries.ts:116
 msgid "Holy See (Vatican City State)"
 msgstr "Holy See (Vatican City State)"
 
@@ -3240,11 +3243,11 @@ msgstr "Home Supply Warehouse Stores"
 msgid "Honduran Lempira"
 msgstr "Honduran Lempira"
 
-#: src/core/utils/countries.ts:115
+#: src/core/utils/countries.ts:117
 msgid "Honduras"
 msgstr "Honduras"
 
-#: src/core/utils/countries.ts:116
+#: src/core/utils/countries.ts:118
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
@@ -3268,7 +3271,7 @@ msgstr "Household Appliance Stores"
 msgid "Hungarian Forint"
 msgstr "Hungarian Forint"
 
-#: src/core/utils/countries.ts:117
+#: src/core/utils/countries.ts:119
 msgid "Hungary"
 msgstr "Hungary"
 
@@ -3294,7 +3297,7 @@ msgstr "I own 25% or more of the company."
 msgid "IBAN"
 msgstr "IBAN"
 
-#: src/core/utils/countries.ts:118
+#: src/core/utils/countries.ts:120
 msgid "Iceland"
 msgstr "Iceland"
 
@@ -3331,7 +3334,7 @@ msgstr "In range"
 msgid "Income Tax Number (Malaysia)"
 msgstr "Income Tax Number (Malaysia)"
 
-#: src/core/utils/countries.ts:119
+#: src/core/utils/countries.ts:121
 msgid "India"
 msgstr "India"
 
@@ -3355,7 +3358,7 @@ msgstr "Individual person"
 msgid "Individuals"
 msgstr "Individuals"
 
-#: src/core/utils/countries.ts:120
+#: src/core/utils/countries.ts:122
 msgid "Indonesia"
 msgstr "Indonesia"
 
@@ -3411,16 +3414,16 @@ msgstr "Invalid IBAN"
 msgid "Invalid issuance"
 msgstr "Invalid issuance"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:191
 #: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:193
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:259
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:261
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:195
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:261
 #: src/components/receivables/InvoicesTable/InvoicesTable.tsx:263
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:337
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:206
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:265
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:339
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:208
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:272
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:210
 #: src/components/receivables/QuotesTable/QuotesTable.tsx:274
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:276
 msgid "Invoice"
 msgstr "Invoice"
 
@@ -3489,28 +3492,28 @@ msgstr "Invoice to “{0}” was created"
 msgid "Invoice total"
 msgstr "Invoice total"
 
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:335
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:337
 #: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:85
 msgid "Invoices"
 msgstr "Invoices"
 
-#: src/core/utils/countries.ts:121
+#: src/core/utils/countries.ts:123
 msgid "Iran, Islamic Republic Of"
 msgstr "Iran, Islamic Republic Of"
 
-#: src/core/utils/countries.ts:122
+#: src/core/utils/countries.ts:124
 msgid "Iraq"
 msgstr "Iraq"
 
-#: src/core/utils/countries.ts:123
+#: src/core/utils/countries.ts:125
 msgid "Ireland"
 msgstr "Ireland"
 
-#: src/core/utils/countries.ts:124
+#: src/core/utils/countries.ts:126
 msgid "Isle Of Man"
 msgstr "Isle Of Man"
 
-#: src/core/utils/countries.ts:125
+#: src/core/utils/countries.ts:127
 msgid "Israel"
 msgstr "Israel"
 
@@ -3595,7 +3598,7 @@ msgstr "It’s required to add any individual who is on the governing board of t
 msgid "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 msgstr "It’s required to add any individual who is on the governing board, owns 25% or more of the company or otherwise has significant management control of the company."
 
-#: src/core/utils/countries.ts:126
+#: src/core/utils/countries.ts:128
 msgid "Italy"
 msgstr "Italy"
 
@@ -3604,7 +3607,7 @@ msgstr "Italy"
 msgid "item"
 msgstr "item"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:238
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:242
 msgid "Item"
 msgstr "Item"
 
@@ -3643,13 +3646,13 @@ msgstr "items"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:582
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:350
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:209
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:213
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:90
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:23
 msgid "Items"
 msgstr "Items"
 
-#: src/core/utils/countries.ts:127
+#: src/core/utils/countries.ts:129
 msgid "Jamaica"
 msgstr "Jamaica"
 
@@ -3657,7 +3660,7 @@ msgstr "Jamaica"
 msgid "Jamaican Dollar"
 msgstr "Jamaican Dollar"
 
-#: src/core/utils/countries.ts:128
+#: src/core/utils/countries.ts:130
 msgid "Japan"
 msgstr "Japan"
 
@@ -3665,7 +3668,7 @@ msgstr "Japan"
 msgid "Japanese Yen"
 msgstr "Japanese Yen"
 
-#: src/core/utils/countries.ts:129
+#: src/core/utils/countries.ts:131
 msgid "Jersey"
 msgstr "Jersey"
 
@@ -3680,7 +3683,7 @@ msgstr "Jewelry Stores, Watches, Clocks, and Silverware Stores"
 msgid "Job title"
 msgstr "Job title"
 
-#: src/core/utils/countries.ts:130
+#: src/core/utils/countries.ts:132
 msgid "Jordan"
 msgstr "Jordan"
 
@@ -3688,7 +3691,7 @@ msgstr "Jordan"
 msgid "Jordanian Dinar"
 msgstr "Jordanian Dinar"
 
-#: src/core/utils/countries.ts:131
+#: src/core/utils/countries.ts:133
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
@@ -3696,7 +3699,7 @@ msgstr "Kazakhstan"
 msgid "Kazakhstani Tenge"
 msgstr "Kazakhstani Tenge"
 
-#: src/core/utils/countries.ts:132
+#: src/core/utils/countries.ts:134
 msgid "Kenya"
 msgstr "Kenya"
 
@@ -3704,15 +3707,15 @@ msgstr "Kenya"
 msgid "Kenyan Shilling"
 msgstr "Kenyan Shilling"
 
-#: src/core/utils/countries.ts:133
+#: src/core/utils/countries.ts:135
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/core/utils/countries.ts:134
+#: src/core/utils/countries.ts:136
 msgid "Korea"
 msgstr "Korea"
 
-#: src/core/utils/countries.ts:136
+#: src/core/utils/countries.ts:138
 msgid "Kuwait"
 msgstr "Kuwait"
 
@@ -3724,7 +3727,7 @@ msgstr "Kuwaiti Dinar"
 msgid "Kyrgystani Som"
 msgstr "Kyrgystani Som"
 
-#: src/core/utils/countries.ts:137
+#: src/core/utils/countries.ts:139
 msgid "Kyrgyzstan"
 msgstr "Kyrgyzstan"
 
@@ -3732,7 +3735,7 @@ msgstr "Kyrgyzstan"
 msgid "Landscaping Services"
 msgstr "Landscaping Services"
 
-#: src/core/utils/countries.ts:138
+#: src/core/utils/countries.ts:140
 msgid "Lao People\"s Democratic Republic"
 msgstr "Lao People\"s Democratic Republic"
 
@@ -3772,7 +3775,7 @@ msgstr "Last name is required"
 msgid "Last update:"
 msgstr "Last update:"
 
-#: src/core/utils/countries.ts:139
+#: src/core/utils/countries.ts:141
 msgid "Latvia"
 msgstr "Latvia"
 
@@ -3788,7 +3791,7 @@ msgstr "Laundry, Cleaning Services"
 msgid "Lebanese Pound"
 msgstr "Lebanese Pound"
 
-#: src/core/utils/countries.ts:140
+#: src/core/utils/countries.ts:142
 msgid "Lebanon"
 msgstr "Lebanon"
 
@@ -3805,7 +3808,7 @@ msgstr "Legal name of person"
 msgid "Legal Services, Attorneys"
 msgstr "Legal Services, Attorneys"
 
-#: src/core/utils/countries.ts:141
+#: src/core/utils/countries.ts:143
 msgid "Lesotho"
 msgstr "Lesotho"
 
@@ -3829,7 +3832,7 @@ msgstr "Less than or equal to"
 msgid "Less than or equal to {formattedValue}"
 msgstr "Less than or equal to {formattedValue}"
 
-#: src/core/utils/countries.ts:142
+#: src/core/utils/countries.ts:144
 msgid "Liberia"
 msgstr "Liberia"
 
@@ -3837,11 +3840,11 @@ msgstr "Liberia"
 msgid "Liberian Dollar"
 msgstr "Liberian Dollar"
 
-#: src/core/utils/countries.ts:143
+#: src/core/utils/countries.ts:145
 msgid "Libyan Arab Jamahiriya"
 msgstr "Libyan Arab Jamahiriya"
 
-#: src/core/utils/countries.ts:144
+#: src/core/utils/countries.ts:146
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
@@ -3861,7 +3864,7 @@ msgstr "Line 2"
 msgid "Linked documents"
 msgstr "Linked documents"
 
-#: src/core/utils/countries.ts:145
+#: src/core/utils/countries.ts:147
 msgid "Lithuania"
 msgstr "Lithuania"
 
@@ -3877,7 +3880,7 @@ msgstr "Luggage and Leather Goods Stores"
 msgid "Lumber, Building Materials Stores"
 msgstr "Lumber, Building Materials Stores"
 
-#: src/core/utils/countries.ts:146
+#: src/core/utils/countries.ts:148
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
@@ -3885,11 +3888,11 @@ msgstr "Luxembourg"
 msgid "Macanese Pataca"
 msgstr "Macanese Pataca"
 
-#: src/core/utils/countries.ts:147
+#: src/core/utils/countries.ts:149
 msgid "Macao"
 msgstr "Macao"
 
-#: src/core/utils/countries.ts:148
+#: src/core/utils/countries.ts:150
 msgid "Macedonia"
 msgstr "Macedonia"
 
@@ -3897,7 +3900,7 @@ msgstr "Macedonia"
 msgid "Macedonian Denar"
 msgstr "Macedonian Denar"
 
-#: src/core/utils/countries.ts:149
+#: src/core/utils/countries.ts:151
 msgid "Madagascar"
 msgstr "Madagascar"
 
@@ -3909,7 +3912,7 @@ msgstr "Make default"
 msgid "Malagasy Ariary"
 msgstr "Malagasy Ariary"
 
-#: src/core/utils/countries.ts:150
+#: src/core/utils/countries.ts:152
 msgid "Malawi"
 msgstr "Malawi"
 
@@ -3917,7 +3920,7 @@ msgstr "Malawi"
 msgid "Malawian Kwacha"
 msgstr "Malawian Kwacha"
 
-#: src/core/utils/countries.ts:151
+#: src/core/utils/countries.ts:153
 msgid "Malaysia"
 msgstr "Malaysia"
 
@@ -3925,7 +3928,7 @@ msgstr "Malaysia"
 msgid "Malaysian Ringgit"
 msgstr "Malaysian Ringgit"
 
-#: src/core/utils/countries.ts:152
+#: src/core/utils/countries.ts:154
 msgid "Maldives"
 msgstr "Maldives"
 
@@ -3933,11 +3936,11 @@ msgstr "Maldives"
 msgid "Maldivian Rufiyaa"
 msgstr "Maldivian Rufiyaa"
 
-#: src/core/utils/countries.ts:153
+#: src/core/utils/countries.ts:155
 msgid "Mali"
 msgstr "Mali"
 
-#: src/core/utils/countries.ts:154
+#: src/core/utils/countries.ts:156
 msgid "Malta"
 msgstr "Malta"
 
@@ -3974,11 +3977,11 @@ msgstr "Mark uncollectible"
 msgid "Marked as uncollectible"
 msgstr "Marked as uncollectible"
 
-#: src/core/utils/countries.ts:155
+#: src/core/utils/countries.ts:157
 msgid "Marshall Islands"
 msgstr "Marshall Islands"
 
-#: src/core/utils/countries.ts:156
+#: src/core/utils/countries.ts:158
 msgid "Martinique"
 msgstr "Martinique"
 
@@ -3990,7 +3993,7 @@ msgstr "Masonry, Stonework, and Plaster"
 msgid "Massage Parlors"
 msgstr "Massage Parlors"
 
-#: src/core/utils/countries.ts:157
+#: src/core/utils/countries.ts:159
 msgid "Mauritania"
 msgstr "Mauritania"
 
@@ -3998,15 +4001,15 @@ msgstr "Mauritania"
 msgid "Mauritian Rupee"
 msgstr "Mauritian Rupee"
 
-#: src/core/utils/countries.ts:158
+#: src/core/utils/countries.ts:160
 msgid "Mauritius"
 msgstr "Mauritius"
 
-#: src/core/utils/countries.ts:159
+#: src/core/utils/countries.ts:161
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:77
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:81
 msgid "Measure unit"
 msgstr "Measure unit"
 
@@ -4046,11 +4049,11 @@ msgstr "Metal Service Centers"
 msgid "Mexican Peso"
 msgstr "Mexican Peso"
 
-#: src/core/utils/countries.ts:160
+#: src/core/utils/countries.ts:162
 msgid "Mexico"
 msgstr "Mexico"
 
-#: src/core/utils/countries.ts:161
+#: src/core/utils/countries.ts:163
 msgid "Micronesia, Federated States Of"
 msgstr "Micronesia, Federated States Of"
 
@@ -4107,7 +4110,7 @@ msgstr "Miscellaneous Specialty Retail"
 msgid "Mobile Home Dealers"
 msgstr "Mobile Home Dealers"
 
-#: src/core/utils/countries.ts:162
+#: src/core/utils/countries.ts:164
 msgid "Moldova"
 msgstr "Moldova"
 
@@ -4115,11 +4118,11 @@ msgstr "Moldova"
 msgid "Moldovan Leu"
 msgstr "Moldovan Leu"
 
-#: src/core/utils/countries.ts:163
+#: src/core/utils/countries.ts:165
 msgid "Monaco"
 msgstr "Monaco"
 
-#: src/core/utils/countries.ts:164
+#: src/core/utils/countries.ts:166
 msgid "Mongolia"
 msgstr "Mongolia"
 
@@ -4131,7 +4134,7 @@ msgstr "Mongolian Tugrik"
 msgid "Monthly recurrence"
 msgstr "Monthly recurrence"
 
-#: src/core/utils/countries.ts:165
+#: src/core/utils/countries.ts:167
 msgid "Montserrat"
 msgstr "Montserrat"
 
@@ -4143,7 +4146,7 @@ msgstr "More"
 msgid "Moroccan Dirham"
 msgstr "Moroccan Dirham"
 
-#: src/core/utils/countries.ts:166
+#: src/core/utils/countries.ts:168
 msgid "Morocco"
 msgstr "Morocco"
 
@@ -4175,7 +4178,7 @@ msgstr "Motorcycle Shops, Dealers"
 msgid "Mozambican Metical"
 msgstr "Mozambican Metical"
 
-#: src/core/utils/countries.ts:167
+#: src/core/utils/countries.ts:169
 msgid "Mozambique"
 msgstr "Mozambique"
 
@@ -4183,7 +4186,7 @@ msgstr "Mozambique"
 msgid "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 msgstr "Music Stores-Musical Instruments, Pianos, and Sheet Music"
 
-#: src/core/utils/countries.ts:168
+#: src/core/utils/countries.ts:170
 msgid "Myanmar"
 msgstr "Myanmar"
 
@@ -4191,7 +4194,7 @@ msgstr "Myanmar"
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:61
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:65
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:98
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:29
 #: src/components/tags/TagFormModal/TagFormModal.tsx:191
@@ -4219,7 +4222,7 @@ msgstr "Name, description"
 msgid "Name:"
 msgstr "Name:"
 
-#: src/core/utils/countries.ts:169
+#: src/core/utils/countries.ts:171
 msgid "Namibia"
 msgstr "Namibia"
 
@@ -4235,11 +4238,11 @@ msgstr "National Registry of Legal Entities (Brazil)"
 msgid "Natural Persons Register (Brazil)"
 msgstr "Natural Persons Register (Brazil)"
 
-#: src/core/utils/countries.ts:170
+#: src/core/utils/countries.ts:172
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/core/utils/countries.ts:171
+#: src/core/utils/countries.ts:173
 msgid "Nepal"
 msgstr "Nepal"
 
@@ -4247,7 +4250,7 @@ msgstr "Nepal"
 msgid "Nepalese Rupee"
 msgstr "Nepalese Rupee"
 
-#: src/core/utils/countries.ts:172
+#: src/core/utils/countries.ts:174
 msgid "Netherlands"
 msgstr "Netherlands"
 
@@ -4255,7 +4258,7 @@ msgstr "Netherlands"
 msgid "Netherlands Antillean Guilder"
 msgstr "Netherlands Antillean Guilder"
 
-#: src/core/utils/countries.ts:173
+#: src/core/utils/countries.ts:175
 msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
@@ -4268,7 +4271,7 @@ msgstr "New"
 msgid "New bill"
 msgstr "New bill"
 
-#: src/core/utils/countries.ts:174
+#: src/core/utils/countries.ts:176
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
@@ -4276,9 +4279,9 @@ msgstr "New Caledonia"
 msgid "New incoming invoice"
 msgstr "New incoming invoice"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:383
 #: src/components/payables/PayablesTable/PayablesTable.tsx:385
-#: src/components/payables/PayablesTable/PayablesTable.tsx:462
+#: src/components/payables/PayablesTable/PayablesTable.tsx:387
+#: src/components/payables/PayablesTable/PayablesTable.tsx:464
 msgid "New Invoice"
 msgstr "New Invoice"
 
@@ -4290,7 +4293,7 @@ msgstr "New tag “{0}” created"
 msgid "New Taiwan Dollar"
 msgstr "New Taiwan Dollar"
 
-#: src/core/utils/countries.ts:175
+#: src/core/utils/countries.ts:177
 msgid "New Zealand"
 msgstr "New Zealand"
 
@@ -4306,13 +4309,13 @@ msgstr "News Dealers and Newsstands"
 msgid "next on {0}"
 msgstr "next on {0}"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:142
+#: src/components/receivables/InvoiceDetails/CreateReceivable/CreateReceivables.tsx:151
 #: src/ui/table/TablePagination.tsx:130
 #: src/ui/table/TablePagination.tsx:143
 msgid "Next page"
 msgstr "Next page"
 
-#: src/core/utils/countries.ts:176
+#: src/core/utils/countries.ts:178
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
@@ -4320,11 +4323,11 @@ msgstr "Nicaragua"
 msgid "Nicaraguan Córdoba"
 msgstr "Nicaraguan Córdoba"
 
-#: src/core/utils/countries.ts:177
+#: src/core/utils/countries.ts:179
 msgid "Niger"
 msgstr "Niger"
 
-#: src/core/utils/countries.ts:178
+#: src/core/utils/countries.ts:180
 msgid "Nigeria"
 msgstr "Nigeria"
 
@@ -4332,12 +4335,12 @@ msgstr "Nigeria"
 msgid "Nigerian Naira"
 msgstr "Nigerian Naira"
 
-#: src/core/utils/countries.ts:179
+#: src/core/utils/countries.ts:181
 msgid "Niue"
 msgstr "Niue"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:40
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:274
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:288
 msgid "No"
 msgstr "No"
 
@@ -4374,7 +4377,7 @@ msgstr "No bank accounts available"
 msgid "No conditions"
 msgstr "No conditions"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:302
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:309
 msgid "No contact persons available"
 msgstr "No contact persons available"
 
@@ -4382,7 +4385,7 @@ msgstr "No contact persons available"
 msgid "No Counterparts"
 msgstr "No Counterparts"
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:187
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:189
 msgid "No Credit Notes"
 msgstr "No Credit Notes"
 
@@ -4406,7 +4409,7 @@ msgstr "No more than 3 reminders are allowed"
 msgid "No overdue reminders available"
 msgstr "No overdue reminders available"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:379
+#: src/components/payables/PayablesTable/PayablesTable.tsx:381
 msgid "No Payables"
 msgstr "No Payables"
 
@@ -4422,12 +4425,12 @@ msgstr "no policy"
 #~ msgid "No Products"
 #~ msgstr "No Products"
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:202
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:204
 msgid "No Quotes"
 msgstr "No Quotes"
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:125
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:257
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:259
 msgid "No Receivables"
 msgstr "No Receivables"
 
@@ -4452,10 +4455,15 @@ msgstr "No Tags"
 msgid "No tags found"
 msgstr "No tags found"
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:346
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:163
+msgid "No Tax ID available"
+msgstr "No Tax ID available"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:377
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:152
-msgid "No TAX ID available"
-msgstr "No TAX ID available"
+#~ msgid "No TAX ID available"
+#~ msgstr "No TAX ID available"
 
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteCounterparts/AutocompleteCounterparts.tsx:55
 #: src/components/approvalPolicies/ApprovalPolicyDetails/ApprovalPolicyForm/AutocompleteUser/AutocompleteUser.tsx:53
@@ -4476,19 +4484,19 @@ msgstr "Non-FI, Stored Value Card Purchase/Load"
 msgid "Nondurable Goods (Not Elsewhere Classified)"
 msgstr "Nondurable Goods (Not Elsewhere Classified)"
 
-#: src/core/utils/countries.ts:180
+#: src/core/utils/countries.ts:182
 msgid "Norfolk Island"
 msgstr "Norfolk Island"
 
-#: src/core/utils/countries.ts:135
+#: src/core/utils/countries.ts:137
 msgid "North Korea"
 msgstr "North Korea"
 
-#: src/core/utils/countries.ts:181
+#: src/core/utils/countries.ts:183
 msgid "Northern Mariana Islands"
 msgstr "Northern Mariana Islands"
 
-#: src/core/utils/countries.ts:182
+#: src/core/utils/countries.ts:184
 msgid "Norway"
 msgstr "Norway"
 
@@ -4522,7 +4530,7 @@ msgstr "Nursing/Personal Care"
 msgid "Office and Commercial Furniture"
 msgstr "Office and Commercial Furniture"
 
-#: src/core/utils/countries.ts:183
+#: src/core/utils/countries.ts:185
 msgid "Oman"
 msgstr "Oman"
 
@@ -4581,8 +4589,8 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Overdue payment"
 msgstr "Overdue payment"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:123
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:165
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:124
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:163
 #: src/components/userRoles/consts.ts:37
 msgid "Overdue reminder"
 msgstr "Overdue reminder"
@@ -4622,7 +4630,7 @@ msgstr "Paid"
 msgid "Paints, Varnishes, and Supplies"
 msgstr "Paints, Varnishes, and Supplies"
 
-#: src/core/utils/countries.ts:184
+#: src/core/utils/countries.ts:186
 msgid "Pakistan"
 msgstr "Pakistan"
 
@@ -4630,15 +4638,15 @@ msgstr "Pakistan"
 msgid "Pakistani Rupee"
 msgstr "Pakistani Rupee"
 
-#: src/core/utils/countries.ts:185
+#: src/core/utils/countries.ts:187
 msgid "Palau"
 msgstr "Palau"
 
-#: src/core/utils/countries.ts:186
+#: src/core/utils/countries.ts:188
 msgid "Palestinian Territory, Occupied"
 msgstr "Palestinian Territory, Occupied"
 
-#: src/core/utils/countries.ts:187
+#: src/core/utils/countries.ts:189
 msgid "Panama"
 msgstr "Panama"
 
@@ -4646,7 +4654,7 @@ msgstr "Panama"
 msgid "Panamanian Balboa"
 msgstr "Panamanian Balboa"
 
-#: src/core/utils/countries.ts:188
+#: src/core/utils/countries.ts:190
 msgid "Papua New Guinea"
 msgstr "Papua New Guinea"
 
@@ -4654,7 +4662,7 @@ msgstr "Papua New Guinea"
 msgid "Papua New Guinean Kina"
 msgstr "Papua New Guinean Kina"
 
-#: src/core/utils/countries.ts:189
+#: src/core/utils/countries.ts:191
 msgid "Paraguay"
 msgstr "Paraguay"
 
@@ -4702,7 +4710,7 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:460
+#: src/components/payables/PayablesTable/PayablesTable.tsx:462
 #: src/components/userRoles/consts.ts:51
 msgid "Payable"
 msgstr "Payable"
@@ -4767,8 +4775,8 @@ msgstr "Payment processing services for {entityName} are provided by Stripe and 
 msgid "Payment record"
 msgstr "Payment record"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:128
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:170
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:129
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:168
 #: src/components/userRoles/consts.ts:36
 msgid "Payment reminder"
 msgstr "Payment reminder"
@@ -4783,8 +4791,8 @@ msgstr "Payment reminder error"
 #~ msgstr "Payment term"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:78
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:116
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:158
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:117
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:156
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:21
 msgid "Payment terms"
 msgstr "Payment terms"
@@ -4821,7 +4829,7 @@ msgstr "Person"
 msgid "Persons review"
 msgstr "Persons review"
 
-#: src/core/utils/countries.ts:190
+#: src/core/utils/countries.ts:192
 msgid "Peru"
 msgstr "Peru"
 
@@ -4841,7 +4849,7 @@ msgstr "Petroleum and Petroleum Products"
 msgid "Philippine Peso"
 msgstr "Philippine Peso"
 
-#: src/core/utils/countries.ts:191
+#: src/core/utils/countries.ts:193
 msgid "Philippines"
 msgstr "Philippines"
 
@@ -4878,7 +4886,7 @@ msgstr "Picture/Video Production"
 msgid "Piece Goods, Notions, and Other Dry Goods"
 msgstr "Piece Goods, Notions, and Other Dry Goods"
 
-#: src/core/utils/countries.ts:192
+#: src/core/utils/countries.ts:194
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
@@ -4964,7 +4972,7 @@ msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:17
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
 msgid "Please, add at least 1 item to proceed with this invoice"
 msgstr "Please, add at least 1 item to proceed with this invoice"
 
@@ -4972,7 +4980,7 @@ msgstr "Please, add at least 1 item to proceed with this invoice"
 msgid "Plumbing, Heating Equipment, and Supplies"
 msgstr "Plumbing, Heating Equipment, and Supplies"
 
-#: src/core/utils/countries.ts:193
+#: src/core/utils/countries.ts:195
 msgid "Poland"
 msgstr "Poland"
 
@@ -5000,7 +5008,7 @@ msgstr "Polish Złoty"
 msgid "Political Organizations"
 msgstr "Political Organizations"
 
-#: src/core/utils/countries.ts:194
+#: src/core/utils/countries.ts:196
 msgid "Portugal"
 msgstr "Portugal"
 
@@ -5043,9 +5051,9 @@ msgstr "Previous page"
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:358
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:128
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:241
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:71
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:74
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:245
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:75
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:78
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:100
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:32
 msgid "Price"
@@ -5075,7 +5083,7 @@ msgstr "Processing..."
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:89
 #: src/components/products/ProductDetails/components/ProductType/ProductType.tsx:16
-#: src/components/products/ProductsTable/ProductsTable.tsx:336
+#: src/components/products/ProductsTable/ProductsTable.tsx:338
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTableFilters.tsx:72
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:49
 #: src/components/userRoles/consts.ts:38
@@ -5112,7 +5120,7 @@ msgstr "Product was deleted."
 
 #: src/components/products/Products.tsx:89
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:70
-#: src/components/products/ProductsTable/ProductsTable.tsx:334
+#: src/components/products/ProductsTable/ProductsTable.tsx:336
 msgid "Products"
 msgstr "Products"
 
@@ -5152,18 +5160,18 @@ msgstr "Provincial Sales Tax (Saskatchewan, Canada)"
 msgid "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Household Goods, and Storage"
 msgstr "Public Warehousing and Storage - Farm Products, Refrigerated Goods, Household Goods, and Storage"
 
-#: src/core/utils/countries.ts:195
+#: src/core/utils/countries.ts:197
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:237
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:105
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:147
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:248
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:106
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:145
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:37
 msgid "Purchase order"
 msgstr "Purchase order"
 
-#: src/core/utils/countries.ts:196
+#: src/core/utils/countries.ts:198
 msgid "Qatar"
 msgstr "Qatar"
 
@@ -5173,7 +5181,7 @@ msgstr "Qatari Rial"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:357
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:62
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:239
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:243
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:33
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:99
 msgid "Quantity"
@@ -5191,7 +5199,7 @@ msgstr "Quebec Sales Tax (Canada)"
 msgid "Quick Copy, Repro, and Blueprint"
 msgstr "Quick Copy, Repro, and Blueprint"
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:270
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:272
 #: src/components/receivables/ReceivablesTable/ReceivablesTable.tsx:92
 msgid "Quotes"
 msgstr "Quotes"
@@ -5413,7 +5421,7 @@ msgstr "Required"
 msgid "Resource name"
 msgstr "Resource name"
 
-#: src/core/utils/countries.ts:197
+#: src/core/utils/countries.ts:199
 msgid "Reunion"
 msgstr "Reunion"
 
@@ -5456,7 +5464,7 @@ msgstr "Roles & Approvals"
 msgid "Roles from the list"
 msgstr "Roles from the list"
 
-#: src/core/utils/countries.ts:198
+#: src/core/utils/countries.ts:200
 msgid "Romania"
 msgstr "Romania"
 
@@ -5487,7 +5495,7 @@ msgstr "Rows per page"
 #~ msgid "Rule"
 #~ msgstr "Rule"
 
-#: src/core/utils/countries.ts:199
+#: src/core/utils/countries.ts:201
 msgid "Russian Federation"
 msgstr "Russian Federation"
 
@@ -5495,7 +5503,7 @@ msgstr "Russian Federation"
 msgid "Russian Ruble"
 msgstr "Russian Ruble"
 
-#: src/core/utils/countries.ts:200
+#: src/core/utils/countries.ts:202
 msgid "Rwanda"
 msgstr "Rwanda"
 
@@ -5503,23 +5511,23 @@ msgstr "Rwanda"
 msgid "Rwandan Franc"
 msgstr "Rwandan Franc"
 
-#: src/core/utils/countries.ts:201
+#: src/core/utils/countries.ts:203
 msgid "Saint Helena"
 msgstr "Saint Helena"
 
-#: src/core/utils/countries.ts:202
+#: src/core/utils/countries.ts:204
 msgid "Saint Kitts And Nevis"
 msgstr "Saint Kitts And Nevis"
 
-#: src/core/utils/countries.ts:203
+#: src/core/utils/countries.ts:205
 msgid "Saint Lucia"
 msgstr "Saint Lucia"
 
-#: src/core/utils/countries.ts:204
+#: src/core/utils/countries.ts:206
 msgid "Saint Pierre And Miquelon"
 msgstr "Saint Pierre And Miquelon"
 
-#: src/core/utils/countries.ts:205
+#: src/core/utils/countries.ts:207
 msgid "Saint Vincent And Grenadines"
 msgstr "Saint Vincent And Grenadines"
 
@@ -5531,11 +5539,11 @@ msgstr "Sales"
 msgid "Sales and Service Tax (Malaysia)"
 msgstr "Sales and Service Tax (Malaysia)"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:221
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:232
 msgid "Same as invoice date"
 msgstr "Same as invoice date"
 
-#: src/core/utils/countries.ts:206
+#: src/core/utils/countries.ts:208
 msgid "Samoa"
 msgstr "Samoa"
 
@@ -5543,15 +5551,15 @@ msgstr "Samoa"
 msgid "Samoan Tala"
 msgstr "Samoan Tala"
 
-#: src/core/utils/countries.ts:207
+#: src/core/utils/countries.ts:209
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/core/utils/countries.ts:208
+#: src/core/utils/countries.ts:210
 msgid "Sao Tome And Principe"
 msgstr "Sao Tome And Principe"
 
-#: src/core/utils/countries.ts:209
+#: src/core/utils/countries.ts:211
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
@@ -5649,11 +5657,11 @@ msgstr "Send failed"
 msgid "Send invoice"
 msgstr "Send invoice"
 
-#: src/core/utils/countries.ts:211
+#: src/core/utils/countries.ts:213
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/core/utils/countries.ts:210
+#: src/core/utils/countries.ts:212
 msgid "Serbia and Montenegro"
 msgstr "Serbia and Montenegro"
 
@@ -5692,7 +5700,7 @@ msgstr "Set this counterpart as:"
 msgid "Sewing, Needlework, Fabric, and Piece Goods Stores"
 msgstr "Sewing, Needlework, Fabric, and Piece Goods Stores"
 
-#: src/core/utils/countries.ts:212
+#: src/core/utils/countries.ts:214
 msgid "Seychelles"
 msgstr "Seychelles"
 
@@ -5700,10 +5708,10 @@ msgstr "Seychelles"
 msgid "Seychellois Rupee"
 msgstr "Seychellois Rupee"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:436
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:444
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:110
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:152
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:457
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:465
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:111
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:150
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:88
 msgid "Shipping address"
 msgstr "Shipping address"
@@ -5716,7 +5724,7 @@ msgstr "Shoe Repair/Hat Cleaning"
 msgid "Shoe Stores"
 msgstr "Shoe Stores"
 
-#: src/core/utils/countries.ts:213
+#: src/core/utils/countries.ts:215
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
@@ -5724,7 +5732,7 @@ msgstr "Sierra Leone"
 msgid "Sierra Leonean Leone"
 msgstr "Sierra Leonean Leone"
 
-#: src/core/utils/countries.ts:214
+#: src/core/utils/countries.ts:216
 msgid "Singapore"
 msgstr "Singapore"
 
@@ -5739,11 +5747,11 @@ msgstr "Singapore Dollar"
 msgid "Single user"
 msgstr "Single user"
 
-#: src/core/utils/countries.ts:215
+#: src/core/utils/countries.ts:217
 msgid "Slovakia"
 msgstr "Slovakia"
 
-#: src/core/utils/countries.ts:216
+#: src/core/utils/countries.ts:218
 msgid "Slovenia"
 msgstr "Slovenia"
 
@@ -5753,7 +5761,7 @@ msgstr "Small Appliance Repair"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:135
 #: src/components/products/ProductDetails/validation.ts:36
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:82
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:86
 msgid "Smallest amount"
 msgstr "Smallest amount"
 
@@ -5765,7 +5773,7 @@ msgstr "Smallest amount (units):"
 msgid "Snowmobile Dealers"
 msgstr "Snowmobile Dealers"
 
-#: src/core/utils/countries.ts:217
+#: src/core/utils/countries.ts:219
 msgid "Solomon Islands"
 msgstr "Solomon Islands"
 
@@ -5777,7 +5785,7 @@ msgstr "Solomon Islands Dollar"
 msgid "Somali Shilling"
 msgstr "Somali Shilling"
 
-#: src/core/utils/countries.ts:218
+#: src/core/utils/countries.ts:220
 msgid "Somalia"
 msgstr "Somalia"
 
@@ -5801,7 +5809,7 @@ msgstr "Sort code"
 msgid "Sort Code"
 msgstr "Sort Code"
 
-#: src/core/utils/countries.ts:219
+#: src/core/utils/countries.ts:221
 msgid "South Africa"
 msgstr "South Africa"
 
@@ -5809,7 +5817,7 @@ msgstr "South Africa"
 msgid "South African Rand"
 msgstr "South African Rand"
 
-#: src/core/utils/countries.ts:220
+#: src/core/utils/countries.ts:222
 msgid "South Georgia And Sandwich Isl."
 msgstr "South Georgia And Sandwich Isl."
 
@@ -5817,7 +5825,7 @@ msgstr "South Georgia And Sandwich Isl."
 msgid "South Korean Won"
 msgstr "South Korean Won"
 
-#: src/core/utils/countries.ts:221
+#: src/core/utils/countries.ts:223
 msgid "Spain"
 msgstr "Spain"
 
@@ -5845,7 +5853,7 @@ msgstr "Sports and Riding Apparel Stores"
 msgid "Sports Clubs/Fields"
 msgstr "Sports Clubs/Fields"
 
-#: src/core/utils/countries.ts:222
+#: src/core/utils/countries.ts:224
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
@@ -5926,13 +5934,13 @@ msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:592
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:404
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:382
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:417
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:31
 msgid "Subtotal"
 msgstr "Subtotal"
 
-#: src/core/utils/countries.ts:223
+#: src/core/utils/countries.ts:225
 msgid "Sudan"
 msgstr "Sudan"
 
@@ -5941,7 +5949,7 @@ msgstr "Sudan"
 msgid "Supplier"
 msgstr "Supplier"
 
-#: src/core/utils/countries.ts:224
+#: src/core/utils/countries.ts:226
 msgid "Suriname"
 msgstr "Suriname"
 
@@ -5949,7 +5957,7 @@ msgstr "Suriname"
 msgid "Surinamese Dollar"
 msgstr "Surinamese Dollar"
 
-#: src/core/utils/countries.ts:225
+#: src/core/utils/countries.ts:227
 msgid "Svalbard And Jan Mayen"
 msgstr "Svalbard And Jan Mayen"
 
@@ -5957,11 +5965,11 @@ msgstr "Svalbard And Jan Mayen"
 msgid "Swazi Lilangeni"
 msgstr "Swazi Lilangeni"
 
-#: src/core/utils/countries.ts:226
+#: src/core/utils/countries.ts:228
 msgid "Swaziland"
 msgstr "Swaziland"
 
-#: src/core/utils/countries.ts:227
+#: src/core/utils/countries.ts:229
 msgid "Sweden"
 msgstr "Sweden"
 
@@ -5981,11 +5989,11 @@ msgstr "Swimming Pools Sales"
 msgid "Swiss Franc"
 msgstr "Swiss Franc"
 
-#: src/core/utils/countries.ts:228
+#: src/core/utils/countries.ts:230
 msgid "Switzerland"
 msgstr "Switzerland"
 
-#: src/core/utils/countries.ts:229
+#: src/core/utils/countries.ts:231
 msgid "Syrian Arab Republic"
 msgstr "Syrian Arab Republic"
 
@@ -6016,11 +6024,11 @@ msgstr "Tags"
 msgid "Tailors, Alterations"
 msgstr "Tailors, Alterations"
 
-#: src/core/utils/countries.ts:230
+#: src/core/utils/countries.ts:232
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: src/core/utils/countries.ts:231
+#: src/core/utils/countries.ts:233
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
@@ -6028,7 +6036,7 @@ msgstr "Tajikistan"
 msgid "Tajikistani Somoni"
 msgstr "Tajikistani Somoni"
 
-#: src/core/utils/countries.ts:232
+#: src/core/utils/countries.ts:234
 msgid "Tanzania"
 msgstr "Tanzania"
 
@@ -6037,20 +6045,28 @@ msgid "Tanzanian Shilling"
 msgstr "Tanzanian Shilling"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
-msgid "TAX"
-msgstr "TAX"
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:248
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:59
+msgid "Tax"
+msgstr "Tax"
+
+#: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
+#~ msgid "TAX"
+#~ msgstr "TAX"
 
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartIndividualForm/CounterpartIndividualForm.tsx:369
 #: src/components/counterparts/CounterpartDetails/CounterpartForm/CounterpartOrganizationForm/CounterpartOrganizationForm.tsx:372
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartIndividualView/CounterpartIndividualView.tsx:60
 #: src/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView/CounterpartOrganizationView.tsx:86
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:319
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:334
 msgid "Tax ID"
 msgstr "Tax ID"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:353
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:368
-msgid "TAX ID"
-msgstr "TAX ID"
+#~ msgid "TAX ID"
+#~ msgstr "TAX ID"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:79
 msgid "Tax ID {counterpart_tax_id}"
@@ -6098,7 +6114,7 @@ msgstr "Tax Registration Number (UAE)"
 msgid "Taxes"
 msgstr "Taxes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:384
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:419
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -6155,7 +6171,7 @@ msgstr "Testing Laboratories"
 msgid "Thai Baht"
 msgstr "Thai Baht"
 
-#: src/core/utils/countries.ts:233
+#: src/core/utils/countries.ts:235
 msgid "Thailand"
 msgstr "Thailand"
 
@@ -6199,7 +6215,7 @@ msgstr "Theatrical Ticket Agencies"
 msgid "There are no items here"
 msgstr "There are no items here"
 
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:266
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:280
 msgid "There are unsaved changes. If you leave, they will be lost."
 msgstr "There are unsaved changes. If you leave, they will be lost."
 
@@ -6319,7 +6335,7 @@ msgstr "This person owns 25% or more of the company."
 msgid "Timeshares"
 msgstr "Timeshares"
 
-#: src/core/utils/countries.ts:234
+#: src/core/utils/countries.ts:236
 msgid "Timor-Leste"
 msgstr "Timor-Leste"
 
@@ -6349,11 +6365,11 @@ msgstr "Todo task"
 msgid "Todo task mute"
 msgstr "Todo task mute"
 
-#: src/core/utils/countries.ts:235
+#: src/core/utils/countries.ts:237
 msgid "Togo"
 msgstr "Togo"
 
-#: src/core/utils/countries.ts:236
+#: src/core/utils/countries.ts:238
 msgid "Tokelau"
 msgstr "Tokelau"
 
@@ -6361,7 +6377,7 @@ msgstr "Tokelau"
 msgid "Tolls/Bridge Fees"
 msgstr "Tolls/Bridge Fees"
 
-#: src/core/utils/countries.ts:237
+#: src/core/utils/countries.ts:239
 msgid "Tonga"
 msgstr "Tonga"
 
@@ -6371,7 +6387,7 @@ msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:621
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:427
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:388
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:423
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:38
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:25
@@ -6430,7 +6446,7 @@ msgstr "Trigger in Monite Script"
 #~ msgid "Triggers"
 #~ msgstr "Triggers"
 
-#: src/core/utils/countries.ts:238
+#: src/core/utils/countries.ts:240
 msgid "Trinidad And Tobago"
 msgstr "Trinidad And Tobago"
 
@@ -6462,7 +6478,7 @@ msgstr "Try another document"
 msgid "TUI Travel - Germany"
 msgstr "TUI Travel - Germany"
 
-#: src/core/utils/countries.ts:239
+#: src/core/utils/countries.ts:241
 msgid "Tunisia"
 msgstr "Tunisia"
 
@@ -6470,7 +6486,7 @@ msgstr "Tunisia"
 msgid "Tunisian Dinar"
 msgstr "Tunisian Dinar"
 
-#: src/core/utils/countries.ts:240
+#: src/core/utils/countries.ts:242
 msgid "Turkey"
 msgstr "Turkey"
 
@@ -6478,15 +6494,15 @@ msgstr "Turkey"
 msgid "Turkish Lira"
 msgstr "Turkish Lira"
 
-#: src/core/utils/countries.ts:241
+#: src/core/utils/countries.ts:243
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: src/core/utils/countries.ts:242
+#: src/core/utils/countries.ts:244
 msgid "Turks And Caicos Islands"
 msgstr "Turks And Caicos Islands"
 
-#: src/core/utils/countries.ts:243
+#: src/core/utils/countries.ts:245
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
@@ -6517,7 +6533,7 @@ msgstr "Typewriter Stores"
 msgid "U.S. Federal Government Agencies or Departments"
 msgstr "U.S. Federal Government Agencies or Departments"
 
-#: src/core/utils/countries.ts:244
+#: src/core/utils/countries.ts:246
 msgid "Uganda"
 msgstr "Uganda"
 
@@ -6525,7 +6541,7 @@ msgstr "Uganda"
 msgid "Ugandan Shilling"
 msgstr "Ugandan Shilling"
 
-#: src/core/utils/countries.ts:245
+#: src/core/utils/countries.ts:247
 msgid "Ukraine"
 msgstr "Ukraine"
 
@@ -6557,7 +6573,7 @@ msgstr "Unique Entity Number (Singapore)"
 msgid "Unit:"
 msgstr "Unit:"
 
-#: src/core/utils/countries.ts:246
+#: src/core/utils/countries.ts:248
 msgid "United Arab Emirates"
 msgstr "United Arab Emirates"
 
@@ -6565,11 +6581,11 @@ msgstr "United Arab Emirates"
 msgid "United Arab Emirates Dirham"
 msgstr "United Arab Emirates Dirham"
 
-#: src/core/utils/countries.ts:247
+#: src/core/utils/countries.ts:249
 msgid "United Kingdom"
 msgstr "United Kingdom"
 
-#: src/core/utils/countries.ts:248
+#: src/core/utils/countries.ts:250
 msgid "United States"
 msgstr "United States"
 
@@ -6577,7 +6593,7 @@ msgstr "United States"
 msgid "United States Dollar"
 msgstr "United States Dollar"
 
-#: src/core/utils/countries.ts:249
+#: src/core/utils/countries.ts:251
 msgid "United States Outlying Islands"
 msgstr "United States Outlying Islands"
 
@@ -6586,8 +6602,8 @@ msgstr "United States Outlying Islands"
 #: src/components/products/ProductDetails/validation.ts:31
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:93
 #: src/components/products/ProductsTable/components/Filters/Filters.tsx:96
-#: src/components/products/ProductsTable/ProductsTable.tsx:231
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:240
+#: src/components/products/ProductsTable/ProductsTable.tsx:233
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:244
 msgid "Units"
 msgstr "Units"
 
@@ -6631,7 +6647,7 @@ msgstr "Unsupported file type"
 #: src/components/products/ProductDetails/ProductEditForm/ProductEditForm.tsx:207
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/BeforeDueDateReminderForm.tsx:469
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:308
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:168
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:181
 #: src/components/userRoles/consts.ts:70
 #: src/components/userRoles/UserRoleDetails/UserRoleDetails.test.tsx:47
 #: src/components/userRoles/UserRoleDetails/UserRoleDetailsDialog/UserRoleDetailsDialog.tsx:211
@@ -6683,9 +6699,9 @@ msgstr "Updating the invoice"
 msgid "Upload a document here."
 msgstr "Upload a document here."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:383
-#: src/components/payables/PayablesTable/PayablesTable.tsx:387
-#: src/components/payables/PayablesTable/PayablesTable.tsx:462
+#: src/components/payables/PayablesTable/PayablesTable.tsx:385
+#: src/components/payables/PayablesTable/PayablesTable.tsx:389
+#: src/components/payables/PayablesTable/PayablesTable.tsx:464
 msgid "Upload File"
 msgstr "Upload File"
 
@@ -6699,7 +6715,7 @@ msgstr "Upload payable file"
 msgid "Uploading payable file"
 msgstr "Uploading payable file"
 
-#: src/core/utils/countries.ts:250
+#: src/core/utils/countries.ts:252
 msgid "Uruguay"
 msgstr "Uruguay"
 
@@ -6763,7 +6779,7 @@ msgstr "Usually it takes no more than 1–2 minutes."
 msgid "Utilities"
 msgstr "Utilities"
 
-#: src/core/utils/countries.ts:251
+#: src/core/utils/countries.ts:253
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
@@ -6823,7 +6839,7 @@ msgstr "Value Added Tax (United Kingdom)"
 msgid "Value must be at most {255} characters"
 msgstr "Value must be at most {255} characters"
 
-#: src/core/utils/countries.ts:252
+#: src/core/utils/countries.ts:254
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
@@ -6835,9 +6851,9 @@ msgstr "Vanuatu Vatu"
 msgid "Variety Stores"
 msgstr "Variety Stores"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:243
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:53
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:57
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:248
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:51
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:55
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:45
 msgid "VAT"
 msgstr "VAT"
@@ -6854,12 +6870,12 @@ msgstr "Vat “{0}” has been updated."
 msgid "VAT {0}%"
 msgstr "VAT {0}%"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:367
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:402
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:113
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:155
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:114
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:153
 msgid "VAT exemption rationale"
 msgstr "VAT exemption rationale"
 
@@ -6871,10 +6887,10 @@ msgstr "VAT has been deleted."
 msgid "Vat ID"
 msgstr "Vat ID"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:322
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:328
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:98
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:140
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:367
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:373
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:139
 msgid "VAT ID"
 msgstr "VAT ID"
 
@@ -6922,7 +6938,7 @@ msgstr "Vendor"
 msgid "Vendors"
 msgstr "Vendors"
 
-#: src/core/utils/countries.ts:253
+#: src/core/utils/countries.ts:255
 msgid "Venezuela"
 msgstr "Venezuela"
 
@@ -6951,7 +6967,7 @@ msgstr "Video Game Arcades"
 msgid "Video Tape Rental Stores"
 msgstr "Video Tape Rental Stores"
 
-#: src/core/utils/countries.ts:254
+#: src/core/utils/countries.ts:256
 msgid "Vietnam"
 msgstr "Vietnam"
 
@@ -6968,11 +6984,11 @@ msgstr "View"
 msgid "View all"
 msgstr "View all"
 
-#: src/core/utils/countries.ts:255
+#: src/core/utils/countries.ts:257
 msgid "Virgin Islands, British"
 msgstr "Virgin Islands, British"
 
-#: src/core/utils/countries.ts:256
+#: src/core/utils/countries.ts:258
 msgid "Virgin Islands, U.S."
 msgstr "Virgin Islands, U.S."
 
@@ -6988,7 +7004,7 @@ msgstr "Vocational/Trade Schools"
 msgid "Waiting to be paid"
 msgstr "Waiting to be paid"
 
-#: src/core/utils/countries.ts:257
+#: src/core/utils/countries.ts:259
 msgid "Wallis And Futuna"
 msgstr "Wallis And Futuna"
 
@@ -7008,7 +7024,7 @@ msgstr "Welding Repair"
 msgid "West African CFA Franc"
 msgstr "West African CFA Franc"
 
-#: src/core/utils/countries.ts:258
+#: src/core/utils/countries.ts:260
 msgid "Western Sahara"
 msgstr "Western Sahara"
 
@@ -7048,7 +7064,7 @@ msgstr "Workflow"
 msgid "Wrecking and Salvage Yards"
 msgstr "Wrecking and Salvage Yards"
 
-#: src/core/utils/countries.ts:259
+#: src/core/utils/countries.ts:261
 msgid "Yemen"
 msgstr "Yemen"
 
@@ -7057,11 +7073,11 @@ msgid "Yemeni Rial"
 msgstr "Yemeni Rial"
 
 #: src/components/onboarding/OnboardingPerson/OnboardingRepresentativeRole/OnboardingRepresentativeRole.tsx:35
-#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:275
+#: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/EditInvoiceDetails.tsx:289
 msgid "Yes"
 msgstr "Yes"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:381
+#: src/components/payables/PayablesTable/PayablesTable.tsx:383
 msgid "You can add a new payable."
 msgstr "You can add a new payable."
 
@@ -7089,12 +7105,12 @@ msgstr "You can create your first approval request."
 msgid "You can create your first counterpart."
 msgstr "You can create your first counterpart."
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:189
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:191
 msgid "You can create your first credit note."
 msgstr "You can create your first credit note."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:127
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:259
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:261
 msgid "You can create your first invoice."
 msgstr "You can create your first invoice."
 
@@ -7102,7 +7118,7 @@ msgstr "You can create your first invoice."
 #~ msgid "You can create your first product."
 #~ msgstr "You can create your first product."
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:204
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:206
 msgid "You can create your first quote."
 msgstr "You can create your first quote."
 
@@ -7138,16 +7154,16 @@ msgstr "You don’t have any approval requests yet."
 msgid "You don’t have any counterparts yet."
 msgstr "You don’t have any counterparts yet."
 
-#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:188
+#: src/components/receivables/CreditNotesTable/CreditNotesTable.tsx:190
 msgid "You don’t have any credit notes yet."
 msgstr "You don’t have any credit notes yet."
 
 #: src/components/receivables/InvoicesTable/InvoicesTable.test.tsx:126
-#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:258
+#: src/components/receivables/InvoicesTable/InvoicesTable.tsx:260
 msgid "You don’t have any invoices yet."
 msgstr "You don’t have any invoices yet."
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:380
+#: src/components/payables/PayablesTable/PayablesTable.tsx:382
 msgid "You don’t have any payables added yet."
 msgstr "You don’t have any payables added yet."
 
@@ -7155,7 +7171,7 @@ msgstr "You don’t have any payables added yet."
 #~ msgid "You don’t have any products yet."
 #~ msgstr "You don’t have any products yet."
 
-#: src/components/receivables/QuotesTable/QuotesTable.tsx:203
+#: src/components/receivables/QuotesTable/QuotesTable.tsx:205
 msgid "You don’t have any quotes yet."
 msgstr "You don’t have any quotes yet."
 
@@ -7175,20 +7191,24 @@ msgstr "You don't have permission to issue this document. Please, contact your s
 msgid "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 msgstr "You don’t have permissions to view this page.<0/>Contact your system administrator for details."
 
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:152
+msgid "Your Tax ID"
+msgstr "Your Tax ID"
+
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:141
-msgid "Your TAX ID"
-msgstr "Your TAX ID"
+#~ msgid "Your TAX ID"
+#~ msgstr "Your TAX ID"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:25
 msgid "Your tax information"
 msgstr "Your tax information"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:109
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:115
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:121
 msgid "Your VAT ID"
 msgstr "Your VAT ID"
 
-#: src/core/utils/countries.ts:260
+#: src/core/utils/countries.ts:262
 msgid "Zambia"
 msgstr "Zambia"
 
@@ -7196,7 +7216,7 @@ msgstr "Zambia"
 msgid "Zambian Kwacha"
 msgstr "Zambian Kwacha"
 
-#: src/core/utils/countries.ts:261
+#: src/core/utils/countries.ts:263
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 

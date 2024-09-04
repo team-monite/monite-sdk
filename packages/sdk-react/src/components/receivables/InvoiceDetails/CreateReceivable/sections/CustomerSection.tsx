@@ -9,6 +9,7 @@ import {
 } from '@/components/counterparts/helpers';
 import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/CreateReceivable/components/CountryInvoiceOption';
 import { CreateCounterpartDialog } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog';
+import type { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useCounterpartAddresses,
@@ -42,12 +43,15 @@ import {
   Typography,
 } from '@mui/material';
 
-import { CreateReceivablesFormProps } from '../validation';
 import type { SectionGeneralProps } from './Section.types';
 
 interface CounterpartsAutocompleteOptionProps {
   id: string;
   label: string;
+}
+
+interface CustomerSectionProps extends SectionGeneralProps {
+  isUSEntity: boolean;
 }
 
 const filter = createFilterOptions<CounterpartsAutocompleteOptionProps>();
@@ -77,7 +81,10 @@ function isCreateNewCounterpartOption(
   return counterpartOption?.id === COUNTERPART_CREATE_NEW_ID;
 }
 
-export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
+export const CustomerSection = ({
+  disabled,
+  isUSEntity,
+}: CustomerSectionProps) => {
   const { i18n } = useLingui();
   const { control, watch, setValue } =
     useFormContext<CreateReceivablesFormProps>();
@@ -303,80 +310,94 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                 </FormHelperText>
               </Collapse>
             </Grid>
-            <Grid item {...customerGridItemProps}>
-              <Controller
-                name="counterpart_vat_id_id"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    disabled={
-                      isCounterpartVatsLoading ||
-                      !counterpartVats?.data ||
-                      counterpartVats?.data.length === 0 ||
-                      disabled
-                    }
-                    error={Boolean(error)}
-                  >
-                    <InputLabel htmlFor={field.name}>{t(
-                      i18n
-                    )`VAT ID`}</InputLabel>
-                    <Select
-                      {...field}
-                      labelId={field.name}
-                      label={t(i18n)`VAT ID`}
-                      MenuProps={{ container: root }}
-                      startAdornment={
-                        isCounterpartVatsLoading ? (
-                          <CircularProgress size={20} />
-                        ) : null
+            {isUSEntity ? (
+              <Grid item {...customerGridItemProps}>
+                <TextField
+                  disabled
+                  fullWidth
+                  variant="outlined"
+                  label={t(i18n)`Tax ID`}
+                  value={counterpart?.tax_id ?? ''}
+                  InputProps={{
+                    startAdornment: isCounterpartLoading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{
+                            whiteSpace: 'nowrap',
+                            mr: 1,
+                          }}
+                        >
+                          {t(i18n)`Tax ID`}
+                        </Typography>
+                      </>
+                    ),
+                  }}
+                />
+                <Collapse
+                  in={
+                    counterpart && !counterpart.tax_id && !isCounterpartLoading
+                  }
+                >
+                  <FormHelperText>
+                    {t(i18n)`No Tax ID available`}
+                  </FormHelperText>
+                </Collapse>
+              </Grid>
+            ) : (
+              <Grid item {...customerGridItemProps}>
+                <Controller
+                  name="counterpart_vat_id_id"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      disabled={
+                        isCounterpartVatsLoading ||
+                        !counterpartVats?.data ||
+                        counterpartVats?.data.length === 0 ||
+                        disabled
                       }
+                      error={Boolean(error)}
                     >
-                      {counterpartVats?.data?.map(({ id, country, value }) => (
-                        <MenuItem key={id} value={id}>
-                          {country && <CountryInvoiceOption code={country} />}
-                          {value}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {error && <FormHelperText>{error.message}</FormHelperText>}
-                  </FormControl>
-                )}
-              />
-            </Grid>
-            <Grid item {...customerGridItemProps}>
-              <TextField
-                disabled
-                fullWidth
-                variant="outlined"
-                label={t(i18n)`TAX ID`}
-                value={counterpart?.tax_id ?? ''}
-                InputProps={{
-                  startAdornment: isCounterpartLoading ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{
-                          whiteSpace: 'nowrap',
-                          mr: 1,
-                        }}
+                      <InputLabel htmlFor={field.name}>{t(
+                        i18n
+                      )`VAT ID`}</InputLabel>
+                      <Select
+                        {...field}
+                        labelId={field.name}
+                        label={t(i18n)`VAT ID`}
+                        MenuProps={{ container: root }}
+                        startAdornment={
+                          isCounterpartVatsLoading ? (
+                            <CircularProgress size={20} />
+                          ) : null
+                        }
                       >
-                        {t(i18n)`TAX ID`}
-                      </Typography>
-                    </>
-                  ),
-                }}
-              />
-              <Collapse
-                in={counterpart && !counterpart.tax_id && !isCounterpartLoading}
-              >
-                <FormHelperText>{t(i18n)`No TAX ID available`}</FormHelperText>
-              </Collapse>
-            </Grid>
+                        {counterpartVats?.data?.map(
+                          ({ id, country, value }) => (
+                            <MenuItem key={id} value={id}>
+                              {country && (
+                                <CountryInvoiceOption code={country} />
+                              )}
+                              {value}
+                            </MenuItem>
+                          )
+                        )}
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+            )}
+
             <Grid item {...customerGridItemProps}>
               <Controller
                 name="default_billing_address_id"

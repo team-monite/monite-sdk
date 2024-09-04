@@ -235,7 +235,10 @@ const CreateReceivablesBase = ({
               {t(i18n)`Create Invoice`}
             </Typography>
             <Stack direction="column" spacing={4}>
-              <CustomerSection disabled={createReceivable.isPending} />
+              <CustomerSection
+                disabled={createReceivable.isPending}
+                isUSEntity={isUSEntity}
+              />
               <EntitySection disabled={createReceivable.isPending} />
               <ItemsSection
                 defaultCurrency={settings?.currency?.default}
