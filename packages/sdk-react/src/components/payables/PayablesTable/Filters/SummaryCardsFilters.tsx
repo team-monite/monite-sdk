@@ -33,7 +33,7 @@ interface SummaryCardsFiltersProps {
 
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   draft: '#FAFAFA',
-  new: '#EBEBFF',
+  new: '#CBCBFE',
   approve_in_progress: '#FFF5EB',
   paid: '#EEFBF9',
   waiting_to_be_paid: '#9999FF',
@@ -69,7 +69,7 @@ const SummaryCard = ({
 
   const backgroundColor = selected
     ? 'transparent'
-    : statusBackgroundColors[status] || '#FAFAFA';
+    : statusBackgroundColors[status] || 'red';
 
   const statusTitleNames: Record<ExtendedPayableStateEnum, string> = {
     draft: t(i18n)`Draft`,
