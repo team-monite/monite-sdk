@@ -50,6 +50,7 @@ export const useUploadPayable = () => {
             toast.promise(
               payableUploadFromFileMutation.mutateAsync({
                 file,
+                file_type: 'payables',
               }),
               {
                 loading: t(i18n)`Uploading payable file`,
