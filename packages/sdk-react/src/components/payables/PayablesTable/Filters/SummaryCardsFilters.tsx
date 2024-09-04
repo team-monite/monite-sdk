@@ -221,6 +221,8 @@ export const SummaryCardsFilters = ({
     handleMouseLeave,
     handleMouseUp,
     handleMouseMove,
+    handleMouseLeft,
+    handleMouseRight,
   } = useDragScroll();
 
   const predefinedOrder: ExtendedPayableStateEnum[] = [
@@ -265,6 +267,8 @@ export const SummaryCardsFilters = ({
       onMouseLeave={handleMouseLeave}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
+      onMouseLeft={handleMouseLeft}
+      onMouseRight={handleMouseRight}
       sx={{
         overflowX: 'auto',
         whiteSpace: 'nowrap',
