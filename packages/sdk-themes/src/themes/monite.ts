@@ -324,7 +324,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           maxWidth: filterControlWidth,
           width: '100%',
 
-          '.MuiInputBase-root': {
+          '& .MuiInputBase-root': {
             marginTop: 0,
             height: '40px',
             minHeight: '40px',
@@ -339,11 +339,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiSelect-select': {
+          '& .MuiSelect-select': {
             fontSize: '14px',
           },
 
-          '.MuiFormLabel-root': {
+          '& .MuiFormLabel-root': {
             position: 'absolute',
             left: '20px',
             top: '10px',
@@ -357,14 +357,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiInputLabel-root': {
+          '& .MuiInputLabel-root': {
             fontWeight: 400,
           },
 
-          '.MuiIconButton-root': {
+          '& .MuiIconButton-root': {
             marginRight: '-6px',
           },
-          '.MuiInputAdornment-positionEnd .MuiSvgIcon-root, .MuiIconButton-root .MuiSvgIcon-root':
+          '& .MuiInputAdornment-positionEnd .MuiSvgIcon-root, & .MuiIconButton-root .MuiSvgIcon-root':
             {
               width: '20px',
               height: '20px',
