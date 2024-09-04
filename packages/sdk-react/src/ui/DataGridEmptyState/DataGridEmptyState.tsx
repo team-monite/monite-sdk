@@ -131,7 +131,7 @@ const ActionButton = ({
   if (!actionButtonLabel) return null;
 
   const handleMenuItemClick = (option?: string) => {
-    if (option && onAction) {
+    if (onAction) {
       onAction(option);
     }
   };

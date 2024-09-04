@@ -206,7 +206,10 @@ const ApprovalPoliciesTableBase = ({
         descriptionLine1={t(i18n)`You don’t have any approval policies yet.`}
         descriptionLine2={t(i18n)`You can create your first approval policy.`}
         actionButtonLabel={t(i18n)`Create`}
-        onAction={() => onCreateClick?.()}
+        actionOptions={[t(i18n)`Approval Policy`]}
+        onAction={() => {
+          onCreateClick?.();
+        }}
         type="no-data"
       />
     );
