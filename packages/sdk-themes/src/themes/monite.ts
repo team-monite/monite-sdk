@@ -859,10 +859,10 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         '&.Monite-SummaryCard-all': {
-          backgroundColor: '#F4F4FE',
+          backgroundColor: '#FAFAFA',
         },
         '&.Monite-SummaryCard-draft': {
-          backgroundColor: '#FAFAFA',
+          backgroundColor: '#F4F4FE',
         },
         '&.Monite-SummaryCard-new': {
           backgroundColor: '#CBCBFE',
@@ -886,6 +886,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           backgroundColor: '#E27E46',
         },
         '&.Monite-SummaryCard-selected': {
+          backgroundColor: 'transparent',
           borderColor: '#3737FF',
         },
       },
