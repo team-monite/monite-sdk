@@ -60,7 +60,12 @@ const SummaryCard = ({
     });
   };
 
-  const formattedAmount = amount ? formatAmount(amount) : '';
+  const formattedAmount =
+    amount !== undefined
+      ? formatAmount(amount)
+      : status !== 'all'
+      ? '0.00'
+      : '';
 
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
