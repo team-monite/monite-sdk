@@ -35,13 +35,10 @@ export const useDragScroll = () => {
 
   const handleWheel = useCallback((e: WheelEvent) => {
     if (containerRef.current) {
-      // Check if the event is from a touchpad by using deltaMode and deltaX
       if (e.deltaMode === 0 && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        // Allow horizontal scrolling with touchpad
         e.preventDefault();
         containerRef.current.scrollLeft += e.deltaX * 2;
       } else {
-        // Allow vertical scrolling with touchpad
         e.preventDefault();
       }
     }
