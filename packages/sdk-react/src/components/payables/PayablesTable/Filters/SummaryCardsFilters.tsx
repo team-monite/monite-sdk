@@ -144,7 +144,7 @@ const SummaryCard = ({
                   mt: 0.5,
                 }}
               >
-                {count} {t(i18n)`items`}
+                {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
               </Typography>
             </Box>
           ) : (
