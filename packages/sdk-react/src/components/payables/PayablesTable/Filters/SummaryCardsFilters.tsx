@@ -61,8 +61,11 @@ const SummaryCard = ({
   };
 
   const formattedAmount = amount ? formatAmount(amount) : '';
-  const [integerPart, decimalPart] =
-    typeof formattedAmount === 'string' ? formattedAmount.split('.') : ['', ''];
+
+  // Safely split formattedAmount if it's a valid string
+  const [integerPart, decimalPart] = formattedAmount.includes('.')
+    ? formattedAmount.split('.')
+    : ['0', '00'];
 
   const backgroundColor = selected
     ? 'transparent'
