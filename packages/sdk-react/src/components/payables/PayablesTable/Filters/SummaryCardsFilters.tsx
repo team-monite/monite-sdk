@@ -40,7 +40,7 @@ const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   rejected: '#FFC4CB',
   partially_paid: '#FBF1FC',
   canceled: '#FFE9D7',
-  all: '#FAFAFA',
+  all: '#F4F4FE',
 };
 
 const SummaryCard = ({
