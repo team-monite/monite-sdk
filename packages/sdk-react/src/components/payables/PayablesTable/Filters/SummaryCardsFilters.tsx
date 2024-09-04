@@ -6,7 +6,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
 import { lighten } from '@mui/material/styles';
-import { light } from '@mui/material/styles/createPalette';
 
 import { Theme } from 'mui-styles';
 
