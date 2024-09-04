@@ -229,6 +229,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiAlert: {
+    styleOverrides: {
+      standardInfo: {
+        backgroundColor: 'primary.90',
+      },
+    },
+  },
   MuiTypography: {
     styleOverrides: {
       root: {
