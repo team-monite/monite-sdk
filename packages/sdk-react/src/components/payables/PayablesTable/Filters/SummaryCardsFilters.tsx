@@ -5,6 +5,8 @@ import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
+import { lighten } from '@mui/material/styles';
+import { light } from '@mui/material/styles/createPalette';
 
 import { Theme } from 'mui-styles';
 
@@ -65,10 +67,6 @@ const SummaryCard = ({
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
     : ['0', '00'];
-
-  const backgroundColor = selected
-    ? 'transparent'
-    : statusBackgroundColors[status];
 
   const statusTitleNames: Record<ExtendedPayableStateEnum, string> = {
     draft: t(i18n)`Draft`,
@@ -182,6 +180,11 @@ const SummaryCard = ({
                   fontWeight: 700,
                   letterSpacing: 0.26,
                   mt: isTruthyOrZero(amount) ? 0 : 1,
+                  color: statusBackgroundColors[status],
+                  borderRadius: 2,
+                  paddingLeft: '4px',
+                  paddingRight: '4px',
+                  backgroundColor: lighten(statusBackgroundColors[status], 0.8),
                 }}
               >
                 {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
@@ -241,15 +244,15 @@ export const SummaryCardsFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
-  const predefinedOrder: ExtendedPayableStateEnum[] = [
+  const predefinedOrder = [
     'all',
     'draft',
     'new',
     'approve_in_progress',
-    'paid',
-    'waiting_to_be_paid',
     'rejected',
+    'waiting_to_be_paid',
     'partially_paid',
+    'paid',
     'canceled',
   ];
 
