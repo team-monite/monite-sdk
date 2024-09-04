@@ -60,12 +60,7 @@ const SummaryCard = ({
     });
   };
 
-  const formattedAmount =
-    amount !== undefined
-      ? formatAmount(amount)
-      : status !== 'all'
-      ? '0.00'
-      : '';
+  const formattedAmount = isTruthyOrZero(amount) ? formatAmount(amount) : '';
 
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
@@ -121,16 +116,17 @@ const SummaryCard = ({
       >
         <Box
           display="flex"
-          justifyContent={amount ? 'space-between' : 'flex-start'}
+          justifyContent={
+            isTruthyOrZero(amount) ? 'space-between' : 'flex-start'
+          }
           alignItems={isAllItems ? 'flex-start' : 'center'}
-          flexDirection={amount ? 'row' : 'column'}
+          flexDirection={isTruthyOrZero(amount) ? 'row' : 'column'}
           sx={{
             textAlign: isAllItems ? 'left' : 'right',
             width: '100%',
             letterSpacing: 0.32,
           }}
         >
-          {/* Adjust layout specifically for "All items" */}
           {isAllItems ? (
             <Box
               display="flex"
@@ -175,7 +171,7 @@ const SummaryCard = ({
                   fontSize: 13,
                   fontWeight: 700,
                   letterSpacing: 0.26,
-                  mt: amount ? 0 : 1,
+                  mt: isTruthyOrZero(amount) ? 0 : 1,
                 }}
               >
                 {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
@@ -307,3 +303,6 @@ export const SummaryCardsFilters = ({
     </Box>
   );
 };
+
+const isTruthyOrZero = (value: number | null | undefined) =>
+  value !== null && value !== undefined;
