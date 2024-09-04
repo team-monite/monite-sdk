@@ -73,6 +73,7 @@ function prepareLineItem(
     measure_unit_id: product.measure_unit_id,
     vat_rate_id: vatRates?.data[0].id,
     vat_rate_value: vatRates?.data[0].value,
+    tax_rate_value: 0,
     smallest_amount: product.smallest_amount,
   };
 }
@@ -129,12 +130,14 @@ interface CreateInvoiceProductsTableProps {
   defaultCurrency?: CurrencyEnum;
   actualCurrency?: CurrencyEnum;
   onCurrencyChanged: (currency: CurrencyEnum) => void;
+  isUSEntity: boolean;
 }
 
 export const ItemsSection = ({
   defaultCurrency,
   actualCurrency,
   onCurrencyChanged,
+  isUSEntity,
 }: CreateInvoiceProductsTableProps) => {
   const { i18n } = useLingui();
   const {
@@ -177,6 +180,7 @@ export const ItemsSection = ({
   } = useCreateInvoiceProductsTable({
     lineItems: watchedLineItems,
     formatCurrencyToDisplay,
+    isUSEntity,
   });
 
   const generalError = useMemo(() => {
@@ -240,7 +244,9 @@ export const ItemsSection = ({
                   <TableCell>{t(i18n)`Units`}</TableCell>
                   <TableCell align="right">{t(i18n)`Price`}</TableCell>
                   <TableCell align="right">{t(i18n)`Amount`}</TableCell>
-                  <TableCell>{t(i18n)`VAT`}</TableCell>
+                  <TableCell>
+                    {isUSEntity ? t(i18n)`TAX` : t(i18n)`VAT`}
+                  </TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -287,50 +293,79 @@ export const ItemsSection = ({
                       />
                     </TableCell>
                     <TableCell>
-                      <Controller
-                        name={`line_items.${index}.vat_rate_id`}
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl
-                            variant="outlined"
-                            fullWidth
-                            required
-                            error={Boolean(error)}
-                          >
-                            <Select
-                              {...field}
-                              id={field.name}
-                              labelId={field.name}
-                              size="small"
-                              defaultValue=""
-                              MenuProps={{ container: root }}
-                              onChange={(e) => {
-                                const vatRateId = e.target.value;
-                                const vatRate = vatRates?.data.find(
-                                  (vatRate) => vatRate.id === vatRateId
-                                );
-
-                                if (!vatRate) {
-                                  throw new Error('Vat rate not found');
-                                }
-
-                                setValue(
-                                  `line_items.${index}.vat_rate_value`,
-                                  vatRate.value
-                                );
-
-                                field.onChange(e);
-                              }}
+                      {isUSEntity ? (
+                        <Controller
+                          name={`line_items.${index}.tax_rate_value`}
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <FormControl
+                              variant="outlined"
+                              fullWidth
+                              required
+                              error={Boolean(error)}
                             >
-                              {vatRates?.data.map((vatRate) => (
-                                <MenuItem key={vatRate.id} value={vatRate.id}>
-                                  {vatRate.value / 100}%
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        )}
-                      />
+                              <TextField
+                                {...field}
+                                id={field.name}
+                                type="number"
+                                inputProps={{ min: 1, max: 100 }}
+                                size="small"
+                                fullWidth={false}
+                                error={Boolean(error)}
+                                helperText={error?.message}
+                                InputProps={{
+                                  endAdornment: '%',
+                                }}
+                              />
+                            </FormControl>
+                          )}
+                        />
+                      ) : (
+                        <Controller
+                          name={`line_items.${index}.vat_rate_id`}
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <FormControl
+                              variant="outlined"
+                              fullWidth
+                              required
+                              error={Boolean(error)}
+                            >
+                              <Select
+                                {...field}
+                                id={field.name}
+                                labelId={field.name}
+                                size="small"
+                                defaultValue=""
+                                MenuProps={{ container: root }}
+                                onChange={(e) => {
+                                  const vatRateId = e.target.value;
+                                  const vatRate = vatRates?.data.find(
+                                    (vatRate) => vatRate.id === vatRateId
+                                  );
+
+                                  if (!vatRate) {
+                                    throw new Error('Vat rate not found');
+                                  }
+
+                                  setValue(
+                                    `line_items.${index}.vat_rate_value`,
+                                    vatRate.value
+                                  );
+
+                                  field.onChange(e);
+                                }}
+                              >
+                                {vatRates?.data.map((vatRate) => (
+                                  <MenuItem key={vatRate.id} value={vatRate.id}>
+                                    {vatRate.value / 100}%
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          )}
+                        />
+                      )}
                     </TableCell>
                     <TableCell>
                       <IconButton
