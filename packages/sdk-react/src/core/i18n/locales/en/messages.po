@@ -3556,6 +3556,7 @@ msgid "Italy"
 msgstr "Italy"
 
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:147
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:169
 msgid "item"
 msgstr "item"
 
