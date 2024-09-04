@@ -18,6 +18,7 @@ import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
+import { checkIfUSEntity } from '@/core/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -133,7 +134,9 @@ const EditInvoiceDetailsContent = ({
     api.entityUsers.getEntityUsersMyEntity.useQuery();
 
   // TODO: This can be moved up to a context and shared
-  const isUSEntity = entity?.address.country === 'US';
+  const isUSEntity = Boolean(
+    entity?.address && checkIfUSEntity(entity.address.country)
+  );
 
   const isLoading =
     updateReceivableLineItems.isPending ||
