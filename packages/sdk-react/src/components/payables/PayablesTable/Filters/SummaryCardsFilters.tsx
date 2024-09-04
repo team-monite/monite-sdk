@@ -32,14 +32,14 @@ interface SummaryCardsFiltersProps {
 }
 
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
-  draft: '#FAFAFA',
-  new: '#CBCBFE',
-  approve_in_progress: '#FFF5EB',
-  paid: '#EEFBF9',
-  waiting_to_be_paid: '#9999FF',
-  rejected: '#FFC4CB',
-  partially_paid: '#FBF1FC',
-  canceled: '#FFE9D7',
+  draft: '#000000D6',
+  new: '#3737FF',
+  approve_in_progress: '#3737FF',
+  paid: '#13705F',
+  waiting_to_be_paid: '#E75300',
+  rejected: '#FF475D',
+  partially_paid: '#0DAA8E',
+  canceled: '#E75300',
   all: '#F4F4FE',
 };
 
@@ -88,6 +88,7 @@ const SummaryCard = ({
     <Card
       onClick={onClick}
       className={classNames(
+        className,
         `${className}-${status}`,
         selected && `${className}-selected`
       )}
@@ -99,7 +100,7 @@ const SummaryCard = ({
         padding: '16px 18px',
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor,
+        backgroundColor: '#F4F4FE',
         height: 80,
         minWidth: isAllItems ? 118 : 220,
         flexShrink: 0,
@@ -160,7 +161,16 @@ const SummaryCard = ({
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
+                className={classNames(
+                  className,
+                  `${className}-title-${status}`
+                )}
+                sx={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  letterSpacing: 0.32,
+                  color: statusBackgroundColors[status],
+                }}
               >
                 {statusTitleNames[status]}
               </Typography>

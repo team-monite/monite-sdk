@@ -889,32 +889,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
     styleOverrides: {
       root: {
+        '&.Monite-SummaryCard': {
+          borderRadius: '3px',
+          backgroundColor: '#FFFFFF',
+        },
         '&.Monite-SummaryCard-all': {
-          backgroundColor: '#FAFAFA',
-        },
-        '&.Monite-SummaryCard-draft': {
           backgroundColor: '#F4F4FE',
-        },
-        '&.Monite-SummaryCard-new': {
-          backgroundColor: '#CBCBFE',
-        },
-        '&.Monite-SummaryCard-approve_in_progress': {
-          backgroundColor: '#FFF5EB',
-        },
-        '&.Monite-SummaryCard-paid': {
-          backgroundColor: '#EEFBF9',
-        },
-        '&.Monite-SummaryCard-waiting_to_be_paid': {
-          backgroundColor: '#9999FF',
-        },
-        '&.Monite-SummaryCard-rejected': {
-          backgroundColor: '#FFC4CB',
-        },
-        '&.Monite-SummaryCard-partially_paid': {
-          backgroundColor: '#FBF1FC',
-        },
-        '&.Monite-SummaryCard-partially_canceled': {
-          backgroundColor: '#E27E46',
         },
         '&.Monite-SummaryCard-selected': {
           backgroundColor: 'transparent',
