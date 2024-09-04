@@ -12,6 +12,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useCounterpartAddresses } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
+import { checkIfUSEntity } from '@/core/utils';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -92,7 +93,9 @@ const CreateReceivablesBase = ({
     api.entityUsers.getEntityUsersMyEntity.useQuery();
 
   // TODO: This can be moved up to a context and shared
-  const isUSEntity = entity?.address.country === 'US';
+  const isUSEntity = Boolean(
+    entity?.address && checkIfUSEntity(entity.address.country)
+  );
 
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
@@ -202,7 +205,9 @@ const CreateReceivablesBase = ({
                       : { vat_rate_id: item.vat_rate_id }),
                   })),
                   vat_exemption_rationale: values.vat_exemption_rationale,
-                  entity_vat_id_id: values.entity_vat_id_id || undefined,
+                  ...(!isUSEntity && values.entity_vat_id_id
+                    ? { entity_vat_id_id: values.entity_vat_id_id }
+                    : {}),
                   fulfillment_date: values.fulfillment_date
                     ? /**
                        * We have to change the date as Backend accepts it.
