@@ -1145,7 +1145,7 @@ export const ApprovalPolicyForm = ({
               variant="contained"
               type="submit"
               form={formId}
-              disabled={updateMutation.isPending}
+              disabled={updateMutation.isPending || createMutation.isPending}
             >{t(i18n)`Save`}</Button>
           </>
         )}
