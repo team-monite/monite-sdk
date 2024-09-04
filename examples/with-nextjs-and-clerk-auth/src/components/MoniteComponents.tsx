@@ -229,12 +229,35 @@ const TransferTypePage = () => {
     setSelectedValue(event.target.value);
   };
 
+  const itemProps: SxProps<Theme> = {
+    borderRadius: '6px',
+    borderWidth: '1px',
+    ml: '1px',
+    mr: '1px',
+    mt: '1px',
+    mb: '1px',
+    borderStyle: 'solid',
+    borderColor: 'divider',
+    p: '2px 12px 6px 2px',
+  };
+  const selectedProps: SxProps<Theme> = {
+    borderRadius: '6px',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'primary.main',
+    ml: '0',
+    mr: '0',
+    mt: '0',
+    mb: '0',
+    p: '2px 12px 6px 2px',
+  };
+
   return (
     <>
       <DialogTitle variant="h3">
         How would your vendors prefer to receive the funds?
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: 3 }}>
         <FormControl component="fieldset">
           <RadioGroup
             aria-label="options"
@@ -242,7 +265,7 @@ const TransferTypePage = () => {
             value={selectedValue}
             onChange={handleChange}
           >
-            <Stack direction="row">
+            <Stack direction="row" gap={2}>
               <FormControlLabel
                 value="option1"
                 control={<Radio />}
@@ -258,6 +281,7 @@ const TransferTypePage = () => {
                     </Typography>
                   </Box>
                 }
+                sx={selectedValue == 'option1' ? selectedProps : itemProps}
               />
               <FormControlLabel
                 value="option2"
@@ -274,6 +298,7 @@ const TransferTypePage = () => {
                     </Typography>
                   </Box>
                 }
+                sx={selectedValue == 'option2' ? selectedProps : itemProps}
               />
             </Stack>
           </RadioGroup>
@@ -312,7 +337,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
   return (
     <>
       <DialogTitle variant="h3">Review and pay</DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ p: 3 }}>
         <Card sx={{ p: 0, mb: 2 }}>
           <CardContent sx={{ p: 2 }}>
             <Typography variant="body1">
