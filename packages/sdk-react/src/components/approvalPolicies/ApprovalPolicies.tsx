@@ -42,10 +42,10 @@ const ApprovalPoliciesBase = () => {
     []
   );
 
-  const onCreateClick = useCallback(() => {
+  const onCreateClick = () => {
     setIsCreateDialogOpened(true);
     setSelectedApprovalPolicyId(undefined);
-  }, []);
+  };
 
   const { data: user } = useEntityUserByAuthToken();
   const { data: isReadAllowed, isLoading: isReadAllowedLoading } =
