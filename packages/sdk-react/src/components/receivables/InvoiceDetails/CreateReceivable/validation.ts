@@ -93,10 +93,7 @@ export const getCreateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: yup
-      .string()
-      .label(t(i18n)`VAT ID`)
-      .required(),
+    entity_vat_id_id: yup.string().label(t(i18n)`VAT ID`),
     counterpart_vat_id_id: yup.string().label(t(i18n)`Counterpart VAT ID`),
     fulfillment_date: yup
       .date()
@@ -135,10 +132,7 @@ export const getUpdateInvoiceValidationSchema = (i18n: I18n) =>
       .label(t(i18n)`Counterpart`)
       .required(),
     entity_bank_account_id: yup.string().label(t(i18n)`Bank account`),
-    entity_vat_id_id: yup
-      .string()
-      .label(t(i18n)`VAT ID`)
-      .required(),
+    entity_vat_id_id: yup.string().label(t(i18n)`VAT ID`),
     counterpart_vat_id_id: yup.string().label(t(i18n)`Counterpart VAT ID`),
     fulfillment_date: yup
       .date()
