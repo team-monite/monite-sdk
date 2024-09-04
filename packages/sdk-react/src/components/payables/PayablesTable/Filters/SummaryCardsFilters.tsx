@@ -32,14 +32,14 @@ interface SummaryCardsFiltersProps {
 }
 
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
-  draft: '#FAFAFA',
+  draft: '#0000000D',
   new: '#F4F4FE',
   approve_in_progress: '#FFF5EB',
   paid: '#EEFBF9',
   waiting_to_be_paid: '#F4F4FE',
-  rejected: '#d32f2f2b',
+  rejected: '#FFE0E4',
   partially_paid: '#EEFBF9',
-  canceled: '#e27e46ad',
+  canceled: '#FFF5EB',
   all: '#FAFAFA',
 };
 
@@ -53,11 +53,16 @@ const SummaryCard = ({
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
 
-  const formattedAmount = amount
-    ? amount.toLocaleString(undefined, { minimumFractionDigits: 2 }).split('.')
-    : ['', ''];
+  const formatAmount = (amount: number) => {
+    const dividedAmount = amount / 100;
+    return dividedAmount.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+    });
+  };
 
-  const [integerPart, decimalPart] = formattedAmount;
+  const formattedAmount = amount ? formatAmount(amount) : '';
+  const [integerPart, decimalPart] =
+    typeof formattedAmount === 'string' ? formattedAmount.split('.') : ['', ''];
 
   const backgroundColor = selected
     ? 'transparent'
