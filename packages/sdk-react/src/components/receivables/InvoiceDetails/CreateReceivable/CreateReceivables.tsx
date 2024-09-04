@@ -88,6 +88,11 @@ const CreateReceivablesBase = ({
 
   const createReceivable = useCreateReceivable();
   const { api, monite } = useMoniteContext();
+  const { data: entity, isLoading: isEntityLoading } =
+    api.entityUsers.getEntityUsersMyEntity.useQuery();
+
+  const isUSEntity = entity?.address.country === 'US';
+
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
       path: { entity_id: monite.entityId },
@@ -111,7 +116,7 @@ const CreateReceivablesBase = ({
 
   const theme = useTheme();
 
-  if (isSettingsLoading) {
+  if (isSettingsLoading || isEntityLoading) {
     return <LoadingPage />;
   }
 
@@ -191,7 +196,9 @@ const CreateReceivablesBase = ({
                   line_items: values.line_items.map((item) => ({
                     quantity: item.quantity,
                     product_id: item.product_id,
-                    vat_rate_id: item.vat_rate_id,
+                    ...(isUSEntity
+                      ? { tax_rate_value: item.tax_rate_value * 100 }
+                      : { vat_rate_id: item.vat_rate_id }),
                   })),
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   entity_vat_id_id: values.entity_vat_id_id || undefined,
@@ -227,6 +234,7 @@ const CreateReceivablesBase = ({
                 defaultCurrency={settings?.currency?.default}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
+                isUSEntity={isUSEntity}
               />
               <PaymentSection disabled={createReceivable.isPending} />
               <ReminderSection
