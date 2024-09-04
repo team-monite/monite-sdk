@@ -8,6 +8,7 @@ export { toast } from './ui/toast';
 export * from './core/utils';
 export * from './core/hooks';
 export * from './core/queries';
+export * from './utils'; // TODO: this export has to be backported to dev branch
 export { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 export { MoniteAPIProvider } from '@/core/context/MoniteAPIProvider';
 export type * as APISchema from './api/schema';

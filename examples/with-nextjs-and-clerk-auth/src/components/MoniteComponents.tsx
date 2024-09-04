@@ -1,6 +1,12 @@
 'use client';
 
-import React, { ReactNode, useCallback, useMemo, useState } from 'react';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
@@ -9,25 +15,41 @@ import { MoniteSDK } from '@monite/sdk-api';
 import {
   ApprovalPolicies as ApprovalPoliciesBase,
   Counterparts as CounterpartsBase,
+  Dialog,
+  getCounterpartName,
   MoniteProvider as MoniteProviderBase,
   Payables as PayablesBase,
   Products as ProductsBase,
   Receivables as ReceivablesBase,
-  Tags as TagsBase,
-  UserRoles as UserRolesBase,
   RolesAndApprovalPolicies as RolesAndApprovalPoliciesBase,
-  useMoniteContext,
+  Tags as TagsBase,
   toast,
+  useCounterpartById,
+  useCurrencies,
+  useDateFormat,
+  useMoniteContext,
   useRootElements,
-  Dialog,
+  UserRoles as UserRolesBase,
 } from '@monite/sdk-react';
 import {
+  Box,
   Button,
+  Card,
+  CardContent,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Divider,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Typography,
 } from '@mui/material';
 
 import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
@@ -91,7 +113,212 @@ export const MoniteProvider = ({
   );
 };
 
-export const Payables = () => {
+enum USPayDialogPage {
+  ChooseBankAccount,
+  TransferType,
+  Review,
+}
+
+const ChooseBankAccountPage = () => {
+  const [selectedValue, setSelectedValue] = useState('option1');
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
+  return (
+    <>
+      <DialogTitle variant="h3">Choose bank account</DialogTitle>
+      <DialogContent>
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="options"
+            name="options"
+            value={selectedValue}
+            onChange={handleChange}
+          >
+            <FormControlLabel
+              value="option1"
+              control={<Radio />}
+              label="JPMorgan Chase 00000178992"
+            />
+            <FormControlLabel
+              value="option2"
+              control={<Radio />}
+              label="JPMorgan Chase 101900777456"
+            />
+            <FormControlLabel
+              value="option3"
+              control={<Radio />}
+              label="JPMorgan Chase 222113080321"
+            />
+            <FormControlLabel
+              value="option3"
+              control={<Radio />}
+              label="JPMorgan Chase 678000999333"
+            />
+            <FormControlLabel
+              value="option3"
+              control={<Radio />}
+              label="JPMorgan Chase 000789000221"
+            />
+          </RadioGroup>
+        </FormControl>
+      </DialogContent>
+    </>
+  );
+};
+
+const TransferTypePage = () => {
+  const dateTimeFormat = useDateFormat();
+  const [selectedValue, setSelectedValue] = useState('option1');
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
+  return (
+    <>
+      <DialogTitle variant="h3">
+        How would your vendors prefer to receive the funds?
+      </DialogTitle>
+      <DialogContent>
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="options"
+            name="options"
+            value={selectedValue}
+            onChange={handleChange}
+          >
+            <Stack direction="row">
+              <FormControlLabel
+                value="option1"
+                control={<Radio />}
+                label={
+                  <Box sx={{ p: 0 }}>
+                    <Typography variant="body1">Via bank transfer</Typography>
+                    <Typography variant="body2">
+                      $1 fee, take 2-3 business days, estimated arrival{' '}
+                      {i18n.date(
+                        new Date(Date.now() + 86400000 * 3),
+                        dateTimeFormat
+                      )}
+                    </Typography>
+                  </Box>
+                }
+              />
+              <FormControlLabel
+                value="option2"
+                control={<Radio />}
+                label={
+                  <Box sx={{ p: 0 }}>
+                    <Typography variant="body1">Via paper check</Typography>
+                    <Typography variant="body2">
+                      $5 fee, take 5-7 business days, estimated arrival{' '}
+                      {i18n.date(
+                        new Date(Date.now() + 86400000 * 7),
+                        dateTimeFormat
+                      )}
+                    </Typography>
+                  </Box>
+                }
+              />
+            </Stack>
+          </RadioGroup>
+        </FormControl>
+      </DialogContent>
+    </>
+  );
+};
+
+const ReviewPage = ({ payableId }: { payableId: string }) => {
+  const className = 'USPayment-ReviewPage';
+
+  const { api } = useMoniteContext();
+  const { data: payable } = api.payables.getPayablesId.useQuery(
+    { path: { payable_id: payableId ?? '' } },
+    {
+      enabled: !!payableId,
+      refetchInterval: 15_000,
+    }
+  );
+
+  const { formatCurrencyToDisplay } = useCurrencies();
+  const { data: counterpart } = useCounterpartById(payable?.counterpart_id);
+  const subtotal = payable
+    ? formatCurrencyToDisplay(
+        payable?.amount_to_pay ?? 0,
+        payable.currency ?? 'USD'
+      )
+    : '—';
+  const documentId = payable?.document_id ?? 'INV-auto';
+
+  const counterpartName = counterpart
+    ? getCounterpartName(counterpart)
+    : payable?.counterpart_raw_data?.name ?? '';
+
+  return (
+    <>
+      <DialogTitle variant="h3">Review and pay</DialogTitle>
+      <DialogContent>
+        <Card sx={{ p: 0, mb: 2 }}>
+          <CardContent sx={{ p: 2 }}>
+            <Typography variant="body1">
+              {counterpartName} &bull; {subtotal}
+            </Typography>
+            <Typography variant="body2">{t(
+              i18n
+            )`Invoice ${documentId}`}</Typography>
+          </CardContent>
+        </Card>
+
+        <Table>
+          <TableBody>
+            <TableRow className={className + '-Subtotal'}>
+              <TableCell sx={{ p: 1 }}>
+                <Typography variant="body1">{t(i18n)`Subtotal`}</Typography>
+              </TableCell>
+              <TableCell sx={{ p: 1 }} align="right">
+                <Typography variant="body1">{subtotal}</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow className={className + '-Fee'}>
+              <TableCell sx={{ p: 1 }}>
+                <Typography variant="body1">{t(i18n)`Total fee`}</Typography>
+              </TableCell>
+              <TableCell sx={{ p: 1 }} align="right">
+                <Typography variant="body1">$1</Typography>
+              </TableCell>
+            </TableRow>
+            <TableRow className={className + '-Totals-Total'}>
+              <TableCell sx={{ p: 1 }}>
+                <Typography variant="subtitle2">{t(i18n)`Total`}</Typography>
+              </TableCell>
+              <TableCell sx={{ p: 1 }} align="right">
+                <Typography variant="subtitle2">
+                  {payable
+                    ? formatCurrencyToDisplay(
+                        (payable?.amount_to_pay ?? 0) + 100,
+                        payable.currency ?? 'USD'
+                      )
+                    : '—'}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </DialogContent>
+    </>
+  );
+};
+
+const USPayDialog = ({
+  payableId,
+  onCloseDialogClick,
+}: {
+  payableId: string;
+  onCloseDialogClick: () => void;
+}) => {
   const { api, queryClient } = useMoniteContext();
   const payMutation = api.payables.postPayablesIdMarkAsPaid.useMutation(
     undefined,
@@ -109,9 +336,6 @@ export const Payables = () => {
       },
     }
   );
-  const { root } = useRootElements();
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
 
   const markInvoiceAsPaid = async (payableId: string) => {
     if (payableId) {
@@ -130,12 +354,80 @@ export const Payables = () => {
     }
   };
 
-  const onCloseDialogClick = () => {
-    setModalOpen(false);
+  const { data: payable } = api.payables.getPayablesId.useQuery(
+    { path: { payable_id: payableId ?? '' } },
+    {
+      enabled: !!payableId,
+      refetchInterval: 15_000,
+    }
+  );
+
+  const [page, setPage] = useState<USPayDialogPage>(
+    USPayDialogPage.ChooseBankAccount
+  );
+
+  const { formatCurrencyToDisplay } = useCurrencies();
+
+  const payableTotal = payable
+    ? formatCurrencyToDisplay(
+        (payable.amount_to_pay ?? 0) + 100,
+        payable.currency ?? 'USD'
+      )
+    : '';
+
+  const nextButtonText = useMemo(() => {
+    switch (page) {
+      case USPayDialogPage.ChooseBankAccount:
+      case USPayDialogPage.TransferType:
+        return t(i18n)`Continue`;
+      case USPayDialogPage.Review:
+        return t(i18n)`Pay` + ' ' + payableTotal;
+    }
+  }, [page, payableTotal]);
+
+  const onNextButtonClicked = async () => {
+    switch (page) {
+      case USPayDialogPage.ChooseBankAccount:
+        setPage(USPayDialogPage.TransferType);
+        break;
+      case USPayDialogPage.TransferType:
+        setPage(USPayDialogPage.Review);
+        break;
+      case USPayDialogPage.Review:
+        await markInvoiceAsPaid(payableId);
+        onCloseDialogClick();
+        break;
+    }
   };
-  const onPayInvoiceClick = () => {
-    // noinspection JSIgnoredPromiseFromCall
-    if (currentPayableId) markInvoiceAsPaid(currentPayableId);
+
+  return (
+    <>
+      {page == USPayDialogPage.ChooseBankAccount && <ChooseBankAccountPage />}
+      {page == USPayDialogPage.TransferType && <TransferTypePage />}
+      {page == USPayDialogPage.Review && <ReviewPage payableId={payableId} />}
+      <Divider />
+      <DialogActions>
+        <Button variant="outlined" onClick={onCloseDialogClick}>
+          {t(i18n)`Cancel`}
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onNextButtonClicked}
+        >
+          {nextButtonText}
+        </Button>
+      </DialogActions>
+    </>
+  );
+};
+
+export const Payables = () => {
+  const { root } = useRootElements();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentPayableId, setCurrentPayableId] = useState<string | null>(null);
+
+  const onCloseDialogClick = () => {
     setModalOpen(false);
   };
 
@@ -145,38 +437,22 @@ export const Payables = () => {
         onPay={(payableId: string) => {
           setCurrentPayableId(payableId);
           setModalOpen(true);
-          // debugger;
-          // noinspection JSIgnoredPromiseFromCall
-          // markInvoiceAsPaid(payableId);
         }}
       />
-      <Dialog
-        open={modalOpen}
-        container={root}
-        aria-label={t(i18n)`Pay invoice`}
-        fullWidth={true}
-        maxWidth="sm"
-      >
-        <DialogTitle variant="h3">{t(i18n)`Pay Invoice`}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {t(i18n)`This action can't be undone.`}
-          </DialogContentText>
-        </DialogContent>
-        <Divider />
-        <DialogActions>
-          <Button variant="outlined" onClick={onCloseDialogClick}>
-            {t(i18n)`Cancel`}
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onPayInvoiceClick}
-          >
-            {t(i18n)`Pay`}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {currentPayableId && (
+        <Dialog
+          open={modalOpen}
+          container={root}
+          aria-label={t(i18n)`Pay invoice`}
+          fullWidth={true}
+          maxWidth="sm"
+        >
+          <USPayDialog
+            payableId={currentPayableId}
+            onCloseDialogClick={onCloseDialogClick}
+          />
+        </Dialog>
+      )}
     </>
   );
 };
