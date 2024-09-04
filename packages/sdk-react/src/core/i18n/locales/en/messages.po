@@ -275,7 +275,7 @@ msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:311
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:387
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:386
 msgid "Add item"
 msgstr "Add item"
 
@@ -421,7 +421,7 @@ msgstr "All invoices"
 msgid "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 msgstr "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:82
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:80
 msgid "All items"
 msgstr "All items"
 
@@ -608,7 +608,7 @@ msgstr "Approve request"
 
 #: src/components/approvalRequests/helpers.ts:12
 #: src/components/payables/consts.ts:35
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:78
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:76
 msgid "Approved"
 msgstr "Approved"
 
@@ -807,8 +807,8 @@ msgstr "Bangladeshi Taka"
 
 #: src/components/onboarding/OnboardingContent/OnboardingContent.tsx:101
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:50
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:99
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:138
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:95
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:134
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:26
 msgid "Bank account"
 msgstr "Bank account"
@@ -916,8 +916,8 @@ msgstr "Billiard/Pool Establishments"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:417
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:423
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:109
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:148
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:105
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:144
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:83
 msgid "Billing address"
 msgstr "Billing address"
@@ -1202,7 +1202,7 @@ msgstr "Cancel without saving?"
 #: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:38
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:167
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:81
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:79
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:124
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:132
@@ -1662,8 +1662,8 @@ msgstr "Counseling Services"
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:87
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:375
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:381
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:97
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:136
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:93
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:132
 #: src/components/userRoles/consts.ts:28
 msgid "Counterpart"
 msgstr "Counterpart"
@@ -1694,8 +1694,8 @@ msgstr "Counterpart has been deleted."
 msgid "Counterpart not found"
 msgstr "Counterpart not found"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:101
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:140
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:97
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:136
 #: src/components/userRoles/consts.ts:32
 msgid "Counterpart VAT ID"
 msgstr "Counterpart VAT ID"
@@ -1966,7 +1966,7 @@ msgstr "Cuba"
 #: src/components/onboarding/validators/validationSchemas.ts:116
 #: src/components/products/ProductDetails/validation.ts:46
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:13
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:71
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:67
 #: src/ui/Currency/MoniteCurrency.tsx:51
 msgid "Currency"
 msgstr "Currency"
@@ -2330,7 +2330,7 @@ msgstr "Download PDF"
 #: src/components/payables/consts.ts:32
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:84
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:121
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:74
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:72
 #: src/components/receivables/getCommonStatusLabel.ts:11
 msgid "Draft"
 msgstr "Draft"
@@ -2995,8 +2995,8 @@ msgid "Fuel Dealers (Non Automotive)"
 msgstr "Fuel Dealers (Non Automotive)"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:187
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:104
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:143
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:139
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:30
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:199
 msgid "Fulfillment date"
@@ -3322,7 +3322,7 @@ msgid "If you switch the invoice currency and add corresponding items, it will a
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
 #: src/components/approvalRequests/helpers.ts:15
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:76
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:74
 msgid "In Approval"
 msgstr "In Approval"
 
@@ -3602,8 +3602,8 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:155
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:177
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:154
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:190
 msgid "item"
 msgstr "item"
 
@@ -3639,8 +3639,8 @@ msgstr "Item tax"
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:155
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:177
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:154
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:190
 msgid "items"
 msgstr "items"
 
@@ -4009,7 +4009,7 @@ msgstr "Mauritius"
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:81
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:77
 msgid "Measure unit"
 msgstr "Measure unit"
 
@@ -4194,7 +4194,7 @@ msgstr "Myanmar"
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:45
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:73
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:123
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:65
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:61
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:98
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:29
 #: src/components/tags/TagFormModal/TagFormModal.tsx:191
@@ -4263,7 +4263,7 @@ msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
 #: src/components/payables/consts.ts:33
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:75
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:73
 msgid "New"
 msgstr "New"
 
@@ -4589,8 +4589,8 @@ msgctxt "InvoicesTableRowActionMenu"
 msgid "Overdue payment"
 msgstr "Overdue payment"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:124
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:163
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:120
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:159
 #: src/components/userRoles/consts.ts:37
 msgid "Overdue reminder"
 msgstr "Overdue reminder"
@@ -4621,7 +4621,7 @@ msgstr "Package Stores-Beer, Wine, and Liquor"
 
 #: src/components/payables/consts.ts:37
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:243
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:77
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:75
 #: src/components/receivables/getCommonStatusLabel.ts:25
 msgid "Paid"
 msgstr "Paid"
@@ -4678,7 +4678,7 @@ msgstr "Parking Lots, Garages"
 msgid "Partially paid"
 msgstr "Partially paid"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:80
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:78
 #: src/components/receivables/getCommonStatusLabel.ts:23
 msgid "Partially Paid"
 msgstr "Partially Paid"
@@ -4775,8 +4775,8 @@ msgstr "Payment processing services for {entityName} are provided by Stripe and 
 msgid "Payment record"
 msgstr "Payment record"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:129
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:168
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:125
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:164
 #: src/components/userRoles/consts.ts:36
 msgid "Payment reminder"
 msgstr "Payment reminder"
@@ -4791,8 +4791,8 @@ msgstr "Payment reminder error"
 #~ msgstr "Payment term"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/PaymentSection.tsx:78
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:117
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:156
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:113
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:152
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewPaymentDetailsSection.tsx:21
 msgid "Payment terms"
 msgstr "Payment terms"
@@ -4972,7 +4972,7 @@ msgid "Please upload the required documents to continue."
 msgstr "Please upload the required documents to continue."
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:17
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:89
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:85
 msgid "Please, add at least 1 item to proceed with this invoice"
 msgstr "Please, add at least 1 item to proceed with this invoice"
 
@@ -5052,8 +5052,8 @@ msgstr "Previous page"
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:107
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:128
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:245
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:75
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:78
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:71
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:74
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:100
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:32
 msgid "Price"
@@ -5165,8 +5165,8 @@ msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/EntitySection.tsx:248
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:106
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:145
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:102
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:141
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewDetailsSection.tsx:37
 msgid "Purchase order"
 msgstr "Purchase order"
@@ -5310,7 +5310,7 @@ msgstr "Reject request"
 #: src/components/approvalRequests/helpers.ts:14
 #: src/components/payables/consts.ts:39
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:207
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:79
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:77
 msgid "Rejected"
 msgstr "Rejected"
 
@@ -5710,8 +5710,8 @@ msgstr "Seychellois Rupee"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:457
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:465
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:111
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:150
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:107
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:146
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewCustomerSection.tsx:88
 msgid "Shipping address"
 msgstr "Shipping address"
@@ -5761,7 +5761,7 @@ msgstr "Small Appliance Repair"
 
 #: src/components/products/ProductDetails/components/ProductForm/ProductForm.tsx:135
 #: src/components/products/ProductDetails/validation.ts:36
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:86
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:82
 msgid "Smallest amount"
 msgstr "Smallest amount"
 
@@ -5934,7 +5934,7 @@ msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:592
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:404
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:417
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:416
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:31
 msgid "Subtotal"
@@ -6046,7 +6046,7 @@ msgstr "Tanzanian Shilling"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:129
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:248
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:59
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:55
 msgid "Tax"
 msgstr "Tax"
 
@@ -6114,7 +6114,7 @@ msgstr "Tax Registration Number (UAE)"
 msgid "Taxes"
 msgstr "Taxes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:419
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:418
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -6387,7 +6387,7 @@ msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:621
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:427
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:423
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:422
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:38
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:25
@@ -6853,7 +6853,7 @@ msgstr "Variety Stores"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:248
 #: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:51
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:55
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:52
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:45
 msgid "VAT"
 msgstr "VAT"
@@ -6870,12 +6870,12 @@ msgstr "Vat “{0}” has been updated."
 msgid "VAT {0}%"
 msgstr "VAT {0}%"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:402
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:401
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:114
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:153
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:110
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:149
 msgid "VAT exemption rationale"
 msgstr "VAT exemption rationale"
 
@@ -6889,8 +6889,8 @@ msgstr "Vat ID"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:367
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/CustomerSection.tsx:373
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:100
-#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:139
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:96
+#: src/components/receivables/InvoiceDetails/CreateReceivable/validation.ts:135
 msgid "VAT ID"
 msgstr "VAT ID"
 
