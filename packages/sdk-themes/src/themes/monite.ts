@@ -222,6 +222,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MuiAlert: {
+    styleOverrides: {
+      standardInfo: {
+        backgroundColor: 'primary.90',
+      },
+    },
+  },
   MuiTypography: {
     styleOverrides: {
       body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
@@ -1074,7 +1081,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
       {
         props: { status: 'waiting_to_be_paid' },
-        style: statusColors.orange,
+        style: statusColors.blue,
       },
       {
         props: { status: 'partially_paid' },
