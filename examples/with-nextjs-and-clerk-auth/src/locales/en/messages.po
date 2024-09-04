@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#: src/components/MoniteComponents.tsx:411
+#: src/components/MoniteComponents.tsx:488
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -19,7 +19,7 @@ msgstr "Cancel"
 msgid "Company"
 msgstr "Company"
 
-#: src/components/MoniteComponents.tsx:382
+#: src/components/MoniteComponents.tsx:459
 msgid "Continue"
 msgstr "Continue"
 
@@ -52,7 +52,7 @@ msgstr "Get Help"
 msgid "Integrations"
 msgstr "Integrations"
 
-#: src/components/MoniteComponents.tsx:269
+#: src/components/MoniteComponents.tsx:346
 msgid "Invoice {documentId}"
 msgstr "Invoice {documentId}"
 
@@ -86,15 +86,15 @@ msgstr "Monite"
 msgid "My Profile"
 msgstr "My Profile"
 
-#: src/components/MoniteComponents.tsx:384
+#: src/components/MoniteComponents.tsx:461
 msgid "Pay"
 msgstr "Pay"
 
-#: src/components/MoniteComponents.tsx:446
+#: src/components/MoniteComponents.tsx:523
 msgid "Pay invoice"
 msgstr "Pay invoice"
 
-#: src/components/MoniteComponents.tsx:349
+#: src/components/MoniteComponents.tsx:426
 msgid "Payable \"{0}\" has been paid"
 msgstr "Payable \"{0}\" has been paid"
 
@@ -118,7 +118,7 @@ msgstr "Roles & Approvals"
 msgid "Sales"
 msgstr "Sales"
 
-#: src/components/MoniteComponents.tsx:279
+#: src/components/MoniteComponents.tsx:356
 msgid "Subtotal"
 msgstr "Subtotal"
 
@@ -134,11 +134,11 @@ msgstr "Team"
 msgid "Theme"
 msgstr "Theme"
 
-#: src/components/MoniteComponents.tsx:295
+#: src/components/MoniteComponents.tsx:372
 msgid "Total"
 msgstr "Total"
 
-#: src/components/MoniteComponents.tsx:287
+#: src/components/MoniteComponents.tsx:364
 msgid "Total fee"
 msgstr "Total fee"
 
