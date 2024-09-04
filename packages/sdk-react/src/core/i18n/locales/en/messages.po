@@ -422,7 +422,7 @@ msgstr "All invoices"
 msgid "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 msgstr "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:87
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:82
 msgid "All items"
 msgstr "All items"
 
@@ -604,7 +604,8 @@ msgid "Approve request"
 msgstr "Approve request"
 
 #: src/components/approvalRequests/helpers.ts:12
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:83
+#: src/components/payables/consts.ts:35
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:78
 msgid "Approved"
 msgstr "Approved"
 
@@ -1198,7 +1199,7 @@ msgstr "Cancel without saving?"
 #: src/components/approvalRequests/helpers.ts:13
 #: src/components/payables/consts.ts:38
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:167
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:86
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:81
 #: src/components/receivables/getCommonStatusLabel.ts:31
 #: src/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip.tsx:124
 #: src/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip.tsx:132
@@ -2326,7 +2327,7 @@ msgstr "Download PDF"
 #: src/components/payables/consts.ts:32
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:84
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:121
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:79
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:74
 #: src/components/receivables/getCommonStatusLabel.ts:11
 msgid "Draft"
 msgstr "Draft"
@@ -3318,7 +3319,7 @@ msgid "If you switch the invoice currency and add corresponding items, it will a
 msgstr "If you switch the invoice currency and add corresponding items, it will automatically replace the previously added ones."
 
 #: src/components/approvalRequests/helpers.ts:15
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:81
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:76
 msgid "In Approval"
 msgstr "In Approval"
 
@@ -3598,8 +3599,8 @@ msgstr "It’s required to add any individual who is on the governing board, own
 msgid "Italy"
 msgstr "Italy"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:159
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:181
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:155
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:177
 msgid "item"
 msgstr "item"
 
@@ -3635,8 +3636,8 @@ msgstr "Item tax"
 msgid "Item tax must be a number between 0 and 100"
 msgstr "Item tax must be a number between 0 and 100"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:159
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:181
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:155
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:177
 msgid "items"
 msgstr "items"
 
@@ -4259,7 +4260,7 @@ msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
 #: src/components/payables/consts.ts:33
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:80
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:75
 msgid "New"
 msgstr "New"
 
@@ -4612,7 +4613,7 @@ msgstr "Package Stores-Beer, Wine, and Liquor"
 
 #: src/components/payables/consts.ts:37
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:243
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:82
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:77
 #: src/components/receivables/getCommonStatusLabel.ts:25
 msgid "Paid"
 msgstr "Paid"
@@ -4669,7 +4670,7 @@ msgstr "Parking Lots, Garages"
 msgid "Partially paid"
 msgstr "Partially paid"
 
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:85
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:80
 #: src/components/receivables/getCommonStatusLabel.ts:23
 msgid "Partially Paid"
 msgstr "Partially Paid"
@@ -5301,7 +5302,7 @@ msgstr "Reject request"
 #: src/components/approvalRequests/helpers.ts:14
 #: src/components/payables/consts.ts:39
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:207
-#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:84
+#: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:79
 msgid "Rejected"
 msgstr "Rejected"
 
@@ -6983,7 +6984,6 @@ msgstr "Vocational/Trade Schools"
 #~ msgid "Waiting paid"
 #~ msgstr "Waiting paid"
 
-#: src/components/payables/consts.ts:35
 #: src/components/payables/PayableDetails/PayableDetails.test.tsx:223
 msgid "Waiting to be paid"
 msgstr "Waiting to be paid"
