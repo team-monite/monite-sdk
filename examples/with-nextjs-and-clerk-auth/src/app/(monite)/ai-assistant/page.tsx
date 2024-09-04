@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import Image from 'next/image';
+
 import {
   Box,
   Button,
@@ -14,45 +16,70 @@ import {
   Typography,
 } from '@mui/material';
 
+import aiStub from './ai-stub-793.png';
+
 export default function AiAssistantPage() {
+  const [replyShown, setReplyShown] = useState(false);
+
+  const onCardClick = () => {
+    setReplyShown(true);
+  };
+
   return (
     <Box className="Monite-PageContainer Monite-AiAssistant">
       <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
         <Typography variant="h2">AI Assistant</Typography>
         <Box flexGrow={2}>
-          <Stack
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            gap={2}
-            sx={{ width: '100%', height: '100%' }}
-          >
-            <Typography
-              variant="subtitle2"
-              sx={{ width: '100%', maxWidth: '720px' }}
+          {!replyShown && (
+            <Stack
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              gap={2}
+              sx={{ width: '100%', height: '100%' }}
             >
-              Some examples of what you can do:
-            </Typography>
-            <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>
-              <AiCard
-                Icon={Icon1}
-                title="Find documents quickly"
-                body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
-              />
-              <AiCard
-                Icon={Icon2}
-                title="Automate & schedule"
-                body="Schedule payments, emails and notifications. Create new
+              <Typography
+                variant="subtitle2"
+                sx={{ width: '100%', maxWidth: '720px' }}
+              >
+                Some examples of what you can do:
+              </Typography>
+              <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>
+                <AiCard
+                  Icon={Icon1}
+                  title="Find documents quickly"
+                  body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
+                  onClick={onCardClick}
+                />
+                <AiCard
+                  Icon={Icon2}
+                  title="Automate & schedule"
+                  body="Schedule payments, emails and notifications. Create new
                       documents, approval policies or any other items."
-              />
-              <AiCard
-                Icon={Icon3}
-                title="Generate custom reports"
-                body="Choose what information to combine is a custom-made
+                  onClick={onCardClick}
+                />
+                <AiCard
+                  Icon={Icon3}
+                  title="Generate custom reports"
+                  body="Choose what information to combine is a custom-made
                       reports tailored to exact needs of your business."
-              />
+                  onClick={onCardClick}
+                />
+              </Stack>
             </Stack>
-          </Stack>
+          )}
+
+          {replyShown && (
+            <Stack
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              gap={2}
+              sx={{ width: '100%', height: '100%' }}
+            >
+              <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />
+            </Stack>
+          )}
         </Box>
         <Stack alignItems="center" justifyContent="center">
           <SearchBar />
@@ -66,13 +93,15 @@ const AiCard = ({
   Icon,
   title,
   body,
+  onClick,
 }: {
   Icon: typeof Icon1;
   title: string;
   body: string;
+  onClick: () => void;
 }) => {
   return (
-    <Card>
+    <Card onClick={onClick}>
       <CardContent sx={{ p: 2 }}>
         <Stack direction="column" alignItems="flex-start" gap={2}>
           <Icon sx={{ width: '40px', height: '40px' }} />
