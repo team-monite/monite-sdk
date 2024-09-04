@@ -532,6 +532,24 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             marginLeft: 0,
           },
         },
+        '&.Monite-AiSearchField': {
+          '& .MuiInputBase-root': {
+            paddingRight: '12px',
+
+            '& .MuiInputBase-input': {
+              '&::placeholder': {
+                opacity: 0.88,
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '16px',
+                padding: '16px 10px',
+              },
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderStyle: 'none',
+            },
+          },
+        },
       },
     },
   },
@@ -612,6 +630,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
         '&.ThemeSelect .ThemeSelect-modeLabel': {
           display: 'flex',
+        },
+        '&.MuiButton-sizeSmall': {
+          fontSize: '14px',
+        },
+        '&.Monite-withShadow, &.Monite-withShadow:hover': {
+          boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1)',
         },
       },
       containedPrimary: {
