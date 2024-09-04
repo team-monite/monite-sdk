@@ -32,14 +32,14 @@ interface SummaryCardsFiltersProps {
 }
 
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
-  draft: '#0000000D',
-  new: '#F4F4FE',
+  draft: '#FAFAFA',
+  new: '#EBEBFF',
   approve_in_progress: '#FFF5EB',
   paid: '#EEFBF9',
-  waiting_to_be_paid: '#F4F4FE',
-  rejected: '#FFE0E4',
-  partially_paid: '#EEFBF9',
-  canceled: '#FFF5EB',
+  waiting_to_be_paid: '#9999FF',
+  rejected: '#FFC4CB',
+  partially_paid: '#FBF1FC',
+  canceled: '#FFE9D7',
   all: '#FAFAFA',
 };
 
