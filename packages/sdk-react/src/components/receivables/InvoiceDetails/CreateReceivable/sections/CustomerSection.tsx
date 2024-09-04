@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { usePrevious } from 'react-use';
 
@@ -29,6 +29,7 @@ import {
   CardContent,
   CircularProgress,
   Collapse,
+  createFilterOptions,
   FormControl,
   FormHelperText,
   Grid,
@@ -39,7 +40,6 @@ import {
   Stack,
   TextField,
   Typography,
-  createFilterOptions,
 } from '@mui/material';
 
 import { CreateReceivablesFormProps } from '../validation';
@@ -85,6 +85,7 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   const { root } = useRootElements();
 
   const counterpartId = watch('counterpart_id');
+  const defaultBillingAddressId = watch('default_billing_address_id');
 
   const { data: counterparts, isLoading: isCounterpartsLoading } =
     useCounterpartList();
@@ -131,6 +132,22 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
 
   const contactPersonDisplayableError =
     usePrevious(contactPersonError) ?? contactPersonError;
+
+  useEffect(() => {
+    if (counterpartId) {
+      if (!defaultBillingAddressId && counterpartAddresses?.data[0]?.id) {
+        setValue(
+          'default_billing_address_id',
+          counterpartAddresses?.data[0]?.id
+        );
+      }
+    }
+  }, [
+    counterpartId,
+    defaultBillingAddressId,
+    counterpartAddresses?.data,
+    setValue,
+  ]);
 
   const className = 'Monite-CreateReceivable-CustomerSection';
 
