@@ -268,8 +268,8 @@ const PayablesTableBase = ({
         }),
         width: 120,
         valueGetter: (_, payable) => {
-          return payable.amount_to_pay && payable.currency
-            ? formatCurrencyToDisplay(payable.amount_to_pay, payable.currency)
+          return payable.total_amount && payable.currency
+            ? formatCurrencyToDisplay(payable.total_amount, payable.currency)
             : '';
         },
       },
