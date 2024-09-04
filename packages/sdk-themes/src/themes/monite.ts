@@ -324,7 +324,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           maxWidth: filterControlWidth,
           width: '100%',
 
-          '.MuiInputBase-root': {
+          '& .MuiInputBase-root': {
             marginTop: 0,
             height: '40px',
             minHeight: '40px',
@@ -339,11 +339,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiSelect-select': {
+          '& .MuiSelect-select': {
             fontSize: '14px',
           },
 
-          '.MuiFormLabel-root': {
+          '& .MuiFormLabel-root': {
             position: 'absolute',
             left: '20px',
             top: '10px',
@@ -357,14 +357,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             },
           },
 
-          '.MuiInputLabel-root': {
+          '& .MuiInputLabel-root': {
             fontWeight: 400,
           },
 
-          '.MuiIconButton-root': {
+          '& .MuiIconButton-root': {
             marginRight: '-6px',
           },
-          '.MuiInputAdornment-positionEnd .MuiSvgIcon-root, .MuiIconButton-root .MuiSvgIcon-root':
+          '& .MuiInputAdornment-positionEnd .MuiSvgIcon-root, & .MuiIconButton-root .MuiSvgIcon-root':
             {
               width: '20px',
               height: '20px',
@@ -532,6 +532,24 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             marginLeft: 0,
           },
         },
+        '&.Monite-AiSearchField': {
+          '& .MuiInputBase-root': {
+            paddingRight: '12px',
+
+            '& .MuiInputBase-input': {
+              '&::placeholder': {
+                opacity: 0.88,
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '16px',
+                padding: '16px 10px',
+              },
+            },
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderStyle: 'none',
+            },
+          },
+        },
       },
     },
   },
@@ -612,6 +630,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
         '&.ThemeSelect .ThemeSelect-modeLabel': {
           display: 'flex',
+        },
+        '&.MuiButton-sizeSmall': {
+          fontSize: '14px',
+        },
+        '&.Monite-withShadow, &.Monite-withShadow:hover': {
+          boxShadow: '0px 1px 1px 0px rgba(0, 0, 0, 0.1)',
         },
       },
       containedPrimary: {

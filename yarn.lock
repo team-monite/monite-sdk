@@ -3122,12 +3122,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clerk/backend@npm:0.37.3":
-  version: 0.37.3
-  resolution: "@clerk/backend@npm:0.37.3"
+"@clerk/backend@npm:0.38.13":
+  version: 0.38.13
+  resolution: "@clerk/backend@npm:0.38.13"
   dependencies:
-    "@clerk/shared": "npm:1.3.1"
-    "@clerk/types": "npm:3.60.0"
+    "@clerk/shared": "npm:1.4.1"
+    "@clerk/types": "npm:3.65.3"
     "@peculiar/webcrypto": "npm:1.4.1"
     "@types/node": "npm:16.18.6"
     cookie: "npm:0.5.0"
@@ -3135,62 +3135,62 @@ __metadata:
     node-fetch-native: "npm:1.0.1"
     snakecase-keys: "npm:5.4.4"
     tslib: "npm:2.4.1"
-  checksum: 10/5fde5387993dfac30f3b5c3851f761a2d3e908e06ec93a36cfa1889fdcf305cd114b5ad448f9cebe0e8166a4ea4343fc7a7cd54e1bd5efe72f11e411a774ce1a
+  checksum: 10/e3fd6593f06aa5ce20ed48f75a2e0a5a3c52c271c2769cb6a1c1b00f8b14dbcec1a11fc37aa8870dc7cf21e061c226d4ba35574e0f8515bf02817d4fec5792b0
   languageName: node
   linkType: hard
 
-"@clerk/clerk-react@npm:4.30.3":
-  version: 4.30.3
-  resolution: "@clerk/clerk-react@npm:4.30.3"
+"@clerk/clerk-react@npm:4.32.3":
+  version: 4.32.3
+  resolution: "@clerk/clerk-react@npm:4.32.3"
   dependencies:
-    "@clerk/shared": "npm:1.3.1"
-    "@clerk/types": "npm:3.60.0"
+    "@clerk/shared": "npm:1.4.1"
+    "@clerk/types": "npm:3.65.3"
     tslib: "npm:2.4.1"
   peerDependencies:
     react: ">=16"
-  checksum: 10/5af29efb6673da66f720418716ebc9fafdf3edb93b16b668df9db4081fb2f481a40aff5ba4e78089185ab616e0e1c9e47de955e4ef62e3af39850885f3089b24
+  checksum: 10/fff32ea418fd33407f549fafae2b716111903e9e471cfe9bd97b33d8e4f483806ebec58a308ce93ad6b94bca2b25494dbdd3ad15d9eaa1cce425981a22a1c794
   languageName: node
   linkType: hard
 
-"@clerk/clerk-sdk-node@npm:4.13.7":
-  version: 4.13.7
-  resolution: "@clerk/clerk-sdk-node@npm:4.13.7"
+"@clerk/clerk-sdk-node@npm:4.13.21":
+  version: 4.13.21
+  resolution: "@clerk/clerk-sdk-node@npm:4.13.21"
   dependencies:
-    "@clerk/backend": "npm:0.37.3"
-    "@clerk/shared": "npm:1.3.1"
-    "@clerk/types": "npm:3.60.0"
+    "@clerk/backend": "npm:0.38.13"
+    "@clerk/shared": "npm:1.4.1"
+    "@clerk/types": "npm:3.65.3"
     "@types/cookies": "npm:0.7.7"
     "@types/express": "npm:4.17.14"
     "@types/node-fetch": "npm:2.6.2"
     camelcase-keys: "npm:6.2.2"
     snakecase-keys: "npm:3.2.1"
     tslib: "npm:2.4.1"
-  checksum: 10/7705bd17d3962da79ec9f5dbc6ca954d0ff19438110c5441bdbcdd1a9255806e03348fd4e9bf35b91c7d8a0e5447868533ce1a6c981d9fec621ee7a314dd6756
+  checksum: 10/c11ffdd44e2a6485b5254fdde12b6e4387456e1f3db3ed35c5517bf1bc8a8ae3708ac0e2c6044c7e2dc231ce238e8baf5f21a324da28d802d0c0c6fc7abdd9f8
   languageName: node
   linkType: hard
 
-"@clerk/nextjs@npm:4.29.4":
-  version: 4.29.4
-  resolution: "@clerk/nextjs@npm:4.29.4"
+"@clerk/nextjs@npm:4.31.4":
+  version: 4.31.4
+  resolution: "@clerk/nextjs@npm:4.31.4"
   dependencies:
-    "@clerk/backend": "npm:0.37.3"
-    "@clerk/clerk-react": "npm:4.30.3"
-    "@clerk/clerk-sdk-node": "npm:4.13.7"
-    "@clerk/shared": "npm:1.3.1"
-    "@clerk/types": "npm:3.60.0"
+    "@clerk/backend": "npm:0.38.13"
+    "@clerk/clerk-react": "npm:4.32.3"
+    "@clerk/clerk-sdk-node": "npm:4.13.21"
+    "@clerk/shared": "npm:1.4.1"
+    "@clerk/types": "npm:3.65.3"
     path-to-regexp: "npm:6.2.1"
     tslib: "npm:2.4.1"
   peerDependencies:
     next: ">=10"
     react: ^17.0.2 || ^18.0.0-0
     react-dom: ^17.0.2 || ^18.0.0-0
-  checksum: 10/108762932e3b65f006b64a6dcd83a98dc5bc3407e6112f75a126d2b69249bf2357465344eb49b602b4393a38963664f29b53d1dc4413b0a944a8eee245dce748
+  checksum: 10/6e3b32f9bf55d21228150775a6d9673d8d3ed387aafa06e0297b92db0d2d2da0f76f42953c0377e057f508011e6800b4b758be55cf065e08db06c8e6903061f7
   languageName: node
   linkType: hard
 
-"@clerk/shared@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@clerk/shared@npm:1.3.1"
+"@clerk/shared@npm:1.4.1":
+  version: 1.4.1
+  resolution: "@clerk/shared@npm:1.4.1"
   dependencies:
     glob-to-regexp: "npm:0.4.1"
     js-cookie: "npm:3.0.1"
@@ -3200,16 +3200,16 @@ __metadata:
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10/618294c89550cb177d21e43236783ca9b79d7783296fc5c62468411d38d84f9a44e9e77087bdb6b9839ea703a3c6388044a213a0200bc3cfc70ec371213629db
+  checksum: 10/4a3df83cb43e71232059b40d3062ae51805dd10311f017e45c0c2e693d0ceb579698781eb2e227b014ae23bcfe1be89c91cb23a14a12d6aee039155e91a0ea36
   languageName: node
   linkType: hard
 
-"@clerk/types@npm:3.60.0":
-  version: 3.60.0
-  resolution: "@clerk/types@npm:3.60.0"
+"@clerk/types@npm:3.65.3":
+  version: 3.65.3
+  resolution: "@clerk/types@npm:3.65.3"
   dependencies:
     csstype: "npm:3.1.1"
-  checksum: 10/9c108febb945d20a048ac9a939345bac8652074357750bd3d1093ad555161c4aea539fab4b2256b4b228ed1f3b3618a86477e17fb97e9fa0a71fee1cdb74835b
+  checksum: 10/fade712865a6568a8b2c238dfa8ed2106816bc31a67ef5c71944dd988b0b53225c4a37c289a4c140aae15eac639a19bd4d7a220a8cfa67a72991e464708b2773
   languageName: node
   linkType: hard
 
@@ -5566,13 +5566,13 @@ __metadata:
   linkType: hard
 
 "@peculiar/asn1-schema@npm:^2.3.0, @peculiar/asn1-schema@npm:^2.3.8":
-  version: 2.3.8
-  resolution: "@peculiar/asn1-schema@npm:2.3.8"
+  version: 2.3.13
+  resolution: "@peculiar/asn1-schema@npm:2.3.13"
   dependencies:
     asn1js: "npm:^3.0.5"
     pvtsutils: "npm:^1.3.5"
     tslib: "npm:^2.6.2"
-  checksum: 10/da349985cff73ae7ea52b6b66c6b4b339a768d5eb9164ad03e73c30985ec0a1c94849b323a826b00a049d7de3840368f77bebe84193205a77565cdfdac6ed524
+  checksum: 10/3d2bf7d40023f3cb7a1b3aa6060bcec39fc92a2e5a91c3b6611ea7d760103049e51fe4aef1e762010612314aa79f2071626ed31b3050155ec7f501d89745e3bd
   languageName: node
   linkType: hard
 
@@ -8533,14 +8533,14 @@ __metadata:
   linkType: hard
 
 "@types/express-serve-static-core@npm:^4.17.18":
-  version: 4.19.0
-  resolution: "@types/express-serve-static-core@npm:4.19.0"
+  version: 4.19.5
+  resolution: "@types/express-serve-static-core@npm:4.19.5"
   dependencies:
     "@types/node": "npm:*"
     "@types/qs": "npm:*"
     "@types/range-parser": "npm:*"
     "@types/send": "npm:*"
-  checksum: 10/3e803822f90106158e2c7598d0a44e078e22fad67806eadb1e9f00261fa2be7ea65725d9d177157225d2b0ab22793a84039a433c2d97910586ae6f79e9d04c2f
+  checksum: 10/49350c6315eeb7d640e13e6138ba6005121b3b610b1e25746fccd5b86b559be810a4ba384b9bd7eee288975b5bd8cf67c1772c646254b812beaa488774eb5513
   languageName: node
   linkType: hard
 
@@ -22546,8 +22546,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sdk-demo-with-nextjs-and-clerk-auth@workspace:examples/with-nextjs-and-clerk-auth"
   dependencies:
-    "@clerk/clerk-sdk-node": "npm:4.13.7"
-    "@clerk/nextjs": "npm:4.29.4"
+    "@clerk/clerk-sdk-node": "npm:4.13.21"
+    "@clerk/nextjs": "npm:4.31.4"
     "@emotion/cache": "npm:~11.11.0"
     "@faker-js/faker": "npm:~8.3.1"
     "@lingui/cli": "npm:~4.7.0"
@@ -24259,10 +24259,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.6.1, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10/bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.4.1, tslib@npm:^2.6.1":
+  version: 2.7.0
+  resolution: "tslib@npm:2.7.0"
+  checksum: 10/9a5b47ddac65874fa011c20ff76db69f97cf90c78cff5934799ab8894a5342db2d17b4e7613a087046bc1d133d21547ddff87ac558abeec31ffa929c88b7fce6
   languageName: node
   linkType: hard
 
@@ -25328,15 +25335,15 @@ __metadata:
   linkType: hard
 
 "webcrypto-core@npm:^1.7.4":
-  version: 1.7.9
-  resolution: "webcrypto-core@npm:1.7.9"
+  version: 1.8.0
+  resolution: "webcrypto-core@npm:1.8.0"
   dependencies:
     "@peculiar/asn1-schema": "npm:^2.3.8"
     "@peculiar/json-schema": "npm:^1.1.12"
     asn1js: "npm:^3.0.1"
     pvtsutils: "npm:^1.3.5"
     tslib: "npm:^2.6.2"
-  checksum: 10/515140c6330024f49142a8dd7d84cdb5adddfc09827b6d3aad5fdec398038465fe8f2b48a3a2d9f67a34ab2ac5324c150ec68d552c9313b65a3130d23629da16
+  checksum: 10/c8403d32d99a9497d02a1ab4eee8a7691867d3f38817b1059e619a5603c22313d4a851ff3aa7ea59f1b3708d787c787b76b2484926cad2d5e01f584ae7c126b8
   languageName: node
   linkType: hard
 
