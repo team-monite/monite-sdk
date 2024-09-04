@@ -132,6 +132,7 @@ const CreditNotesTableBase = ({
         headerName: t(i18n)`Customer`,
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         width: defaultCounterpartColumnWidth,
+        display: 'flex',
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),

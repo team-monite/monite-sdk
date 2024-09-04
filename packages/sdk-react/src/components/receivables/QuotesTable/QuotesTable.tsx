@@ -151,6 +151,7 @@ const QuotesTableBase = ({
         sortable: ReceivableCursorFields.includes('counterpart_name'),
         headerName: t(i18n)`Customer`,
         width: defaultCounterpartColumnWidth,
+        display: 'flex',
         renderCell: (params) => (
           <CounterpartCellById counterpartId={params.row.counterpart_id} />
         ),
