@@ -260,7 +260,6 @@ const PayablesTableBase = ({
       {
         field: 'amount',
         sortable: false,
-        align: 'right',
         headerName: t(i18n)({
           id: 'Amount Name',
           message: 'Amount',

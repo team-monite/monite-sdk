@@ -218,8 +218,6 @@ const ProductsTableBase = ({
         headerName: t(i18n)`Price per unit`,
         flex: 1,
         sortable: false,
-        align: 'right',
-        headerAlign: 'right',
         valueGetter: (value: ProductServiceResponse['price']) => {
           const price = value;
 
