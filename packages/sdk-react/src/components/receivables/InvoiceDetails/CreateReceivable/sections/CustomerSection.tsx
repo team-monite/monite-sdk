@@ -259,9 +259,10 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
                     : ''
                 }
                 InputProps={{
-                  startAdornment: isContactPersonsLoading ? (
-                    <CircularProgress size={20} />
-                  ) : null,
+                  startAdornment:
+                    counterpartId && isContactPersonsLoading ? (
+                      <CircularProgress size={20} />
+                    ) : null,
                 }}
               />
               <Collapse in={Boolean(contactPersonError)}>
