@@ -12,6 +12,7 @@ import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateRe
 import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import {
   useUpdateReceivable,
@@ -127,8 +128,17 @@ const EditInvoiceDetailsContent = ({
   const updateReceivableLineItems = useUpdateReceivableLineItems(invoice.id);
   const updateReceivable = useUpdateReceivable(invoice.id);
 
+  const { api } = useMoniteContext();
+  const { data: entity, isLoading: isEntityLoading } =
+    api.entityUsers.getEntityUsersMyEntity.useQuery();
+
+  // TODO: This can be moved up to a context and shared
+  const isUSEntity = entity?.address.country === 'US';
+
   const isLoading =
-    updateReceivableLineItems.isPending || updateReceivable.isPending;
+    updateReceivableLineItems.isPending ||
+    updateReceivable.isPending ||
+    isEntityLoading;
 
   const formName = `Monite-Form-receivablesDetailsForm-${useId()}`;
 
@@ -243,6 +253,7 @@ const EditInvoiceDetailsContent = ({
               <CustomerSection disabled={isLoading} />
               <EntitySection disabled={isLoading} hidden={['purchase_order']} />
               <ItemsSection
+                isUSEntity={isUSEntity}
                 actualCurrency={actualCurrency}
                 onCurrencyChanged={setActualCurrency}
               />

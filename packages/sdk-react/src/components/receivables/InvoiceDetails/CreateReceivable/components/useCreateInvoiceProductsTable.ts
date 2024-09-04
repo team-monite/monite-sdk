@@ -56,13 +56,9 @@ export const useCreateInvoiceProductsTable = ({
       const quantity = field.quantity;
       const subtotalPrice = price * quantity;
 
-      let taxRate: number | undefined = 0;
-
-      if (isUSEntity) {
-        taxRate = (field?.tax_rate_value ?? 0) * 100;
-      } else {
-        taxRate = field.vat_rate_value;
-      }
+      const taxRate = isUSEntity
+        ? (field?.tax_rate_value ?? 0) * 100
+        : field.vat_rate_value;
 
       if (!taxRate) {
         return acc;

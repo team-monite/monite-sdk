@@ -91,6 +91,7 @@ const CreateReceivablesBase = ({
   const { data: entity, isLoading: isEntityLoading } =
     api.entityUsers.getEntityUsersMyEntity.useQuery();
 
+  // TODO: This can be moved up to a context and shared
   const isUSEntity = entity?.address.country === 'US';
 
   const { data: settings, isLoading: isSettingsLoading } =
