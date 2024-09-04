@@ -177,6 +177,8 @@ const QuotesTableBase = ({
       {
         field: 'amount',
         headerName: t(i18n)`Amount`,
+        headerAlign: 'right',
+        align: 'right',
         sortable: ReceivableCursorFields.includes('amount'),
         width: 120,
         valueGetter: (_, row) => {
