@@ -62,14 +62,13 @@ const SummaryCard = ({
 
   const formattedAmount = amount ? formatAmount(amount) : '';
 
-  // Safely split formattedAmount if it's a valid string
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
     : ['0', '00'];
 
   const backgroundColor = selected
     ? 'transparent'
-    : statusBackgroundColors[status] || 'red';
+    : statusBackgroundColors[status];
 
   const statusTitleNames: Record<ExtendedPayableStateEnum, string> = {
     draft: t(i18n)`Draft`,
