@@ -223,6 +223,18 @@ export const SummaryCardsFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
+  const predefinedOrder: ExtendedPayableStateEnum[] = [
+    'all',
+    'draft',
+    'new',
+    'approve_in_progress',
+    'paid',
+    'waiting_to_be_paid',
+    'rejected',
+    'partially_paid',
+    'canceled',
+  ];
+
   const enhancedData = [
     {
       status: 'all' as ExtendedPayableStateEnum,
@@ -234,6 +246,11 @@ export const SummaryCardsFilters = ({
     },
     ...data,
   ];
+
+  const sortedData = enhancedData.sort(
+    (a, b) =>
+      predefinedOrder.indexOf(a.status) - predefinedOrder.indexOf(b.status)
+  );
 
   const handleSelectStatus = (status: ExtendedPayableStateEnum) => {
     onChangeFilter('status', status === 'all' ? null : status);
@@ -265,7 +282,7 @@ export const SummaryCardsFilters = ({
         ...sx,
       }}
     >
-      {enhancedData.map((item) => (
+      {sortedData.map((item) => (
         <SummaryCard
           key={item.status}
           status={item.status}

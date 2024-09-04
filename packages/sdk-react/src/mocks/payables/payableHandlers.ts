@@ -21,18 +21,6 @@ import {
 
 type PayableParams = { payableId: string };
 
-// export interface PayableAggregatedItem {
-//   status: components['schemas']['PayableStateEnum'];
-//   amount: number;
-//   quantity: number;
-// }
-//
-// export interface AggregatedPayablesResponse {
-//   data: PayableAggregatedItem[];
-//   total_amount: number;
-//   total_quantity: number;
-// }
-
 export const PAYABLES_ENDPOINT = 'payables';
 const payablePath = `*/${PAYABLES_ENDPOINT}`;
 const payableIdPath = `${payablePath}/:payableId`;
