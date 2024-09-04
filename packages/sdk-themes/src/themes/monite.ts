@@ -1081,7 +1081,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
       {
         props: { status: 'waiting_to_be_paid' },
-        style: statusColors.orange,
+        style: statusColors.blue,
       },
       {
         props: { status: 'partially_paid' },
