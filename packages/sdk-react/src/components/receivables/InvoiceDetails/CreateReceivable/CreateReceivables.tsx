@@ -139,7 +139,7 @@ const CreateReceivablesBase = ({
               type="submit"
               form={formName}
               disabled={createReceivable.isPending}
-            >{t(i18n)`Create`}</Button>
+            >{t(i18n)`Next page`}</Button>
           </Box>
         </Toolbar>
       </DialogTitle>
