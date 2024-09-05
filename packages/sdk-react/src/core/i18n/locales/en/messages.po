@@ -4515,7 +4515,7 @@ msgstr "NOT allowed"
 msgid "Number"
 msgstr "Number"
 
-#: src/components/payables/PayablesTable/PayablesTable.tsx:229
+#: src/components/payables/PayablesTable/PayablesTable.tsx:227
 msgid "Number, status"
 msgstr "Number, status"
 
@@ -5073,6 +5073,10 @@ msgstr "Price:"
 #: src/components/onboarding/components/OnboardingFooter/OnboardingFooter.tsx:83
 msgid "Privacy"
 msgstr "Privacy"
+
+#: src/components/payables/PayablesTable/PayablesTable.tsx:239
+msgid "Processing file"
+msgstr "Processing file"
 
 #: src/components/payables/PayablesTable/PayablesTable.tsx:251
 #~ msgid "Processing file…"
@@ -5946,7 +5950,7 @@ msgid "Sudan"
 msgstr "Sudan"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:192
-#: src/components/payables/PayablesTable/PayablesTable.tsx:219
+#: src/components/payables/PayablesTable/PayablesTable.tsx:217
 msgid "Supplier"
 msgstr "Supplier"
 
