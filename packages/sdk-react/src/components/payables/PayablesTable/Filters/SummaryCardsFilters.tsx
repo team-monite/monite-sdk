@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { classNames } from '@/utils/css-utils';
@@ -67,17 +68,9 @@ const SummaryCard = ({
     ? formattedAmount.split('.')
     : ['0', '00'];
 
-  const statusTitleNames: Record<ExtendedPayableStateEnum, string> = {
-    draft: t(i18n)`Draft`,
-    new: t(i18n)`New`,
-    approve_in_progress: t(i18n)`In Approval`,
-    paid: t(i18n)`Paid`,
-    waiting_to_be_paid: t(i18n)`Approved`,
-    rejected: t(i18n)`Rejected`,
-    partially_paid: t(i18n)`Partially Paid`,
-    canceled: t(i18n)`Canceled`,
-    all: t(i18n)`All items`,
-  };
+  const statusText = isAllItems
+    ? t(i18n)`All items`
+    : getRowToStatusTextMap(i18n)[status];
 
   const className = 'Monite-SummaryCard';
 
@@ -139,7 +132,7 @@ const SummaryCard = ({
                 fontWeight="bold"
                 sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
               >
-                {statusTitleNames[status]}
+                {statusText}
               </Typography>
               <Typography
                 variant="body2"
@@ -170,7 +163,7 @@ const SummaryCard = ({
                   color: statusBackgroundColors[status],
                 }}
               >
-                {statusTitleNames[status]}
+                {statusText}
               </Typography>
               <Typography
                 variant="body2"

@@ -31,12 +31,12 @@ export const getRowToStatusTextMap = (
 } => ({
   draft: t(i18n)`Draft`,
   new: t(i18n)`New`,
-  approve_in_progress: t(i18n)`Pending`,
-  waiting_to_be_paid: t(i18n)`Approved`,
-  partially_paid: t(i18n)`Partially paid`,
+  approve_in_progress: t(i18n)`In Approval`,
   paid: t(i18n)`Paid`,
-  canceled: t(i18n)`Canceled`,
+  waiting_to_be_paid: t(i18n)`Approved`,
   rejected: t(i18n)`Rejected`,
+  partially_paid: t(i18n)`Partially Paid`,
+  canceled: t(i18n)`Canceled`,
 });
 
 export const PAYABLE_STATUS_TO_MUI_ICON_MAP: Record<
