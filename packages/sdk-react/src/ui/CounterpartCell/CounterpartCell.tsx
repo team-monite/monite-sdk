@@ -44,6 +44,8 @@ export const CounterPartCellByName = ({
       direction="row"
       alignItems="center"
       spacing={1.5}
+      justifyContent="stretch"
+      sx={{ maxWidth: '100%', overflow: 'hidden' }}
     >
       {isLoading ? (
         <Skeleton
@@ -71,12 +73,26 @@ export const CounterPartCellByName = ({
           sx={{ flexShrink: 0, minWidth: '4em' }}
         />
       ) : (
-        <Stack direction="column" alignItems="flex-start" gap={0}>
+        <Stack
+          direction="column"
+          alignItems="stretch"
+          gap={0}
+          sx={{
+            maxWidth: '100%',
+            flexBasis: 0,
+            flexShrink: 2,
+            flexGrow: 2,
+            overflow: 'hidden',
+          }}
+        >
           <Typography variant="body1" className="Monite-TextOverflowContainer">
             {name}
           </Typography>
           {country && city && (
-            <Typography variant="body2">
+            <Typography
+              variant="body2"
+              className="Monite-TextOverflowContainer"
+            >
               {country} &#x2022; {city}
             </Typography>
           )}

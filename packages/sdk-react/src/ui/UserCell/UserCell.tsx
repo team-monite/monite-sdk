@@ -32,6 +32,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
       direction="row"
       alignItems="center"
       spacing={1.5}
+      sx={{ maxWidth: '100%' }}
     >
       {isLoading ? (
         <Skeleton
