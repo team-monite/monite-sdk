@@ -61,14 +61,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
           sx={{ flexShrink: 0, minWidth: '4em' }}
         />
       ) : (
-        <span
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {name}
-        </span>
+        <span className="Monite-TextOverflowContainer">{name}</span>
       )}
     </Stack>
   );
