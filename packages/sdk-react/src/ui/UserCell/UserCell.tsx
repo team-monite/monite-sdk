@@ -32,6 +32,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
       direction="row"
       alignItems="center"
       spacing={1.5}
+      sx={{ maxWidth: '100%' }}
     >
       {isLoading ? (
         <Skeleton
@@ -60,14 +61,7 @@ export const UserCell = ({ userId }: { userId: string }) => {
           sx={{ flexShrink: 0, minWidth: '4em' }}
         />
       ) : (
-        <span
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {name}
-        </span>
+        <span className="Monite-TextOverflowContainer">{name}</span>
       )}
     </Stack>
   );
