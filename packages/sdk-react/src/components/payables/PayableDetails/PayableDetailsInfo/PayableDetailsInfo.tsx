@@ -220,7 +220,9 @@ const PayableDetailsInfoBase = ({
                           counterpartBankAccount?.name
                         ) && payable?.ocr_status === null
                       }
-                    />
+                    >
+                      {t(i18n)`Bank account`}:
+                    </StyledLabelTableCell>
                     <TableCell>{counterpartBankAccount.name}</TableCell>
                   </TableRow>
                 )}
