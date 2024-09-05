@@ -9,7 +9,6 @@ import React, {
 } from 'react';
 
 import { i18n } from '@lingui/core';
-import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
@@ -343,9 +342,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
             <Typography variant="body1">
               {counterpartName} &bull; {subtotal}
             </Typography>
-            <Typography variant="body2">{t(
-              i18n
-            )`Invoice ${documentId}`}</Typography>
+            <Typography variant="body2">{`Invoice ${documentId}`}</Typography>
           </CardContent>
         </Card>
 
@@ -353,7 +350,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
           <TableBody>
             <TableRow className={className + '-Subtotal'}>
               <TableCell sx={{ p: 1 }}>
-                <Typography variant="body1">{t(i18n)`Subtotal`}</Typography>
+                <Typography variant="body1">Subtotal</Typography>
               </TableCell>
               <TableCell sx={{ p: 1 }} align="right">
                 <Typography variant="body1">{subtotal}</Typography>
@@ -361,7 +358,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
             </TableRow>
             <TableRow className={className + '-Fee'}>
               <TableCell sx={{ p: 1 }}>
-                <Typography variant="body1">{t(i18n)`Total fee`}</Typography>
+                <Typography variant="body1">Total fee</Typography>
               </TableCell>
               <TableCell sx={{ p: 1 }} align="right">
                 <Typography variant="body1">$1</Typography>
@@ -369,7 +366,7 @@ const ReviewPage = ({ payableId }: { payableId: string }) => {
             </TableRow>
             <TableRow className={className + '-Totals-Total'}>
               <TableCell sx={{ p: 1 }}>
-                <Typography variant="subtitle2">{t(i18n)`Total`}</Typography>
+                <Typography variant="subtitle2">Total</Typography>
               </TableCell>
               <TableCell sx={{ p: 1 }} align="right">
                 <Typography variant="subtitle2">
@@ -422,9 +419,7 @@ const USPayDialog = ({
         },
         {
           onSuccess: (payable) => {
-            toast.success(
-              t(i18n)`Payable "${payable.document_id}" has been paid`
-            );
+            toast.success(`Payable "${payable.document_id}" has been paid`);
           },
         }
       );
@@ -456,9 +451,9 @@ const USPayDialog = ({
     switch (page) {
       case USPayDialogPage.ChooseBankAccount:
       case USPayDialogPage.TransferType:
-        return t(i18n)`Continue`;
+        return `Continue`;
       case USPayDialogPage.Review:
-        return t(i18n)`Pay` + ' ' + payableTotal;
+        return `Pay` + ' ' + payableTotal;
     }
   }, [page, payableTotal]);
 
@@ -485,7 +480,7 @@ const USPayDialog = ({
       <Divider />
       <DialogActions>
         <Button variant="outlined" onClick={onCloseDialogClick}>
-          {t(i18n)`Cancel`}
+          Cancel
         </Button>
         <Button
           variant="contained"
@@ -520,7 +515,7 @@ export const Payables = () => {
         <Dialog
           open={modalOpen}
           container={root}
-          aria-label={t(i18n)`Pay invoice`}
+          aria-label={`Pay invoice`}
           fullWidth={true}
           maxWidth="sm"
         >
