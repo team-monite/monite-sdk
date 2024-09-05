@@ -33,14 +33,15 @@ interface SummaryCardsFiltersProps {
   sx?: SxProps<Theme>;
 }
 
+//ToDo: should reuse statusColors from monite.ts
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   draft: '#000000D6',
   new: '#3737FF',
-  approve_in_progress: '#3737FF',
+  approve_in_progress: '#E75300',
   paid: '#13705F',
-  waiting_to_be_paid: '#E75300',
+  waiting_to_be_paid: '#3737FF',
   rejected: '#FF475D',
-  partially_paid: '#0DAA8E',
+  partially_paid: '#A06DC8',
   canceled: '#E75300',
   all: '#F4F4FE',
 };
