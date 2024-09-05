@@ -101,6 +101,7 @@ const SummaryCard = ({
         height: 80,
         minWidth: isAllItems ? 118 : 220,
         flexShrink: 0,
+        boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
       }}
     >
       <CardContent
