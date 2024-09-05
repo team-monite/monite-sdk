@@ -385,10 +385,10 @@ const PayableDetailsInfoBase = ({
                               payable.currency
                             )}
                           </Box>
-                          <Box sx={{ color: 'secondary.main' }}>
-                            {t(i18n)`excl. VAT`}{' '}
-                            {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}
-                          </Box>
+                          {/*<Box sx={{ color: 'secondary.main' }}>*/}
+                          {/*  {t(i18n)`excl. VAT`}{' '}*/}
+                          {/*  {`${item.tax ? (item.tax / 100).toFixed(0) : 0}%`}*/}
+                          {/*</Box>*/}
                         </>
                       ) : (
                         '—'

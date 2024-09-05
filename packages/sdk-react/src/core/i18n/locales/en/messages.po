@@ -1376,7 +1376,7 @@ msgid "Close approval policy details"
 msgstr "Close approval policy details"
 
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/ExistingReceivableDetails.tsx:183
-#: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:34
+#: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:35
 msgid "Close invoice details"
 msgstr "Close invoice details"
 
@@ -2697,8 +2697,8 @@ msgid "Every last day of the month"
 msgstr "Every last day of the month"
 
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:389
-msgid "excl. VAT"
-msgstr "excl. VAT"
+#~ msgid "excl. VAT"
+#~ msgstr "excl. VAT"
 
 #: src/components/onboarding/utils/codeToLabel.ts:48
 msgid "Executive"
@@ -5814,7 +5814,7 @@ msgstr "Somali Shilling"
 msgid "Somalia"
 msgstr "Somalia"
 
-#: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:29
+#: src/components/receivables/InvoiceDetails/InvoiceError/InvoiceError.tsx:30
 #: src/ui/error/Error.tsx:32
 msgid "Something went wrong"
 msgstr "Something went wrong"
@@ -6652,7 +6652,7 @@ msgid "Unrecognized error. Please contact support."
 msgstr "Unrecognized error. Please contact support."
 
 #: src/ui/CounterpartCell/CounterpartCell.tsx:33
-#: src/ui/UserCell/UserCell.tsx:11
+#: src/ui/UserCell/UserCell.tsx:12
 msgid "Unspecified"
 msgstr "Unspecified"
 
