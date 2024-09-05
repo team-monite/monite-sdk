@@ -1,14 +1,14 @@
 import { useDialog } from '@/components/Dialog';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import CloseIcon from '@mui/icons-material/Close';
 import {
-  DialogTitle,
   Box,
-  Typography,
-  IconButton,
-  Divider,
   DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  Typography,
 } from '@mui/material';
 
 export const InvoiceError = ({
@@ -19,6 +19,7 @@ export const InvoiceError = ({
   errorMessage: string | undefined;
 }) => {
   const dialogContext = useDialog();
+  const { i18n } = useLingui();
 
   return (
     <>
