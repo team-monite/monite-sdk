@@ -16,16 +16,16 @@ msgid "AI Assistant"
 msgstr "AI Assistant"
 
 #: src/components/MoniteComponents.tsx:488
-msgid "Cancel"
-msgstr "Cancel"
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
 
 #: src/components/NavigationMenu/NavigationList.tsx:67
 msgid "Company"
 msgstr "Company"
 
 #: src/components/MoniteComponents.tsx:459
-msgid "Continue"
-msgstr "Continue"
+#~ msgid "Continue"
+#~ msgstr "Continue"
 
 #: src/components/NavigationMenu/NavigationList.tsx:54
 msgid "Counterparts"
@@ -57,8 +57,8 @@ msgid "Integrations"
 msgstr "Integrations"
 
 #: src/components/MoniteComponents.tsx:346
-msgid "Invoice {documentId}"
-msgstr "Invoice {documentId}"
+#~ msgid "Invoice {documentId}"
+#~ msgstr "Invoice {documentId}"
 
 #: src/components/NavigationMenu/NavigationList.tsx:76
 msgid "Invoice Design"
@@ -91,16 +91,16 @@ msgid "My Profile"
 msgstr "My Profile"
 
 #: src/components/MoniteComponents.tsx:461
-msgid "Pay"
-msgstr "Pay"
+#~ msgid "Pay"
+#~ msgstr "Pay"
 
 #: src/components/MoniteComponents.tsx:523
-msgid "Pay invoice"
-msgstr "Pay invoice"
+#~ msgid "Pay invoice"
+#~ msgstr "Pay invoice"
 
 #: src/components/MoniteComponents.tsx:426
-msgid "Payable \"{0}\" has been paid"
-msgstr "Payable \"{0}\" has been paid"
+#~ msgid "Payable \"{0}\" has been paid"
+#~ msgstr "Payable \"{0}\" has been paid"
 
 #: src/components/NavigationMenu/NavigationList.tsx:57
 msgid "Products & Services"
@@ -123,8 +123,8 @@ msgid "Sales"
 msgstr "Sales"
 
 #: src/components/MoniteComponents.tsx:356
-msgid "Subtotal"
-msgstr "Subtotal"
+#~ msgid "Subtotal"
+#~ msgstr "Subtotal"
 
 #: src/components/NavigationMenu/NavigationList.tsx:85
 msgid "Tags"
@@ -139,12 +139,12 @@ msgid "Theme"
 msgstr "Theme"
 
 #: src/components/MoniteComponents.tsx:372
-msgid "Total"
-msgstr "Total"
+#~ msgid "Total"
+#~ msgstr "Total"
 
 #: src/components/MoniteComponents.tsx:364
-msgid "Total fee"
-msgstr "Total fee"
+#~ msgid "Total fee"
+#~ msgstr "Total fee"
 
 #: src/components/ThemeRegistry/AppThemeProvider.tsx:91
 msgid "We were unable to save your theme selection, please try again."

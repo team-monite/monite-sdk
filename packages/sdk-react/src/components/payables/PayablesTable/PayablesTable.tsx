@@ -315,7 +315,7 @@ const PayablesTableBase = ({
       },
       {
         field: 'pay',
-        headerName: '',
+        headerName: t(i18n)`Actions`,
         sortable: false,
         display: 'flex',
         minWidth: 80,
