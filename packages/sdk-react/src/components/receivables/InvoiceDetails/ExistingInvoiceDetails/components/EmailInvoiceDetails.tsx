@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -15,17 +16,21 @@ import {
 import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useFormPersist } from '@/core/hooks/useFormPersist';
-import { useReceivableContacts } from '@/core/queries';
+import {
+  useMe,
+  useMyEntityName,
+  useReceivableById,
+  useReceivableContacts,
+} from '@/core/queries';
 import {
   useIssueReceivableById,
   useReceivableEmailPreview,
   useSendReceivableById,
 } from '@/core/queries/useReceivables';
-import i18n from '@/mocks/i18n';
 import { CenteredContentBox } from '@/ui/box';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -72,17 +77,69 @@ const EmailInvoiceDetailsBase = ({
 }: EmailInvoiceDetailsProps) => {
   const { i18n } = useLingui();
   const { monite, api } = useMoniteContext();
-  const { control, handleSubmit, getValues, setValue, trigger } = useForm({
-    resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
-    defaultValues: {
-      subject: '',
-      body: '',
-      to: '',
-      // TODO: add support for multiple recipients, cc and bcc fields
-    },
-  });
+
+  const { control, handleSubmit, getValues, setValue, trigger, watch } =
+    useForm({
+      resolver: yupResolver(getEmailInvoiceDetailsSchema(i18n)),
+      defaultValues: {
+        subject: '',
+        body: '',
+        to: '',
+        // TODO: add support for multiple recipients, cc and bcc fields
+      },
+    });
+
+  const { data: me } = useMe();
+  const { data: receivable } = useReceivableById(invoiceId);
+  const { data: contacts } = useReceivableContacts(invoiceId);
+  const to = watch('to');
+  const body = watch('body');
+  const previousBody = useRef(body);
+  useEffect(() => {
+    if (me && to && contacts && body == previousBody.current) {
+      const contact = contacts.find(({ email }) => email == to);
+      if (contact) {
+        const newBody = t(i18n)`Hi ${contact.first_name},
+
+Please find the invoice attached as discussed.
+
+Kind Regards,
+${me.first_name}`;
+        previousBody.current = newBody;
+        setValue('body', newBody, {
+          shouldValidate: false,
+          shouldDirty: true,
+          shouldTouch: true,
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [to, me, contacts]);
+  const subject = watch('subject');
+  const previousSubject = useRef(subject);
+  const myCompanyName = useMyEntityName();
+  useEffect(() => {
+    if (receivable && subject == previousSubject.current) {
+      const newSubject = myCompanyName
+        ? t(i18n)`Invoice ${
+            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+          } from ${myCompanyName}`
+        : t(i18n)`Invoice ${
+            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+          }`;
+      previousSubject.current = newSubject;
+      setValue('subject', newSubject, {
+        shouldValidate: false,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [receivable, myCompanyName]);
+
   // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
-  useFormPersist(`Monite-EmailInvoiceDetails-FormState`, getValues, setValue);
+  // TODO: Form persistance disabled as requested by Joao on Sep 5
+  // useFormPersist(`Monite-EmailInvoiceDetails-FormState`, getValues, setValue);
   const sendMutation = useSendReceivableById(invoiceId);
   const issueMutation = useIssueReceivableById(invoiceId);
 
@@ -372,6 +429,8 @@ const Form = ({
   setValue: SetFieldValue<any>;
   isDisabled: boolean;
 }) => {
+  const { i18n } = useLingui();
+
   return (
     <form id={formName} noValidate onSubmit={handleIssueAndSend}>
       <Card sx={{ mb: 3 }}>
@@ -461,6 +520,7 @@ const Preview = ({
   invoiceId: string;
   getValues: UseFormGetValues<FormProps>;
 }) => {
+  const { i18n } = useLingui();
   const { subject, body } = getValues();
   const { isLoading, preview, error, refresh } = useReceivableEmailPreview(
     invoiceId,
