@@ -307,7 +307,9 @@ const PayableDetailsInfoBase = ({
                           payable.tags?.[0].id
                         ) && payable?.ocr_status === null
                       }
-                    />
+                    >
+                      {t(i18n)`Tags`}:
+                    </StyledLabelTableCell>
                     <TableCell>
                       <Stack
                         spacing={1}
