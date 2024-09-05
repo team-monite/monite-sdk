@@ -316,6 +316,7 @@ export const ItemsSection = ({
                                 InputProps={{
                                   endAdornment: '%',
                                 }}
+                                sx={{ minWidth: 100 }}
                               />
                             </FormControl>
                           )}
