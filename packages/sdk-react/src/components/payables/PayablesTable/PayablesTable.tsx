@@ -29,12 +29,10 @@ import {
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
-import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import HourglassEmpty from '@mui/icons-material/HourglassEmpty';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -229,15 +227,17 @@ const PayablesTableBase = ({
         headerName: t(i18n)`Number, status`,
         width: 100,
         display: 'flex',
-        colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 2 : 1),
+        colSpan: (_, row) => (isPayableInOCRProcessing(row) ? 4 : 1),
         renderCell: (params) => {
           const payable = params.row;
 
           if (isPayableInOCRProcessing(payable)) {
             return (
               <>
-                <FindInPageOutlinedIcon fontSize="small" />
-                {payable.file?.name}
+                <CircularProgress size={22} sx={{ mr: 1 }} />
+                <Box sx={{ ml: 1 }}>
+                  {t(i18n)`Processing file`} '{payable.file?.name}'
+                </Box>
               </>
             );
           }
