@@ -35,7 +35,7 @@ msgstr "Delete {type} “{name}”?"
 #~ msgid "Status Name"
 #~ msgstr "Status"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:165
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:179
 msgid "(.pdf, .png, .jpg supported)"
 msgstr "(.pdf, .png, .jpg supported)"
 
@@ -257,7 +257,7 @@ msgstr "Add another owner"
 msgid "Add bank account"
 msgstr "Add bank account"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:169
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:186
 msgid "Add bill manually"
 msgstr "Add bill manually"
 
@@ -276,7 +276,7 @@ msgstr "Add contact person"
 
 #: src/components/payables/PayableDetails/PayableLineItemsForm/PayableLineItemsForm.tsx:172
 #: src/components/receivables/InvoiceDetails/CreateReceivable/components/ProductsTable.tsx:311
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:386
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:387
 msgid "Add item"
 msgstr "Add item"
 
@@ -418,7 +418,7 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:125
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:131
 msgid "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 msgstr "All invoices and bills sent to this email will be automatically processed and added to the system as drafts."
 
@@ -1616,11 +1616,11 @@ msgstr "Convert this invoice into recurring template"
 msgid "Cook Islands"
 msgstr "Cook Islands"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:105
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:111
 msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:108
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:114
 msgid "Copy"
 msgstr "Copy"
 
@@ -1804,7 +1804,7 @@ msgstr "Create an item with this currency to add it"
 msgid "Create Approval Policy"
 msgstr "Create Approval Policy"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:181
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:197
 msgid "Create bill manually"
 msgstr "Create bill manually"
 
@@ -2002,7 +2002,7 @@ msgstr "Customers"
 msgid "Customers & Vendors"
 msgstr "Customers & Vendors"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:92
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:98
 msgid "Customise"
 msgstr "Customise"
 
@@ -2336,7 +2336,7 @@ msgstr "Download PDF"
 msgid "Draft"
 msgstr "Draft"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:129
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:138
 msgid "Drag & Drop"
 msgstr "Drag & Drop"
 
@@ -2344,7 +2344,7 @@ msgstr "Drag & Drop"
 msgid "Drag & Drop it here to save for administrative purposes."
 msgstr "Drag & Drop it here to save for administrative purposes."
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:162
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:176
 msgid "Drag files or click to upload"
 msgstr "Drag files or click to upload"
 
@@ -2934,7 +2934,7 @@ msgstr "Flow"
 msgid "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 msgstr "For this reminder to be sent for your invoice, please make sure to set payment terms that include a discount"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:82
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:88
 msgid "Forward to email"
 msgstr "Forward to email"
 
@@ -5939,7 +5939,7 @@ msgstr "Submit invoice"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:592
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:404
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:416
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:417
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:158
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:31
 msgid "Subtotal"
@@ -6119,7 +6119,7 @@ msgstr "Tax Registration Number (UAE)"
 msgid "Taxes"
 msgstr "Taxes"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:418
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:419
 msgid "Taxes total"
 msgstr "Taxes total"
 
@@ -6392,7 +6392,7 @@ msgstr "Tongan Paʻanga"
 
 #: src/components/payables/PayableDetails/PayableDetailsForm/PayableDetailsForm.tsx:621
 #: src/components/payables/PayableDetails/PayableDetailsInfo/PayableDetailsInfo.tsx:427
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:422
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:423
 #: src/components/receivables/InvoiceDetails/ExistingInvoiceDetails/components/sections/PreviewItemsSection.tsx:173
 #: src/components/receivables/InvoiceDetails/InvoiceItems/InvoiceItems.tsx:38
 #: src/components/receivables/InvoiceDetails/InvoiceTotal/InvoiceTotal.tsx:25
@@ -6710,7 +6710,7 @@ msgstr "Upload a document here."
 msgid "Upload File"
 msgstr "Upload File"
 
-#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:188
+#: src/components/payables/CreatePayableMenu/CreatePayableMenu.tsx:205
 #: src/components/payables/Payables.test.tsx:38
 #: src/components/payables/Payables.tsx:149
 msgid "Upload payable file"
@@ -6875,7 +6875,7 @@ msgstr "Vat “{0}” has been updated."
 msgid "VAT {0}%"
 msgstr "VAT {0}%"
 
-#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:401
+#: src/components/receivables/InvoiceDetails/CreateReceivable/sections/ItemsSection.tsx:402
 msgid "VAT Exempt Rationale"
 msgstr "VAT Exempt Rationale"
 
