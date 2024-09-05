@@ -6,7 +6,6 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
 import { lighten } from '@mui/material/styles';
-import { light } from '@mui/material/styles/createPalette';
 
 import { Theme } from 'mui-styles';
 
@@ -164,9 +163,9 @@ const SummaryCard = ({
                   `${className}-title-${status}`
                 )}
                 sx={{
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: 700,
-                  letterSpacing: 0.32,
+                  letterSpacing: 0.28,
                   color: statusBackgroundColors[status],
                 }}
               >

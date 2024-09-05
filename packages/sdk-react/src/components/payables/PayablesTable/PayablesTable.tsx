@@ -29,6 +29,7 @@ import {
 import { UserCell } from '@/ui/UserCell';
 import { classNames } from '@/utils/css-utils';
 import { useDateFormat } from '@/utils/MoniteOptions';
+import { i18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
@@ -118,7 +119,9 @@ export const PayablesTable = (props: PayablesTableProps) => (
 );
 
 const usePayablesTableSummaryData = () => {
-  const { api } = useMoniteContext();
+  const { api, queryClient } = useMoniteContext();
+
+  api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
 
   return api.payables.getPayablesAnalytics.useQuery();
 };
