@@ -190,6 +190,7 @@ msgid "Action menu"
 msgstr "Action menu"
 
 #: src/components/approvalRequests/ApprovalRequestsTable/useApprovalRequestActionsCell.tsx:93
+#: src/components/payables/PayablesTable/PayablesTable.tsx:318
 msgid "Actions"
 msgstr "Actions"
 
