@@ -70,7 +70,7 @@ export const CreatePayableMenu = ({
       </Button>
       <Menu {...menuProps} sx={{ '& > .MuiPaper-root': { width: 550 } }}>
         <Stack
-          spacing={2}
+          spacing={3}
           flexDirection="column"
           sx={{ p: 2, width: 550 }}
           onClick={(e) => {
@@ -78,108 +78,125 @@ export const CreatePayableMenu = ({
             e.stopPropagation();
           }}
         >
-          <Stack direction="row" justifyContent="space-between">
-            <Typography variant="subtitle1">{t(
-              i18n
-            )`Forward to email`}</Typography>
-            <Button
-              variant="text"
-              endIcon={<SettingsIcon />}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >{t(i18n)`Customise`}</Button>
-          </Stack>
-          <Alert
-            severity="info"
-            icon={<MailOutlineIcon color="primary" />}
-            action={
+          <Box>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={2}
+            >
+              <Typography variant="subtitle1">{t(
+                i18n
+              )`Forward to email`}</Typography>
               <Button
-                variant="outlined"
-                startIcon={<ContentCopyIcon />}
-                onClick={() => {
-                  navigator.clipboard.writeText(
-                    'incoming-bills-silver-wind@x-platform.com'
-                  );
-                  toast.success(t(i18n)`Copied to clipboard`);
+                variant="text"
+                endIcon={<SettingsIcon />}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                 }}
-              >
-                {t(i18n)`Copy`}
-              </Button>
-            }
-            sx={{
-              '& .MuiPaper-root': { alignItems: 'center' },
-              '& .MuiAlert-action': { pt: 0 },
-            }}
-          >
-            <Box>
-              <Typography variant="body1" color="primary">
-                {/* TODO: add support for email */}
-                {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
-                {'incoming-bills-silver-wind@x-platform.com'}
-              </Typography>
-            </Box>
-          </Alert>
-          <Typography variant="body2">
-            {t(
-              i18n
-            )`All invoices and bills sent to this email will be automatically processed and added to the system as drafts.`}
-          </Typography>
-          <Typography variant="subtitle1">{t(i18n)`Drag & Drop`}</Typography>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              width: '100%',
-              height: 170,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              textAlign: 'center',
-              border: 2,
-              borderRadius: 2,
-              borderStyle: 'dashed',
-              borderColor: 'primary.main',
-              ...(dragIsOver
-                ? { backgroundColor: 'transparent' }
-                : {
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.05),
-                  }),
-            }}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-            onClick={() => openFileInput()}
-          >
+              >{t(i18n)`Customise`}</Button>
+            </Stack>
+            <Alert
+              severity="info"
+              icon={<MailOutlineIcon color="primary" />}
+              action={
+                <Button
+                  variant="outlined"
+                  startIcon={<ContentCopyIcon />}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      'incoming-bills-silver-wind@x-platform.com'
+                    );
+                    toast.success(t(i18n)`Copied to clipboard`);
+                  }}
+                >
+                  {t(i18n)`Copy`}
+                </Button>
+              }
+              sx={{
+                '& .MuiPaper-root': { alignItems: 'center' },
+                '& .MuiAlert-action': { pt: 0 },
+              }}
+            >
+              <Box>
+                <Typography variant="body1" color="primary">
+                  {/* TODO: add support for email */}
+                  {/* eslint-disable-next-line lingui/no-unlocalized-strings */}
+                  {'incoming-bills-silver-wind@x-platform.com'}
+                </Typography>
+              </Box>
+            </Alert>
+            <Typography variant="body2" mt={1}>
+              {t(
+                i18n
+              )`All invoices and bills sent to this email will be automatically processed and added to the system as drafts.`}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant="subtitle1" mb={1}>
+              {t(i18n)`Drag & Drop`}
+            </Typography>
             <Box
               sx={{
-                margin: 'auto',
+                boxSizing: 'border-box',
+                cursor: 'pointer',
+                width: '100%',
+                height: 170,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                textAlign: 'center',
+                border: 2,
+                borderRadius: 2,
+                borderStyle: 'dashed',
+                borderColor: 'primary.main',
+                ...(dragIsOver
+                  ? { backgroundColor: 'transparent' }
+                  : {
+                      backgroundColor: (theme) =>
+                        alpha(theme.palette.primary.main, 0.05),
+                    }),
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                },
               }}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => openFileInput()}
             >
-              <CloudUploadOutlinedIcon color="primary" fontSize="large" />
-              <Typography color="primary" variant="subtitle2">
-                {t(i18n)`Drag files or click to upload`}
-              </Typography>
-              <Typography color="text.secondary" variant="body2">
-                {t(i18n)`(.pdf, .png, .jpg supported)`}
-              </Typography>
+              <Box
+                sx={{
+                  margin: 'auto',
+                }}
+              >
+                <CloudUploadOutlinedIcon color="primary" fontSize="large" />
+                <Typography color="primary" variant="subtitle2">
+                  {t(i18n)`Drag files or click to upload`}
+                </Typography>
+                <Typography color="text.secondary" variant="body2">
+                  {t(i18n)`(.pdf, .png, .jpg supported)`}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-          <Typography variant="subtitle1">{t(
-            i18n
-          )`Add bill manually`}</Typography>
-          <Box flex={0}>
-            <Button
-              startIcon={<AddIcon />}
-              variant="outlined"
-              onClick={() => {
-                closeMenu();
-                onCreateInvoice();
-              }}
-            >
-              {t(i18n)`Create bill manually`}
-            </Button>
+          <Box>
+            <Typography variant="subtitle1" mb={1}>
+              {t(i18n)`Add bill manually`}
+            </Typography>
+            <Box flex={0}>
+              <Button
+                startIcon={<AddIcon />}
+                variant="outlined"
+                onClick={() => {
+                  closeMenu();
+                  onCreateInvoice();
+                }}
+              >
+                {t(i18n)`Create bill manually`}
+              </Button>
+            </Box>
           </Box>
         </Stack>
       </Menu>
