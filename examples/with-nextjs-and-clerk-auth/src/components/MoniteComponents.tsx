@@ -8,7 +8,6 @@ import React, {
   useState,
 } from 'react';
 
-import { i18n } from '@lingui/core';
 import { useLingui } from '@lingui/react';
 import { MoniteSDK } from '@monite/sdk-api';
 import {
@@ -221,6 +220,7 @@ const ChooseBankAccountPage = () => {
 };
 
 const TransferTypePage = () => {
+  const { i18n } = useLingui();
   const dateTimeFormat = useDateFormat();
   const [selectedValue, setSelectedValue] = useState('option1');
 
