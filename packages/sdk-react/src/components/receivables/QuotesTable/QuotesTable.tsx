@@ -204,7 +204,7 @@ const QuotesTableBase = ({
         title={t(i18n)`No Quotes`}
         descriptionLine1={t(i18n)`You don’t have any quotes yet.`}
         descriptionLine2={t(i18n)`You can create your first quote.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionButtonLabel={t(i18n)`Create Quote`}
         actionOptions={[t(i18n)`Invoice`]}
         onAction={(action) => {
           if (action === t(i18n)`Invoice`) {
@@ -270,7 +270,7 @@ const QuotesTableBase = ({
               isError={isError}
               refetch={refetch}
               entityName={t(i18n)`Quotes`}
-              actionButtonLabel={t(i18n)`Create new`}
+              actionButtonLabel={t(i18n)`Create Quote`}
               actionOptions={[t(i18n)`Invoice`]}
               onCreate={(type) => {
                 if (type === t(i18n)`Invoice`) {

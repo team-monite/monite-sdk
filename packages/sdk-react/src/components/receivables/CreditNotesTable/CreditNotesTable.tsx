@@ -189,7 +189,7 @@ const CreditNotesTableBase = ({
         title={t(i18n)`No Credit Notes`}
         descriptionLine1={t(i18n)`You don’t have any credit notes yet.`}
         descriptionLine2={t(i18n)`You can create your first credit note.`}
-        actionButtonLabel={t(i18n)`Create Invoice`}
+        actionButtonLabel={t(i18n)`Create Credit Note`}
         actionOptions={[t(i18n)`Invoice`]}
         onAction={(action) => {
           if (action === t(i18n)`Invoice`) {
@@ -257,7 +257,7 @@ const CreditNotesTableBase = ({
                 onCreate={() => setIsCreateInvoiceDialogOpen?.(true)}
                 refetch={refetch}
                 entityName={t(i18n)`Credit Notes`}
-                actionButtonLabel={t(i18n)`Create Invoice`}
+                actionButtonLabel={t(i18n)`Create Credit Note`}
                 actionOptions={[t(i18n)`Invoice`]}
                 type="no-data"
               />
