@@ -22,7 +22,8 @@ export default function AiAssistantPage() {
   const [replyShown, setReplyShown] = useState(false);
 
   const onCardClick = () => {
-    setReplyShown(true);
+    // Do nothing on click - Alex told not to show fake response
+    // setReplyShown(true);
   };
 
   return (
