@@ -28,8 +28,6 @@ export const useCreateInvoiceProductsTable = ({
   formatCurrencyToDisplay,
   isUSEntity,
 }: UseCreateInvoiceProductsTable): UseCreateInvoiceProductsTableProps => {
-  console.log('calc subtotal', { lineItems });
-
   const subtotalPrice = useMemo(() => {
     const price = lineItems.reduce((acc, field) => {
       const price = field.price?.value ?? 0;
