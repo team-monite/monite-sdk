@@ -16,10 +16,16 @@ import {
 import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
+import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { useMe, useReceivableContacts } from '@/core/queries';
+import {
+  useMe,
+  useMyEntityName,
+  useReceivableById,
+  useReceivableContacts,
+} from '@/core/queries';
 import {
   useIssueReceivableById,
   useReceivableEmailPreview,
@@ -84,6 +90,7 @@ const EmailInvoiceDetailsBase = ({
     });
 
   const { data: me } = useMe();
+  const { data: receivable } = useReceivableById(invoiceId);
   const { data: contacts } = useReceivableContacts(invoiceId);
   const to = watch('to');
   const body = watch('body');
@@ -107,7 +114,28 @@ ${me.first_name}`;
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [body, me, to, contacts]);
+  }, [to, me, contacts]);
+  const subject = watch('subject');
+  const previousSubject = useRef(subject);
+  const myCompanyName = useMyEntityName();
+  useEffect(() => {
+    if (receivable && subject == previousSubject.current) {
+      const newSubject = myCompanyName
+        ? t(i18n)`Invoice ${
+            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+          } from ${myCompanyName}`
+        : t(i18n)`Invoice ${
+            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
+          }`;
+      previousSubject.current = newSubject;
+      setValue('subject', newSubject, {
+        shouldValidate: false,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [receivable, myCompanyName]);
 
   // Use the same storage key for all invoices to avoid overloading the localStorage with dozens of saved form states
   // TODO: Form persistance disabled as requested by Joao on Sep 5
