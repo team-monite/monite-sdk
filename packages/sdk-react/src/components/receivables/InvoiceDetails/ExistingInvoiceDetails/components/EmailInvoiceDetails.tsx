@@ -16,7 +16,6 @@ import {
 import { toast } from 'react-hot-toast';
 
 import { DefaultEmail } from '@/components/counterparts/CounterpartDetails/CounterpartView/CounterpartOrganizationView';
-import { INVOICE_DOCUMENT_AUTO_ID } from '@/components/receivables/consts';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
@@ -119,14 +118,10 @@ ${me.first_name}`;
   const previousSubject = useRef(subject);
   const myCompanyName = useMyEntityName();
   useEffect(() => {
-    if (receivable && subject == previousSubject.current) {
-      const newSubject = myCompanyName
-        ? t(i18n)`Invoice ${
-            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
-          } from ${myCompanyName}`
-        : t(i18n)`Invoice ${
-            receivable.document_id ?? INVOICE_DOCUMENT_AUTO_ID
-          }`;
+    if (receivable && myCompanyName && subject == previousSubject.current) {
+      const newSubject = receivable.document_id
+        ? t(i18n)`Invoice ${receivable.document_id} from ${myCompanyName}`
+        : t(i18n)`Invoice from ${myCompanyName}`;
       previousSubject.current = newSubject;
       setValue('subject', newSubject, {
         shouldValidate: false,
