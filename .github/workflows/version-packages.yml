@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - feat/DEV-11776-sep5-demo-branch
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"

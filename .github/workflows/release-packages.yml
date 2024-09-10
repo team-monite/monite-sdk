@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  RELEASE_BRANCH: "feat/DEV-11776-sep5-demo-branch"
+  RELEASE_BRANCH: "main"
 
 jobs:
   npm-publish:
