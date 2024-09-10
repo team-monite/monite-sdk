@@ -8,6 +8,7 @@ on:
     branches:
       - main
       - dev
+      - feat/DEV-11776-sep5-demo-branch
     types: [synchronize, edited]
 
 concurrency:
