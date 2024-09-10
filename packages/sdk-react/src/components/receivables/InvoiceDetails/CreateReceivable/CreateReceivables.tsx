@@ -75,6 +75,7 @@ const CreateReceivablesBase = ({
         entity_bank_account_id: '',
         overdue_reminder_id: '',
         payment_reminder_id: '',
+        memo: '',
       }),
       [type]
     ),
@@ -193,6 +194,7 @@ const CreateReceivablesBase = ({
                     product_id: item.product_id,
                     vat_rate_id: item.vat_rate_id,
                   })),
+                  memo: values.memo,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   entity_vat_id_id: values.entity_vat_id_id || undefined,
                   fulfillment_date: values.fulfillment_date
