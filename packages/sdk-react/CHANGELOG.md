@@ -1,5 +1,22 @@
 # @monite/sdk-react
 
+## 3.16.0-beta.4
+
+### Minor Changes
+
+- 017c0c20: feat(DEV-12417): cover no data grid logic for receivalbes and tags
+- e9eeb68f: feat(DEV-12284): add Approval Policies builder component
+- 0a37dc68: Add country and city name next to counterpart name in tables.
+- 6c3faf43: Add coloured avatars for counterparts in tables, improve look of Counterparts table.
+- 14106eed: feat(DEV-12440): AP cards statuses
+- cddff2af: Fix table filters layout, fix 'Status' filter font size
+- 6523f5b9: Table empty state (filters applied, not content to display)
+- 5d4c1274: Add the capability to change invoice recipient and preview invoice email before sending.
+
+### Patch Changes
+
+- @monite/sdk-api@3.16.0-beta.4
+
 ## 3.16.0-beta.3
 
 ### Minor Changes
