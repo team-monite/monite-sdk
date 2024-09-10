@@ -1,5 +1,20 @@
 # @monite/sdk-drop-in
 
+## 1.8.0-beta.4
+
+### Minor Changes
+
+- e9eeb68f: feat(DEV-12284): add Approval Policies builder component
+
+### Patch Changes
+
+- Updated dependencies [0a37dc68]
+- Updated dependencies [6c3faf43]
+- Updated dependencies [cddff2af]
+- Updated dependencies [5d4c1274]
+  - @team-monite/sdk-themes@0.2.0-beta.2
+  - @monite/sdk-api@3.16.0-beta.4
+
 ## 1.8.0-beta.3
 
 ### Patch Changes

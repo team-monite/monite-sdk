@@ -1,5 +1,14 @@
 # @team-monite/sdk-themes
 
+## 0.2.0-beta.2
+
+### Minor Changes
+
+- 0a37dc68: Add country and city name next to counterpart name in tables.
+- 6c3faf43: Add coloured avatars for counterparts in tables, improve look of Counterparts table.
+- cddff2af: Fix table filters layout, fix 'Status' filter font size
+- 5d4c1274: Add the capability to change invoice recipient and preview invoice email before sending.
+
 ## 0.2.0-beta.1
 
 ### Minor Changes
