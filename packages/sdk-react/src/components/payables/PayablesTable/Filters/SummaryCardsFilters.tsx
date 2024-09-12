@@ -51,10 +51,14 @@ interface StyledCardProps extends ComponentProps<typeof Card> {
 
 const StyledCard = styled(Card)(
   ({ selected, isAllItems }: StyledCardProps) => ({
+    cursor: 'pointer',
     border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
+    '&:hover': { border: '2px solid blue' },
     display: 'flex',
+    padding: '16px 18px',
     flexDirection: 'column',
     justifyContent: 'center',
+    height: 80,
     minWidth: isAllItems ? '118px' : '220px',
     flexShrink: 0,
   })
