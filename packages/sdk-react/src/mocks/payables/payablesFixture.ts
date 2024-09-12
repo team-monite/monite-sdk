@@ -1,8 +1,7 @@
-import { components } from '@/api';
+import { components, paths } from '@/api';
 import { CurrencyEnum } from '@/enums/CurrencyEnum';
 import { PayableStateEnum } from '@/enums/PayableStateEnum';
-import { counterpartListFixture } from '@/mocks';
-import { approvalPolicyByIdFixtures } from '@/mocks/approvalPolicies';
+import { approvalPoliciesListFixture } from '@/mocks/approvalPolicies';
 import { entityUsers } from '@/mocks/entityUsers/entityUserByIdFixture';
 import {
   getRandomItemFromArray,
@@ -28,7 +27,8 @@ function generatePayable(
     amount_due: Number(faker.finance.amount()),
     amount_paid: Number(faker.finance.amount()),
     amount_to_pay: Number(faker.finance.amount()),
-    approval_policy_id: getRandomItemFromArray(approvalPolicyByIdFixtures).id,
+    approval_policy_id: getRandomItemFromArray(approvalPoliciesListFixture.data)
+      .id,
     description: faker.commerce.productDescription(),
     due_date: faker.date.soon().toString(),
     payment_terms: undefined,
@@ -145,6 +145,38 @@ export const payableFixturePages: components['schemas']['PayableResponseSchema']
     }),
     ...new Array(15).fill('_').map(() => generatePayable()),
   ];
+
+export const generateAggregatedPayables =
+  (): paths['/payables/analytics']['get']['responses']['200']['content']['application/json'] => {
+    const statuses: components['schemas']['PayableStateEnum'][] = [
+      'draft',
+      'new',
+      'approve_in_progress',
+      'waiting_to_be_paid', // Added missing statuses
+      'partially_paid',
+      'paid',
+      'canceled',
+      'rejected',
+    ];
+
+    const data = statuses.map((status) => ({
+      status,
+      count: faker.number.int({ min: 1, max: 5 }),
+      sum_total_amount: faker.number.int({ min: 50, max: 200 }),
+    }));
+
+    const sum_total_amount = data.reduce(
+      (acc, item) => acc + item.sum_total_amount,
+      0
+    );
+    const count = data.length;
+
+    return {
+      data,
+      count,
+      sum_total_amount,
+    };
+  };
 
 export const payableFixtureWithoutFile: components['schemas']['PayableResponseSchema'] =
   generatePayable({
