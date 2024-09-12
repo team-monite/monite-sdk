@@ -145,7 +145,7 @@ interface ICreateRenderWithClientProps {
  * @see {@link https://tkdodo.eu/blog/testing-react-query#always-await-the-query}
  */
 export function createRenderWithClient(props?: ICreateRenderWithClientProps) {
-  return ({ children }: { children: ReactElement }) => (
+  return ({ children }: { children: React.ReactNode }) => (
     <Provider
       client={queryClient}
       children={children}
