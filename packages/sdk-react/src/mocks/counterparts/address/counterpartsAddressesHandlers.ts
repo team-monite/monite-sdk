@@ -1,7 +1,9 @@
 import { components } from '@/api';
-import { counterpartsAddressesFixture } from '@/mocks';
 
-import { http, HttpResponse, delay } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
+
+// noinspection ES6PreferShortImport
+import { counterpartsAddressesFixture } from './counterpartsAddressesFixture';
 
 const counterpartsAddressesPath = `*/counterparts/:counterpartId/addresses`;
 const counterpartAddressPath = `${counterpartsAddressesPath}/:addressId`;
@@ -15,10 +17,13 @@ export const counterpartsAddressesHandlers = [
     | components['schemas']['ErrorSchemaResponse']
   >(counterpartsAddressesPath, async ({ params }) => {
     const { counterpartId } = params;
+    // Imports may silently fail if imported as import { counterpartsAddressesFixture } from '@/mocks';
+    // Since mock handlers do not print exception, make sure the file was imported properly
+    if (!counterpartsAddressesFixture)
+      console.error(`counterpartsAddressesFixture is undefined`);
     const address = counterpartsAddressesFixture.find((address) =>
       address.data.find((addr) => addr.counterpart_id === counterpartId)
     );
-    // console.log(`/addresses: ${counterpartId}, ${address}`);
 
     if (!address) {
       await delay();

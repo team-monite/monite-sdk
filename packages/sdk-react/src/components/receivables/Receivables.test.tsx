@@ -164,8 +164,11 @@ describe('Receivables', () => {
       ).toBeNull();
 
       // Choose counterpart and billing address
+      console.log('bill to');
       await triggerClickOnFirstAutocompleteOption(/Bill to/i);
+      console.log('billing address');
       await triggerClickOnFirstAutocompleteOption(/Billing address/i);
+      console.log('vat id');
       await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
 
       // Add item to invoice
@@ -175,6 +178,7 @@ describe('Receivables', () => {
       const addItemButton = itemsHeader.parentElement!.querySelector('button')!;
       act(() => fireEvent.click(addItemButton));
 
+      console.log('available items');
       await waitFor(() => !!screen.queryByText(t`Available items`), {
         timeout: 30_000,
       });
@@ -190,6 +194,7 @@ describe('Receivables', () => {
         availableItems,
         ({ tagName }) => tagName == 'FORM'
       )!;
+      console.log('tbody tr');
       await waitFor(() => !!rightSideForm.querySelector('tbody tr'), {
         timeout: 30_000,
       });
