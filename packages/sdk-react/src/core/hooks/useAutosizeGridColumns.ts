@@ -128,10 +128,6 @@ export function useAutosizeGridColumns(
       for (const serializedColumn of serializedColumns) {
         if (typeof grid.setColumnWidth === 'function') {
           grid.setColumnWidth(serializedColumn.field, serializedColumn.width);
-        } else {
-          // eslint-disable-next-line lingui/no-unlocalized-strings
-          console.warn(`setColumnWidth is not a function on the grid object`);
-          //Todo: Handle the situation where setColumnWidth is not available
         }
       }
       columnsRestored.current = columns; // Allow serialization of updated column widths
