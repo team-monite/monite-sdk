@@ -151,7 +151,7 @@ export const generateAggregatedPayables =
       'draft',
       'new',
       'approve_in_progress',
-      'waiting_to_be_paid', // Added missing statuses
+      'waiting_to_be_paid',
       'partially_paid',
       'paid',
       'canceled',
