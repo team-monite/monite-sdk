@@ -105,6 +105,11 @@ export const CustomerSection = ({ disabled }: SectionGeneralProps) => {
   // _isCounterpartAddressesLoading will be true if counterpartId isn't set
   const isCounterpartAddressesLoading =
     counterpartId && _isCounterpartAddressesLoading;
+  console.log(
+    `counterpartAddresses: ${
+      counterpartAddresses?.data?.length ?? 0
+    }, isCounterpartAddressesLoading: ${isCounterpartAddressesLoading}`
+  );
 
   const [isCreateCounterpartOpened, setIsCreateCounterpartOpened] =
     useState<boolean>(false);

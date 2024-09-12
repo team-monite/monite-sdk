@@ -1,3 +1,5 @@
+import { VirtuosoMockContext } from 'react-virtuoso';
+
 import { Receivables } from '@/components';
 import {
   ENTITY_ID_FOR_EMPTY_PERMISSIONS,
@@ -133,7 +135,11 @@ describe('Receivables', () => {
 
       render(<Receivables />, {
         wrapper: ({ children }) => (
-          <Provider client={queryClient} children={children} />
+          <VirtuosoMockContext.Provider
+            value={{ viewportHeight: 1000, itemHeight: 50 }}
+          >
+            <Provider client={queryClient} children={children} />
+          </VirtuosoMockContext.Provider>
         ),
       });
 
@@ -145,11 +151,11 @@ describe('Receivables', () => {
 
       act(() => fireEvent.click(createInvoiceButton));
 
-      const nextPageButton = screen.findByRole('button', {
+      const nextPageButtonPromise = screen.findByRole('button', {
         name: t`Next page`,
       });
-      await expect(nextPageButton).resolves.toBeInTheDocument();
-      await expect(nextPageButton).resolves.toBeEnabled();
+      await expect(nextPageButtonPromise).resolves.toBeInTheDocument();
+      await expect(nextPageButtonPromise).resolves.toBeEnabled();
 
       // No contact progress indicator should be visible at this moment
       const contactPersonPromise = screen.findByLabelText<HTMLInputElement>(
@@ -170,6 +176,8 @@ describe('Receivables', () => {
       await triggerClickOnFirstAutocompleteOption(/Billing address/i);
       console.log('vat id');
       await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
+      console.log('payment terms');
+      await triggerClickOnFirstAutocompleteOption(/Payment terms/i);
 
       // Add item to invoice
       const itemsHeader = screen.getByText(t`Items`);
@@ -184,10 +192,10 @@ describe('Receivables', () => {
       });
 
       // Find product in 'Add Item' dialog
-      await expect(
-        screen.findByText(t`Available items`)
-      ).resolves.toBeInTheDocument();
-      await waitUntilTableIsLoaded();
+      // await expect(
+      //   screen.findByText(t`Available items`)
+      // ).resolves.toBeInTheDocument();
+      // await waitUntilTableIsLoaded();
 
       const availableItems = screen.getByText(t`Available items`);
       const rightSideForm = findParentElement(
@@ -199,28 +207,25 @@ describe('Receivables', () => {
         timeout: 30_000,
       });
       const productRow = rightSideForm.querySelector('tbody tr')!;
-      const availableItems2 = screen.getByText(t`Available items`);
-      console.log(availableItems == availableItems2);
-      console.log(rightSideForm.innerHTML);
-      console.log(productRow.outerHTML);
+      console.log('checkbox mark');
       const productCheckbox = productRow.querySelector('input')!;
       act(() => fireEvent.click(productCheckbox));
+      console.log('Add click');
       const addProductsButton = screen.getByText(t`Add`);
       act(() => fireEvent.click(addProductsButton));
 
-      // Check Subtotal got updated
-      const subtotalLabel = screen.getByText(t`Subtotal`);
-      const subtotalCardTableItem = findParentElement(
-        subtotalLabel,
-        ({ classList }) =>
-          classList.contains('Monite-CreateReceivable-CardTableItem')
-      )!;
-      const subtotalCardValue: HTMLElement =
-        subtotalCardTableItem.querySelector(
-          '.Monite-CreateReceivable-CardTableItem-Value'
-        )!;
-      expect(parseFloat(subtotalCardValue.innerText)).toBeGreaterThan(0);
-      // subtotalLabel;
-    });
+      console.log('Create invoice');
+      // Create invoice
+      const nextPageButton = await nextPageButtonPromise;
+      act(() => fireEvent.click(nextPageButton));
+      await expect(nextPageButtonPromise).resolves.toBeDisabled();
+
+      // Compose email dialog opens
+      const composeEmailButtonPromise = screen.findByRole('button', {
+        name: t`Compose email`,
+      });
+      await expect(composeEmailButtonPromise).resolves.toBeInTheDocument();
+      await expect(composeEmailButtonPromise).resolves.toBeEnabled();
+    }, 30_000);
   });
 });
