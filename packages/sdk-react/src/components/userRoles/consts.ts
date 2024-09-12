@@ -37,6 +37,7 @@ export const getPermissionToLabelMap = (i18n: I18n) => ({
   payment_reminder: t(i18n)`Payment reminder`,
   overdue_reminder: t(i18n)`Overdue reminder`,
   product: t(i18n)`Product`,
+  project: t(i18n)`Project`,
   receivable: t(i18n)`Receivable`,
   reconciliation: t(i18n)`Reconciliation`,
   role: t(i18n)`Role`,

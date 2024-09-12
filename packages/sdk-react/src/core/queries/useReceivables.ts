@@ -568,6 +568,7 @@ export const useReceivableEmailPreview = (
       .mutateAsync({
         body_text,
         subject_text,
+        //@ts-expect-error - we need to check why type is not matched
         language: language(),
         type: 'receivable',
       })

@@ -81,6 +81,7 @@ const SummaryCard = ({
       className={classNames(
         className,
         `${className}-${status}`,
+        //@ts-expect-error - we need to check if the selected prop is defined in monite class
         selected && `${className}-selected`
       )}
       sx={{
