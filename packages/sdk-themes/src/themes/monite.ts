@@ -10,6 +10,8 @@ import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
 import '@mui/x-data-grid/themeAugmentation';
 
+import { statusBackgroundColors } from '../../dist/themes/monite.js';
+
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
   '90': string;
   '60': string;
@@ -224,6 +226,42 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiTypography: {
     styleOverrides: {
+      root: {
+        '&.Monite-SummaryCard-StatusTypography': {
+          fontSize: 14,
+        },
+        '&.Monite-SummaryCard-StatusTypography-draft': {
+          color: statusBackgroundColors.draft,
+        },
+        '&.Monite-SummaryCard-StatusTypography-new': {
+          color: statusBackgroundColors.new,
+        },
+        '&.Monite-SummaryCard-StatusTypography-approve_in_progress': {
+          color: statusBackgroundColors.approve_in_progress,
+        },
+        '&.Monite-SummaryCard-StatusTypography-paid': {
+          color: statusBackgroundColors.paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-waiting_to_be_paid': {
+          color: statusBackgroundColors.waiting_to_be_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-rejected': {
+          color: statusBackgroundColors.rejected,
+        },
+        '&.Monite-SummaryCard-StatusTypography-partially_paid': {
+          color: statusBackgroundColors.partially_paid,
+        },
+        '&.Monite-SummaryCard-StatusTypography-canceled': {
+          color: statusBackgroundColors.canceled,
+        },
+        '&.Monite-SummaryCard-StatusTypography-all': {
+          color: statusBackgroundColors.all,
+        },
+        '&.Monite-SummaryCard-AmountTypography': {
+          fontSize: 20,
+          marginTop: 4,
+        },
+      },
       body2: defaultMoniteTypography.body2, // It's unclear why body2 doesn't pickup from the typography config itself
     },
   },
@@ -877,22 +915,27 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     },
   },
   MuiCard: {
-    defaultProps: {
-      variant: 'outlined',
-    },
     styleOverrides: {
       root: {
         '&.Monite-SummaryCard': {
+          cursor: 'pointer',
+          display: 'flex',
+          padding: '16px 18px',
+          flexDirection: 'column',
           borderRadius: '3px',
-          backgroundColor: '#FFFFFF',
-        },
-        '&.Monite-SummaryCard-all': {
-          backgroundColor: '#F4F4FE',
-          width: '118px',
+          backgroundColor: '#ffffff',
+          height: 80,
+          boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+          '&:hover': {
+            border: '2px solid blue',
+          },
         },
         '&.Monite-SummaryCard-selected': {
-          backgroundColor: 'transparent',
-          borderColor: '#3737FF',
+          border: '2px solid #3737FF',
+        },
+        '&.Monite-SummaryCard-all': {
+          minWidth: '118px',
+          backgroundColor: '#F4F4FE',
         },
       },
     },

@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { ExtendedPayableStateEnum } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -23,6 +24,19 @@ export const ROW_TO_STATUS_MUI_MAP: {
   canceled: 'error',
   rejected: 'error',
 };
+
+export const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> =
+  {
+    draft: '#000000D6',
+    new: '#3737FF',
+    approve_in_progress: '#E75300',
+    paid: '#13705F',
+    waiting_to_be_paid: '#3737FF',
+    rejected: '#FF475D',
+    partially_paid: '#A06DC8',
+    canceled: '#E75300',
+    all: '#F4F4FE',
+  };
 
 export const getRowToStatusTextMap = (
   i18n: I18n

@@ -1,7 +1,10 @@
 import { ComponentProps } from 'react';
 
 import { components } from '@/api';
-import { getRowToStatusTextMap } from '@/components/payables/consts';
+import {
+  getRowToStatusTextMap,
+  statusBackgroundColors,
+} from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { classNames } from '@/utils/css-utils';
@@ -21,7 +24,7 @@ type FilterTypes = {
   status: components['schemas']['PayableStateEnum'] | 'all';
 };
 
-type ExtendedPayableStateEnum =
+export type ExtendedPayableStateEnum =
   | components['schemas']['PayableStateEnum']
   | 'all'
   | string;
@@ -46,54 +49,21 @@ interface StyledCardProps extends ComponentProps<typeof Card> {
   isAllItems?: boolean;
 }
 
-interface StatusTypographyProps extends ComponentProps<typeof Typography> {
-  statusColor: (typeof statusBackgroundColors)[ExtendedPayableStateEnum];
-}
-
 const StyledCard = styled(Card)(
   ({ selected, isAllItems }: StyledCardProps) => ({
-    cursor: 'pointer',
     border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
-    '&:hover': { border: '2px solid blue' },
     display: 'flex',
-    padding: '16px 18px',
     flexDirection: 'column',
     justifyContent: 'center',
-    borderRadius: '3px',
-    backgroundColor: '#ffffff',
-    height: 80,
     minWidth: isAllItems ? '118px' : '220px',
     flexShrink: 0,
-    boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
-  })
-);
-
-const StatusTypography = styled(Typography)(
-  ({ statusColor }: StatusTypographyProps) => ({
-    color: statusColor,
-    fontSize: 14,
   })
 );
 
 const AmountTypography = styled(Typography)(() => ({
   display: 'flex',
   alignItems: 'baseline',
-  fontSize: 20,
-  marginTop: 4,
 }));
-
-// ToDo: Define status background colors outside component to make it reusable from monite.ts theme
-const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
-  draft: '#000000D6',
-  new: '#3737FF',
-  approve_in_progress: '#E75300',
-  paid: '#13705F',
-  waiting_to_be_paid: '#3737FF',
-  rejected: '#FF475D',
-  partially_paid: '#A06DC8',
-  canceled: '#E75300',
-  all: '#F4F4FE',
-};
 
 const SummaryCard = ({
   status,
@@ -182,14 +152,19 @@ const SummaryCard = ({
             </Box>
           ) : (
             <>
-              <StatusTypography
+              <Typography
                 variant="h6"
                 fontWeight={700}
                 fontSize="small"
-                statusColor={statusBackgroundColors[status]}
+                className={classNames(
+                  `${className}-StatusTypography`,
+                  `${className}-StatusTypography-${status}`,
+                  `${className}-StatusTypography-${status}-${selected}`
+                )}
+                color={statusBackgroundColors[status]}
               >
                 {statusText}
-              </StatusTypography>
+              </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -216,7 +191,15 @@ const SummaryCard = ({
             alignItems="flex-end"
             mt="auto"
           >
-            <AmountTypography variant="h5" fontWeight={700}>
+            <AmountTypography
+              variant="h5"
+              fontWeight={700}
+              className={classNames(
+                `${className}-AmountTypography`,
+                `${className}-AmountTypography-${status}`,
+                `${className}-AmountTypography-${status}-${selected}`
+              )}
+            >
               ${integerPart}.
               <Typography
                 component="span"
