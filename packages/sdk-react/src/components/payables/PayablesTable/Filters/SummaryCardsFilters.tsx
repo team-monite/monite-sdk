@@ -4,6 +4,7 @@ import { components } from '@/api';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -42,27 +43,30 @@ interface SummaryCardsFiltersProps {
 
 interface StyledCardProps extends ComponentProps<typeof Card> {
   selected: boolean;
+  isAllItems?: boolean;
 }
 
 interface StatusTypographyProps extends ComponentProps<typeof Typography> {
   statusColor: (typeof statusBackgroundColors)[ExtendedPayableStateEnum];
 }
 
-const StyledCard = styled(Card)(({ selected }: StyledCardProps) => ({
-  cursor: 'pointer',
-  border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
-  '&:hover': { border: '2px solid blue' },
-  display: 'flex',
-  padding: '16px 18px',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  borderRadius: '3px',
-  backgroundColor: '#ffffff',
-  height: 80,
-  minWidth: 220,
-  flexShrink: 0,
-  boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
-}));
+const StyledCard = styled(Card)(
+  ({ selected, isAllItems }: StyledCardProps) => ({
+    cursor: 'pointer',
+    border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
+    '&:hover': { border: '2px solid blue' },
+    display: 'flex',
+    padding: '16px 18px',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    borderRadius: '3px',
+    backgroundColor: '#ffffff',
+    height: 80,
+    minWidth: isAllItems ? '118px' : '220px',
+    flexShrink: 0,
+    boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+  })
+);
 
 const StatusTypography = styled(Typography)(
   ({ statusColor }: StatusTypographyProps) => ({
@@ -119,8 +123,19 @@ const SummaryCard = ({
         status as components['schemas']['PayableStateEnum']
       ];
 
+  const className = 'Monite-SummaryCard';
+
   return (
-    <StyledCard onClick={onClick} selected={selected}>
+    <StyledCard
+      onClick={onClick}
+      selected={selected}
+      isAllItems={isAllItems}
+      className={classNames(
+        className,
+        `${className}-${status}`,
+        selected ? `${className}-selected` : ''
+      )}
+    >
       <CardContent
         sx={{
           padding: 0,
@@ -144,7 +159,15 @@ const SummaryCard = ({
               alignItems="flex-start"
               sx={{ width: '100%' }}
             >
-              <Typography variant="h6" fontWeight={700} sx={{ fontSize: 16 }}>
+              <Typography
+                variant="h6"
+                fontWeight={700}
+                sx={{ fontSize: 16 }}
+                className={classNames(
+                  className,
+                  `${className}-title-${status}`
+                )}
+              >
                 {statusText}
               </Typography>
               <Typography

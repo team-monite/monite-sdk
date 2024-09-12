@@ -888,6 +888,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         },
         '&.Monite-SummaryCard-all': {
           backgroundColor: '#F4F4FE',
+          width: '118px',
         },
         '&.Monite-SummaryCard-selected': {
           backgroundColor: 'transparent',
