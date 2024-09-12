@@ -10,7 +10,17 @@ import type { Theme, ThemeOptions } from '@mui/material/styles/createTheme.js';
 import type { TypographyOptions } from '@mui/material/styles/createTypography.js';
 import '@mui/x-data-grid/themeAugmentation';
 
-import { statusBackgroundColors } from '../../dist/themes/monite.js';
+const statusBackgroundColors = {
+  draft: '#000000D6',
+  new: '#3737FF',
+  approve_in_progress: '#E75300',
+  paid: '#13705F',
+  waiting_to_be_paid: '#3737FF',
+  rejected: '#FF475D',
+  partially_paid: '#A06DC8',
+  canceled: '#E75300',
+  all: '#F4F4FE',
+};
 
 interface MonitePaletteColorOptions extends SimplePaletteColorOptions {
   '90': string;

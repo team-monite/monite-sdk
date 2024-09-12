@@ -25,19 +25,6 @@ export const ROW_TO_STATUS_MUI_MAP: {
   rejected: 'error',
 };
 
-export const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> =
-  {
-    draft: '#000000D6',
-    new: '#3737FF',
-    approve_in_progress: '#E75300',
-    paid: '#13705F',
-    waiting_to_be_paid: '#3737FF',
-    rejected: '#FF475D',
-    partially_paid: '#A06DC8',
-    canceled: '#E75300',
-    all: '#F4F4FE',
-  };
-
 export const getRowToStatusTextMap = (
   i18n: I18n
 ): {

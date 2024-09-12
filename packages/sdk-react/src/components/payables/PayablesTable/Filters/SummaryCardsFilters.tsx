@@ -1,10 +1,8 @@
 import { ComponentProps } from 'react';
 
 import { components } from '@/api';
-import {
-  getRowToStatusTextMap,
-  statusBackgroundColors,
-} from '@/components/payables/consts';
+import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
+import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { classNames } from '@/utils/css-utils';
@@ -14,11 +12,13 @@ import {
   Box,
   Card,
   CardContent,
+  Palette,
+  PaletteColor,
   SxProps,
   Theme,
   Typography,
 } from '@mui/material';
-import { lighten, styled } from '@mui/material/styles';
+import { lighten, styled, useTheme } from '@mui/material/styles';
 
 type FilterTypes = {
   status: components['schemas']['PayableStateEnum'] | 'all';
@@ -47,13 +47,16 @@ interface SummaryCardsFiltersProps {
 interface StyledCardProps extends ComponentProps<typeof Card> {
   selected: boolean;
   isAllItems?: boolean;
+  theme: Theme;
 }
 
 const StyledCard = styled(Card)(
-  ({ selected, isAllItems }: StyledCardProps) => ({
+  ({ selected, isAllItems, theme }: StyledCardProps) => ({
     cursor: 'pointer',
-    border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
-    '&:hover': { border: '2px solid blue' },
+    border: `2px solid ${
+      selected ? theme.palette.primary.main : 'transparent'
+    }`,
+    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
     display: 'flex',
     padding: '16px 18px',
     flexDirection: 'column',
@@ -78,6 +81,7 @@ const SummaryCard = ({
 }: SummaryCardProps) => {
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
+  const theme = useTheme();
 
   const formatAmount = (amount: number) => {
     const dividedAmount = amount / 100;
@@ -98,6 +102,21 @@ const SummaryCard = ({
       ];
 
   const className = 'Monite-SummaryCard';
+
+  const getColor = (theme: Palette, colorName: string) => {
+    const [colorGroup, colorShade] = colorName.split('.') as [
+      keyof Palette,
+      string
+    ];
+
+    const paletteGroup = theme[colorGroup] as PaletteColor | undefined;
+
+    return (
+      paletteGroup?.[colorShade as keyof PaletteColor] || theme.text.primary
+    );
+  };
+
+  const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
 
   return (
     <StyledCard
@@ -165,7 +184,7 @@ const SummaryCard = ({
                   `${className}-StatusTypography-${status}`,
                   `${className}-StatusTypography-${status}-${selected}`
                 )}
-                color={statusBackgroundColors[status]}
+                color={colorValue}
               >
                 {statusText}
               </Typography>
@@ -176,11 +195,11 @@ const SummaryCard = ({
                 fontSize="small"
                 sx={{
                   mt: amount != null ? 0 : 1,
-                  color: statusBackgroundColors[status],
+                  color: colorValue,
                   borderRadius: 2,
                   paddingLeft: '4px',
                   paddingRight: '4px',
-                  backgroundColor: lighten(statusBackgroundColors[status], 0.8),
+                  backgroundColor: lighten(colorValue, 0.8),
                 }}
               >
                 {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
