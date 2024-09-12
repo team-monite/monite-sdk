@@ -120,6 +120,7 @@ const SummaryCard = ({
 
   return (
     <StyledCard
+      theme={theme}
       onClick={onClick}
       selected={selected}
       isAllItems={isAllItems}

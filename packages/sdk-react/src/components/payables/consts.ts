@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { ExtendedPayableStateEnum } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import type { I18n } from '@lingui/core';
 import { t } from '@lingui/macro';
 import CancelIcon from '@mui/icons-material/Cancel';
