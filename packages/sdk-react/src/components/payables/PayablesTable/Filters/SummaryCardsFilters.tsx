@@ -127,21 +127,15 @@ const SummaryCard = ({
               alignItems="flex-start"
               sx={{ width: '100%' }}
             >
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                sx={{ fontSize: 16, fontWeight: 700 }}
-              >
+              <Typography variant="h6" fontWeight="bold" sx={{ fontSize: 16 }}>
                 {statusText}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  mt: 0.5,
-                }}
+                fontWeight="bold"
+                fontSize="small"
+                sx={{ mt: 0.5 }}
               >
                 {count} {count === 1 ? t(i18n)`item` : t(i18n)`items`}
               </Typography>
@@ -151,24 +145,21 @@ const SummaryCard = ({
               <Typography
                 variant="h6"
                 fontWeight="bold"
+                fontSize="small"
                 className={classNames(
                   className,
                   `${className}-title-${status}`
                 )}
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  color: statusBackgroundColors[status],
-                }}
+                sx={{ color: statusBackgroundColors[status] }}
               >
                 {statusText}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
+                fontWeight="bold"
+                fontSize="small"
                 sx={{
-                  fontSize: 13,
-                  fontWeight: 700,
                   mt: isTruthyOrZero(amount) ? 0 : 1,
                   color: statusBackgroundColors[status],
                   borderRadius: 2,
@@ -192,21 +183,19 @@ const SummaryCard = ({
             <Typography
               variant="h5"
               fontWeight="bold"
+              fontSize="large"
               sx={{
-                fontSize: 20,
-                fontWeight: 700,
                 display: 'flex',
                 alignItems: 'baseline',
+                marginTop: 0.5,
               }}
             >
               ${integerPart}.
               <Typography
                 component="span"
-                sx={{
-                  color: 'gray',
-                  fontSize: 14,
-                  fontWeight: 700,
-                }}
+                fontWeight="bold"
+                fontSize="small"
+                sx={{ color: 'gray' }}
               >
                 {decimalPart}
               </Typography>
