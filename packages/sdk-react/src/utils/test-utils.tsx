@@ -24,6 +24,7 @@ import {
 import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { waitForOptions } from '@testing-library/dom/types/wait-for';
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -212,6 +213,29 @@ export async function waitUntilTableIsLoaded(
 }
 
 /**
+ * Waits when the spinner `progressbar`
+ *  (which is used for all data-tables in our project)
+ *  will be removed from the DOM.
+ * That action will mean that the data is loaded in the table
+ * Unlike `waitUntilTableIsLoaded`, this method will immediately return
+ * if there are no spinners
+ */
+export async function optionallyWaitUntilDataIsLoaded(
+  waitForOptions?: waitForOptions
+): Promise<void> {
+  const spinners = screen
+    .queryAllByRole('progressbar')
+    .filter((e) => !!e.parentElement);
+
+  if (spinners.length > 0) {
+    return await waitForElementToBeRemoved(spinners, {
+      timeout: waitForOptions?.timeout ?? 30_000,
+      interval: waitForOptions?.interval,
+    });
+  }
+}
+
+/**
  * Triggers a click on a select option
  *
  * @param selectName Select name
@@ -247,8 +271,28 @@ export function triggerClickOnAutocompleteOption(
   });
   fireEvent.mouseDown(dropdown);
 
-  const option = screen.getByText(selectOption);
+  const option = screen.getByRole('option', { name: selectOption });
   fireEvent.click(option);
+}
+
+export async function triggerClickOnFirstAutocompleteOption(
+  selectName: string | RegExp,
+  waitForOptions?: waitForOptions
+) {
+  const dropdown = screen.getByRole('combobox', {
+    name: selectName,
+  });
+  act(() => fireEvent.mouseDown(dropdown));
+
+  await waitFor(() => screen.queryAllByRole('option').length > 0, {
+    timeout: waitForOptions?.timeout ?? 30_000,
+    interval: waitForOptions?.interval,
+  });
+  const options = screen.getAllByRole('option');
+  act(() => fireEvent.click(options[0]));
+  // const options = screen.getAllByRole('option');
+  // if (options.length > 0) fireEvent.click(options[0]);
+  // else throw new Error('No autocomplete options found');
 }
 
 /**
@@ -365,4 +409,15 @@ export async function checkPermissionQueriesLoaded(queryClient: QueryClient) {
 
   if (roleQuery.status !== 'success' || meQuery.status !== 'success')
     throw new Error('Permissions not loaded');
+}
+
+export function findParentElement(
+  childElement: HTMLElement,
+  predicate: (elem: HTMLElement) => boolean
+) {
+  let parent: HTMLElement | null | undefined = childElement.parentElement;
+  do {
+    if (parent && predicate(parent)) return parent;
+    parent = parent?.parentElement;
+  } while (parent != null);
 }
