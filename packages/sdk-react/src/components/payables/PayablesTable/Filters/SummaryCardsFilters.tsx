@@ -1,14 +1,20 @@
+import { ComponentProps } from 'react';
+
 import { components } from '@/api';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
-import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Box, Card, CardContent, SxProps, Typography } from '@mui/material';
-import { lighten } from '@mui/material/styles';
-
-import { Theme } from 'mui-styles';
+import {
+  Box,
+  Card,
+  CardContent,
+  SxProps,
+  Theme,
+  Typography,
+} from '@mui/material';
+import { lighten, styled } from '@mui/material/styles';
 
 type FilterTypes = {
   status: components['schemas']['PayableStateEnum'] | 'all';
@@ -16,7 +22,8 @@ type FilterTypes = {
 
 type ExtendedPayableStateEnum =
   | components['schemas']['PayableStateEnum']
-  | 'all';
+  | 'all'
+  | string;
 
 interface SummaryCardProps {
   status: ExtendedPayableStateEnum;
@@ -29,11 +36,49 @@ interface SummaryCardProps {
 interface SummaryCardsFiltersProps {
   data: components['schemas']['PayableAggregatedDataResponse']['data'];
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
-  selectedStatus: string | null;
+  selectedStatus: ExtendedPayableStateEnum | null;
   sx?: SxProps<Theme>;
 }
 
-//ToDo: should reuse statusColors from monite.ts
+interface StyledCardProps extends ComponentProps<typeof Card> {
+  selected: boolean;
+}
+
+interface StatusTypographyProps extends ComponentProps<typeof Typography> {
+  statusColor: (typeof statusBackgroundColors)[ExtendedPayableStateEnum];
+}
+
+const StyledCard = styled(Card)(({ selected }: StyledCardProps) => ({
+  cursor: 'pointer',
+  border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
+  '&:hover': { border: '2px solid blue' },
+  display: 'flex',
+  padding: '16px 18px',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  borderRadius: '3px',
+  backgroundColor: '#ffffff',
+  height: 80,
+  minWidth: 220,
+  flexShrink: 0,
+  boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
+}));
+
+const StatusTypography = styled(Typography)(
+  ({ statusColor }: StatusTypographyProps) => ({
+    color: statusColor,
+    fontSize: 14,
+  })
+);
+
+const AmountTypography = styled(Typography)(() => ({
+  display: 'flex',
+  alignItems: 'baseline',
+  fontSize: 20,
+  marginTop: 4,
+}));
+
+// ToDo: Define status background colors outside component to make it reusable from monite.ts theme
 const statusBackgroundColors: Record<ExtendedPayableStateEnum, string> = {
   draft: '#000000D6',
   new: '#3737FF',
@@ -63,41 +108,19 @@ const SummaryCard = ({
     });
   };
 
-  const formattedAmount = isTruthyOrZero(amount) ? formatAmount(amount) : '';
-
+  const formattedAmount = amount != null ? formatAmount(amount) : '';
   const [integerPart, decimalPart] = formattedAmount.includes('.')
     ? formattedAmount.split('.')
     : ['0', '00'];
 
   const statusText = isAllItems
     ? t(i18n)`All items`
-    : getRowToStatusTextMap(i18n)[status];
-
-  const className = 'Monite-SummaryCard';
+    : getRowToStatusTextMap(i18n)[
+        status as components['schemas']['PayableStateEnum']
+      ];
 
   return (
-    <Card
-      onClick={onClick}
-      className={classNames(
-        className,
-        `${className}-${status}`,
-        selected ? `${className}-selected` : ''
-      )}
-      sx={{
-        cursor: 'pointer',
-        border: `2px solid ${selected ? '#3737FF' : 'transparent'}`,
-        '&:hover': { border: '2px solid blue' },
-        display: 'flex',
-        padding: '16px 18px',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        backgroundColor: '#F4F4FE',
-        height: 80,
-        minWidth: isAllItems ? 118 : 220,
-        flexShrink: 0,
-        boxShadow: '0px 1px 1px 0px #0000000F, 0px 4px 4px -1px #00000005',
-      }}
-    >
+    <StyledCard onClick={onClick} selected={selected}>
       <CardContent
         sx={{
           padding: 0,
@@ -109,15 +132,9 @@ const SummaryCard = ({
       >
         <Box
           display="flex"
-          justifyContent={
-            isTruthyOrZero(amount) ? 'space-between' : 'flex-start'
-          }
+          justifyContent={amount != null ? 'space-between' : 'flex-start'}
           alignItems={isAllItems ? 'flex-start' : 'center'}
-          flexDirection={isTruthyOrZero(amount) ? 'row' : 'column'}
-          sx={{
-            textAlign: isAllItems ? 'left' : 'right',
-            width: '100%',
-          }}
+          flexDirection={amount != null ? 'row' : 'column'}
         >
           {isAllItems ? (
             <Box
@@ -127,13 +144,13 @@ const SummaryCard = ({
               alignItems="flex-start"
               sx={{ width: '100%' }}
             >
-              <Typography variant="h6" fontWeight="bold" sx={{ fontSize: 16 }}>
+              <Typography variant="h6" fontWeight={700} sx={{ fontSize: 16 }}>
                 {statusText}
               </Typography>
               <Typography
                 variant="body2"
                 color="text.secondary"
-                fontWeight="bold"
+                fontWeight={700}
                 fontSize="small"
                 sx={{ mt: 0.5 }}
               >
@@ -142,25 +159,21 @@ const SummaryCard = ({
             </Box>
           ) : (
             <>
-              <Typography
+              <StatusTypography
                 variant="h6"
-                fontWeight="bold"
+                fontWeight={700}
                 fontSize="small"
-                className={classNames(
-                  className,
-                  `${className}-title-${status}`
-                )}
-                sx={{ color: statusBackgroundColors[status] }}
+                statusColor={statusBackgroundColors[status]}
               >
                 {statusText}
-              </Typography>
+              </StatusTypography>
               <Typography
                 variant="body2"
                 color="text.secondary"
-                fontWeight="bold"
+                fontWeight={700}
                 fontSize="small"
                 sx={{
-                  mt: isTruthyOrZero(amount) ? 0 : 1,
+                  mt: amount != null ? 0 : 1,
                   color: statusBackgroundColors[status],
                   borderRadius: 2,
                   paddingLeft: '4px',
@@ -180,30 +193,21 @@ const SummaryCard = ({
             alignItems="flex-end"
             mt="auto"
           >
-            <Typography
-              variant="h5"
-              fontWeight="bold"
-              fontSize="large"
-              sx={{
-                display: 'flex',
-                alignItems: 'baseline',
-                marginTop: 0.5,
-              }}
-            >
+            <AmountTypography variant="h5" fontWeight={700}>
               ${integerPart}.
               <Typography
                 component="span"
-                fontWeight="bold"
+                fontWeight={700}
                 fontSize="small"
                 sx={{ color: 'gray' }}
               >
                 {decimalPart}
               </Typography>
-            </Typography>
+            </AmountTypography>
           </Box>
         )}
       </CardContent>
-    </Card>
+    </StyledCard>
   );
 };
 
@@ -235,7 +239,7 @@ export const SummaryCardsFilters = ({
 
   const enhancedData = [
     {
-      status: 'all' as ExtendedPayableStateEnum,
+      status: 'all',
       count: data.reduce((acc, item) => acc + item.count, 0),
       sum_total_amount: data.reduce(
         (acc, item) => acc + (item.sum_total_amount || 0),
@@ -293,6 +297,3 @@ export const SummaryCardsFilters = ({
     </Box>
   );
 };
-
-const isTruthyOrZero = (value: number | null | undefined) =>
-  value !== null && value !== undefined;
