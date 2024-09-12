@@ -81,8 +81,7 @@ const SummaryCard = ({
       className={classNames(
         className,
         `${className}-${status}`,
-        //@ts-expect-error - we need to check if the selected prop is defined in monite class
-        selected && `${className}-selected`
+        selected ? `${className}-selected` : ''
       )}
       sx={{
         cursor: 'pointer',
@@ -118,7 +117,6 @@ const SummaryCard = ({
           sx={{
             textAlign: isAllItems ? 'left' : 'right',
             width: '100%',
-            letterSpacing: 0.32,
           }}
         >
           {isAllItems ? (
@@ -132,7 +130,7 @@ const SummaryCard = ({
               <Typography
                 variant="h6"
                 fontWeight="bold"
-                sx={{ fontSize: 16, fontWeight: 700, letterSpacing: 0.32 }}
+                sx={{ fontSize: 16, fontWeight: 700 }}
               >
                 {statusText}
               </Typography>
@@ -142,7 +140,6 @@ const SummaryCard = ({
                 sx={{
                   fontSize: 13,
                   fontWeight: 700,
-                  letterSpacing: 0.26,
                   mt: 0.5,
                 }}
               >
@@ -161,7 +158,6 @@ const SummaryCard = ({
                 sx={{
                   fontSize: 14,
                   fontWeight: 700,
-                  letterSpacing: 0.28,
                   color: statusBackgroundColors[status],
                 }}
               >
@@ -173,7 +169,6 @@ const SummaryCard = ({
                 sx={{
                   fontSize: 13,
                   fontWeight: 700,
-                  letterSpacing: 0.26,
                   mt: isTruthyOrZero(amount) ? 0 : 1,
                   color: statusBackgroundColors[status],
                   borderRadius: 2,
@@ -211,8 +206,6 @@ const SummaryCard = ({
                   color: 'gray',
                   fontSize: 14,
                   fontWeight: 700,
-                  leadingTrim: 'both',
-                  textEdge: 'cap',
                 }}
               >
                 {decimalPart}
