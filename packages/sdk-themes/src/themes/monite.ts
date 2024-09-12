@@ -44,9 +44,14 @@ export const paletteLight: MonitePaletteOptions = {
   },
   secondary: {
     main: '#707070',
+    dark: 'rgb(39, 39, 44)',
+  },
+  background: {
+    default: 'rgba(250, 250, 250, 1)',
+    paper: '#ffffff',
   },
   menu: {
-    background: '#F1F2F5',
+    background: 'rgba(250, 250, 250, 1)',
   },
   neutral: {
     '10': '#111111',
@@ -167,7 +172,7 @@ export const defaultMoniteTypography:
     lineHeight: '24px',
   },
   body2: {
-    fontWeight: 500,
+    fontWeight: 400,
     fontSize: '14px',
     lineHeight: '20px',
     color: 'rgba(0, 0, 0, 0.56)',
@@ -317,13 +322,13 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             height: '40px',
             minHeight: '40px',
             maxHeight: '40px',
-            borderRadius: '20px',
+            borderRadius: '3px',
             color: 'black',
-            backgroundColor: 'neutral.95',
+            backgroundColor: 'transparent',
             padding: '0 6px',
 
             '.MuiOutlinedInput-notchedOutline': {
-              borderStyle: 'none',
+              // borderStyle: 'none',
             },
           },
 
@@ -338,10 +343,15 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             fontSize: '14px',
             maxWidth: 'calc(100% - 52px)',
             textOverflow: 'ellipsis',
+            pointerEvents: 'none',
 
             '&.MuiFormLabel-filled': {
               opacity: 0,
             },
+          },
+
+          '.MuiInputLabel-root': {
+            fontWeight: 400,
           },
 
           '.MuiIconButton-root': {
@@ -420,6 +430,17 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     styleOverrides: {
       root: {
         '&.Monite-Filters': {
+          backgroundColor: 'background.paper',
+          padding: '14px',
+          marginBottom: 0,
+          borderTopLeftRadius: '6px',
+          borderTopRightRadius: '6px',
+          borderBottomLeftRadius: '0',
+          borderBottomRightRadius: '0',
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          borderColor: 'divider',
+          borderBottomStyle: 'none',
           '& > *': {
             flexBasis: 'fit-content',
             flexGrow: 1,
@@ -527,8 +548,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         '&.NavigationList': {
           margin: '0px 12px',
 
-          '.MuiListItem-root': {
+          '& .MuiListItem-root': {
             marginTop: 8,
+
+            '& .Mui-selected': {
+              '& span': {
+                color: 'secondary.dark',
+              },
+            },
           },
 
           '.MuiListItemButton-root': {
@@ -551,8 +578,12 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
             marginLeft: 12,
           },
 
-          '.Mui-selected': {
-            color: 'primary.main',
+          '& .MuiSvgIcon-root': {
+            color: 'secondary.dark',
+
+            '& > path': {
+              color: 'secondary.dark',
+            },
           },
         },
       },
@@ -570,7 +601,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         maxHeight: '48px',
 
         '&.ThemeSelect': {
-          borderRadius: 8,
+          borderRadius: '3px',
         },
         '&.ThemeSelect .ThemeSelect-modeLabel': {
           display: 'flex',
@@ -579,16 +610,16 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       containedPrimary: {
         minWidth: '120px',
         backgroundColor: 'primary.main',
-        borderRadius: '8px',
+        borderRadius: '3px',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: 'primary.60',
-          borderRadius: '8px',
+          borderRadius: '3px',
           boxShadow: 'none',
         },
         '&:active': {
           backgroundColor: 'primary.dark',
-          borderRadius: '8px',
+          borderRadius: '3px',
           boxShadow: 'none',
         },
         '&:disabled': {
@@ -601,7 +632,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       outlinedPrimary: {
         backgroundColor: 'primary.90',
         borderColor: 'primary.90',
-        borderRadius: '8px',
+        borderRadius: '3px',
         boxShadow: 'none',
         '&:hover': {
           backgroundColor: 'primary.80',
@@ -680,6 +711,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       label: {
         padding: '0',
       },
+      deleteIcon: {
+        margin: '0 -2px 0 6px',
+      },
     },
   },
   MoniteTablePagination: {
@@ -689,29 +723,61 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   },
   MuiDataGrid: {
     defaultProps: {
-      columnHeaderHeight: 40,
-      rowHeight: 56,
+      columnHeaderHeight: 55,
+      rowHeight: 72,
       density: 'standard',
-      showCellVerticalBorder: false,
-      showColumnVerticalBorder: false,
     },
     styleOverrides: {
       root: {
-        border: 0,
-        borderColor: 'transparent',
+        backgroundColor: 'background.paper',
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: '6px',
+        borderBottomRightRadius: '6px',
         '--DataGrid-rowBorderColor': 'divider',
+        '& .MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
+        '&.MuiDataGrid-withBorderColor': {
+          borderColor: 'divider',
+        },
+        '& div[role="presentation"] + .MuiDataGrid-cell, & div[role="presentation"] + .MuiDataGrid-columnHeader':
+          {
+            borderLeftStyle: 'none',
+            borderLeftWidth: '0',
+          },
+      },
+      columnHeader: {
+        borderLeftStyle: 'solid',
+        borderLeftWidth: '1px',
+        borderLeftColor: 'divider',
+        padding: '0 15.5px',
         '& .MuiDataGrid-columnHeaderTitle': {
-          color: 'neutral.10',
-          fontWeight: 500,
-          fontSize: '16px',
+          color: 'rgba(0, 0, 0, 0.77)',
+          fontWeight: 600,
+          fontSize: '14px',
+          lineHeight: '17.57px',
         },
       },
-      main: {
-        paddingLeft: '12px',
-      },
       cell: {
+        '&[role="gridcell"]': {
+          borderLeftStyle: 'solid',
+          borderLeftWidth: '1px',
+          borderLeftColor: 'divider',
+        },
+
+        '.MuiDataGrid-cellOffsetLeft + &': {
+          borderLeftStyle: 'none',
+          borderLeftWidth: '0',
+        },
+
+        padding: '0 15.5px',
         fontWeight: 400,
         fontSize: '14px',
+        '& span': {
+          fontWeight: 400,
+          fontSize: '14px',
+        },
         // Align counterpart avatar with the cell header
         '&[data-field="counterpart_id"], &[data-field="counterpart_name"], &[data-field="was_created_by_user_id"]':
           {
@@ -719,6 +785,9 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
               paddingLeft: 0,
             },
           },
+        '&[data-field="actions"]': {
+          textOverflow: 'clip', // Hide ... after action buttons
+        },
         '& .Monite-TextOverflowContainer': {
           display: 'block',
           whiteSpace: 'nowrap',
@@ -771,13 +840,14 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
           padding: '16px',
         },
         '& .MuiTab-root.Mui-selected': {
-          backgroundColor: 'primary.light',
-          borderRadius: 10,
+          backgroundColor: 'transparent',
+          color: 'secondary.dark',
+          borderRadius: 0,
         },
       },
       indicator: {
-        borderRadius: 10,
-        backgroundColor: 'primary.main',
+        borderRadius: 0,
+        backgroundColor: 'secondary.dark',
         height: '4px',
       },
     },
@@ -786,11 +856,40 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
     defaultProps: {
       variant: 'outlined',
     },
-    // styleOverrides: {
-    //   root: {
-    //     backgroundColor: 'neutral.90',
-    //   },
-    // },
+    styleOverrides: {
+      root: {
+        '&.Monite-SummaryCard-all': {
+          backgroundColor: '#F4F4FE',
+        },
+        '&.Monite-SummaryCard-draft': {
+          backgroundColor: '#FAFAFA',
+        },
+        '&.Monite-SummaryCard-new': {
+          backgroundColor: '#CBCBFE',
+        },
+        '&.Monite-SummaryCard-approve_in_progress': {
+          backgroundColor: '#FFF5EB',
+        },
+        '&.Monite-SummaryCard-paid': {
+          backgroundColor: '#EEFBF9',
+        },
+        '&.Monite-SummaryCard-waiting_to_be_paid': {
+          backgroundColor: '#9999FF',
+        },
+        '&.Monite-SummaryCard-rejected': {
+          backgroundColor: '#FFC4CB',
+        },
+        '&.Monite-SummaryCard-partially_paid': {
+          backgroundColor: '#FBF1FC',
+        },
+        '&.Monite-SummaryCard-partially_canceled': {
+          backgroundColor: '#E27E46',
+        },
+        '&.Monite-SummaryCard-selected': {
+          borderColor: '#3737FF',
+        },
+      },
+    },
   },
   MuiCardContent: {
     styleOverrides: {
@@ -869,7 +968,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         margin: 0,
         padding: '40px 32px',
         '> form': {
-          maxWidth: '940px',
+          maxWidth: 'min(940px, 100%)',
           margin: '0 auto',
         },
       },
@@ -1045,6 +1144,10 @@ const colorProps = [
   'backgroundColor',
   'bgcolor',
   'borderColor',
+  'borderRightColor',
+  'borderLeftColor',
+  'borderTopColor',
+  'borderBottomColor',
   'fill',
   '--DataGrid-rowBorderColor',
 ];
