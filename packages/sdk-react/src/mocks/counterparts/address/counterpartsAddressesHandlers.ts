@@ -40,7 +40,7 @@ export const counterpartsAddressesHandlers = [
       );
     }
 
-    // await delay();
+    await delay();
 
     return HttpResponse.json(address);
   }),

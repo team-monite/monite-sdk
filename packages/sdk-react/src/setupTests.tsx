@@ -110,9 +110,16 @@ jest.mock('@/api/client', () => {
   };
 });
 
+const consoleError = console.error;
 beforeAll(() => {
   // Enable the mocking in tests.
   server.listen();
+
+  // suppress 'An update to ... inside a test was not wrapped in act(...)' errors in the console
+  console.error = (...args) => {
+    if (/act/.test(args[0])) return;
+    consoleError(...args);
+  };
 });
 
 afterEach(() => {
@@ -123,6 +130,9 @@ afterEach(() => {
 afterAll(() => {
   // Clean up once the tests are done.
   server.close();
+
+  // Restore console.error function
+  console.error = consoleError;
 });
 
 Object.defineProperty(window, 'matchMedia', {
