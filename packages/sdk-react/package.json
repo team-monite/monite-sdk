@@ -83,7 +83,7 @@
     "@team-monite/sdk-themes": "workspace:~",
     "@testing-library/dom": "~9.3.1",
     "@testing-library/jest-dom": "~5.16.5",
-    "@testing-library/react": "~16.0.1",
+    "@testing-library/react": "~14.1.0",
     "@testing-library/user-event": "~14.4.3",
     "@types/deep-eql": "~4.0.2",
     "@types/jest": "~29.5.11",
