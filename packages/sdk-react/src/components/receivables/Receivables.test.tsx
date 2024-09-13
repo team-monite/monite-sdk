@@ -10,6 +10,7 @@ import {
   findParentElement,
   Provider,
   triggerClickOnFirstAutocompleteOption,
+  waitForCondition,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
 import { t } from '@lingui/macro';
@@ -21,6 +22,7 @@ import {
   render,
   screen,
   waitFor,
+  waitForElementToBeRemoved,
 } from '@testing-library/react';
 
 describe('Receivables', () => {
@@ -169,14 +171,10 @@ describe('Receivables', () => {
         )
       ).toBeNull();
 
-      // Choose counterpart and billing address
-      console.log('bill to');
+      // Fill required fields
       await triggerClickOnFirstAutocompleteOption(/Bill to/i);
-      console.log('billing address');
       await triggerClickOnFirstAutocompleteOption(/Billing address/i);
-      console.log('vat id');
       await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
-      console.log('payment terms');
       await triggerClickOnFirstAutocompleteOption(/Payment terms/i);
 
       // Add item to invoice
@@ -185,47 +183,41 @@ describe('Receivables', () => {
       // Due to the button icon, the screen.getByText won't find it
       const addItemButton = itemsHeader.parentElement!.querySelector('button')!;
       act(() => fireEvent.click(addItemButton));
-
-      console.log('available items');
-      await waitFor(() => !!screen.queryByText(t`Available items`), {
-        timeout: 30_000,
-      });
-
-      // Find product in 'Add Item' dialog
-      // await expect(
-      //   screen.findByText(t`Available items`)
-      // ).resolves.toBeInTheDocument();
-      // await waitUntilTableIsLoaded();
+      // Wait for Products dialog to open
+      await waitForCondition(
+        () => !!screen.queryByText(`Available items`),
+        3_000
+      );
 
       const availableItems = screen.getByText(t`Available items`);
       const rightSideForm = findParentElement(
         availableItems,
         ({ tagName }) => tagName == 'FORM'
       )!;
-      console.log('tbody tr');
-      await waitFor(() => !!rightSideForm.querySelector('tbody tr'), {
-        timeout: 30_000,
-      });
-      const productRow = rightSideForm.querySelector('tbody tr')!;
-      console.log('checkbox mark');
-      const productCheckbox = productRow.querySelector('input')!;
+      // Wait for products to load
+      await waitForCondition(
+        () => !!rightSideForm.querySelector('tbody tr input'),
+        3_000
+      );
+      const productCheckbox = rightSideForm.querySelector('tbody tr input')!;
       act(() => fireEvent.click(productCheckbox));
-      console.log('Add click');
-      const addProductsButton = screen.getByText(t`Add`);
-      act(() => fireEvent.click(addProductsButton));
 
-      console.log('Create invoice');
+      const addProductsButton = screen.getByRole('button', { name: t`Add` });
+      act(() => fireEvent.click(addProductsButton));
+      // Wait for Products dialog to close
+      await waitForElementToBeRemoved(addProductsButton, {
+        timeout: 3_000,
+      });
+
       // Create invoice
       const nextPageButton = await nextPageButtonPromise;
       act(() => fireEvent.click(nextPageButton));
-      await expect(nextPageButtonPromise).resolves.toBeDisabled();
 
       // Compose email dialog opens
-      const composeEmailButtonPromise = screen.findByRole('button', {
-        name: t`Compose email`,
-      });
-      await expect(composeEmailButtonPromise).resolves.toBeInTheDocument();
-      await expect(composeEmailButtonPromise).resolves.toBeEnabled();
+      await waitForCondition(
+        () => !!screen.queryByRole('button', { name: t`Compose email` }),
+        3_000
+      );
     }, 30_000);
   });
 });

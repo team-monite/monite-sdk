@@ -236,6 +236,34 @@ export async function optionallyWaitUntilDataIsLoaded(
 }
 
 /**
+ * Waits for condition to be true
+ *
+ * @param predicate Predicate checking for condition
+ * @param timeout Wait function timeout
+ */
+export function waitForCondition(
+  predicate: () => boolean,
+  timeout: number = 1_000
+) {
+  return new Promise<void>((resolve, reject) => {
+    const interval = 50;
+    let timeLeft = timeout;
+    const intervalId = setInterval(() => {
+      if (predicate()) {
+        clearInterval(intervalId);
+        resolve();
+      } else {
+        timeLeft -= interval;
+        if (timeLeft <= 0) {
+          clearInterval(intervalId);
+          reject(new Error('Timed out in waitForCondition.'));
+        }
+      }
+    }, interval);
+  });
+}
+
+/**
  * Triggers a click on a select option
  *
  * @param selectName Select name
@@ -277,22 +305,25 @@ export function triggerClickOnAutocompleteOption(
 
 export async function triggerClickOnFirstAutocompleteOption(
   selectName: string | RegExp,
-  waitForOptions?: waitForOptions
+  timeout: number = 3_000
 ) {
   const dropdown = screen.getByRole('combobox', {
     name: selectName,
   });
   act(() => fireEvent.mouseDown(dropdown));
 
-  await waitFor(() => screen.queryAllByRole('option').length > 0, {
-    timeout: waitForOptions?.timeout ?? 30_000,
-    interval: waitForOptions?.interval,
-  });
+  await waitForCondition(
+    () => screen.queryAllByRole('option').length > 0,
+    timeout
+  );
   const options = screen.getAllByRole('option');
   act(() => fireEvent.click(options[0]));
-  // const options = screen.getAllByRole('option');
-  // if (options.length > 0) fireEvent.click(options[0]);
-  // else throw new Error('No autocomplete options found');
+
+  // Wait for options to be hidden
+  await waitForCondition(
+    () => !screen.queryAllByRole('option').length,
+    timeout
+  );
 }
 
 /**

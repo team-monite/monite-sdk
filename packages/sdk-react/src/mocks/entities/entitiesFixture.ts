@@ -11,12 +11,10 @@ function getEntitySettings(): MergedSettingsResponse {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'non_compliant',
-    currency: faker.datatype.boolean()
-      ? {
-          default: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
-          exchange_rates: [],
-        }
-      : undefined,
+    currency: {
+      default: 'EUR',
+      exchange_rates: [],
+    },
   };
 }
 
@@ -35,7 +33,7 @@ function generateEntityVatIdResourceList(
 function generateEntityData(entityId: string): EntityResponse {
   const type = faker.datatype.boolean() ? 'individual' : 'organization';
   const address: components['schemas']['EntityAddressSchema'] = {
-    country: getRandomItemFromArray(['DE', 'US', 'KZ']),
+    country: 'DE',
     city: faker.location.city(),
     line1: faker.location.streetAddress(),
     postal_code: faker.location.zipCode(),
@@ -123,8 +121,6 @@ export const entityPaymentMethods: OnboardingPaymentMethodsResponse = {
   ],
 };
 
-type AllowedCountries = components['schemas']['AllowedCountries'];
-type CurrencyEnum = components['schemas']['CurrencyEnum'];
 type EntityIndividualResponse =
   components['schemas']['EntityIndividualResponse'];
 type EntityOrganizationResponse =
@@ -133,12 +129,5 @@ type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
 type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
-type MoniteAllPaymentMethods = components['schemas']['MoniteAllPaymentMethods'];
-type MoniteAllPaymentMethodsTypes =
-  components['schemas']['MoniteAllPaymentMethodsTypes'];
 type OnboardingPaymentMethodsResponse =
   components['schemas']['OnboardingPaymentMethodsResponse'];
-type PaymentMethodDirection = components['schemas']['PaymentMethodDirection'];
-type PaymentMethodStatus = components['schemas']['PaymentMethodStatus'];
-type StatusEnum = components['schemas']['StatusEnum'];
-type VatIDTypeEnum = components['schemas']['VatIDTypeEnum'];

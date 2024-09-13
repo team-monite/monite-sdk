@@ -21,7 +21,7 @@ describe('CreateReceivables', () => {
 
     await waitUntilTableIsLoaded();
 
-    const submitButton = screen.getByRole('button', { name: /create/i });
+    const submitButton = screen.getByRole('button', { name: /Next page/i });
 
     fireEvent.click(submitButton);
 

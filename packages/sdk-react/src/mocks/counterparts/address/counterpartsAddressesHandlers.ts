@@ -24,7 +24,6 @@ export const counterpartsAddressesHandlers = [
     const address = counterpartsAddressesFixture.find((address) =>
       address.data.find((addr) => addr.counterpart_id === counterpartId)
     );
-    console.log(`/addresses: ${counterpartId}, ${address}`);
 
     if (!address) {
       await delay();

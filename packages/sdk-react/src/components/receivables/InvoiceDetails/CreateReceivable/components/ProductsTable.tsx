@@ -208,8 +208,6 @@ export const ProductsTable = ({
     [productsInfinity]
   );
 
-  console.log(`flattenProducts: ${flattenProducts.length}`);
-
   const { formatCurrencyToDisplay } = useCurrencies();
 
   const formName = `Monite-Form-productsTable-${useId()}`;
