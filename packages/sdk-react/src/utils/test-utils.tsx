@@ -213,29 +213,6 @@ export async function waitUntilTableIsLoaded(
 }
 
 /**
- * Waits when the spinner `progressbar`
- *  (which is used for all data-tables in our project)
- *  will be removed from the DOM.
- * That action will mean that the data is loaded in the table
- * Unlike `waitUntilTableIsLoaded`, this method will immediately return
- * if there are no spinners
- */
-export async function optionallyWaitUntilDataIsLoaded(
-  waitForOptions?: waitForOptions
-): Promise<void> {
-  const spinners = screen
-    .queryAllByRole('progressbar')
-    .filter((e) => !!e.parentElement);
-
-  if (spinners.length > 0) {
-    return await waitForElementToBeRemoved(spinners, {
-      timeout: waitForOptions?.timeout ?? 30_000,
-      interval: waitForOptions?.interval,
-    });
-  }
-}
-
-/**
  * Waits for condition to be true
  *
  * @param predicate Predicate checking for condition
