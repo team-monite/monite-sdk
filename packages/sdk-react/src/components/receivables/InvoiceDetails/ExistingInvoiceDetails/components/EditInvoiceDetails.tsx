@@ -12,13 +12,12 @@ import { PaymentSection } from '@/components/receivables/InvoiceDetails/CreateRe
 import { getUpdateInvoiceValidationSchema } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { EditInvoiceReminderDialog } from '@/components/receivables/InvoiceDetails/EditInvoiceReminderDialog';
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
-import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMyEntity } from '@/core/queries';
 import {
   useUpdateReceivable,
   useUpdateReceivableLineItems,
 } from '@/core/queries/useReceivables';
-import { checkIfUSEntity } from '@/core/utils';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -129,14 +128,7 @@ const EditInvoiceDetailsContent = ({
   const updateReceivableLineItems = useUpdateReceivableLineItems(invoice.id);
   const updateReceivable = useUpdateReceivable(invoice.id);
 
-  const { api } = useMoniteContext();
-  const { data: entity, isLoading: isEntityLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery();
-
-  // TODO: This can be moved up to a context and shared
-  const isUSEntity = Boolean(
-    entity?.address && checkIfUSEntity(entity.address.country)
-  );
+  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
 
   const isLoading =
     updateReceivableLineItems.isPending ||

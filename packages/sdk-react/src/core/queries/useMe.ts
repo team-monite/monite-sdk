@@ -21,7 +21,7 @@ export const useMe = () => {
 export const useMyEntity = () => {
   const { api } = useMoniteContext();
 
-  return api.entityUsers.getEntityUsersMyEntity.useQuery(
+  const queryProps = api.entityUsers.getEntityUsersMyEntity.useQuery(
     {},
     {
       retry: false,
@@ -30,6 +30,15 @@ export const useMyEntity = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const isUSEntity = Boolean(
+    queryProps.data?.address && queryProps.data?.address.country === 'US'
+  );
+
+  return {
+    ...queryProps,
+    isUSEntity,
+  };
 };
 
 export const useMyEntityName = () => {

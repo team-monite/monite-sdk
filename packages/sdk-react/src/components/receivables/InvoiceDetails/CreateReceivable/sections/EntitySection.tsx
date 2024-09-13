@@ -5,7 +5,7 @@ import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/Cr
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
-import { checkIfUSEntity } from '@/core/utils';
+import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -66,8 +66,11 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
       path: { entity_id: monite.entityId },
     });
 
-  const { data: entity, isLoading: isEntityLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery();
+  const {
+    data: entity,
+    isLoading: isEntityLoading,
+    isUSEntity,
+  } = useMyEntity();
 
   /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
@@ -88,10 +91,6 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
   }, [visibleFields]);
 
   const className = 'Monite-CreateReceivable-EntitySection';
-  // TODO: This can be moved up to a context and shared
-  const isUSEntity = Boolean(
-    entity?.address && checkIfUSEntity(entity.address.country)
-  );
 
   return (
     <Stack spacing={1} className={className}>
