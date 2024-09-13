@@ -11,6 +11,9 @@ function getEntitySettings(): MergedSettingsResponse {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'non_compliant',
+    generate_paid_invoice_pdf: faker.datatype.boolean(),
+    quote_signature_required: faker.datatype.boolean(),
+    vat_mode: faker.datatype.boolean() ? 'inclusive' : 'exclusive',
     currency: faker.datatype.boolean()
       ? {
           default: getRandomItemFromArray(['EUR', 'USD', 'GEL', 'KZT']),
@@ -132,7 +135,7 @@ type EntityOrganizationResponse =
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
-type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type MoniteAllPaymentMethods = components['schemas']['MoniteAllPaymentMethods'];
 type MoniteAllPaymentMethodsTypes =
   components['schemas']['MoniteAllPaymentMethodsTypes'];

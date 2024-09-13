@@ -228,6 +228,9 @@ export const InvoiceRecurrenceForm = ({
                       end_year,
                       start_month,
                       start_year,
+                      // TODO: add support for recurrence body and subject text
+                      body_text: '',
+                      subject_text: '',
                     },
                   });
 

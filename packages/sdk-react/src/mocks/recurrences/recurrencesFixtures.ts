@@ -9,6 +9,8 @@ export const recurrenceFixture = (
 ): components['schemas']['Recurrence'] => {
   return {
     id: faker.string.uuid(),
+    body_text: faker.lorem.paragraph(),
+    subject_text: faker.lorem.sentence(),
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.past().toISOString(),
     day_of_month: faker.helpers.arrayElement(['first_day', 'last_day']),
