@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
-import type { Services } from '@/api';
+import type { components, Services } from '@/api';
 import { ExistingReceivableDetailsProps } from '@/components/receivables/InvoiceDetails/InvoiceDetails.types';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useCounterpartContactList } from '@/core/queries/useCounterpart';
 import { getAPIErrorMessage } from '@/core/utils/getAPIErrorMessage';
 import { select, t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { LanguageCodeEnum } from '@monite/sdk-api';
 
 export const useReceivables = (
   query: Services['receivables']['getReceivables']['types']['parameters']['query'],
@@ -543,11 +544,23 @@ export const useReceivableEmailPreview = (
     setAttemptNumber(attemptNumber + 1);
   };
 
+  const isLanguageCodeEnum = (
+    value: string
+  ): value is components['schemas']['LanguageCodeEnum'] => {
+    return Object.values(LanguageCodeEnum).includes(value as LanguageCodeEnum);
+  };
+
   const language = () => {
     const locale = i18n.locale;
     const dashIndex = locale.indexOf('-');
-    if (dashIndex >= 0) return locale.substring(0, dashIndex);
-    return locale;
+    const languageCode =
+      dashIndex >= 0 ? locale.substring(0, dashIndex) : locale;
+
+    if (isLanguageCodeEnum(languageCode)) {
+      return languageCode;
+    }
+
+    return 'en';
   };
 
   useEffect(() => {

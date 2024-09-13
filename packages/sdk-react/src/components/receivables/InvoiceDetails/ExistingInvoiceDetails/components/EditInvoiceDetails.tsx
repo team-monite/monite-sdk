@@ -89,7 +89,7 @@ const EditInvoiceDetailsContent = ({
         vat_rate_value: lineItem.product.vat_rate.value,
         name: lineItem.product.name,
         price: lineItem.product.price,
-        measure_unit_id: lineItem.product.measure_unit_id,
+        measure_unit_id: lineItem.product.measure_unit?.id ?? '',
       })),
       vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
 
