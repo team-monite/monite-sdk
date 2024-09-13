@@ -299,7 +299,7 @@ export function triggerClickOnAutocompleteOption(
   });
   fireEvent.mouseDown(dropdown);
 
-  const option = screen.getByRole('option', { name: selectOption });
+  const option = screen.getByText(selectOption);
   fireEvent.click(option);
 }
 
