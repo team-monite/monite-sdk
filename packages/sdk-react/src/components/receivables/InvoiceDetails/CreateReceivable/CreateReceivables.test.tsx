@@ -79,13 +79,17 @@ describe('CreateReceivables', () => {
     const createInvoiceButton = await screen.findByRole('button', {
       name: t`Create Invoice`,
     });
-
     fireEvent.click(createInvoiceButton);
 
+    await waitForCondition(
+      () =>
+        !!screen.queryByRole('button', {
+          name: t`Next page`,
+        })
+    );
     const nextPageButtonPromise = screen.findByRole('button', {
       name: t`Next page`,
     });
-    await expect(nextPageButtonPromise).resolves.toBeInTheDocument();
     await expect(nextPageButtonPromise).resolves.toBeEnabled();
 
     // No contact progress indicator should be visible at this moment
