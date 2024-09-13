@@ -1,17 +1,30 @@
+import { VirtuosoMockContext } from 'react-virtuoso';
+
+import { Receivables } from '@/components';
 import { CounterpartDataTestId } from '@/components/counterparts/Counterpart.types';
-import { getCounterpartName } from '@/components/counterparts/helpers';
 import { CreateCounterpartDialogTestEnum } from '@/components/receivables/InvoiceDetails/CreateReceivable/sections/components/CreateCounterpartDialog.types';
-import { counterpartListFixture } from '@/mocks';
 import { entityIds, entityVatIdList } from '@/mocks/entities';
 import { paymentTermsFixtures } from '@/mocks/paymentTerms';
 import { DateTimeFormatOptions } from '@/utils/DateTimeFormatOptions';
 import {
+  findParentElement,
+  Provider,
   renderWithClient,
   triggerClickOnAutocompleteOption,
+  triggerClickOnFirstAutocompleteOption,
   triggerClickOnSelectOption,
+  waitForCondition,
   waitUntilTableIsLoaded,
 } from '@/utils/test-utils';
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { t } from '@lingui/macro';
+import { QueryClient } from '@tanstack/react-query';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from '@testing-library/react';
 
 import { CreateReceivables } from './CreateReceivables';
 
@@ -35,7 +48,7 @@ describe('CreateReceivables', () => {
 
     await waitUntilTableIsLoaded();
 
-    const submitButton = screen.getByRole('button', { name: /create/i });
+    const submitButton = screen.getByRole('button', { name: /Next/i });
 
     fireEvent.click(submitButton);
 
@@ -44,37 +57,96 @@ describe('CreateReceivables', () => {
     expect(error).toBeInTheDocument();
   });
 
-  test.skip('should create receivable when the form is valid', async () => {
-    const onCreateMock = jest.fn();
+  test('newly created invoice should be opened after creation', async () => {
+    const queryClient = new QueryClient({
+      defaultOptions: {
+        queries: { retry: false, gcTime: Infinity, staleTime: Infinity },
+      },
+    });
 
-    renderWithClient(
-      <CreateReceivables type={'invoice'} onCreate={onCreateMock} />
-    );
+    render(<Receivables />, {
+      wrapper: ({ children }) => (
+        <VirtuosoMockContext.Provider
+          value={{ viewportHeight: 1000, itemHeight: 50 }}
+        >
+          <Provider client={queryClient} children={children} />
+        </VirtuosoMockContext.Provider>
+      ),
+    });
 
     await waitUntilTableIsLoaded();
 
-    const firstCounterpart = counterpartListFixture[0];
+    const createInvoiceButton = await screen.findByRole('button', {
+      name: t`Create Invoice`,
+    });
 
-    // Select first counterpart
-    triggerClickOnSelectOption(
-      /Bill to/i,
-      getCounterpartName(firstCounterpart)
+    fireEvent.click(createInvoiceButton);
+
+    const nextPageButtonPromise = screen.findByRole('button', {
+      name: t`Next page`,
+    });
+    await expect(nextPageButtonPromise).resolves.toBeInTheDocument();
+    await expect(nextPageButtonPromise).resolves.toBeEnabled();
+
+    // No contact progress indicator should be visible at this moment
+    const contactPersonPromise = screen.findByLabelText<HTMLInputElement>(
+      t`Contact person`
+    );
+    await expect(contactPersonPromise).resolves.toBeInTheDocument();
+    const contactPersonInput = await contactPersonPromise;
+    expect(
+      contactPersonInput.parentElement!.querySelector(
+        '.MuiCircularProgress-root'
+      )
+    ).toBeNull();
+
+    await triggerClickOnFirstAutocompleteOption(/Bill to/i);
+    await triggerClickOnFirstAutocompleteOption(/Billing address/i);
+    await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
+    await triggerClickOnFirstAutocompleteOption(/Payment terms/i);
+
+    // Add item to invoice
+    const itemsHeader = screen.getByText(t`Items`);
+    // Use querySelector to find the 'Add Item' button.
+    // Due to the button icon, the screen.getByText won't find it
+    const addItemButton = itemsHeader.parentElement!.querySelector('button')!;
+    fireEvent.click(addItemButton);
+    // Wait for Products dialog to open
+    await waitForCondition(
+      () => !!screen.queryByText(`Available items`),
+      3_000
     );
 
-    // Select the first two items
-    fireEvent.click(screen.getByRole('button', { name: 'Add item' }));
-    const checkboxes = await screen.findAllByRole('checkbox');
-    fireEvent.click(checkboxes[1]);
-    fireEvent.click(checkboxes[2]);
-    fireEvent.click(screen.getByRole('button', { name: 'Add' }));
+    const availableItems = screen.getByText(t`Available items`);
+    const rightSideForm = findParentElement(
+      availableItems,
+      ({ tagName }) => tagName == 'FORM'
+    )!;
+    // Wait for products to load
+    await waitForCondition(
+      () => !!rightSideForm.querySelector('tbody tr input'),
+      3_000
+    );
+    const productCheckbox = rightSideForm.querySelector('tbody tr input')!;
+    fireEvent.click(productCheckbox);
 
-    await waitFor(() => {
-      const submitButton = screen.getByRole('button', { name: /create/i });
-      fireEvent.click(submitButton);
-
-      expect(onCreateMock).toHaveBeenCalled();
+    const addProductsButton = screen.getByRole('button', { name: t`Add` });
+    fireEvent.click(addProductsButton);
+    // Wait for Products dialog to close
+    await waitForElementToBeRemoved(addProductsButton, {
+      timeout: 3_000,
     });
-  });
+
+    // Create invoice
+    const nextPageButton = await nextPageButtonPromise;
+    fireEvent.click(nextPageButton);
+
+    // Compose email dialog opens
+    await waitForCondition(
+      () => !!screen.queryByRole('button', { name: t`Compose email` }),
+      3_000
+    );
+  }, 30_000);
 
   describe('# Select Counterpart', () => {
     test('should show "Create counterpart" dialog when the user clicks on "Bill to" select and "Create new counterpart" button', async () => {
@@ -223,7 +295,7 @@ describe('CreateReceivables', () => {
       const errorMessage = 'VAT ID is a required field';
 
       /** We should have an error if we do not fill entity vat id */
-      fireEvent.click(screen.getByRole('button', { name: /create/i }));
+      fireEvent.click(screen.getByRole('button', { name: /next/i }));
       expect(await screen.findByText(errorMessage)).toBeInTheDocument();
 
       const vatIdByEntity = entityVatIdList[entityIds[0]];
@@ -250,7 +322,7 @@ describe('CreateReceivables', () => {
       const errorMessage = 'Payment terms is a required field';
 
       /** We should have an error if we do not fill entity vat id */
-      fireEvent.click(screen.getByRole('button', { name: /create/i }));
+      fireEvent.click(screen.getByRole('button', { name: /next/i }));
       expect(await screen.findByText(errorMessage)).toBeInTheDocument();
 
       const firstPaymentTerm = paymentTermsFixtures.data?.[0];
