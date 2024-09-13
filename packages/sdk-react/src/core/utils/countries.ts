@@ -9,8 +9,6 @@ export type CountryType = {
   label: string;
 };
 
-export const checkIfUSEntity = (country: AllowedCountries) => country === 'US';
-
 export const getCountriesArray = (i18n: I18n): CountryType[] =>
   Object.entries(getCountries(i18n)).map(([code, label]) => ({
     code: code as AllowedCountries,

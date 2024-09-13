@@ -10,9 +10,8 @@ import { InvoiceDetailsCreateProps } from '@/components/receivables/InvoiceDetai
 import { useInvoiceReminderDialogs } from '@/components/receivables/InvoiceDetails/useInvoiceReminderDialogs';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
-import { useCounterpartAddresses } from '@/core/queries';
+import { useCounterpartAddresses, useMyEntity } from '@/core/queries';
 import { useCreateReceivable } from '@/core/queries/useReceivables';
-import { checkIfUSEntity } from '@/core/utils';
 import { LoadingPage } from '@/ui/loadingPage';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { t } from '@lingui/macro';
@@ -89,13 +88,7 @@ const CreateReceivablesBase = ({
 
   const createReceivable = useCreateReceivable();
   const { api, monite } = useMoniteContext();
-  const { data: entity, isLoading: isEntityLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery();
-
-  // TODO: This can be moved up to a context and shared
-  const isUSEntity = Boolean(
-    entity?.address && checkIfUSEntity(entity.address.country)
-  );
+  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
 
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
