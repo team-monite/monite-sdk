@@ -92,7 +92,6 @@ describe('CreateReceivables', () => {
     });
     await expect(nextPageButtonPromise).resolves.toBeEnabled();
 
-    // No contact progress indicator should be visible at this moment
     const contactPersonPromise = screen.findByLabelText<HTMLInputElement>(
       t`Contact person`
     );
@@ -109,13 +108,11 @@ describe('CreateReceivables', () => {
     await triggerClickOnFirstAutocompleteOption(/Your VAT ID/i);
     await triggerClickOnFirstAutocompleteOption(/Payment terms/i);
 
-    // Add item to invoice
     const itemsHeader = screen.getByText(t`Items`);
     // Use querySelector to find the 'Add Item' button.
     // Due to the button icon, the screen.getByText won't find it
     const addItemButton = itemsHeader.parentElement!.querySelector('button')!;
     fireEvent.click(addItemButton);
-    // Wait for Products dialog to open
     await waitForCondition(
       () => !!screen.queryByText(`Available items`),
       3_000
@@ -126,7 +123,6 @@ describe('CreateReceivables', () => {
       availableItems,
       ({ tagName }) => tagName == 'FORM'
     )!;
-    // Wait for products to load
     await waitForCondition(
       () => !!rightSideForm.querySelector('tbody tr input'),
       3_000
@@ -136,16 +132,13 @@ describe('CreateReceivables', () => {
 
     const addProductsButton = screen.getByRole('button', { name: t`Add` });
     fireEvent.click(addProductsButton);
-    // Wait for Products dialog to close
     await waitForElementToBeRemoved(addProductsButton, {
       timeout: 3_000,
     });
 
-    // Create invoice
     const nextPageButton = await nextPageButtonPromise;
     fireEvent.click(nextPageButton);
 
-    // Compose email dialog opens
     await waitForCondition(
       () => !!screen.queryByRole('button', { name: t`Compose email` }),
       3_000

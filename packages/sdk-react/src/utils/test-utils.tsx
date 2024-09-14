@@ -217,26 +217,27 @@ export async function waitUntilTableIsLoaded(
  *
  * @param predicate Predicate checking for condition
  * @param timeout Wait function timeout
+ * @param checkInterval Wait function check interval
  */
 export function waitForCondition(
   predicate: () => boolean,
-  timeout: number = 1_000
+  timeout: number = 1_000,
+  checkInterval: number = 50
 ) {
   return new Promise<void>((resolve, reject) => {
-    const interval = 50;
     let timeLeft = timeout;
     const intervalId = setInterval(() => {
       if (predicate()) {
         clearInterval(intervalId);
         resolve();
       } else {
-        timeLeft -= interval;
+        timeLeft -= checkInterval;
         if (timeLeft <= 0) {
           clearInterval(intervalId);
           reject(new Error('Timed out in waitForCondition.'));
         }
       }
-    }, interval);
+    }, checkInterval);
   });
 }
 
