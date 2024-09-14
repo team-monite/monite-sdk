@@ -14,6 +14,7 @@ import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useCurrencies } from '@/core/hooks';
 import { Price } from '@/core/utils/price';
+import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -83,24 +84,36 @@ const CardTableItem = ({
   variant = 'body1',
   sx,
   className,
-}: CardTableItemProps) => (
-  <Grid container direction="row" alignItems="center" className={className}>
-    <Grid item xs={4}>
-      {typeof label === 'string' ? (
-        <Typography variant="body1">{label}</Typography>
-      ) : (
-        label
+}: CardTableItemProps) => {
+  const componentClassName = 'Monite-CreateReceivable-CardTableItem';
+  return (
+    <Grid
+      container
+      direction="row"
+      alignItems="center"
+      className={classNames(componentClassName, className)}
+    >
+      <Grid item xs={4}>
+        {typeof label === 'string' ? (
+          <Typography variant="body1">{label}</Typography>
+        ) : (
+          label
+        )}
+      </Grid>
+      {value && (
+        <Grid item xs={8} display="flex" justifyContent="end">
+          <Typography
+            variant={variant}
+            sx={sx}
+            className={componentClassName + '-Value'}
+          >
+            {value.toString()}
+          </Typography>
+        </Grid>
       )}
     </Grid>
-    {value && (
-      <Grid item xs={8} display="flex" justifyContent="end">
-        <Typography variant={variant} sx={sx}>
-          {value.toString()}
-        </Typography>
-      </Grid>
-    )}
-  </Grid>
-);
+  );
+};
 
 const TotalCell = ({
   item,
@@ -379,9 +392,17 @@ export const ItemsSection = ({
       <Card className={className + '-Totals'} variant="outlined">
         <CardContent>
           <Stack>
-            <CardTableItem label={t(i18n)`Subtotal`} value={subtotalPrice} />
+            <CardTableItem
+              label={t(i18n)`Subtotal`}
+              value={subtotalPrice}
+              className="Monite-Subtotal"
+            />
             <Divider sx={{ my: 1.5 }} />
-            <CardTableItem label={t(i18n)`Taxes total`} value={totalTaxes} />
+            <CardTableItem
+              label={t(i18n)`Taxes total`}
+              value={totalTaxes}
+              className="Monite-TaxesTotal"
+            />
             <Divider sx={{ my: 1.5 }} />
             <CardTableItem
               label={
@@ -389,6 +410,7 @@ export const ItemsSection = ({
               }
               value={totalPrice}
               variant="subtitle1"
+              className="Monite-Total"
             />
           </Stack>
         </CardContent>
