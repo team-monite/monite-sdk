@@ -11,6 +11,9 @@ function getEntitySettings(): MergedSettingsResponse {
     allow_purchase_order_autolinking: false,
     payment_priority: 'balanced',
     receivable_edit_flow: 'non_compliant',
+    generate_paid_invoice_pdf: false,
+    quote_signature_required: false,
+    vat_mode: 'exclusive',
     currency: {
       default: 'EUR',
       exchange_rates: [],
@@ -128,6 +131,6 @@ type EntityOrganizationResponse =
 type EntityResponse = components['schemas']['EntityResponse'];
 type EntityVatIDResourceList = components['schemas']['EntityVatIDResourceList'];
 type EntityVatIDResponse = components['schemas']['EntityVatIDResponse'];
-type MergedSettingsResponse = components['schemas']['MergedSettingsResponse'];
+type MergedSettingsResponse = components['schemas']['SettingsResponse'];
 type OnboardingPaymentMethodsResponse =
   components['schemas']['OnboardingPaymentMethodsResponse'];
