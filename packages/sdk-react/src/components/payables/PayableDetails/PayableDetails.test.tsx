@@ -174,13 +174,13 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(0);
       });
 
-      test('should show "Pending" tag, "Reject" and "Approve" button for payable in "Pending" status', async () => {
+      test('should show "In Approval" tag, "Reject" and "Approve" button for payable in "In Approval" status', async () => {
         fixture.status = 'approve_in_progress';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
 
-        const pendingStatus = screen.getByText(t`Pending`);
+        const pendingStatus = screen.getByText(t`In Approval`);
         const rejectButton = await screen.findByRole('button', {
           name: t`Reject`,
         });
@@ -214,13 +214,13 @@ describe('PayableDetails', () => {
         expect(buttons).toHaveLength(0);
       });
 
-      test('should show "Waiting to be paid" tag, "Pay" button for payable in "Waiting to be paid" status', async () => {
+      test('should show "Approved" tag, "Pay" button for payable in "Approved" status', async () => {
         fixture.status = 'waiting_to_be_paid';
         renderWithClient(<PayableDetails id={payableId} />);
 
         await waitUntilTableIsLoaded();
 
-        const waitingStatus = screen.getByText(t`Waiting to be paid`);
+        const waitingStatus = screen.getByText(t`Approved`);
         const payButton = await screen.findByRole('button', {
           name: t`Pay`,
         });

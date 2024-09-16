@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
 import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
@@ -124,6 +125,8 @@ const PayablesTableBase = ({
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
+
+  const { data: summaryData } = usePayablesTableSummaryData();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -425,9 +428,13 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <Box sx={{ mb: 2 }}>
-        <FiltersComponent onChangeFilter={onChangeFilter} />
-      </Box>
+      <SummaryCardsFilters
+        data={summaryData?.data ?? []}
+        onChangeFilter={onChangeFilter}
+        selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+        sx={{ mb: 2 }}
+      />
+      <FiltersComponent onChangeFilter={onChangeFilter} />
       <DataGrid
         initialState={{
           sorting: {
@@ -492,4 +499,12 @@ const PayablesTableBase = ({
       />
     </Box>
   );
+};
+
+const usePayablesTableSummaryData = () => {
+  const { api, queryClient } = useMoniteContext();
+
+  api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+
+  return api.payables.getPayablesAnalytics.useQuery();
 };
