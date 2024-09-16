@@ -4,16 +4,8 @@ import { PayableStateEnum } from '@/enums/PayableStateEnum';
 import { SearchField } from '@/ui/SearchField';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SxProps,
-} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-
-import { Theme } from 'mui-styles';
 
 import { getRowToStatusTextMap } from '../../consts';
 import {
@@ -26,10 +18,9 @@ import { FilterTypes, FilterValue } from '../types';
 
 interface PayablesTableFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
-  sx?: SxProps<Theme>;
 }
 
-export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
+export const Filters = ({ onChangeFilter }: PayablesTableFiltersProps) => {
   const { i18n } = useLingui();
   const { root } = useRootElements();
   const className = 'Monite-PayableFilters';
@@ -37,7 +28,6 @@ export const Filters = ({ onChangeFilter, sx }: PayablesTableFiltersProps) => {
   return (
     <FilterContainer
       className={className}
-      sx={sx}
       searchField={
         <SearchField
           label={t(i18n)`Search`}
