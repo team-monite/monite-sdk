@@ -43,7 +43,7 @@ describe('PayablesTable', () => {
       expect(await screen.findByText(/Access Restricted/)).toBeInTheDocument();
     }, 10_000);
 
-    test.skip('should render a special row for payable in OCR processing', async () => {
+    test('should render a special row for payable in OCR processing', async () => {
       renderWithClient(<PayablesTable />);
 
       await waitUntilTableIsLoaded();
