@@ -353,9 +353,8 @@ export const ItemsSection = ({
                                 defaultValue=""
                                 MenuProps={{ container: root }}
                                 onChange={(e) => {
-                                  const vatRateId = e.target.value;
                                   const vatRate = vatRates?.data.find(
-                                    (vatRate) => vatRate.id === vatRateId
+                                    (vatRate) => vatRate.id === e.target.value
                                   );
 
                                   if (!vatRate) {
