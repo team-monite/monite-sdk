@@ -57,8 +57,11 @@ const CreateReceivablesBase = ({
 }: InvoiceDetailsCreateProps) => {
   const { i18n } = useLingui();
   const dialogContext = useDialog();
+  const { api, monite } = useMoniteContext();
+  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
+
   const methods = useForm<CreateReceivablesFormProps>({
-    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getCreateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: useMemo(
       () => ({
         type,
@@ -87,9 +90,6 @@ const CreateReceivablesBase = ({
   const { data: counterpartAddresses } = useCounterpartAddresses(counterpartId);
 
   const createReceivable = useCreateReceivable();
-  const { api, monite } = useMoniteContext();
-  const { isUSEntity, isLoading: isEntityLoading } = useMyEntity();
-
   const { data: settings, isLoading: isSettingsLoading } =
     api.entities.getEntitiesIdSettings.useQuery({
       path: { entity_id: monite.entityId },
