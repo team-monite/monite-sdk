@@ -22,7 +22,7 @@ export type CreateReceivablesProductsFormProps = yup.InferType<
   ReturnType<typeof getCreateInvoiceProductsValidationSchema>
 >;
 
-const getLineItemsSchema = (i18n: I18n) =>
+const getLineItemsSchema = (i18n: I18n, isUSEntity: boolean) =>
   yup
     .array()
     .of(
@@ -48,20 +48,32 @@ const getLineItemsSchema = (i18n: I18n) =>
           .string()
           .label(t(i18n)`Product`)
           .required(),
-        vat_rate_id: yup
-          .string()
-          .label(t(i18n)`VAT`)
-          .required(),
-        vat_rate_value: yup
-          .number()
-          .label(t(i18n)`VAT`)
-          .required(),
-        tax_rate_value: yup
-          .number()
-          .label(t(i18n)`TAX`)
-          .min(0)
-          .max(100)
-          .required(),
+        ...(isUSEntity
+          ? {
+              vat_rate_value: yup.number().label(t(i18n)`VAT`),
+              vat_rate_id: yup.string().label(t(i18n)`VAT`),
+              tax_rate_value: yup
+                .number()
+                .label(t(i18n)`TAX`)
+                .min(0)
+                .max(100)
+                .required(),
+            }
+          : {
+              tax_rate_value: yup
+                .number()
+                .label(t(i18n)`TAX`)
+                .min(0)
+                .max(100),
+              vat_rate_value: yup
+                .number()
+                .label(t(i18n)`VAT`)
+                .required(),
+              vat_rate_id: yup
+                .string()
+                .label(t(i18n)`VAT`)
+                .required(),
+            }),
         name: yup
           .string()
           .label(t(i18n)`Name`)
@@ -93,7 +105,7 @@ const getLineItemsSchema = (i18n: I18n) =>
 
 export const getCreateInvoiceValidationSchema = (
   i18n: I18n,
-  isUSEntity: boolean = false
+  isUSEntity: boolean
 ) =>
   yup.object({
     type: yup.string().required(),
@@ -126,7 +138,7 @@ export const getCreateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Payment terms`)
       .required(),
-    line_items: getLineItemsSchema(i18n),
+    line_items: getLineItemsSchema(i18n, isUSEntity),
     overdue_reminder_id: yup
       .string()
       .optional()
@@ -141,7 +153,7 @@ export const getCreateInvoiceValidationSchema = (
 
 export const getUpdateInvoiceValidationSchema = (
   i18n: I18n,
-  isUSEntity: boolean = false
+  isUSEntity: boolean
 ) =>
   yup.object({
     counterpart_id: yup
@@ -173,7 +185,7 @@ export const getUpdateInvoiceValidationSchema = (
       .string()
       .label(t(i18n)`Payment terms`)
       .required(),
-    line_items: getLineItemsSchema(i18n),
+    line_items: getLineItemsSchema(i18n, isUSEntity),
     overdue_reminder_id: yup
       .string()
       .optional()

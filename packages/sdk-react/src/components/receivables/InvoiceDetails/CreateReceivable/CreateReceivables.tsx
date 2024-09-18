@@ -194,7 +194,7 @@ const CreateReceivablesBase = ({
                     quantity: item.quantity,
                     product_id: item.product_id,
                     ...(isUSEntity
-                      ? { tax_rate_value: item.tax_rate_value * 100 }
+                      ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
                       : { vat_rate_id: item.vat_rate_id }),
                   })),
                   vat_exemption_rationale: values.vat_exemption_rationale,

@@ -64,8 +64,10 @@ const EditInvoiceDetailsContent = ({
   const { i18n } = useLingui();
   const { root } = useRootElements();
 
+  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
+
   const methods = useForm<UpdateReceivablesFormProps>({
-    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n)),
+    resolver: yupResolver(getUpdateInvoiceValidationSchema(i18n, isUSEntity)),
     defaultValues: {
       /** Customer section */
       counterpart_id: invoice.counterpart_id,
@@ -127,8 +129,6 @@ const EditInvoiceDetailsContent = ({
 
   const updateReceivableLineItems = useUpdateReceivableLineItems(invoice.id);
   const updateReceivable = useUpdateReceivable(invoice.id);
-
-  const { isLoading: isEntityLoading, isUSEntity } = useMyEntity();
 
   const isLoading =
     updateReceivableLineItems.isPending ||
