@@ -5,6 +5,7 @@ import { CountryInvoiceOption } from '@/components/receivables/InvoiceDetails/Cr
 import { CreateReceivablesFormProps } from '@/components/receivables/InvoiceDetails/CreateReceivable/validation';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { useRootElements } from '@/core/context/RootElementsProvider';
+import { useMyEntity } from '@/core/queries';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -65,8 +66,11 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
       path: { entity_id: monite.entityId },
     });
 
-  const { data: entity, isLoading: isEntityLoading } =
-    api.entityUsers.getEntityUsersMyEntity.useQuery();
+  const {
+    data: entity,
+    isLoading: isEntityLoading,
+    isUSEntity,
+  } = useMyEntity();
 
   /** Describes if `Same as invoice date` checkbox is checked */
   const [isSameAsInvoiceDateChecked, setIsSameAsInvoiceDateChecked] =
@@ -94,45 +98,51 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
       <Card variant="outlined">
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item {...gridItemProps}>
-              <Controller
-                name="entity_vat_id_id"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    required
-                    disabled={isEntityVatIdsLoading || disabled}
-                    error={Boolean(error)}
-                  >
-                    <InputLabel id={field.name}>{t(
-                      i18n
-                    )`Your VAT ID`}</InputLabel>
-                    <Select
-                      {...field}
-                      labelId={field.name}
-                      label={t(i18n)`Your VAT ID`}
-                      MenuProps={{ container: root }}
-                      startAdornment={
-                        isEntityVatIdsLoading ? (
-                          <CircularProgress size={20} />
-                        ) : entity?.address.country ? (
-                          <CountryInvoiceOption code={entity.address.country} />
-                        ) : null
-                      }
+            {!isUSEntity && (
+              <Grid item {...gridItemProps}>
+                <Controller
+                  name="entity_vat_id_id"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <FormControl
+                      variant="outlined"
+                      fullWidth
+                      required
+                      disabled={isEntityVatIdsLoading || disabled}
+                      error={Boolean(error)}
                     >
-                      {entityVatIds?.data.map((vatId) => (
-                        <MenuItem key={vatId.id} value={vatId.id}>
-                          {vatId.value}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {error && <FormHelperText>{error.message}</FormHelperText>}
-                  </FormControl>
-                )}
-              />
-            </Grid>
+                      <InputLabel id={field.name}>{t(
+                        i18n
+                      )`Your VAT ID`}</InputLabel>
+                      <Select
+                        {...field}
+                        labelId={field.name}
+                        label={t(i18n)`Your VAT ID`}
+                        MenuProps={{ container: root }}
+                        startAdornment={
+                          isEntityVatIdsLoading ? (
+                            <CircularProgress size={20} />
+                          ) : entity?.address.country ? (
+                            <CountryInvoiceOption
+                              code={entity.address.country}
+                            />
+                          ) : null
+                        }
+                      >
+                        {entityVatIds?.data.map((vatId) => (
+                          <MenuItem key={vatId.id} value={vatId.id}>
+                            {vatId.value}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {error && (
+                        <FormHelperText>{error.message}</FormHelperText>
+                      )}
+                    </FormControl>
+                  )}
+                />
+              </Grid>
+            )}
             <Grid item {...gridItemProps}>
               <TextField
                 disabled
