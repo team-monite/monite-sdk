@@ -10,7 +10,6 @@ import {
   isFieldRequired,
   isOcrMismatch,
   MonitePayableDetailsInfoProps,
-  OcrMismatchFields,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
