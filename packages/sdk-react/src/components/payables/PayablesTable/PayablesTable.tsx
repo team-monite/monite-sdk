@@ -153,7 +153,6 @@ const PayablesTableBase = ({
 
   const payablesQueryParameters = api.payables.getPayables.getQueryKey({
     query: {
-      sort: sortModel?.field,
       order: sortModel?.sort,
       limit: pageSize,
       pagination_token: currentPaginationToken || undefined,
@@ -170,8 +169,7 @@ const PayablesTableBase = ({
             representation: 'date',
           })
         : undefined,
-      document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      counterpart_name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      search_text: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
         ? currentFilter[FILTER_TYPE_OVERDUE]
         : undefined,
