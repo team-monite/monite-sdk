@@ -52,9 +52,14 @@ import {
   FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue } from './types';
+import {
+  FilterTypes,
+  FilterValue,
+  MonitePayableTableProps,
+  usePayableTableThemeProps,
+} from './types';
 
-interface PayablesTableProps {
+interface PayablesTableProps extends MonitePayableTableProps {
   /**
    * The event handler for a row click.
    *
@@ -122,11 +127,16 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
   openFileInput,
   setIsCreateInvoiceDialogOpen,
+  ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { data: summaryData } = usePayablesTableSummaryData();
+  const { isShowingSummaryCards } = usePayableTableThemeProps(inProps);
+
+  const { data: summaryData } = usePayablesTableSummaryData(
+    isShowingSummaryCards
+  );
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -428,12 +438,14 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <SummaryCardsFilters
-        data={summaryData?.data ?? []}
-        onChangeFilter={onChangeFilter}
-        selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
-        sx={{ mb: 2 }}
-      />
+      {isShowingSummaryCards && (
+        <SummaryCardsFilters
+          data={summaryData?.data ?? []}
+          onChangeFilter={onChangeFilter}
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
       <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
@@ -501,19 +513,17 @@ const PayablesTableBase = ({
   );
 };
 
-const usePayablesTableSummaryData = () => {
+const usePayablesTableSummaryData = (isShowingSummaryCards?: boolean) => {
   const { api, queryClient } = useMoniteContext();
 
   if (queryClient) {
     api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
   }
 
-  return queryClient
-    ? api.payables.getPayablesAnalytics.useQuery(
-        {},
-        {
-          enabled: true,
-        }
-      )
-    : { data: null, isLoading: true };
+  return api.payables.getPayablesAnalytics.useQuery(
+    {},
+    {
+      enabled: isShowingSummaryCards && !!queryClient,
+    }
+  );
 };

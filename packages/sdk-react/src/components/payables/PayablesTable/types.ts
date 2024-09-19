@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { useThemeProps } from '@mui/material/styles';
 
 import {
   FILTER_TYPE_CREATED_AT,
@@ -27,3 +28,15 @@ export type FilterValue =
   | Date
   | string
   | null;
+
+export interface MonitePayableTableProps {
+  isShowingSummaryCards?: boolean;
+}
+
+export const usePayableTableThemeProps = (
+  inProps: Partial<MonitePayableTableProps>
+): MonitePayableTableProps =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableTable',
+  });

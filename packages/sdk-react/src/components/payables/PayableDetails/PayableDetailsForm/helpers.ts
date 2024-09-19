@@ -299,14 +299,12 @@ export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
-  isShowingSummaryCards?: boolean;
 }
 
 export const usePayableDetailsThemeProps = (
   inProps?: Partial<MonitePayableDetailsInfoProps>
-) => {
-  return useThemeProps({
+) =>
+  useThemeProps({
     props: inProps,
     name: 'MonitePayableDetailsInfo',
   });
-};
