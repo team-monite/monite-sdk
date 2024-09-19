@@ -171,6 +171,7 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      counterpart_name: currentFilter[FILTER_TYPE_SEARCH] || undefined,
       is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
         ? currentFilter[FILTER_TYPE_OVERDUE]
         : undefined,
