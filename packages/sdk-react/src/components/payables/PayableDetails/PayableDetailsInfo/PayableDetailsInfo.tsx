@@ -44,7 +44,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
 
 import { OptionalFields } from '../../types';
@@ -144,6 +144,7 @@ const PayableDetailsInfoBase = ({
 
   const className = 'Monite-PayableDetailsInfo';
   const dateFormat = useDateFormat();
+  const theme = useTheme();
 
   if (isPayableInOCRProcessing(payable)) {
     return (
@@ -183,9 +184,12 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
-                {true && (
+                {ocrMismatchWarning && (
                   <TableRow>
-                    <TableCell colSpan={2} style={{ color: 'red' }}>
+                    <TableCell
+                      colSpan={2}
+                      style={{ color: theme.palette.error.main }}
+                    >
                       {ocrMismatchWarning}
                     </TableCell>
                   </TableRow>
