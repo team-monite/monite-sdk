@@ -8,6 +8,7 @@ import {
 } from '@/components/counterparts/helpers';
 import {
   isFieldRequired,
+  isOcrMismatch,
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
@@ -43,7 +44,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { TableCellProps } from '@mui/material/TableCell/TableCell';
 
 import { OptionalFields } from '../../types';
@@ -88,7 +89,7 @@ const PayableDetailsInfoBase = ({
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
-  const { ocrRequiredFields, optionalFields } =
+  const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
@@ -103,6 +104,23 @@ const PayableDetailsInfoBase = ({
       payableId: payable.id,
     }
   );
+
+  const ocrMismatchWarning = useMemo(() => {
+    if (!payable || !ocrMismatchFields) return null;
+
+    const { isAmountMismatch, isBankAccountMismatch } = isOcrMismatch(payable);
+
+    if (
+      (ocrMismatchFields.amount_to_pay && isAmountMismatch) ||
+      (ocrMismatchFields.counterpart_bank_account_id && isBankAccountMismatch)
+    ) {
+      return t(
+        i18n
+      )`There may be a mismatch between the OCR data and payable data. Please review the details`;
+    }
+
+    return null;
+  }, [payable, ocrMismatchFields, i18n]);
 
   const { data: lineItemsData } = lineItemsQuery;
 
@@ -129,6 +147,7 @@ const PayableDetailsInfoBase = ({
 
   const className = 'Monite-PayableDetailsInfo';
   const dateFormat = useDateFormat();
+  const theme = useTheme();
 
   if (isPayableInOCRProcessing(payable)) {
     return (
@@ -168,6 +187,16 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
+                {ocrMismatchWarning && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={2}
+                      style={{ color: theme.palette.error.main }}
+                    >
+                      {ocrMismatchWarning}
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <StyledLabelTableCell
                     isRequired={
