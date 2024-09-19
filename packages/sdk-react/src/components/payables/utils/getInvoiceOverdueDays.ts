@@ -1,7 +1,9 @@
 import { components } from '@/api';
 
 export const getInvoiceOverdueDays = (
-  invoice: components['schemas']['PayableResponseSchema']
+  invoice:
+    | components['schemas']['PayableResponseSchema']
+    | components['schemas']['ReceivableResponse']
 ): false | number => {
   if (!invoice.due_date) return false;
 
@@ -20,7 +22,10 @@ export const getInvoiceOverdueDays = (
     'approve_in_progress',
   ];
 
-  const isStatusOverdue = statuses.includes(invoice.status);
+  //ToDo: introduce type guards that will check based on receivable or payable data, intead of type assertion
+  const isStatusOverdue = statuses.includes(
+    invoice.status as components['schemas']['PayableStateEnum']
+  );
   const isDateOverdue = dueDate.getTime() < today.getTime();
 
   if (isStatusOverdue && isDateOverdue) {
