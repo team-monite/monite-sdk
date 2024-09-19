@@ -257,11 +257,21 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
 };
 
 export const isOcrMismatch = (
-  payableData: components['schemas']['PayableResponseSchema'],
-  ocrData: components['schemas']['OCRResponseInvoiceReceiptData']
+  payableData: components['schemas']['PayableResponseSchema']
 ) => {
-  const { amount_to_pay, counterpart_bank_account_id } = payableData;
-  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } = ocrData;
+  const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
+    payableData;
+
+  //ToDo: check if this case is better to cover with type guard
+  if (!other_extracted_data || !('total' in other_extracted_data)) {
+    return {
+      isAmountMismatch: false,
+      isBankAccountMismatch: false,
+    };
+  }
+
+  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
+    other_extracted_data;
 
   const isAmountMismatch = amount_to_pay !== ocrTotal;
 

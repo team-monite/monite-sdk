@@ -8,6 +8,7 @@ import {
 } from '@/components/counterparts/helpers';
 import {
   isFieldRequired,
+  isOcrMismatch,
   MonitePayableDetailsInfoProps,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
@@ -104,6 +105,20 @@ const PayableDetailsInfoBase = ({
     }
   );
 
+  const ocrMismatchWarning = useMemo(() => {
+    if (!payable) return null;
+
+    const { isAmountMismatch, isBankAccountMismatch } = isOcrMismatch(payable);
+
+    if (isAmountMismatch || isBankAccountMismatch) {
+      return t(
+        i18n
+      )`There may be a mismatch between the OCR data and payable data. Please review the details`;
+    }
+
+    return null;
+  }, [i18n, payable]);
+
   const { data: lineItemsData } = lineItemsQuery;
 
   const lineItems = lineItemsData?.data;
@@ -168,6 +183,13 @@ const PayableDetailsInfoBase = ({
           <Paper variant="outlined">
             <Table>
               <TableBody>
+                {true && (
+                  <TableRow>
+                    <TableCell colSpan={2} style={{ color: 'red' }}>
+                      {ocrMismatchWarning}
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <StyledLabelTableCell
                     isRequired={
