@@ -932,6 +932,11 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       },
     },
   },
+  MonitePayableTable: {
+    defaultProps: {
+      isShowingSummaryCards: true,
+    },
+  },
   MuiFormHelperText: {
     styleOverrides: {
       root: {

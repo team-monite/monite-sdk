@@ -5,6 +5,7 @@ import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
 import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -14,6 +15,7 @@ import {
   CardContent,
   Palette,
   PaletteColor,
+  Skeleton,
   SxProps,
   Theme,
   Typography,
@@ -38,7 +40,6 @@ interface SummaryCardProps {
 }
 
 interface SummaryCardsFiltersProps {
-  data: components['schemas']['PayableAggregatedDataResponse']['data'];
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedStatus: ExtendedPayableStateEnum | null;
   sx?: SxProps<Theme>;
@@ -72,6 +73,8 @@ const AmountTypography = styled(Typography)(() => ({
   alignItems: 'baseline',
 }));
 
+const className = 'Monite-SummaryCard';
+
 const SummaryCard = ({
   status,
   count,
@@ -100,8 +103,6 @@ const SummaryCard = ({
     : getRowToStatusTextMap(i18n)[
         status as components['schemas']['PayableStateEnum']
       ];
-
-  const className = 'Monite-SummaryCard';
 
   const getColor = (theme: Palette, colorName: string) => {
     const [colorGroup, colorShade] = colorName.split('.') as [
@@ -242,11 +243,12 @@ const SummaryCard = ({
 };
 
 export const SummaryCardsFilters = ({
-  data,
   onChangeFilter,
   selectedStatus,
   sx,
 }: SummaryCardsFiltersProps) => {
+  const { data: summaryData } = usePayablesTableSummaryData();
+
   const {
     containerRef,
     handleMouseDown,
@@ -254,6 +256,17 @@ export const SummaryCardsFilters = ({
     handleMouseUp,
     handleMouseMove,
   } = useDragScroll();
+
+  if (!summaryData) {
+    return (
+      <Skeleton
+        variant="rectangular"
+        height={100}
+        className={classNames(`${className}-Skeleton`)}
+        sx={{ m: 2, borderRadius: 3 }}
+      />
+    );
+  }
 
   const predefinedOrder = [
     'all',
@@ -270,13 +283,13 @@ export const SummaryCardsFilters = ({
   const enhancedData = [
     {
       status: 'all',
-      count: data.reduce((acc, item) => acc + item.count, 0),
-      sum_total_amount: data.reduce(
+      count: summaryData.data.reduce((acc, item) => acc + item.count, 0),
+      sum_total_amount: summaryData.data.reduce(
         (acc, item) => acc + (item.sum_total_amount || 0),
         0
       ),
     },
-    ...data,
+    ...summaryData.data,
   ];
 
   const sortedData = enhancedData.sort(
@@ -325,5 +338,20 @@ export const SummaryCardsFilters = ({
         />
       ))}
     </Box>
+  );
+};
+
+const usePayablesTableSummaryData = () => {
+  const { api, queryClient } = useMoniteContext();
+
+  if (queryClient) {
+    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+  }
+
+  return api.payables.getPayablesAnalytics.useQuery(
+    {},
+    {
+      enabled: !!queryClient,
+    }
   );
 };

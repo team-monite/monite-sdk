@@ -134,10 +134,6 @@ const PayablesTableBase = ({
 
   const { isShowingSummaryCards } = usePayableTableThemeProps(inProps);
 
-  const { data: summaryData } = usePayablesTableSummaryData(
-    isShowingSummaryCards
-  );
-
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
@@ -440,7 +436,6 @@ const PayablesTableBase = ({
     >
       {isShowingSummaryCards && (
         <SummaryCardsFilters
-          data={summaryData?.data ?? []}
           onChangeFilter={onChangeFilter}
           selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
           sx={{ mb: 2 }}
@@ -510,20 +505,5 @@ const PayablesTableBase = ({
         rows={payables?.data || []}
       />
     </Box>
-  );
-};
-
-const usePayablesTableSummaryData = (isShowingSummaryCards?: boolean) => {
-  const { api, queryClient } = useMoniteContext();
-
-  if (queryClient) {
-    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
-  }
-
-  return api.payables.getPayablesAnalytics.useQuery(
-    {},
-    {
-      enabled: isShowingSummaryCards && !!queryClient,
-    }
   );
 };
