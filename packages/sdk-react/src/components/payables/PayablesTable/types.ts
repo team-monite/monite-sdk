@@ -1,5 +1,4 @@
 import { components } from '@/api';
-import { useThemeProps } from '@mui/material/styles';
 
 import {
   FILTER_TYPE_CREATED_AT,
