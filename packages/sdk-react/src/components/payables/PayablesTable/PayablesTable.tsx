@@ -6,7 +6,7 @@ import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBa
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
+import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -32,7 +32,7 @@ import { useDateFormat } from '@/utils/MoniteOptions';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Box, CircularProgress, Stack, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -286,6 +286,37 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Due date" heading title',
         }),
         width: 120,
+        renderCell: (params) => {
+          const overdueDays = getInvoiceOverdueDays(params.row);
+
+          return (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="start"
+              sx={overdueDays !== false ? { marginTop: 0.5 } : { marginTop: 2 }}
+            >
+              <Typography
+                variant="body2"
+                color={overdueDays !== false ? 'error' : ''}
+              >
+                {i18n.date(new Date(params.row.due_date), dateFormat)}{' '}
+              </Typography>
+              {overdueDays !== false && (
+                <Typography
+                  variant="caption"
+                  color="error"
+                  fontWeight="bold"
+                  fontSize="small"
+                >
+                  {t(i18n)`Overdue by ${overdueDays} ${
+                    overdueDays === 1 ? 'day' : 'days'
+                  }`}
+                </Typography>
+              )}
+            </Box>
+          );
+        },
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
         ) => value && i18n.date(value, dateFormat),
@@ -300,26 +331,7 @@ const PayablesTableBase = ({
         }),
         display: 'flex',
         width: 160,
-        renderCell: (params) => {
-          const payable = params.row;
-          const isOverdue = isInvoiceOverdue(payable);
-
-          return (
-            <Box display="flex" alignItems="center" gap={1}>
-              <PayableStatusChip status={params.value} />
-              {isOverdue && (
-                <StyledChip
-                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
-                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
-                  status={params.value}
-                  color="error"
-                  label={t(i18n)`Overdue`}
-                  size={'small'}
-                />
-              )}
-            </Box>
-          );
-        },
+        renderCell: (params) => <PayableStatusChip status={params.value} />,
       },
       {
         field: 'amount',
