@@ -504,7 +504,16 @@ const PayablesTableBase = ({
 const usePayablesTableSummaryData = () => {
   const { api, queryClient } = useMoniteContext();
 
-  api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+  if (queryClient) {
+    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+  }
 
-  return api.payables.getPayablesAnalytics.useQuery();
+  return queryClient
+    ? api.payables.getPayablesAnalytics.useQuery(
+        {},
+        {
+          enabled: true,
+        }
+      )
+    : { data: null, isLoading: true };
 };
