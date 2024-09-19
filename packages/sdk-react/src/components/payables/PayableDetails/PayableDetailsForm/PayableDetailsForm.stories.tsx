@@ -59,6 +59,10 @@ export const DialogDetailsForm: Story = {
                     dueDate: true, // The due date is required based on OCR data
                     currency: true, // The currency is required based on OCR data
                   },
+                  ocrMismatchFields: {
+                    amount_to_pay: true,
+                    counterpart_bank_account_id: true,
+                  },
                 },
               },
             },

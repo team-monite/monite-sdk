@@ -10,6 +10,7 @@ import {
   isFieldRequired,
   isOcrMismatch,
   MonitePayableDetailsInfoProps,
+  OcrMismatchFields,
   usePayableDetailsThemeProps,
 } from '@/components/payables/PayableDetails/PayableDetailsForm/helpers';
 import { UserAvatar } from '@/components/UserAvatar/UserAvatar';
@@ -89,7 +90,7 @@ const PayableDetailsInfoBase = ({
 }: PayablesDetailsInfoProps) => {
   const { i18n } = useLingui();
   const { formatCurrencyToDisplay, formatFromMinorUnits } = useCurrencies();
-  const { ocrRequiredFields, optionalFields } =
+  const { ocrRequiredFields, optionalFields, ocrMismatchFields } =
     usePayableDetailsThemeProps(inProps);
   const { showInvoiceDate, showTags } = useOptionalFields<OptionalFields>(
     optionalFields,
@@ -106,18 +107,21 @@ const PayableDetailsInfoBase = ({
   );
 
   const ocrMismatchWarning = useMemo(() => {
-    if (!payable) return null;
+    if (!payable || !ocrMismatchFields) return null;
 
     const { isAmountMismatch, isBankAccountMismatch } = isOcrMismatch(payable);
 
-    if (isAmountMismatch || isBankAccountMismatch) {
+    if (
+      (ocrMismatchFields.amount_to_pay && isAmountMismatch) ||
+      (ocrMismatchFields.counterpart_bank_account_id && isBankAccountMismatch)
+    ) {
       return t(
         i18n
       )`There may be a mismatch between the OCR data and payable data. Please review the details`;
     }
 
     return null;
-  }, [i18n, payable]);
+  }, [payable, ocrMismatchFields, i18n]);
 
   const { data: lineItemsData } = lineItemsQuery;
 

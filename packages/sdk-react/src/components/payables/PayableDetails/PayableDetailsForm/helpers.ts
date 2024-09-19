@@ -262,7 +262,6 @@ export const isOcrMismatch = (
   const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
     payableData;
 
-  //ToDo: check if this case is better to cover with type guard
   if (!other_extracted_data || !('total' in other_extracted_data)) {
     return {
       isAmountMismatch: false,
@@ -286,9 +285,20 @@ export const isOcrMismatch = (
   };
 };
 
+export type OcrMismatchField =
+  | keyof Pick<
+      components['schemas']['PayableResponseSchema'],
+      'amount_to_pay' | 'counterpart_bank_account_id'
+    >;
+
+export type OcrMismatchFields =
+  | Partial<Record<OcrMismatchField, boolean>>
+  | undefined;
+
 export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
   ocrRequiredFields?: OcrRequiredFields;
+  ocrMismatchFields?: OcrMismatchFields;
 }
 
 export const usePayableDetailsThemeProps = (
