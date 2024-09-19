@@ -256,6 +256,26 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
   return isDefaultRequired || isOcrRequired;
 };
 
+export const isOcrMismatch = (
+  payableData: components['schemas']['PayableResponseSchema'],
+  ocrData: components['schemas']['OCRResponseInvoiceReceiptData']
+) => {
+  const { amount_to_pay, counterpart_bank_account_id } = payableData;
+  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } = ocrData;
+
+  const isAmountMismatch = amount_to_pay !== ocrTotal;
+
+  const isBankAccountMismatch =
+    counterpart_bank_account_id && ocrBankAccountId
+      ? counterpart_bank_account_id !== ocrBankAccountId
+      : false;
+
+  return {
+    isAmountMismatch,
+    isBankAccountMismatch,
+  };
+};
+
 export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
   ocrRequiredFields?: OcrRequiredFields;
