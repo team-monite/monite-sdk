@@ -261,7 +261,7 @@ export const SummaryCardsFilters = ({
     return (
       <Skeleton
         variant="rectangular"
-        height={100}
+        height={80}
         className={classNames(`${className}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
