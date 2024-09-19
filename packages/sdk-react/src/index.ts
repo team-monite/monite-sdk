@@ -17,3 +17,4 @@ export {
   type CreateMoniteAPIClientResult,
   type CreateMoniteAPIClientOptions,
 } from '@/api/client';
+export * from '@/core/context/MoniteChatClient';

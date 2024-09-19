@@ -5,7 +5,10 @@ import { Layout } from '@/components/Layout';
 import { MoniteProvider } from '@/components/MoniteComponents';
 import { NoAccountEntity } from '@/components/NoAccountEntity';
 import { getCurrentUserEntity } from '@/lib/clerk-api/get-current-user-entity';
-import { getMoniteApiUrl } from '@/lib/monite-api/monite-client';
+import {
+  getMoniteApiUrl,
+  getMoniteChatApiUrl,
+} from '@/lib/monite-api/monite-client';
 
 export default async function MoniteLayout({
   children,
@@ -40,6 +43,7 @@ export default async function MoniteLayout({
         entityUserId={entity_user_id}
         entityId={entity_id}
         apiUrl={getMoniteApiUrl()}
+        chatApiUrl={getMoniteChatApiUrl()}
       >
         <DemoDataGenerationProgress key={entity_id} />
         {children}

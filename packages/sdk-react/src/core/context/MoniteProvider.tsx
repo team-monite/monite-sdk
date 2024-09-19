@@ -6,6 +6,7 @@ import {
   MoniteAPIProvider,
   MoniteQraftContext,
 } from '@/core/context/MoniteAPIProvider';
+import { MoniteChatClient } from '@/core/context/MoniteChatClient';
 import { MoniteLocale } from '@/core/context/MoniteI18nProvider';
 import { createThemeWithDefaults } from '@/core/utils/createThemeWithDefaults';
 import { MoniteSDK } from '@monite/sdk-api';
@@ -30,6 +31,9 @@ export interface MoniteProviderProps {
 
   /** An instance of `MoniteSDK` */
   monite: MoniteSDK;
+
+  /** An instance of `MoniteChatClient` */
+  chatClient?: MoniteChatClient;
 
   /**
    * `locale` responsible for internationalisation
