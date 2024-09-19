@@ -1,7 +1,7 @@
 import { components } from '@/api';
 import { createAPIClient } from '@/api/client';
 import { Dialog } from '@/components';
-import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
+import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { ENTITY_ID_FOR_EMPTY_PERMISSIONS } from '@/mocks/entityUsers';
 import {
   changeDocumentIdByPayableId,
@@ -612,8 +612,8 @@ describe('PayableDetails', () => {
       });
     });
 
-    describe('isInvoiceOverdue', () => {
-      const createInvoice = (
+    describe('getInvoiceOverdueDays', () => {
+      const createPayableInvoice = (
         status: components['schemas']['PayableStateEnum'],
         due_date: components['schemas']['PayableResponseSchema']['due_date']
       ): components['schemas']['PayableResponseSchema'] => ({
@@ -627,48 +627,52 @@ describe('PayableDetails', () => {
         source_of_payable_data: 'user_specified',
       });
 
-      const testCases = [
+      const testCasesPayable = [
         {
-          description: 'should return false when due_date is after today',
-          status: PayableStateEnum.WAITING_TO_BE_PAID,
+          description:
+            'should return false when due_date is after today for payable',
+          status: PayableStateEnum.DRAFT,
           due_date: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
           expected: false,
         },
         {
-          description: 'should return false when due_date is today',
-          status: PayableStateEnum.WAITING_TO_BE_PAID,
+          description: 'should return false when due_date is today for payable',
+          status: PayableStateEnum.NEW,
           due_date: new Date().toISOString(),
           expected: false,
         },
         {
-          description: 'should return true when due_date is before today',
+          description:
+            'should return overdue days when due_date is before today for payable',
           status: PayableStateEnum.WAITING_TO_BE_PAID,
           due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          expected: true,
+          expected: 1,
         },
         {
           description:
-            'should return false for status not in overdue statuses, even if due_date is before today',
+            'should return false for status not in overdue statuses, even if due_date is before today for payable',
           status: PayableStateEnum.PAID,
           due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
           expected: false,
         },
         {
           description:
-            'should return false for status not in overdue statuses and due_date is today',
-          status: PayableStateEnum.PAID,
+            'should return false for status not in overdue statuses and due_date is today for payable',
+          status: PayableStateEnum.APPROVE_IN_PROGRESS,
           due_date: new Date().toISOString(),
           expected: false,
         },
       ];
 
-      testCases.forEach(({ description, status, due_date, expected }) => {
-        it(description, () => {
-          const invoice: components['schemas']['PayableResponseSchema'] =
-            createInvoice(status, due_date);
-          expect(isInvoiceOverdue(invoice)).toBe(expected);
-        });
-      });
+      testCasesPayable.forEach(
+        ({ description, status, due_date, expected }) => {
+          it(description, () => {
+            const invoice: components['schemas']['PayableResponseSchema'] =
+              createPayableInvoice(status, due_date);
+            expect(getInvoiceOverdueDays(invoice)).toBe(expected);
+          });
+        }
+      );
     });
   });
 });
