@@ -33,6 +33,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
+import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -52,12 +53,7 @@ import {
   FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import {
-  FilterTypes,
-  FilterValue,
-  MonitePayableTableProps,
-  usePayableTableThemeProps,
-} from './types';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 
 interface PayablesTableProps extends MonitePayableTableProps {
   /**
@@ -507,3 +503,11 @@ const PayablesTableBase = ({
     </Box>
   );
 };
+
+export const usePayableTableThemeProps = (
+  inProps: Partial<MonitePayableTableProps>
+): MonitePayableTableProps =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableTable',
+  });

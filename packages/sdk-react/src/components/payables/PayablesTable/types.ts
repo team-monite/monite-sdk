@@ -32,11 +32,3 @@ export type FilterValue =
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
 }
-
-export const usePayableTableThemeProps = (
-  inProps: Partial<MonitePayableTableProps>
-): MonitePayableTableProps =>
-  useThemeProps({
-    props: inProps,
-    name: 'MonitePayableTable',
-  });
