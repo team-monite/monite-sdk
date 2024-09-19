@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { components } from '@/api';
 import { getInvoiceOverdueDays } from '@/components/payables/utils/getInvoiceOverdueDays';
 import { useDateFormat } from '@/utils/MoniteOptions';
