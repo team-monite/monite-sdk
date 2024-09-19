@@ -227,6 +227,8 @@ export const InvoiceRecurrenceForm = ({
                     day_of_month,
                     end_month,
                     end_year,
+                    body_text,
+                    subject_text,
                   })
                 : await createRecurrenceMutation.mutateAsync({
                     body: {
