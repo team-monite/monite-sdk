@@ -1,10 +1,15 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import Image from 'next/image';
-
-import { useMoniteContext } from '@monite/sdk-react';
+import { MoniteChatResponseChunk, useMoniteContext } from '@monite/sdk-react';
 import {
   Box,
   Button,
@@ -17,121 +22,165 @@ import {
   Typography,
 } from '@mui/material';
 
-import aiStub from './ai-stub-793.png';
+type PreviousChatMessage = {
+  message: string;
+  response: string;
+};
 
-// const fetchToken = async () => {
-//   const res = await fetch(`https://api.sandbox.monite.com/v1/auth/token`, {
-//     method: 'POST',
-//     headers: {
-//       accept: 'application/json',
-//       'Content-Type': 'application/json',
-//       'x-monite-version': '2023-04-12',
-//     },
-//     body: JSON.stringify({
-//       grant_type: GrantType.ENTITY_USER,
-//       entity_user_id: '51eb4091-f5a7-462c-8e2e-ac42c44d12eb',
-//       client_id: '463e0b19-0cc4-4f60-9cef-3db0c205c5fa',
-//       client_secret: '4396bb50-a211-451d-921b-18381fed994e',
-//     }),
-//   });
-//
-//   if (!res.ok) {
-//     throw new Error(`Could not fetch token: ${await res.text()}`);
-//   }
-//
-//   return await res.json();
-// };
-//
-// console.log('creating chat');
-// const chatClient = createChatClient({
-//   chatApiUrl: 'https://app.sandbox.monite.com/v1/chat',
-//   entityId: '00c526b3-686e-4ad8-bffd-21d3302b32eb',
-//   fetchToken,
-// });
-//
-// const responseStream = await chatClient.sendMessage(
-//   `What's the biggest invoice amount`,
-//   ''
-// );
-// const reader = responseStream.getReader();
-// for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
-//   const { value, done } = await reader.read();
-//   if (done) {
-//     break;
-//   }
-//   console.log(value.data.message);
-// }
+type ChatContextType = {
+  previousMessages: PreviousChatMessage[];
+  currentMessage: string;
+  currentResponse: string;
+  isAnsweringQuestion: boolean;
+  sendMessage: (message: string) => Promise<void>;
+  stopAnswering: () => void;
+};
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+const ChatContextProvider = ({ children }: { children: ReactNode }) => {
+  const { chatClient } = useMoniteContext();
+  const [previousMessages, setPreviousMessages] = useState<
+    PreviousChatMessage[]
+  >([]);
+  const [currentResponseStream, setCurrentResponseStream] =
+    useState<ReadableStream<MoniteChatResponseChunk> | null>(null);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const currentResponse = useStreamResponse(
+    currentResponseStream,
+    (streamRead) => {
+      if (currentResponseStream === streamRead) {
+        setPreviousMessages((prevMessages) => [
+          ...prevMessages,
+          { message: currentMessage, response: currentResponse },
+        ]);
+        setCurrentResponseStream(null);
+        setCurrentMessage('');
+      }
+    }
+  );
+  const isAnsweringQuestion = useMemo(
+    () => !!currentMessage,
+    [currentResponseStream]
+  );
+
+  // TODO: add threads support
+  const sendMessage = async (message: string) => {
+    if (isAnsweringQuestion)
+      throw new Error(
+        'Cannot send a message during response generation. Stop response generation first.'
+      );
+    setCurrentMessage(message);
+    const responseStream = await chatClient!.sendMessage(message, '');
+    setCurrentResponseStream(responseStream);
+  };
+
+  const stopAnswering = async () => {
+    if (!isAnsweringQuestion) return;
+    setCurrentMessage('');
+    const stream = currentResponseStream;
+    if (stream) {
+      setCurrentResponseStream(null);
+      await stream.cancel();
+    }
+  };
+
+  return (
+    <ChatContext.Provider
+      value={{
+        previousMessages,
+        currentMessage,
+        currentResponse,
+        isAnsweringQuestion,
+        sendMessage,
+        stopAnswering,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  );
+};
+
+const useChatContext = () => {
+  const context = useContext(ChatContext);
+  if (!context) {
+    throw new Error(
+      'useChatContext must be used within an ChatContextProvider'
+    );
+  }
+  return context;
+};
 
 export default function AiAssistantPage() {
   const [replyShown, setReplyShown] = useState(false);
-
-  const { chatClient } = useMoniteContext();
 
   const onCardClick = () => {
     // const responseStream = await chatClient.sendMessage()
   };
 
   return (
-    <Box className="Monite-PageContainer Monite-AiAssistant">
-      <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
-        <Typography variant="h2">AI Assistant</Typography>
-        <Box flexGrow={2}>
-          {!replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Typography
-                variant="subtitle2"
-                sx={{ width: '100%', maxWidth: '720px' }}
-              >
-                Some examples of what you can do:
-              </Typography>
-              <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>
-                <AiCard
-                  Icon={Icon1}
-                  title="Find documents quickly"
-                  body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon2}
-                  title="Automate & schedule"
-                  body="Schedule payments, emails and notifications. Create new
-                      documents, approval policies or any other items."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon3}
-                  title="Generate custom reports"
-                  body="Choose what information to combine is a custom-made
-                      reports tailored to exact needs of your business."
-                  onClick={onCardClick}
-                />
-              </Stack>
-            </Stack>
-          )}
+    <ChatContextProvider>
+      <Box className="Monite-PageContainer Monite-AiAssistant">
+        <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
+          <Typography variant="h2">AI Assistant</Typography>
+          <Box flexGrow={2}>
+            {/*{!replyShown && (*/}
+            {/*  <Stack*/}
+            {/*    direction="column"*/}
+            {/*    alignItems="center"*/}
+            {/*    justifyContent="center"*/}
+            {/*    gap={2}*/}
+            {/*    sx={{ width: '100%', height: '100%' }}*/}
+            {/*  >*/}
+            {/*    <Typography*/}
+            {/*      variant="subtitle2"*/}
+            {/*      sx={{ width: '100%', maxWidth: '720px' }}*/}
+            {/*    >*/}
+            {/*      Some examples of what you can do:*/}
+            {/*    </Typography>*/}
+            {/*    <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>*/}
+            {/*      <AiCard*/}
+            {/*        Icon={Icon1}*/}
+            {/*        title="Find documents quickly"*/}
+            {/*        body="Type any prompt and we’ll look for all related documents and show you relevant information organised."*/}
+            {/*        onClick={onCardClick}*/}
+            {/*      />*/}
+            {/*      <AiCard*/}
+            {/*        Icon={Icon2}*/}
+            {/*        title="Automate & schedule"*/}
+            {/*        body="Schedule payments, emails and notifications. Create new*/}
+            {/*            documents, approval policies or any other items."*/}
+            {/*        onClick={onCardClick}*/}
+            {/*      />*/}
+            {/*      <AiCard*/}
+            {/*        Icon={Icon3}*/}
+            {/*        title="Generate custom reports"*/}
+            {/*        body="Choose what information to combine is a custom-made*/}
+            {/*            reports tailored to exact needs of your business."*/}
+            {/*        onClick={onCardClick}*/}
+            {/*      />*/}
+            {/*    </Stack>*/}
+            {/*  </Stack>*/}
+            {/*)}*/}
 
-          {replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />
-            </Stack>
-          )}
-        </Box>
-        <Stack alignItems="center" justifyContent="center">
-          <SearchBar />
+            {/*{replyShown && (*/}
+            {/*  <Stack*/}
+            {/*    direction="column"*/}
+            {/*    alignItems="center"*/}
+            {/*    justifyContent="center"*/}
+            {/*    gap={2}*/}
+            {/*    sx={{ width: '100%', height: '100%' }}*/}
+            {/*  >*/}
+            {/*    <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />*/}
+            {/*  </Stack>*/}
+            {/*)}*/}
+          </Box>
+          <Stack alignItems="center" justifyContent="center">
+            <SearchBar />
+          </Stack>
         </Stack>
-      </Stack>
-    </Box>
+      </Box>
+    </ChatContextProvider>
   );
 }
 
@@ -161,27 +210,16 @@ const AiCard = ({
 
 const SearchBar = () => {
   const [message, setMessage] = useState('');
-  const isGeneratingReply = useRef(false);
 
-  const { chatClient } = useMoniteContext();
+  const { isAnsweringQuestion, sendMessage, stopAnswering } = useChatContext();
 
-  const sendMessage = async () => {
-    if (isGeneratingReply.current) return;
-    isGeneratingReply.current = true;
-    try {
-      console.log('Chat message:', message);
-      const responseStream = await chatClient!.sendMessage(message, '');
-      const reader = responseStream.getReader();
-      for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
-        const { value, done } = await reader.read();
-        if (done) {
-          break;
-        }
-        console.log(value.data.message);
-      }
-    } finally {
-      isGeneratingReply.current = false;
-    }
+  const onSendClicked = () => {
+    console.log('Chat message:', message);
+    sendMessage(message);
+  };
+
+  const onStopClicked = () => {
+    stopAnswering();
   };
 
   return (
@@ -192,9 +230,8 @@ const SearchBar = () => {
       value={message}
       onChange={(e) => setMessage(e.target.value)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          // noinspection JSIgnoredPromiseFromCall
-          sendMessage();
+        if (e.key === 'Enter' && !isAnsweringQuestion) {
+          onSendClicked();
         }
       }}
       fullWidth
@@ -206,16 +243,50 @@ const SearchBar = () => {
               variant="outlined"
               size="small"
               className="Monite-withShadow"
-              onClick={sendMessage}
+              onClick={isAnsweringQuestion ? onStopClicked : onSendClicked}
               style={{ textTransform: 'none' }} // Ensures "Send" text is not all caps
             >
-              Send
+              {isAnsweringQuestion ? 'Stop' : 'Send'}
             </Button>
           </InputAdornment>
         ),
       }}
     />
   );
+};
+
+const useStreamResponse = (
+  stream: ReadableStream<MoniteChatResponseChunk> | null | undefined,
+  onStreamRead: (stream: ReadableStream<MoniteChatResponseChunk>) => void
+) => {
+  const [responseText, setResponseText] = useState('');
+
+  useEffect(() => {
+    if (!stream) return;
+
+    const reader = stream.getReader();
+    const readStream = async () => {
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+
+          const chunkText = value.data.message;
+          setResponseText((prevText) => prevText + chunkText);
+        }
+      } catch (err) {
+        console.error('Error reading stream:', err);
+      } finally {
+        reader.releaseLock();
+        onStreamRead(stream);
+      }
+    };
+
+    // noinspection JSIgnoredPromiseFromCall
+    readStream();
+  }, [stream]);
+
+  return responseText;
 };
 
 const Icon1 = createSvgIcon(
