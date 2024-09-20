@@ -29,6 +29,7 @@ import {
   useRootElements,
   UserRoles as UserRolesBase,
 } from '@monite/sdk-react';
+import { createChatClient } from '@monite/sdk-react';
 import { Theme } from '@monite/sdk-react/mui-styles';
 import {
   Box,
@@ -58,11 +59,13 @@ import { useAppTheme } from '@/components/ThemeRegistry/AppThemeProvider';
 
 export const MoniteProvider = ({
   apiUrl,
+  chatApiUrl,
   entityId,
   entityUserId,
   children,
 }: {
   apiUrl: string;
+  chatApiUrl: string;
   entityId: string;
   entityUserId: string;
   children: ReactNode;
@@ -98,9 +101,15 @@ export const MoniteProvider = ({
     [apiUrl, entityId, fetchToken]
   );
 
+  const chatClient = useMemo(
+    () => createChatClient({ chatApiUrl, entityId, fetchToken }),
+    [chatApiUrl, entityId, fetchToken]
+  );
+
   return (
     <MoniteProviderBase
       monite={monite}
+      chatClient={chatClient}
       theme={theme}
       locale={{
         code: i18n.locale,

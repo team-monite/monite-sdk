@@ -9,6 +9,7 @@ import {
 import { createAPIClient, CreateMoniteAPIClientResult } from '@/api/client';
 import { createQueryClient } from '@/core/context/createQueryClient';
 import { MoniteQraftContext } from '@/core/context/MoniteAPIProvider';
+import { MoniteChatClient } from '@/core/context/MoniteChatClient';
 import {
   getLocaleWithDefaults,
   I18nLoader,
@@ -30,6 +31,7 @@ interface MoniteContextBaseValue {
   i18n: I18n;
   dateFnsLocale: DateFnsLocale;
   theme: Theme;
+  chatClient?: MoniteChatClient;
 }
 
 export interface MoniteContextValue
@@ -69,6 +71,7 @@ interface MoniteContextProviderProps {
   monite: MoniteSDK;
   locale: Partial<MoniteLocale> | undefined;
   theme: Theme;
+  chatClient?: MoniteChatClient;
   children: ReactNode;
 }
 
@@ -109,6 +112,7 @@ const ContextProvider = ({
   dateFnsLocale,
   theme,
   children,
+  chatClient,
 }: ContextProviderProps) => {
   const sentryHub = useMemo(() => {
     return typeof window !== 'undefined' && typeof document !== 'undefined' // Check if we are in the browser
@@ -153,6 +157,7 @@ const ContextProvider = ({
         api,
         version,
         requestFn,
+        chatClient,
       }}
     >
       {children}

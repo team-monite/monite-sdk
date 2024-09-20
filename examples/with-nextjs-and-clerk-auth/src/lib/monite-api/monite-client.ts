@@ -30,3 +30,9 @@ export const getMoniteApiVersion = (): string => {
     throw new Error('apiVersion is not exists in "@monite/sdk-api"');
   return moniteApiVersion;
 };
+
+export const getMoniteChatApiUrl = (): string => {
+  const chatbotApiUrl = process.env.MONITE_CHATBOT_API_URL;
+  if (!chatbotApiUrl) throw new Error('MONITE_CHATBOT_API_URL is not set');
+  return chatbotApiUrl;
+};

@@ -1,9 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-import Image from 'next/image';
-
+import { MoniteChatResponseChunk, useMoniteContext } from '@monite/sdk-react';
 import {
   Box,
   Button,
@@ -16,77 +22,148 @@ import {
   Typography,
 } from '@mui/material';
 
-import aiStub from './ai-stub-793.png';
+type PreviousChatMessage = {
+  message: string;
+  response: string;
+};
 
-export default function AiAssistantPage() {
-  const [replyShown, setReplyShown] = useState(false);
+type ChatContextType = {
+  previousMessages: PreviousChatMessage[];
+  currentMessage: string;
+  currentResponse: string;
+  isAnsweringQuestion: boolean;
+  sendMessage: (message: string) => Promise<void>;
+  stopAnswering: () => void;
+};
 
-  const onCardClick = () => {
-    // Do nothing on click - Alex told not to show fake response
-    // setReplyShown(true);
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+const ChatContextProvider = ({ children }: { children: ReactNode }) => {
+  const { chatClient } = useMoniteContext();
+  const [previousMessages, setPreviousMessages] = useState<
+    PreviousChatMessage[]
+  >([]);
+  const [currentResponseStream, setCurrentResponseStream] =
+    useState<ReadableStream<MoniteChatResponseChunk> | null>(null);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const currentResponse = useStreamResponse(
+    currentResponseStream,
+    (streamRead) => {
+      if (currentResponseStream === streamRead) {
+        setPreviousMessages((prevMessages) => [
+          ...prevMessages,
+          { message: currentMessage, response: currentResponse },
+        ]);
+        setCurrentResponseStream(null);
+        setCurrentMessage('');
+      }
+    }
+  );
+  const isAnsweringQuestion = useMemo(() => !!currentMessage, [currentMessage]);
+
+  // TODO: add threads support
+  const sendMessage = async (message: string) => {
+    if (isAnsweringQuestion)
+      throw new Error(
+        'Cannot send a message during response generation. Stop response generation first.'
+      );
+    setCurrentMessage(message);
+    const responseStream = await chatClient!.sendMessage(message, '');
+    setCurrentResponseStream(responseStream);
+  };
+
+  const stopAnswering = async () => {
+    if (!isAnsweringQuestion) return;
+    setCurrentMessage('');
+    const stream = currentResponseStream;
+    if (stream) {
+      setCurrentResponseStream(null);
+      await stream.cancel();
+    }
   };
 
   return (
-    <Box className="Monite-PageContainer Monite-AiAssistant">
-      <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
-        <Typography variant="h2">AI Assistant</Typography>
-        <Box flexGrow={2}>
-          {!replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Typography
-                variant="subtitle2"
-                sx={{ width: '100%', maxWidth: '720px' }}
-              >
-                Some examples of what you can do:
-              </Typography>
-              <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>
-                <AiCard
-                  Icon={Icon1}
-                  title="Find documents quickly"
-                  body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon2}
-                  title="Automate & schedule"
-                  body="Schedule payments, emails and notifications. Create new
-                      documents, approval policies or any other items."
-                  onClick={onCardClick}
-                />
-                <AiCard
-                  Icon={Icon3}
-                  title="Generate custom reports"
-                  body="Choose what information to combine is a custom-made
-                      reports tailored to exact needs of your business."
-                  onClick={onCardClick}
-                />
-              </Stack>
-            </Stack>
-          )}
+    <ChatContext.Provider
+      value={{
+        previousMessages,
+        currentMessage,
+        currentResponse,
+        isAnsweringQuestion,
+        sendMessage,
+        stopAnswering,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  );
+};
 
-          {replyShown && (
-            <Stack
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              gap={2}
-              sx={{ width: '100%', height: '100%' }}
-            >
-              <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />
+const useChatContext = () => {
+  const context = useContext(ChatContext);
+  if (!context) {
+    throw new Error(
+      'useChatContext must be used within an ChatContextProvider'
+    );
+  }
+  return context;
+};
+
+export default function AiAssistantPage() {
+  return (
+    <ChatContextProvider>
+      <Box className="Monite-PageContainer Monite-AiAssistant">
+        <Stack
+          direction="column"
+          alignItems="stretch"
+          justifyContent="stretch"
+          sx={{
+            width: '100%',
+            height: '100%',
+            maxHeight: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 3 }}>
+            AI Assistant
+          </Typography>
+          <Stack
+            flex={2}
+            direction="column"
+            alignItems="stretch"
+            justifyContent="flex-start"
+            sx={{
+              overflowY: 'auto',
+              py: 5,
+              width: '100%',
+              maxHeight: '100%',
+            }}
+          >
+            <Stack direction="row" gap={2} justifyContent="center">
+              <AiCard
+                Icon={Icon1}
+                title="Find documents quickly"
+                body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
+              />
+              <AiCard
+                Icon={Icon2}
+                title="Automate & schedule"
+                body="Schedule payments, emails and notifications. Create new
+                          documents, approval policies or any other items."
+              />
+              <AiCard
+                Icon={Icon3}
+                title="Generate custom reports"
+                body="Choose what information to combine is a custom-made
+                          reports tailored to exact needs of your business."
+              />
             </Stack>
-          )}
-        </Box>
-        <Stack alignItems="center" justifyContent="center">
-          <SearchBar />
+          </Stack>
+          <Stack alignItems="center" justifyContent="center" sx={{ mt: 3 }}>
+            <SearchBar />
+          </Stack>
         </Stack>
-      </Stack>
-    </Box>
+      </Box>
+    </ChatContextProvider>
   );
 }
 
@@ -99,7 +176,7 @@ const AiCard = ({
   Icon: typeof Icon1;
   title: string;
   body: string;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   return (
     <Card onClick={onClick}>
@@ -115,11 +192,17 @@ const AiCard = ({
 };
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleSearch = () => {
-    console.log('Search term:', searchTerm);
-    // Add your search handling logic here
+  const { isAnsweringQuestion, sendMessage, stopAnswering } = useChatContext();
+
+  const onSendClicked = () => {
+    console.log('Chat message:', message);
+    sendMessage(message);
+  };
+
+  const onStopClicked = () => {
+    stopAnswering();
   };
 
   return (
@@ -127,8 +210,13 @@ const SearchBar = () => {
       className="Monite-AiSearchField"
       variant="outlined"
       placeholder="What we can help you with?"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' && !isAnsweringQuestion) {
+          onSendClicked();
+        }
+      }}
       fullWidth
       sx={{ maxWidth: '720px', background: '#ffffff', borderRadius: '4px' }}
       InputProps={{
@@ -138,16 +226,50 @@ const SearchBar = () => {
               variant="outlined"
               size="small"
               className="Monite-withShadow"
-              onClick={handleSearch}
+              onClick={isAnsweringQuestion ? onStopClicked : onSendClicked}
               style={{ textTransform: 'none' }} // Ensures "Send" text is not all caps
             >
-              Send
+              {isAnsweringQuestion ? 'Stop' : 'Send'}
             </Button>
           </InputAdornment>
         ),
       }}
     />
   );
+};
+
+const useStreamResponse = (
+  stream: ReadableStream<MoniteChatResponseChunk> | null | undefined,
+  onStreamRead: (stream: ReadableStream<MoniteChatResponseChunk>) => void
+) => {
+  const [responseText, setResponseText] = useState('');
+
+  useEffect(() => {
+    if (!stream) return;
+
+    const reader = stream.getReader();
+    const readStream = async () => {
+      try {
+        for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
+          const { value, done } = await reader.read();
+          if (done) break;
+
+          const chunkText = value.data.message;
+          setResponseText((prevText) => prevText + chunkText);
+        }
+      } catch (err) {
+        console.error('Error reading stream:', err);
+      } finally {
+        reader.releaseLock();
+        onStreamRead(stream);
+      }
+    };
+
+    // noinspection JSIgnoredPromiseFromCall
+    readStream();
+  }, [onStreamRead, stream]);
+
+  return responseText;
 };
 
 const Icon1 = createSvgIcon(
