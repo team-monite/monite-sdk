@@ -59,10 +59,7 @@ const ChatContextProvider = ({ children }: { children: ReactNode }) => {
       }
     }
   );
-  const isAnsweringQuestion = useMemo(
-    () => !!currentMessage,
-    [currentResponseStream]
-  );
+  const isAnsweringQuestion = useMemo(() => !!currentMessage, [currentMessage]);
 
   // TODO: add threads support
   const sendMessage = async (message: string) => {
@@ -253,7 +250,7 @@ const useStreamResponse = (
     const reader = stream.getReader();
     const readStream = async () => {
       try {
-        while (true) {
+        for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
           const { value, done } = await reader.read();
           if (done) break;
 
@@ -270,7 +267,7 @@ const useStreamResponse = (
 
     // noinspection JSIgnoredPromiseFromCall
     readStream();
-  }, [stream]);
+  }, [onStreamRead, stream]);
 
   return responseText;
 };
