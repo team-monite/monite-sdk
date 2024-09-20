@@ -1,7 +1,5 @@
 import { MoniteFetchToken } from '@monite/sdk-api';
 
-export interface IMoniteChat {}
-
 type TokenProvider = () => Promise<{
   access_token: string;
   token_type: string;
