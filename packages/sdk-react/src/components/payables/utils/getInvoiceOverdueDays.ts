@@ -24,18 +24,16 @@ export const getInvoiceOverdueDays = (
 
   if (dueDate.getTime() === today.getTime()) return 0;
 
-  // TODO: Introduce type guards that will check based on receivable or payable data, instead of type assertion
   const isStatusOverdue = statuses.includes(
     invoice.status as components['schemas']['PayableStateEnum']
   );
   const isDateOverdue = dueDate.getTime() < today.getTime();
 
-  // Default calculation if overdue
-  if (isStatusOverdue && isDateOverdue) {
-    return Math.floor(
-      (today.getTime() - dueDate.getTime()) / MILLISECONDS_IN_A_DAY
-    );
+  if (!(isStatusOverdue && isDateOverdue)) {
+    return 0;
   }
 
-  return 0;
+  return Math.floor(
+    (today.getTime() - dueDate.getTime()) / MILLISECONDS_IN_A_DAY
+  );
 };
