@@ -35,15 +35,7 @@ export const DialogDetailsForm: Story = {
   },
   render: (args) => {
     return (
-      <Dialog
-        open={true}
-        fullScreen
-        onClose={() => {
-          action('onClose')();
-        }}
-        onSubmit={() => {}}
-        onClosed={action('onClosed')}
-      >
+      <Dialog alignDialog="right" open={true} onClose={action('onClose')}>
         <ExtendThemeProvider
           theme={{
             components: {
