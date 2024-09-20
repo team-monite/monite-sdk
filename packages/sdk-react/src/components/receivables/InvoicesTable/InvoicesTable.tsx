@@ -17,6 +17,7 @@ import { ReceivableCursorFields } from '@/enums/ReceivableCursorFields';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import {
   TablePagination,
   useTablePaginationThemeDefaultPageSize,
@@ -226,6 +227,7 @@ const InvoicesTableBase = ({
         sortable: false,
         width: 120,
         valueFormatter: (value) => (value ? i18n.date(value, dateFormat) : '—'),
+        renderCell: (params) => <DueDateCell data={params.row} />,
       },
       ...(invoiceActionCell ? [invoiceActionCell] : []),
     ];

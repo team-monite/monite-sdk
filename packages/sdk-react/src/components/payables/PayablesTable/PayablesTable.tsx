@@ -5,8 +5,6 @@ import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
-import { StyledChip } from '@/components/payables/PayableStatusChip/PayableStatusChip';
-import { isInvoiceOverdue } from '@/components/payables/utils/isInvoiceOverdue';
 import { useMoniteContext } from '@/core/context/MoniteContext';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import {
@@ -22,6 +20,7 @@ import { AccessRestriction } from '@/ui/accessRestriction';
 import { CounterpartCellById } from '@/ui/CounterpartCell';
 import { DataGridEmptyState } from '@/ui/DataGridEmptyState';
 import { GetNoRowsOverlay } from '@/ui/DataGridEmptyState/GetNoRowsOverlay';
+import { DueDateCell } from '@/ui/DueDateCell';
 import { LoadingPage } from '@/ui/loadingPage';
 import {
   TablePagination,
@@ -288,6 +287,7 @@ const PayablesTableBase = ({
           comment: 'Payables Table "Due date" heading title',
         }),
         width: 120,
+        renderCell: (params) => <DueDateCell data={params.row} />,
         valueFormatter: (
           value: components['schemas']['PayableResponseSchema']['due_date']
         ) => value && i18n.date(value, dateFormat),
@@ -302,26 +302,7 @@ const PayablesTableBase = ({
         }),
         display: 'flex',
         width: 160,
-        renderCell: (params) => {
-          const payable = params.row;
-          const isOverdue = isInvoiceOverdue(payable);
-
-          return (
-            <Box display="flex" alignItems="center" gap={1}>
-              <PayableStatusChip status={params.value} />
-              {isOverdue && (
-                <StyledChip
-                  // TODO: Consider refactoring to a custom component to allow better theming and control over styles (e.g., PayableStatusChip). This temporary solution adds specificity for the "Overdue" chip.
-                  className="Monite-PayableStatusChip Monite-PayableStatusChip-Overdue"
-                  status={params.value}
-                  color="error"
-                  label={t(i18n)`Overdue`}
-                  size={'small'}
-                />
-              )}
-            </Box>
-          );
-        },
+        renderCell: (params) => <PayableStatusChip status={params.value} />,
       },
       {
         field: 'amount',
