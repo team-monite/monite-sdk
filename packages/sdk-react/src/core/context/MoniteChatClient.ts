@@ -59,6 +59,24 @@ export const createChatClient = ({
     return await _tokenProvider();
   };
 
+  const parseMultipleJSONObjects = (text: string) => {
+    // Split the string into potential JSON objects
+    const jsonObjects = text.split(/(?<=})\s*(?={)/);
+
+    return jsonObjects
+      .map((objString) => {
+        try {
+          // Try parsing each object and return it if valid
+          return JSON.parse(objString);
+        } catch (error) {
+          // Handle parse error (e.g., log or skip invalid objects)
+          console.error('JSON Parse Error: ', error);
+          return null; // Or handle error as needed
+        }
+      })
+      .filter((obj) => obj !== null); // Filter out any failed parses
+  };
+
   const sendMessage = async (message: string, threadId: string = '') => {
     const token = await getToken();
     const response = await fetch(chatApiUrl, {
@@ -94,14 +112,15 @@ export const createChatClient = ({
       const { value, done } = await reader.read();
       if (done) break;
 
-      const text = decoder.decode(value, { stream: true });
-      console.log(text); // Process each chunk of the stream
-      const event = JSON.parse(text); // Assuming each chunk is valid JSON
-
+      const text = decoder.decode(value, { stream: true })?.trim() ?? '';
+      const events = parseMultipleJSONObjects(text);
       // Handle your event (e.g., process data)
-      console.log(event);
+      console.log(events);
 
-      if (event.data === '[STREAM_DONE]') {
+      if (
+        events.length > 0 &&
+        events[events.length - 1].data === '[STREAM_DONE]'
+      ) {
         console.log('Stream finished');
         break;
       }
