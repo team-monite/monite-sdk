@@ -33,6 +33,7 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import FindInPageOutlinedIcon from '@mui/icons-material/FindInPageOutlined';
 import { Box, CircularProgress, Stack } from '@mui/material';
+import { useThemeProps } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -52,9 +53,9 @@ import {
   FILTER_TYPE_OVERDUE,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue } from './types';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 
-interface PayablesTableProps {
+interface PayablesTableProps extends MonitePayableTableProps {
   /**
    * The event handler for a row click.
    *
@@ -122,11 +123,12 @@ const PayablesTableBase = ({
   onChangeFilter: onChangeFilterCallback,
   openFileInput,
   setIsCreateInvoiceDialogOpen,
+  ...inProps
 }: PayablesTableProps) => {
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { data: summaryData } = usePayablesTableSummaryData();
+  const { isShowingSummaryCards } = usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -428,13 +430,14 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      <SummaryCardsFilters
-        data={summaryData?.data ?? []}
-        onChangeFilter={onChangeFilter}
-        selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
-        sx={{ mb: 2 }}
-      />
-      <FiltersComponent onChangeFilter={onChangeFilter} />
+      {isShowingSummaryCards && (
+        <SummaryCardsFilters
+          onChangeFilter={onChangeFilter}
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
+      <FiltersComponent onChangeFilter={onChangeFilter} sx={{ mb: 2 }} />
       <DataGrid
         initialState={{
           sorting: {
@@ -501,19 +504,10 @@ const PayablesTableBase = ({
   );
 };
 
-const usePayablesTableSummaryData = () => {
-  const { api, queryClient } = useMoniteContext();
-
-  if (queryClient) {
-    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
-  }
-
-  return queryClient
-    ? api.payables.getPayablesAnalytics.useQuery(
-        {},
-        {
-          enabled: true,
-        }
-      )
-    : { data: null, isLoading: true };
-};
+export const usePayableTableThemeProps = (
+  inProps: Partial<MonitePayableTableProps>
+): MonitePayableTableProps =>
+  useThemeProps({
+    props: inProps,
+    name: 'MonitePayableTable',
+  });
