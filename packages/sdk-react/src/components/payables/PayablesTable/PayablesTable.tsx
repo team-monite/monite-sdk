@@ -127,7 +127,8 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards } = usePayableTableThemeProps(inProps);
+  const { isShowingSummaryCards, fieldOrder } =
+    usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -215,6 +216,13 @@ const PayablesTableBase = ({
     ],
     []
   );
+
+  const calculatedFieldOrder = useMemo<string[]>(() => {
+    if (fieldOrder && Array.isArray(fieldOrder)) {
+      return fieldOrder as string[];
+    }
+    return defaultFieldOrder;
+  }, [defaultFieldOrder, fieldOrder]);
 
   const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
@@ -351,14 +359,14 @@ const PayablesTableBase = ({
 
   const columns = useMemo<GridColDef[]>(() => {
     return columnsConfig.sort((a, b) => {
-      const aIndex = defaultFieldOrder.indexOf(a.field);
-      const bIndex = defaultFieldOrder.indexOf(b.field);
+      const aIndex = calculatedFieldOrder.indexOf(a.field);
+      const bIndex = calculatedFieldOrder.indexOf(b.field);
 
       if (aIndex === -1 || bIndex === -1) return 0;
 
       return aIndex - bIndex;
     });
-  }, [columnsConfig, defaultFieldOrder]);
+  }, [columnsConfig, calculatedFieldOrder]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
