@@ -29,7 +29,7 @@ export const getInvoiceOverdueDays = (
   );
   const isDateOverdue = dueDate.getTime() < today.getTime();
 
-  if (!(isStatusOverdue && isDateOverdue)) {
+  if (!isStatusOverdue || !isDateOverdue)) {
     return 0;
   }
 
