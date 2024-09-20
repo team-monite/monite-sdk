@@ -256,16 +256,55 @@ export const isFieldRequired = <TFieldValues extends FieldValues>(
   return isDefaultRequired || isOcrRequired;
 };
 
+export const isOcrMismatch = (
+  payableData: components['schemas']['PayableResponseSchema']
+) => {
+  const { amount_to_pay, counterpart_bank_account_id, other_extracted_data } =
+    payableData;
+
+  if (!other_extracted_data || !('total' in other_extracted_data)) {
+    return {
+      isAmountMismatch: false,
+      isBankAccountMismatch: false,
+    };
+  }
+
+  const { total: ocrTotal, counterpart_account_id: ocrBankAccountId } =
+    other_extracted_data;
+
+  const isAmountMismatch = amount_to_pay !== ocrTotal;
+
+  const isBankAccountMismatch =
+    counterpart_bank_account_id && ocrBankAccountId
+      ? counterpart_bank_account_id !== ocrBankAccountId
+      : false;
+
+  return {
+    isAmountMismatch,
+    isBankAccountMismatch,
+  };
+};
+
+export type OcrMismatchField =
+  | keyof Pick<
+      components['schemas']['PayableResponseSchema'],
+      'amount_to_pay' | 'counterpart_bank_account_id'
+    >;
+
+export type OcrMismatchFields =
+  | Partial<Record<OcrMismatchField, boolean>>
+  | undefined;
+
 export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
   ocrRequiredFields?: OcrRequiredFields;
+  ocrMismatchFields?: OcrMismatchFields;
 }
 
 export const usePayableDetailsThemeProps = (
   inProps?: Partial<MonitePayableDetailsInfoProps>
-) => {
-  return useThemeProps({
+) =>
+  useThemeProps({
     props: inProps,
     name: 'MonitePayableDetailsInfo',
   });
-};

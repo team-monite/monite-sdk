@@ -1,18 +1,22 @@
 import { ReactNode } from 'react';
 
 import { classNames } from '@/utils/css-utils';
-import { Stack } from '@mui/material';
+import { Stack, SxProps } from '@mui/material';
+
+import { Theme } from 'mui-styles';
 
 interface FilterContainerProps {
   className?: string;
   searchField?: ReactNode;
   children: ReactNode;
+  sx?: SxProps<Theme>;
 }
 
 export const FilterContainer = ({
   className,
   searchField,
   children,
+  sx,
 }: FilterContainerProps) => {
   return (
     <Stack
@@ -20,16 +24,22 @@ export const FilterContainer = ({
       justifyContent="space-between"
       alignItems="center"
       className={classNames('Monite-Filters', className)}
-      sx={{
-        '& > *': {
-          flexBasis: 'fit-content',
-          flexGrow: 1,
+      sx={Object.assign(
+        {
+          '& > *': {
+            flexBasis: 'fit-content',
+            flexGrow: 1,
+          },
+          '& > .Monite-SearchField': {
+            maxWidth: '400px',
+            width: '100%',
+          },
+          '& > .Monite-Filters-Group': {
+            overflow: 'auto',
+          },
         },
-        '& > .Monite-SearchField': {
-          maxWidth: '400px',
-          width: '100%',
-        },
-      }}
+        sx || {}
+      )}
     >
       {searchField}
       <Stack
