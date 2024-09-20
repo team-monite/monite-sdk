@@ -77,6 +77,15 @@ export const createChatClient = ({
       .filter((obj) => obj !== null); // Filter out any failed parses
   };
 
+  const getEncoding = (response: Response) => {
+    // Get the content-type header
+    // eslint-disable-next-line lingui/no-unlocalized-strings
+    const contentType = response.headers.get('Content-Type') || 'text/plain';
+    // Parse the charset from the content-type header (default to utf-8)
+    const charsetMatch = contentType.match(/charset=([^;]*)/);
+    return charsetMatch ? charsetMatch[1] : 'utf-8';
+  };
+
   const sendMessage = async (message: string, threadId: string = '') => {
     const token = await getToken();
     const response = await fetch(chatApiUrl, {
@@ -96,13 +105,7 @@ export const createChatClient = ({
       throw new Error(`Network response was not ok: ${await response.text()}`);
     }
 
-    // Get the content-type header
-    // eslint-disable-next-line lingui/no-unlocalized-strings
-    const contentType = response.headers.get('Content-Type') || 'text/plain';
-
-    // Parse the charset from the content-type header (default to utf-8)
-    const charsetMatch = contentType.match(/charset=([^;]*)/);
-    const encoding = charsetMatch ? charsetMatch[1] : 'utf-8';
+    const encoding = getEncoding(response);
 
     // Use the correct decoder based on the encoding
     const decoder = new TextDecoder(encoding);
