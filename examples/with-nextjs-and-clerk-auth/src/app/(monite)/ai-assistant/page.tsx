@@ -112,12 +112,6 @@ const useChatContext = () => {
 };
 
 export default function AiAssistantPage() {
-  const [replyShown, setReplyShown] = useState(false);
-
-  const onCardClick = () => {
-    // const responseStream = await chatClient.sendMessage()
-  };
-
   return (
     <ChatContextProvider>
       <Box className="Monite-PageContainer Monite-AiAssistant">
@@ -152,21 +146,18 @@ export default function AiAssistantPage() {
                 Icon={Icon1}
                 title="Find documents quickly"
                 body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
-                onClick={onCardClick}
               />
               <AiCard
                 Icon={Icon2}
                 title="Automate & schedule"
                 body="Schedule payments, emails and notifications. Create new
                           documents, approval policies or any other items."
-                onClick={onCardClick}
               />
               <AiCard
                 Icon={Icon3}
                 title="Generate custom reports"
                 body="Choose what information to combine is a custom-made
                           reports tailored to exact needs of your business."
-                onClick={onCardClick}
               />
             </Stack>
           </Stack>
@@ -188,7 +179,7 @@ const AiCard = ({
   Icon: typeof Icon1;
   title: string;
   body: string;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   return (
     <Card onClick={onClick}>
