@@ -202,7 +202,21 @@ const PayablesTableBase = ({
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
   const dateFormat = useDateFormat();
 
-  const columns = useMemo<GridColDef[]>(() => {
+  const defaultFieldOrder = useMemo<string[]>(
+    () => [
+      'document_id',
+      'counterpart_id',
+      'created_at',
+      'issued_at',
+      'due_date',
+      'status',
+      'amount',
+      'pay',
+    ],
+    []
+  );
+
+  const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'document_id',
@@ -334,6 +348,17 @@ const PayablesTableBase = ({
       },
     ];
   }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return columnsConfig.sort((a, b) => {
+      const aIndex = defaultFieldOrder.indexOf(a.field);
+      const bIndex = defaultFieldOrder.indexOf(b.field);
+
+      if (aIndex === -1 || bIndex === -1) return 0;
+
+      return aIndex - bIndex;
+    });
+  }, [columnsConfig, defaultFieldOrder]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
