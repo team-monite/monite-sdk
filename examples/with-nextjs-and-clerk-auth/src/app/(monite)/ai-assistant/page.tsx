@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 
+import { useMoniteContext } from '@monite/sdk-react';
 import {
   Box,
   Button,
@@ -18,12 +19,56 @@ import {
 
 import aiStub from './ai-stub-793.png';
 
+// const fetchToken = async () => {
+//   const res = await fetch(`https://api.sandbox.monite.com/v1/auth/token`, {
+//     method: 'POST',
+//     headers: {
+//       accept: 'application/json',
+//       'Content-Type': 'application/json',
+//       'x-monite-version': '2023-04-12',
+//     },
+//     body: JSON.stringify({
+//       grant_type: GrantType.ENTITY_USER,
+//       entity_user_id: '51eb4091-f5a7-462c-8e2e-ac42c44d12eb',
+//       client_id: '463e0b19-0cc4-4f60-9cef-3db0c205c5fa',
+//       client_secret: '4396bb50-a211-451d-921b-18381fed994e',
+//     }),
+//   });
+//
+//   if (!res.ok) {
+//     throw new Error(`Could not fetch token: ${await res.text()}`);
+//   }
+//
+//   return await res.json();
+// };
+//
+// console.log('creating chat');
+// const chatClient = createChatClient({
+//   chatApiUrl: 'https://app.sandbox.monite.com/v1/chat',
+//   entityId: '00c526b3-686e-4ad8-bffd-21d3302b32eb',
+//   fetchToken,
+// });
+//
+// const responseStream = await chatClient.sendMessage(
+//   `What's the biggest invoice amount`,
+//   ''
+// );
+// const reader = responseStream.getReader();
+// for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
+//   const { value, done } = await reader.read();
+//   if (done) {
+//     break;
+//   }
+//   console.log(value.data.message);
+// }
+
 export default function AiAssistantPage() {
   const [replyShown, setReplyShown] = useState(false);
 
+  const { chatClient } = useMoniteContext();
+
   const onCardClick = () => {
-    // Do nothing on click - Alex told not to show fake response
-    // setReplyShown(true);
+    // const responseStream = await chatClient.sendMessage()
   };
 
   return (
@@ -115,11 +160,28 @@ const AiCard = ({
 };
 
 const SearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [message, setMessage] = useState('');
+  const isGeneratingReply = useRef(false);
 
-  const handleSearch = () => {
-    console.log('Search term:', searchTerm);
-    // Add your search handling logic here
+  const { chatClient } = useMoniteContext();
+
+  const sendMessage = async () => {
+    if (isGeneratingReply.current) return;
+    isGeneratingReply.current = true;
+    try {
+      console.log('Chat message:', message);
+      const responseStream = await chatClient!.sendMessage(message, '');
+      const reader = responseStream.getReader();
+      for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
+        const { value, done } = await reader.read();
+        if (done) {
+          break;
+        }
+        console.log(value.data.message);
+      }
+    } finally {
+      isGeneratingReply.current = false;
+    }
   };
 
   return (
@@ -127,8 +189,14 @@ const SearchBar = () => {
       className="Monite-AiSearchField"
       variant="outlined"
       placeholder="What we can help you with?"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          // noinspection JSIgnoredPromiseFromCall
+          sendMessage();
+        }
+      }}
       fullWidth
       sx={{ maxWidth: '720px', background: '#ffffff', borderRadius: '4px' }}
       InputProps={{
@@ -138,7 +206,7 @@ const SearchBar = () => {
               variant="outlined"
               size="small"
               className="Monite-withShadow"
-              onClick={handleSearch}
+              onClick={sendMessage}
               style={{ textTransform: 'none' }} // Ensures "Send" text is not all caps
             >
               Send

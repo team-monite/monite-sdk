@@ -47,11 +47,17 @@ export const MoniteProvider = ({
   theme,
   children,
   locale,
+  chatClient,
 }: MoniteProviderProps) => {
   const muiTheme = useMemo(() => createThemeWithDefaults(theme), [theme]);
 
   return (
-    <MoniteContextProvider monite={monite} locale={locale} theme={muiTheme}>
+    <MoniteContextProvider
+      monite={monite}
+      locale={locale}
+      theme={muiTheme}
+      chatClient={chatClient}
+    >
       <EmotionCacheProvider cacheKey="monite-css-baseline">
         <MuiThemeProvider theme={muiTheme}>
           <ContainerCssBaseline enableColorScheme />
