@@ -130,6 +130,8 @@ export const InvoiceRecurrenceForm = ({
       endDate: recurrence
         ? new Date(recurrence.end_year, recurrence.end_month - 1, 1)
         : null,
+      body_text: recurrence?.body_text ?? '',
+      subject_text: recurrence?.subject_text ?? '',
     }),
     [recurrence]
   );
@@ -204,7 +206,13 @@ export const InvoiceRecurrenceForm = ({
           spacing={3}
           id={formId}
           onSubmit={handleSubmit(
-            async ({ startDate, endDate, day_of_month }) => {
+            async ({
+              startDate,
+              endDate,
+              day_of_month,
+              body_text,
+              subject_text,
+            }) => {
               if (!startDate || !endDate || !day_of_month)
                 throw new Error('Invalid incoming data');
 
@@ -219,6 +227,8 @@ export const InvoiceRecurrenceForm = ({
                     day_of_month,
                     end_month,
                     end_year,
+                    body_text,
+                    subject_text,
                   })
                 : await createRecurrenceMutation.mutateAsync({
                     body: {
@@ -228,9 +238,8 @@ export const InvoiceRecurrenceForm = ({
                       end_year,
                       start_month,
                       start_year,
-                      // TODO: add support for recurrence body and subject text
-                      body_text: '',
-                      subject_text: '',
+                      body_text,
+                      subject_text,
                     },
                   });
 
@@ -389,6 +398,8 @@ const useValidationSchema = () => {
             .required(t(i18n)`Required`),
       })
       .label(t(i18n)`Issue at`),
+    body_text: yup.string().label(t(i18n)`Body`),
+    subject_text: yup.string().label(t(i18n)`Subject`),
   });
 
   return shape;
