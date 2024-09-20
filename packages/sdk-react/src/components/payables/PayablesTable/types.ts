@@ -27,3 +27,7 @@ export type FilterValue =
   | Date
   | string
   | null;
+
+export interface MonitePayableTableProps {
+  isShowingSummaryCards?: boolean;
+}

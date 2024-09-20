@@ -303,9 +303,8 @@ export interface MonitePayableDetailsInfoProps {
 
 export const usePayableDetailsThemeProps = (
   inProps?: Partial<MonitePayableDetailsInfoProps>
-) => {
-  return useThemeProps({
+) =>
+  useThemeProps({
     props: inProps,
     name: 'MonitePayableDetailsInfo',
   });
-};
