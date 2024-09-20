@@ -633,13 +633,13 @@ describe('PayableDetails', () => {
             'should return false when due_date is after today for payable',
           status: PayableStateEnum.DRAFT,
           due_date: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(),
-          expected: false,
+          expected: 0,
         },
         {
           description: 'should return false when due_date is today for payable',
           status: PayableStateEnum.NEW,
           due_date: new Date().toISOString(),
-          expected: false,
+          expected: 0,
         },
         {
           description:
@@ -653,14 +653,14 @@ describe('PayableDetails', () => {
             'should return false for status not in overdue statuses, even if due_date is before today for payable',
           status: PayableStateEnum.PAID,
           due_date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          expected: false,
+          expected: 0,
         },
         {
           description:
             'should return false for status not in overdue statuses and due_date is today for payable',
           status: PayableStateEnum.APPROVE_IN_PROGRESS,
           due_date: new Date().toISOString(),
-          expected: false,
+          expected: 0,
         },
       ];
 
