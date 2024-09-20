@@ -95,6 +95,7 @@ const EditInvoiceDetailsContent = ({
         measure_unit_id: lineItem.product.measure_unit?.id ?? '',
       })),
       vat_exemption_rationale: invoice.vat_exemption_rationale ?? '',
+      memo: invoice.memo ?? '',
 
       /** Items section */
       entity_bank_account_id: invoice.entity_bank_account?.id ?? '',
@@ -197,6 +198,7 @@ const EditInvoiceDetailsContent = ({
                     counterpart_vat_id_id:
                       values.counterpart_vat_id_id || undefined,
                     currency: actualCurrency,
+                    memo: values.memo,
                     vat_exemption_rationale: values.vat_exemption_rationale,
                     // @ts-expect-error - we need to send `null`, but the backend doesn't provide a correct type
                     counterpart_shipping_address_id:

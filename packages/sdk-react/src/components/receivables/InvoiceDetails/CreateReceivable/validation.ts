@@ -134,6 +134,10 @@ export const getCreateInvoiceValidationSchema = (
     vat_exemption_rationale: yup
       .string()
       .label(t(i18n)`VAT exemption rationale`),
+    memo: yup
+      .string()
+      .label(t(i18n)`Memo`)
+      .optional(),
     payment_terms_id: yup
       .string()
       .label(t(i18n)`Payment terms`)
@@ -181,6 +185,10 @@ export const getUpdateInvoiceValidationSchema = (
     vat_exemption_rationale: yup
       .string()
       .label(t(i18n)`VAT exemption rationale`),
+    memo: yup
+      .string()
+      .label(t(i18n)`Memo`)
+      .optional(),
     payment_terms_id: yup
       .string()
       .label(t(i18n)`Payment terms`)
