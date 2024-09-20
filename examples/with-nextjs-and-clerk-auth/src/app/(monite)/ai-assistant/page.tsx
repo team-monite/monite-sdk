@@ -121,61 +121,56 @@ export default function AiAssistantPage() {
   return (
     <ChatContextProvider>
       <Box className="Monite-PageContainer Monite-AiAssistant">
-        <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
-          <Typography variant="h2">AI Assistant</Typography>
-          <Box flexGrow={2}>
-            {/*{!replyShown && (*/}
-            {/*  <Stack*/}
-            {/*    direction="column"*/}
-            {/*    alignItems="center"*/}
-            {/*    justifyContent="center"*/}
-            {/*    gap={2}*/}
-            {/*    sx={{ width: '100%', height: '100%' }}*/}
-            {/*  >*/}
-            {/*    <Typography*/}
-            {/*      variant="subtitle2"*/}
-            {/*      sx={{ width: '100%', maxWidth: '720px' }}*/}
-            {/*    >*/}
-            {/*      Some examples of what you can do:*/}
-            {/*    </Typography>*/}
-            {/*    <Stack direction="row" gap={2} sx={{ maxWidth: '720px' }}>*/}
-            {/*      <AiCard*/}
-            {/*        Icon={Icon1}*/}
-            {/*        title="Find documents quickly"*/}
-            {/*        body="Type any prompt and we’ll look for all related documents and show you relevant information organised."*/}
-            {/*        onClick={onCardClick}*/}
-            {/*      />*/}
-            {/*      <AiCard*/}
-            {/*        Icon={Icon2}*/}
-            {/*        title="Automate & schedule"*/}
-            {/*        body="Schedule payments, emails and notifications. Create new*/}
-            {/*            documents, approval policies or any other items."*/}
-            {/*        onClick={onCardClick}*/}
-            {/*      />*/}
-            {/*      <AiCard*/}
-            {/*        Icon={Icon3}*/}
-            {/*        title="Generate custom reports"*/}
-            {/*        body="Choose what information to combine is a custom-made*/}
-            {/*            reports tailored to exact needs of your business."*/}
-            {/*        onClick={onCardClick}*/}
-            {/*      />*/}
-            {/*    </Stack>*/}
-            {/*  </Stack>*/}
-            {/*)}*/}
-
-            {/*{replyShown && (*/}
-            {/*  <Stack*/}
-            {/*    direction="column"*/}
-            {/*    alignItems="center"*/}
-            {/*    justifyContent="center"*/}
-            {/*    gap={2}*/}
-            {/*    sx={{ width: '100%', height: '100%' }}*/}
-            {/*  >*/}
-            {/*    <Image src={aiStub} alt="" onClick={() => setReplyShown(false)} />*/}
-            {/*  </Stack>*/}
-            {/*)}*/}
-          </Box>
-          <Stack alignItems="center" justifyContent="center">
+        <Stack
+          direction="column"
+          alignItems="stretch"
+          justifyContent="stretch"
+          sx={{
+            width: '100%',
+            height: '100%',
+            maxHeight: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 3 }}>
+            AI Assistant
+          </Typography>
+          <Stack
+            flex={2}
+            direction="column"
+            alignItems="stretch"
+            justifyContent="flex-start"
+            sx={{
+              overflowY: 'auto',
+              py: 5,
+              width: '100%',
+              maxHeight: '100%',
+            }}
+          >
+            <Stack direction="row" gap={2} justifyContent="center">
+              <AiCard
+                Icon={Icon1}
+                title="Find documents quickly"
+                body="Type any prompt and we’ll look for all related documents and show you relevant information organised."
+                onClick={onCardClick}
+              />
+              <AiCard
+                Icon={Icon2}
+                title="Automate & schedule"
+                body="Schedule payments, emails and notifications. Create new
+                          documents, approval policies or any other items."
+                onClick={onCardClick}
+              />
+              <AiCard
+                Icon={Icon3}
+                title="Generate custom reports"
+                body="Choose what information to combine is a custom-made
+                          reports tailored to exact needs of your business."
+                onClick={onCardClick}
+              />
+            </Stack>
+          </Stack>
+          <Stack alignItems="center" justifyContent="center" sx={{ mt: 3 }}>
             <SearchBar />
           </Stack>
         </Stack>
