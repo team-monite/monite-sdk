@@ -25,12 +25,12 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
       display="flex"
       flexDirection="column"
       alignItems="start"
-      sx={overdueDays !== false ? { marginTop: 0.8 } : { marginTop: 2 }}
+      sx={overdueDays > 0 ? { marginTop: 0.8 } : { marginTop: 2 }}
     >
-      <Typography variant="body2" color={overdueDays !== false ? 'error' : ''}>
+      <Typography variant="body2" color={overdueDays > 0 ? 'error' : ''}>
         {formattedDate}
       </Typography>
-      {overdueDays !== false && (
+      {overdueDays > 0 && (
         <Typography
           variant="caption"
           color="error"
