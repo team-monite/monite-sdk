@@ -40,8 +40,20 @@ export const createTokenProvider = async (
   };
 };
 
+export type MoniteChatResponseChunk = {
+  data: {
+    message: string;
+    timestamp: number;
+  };
+  thread_id: string;
+  error: string;
+};
+
 export type MoniteChatClient = {
-  sendMessage: (message: string, threadId: string) => Promise<void>;
+  sendMessage: (
+    message: string,
+    threadId: string
+  ) => Promise<ReadableStream<MoniteChatResponseChunk>>;
 };
 
 export const createChatClient = ({
@@ -60,33 +72,31 @@ export const createChatClient = ({
   };
 
   const parseMultipleJSONObjects = (text: string) => {
-    // Split the string into potential JSON objects
     const jsonObjects = text.split(/(?<=})\s*(?={)/);
 
     return jsonObjects
       .map((objString) => {
         try {
-          // Try parsing each object and return it if valid
           return JSON.parse(objString);
         } catch (error) {
-          // Handle parse error (e.g., log or skip invalid objects)
           console.error('JSON Parse Error: ', error);
-          return null; // Or handle error as needed
+          return null;
         }
       })
-      .filter((obj) => obj !== null); // Filter out any failed parses
+      .filter((obj) => obj !== null);
   };
 
   const getEncoding = (response: Response) => {
-    // Get the content-type header
     // eslint-disable-next-line lingui/no-unlocalized-strings
     const contentType = response.headers.get('Content-Type') || 'text/plain';
-    // Parse the charset from the content-type header (default to utf-8)
     const charsetMatch = contentType.match(/charset=([^;]*)/);
     return charsetMatch ? charsetMatch[1] : 'utf-8';
   };
 
-  const sendMessage = async (message: string, threadId: string = '') => {
+  const sendMessage = async (
+    message: string,
+    threadId: string = ''
+  ): Promise<ReadableStream<MoniteChatResponseChunk>> => {
     const token = await getToken();
     const response = await fetch(chatApiUrl, {
       method: 'POST',
@@ -106,28 +116,36 @@ export const createChatClient = ({
     }
 
     const encoding = getEncoding(response);
-
-    // Use the correct decoder based on the encoding
     const decoder = new TextDecoder(encoding);
 
-    const reader = response.body!.getReader();
-    for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
-      const { value, done } = await reader.read();
-      if (done) break;
+    return new ReadableStream({
+      async start(controller) {
+        const reader = response.body!.getReader();
 
-      const text = decoder.decode(value, { stream: true })?.trim() ?? '';
-      const events = parseMultipleJSONObjects(text);
-      // Handle your event (e.g., process data)
-      console.log(events);
+        try {
+          for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
+            const { value, done } = await reader.read();
+            if (done) {
+              controller.close();
+              break;
+            }
 
-      if (
-        events.length > 0 &&
-        events[events.length - 1].data === '[STREAM_DONE]'
-      ) {
-        console.log('Stream finished');
-        break;
-      }
-    }
+            const text = decoder.decode(value, { stream: true })?.trim() ?? '';
+            const events = parseMultipleJSONObjects(text);
+            if (!events.length) continue;
+
+            if (events[events.length - 1].data === '[STREAM_DONE]') {
+              controller.close();
+              break;
+            } else {
+              events.forEach((event) => controller.enqueue(event));
+            }
+          }
+        } catch (err) {
+          controller.error(err);
+        }
+      },
+    });
   };
 
   return {

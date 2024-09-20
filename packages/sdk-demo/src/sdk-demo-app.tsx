@@ -39,5 +39,16 @@ import { createChatClient } from '@monite/sdk-react';
     fetchToken,
   });
 
-  await chatClient.sendMessage(`What's the biggest invoice amount`, '');
+  const responseStream = await chatClient.sendMessage(
+    `What's the biggest invoice amount`,
+    ''
+  );
+  const reader = responseStream.getReader();
+  for (let i = 0, maxMessageNumber = 10000; i < maxMessageNumber; i++) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    console.log(value.data.message);
+  }
 })();
