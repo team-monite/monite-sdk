@@ -299,6 +299,7 @@ export interface MonitePayableDetailsInfoProps {
   optionalFields?: OptionalFields;
   ocrRequiredFields?: OcrRequiredFields;
   ocrMismatchFields?: OcrMismatchFields;
+  isTagsDisabled?: boolean;
 }
 
 export const usePayableDetailsThemeProps = (
