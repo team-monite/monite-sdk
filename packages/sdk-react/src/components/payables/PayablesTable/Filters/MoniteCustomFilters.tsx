@@ -1,7 +1,5 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useEffect } from 'react';
 
-import { components } from '@/api';
-import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FilterValue } from '@/components/userRoles/types';
@@ -72,11 +70,8 @@ const MoniteCustomFilter = ({
   const isAllItems = title === 'all';
   const theme = useTheme();
 
-  const titleText = isAllItems
-    ? t(i18n)`All items`
-    : getRowToStatusTextMap(i18n)[
-        title as components['schemas']['PayableStateEnum']
-      ];
+  // Here, we're mapping the title text or using default text
+  const titleText = isAllItems ? t(i18n)`All items` : title;
 
   const colorValue = theme.palette.primary.main;
 
@@ -107,40 +102,15 @@ const MoniteCustomFilter = ({
           alignItems={isAllItems ? 'flex-start' : 'center'}
           flexDirection={'row'}
         >
-          {isAllItems ? (
-            <Box
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-              alignItems="flex-start"
-              sx={{ width: '100%' }}
-            >
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                sx={{ fontSize: 16 }}
-                className={classNames(className, `${className}-Title-${title}`)}
-              >
-                {titleText}
-              </Typography>
-            </Box>
-          ) : (
-            <>
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                fontSize="small"
-                className={classNames(
-                  `${className}-TitleTypography`,
-                  `${className}-TitleTypography-${title}`,
-                  `${className}-TitleTypography-${title}-${selected}`
-                )}
-                color={colorValue}
-              >
-                {titleText}
-              </Typography>
-            </>
-          )}
+          <Typography
+            variant="h6"
+            fontWeight={700}
+            sx={{ fontSize: 16 }}
+            className={classNames(className, `${className}-Title-${title}`)}
+            color={colorValue}
+          >
+            {titleText}
+          </Typography>
         </Box>
       </CardContent>
     </StyledCard>
@@ -161,6 +131,10 @@ export const MoniteCustomFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
+  useEffect(() => {
+    console.log(tabFiltersData);
+  }, [tabFiltersData]);
+
   if (!tabFiltersData) {
     return (
       <Skeleton
@@ -178,7 +152,7 @@ export const MoniteCustomFilters = ({
     },
     ...Object.keys(tabFiltersData).map((key) => ({
       title: key,
-      ...tabFiltersData[key],
+      filterData: tabFiltersData[key],
     })),
   ];
 
