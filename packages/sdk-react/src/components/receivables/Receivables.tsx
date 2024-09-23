@@ -4,7 +4,10 @@ import { Dialog } from '@/components/Dialog';
 import { PageHeader } from '@/components/PageHeader';
 import { InvoiceDetails } from '@/components/receivables/InvoiceDetails';
 import { ReceivablesTable } from '@/components/receivables/ReceivablesTable';
-import { ReceivablesTableTabEnum } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
+import {
+  useControlledTab,
+  useReceivablesTableProps,
+} from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteScopedProviders } from '@/core/context/MoniteScopedProviders';
 import { useRootElements } from '@/core/context/RootElementsProvider';
 import { useEntityUserByAuthToken } from '@/core/queries';
@@ -27,9 +30,13 @@ const ReceivablesBase = () => {
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [isCreateInvoiceDialogOpen, setIsCreateInvoiceDialogOpen] =
     useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<ReceivablesTableTabEnum>(
-    ReceivablesTableTabEnum.Invoices
-  );
+
+  const { tabs: receivablesTabs, tab: inReceivablesTab } =
+    useReceivablesTableProps();
+
+  const [activeTabIndex, setActiveTabIndex] = useControlledTab({
+    tab: inReceivablesTab ?? 0,
+  });
 
   useEffect(() => {
     if (!invoiceId) {
@@ -103,8 +110,8 @@ const ReceivablesBase = () => {
       {!isReadAllowed && !isReadAllowedLoading && <AccessRestriction />}
       {isReadAllowed && (
         <ReceivablesTable
-          tab={activeTab}
-          onTabChange={setActiveTab}
+          tab={activeTabIndex}
+          onTabChange={setActiveTabIndex}
           onRowClick={onRowClick}
         />
       )}
@@ -131,7 +138,14 @@ const ReceivablesBase = () => {
           type={'invoice'}
           onCreate={() => {
             setIsCreateInvoiceDialogOpen(false);
-            setActiveTab(ReceivablesTableTabEnum.Invoices);
+            setActiveTabIndex(
+              Math.max(
+                0,
+                receivablesTabs?.findIndex(
+                  (tab) => tab.query?.type === 'invoice'
+                ) ?? 0
+              )
+            );
           }}
         />
       </Dialog>

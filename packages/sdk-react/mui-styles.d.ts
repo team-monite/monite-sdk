@@ -3,6 +3,7 @@ import { type PayableStatusChipProps } from '@/components/payables/PayableStatus
 import { InvoiceRecurrenceIterationStatusChipProps } from '@/components/receivables/InvoiceRecurrenceIterationStatusChip/InvoiceRecurrenceIterationStatusChip';
 import { InvoiceRecurrenceStatusChipProps } from '@/components/receivables/InvoiceRecurrenceStatusChip/InvoiceRecurrenceStatusChip';
 import { type InvoiceStatusChipProps } from '@/components/receivables/InvoiceStatusChip';
+import { MoniteReceivablesTableProps } from '@/components/receivables/ReceivablesTable/ReceivablesTable';
 import { MoniteTablePaginationProps } from '@/ui/table/TablePagination';
 import {
   ComponentsOverrides,
@@ -35,6 +36,7 @@ declare module '@mui/material/styles' {
     MoniteTablePagination: 'root' | 'menu';
     MoniteInvoiceRecurrenceStatusChip: 'root';
     MoniteInvoiceRecurrenceIterationStatusChip: 'root';
+    MoniteReceivablesTable: never; // no slots available
   }
 
   /**
@@ -47,6 +49,7 @@ declare module '@mui/material/styles' {
     MoniteTablePagination: Partial<MoniteTablePaginationProps>;
     MoniteInvoiceRecurrenceStatusChip: Partial<InvoiceRecurrenceStatusChipProps>;
     MoniteInvoiceRecurrenceIterationStatusChip: Partial<InvoiceRecurrenceIterationStatusChipProps>;
+    MoniteReceivablesTable: Partial<MoniteReceivablesTableProps>;
   }
 
   /**
@@ -59,5 +62,6 @@ declare module '@mui/material/styles' {
     MoniteTablePagination?: ComponentType<'MoniteTablePagination'>;
     MoniteInvoiceRecurrenceStatusChip?: ComponentType<'MoniteInvoiceRecurrenceStatusChip'>;
     MoniteInvoiceRecurrenceIterationStatusChip?: ComponentType<'MoniteInvoiceRecurrenceIterationStatusChip'>;
+    MoniteReceivablesTable?: ComponentType<'MoniteReceivablesTable'>;
   }
 }
