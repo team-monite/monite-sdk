@@ -50,6 +50,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_OVERDUE,
+  DEFAULT_FIELD_ORDER,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
@@ -203,26 +204,12 @@ const PayablesTableBase = ({
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
   const dateFormat = useDateFormat();
 
-  const defaultFieldOrder = useMemo<string[]>(
-    () => [
-      'document_id',
-      'counterpart_id',
-      'created_at',
-      'issued_at',
-      'due_date',
-      'status',
-      'amount',
-      'pay',
-    ],
-    []
-  );
-
   const calculatedFieldOrder = useMemo<string[]>(() => {
     if (fieldOrder && Array.isArray(fieldOrder)) {
       return fieldOrder as string[];
     }
-    return defaultFieldOrder;
-  }, [defaultFieldOrder, fieldOrder]);
+    return DEFAULT_FIELD_ORDER;
+  }, [fieldOrder]);
 
   const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
