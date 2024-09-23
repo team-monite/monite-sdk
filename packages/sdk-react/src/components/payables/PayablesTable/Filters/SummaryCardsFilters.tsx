@@ -74,7 +74,7 @@ const AmountTypography = styled(Typography)(() => ({
   alignItems: 'baseline',
 }));
 
-const className = 'Monite-SummaryCard';
+export const sumaryClassName = 'Monite-SummaryCard';
 
 const SummaryCard = ({
   status,
@@ -127,9 +127,9 @@ const SummaryCard = ({
       selected={selected}
       isAllItems={isAllItems}
       className={classNames(
-        className,
-        `${className}-${status}`,
-        selected ? `${className}-selected` : ''
+        sumaryClassName,
+        `${sumaryClassName}-${status}`,
+        selected ? `${sumaryClassName}-selected` : ''
       )}
     >
       <CardContent
@@ -160,8 +160,8 @@ const SummaryCard = ({
                 fontWeight={700}
                 sx={{ fontSize: 16 }}
                 className={classNames(
-                  className,
-                  `${className}-title-${status}`
+                  sumaryClassName,
+                  `${sumaryClassName}-title-${status}`
                 )}
               >
                 {statusText}
@@ -183,9 +183,9 @@ const SummaryCard = ({
                 fontWeight={700}
                 fontSize="small"
                 className={classNames(
-                  `${className}-StatusTypography`,
-                  `${className}-StatusTypography-${status}`,
-                  `${className}-StatusTypography-${status}-${selected}`
+                  `${sumaryClassName}-StatusTypography`,
+                  `${sumaryClassName}-StatusTypography-${status}`,
+                  `${sumaryClassName}-StatusTypography-${status}-${selected}`
                 )}
                 color={colorValue}
               >
@@ -221,9 +221,9 @@ const SummaryCard = ({
               variant="h5"
               fontWeight={700}
               className={classNames(
-                `${className}-AmountTypography`,
-                `${className}-AmountTypography-${status}`,
-                `${className}-AmountTypography-${status}-${selected}`
+                `${sumaryClassName}-AmountTypography`,
+                `${sumaryClassName}-AmountTypography-${status}`,
+                `${sumaryClassName}-AmountTypography-${status}-${selected}`
               )}
             >
               ${integerPart}.
@@ -263,7 +263,7 @@ export const SummaryCardsFilters = ({
       <Skeleton
         variant="rectangular"
         height={80}
-        className={classNames(`${className}-Skeleton`)}
+        className={classNames(`${sumaryClassName}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
     );

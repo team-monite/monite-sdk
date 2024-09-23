@@ -1,5 +1,6 @@
-import { ComponentProps, useEffect } from 'react';
+import { ComponentProps } from 'react';
 
+import { sumaryClassName } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FilterValue } from '@/components/userRoles/types';
@@ -59,8 +60,6 @@ const StyledCard = styled(Card)(
   })
 );
 
-const className = 'Monite-MoniteCustom';
-
 const MoniteCustomFilter = ({
   title,
   onClick,
@@ -70,10 +69,7 @@ const MoniteCustomFilter = ({
   const isAllItems = title === 'all';
   const theme = useTheme();
 
-  // Here, we're mapping the title text or using default text
   const titleText = isAllItems ? t(i18n)`All items` : title;
-
-  const colorValue = theme.palette.primary.main;
 
   return (
     <StyledCard
@@ -82,9 +78,9 @@ const MoniteCustomFilter = ({
       selected={selected}
       isAllItems={isAllItems}
       className={classNames(
-        className,
-        `${className}-${title}`,
-        selected ? `${className}-selected` : ''
+        sumaryClassName,
+        `${sumaryClassName}-${title}`,
+        selected ? `${sumaryClassName}-selected` : ''
       )}
     >
       <CardContent
@@ -106,8 +102,10 @@ const MoniteCustomFilter = ({
             variant="h6"
             fontWeight={700}
             sx={{ fontSize: 16 }}
-            className={classNames(className, `${className}-Title-${title}`)}
-            color={colorValue}
+            className={classNames(
+              sumaryClassName,
+              `${sumaryClassName}-Title-${title}`
+            )}
           >
             {titleText}
           </Typography>
@@ -136,7 +134,7 @@ export const MoniteCustomFilters = ({
       <Skeleton
         variant="rectangular"
         height={80}
-        className={classNames(`${className}-Skeleton`)}
+        className={classNames(`${sumaryClassName}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
     );

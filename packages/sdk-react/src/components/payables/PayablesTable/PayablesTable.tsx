@@ -159,12 +159,6 @@ const PayablesTableBase = ({
       entityUserId: user?.id,
     });
 
-  const customMoniteFilter = currentFilter[FILTER_TYPE_CUSTOM_MONITE]
-    ? tab_filters?.[
-        currentFilter[FILTER_TYPE_CUSTOM_MONITE] as keyof typeof tab_filters
-      ]
-    : undefined;
-
   const payablesQueryParameters = api.payables.getPayables.getQueryKey({
     query: {
       sort: sortModel?.field,
@@ -185,8 +179,8 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      ...(typeof customMoniteFilter === 'object' && customMoniteFilter
-        ? customMoniteFilter
+      ...(typeof currentFilter[FILTER_TYPE_CUSTOM_MONITE] === 'string'
+        ? tab_filters?.[currentFilter[FILTER_TYPE_CUSTOM_MONITE]] || {}
         : {}),
     },
   });
@@ -377,10 +371,9 @@ const PayablesTableBase = ({
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
     if (field === FILTER_TYPE_CUSTOM_MONITE && value) {
-      const selectedFilter = tab_filters?.[value as string];
       setCurrentFilter((prevFilter) => ({
         ...prevFilter,
-        [FILTER_TYPE_CUSTOM_MONITE]: selectedFilter || null,
+        [FILTER_TYPE_CUSTOM_MONITE]: value as keyof typeof tab_filters,
       }));
     } else {
       setCurrentFilter((prevFilter) => ({
