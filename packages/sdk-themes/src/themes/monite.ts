@@ -953,6 +953,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         'amount',
         'pay',
       ],
+      customFilters: ['all', 'testing', 'else'],
     },
   },
   MuiFormHelperText: {

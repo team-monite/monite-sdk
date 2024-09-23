@@ -2,6 +2,7 @@ import { ComponentProps } from 'react';
 
 import { FILTER_TYPE_CUSTOM_MONITE } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
+import { PayablesTabFilter } from '@/components/payables/PayablesTable/types';
 import { FilterValue } from '@/components/userRoles/types';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
@@ -38,12 +39,14 @@ interface SummaryCardsFiltersProps {
   onChangeFilter: (field: keyof GenericFilterTypes, value: FilterValue) => void;
   filterField: keyof GenericFilterTypes;
   selectedFilter: GenericExtendedStatusEnum | null;
-  data: Array<{
-    status: GenericExtendedStatusEnum;
-    count: number;
-    amount?: number;
-    statusText?: string;
-  }>;
+  data:
+    | Array<{
+        status: GenericExtendedStatusEnum;
+        count: number;
+        amount?: number;
+        statusText?: string;
+      }>
+    | Array<keyof PayablesTabFilter>;
   colorMap?: Record<string, string>;
   sx?: SxProps<Theme>;
 }
@@ -236,7 +239,7 @@ export const SummaryCardsFilters = ({
   onChangeFilter,
   selectedFilter,
   filterField,
-  data,
+  data = [],
   colorMap,
   sx,
 }: SummaryCardsFiltersProps) => {
@@ -291,13 +294,17 @@ export const SummaryCardsFilters = ({
     >
       {data.map((item) => (
         <SummaryCard
-          key={item.status}
-          status={item.status}
-          count={item.count}
-          amount={item.amount}
-          onClick={() => handleSelectStatus(item.status)}
-          selected={selectedFilter === item.status}
-          statusText={item.statusText}
+          key={typeof item === 'string' ? item : item.status}
+          status={typeof item === 'string' ? item : item.status}
+          count={typeof item === 'string' ? 0 : item.count}
+          amount={typeof item === 'string' ? 0 : item.amount}
+          onClick={() =>
+            handleSelectStatus(typeof item === 'string' ? item : item.status)
+          }
+          selected={
+            selectedFilter === (typeof item === 'string' ? item : item.status)
+          }
+          statusText={typeof item === 'string' ? item : item.statusText}
           colorMap={colorMap}
         />
       ))}

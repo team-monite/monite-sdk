@@ -491,7 +491,11 @@ const PayablesTableBase = ({
               ? FILTER_TYPE_CUSTOM_MONITE
               : FILTER_TYPE_STATUS
           }
-          data={summaryCardData}
+          data={
+            (customFilters?.length ?? 0) > 0
+              ? customFilters || []
+              : summaryCardData
+          }
           sx={{ mb: 2 }}
         />
       )}
