@@ -953,7 +953,15 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         'amount',
         'pay',
       ],
-      customFilters: ['all', 'testing', 'else'],
+      tab_filters: {
+        'New Large Invoices': {
+          status__in: ['draft', 'new'],
+          amount__gt: 1000,
+        },
+        Unpaid: {
+          status__in: ['waiting to be paid', 'partially paid'],
+        },
+      },
     },
   },
   MuiFormHelperText: {

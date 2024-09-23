@@ -40,10 +40,28 @@ export type FieldValueTypes =
   | 'amount'
   | 'pay';
 
+// {
+//   "New Large Invoices": {
+//   "status__in": ["draft", "new"],
+//     "amount_gt": 1000
+// },
+//   "Unpaid": {
+//   "status__in": ["waiting to be paid", "partially paid"]
+// }
+// const mockObject: Record<string, PayablesTabFilter> = {
+//   NewLargeInvoices: {
+//     status__in: ['draft', 'new'],
+//     amount__gt: 1000,
+//   },
+//   Unpaid: {
+//     status__in: ['waiting to be paid', 'partially paid'],
+//   },
+// };
+
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: Array<keyof FieldValueTypes>;
-  customFilters?: Array<keyof PayablesTabFilter>;
+  tab_filters?: Record<string, PayablesTabFilter>;
 }
 
 /*

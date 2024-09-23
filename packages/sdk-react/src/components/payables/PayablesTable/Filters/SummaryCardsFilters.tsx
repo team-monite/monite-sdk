@@ -1,9 +1,12 @@
 import { ComponentProps } from 'react';
 
-import { FILTER_TYPE_CUSTOM_MONITE } from '@/components/payables/PayablesTable/consts';
+import { components } from '@/api';
+import { STATUS_TO_MUI_MAP } from '@/components/approvalRequests/consts';
+import { getRowToStatusTextMap } from '@/components/payables/consts';
+import { DEFAULT_CARDS_ORDER } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
-import { PayablesTabFilter } from '@/components/payables/PayablesTable/types';
 import { FilterValue } from '@/components/userRoles/types';
+import { useMoniteContext } from '@/core/context/MoniteContext';
 import { classNames } from '@/utils/css-utils';
 import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
@@ -11,6 +14,8 @@ import {
   Box,
   Card,
   CardContent,
+  Palette,
+  PaletteColor,
   Skeleton,
   SxProps,
   Theme,
@@ -18,36 +23,26 @@ import {
 } from '@mui/material';
 import { lighten, styled, useTheme } from '@mui/material/styles';
 
-interface GenericFilterTypes {
-  status: string | 'all';
-  [FILTER_TYPE_CUSTOM_MONITE]: string | 'all';
-}
+type FilterTypes = {
+  status: components['schemas']['PayableStateEnum'] | 'all';
+};
 
-export type GenericExtendedStatusEnum = string | 'all';
+export type ExtendedPayableStateEnum =
+  | components['schemas']['PayableStateEnum']
+  | 'all'
+  | string;
 
-interface GenericSummaryCardProps {
-  status: GenericExtendedStatusEnum;
+interface SummaryCardProps {
+  status: ExtendedPayableStateEnum;
   count: number;
   amount?: number;
   onClick: () => void;
   selected: boolean;
-  statusText?: string;
-  colorMap?: Record<string, string>;
 }
 
 interface SummaryCardsFiltersProps {
-  onChangeFilter: (field: keyof GenericFilterTypes, value: FilterValue) => void;
-  filterField: keyof GenericFilterTypes;
-  selectedFilter: GenericExtendedStatusEnum | null;
-  data:
-    | Array<{
-        status: GenericExtendedStatusEnum;
-        count: number;
-        amount?: number;
-        statusText?: string;
-      }>
-    | Array<keyof PayablesTabFilter>;
-  colorMap?: Record<string, string>;
+  onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
+  selectedStatus: ExtendedPayableStateEnum | null;
   sx?: SxProps<Theme>;
 }
 
@@ -58,22 +53,20 @@ interface StyledCardProps extends ComponentProps<typeof Card> {
 }
 
 const StyledCard = styled(Card)(
-  ({ selected, isAllItems, theme }: StyledCardProps) => {
-    return {
-      cursor: 'pointer',
-      border: `2px solid ${
-        selected ? theme.palette.primary.main : 'transparent'
-      }`,
-      '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
-      display: 'flex',
-      padding: '16px 18px',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      height: 80,
-      minWidth: isAllItems ? '118px' : '220px',
-      flexShrink: 0,
-    };
-  }
+  ({ selected, isAllItems, theme }: StyledCardProps) => ({
+    cursor: 'pointer',
+    border: `2px solid ${
+      selected ? theme.palette.primary.main : 'transparent'
+    }`,
+    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
+    display: 'flex',
+    padding: '16px 18px',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: 80,
+    minWidth: isAllItems ? '118px' : '220px',
+    flexShrink: 0,
+  })
 );
 
 const AmountTypography = styled(Typography)(() => ({
@@ -89,9 +82,7 @@ const SummaryCard = ({
   amount,
   onClick,
   selected,
-  statusText,
-  colorMap,
-}: GenericSummaryCardProps) => {
+}: SummaryCardProps) => {
   const { i18n } = useLingui();
   const isAllItems = status === 'all';
   const theme = useTheme();
@@ -108,16 +99,33 @@ const SummaryCard = ({
     ? formattedAmount.split('.')
     : ['0', '00'];
 
-  const displayStatusText =
-    statusText || (isAllItems ? t(i18n)`All items` : status);
+  const statusText = isAllItems
+    ? t(i18n)`All items`
+    : getRowToStatusTextMap(i18n)[
+        status as components['schemas']['PayableStateEnum']
+      ];
 
-  const colorValue = colorMap ? colorMap[status] : theme.palette.text.primary;
+  const getColor = (theme: Palette, colorName: string) => {
+    const [colorGroup, colorShade] = colorName.split('.') as [
+      keyof Palette,
+      string
+    ];
+
+    const paletteGroup = theme[colorGroup] as PaletteColor | undefined;
+
+    return (
+      paletteGroup?.[colorShade as keyof PaletteColor] || theme.text.primary
+    );
+  };
+
+  const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
 
   return (
     <StyledCard
       theme={theme}
       onClick={onClick}
       selected={selected}
+      isAllItems={isAllItems}
       className={classNames(
         className,
         `${className}-${status}`,
@@ -156,7 +164,7 @@ const SummaryCard = ({
                   `${className}-title-${status}`
                 )}
               >
-                {displayStatusText}
+                {statusText}
               </Typography>
               <Typography
                 variant="body2"
@@ -181,7 +189,7 @@ const SummaryCard = ({
                 )}
                 color={colorValue}
               >
-                {displayStatusText}
+                {statusText}
               </Typography>
               <Typography
                 variant="body2"
@@ -237,12 +245,11 @@ const SummaryCard = ({
 
 export const SummaryCardsFilters = ({
   onChangeFilter,
-  selectedFilter,
-  filterField,
-  data = [],
-  colorMap,
+  selectedStatus,
   sx,
 }: SummaryCardsFiltersProps) => {
+  const { data: summaryData } = usePayablesTableSummaryData();
+
   const {
     containerRef,
     handleMouseDown,
@@ -251,7 +258,7 @@ export const SummaryCardsFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
-  if (!data || data.length === 0) {
+  if (!summaryData) {
     return (
       <Skeleton
         variant="rectangular"
@@ -262,8 +269,26 @@ export const SummaryCardsFilters = ({
     );
   }
 
-  const handleSelectStatus = (status: GenericExtendedStatusEnum) => {
-    onChangeFilter(filterField, status === 'all' ? null : status);
+  const enhancedData = [
+    {
+      status: 'all',
+      count: summaryData.data.reduce((acc, item) => acc + item.count, 0),
+      sum_total_amount: summaryData.data.reduce(
+        (acc, item) => acc + (item.sum_total_amount || 0),
+        0
+      ),
+    },
+    ...summaryData.data,
+  ];
+
+  const sortedData = enhancedData.sort(
+    (a, b) =>
+      DEFAULT_CARDS_ORDER.indexOf(a.status) -
+      DEFAULT_CARDS_ORDER.indexOf(b.status)
+  );
+
+  const handleSelectStatus = (status: ExtendedPayableStateEnum) => {
+    onChangeFilter('status', status === 'all' ? null : status);
   };
 
   return (
@@ -292,22 +317,31 @@ export const SummaryCardsFilters = ({
         ...sx,
       }}
     >
-      {data.map((item) => (
+      {sortedData.map((item) => (
         <SummaryCard
-          key={typeof item === 'string' ? item : item.status}
-          status={typeof item === 'string' ? item : item.status}
-          count={typeof item === 'string' ? 0 : item.count}
-          amount={typeof item === 'string' ? 0 : item.amount}
-          onClick={() =>
-            handleSelectStatus(typeof item === 'string' ? item : item.status)
-          }
-          selected={
-            selectedFilter === (typeof item === 'string' ? item : item.status)
-          }
-          statusText={typeof item === 'string' ? item : item.statusText}
-          colorMap={colorMap}
+          key={item.status}
+          status={item.status}
+          count={item.count}
+          amount={item.sum_total_amount}
+          onClick={() => handleSelectStatus(item.status)}
+          selected={selectedStatus === item.status}
         />
       ))}
     </Box>
+  );
+};
+
+const usePayablesTableSummaryData = () => {
+  const { api, queryClient } = useMoniteContext();
+
+  if (queryClient) {
+    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+  }
+
+  return api.payables.getPayablesAnalytics.useQuery(
+    {},
+    {
+      enabled: !!queryClient,
+    }
   );
 };

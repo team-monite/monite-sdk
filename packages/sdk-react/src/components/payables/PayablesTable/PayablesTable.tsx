@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
-import { getRowToStatusTextMap } from '@/components/payables/consts';
+import { MoniteCustomFilters } from '@/components/payables/PayablesTable/Filters/MoniteCustomFilters';
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -46,7 +46,6 @@ import { addDays, formatISO } from 'date-fns';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
-  DEFAULT_CARDS_ORDER,
   DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
   FILTER_TYPE_CUSTOM_MONITE,
@@ -130,12 +129,12 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards, fieldOrder, customFilters } =
+  const { isShowingSummaryCards, fieldOrder, tab_filters } =
     usePayableTableThemeProps(inProps);
 
-  //TODO: should not be executed if isShowingSummaryCards is false for performance reasons
-  const { data: summaryData, isLoading: isSummaryLoading } =
-    usePayablesTableSummaryData();
+  useEffect(() => {
+    console.log(tab_filters);
+  }, [tab_filters]);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -180,9 +179,6 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      ...(currentFilter[FILTER_TYPE_CUSTOM_MONITE]
-        ? { [currentFilter[FILTER_TYPE_CUSTOM_MONITE]]: true }
-        : {}),
     },
   });
 
@@ -361,46 +357,6 @@ const PayablesTableBase = ({
     });
   }, [columnsConfig, calculatedFieldOrder]);
 
-  const summaryCardData = useMemo(() => {
-    if (!summaryData) return [];
-
-    const defaultData = [
-      {
-        status: 'all',
-        count: summaryData.data.reduce((acc, item) => acc + item.count, 0),
-        amount: summaryData.data.reduce(
-          (acc, item) => acc + (item.sum_total_amount || 0),
-          0
-        ),
-        statusText: t(i18n)`All items`,
-      },
-      ...summaryData.data.map((item) => ({
-        status: item.status,
-        count: item.count,
-        amount: item.sum_total_amount,
-        statusText: getRowToStatusTextMap(i18n)[item.status],
-      })),
-    ];
-
-    return customFilters?.length
-      ? customFilters.map((filter) => {
-          const filterData = defaultData.find((data) => data.status === filter);
-          return (
-            filterData || {
-              status: filter,
-              count: 0,
-              amount: 0,
-              statusText: filter,
-            }
-          );
-        })
-      : defaultData.sort(
-          (a, b) =>
-            DEFAULT_CARDS_ORDER.indexOf(a.status) -
-            DEFAULT_CARDS_ORDER.indexOf(b.status)
-        );
-  }, [summaryData, i18n, customFilters]);
-
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
     columns,
@@ -478,24 +434,18 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      {isShowingSummaryCards && !isSummaryLoading && (
+      {isShowingSummaryCards && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
-          selectedFilter={
-            (customFilters?.length ?? 0) > 0
-              ? currentFilter[FILTER_TYPE_CUSTOM_MONITE] || 'all'
-              : currentFilter[FILTER_TYPE_STATUS] || 'all'
-          }
-          filterField={
-            (customFilters?.length ?? 0) > 0
-              ? FILTER_TYPE_CUSTOM_MONITE
-              : FILTER_TYPE_STATUS
-          }
-          data={
-            (customFilters?.length ?? 0) > 0
-              ? customFilters || []
-              : summaryCardData
-          }
+          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          sx={{ mb: 2 }}
+        />
+      )}
+      {tab_filters && Object.keys(tab_filters).length > 0 && (
+        <MoniteCustomFilters
+          tabFiltersData={tab_filters}
+          onChangeFilter={onChangeFilter}
+          selectedFilter={currentFilter[FILTER_TYPE_CUSTOM_MONITE] || 'all'}
           sx={{ mb: 2 }}
         />
       )}
@@ -564,16 +514,6 @@ const PayablesTableBase = ({
       />
     </Box>
   );
-};
-
-const usePayablesTableSummaryData = () => {
-  const { api, queryClient } = useMoniteContext();
-  if (queryClient) {
-    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
-  }
-  return api.payables.getPayablesAnalytics.useQuery(undefined, {
-    enabled: !!queryClient,
-  });
 };
 
 const usePayableTableThemeProps = (
