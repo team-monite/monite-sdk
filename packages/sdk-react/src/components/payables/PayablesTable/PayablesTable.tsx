@@ -159,6 +159,12 @@ const PayablesTableBase = ({
       entityUserId: user?.id,
     });
 
+  const customMoniteFilter = currentFilter[FILTER_TYPE_CUSTOM_MONITE]
+    ? tab_filters?.[
+        currentFilter[FILTER_TYPE_CUSTOM_MONITE] as keyof typeof tab_filters
+      ]
+    : undefined;
+
   const payablesQueryParameters = api.payables.getPayables.getQueryKey({
     query: {
       sort: sortModel?.field,
@@ -179,7 +185,9 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      ...(currentFilter[FILTER_TYPE_CUSTOM_MONITE] || {}),
+      ...(typeof customMoniteFilter === 'object' && customMoniteFilter
+        ? customMoniteFilter
+        : {}),
     },
   });
 
@@ -368,19 +376,13 @@ const PayablesTableBase = ({
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
-
-    // Check if the filter is related to the custom Monite filters
     if (field === FILTER_TYPE_CUSTOM_MONITE && value) {
-      // If a custom filter is selected, update the currentFilter based on tab_filters
       const selectedFilter = tab_filters?.[value as string];
-
-      // Apply the selected filter's conditions to the currentFilter
       setCurrentFilter((prevFilter) => ({
         ...prevFilter,
         [FILTER_TYPE_CUSTOM_MONITE]: selectedFilter || null,
       }));
     } else {
-      // For other filters, update the currentFilter normally
       setCurrentFilter((prevFilter) => ({
         ...prevFilter,
         [field]: value === 'all' ? null : value,
@@ -459,7 +461,11 @@ const PayablesTableBase = ({
         <MoniteCustomFilters
           tabFiltersData={tab_filters}
           onChangeFilter={onChangeFilter}
-          selectedFilter={currentFilter[FILTER_TYPE_CUSTOM_MONITE] || 'all'}
+          selectedFilter={
+            typeof currentFilter[FILTER_TYPE_CUSTOM_MONITE] === 'string'
+              ? currentFilter[FILTER_TYPE_CUSTOM_MONITE]
+              : 'all'
+          }
           sx={{ mb: 2 }}
         />
       )}

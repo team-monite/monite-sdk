@@ -19,7 +19,7 @@ export type FilterTypes = Partial<{
   [FILTER_TYPE_STATUS]: components['schemas']['PayableStateEnum'] | null;
   [FILTER_TYPE_DUE_DATE]: Date | null;
   [FILTER_TYPE_CREATED_AT]: Date | null;
-  [FILTER_TYPE_CUSTOM_MONITE]: keyof PayablesTabFilter;
+  [FILTER_TYPE_CUSTOM_MONITE]: PayablesTabFilter | null;
 }>;
 
 export type FilterValue =
