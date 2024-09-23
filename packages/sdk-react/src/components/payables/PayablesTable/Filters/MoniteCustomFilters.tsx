@@ -131,10 +131,6 @@ export const MoniteCustomFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
-  useEffect(() => {
-    console.log(tabFiltersData);
-  }, [tabFiltersData]);
-
   if (!tabFiltersData) {
     return (
       <Skeleton

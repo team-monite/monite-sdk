@@ -179,6 +179,7 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
+      ...(currentFilter[FILTER_TYPE_CUSTOM_MONITE] || {}),
     },
   });
 
@@ -366,12 +367,25 @@ const PayablesTableBase = ({
   );
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
-    console.log(field, value);
     setCurrentPaginationToken(null);
-    setCurrentFilter((prevFilter) => ({
-      ...prevFilter,
-      [field]: value === 'all' ? null : value,
-    }));
+
+    // Check if the filter is related to the custom Monite filters
+    if (field === FILTER_TYPE_CUSTOM_MONITE && value) {
+      // If a custom filter is selected, update the currentFilter based on tab_filters
+      const selectedFilter = tab_filters?.[value as string];
+
+      // Apply the selected filter's conditions to the currentFilter
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [FILTER_TYPE_CUSTOM_MONITE]: selectedFilter || null,
+      }));
+    } else {
+      // For other filters, update the currentFilter normally
+      setCurrentFilter((prevFilter) => ({
+        ...prevFilter,
+        [field]: value === 'all' ? null : value,
+      }));
+    }
 
     onChangeFilterCallback?.({ field, value });
   };
@@ -434,7 +448,7 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      {isShowingSummaryCards && (
+      {isShowingSummaryCards && !tab_filters && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
           selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
