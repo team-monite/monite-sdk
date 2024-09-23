@@ -1,5 +1,6 @@
 import { ComponentProps } from 'react';
 
+import { FILTER_TYPE_CUSTOM_MONITE } from '@/components/payables/PayablesTable/consts';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { FilterValue } from '@/components/userRoles/types';
 import { classNames } from '@/utils/css-utils';
@@ -18,6 +19,7 @@ import { lighten, styled, useTheme } from '@mui/material/styles';
 
 interface GenericFilterTypes {
   status: string | 'all';
+  [FILTER_TYPE_CUSTOM_MONITE]: string | 'all';
 }
 
 export type GenericExtendedStatusEnum = string | 'all';

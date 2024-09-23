@@ -481,8 +481,16 @@ const PayablesTableBase = ({
       {isShowingSummaryCards && !isSummaryLoading && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
-          selectedFilter={currentFilter[FILTER_TYPE_STATUS] || 'all'}
-          filterField={FILTER_TYPE_STATUS}
+          selectedFilter={
+            (customFilters?.length ?? 0) > 0
+              ? currentFilter[FILTER_TYPE_CUSTOM_MONITE] || 'all'
+              : currentFilter[FILTER_TYPE_STATUS] || 'all'
+          }
+          filterField={
+            (customFilters?.length ?? 0) > 0
+              ? FILTER_TYPE_CUSTOM_MONITE
+              : FILTER_TYPE_STATUS
+          }
           data={summaryCardData}
           sx={{ mb: 2 }}
         />
