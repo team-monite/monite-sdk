@@ -4,7 +4,7 @@ export const FILTER_TYPE_SEARCH = 'search';
 export const FILTER_TYPE_STATUS = 'status';
 export const FILTER_TYPE_DUE_DATE = 'due_date';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
-export const FILTER_TYPE_OVERDUE = 'overdue';
+export const FILTER_TYPE_CUSTOM_MONITE = 'custom_monite';
 
 export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
   'document_id',
@@ -15,4 +15,16 @@ export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
   'status',
   'amount',
   'pay',
+];
+
+export const DEFAULT_CARDS_ORDER = [
+  'all',
+  'draft',
+  'new',
+  'approve_in_progress',
+  'rejected',
+  'waiting_to_be_paid',
+  'partially_paid',
+  'paid',
+  'canceled',
 ];

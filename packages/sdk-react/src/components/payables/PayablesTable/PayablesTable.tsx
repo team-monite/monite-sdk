@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 
 import { components } from '@/api';
 import { ScopedCssBaselineContainerClassName } from '@/components/ContainerCssBaseline';
+import { getRowToStatusTextMap } from '@/components/payables/consts';
 import { SummaryCardsFilters } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { PayableStatusChip } from '@/components/payables/PayableStatusChip';
 import { useMoniteContext } from '@/core/context/MoniteContext';
@@ -45,20 +46,16 @@ import { addDays, formatISO } from 'date-fns';
 import { isPayableInOCRProcessing } from '../utils/isPayableInOcr';
 import { PayablesTableAction } from './components/PayablesTableAction';
 import {
+  DEFAULT_CARDS_ORDER,
+  DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
+  FILTER_TYPE_CUSTOM_MONITE,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
-  FILTER_TYPE_OVERDUE,
-  DEFAULT_FIELD_ORDER,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import {
-  FilterTypes,
-  FilterValue,
-  MonitePayableTableProps,
-  PayablesTabFilter,
-} from './types';
+import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
 
 interface PayablesTableProps extends MonitePayableTableProps {
   /**
@@ -109,14 +106,6 @@ interface PayablesTableProps extends MonitePayableTableProps {
    * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
-
-  /**
-   * The query to be used for the Table
-   */
-  query?: PayablesTabFilter;
-
-  /** Filters to be applied to the table */
-  filters?: Array<keyof PayablesTabFilter>;
 }
 
 export interface PayableGridSortModel {
@@ -141,8 +130,12 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards, fieldOrder } =
+  const { isShowingSummaryCards, fieldOrder, customFilters } =
     usePayableTableThemeProps(inProps);
+
+  //TODO: should not be executed if isShowingSummaryCards is false for performance reasons
+  const { data: summaryData, isLoading: isSummaryLoading } =
+    usePayablesTableSummaryData();
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -187,9 +180,9 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      is_overdue: currentFilter[FILTER_TYPE_OVERDUE]
-        ? currentFilter[FILTER_TYPE_OVERDUE]
-        : undefined,
+      ...(currentFilter[FILTER_TYPE_CUSTOM_MONITE]
+        ? { [currentFilter[FILTER_TYPE_CUSTOM_MONITE]]: true }
+        : {}),
     },
   });
 
@@ -368,6 +361,46 @@ const PayablesTableBase = ({
     });
   }, [columnsConfig, calculatedFieldOrder]);
 
+  const summaryCardData = useMemo(() => {
+    if (!summaryData) return [];
+
+    const defaultData = [
+      {
+        status: 'all',
+        count: summaryData.data.reduce((acc, item) => acc + item.count, 0),
+        amount: summaryData.data.reduce(
+          (acc, item) => acc + (item.sum_total_amount || 0),
+          0
+        ),
+        statusText: t(i18n)`All items`,
+      },
+      ...summaryData.data.map((item) => ({
+        status: item.status,
+        count: item.count,
+        amount: item.sum_total_amount,
+        statusText: getRowToStatusTextMap(i18n)[item.status],
+      })),
+    ];
+
+    return customFilters?.length
+      ? customFilters.map((filter) => {
+          const filterData = defaultData.find((data) => data.status === filter);
+          return (
+            filterData || {
+              status: filter,
+              count: 0,
+              amount: 0,
+              statusText: filter,
+            }
+          );
+        })
+      : defaultData.sort(
+          (a, b) =>
+            DEFAULT_CARDS_ORDER.indexOf(a.status) -
+            DEFAULT_CARDS_ORDER.indexOf(b.status)
+        );
+  }, [summaryData, i18n, customFilters]);
+
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,
     columns,
@@ -377,6 +410,7 @@ const PayablesTableBase = ({
   );
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
+    console.log(field, value);
     setCurrentPaginationToken(null);
     setCurrentFilter((prevFilter) => ({
       ...prevFilter,
@@ -444,10 +478,12 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      {isShowingSummaryCards && (
+      {isShowingSummaryCards && !isSummaryLoading && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
-          selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          selectedFilter={currentFilter[FILTER_TYPE_STATUS] || 'all'}
+          filterField={FILTER_TYPE_STATUS}
+          data={summaryCardData}
           sx={{ mb: 2 }}
         />
       )}
@@ -518,7 +554,17 @@ const PayablesTableBase = ({
   );
 };
 
-export const usePayableTableThemeProps = (
+const usePayablesTableSummaryData = () => {
+  const { api, queryClient } = useMoniteContext();
+  if (queryClient) {
+    api.payables.getPayablesAnalytics.invalidateQueries(queryClient);
+  }
+  return api.payables.getPayablesAnalytics.useQuery(undefined, {
+    enabled: !!queryClient,
+  });
+};
+
+const usePayableTableThemeProps = (
   inProps: Partial<MonitePayableTableProps>
 ): MonitePayableTableProps =>
   useThemeProps({
