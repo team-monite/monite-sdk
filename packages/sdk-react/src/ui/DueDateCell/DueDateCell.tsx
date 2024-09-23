@@ -38,7 +38,9 @@ export const DueDateCell = ({ data }: DueDateCellProps) => {
           fontSize="small"
         >
           {overdueDays > 0 &&
-            `${overdueDays} ${overdueDays === 1 ? 'day' : 'days'} overdue`}
+            t(i18n)`${overdueDays} ${
+              overdueDays === 1 ? t(i18n)`day` : t(i18n)`days`
+            } overdue`}
         </Typography>
       )}
     </Box>
