@@ -1,4 +1,5 @@
 import { components } from '@/api';
+import { API } from '@/api/client';
 
 import {
   FILTER_TYPE_CREATED_AT,
@@ -42,3 +43,7 @@ export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: Array<keyof FieldValueTypes>;
 }
+
+export type PayablesTabFilter = NonNullable<
+  API['payables']['getPayables']['types']['parameters']['query']
+>;

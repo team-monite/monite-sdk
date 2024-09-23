@@ -53,7 +53,12 @@ import {
   DEFAULT_FIELD_ORDER,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
-import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
+import {
+  FilterTypes,
+  FilterValue,
+  MonitePayableTableProps,
+  PayablesTabFilter,
+} from './types';
 
 interface PayablesTableProps extends MonitePayableTableProps {
   /**
@@ -104,6 +109,14 @@ interface PayablesTableProps extends MonitePayableTableProps {
    * @param {boolean} isOpen - A boolean value indicating whether the dialog should be open (true) or closed (false).
    */
   setIsCreateInvoiceDialogOpen?: (isOpen: boolean) => void;
+
+  /**
+   * The query to be used for the Table
+   */
+  query?: PayablesTabFilter;
+
+  /** Filters to be applied to the table */
+  filters?: Array<keyof PayablesTabFilter>;
 }
 
 export interface PayableGridSortModel {
