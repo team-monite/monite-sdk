@@ -1,3 +1,5 @@
+import { components } from '@/api';
+import { ExtendedPayableStateEnum } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { FieldValueTypes } from '@/components/payables/PayablesTable/types';
 
 export const FILTER_TYPE_SEARCH = 'search';
@@ -17,7 +19,7 @@ export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
   'pay',
 ];
 
-export const DEFAULT_CARDS_ORDER = [
+export const DEFAULT_CARDS_ORDER: ExtendedPayableStateEnum[] = [
   'all',
   'draft',
   'new',
