@@ -4858,7 +4858,7 @@ __metadata:
     react-use: "npm:^17.3.2"
     rimraf: "npm:~5.0.0"
     typescript: "npm:~5.5.4"
-    vite: "npm:~5.1.4"
+    vite: "npm:~5.1.8"
   languageName: unknown
   linkType: soft
 
@@ -8134,7 +8134,7 @@ __metadata:
     sass: "npm:^1.52.1"
     ts-node: "npm:~10.9.1"
     typescript: "npm:~5.5.4"
-    vite: "npm:~5.1.4"
+    vite: "npm:~5.1.8"
     web-vitals: "npm:^2.1.4"
     yup: "npm:~0.32.11"
   languageName: unknown
@@ -25388,9 +25388,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:~5.1.4":
-  version: 5.1.4
-  resolution: "vite@npm:5.1.4"
+"vite@npm:~5.1.8":
+  version: 5.1.8
+  resolution: "vite@npm:5.1.8"
   dependencies:
     esbuild: "npm:^0.19.3"
     fsevents: "npm:~2.3.3"
@@ -25424,7 +25424,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/e9003b853f0784260f4fe7ce0190124b347fd8fd6bf889a07080facd0d9a9667eaff4022eddb1ba3f0283ef69d15d77f84bca832082e48874a7a62e7f6d66b08
+  checksum: 10/94fedbcf083849eef359c785c67b4160e5a994978a13693b5cc32ddef1a2652de2adb21a77c801f09aa04ab4c22bd1335307f1b8efdd68567866407994ace0ac
   languageName: node
   linkType: hard
 
