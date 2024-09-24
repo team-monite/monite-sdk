@@ -953,22 +953,22 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         'amount',
         'pay',
       ],
-      tabFilters: {
+      summaryCardFilters: {
         'New Large Invoices': {
-          status__in: ['draft', 'new'], // Filter by multiple statuses
-          amount__gt: 1000, // Filter by amount greater than 1000
-          sort: 'created_at', // Sort by 'created_at'
-          order: 'asc', // Sort in ascending order
+          status__in: ['draft', 'new'],
+          amount__gt: 1000,
+          sort: 'created_at',
+          order: 'asc',
         },
         Unpaid: {
-          status__in: ['waiting_to_be_paid', 'partially_paid'], // Filter by statuses: waiting to be paid, partially paid
+          status__in: ['waiting_to_be_paid', 'partially_paid'],
         },
         'Overdue Invoices': {
-          status__in: ['waiting_to_be_paid'], // Filter by status waiting to be paid
-          overdue: true, // Filter by overdue invoices
+          status__in: ['waiting_to_be_paid'],
+          overdue: true,
         },
         'High-Value Invoices': {
-          amount__gte: 10000, // Amount greater than or equal to 10,000
+          amount__gte: 10000,
         },
       },
     },

@@ -5,7 +5,7 @@ export const FILTER_TYPE_SEARCH = 'search';
 export const FILTER_TYPE_STATUS = 'status';
 export const FILTER_TYPE_DUE_DATE = 'due_date';
 export const FILTER_TYPE_CREATED_AT = 'created_at';
-export const FILTER_TYPE_CUSTOM_MONITE = 'summary_card_filter';
+export const FILTER_TYPE_SUMMARY_CARD = 'summary_card_filter';
 
 export const DEFAULT_FIELD_ORDER: FieldValueTypes[] = [
   'document_id',

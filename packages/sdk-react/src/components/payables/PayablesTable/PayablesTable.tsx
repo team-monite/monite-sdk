@@ -48,7 +48,7 @@ import { PayablesTableAction } from './components/PayablesTableAction';
 import {
   DEFAULT_FIELD_ORDER,
   FILTER_TYPE_CREATED_AT,
-  FILTER_TYPE_CUSTOM_MONITE,
+  FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
@@ -129,7 +129,7 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards, fieldOrder, tabFilters } =
+  const { isShowingSummaryCards, fieldOrder, summaryCardFilters } =
     usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
@@ -175,8 +175,8 @@ const PayablesTableBase = ({
           })
         : undefined,
       document_id__icontains: currentFilter[FILTER_TYPE_SEARCH] || undefined,
-      ...(typeof currentFilter[FILTER_TYPE_CUSTOM_MONITE] === 'string'
-        ? tabFilters?.[currentFilter[FILTER_TYPE_CUSTOM_MONITE]] || {}
+      ...(typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+        ? summaryCardFilters?.[currentFilter[FILTER_TYPE_SUMMARY_CARD]] || {}
         : {}),
     },
   });
@@ -366,10 +366,10 @@ const PayablesTableBase = ({
 
   const onChangeFilter = (field: keyof FilterTypes, value: FilterValue) => {
     setCurrentPaginationToken(null);
-    if (field === FILTER_TYPE_CUSTOM_MONITE && value) {
+    if (field === FILTER_TYPE_SUMMARY_CARD && value) {
       setCurrentFilter((prevFilter) => ({
         ...prevFilter,
-        [FILTER_TYPE_CUSTOM_MONITE]: value as keyof typeof tabFilters,
+        [FILTER_TYPE_SUMMARY_CARD]: value as keyof typeof summaryCardFilters,
       }));
     } else {
       setCurrentFilter((prevFilter) => ({
@@ -439,20 +439,20 @@ const PayablesTableBase = ({
         pt: 2,
       }}
     >
-      {isShowingSummaryCards && !tabFilters && (
+      {isShowingSummaryCards && !summaryCardFilters && (
         <SummaryCardsFilters
           onChangeFilter={onChangeFilter}
           selectedStatus={currentFilter[FILTER_TYPE_STATUS] || 'all'}
           sx={{ mb: 2 }}
         />
       )}
-      {tabFilters && Object.keys(tabFilters).length > 0 && (
+      {summaryCardFilters && Object.keys(summaryCardFilters).length > 0 && (
         <MoniteCustomFilters
-          tabFiltersData={tabFilters}
+          summaryCardFiltersData={summaryCardFilters}
           onChangeFilter={onChangeFilter}
           selectedFilter={
-            typeof currentFilter[FILTER_TYPE_CUSTOM_MONITE] === 'string'
-              ? currentFilter[FILTER_TYPE_CUSTOM_MONITE]
+            typeof currentFilter[FILTER_TYPE_SUMMARY_CARD] === 'string'
+              ? currentFilter[FILTER_TYPE_SUMMARY_CARD]
               : 'all'
           }
           sx={{ mb: 2 }}

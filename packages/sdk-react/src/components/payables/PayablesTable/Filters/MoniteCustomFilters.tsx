@@ -1,4 +1,4 @@
-import { FILTER_TYPE_CUSTOM_MONITE } from '@/components/payables/PayablesTable/consts';
+import { FILTER_TYPE_SUMMARY_CARD } from '@/components/payables/PayablesTable/consts';
 import {
   summaryCardClassName,
   SummaryStyledCard,
@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-type FilterTypes = Record<typeof FILTER_TYPE_CUSTOM_MONITE, 'all'>;
+type FilterTypes = Record<typeof FILTER_TYPE_SUMMARY_CARD, 'all'>;
 
 export type ExtendedPayableStateEnum = 'all' | string;
 
@@ -33,7 +33,10 @@ interface MoniteCustomFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedFilter: ExtendedPayableStateEnum | null;
   sx?: SxProps<Theme>;
-  tabFiltersData: Pick<MonitePayableTableProps, 'tabFilters'>['tabFilters'];
+  summaryCardFiltersData: Pick<
+    MonitePayableTableProps,
+    'summaryCardFilters'
+  >['summaryCardFilters'];
 }
 
 const MoniteCustomFilter = ({
@@ -93,7 +96,7 @@ const MoniteCustomFilter = ({
 
 export const MoniteCustomFilters = ({
   onChangeFilter,
-  tabFiltersData,
+  summaryCardFiltersData,
   selectedFilter,
   sx,
 }: MoniteCustomFiltersProps) => {
@@ -105,7 +108,7 @@ export const MoniteCustomFilters = ({
     handleMouseMove,
   } = useDragScroll();
 
-  if (!tabFiltersData) {
+  if (!summaryCardFiltersData) {
     return (
       <Skeleton
         variant="rectangular"
@@ -120,14 +123,14 @@ export const MoniteCustomFilters = ({
     {
       title: 'all',
     },
-    ...Object.keys(tabFiltersData).map((key) => ({
+    ...Object.keys(summaryCardFiltersData).map((key) => ({
       title: key,
-      filterData: tabFiltersData[key],
+      filterData: summaryCardFiltersData[key],
     })),
   ];
 
   const handleSelectTitle = (title: ExtendedPayableStateEnum) => {
-    onChangeFilter(FILTER_TYPE_CUSTOM_MONITE, title === 'all' ? null : title);
+    onChangeFilter(FILTER_TYPE_SUMMARY_CARD, title === 'all' ? null : title);
   };
 
   return (

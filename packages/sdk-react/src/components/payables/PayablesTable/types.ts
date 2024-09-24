@@ -3,7 +3,7 @@ import { API } from '@/api/client';
 
 import {
   FILTER_TYPE_CREATED_AT,
-  FILTER_TYPE_CUSTOM_MONITE,
+  FILTER_TYPE_SUMMARY_CARD,
   FILTER_TYPE_DUE_DATE,
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
@@ -19,7 +19,7 @@ export type FilterTypes = Partial<{
   [FILTER_TYPE_STATUS]: components['schemas']['PayableStateEnum'] | null;
   [FILTER_TYPE_DUE_DATE]: Date | null;
   [FILTER_TYPE_CREATED_AT]: Date | null;
-  [FILTER_TYPE_CUSTOM_MONITE]: PayablesTabFilter | null;
+  [FILTER_TYPE_SUMMARY_CARD]: PayablesTabFilter | null;
 }>;
 
 export type FilterValue =
@@ -43,7 +43,7 @@ export type FieldValueTypes =
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: Array<keyof FieldValueTypes>;
-  tabFilters?: Record<string, PayablesTabFilter | null>;
+  summaryCardFilters?: Record<string, PayablesTabFilter | null>;
 }
 
 export type PayablesTabFilter = NonNullable<
