@@ -127,9 +127,9 @@ const SummaryCard = ({
       selected={selected}
       isAllItems={isAllItems}
       className={classNames(
-        sumaryClassName,
-        `${sumaryClassName}-${status}`,
-        selected ? `${sumaryClassName}-selected` : ''
+        summaryCardClassName,
+        `${summaryCardClassName}-${status}`,
+        selected ? `${summaryCardClassName}-selected` : ''
       )}
     >
       <CardContent
@@ -160,8 +160,8 @@ const SummaryCard = ({
                 fontWeight={700}
                 sx={{ fontSize: 16 }}
                 className={classNames(
-                  sumaryClassName,
-                  `${sumaryClassName}-title-${status}`
+                  summaryCardClassName,
+                  `${summaryCardClassName}-title-${status}`
                 )}
               >
                 {statusText}
@@ -183,9 +183,9 @@ const SummaryCard = ({
                 fontWeight={700}
                 fontSize="small"
                 className={classNames(
-                  `${sumaryClassName}-StatusTypography`,
-                  `${sumaryClassName}-StatusTypography-${status}`,
-                  `${sumaryClassName}-StatusTypography-${status}-${selected}`
+                  `${summaryCardClassName}-StatusTypography`,
+                  `${summaryCardClassName}-StatusTypography-${status}`,
+                  `${summaryCardClassName}-StatusTypography-${status}-${selected}`
                 )}
                 color={colorValue}
               >
@@ -221,9 +221,9 @@ const SummaryCard = ({
               variant="h5"
               fontWeight={700}
               className={classNames(
-                `${sumaryClassName}-AmountTypography`,
-                `${sumaryClassName}-AmountTypography-${status}`,
-                `${sumaryClassName}-AmountTypography-${status}-${selected}`
+                `${summaryCardClassName}-AmountTypography`,
+                `${summaryCardClassName}-AmountTypography-${status}`,
+                `${summaryCardClassName}-AmountTypography-${status}-${selected}`
               )}
             >
               ${integerPart}.
@@ -263,7 +263,7 @@ export const SummaryCardsFilters = ({
       <Skeleton
         variant="rectangular"
         height={80}
-        className={classNames(`${sumaryClassName}-Skeleton`)}
+        className={classNames(`${summaryCardClassName}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
     );

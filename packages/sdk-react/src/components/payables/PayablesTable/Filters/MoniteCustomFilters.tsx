@@ -1,5 +1,5 @@
 import {
-  sumaryClassName,
+  summaryCardClassName,
   SummaryStyledCard,
 } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
@@ -55,9 +55,9 @@ const MoniteCustomFilter = ({
       selected={selected}
       isAllItems={isAllItems}
       className={classNames(
-        sumaryClassName,
-        `${sumaryClassName}-${title}`,
-        selected ? `${sumaryClassName}-selected` : ''
+        summaryCardClassName,
+        `${summaryCardClassName}-${title}`,
+        selected ? `${summaryCardClassName}-selected` : ''
       )}
     >
       <CardContent
@@ -80,8 +80,8 @@ const MoniteCustomFilter = ({
             fontWeight={700}
             sx={{ fontSize: 16 }}
             className={classNames(
-              sumaryClassName,
-              `${sumaryClassName}-Title-${title}`
+              summaryCardClassName,
+              `${summaryCardClassName}-Title-${title}`
             )}
           >
             {titleText}
@@ -111,7 +111,7 @@ export const MoniteCustomFilters = ({
       <Skeleton
         variant="rectangular"
         height={80}
-        className={classNames(`${sumaryClassName}-Skeleton`)}
+        className={classNames(`${summaryCardClassName}-Skeleton`)}
         sx={{ m: 2, borderRadius: 3 }}
       />
     );
