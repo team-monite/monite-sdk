@@ -104,7 +104,7 @@
     "react-dom": "^18.2.0",
     "react-select-event": "~5.5.1",
     "rimraf": "~5.0.0",
-    "rollup": "~3.29.4",
+    "rollup": "~3.29.5",
     "storybook": "~7.6.7",
     "typescript": "~5.5.4"
   },
