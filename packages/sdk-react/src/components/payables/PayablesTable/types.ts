@@ -43,7 +43,7 @@ export type FieldValueTypes =
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: Array<keyof FieldValueTypes>;
-  tab_filters?: Record<string, PayablesTabFilter | null>;
+  tabFilters?: Record<string, PayablesTabFilter | null>;
 }
 
 export type PayablesTabFilter = NonNullable<

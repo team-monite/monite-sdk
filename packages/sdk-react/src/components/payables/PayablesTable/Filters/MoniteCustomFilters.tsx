@@ -33,7 +33,7 @@ interface MoniteCustomFiltersProps {
   onChangeFilter: (field: keyof FilterTypes, value: FilterValue) => void;
   selectedFilter: ExtendedPayableStateEnum | null;
   sx?: SxProps<Theme>;
-  tabFiltersData: Pick<MonitePayableTableProps, 'tab_filters'>['tab_filters'];
+  tabFiltersData: Pick<MonitePayableTableProps, 'tabFilters'>['tabFilters'];
 }
 
 const MoniteCustomFilter = ({

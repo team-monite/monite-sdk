@@ -953,7 +953,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
         'amount',
         'pay',
       ],
-      tab_filters: {
+      tabFilters: {
         'New Large Invoices': {
           status__in: ['draft', 'new'], // Filter by multiple statuses
           amount__gt: 1000, // Filter by amount greater than 1000
