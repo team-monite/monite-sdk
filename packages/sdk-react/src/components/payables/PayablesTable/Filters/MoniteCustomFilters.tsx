@@ -1,3 +1,4 @@
+import { FILTER_TYPE_CUSTOM_MONITE } from '@/components/payables/PayablesTable/consts';
 import {
   summaryCardClassName,
   SummaryStyledCard,
@@ -18,9 +19,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-type FilterTypes = {
-  custom_monite: string | 'all';
-};
+type FilterTypes = Record<typeof FILTER_TYPE_CUSTOM_MONITE, 'all'>;
 
 export type ExtendedPayableStateEnum = 'all' | string;
 
@@ -128,7 +127,7 @@ export const MoniteCustomFilters = ({
   ];
 
   const handleSelectTitle = (title: ExtendedPayableStateEnum) => {
-    onChangeFilter('custom_monite', title === 'all' ? null : title);
+    onChangeFilter(FILTER_TYPE_CUSTOM_MONITE, title === 'all' ? null : title);
   };
 
   return (
