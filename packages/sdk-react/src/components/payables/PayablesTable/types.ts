@@ -40,55 +40,11 @@ export type FieldValueTypes =
   | 'amount'
   | 'pay';
 
-// {
-//   "New Large Invoices": {
-//   "status__in": ["draft", "new"],
-//     "amount_gt": 1000
-// },
-//   "Unpaid": {
-//   "status__in": ["waiting to be paid", "partially paid"]
-// }
-// const mockObject: Record<string, PayablesTabFilter> = {
-//   NewLargeInvoices: {
-//     status__in: ['draft', 'new'],
-//     amount__gt: 1000,
-//   },
-//   Unpaid: {
-//     status__in: ['waiting to be paid', 'partially paid'],
-//   },
-// };
-
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
   fieldOrder?: Array<keyof FieldValueTypes>;
-  tab_filters?: Record<string, PayablesTabFilter>;
+  tab_filters?: Record<string, PayablesTabFilter | null>;
 }
-
-/*
-PayablesTabFilter
-  query?: {
-    sort?: components["schemas"]["PayableCursorFields"];
-    order?: components["schemas"] ["OrderEnum"];
-    limit?: number;
-    pagination_token?: string;
-    created_at__lt?: string;
-    created_at__gt?: string;
-    created_at__lte?: string;
-    created_at__gte?: string;
-    status?: components["schemas"]["PayableStateEnum"];
-    due_date__lt?: string;
-    due_date__gt?: string;
-    due_date__lte?: string;
-    due_date__gte?: string;
-    amount__lt?: number;
-    amount__gt?: number;
-    amount__lte?: number;
-    amount__gte?: number;
-    overdue?: boolean;
-    document_id__icontains?: string;
-    counterpart_id?: string;
-    ...
- */
 
 export type PayablesTabFilter = NonNullable<
   API['payables']['getPayables']['types']['parameters']['query']

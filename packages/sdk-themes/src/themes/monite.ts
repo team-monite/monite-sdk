@@ -943,7 +943,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableTable: {
     defaultProps: {
       isShowingSummaryCards: true,
-      fieldOrder: [
+      fieldOrders: [
         'document_id',
         'counterpart_id',
         'created_at',
@@ -955,11 +955,20 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
       ],
       tab_filters: {
         'New Large Invoices': {
-          status__in: ['draft', 'new'],
-          amount__gt: 1000,
+          status__in: ['draft', 'new'], // Filter by multiple statuses
+          amount__gt: 1000, // Filter by amount greater than 1000
+          sort: 'created_at', // Sort by 'created_at'
+          order: 'asc', // Sort in ascending order
         },
         Unpaid: {
-          status__in: ['waiting to be paid', 'partially paid'],
+          status__in: ['waiting_to_be_paid', 'partially_paid'], // Filter by statuses: waiting to be paid, partially paid
+        },
+        'Overdue Invoices': {
+          status__in: ['waiting_to_be_paid'], // Filter by status waiting to be paid
+          overdue: true, // Filter by overdue invoices
+        },
+        'High-Value Invoices': {
+          amount__gte: 10000, // Amount greater than or equal to 10,000
         },
       },
     },
