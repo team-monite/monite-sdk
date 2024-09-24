@@ -383,7 +383,7 @@ msgstr "All future iterations of this invoice will be canceled."
 msgid "All invoices"
 msgstr "All invoices"
 
-#: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:49
+#: src/components/payables/PayablesTable/Filters/MoniteCustomFilters.tsx:48
 #: src/components/payables/PayablesTable/Filters/SummaryCardsFilters.tsx:103
 msgid "All items"
 msgstr "All items"
@@ -1926,12 +1926,12 @@ msgid "Dating/Escort Services"
 msgstr "Dating/Escort Services"
 
 #: src/ui/DueDateCell/DueDateCell.tsx:42
-msgid "day"
-msgstr "day"
+#~ msgid "day"
+#~ msgstr "day"
 
 #: src/ui/DueDateCell/DueDateCell.tsx:42
-msgid "days"
-msgstr "days"
+#~ msgid "days"
+#~ msgstr "days"
 
 #: src/components/receivables/InvoiceDetails/CreateReceivable/sections/components/ReminderForm/OverdueReminderForm.tsx:232
 #~ msgid "days after"
