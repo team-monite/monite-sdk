@@ -50,6 +50,7 @@ import {
   FILTER_TYPE_SEARCH,
   FILTER_TYPE_STATUS,
   FILTER_TYPE_OVERDUE,
+  DEFAULT_FIELD_ORDER,
 } from './consts';
 import { Filters as FiltersComponent } from './Filters';
 import { FilterTypes, FilterValue, MonitePayableTableProps } from './types';
@@ -127,7 +128,8 @@ const PayablesTableBase = ({
   const { i18n } = useLingui();
   const { api, queryClient } = useMoniteContext();
 
-  const { isShowingSummaryCards } = usePayableTableThemeProps(inProps);
+  const { isShowingSummaryCards, fieldOrder } =
+    usePayableTableThemeProps(inProps);
 
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
@@ -201,7 +203,14 @@ const PayablesTableBase = ({
   const areCounterpartsLoading = useAreCounterpartsLoading(payables?.data);
   const dateFormat = useDateFormat();
 
-  const columns = useMemo<GridColDef[]>(() => {
+  const calculatedFieldOrder = useMemo<string[]>(() => {
+    if (fieldOrder && Array.isArray(fieldOrder)) {
+      return fieldOrder as string[];
+    }
+    return DEFAULT_FIELD_ORDER;
+  }, [fieldOrder]);
+
+  const columnsConfig = useMemo<GridColDef[]>(() => {
     return [
       {
         field: 'document_id',
@@ -333,6 +342,17 @@ const PayablesTableBase = ({
       },
     ];
   }, [dateFormat, formatCurrencyToDisplay, i18n, onPay]);
+
+  const columns = useMemo<GridColDef[]>(() => {
+    return columnsConfig.sort((a, b) => {
+      const aIndex = calculatedFieldOrder.indexOf(a.field);
+      const bIndex = calculatedFieldOrder.indexOf(b.field);
+
+      if (aIndex === -1 || bIndex === -1) return 0;
+
+      return aIndex - bIndex;
+    });
+  }, [columnsConfig, calculatedFieldOrder]);
 
   const gridApiRef = useAutosizeGridColumns(
     payables?.data,

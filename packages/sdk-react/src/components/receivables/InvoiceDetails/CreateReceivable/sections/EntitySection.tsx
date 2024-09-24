@@ -254,6 +254,30 @@ export const EntitySection = ({ disabled, hidden }: EntitySectionProps) => {
               </Grid>
             )}
           </Grid>
+          <Grid item>
+            <Controller
+              name="memo"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl
+                  variant="outlined"
+                  fullWidth
+                  required
+                  disabled={isEntityVatIdsLoading || disabled}
+                  error={Boolean(error)}
+                >
+                  <TextField
+                    {...field}
+                    label={t(i18n)`Memo`}
+                    multiline
+                    minRows={2}
+                    fullWidth
+                    error={Boolean(error)}
+                  />
+                </FormControl>
+              )}
+            />
+          </Grid>
         </CardContent>
       </Card>
     </Stack>

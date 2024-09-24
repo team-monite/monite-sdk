@@ -28,6 +28,17 @@ export type FilterValue =
   | string
   | null;
 
+export type FieldValueTypes =
+  | 'document_id'
+  | 'counterpart_id'
+  | 'created_at'
+  | 'issued_at'
+  | 'due_date'
+  | 'status'
+  | 'amount'
+  | 'pay';
+
 export interface MonitePayableTableProps {
   isShowingSummaryCards?: boolean;
+  fieldOrder?: Array<keyof FieldValueTypes>;
 }

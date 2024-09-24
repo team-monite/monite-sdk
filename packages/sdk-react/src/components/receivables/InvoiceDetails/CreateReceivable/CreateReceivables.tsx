@@ -78,6 +78,7 @@ const CreateReceivablesBase = ({
         entity_bank_account_id: '',
         overdue_reminder_id: '',
         payment_reminder_id: '',
+        memo: '',
       }),
       [type]
     ),
@@ -197,6 +198,7 @@ const CreateReceivablesBase = ({
                       ? { tax_rate_value: item?.tax_rate_value ?? 0 * 100 }
                       : { vat_rate_id: item.vat_rate_id }),
                   })),
+                  memo: values.memo,
                   vat_exemption_rationale: values.vat_exemption_rationale,
                   ...(!isUSEntity && values.entity_vat_id_id
                     ? { entity_vat_id_id: values.entity_vat_id_id }
