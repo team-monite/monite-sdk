@@ -69,7 +69,7 @@ export const createPaymentReminderCardTerms = (
   }, []);
 };
 
-const createDayPluralForm = (i18n: I18n, days: number) =>
+export const createDayPluralForm = (i18n: I18n, days: number) =>
   t(i18n)`${plural(days, {
     one: 'day',
     two: 'days',
