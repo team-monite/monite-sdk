@@ -132,10 +132,6 @@ const PayablesTableBase = ({
   const { isShowingSummaryCards, fieldOrder, tab_filters } =
     usePayableTableThemeProps(inProps);
 
-  useEffect(() => {
-    console.log(tab_filters);
-  }, [tab_filters]);
-
   const [currentPaginationToken, setCurrentPaginationToken] = useState<
     string | null
   >(null);
