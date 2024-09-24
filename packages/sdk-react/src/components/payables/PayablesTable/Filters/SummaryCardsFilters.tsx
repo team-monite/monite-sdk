@@ -74,7 +74,7 @@ const AmountTypography = styled(Typography)(() => ({
   alignItems: 'baseline',
 }));
 
-export const sumaryClassName = 'Monite-SummaryCard';
+export const summaryCardClassName = 'Monite-SummaryCard';
 
 const SummaryCard = ({
   status,
