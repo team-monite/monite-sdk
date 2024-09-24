@@ -943,7 +943,7 @@ export const defaultMoniteComponents: Components<Omit<Theme, 'components'>> = {
   MonitePayableTable: {
     defaultProps: {
       isShowingSummaryCards: true,
-      fieldOrders: [
+      fieldOrder: [
         'document_id',
         'counterpart_id',
         'created_at',
