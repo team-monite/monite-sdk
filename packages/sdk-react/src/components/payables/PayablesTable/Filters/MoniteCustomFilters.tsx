@@ -1,6 +1,7 @@
-import { ComponentProps } from 'react';
-
-import { sumaryClassName } from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
+import {
+  sumaryClassName,
+  SummaryStyledCard,
+} from '@/components/payables/PayablesTable/Filters/SummaryCardsFilters';
 import { useDragScroll } from '@/components/payables/PayablesTable/hooks/useDragScroll';
 import { MonitePayableTableProps } from '@/components/payables/PayablesTable/types';
 import { FilterValue } from '@/components/userRoles/types';
@@ -9,14 +10,13 @@ import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
   Box,
-  Card,
   CardContent,
   Skeleton,
   SxProps,
   Theme,
   Typography,
 } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 type FilterTypes = {
   custom_monite: string | 'all';
@@ -37,29 +37,6 @@ interface MoniteCustomFiltersProps {
   tabFiltersData: Pick<MonitePayableTableProps, 'tab_filters'>['tab_filters'];
 }
 
-interface StyledCardProps extends ComponentProps<typeof Card> {
-  selected: boolean;
-  isAllItems?: boolean;
-  theme: Theme;
-}
-
-const StyledCard = styled(Card)(
-  ({ selected, isAllItems, theme }: StyledCardProps) => ({
-    cursor: 'pointer',
-    border: `2px solid ${
-      selected ? theme.palette.primary.main : 'transparent'
-    }`,
-    '&:hover': { border: `2px solid ${theme.palette.primary.main}` },
-    display: 'flex',
-    padding: '16px 18px',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: 80,
-    minWidth: isAllItems ? '118px' : '220px',
-    flexShrink: 0,
-  })
-);
-
 const MoniteCustomFilter = ({
   title,
   onClick,
@@ -72,7 +49,7 @@ const MoniteCustomFilter = ({
   const titleText = isAllItems ? t(i18n)`All items` : title;
 
   return (
-    <StyledCard
+    <SummaryStyledCard
       theme={theme}
       onClick={onClick}
       selected={selected}
@@ -111,7 +88,7 @@ const MoniteCustomFilter = ({
           </Typography>
         </Box>
       </CardContent>
-    </StyledCard>
+    </SummaryStyledCard>
   );
 };
 

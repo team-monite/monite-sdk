@@ -52,7 +52,7 @@ interface StyledCardProps extends ComponentProps<typeof Card> {
   theme: Theme;
 }
 
-const StyledCard = styled(Card)(
+export const SummaryStyledCard = styled(Card)(
   ({ selected, isAllItems, theme }: StyledCardProps) => ({
     cursor: 'pointer',
     border: `2px solid ${
@@ -121,7 +121,7 @@ const SummaryCard = ({
   const colorValue = getColor(theme.palette, STATUS_TO_MUI_MAP[status]);
 
   return (
-    <StyledCard
+    <SummaryStyledCard
       theme={theme}
       onClick={onClick}
       selected={selected}
@@ -239,7 +239,7 @@ const SummaryCard = ({
           </Box>
         )}
       </CardContent>
-    </StyledCard>
+    </SummaryStyledCard>
   );
 };
 
